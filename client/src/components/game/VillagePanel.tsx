@@ -54,59 +54,55 @@ export default function VillagePanel() {
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           
           <div className="space-y-3">
-            {(villagers.gatherers > 0 || story.seen?.hasGatherers) && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Gatherer</span>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => unassignVillager('gatherers')}
-                    disabled={villagers.gatherers === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    -
-                  </Button>
-                  <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
-                  <Button
-                    onClick={() => assignVillager('gatherers')}
-                    disabled={villagers.free === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    +
-                  </Button>
-                </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Gatherer</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => unassignVillager('gatherers')}
+                  disabled={villagers.gatherers === 0}
+                  variant="outline"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                >
+                  -
+                </Button>
+                <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
+                <Button
+                  onClick={() => assignVillager('gatherers')}
+                  disabled={villagers.free === 0}
+                  variant="outline"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                >
+                  +
+                </Button>
               </div>
-            )}
+            </div>
             
-            {(villagers.hunters > 0 || story.seen?.hasHunters) && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Hunter</span>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => unassignVillager('hunters')}
-                    disabled={villagers.hunters === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    -
-                  </Button>
-                  <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
-                  <Button
-                    onClick={() => assignVillager('hunters')}
-                    disabled={villagers.free === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    +
-                  </Button>
-                </div>
+            <div className="flex items-center justify-between">
+              <span className="text-sm">Hunter</span>
+              <div className="flex items-center gap-2">
+                <Button
+                  onClick={() => unassignVillager('hunters')}
+                  disabled={villagers.hunters === 0}
+                  variant="outline"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                >
+                  -
+                </Button>
+                <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
+                <Button
+                  onClick={() => assignVillager('hunters')}
+                  disabled={villagers.free === 0}
+                  variant="outline"
+                  size="sm"
+                  className="h-6 w-6 p-0"
+                >
+                  +
+                </Button>
               </div>
-            )}
+            </div>
           </div>
         </div>
       )}
