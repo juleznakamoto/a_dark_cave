@@ -72,7 +72,6 @@ export const gameTexts = {
     initial: 'Beyond the village lies a vast world waiting to be explored...',
   },
   hints: {
-    needFuel: 'The fire needs more fuel to keep burning...',
     enoughWood: 'You have enough wood to craft something useful.',
   },
 };
