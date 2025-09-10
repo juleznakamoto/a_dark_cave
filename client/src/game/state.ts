@@ -375,15 +375,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
     } else if (actionId === 'buildWorkshop') {
+      console.log('=== Building Workshop ===');
+      console.log('Current state:', {
+        buildings: state.buildings,
+        resources: state.resources,
+        workshopsCount: state.buildings.workshops
+      });
+      
       const requirements = buildingRequirements.workshop[state.buildings.workshops + 1];
+      console.log('Requirements found:', requirements);
+      
       const newResources = { ...state.resources };
 
       // Deduct all resource costs dynamically
       for (const [resource, amount] of Object.entries(requirements)) {
         if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
+          console.log(`Deducting ${amount} ${resource} (had ${newResources[resource as keyof typeof newResources]})`);
           newResources[resource as keyof typeof newResources] -= amount;
         }
       }
+
+      console.log('New resources after deduction:', newResources);
 
       updates.resources = newResources;
       updates.buildings = {
@@ -397,6 +409,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           actionBuildWorkshop: true
         }
       };
+      
+      console.log('Updates to apply:', updates);
+      console.log('=== Workshop Building Complete ===');
     }
      else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones

@@ -15,6 +15,12 @@ export default function VillagePanel() {
   };
 
   const handleBuildWorkshop = () => {
+    console.log('=== Workshop Button Clicked ===');
+    console.log('Current buildings:', buildings);
+    console.log('Current resources:', resources);
+    console.log('Current cooldowns:', cooldowns);
+    console.log('Workshop requirements:', workshopRequirements);
+    console.log('Can build workshop:', canBuildWorkshop);
     executeAction('buildWorkshop');
   };
 
