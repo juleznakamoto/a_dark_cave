@@ -25,7 +25,7 @@ export const gameActions: Record<string, Action> = {
     effects: {
       'resources.wood': '+1-3', // Random amount
     },
-    cooldown: 3, // 3 second cooldown
+    cooldown: 5, // 5 second cooldown
   },
   
   buildTorch: {
@@ -41,7 +41,7 @@ export const gameActions: Record<string, Action> = {
       'tools.torch': true,
     },
     unlocks: ['exploreDeeper'],
-    cooldown: 5, // 5 second cooldown
+    cooldown: 5, // 10 second cooldown
   },
   
   buildHut: {
@@ -56,7 +56,7 @@ export const gameActions: Record<string, Action> = {
       'resources.wood': -50,
       'buildings.huts': '+1',
     },
-    cooldown: 10, // 10 second cooldown
+    cooldown: 10, // 30 second cooldown
   },
 };
 
