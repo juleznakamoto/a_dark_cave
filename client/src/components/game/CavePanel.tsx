@@ -76,44 +76,45 @@ export default function CavePanel() {
               <span className="relative z-10">Gather Wood</span>
             </CooldownButton>
           )}
-
-          {/* Build Torch Action */}
-          {hasSeenBuildTorch && (
-            <CooldownButton
-              onClick={handleBuildTorch}
-              cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
-              variant="secondary"
-              data-testid="button-build-torch"
-              disabled={!canBuildTorch}
-              className={`w-full ${
-                canBuildTorch
-                  ? 'bg-amber-800 border-amber-600 text-amber-100 hover:bg-amber-700 hover:text-amber-50'
-                  : 'bg-gray-700 border-gray-600 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              Build Torch (10 wood)
-            </CooldownButton>
-          )}
-
-          {/* Build Hut Action (Village unlocked) */}
-          {hasSeenBuildHut && (
-            <CooldownButton
-              onClick={handleBuildHut}
-              cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
-              variant="secondary"
-              data-testid="button-build-hut"
-              disabled={!canBuildHut}
-              className={`w-full ${
-                canBuildHut
-                  ? 'bg-green-800 border-green-600 text-green-100 hover:bg-green-700 hover:text-green-50'
-                  : 'bg-gray-700 border-gray-600 text-gray-400 cursor-not-allowed'
-              }`}
-            >
-              Build Hut (50 wood)
-            </CooldownButton>
-          )}
         </div>
       </div>
+
+      {/* Build Panel */}
+      {(hasSeenBuildTorch || hasSeenBuildHut) && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+
+          <div className="flex flex-wrap gap-2">
+            {/* Build Torch */}
+            {hasSeenBuildTorch && (
+              <CooldownButton
+                onClick={handleBuildTorch}
+                cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
+                data-testid="button-build-torch"
+                disabled={!canBuildTorch}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">Build Torch (10 wood)</span>
+              </CooldownButton>
+            )}
+
+            {/* Build Hut (Village unlocked) */}
+            {hasSeenBuildHut && (
+              <CooldownButton
+                onClick={handleBuildHut}
+                cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
+                data-testid="button-build-hut"
+                disabled={!canBuildHut}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">Build Hut (50 wood)</span>
+              </CooldownButton>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Progress Hints */}
       <div className="space-y-2 text-sm text-muted-foreground">
