@@ -5,8 +5,8 @@ import { LogEntry } from "@/game/events";
 export default function LogPanel() {
   const { log } = useGameStore();
 
-  // Get only the last 10 entries
-  const recentEntries = log.slice(-10);
+  // Get only the last 10 entries and reverse them so latest is at top
+  const recentEntries = log.slice(-10).reverse();
 
   return (
     <div className="space-y-3 text-sm">
