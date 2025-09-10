@@ -84,11 +84,11 @@ function handleFireConsumption() {
 function handleGathererProduction() {
   const state = useGameStore.getState();
   const gatherers = state.villagers.gatherers;
-  
+
   if (gatherers > 0) {
     const woodProduced = gatherers * 5; // Each gatherer produces 5 wood
     state.updateResource('wood', woodProduced);
-    
+
     // Add log entry for gatherer production
     const logEntry = {
       id: `gatherer-production-${Date.now()}`,
@@ -96,7 +96,7 @@ function handleGathererProduction() {
       timestamp: Date.now(),
       type: 'production' as const,
     };
-    
+
     state.addLogEntry(logEntry);
   }
 }
