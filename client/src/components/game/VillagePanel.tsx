@@ -4,7 +4,7 @@ import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
 export default function VillagePanel() {
-  const { resources, cooldowns, villagers, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const { resources, cooldowns, villagers, story, executeAction, assignVillager, unassignVillager } = useGameStore();
 
   const handleBuildHut = () => {
     executeAction('buildHut');
@@ -49,35 +49,37 @@ export default function VillagePanel() {
         </div>
       </div>
 
-      {villagers.free > 0 && (
+      {(villagers.free > 0 || story.seen?.hasVillagers) && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Gatherer</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => unassignVillager('gatherers')}
-                  disabled={villagers.gatherers === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  -
-                </Button>
-                <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
-                <Button
-                  onClick={() => assignVillager('gatherers')}
-                  disabled={villagers.free === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  +
-                </Button>
+            {(villagers.gatherers > 0 || story.seen?.hasGatherers) && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Gatherer</span>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => unassignVillager('gatherers')}
+                    disabled={villagers.gatherers === 0}
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                  >
+                    -
+                  </Button>
+                  <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
+                  <Button
+                    onClick={() => assignVillager('gatherers')}
+                    disabled={villagers.free === 0}
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                  >
+                    +
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
             
             {(villagers.hunters > 0 || story.seen?.hasHunters) && (
               <div className="flex items-center justify-between">

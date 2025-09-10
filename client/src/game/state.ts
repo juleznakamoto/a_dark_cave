@@ -501,13 +501,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
           }
         };
 
-        // Track when hunters are first assigned
+        // Track when population types are first assigned
         if (job === 'hunters' && state.villagers.hunters === 0) {
           updates.story = {
             ...state.story,
             seen: {
               ...state.story.seen,
               hasHunters: true
+            }
+          };
+        } else if (job === 'gatherers' && state.villagers.gatherers === 0) {
+          updates.story = {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              hasGatherers: true
             }
           };
         }
