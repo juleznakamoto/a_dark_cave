@@ -119,6 +119,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     
+    // Check requirements before executing
+    if (actionId === 'lightFire' && state.flags.fireLit) return;
+    if (actionId === 'gatherWood' && !state.flags.fireLit) return;
+    if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
+    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return;
+    
     // Mark action as seen
     const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;
     
@@ -135,7 +141,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
     
     // Apply specific action effects
-    if (actionId === 'buildTorch') {
+    if (actionId === 'lightFire') {
+      updates.flags = { ...state.flags, fireLit: true };
+      updates.story.seen.fireLit = true;
+    } else if (actionId === 'gatherWood') {
+      const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
+      updates.resources = { ...state.resources, wood: state.resources.wood + amount };
+      updates.story.seen.hasWood = true;
+    } else if (actionId === 'buildTorch') {
       updates.resources = { ...state.resources, wood: state.resources.wood - 10, torch: state.resources.torch + 1 };
       updates.flags = { ...state.flags, torchBuilt: true };
     } else if (actionId === 'buildHut') {
