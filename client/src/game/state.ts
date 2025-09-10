@@ -83,6 +83,8 @@ const defaultGameState: GameState = {
     active: [],
     log: [],
   },
+  current_population: 0,
+  total_population: 0,
   version: 1,
 };
 
