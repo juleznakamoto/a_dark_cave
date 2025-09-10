@@ -31,7 +31,8 @@ export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
     condition: (state) =>
-      state.current_population < state.total_population,
+      state.current_population < state.total_population &&
+      Math.random() < 0.002,
     triggerType: "resource",
     message: [
       "A stranger approaches through the woods and joins your village.",
@@ -53,14 +54,17 @@ export const gameEvents: Record<string, GameEvent> = {
         seen: {
           ...state.story.seen,
           hasVillagers: true,
-        }
-      }
+        },
+      },
     }),
   },
 };
 
 export class EventManager {
-  static checkEvents(state: GameState): { newLogEntries: LogEntry[], stateChanges: Partial<GameState> } {
+  static checkEvents(state: GameState): {
+    newLogEntries: LogEntry[];
+    stateChanges: Partial<GameState>;
+  } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
     const sortedEvents = Object.values(gameEvents).sort(
