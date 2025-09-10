@@ -22,10 +22,12 @@ export const gameStateSchema = z.object({
   buildings: z.object({
     huts: z.number().min(0).default(0),
     traps: z.number().min(0).default(0),
+    lodges: z.number().min(0).default(0),
   }),
   villagers: z.object({
     free: z.number().min(0).default(0),
     hunters: z.number().min(0).default(0),
+    gatherers: z.number().min(0).default(0),
   }),
   world: z.object({
     discovered: z.boolean().default(false),

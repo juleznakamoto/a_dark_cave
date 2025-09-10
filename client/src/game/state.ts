@@ -224,15 +224,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
 
-      // Add rumbling sound after first torch
-      const rumbleLogEntry: LogEntry = {
-        id: `rumble-sound-${Date.now()}`,
-        message: 'A low, rumbling sound echoes from deeper in the cave.',
-        timestamp: Date.now() + 1000, // Slight delay after torch message
-        type: 'system',
-      };
+      // Add rumbling sound after first torch (only if not seen before)
+      if (!state.story.seen.rumbleSound) {
+        const rumbleLogEntry: LogEntry = {
+          id: `rumble-sound-${Date.now()}`,
+          message: 'A low, rumbling sound echoes from deeper in the cave.',
+          timestamp: Date.now() + 1000, // Slight delay after torch message
+          type: 'system',
+        };
 
-      updates.log = [...state.log, rumbleLogEntry].slice(-8);
+        updates.log = [...state.log, rumbleLogEntry].slice(-8);
+        updates.story.seen.rumbleSound = true;
+      }
     } else if (actionId === 'buildHut') {
       updates.resources = {
         ...state.resources,
