@@ -84,6 +84,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   lightFire: () => {
     const state = get();
     if ((state.cooldowns['lightFire'] || 0) > 0) return;
+    if (state.flags.fireLit) return; // Don't light fire if already lit
 
     const cooldown = gameActions.lightFire?.cooldown || 1;
     
@@ -183,6 +184,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'lightFire') {
       updates.flags = { ...state.flags, fireLit: true };
       updates.story.seen.fireLit = true;
+      
+      // Add fire lit message to log
+      const fireLogEntry: LogEntry = {
+        id: `fire-lit-${Date.now()}`,
+        message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
+        timestamp: Date.now(),
+        type: 'system',
+      };
+      updates.log = [...state.log, fireLogEntry].slice(-50);
     } else if (actionId === 'gatherWood') {
       const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
       updates.resources = { ...state.resources, wood: state.resources.wood + amount };
@@ -241,7 +251,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const savedState = await loadGame();
     
-    // Always add initial cave description when loading/starting game
+    // Always add initial cave description when starting new game
     const initialLogEntry: LogEntry = {
       id: 'initial-narrative',
       message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
@@ -255,7 +265,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: 'cave',
         lastSaved: 'Loaded',
         cooldowns: {},
-        log: [initialLogEntry, ...get().log],
         events: get().events,
       });
     } else {
