@@ -4,7 +4,7 @@ import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
 export default function VillagePanel() {
-  const { resources, cooldowns, villagers, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
 
   const handleBuildHut = () => {
     executeAction('buildHut');
