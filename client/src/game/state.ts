@@ -71,6 +71,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const cooldown = gameActions.gatherWood?.cooldown || 3;
     set((state) => ({
       resources: { ...state.resources, wood: state.resources.wood + amount },
+      story: { ...state.story, seen: { ...state.story.seen, hasWood: true } },
       cooldowns: { ...state.cooldowns, gatherWood: cooldown }
     }));
   },
@@ -80,9 +81,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updateResource: (resource: keyof GameState['resources'], amount: number) => {
-    set((state) => ({
-      resources: { ...state.resources, [resource]: Math.max(0, state.resources[resource] + amount) }
-    }));
+    set((state) => {
+      const newAmount = Math.max(0, state.resources[resource] + amount);
+      const updates: any = {
+        resources: { ...state.resources, [resource]: newAmount }
+      };
+      
+      // Track when resources are first seen
+      if (newAmount > 0 && !state.story.seen[`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]) {
+        updates.story = {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            [`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]: true
+          }
+        };
+      }
+      
+      return updates;
+    });
   },
 
   setFlag: (flag: keyof GameState['flags'], value: boolean) => {

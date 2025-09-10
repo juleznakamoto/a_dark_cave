@@ -1,10 +1,13 @@
 import { useGameStore } from '@/game/state';
 
 export default function ToolsDisplay() {
-  const { tools } = useGameStore();
+  const { tools, story } = useGameStore();
 
-  // Only show the tools display if player has acquired any tools
-  const hasAnyTools = tools.axe || tools.spear;
+  // Show the tools display if player has ever acquired any tools
+  const hasEverSeenAxe = story.seen.hasAxe || tools.axe;
+  const hasEverSeenSpear = story.seen.hasSpear || tools.spear;
+  
+  const hasAnyTools = hasEverSeenAxe || hasEverSeenSpear;
 
   if (!hasAnyTools) {
     return null;
@@ -16,11 +19,15 @@ export default function ToolsDisplay() {
         Tools
       </h3>
       <div className="space-y-1 text-sm text-muted-foreground">
-        {tools.axe && (
-          <div data-testid="tool-axe">Axe</div>
+        {hasEverSeenAxe && (
+          <div data-testid="tool-axe">
+            {tools.axe ? 'Axe' : 'Axe (missing)'}
+          </div>
         )}
-        {tools.spear && (
-          <div data-testid="tool-spear">Spear</div>
+        {hasEverSeenSpear && (
+          <div data-testid="tool-spear">
+            {tools.spear ? 'Spear' : 'Spear (missing)'}
+          </div>
         )}
       </div>
     </div>
