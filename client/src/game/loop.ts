@@ -104,8 +104,8 @@ function handleHunterProduction() {
   const hunters = state.villagers.hunters;
 
   if (hunters > 0) {
-    const foodProduced = hunters * 5; // Each hunter produces 5 food (meat)
-    state.updateResource('food', foodProduced);
+    const meatProduced = hunters * 5; // Each hunter produces 5 meat
+    state.updateResource('meat', meatProduced);
   }
 }
 

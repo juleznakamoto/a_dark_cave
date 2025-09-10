@@ -3,6 +3,9 @@ import { GameState } from '@shared/schema';
 import { gameActions } from '@/game/rules';
 import { LogEntry, EventManager } from '@/game/events';
 
+// Define the ResourceType to use 'meat' instead of 'food'
+type ResourceType = 'wood' | 'meat';
+
 interface GameStore extends GameState {
   // Actions
   lightFire: () => void;
@@ -40,7 +43,7 @@ interface GameStore extends GameState {
 const defaultGameState: GameState = {
   resources: {
     wood: 0,
-    food: 0,
+    meat: 0, // Changed from food to meat
     torch: 0,
     stone: 0,
   },

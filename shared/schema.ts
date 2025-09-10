@@ -4,7 +4,7 @@ import { z } from "zod";
 export const gameStateSchema = z.object({
   resources: z.object({
     wood: z.number().min(0).default(0),
-    food: z.number().min(0).default(0),
+    meat: z.number().min(0).default(0),
     torch: z.number().min(0).default(0),
     stone: z.number().min(0).default(0),
   }),

@@ -70,3 +70,8 @@ Preferred communication style: Simple, everyday language.
 - **Replit Integration**: Custom Replit plugins for enhanced development experience
 - **Vite Plugins**: Runtime error overlay and development tools
 - **Font Integration**: Google Fonts (Inter, Crimson Text, Courier New) for typography hierarchy
+
+## Development Rules
+
+### Event System
+- **No Event Creation**: Do not create events, log messages, or narrative elements without explicit instruction from the user. Focus only on mechanical aspects (resources, buildings, villagers) unless specifically asked to work on the event system.
