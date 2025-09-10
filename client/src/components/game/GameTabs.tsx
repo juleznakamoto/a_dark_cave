@@ -1,11 +1,4 @@
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuItem,
-  SidebarMenuButton,
-} from '@/components/ui/sidebar';
+import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
 import ResourceDisplay from './ResourceDisplay';
 import ToolsDisplay from './ToolsDisplay';
@@ -19,44 +12,93 @@ export default function GameTabs() {
     updatePopulation();
   }, [villagers, buildings.huts, updatePopulation]);
 
-  const tabs = [
-    { id: 'cave', label: 'Cave', visible: true },
-    { id: 'village', label: 'Village', visible: flags.villageUnlocked },
-    { id: 'world', label: 'World', visible: flags.worldDiscovered },
-  ];
-
   return (
-    <Sidebar side="left" variant="sidebar" className="w-48">
-      <SidebarHeader className="p-4">
+    <nav className="w-48 border-r border-border bg-muted/30">
+      <div className="p-4">
         <div className="space-y-2">
-          <ResourceDisplay />
-          <ToolsDisplay />
-          {story.seen.hasVillagers && (
-            <div className="text-xs text-muted-foreground space-y-1">
-              <div>Population: {current_population}/{total_population}</div>
-              <div>Free: {villagers.free}</div>
-              {villagers.gatherers > 0 && <div>Gatherers: {villagers.gatherers}</div>}
-              {villagers.hunters > 0 && <div>Hunters: {villagers.hunters}</div>}
-            </div>
+          <Button
+            variant={activeTab === 'cave' ? 'default' : 'ghost'}
+            className="w-full justify-start text-sm"
+            onClick={() => setActiveTab('cave')}
+            data-testid="tab-cave"
+          >
+            The Cave
+          </Button>
+
+          {flags.villageUnlocked && (
+            <Button
+              variant={activeTab === 'village' ? 'default' : 'ghost'}
+              className="w-full justify-start text-sm"
+              onClick={() => setActiveTab('village')}
+              data-testid="tab-village"
+            >
+              The Village
+            </Button>
+          )}
+
+          {flags.worldDiscovered && (
+            <Button
+              variant={activeTab === 'world' ? 'default' : 'ghost'}
+              className="w-full justify-start text-sm"
+              onClick={() => setActiveTab('world')}
+              data-testid="tab-world"
+            >
+              The World
+            </Button>
           )}
         </div>
-      </SidebarHeader>
+      </div>
 
-      <SidebarContent>
-        <SidebarMenu>
-          {tabs.filter(tab => tab.visible).map((tab) => (
-            <SidebarMenuItem key={tab.id}>
-              <SidebarMenuButton
-                isActive={activeTab === tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className="w-full justify-start"
-              >
-                {tab.label}
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-        </SidebarMenu>
-      </SidebarContent>
-    </Sidebar>
+      {/* Buildings Section */}
+      {(buildings.huts > 0 || buildings.lodges > 0) && (
+        <div className="mt-6">
+          <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">Buildings</h3>
+          <div className="space-y-1 px-3">
+            {buildings.huts > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Wooden Huts</span>
+                <span className="font-mono">{buildings.huts}</span>
+              </div>
+            )}
+            {buildings.lodges > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Lodges</span>
+                <span className="font-mono">{buildings.lodges}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* Population Section */}
+      {story.seen?.hasVillagers && (
+        <div className="mt-6">
+          <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">
+            Population ({current_population}/{total_population})
+          </h3>
+          <div className="space-y-1 px-3">
+            <div className="flex justify-between items-center text-sm">
+              <span>Villagers</span>
+              <span className="font-mono">{villagers.free}</span>
+            </div>
+            {villagers.gatherers > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Gatherers</span>
+                <span className="font-mono">{villagers.gatherers}</span>
+              </div>
+            )}
+            {villagers.hunters > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Hunters</span>
+                <span className="font-mono">{villagers.hunters}</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <ResourceDisplay />
+      <ToolsDisplay />
+    </nav>
   );
 }
