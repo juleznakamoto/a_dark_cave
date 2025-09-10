@@ -34,7 +34,7 @@ export default function VillagePanel() {
             <span className="relative z-10">Wooden Hut (100 wood)</span>
           </CooldownButton>
 
-          {buildings.huts >= 1 && villagers.free > 0 && (
+          {buildings.huts >= 1 && (
             <CooldownButton
               onClick={handleBuildLodge}
               cooldownMs={(gameActions.buildLodge?.cooldown || 15) * 1000}
