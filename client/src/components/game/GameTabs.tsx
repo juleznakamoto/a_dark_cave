@@ -2,47 +2,37 @@ import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
 import ResourceDisplay from './ResourceDisplay';
 import ToolsDisplay from './ToolsDisplay';
+import { cn } from '@/lib/utils';
 
 export default function GameTabs() {
   const { activeTab, setActiveTab, flags } = useGameStore();
 
+  const tabs = [
+    { id: 'cave', label: 'The Cave' },
+    ...(flags.villageUnlocked ? [{ id: 'village', label: 'The Village' }] : []),
+    ...(flags.worldDiscovered ? [{ id: 'world', label: 'The World' }] : []),
+  ];
+
   return (
-    <nav className="w-48 border-r border-border bg-muted/30">
-      <div className="p-4">
-        <div className="space-y-2">
-          <Button
-            variant={activeTab === 'cave' ? 'default' : 'ghost'}
-            className="w-full justify-start text-sm"
-            onClick={() => setActiveTab('cave')}
-            data-testid="tab-cave"
+    <nav className="border-b border-border">
+      <div className="flex space-x-1">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveTab(tab.id)}
+            className={cn(
+              'px-4 py-2 text-sm font-medium transition-colors border-b-2',
+              activeTab === tab.id
+                ? 'border-primary text-primary bg-accent/50'
+                : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+            )}
+            data-testid={`tab-${tab.id}`}
           >
-            The Cave
-          </Button>
-          
-          {flags.villageUnlocked && (
-            <Button
-              variant={activeTab === 'village' ? 'default' : 'ghost'}
-              className="w-full justify-start text-sm"
-              onClick={() => setActiveTab('village')}
-              data-testid="tab-village"
-            >
-              The Village
-            </Button>
-          )}
-          
-          {flags.worldDiscovered && (
-            <Button
-              variant={activeTab === 'world' ? 'default' : 'ghost'}
-              className="w-full justify-start text-sm"
-              onClick={() => setActiveTab('world')}
-              data-testid="tab-world"
-            >
-              The World
-            </Button>
-          )}
-        </div>
+            {tab.label}
+          </button>
+        ))}
       </div>
-      
+
       <ResourceDisplay />
       <ToolsDisplay />
     </nav>

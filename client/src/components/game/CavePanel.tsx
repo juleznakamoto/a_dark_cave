@@ -33,11 +33,6 @@ export default function CavePanel() {
 
   return (
     <div className="space-y-6">
-      {/* Events Panel - Full Width at Top */}
-      <div className="w-full">
-        <LogPanel />
-      </div>
-
       {/* Actions Panel */}
       <div className="space-y-4">
         <h2 className="text-lg font-medium border-b border-border pb-2">Actions</h2>
