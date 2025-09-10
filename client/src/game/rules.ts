@@ -11,7 +11,7 @@ export const buildingRequirements = {
     1: { wood: 250, requiredBuildings: { huts: 1 } },
   },
   workshop: {
-    1: { wood: 100, stone: 10, requiredBuildings: { lodges: 1 } },
+    1: { wood: 100, stone: 20, requiredBuildings: { lodges: 1 } },
   },
 };
 
