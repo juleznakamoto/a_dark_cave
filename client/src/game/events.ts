@@ -32,7 +32,7 @@ export const gameEvents: Record<string, GameEvent> = {
     id: "strangerApproaches",
     condition: (state) =>
       state.buildings.huts >= 1 &&
-      !state.events?.strangerApproaches,
+      state.current_population < state.total_population,
     triggerType: "resource",
     message: [
       "A stranger approaches through the woods.",
