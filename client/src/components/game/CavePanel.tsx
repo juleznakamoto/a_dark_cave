@@ -118,14 +118,6 @@ export default function CavePanel() {
           <p data-testid="hint-enough-wood">{gameTexts.hints.enoughWood}</p>
         )}
       </div>
-
-      {/* Event Log */}
-      {flags.fireLit && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Events</h2>
-          <LogPanel />
-        </div>
-      )}
     </div>
   );
 }
