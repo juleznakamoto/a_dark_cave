@@ -15,7 +15,7 @@ export default function VillagePanel() {
   };
 
   const canBuildHut = resources.wood >= 100 && (cooldowns['buildHut'] || 0) === 0;
-  const canBuildLodge = villagers.free >= 1 && resources.wood >= 250 && (cooldowns['buildLodge'] || 0) === 0;
+  const canBuildLodge = buildings.huts >= 1 && villagers.free >= 1 && resources.wood >= 250 && (cooldowns['buildLodge'] || 0) === 0;
 
   return (
     <div className="space-y-6">
@@ -34,7 +34,7 @@ export default function VillagePanel() {
             <span className="relative z-10">Wooden Hut (100 wood)</span>
           </CooldownButton>
 
-          {villagers.free > 0 && (
+          {buildings.huts >= 1 && villagers.free > 0 && (
             <CooldownButton
               onClick={handleBuildLodge}
               cooldownMs={(gameActions.buildLodge?.cooldown || 15) * 1000}
@@ -49,7 +49,7 @@ export default function VillagePanel() {
         </div>
       </div>
 
-      {(villagers.free > 0 || story.seen?.hasVillagers) && (
+      {(buildings.lodges > 0 || story.seen?.hasGatherers || story.seen?.hasHunters) && (villagers.free > 0 || story.seen?.hasVillagers) && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           

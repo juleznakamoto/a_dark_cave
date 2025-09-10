@@ -175,7 +175,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'gatherWood' && !state.flags.fireLit) return;
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
     if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 100)) return;
-    if (actionId === 'buildLodge' && (state.villagers.free < 1 || state.resources.wood < 250)) return;
+    if (actionId === 'buildLodge' && (state.buildings.huts < 1 || state.villagers.free < 1 || state.resources.wood < 250)) return;
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
     if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 

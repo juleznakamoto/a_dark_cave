@@ -64,6 +64,7 @@ export const gameActions: Record<string, Action> = {
     label: 'Lodge',
     description: 'Build a lodge where villagers can gather and work.',
     requirements: {
+      'buildings.huts': 1,
       'villagers.free': 1,
       'resources.wood': 250,
     },
