@@ -1,10 +1,9 @@
-
-import { GameState } from '@shared/schema';
+import { GameState } from "@shared/schema";
 
 export interface GameEvent {
   id: string;
   condition: (state: GameState) => boolean;
-  triggerType: 'time' | 'resource' | 'random' | 'action';
+  triggerType: "time" | "resource" | "random" | "action";
   message: string;
   choices?: EventChoice[];
   triggered: boolean;
@@ -23,23 +22,26 @@ export interface LogEntry {
   id: string;
   message: string;
   timestamp: number;
-  type: 'event' | 'action' | 'system';
+  type: "event" | "action" | "system";
   choices?: EventChoice[];
 }
 
 // Define game events
 export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
-    id: 'strangerApproaches',
-    condition: (state) => state.resources.wood >= 10 && !state.events?.strangerApproaches,
-    triggerType: 'resource',
-    message: 'A stranger approaches through the woods, carrying a large pack.',
+    id: "strangerApproaches",
+    condition: (state) =>
+      state.resources.wood >= 10 &&
+      state.flags.caveExplored == true &&
+      !state.events?.strangerApproaches,
+    triggerType: "resource",
+    message: "A stranger approaches through the woods, carrying a large pack.",
     triggered: false,
     priority: 1,
     choices: [
       {
-        id: 'tradeWithStranger',
-        label: 'Trade Wood for Supplies',
+        id: "tradeWithStranger",
+        label: "Trade Wood for Supplies",
         effect: (state) => ({
           resources: {
             ...state.resources,
@@ -50,8 +52,8 @@ export const gameEvents: Record<string, GameEvent> = {
         cooldown: 2,
       },
       {
-        id: 'ignoreStranger',
-        label: 'Ignore the Stranger',
+        id: "ignoreStranger",
+        label: "Ignore the Stranger",
         effect: () => ({}),
         cooldown: 1,
       },
@@ -59,15 +61,16 @@ export const gameEvents: Record<string, GameEvent> = {
   },
 
   mysterousSound: {
-    id: 'mysterousSound',
-    condition: (state) => state.resources.wood >= 20 && !state.events?.mysterousSound,
-    triggerType: 'resource',
-    message: 'A low, rumbling sound echoes from deeper in the cave.',
+    id: "mysterousSound",
+    condition: (state) =>
+      state.resources.wood >= 20 && !state.events?.mysterousSound,
+    triggerType: "resource",
+    message: "A low, rumbling sound echoes from deeper in the cave.",
     triggered: false,
     choices: [
       {
-        id: 'investigate',
-        label: 'Investigate the Sound',
+        id: "investigate",
+        label: "Investigate the Sound",
         effect: (state) => ({
           flags: {
             ...state.flags,
@@ -77,25 +80,26 @@ export const gameEvents: Record<string, GameEvent> = {
         cooldown: 3,
       },
       {
-        id: 'stayPut',
-        label: 'Stay by the Fire',
+        id: "stayPut",
+        label: "Stay by the Fire",
         effect: () => ({}),
         cooldown: 1,
       },
     ],
   },
-
 };
 
 export class EventManager {
   static checkEvents(state: GameState): LogEntry[] {
     const newLogEntries: LogEntry[] = [];
-    const sortedEvents = Object.values(gameEvents).sort((a, b) => (b.priority || 0) - (a.priority || 0));
+    const sortedEvents = Object.values(gameEvents).sort(
+      (a, b) => (b.priority || 0) - (a.priority || 0),
+    );
 
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
-      
+
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.events?.[event.id] && !event.repeatable) continue;
 
@@ -105,12 +109,12 @@ export class EventManager {
           id: `${event.id}-${Date.now()}`,
           message: event.message,
           timestamp: Date.now(),
-          type: 'event',
+          type: "event",
           choices: event.choices,
         };
 
         newLogEntries.push(logEntry);
-        
+
         // Mark as triggered
         event.triggered = true;
         break; // Only trigger one event per tick
@@ -120,11 +124,15 @@ export class EventManager {
     return newLogEntries;
   }
 
-  static applyEventChoice(state: GameState, choiceId: string, eventId: string): Partial<GameState> {
+  static applyEventChoice(
+    state: GameState,
+    choiceId: string,
+    eventId: string,
+  ): Partial<GameState> {
     const event = gameEvents[eventId];
     if (!event) return {};
 
-    const choice = event.choices?.find(c => c.id === choiceId);
+    const choice = event.choices?.find((c) => c.id === choiceId);
     if (!choice) return {};
 
     return choice.effect(state);
