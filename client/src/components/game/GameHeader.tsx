@@ -4,7 +4,7 @@ import { manualSave } from '@/game/loop';
 import { deleteSave } from '@/game/save';
 
 export default function GameHeader() {
-  const { lastSaved, restartGame } = useGameStore();
+  const { lastSaved, restartGame, devMode, toggleDevMode } = useGameStore();
 
   const handleSaveGame = async () => {
     await manualSave();
@@ -31,15 +31,24 @@ export default function GameHeader() {
         >
           Save Game
         </Button>
-        <Button 
-          variant="destructive"
-          size="sm"
-          onClick={handleRestartGame}
-          data-testid="button-restart-game"
-          className="px-3 py-1 text-xs"
-        >
-          Restart
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={toggleDevMode}
+            variant={devMode ? "default" : "outline"}
+            size="sm"
+          >
+            Dev Mode {devMode ? "ON" : "OFF"}
+          </Button>
+          <Button 
+            onClick={handleRestartGame}
+            variant="destructive"
+            size="sm"
+            data-testid="button-restart-game"
+            className="px-3 py-1 text-xs"
+          >
+            Restart
+          </Button>
+        </div>
       </div>
     </header>
   );

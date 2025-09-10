@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/events";

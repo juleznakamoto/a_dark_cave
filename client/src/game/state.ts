@@ -14,11 +14,13 @@ interface GameStore extends GameState {
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
+  toggleDevMode: () => void;
 
   // UI state
   activeTab: string;
   lastSaved: string;
   isGameLoopActive: boolean;
+  devMode: boolean;
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -79,17 +81,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   activeTab: 'cave',
   lastSaved: 'Never',
   isGameLoopActive: false,
+  devMode: false,
   cooldowns: {},
   log: [],
   events: {},
 
   lightFire: () => {
     const state = get();
-    if ((state.cooldowns['lightFire'] || 0) > 0) return;
+    if ((state.cooldowns['lightFire'] || 0) > 0 && !state.devMode) return;
     if (state.flags.fireLit) return; // Don't light fire if already lit
 
     const cooldown = gameActions.lightFire?.cooldown || 1;
-    
+
     // Add fire lit message to log
     const fireLogEntry: LogEntry = {
       id: `fire-lit-${Date.now()}`,
@@ -101,21 +104,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       flags: { ...state.flags, fireLit: true },
       story: { ...state.story, seen: { ...state.story.seen, fireLit: true } },
-      cooldowns: { ...state.cooldowns, lightFire: cooldown },
+      cooldowns: { ...state.cooldowns, lightFire: state.devMode ? 0 : cooldown },
       log: [...state.log, fireLogEntry].slice(-50)
     }));
   },
 
   gatherWood: () => {
     const state = get();
-    if ((state.cooldowns['gatherWood'] || 0) > 0) return;
+    if ((state.cooldowns['gatherWood'] || 0) > 0 && !state.devMode) return;
 
     const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
     const cooldown = gameActions.gatherWood?.cooldown || 3;
     set((state) => ({
       resources: { ...state.resources, wood: state.resources.wood + amount },
       story: { ...state.story, seen: { ...state.story.seen, hasWood: true } },
-      cooldowns: { ...state.cooldowns, gatherWood: cooldown }
+      cooldowns: { ...state.cooldowns, gatherWood: state.devMode ? 0 : cooldown }
     }));
   },
 
@@ -159,7 +162,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
+    if (!action || (state.cooldowns[actionId] || 0) > 0 && !state.devMode) return;
 
     // Check requirements before executing
     if (actionId === 'lightFire' && state.flags.fireLit) return;
@@ -174,7 +177,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply action effects and mark as seen
     const updates: any = {
-      cooldowns: { ...state.cooldowns, [actionId]: action.cooldown || 1 },
+      cooldowns: { ...state.cooldowns, [actionId]: state.devMode ? 0 : (action.cooldown || 1) },
       story: {
         ...state.story,
         seen: {
@@ -188,7 +191,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'lightFire') {
       updates.flags = { ...state.flags, fireLit: true };
       updates.story.seen.fireLit = true;
-      
+
       // Add fire lit message to log
       const fireLogEntry: LogEntry = {
         id: `fire-lit-${Date.now()}`,
@@ -222,7 +225,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           hasStone: true
         }
       };
-      
+
       // Add log entry for stones found
       const stonesLogEntry: LogEntry = {
         id: `stones-found-${Date.now()}`,
@@ -238,7 +241,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         stone: state.resources.stone - 10
       };
       updates.tools = { ...state.tools, axe: true };
-      
+
       // Add log entry for axe crafted
       const axeLogEntry: LogEntry = {
         id: `axe-crafted-${Date.now()}`,
@@ -263,6 +266,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   tickCooldowns: () => {
     set((state) => {
+      if (state.devMode) return { cooldowns: {} }; // Clear all cooldowns in dev mode
       const newCooldowns = { ...state.cooldowns };
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
@@ -282,8 +286,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldowns: {},
       log: [],
       events: {},
+      devMode: false,
     });
-    
+
     // Then add the initial cave description
     const initialLogEntry: LogEntry = {
       id: 'initial-narrative',
@@ -291,7 +296,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       timestamp: Date.now(),
       type: 'system',
     };
-    
+
     get().addLogEntry(initialLogEntry);
   },
 
@@ -305,7 +310,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
 
     const savedState = await loadGame();
-    
+
     if (savedState) {
       set({
         ...savedState,
@@ -313,6 +318,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         lastSaved: 'Loaded',
         cooldowns: {},
         events: get().events,
+        devMode: false, // Ensure devMode is false on load
       });
     } else {
       // For new games, first set the initial state
@@ -323,8 +329,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldowns: {},
         log: [],
         events: {},
+        devMode: false,
       });
-      
+
       // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
         id: 'initial-narrative',
@@ -332,7 +339,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system',
       };
-      
+
       get().addLogEntry(initialLogEntry);
     }
   },
@@ -372,5 +379,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...changes,
       }));
     }
+  },
+
+  toggleDevMode: () => {
+    set((state) => ({
+      devMode: !state.devMode,
+      cooldowns: state.devMode ? state.cooldowns : {}, // Clear cooldowns when enabling dev mode
+    }));
   },
 }));
