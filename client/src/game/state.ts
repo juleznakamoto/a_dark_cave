@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { GameState } from '@shared/schema';
-import { gameActions } from '@/game/rules';
+import { gameActions, buildingRequirements } from '@/game/rules';
 import { LogEntry, EventManager } from '@/game/events';
 
 interface GameStore extends GameState {
@@ -89,16 +89,40 @@ const defaultGameState: GameState = {
 };
 
 // Building requirements system
-const buildingRequirements: Record<string, (state: GameState) => boolean> = {
-  hut: (state) => state.flags.villageUnlocked && state.resources.wood >= 100,
-  lodge: (state) => state.buildings.huts >= 1 && state.villagers.free >= 1 && state.resources.wood >= 250,
-  // Add other buildings and their requirements here, e.g.:
-  // trap: (state) => state.resources.wood >= 50 && state.villagers.gatherers >= 1,
-};
-
 const canBuildBuilding = (buildingType: string, state: GameState): boolean => {
-  const requirementFn = buildingRequirements[buildingType];
-  return requirementFn ? requirementFn(state) : false;
+  // Get the building key (hut/lodge) and current count
+  const buildingKey = buildingType === 'buildHut' ? 'hut' : buildingType === 'buildLodge' ? 'lodge' : buildingType;
+  const currentCount = buildingKey === 'hut' ? state.buildings.huts :
+                      buildingKey === 'lodge' ? state.buildings.lodges : 0;
+
+  const nextLevel = currentCount + 1;
+  const requirements = buildingRequirements[buildingKey]?.[nextLevel];
+
+  if (!requirements) return false;
+
+  // Check special flags for first hut
+  if (buildingKey === 'hut' && nextLevel === 1 && !state.flags.villageUnlocked) return false;
+
+  // Check all resource requirements dynamically
+  for (const [resource, amount] of Object.entries(requirements)) {
+    if (resource === 'requiredBuildings') continue; // Skip building requirements for now
+
+    // Check if this is a resource requirement
+    if (state.resources.hasOwnProperty(resource)) {
+      if (state.resources[resource as keyof typeof state.resources] < amount) {
+        return false;
+      }
+    }
+  }
+
+  // Check building requirements
+  if (requirements.requiredBuildings) {
+    return Object.entries(requirements.requiredBuildings).every(([building, count]) =>
+      state.buildings[building as keyof typeof state.buildings] >= count
+    );
+  }
+
+  return true;
 };
 
 
@@ -261,10 +285,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         updates.story.seen.rumbleSound = true;
       }
     } else if (actionId === 'buildHut') {
-      updates.resources = {
-        ...state.resources,
-        wood: state.resources.wood - 100
-      };
+      const requirements = buildingRequirements.hut[state.buildings.huts + 1];
+      const newResources = { ...state.resources };
+
+      // Deduct all resource costs dynamically
+      for (const [resource, amount] of Object.entries(requirements)) {
+        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
+          newResources[resource as keyof typeof newResources] -= amount;
+        }
+      }
+
+      updates.resources = newResources;
       updates.buildings = {
         ...state.buildings,
         huts: state.buildings.huts + 1
@@ -317,10 +348,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }, 2000);
       }
     } else if (actionId === 'buildLodge') {
-      updates.resources = {
-        ...state.resources,
-        wood: state.resources.wood - 250
-      };
+      const requirements = buildingRequirements.lodge[state.buildings.lodges + 1];
+      const newResources = { ...state.resources };
+
+      // Deduct all resource costs dynamically
+      for (const [resource, amount] of Object.entries(requirements)) {
+        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
+          newResources[resource as keyof typeof newResources] -= amount;
+        }
+      }
+
+      updates.resources = newResources;
       updates.buildings = {
         ...state.buildings,
         lodges: state.buildings.lodges + 1
