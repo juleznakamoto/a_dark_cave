@@ -5,14 +5,35 @@ import CooldownButton from '@/components/CooldownButton';
 import LogPanel from './LogPanel';
 
 export default function CavePanel() {
-  const { flags, resources, lightFire, gatherWood, cooldowns, updateResource, setFlag } = useGameStore();
+  const {
+    resources,
+    flags,
+    tools,
+    buildings,
+    lightFire,
+    gatherWood,
+    updateResource,
+    setFlag,
+    cooldowns,
+    story,
+    executeAction
+  } = useGameStore();
 
-  const buildTorch = () => {
-    if (resources.wood >= 10) {
-      updateResource('wood', -10);
-      updateResource('torch', 1);
-    }
+  const handleBuildTorch = () => {
+    executeAction('buildTorch');
   };
+
+  const handleBuildHut = () => {
+    executeAction('buildHut');
+  };
+
+  // Check if actions have been seen (should remain visible)
+  const hasSeenBuildTorch = story.seen.actionBuildTorch || flags.fireLit && resources.wood >= 10;
+  const hasSeenBuildHut = story.seen.actionBuildHut || flags.villageUnlocked && resources.wood >= 50;
+
+  // Check if actions can currently be performed
+  const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;
+  const canBuildHut = flags.villageUnlocked && resources.wood >= 50 && (cooldowns['buildHut'] || 0) === 0;
 
   return (
     <div className="space-y-6">
@@ -37,7 +58,7 @@ export default function CavePanel() {
           {/* Light Fire Action */}
           {!flags.fireLit && (
             <CooldownButton
-              onClick={lightFire}
+              onClick={() => executeAction('lightFire')}
               cooldownMs={gameActions.lightFire.cooldown * 1000}
               data-testid="action-light-fire"
               className="relative overflow-hidden"
@@ -50,7 +71,7 @@ export default function CavePanel() {
           {/* Gather Wood Action */}
           {flags.fireLit && (
             <CooldownButton
-              onClick={gatherWood}
+              onClick={() => executeAction('gatherWood')}
               cooldownMs={gameActions.gatherWood.cooldown * 1000}
               data-testid="action-gather-wood"
               className="relative overflow-hidden"
@@ -61,15 +82,38 @@ export default function CavePanel() {
           )}
 
           {/* Build Torch Action */}
-          {flags.fireLit && resources.wood >= 10 && (
+          {hasSeenBuildTorch && (
             <CooldownButton
-              onClick={buildTorch}
-              cooldownMs={gameActions.buildTorch.cooldown * 1000}
-              data-testid="action-build-torch"
-              variant="outline"
-              size="sm"
+              onClick={handleBuildTorch}
+              cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
+              variant="secondary"
+              data-testid="button-build-torch"
+              disabled={!canBuildTorch}
+              className={`w-full ${
+                canBuildTorch
+                  ? 'bg-amber-800 border-amber-600 text-amber-100 hover:bg-amber-700 hover:text-amber-50'
+                  : 'bg-gray-700 border-gray-600 text-gray-400 cursor-not-allowed'
+              }`}
             >
-              Build Torch
+              Build Torch (10 wood)
+            </CooldownButton>
+          )}
+
+          {/* Build Hut Action (Village unlocked) */}
+          {hasSeenBuildHut && (
+            <CooldownButton
+              onClick={handleBuildHut}
+              cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
+              variant="secondary"
+              data-testid="button-build-hut"
+              disabled={!canBuildHut}
+              className={`w-full ${
+                canBuildHut
+                  ? 'bg-green-800 border-green-600 text-green-100 hover:bg-green-700 hover:text-green-50'
+                  : 'bg-gray-700 border-gray-600 text-gray-400 cursor-not-allowed'
+              }`}
+            >
+              Build Hut (50 wood)
             </CooldownButton>
           )}
         </div>

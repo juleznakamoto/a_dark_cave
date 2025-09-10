@@ -112,6 +112,42 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ ...newState });
   },
   
+  executeAction: (actionId: string) => {
+    const state = get();
+    const action = gameActions[actionId];
+    
+    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
+    
+    // Mark action as seen
+    const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;
+    
+    // Apply action effects and mark as seen
+    const updates: any = {
+      cooldowns: { ...state.cooldowns, [actionId]: action.cooldown || 1 },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          [seenKey]: true
+        }
+      }
+    };
+    
+    // Apply specific action effects
+    if (actionId === 'buildTorch') {
+      updates.resources = { ...state.resources, wood: state.resources.wood - 10, torch: state.resources.torch + 1 };
+      updates.flags = { ...state.flags, torchBuilt: true };
+    } else if (actionId === 'buildHut') {
+      updates.resources = { ...state.resources, wood: state.resources.wood - 50 };
+      updates.buildings = { ...state.buildings, huts: state.buildings.huts + 1 };
+    }
+    
+    set((prevState) => ({
+      ...prevState,
+      ...updates
+    }));
+  },
+  
   setCooldown: (action: string, duration: number) => {
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: duration }
