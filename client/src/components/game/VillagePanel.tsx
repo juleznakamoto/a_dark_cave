@@ -21,7 +21,7 @@ export default function VillagePanel() {
   // Get building requirements
   const nextHutLevel = buildings.huts + 1;
   const nextLodgeLevel = buildings.lodges + 1;
-  const nextWorkshopLevel = buildings.workshops + 1;
+  const nextWorkshopLevel = (buildings.workshops || 0) + 1;
   const hutRequirements = buildingRequirements.hut[nextHutLevel];
   const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
   const workshopRequirements = buildingRequirements.workshop[nextWorkshopLevel];
