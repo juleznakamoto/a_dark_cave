@@ -23,13 +23,19 @@ export default function CavePanel() {
     executeAction('buildHut');
   };
 
+  const handleExploreCave = () => {
+    executeAction('exploreCave');
+  };
+
   // Check if actions have been seen (should remain visible)
   const hasSeenBuildTorch = story.seen.actionBuildTorch || flags.fireLit && resources.wood >= 10;
   const hasSeenBuildHut = story.seen.actionBuildHut || flags.villageUnlocked && resources.wood >= 50;
+  const hasSeenExploreCave = story.seen.actionExploreCave || resources.torch >= 5;
 
   // Check if actions can currently be performed
   const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;
   const canBuildHut = flags.villageUnlocked && resources.wood >= 50 && (cooldowns['buildHut'] || 0) === 0;
+  const canExploreCave = flags.fireLit && resources.torch >= 5 && (cooldowns['exploreCave'] || 0) === 0;
 
   return (
     <div className="space-y-6">
@@ -99,6 +105,27 @@ export default function CavePanel() {
                 <span className="relative z-10">Build Hut (50 wood)</span>
               </CooldownButton>
             )}
+          </div>
+        </div>
+      )}
+
+      {/* Explore Panel */}
+      {hasSeenExploreCave && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium border-b border-border pb-2">Explore</h2>
+
+          <div className="flex flex-wrap gap-2">
+            {/* Explore Cave */}
+            <CooldownButton
+              onClick={handleExploreCave}
+              cooldownMs={(gameActions.exploreCave?.cooldown || 15) * 1000}
+              data-testid="button-explore-cave"
+              disabled={!canExploreCave}
+              className="relative overflow-hidden"
+              size="sm"
+            >
+              <span className="relative z-10">Explore Cave (5 torches)</span>
+            </CooldownButton>
           </div>
         </div>
       )}

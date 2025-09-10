@@ -12,6 +12,7 @@ export const gameStateSchema = z.object({
     villageUnlocked: z.boolean().default(false),
     worldDiscovered: z.boolean().default(false),
     torchBuilt: z.boolean().default(false),
+    caveExplored: z.boolean().default(false),
   }),
   tools: z.object({
     axe: z.boolean().default(false),

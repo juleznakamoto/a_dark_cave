@@ -58,6 +58,21 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 30, // 30 second cooldown
   },
+
+  exploreCave: {
+    id: 'exploreCave',
+    label: 'Explore Cave',
+    description: 'Venture deeper into the cave with torches to light the way.',
+    requirements: {
+      'flags.fireLit': true,
+      'resources.torch': 5,
+    },
+    effects: {
+      'resources.torch': -5,
+      'flags.caveExplored': true,
+    },
+    cooldown: 15, // 15 second cooldown
+  },
 };
 
 export const gameTexts = {

@@ -44,6 +44,7 @@ const defaultGameState: GameState = {
     villageUnlocked: false,
     worldDiscovered: false,
     torchBuilt: false,
+    caveExplored: false,
   },
   tools: {
     axe: false,
@@ -164,6 +165,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'gatherWood' && !state.flags.fireLit) return;
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
     if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return;
+    if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
 
     // Mark action as seen
     const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;
@@ -203,6 +205,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     } else if (actionId === 'buildHut') {
       updates.resources = { ...state.resources, wood: state.resources.wood - 50 };
       updates.buildings = { ...state.buildings, huts: state.buildings.huts + 1 };
+    } else if (actionId === 'exploreCave') {
+      updates.resources = { ...state.resources, torch: state.resources.torch - 5 };
+      updates.flags = { ...state.flags, caveExplored: true };
     }
 
     set((prevState) => ({
