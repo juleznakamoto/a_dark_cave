@@ -101,30 +101,32 @@ export default function VillagePanel() {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Hunter</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => unassignVillager('hunters')}
-                  disabled={villagers.hunters === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  -
-                </Button>
-                <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
-                <Button
-                  onClick={() => assignVillager('hunters')}
-                  disabled={villagers.free === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  +
-                </Button>
+            {buildings.lodges > 0 && (
+              <div className="flex items-center justify-between">
+                <span className="text-sm">Hunter</span>
+                <div className="flex items-center gap-2">
+                  <Button
+                    onClick={() => unassignVillager('hunters')}
+                    disabled={villagers.hunters === 0}
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                  >
+                    -
+                  </Button>
+                  <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
+                  <Button
+                    onClick={() => assignVillager('hunters')}
+                    disabled={villagers.free === 0}
+                    variant="outline"
+                    size="sm"
+                    className="h-6 w-6 p-0"
+                  >
+                    +
+                  </Button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       )}
