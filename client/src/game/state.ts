@@ -230,14 +230,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
 
-      // Add log entry for stones found
-      const stonesLogEntry: LogEntry = {
-        id: `stones-found-${Date.now()}`,
-        message: `You found ${stonesFound} stone${stonesFound > 1 ? 's' : ''} while exploring the cave.`,
-        timestamp: Date.now(),
-        type: 'system',
-      };
-      updates.log = [...state.log, stonesLogEntry].slice(-8);
+      
     } else if (actionId === 'craftAxe') {
       updates.resources = {
         ...state.resources,
