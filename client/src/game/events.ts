@@ -9,6 +9,7 @@ export interface GameEvent {
   triggered: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
+  timeProbability?: number; // Average minutes between triggers
 }
 
 export interface EventChoice {
@@ -31,9 +32,9 @@ export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
     condition: (state) =>
-      state.current_population < state.total_population &&
-      Math.random() < 0.002,
+      state.current_population < state.total_population,
     triggerType: "resource",
+    timeProbability: 2, // Average 2 minutes between stranger arrivals
     message: [
       "A stranger approaches through the woods and joins your village.",
       "A traveler arrives and decides to stay.",
@@ -78,8 +79,22 @@ export class EventManager {
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.events?.[event.id] && !event.repeatable) continue;
 
-      // Check condition
-      if (event.condition(state)) {
+      // Check condition with probability if specified
+      let shouldTrigger = event.condition(state);
+      
+      // Apply time-based probability if specified
+      if (shouldTrigger && event.timeProbability) {
+        // Game loop runs every 200ms (5 times per second)
+        // Ticks per minute = 5 * 60 = 300
+        // Average ticks between events = timeProbability * 300
+        // Probability per tick = 1 / (timeProbability * 300)
+        const ticksPerMinute = 300;
+        const averageTicksBetweenEvents = event.timeProbability * ticksPerMinute;
+        const probabilityPerTick = 1 / averageTicksBetweenEvents;
+        shouldTrigger = Math.random() < probabilityPerTick;
+      }
+
+      if (shouldTrigger) {
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
           message: event.message,
