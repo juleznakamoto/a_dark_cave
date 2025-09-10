@@ -162,7 +162,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || (state.cooldowns[actionId] || 0) > 0 && !state.devMode) return;
+    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
 
     // Check requirements before executing
     if (actionId === 'lightFire' && state.flags.fireLit) return;
@@ -392,7 +392,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   toggleDevMode: () => {
     set((state) => ({
       devMode: !state.devMode,
-      cooldowns: state.devMode ? state.cooldowns : {}, // Clear cooldowns when enabling dev mode
+      cooldowns: !state.devMode ? {} : state.cooldowns, // Clear cooldowns when enabling dev mode
     }));
   },
 }));
