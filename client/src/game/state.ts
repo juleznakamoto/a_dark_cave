@@ -170,7 +170,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'lightFire' && state.flags.fireLit) return;
     if (actionId === 'gatherWood' && !state.flags.fireLit) return;
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
-    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return;
+    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return; // This check will be updated to 100 wood
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
     if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 
@@ -211,9 +211,39 @@ export const useGameStore = create<GameStore>((set, get) => ({
     } else if (actionId === 'buildTorch') {
       updates.resources = { ...state.resources, wood: state.resources.wood - 10, torch: state.resources.torch + 1 };
       updates.flags = { ...state.flags, torchBuilt: true };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          actionBuildTorch: true
+        }
+      };
+
+      // Add rumbling sound after first torch
+      const rumbleLogEntry: LogEntry = {
+        id: `rumble-sound-${Date.now()}`,
+        message: 'A low, rumbling sound echoes from deeper in the cave.',
+        timestamp: Date.now() + 1000, // Slight delay after torch message
+        type: 'system',
+      };
+
+      updates.log = [...state.log, rumbleLogEntry].slice(-8);
     } else if (actionId === 'buildHut') {
-      updates.resources = { ...state.resources, wood: state.resources.wood - 50 };
-      updates.buildings = { ...state.buildings, huts: state.buildings.huts + 1 };
+      updates.resources = {
+        ...state.resources,
+        wood: state.resources.wood - 100
+      };
+      updates.buildings = {
+        ...state.buildings,
+        huts: state.buildings.huts + 1
+      };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          actionBuildHut: true
+        }
+      };
     } else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
       updates.resources = {
@@ -230,7 +260,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
 
-      
+
     } else if (actionId === 'craftAxe') {
       updates.resources = {
         ...state.resources,
@@ -255,14 +285,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system',
       };
-      
+
       const villageLogEntry: LogEntry = {
         id: `village-unlocked-${Date.now()}`,
         message: 'Outside the cave, a small clearing opens up. This could be the foundation of something greater.',
         timestamp: Date.now(),
         type: 'system',
       };
-      
+
       updates.log = [...state.log, axeLogEntry, villageLogEntry].slice(-8);
     }
 

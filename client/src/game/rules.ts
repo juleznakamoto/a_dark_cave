@@ -14,7 +14,7 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 1, // 1 second cooldown
   },
-  
+
   gatherWood: {
     id: 'gatherWood',
     label: 'Gather Wood',
@@ -27,10 +27,10 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 1, // 5 second cooldown
   },
-  
+
   buildTorch: {
     id: 'buildTorch',
-    label: 'Build Torch',
+    label: 'Torch',
     description: 'Create a torch to explore deeper into the cave.',
     requirements: {
       'flags.fireLit': true,
@@ -43,20 +43,20 @@ export const gameActions: Record<string, Action> = {
     unlocks: ['exploreDeeper'],
     cooldown: 10, // 10 second cooldown
   },
-  
+
   buildHut: {
     id: 'buildHut',
-    label: 'Build Hut',
-    description: 'Construct a simple wooden hut for shelter.',
+    label: 'Wooden Hut',
+    description: 'Construct a simple shelter to house villagers.',
     requirements: {
       'flags.villageUnlocked': true,
-      'resources.wood': 50,
+      'resources.wood': 100,
     },
     effects: {
-      'resources.wood': -50,
-      'buildings.huts': '+1',
+      'resources.wood': -100,
+      'buildings.huts': 1,
     },
-    cooldown: 30, // 30 second cooldown
+    cooldown: 10, // 10 second cooldown
   },
 
   exploreCave: {
@@ -76,7 +76,7 @@ export const gameActions: Record<string, Action> = {
 
   craftAxe: {
     id: 'craftAxe',
-    label: 'Craft Axe',
+    label: 'Axe',
     description: 'Create a sturdy axe from wood and stone to gather resources more efficiently.',
     requirements: {
       'flags.fireLit': true,
@@ -94,11 +94,12 @@ export const gameActions: Record<string, Action> = {
 
 export const gameTexts = {
   cave: {
-    initial: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+    initial: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you. A low, rumbling sound echoes from deeper in the cave.',
     fireLit: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
   },
   village: {
-    initial: 'Outside the cave, a small clearing opens up. This could be the foundation of something greater.',
+    initial: 'This could be the foundation of something greater.',
+    buildings: 'Buildings',
   },
   world: {
     initial: 'Beyond the village lies a vast world waiting to be explored...',

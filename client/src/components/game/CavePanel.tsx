@@ -92,10 +92,10 @@ export default function CavePanel() {
         </div>
       </div>
 
-      {/* Build Panel */}
+      {/* Craft Panel */}
       {(hasSeenBuildTorch || hasSeenBuildHut) && (
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+          <h2 className="text-lg font-medium border-b border-border pb-2">Craft</h2>
 
           <div className="flex flex-wrap gap-2">
             {/* Build Torch */}
@@ -108,7 +108,7 @@ export default function CavePanel() {
                 className="relative overflow-hidden"
                 size="sm"
               >
-                <span className="relative z-10">Build Torch (10 wood)</span>
+                <span className="relative z-10">Torch (10 wood)</span>
               </CooldownButton>
             )}
 
@@ -136,7 +136,7 @@ export default function CavePanel() {
                 className="relative overflow-hidden"
                 size="sm"
               >
-                <span className="relative z-10">Craft Axe (5 wood, 10 stone)</span>
+                <span className="relative z-10">Axe (5 wood, 10 stone)</span>
               </CooldownButton>
             )}
           </div>
