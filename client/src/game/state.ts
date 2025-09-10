@@ -230,6 +230,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
+    // First clear the state
     set({
       ...defaultGameState,
       activeTab: 'cave',
@@ -238,6 +239,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       events: {},
     });
+    
+    // Then add the initial cave description
+    const initialLogEntry: LogEntry = {
+      id: 'initial-narrative',
+      message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+      timestamp: Date.now(),
+      type: 'system',
+    };
+    
+    get().addLogEntry(initialLogEntry);
   },
 
   loadGame: async () => {
@@ -260,7 +271,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         events: get().events,
       });
     } else {
-      // Create initial cave description for new games
+      // For new games, first set the initial state
+      set({
+        ...defaultGameState,
+        activeTab: 'cave',
+        lastSaved: 'Never',
+        cooldowns: {},
+        log: [],
+        events: {},
+      });
+      
+      // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
         id: 'initial-narrative',
         message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
@@ -268,14 +289,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         type: 'system',
       };
       
-      set({
-        ...defaultGameState,
-        activeTab: 'cave',
-        lastSaved: 'Never',
-        cooldowns: {},
-        log: [initialLogEntry],
-        events: {},
-      });
+      get().addLogEntry(initialLogEntry);
     }
   },
 
