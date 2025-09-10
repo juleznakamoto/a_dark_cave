@@ -70,3 +70,10 @@ export const saveDataSchema = z.object({
 });
 
 export type SaveData = z.infer<typeof saveDataSchema>;
+
+export const logEntrySchema = z.object({
+  id: z.string(),
+  message: z.string(),
+  timestamp: z.number(),
+  type: z.enum(['system', 'action', 'event', 'production']).default('system'),
+});

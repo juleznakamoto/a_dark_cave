@@ -7,9 +7,11 @@ let lastTick = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 30000; // Auto-save every 30 seconds
 const FIRE_CONSUMPTION_INTERVAL = 30000; // Fire consumes wood every 30 seconds
+const GATHERER_PRODUCTION_INTERVAL = 10000; // Gatherers produce wood every 10 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
+let lastGathererProduction = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -33,6 +35,12 @@ export function startGameLoop() {
       if (timestamp - lastFireConsumption >= FIRE_CONSUMPTION_INTERVAL) {
         lastFireConsumption = timestamp;
         handleFireConsumption();
+      }
+
+      // Gatherer production logic
+      if (timestamp - lastGathererProduction >= GATHERER_PRODUCTION_INTERVAL) {
+        lastGathererProduction = timestamp;
+        handleGathererProduction();
       }
     }
 
@@ -71,6 +79,26 @@ function checkUnlocks(state: GameState) {
 
 function handleFireConsumption() {
   // Fire consumption disabled - fire stays lit indefinitely
+}
+
+function handleGathererProduction() {
+  const state = useGameStore.getState();
+  const gatherers = state.villagers.gatherers;
+  
+  if (gatherers > 0) {
+    const woodProduced = gatherers * 5; // Each gatherer produces 5 wood
+    state.updateResource('wood', woodProduced);
+    
+    // Add log entry for gatherer production
+    const logEntry = {
+      id: `gatherer-production-${Date.now()}`,
+      message: `Your ${gatherers} gatherer${gatherers > 1 ? 's' : ''} collected ${woodProduced} wood.`,
+      timestamp: Date.now(),
+      type: 'production' as const,
+    };
+    
+    state.addLogEntry(logEntry);
+  }
 }
 
 async function handleAutoSave() {
