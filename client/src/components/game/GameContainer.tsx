@@ -25,14 +25,22 @@ export default function GameContainer() {
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
 
-      <main className="flex-1 flex">
-        <GameTabs />
+      <main className="flex-1 p-6">
+        {/* Event Log - Full Width at Top */}
+        <div className="w-full mb-6">
+          <LogPanel />
+        </div>
 
-        <section className="flex-1 p-6 overflow-y-auto">
-          {activeTab === 'cave' && <CavePanel />}
-          {activeTab === 'village' && <VillagePanel />}
-          {activeTab === 'world' && <WorldPanel />}
-        </section>
+        {/* Main Content Area - Sidebar and Panel */}
+        <div className="flex">
+          <GameTabs />
+
+          <section className="flex-1 pl-6 overflow-y-auto">
+            {activeTab === 'cave' && <CavePanel />}
+            {activeTab === 'village' && <VillagePanel />}
+            {activeTab === 'world' && <WorldPanel />}
+          </section>
+        </div>
       </main>
 
       <GameFooter />
