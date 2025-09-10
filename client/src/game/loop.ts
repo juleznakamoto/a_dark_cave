@@ -1,5 +1,6 @@
 import { useGameStore } from './state';
 import { saveGame } from './save';
+import { GameState } from '@shared/schema';
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -43,6 +44,9 @@ export function stopGameLoop() {
 
 function processTick() {
   const state = useGameStore.getState();
+  
+  // Tick down cooldowns
+  state.tickCooldowns();
   
   // Example game logic - could be expanded
   if (state.flags.fireLit && state.resources.wood > 0) {
