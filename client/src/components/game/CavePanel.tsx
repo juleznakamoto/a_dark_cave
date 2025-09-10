@@ -24,30 +24,21 @@ export default function CavePanel() {
       <div className="space-y-4">
         <h2 className="text-lg font-medium border-b border-border pb-2">Actions</h2>
         
-        <div className="grid gap-3">
+        <div className="flex flex-wrap gap-2">
           {/* Light Fire Action */}
           {!flags.fireLit && (
             <Button
               variant="outline"
-              className="p-4 h-auto text-left flex-col items-start group relative"
+              className="relative overflow-hidden"
+              size="sm"
               onClick={lightFire}
               disabled={(cooldowns['lightFire'] || 0) > 0}
               data-testid="action-light-fire"
             >
-              <div className="font-medium group-hover:text-primary">
-                Light Fire
-                {(cooldowns['lightFire'] || 0) > 0 && (
-                  <span className="ml-2 text-muted-foreground">
-                    ({Math.ceil(cooldowns['lightFire'])}s)
-                  </span>
-                )}
-              </div>
-              <div className="text-sm text-muted-foreground mt-1">
-                You have some dry wood and kindling. A fire would provide warmth and light.
-              </div>
+              <span className="relative z-10">Light Fire</span>
               {(cooldowns['lightFire'] || 0) > 0 && (
                 <div 
-                  className="absolute left-0 bottom-0 h-1 bg-muted-foreground/30 pointer-events-none"
+                  className="absolute inset-0 bg-muted/50"
                   style={{
                     width: `${((cooldowns['lightFire'] || 0) / gameActions.lightFire.cooldown) * 100}%`,
                     transition: 'width 0.2s linear'
@@ -61,25 +52,16 @@ export default function CavePanel() {
           {flags.fireLit && (
             <Button
               variant="outline"
-              className="p-4 h-auto text-left flex-col items-start group relative"
+              className="relative overflow-hidden"
+              size="sm"
               onClick={gatherWood}
               disabled={(cooldowns['gatherWood'] || 0) > 0}
               data-testid="action-gather-wood"
             >
-              <div className="font-medium group-hover:text-primary">
-                Gather Wood
-                {(cooldowns['gatherWood'] || 0) > 0 && (
-                  <span className="ml-2 text-muted-foreground">
-                    ({Math.ceil(cooldowns['gatherWood'])}s)
-                  </span>
-                )}
-              </div>
-              <div className="text-sm text-muted-foreground mt-1">
-                Search the cave for fallen branches and dry wood to keep the fire burning.
-              </div>
+              <span className="relative z-10">Gather Wood</span>
               {(cooldowns['gatherWood'] || 0) > 0 && (
                 <div 
-                  className="absolute left-0 bottom-0 h-1 bg-muted-foreground/30 pointer-events-none"
+                  className="absolute inset-0 bg-muted/50"
                   style={{
                     width: `${((cooldowns['gatherWood'] || 0) / gameActions.gatherWood.cooldown) * 100}%`,
                     transition: 'width 0.2s linear'
@@ -89,18 +71,19 @@ export default function CavePanel() {
             </Button>
           )}
 
-          {/* Build Torch Action - Coming Soon */}
-          <Button
-            variant="outline"
-            className="p-4 h-auto text-left flex-col items-start opacity-50"
-            disabled
-            data-testid="action-build-torch"
-          >
-            <div className="font-medium">Build Torch</div>
-            <div className="text-sm text-muted-foreground mt-1">
-              Create a torch to explore deeper into the cave. (Requires 10 wood)
-            </div>
-          </Button>
+          {/* Build Torch Action */}
+          {flags.fireLit && resources.wood >= 10 && (
+            <Button
+              variant="outline"
+              className="relative overflow-hidden"
+              size="sm"
+              onClick={() => {}}
+              disabled={true}
+              data-testid="action-build-torch"
+            >
+              <span className="relative z-10">Build Torch</span>
+            </Button>
+          )}
         </div>
       </div>
 
