@@ -35,7 +35,14 @@ export const gameEvents: Record<string, GameEvent> = {
       state.flags.caveExplored == true &&
       !state.events?.strangerApproaches,
     triggerType: "resource",
-    message: "A stranger approaches through the woods, carrying a large pack.",
+    message: [
+      "A stranger approaches through the woods.",
+      "A traveler arrives and offers to join your village.",
+      "A wanderer appears from the woods, looking to for a place to stay.",
+      "Someone approaches the village, willing to stay.",
+      "A stranger joins your community, bringing skills and hope.",
+      "A newcomer arrives, ready to lend a hand in your village.",
+    ][Math.floor(Math.random() * 6)],
     triggered: false,
     priority: 1,
     choices: [
