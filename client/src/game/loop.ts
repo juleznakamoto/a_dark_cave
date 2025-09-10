@@ -1,0 +1,88 @@
+import { useGameStore } from './state';
+import { saveGame } from './save';
+
+let gameLoopId: number | null = null;
+let lastTick = 0;
+const TICK_INTERVAL = 200; // 200ms ticks
+const AUTO_SAVE_INTERVAL = 30000; // Auto-save every 30 seconds
+
+let lastAutoSave = 0;
+
+export function startGameLoop() {
+  if (gameLoopId) return; // Already running
+
+  useGameStore.setState({ isGameLoopActive: true });
+  
+  function tick(timestamp: number) {
+    if (timestamp - lastTick >= TICK_INTERVAL) {
+      lastTick = timestamp;
+      
+      // Game tick logic
+      processTick();
+      
+      // Auto-save logic
+      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
+        lastAutoSave = timestamp;
+        handleAutoSave();
+      }
+    }
+    
+    gameLoopId = requestAnimationFrame(tick);
+  }
+  
+  gameLoopId = requestAnimationFrame(tick);
+}
+
+export function stopGameLoop() {
+  if (gameLoopId) {
+    cancelAnimationFrame(gameLoopId);
+    gameLoopId = null;
+    useGameStore.setState({ isGameLoopActive: false });
+  }
+}
+
+function processTick() {
+  const state = useGameStore.getState();
+  
+  // Example game logic - could be expanded
+  if (state.flags.fireLit && state.resources.wood > 0) {
+    // Fire consumes wood very slowly
+    if (Math.random() < 0.001) { // Very low chance per tick
+      useGameStore.getState().updateResource('wood', -1);
+    }
+  }
+  
+  // Check for unlocks
+  checkUnlocks(state);
+}
+
+function checkUnlocks(state: GameState) {
+  // Unlock village when player has gathered enough wood
+  if (state.resources.wood >= 20 && !state.flags.villageUnlocked) {
+    useGameStore.getState().setFlag('villageUnlocked', true);
+  }
+}
+
+async function handleAutoSave() {
+  const state = useGameStore.getState();
+  const gameState: GameState = {
+    resources: state.resources,
+    flags: state.flags,
+    tools: state.tools,
+    buildings: state.buildings,
+    villagers: state.villagers,
+    world: state.world,
+    story: state.story,
+    version: state.version,
+  };
+  
+  await saveGame(gameState);
+  
+  const now = new Date().toLocaleTimeString();
+  useGameStore.setState({ lastSaved: now });
+}
+
+// Export the manual save function
+export async function manualSave() {
+  await handleAutoSave();
+}
