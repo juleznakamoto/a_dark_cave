@@ -25,7 +25,7 @@ export default function ResourceDisplay() {
           <div className="flex justify-between">
             <span>Wood</span>
             <span className="font-mono" data-testid="resource-wood">
-              {resources.wood}
+              {resources.wood || 0}
             </span>
           </div>
         )}
@@ -33,7 +33,7 @@ export default function ResourceDisplay() {
           <div className="flex justify-between">
             <span>Food</span>
             <span className="font-mono" data-testid="resource-food">
-              {resources.food}
+              {resources.food || 0}
             </span>
           </div>
         )}
@@ -41,7 +41,7 @@ export default function ResourceDisplay() {
           <div className="flex justify-between">
             <span>Torch</span>
             <span className="font-mono" data-testid="resource-torch">
-              {resources.torch}
+              {resources.torch || 0}
             </span>
           </div>
         )}
@@ -49,7 +49,7 @@ export default function ResourceDisplay() {
           <div className="flex justify-between">
             <span>Stone</span>
             <span className="font-mono" data-testid="resource-stone">
-              {resources.stone}
+              {resources.stone || 0}
             </span>
           </div>
         )}

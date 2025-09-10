@@ -81,7 +81,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   activeTab: 'cave',
   lastSaved: 'Never',
   isGameLoopActive: false,
-  devMode: false,
+  devMode: true,
   cooldowns: {},
   log: [],
   events: {},
@@ -212,8 +212,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       updates.buildings = { ...state.buildings, huts: state.buildings.huts + 1 };
     } else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
-      updates.resources = { 
-        ...state.resources, 
+      updates.resources = {
+        ...state.resources,
         torch: state.resources.torch - 5,
         stone: state.resources.stone + stonesFound
       };
@@ -235,8 +235,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       updates.log = [...state.log, stonesLogEntry].slice(-50);
     } else if (actionId === 'craftAxe') {
-      updates.resources = { 
-        ...state.resources, 
+      updates.resources = {
+        ...state.resources,
         wood: state.resources.wood - 5,
         stone: state.resources.stone - 10
       };
