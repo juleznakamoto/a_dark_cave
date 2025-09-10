@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
 import { gameTexts, gameActions } from '@/game/rules';
+import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
   const { flags, resources, lightFire, gatherWood, cooldowns } = useGameStore();
@@ -12,7 +13,7 @@ export default function CavePanel() {
         <p className="font-serif text-lg leading-relaxed">
           {gameTexts.cave.initial}
         </p>
-        
+
         {flags.fireLit && (
           <p className="font-serif leading-relaxed text-muted-foreground italic">
             {gameTexts.cave.fireLit}
@@ -23,52 +24,32 @@ export default function CavePanel() {
       {/* Actions Panel */}
       <div className="space-y-4">
         <h2 className="text-lg font-medium border-b border-border pb-2">Actions</h2>
-        
+
         <div className="flex flex-wrap gap-2">
           {/* Light Fire Action */}
           {!flags.fireLit && (
-            <Button
-              variant="outline"
+            <CooldownButton
+              onClick={lightFire}
+              cooldownMs={gameActions.lightFire.cooldown * 1000}
+              data-testid="action-light-fire"
               className="relative overflow-hidden"
               size="sm"
-              onClick={lightFire}
-              disabled={(cooldowns['lightFire'] || 0) > 0}
-              data-testid="action-light-fire"
             >
               <span className="relative z-10">Light Fire</span>
-              {(cooldowns['lightFire'] || 0) > 0 && (
-                <div 
-                  className="absolute inset-0 bg-muted-foreground/20"
-                  style={{
-                    transform: `translateX(-${100 - ((cooldowns['lightFire'] || 0) / gameActions.lightFire.cooldown) * 100}%)`,
-                    transition: 'transform 0.2s linear'
-                  }}
-                />
-              )}
-            </Button>
+            </CooldownButton>
           )}
 
           {/* Gather Wood Action */}
           {flags.fireLit && (
-            <Button
-              variant="outline"
+            <CooldownButton
+              onClick={gatherWood}
+              cooldownMs={gameActions.gatherWood.cooldown * 1000}
+              data-testid="action-gather-wood"
               className="relative overflow-hidden"
               size="sm"
-              onClick={gatherWood}
-              disabled={(cooldowns['gatherWood'] || 0) > 0}
-              data-testid="action-gather-wood"
             >
               <span className="relative z-10">Gather Wood</span>
-              {(cooldowns['gatherWood'] || 0) > 0 && (
-                <div 
-                  className="absolute inset-0 bg-muted-foreground/20"
-                  style={{
-                    transform: `translateX(-${100 - ((cooldowns['gatherWood'] || 0) / gameActions.gatherWood.cooldown) * 100}%)`,
-                    transition: 'transform 0.2s linear'
-                  }}
-                />
-              )}
-            </Button>
+            </CooldownButton>
           )}
 
           {/* Build Torch Action */}
