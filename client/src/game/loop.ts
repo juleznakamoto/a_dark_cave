@@ -66,10 +66,7 @@ function processTick() {
 }
 
 function checkUnlocks(state: GameState) {
-  // Unlock village when player has gathered enough wood
-  if (state.resources.wood >= 20 && !state.flags.villageUnlocked) {
-    useGameStore.getState().setFlag('villageUnlocked', true);
-  }
+  // Village is now unlocked when axe is crafted
 }
 
 function handleFireConsumption() {

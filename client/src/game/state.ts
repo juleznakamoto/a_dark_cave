@@ -241,6 +241,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         stone: state.resources.stone - 10
       };
       updates.tools = { ...state.tools, axe: true };
+      updates.flags = { ...state.flags, villageUnlocked: true };
       updates.story = {
         ...state.story,
         seen: {
@@ -250,14 +251,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
 
-      // Add log entry for axe crafted
+      // Add log entries for axe crafted and village unlocked
       const axeLogEntry: LogEntry = {
         id: `axe-crafted-${Date.now()}`,
         message: 'You craft a sturdy axe from wood and stone. This will help you gather resources more efficiently.',
         timestamp: Date.now(),
         type: 'system',
       };
-      updates.log = [...state.log, axeLogEntry].slice(-8);
+      
+      const villageLogEntry: LogEntry = {
+        id: `village-unlocked-${Date.now()}`,
+        message: 'Outside the cave, a small clearing opens up. This could be the foundation of something greater.',
+        timestamp: Date.now(),
+        type: 'system',
+      };
+      
+      updates.log = [...state.log, axeLogEntry, villageLogEntry].slice(-8);
     }
 
     set((prevState) => ({
