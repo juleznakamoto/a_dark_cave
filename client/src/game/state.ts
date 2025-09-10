@@ -65,6 +65,7 @@ const defaultGameState: GameState = {
     huts: 0,
     traps: 0,
     lodges: 0,
+    workshops: 0,
   },
   villagers: {
     free: 0,
@@ -91,9 +92,11 @@ const defaultGameState: GameState = {
 // Building requirements system
 const canBuildBuilding = (buildingType: string, state: GameState): boolean => {
   // Get the building key (hut/lodge) and current count
-  const buildingKey = buildingType === 'buildHut' ? 'hut' : buildingType === 'buildLodge' ? 'lodge' : buildingType;
+  const buildingKey = buildingType === 'buildHut' ? 'hut' : buildingType === 'buildLodge' ? 'lodge' : buildingType === 'buildWorkshop' ? 'workshop' : buildingType;
   const currentCount = buildingKey === 'hut' ? state.buildings.huts :
-                      buildingKey === 'lodge' ? state.buildings.lodges : 0;
+                      buildingKey === 'lodge' ? state.buildings.lodges :
+                      buildingKey === 'workshop' ? state.buildings.workshops : 0;
+
 
   const nextLevel = currentCount + 1;
   const requirements = buildingRequirements[buildingKey]?.[nextLevel];
@@ -224,6 +227,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
     if (actionId === 'buildHut' && !canBuildBuilding('hut', state)) return;
     if (actionId === 'buildLodge' && !canBuildBuilding('lodge', state)) return;
+    if (actionId === 'buildWorkshop' && !canBuildBuilding('workshop', state)) return;
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
     if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 
@@ -370,7 +374,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
           actionBuildLodge: true
         }
       };
-    } else if (actionId === 'exploreCave') {
+    } else if (actionId === 'buildWorkshop') {
+      const requirements = buildingRequirements.workshop[state.buildings.workshops + 1];
+      const newResources = { ...state.resources };
+
+      // Deduct all resource costs dynamically
+      for (const [resource, amount] of Object.entries(requirements)) {
+        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
+          newResources[resource as keyof typeof newResources] -= amount;
+        }
+      }
+
+      updates.resources = newResources;
+      updates.buildings = {
+        ...state.buildings,
+        workshops: state.buildings.workshops + 1
+      };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          actionBuildWorkshop: true
+        }
+      };
+    }
+     else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
       updates.resources = {
         ...state.resources,

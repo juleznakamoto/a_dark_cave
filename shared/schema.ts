@@ -20,9 +20,10 @@ export const gameStateSchema = z.object({
     spear: z.boolean().default(false),
   }),
   buildings: z.object({
-    huts: z.number().min(0).default(0),
-    traps: z.number().min(0).default(0),
-    lodges: z.number().min(0).default(0),
+    huts: z.number().default(0),
+    traps: z.number().default(0),
+    lodges: z.number().default(0),
+    workshops: z.number().default(0),
   }),
   villagers: z.object({
     free: z.number().min(0).default(0),

@@ -14,11 +14,17 @@ export default function VillagePanel() {
     executeAction('buildLodge');
   };
 
+  const handleBuildWorkshop = () => {
+    executeAction('buildWorkshop');
+  };
+
   // Get building requirements
   const nextHutLevel = buildings.huts + 1;
   const nextLodgeLevel = buildings.lodges + 1;
+  const nextWorkshopLevel = buildings.workshops + 1;
   const hutRequirements = buildingRequirements.hut[nextHutLevel];
   const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
+  const workshopRequirements = buildingRequirements.workshop[nextWorkshopLevel];
 
   // Check if we can build next hut
   const canBuildHut = hutRequirements &&
@@ -34,6 +40,17 @@ export default function VillagePanel() {
     resources.wood >= lodgeRequirements.wood &&
     (cooldowns["buildLodge"] || 0) === 0 &&
     Object.entries(lodgeRequirements.requiredBuildings || {}).every(
+      ([building, count]) =>
+        buildings[building as keyof typeof buildings] >= count
+    );
+
+  // Check if we can build next workshop
+  const canBuildWorkshop =
+    workshopRequirements &&
+    resources.wood >= workshopRequirements.wood &&
+    resources.stone >= workshopRequirements.stone &&
+    (cooldowns["buildWorkshop"] || 0) === 0 &&
+    Object.entries(workshopRequirements.requiredBuildings || {}).every(
       ([building, count]) =>
         buildings[building as keyof typeof buildings] >= count
     );
@@ -65,6 +82,19 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">Lodge ({lodgeRequirements?.wood || '250'} wood)</span>
+            </CooldownButton>
+          )}
+
+          {buildings.lodges >= 1 && (
+            <CooldownButton
+              onClick={handleBuildWorkshop}
+              cooldownMs={(gameActions.buildWorkshop?.cooldown || 20) * 1000}
+              data-testid="button-build-workshop"
+              disabled={!canBuildWorkshop}
+              className="relative overflow-hidden"
+              size="sm"
+            >
+              <span className="relative z-10">Workshop ({workshopRequirements?.wood || '100'} wood, {workshopRequirements?.stone || '10'} stone)</span>
             </CooldownButton>
           )}
         </div>

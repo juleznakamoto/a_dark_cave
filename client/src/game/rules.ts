@@ -9,6 +9,9 @@ export const buildingRequirements = {
   lodge: {
     1: { wood: 250, requiredBuildings: { huts: 1 } },
   },
+  workshop: {
+    1: { wood: 100, stone: 10, requiredBuildings: { lodges: 1 } },
+  },
 };
 
 export const gameActions: Record<string, Action> = {
@@ -84,6 +87,21 @@ export const gameActions: Record<string, Action> = {
       "buildings.lodges": 1,
     },
     cooldown: 15, // 15 second cooldown
+  },
+
+  buildWorkshop: {
+    id: "buildWorkshop",
+    label: "Workshop",
+    description: "Construct a workshop for advanced crafting and tool creation.",
+    requirements: {
+      "buildings.lodges": 1,
+    },
+    effects: {
+      "resources.wood": -100,
+      "resources.stone": -10,
+      "buildings.workshops": 1,
+    },
+    cooldown: 20, // 20 second cooldown
   },
 
   exploreCave: {
