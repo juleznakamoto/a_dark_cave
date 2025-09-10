@@ -33,6 +33,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
+  assignVillager: (job: 'gatherers' | 'hunters') => void;
+  unassignVillager: (job: 'gatherers' | 'hunters') => void;
 }
 
 const defaultGameState: GameState = {
@@ -56,10 +58,12 @@ const defaultGameState: GameState = {
   buildings: {
     huts: 0,
     traps: 0,
+    lodges: 0,
   },
   villagers: {
     free: 0,
     hunters: 0,
+    gatherers: 0,
   },
   world: {
     discovered: false,
@@ -170,7 +174,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'lightFire' && state.flags.fireLit) return;
     if (actionId === 'gatherWood' && !state.flags.fireLit) return;
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
-    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return; // This check will be updated to 100 wood
+    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 100)) return;
+    if (actionId === 'buildLodge' && (state.villagers.free < 1 || state.resources.wood < 250)) return;
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
     if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 
@@ -281,6 +286,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
           }, 1000);
         }, 2000);
       }
+    } else if (actionId === 'buildLodge') {
+      updates.resources = {
+        ...state.resources,
+        wood: state.resources.wood - 250
+      };
+      updates.buildings = {
+        ...state.buildings,
+        lodges: state.buildings.lodges + 1
+      };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          actionBuildLodge: true
+        }
+      };
     } else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
       updates.resources = {
@@ -464,5 +485,35 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   toggleDevMode: () => {
     // Dev mode is always enabled - no-op
+  },
+
+  assignVillager: (job: 'gatherers' | 'hunters') => {
+    set((state) => {
+      if (state.villagers.free > 0) {
+        return {
+          villagers: {
+            ...state.villagers,
+            free: state.villagers.free - 1,
+            [job]: state.villagers[job] + 1
+          }
+        };
+      }
+      return state;
+    });
+  },
+
+  unassignVillager: (job: 'gatherers' | 'hunters') => {
+    set((state) => {
+      if (state.villagers[job] > 0) {
+        return {
+          villagers: {
+            ...state.villagers,
+            free: state.villagers.free + 1,
+            [job]: state.villagers[job] - 1
+          }
+        };
+      }
+      return state;
+    });
   },
 }));

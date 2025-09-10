@@ -59,6 +59,21 @@ export const gameActions: Record<string, Action> = {
     cooldown: 10, // 10 second cooldown
   },
 
+  buildLodge: {
+    id: 'buildLodge',
+    label: 'Lodge',
+    description: 'Build a lodge where villagers can gather and work.',
+    requirements: {
+      'villagers.free': 1,
+      'resources.wood': 250,
+    },
+    effects: {
+      'resources.wood': -250,
+      'buildings.lodges': 1,
+    },
+    cooldown: 15, // 15 second cooldown
+  },
+
   exploreCave: {
     id: 'exploreCave',
     label: 'Explore Cave',
