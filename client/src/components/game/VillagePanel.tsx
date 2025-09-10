@@ -49,7 +49,7 @@ export default function VillagePanel() {
         </div>
       </div>
 
-      {(buildings.lodges > 0 || story.seen?.hasGatherers || story.seen?.hasHunters) || (villagers > 0 || story.seen?.hasVillagers) && (
+      {story.seen?.hasVillagers && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           
