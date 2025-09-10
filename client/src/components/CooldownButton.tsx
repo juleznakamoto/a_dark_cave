@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useCooldown } from '@/hooks/useCooldown';
+import { useGameStore } from '@/game/state';
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -26,6 +27,7 @@ export default function CooldownButton({
   ...props
 }: CooldownButtonProps) {
   const { isCoolingDown, progress, startCooldown } = useCooldown();
+  const { devMode } = useGameStore();
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
@@ -33,11 +35,14 @@ export default function CooldownButton({
     // Execute the action immediately
     onClick();
     
-    // Start the cooldown
-    startCooldown(cooldownMs);
+    // Start the cooldown (skip in dev mode)
+    if (!devMode) {
+      startCooldown(cooldownMs);
+    }
   };
 
-  const isButtonDisabled = disabled || isCoolingDown;
+  const isButtonDisabled = disabled || (isCoolingDown && !devMode);
+  const showCooldownVisual = isCoolingDown && !devMode;
 
   return (
     <div className="relative inline-block">
@@ -47,7 +52,7 @@ export default function CooldownButton({
         variant={variant}
         size={size}
         className={`relative overflow-hidden transition-all duration-200 ${
-          isCoolingDown ? 'opacity-60 cursor-not-allowed' : ''
+          showCooldownVisual ? 'opacity-60 cursor-not-allowed' : ''
         } ${className}`}
         data-testid={testId}
         {...props}
@@ -56,7 +61,7 @@ export default function CooldownButton({
         <span className="relative z-10">{children}</span>
         
         {/* Cooldown progress overlay */}
-        {isCoolingDown && (
+        {showCooldownVisual && (
           <div
             className="absolute inset-0 bg-black/20 transition-all duration-75 ease-linear"
             style={{

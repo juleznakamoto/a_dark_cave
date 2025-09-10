@@ -8,7 +8,7 @@ export default function ResourceDisplay() {
   const hasEverSeenFood = story.seen.hasFood || resources.food > 0;
   const hasEverSeenTorch = story.seen.hasTorch || resources.torch > 0;
   const hasEverSeenStone = story.seen.hasStone || resources.stone > 0;
-  
+
   const hasAnyResources = hasEverSeenWood || hasEverSeenFood || hasEverSeenTorch || hasEverSeenStone;
 
   if (!hasAnyResources) {
