@@ -5,11 +5,11 @@ export default function ResourceDisplay() {
 
   // Show the resource display if player has ever gathered any resources
   const hasEverSeenWood = story.seen.hasWood || story.seen.actionGatherWood || resources.wood > 0;
-  const hasEverSeenFood = story.seen.hasFood || resources.food > 0;
+  const hasEverSeenMeat = story.seen.hasMeat || resources.meat > 0;
   const hasEverSeenTorch = story.seen.hasTorch || story.seen.actionBuildTorch || resources.torch > 0;
   const hasEverSeenStone = story.seen.hasStone || story.seen.actionExploreCave || resources.stone > 0;
 
-  const hasAnyResources = hasEverSeenWood || hasEverSeenFood || hasEverSeenTorch || hasEverSeenStone;
+  const hasAnyResources = hasEverSeenWood || hasEverSeenMeat || hasEverSeenTorch || hasEverSeenStone;
 
   if (!hasAnyResources) {
     return null;
@@ -29,11 +29,11 @@ export default function ResourceDisplay() {
             </span>
           </div>
         )}
-        {hasEverSeenFood && (
+        {hasEverSeenMeat && (
           <div className="flex justify-between">
-            <span>Food</span>
-            <span className="font-mono" data-testid="resource-food">
-              {resources.food ?? 0}
+            <span>Meat</span>
+            <span className="font-mono" data-testid="resource-meat">
+              {resources.meat ?? 0}
             </span>
           </div>
         )}

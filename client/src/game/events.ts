@@ -46,7 +46,7 @@ export const gameEvents: Record<string, GameEvent> = {
           resources: {
             ...state.resources,
             wood: Math.max(0, state.resources.wood - 5),
-            food: state.resources.food + 3,
+            meat: state.resources.meat + 3,
           },
         }),
         cooldown: 2,
