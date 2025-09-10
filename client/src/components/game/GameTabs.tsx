@@ -62,13 +62,15 @@ export default function GameTabs() {
           <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">Population</h3>
           <div className="space-y-1 px-3">
             <div className="flex justify-between items-center text-sm">
-              <span>Free Villagers</span>
+              <span>Villagers</span>
               <span className="font-mono">{villagers.free}</span>
             </div>
-            <div className="flex justify-between items-center text-sm">
-              <span>Hunters</span>
-              <span className="font-mono">{villagers.hunters}</span>
-            </div>
+            {villagers.hunters > 0 && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Hunters</span>
+                <span className="font-mono">{villagers.hunters}</span>
+              </div>
+            )}
           </div>
         </div>
       )}

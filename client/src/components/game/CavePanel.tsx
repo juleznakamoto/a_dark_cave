@@ -19,9 +19,7 @@ export default function CavePanel() {
     executeAction('buildTorch');
   };
 
-  const handleBuildHut = () => {
-    executeAction('buildHut');
-  };
+  
 
   const handleExploreCave = () => {
     executeAction('exploreCave');
@@ -33,13 +31,11 @@ export default function CavePanel() {
 
   // Check if actions have been seen (should remain visible)
   const hasSeenBuildTorch = story.seen.actionBuildTorch || (flags.fireLit && resources.wood >= 10);
-  const hasSeenBuildHut = story.seen.actionBuildHut || (flags.villageUnlocked && resources.wood >= 50);
   const hasSeenExploreCave = story.seen.actionExploreCave || flags.torchBuilt;
   const hasSeenCraftAxe = story.seen.actionCraftAxe || story.seen.hasStone;
 
   // Check if actions can currently be performed
   const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;
-  const canBuildHut = flags.villageUnlocked && resources.wood >= 50 && (cooldowns['buildHut'] || 0) === 0;
   const canExploreCave = flags.fireLit && resources.torch >= 5 && (cooldowns['exploreCave'] || 0) === 0;
   const canCraftAxe = flags.fireLit && resources.wood >= 5 && resources.stone >= 10 && !tools.axe && (cooldowns['craftAxe'] || 0) === 0;
 
@@ -93,7 +89,7 @@ export default function CavePanel() {
       </div>
 
       {/* Craft Panel */}
-      {(hasSeenBuildTorch || hasSeenBuildHut) && (
+      {hasSeenBuildTorch && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Craft</h2>
 
@@ -112,19 +108,7 @@ export default function CavePanel() {
               </CooldownButton>
             )}
 
-            {/* Build Hut (Village unlocked) */}
-            {hasSeenBuildHut && (
-              <CooldownButton
-                onClick={handleBuildHut}
-                cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
-                data-testid="button-build-hut"
-                disabled={!canBuildHut}
-                className="relative overflow-hidden"
-                size="sm"
-              >
-                <span className="relative z-10">Build Hut (50 wood)</span>
-              </CooldownButton>
-            )}
+            
 
             {/* Craft Axe */}
             {hasSeenCraftAxe && (
