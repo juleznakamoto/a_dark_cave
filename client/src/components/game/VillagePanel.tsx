@@ -2,6 +2,7 @@ import { useGameStore } from '@/game/state';
 import { gameActions } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
+import { buildingRequirements } from '@/game/buildingRequirements'; // Assuming buildingRequirements are defined here
 
 export default function VillagePanel() {
   const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
@@ -14,14 +15,36 @@ export default function VillagePanel() {
     executeAction('buildLodge');
   };
 
-  const canBuildHut = resources.wood >= 100 && (cooldowns['buildHut'] || 0) === 0;
-  const canBuildLodge = buildings.huts >= 1 && villagers.free >= 1 && resources.wood >= 250 && (cooldowns['buildLodge'] || 0) === 0;
+  // Get next building requirements and costs
+  const nextHutLevel = buildings.huts + 1;
+  const nextLodgeLevel = buildings.lodges + 1;
+  const hutRequirements = buildingRequirements.hut[nextHutLevel];
+  const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
+
+  // Check if we can build next hut
+  const canBuildHut = hutRequirements &&
+    resources.wood >= hutRequirements.wood &&
+    (cooldowns['buildHut'] || 0) === 0 &&
+    Object.entries(hutRequirements.requiredBuildings || {}).every(([building, count]) =>
+      buildings[building as keyof typeof buildings] >= count
+    );
+
+  // Check if we can build next lodge
+  const canBuildLodge = lodgeRequirements &&
+    resources.wood >= lodgeRequirements.wood &&
+    (cooldowns['buildLodge'] || 0) === 0 &&
+    Object.entries(lodgeRequirements.requiredBuildings || {}).every(([building, count]) =>
+      buildings[building as keyof typeof buildings] >= count
+    ) &&
+    Object.entries(lodgeRequirements.requiredVillagers || {}).every(([villagerType, count]) =>
+      villagers[villagerType as keyof typeof villagers] >= count
+    );
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
         <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
-        
+
         <div className="flex flex-wrap gap-2">
           <CooldownButton
             onClick={handleBuildHut}
@@ -31,7 +54,7 @@ export default function VillagePanel() {
             className="relative overflow-hidden"
             size="sm"
           >
-            <span className="relative z-10">Wooden Hut (100 wood)</span>
+            <span className="relative z-10">Wooden Hut ({hutRequirements?.wood || '100'} wood)</span>
           </CooldownButton>
 
           {buildings.huts >= 1 && (
@@ -43,7 +66,7 @@ export default function VillagePanel() {
               className="relative overflow-hidden"
               size="sm"
             >
-              <span className="relative z-10">Lodge (250 wood)</span>
+              <span className="relative z-10">Lodge ({lodgeRequirements?.wood || '250'} wood)</span>
             </CooldownButton>
           )}
         </div>
@@ -52,7 +75,7 @@ export default function VillagePanel() {
       {story.seen?.hasVillagers && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
-          
+
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm">Gatherer</span>
@@ -78,7 +101,7 @@ export default function VillagePanel() {
                 </Button>
               </div>
             </div>
-            
+
             <div className="flex items-center justify-between">
               <span className="text-sm">Hunter</span>
               <div className="flex items-center gap-2">

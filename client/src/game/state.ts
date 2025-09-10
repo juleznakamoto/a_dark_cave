@@ -88,6 +88,20 @@ const defaultGameState: GameState = {
   version: 1,
 };
 
+// Building requirements system
+const buildingRequirements: Record<string, (state: GameState) => boolean> = {
+  hut: (state) => state.flags.villageUnlocked && state.resources.wood >= 100,
+  lodge: (state) => state.buildings.huts >= 1 && state.villagers.free >= 1 && state.resources.wood >= 250,
+  // Add other buildings and their requirements here, e.g.:
+  // trap: (state) => state.resources.wood >= 50 && state.villagers.gatherers >= 1,
+};
+
+const canBuildBuilding = (buildingType: string, state: GameState): boolean => {
+  const requirementFn = buildingRequirements[buildingType];
+  return requirementFn ? requirementFn(state) : false;
+};
+
+
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: 'cave',
@@ -184,8 +198,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'lightFire' && state.flags.fireLit) return;
     if (actionId === 'gatherWood' && !state.flags.fireLit) return;
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
-    if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 100)) return;
-    if (actionId === 'buildLodge' && (state.buildings.huts < 1 || state.villagers.free < 1 || state.resources.wood < 250)) return;
+    if (actionId === 'buildHut' && !canBuildBuilding('hut', state)) return;
+    if (actionId === 'buildLodge' && !canBuildBuilding('lodge', state)) return;
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
     if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 
@@ -239,7 +253,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         const rumbleLogEntry: LogEntry = {
           id: `rumble-sound-${Date.now()}`,
           message: 'A low, rumbling sound echoes from deeper in the cave.',
-          timestamp: Date.now() + 1000, // Slight delay after torch message
+          timestamp: Date.now(),
           type: 'system',
         };
 
@@ -278,7 +292,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             set((state) => {
               const currentPopulation = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
               const maxPopulation = state.buildings.huts * 2;
-              
+
               if (currentPopulation < maxPopulation) {
                 const newState = {
                   villagers: {
@@ -479,7 +493,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           }, {} as Record<string, boolean>),
         },
       }));
-      
+
       // Update population after applying changes
       setTimeout(() => get().updatePopulation(), 0);
     }

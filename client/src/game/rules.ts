@@ -1,5 +1,21 @@
 import { Action } from '@shared/schema';
 
+// Building requirements configuration
+export const buildingRequirements = {
+  hut: {
+    1: { wood: 100, requiredBuildings: {} },
+    2: { wood: 100, requiredBuildings: { lodges: 1 } },
+    3: { wood: 150, requiredBuildings: { lodges: 2 } },
+    4: { wood: 200, requiredBuildings: { lodges: 3, traps: 1 } },
+    5: { wood: 250, requiredBuildings: { lodges: 4, traps: 2 } },
+  },
+  lodge: {
+    1: { wood: 250, requiredBuildings: { huts: 1 }, requiredVillagers: { free: 1 } },
+    2: { wood: 300, requiredBuildings: { huts: 2 }, requiredVillagers: { free: 2 } },
+    3: { wood: 400, requiredBuildings: { huts: 3 }, requiredVillagers: { free: 3 } },
+  }
+};
+
 export const gameActions: Record<string, Action> = {
   lightFire: {
     id: 'lightFire',
