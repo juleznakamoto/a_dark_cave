@@ -251,21 +251,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const savedState = await loadGame();
     
-    // Always add initial cave description
-    const initialLogEntry: LogEntry = {
-      id: 'initial-narrative',
-      message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
-      timestamp: Date.now(),
-      type: 'system',
-    };
-    
     if (savedState) {
       set({
         ...savedState,
         activeTab: 'cave',
         lastSaved: 'Loaded',
         cooldowns: {},
-        log: savedState.log && savedState.log.length > 0 ? savedState.log : [initialLogEntry],
         events: get().events,
       });
     } else {
@@ -274,9 +265,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: 'cave',
         lastSaved: 'Never',
         cooldowns: {},
-        log: [initialLogEntry],
+        log: [],
         events: {},
       });
+      
+      // Trigger initial cave description after 200ms for new games
+      setTimeout(() => {
+        const state = get();
+        const initialLogEntry: LogEntry = {
+          id: 'initial-narrative',
+          message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+          timestamp: Date.now(),
+          type: 'system',
+        };
+        state.addLogEntry(initialLogEntry);
+      }, 200);
     }
   },
 
