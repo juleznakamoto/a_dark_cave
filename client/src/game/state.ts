@@ -493,13 +493,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
   assignVillager: (job: 'gatherers' | 'hunters') => {
     set((state) => {
       if (state.villagers.free > 0) {
-        return {
+        const updates: any = {
           villagers: {
             ...state.villagers,
             free: state.villagers.free - 1,
             [job]: state.villagers[job] + 1
           }
         };
+
+        // Track when hunters are first assigned
+        if (job === 'hunters' && state.villagers.hunters === 0) {
+          updates.story = {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              hasHunters: true
+            }
+          };
+        }
+
+        return updates;
       }
       return state;
     });
