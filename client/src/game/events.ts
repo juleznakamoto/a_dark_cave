@@ -31,7 +31,6 @@ export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
     condition: (state) =>
-      state.buildings.huts >= 1 &&
       state.current_population < state.total_population,
     triggerType: "resource",
     message: [
@@ -60,34 +59,6 @@ export const gameEvents: Record<string, GameEvent> = {
       {
         id: "ignoreStranger",
         label: "Ignore the Stranger",
-        effect: () => ({}),
-        cooldown: 1,
-      },
-    ],
-  },
-
-  mysterousSound: {
-    id: "mysterousSound",
-    condition: (state) =>
-      state.resources.wood >= 20 && !state.events?.mysterousSound,
-    triggerType: "resource",
-    message: "A low, rumbling sound echoes from deeper in the cave.",
-    triggered: false,
-    choices: [
-      {
-        id: "investigate",
-        label: "Investigate the Sound",
-        effect: (state) => ({
-          flags: {
-            ...state.flags,
-            villageUnlocked: true,
-          },
-        }),
-        cooldown: 3,
-      },
-      {
-        id: "stayPut",
-        label: "Stay by the Fire",
         effect: () => ({}),
         cooldown: 1,
       },
