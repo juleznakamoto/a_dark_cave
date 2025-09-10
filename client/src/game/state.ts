@@ -113,7 +113,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     if ((state.cooldowns['gatherWood'] || 0) > 0 && !state.devMode) return;
 
-    const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
+    const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
+    const axeBonus = state.tools.axe ? 1 : 0; // +1 wood if axe is owned
+    const amount = baseAmount + axeBonus;
     const cooldown = gameActions.gatherWood?.cooldown || 3;
     set((state) => ({
       resources: { ...state.resources, wood: state.resources.wood + amount },
@@ -201,7 +203,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       updates.log = [...state.log, fireLogEntry].slice(-8);
     } else if (actionId === 'gatherWood') {
-      const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
+      const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
+      const axeBonus = state.tools.axe ? 1 : 0; // +1 wood if axe is owned
+      const amount = baseAmount + axeBonus;
       updates.resources = { ...state.resources, wood: state.resources.wood + amount };
       updates.story.seen.hasWood = true;
     } else if (actionId === 'buildTorch') {
