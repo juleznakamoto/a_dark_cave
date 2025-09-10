@@ -26,6 +26,18 @@ export default function VillagePanel() {
   const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
   const workshopRequirements = buildingRequirements.workshop[nextWorkshopLevel];
 
+  // Debug logging
+  console.log('Workshop debug:', {
+    buildings,
+    workshopRequirements,
+    nextWorkshopLevel,
+    lodgesCount: buildings.lodges,
+    hasRequirements: !!workshopRequirements,
+    buildingReqsMet: workshopRequirements ? Object.entries(workshopRequirements.requiredBuildings || {}).every(([building, count]) =>
+      buildings[building as keyof typeof buildings] >= count
+    ) : false
+  });
+
   // Check if we can build next hut
   const canBuildHut = hutRequirements &&
     resources.wood >= hutRequirements.wood &&
