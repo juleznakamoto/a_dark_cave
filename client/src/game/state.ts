@@ -263,16 +263,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             type: 'system',
           };
 
-          const villagerLogEntry: LogEntry = {
-            id: `villager-added-${Date.now()}`,
-            message: 'The stranger decides to stay and help. You now have a villager!',
-            timestamp: Date.now() + 1000,
-            type: 'system',
-          };
-
           get().addLogEntry(strangerLogEntry);
           setTimeout(() => {
-            get().addLogEntry(villagerLogEntry);
             set((state) => ({
               villagers: {
                 ...state.villagers,
