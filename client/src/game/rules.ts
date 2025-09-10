@@ -5,6 +5,7 @@ export const buildingRequirements = {
   hut: {
     1: { wood: 100, requiredBuildings: {} },
     2: { wood: 200, requiredBuildings: { lodges: 1 } },
+    3: { wood: 400, requiredBuildings: { workshops: 1 } }
   },
   lodge: {
     1: { wood: 250, requiredBuildings: { huts: 1 } },
