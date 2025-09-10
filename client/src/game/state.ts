@@ -86,10 +86,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if ((state.cooldowns['lightFire'] || 0) > 0) return;
 
     const cooldown = gameActions.lightFire?.cooldown || 1;
+    
+    // Add fire lit message to log
+    const fireLogEntry: LogEntry = {
+      id: `fire-lit-${Date.now()}`,
+      message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
+      timestamp: Date.now(),
+      type: 'system',
+    };
+
     set((state) => ({
       flags: { ...state.flags, fireLit: true },
       story: { ...state.story, seen: { ...state.story.seen, fireLit: true } },
-      cooldowns: { ...state.cooldowns, lightFire: cooldown }
+      cooldowns: { ...state.cooldowns, lightFire: cooldown },
+      log: [...state.log, fireLogEntry].slice(-50)
     }));
   },
 

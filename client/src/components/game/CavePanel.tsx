@@ -33,17 +33,10 @@ export default function CavePanel() {
 
   return (
     <div className="space-y-6">
-      {/* Narrative Text */}
+      {/* Events Panel */}
       <div className="space-y-4">
-        <p className="font-serif text-lg leading-relaxed">
-          {gameTexts.cave.initial}
-        </p>
-
-        {flags.fireLit && (
-          <p className="font-serif leading-relaxed text-muted-foreground italic">
-            {gameTexts.cave.fireLit}
-          </p>
-        )}
+        <h2 className="text-lg font-medium border-b border-border pb-2">Events</h2>
+        <LogPanel />
       </div>
 
       {/* Actions Panel */}
