@@ -244,6 +244,43 @@ export const useGameStore = create<GameStore>((set, get) => ({
           actionBuildHut: true
         }
       };
+
+      // After building the first hut, trigger stranger event
+      if (state.buildings.huts === 0) {
+        setTimeout(() => {
+          const strangerLogEntry: LogEntry = {
+            id: `stranger-approaches-${Date.now()}`,
+            message: 'A stranger approaches through the woods.',
+            timestamp: Date.now(),
+            type: 'system',
+          };
+
+          const villagerLogEntry: LogEntry = {
+            id: `villager-added-${Date.now()}`,
+            message: 'The stranger decides to stay and help. You now have a villager!',
+            timestamp: Date.now() + 1000,
+            type: 'system',
+          };
+
+          get().addLogEntry(strangerLogEntry);
+          setTimeout(() => {
+            get().addLogEntry(villagerLogEntry);
+            set((state) => ({
+              villagers: {
+                ...state.villagers,
+                free: state.villagers.free + 1
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  hasVillagers: true
+                }
+              }
+            }));
+          }, 1000);
+        }, 2000);
+      }
     } else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
       updates.resources = {
