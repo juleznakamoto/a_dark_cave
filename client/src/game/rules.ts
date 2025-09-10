@@ -25,7 +25,7 @@ export const gameActions: Record<string, Action> = {
     effects: {
       'resources.wood': '+1-3', // Random amount
     },
-    cooldown: 5, // 5 second cooldown
+    cooldown: 1, // 5 second cooldown
   },
   
   buildTorch: {
