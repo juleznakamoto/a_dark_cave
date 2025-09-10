@@ -31,38 +31,32 @@ export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
     condition: (state) =>
+      state.buildings.huts >= 1 &&
       state.current_population < state.total_population,
     triggerType: "resource",
     message: [
-      "A stranger approaches through the woods.",
-      "A traveler arrives and offers to join your village.",
-      "A wanderer appears from the woods, looking for a place to stay.",
-      "Someone approaches the village, willing to stay.",
+      "A stranger approaches through the woods and joins your village.",
+      "A traveler arrives and decides to stay.",
+      "A wanderer appears from the woods and becomes part of your community.",
+      "Someone approaches the village and settles in.",
       "A stranger joins your community, bringing skills and hope.",
-      "A newcomer arrives, ready to lend a hand in your village.",
+      "A newcomer arrives and makes themselves at home.",
     ][Math.floor(Math.random() * 6)],
     triggered: false,
     priority: 1,
-    choices: [
-      {
-        id: "tradeWithStranger",
-        label: "Trade Wood for Supplies",
-        effect: (state) => ({
-          resources: {
-            ...state.resources,
-            wood: Math.max(0, state.resources.wood - 5),
-            meat: state.resources.meat + 3,
-          },
-        }),
-        cooldown: 2,
+    effect: (state) => ({
+      villagers: {
+        ...state.villagers,
+        free: state.villagers.free + 1,
       },
-      {
-        id: "ignoreStranger",
-        label: "Ignore the Stranger",
-        effect: () => ({}),
-        cooldown: 1,
-      },
-    ],
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasVillagers: true,
+        }
+      }
+    }),
   },
 };
 
@@ -91,6 +85,14 @@ export class EventManager {
         };
 
         newLogEntries.push(logEntry);
+
+        // Apply effect if it exists
+        if (event.effect) {
+          const newStateUpdate = event.effect(state);
+          // Merge the update into the state (this part might need adjustment based on how state is managed)
+          // For now, we assume a direct merge is possible or handled elsewhere
+          // Example: Object.assign(state, newStateUpdate);
+        }
 
         // Mark as triggered
         event.triggered = true;

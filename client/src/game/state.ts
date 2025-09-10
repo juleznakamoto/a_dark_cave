@@ -463,10 +463,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   checkEvents: () => {
     const state = get();
-    const newLogEntries = EventManager.checkEvents(state);
+    const { newLogEntries, stateChanges } = EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
       set((prevState) => ({
+        ...prevState,
+        ...stateChanges,
         log: [...prevState.log, ...newLogEntries].slice(-8),
         events: {
           ...prevState.events,
@@ -477,6 +479,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           }, {} as Record<string, boolean>),
         },
       }));
+      
+      // Update population after applying changes
+      setTimeout(() => get().updatePopulation(), 0);
     }
   },
 
