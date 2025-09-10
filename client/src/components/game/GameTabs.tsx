@@ -2,9 +2,15 @@ import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
 import ResourceDisplay from './ResourceDisplay';
 import ToolsDisplay from './ToolsDisplay';
+import { useEffect } from 'react';
 
 export default function GameTabs() {
-  const { activeTab, setActiveTab, flags, buildings, villagers, story } = useGameStore();
+  const { activeTab, setActiveTab, flags, buildings, villagers, story, current_population, total_population, updatePopulation } = useGameStore();
+
+  // Update population whenever the component renders
+  useEffect(() => {
+    updatePopulation();
+  }, [villagers, buildings.huts, updatePopulation]);
 
   return (
     <nav className="w-48 border-r border-border bg-muted/30">
@@ -68,7 +74,7 @@ export default function GameTabs() {
       {story.seen?.hasVillagers && (
         <div className="mt-6">
           <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">
-            Population ({Object.values(villagers).reduce((sum, val) => sum + val, 0)}/{buildings.huts * 2})
+            Population ({current_population}/{total_population})
           </h3>
           <div className="space-y-1 px-3">
             <div className="flex justify-between items-center text-sm">

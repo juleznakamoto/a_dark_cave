@@ -17,6 +17,11 @@ interface GameStore extends GameState {
   toggleDevMode: () => void;
   getMaxPopulation: () => number;
 
+  // Population helpers
+  current_population: number;
+  total_population: number;
+  updatePopulation: () => void;
+
   // UI state
   activeTab: string;
   lastSaved: string;
@@ -90,6 +95,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   cooldowns: {},
   log: [],
   events: {},
+  current_population: 0,
+  total_population: 0,
 
   lightFire: () => {
     const state = get();
@@ -271,7 +278,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
               const maxPopulation = state.buildings.huts * 2;
               
               if (currentPopulation < maxPopulation) {
-                return {
+                const newState = {
                   villagers: {
                     ...state.villagers,
                     free: state.villagers.free + 1
@@ -284,6 +291,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     }
                   }
                 };
+                // Update population after changing villagers
+                setTimeout(() => get().updatePopulation(), 0);
+                return newState;
               }
               return state;
             });
@@ -514,6 +524,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
           };
         }
 
+        // Update population after changing villagers
+        setTimeout(() => get().updatePopulation(), 0);
         return updates;
       }
       return state;
@@ -523,13 +535,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   unassignVillager: (job: 'gatherers' | 'hunters') => {
     set((state) => {
       if (state.villagers[job] > 0) {
-        return {
+        const newState = {
           villagers: {
             ...state.villagers,
             free: state.villagers.free + 1,
             [job]: state.villagers[job] - 1
           }
         };
+        // Update population after changing villagers
+        setTimeout(() => get().updatePopulation(), 0);
+        return newState;
       }
       return state;
     });
@@ -538,5 +553,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   getMaxPopulation: () => {
     const state = get();
     return state.buildings.huts * 2; // Each hut provides +2 max population
+  },
+
+  updatePopulation: () => {
+    set((state) => {
+      const current = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
+      const total = state.buildings.huts * 2;
+      return {
+        current_population: current,
+        total_population: total
+      };
+    });
   },
 }));
