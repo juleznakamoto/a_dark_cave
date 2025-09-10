@@ -10,7 +10,7 @@ export default function LogPanel() {
   const recentEntries = log.slice(-8).reverse();
 
   return (
-    <div className="h-48 overflow-y-auto border border-border rounded-lg p-4 bg-muted/20">
+    <div className="h-48 p-4">
       <div className="space-y-3 text-sm">
         {recentEntries.map((entry: LogEntry, index: number) => {
           const isThirdLast = index === recentEntries.length - 3;
@@ -29,7 +29,7 @@ export default function LogPanel() {
           }
 
           return (
-            <div key={entry.id} className="border-l-2 border-transparent pl-3">
+            <div key={entry.id} className="pl-3">
               <p className={`text-foreground leading-relaxed ${opacity}`}>
                 {entry.message}
               </p>
