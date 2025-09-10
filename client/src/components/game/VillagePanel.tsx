@@ -1,8 +1,7 @@
 import { useGameStore } from '@/game/state';
-import { gameActions } from '@/game/rules';
+import { gameActions, buildingRequirements } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
-import { buildingRequirements } from '@/game/rules';
 
 export default function VillagePanel() {
   const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
@@ -15,7 +14,7 @@ export default function VillagePanel() {
     executeAction('buildLodge');
   };
 
-  // Get next building requirements and costs
+  // Get building requirements
   const nextHutLevel = buildings.huts + 1;
   const nextLodgeLevel = buildings.lodges + 1;
   const hutRequirements = buildingRequirements.hut[nextHutLevel];
