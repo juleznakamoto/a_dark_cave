@@ -1,122 +1,120 @@
-import { Action } from '@shared/schema';
+import { Action } from "@shared/schema";
 
 // Building requirements configuration
 export const buildingRequirements = {
   hut: {
     1: { wood: 100, requiredBuildings: {} },
     2: { wood: 100, requiredBuildings: { lodges: 1 } },
-    3: { wood: 150, requiredBuildings: { lodges: 2 } },
-    4: { wood: 200, requiredBuildings: { lodges: 3, traps: 1 } },
-    5: { wood: 250, requiredBuildings: { lodges: 4, traps: 2 } },
   },
   lodge: {
-    1: { wood: 250, requiredBuildings: { huts: 1 }, requiredVillagers: { free: 1 } },
-    2: { wood: 300, requiredBuildings: { huts: 2 }, requiredVillagers: { free: 2 } },
-    3: { wood: 400, requiredBuildings: { huts: 3 }, requiredVillagers: { free: 3 } },
-  }
+    1: { wood: 250, requiredBuildings: { huts: 1 } },
+  },
 };
 
 export const gameActions: Record<string, Action> = {
   lightFire: {
-    id: 'lightFire',
-    label: 'Light Fire',
-    description: 'You have some dry wood and kindling. A fire would provide warmth and light.',
+    id: "lightFire",
+    label: "Light Fire",
+    description:
+      "You have some dry wood and kindling. A fire would provide warmth and light.",
     requirements: {
-      'flags.fireLit': false,
+      "flags.fireLit": false,
     },
     effects: {
-      'flags.fireLit': true,
-      'story.seen.fireLit': true,
+      "flags.fireLit": true,
+      "story.seen.fireLit": true,
     },
     cooldown: 1, // 1 second cooldown
   },
 
   gatherWood: {
-    id: 'gatherWood',
-    label: 'Gather Wood',
-    description: 'Search the cave for fallen branches and dry wood to keep the fire burning.',
+    id: "gatherWood",
+    label: "Gather Wood",
+    description:
+      "Search the cave for fallen branches and dry wood to keep the fire burning.",
     requirements: {
-      'flags.fireLit': true,
+      "flags.fireLit": true,
     },
     effects: {
-      'resources.wood': '+1-3', // Random amount
+      "resources.wood": "+1-3", // Random amount
     },
     cooldown: 1, // 5 second cooldown
   },
 
   buildTorch: {
-    id: 'buildTorch',
-    label: 'Torch',
-    description: 'Create a torch to explore deeper into the cave.',
+    id: "buildTorch",
+    label: "Torch",
+    description: "Create a torch to explore deeper into the cave.",
     requirements: {
-      'flags.fireLit': true,
-      'resources.wood': 10,
+      "flags.fireLit": true,
+      "resources.wood": 10,
     },
     effects: {
-      'resources.wood': -10,
-      'resources.torch': '+1',
+      "resources.wood": -10,
+      "resources.torch": "+1",
     },
-    unlocks: ['exploreDeeper'],
+    unlocks: ["exploreDeeper"],
     cooldown: 10, // 10 second cooldown
   },
 
   buildHut: {
-    id: 'buildHut',
-    label: 'Wooden Hut',
-    description: 'Construct a simple shelter to house villagers.',
+    id: "buildHut",
+    label: "Wooden Hut",
+    description: "Construct a simple shelter to house villagers.",
     requirements: {
-      'flags.villageUnlocked': true,
-      'resources.wood': 100,
+      "flags.villageUnlocked": true,
+      "resources.wood": 100,
     },
     effects: {
-      'resources.wood': -100,
-      'buildings.huts': 1,
+      "resources.wood": -100,
+      "buildings.huts": 1,
     },
     cooldown: 10, // 10 second cooldown
   },
 
   buildLodge: {
-    id: 'buildLodge',
-    label: 'Lodge',
-    description: 'Build a lodge where villagers can gather and work.',
+    id: "buildLodge",
+    label: "Lodge",
+    description: "Build a lodge where villagers can gather and work.",
     requirements: {
-      'buildings.huts': 1,
+      "buildings.huts": 1,
     },
     effects: {
-      'resources.wood': -250,
-      'buildings.lodges': 1,
+      "resources.wood": -250,
+      "buildings.lodges": 1,
     },
     cooldown: 15, // 15 second cooldown
   },
 
   exploreCave: {
-    id: 'exploreCave',
-    label: 'Explore Cave',
-    description: 'Venture deeper into the cave with torches to light the way.',
+    id: "exploreCave",
+    label: "Explore Cave",
+    description: "Venture deeper into the cave with torches to light the way.",
     requirements: {
-      'flags.fireLit': true,
-      'resources.torch': 5,
+      "flags.fireLit": true,
+      "resources.torch": 5,
     },
     effects: {
-      'resources.torch': -5,
-      'flags.caveExplored': true,
+      "resources.torch": -5,
+      "flags.caveExplored": true,
     },
     cooldown: 15, // 15 second cooldown
   },
 
   craftAxe: {
-    id: 'craftAxe',
-    label: 'Axe',
-    description: 'Create a sturdy axe from wood and stone to gather resources more efficiently.',
+    id: "craftAxe",
+    label: "Axe",
+    description:
+      "Create a sturdy axe from wood and stone to gather resources more efficiently.",
     requirements: {
-      'flags.fireLit': true,
-      'resources.wood': 5,
-      'resources.stone': 10,
+      "flags.fireLit": true,
+      "resources.wood": 5,
+      "resources.stone": 10,
     },
     effects: {
-      'resources.wood': -5,
-      'resources.stone': -10,
-      'tools.axe': true,
+      "resources.wood": -5,
+      "resources.stone": -10,
+      "tools.axe": true,
     },
     cooldown: 20, // 20 second cooldown
   },
@@ -124,15 +122,17 @@ export const gameActions: Record<string, Action> = {
 
 export const gameTexts = {
   cave: {
-    initial: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you. A low, rumbling sound echoes from deeper in the cave.',
-    fireLit: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
+    initial:
+      "A dark cave. The air is cold and stale. You can barely make out the shapes around you. A low, rumbling sound echoes from deeper in the cave.",
+    fireLit:
+      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
   },
   village: {
-    initial: 'This could be the foundation of something greater.',
-    buildings: 'Buildings',
+    initial: "This could be the foundation of something greater.",
+    buildings: "Buildings",
   },
   world: {
-    initial: 'Beyond the village lies a vast world waiting to be explored...',
+    initial: "Beyond the village lies a vast world waiting to be explored...",
   },
   hints: {},
 };

@@ -30,14 +30,13 @@ export default function VillagePanel() {
     );
 
   // Check if we can build next lodge
-  const canBuildLodge = lodgeRequirements &&
+  const canBuildLodge =
+    lodgeRequirements &&
     resources.wood >= lodgeRequirements.wood &&
-    (cooldowns['buildLodge'] || 0) === 0 &&
-    Object.entries(lodgeRequirements.requiredBuildings || {}).every(([building, count]) =>
-      buildings[building as keyof typeof buildings] >= count
-    ) &&
-    Object.entries(lodgeRequirements.requiredVillagers || {}).every(([villagerType, count]) =>
-      villagers[villagerType as keyof typeof villagers] >= count
+    (cooldowns["buildLodge"] || 0) === 0 &&
+    Object.entries(lodgeRequirements.requiredBuildings || {}).every(
+      ([building, count]) =>
+        buildings[building as keyof typeof buildings] >= count
     );
 
   return (
