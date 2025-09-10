@@ -11,7 +11,7 @@ export default function LogPanel() {
   return (
     <div className="h-48 overflow-hidden">
       <div className="h-full overflow-y-auto p-4">
-        <div className="space-y-3 text-sm">
+        <div className="space-y-2 text-sm">
           {recentEntries.map((entry: LogEntry, index: number) => {
             const isThirdLast = index === recentEntries.length - 3;
             const isSecondLast = index === recentEntries.length - 2;
