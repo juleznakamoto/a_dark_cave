@@ -260,26 +260,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
         events: get().events,
       });
     } else {
+      // Create initial cave description for new games
+      const initialLogEntry: LogEntry = {
+        id: 'initial-narrative',
+        message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+        timestamp: Date.now(),
+        type: 'system',
+      };
+      
       set({
         ...defaultGameState,
         activeTab: 'cave',
         lastSaved: 'Never',
         cooldowns: {},
-        log: [],
+        log: [initialLogEntry],
         events: {},
       });
-      
-      // Trigger initial cave description after 200ms for new games
-      setTimeout(() => {
-        const state = get();
-        const initialLogEntry: LogEntry = {
-          id: 'initial-narrative',
-          message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
-          timestamp: Date.now(),
-          type: 'system',
-        };
-        state.addLogEntry(initialLogEntry);
-      }, 200);
     }
   },
 
