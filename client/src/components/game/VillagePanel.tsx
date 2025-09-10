@@ -85,7 +85,9 @@ export default function VillagePanel() {
             </CooldownButton>
           )}
 
-          {buildings.lodges >= 1 && (
+          {workshopRequirements && Object.entries(workshopRequirements.requiredBuildings || {}).every(([building, count]) =>
+            buildings[building as keyof typeof buildings] >= count
+          ) && (
             <CooldownButton
               onClick={handleBuildWorkshop}
               cooldownMs={(gameActions.buildWorkshop?.cooldown || 20) * 1000}
