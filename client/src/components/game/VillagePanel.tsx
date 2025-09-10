@@ -69,7 +69,14 @@ export default function VillagePanel() {
             className="relative overflow-hidden"
             size="sm"
           >
-            <span className="relative z-10">Wooden Hut ({hutRequirements?.wood || '100'} wood)</span>
+            <span className="relative z-10">
+              Wooden Hut (
+              {hutRequirements ? Object.entries(hutRequirements)
+                .filter(([key]) => key !== 'requiredBuildings')
+                .map(([resource, amount]) => `${amount} ${resource}`)
+                .join(', ') : 'No requirements'}
+              )
+            </span>
           </CooldownButton>
 
           {buildings.huts >= 1 && (
@@ -81,7 +88,14 @@ export default function VillagePanel() {
               className="relative overflow-hidden"
               size="sm"
             >
-              <span className="relative z-10">Lodge ({lodgeRequirements?.wood || '250'} wood)</span>
+              <span className="relative z-10">
+                Lodge (
+                {lodgeRequirements ? Object.entries(lodgeRequirements)
+                  .filter(([key]) => key !== 'requiredBuildings')
+                  .map(([resource, amount]) => `${amount} ${resource}`)
+                  .join(', ') : 'No requirements'}
+                )
+              </span>
             </CooldownButton>
           )}
 
@@ -96,7 +110,14 @@ export default function VillagePanel() {
               className="relative overflow-hidden"
               size="sm"
             >
-              <span className="relative z-10">Workshop ({workshopRequirements?.wood || '100'} wood, {workshopRequirements?.stone || '10'} stone)</span>
+              <span className="relative z-10">
+                Workshop (
+                {workshopRequirements ? Object.entries(workshopRequirements)
+                  .filter(([key]) => key !== 'requiredBuildings')
+                  .map(([resource, amount]) => `${amount} ${resource}`)
+                  .join(', ') : 'No requirements'}
+                )
+              </span>
             </CooldownButton>
           )}
         </div>
