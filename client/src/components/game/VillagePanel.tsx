@@ -2,7 +2,7 @@ import { useGameStore } from '@/game/state';
 import { gameActions } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
-import { buildingRequirements } from '@/game/buildingRequirements'; // Assuming buildingRequirements are defined here
+import { buildingRequirements } from '@/game/rules';
 
 export default function VillagePanel() {
   const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
