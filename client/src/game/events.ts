@@ -85,27 +85,6 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
-  woodDepletion: {
-    id: 'woodDepletion',
-    condition: (state) => state.resources.wood === 0 && state.flags.fireLit,
-    triggerType: 'resource',
-    message: 'The last piece of wood crumbles to ash. The fire dims.',
-    triggered: false,
-    repeatable: true,
-    choices: [
-      {
-        id: 'searchForWood',
-        label: 'Search Desperately for Wood',
-        effect: (state) => ({
-          resources: {
-            ...state.resources,
-            wood: Math.random() < 0.3 ? 1 : 0, // 30% chance to find 1 wood
-          },
-        }),
-        cooldown: 5,
-      },
-    ],
-  },
 };
 
 export class EventManager {
