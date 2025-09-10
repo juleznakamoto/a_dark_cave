@@ -9,14 +9,6 @@ export default function LogPanel() {
   // Get only the last 10 entries
   const recentEntries = log.slice(-10);
 
-  if (recentEntries.length === 0) {
-    return (
-      <div className="text-muted-foreground text-sm">
-        <p>Events and messages will appear here...</p>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-3 text-sm">
       {recentEntries.map((entry: LogEntry) => (
