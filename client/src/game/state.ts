@@ -251,7 +251,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const savedState = await loadGame();
     
-    // Always add initial cave description when starting new game
+    // Always add initial cave description when game loads
     const initialLogEntry: LogEntry = {
       id: 'initial-narrative',
       message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
@@ -265,6 +265,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: 'cave',
         lastSaved: 'Loaded',
         cooldowns: {},
+        log: [initialLogEntry],
         events: get().events,
       });
     } else {
