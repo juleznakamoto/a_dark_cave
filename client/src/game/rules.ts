@@ -41,7 +41,7 @@ export const gameActions: Record<string, Action> = {
       'resources.torch': '+1',
     },
     unlocks: ['exploreDeeper'],
-    cooldown: 5, // 5 second cooldown
+    cooldown: 10, // 10 second cooldown
   },
   
   buildHut: {
@@ -56,7 +56,7 @@ export const gameActions: Record<string, Action> = {
       'resources.wood': -50,
       'buildings.huts': '+1',
     },
-    cooldown: 10, // 30 second cooldown
+    cooldown: 30, // 30 second cooldown
   },
 };
 
