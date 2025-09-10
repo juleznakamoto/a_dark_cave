@@ -1,12 +1,20 @@
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
 import { manualSave } from '@/game/loop';
+import { deleteSave } from '@/game/save';
 
 export default function GameHeader() {
-  const { lastSaved } = useGameStore();
+  const { lastSaved, restartGame } = useGameStore();
 
   const handleSaveGame = async () => {
     await manualSave();
+  };
+
+  const handleRestartGame = async () => {
+    if (confirm('Are you sure you want to restart the game? This will delete your current progress.')) {
+      await deleteSave();
+      restartGame();
+    }
   };
 
   return (
@@ -22,6 +30,15 @@ export default function GameHeader() {
           className="px-3 py-1 text-xs"
         >
           Save Game
+        </Button>
+        <Button 
+          variant="destructive"
+          size="sm"
+          onClick={handleRestartGame}
+          data-testid="button-restart-game"
+          className="px-3 py-1 text-xs"
+        >
+          Restart
         </Button>
       </div>
     </header>

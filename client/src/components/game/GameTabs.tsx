@@ -19,25 +19,27 @@ export default function GameTabs() {
             The Cave
           </Button>
           
-          <Button
-            variant={activeTab === 'village' ? 'default' : 'ghost'}
-            className="w-full justify-start text-sm"
-            onClick={() => setActiveTab('village')}
-            disabled={!flags.villageUnlocked}
-            data-testid="tab-village"
-          >
-            The Village
-          </Button>
+          {flags.villageUnlocked && (
+            <Button
+              variant={activeTab === 'village' ? 'default' : 'ghost'}
+              className="w-full justify-start text-sm"
+              onClick={() => setActiveTab('village')}
+              data-testid="tab-village"
+            >
+              The Village
+            </Button>
+          )}
           
-          <Button
-            variant={activeTab === 'world' ? 'default' : 'ghost'}
-            className="w-full justify-start text-sm"
-            onClick={() => setActiveTab('world')}
-            disabled={!flags.worldDiscovered}
-            data-testid="tab-world"
-          >
-            The World
-          </Button>
+          {flags.worldDiscovered && (
+            <Button
+              variant={activeTab === 'world' ? 'default' : 'ghost'}
+              className="w-full justify-start text-sm"
+              onClick={() => setActiveTab('world')}
+              data-testid="tab-world"
+            >
+              The World
+            </Button>
+          )}
         </div>
       </div>
       

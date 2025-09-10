@@ -10,6 +10,7 @@ interface GameStore extends GameState {
   updateResource: (resource: keyof GameState['resources'], amount: number) => void;
   setFlag: (flag: keyof GameState['flags'], value: boolean) => void;
   initialize: (state: GameState) => void;
+  restartGame: () => void;
   
   // UI state
   activeTab: string;
@@ -99,6 +100,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       }
       return { cooldowns: newCooldowns };
+    });
+  },
+
+  restartGame: () => {
+    set({
+      ...defaultGameState,
+      activeTab: 'cave',
+      lastSaved: 'Never',
+      cooldowns: {},
     });
   },
 }));
