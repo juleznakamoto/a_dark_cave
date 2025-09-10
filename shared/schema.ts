@@ -3,8 +3,8 @@ import { z } from "zod";
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   resources: z.object({
-    wood: z.number().default(0),
-    food: z.number().default(0),
+    wood: z.number().min(0).default(0),
+    food: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),
@@ -16,12 +16,12 @@ export const gameStateSchema = z.object({
     spear: z.boolean().default(false),
   }),
   buildings: z.object({
-    huts: z.number().default(0),
-    traps: z.number().default(0),
+    huts: z.number().min(0).default(0),
+    traps: z.number().min(0).default(0),
   }),
   villagers: z.object({
-    free: z.number().default(0),
-    hunters: z.number().default(0),
+    free: z.number().min(0).default(0),
+    hunters: z.number().min(0).default(0),
   }),
   world: z.object({
     discovered: z.boolean().default(false),
@@ -32,6 +32,11 @@ export const gameStateSchema = z.object({
   }),
   story: z.object({
     seen: z.record(z.string(), z.boolean()).default({}),
+  }),
+  events: z.object({
+    available: z.array(z.string()).default([]),
+    active: z.array(z.string()).default([]),
+    log: z.array(z.string()).default([]),
   }),
   version: z.number().default(1),
 });

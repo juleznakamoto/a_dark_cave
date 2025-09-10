@@ -48,6 +48,9 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
   
+  // Check and trigger events
+  state.checkEvents();
+  
   // Example game logic - could be expanded
   if (state.flags.fireLit && state.resources.wood > 0) {
     // Fire consumes wood very slowly

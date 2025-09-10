@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { GameState } from '@shared/schema';
 import { gameActions } from '@/game/rules';
+import { LogEntry, EventManager } from '@/game/events';
 
 interface GameStore extends GameState {
   // Actions
@@ -21,6 +22,13 @@ interface GameStore extends GameState {
   cooldowns: Record<string, number>;
   setCooldown: (action: string, duration: number) => void;
   tickCooldowns: () => void;
+  
+  // Event system
+  log: LogEntry[];
+  events: Record<string, boolean>;
+  addLogEntry: (entry: LogEntry) => void;
+  checkEvents: () => void;
+  applyEventChoice: (choiceId: string, eventId: string) => void;
 }
 
 const defaultGameState: GameState = {
@@ -40,6 +48,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   lastSaved: 'Never',
   isGameLoopActive: false,
   cooldowns: {},
+  log: [],
+  events: {},
 
   lightFire: () => {
     const state = get();
@@ -109,6 +119,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
       activeTab: 'cave',
       lastSaved: 'Never',
       cooldowns: {},
+      log: [],
+      events: {},
     });
+  },
+
+  addLogEntry: (entry: LogEntry) => {
+    set((state) => ({
+      log: [...state.log, entry].slice(-50), // Keep only last 50 entries
+    }));
+  },
+
+  checkEvents: () => {
+    const state = get();
+    const newLogEntries = EventManager.checkEvents(state);
+    
+    if (newLogEntries.length > 0) {
+      set((prevState) => ({
+        log: [...prevState.log, ...newLogEntries].slice(-50),
+        events: {
+          ...prevState.events,
+          ...newLogEntries.reduce((acc, entry) => {
+            const eventId = entry.id.split('-')[0];
+            acc[eventId] = true;
+            return acc;
+          }, {} as Record<string, boolean>),
+        },
+      }));
+    }
+  },
+
+  applyEventChoice: (choiceId: string, eventId: string) => {
+    const state = get();
+    const changes = EventManager.applyEventChoice(state, choiceId, eventId);
+    
+    if (Object.keys(changes).length > 0) {
+      set((prevState) => ({
+        ...prevState,
+        ...changes,
+      }));
+    }
   },
 }));
