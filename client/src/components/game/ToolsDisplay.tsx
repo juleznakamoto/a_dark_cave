@@ -4,7 +4,7 @@ export default function ToolsDisplay() {
   const { tools, story } = useGameStore();
 
   // Show the tools display if player has ever acquired any tools
-  const hasEverSeenAxe = story.seen.hasAxe || tools.axe;
+  const hasEverSeenAxe = story.seen.hasAxe || story.seen.actionCraftAxe || tools.axe;
   const hasEverSeenSpear = story.seen.hasSpear || tools.spear;
   
   const hasAnyTools = hasEverSeenAxe || hasEverSeenSpear;

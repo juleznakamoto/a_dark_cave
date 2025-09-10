@@ -73,36 +73,7 @@ function checkUnlocks(state: GameState) {
 }
 
 function handleFireConsumption() {
-  const state = useGameStore.getState();
-
-  // If fire is lit, consume 1 wood every 30 seconds
-  if (state.flags.fireLit) {
-    if (state.resources.wood > 0) {
-      // Consume 1 wood
-      useGameStore.getState().updateResource('wood', -1);
-
-      // Add log entry about fire consuming wood
-      const logEntry = {
-        id: `fire-consumption-${Date.now()}`,
-        message: 'The fire consumes some wood, crackling softly.',
-        timestamp: Date.now(),
-        type: 'system' as const,
-      };
-      useGameStore.getState().addLogEntry(logEntry);
-    } else {
-      // No wood left - fire goes out
-      useGameStore.getState().setFlag('fireLit', false);
-
-      // Add log entry about fire going out
-      const logEntry = {
-        id: `fire-out-${Date.now()}`,
-        message: 'The fire flickers and dies. The cave grows cold and dark.',
-        timestamp: Date.now(),
-        type: 'system' as const,
-      };
-      useGameStore.getState().addLogEntry(logEntry);
-    }
-  }
+  // Fire consumption disabled - fire stays lit indefinitely
 }
 
 async function handleAutoSave() {

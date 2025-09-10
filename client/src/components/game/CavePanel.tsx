@@ -32,10 +32,10 @@ export default function CavePanel() {
   };
 
   // Check if actions have been seen (should remain visible)
-  const hasSeenBuildTorch = story.seen.actionBuildTorch || flags.fireLit && resources.wood >= 10;
-  const hasSeenBuildHut = story.seen.actionBuildHut || flags.villageUnlocked && resources.wood >= 50;
-  const hasSeenExploreCave = story.seen.actionExploreCave || resources.torch >= 5;
-  const hasSeenCraftAxe = story.seen.actionCraftAxe || (resources.wood >= 5 && resources.stone >= 10);
+  const hasSeenBuildTorch = story.seen.actionBuildTorch || (flags.fireLit && resources.wood >= 10);
+  const hasSeenBuildHut = story.seen.actionBuildHut || (flags.villageUnlocked && resources.wood >= 50);
+  const hasSeenExploreCave = story.seen.actionExploreCave || (flags.fireLit && resources.torch >= 5);
+  const hasSeenCraftAxe = story.seen.actionCraftAxe || (flags.fireLit && resources.wood >= 5 && resources.stone >= 10);
 
   // Check if actions can currently be performed
   const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;

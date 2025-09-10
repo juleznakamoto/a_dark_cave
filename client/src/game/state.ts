@@ -105,7 +105,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       flags: { ...state.flags, fireLit: true },
       story: { ...state.story, seen: { ...state.story.seen, fireLit: true } },
       cooldowns: { ...state.cooldowns, lightFire: state.devMode ? 0 : cooldown },
-      log: [...state.log, fireLogEntry].slice(-50)
+      log: [...state.log, fireLogEntry].slice(-8)
     }));
   },
 
@@ -199,7 +199,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system',
       };
-      updates.log = [...state.log, fireLogEntry].slice(-50);
+      updates.log = [...state.log, fireLogEntry].slice(-8);
     } else if (actionId === 'gatherWood') {
       const amount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
       updates.resources = { ...state.resources, wood: state.resources.wood + amount };
@@ -233,7 +233,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system',
       };
-      updates.log = [...state.log, stonesLogEntry].slice(-50);
+      updates.log = [...state.log, stonesLogEntry].slice(-8);
     } else if (actionId === 'craftAxe') {
       updates.resources = {
         ...state.resources,
@@ -241,6 +241,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         stone: state.resources.stone - 10
       };
       updates.tools = { ...state.tools, axe: true };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasAxe: true,
+          actionCraftAxe: true
+        }
+      };
 
       // Add log entry for axe crafted
       const axeLogEntry: LogEntry = {
@@ -249,7 +257,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system',
       };
-      updates.log = [...state.log, axeLogEntry].slice(-50);
+      updates.log = [...state.log, axeLogEntry].slice(-8);
     }
 
     set((prevState) => ({
@@ -346,7 +354,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     set((state) => ({
-      log: [...state.log, entry].slice(-50), // Keep only last 50 entries
+      log: [...state.log, entry].slice(-8), // Keep only last 8 entries
     }));
   },
 
@@ -356,7 +364,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (newLogEntries.length > 0) {
       set((prevState) => ({
-        log: [...prevState.log, ...newLogEntries].slice(-50),
+        log: [...prevState.log, ...newLogEntries].slice(-8),
         events: {
           ...prevState.events,
           ...newLogEntries.reduce((acc, entry) => {
