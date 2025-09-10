@@ -31,8 +31,7 @@ export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
     condition: (state) =>
-      state.resources.wood >= 10 &&
-      state.flags.caveExplored == true &&
+      state.buildings.huts >= 1 &&
       !state.events?.strangerApproaches,
     triggerType: "resource",
     message: [
