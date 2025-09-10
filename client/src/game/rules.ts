@@ -4,7 +4,7 @@ import { Action } from "@shared/schema";
 export const buildingRequirements = {
   hut: {
     1: { wood: 100, requiredBuildings: {} },
-    2: { wood: 100, requiredBuildings: { lodges: 1 } },
+    2: { wood: 200, requiredBuildings: { lodges: 1 } },
   },
   lodge: {
     1: { wood: 250, requiredBuildings: { huts: 1 } },
@@ -116,7 +116,7 @@ export const gameActions: Record<string, Action> = {
       "resources.stone": -10,
       "tools.axe": true,
     },
-    cooldown: 20, // 20 second cooldown
+    cooldown: 1, // 1 second cooldown
   },
 };
 
