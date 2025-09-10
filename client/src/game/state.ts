@@ -300,7 +300,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldowns: {},
       log: [],
       events: {},
-      devMode: false,
+      devMode: true,
     });
 
     // Then add the initial cave description
@@ -332,7 +332,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         lastSaved: 'Loaded',
         cooldowns: {},
         events: get().events,
-        devMode: false, // Ensure devMode is false on load
+        devMode: true, // Ensure devMode is always true
       });
     } else {
       // For new games, first set the initial state
@@ -343,7 +343,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldowns: {},
         log: [],
         events: {},
-        devMode: false,
+        devMode: true,
       });
 
       // Then immediately add the initial cave description
@@ -396,9 +396,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   toggleDevMode: () => {
-    set((state) => ({
-      devMode: !state.devMode,
-      cooldowns: !state.devMode ? {} : state.cooldowns, // Clear cooldowns when enabling dev mode
-    }));
+    // Dev mode is always enabled - no-op
   },
 }));
