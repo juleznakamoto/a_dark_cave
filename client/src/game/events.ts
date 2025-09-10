@@ -37,7 +37,7 @@ export const gameEvents: Record<string, GameEvent> = {
     message: [
       "A stranger approaches through the woods.",
       "A traveler arrives and offers to join your village.",
-      "A wanderer appears from the woods, looking to for a place to stay.",
+      "A wanderer appears from the woods, looking for a place to stay.",
       "Someone approaches the village, willing to stay.",
       "A stranger joins your community, bringing skills and hope.",
       "A newcomer arrives, ready to lend a hand in your village.",

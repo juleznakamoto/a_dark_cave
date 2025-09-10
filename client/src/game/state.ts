@@ -562,6 +562,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const current = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
       const total = state.buildings.huts * 2;
       return {
+        ...state,
         current_population: current,
         total_population: total
       };
