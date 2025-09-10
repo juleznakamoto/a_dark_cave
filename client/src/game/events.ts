@@ -60,8 +60,9 @@ export const gameEvents: Record<string, GameEvent> = {
 };
 
 export class EventManager {
-  static checkEvents(state: GameState): LogEntry[] {
+  static checkEvents(state: GameState): { newLogEntries: LogEntry[], stateChanges: Partial<GameState> } {
     const newLogEntries: LogEntry[] = [];
+    let stateChanges: Partial<GameState> = {};
     const sortedEvents = Object.values(gameEvents).sort(
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
@@ -87,10 +88,7 @@ export class EventManager {
 
         // Apply effect if it exists
         if (event.effect) {
-          const newStateUpdate = event.effect(state);
-          // Merge the update into the state (this part might need adjustment based on how state is managed)
-          // For now, we assume a direct merge is possible or handled elsewhere
-          // Example: Object.assign(state, newStateUpdate);
+          stateChanges = event.effect(state);
         }
 
         // Mark as triggered
@@ -99,7 +97,7 @@ export class EventManager {
       }
     }
 
-    return newLogEntries;
+    return { newLogEntries, stateChanges };
   }
 
   static applyEventChoice(
