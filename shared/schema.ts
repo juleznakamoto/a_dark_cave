@@ -5,6 +5,7 @@ export const gameStateSchema = z.object({
   resources: z.object({
     wood: z.number().min(0).default(0),
     food: z.number().min(0).default(0),
+    torch: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),

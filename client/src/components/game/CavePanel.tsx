@@ -10,7 +10,7 @@ export default function CavePanel() {
   const buildTorch = () => {
     if (resources.wood >= 10) {
       updateResource('wood', -10);
-      setFlag('torchBuilt', true);
+      updateResource('torch', 1);
     }
   };
 

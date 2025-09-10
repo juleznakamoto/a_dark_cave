@@ -38,10 +38,10 @@ export const gameActions: Record<string, Action> = {
     },
     effects: {
       'resources.wood': -10,
-      'tools.torch': true,
+      'resources.torch': '+1',
     },
     unlocks: ['exploreDeeper'],
-    cooldown: 5, // 10 second cooldown
+    cooldown: 5, // 5 second cooldown
   },
   
   buildHut: {

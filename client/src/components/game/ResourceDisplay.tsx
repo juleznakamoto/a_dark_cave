@@ -4,7 +4,7 @@ export default function ResourceDisplay() {
   const { resources } = useGameStore();
 
   // Only show the resource display if player has gathered any resources
-  const hasAnyResources = resources.wood > 0 || resources.food > 0;
+  const hasAnyResources = resources.wood > 0 || resources.food > 0 || resources.torch > 0;
 
   if (!hasAnyResources) {
     return null;
@@ -29,6 +29,14 @@ export default function ResourceDisplay() {
             <span>Food</span>
             <span className="font-mono" data-testid="resource-food">
               {resources.food}
+            </span>
+          </div>
+        )}
+        {resources.torch > 0 && (
+          <div className="flex justify-between">
+            <span>Torch</span>
+            <span className="font-mono" data-testid="resource-torch">
+              {resources.torch}
             </span>
           </div>
         )}

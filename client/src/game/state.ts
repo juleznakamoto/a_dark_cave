@@ -32,7 +32,7 @@ interface GameStore extends GameState {
 }
 
 const defaultGameState: GameState = {
-  resources: { wood: 0, food: 0 },
+  resources: { wood: 0, food: 0, torch: 0 },
   flags: { fireLit: false, villageUnlocked: false, worldDiscovered: false, torchBuilt: false },
   tools: { axe: false, spear: false },
   buildings: { huts: 0, traps: 0 },
