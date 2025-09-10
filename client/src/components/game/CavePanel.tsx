@@ -5,7 +5,14 @@ import CooldownButton from '@/components/CooldownButton';
 import LogPanel from './LogPanel';
 
 export default function CavePanel() {
-  const { flags, resources, lightFire, gatherWood, cooldowns } = useGameStore();
+  const { flags, resources, lightFire, gatherWood, cooldowns, updateResource, setFlag } = useGameStore();
+
+  const buildTorch = () => {
+    if (resources.wood >= 10) {
+      updateResource('wood', -10);
+      setFlag('torchBuilt', true);
+    }
+  };
 
   return (
     <div className="space-y-6">
@@ -55,16 +62,15 @@ export default function CavePanel() {
 
           {/* Build Torch Action */}
           {flags.fireLit && resources.wood >= 10 && (
-            <Button
-              variant="outline"
-              className="relative overflow-hidden"
-              size="sm"
-              onClick={() => {}}
-              disabled={true}
+            <CooldownButton
+              onClick={buildTorch}
+              cooldownMs={gameActions.buildTorch.cooldown * 1000}
               data-testid="action-build-torch"
+              variant="outline"
+              size="sm"
             >
-              <span className="relative z-10">Build Torch</span>
-            </Button>
+              Build Torch
+            </CooldownButton>
           )}
         </div>
       </div>
