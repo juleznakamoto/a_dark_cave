@@ -15,6 +15,7 @@ interface GameStore extends GameState {
   restartGame: () => void;
   loadGame: () => Promise<void>;
   toggleDevMode: () => void;
+  getMaxPopulation: () => number;
 
   // UI state
   activeTab: string;
@@ -265,19 +266,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
           get().addLogEntry(strangerLogEntry);
           setTimeout(() => {
-            set((state) => ({
-              villagers: {
-                ...state.villagers,
-                free: state.villagers.free + 1
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  hasVillagers: true
-                }
+            set((state) => {
+              const currentPopulation = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
+              const maxPopulation = state.buildings.huts * 2;
+              
+              if (currentPopulation < maxPopulation) {
+                return {
+                  villagers: {
+                    ...state.villagers,
+                    free: state.villagers.free + 1
+                  },
+                  story: {
+                    ...state.story,
+                    seen: {
+                      ...state.story.seen,
+                      hasVillagers: true
+                    }
+                  }
+                };
               }
-            }));
+              return state;
+            });
           }, 1000);
         }, 2000);
       }
@@ -524,5 +533,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
       return state;
     });
+  },
+
+  getMaxPopulation: () => {
+    const state = get();
+    return state.buildings.huts * 2; // Each hut provides +2 max population
   },
 }));

@@ -67,7 +67,9 @@ export default function GameTabs() {
       {/* Population Section */}
       {story.seen?.hasVillagers && (
         <div className="mt-6">
-          <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">Population</h3>
+          <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">
+            Population ({villagers.free + villagers.gatherers + villagers.hunters}/{buildings.huts * 2})
+          </h3>
           <div className="space-y-1 px-3">
             <div className="flex justify-between items-center text-sm">
               <span>Villagers</span>
