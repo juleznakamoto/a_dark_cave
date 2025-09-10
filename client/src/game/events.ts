@@ -58,35 +58,6 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
-  fireNearlySpreads: {
-    id: 'fireNearlySpreads',
-    condition: (state) => state.flags.fireLit && Math.random() < 0.02, // 2% chance per tick
-    triggerType: 'random',
-    message: 'The fire crackles dangerously, sparks flying toward the dry wood pile.',
-    triggered: false,
-    repeatable: true,
-    priority: 2,
-    choices: [
-      {
-        id: 'protectWood',
-        label: 'Protect the Wood',
-        effect: () => ({}),
-        cooldown: 1,
-      },
-      {
-        id: 'letItBurn',
-        label: 'Let Nature Take Its Course',
-        effect: (state) => ({
-          resources: {
-            ...state.resources,
-            wood: Math.max(0, state.resources.wood - Math.floor(Math.random() * 3 + 1)),
-          },
-        }),
-        cooldown: 1,
-      },
-    ],
-  },
-
   mysterousSound: {
     id: 'mysterousSound',
     condition: (state) => state.resources.wood >= 20 && !state.events?.mysterousSound,
