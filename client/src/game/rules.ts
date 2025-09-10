@@ -71,7 +71,5 @@ export const gameTexts = {
   world: {
     initial: 'Beyond the village lies a vast world waiting to be explored...',
   },
-  hints: {
-    enoughWood: 'You have enough wood to craft something useful.',
-  },
+  hints: {},
 };
