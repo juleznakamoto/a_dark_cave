@@ -1,0 +1,68 @@
+I want to replicate the **button cooldown system AND the event functionality** from *A Dark Room*.  
+Please implement this in React + TypeScript with TailwindCSS.
+
+### Requirements
+
+1. **Button Cooldown**
+   - Reusable hook `useCooldown` (as in previous prompt).
+   - Buttons trigger actions (e.g. "Gather Wood"), then go on cooldown with a progress indicator.
+   - Multiple buttons should work independently with different cooldowns.
+
+2. **Event System**
+   - Central event manager in `/src/game/events.ts`.
+   - Events can be triggered by:
+     - **Time** (after X ticks of the game loop).
+     - **Resources** (e.g. when wood > 10).
+     - **Random chance** when performing an action.
+   - Events are objects with:
+     ```ts
+     {
+       id: string;
+       condition: (state: GameState) => boolean;
+       triggerType: "time" | "resource" | "random";
+       message: string;
+       choices?: { label: string; effect: (state: GameState) => void }[];
+       triggered: boolean;
+     }
+     ```
+   - Events should only trigger once unless marked repeatable.
+
+3. **UI Integration**
+   - Add a **log panel** (`/src/components/Log.tsx`) where event messages appear.
+   - If an event has choices, render buttons below the message (these can also use the cooldown system if needed).
+   - Keep the log scrollable, newest messages at the bottom.
+
+4. **Game Loop**
+   - Extend `loop.ts` to:
+     - Check all event conditions every tick.
+     - Trigger events that match conditions.
+     - Update state accordingly.
+
+5. **State Management**
+   - Extend Zustand state with:
+     ```ts
+     {
+       log: string[];
+       events: Record<string, boolean>;
+     }
+     ```
+   - When an event triggers, append message to `log` and mark as triggered.
+
+6. **Styling**
+   - TailwindCSS: log panel has a dark background, monospace font, vertical scroll.
+   - Event choice buttons styled consistently with action buttons.
+
+### Folder Structure
+/src/game/events.ts → Event definitions & logic
+/src/game/loop.ts → Game tick, calls event checks
+/src/components/Log.tsx → Log UI
+/src/components/CooldownButton.tsx
+/src/hooks/useCooldown.ts
+
+markdown
+Code kopieren
+
+Please:
+1. Explain the architecture briefly (how events and cooldowns interact).
+2. Implement `useCooldown`, `CooldownButton`, `events.ts`, and `Log.tsx`.
+3. Show an example event (e.g. "A stranger approaches") that triggers when wood > 10 and offers two choices.
