@@ -240,24 +240,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
 
     const savedState = await loadGame();
+    
+    // Always add initial cave description when loading/starting game
+    const initialLogEntry: LogEntry = {
+      id: 'initial-narrative',
+      message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+      timestamp: Date.now(),
+      type: 'system',
+    };
+
     if (savedState) {
       set({
         ...savedState,
         activeTab: 'cave',
         lastSaved: 'Loaded',
         cooldowns: {},
-        log: get().log,
+        log: [initialLogEntry, ...get().log],
         events: get().events,
       });
     } else {
-      // If no save exists, start a new game with initial narrative
-      const initialLogEntry: LogEntry = {
-        id: 'initial-narrative',
-        message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
-        timestamp: Date.now(),
-        type: 'system',
-      };
-
       set({
         ...defaultGameState,
         activeTab: 'cave',
