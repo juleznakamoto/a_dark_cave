@@ -27,15 +27,21 @@ export default function CavePanel() {
     executeAction('exploreCave');
   };
 
+  const handleCraftAxe = () => {
+    executeAction('craftAxe');
+  };
+
   // Check if actions have been seen (should remain visible)
   const hasSeenBuildTorch = story.seen.actionBuildTorch || flags.fireLit && resources.wood >= 10;
   const hasSeenBuildHut = story.seen.actionBuildHut || flags.villageUnlocked && resources.wood >= 50;
   const hasSeenExploreCave = story.seen.actionExploreCave || resources.torch >= 5;
+  const hasSeenCraftAxe = story.seen.actionCraftAxe || (resources.wood >= 5 && resources.stone >= 10);
 
   // Check if actions can currently be performed
   const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;
   const canBuildHut = flags.villageUnlocked && resources.wood >= 50 && (cooldowns['buildHut'] || 0) === 0;
   const canExploreCave = flags.fireLit && resources.torch >= 5 && (cooldowns['exploreCave'] || 0) === 0;
+  const canCraftAxe = flags.fireLit && resources.wood >= 5 && resources.stone >= 10 && !tools.axe && (cooldowns['craftAxe'] || 0) === 0;
 
   return (
     <div className="space-y-6">
@@ -103,6 +109,20 @@ export default function CavePanel() {
                 size="sm"
               >
                 <span className="relative z-10">Build Hut (50 wood)</span>
+              </CooldownButton>
+            )}
+
+            {/* Craft Axe */}
+            {hasSeenCraftAxe && (
+              <CooldownButton
+                onClick={handleCraftAxe}
+                cooldownMs={(gameActions.craftAxe?.cooldown || 20) * 1000}
+                data-testid="button-craft-axe"
+                disabled={!canCraftAxe}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">Craft Axe (5 wood, 10 stone)</span>
               </CooldownButton>
             )}
           </div>

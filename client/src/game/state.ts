@@ -38,6 +38,7 @@ const defaultGameState: GameState = {
     wood: 0,
     food: 0,
     torch: 0,
+    stone: 0,
   },
   flags: {
     fireLit: false,
@@ -166,6 +167,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
     if (actionId === 'buildHut' && (!state.flags.villageUnlocked || state.resources.wood < 50)) return;
     if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
+    if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
 
     // Mark action as seen
     const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;
@@ -206,8 +208,45 @@ export const useGameStore = create<GameStore>((set, get) => ({
       updates.resources = { ...state.resources, wood: state.resources.wood - 50 };
       updates.buildings = { ...state.buildings, huts: state.buildings.huts + 1 };
     } else if (actionId === 'exploreCave') {
-      updates.resources = { ...state.resources, torch: state.resources.torch - 5 };
+      const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
+      updates.resources = { 
+        ...state.resources, 
+        torch: state.resources.torch - 5,
+        stone: state.resources.stone + stonesFound
+      };
       updates.flags = { ...state.flags, caveExplored: true };
+      updates.story = {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasStone: true
+        }
+      };
+      
+      // Add log entry for stones found
+      const stonesLogEntry: LogEntry = {
+        id: `stones-found-${Date.now()}`,
+        message: `You found ${stonesFound} stone${stonesFound > 1 ? 's' : ''} while exploring the cave.`,
+        timestamp: Date.now(),
+        type: 'system',
+      };
+      updates.log = [...state.log, stonesLogEntry].slice(-50);
+    } else if (actionId === 'craftAxe') {
+      updates.resources = { 
+        ...state.resources, 
+        wood: state.resources.wood - 5,
+        stone: state.resources.stone - 10
+      };
+      updates.tools = { ...state.tools, axe: true };
+      
+      // Add log entry for axe crafted
+      const axeLogEntry: LogEntry = {
+        id: `axe-crafted-${Date.now()}`,
+        message: 'You craft a sturdy axe from wood and stone. This will help you gather resources more efficiently.',
+        timestamp: Date.now(),
+        type: 'system',
+      };
+      updates.log = [...state.log, axeLogEntry].slice(-50);
     }
 
     set((prevState) => ({

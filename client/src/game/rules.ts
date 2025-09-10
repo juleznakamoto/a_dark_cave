@@ -73,6 +73,23 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 15, // 15 second cooldown
   },
+
+  craftAxe: {
+    id: 'craftAxe',
+    label: 'Craft Axe',
+    description: 'Create a sturdy axe from wood and stone to gather resources more efficiently.',
+    requirements: {
+      'flags.fireLit': true,
+      'resources.wood': 5,
+      'resources.stone': 10,
+    },
+    effects: {
+      'resources.wood': -5,
+      'resources.stone': -10,
+      'tools.axe': true,
+    },
+    cooldown: 20, // 20 second cooldown
+  },
 };
 
 export const gameTexts = {

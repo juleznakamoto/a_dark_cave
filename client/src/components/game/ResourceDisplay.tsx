@@ -7,8 +7,9 @@ export default function ResourceDisplay() {
   const hasEverSeenWood = story.seen.hasWood || resources.wood > 0;
   const hasEverSeenFood = story.seen.hasFood || resources.food > 0;
   const hasEverSeenTorch = story.seen.hasTorch || resources.torch > 0;
+  const hasEverSeenStone = story.seen.hasStone || resources.stone > 0;
   
-  const hasAnyResources = hasEverSeenWood || hasEverSeenFood || hasEverSeenTorch;
+  const hasAnyResources = hasEverSeenWood || hasEverSeenFood || hasEverSeenTorch || hasEverSeenStone;
 
   if (!hasAnyResources) {
     return null;
@@ -41,6 +42,14 @@ export default function ResourceDisplay() {
             <span>Torch</span>
             <span className="font-mono" data-testid="resource-torch">
               {resources.torch}
+            </span>
+          </div>
+        )}
+        {hasEverSeenStone && (
+          <div className="flex justify-between">
+            <span>Stone</span>
+            <span className="font-mono" data-testid="resource-stone">
+              {resources.stone}
             </span>
           </div>
         )}
