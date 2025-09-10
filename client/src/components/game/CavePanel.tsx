@@ -10,10 +10,6 @@ export default function CavePanel() {
     flags,
     tools,
     buildings,
-    lightFire,
-    gatherWood,
-    updateResource,
-    setFlag,
     cooldowns,
     story,
     executeAction

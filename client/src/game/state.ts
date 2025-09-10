@@ -7,6 +7,7 @@ interface GameStore extends GameState {
   // Actions
   lightFire: () => void;
   gatherWood: () => void;
+  executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   updateResource: (resource: keyof GameState['resources'], amount: number) => void;
   setFlag: (flag: keyof GameState['flags'], value: boolean) => void;
