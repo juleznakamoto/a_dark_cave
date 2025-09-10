@@ -75,6 +75,20 @@ export default function CavePanel() {
               <span className="relative z-10">Gather Wood</span>
             </CooldownButton>
           )}
+
+          {/* Explore Cave */}
+          {hasSeenExploreCave && (
+            <CooldownButton
+              onClick={handleExploreCave}
+              cooldownMs={(gameActions.exploreCave?.cooldown || 15) * 1000}
+              data-testid="button-explore-cave"
+              disabled={!canExploreCave}
+              className="relative overflow-hidden"
+              size="sm"
+            >
+              <span className="relative z-10">Explore Cave (5 torches)</span>
+            </CooldownButton>
+          )}
         </div>
       </div>
 
@@ -125,27 +139,6 @@ export default function CavePanel() {
                 <span className="relative z-10">Craft Axe (5 wood, 10 stone)</span>
               </CooldownButton>
             )}
-          </div>
-        </div>
-      )}
-
-      {/* Explore Panel */}
-      {hasSeenExploreCave && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Explore</h2>
-
-          <div className="flex flex-wrap gap-2">
-            {/* Explore Cave */}
-            <CooldownButton
-              onClick={handleExploreCave}
-              cooldownMs={(gameActions.exploreCave?.cooldown || 15) * 1000}
-              data-testid="button-explore-cave"
-              disabled={!canExploreCave}
-              className="relative overflow-hidden"
-              size="sm"
-            >
-              <span className="relative z-10">Explore Cave (5 torches)</span>
-            </CooldownButton>
           </div>
         </div>
       )}
