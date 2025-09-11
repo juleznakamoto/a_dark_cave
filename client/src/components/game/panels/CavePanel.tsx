@@ -96,7 +96,7 @@ export default function CavePanel() {
                 size="sm"
                 disabled={!canCraftAxe}
               >
-                Stone Axe{getCostText('craftAxe')}
+                Axe{getCostText('craftAxe')}
               </CooldownButton>
             )}
 
@@ -108,7 +108,7 @@ export default function CavePanel() {
                 size="sm"
                 disabled={!canCraftPickaxe}
               >
-                Stone Pickaxe{getCostText('craftPickaxe')}
+                Pickaxe{getCostText('craftPickaxe')}
               </CooldownButton>
             )}
           </div>
