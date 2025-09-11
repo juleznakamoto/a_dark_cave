@@ -319,7 +319,7 @@ export const gameActions: Record<string, Action> = {
     label: "Pickaxe",
     show_when: {
       "buildings.workshops": 1,
-      "tools.pickaxe": !true,
+      "tools.pickaxe": false,
     },
     cost: {
       "resources.wood": 10,
