@@ -13,7 +13,6 @@ import {
 
 interface GameStore extends GameState {
   // Actions
-  lightFire: () => void;
   gatherWood: () => void;
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
@@ -114,28 +113,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   current_population: 0,
   total_population: 0,
 
-  lightFire: () => {
-    const state = get();
-    if ((state.cooldowns['lightFire'] || 0) > 0 && !state.devMode) return;
-    if (state.flags.fireLit) return; // Don't light fire if already lit
-
-    const cooldown = gameActions.lightFire.cooldown;
-
-    // Add fire lit message to log
-    const fireLogEntry: LogEntry = {
-      id: `fire-lit-${Date.now()}`,
-      message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
-      timestamp: Date.now(),
-      type: 'system',
-    };
-
-    set((state) => ({
-      flags: { ...state.flags, fireLit: true },
-      story: { ...state.story, seen: { ...state.story.seen, fireLit: true } },
-      cooldowns: { ...state.cooldowns, lightFire: state.devMode ? 0 : cooldown },
-      log: [...state.log, fireLogEntry].slice(-8)
-    }));
-  },
+  
 
   gatherWood: () => {
     const state = get();
