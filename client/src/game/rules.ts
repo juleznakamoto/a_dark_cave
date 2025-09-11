@@ -91,7 +91,7 @@ export const gameActions: Record<string, Action> = {
       "flags.fireLit": true,
       "story.seen.fireLit": true,
     },
-    cooldown: 1, // 1 second cooldown
+    cooldown: 1,
   },
 
   gatherWood: {
@@ -104,7 +104,7 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.wood": "+1-3", // Random amount
     },
-    cooldown: 1, // 5 second cooldown
+    cooldown: 3,
   },
 
   buildTorch: {
@@ -121,7 +121,7 @@ export const gameActions: Record<string, Action> = {
       "resources.torch": "+1",
     },
     unlocks: ["exploreDeeper"],
-    cooldown: 10, // 10 second cooldown
+    cooldown: 5,
   },
 
   buildHut: {
@@ -164,7 +164,7 @@ export const gameActions: Record<string, Action> = {
         "buildings.huts": 1,
       },
     },
-    cooldown: 10, // 10 second cooldown
+    cooldown: 10,
   },
 
   buildLodge: {
@@ -187,7 +187,7 @@ export const gameActions: Record<string, Action> = {
         "buildings.lodges": 1,
       },
     },
-    cooldown: 15, // 15 second cooldown
+    cooldown: 15,
   },
 
   buildWorkshop: {
@@ -212,7 +212,7 @@ export const gameActions: Record<string, Action> = {
         "buildings.workshops": 1,
       },
     },
-    cooldown: 20, // 20 second cooldown
+    cooldown: 20,
   },
 
   exploreCave: {
@@ -228,7 +228,7 @@ export const gameActions: Record<string, Action> = {
       "resources.torch": -5,
       "flags.caveExplored": true,
     },
-    cooldown: 15, // 15 second cooldown
+    cooldown: 10,
   },
 
   craftAxe: {
@@ -247,7 +247,7 @@ export const gameActions: Record<string, Action> = {
       "resources.stone": -10,
       "tools.axe": true,
     },
-    cooldown: 1, // 1 second cooldown
+    cooldown: 15,
   },
 };
 

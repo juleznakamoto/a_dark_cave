@@ -34,7 +34,7 @@ export default function VillagePanel() {
           {shouldShowAction('buildHut', state) && (
             <CooldownButton
               onClick={handleBuildHut}
-              cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
+              cooldownMs={gameActions.buildHut.cooldown * 1000}
               data-testid="button-build-wooden-hut"
               disabled={!canBuildHut}
               className="relative overflow-hidden"
@@ -49,7 +49,7 @@ export default function VillagePanel() {
           {shouldShowAction('buildLodge', state) && (
             <CooldownButton
               onClick={handleBuildLodge}
-              cooldownMs={(gameActions.buildLodge?.cooldown || 15) * 1000}
+              cooldownMs={gameActions.buildLodge.cooldown * 1000}
               data-testid="button-build-lodge"
               disabled={!canBuildLodge}
               className="relative overflow-hidden"
@@ -64,7 +64,7 @@ export default function VillagePanel() {
           {shouldShowAction('buildWorkshop', state) && (
             <CooldownButton
               onClick={handleBuildWorkshop}
-              cooldownMs={(gameActions.buildWorkshop?.cooldown || 20) * 1000}
+              cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
               data-testid="button-build-workshop"
               disabled={!canBuildWorkshop}
               className="relative overflow-hidden"

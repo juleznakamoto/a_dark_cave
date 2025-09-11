@@ -27,7 +27,7 @@ export default function CavePanel() {
           {!flags.fireLit && (
             <CooldownButton
               onClick={() => executeAction('lightFire')}
-              cooldownMs={(gameActions.lightFire?.cooldown || 1) * 1000}
+              cooldownMs={gameActions.lightFire.cooldown * 1000}
               data-testid="button-light-fire"
               size="sm"
             >
@@ -38,7 +38,7 @@ export default function CavePanel() {
           {showGatherWood && (
             <CooldownButton
               onClick={() => executeAction('gatherWood')}
-              cooldownMs={(gameActions.gatherWood?.cooldown || 3) * 1000}
+              cooldownMs={gameActions.gatherWood.cooldown * 1000}
               data-testid="button-gather-wood"
               size="sm"
             >
@@ -49,12 +49,12 @@ export default function CavePanel() {
           {showExploreCave && (
             <CooldownButton
               onClick={() => executeAction('exploreCave')}
-              cooldownMs={(gameActions.exploreCave?.cooldown || 10) * 1000}
+              cooldownMs={gameActions.exploreCave.cooldown * 1000}
               data-testid="button-explore-cave"
               size="sm"
               disabled={!canExploreCave}
             >
-              Explore Cave (5 torch)
+              Explore Cave{getCostText('exploreCave')}
             </CooldownButton>
           )}
         </div>
@@ -68,24 +68,24 @@ export default function CavePanel() {
             {showBuildTorch && (
               <CooldownButton
                 onClick={() => executeAction('buildTorch')}
-                cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
+                cooldownMs={gameActions.buildTorch.cooldown * 1000}
                 data-testid="button-build-torch"
                 size="sm"
                 disabled={!canBuildTorch}
               >
-                Torch (10 wood)
+                Torch{getCostText('buildTorch')}
               </CooldownButton>
             )}
 
             {showCraftAxe && (
               <CooldownButton
                 onClick={() => executeAction('craftAxe')}
-                cooldownMs={(gameActions.craftAxe?.cooldown || 15) * 1000}
+                cooldownMs={gameActions.craftAxe.cooldown * 1000}
                 data-testid="button-craft-axe"
                 size="sm"
                 disabled={!canCraftAxe}
               >
-                Axe (5 wood, 10 stone)
+                Axe{getCostText('craftAxe')}
               </CooldownButton>
             )}
           </div>

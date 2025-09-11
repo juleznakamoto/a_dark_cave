@@ -109,7 +109,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if ((state.cooldowns['lightFire'] || 0) > 0 && !state.devMode) return;
     if (state.flags.fireLit) return; // Don't light fire if already lit
 
-    const cooldown = gameActions.lightFire?.cooldown || 1;
+    const cooldown = gameActions.lightFire.cooldown;
 
     // Add fire lit message to log
     const fireLogEntry: LogEntry = {
@@ -134,7 +134,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
     const axeBonus = state.tools.axe ? 1 : 0; // +1 wood if axe is owned
     const amount = baseAmount + axeBonus;
-    const cooldown = gameActions.gatherWood?.cooldown || 3;
+    const cooldown = gameActions.gatherWood.cooldown;
     set((state) => ({
       resources: { ...state.resources, wood: state.resources.wood + amount },
       story: { ...state.story, seen: { ...state.story.seen, hasWood: true } },
@@ -192,7 +192,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply action effects and mark as seen
     const updates: any = {
-      cooldowns: { ...state.cooldowns, [actionId]: state.devMode ? 0 : (action.cooldown || 1) },
+      cooldowns: { ...state.cooldowns, [actionId]: state.devMode ? 0 : action.cooldown },
       story: {
         ...state.story,
         seen: {
