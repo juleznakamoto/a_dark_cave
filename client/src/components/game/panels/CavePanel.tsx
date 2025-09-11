@@ -3,7 +3,7 @@ import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
-  const { flags, executeAction, cooldowns } = useGameStore();
+  const { flags, executeAction } = useGameStore();
   const state = useGameStore.getState();
 
   // Use data-driven visibility checks
