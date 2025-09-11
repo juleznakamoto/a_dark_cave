@@ -6,14 +6,10 @@ import CooldownButton from '@/components/CooldownButton';
 export default function CavePanel() {
   const { resources, tools, flags, executeAction, cooldowns, story } = useGameStore();
 
-  // Show gather wood button only after fire is lit
   const showGatherWood = flags.fireLit;
-  // Show build torch when player has enough wood (10+)
-  const showBuildTorch = flags.fireLit && resources.wood >= 10 && !flags.torchBuilt;
-  // Show explore cave when player has 5+ torches
-  const showExploreCave = flags.fireLit && resources.torch >= 5 && !flags.caveExplored;
-  // Show craft axe when player has explored cave and has resources
-  const showCraftAxe = flags.caveExplored && resources.wood >= 5 && resources.stone >= 10 && !tools.axe;
+  const showBuildTorch = flags.fireLit && resources.wood >= 5;
+  const showExploreCave = flags.fireLit && resources.torch >= 1;
+  const showCraftAxe = flags.caveExplored && !tools.axe;
 
   return (
     <div className="space-y-6">
