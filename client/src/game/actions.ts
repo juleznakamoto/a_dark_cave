@@ -55,8 +55,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
 }
 
 function handleLightFire(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('lightFire', state);
-  Object.assign(result.stateUpdates, effectUpdates);
+  result.stateUpdates.flags = { ...state.flags, fireLit: true };
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      fireLit: true
+    }
+  };
   
   result.logEntries!.push({
     id: `fire-lit-${Date.now()}`,
