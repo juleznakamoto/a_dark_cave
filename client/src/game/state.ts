@@ -289,13 +289,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         updates.story.seen.rumbleSound = true;
       }
     } else if (actionId === 'buildHut') {
-      const requirements = buildingRequirements.hut[state.buildings.huts + 1];
+      const level = state.buildings.huts + 1;
+      const actionEffects = gameActions.buildHut.effects[level];
       const newResources = { ...state.resources };
 
-      // Deduct all resource costs dynamically
-      for (const [resource, amount] of Object.entries(requirements)) {
-        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
-          newResources[resource as keyof typeof newResources] -= amount;
+      // Apply effects from the action definition
+      for (const [path, effect] of Object.entries(actionEffects)) {
+        if (path.startsWith('resources.')) {
+          const resource = path.split('.')[1] as keyof typeof newResources;
+          newResources[resource] += effect;
         }
       }
 
@@ -352,13 +354,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }, 2000);
       }
     } else if (actionId === 'buildLodge') {
-      const requirements = buildingRequirements.lodge[state.buildings.lodges + 1];
+      const level = state.buildings.lodges + 1;
+      const actionEffects = gameActions.buildLodge.effects[level];
       const newResources = { ...state.resources };
 
-      // Deduct all resource costs dynamically
-      for (const [resource, amount] of Object.entries(requirements)) {
-        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
-          newResources[resource as keyof typeof newResources] -= amount;
+      // Apply effects from the action definition
+      for (const [path, effect] of Object.entries(actionEffects)) {
+        if (path.startsWith('resources.')) {
+          const resource = path.split('.')[1] as keyof typeof newResources;
+          newResources[resource] += effect;
         }
       }
 
@@ -375,27 +379,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
       };
     } else if (actionId === 'buildWorkshop') {
-      console.log('=== Building Workshop ===');
-      console.log('Current state:', {
-        buildings: state.buildings,
-        resources: state.resources,
-        workshopsCount: state.buildings.workshops
-      });
-      
-      const requirements = buildingRequirements.workshop[state.buildings.workshops + 1];
-      console.log('Requirements found:', requirements);
-      
+      const level = state.buildings.workshops + 1;
+      const actionEffects = gameActions.buildWorkshop.effects[level];
       const newResources = { ...state.resources };
 
-      // Deduct all resource costs dynamically
-      for (const [resource, amount] of Object.entries(requirements)) {
-        if (resource !== 'requiredBuildings' && newResources.hasOwnProperty(resource)) {
-          console.log(`Deducting ${amount} ${resource} (had ${newResources[resource as keyof typeof newResources]})`);
-          newResources[resource as keyof typeof newResources] -= amount;
+      // Apply effects from the action definition
+      for (const [path, effect] of Object.entries(actionEffects)) {
+        if (path.startsWith('resources.')) {
+          const resource = path.split('.')[1] as keyof typeof newResources;
+          newResources[resource] += effect;
         }
       }
-
-      console.log('New resources after deduction:', newResources);
 
       updates.resources = newResources;
       updates.buildings = {
@@ -409,9 +403,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           actionBuildWorkshop: true
         }
       };
-      
-      console.log('Updates to apply:', updates);
-      console.log('=== Workshop Building Complete ===');
     }
      else if (actionId === 'exploreCave') {
       const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones

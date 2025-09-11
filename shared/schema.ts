@@ -56,9 +56,18 @@ export type GameState = z.infer<typeof gameStateSchema>;
 export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
-  show_when: z.record(z.string(), z.any()).optional(),
-  cost: z.record(z.string(), z.any()).optional(),
-  effects: z.record(z.string(), z.any()),
+  show_when: z.union([
+    z.record(z.string(), z.any()),
+    z.record(z.number(), z.record(z.string(), z.any()))
+  ]).optional(),
+  cost: z.union([
+    z.record(z.string(), z.any()),
+    z.record(z.number(), z.record(z.string(), z.any()))
+  ]).optional(),
+  effects: z.union([
+    z.record(z.string(), z.any()),
+    z.record(z.number(), z.record(z.string(), z.any()))
+  ]),
   unlocks: z.array(z.string()).optional(),
   cooldown: z.number().optional(),
 });
