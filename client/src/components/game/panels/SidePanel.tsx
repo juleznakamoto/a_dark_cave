@@ -2,126 +2,78 @@ import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, story, current_population, total_population } = useGameStore();
+  const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
 
-  // Resources section
-  const resourceItems = [
-    {
-      id: 'wood',
-      label: 'Wood',
-      value: resources.wood ?? 0,
-      testId: 'resource-wood',
-      visible: story.seen.hasWood || resources.wood > 0
-    },
-    {
-      id: 'meat',
-      label: 'Meat',
-      value: resources.meat ?? 0,
-      testId: 'resource-meat',
-      visible: story.seen.hasMeat || resources.meat > 0
-    },
-    {
-      id: 'torch',
-      label: 'Torch',
-      value: resources.torch ?? 0,
-      testId: 'resource-torch',
-      visible: story.seen.hasTorch || resources.torch > 0
-    },
-    {
-      id: 'stone',
-      label: 'Stone',
-      value: resources.stone ?? 0,
-      testId: 'resource-stone',
-      visible: story.seen.hasStone || resources.stone > 0
-    }
-  ];
+  // Dynamically generate resource items from state
+  const resourceItems = Object.entries(resources)
+    .map(([key, value]) => ({
+      id: key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value: value ?? 0,
+      testId: `resource-${key}`,
+      visible: (value ?? 0) > 0
+    }))
+    .filter(item => item.visible);
 
-  // Tools section
-  const toolItems = [
-    {
-      id: 'axe',
-      label: 'Axe',
+  // Dynamically generate tool items from state
+  const toolItems = Object.entries(tools)
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
       value: 1,
-      testId: 'tool-axe',
-      visible: story.seen.hasAxe || tools.axe
-    },
-    {
-      id: 'spear',
-      label: 'Spear',
-      value: 1,
-      testId: 'tool-spear',
-      visible: story.seen.hasSpear || tools.spear
-    }
-  ];
+      testId: `tool-${key}`,
+      visible: true
+    }));
 
-  // Buildings section
-  const buildingItems = [
-    {
-      id: 'huts',
-      label: 'Huts',
-      value: buildings.huts ?? 0,
-      testId: 'building-huts',
-      visible: story.seen.actionBuildHut === true
-    },
-    {
-      id: 'lodges',
-      label: 'Lodges', 
-      value: buildings.lodges ?? 0,
-      testId: 'building-lodges',
-      visible: story.seen.actionBuildLodge === true
-    },
-    {
-      id: 'workshops',
-      label: 'Workshops',
-      value: buildings.workshops ?? 0,
-      testId: 'building-workshops',
-      visible: story.seen.actionBuildWorkshop === true
-    }
-  ];
+  // Dynamically generate building items from state
+  const buildingItems = Object.entries(buildings)
+    .map(([key, value]) => ({
+      id: key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value: value ?? 0,
+      testId: `building-${key}`,
+      visible: (value ?? 0) > 0
+    }))
+    .filter(item => item.visible);
 
-  // Population section
-  const populationItems = [
-    {
-      id: 'free',
-      label: 'Free',
-      value: villagers.free ?? 0,
-      testId: 'population-free',
-      visible: story.seen?.hasVillagers === true
-    },
-    {
-      id: 'gatherers',
-      label: `Gatherers`,
-      value: villagers.gatherers ?? 0,
-      testId: 'population-gatherers',
-      visible: story.seen?.hasGatherers === true
-    },
-    {
-      id: 'hunters',
-      label: `Hunters`,
-      value: villagers.hunters ?? 0,
-      testId: 'population-hunters',
-      visible: story.seen?.hasHunters === true
-    }
-  ];
+  // Dynamically generate villager items from state
+  const populationItems = Object.entries(villagers)
+    .map(([key, value]) => ({
+      id: key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value: value ?? 0,
+      testId: `population-${key}`,
+      visible: current_population > 0
+    }))
+    .filter(item => item.visible);
 
   return (
     <div>
-      <SidePanelSection 
-        title="Resources" 
-        items={resourceItems}
-      />
-      <SidePanelSection 
-        title="Tools" 
-        items={toolItems}
-      />
-      <SidePanelSection 
-        title="Buildings" 
-        items={buildingItems}
-      />
-      <SidePanelSection 
-        title={`Population ${current_population}/${total_population}`} 
-        items={populationItems.filter(item => item.id !== 'total')} 
-      />
+      {resourceItems.length > 0 && (
+        <SidePanelSection 
+          title="Resources" 
+          items={resourceItems}
+        />
+      )}
+      {toolItems.length > 0 && (
+        <SidePanelSection 
+          title="Tools" 
+          items={toolItems}
+        />
+      )}
+      {buildingItems.length > 0 && (
+        <SidePanelSection 
+          title="Buildings" 
+          items={buildingItems}
+        />
+      )}
+      {populationItems.length > 0 && (
+        <SidePanelSection 
+          title={`Population ${current_population}/${total_population}`} 
+          items={populationItems}
+        />
+      )}
     </div>
   );
 }
