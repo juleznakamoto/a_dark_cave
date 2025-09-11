@@ -350,22 +350,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     }
      else if (actionId === 'exploreCave') {
-      const stonesFound = Math.floor(Math.random() * 4) + 1; // 1-4 stones
-      updates.resources = {
-        ...state.resources,
-        torch: state.resources.torch - 5,
-        stone: state.resources.stone + stonesFound
-      };
-      updates.flags = { ...state.flags, caveExplored: true };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          hasStone: true
-        }
-      };
-
-
+      const effectUpdates = applyActionEffects(actionId, state);
+      Object.assign(updates, effectUpdates);
     } else if (actionId === 'craftAxe') {
       const effectUpdates = applyActionEffects(actionId, state);
       Object.assign(updates, effectUpdates);

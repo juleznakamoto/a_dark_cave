@@ -73,7 +73,7 @@ export const applyActionEffects = (actionId: string, state: GameState): Partial<
                        pathParts[i] === 'flags' ? { ...state.flags } :
                        pathParts[i] === 'tools' ? { ...state.tools } :
                        pathParts[i] === 'buildings' ? { ...state.buildings } :
-                       pathParts[i] === 'story' ? { ...state.story } :
+                       pathParts[i] === 'story' ? { ...state.story, seen: { ...state.story.seen } } :
                        {};
       }
       current = current[part];
@@ -175,7 +175,9 @@ export const gameActions: Record<string, Action> = {
     },
     effects: {
       "resources.wood": -10,
-      "resources.torch": "+1",
+      "resources.torch": 1,
+      "flags.torchBuilt": true,
+      "story.seen.actionBuildTorch": true,
     },
     unlocks: ["exploreDeeper"],
     cooldown: 5,
@@ -283,7 +285,9 @@ export const gameActions: Record<string, Action> = {
     },
     effects: {
       "resources.torch": -5,
+      "resources.stone": "random(1,4)",
       "flags.caveExplored": true,
+      "story.seen.hasStone": true,
     },
     cooldown: 10,
   },
