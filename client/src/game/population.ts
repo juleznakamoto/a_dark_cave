@@ -57,3 +57,21 @@ export const getPopulationProductionText = (jobId: string): string => {
     .map(prod => `${prod.amount} ${prod.resource}`)
     .join(', ') + ' per 30s';
 };
+import { GameState } from '@shared/schema';
+
+export function getPopulationProductionText(state: GameState): string {
+  const { villagers } = state;
+  const productions: string[] = [];
+
+  if (villagers.gatherers > 0) {
+    const woodRate = villagers.gatherers * 1; // 1 wood per gatherer per tick
+    productions.push(`+${woodRate} wood/s`);
+  }
+
+  if (villagers.hunters > 0) {
+    const meatRate = villagers.hunters * 0.5; // 0.5 meat per hunter per tick
+    productions.push(`+${meatRate} meat/s`);
+  }
+
+  return productions.length > 0 ? productions.join(', ') : '';
+}

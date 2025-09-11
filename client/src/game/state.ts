@@ -1,7 +1,15 @@
 import { create } from 'zustand';
 import { GameState } from '@shared/schema';
-import { gameActions, shouldShowAction, canExecuteAction, applyActionEffects } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
 import { LogEntry, EventManager } from '@/game/events';
+import { executeGameAction } from '@/game/actions';
+import { 
+  updateResource, 
+  updateFlag, 
+  updatePopulationCounts, 
+  assignVillagerToJob, 
+  unassignVillagerFromJob 
+} from '@/game/stateHelpers';
 
 interface GameStore extends GameState {
   // Actions
@@ -139,31 +147,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updateResource: (resource: keyof GameState['resources'], amount: number) => {
-    set((state) => {
-      const newAmount = Math.max(0, state.resources[resource] + amount);
-      const updates: any = {
-        resources: { ...state.resources, [resource]: newAmount }
-      };
-
-      // Track when resources are first seen
-      if (newAmount > 0 && !state.story.seen[`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]) {
-        updates.story = {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            [`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]: true
-          }
-        };
-      }
-
-      return updates;
-    });
+    set((state) => updateResource(state, resource, amount));
   },
 
   setFlag: (flag: keyof GameState['flags'], value: boolean) => {
-    set((state) => ({
-      flags: { ...state.flags, [flag]: value }
-    }));
+    set((state) => updateFlag(state, flag, value));
   },
 
   initialize: (newState: GameState) => {
@@ -175,202 +163,64 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const action = gameActions[actionId];
 
     if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
-
-    // Check requirements before executing using the centralized logic
     if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
-    // Mark action as seen
-    const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;
-
-    // Apply action effects and mark as seen
-    const updates: any = {
-      cooldowns: { ...state.cooldowns, [actionId]: state.devMode ? 0 : action.cooldown },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          [seenKey]: true
-        }
-      }
-    };
-
-    // Apply specific action effects
-    if (actionId === 'lightFire') {
-      updates.flags = { ...state.flags, fireLit: true };
-      updates.story.seen.fireLit = true;
-
-      // Add fire lit message to log
-      const fireLogEntry: LogEntry = {
-        id: `fire-lit-${Date.now()}`,
-        message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
-        timestamp: Date.now(),
-        type: 'system',
-      };
-      updates.log = [...state.log, fireLogEntry].slice(-8);
-    } else if (actionId === 'gatherWood') {
-      const effectUpdates = applyActionEffects(actionId, state);
-      Object.assign(updates, effectUpdates);
-    } else if (actionId === 'buildTorch') {
-      updates.resources = { ...state.resources, wood: state.resources.wood - 10, torch: state.resources.torch + 1 };
-      updates.flags = { ...state.flags, torchBuilt: true };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          actionBuildTorch: true
-        }
-      };
-
-      // Add rumbling sound after first torch (only if not seen before)
-      if (!state.story.seen.rumbleSound) {
-        const rumbleLogEntry: LogEntry = {
-          id: `rumble-sound-${Date.now()}`,
-          message: 'A low, rumbling sound echoes from deeper in the cave.',
-          timestamp: Date.now(),
-          type: 'system',
-        };
-
-        updates.log = [...state.log, rumbleLogEntry].slice(-8);
-        updates.story.seen.rumbleSound = true;
-      }
-    } else if (actionId === 'buildHut') {
-      const level = state.buildings.huts + 1;
-      const actionEffects = gameActions.buildHut.effects[level];
-      const newResources = { ...state.resources };
-
-      // Apply effects from the action definition
-      for (const [path, effect] of Object.entries(actionEffects)) {
-        if (path.startsWith('resources.')) {
-          const resource = path.split('.')[1] as keyof typeof newResources;
-          newResources[resource] += effect;
-        }
-      }
-
-      updates.resources = newResources;
-      updates.buildings = {
-        ...state.buildings,
-        huts: state.buildings.huts + 1
-      };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          actionBuildHut: true
-        }
-      };
-
-      // After building the first hut, trigger stranger event
-      if (state.buildings.huts === 0) {
-        setTimeout(() => {
-          const strangerLogEntry: LogEntry = {
-            id: `stranger-approaches-${Date.now()}`,
-            message: 'A stranger approaches through the woods.',
-            timestamp: Date.now(),
-            type: 'system',
-          };
-
-          get().addLogEntry(strangerLogEntry);
-          setTimeout(() => {
-            set((state) => {
-              const currentPopulation = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
-              const maxPopulation = state.buildings.huts * 2;
-
-              if (currentPopulation < maxPopulation) {
-                const newState = {
-                  villagers: {
-                    ...state.villagers,
-                    free: state.villagers.free + 1
-                  },
-                  story: {
-                    ...state.story,
-                    seen: {
-                      ...state.story.seen,
-                      hasVillagers: true
-                    }
-                  }
-                };
-                // Update population after changing villagers
-                setTimeout(() => get().updatePopulation(), 0);
-                return newState;
-              }
-              return state;
-            });
-          }, 1000);
-        }, 2000);
-      }
-    } else if (actionId === 'buildLodge') {
-      const level = state.buildings.lodges + 1;
-      const actionEffects = gameActions.buildLodge.effects[level];
-      const newResources = { ...state.resources };
-
-      // Apply effects from the action definition
-      for (const [path, effect] of Object.entries(actionEffects)) {
-        if (path.startsWith('resources.')) {
-          const resource = path.split('.')[1] as keyof typeof newResources;
-          newResources[resource] += effect;
-        }
-      }
-
-      updates.resources = newResources;
-      updates.buildings = {
-        ...state.buildings,
-        lodges: state.buildings.lodges + 1
-      };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          actionBuildLodge: true
-        }
-      };
-    } else if (actionId === 'buildWorkshop') {
-      const level = state.buildings.workshops + 1;
-      const actionEffects = gameActions.buildWorkshop.effects[level];
-      const newResources = { ...state.resources };
-
-      // Apply effects from the action definition
-      for (const [path, effect] of Object.entries(actionEffects)) {
-        if (path.startsWith('resources.')) {
-          const resource = path.split('.')[1] as keyof typeof newResources;
-          newResources[resource] += effect;
-        }
-      }
-
-      updates.resources = newResources;
-      updates.buildings = {
-        ...state.buildings,
-        workshops: state.buildings.workshops + 1
-      };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          actionBuildWorkshop: true
-        }
-      };
-    }
-     else if (actionId === 'exploreCave') {
-      const effectUpdates = applyActionEffects(actionId, state);
-      Object.assign(updates, effectUpdates);
-    } else if (actionId === 'craftAxe') {
-      const effectUpdates = applyActionEffects(actionId, state);
-      Object.assign(updates, effectUpdates);
-
-      // Add log entry for village unlocked
-      const villageLogEntry: LogEntry = {
-        id: `village-unlocked-${Date.now()}`,
-        message: 'Outside the cave, a small clearing opens up. This could be the foundation of something greater.',
-        timestamp: Date.now(),
-        type: 'system',
-      };
-
-      updates.log = [...state.log, villageLogEntry].slice(-8);
+    const result = executeGameAction(actionId, state);
+    
+    // Apply cooldown override for dev mode
+    if (state.devMode) {
+      result.stateUpdates.cooldowns = { ...result.stateUpdates.cooldowns, [actionId]: 0 };
     }
 
+    // Apply state updates
     set((prevState) => ({
       ...prevState,
-      ...updates
+      ...result.stateUpdates,
+      log: result.logEntries ? [...prevState.log, ...result.logEntries].slice(-8) : prevState.log
     }));
+
+    // Handle delayed effects (like stranger event for first hut)
+    if (result.delayedEffects) {
+      result.delayedEffects.forEach(effect => {
+        if (actionId === 'buildHut' && state.buildings.huts === 0) {
+          setTimeout(() => {
+            const strangerLogEntry: LogEntry = {
+              id: `stranger-approaches-${Date.now()}`,
+              message: 'A stranger approaches through the woods.',
+              timestamp: Date.now(),
+              type: 'system',
+            };
+
+            get().addLogEntry(strangerLogEntry);
+            setTimeout(() => {
+              set((state) => {
+                const currentPopulation = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
+                const maxPopulation = state.buildings.huts * 2;
+
+                if (currentPopulation < maxPopulation) {
+                  const newState = {
+                    villagers: {
+                      ...state.villagers,
+                      free: state.villagers.free + 1
+                    },
+                    story: {
+                      ...state.story,
+                      seen: {
+                        ...state.story.seen,
+                        hasVillagers: true
+                      }
+                    }
+                  };
+                  setTimeout(() => get().updatePopulation(), 0);
+                  return newState;
+                }
+                return state;
+              });
+            }, 1000);
+          }, 2000);
+        }
+      });
+    }
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -507,57 +357,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   assignVillager: (job: 'gatherers' | 'hunters') => {
     set((state) => {
-      if (state.villagers.free > 0) {
-        const updates: any = {
-          villagers: {
-            ...state.villagers,
-            free: state.villagers.free - 1,
-            [job]: state.villagers[job] + 1
-          }
-        };
-
-        // Track when population types are first assigned
-        if (job === 'hunters' && state.villagers.hunters === 0) {
-          updates.story = {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              hasHunters: true
-            }
-          };
-        } else if (job === 'gatherers' && state.villagers.gatherers === 0) {
-          updates.story = {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              hasGatherers: true
-            }
-          };
-        }
-
-        // Update population after changing villagers
+      const updates = assignVillagerToJob(state, job);
+      if (Object.keys(updates).length > 0) {
         setTimeout(() => get().updatePopulation(), 0);
-        return updates;
       }
-      return state;
+      return updates;
     });
   },
 
   unassignVillager: (job: 'gatherers' | 'hunters') => {
     set((state) => {
-      if (state.villagers[job] > 0) {
-        const newState = {
-          villagers: {
-            ...state.villagers,
-            free: state.villagers.free + 1,
-            [job]: state.villagers[job] - 1
-          }
-        };
-        // Update population after changing villagers
+      const updates = unassignVillagerFromJob(state, job);
+      if (Object.keys(updates).length > 0) {
         setTimeout(() => get().updatePopulation(), 0);
-        return newState;
       }
-      return state;
+      return updates;
     });
   },
 
@@ -567,14 +381,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updatePopulation: () => {
-    set((state) => {
-      const current = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
-      const total = state.buildings.huts * 2;
-      return {
-        ...state,
-        current_population: current,
-        total_population: total
-      };
-    });
+    set((state) => ({ ...state, ...updatePopulationCounts(state) }));
   },
 }));
