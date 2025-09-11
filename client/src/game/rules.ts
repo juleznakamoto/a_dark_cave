@@ -143,7 +143,7 @@ export const gameTexts = {
   cave: {
     initial:
       "A dark cave. The air is cold and stale. You can barely make out the shapes around you. A low, rumbling sound echoes from deeper in the cave.",
-    afterFire:
+    fireLit:
       "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
   },
   village: {
