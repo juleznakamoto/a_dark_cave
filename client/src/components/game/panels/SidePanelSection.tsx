@@ -1,6 +1,3 @@
-
-import { ReactNode } from 'react';
-
 interface SidePanelItem {
   id: string;
   label: string;
