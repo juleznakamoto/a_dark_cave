@@ -1,6 +1,6 @@
-import { useGameStore } from './state';
-import { saveGame } from './save';
-import { GameState } from '@shared/schema';
+import { useGameStore } from "./state";
+import { saveGame } from "./save";
+import { GameState } from "@shared/schema";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -74,19 +74,15 @@ function processTick() {
 
   // Check and trigger events
   state.checkEvents();
-
-  // Fire consumption is now handled in handleFireConsumption() every 30 seconds
-
-  // Check for unlocks
-  checkUnlocks(state);
-}
-
-function checkUnlocks(state: GameState) {
-  // Village is now unlocked when axe is crafted
 }
 
 function handleFireConsumption() {
-  // Fire consumption disabled - fire stays lit indefinitely
+  const state = useGameStore.getState();
+
+  if (state.flags.fireLit && state.resources.wood > 0) {
+    // Fire consumes 1 wood every 30 seconds
+    state.updateResource("wood", -1);
+  }
 }
 
 function handleGathererProduction() {
@@ -95,7 +91,9 @@ function handleGathererProduction() {
 
   if (gatherers > 0) {
     const woodProduced = gatherers * 10; // Each gatherer produces 10 wood
-    state.updateResource('wood', woodProduced);
+    state.updateResource("wood", woodProduced);
+    const stoneProduced = gatherers * 2; // Each gatherer produces 2 stone
+    state.updateResource("stone", stoneProduced);
   }
 }
 
@@ -105,7 +103,7 @@ function handleHunterProduction() {
 
   if (hunters > 0) {
     const meatProduced = hunters * 5; // Each hunter produces 5 meat
-    state.updateResource('meat', meatProduced);
+    state.updateResource("meat", meatProduced);
   }
 }
 

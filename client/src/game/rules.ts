@@ -247,6 +247,6 @@ export const gameActions: Record<string, Action> = {
       "resources.stone": -10,
       "tools.axe": true,
     },
-    cooldown: 15,
+    cooldown: 1,
   },
 };

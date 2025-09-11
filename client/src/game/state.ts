@@ -132,7 +132,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if ((state.cooldowns['gatherWood'] || 0) > 0 && !state.devMode) return;
 
     const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
-    const axeBonus = state.tools.axe ? 1 : 0; // +1 wood if axe is owned
+    const axeBonus = state.tools.axe ? 3 : 0; // +3 wood if axe is owned
     const amount = baseAmount + axeBonus;
     const cooldown = gameActions.gatherWood.cooldown;
     set((state) => ({
