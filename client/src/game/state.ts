@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { GameState } from '@shared/schema';
-import { gameActions, buildingRequirements } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
 import { LogEntry, EventManager } from '@/game/events';
 
 interface GameStore extends GameState {
@@ -89,44 +89,7 @@ const defaultGameState: GameState = {
   version: 1,
 };
 
-// Building requirements system
-const canBuildBuilding = (buildingType: string, state: GameState): boolean => {
-  // Get the building key (hut/lodge) and current count
-  const buildingKey = buildingType === 'buildHut' ? 'hut' : buildingType === 'buildLodge' ? 'lodge' : buildingType === 'buildWorkshop' ? 'workshop' : buildingType;
-  const currentCount = buildingKey === 'hut' ? state.buildings.huts :
-                      buildingKey === 'lodge' ? state.buildings.lodges :
-                      buildingKey === 'workshop' ? state.buildings.workshops : 0;
 
-
-  const nextLevel = currentCount + 1;
-  const requirements = buildingRequirements[buildingKey]?.[nextLevel];
-
-  if (!requirements) return false;
-
-  // Check special flags for first hut
-  if (buildingKey === 'hut' && nextLevel === 1 && !state.flags.villageUnlocked) return false;
-
-  // Check all resource requirements dynamically
-  for (const [resource, amount] of Object.entries(requirements)) {
-    if (resource === 'requiredBuildings') continue; // Skip building requirements for now
-
-    // Check if this is a resource requirement
-    if (state.resources.hasOwnProperty(resource)) {
-      if (state.resources[resource as keyof typeof state.resources] < amount) {
-        return false;
-      }
-    }
-  }
-
-  // Check building requirements
-  if (requirements.requiredBuildings) {
-    return Object.entries(requirements.requiredBuildings).every(([building, count]) =>
-      state.buildings[building as keyof typeof state.buildings] >= count
-    );
-  }
-
-  return true;
-};
 
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -221,15 +184,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
 
-    // Check requirements before executing
-    if (actionId === 'lightFire' && state.flags.fireLit) return;
-    if (actionId === 'gatherWood' && !state.flags.fireLit) return;
-    if (actionId === 'buildTorch' && (!state.flags.fireLit || state.resources.wood < 10)) return;
-    if (actionId === 'buildHut' && !canBuildBuilding('hut', state)) return;
-    if (actionId === 'buildLodge' && !canBuildBuilding('lodge', state)) return;
-    if (actionId === 'buildWorkshop' && !canBuildBuilding('workshop', state)) return;
-    if (actionId === 'exploreCave' && (!state.flags.fireLit || state.resources.torch < 5)) return;
-    if (actionId === 'craftAxe' && (!state.flags.fireLit || state.resources.wood < 5 || state.resources.stone < 10 || state.tools.axe)) return;
+    // Check requirements before executing using the centralized logic
+    if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
     // Mark action as seen
     const seenKey = `action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`;

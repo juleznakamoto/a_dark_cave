@@ -1,11 +1,12 @@
 
 import { useGameStore } from '@/game/state';
-import { gameActions, buildingRequirements } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
 export default function VillagePanel() {
-  const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const { cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const state = useGameStore();
 
   const handleBuildHut = () => {
     executeAction('buildHut');
@@ -16,51 +17,35 @@ export default function VillagePanel() {
   };
 
   const handleBuildWorkshop = () => {
-    console.log('=== Workshop Button Clicked ===');
-    console.log('Current buildings:', buildings);
-    console.log('Current resources:', resources);
-    console.log('Current cooldowns:', cooldowns);
-    console.log('Workshop requirements:', workshopRequirements);
-    console.log('Can build workshop:', canBuildWorkshop);
     executeAction('buildWorkshop');
   };
 
-  // Get building requirements
-  const nextHutLevel = buildings.huts + 1;
-  const nextLodgeLevel = buildings.lodges + 1;
-  const nextWorkshopLevel = (buildings.workshops || 0) + 1;
-  const hutRequirements = buildingRequirements.hut[nextHutLevel];
-  const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
-  const workshopRequirements = buildingRequirements.workshop[nextWorkshopLevel];
+  // Use action-based logic instead of hardcoded requirements
+  const canBuildHut = shouldShowAction('buildHut', state) && canExecuteAction('buildHut', state) && (cooldowns['buildHut'] || 0) === 0;
+  const canBuildLodge = shouldShowAction('buildLodge', state) && canExecuteAction('buildLodge', state) && (cooldowns['buildLodge'] || 0) === 0;
+  const canBuildWorkshop = shouldShowAction('buildWorkshop', state) && canExecuteAction('buildWorkshop', state) && (cooldowns['buildWorkshop'] || 0) === 0;
 
-  // Check if we can build next hut
-  const canBuildHut = hutRequirements &&
-    resources.wood >= hutRequirements.wood &&
-    (cooldowns['buildHut'] || 0) === 0 &&
-    Object.entries(hutRequirements.requiredBuildings || {}).every(([building, count]) =>
-      buildings[building as keyof typeof buildings] >= count
-    );
+  // Get cost information from actions
+  const getNextLevel = (actionId: string) => {
+    if (actionId === 'buildHut') return buildings.huts + 1;
+    if (actionId === 'buildLodge') return buildings.lodges + 1;
+    if (actionId === 'buildWorkshop') return (buildings.workshops || 0) + 1;
+    return 1;
+  };
 
-  // Check if we can build next lodge
-  const canBuildLodge =
-    lodgeRequirements &&
-    resources.wood >= lodgeRequirements.wood &&
-    (cooldowns["buildLodge"] || 0) === 0 &&
-    Object.entries(lodgeRequirements.requiredBuildings || {}).every(
-      ([building, count]) =>
-        buildings[building as keyof typeof buildings] >= count
-    );
-
-  // Check if we can build next workshop
-  const canBuildWorkshop =
-    workshopRequirements &&
-    resources.wood >= workshopRequirements.wood &&
-    resources.stone >= workshopRequirements.stone &&
-    (cooldowns["buildWorkshop"] || 0) === 0 &&
-    Object.entries(workshopRequirements.requiredBuildings || {}).every(
-      ([building, count]) =>
-        buildings[building as keyof typeof buildings] >= count
-    );
+  const getCostText = (actionId: string) => {
+    const action = gameActions[actionId];
+    if (!action?.cost) return 'No cost';
+    
+    const level = getNextLevel(actionId);
+    const costs = action.building ? action.cost[level] : action.cost;
+    
+    if (!costs) return 'No cost';
+    
+    return Object.entries(costs)
+      .map(([resource, amount]) => `${amount} ${resource}`)
+      .join(', ');
+  };
 
   return (
     <div className="space-y-6">
@@ -68,25 +53,22 @@ export default function VillagePanel() {
         <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
 
         <div className="flex flex-wrap gap-2">
-          <CooldownButton
-            onClick={handleBuildHut}
-            cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
-            data-testid="button-build-wooden-hut"
-            disabled={!canBuildHut}
-            className="relative overflow-hidden"
-            size="sm"
-          >
-            <span className="relative z-10">
-              Wooden Hut (
-              {hutRequirements ? Object.entries(hutRequirements)
-                .filter(([key]) => key !== 'requiredBuildings')
-                .map(([resource, amount]) => `${amount} ${resource}`)
-                .join(', ') : 'No requirements'}
-              )
-            </span>
-          </CooldownButton>
+          {shouldShowAction('buildHut', state) && (
+            <CooldownButton
+              onClick={handleBuildHut}
+              cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
+              data-testid="button-build-wooden-hut"
+              disabled={!canBuildHut}
+              className="relative overflow-hidden"
+              size="sm"
+            >
+              <span className="relative z-10">
+                Wooden Hut ({getCostText('buildHut')})
+              </span>
+            </CooldownButton>
+          )}
 
-          {buildings.huts >= 1 && (
+          {shouldShowAction('buildLodge', state) && (
             <CooldownButton
               onClick={handleBuildLodge}
               cooldownMs={(gameActions.buildLodge?.cooldown || 15) * 1000}
@@ -96,19 +78,12 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">
-                Lodge (
-                {lodgeRequirements ? Object.entries(lodgeRequirements)
-                  .filter(([key]) => key !== 'requiredBuildings')
-                  .map(([resource, amount]) => `${amount} ${resource}`)
-                  .join(', ') : 'No requirements'}
-                )
+                Lodge ({getCostText('buildLodge')})
               </span>
             </CooldownButton>
           )}
 
-          {workshopRequirements && Object.entries(workshopRequirements.requiredBuildings || {}).every(([building, count]) =>
-            buildings[building as keyof typeof buildings] >= count
-          ) && (
+          {shouldShowAction('buildWorkshop', state) && (
             <CooldownButton
               onClick={handleBuildWorkshop}
               cooldownMs={(gameActions.buildWorkshop?.cooldown || 20) * 1000}
@@ -118,12 +93,7 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">
-                Workshop (
-                {workshopRequirements ? Object.entries(workshopRequirements)
-                  .filter(([key]) => key !== 'requiredBuildings')
-                  .map(([resource, amount]) => `${amount} ${resource}`)
-                  .join(', ') : 'No requirements'}
-                )
+                Workshop ({getCostText('buildWorkshop')})
               </span>
             </CooldownButton>
           )}
