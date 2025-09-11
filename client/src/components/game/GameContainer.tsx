@@ -3,7 +3,7 @@ import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
 import VillagePanel from './panels/VillagePanel';
 import WorldPanel from './panels/WorldPanel';
-import LogPanel from './LogPanel';
+import LogPanel from './panels/LogPanel';
 import { useGameStore } from '@/game/state';
 
 export default function GameContainer() {
