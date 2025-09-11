@@ -1,5 +1,5 @@
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
