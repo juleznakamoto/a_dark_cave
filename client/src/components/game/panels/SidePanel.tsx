@@ -44,7 +44,7 @@ export default function SidePanel() {
       label: key.charAt(0).toUpperCase() + key.slice(1),
       value: value ?? 0,
       testId: `population-${key}`,
-      visible: current_population > 0
+      visible: (value ?? 0) > 0
     }))
     .filter(item => item.visible);
 
