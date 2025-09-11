@@ -140,9 +140,7 @@ export const gameActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
-    cost: {
-      "flags.fireLit": false,
-    },
+    cost: {},
     effects: {
       "flags.fireLit": true,
       "story.seen.fireLit": true,
@@ -158,7 +156,7 @@ export const gameActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(1,3)", // 1-3 base + stone_axe bonus
+      "resources.wood": "random(1,3)", // 1-3 base + axe bonus
       "story.seen.hasWood": true,
     },
     cooldown: 3,
