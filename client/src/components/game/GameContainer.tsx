@@ -1,8 +1,8 @@
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
-import CavePanel from './CavePanel';
-import VillagePanel from './VillagePanel';
-import WorldPanel from './WorldPanel';
+import CavePanel from './panels/CavePanel';
+import VillagePanel from './panels/VillagePanel';
+import WorldPanel from './panels/WorldPanel';
 import LogPanel from './LogPanel';
 import { useGameStore } from '@/game/state';
 

@@ -1,0 +1,143 @@
+
+import { useGameStore } from '@/game/state';
+import SidePanelSection from './SidePanelSection';
+
+export default function SidePanel() {
+  const { resources, tools, buildings, villagers, story, current_population, total_population } = useGameStore();
+
+  // Resources section
+  const resourceItems = [
+    {
+      id: 'wood',
+      label: 'Wood',
+      value: resources.wood ?? 0,
+      testId: 'resource-wood',
+      visible: story.seen.hasWood || story.seen.actionGatherWood || resources.wood > 0
+    },
+    {
+      id: 'meat',
+      label: 'Meat',
+      value: resources.meat ?? 0,
+      testId: 'resource-meat',
+      visible: story.seen.hasMeat || resources.meat > 0
+    },
+    {
+      id: 'torch',
+      label: 'Torch',
+      value: resources.torch ?? 0,
+      testId: 'resource-torch',
+      visible: story.seen.hasTorch || story.seen.actionBuildTorch || resources.torch > 0
+    },
+    {
+      id: 'stone',
+      label: 'Stone',
+      value: resources.stone ?? 0,
+      testId: 'resource-stone',
+      visible: story.seen.hasStone || story.seen.actionExploreCave || resources.stone > 0
+    }
+  ];
+
+  // Tools section
+  const toolItems = [
+    {
+      id: 'axe',
+      label: 'Axe',
+      value: tools.axe ? 'Axe' : 'Axe (missing)',
+      testId: 'tool-axe',
+      visible: story.seen.hasAxe || story.seen.actionCraftAxe || tools.axe
+    },
+    {
+      id: 'spear',
+      label: 'Spear',
+      value: tools.spear ? 'Spear' : 'Spear (missing)',
+      testId: 'tool-spear',
+      visible: story.seen.hasSpear || tools.spear
+    }
+  ];
+
+  // Buildings section
+  const buildingItems = [
+    {
+      id: 'huts',
+      label: 'Huts',
+      value: buildings.huts,
+      testId: 'building-huts',
+      visible: buildings.huts > 0 || story.seen.actionBuildHut
+    },
+    {
+      id: 'lodges',
+      label: 'Lodges', 
+      value: buildings.lodges,
+      testId: 'building-lodges',
+      visible: buildings.lodges > 0 || story.seen.actionBuildLodge
+    },
+    {
+      id: 'workshops',
+      label: 'Workshops',
+      value: buildings.workshops,
+      testId: 'building-workshops',
+      visible: buildings.workshops > 0 || story.seen.actionBuildWorkshop
+    },
+    {
+      id: 'traps',
+      label: 'Traps',
+      value: buildings.traps,
+      testId: 'building-traps',
+      visible: buildings.traps > 0
+    }
+  ];
+
+  // Population section
+  const populationItems = [
+    {
+      id: 'total',
+      label: 'Population',
+      value: `${current_population}/${total_population}`,
+      testId: 'population-total',
+      visible: story.seen?.hasVillagers && total_population > 0
+    },
+    {
+      id: 'free',
+      label: 'Free',
+      value: villagers.free,
+      testId: 'population-free',
+      visible: story.seen?.hasVillagers && villagers.free > 0
+    },
+    {
+      id: 'gatherers',
+      label: 'Gatherers',
+      value: villagers.gatherers,
+      testId: 'population-gatherers',
+      visible: story.seen?.hasVillagers && villagers.gatherers > 0
+    },
+    {
+      id: 'hunters',
+      label: 'Hunters',
+      value: villagers.hunters,
+      testId: 'population-hunters',
+      visible: story.seen?.hasVillagers && villagers.hunters > 0
+    }
+  ];
+
+  return (
+    <div>
+      <SidePanelSection 
+        title="Resources" 
+        items={resourceItems}
+      />
+      <SidePanelSection 
+        title="Tools" 
+        items={toolItems}
+        className="text-muted-foreground"
+      />
+      <SidePanelSection 
+        title="Buildings" 
+        items={buildingItems}
+      />
+      <SidePanelSection 
+        title="Population" 
+        items={populationItems}
+      />
+    </div>
+  );
+}

@@ -1,7 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import ResourceDisplay from './ResourceDisplay';
-import ToolsDisplay from './ToolsDisplay';
+import SidePanel from './SidePanel'; // Assuming SidePanel is now in the same directory or adjust path as needed
 import { useEffect } from 'react';
 
 export default function GameTabs() {
@@ -97,8 +96,7 @@ export default function GameTabs() {
         </div>
       )}
 
-      <ResourceDisplay />
-      <ToolsDisplay />
+      <SidePanel />
     </nav>
   );
 }
