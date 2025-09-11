@@ -10,7 +10,7 @@ export default function CavePanel() {
   const showExploreCave = shouldShowAction('exploreCave', state);
   const showBuildTorch = shouldShowAction('buildTorch', state);
   const showCraftAxe = shouldShowAction('craftAxe', state);
-  const showCraftPickaxe = {true};
+  const showCraftPickaxe = true;
   const showMineIron = shouldShowAction('mineIron', state);
   const canBuildTorch = canExecuteAction('buildTorch', state);
   const canExploreCave = canExecuteAction('exploreCave', state);
