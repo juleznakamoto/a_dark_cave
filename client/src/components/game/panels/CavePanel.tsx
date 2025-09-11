@@ -1,4 +1,3 @@
-
 import { useGameStore } from '@/game/state';
 import { gameActions, gameTexts, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -11,7 +10,7 @@ export default function CavePanel() {
   const showLightFire = !flags.fireLit;
   const showGatherWood = shouldShowAction('gatherWood', state);
   const showExploreCave = shouldShowAction('exploreCave', state);
-  
+
   // Craft section items
   const showBuildTorch = shouldShowAction('buildTorch', state);
   const showCraftAxe = shouldShowAction('craftAxe', state);

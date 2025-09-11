@@ -54,6 +54,32 @@ export const canExecuteAction = (actionId: string, state: GameState): boolean =>
   return checkRequirements(action.cost, state, action);
 };
 
+// Utility function to get cost text for actions
+export const getCostText = (actionId: string, state?: GameState) => {
+  const action = gameActions[actionId];
+  if (!action?.cost) return '';
+  
+  let costs = action.cost;
+  
+  // For building actions, get the cost for the next level
+  if (action.building && state) {
+    const level = getNextBuildingLevel(actionId, state);
+    costs = action.cost[level];
+  }
+  
+  if (!costs || Object.keys(costs).length === 0) return '';
+  
+  const costText = Object.entries(costs)
+    .map(([resource, amount]) => {
+      // Extract the clean resource name from paths like "resources.wood"
+      const resourceName = resource.includes('.') ? resource.split('.').pop() : resource;
+      return `${amount} ${resourceName}`;
+    })
+    .join(', ');
+  
+  return costText ? ` (${costText})` : '';
+};
+
 export const gameActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",

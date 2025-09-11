@@ -1,6 +1,6 @@
 
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
@@ -25,32 +25,6 @@ export default function VillagePanel() {
   const canBuildLodge = shouldShowAction('buildLodge', state) && canExecuteAction('buildLodge', state) && (cooldowns['buildLodge'] || 0) === 0;
   const canBuildWorkshop = shouldShowAction('buildWorkshop', state) && canExecuteAction('buildWorkshop', state) && (cooldowns['buildWorkshop'] || 0) === 0;
 
-  // Get cost information from actions
-  const getNextLevel = (actionId: string) => {
-    if (actionId === 'buildHut') return buildings.huts + 1;
-    if (actionId === 'buildLodge') return buildings.lodges + 1;
-    if (actionId === 'buildWorkshop') return (buildings.workshops || 0) + 1;
-    return 1;
-  };
-
-  const getCostText = (actionId: string) => {
-    const action = gameActions[actionId];
-    if (!action?.cost) return 'No cost';
-    
-    const level = getNextLevel(actionId);
-    const costs = action.building ? action.cost[level] : action.cost;
-    
-    if (!costs) return 'No cost';
-    
-    return Object.entries(costs)
-      .map(([resource, amount]) => {
-        // Extract the clean resource name from paths like "resources.wood"
-        const resourceName = resource.includes('.') ? resource.split('.').pop() : resource;
-        return `${amount} ${resourceName}`;
-      })
-      .join(', ');
-  };
-
   return (
     <div className="space-y-6">
       <div className="space-y-4">
@@ -67,7 +41,7 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">
-                Wooden Hut ({getCostText('buildHut')})
+                Wooden Hut{getCostText('buildHut', state)}
               </span>
             </CooldownButton>
           )}
@@ -82,7 +56,7 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">
-                Lodge ({getCostText('buildLodge')})
+                Lodge{getCostText('buildLodge', state)}
               </span>
             </CooldownButton>
           )}
@@ -97,7 +71,7 @@ export default function VillagePanel() {
               size="sm"
             >
               <span className="relative z-10">
-                Workshop ({getCostText('buildWorkshop')})
+                Workshop{getCostText('buildWorkshop', state)}
               </span>
             </CooldownButton>
           )}
