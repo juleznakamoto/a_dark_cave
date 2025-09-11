@@ -285,7 +285,7 @@ export const gameActions: Record<string, Action> = {
     },
     effects: {
       "resources.torch": -5,
-      "resources.stone": "random(1,4)",
+      "resources.stone": "random(2,5)",
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
