@@ -4,9 +4,9 @@ import { GameState } from "@shared/schema";
 // Utility function to check if an action should be shown
 export const shouldShowAction = (actionId: string, state: GameState): boolean => {
   const action = gameActions[actionId];
-  if (!action?.showRequirements) return false;
+  if (!action?.show_when) return false;
   
-  return Object.entries(action.showRequirements).every(([path, expectedValue]) => {
+  return Object.entries(action.show_when).every(([path, expectedValue]) => {
     const pathParts = path.split('.');
     let current: any = state;
     
@@ -25,9 +25,9 @@ export const shouldShowAction = (actionId: string, state: GameState): boolean =>
 // Utility function to check if requirements are met for an action
 export const canExecuteAction = (actionId: string, state: GameState): boolean => {
   const action = gameActions[actionId];
-  if (!action?.requirements) return true;
+  if (!action?.cost) return true;
   
-  return Object.entries(action.requirements).every(([path, expectedValue]) => {
+  return Object.entries(action.cost).every(([path, expectedValue]) => {
     const pathParts = path.split('.');
     let current: any = state;
     
@@ -62,7 +62,7 @@ export const gameActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
-    requirements: {
+    cost: {
       "flags.fireLit": false,
     },
     effects: {
@@ -75,10 +75,10 @@ export const gameActions: Record<string, Action> = {
   gatherWood: {
     id: "gatherWood",
     label: "Gather Wood",
-    showRequirements: {
+    show_when: {
       "flags.fireLit": true,
     },
-    requirements: {},
+    cost: {},
     effects: {
       "resources.wood": "+1-3", // Random amount
     },
@@ -88,10 +88,10 @@ export const gameActions: Record<string, Action> = {
   buildTorch: {
     id: "buildTorch",
     label: "Torch",
-    showRequirements: {
+    show_when: {
       "flags.fireLit": true,
     },
-    requirements: {
+    cost: {
       "resources.wood": 10,
     },
     effects: {
@@ -105,7 +105,7 @@ export const gameActions: Record<string, Action> = {
   buildHut: {
     id: "buildHut",
     label: "Wooden Hut",
-    requirements: {
+    cost: {
       "flags.villageUnlocked": true,
       "resources.wood": 100,
     },
@@ -119,7 +119,7 @@ export const gameActions: Record<string, Action> = {
   buildLodge: {
     id: "buildLodge",
     label: "Lodge",
-    requirements: {
+    cost: {
       "buildings.huts": 1,
     },
     effects: {
@@ -132,7 +132,7 @@ export const gameActions: Record<string, Action> = {
   buildWorkshop: {
     id: "buildWorkshop",
     label: "Workshop",
-    requirements: {
+    cost: {
       "buildings.lodges": 1,
     },
     effects: {
@@ -146,10 +146,10 @@ export const gameActions: Record<string, Action> = {
   exploreCave: {
     id: "exploreCave",
     label: "Explore Cave",
-    showRequirements: {
+    show_when: {
       "flags.fireLit": true,
     },
-    requirements: {
+    cost: {
       "resources.torch": 5,
     },
     effects: {
@@ -162,11 +162,11 @@ export const gameActions: Record<string, Action> = {
   craftAxe: {
     id: "craftAxe",
     label: "Axe",
-    showRequirements: {
+    show_when: {
       "flags.caveExplored": true,
       "tools.axe": false,
     },
-    requirements: {
+    cost: {
       "resources.wood": 5,
       "resources.stone": 10,
     },
