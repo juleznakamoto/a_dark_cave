@@ -2,193 +2,113 @@
 import { useGameStore } from '@/game/state';
 import { gameActions, buildingRequirements } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
-import { Button } from '@/components/ui/button';
 
 export default function VillagePanel() {
-  const { resources, cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const { resources, buildings, flags, executeAction, villagers, assignVillager, unassignVillager } = useGameStore();
 
-  const handleBuildHut = () => {
-    executeAction('buildHut');
-  };
-
-  const handleBuildLodge = () => {
-    executeAction('buildLodge');
-  };
-
-  const handleBuildWorkshop = () => {
-    console.log('=== Workshop Button Clicked ===');
-    console.log('Current buildings:', buildings);
-    console.log('Current resources:', resources);
-    console.log('Current cooldowns:', cooldowns);
-    console.log('Workshop requirements:', workshopRequirements);
-    console.log('Can build workshop:', canBuildWorkshop);
-    executeAction('buildWorkshop');
-  };
-
-  // Get building requirements
-  const nextHutLevel = buildings.huts + 1;
-  const nextLodgeLevel = buildings.lodges + 1;
-  const nextWorkshopLevel = (buildings.workshops || 0) + 1;
-  const hutRequirements = buildingRequirements.hut[nextHutLevel];
-  const lodgeRequirements = buildingRequirements.lodge[nextLodgeLevel];
-  const workshopRequirements = buildingRequirements.workshop[nextWorkshopLevel];
-
-  // Check if we can build next hut
-  const canBuildHut = hutRequirements &&
-    resources.wood >= hutRequirements.wood &&
-    (cooldowns['buildHut'] || 0) === 0 &&
-    Object.entries(hutRequirements.requiredBuildings || {}).every(([building, count]) =>
-      buildings[building as keyof typeof buildings] >= count
-    );
-
-  // Check if we can build next lodge
-  const canBuildLodge =
-    lodgeRequirements &&
-    resources.wood >= lodgeRequirements.wood &&
-    (cooldowns["buildLodge"] || 0) === 0 &&
-    Object.entries(lodgeRequirements.requiredBuildings || {}).every(
-      ([building, count]) =>
-        buildings[building as keyof typeof buildings] >= count
-    );
-
-  // Check if we can build next workshop
-  const canBuildWorkshop =
-    workshopRequirements &&
-    resources.wood >= workshopRequirements.wood &&
-    resources.stone >= workshopRequirements.stone &&
-    (cooldowns["buildWorkshop"] || 0) === 0 &&
-    Object.entries(workshopRequirements.requiredBuildings || {}).every(
-      ([building, count]) =>
-        buildings[building as keyof typeof buildings] >= count
-    );
+  // Building availability logic
+  const canBuildHut = flags.villageUnlocked && resources.wood >= (buildingRequirements.hut[buildings.huts + 1]?.wood || 100);
+  const canBuildLodge = buildings.huts >= 1 && resources.wood >= (buildingRequirements.lodge[buildings.lodges + 1]?.wood || 250);
+  const canBuildWorkshop = buildings.lodges >= 1 && 
+    resources.wood >= (buildingRequirements.workshop[buildings.workshops + 1]?.wood || 100) && 
+    resources.stone >= (buildingRequirements.workshop[buildings.workshops + 1]?.stone || 20);
 
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+        <p className="font-serif text-lg leading-relaxed">
+          Outside the cave, a small clearing opens up. This could be the foundation of something greater.
+        </p>
 
+        {/* Building Actions */}
         <div className="flex flex-wrap gap-2">
-          <CooldownButton
-            onClick={handleBuildHut}
-            cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
-            data-testid="button-build-wooden-hut"
-            disabled={!canBuildHut}
-            className="relative overflow-hidden"
-            size="sm"
-          >
-            <span className="relative z-10">
-              Wooden Hut (
-              {hutRequirements ? Object.entries(hutRequirements)
-                .filter(([key]) => key !== 'requiredBuildings')
-                .map(([resource, amount]) => `${amount} ${resource}`)
-                .join(', ') : 'No requirements'}
-              )
-            </span>
-          </CooldownButton>
-
-          {buildings.huts >= 1 && (
+          {canBuildHut && (
             <CooldownButton
-              onClick={handleBuildLodge}
+              onClick={() => executeAction('buildHut')}
+              cooldownMs={(gameActions.buildHut?.cooldown || 10) * 1000}
+              data-testid="button-build-hut"
+              size="sm"
+            >
+              Build Hut ({buildingRequirements.hut[buildings.huts + 1]?.wood || 100} wood)
+            </CooldownButton>
+          )}
+
+          {canBuildLodge && (
+            <CooldownButton
+              onClick={() => executeAction('buildLodge')}
               cooldownMs={(gameActions.buildLodge?.cooldown || 15) * 1000}
               data-testid="button-build-lodge"
-              disabled={!canBuildLodge}
-              className="relative overflow-hidden"
               size="sm"
             >
-              <span className="relative z-10">
-                Lodge (
-                {lodgeRequirements ? Object.entries(lodgeRequirements)
-                  .filter(([key]) => key !== 'requiredBuildings')
-                  .map(([resource, amount]) => `${amount} ${resource}`)
-                  .join(', ') : 'No requirements'}
-                )
-              </span>
+              Build Lodge ({buildingRequirements.lodge[buildings.lodges + 1]?.wood || 250} wood)
             </CooldownButton>
           )}
 
-          {workshopRequirements && Object.entries(workshopRequirements.requiredBuildings || {}).every(([building, count]) =>
-            buildings[building as keyof typeof buildings] >= count
-          ) && (
+          {canBuildWorkshop && (
             <CooldownButton
-              onClick={handleBuildWorkshop}
+              onClick={() => executeAction('buildWorkshop')}
               cooldownMs={(gameActions.buildWorkshop?.cooldown || 20) * 1000}
               data-testid="button-build-workshop"
-              disabled={!canBuildWorkshop}
-              className="relative overflow-hidden"
               size="sm"
             >
-              <span className="relative z-10">
-                Workshop (
-                {workshopRequirements ? Object.entries(workshopRequirements)
-                  .filter(([key]) => key !== 'requiredBuildings')
-                  .map(([resource, amount]) => `${amount} ${resource}`)
-                  .join(', ') : 'No requirements'}
-                )
-              </span>
+              Build Workshop ({buildingRequirements.workshop[buildings.workshops + 1]?.wood || 100} wood, {buildingRequirements.workshop[buildings.workshops + 1]?.stone || 20} stone)
             </CooldownButton>
           )}
         </div>
-      </div>
 
-      {story.seen?.hasVillagers && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
-
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Gatherer</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => unassignVillager('gatherers')}
-                  disabled={villagers.gatherers === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  -
-                </Button>
-                <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
-                <Button
-                  onClick={() => assignVillager('gatherers')}
-                  disabled={villagers.free === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  +
-                </Button>
-              </div>
+        {/* Villager Management */}
+        {villagers.free > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">Assign Villagers</h3>
+            <div className="flex flex-wrap gap-2">
+              <CooldownButton
+                onClick={() => assignVillager('gatherers')}
+                cooldownMs={0}
+                data-testid="button-assign-gatherer"
+                size="sm"
+              >
+                Assign Gatherer
+              </CooldownButton>
+              <CooldownButton
+                onClick={() => assignVillager('hunters')}
+                cooldownMs={0}
+                data-testid="button-assign-hunter"
+                size="sm"
+              >
+                Assign Hunter
+              </CooldownButton>
             </div>
-
-            {buildings.lodges > 0 && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Hunter</span>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => unassignVillager('hunters')}
-                    disabled={villagers.hunters === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    -
-                  </Button>
-                  <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
-                  <Button
-                    onClick={() => assignVillager('hunters')}
-                    disabled={villagers.free === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    +
-                  </Button>
-                </div>
-              </div>
-            )}
           </div>
-        </div>
-      )}
+        )}
+
+        {(villagers.gatherers > 0 || villagers.hunters > 0) && (
+          <div className="space-y-2">
+            <h3 className="text-sm font-medium text-muted-foreground">Unassign Villagers</h3>
+            <div className="flex flex-wrap gap-2">
+              {villagers.gatherers > 0 && (
+                <CooldownButton
+                  onClick={() => unassignVillager('gatherers')}
+                  cooldownMs={0}
+                  data-testid="button-unassign-gatherer"
+                  size="sm"
+                >
+                  Unassign Gatherer
+                </CooldownButton>
+              )}
+              {villagers.hunters > 0 && (
+                <CooldownButton
+                  onClick={() => unassignVillager('hunters')}
+                  cooldownMs={0}
+                  data-testid="button-unassign-hunter"
+                  size="sm"
+                >
+                  Unassign Hunter
+                </CooldownButton>
+              )}
+            </div>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
