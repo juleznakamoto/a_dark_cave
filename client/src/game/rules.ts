@@ -62,8 +62,6 @@ export const gameActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
-    description:
-      "You have some dry wood and kindling. A fire would provide warmth and light.",
     requirements: {
       "flags.fireLit": false,
     },
@@ -77,8 +75,6 @@ export const gameActions: Record<string, Action> = {
   gatherWood: {
     id: "gatherWood",
     label: "Gather Wood",
-    description:
-      "Search the cave for fallen branches and dry wood to keep the fire burning.",
     showRequirements: {
       "flags.fireLit": true,
     },
@@ -92,7 +88,6 @@ export const gameActions: Record<string, Action> = {
   buildTorch: {
     id: "buildTorch",
     label: "Torch",
-    description: "Create a torch to explore deeper into the cave.",
     showRequirements: {
       "flags.fireLit": true,
     },
@@ -110,7 +105,6 @@ export const gameActions: Record<string, Action> = {
   buildHut: {
     id: "buildHut",
     label: "Wooden Hut",
-    description: "Construct a simple shelter to house villagers.",
     requirements: {
       "flags.villageUnlocked": true,
       "resources.wood": 100,
@@ -125,7 +119,6 @@ export const gameActions: Record<string, Action> = {
   buildLodge: {
     id: "buildLodge",
     label: "Lodge",
-    description: "Build a lodge where villagers can gather and work.",
     requirements: {
       "buildings.huts": 1,
     },
@@ -139,7 +132,6 @@ export const gameActions: Record<string, Action> = {
   buildWorkshop: {
     id: "buildWorkshop",
     label: "Workshop",
-    description: "Construct a workshop for advanced crafting and tool creation.",
     requirements: {
       "buildings.lodges": 1,
     },
@@ -154,7 +146,6 @@ export const gameActions: Record<string, Action> = {
   exploreCave: {
     id: "exploreCave",
     label: "Explore Cave",
-    description: "Venture deeper into the cave with torches to light the way.",
     showRequirements: {
       "flags.fireLit": true,
     },
@@ -171,8 +162,6 @@ export const gameActions: Record<string, Action> = {
   craftAxe: {
     id: "craftAxe",
     label: "Axe",
-    description:
-      "Create a sturdy axe from wood and stone to gather resources more efficiently.",
     showRequirements: {
       "flags.caveExplored": true,
       "tools.axe": false,
