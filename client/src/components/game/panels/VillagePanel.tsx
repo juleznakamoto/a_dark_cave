@@ -43,7 +43,11 @@ export default function VillagePanel() {
     if (!costs) return 'No cost';
     
     return Object.entries(costs)
-      .map(([resource, amount]) => `${amount} ${resource}`)
+      .map(([resource, amount]) => {
+        // Extract the clean resource name from paths like "resources.wood"
+        const resourceName = resource.includes('.') ? resource.split('.').pop() : resource;
+        return `${amount} ${resourceName}`;
+      })
       .join(', ');
   };
 
