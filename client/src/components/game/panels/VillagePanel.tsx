@@ -20,7 +20,6 @@ export default function VillagePanel() {
     executeAction('buildWorkshop');
   };
 
-  // Use action-based logic instead of hardcoded requirements
   const canBuildHut = shouldShowAction('buildHut', state) && canExecuteAction('buildHut', state) && (cooldowns['buildHut'] || 0) === 0;
   const canBuildLodge = shouldShowAction('buildLodge', state) && canExecuteAction('buildLodge', state) && (cooldowns['buildLodge'] || 0) === 0;
   const canBuildWorkshop = shouldShowAction('buildWorkshop', state) && canExecuteAction('buildWorkshop', state) && (cooldowns['buildWorkshop'] || 0) === 0;

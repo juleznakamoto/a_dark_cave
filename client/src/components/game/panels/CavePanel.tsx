@@ -6,15 +6,10 @@ export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore.getState();
 
-  // Use data-driven visibility checks
   const showGatherWood = shouldShowAction('gatherWood', state);
   const showExploreCave = shouldShowAction('exploreCave', state);
-
-  // Craft section items
   const showBuildTorch = shouldShowAction('buildTorch', state);
   const showCraftAxe = shouldShowAction('craftAxe', state);
-
-  // Use data-driven requirement checks
   const canBuildTorch = canExecuteAction('buildTorch', state);
   const canExploreCave = canExecuteAction('exploreCave', state);
   const canCraftAxe = canExecuteAction('craftAxe', state);
