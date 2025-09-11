@@ -1,15 +1,9 @@
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import SidePanel from './panels/SidePanel'; // Assuming SidePanel is now in the same directory or adjust path as needed
-import { useEffect } from 'react';
+import SidePanel from './panels/SidePanel';
 
 export default function GameTabs() {
-  const { activeTab, setActiveTab, flags, buildings, villagers, story, current_population, total_population, updatePopulation } = useGameStore();
-
-  // Update population whenever the component renders
-  useEffect(() => {
-    updatePopulation();
-  }, [villagers, buildings.huts, updatePopulation]);
+  const { activeTab, setActiveTab, flags } = useGameStore();
 
   return (
     <nav className="w-48 border-r border-border bg-muted/30">

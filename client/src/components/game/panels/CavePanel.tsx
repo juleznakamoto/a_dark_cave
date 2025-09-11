@@ -19,7 +19,7 @@ export default function CavePanel() {
     <div className="space-y-6">
       <div className="space-y-4">
         <p className="font-serif text-lg leading-relaxed">
-          {!flags.fireLit ? gameTexts.cave.initial : gameTexts.cave.afterFire}
+          {!flags.fireLit ? (gameTexts.cave?.initial || "A dark cave. The air is cold and stale. You can barely make out the shapes around you.") : (gameTexts.cave?.afterFire || "The fire crackles softly.")}
         </p>
 
         <div className="flex flex-wrap gap-2">
