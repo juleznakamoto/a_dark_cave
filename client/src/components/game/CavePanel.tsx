@@ -1,140 +1,82 @@
-import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import { gameTexts, gameActions } from '@/game/rules';
+import { gameActions, gameTexts } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
-import LogPanel from './LogPanel';
 
 export default function CavePanel() {
-  const {
-    resources,
-    flags,
-    tools,
-    buildings,
-    cooldowns,
-    story,
-    executeAction
-  } = useGameStore();
+  const { resources, tools, flags, executeAction, cooldowns, story } = useGameStore();
 
-  const handleBuildTorch = () => {
-    executeAction('buildTorch');
-  };
-
-  
-
-  const handleExploreCave = () => {
-    executeAction('exploreCave');
-  };
-
-  const handleCraftAxe = () => {
-    executeAction('craftAxe');
-  };
-
-  // Check if actions have been seen (should remain visible)
-  const hasSeenBuildTorch = story.seen.actionBuildTorch || (flags.fireLit && resources.wood >= 10);
-  const hasSeenExploreCave = story.seen.actionExploreCave || flags.torchBuilt;
-  const hasSeenCraftAxe = story.seen.actionCraftAxe || story.seen.hasStone;
-
-  // Check if actions can currently be performed
-  const canBuildTorch = flags.fireLit && resources.wood >= 10 && (cooldowns['buildTorch'] || 0) === 0;
-  const canExploreCave = flags.fireLit && resources.torch >= 5 && (cooldowns['exploreCave'] || 0) === 0;
-  const canCraftAxe = flags.fireLit && resources.wood >= 5 && resources.stone >= 10 && !tools.axe && (cooldowns['craftAxe'] || 0) === 0;
+  // Show gather wood button only after fire is lit
+  const showGatherWood = flags.fireLit && !story.seen.hasWood;
+  // Show build torch when player has enough wood (10+)
+  const showBuildTorch = flags.fireLit && resources.wood >= 10 && !flags.torchBuilt;
+  // Show explore cave when player has 5+ torches
+  const showExploreCave = flags.fireLit && resources.torch >= 5 && !flags.caveExplored;
+  // Show craft axe when player has explored cave and has resources
+  const showCraftAxe = flags.caveExplored && resources.wood >= 5 && resources.stone >= 10 && !tools.axe;
 
   return (
     <div className="space-y-6">
-      {/* Actions Panel */}
       <div className="space-y-4">
-        <h2 className="text-lg font-medium border-b border-border pb-2">Actions</h2>
+        <p className="font-serif text-lg leading-relaxed">
+          {!flags.fireLit ? gameTexts.cave.initial : gameTexts.cave.afterFire}
+        </p>
 
         <div className="flex flex-wrap gap-2">
-          {/* Light Fire Action */}
           {!flags.fireLit && (
             <CooldownButton
               onClick={() => executeAction('lightFire')}
-              cooldownMs={gameActions.lightFire.cooldown * 1000}
-              data-testid="action-light-fire"
-              className="relative overflow-hidden"
+              cooldownMs={(gameActions.lightFire?.cooldown || 1) * 1000}
+              data-testid="button-light-fire"
               size="sm"
             >
-              <span className="relative z-10">Light Fire</span>
+              Light Fire
             </CooldownButton>
           )}
 
-          {/* Gather Wood Action */}
-          {flags.fireLit && (
+          {showGatherWood && (
             <CooldownButton
               onClick={() => executeAction('gatherWood')}
-              cooldownMs={gameActions.gatherWood.cooldown * 1000}
-              data-testid="action-gather-wood"
-              className="relative overflow-hidden"
+              cooldownMs={(gameActions.gatherWood?.cooldown || 3) * 1000}
+              data-testid="button-gather-wood"
               size="sm"
             >
-              <span className="relative z-10">Gather Wood</span>
+              Gather Wood
             </CooldownButton>
           )}
 
-          {/* Explore Cave */}
-          {hasSeenExploreCave && (
+          {showBuildTorch && (
             <CooldownButton
-              onClick={handleExploreCave}
-              cooldownMs={(gameActions.exploreCave?.cooldown || 15) * 1000}
-              data-testid="button-explore-cave"
-              disabled={!canExploreCave}
-              className="relative overflow-hidden"
+              onClick={() => executeAction('buildTorch')}
+              cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
+              data-testid="button-build-torch"
               size="sm"
             >
-              <span className="relative z-10">Explore Cave (5 torches)</span>
+              Build Torch (10 wood)
+            </CooldownButton>
+          )}
+
+          {showExploreCave && (
+            <CooldownButton
+              onClick={() => executeAction('exploreCave')}
+              cooldownMs={(gameActions.exploreCave?.cooldown || 10) * 1000}
+              data-testid="button-explore-cave"
+              size="sm"
+            >
+              Explore Cave (5 torch)
+            </CooldownButton>
+          )}
+
+          {showCraftAxe && (
+            <CooldownButton
+              onClick={() => executeAction('craftAxe')}
+              cooldownMs={(gameActions.craftAxe?.cooldown || 15) * 1000}
+              data-testid="button-craft-axe"
+              size="sm"
+            >
+              Craft Axe (5 wood, 10 stone)
             </CooldownButton>
           )}
         </div>
-      </div>
-
-      {/* Craft Panel */}
-      {hasSeenBuildTorch && (
-        <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Craft</h2>
-
-          <div className="flex flex-wrap gap-2">
-            {/* Build Torch */}
-            {hasSeenBuildTorch && (
-              <CooldownButton
-                onClick={handleBuildTorch}
-                cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
-                data-testid="button-build-torch"
-                disabled={!canBuildTorch}
-                className="relative overflow-hidden"
-                size="sm"
-              >
-                <span className="relative z-10">Torch (10 wood)</span>
-              </CooldownButton>
-            )}
-
-            
-
-            {/* Craft Axe */}
-            {hasSeenCraftAxe && (
-              <CooldownButton
-                onClick={handleCraftAxe}
-                cooldownMs={(gameActions.craftAxe?.cooldown || 20) * 1000}
-                data-testid="button-craft-axe"
-                disabled={!canCraftAxe}
-                className="relative overflow-hidden"
-                size="sm"
-              >
-                <span className="relative z-10">Axe (5 wood, 10 stone)</span>
-              </CooldownButton>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* Progress Hints */}
-      <div className="space-y-2 text-sm text-muted-foreground">
-        {flags.fireLit && resources.wood < 5 && (
-          <p data-testid="hint-need-fuel">{gameTexts.hints.needFuel}</p>
-        )}
-        {resources.wood >= 10 && (
-          <p data-testid="hint-enough-wood">{gameTexts.hints.enoughWood}</p>
-        )}
       </div>
     </div>
   );
