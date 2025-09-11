@@ -20,7 +20,7 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
       value: 1,
       testId: `tool-${key}`,
       visible: true
