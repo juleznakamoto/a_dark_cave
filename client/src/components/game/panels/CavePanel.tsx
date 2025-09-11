@@ -1,13 +1,12 @@
 import { useGameStore } from '@/game/state';
-import { gameActions, gameTexts, shouldShowAction, canExecuteAction } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
-  const { resources, tools, flags, executeAction, cooldowns, story } = useGameStore();
+  const { flags, executeAction, cooldowns } = useGameStore();
   const state = useGameStore.getState();
 
   // Use data-driven visibility checks
-  const showLightFire = !flags.fireLit;
   const showGatherWood = shouldShowAction('gatherWood', state);
   const showExploreCave = shouldShowAction('exploreCave', state);
 
