@@ -4,7 +4,7 @@ import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
-  const state = useGameStore.getState();
+  const state = useGameStore();
 
   const showGatherWood = shouldShowAction('gatherWood', state);
   const showExploreCave = shouldShowAction('exploreCave', state);

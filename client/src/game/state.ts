@@ -139,10 +139,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   executeAction: (actionId: string) => {
-    console.log('Executing action:', actionId);
     const state = get();
     const action = gameActions[actionId];
-    console.log('Action found:', action);
 
     if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
     if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
