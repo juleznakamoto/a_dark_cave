@@ -12,7 +12,7 @@ export default function SidePanel() {
       label: 'Wood',
       value: resources.wood ?? 0,
       testId: 'resource-wood',
-      visible: story.seen.hasWood || story.seen.actionGatherWood || resources.wood > 0
+      visible: story.seen.hasWood || resources.wood > 0
     },
     {
       id: 'meat',
@@ -26,14 +26,14 @@ export default function SidePanel() {
       label: 'Torch',
       value: resources.torch ?? 0,
       testId: 'resource-torch',
-      visible: story.seen.hasTorch || story.seen.actionBuildTorch || resources.torch > 0
+      visible: story.seen.hasTorch || resources.torch > 0
     },
     {
       id: 'stone',
       label: 'Stone',
       value: resources.stone ?? 0,
       testId: 'resource-stone',
-      visible: story.seen.hasStone || story.seen.actionExploreCave || resources.stone > 0
+      visible: story.seen.hasStone || resources.stone > 0
     }
   ];
 
@@ -42,9 +42,9 @@ export default function SidePanel() {
     {
       id: 'axe',
       label: 'Axe',
-      value: tools.axe ? 'Axe' : 'Axe (missing)',
+      value: tools.axe,
       testId: 'tool-axe',
-      visible: story.seen.hasAxe || story.seen.actionCraftAxe || tools.axe
+      visible: story.seen.hasAxe || tools.axe
     },
     {
       id: 'spear',
@@ -60,30 +60,23 @@ export default function SidePanel() {
     {
       id: 'huts',
       label: 'Huts',
-      value: buildings.huts,
+      value: buildings.huts ?? 0,
       testId: 'building-huts',
-      visible: buildings.huts > 0 || story.seen.actionBuildHut
+      visible: story.seen.actionBuildHut
     },
     {
       id: 'lodges',
       label: 'Lodges', 
-      value: buildings.lodges,
+      value: buildings.lodges ?? 0,
       testId: 'building-lodges',
-      visible: buildings.lodges > 0 || story.seen.actionBuildLodge
+      visible: story.seen.actionBuildLodge
     },
     {
       id: 'workshops',
       label: 'Workshops',
-      value: buildings.workshops,
+      value: buildings.workshops ?? 0,
       testId: 'building-workshops',
-      visible: buildings.workshops > 0 || story.seen.actionBuildWorkshop
-    },
-    {
-      id: 'traps',
-      label: 'Traps',
-      value: buildings.traps,
-      testId: 'building-traps',
-      visible: buildings.traps > 0
+      visible: story.seen.actionBuildWorkshop
     }
   ];
 
@@ -94,28 +87,28 @@ export default function SidePanel() {
       label: 'Population',
       value: `${current_population}/${total_population}`,
       testId: 'population-total',
-      visible: story.seen?.hasVillagers && total_population > 0
+      visible: story.seen?.hasVillagers
     },
     {
       id: 'free',
       label: 'Free',
-      value: villagers.free,
+      value: villagers.free ?? 0,
       testId: 'population-free',
-      visible: story.seen?.hasVillagers && villagers.free > 0
+      visible: story.seen?.hasVillagers
     },
     {
       id: 'gatherers',
       label: 'Gatherers',
-      value: villagers.gatherers,
+      value: villagers.gatherers ?? 0,
       testId: 'population-gatherers',
-      visible: story.seen?.hasVillagers && villagers.gatherers > 0
+      visible: story.seen?.hasVillagers
     },
     {
       id: 'hunters',
       label: 'Hunters',
-      value: villagers.hunters,
+      value: villagers.hunters ?? 0,
       testId: 'population-hunters',
-      visible: story.seen?.hasVillagers && villagers.hunters > 0
+      visible: story.seen?.hasVillagers
     }
   ];
 
@@ -128,7 +121,6 @@ export default function SidePanel() {
       <SidePanelSection 
         title="Tools" 
         items={toolItems}
-        className="text-muted-foreground"
       />
       <SidePanelSection 
         title="Buildings" 

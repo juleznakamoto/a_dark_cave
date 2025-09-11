@@ -18,10 +18,6 @@ export default function CavePanel() {
   return (
     <div className="space-y-6">
       <div className="space-y-4">
-        <p className="font-serif text-lg leading-relaxed">
-          {!flags.fireLit ? gameTexts.cave.initial : gameTexts.cave.afterFire}
-        </p>
-
         <div className="flex flex-wrap gap-2">
           {!flags.fireLit && (
             <CooldownButton
