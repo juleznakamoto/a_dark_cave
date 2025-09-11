@@ -56,6 +56,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
 
 function handleLightFire(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('lightFire', state);
+  console.log('Light Fire - Effect Updates:', effectUpdates);
+  console.log('Light Fire - Current State:', state.flags.fireLit);
   Object.assign(result.stateUpdates, effectUpdates);
   
   result.logEntries!.push({
