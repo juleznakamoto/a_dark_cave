@@ -294,7 +294,7 @@ export const gameActions: Record<string, Action> = {
 
   craftAxe: {
     id: "craftAxe",
-    label: "Axe",
+    label: "Stone Axe",
     show_when: {
       "flags.caveExplored": true,
       "tools.axe": false,
@@ -316,7 +316,7 @@ export const gameActions: Record<string, Action> = {
 
   craftPickaxe: {
     id: "craftPickaxe",
-    label: "Pickaxe",
+    label: "Stone Pickaxe",
     show_when: {
       "buildings.workshops": 1,
       "tools.pickaxe": false,
