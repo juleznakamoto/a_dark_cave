@@ -94,7 +94,7 @@ function handleGathererProduction() {
   const gatherers = state.villagers.gatherers;
 
   if (gatherers > 0) {
-    const woodProduced = gatherers * 5; // Each gatherer produces 5 wood
+    const woodProduced = gatherers * 10; // Each gatherer produces 10 wood
     state.updateResource('wood', woodProduced);
   }
 }

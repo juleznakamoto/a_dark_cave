@@ -250,20 +250,3 @@ export const gameActions: Record<string, Action> = {
     cooldown: 15,
   },
 };
-
-export const gameTexts = {
-  cave: {
-    initial:
-      "A dark cave. The air is cold and stale. You can barely make out the shapes around you. A low, rumbling sound echoes from deeper in the cave.",
-    fireLit:
-      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
-  },
-  village: {
-    initial: "This could be the foundation of something greater.",
-    buildings: "Buildings",
-  },
-  world: {
-    initial: "Beyond the village lies a vast world waiting to be explored...",
-  },
-  hints: {},
-};
