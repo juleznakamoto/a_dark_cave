@@ -9,13 +9,13 @@ export default function CavePanel() {
   const showGatherWood = shouldShowAction('gatherWood', state);
   const showExploreCave = shouldShowAction('exploreCave', state);
   const showBuildTorch = shouldShowAction('buildTorch', state);
-  const showCraftAxe = shouldShowAction('craftAxe', state);
-  const showCraftPickaxe = shouldShowAction('craftPickaxe', state);
+  const showCraftStoneAxe = shouldShowAction('craftStoneAxe', state);
+  const showCraftStonePickaxe = shouldShowAction('craftStonePickaxe', state);
   const showMineIron = shouldShowAction('mineIron', state);
   const canBuildTorch = canExecuteAction('buildTorch', state);
   const canExploreCave = canExecuteAction('exploreCave', state);
-  const canCraftAxe = canExecuteAction('craftAxe', state);
-  const canCraftPickaxe = canExecuteAction('craftPickaxe', state);
+  const canCraftStoneAxe = canExecuteAction('craftStoneAxe', state);
+  const canCraftStonePickaxe = canExecuteAction('craftStonePickaxe', state);
   const canMineIron = canExecuteAction('mineIron', state);
 
   return (
@@ -72,7 +72,7 @@ export default function CavePanel() {
       </div>
 
       {/* Craft Section */}
-      {(showBuildTorch || showCraftAxe || showCraftPickaxe) && (
+      {(showBuildTorch || showCraftStoneAxe || showCraftStonePickaxe) && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-foreground">Craft</h3>
           <div className="flex flex-wrap gap-2">
@@ -88,27 +88,27 @@ export default function CavePanel() {
               </CooldownButton>
             )}
 
-            {showCraftAxe && (
+            {showCraftStoneAxe && (
               <CooldownButton
-                onClick={() => executeAction('craftAxe')}
-                cooldownMs={gameActions.craftAxe.cooldown * 1000}
+                onClick={() => executeAction('craftStoneAxe')}
+                cooldownMs={gameActions.craftStoneAxe.cooldown * 1000}
                 data-testid="button-craft-axe"
                 size="sm"
-                disabled={!canCraftAxe}
+                disabled={!canCraftStoneAxe}
               >
-                Axe{getCostText('craftAxe')}
+                StoneAxe{getCostText('craftStoneAxe')}
               </CooldownButton>
             )}
 
-            {showCraftPickaxe && (
+            {showCraftStonePickaxe && (
               <CooldownButton
-                onClick={() => executeAction('craftPickaxe')}
-                cooldownMs={gameActions.craftPickaxe.cooldown * 1000}
-                data-testid="button-craft-pickaxe"
+                onClick={() => executeAction('craftStonePickaxe')}
+                cooldownMs={gameActions.craftStonePickaxe.cooldown * 1000}
+                data-testid="button-craft-stone_pickaxe"
                 size="sm"
-                disabled={!canCraftPickaxe}
+                disabled={!canCraftStonePickaxe}
               >
-                Pickaxe{getCostText('craftPickaxe')}
+                StonePickaxe{getCostText('craftStonePickaxe')}
               </CooldownButton>
             )}
           </div>

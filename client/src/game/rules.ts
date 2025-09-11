@@ -89,9 +89,9 @@ export const applyActionEffects = (actionId: string, state: GameState): Partial<
         const max = parseInt(match[2]);
         let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
         
-        // Apply axe bonus for wood gathering
-        if (actionId === 'gatherWood' && finalKey === 'wood' && state.tools.axe) {
-          baseAmount += 3; // +3 wood if axe is owned
+        // Apply stone_axe bonus for wood gathering
+        if (actionId === 'gatherWood' && finalKey === 'wood' && state.tools.stone_axe) {
+          baseAmount += 3; // +3 wood if stone_axe is owned
         }
         
         current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) + baseAmount;
@@ -158,7 +158,7 @@ export const gameActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(1,3)", // 1-3 base + axe bonus
+      "resources.wood": "random(1,3)", // 1-3 base + stone_axe bonus
       "story.seen.hasWood": true,
     },
     cooldown: 3,
@@ -292,12 +292,12 @@ export const gameActions: Record<string, Action> = {
     cooldown: 10,
   },
 
-  craftAxe: {
-    id: "craftAxe",
-    label: "Axe",
+  craftStoneAxe: {
+    id: "craftStoneAxe",
+    label: "StoneAxe",
     show_when: {
       "flags.caveExplored": true,
-      "tools.axe": false,
+      "tools.stone_axe": false,
     },
     cost: {
       "resources.wood": 5,
@@ -306,20 +306,20 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.wood": -5,
       "resources.stone": -10,
-      "tools.axe": true,
+      "tools.stone_axe": true,
       "flags.villageUnlocked": true,
-      "story.seen.hasAxe": true,
-      "story.seen.actionCraftAxe": true,
+      "story.seen.hasStoneAxe": true,
+      "story.seen.actionCraftStoneAxe": true,
     },
     cooldown: 1,
   },
 
-  craftPickaxe: {
-    id: "craftPickaxe",
-    label: "Pickaxe",
+  craftStonePickaxe: {
+    id: "craftStonePickaxe",
+    label: "Stone Pickaxe",
     show_when: {
       "buildings.workshops": 1,
-      "tools.pickaxe": false,
+      "tools.stone_pickaxe": false,
     },
     cost: {
       "resources.wood": 10,
@@ -328,9 +328,9 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.wood": -10,
       "resources.stone": -20,
-      "tools.pickaxe": true,
-      "story.seen.hasPickaxe": true,
-      "story.seen.actionCraftPickaxe": true,
+      "tools.stone_pickaxe": true,
+      "story.seen.hasStonePickaxe": true,
+      "story.seen.actionCraftStonePickaxe": true,
     },
     cooldown: 5,
   },
@@ -339,7 +339,7 @@ export const gameActions: Record<string, Action> = {
     id: "mineIron",
     label: "Mine Iron",
     show_when: {
-      "tools.pickaxe": true,
+      "tools.stone_pickaxe": true,
     },
     cost: {
       "resources.torch": 10,

@@ -17,9 +17,9 @@ export const gameStateSchema = z.object({
     caveExplored: z.boolean().default(false),
   }),
   tools: z.object({
-    axe: z.boolean().default(false),
+    stone_axe: z.boolean().default(false),
     spear: z.boolean().default(false),
-    pickaxe: z.boolean().default(false),
+    stone_pickaxe: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),

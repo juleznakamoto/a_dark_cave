@@ -43,10 +43,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildWorkshop(state, result);
     case 'exploreCave':
       return handleExploreCave(state, result);
-    case 'craftAxe':
-      return handleCraftAxe(state, result);
-    case 'craftPickaxe':
-      return handleCraftPickaxe(state, result);
+    case 'craftStoneAxe':
+      return handleCraftStoneAxe(state, result);
+    case 'craftStonePickaxe':
+      return handleCraftStonePickaxe(state, result);
     case 'mineIron':
       return handleMineIron(state, result);
     default:
@@ -162,8 +162,8 @@ function handleExploreCave(state: GameState, result: ActionResult): ActionResult
   return result;
 }
 
-function handleCraftAxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftAxe', state);
+function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftStoneAxe', state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
@@ -176,8 +176,8 @@ function handleCraftAxe(state: GameState, result: ActionResult): ActionResult {
   return result;
 }
 
-function handleCraftPickaxe(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftPickaxe', state);
+function handleCraftStonePickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftStonePickaxe', state);
   Object.assign(result.stateUpdates, effectUpdates);  
   return result;
 }

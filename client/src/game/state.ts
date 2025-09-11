@@ -67,9 +67,9 @@ const defaultGameState: GameState = {
     caveExplored: false,
   },
   tools: {
-    axe: false,
+    stone_axe: false,
     spear: false,
-    pickaxe: false,
+    stone_pickaxe: false,
   },
   buildings: {
     huts: 0,
