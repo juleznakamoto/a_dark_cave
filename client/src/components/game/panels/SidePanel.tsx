@@ -1,4 +1,3 @@
-
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
 
@@ -127,8 +126,8 @@ export default function SidePanel() {
         items={buildingItems}
       />
       <SidePanelSection 
-        title="Population" 
-        items={populationItems}
+        title={`Population ${current_population}/${total_population}`} 
+        items={populationItems.filter(item => item.id !== 'total')} 
       />
     </div>
   );
