@@ -7,6 +7,7 @@ export const gameStateSchema = z.object({
     meat: z.number().min(0).default(0),
     torch: z.number().min(0).default(0),
     stone: z.number().min(0).default(0),
+    iron: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),
@@ -18,6 +19,7 @@ export const gameStateSchema = z.object({
   tools: z.object({
     axe: z.boolean().default(false),
     spear: z.boolean().default(false),
+    pickaxe: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),

@@ -313,4 +313,42 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 1,
   },
+
+  craftPickaxe: {
+    id: "craftPickaxe",
+    label: "Pickaxe",
+    show_when: {
+      "buildings.workshops": 1,
+      "tools.pickaxe": false,
+    },
+    cost: {
+      "resources.wood": 10,
+      "resources.stone": 20,
+    },
+    effects: {
+      "resources.wood": -10,
+      "resources.stone": -20,
+      "tools.pickaxe": true,
+      "story.seen.hasPickaxe": true,
+      "story.seen.actionCraftPickaxe": true,
+    },
+    cooldown: 5,
+  },
+
+  mineIron: {
+    id: "mineIron",
+    label: "Mine Iron",
+    show_when: {
+      "tools.pickaxe": true,
+    },
+    cost: {
+      "resources.torch": 10,
+    },
+    effects: {
+      "resources.torch": -10,
+      "resources.iron": "random(2,5)",
+      "story.seen.hasIron": true,
+    },
+    cooldown: 8,
+  },
 };

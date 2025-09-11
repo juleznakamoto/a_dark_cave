@@ -10,9 +10,13 @@ export default function CavePanel() {
   const showExploreCave = shouldShowAction('exploreCave', state);
   const showBuildTorch = shouldShowAction('buildTorch', state);
   const showCraftAxe = shouldShowAction('craftAxe', state);
+  const showCraftPickaxe = shouldShowAction('craftPickaxe', state);
+  const showMineIron = shouldShowAction('mineIron', state);
   const canBuildTorch = canExecuteAction('buildTorch', state);
   const canExploreCave = canExecuteAction('exploreCave', state);
   const canCraftAxe = canExecuteAction('craftAxe', state);
+  const canCraftPickaxe = canExecuteAction('craftPickaxe', state);
+  const canMineIron = canExecuteAction('mineIron', state);
 
   return (
     <div className="space-y-6">
@@ -52,11 +56,23 @@ export default function CavePanel() {
               Explore Cave{getCostText('exploreCave')}
             </CooldownButton>
           )}
+
+          {showMineIron && (
+            <CooldownButton
+              onClick={() => executeAction('mineIron')}
+              cooldownMs={gameActions.mineIron.cooldown * 1000}
+              data-testid="button-mine-iron"
+              size="sm"
+              disabled={!canMineIron}
+            >
+              Mine Iron{getCostText('mineIron')}
+            </CooldownButton>
+          )}
         </div>
       </div>
 
       {/* Craft Section */}
-      {(showBuildTorch || showCraftAxe) && (
+      {(showBuildTorch || showCraftAxe || showCraftPickaxe) && (
         <div className="space-y-4">
           <h3 className="text-lg font-semibold text-foreground">Craft</h3>
           <div className="flex flex-wrap gap-2">
@@ -81,6 +97,18 @@ export default function CavePanel() {
                 disabled={!canCraftAxe}
               >
                 Axe{getCostText('craftAxe')}
+              </CooldownButton>
+            )}
+
+            {showCraftPickaxe && (
+              <CooldownButton
+                onClick={() => executeAction('craftPickaxe')}
+                cooldownMs={gameActions.craftPickaxe.cooldown * 1000}
+                data-testid="button-craft-pickaxe"
+                size="sm"
+                disabled={!canCraftPickaxe}
+              >
+                Pickaxe{getCostText('craftPickaxe')}
               </CooldownButton>
             )}
           </div>

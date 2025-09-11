@@ -45,6 +45,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCave(state, result);
     case 'craftAxe':
       return handleCraftAxe(state, result);
+    case 'craftPickaxe':
+      return handleCraftPickaxe(state, result);
+    case 'mineIron':
+      return handleMineIron(state, result);
     default:
       return result;
   }
@@ -165,6 +169,40 @@ function handleCraftAxe(state: GameState, result: ActionResult): ActionResult {
   result.logEntries!.push({
     id: `village-unlocked-${Date.now()}`,
     message: 'Outside the cave, a small clearing opens up. This could be the foundation of something greater.',
+    timestamp: Date.now(),
+    type: 'system',
+  });
+  
+  return result;
+}
+
+function handleCraftPickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftPickaxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `pickaxe-crafted-${Date.now()}`,
+    message: 'The pickaxe feels heavy in your hands. Deep in the cave, you hear the echo of metal striking stone.',
+    timestamp: Date.now(),
+    type: 'system',
+  });
+  
+  return result;
+}
+
+function handleMineIron(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineIron', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  const ironFound = Math.floor(Math.random() * 4) + 2; // 2-5 iron
+  result.stateUpdates.resources = {
+    ...result.stateUpdates.resources,
+    iron: (state.resources.iron || 0) + ironFound
+  };
+
+  result.logEntries!.push({
+    id: `iron-mined-${Date.now()}`,
+    message: `You strike the cave wall with your pickaxe. Sparks fly as you uncover ${ironFound} pieces of iron ore.`,
     timestamp: Date.now(),
     type: 'system',
   });

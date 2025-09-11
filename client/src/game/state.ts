@@ -57,6 +57,7 @@ const defaultGameState: GameState = {
     meat: 0,
     torch: 0,
     stone: 0,
+    iron: 0,
   },
   flags: {
     fireLit: false,
@@ -68,6 +69,7 @@ const defaultGameState: GameState = {
   tools: {
     axe: false,
     spear: false,
+    pickaxe: false,
   },
   buildings: {
     huts: 0,
