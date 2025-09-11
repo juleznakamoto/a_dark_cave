@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import SidePanel from './SidePanel'; // Assuming SidePanel is now in the same directory or adjust path as needed
+import SidePanel from './panels/SidePanel'; // Assuming SidePanel is now in the same directory or adjust path as needed
 import { useEffect } from 'react';
 
 export default function GameTabs() {
