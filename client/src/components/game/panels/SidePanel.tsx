@@ -41,14 +41,14 @@ export default function SidePanel() {
     {
       id: 'axe',
       label: 'Axe',
-      value: tools.axe,
+      value: 1,
       testId: 'tool-axe',
       visible: story.seen.hasAxe || tools.axe
     },
     {
       id: 'spear',
       label: 'Spear',
-      value: tools.spear ? 'Spear' : 'Spear (missing)',
+      value: 1,
       testId: 'tool-spear',
       visible: story.seen.hasSpear || tools.spear
     }
@@ -82,13 +82,6 @@ export default function SidePanel() {
   // Population section
   const populationItems = [
     {
-      id: 'total',
-      label: 'Population',
-      value: `${current_population}/${total_population}`,
-      testId: 'population-total',
-      visible: story.seen?.hasVillagers
-    },
-    {
       id: 'free',
       label: 'Free',
       value: villagers.free ?? 0,
@@ -100,14 +93,14 @@ export default function SidePanel() {
       label: 'Gatherers',
       value: villagers.gatherers ?? 0,
       testId: 'population-gatherers',
-      visible: story.seen?.hasVillagers
+      visible: story.seen?.hasGatherers
     },
     {
       id: 'hunters',
       label: 'Hunters',
       value: villagers.hunters ?? 0,
       testId: 'population-hunters',
-      visible: story.seen?.hasVillagers
+      visible: story.seen?.hasHunters
     }
   ];
 
