@@ -56,6 +56,7 @@ export type GameState = z.infer<typeof gameStateSchema>;
 export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
+  building: z.boolean().optional(),
   show_when: z.union([
     z.record(z.string(), z.any()),
     z.record(z.number(), z.record(z.string(), z.any()))

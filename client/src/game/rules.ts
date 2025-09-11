@@ -13,35 +13,16 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   return 1;
 };
 
-// Utility function to check if an action should be shown
-export const shouldShowAction = (actionId: string, state: GameState): boolean => {
-  const action = gameActions[actionId];
-  if (!action?.show_when) return false;
-  
-  // For building actions, get the appropriate level
-  if (['buildHut', 'buildLodge', 'buildWorkshop'].includes(actionId)) {
-    const level = getNextBuildingLevel(actionId, state);
-    const levelRequirements = action.show_when[level];
+// Helper function to check requirements for both building and non-building actions
+const checkRequirements = (requirements: any, state: GameState, action: Action): boolean => {
+  if (action.building) {
+    const level = getNextBuildingLevel(action.id, state);
+    const levelRequirements = requirements[level];
     if (!levelRequirements) return false;
-    
-    return Object.entries(levelRequirements).every(([path, expectedValue]) => {
-      const pathParts = path.split('.');
-      let current: any = state;
-      
-      for (const part of pathParts) {
-        current = current?.[part];
-      }
-      
-      if (typeof expectedValue === 'boolean') {
-        return current === expectedValue;
-      }
-      
-      return current >= expectedValue;
-    });
+    requirements = levelRequirements;
   }
   
-  // For non-building actions, use the original logic
-  return Object.entries(action.show_when).every(([path, expectedValue]) => {
+  return Object.entries(requirements).every(([path, expectedValue]) => {
     const pathParts = path.split('.');
     let current: any = state;
     
@@ -55,6 +36,14 @@ export const shouldShowAction = (actionId: string, state: GameState): boolean =>
     
     return current >= expectedValue;
   });
+};
+
+// Utility function to check if an action should be shown
+export const shouldShowAction = (actionId: string, state: GameState): boolean => {
+  const action = gameActions[actionId];
+  if (!action?.show_when) return false;
+  
+  return checkRequirements(action.show_when, state, action);
 };
 
 // Utility function to check if requirements are met for an action
@@ -62,58 +51,7 @@ export const canExecuteAction = (actionId: string, state: GameState): boolean =>
   const action = gameActions[actionId];
   if (!action?.cost) return true;
   
-  // For building actions, get the appropriate level
-  if (['buildHut', 'buildLodge', 'buildWorkshop'].includes(actionId)) {
-    const level = getNextBuildingLevel(actionId, state);
-    const levelRequirements = action.cost[level];
-    if (!levelRequirements) return false;
-    
-    return Object.entries(levelRequirements).every(([path, expectedValue]) => {
-      const pathParts = path.split('.');
-      let current: any = state;
-      
-      for (const part of pathParts) {
-        current = current?.[part];
-      }
-      
-      if (typeof expectedValue === 'boolean') {
-        return current === expectedValue;
-      }
-      
-      return current >= expectedValue;
-    });
-  }
-  
-  // For non-building actions, use the original logic
-  return Object.entries(action.cost).every(([path, expectedValue]) => {
-    const pathParts = path.split('.');
-    let current: any = state;
-    
-    for (const part of pathParts) {
-      current = current?.[part];
-    }
-    
-    if (typeof expectedValue === 'boolean') {
-      return current === expectedValue;
-    }
-    
-    return current >= expectedValue;
-  });
-};
-
-// Building requirements configuration
-export const buildingRequirements = {
-  hut: {
-    1: { wood: 100, requiredBuildings: {} },
-    2: { wood: 200, requiredBuildings: { lodges: 1 } },
-    3: { wood: 400, requiredBuildings: { workshops: 1 } }
-  },
-  lodge: {
-    1: { wood: 250, requiredBuildings: { huts: 1 } },
-  },
-  workshop: {
-    1: { wood: 100, stone: 20, requiredBuildings: { lodges: 1 } },
-  },
+  return checkRequirements(action.cost, state, action);
 };
 
 export const gameActions: Record<string, Action> = {
@@ -163,6 +101,7 @@ export const gameActions: Record<string, Action> = {
   buildHut: {
     id: "buildHut",
     label: "Wooden Hut",
+    building: true,
     show_when: {
       1: {
         "flags.villageUnlocked": true,
@@ -205,6 +144,7 @@ export const gameActions: Record<string, Action> = {
   buildLodge: {
     id: "buildLodge",
     label: "Lodge",
+    building: true,
     show_when: {
       1: {
         "buildings.huts": 1,
@@ -227,6 +167,7 @@ export const gameActions: Record<string, Action> = {
   buildWorkshop: {
     id: "buildWorkshop",
     label: "Workshop",
+    building: true,
     show_when: {
       1: {
         "buildings.lodges": 1,
