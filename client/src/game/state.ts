@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { GameState } from '@shared/schema';
-import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, applyActionEffects } from '@/game/rules';
 import { LogEntry, EventManager } from '@/game/events';
 
 interface GameStore extends GameState {
@@ -131,15 +131,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     if ((state.cooldowns['gatherWood'] || 0) > 0 && !state.devMode) return;
 
-    const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
-    const axeBonus = state.tools.axe ? 3 : 0; // +3 wood if axe is owned
-    const amount = baseAmount + axeBonus;
-    const cooldown = gameActions.gatherWood.cooldown;
-    set((state) => ({
-      resources: { ...state.resources, wood: state.resources.wood + amount },
-      story: { ...state.story, seen: { ...state.story.seen, hasWood: true } },
-      cooldowns: { ...state.cooldowns, gatherWood: state.devMode ? 0 : cooldown }
-    }));
+    get().executeAction('gatherWood');
   },
 
   setActiveTab: (tab: string) => {
@@ -216,11 +208,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       updates.log = [...state.log, fireLogEntry].slice(-8);
     } else if (actionId === 'gatherWood') {
-      const baseAmount = Math.floor(Math.random() * 3) + 1; // 1-3 wood per gather
-      const axeBonus = state.tools.axe ? 1 : 0; // +1 wood if axe is owned
-      const amount = baseAmount + axeBonus;
-      updates.resources = { ...state.resources, wood: state.resources.wood + amount };
-      updates.story.seen.hasWood = true;
+      const effectUpdates = applyActionEffects(actionId, state);
+      Object.assign(updates, effectUpdates);
     } else if (actionId === 'buildTorch') {
       updates.resources = { ...state.resources, wood: state.resources.wood - 10, torch: state.resources.torch + 1 };
       updates.flags = { ...state.flags, torchBuilt: true };
@@ -378,21 +367,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
 
     } else if (actionId === 'craftAxe') {
-      updates.resources = {
-        ...state.resources,
-        wood: state.resources.wood - 5,
-        stone: state.resources.stone - 10
-      };
-      updates.tools = { ...state.tools, axe: true };
-      updates.flags = { ...state.flags, villageUnlocked: true };
-      updates.story = {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          hasAxe: true,
-          actionCraftAxe: true
-        }
-      };
+      const effectUpdates = applyActionEffects(actionId, state);
+      Object.assign(updates, effectUpdates);
 
       // Add log entry for village unlocked
       const villageLogEntry: LogEntry = {

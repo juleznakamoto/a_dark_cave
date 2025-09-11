@@ -54,6 +54,62 @@ export const canExecuteAction = (actionId: string, state: GameState): boolean =>
   return checkRequirements(action.cost, state, action);
 };
 
+// Utility function to apply action effects
+export const applyActionEffects = (actionId: string, state: GameState): Partial<GameState> => {
+  const action = gameActions[actionId];
+  if (!action?.effects) return {};
+
+  const updates: any = {};
+
+  for (const [path, effect] of Object.entries(action.effects)) {
+    const pathParts = path.split('.');
+    let current = updates;
+    
+    // Navigate to the correct nested object
+    for (let i = 0; i < pathParts.length - 1; i++) {
+      const part = pathParts[i];
+      if (!current[part]) {
+        current[part] = pathParts[i] === 'resources' ? { ...state.resources } :
+                       pathParts[i] === 'flags' ? { ...state.flags } :
+                       pathParts[i] === 'tools' ? { ...state.tools } :
+                       pathParts[i] === 'buildings' ? { ...state.buildings } :
+                       pathParts[i] === 'story' ? { ...state.story } :
+                       {};
+      }
+      current = current[part];
+    }
+
+    const finalKey = pathParts[pathParts.length - 1];
+    
+    if (typeof effect === 'string' && effect.startsWith('random(')) {
+      // Handle random effects like "random(1,3)"
+      const match = effect.match(/random\((\d+),(\d+)\)/);
+      if (match) {
+        const min = parseInt(match[1]);
+        const max = parseInt(match[2]);
+        let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+        
+        // Apply axe bonus for wood gathering
+        if (actionId === 'gatherWood' && finalKey === 'wood' && state.tools.axe) {
+          baseAmount += 3; // +3 wood if axe is owned
+        }
+        
+        current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) + baseAmount;
+      }
+    } else if (typeof effect === 'number') {
+      if (pathParts[0] === 'resources') {
+        current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) + effect;
+      } else {
+        current[finalKey] = effect;
+      }
+    } else if (typeof effect === 'boolean') {
+      current[finalKey] = effect;
+    }
+  }
+
+  return updates;
+};
+
 // Utility function to get cost text for actions
 export const getCostText = (actionId: string, state?: GameState) => {
   const action = gameActions[actionId];
@@ -102,7 +158,8 @@ export const gameActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "+1-3", // Random amount
+      "resources.wood": "random(1,3)", // 1-3 base + axe bonus
+      "story.seen.hasWood": true,
     },
     cooldown: 3,
   },
@@ -246,6 +303,9 @@ export const gameActions: Record<string, Action> = {
       "resources.wood": -5,
       "resources.stone": -10,
       "tools.axe": true,
+      "flags.villageUnlocked": true,
+      "story.seen.hasAxe": true,
+      "story.seen.actionCraftAxe": true,
     },
     cooldown: 1,
   },
