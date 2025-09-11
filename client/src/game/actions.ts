@@ -43,9 +43,9 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildWorkshop(state, result);
     case 'exploreCave':
       return handleExploreCave(state, result);
-    case 'craftAxe':
+    case 'craftStoneAxe':
       return handleCraftStoneAxe(state, result);
-    case 'craftPickaxe':
+    case 'craftStonePickaxe':
       return handleCraftStonePickaxe(state, result);
     case 'mineIron':
       return handleMineIron(state, result);

@@ -20,7 +20,7 @@ export default function GameTabs() {
 
   return (
     <nav className="w-48 border-r border-border bg-muted/30">
-      <div className="space-y-4">
+      <div>
         <Button
           variant={activeTab === "cave" ? "default" : "ghost"}
           className="w-full justify-start text-sm background-color: blue;"
