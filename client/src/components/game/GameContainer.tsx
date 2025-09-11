@@ -9,19 +9,6 @@ import { useGameStore } from '@/game/state';
 export default function GameContainer() {
   const { activeTab } = useGameStore();
 
-  const renderActivePanel = () => {
-    switch (activeTab) {
-      case 'cave':
-        return <CavePanel />;
-      case 'village':
-        return <VillagePanel />;
-      case 'world':
-        return <WorldPanel />;
-      default:
-        return <CavePanel />;
-    }
-  };
-
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
 
