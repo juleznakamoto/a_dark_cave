@@ -1,15 +1,22 @@
-
 import { useGameStore } from '@/game/state';
-import { gameActions, gameTexts } from '@/game/rules';
+import { gameActions, gameTexts, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 
 export default function CavePanel() {
   const { resources, tools, flags, executeAction, cooldowns, story } = useGameStore();
+  const state = useGameStore.getState();
 
-  const showGatherWood = flags.fireLit;
-  const showBuildTorch = flags.fireLit && resources.wood >= 5;
-  const showExploreCave = flags.fireLit && resources.torch >= 1;
-  const showCraftAxe = flags.caveExplored && !tools.axe;
+  // Use data-driven visibility checks
+  const showLightFire = !flags.fireLit;
+  const showGatherWood = shouldShowAction('gatherWood', state);
+  const showBuildTorch = shouldShowAction('buildTorch', state);
+  const showExploreCave = shouldShowAction('exploreCave', state);
+  const showCraftAxe = shouldShowAction('craftAxe', state);
+
+  // Use data-driven requirement checks
+  const canBuildTorch = canExecuteAction('buildTorch', state);
+  const canExploreCave = canExecuteAction('exploreCave', state);
+  const canCraftAxe = canExecuteAction('craftAxe', state);
 
   return (
     <div className="space-y-6">
@@ -43,6 +50,7 @@ export default function CavePanel() {
               cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
               data-testid="button-build-torch"
               size="sm"
+              disabled={!canBuildTorch}
             >
               Build Torch (10 wood)
             </CooldownButton>
@@ -54,6 +62,7 @@ export default function CavePanel() {
               cooldownMs={(gameActions.exploreCave?.cooldown || 10) * 1000}
               data-testid="button-explore-cave"
               size="sm"
+              disabled={!canExploreCave}
             >
               Explore Cave (5 torch)
             </CooldownButton>
@@ -65,6 +74,7 @@ export default function CavePanel() {
               cooldownMs={(gameActions.craftAxe?.cooldown || 15) * 1000}
               data-testid="button-craft-axe"
               size="sm"
+              disabled={!canCraftAxe}
             >
               Craft Axe (5 wood, 10 stone)
             </CooldownButton>

@@ -1,4 +1,47 @@
 import { Action } from "@shared/schema";
+import { GameState } from "@shared/schema";
+
+// Utility function to check if an action should be shown
+export const shouldShowAction = (actionId: string, state: GameState): boolean => {
+  const action = gameActions[actionId];
+  if (!action?.showRequirements) return false;
+  
+  return Object.entries(action.showRequirements).every(([path, expectedValue]) => {
+    const pathParts = path.split('.');
+    let current: any = state;
+    
+    for (const part of pathParts) {
+      current = current?.[part];
+    }
+    
+    if (typeof expectedValue === 'boolean') {
+      return current === expectedValue;
+    }
+    
+    return current >= expectedValue;
+  });
+};
+
+// Utility function to check if requirements are met for an action
+export const canExecuteAction = (actionId: string, state: GameState): boolean => {
+  const action = gameActions[actionId];
+  if (!action?.requirements) return true;
+  
+  return Object.entries(action.requirements).every(([path, expectedValue]) => {
+    const pathParts = path.split('.');
+    let current: any = state;
+    
+    for (const part of pathParts) {
+      current = current?.[part];
+    }
+    
+    if (typeof expectedValue === 'boolean') {
+      return current === expectedValue;
+    }
+    
+    return current >= expectedValue;
+  });
+};
 
 // Building requirements configuration
 export const buildingRequirements = {
@@ -36,9 +79,10 @@ export const gameActions: Record<string, Action> = {
     label: "Gather Wood",
     description:
       "Search the cave for fallen branches and dry wood to keep the fire burning.",
-    requirements: {
+    showRequirements: {
       "flags.fireLit": true,
     },
+    requirements: {},
     effects: {
       "resources.wood": "+1-3", // Random amount
     },
@@ -49,8 +93,10 @@ export const gameActions: Record<string, Action> = {
     id: "buildTorch",
     label: "Torch",
     description: "Create a torch to explore deeper into the cave.",
-    requirements: {
+    showRequirements: {
       "flags.fireLit": true,
+    },
+    requirements: {
       "resources.wood": 10,
     },
     effects: {
@@ -109,8 +155,10 @@ export const gameActions: Record<string, Action> = {
     id: "exploreCave",
     label: "Explore Cave",
     description: "Venture deeper into the cave with torches to light the way.",
-    requirements: {
+    showRequirements: {
       "flags.fireLit": true,
+    },
+    requirements: {
       "resources.torch": 5,
     },
     effects: {
@@ -125,8 +173,11 @@ export const gameActions: Record<string, Action> = {
     label: "Axe",
     description:
       "Create a sturdy axe from wood and stone to gather resources more efficiently.",
+    showRequirements: {
+      "flags.caveExplored": true,
+      "tools.axe": false,
+    },
     requirements: {
-      "flags.fireLit": true,
       "resources.wood": 5,
       "resources.stone": 10,
     },
