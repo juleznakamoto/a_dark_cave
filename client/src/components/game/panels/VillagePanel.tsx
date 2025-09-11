@@ -27,61 +27,63 @@ export default function VillagePanel() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-4">
-        <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+      {/* Build Section */}
+      {(shouldShowAction('buildHut', state) || shouldShowAction('buildLodge', state) || shouldShowAction('buildWorkshop', state)) && (
+        <div className="space-y-4">
+          <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+          <div className="flex flex-wrap gap-2">
+            {shouldShowAction('buildHut', state) && (
+              <CooldownButton
+                onClick={handleBuildHut}
+                cooldownMs={gameActions.buildHut.cooldown * 1000}
+                data-testid="button-build-wooden-hut"
+                disabled={!canBuildHut}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">
+                  Wooden Hut{getCostText('buildHut', state)}
+                </span>
+              </CooldownButton>
+            )}
 
-        <div className="flex flex-wrap gap-2">
-          {shouldShowAction('buildHut', state) && (
-            <CooldownButton
-              onClick={handleBuildHut}
-              cooldownMs={gameActions.buildHut.cooldown * 1000}
-              data-testid="button-build-wooden-hut"
-              disabled={!canBuildHut}
-              className="relative overflow-hidden"
-              size="sm"
-            >
-              <span className="relative z-10">
-                Wooden Hut{getCostText('buildHut', state)}
-              </span>
-            </CooldownButton>
-          )}
+            {shouldShowAction('buildLodge', state) && (
+              <CooldownButton
+                onClick={handleBuildLodge}
+                cooldownMs={gameActions.buildLodge.cooldown * 1000}
+                data-testid="button-build-lodge"
+                disabled={!canBuildLodge}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">
+                  Lodge{getCostText('buildLodge', state)}
+                </span>
+              </CooldownButton>
+            )}
 
-          {shouldShowAction('buildLodge', state) && (
-            <CooldownButton
-              onClick={handleBuildLodge}
-              cooldownMs={gameActions.buildLodge.cooldown * 1000}
-              data-testid="button-build-lodge"
-              disabled={!canBuildLodge}
-              className="relative overflow-hidden"
-              size="sm"
-            >
-              <span className="relative z-10">
-                Lodge{getCostText('buildLodge', state)}
-              </span>
-            </CooldownButton>
-          )}
-
-          {shouldShowAction('buildWorkshop', state) && (
-            <CooldownButton
-              onClick={handleBuildWorkshop}
-              cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
-              data-testid="button-build-workshop"
-              disabled={!canBuildWorkshop}
-              className="relative overflow-hidden"
-              size="sm"
-            >
-              <span className="relative z-10">
-                Workshop{getCostText('buildWorkshop', state)}
-              </span>
-            </CooldownButton>
-          )}
+            {shouldShowAction('buildWorkshop', state) && (
+              <CooldownButton
+                onClick={handleBuildWorkshop}
+                cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
+                data-testid="button-build-workshop"
+                disabled={!canBuildWorkshop}
+                className="relative overflow-hidden"
+                size="sm"
+              >
+                <span className="relative z-10">
+                  Workshop{getCostText('buildWorkshop', state)}
+                </span>
+              </CooldownButton>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
+      {/* Rule Section */}
       {story.seen?.hasVillagers && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
-
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <span className="text-sm">Gatherer</span>
