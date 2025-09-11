@@ -185,11 +185,5 @@ function handleCraftPickaxe(state: GameState, result: ActionResult): ActionResul
 function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
   Object.assign(result.stateUpdates, effectUpdates);
-
-  const ironFound = Math.floor(Math.random() * 4) + 2;
-  result.stateUpdates.resources = {
-    ...result.stateUpdates.resources,
-    iron: (state.resources.iron || 0) + ironFound
-  }; 
   return result;
 }
