@@ -1,6 +1,7 @@
 import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
+import { getPopulationProduction } from "./population";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -90,10 +91,10 @@ function handleGathererProduction() {
   const gatherers = state.villagers.gatherers;
 
   if (gatherers > 0) {
-    const woodProduced = gatherers * 10; // Each gatherer produces 10 wood
-    state.updateResource("wood", woodProduced);
-    const stoneProduced = gatherers * 2; // Each gatherer produces 2 stone
-    state.updateResource("stone", stoneProduced);
+    const production = getPopulationProduction('gatherers', gatherers);
+    production.forEach(prod => {
+      state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+    });
   }
 }
 
@@ -102,8 +103,10 @@ function handleHunterProduction() {
   const hunters = state.villagers.hunters;
 
   if (hunters > 0) {
-    const meatProduced = hunters * 5; // Each hunter produces 5 meat
-    state.updateResource("meat", meatProduced);
+    const production = getPopulationProduction('hunters', hunters);
+    production.forEach(prod => {
+      state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+    });
   }
 }
 
