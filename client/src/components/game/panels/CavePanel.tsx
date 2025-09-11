@@ -1,3 +1,4 @@
+
 import { useGameStore } from '@/game/state';
 import { gameActions, gameTexts, shouldShowAction, canExecuteAction } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -9,8 +10,10 @@ export default function CavePanel() {
   // Use data-driven visibility checks
   const showLightFire = !flags.fireLit;
   const showGatherWood = shouldShowAction('gatherWood', state);
-  const showBuildTorch = shouldShowAction('buildTorch', state);
   const showExploreCave = shouldShowAction('exploreCave', state);
+  
+  // Craft section items
+  const showBuildTorch = shouldShowAction('buildTorch', state);
   const showCraftAxe = shouldShowAction('craftAxe', state);
 
   // Use data-driven requirement checks
@@ -20,6 +23,7 @@ export default function CavePanel() {
 
   return (
     <div className="space-y-6">
+      {/* Action Buttons Section (no header) */}
       <div className="space-y-4">
         <div className="flex flex-wrap gap-2">
           {!flags.fireLit && (
@@ -44,18 +48,6 @@ export default function CavePanel() {
             </CooldownButton>
           )}
 
-          {showBuildTorch && (
-            <CooldownButton
-              onClick={() => executeAction('buildTorch')}
-              cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
-              data-testid="button-build-torch"
-              size="sm"
-              disabled={!canBuildTorch}
-            >
-              Build Torch (10 wood)
-            </CooldownButton>
-          )}
-
           {showExploreCave && (
             <CooldownButton
               onClick={() => executeAction('exploreCave')}
@@ -67,20 +59,40 @@ export default function CavePanel() {
               Explore Cave (5 torch)
             </CooldownButton>
           )}
-
-          {showCraftAxe && (
-            <CooldownButton
-              onClick={() => executeAction('craftAxe')}
-              cooldownMs={(gameActions.craftAxe?.cooldown || 15) * 1000}
-              data-testid="button-craft-axe"
-              size="sm"
-              disabled={!canCraftAxe}
-            >
-              Craft Axe (5 wood, 10 stone)
-            </CooldownButton>
-          )}
         </div>
       </div>
+
+      {/* Craft Section */}
+      {(showBuildTorch || showCraftAxe) && (
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">Craft</h3>
+          <div className="flex flex-wrap gap-2">
+            {showBuildTorch && (
+              <CooldownButton
+                onClick={() => executeAction('buildTorch')}
+                cooldownMs={(gameActions.buildTorch?.cooldown || 5) * 1000}
+                data-testid="button-build-torch"
+                size="sm"
+                disabled={!canBuildTorch}
+              >
+                Torch (10 wood)
+              </CooldownButton>
+            )}
+
+            {showCraftAxe && (
+              <CooldownButton
+                onClick={() => executeAction('craftAxe')}
+                cooldownMs={(gameActions.craftAxe?.cooldown || 15) * 1000}
+                data-testid="button-craft-axe"
+                size="sm"
+                disabled={!canCraftAxe}
+              >
+                Axe (5 wood, 10 stone)
+              </CooldownButton>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
