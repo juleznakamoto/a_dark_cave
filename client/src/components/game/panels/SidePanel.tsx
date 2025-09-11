@@ -61,21 +61,21 @@ export default function SidePanel() {
       label: 'Huts',
       value: buildings.huts ?? 0,
       testId: 'building-huts',
-      visible: story.seen.actionBuildHut
+      visible: story.seen.actionBuildHut === true
     },
     {
       id: 'lodges',
       label: 'Lodges', 
       value: buildings.lodges ?? 0,
       testId: 'building-lodges',
-      visible: story.seen.actionBuildLodge
+      visible: story.seen.actionBuildLodge === true
     },
     {
       id: 'workshops',
       label: 'Workshops',
       value: buildings.workshops ?? 0,
       testId: 'building-workshops',
-      visible: story.seen.actionBuildWorkshop
+      visible: story.seen.actionBuildWorkshop === true
     }
   ];
 
@@ -86,21 +86,21 @@ export default function SidePanel() {
       label: 'Free',
       value: villagers.free ?? 0,
       testId: 'population-free',
-      visible: story.seen?.hasVillagers
+      visible: story.seen?.hasVillagers === true
     },
     {
       id: 'gatherers',
       label: 'Gatherers',
       value: villagers.gatherers ?? 0,
       testId: 'population-gatherers',
-      visible: story.seen?.hasGatherers
+      visible: story.seen?.hasGatherers === true
     },
     {
       id: 'hunters',
       label: 'Hunters',
       value: villagers.hunters ?? 0,
       testId: 'population-hunters',
-      visible: story.seen?.hasHunters
+      visible: story.seen?.hasHunters === true
     }
   ];
 
