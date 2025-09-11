@@ -3,6 +3,7 @@ import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
+import { getPopulationProductionText } from '@/game/population';
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
@@ -68,7 +69,7 @@ export default function VillagePanel() {
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm">Gatherer</span>
+              <span className="text-sm">Gatherer ({getPopulationProductionText('gatherers')})</span>
               <div className="flex items-center gap-2">
                 <Button
                   onClick={() => unassignVillager('gatherers')}
@@ -94,7 +95,7 @@ export default function VillagePanel() {
 
             {buildings.lodges > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-sm">Hunter</span>
+                <span className="text-sm">Hunter ({getPopulationProductionText('hunters')})</span>
                 <div className="flex items-center gap-2">
                   <Button
                     onClick={() => unassignVillager('hunters')}

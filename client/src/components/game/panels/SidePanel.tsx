@@ -1,6 +1,5 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { getPopulationProductionText } from '@/game/population';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, story, current_population, total_population } = useGameStore();
@@ -91,14 +90,14 @@ export default function SidePanel() {
     },
     {
       id: 'gatherers',
-      label: `Gatherers (${getPopulationProductionText('gatherers')})`,
+      label: `Gatherers`,
       value: villagers.gatherers ?? 0,
       testId: 'population-gatherers',
       visible: story.seen?.hasGatherers === true
     },
     {
       id: 'hunters',
-      label: `Hunters (${getPopulationProductionText('hunters')})`,
+      label: `Hunters`,
       value: villagers.hunters ?? 0,
       testId: 'population-hunters',
       visible: story.seen?.hasHunters === true
