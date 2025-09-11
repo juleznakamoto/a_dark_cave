@@ -5,24 +5,16 @@ import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
 export default function VillagePanel() {
-  const { cooldowns, villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
-  const state = useGameStore();
+  const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const state = useGameStore.getState();
 
-  const handleBuildHut = () => {
-    executeAction('buildHut');
-  };
+  const handleBuildHut = () => executeAction('buildHut');
+  const handleBuildLodge = () => executeAction('buildLodge');
+  const handleBuildWorkshop = () => executeAction('buildWorkshop');
 
-  const handleBuildLodge = () => {
-    executeAction('buildLodge');
-  };
-
-  const handleBuildWorkshop = () => {
-    executeAction('buildWorkshop');
-  };
-
-  const canBuildHut = shouldShowAction('buildHut', state) && canExecuteAction('buildHut', state) && (cooldowns['buildHut'] || 0) === 0;
-  const canBuildLodge = shouldShowAction('buildLodge', state) && canExecuteAction('buildLodge', state) && (cooldowns['buildLodge'] || 0) === 0;
-  const canBuildWorkshop = shouldShowAction('buildWorkshop', state) && canExecuteAction('buildWorkshop', state) && (cooldowns['buildWorkshop'] || 0) === 0;
+  const canBuildHut = canExecuteAction('buildHut', state);
+  const canBuildLodge = canExecuteAction('buildLodge', state);
+  const canBuildWorkshop = canExecuteAction('buildWorkshop', state);
 
   return (
     <div className="space-y-6">
@@ -37,12 +29,9 @@ export default function VillagePanel() {
                 cooldownMs={gameActions.buildHut.cooldown * 1000}
                 data-testid="button-build-wooden-hut"
                 disabled={!canBuildHut}
-                className="relative overflow-hidden"
                 size="sm"
               >
-                <span className="relative z-10">
-                  Wooden Hut{getCostText('buildHut', state)}
-                </span>
+                Wooden Hut{getCostText('buildHut', state)}
               </CooldownButton>
             )}
 
@@ -52,12 +41,9 @@ export default function VillagePanel() {
                 cooldownMs={gameActions.buildLodge.cooldown * 1000}
                 data-testid="button-build-lodge"
                 disabled={!canBuildLodge}
-                className="relative overflow-hidden"
                 size="sm"
               >
-                <span className="relative z-10">
-                  Lodge{getCostText('buildLodge', state)}
-                </span>
+                Lodge{getCostText('buildLodge', state)}
               </CooldownButton>
             )}
 
@@ -67,12 +53,9 @@ export default function VillagePanel() {
                 cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
                 data-testid="button-build-workshop"
                 disabled={!canBuildWorkshop}
-                className="relative overflow-hidden"
                 size="sm"
               >
-                <span className="relative z-10">
-                  Workshop{getCostText('buildWorkshop', state)}
-                </span>
+                Workshop{getCostText('buildWorkshop', state)}
               </CooldownButton>
             )}
           </div>
