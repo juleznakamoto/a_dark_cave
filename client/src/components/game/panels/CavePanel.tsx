@@ -7,7 +7,7 @@ export default function CavePanel() {
   const { resources, tools, flags, executeAction, cooldowns, story } = useGameStore();
 
   // Show gather wood button only after fire is lit
-  const showGatherWood = flags.fireLit && !story.seen.hasWood;
+  const showGatherWood = flags.fireLit;
   // Show build torch when player has enough wood (10+)
   const showBuildTorch = flags.fireLit && resources.wood >= 10 && !flags.torchBuilt;
   // Show explore cave when player has 5+ torches
