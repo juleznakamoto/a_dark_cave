@@ -168,7 +168,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
     const result = executeGameAction(actionId, state);
-    
+
     // Apply cooldown override for dev mode
     if (state.devMode) {
       result.stateUpdates.cooldowns = { ...result.stateUpdates.cooldowns, [actionId]: 0 };
