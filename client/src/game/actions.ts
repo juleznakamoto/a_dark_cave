@@ -178,15 +178,7 @@ function handleCraftAxe(state: GameState, result: ActionResult): ActionResult {
 
 function handleCraftPickaxe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftPickaxe', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  result.logEntries!.push({
-    id: `pickaxe-crafted-${Date.now()}`,
-    message: 'The pickaxe feels heavy in your hands. Deep in the cave, you hear the echo of metal striking stone.',
-    timestamp: Date.now(),
-    type: 'system',
-  });
-  
+  Object.assign(result.stateUpdates, effectUpdates);  
   return result;
 }
 
@@ -194,18 +186,10 @@ function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  const ironFound = Math.floor(Math.random() * 4) + 2; // 2-5 iron
+  const ironFound = Math.floor(Math.random() * 4) + 2;
   result.stateUpdates.resources = {
     ...result.stateUpdates.resources,
     iron: (state.resources.iron || 0) + ironFound
-  };
-
-  result.logEntries!.push({
-    id: `iron-mined-${Date.now()}`,
-    message: `You strike the cave wall with your pickaxe. Sparks fly as you uncover ${ironFound} pieces of iron ore.`,
-    timestamp: Date.now(),
-    type: 'system',
-  });
-  
+  }; 
   return result;
 }
