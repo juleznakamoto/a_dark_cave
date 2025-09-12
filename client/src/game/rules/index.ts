@@ -202,8 +202,8 @@ export const applyActionEffects = (
 
       // Only store log message if the effect actually triggered
       if (shouldTrigger && probabilityEffect.logMessage) {
-        if (!current.logMessages) current.logMessages = [];
-        current.logMessages.push(probabilityEffect.logMessage);
+        if (!updates.logMessages) updates.logMessages = [];
+        updates.logMessages.push(probabilityEffect.logMessage);
       }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
