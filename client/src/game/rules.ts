@@ -443,4 +443,25 @@ export const gameActions: Record<string, Action> = {
     },
     cooldown: 8,
   },
+
+  ventureDeeper: {
+    id: "ventureDeeper",
+    label: "Venture Deeper",
+    show_when: {
+      "buildings.huts": 1,
+    },
+    cost: {
+      "resources.torch": 10,
+    },
+    effects: {
+      "resources.torch": -10,
+      "resources.stone": "random(3,8)",
+      "resources.coal": { probability: 0.2, value: "random(2,5)" },
+      "resources.iron": { probability: 0.15, value: "random(2,4)" },
+      "resources.bones": { probability: 0.1, value: "random(1,3)" },
+      "flags.venturedDeeper": true,
+      "story.seen.venturedDeeper": true,
+    },
+    cooldown: 15,
+  },
 };

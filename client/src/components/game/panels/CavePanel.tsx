@@ -12,11 +12,13 @@ export default function CavePanel() {
   const showCraftStoneAxe = shouldShowAction('craftStoneAxe', state);
   const showCraftStonePickaxe = shouldShowAction('craftStonePickaxe', state);
   const showMineIron = shouldShowAction('mineIron', state);
+  const showVentureDeeper = shouldShowAction('ventureDeeper', state);
   const canBuildTorch = canExecuteAction('buildTorch', state);
   const canExploreCave = canExecuteAction('exploreCave', state);
   const canCraftStoneAxe = canExecuteAction('craftStoneAxe', state);
   const canCraftStonePickaxe = canExecuteAction('craftStonePickaxe', state);
   const canMineIron = canExecuteAction('mineIron', state);
+  const canVentureDeeper = canExecuteAction('ventureDeeper', state);
 
   return (
     <div className="space-y-6">
@@ -66,6 +68,18 @@ export default function CavePanel() {
               disabled={!canMineIron}
             >
               Mine Iron{getCostText('mineIron')}
+            </CooldownButton>
+          )}
+
+          {showVentureDeeper && (
+            <CooldownButton
+              onClick={() => executeAction('ventureDeeper')}
+              cooldownMs={gameActions.ventureDeeper.cooldown * 1000}
+              data-testid="button-venture-deeper"
+              size="sm"
+              disabled={!canVentureDeeper}
+            >
+              Venture Deeper{getCostText('ventureDeeper')}
             </CooldownButton>
           )}
         </div>

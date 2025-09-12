@@ -49,6 +49,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftStonePickaxe(state, result);
     case 'mineIron':
       return handleMineIron(state, result);
+    case 'ventureDeeper':
+      return handleVentureDeeper(state, result);
     default:
       return result;
   }
@@ -218,6 +220,37 @@ function handleMineIron(state: GameState, result: ActionResult): ActionResult {
     });
     // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
+  }
+  
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleVentureDeeper(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('ventureDeeper', state);
+  
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for venturing deeper
+  if (!state.story.seen.venturedDeeper) {
+    result.logEntries!.push({
+      id: `venture-deeper-${Date.now()}`,
+      message: 'The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend, but the promise of greater treasures draws you forward.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
   }
   
   Object.assign(result.stateUpdates, effectUpdates);

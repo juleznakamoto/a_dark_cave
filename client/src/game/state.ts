@@ -73,6 +73,7 @@ const defaultGameState: GameState = {
     worldDiscovered: false,
     torchBuilt: false,
     caveExplored: false,
+    venturedDeeper: false,
     gameStarted: false,
   },
   tools: {
