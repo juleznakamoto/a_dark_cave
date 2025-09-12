@@ -41,11 +41,11 @@ export const basicActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
-      "resources.coal": { probability: 0.2, value: "random(1,4)" },
-      "resources.iron": { probability: 0.2, value: "random(1,4)" },
-      "resources.bones": { probability: 0.1, value: "random(1,4)" },
+      "resources.coal": { probability: 0.5, value: "random(1,4)" },
+      "resources.iron": { probability: 0.5, value: "random(1,4)" },
+      "resources.bones": { probability: 0.25, value: "random(1,4)" },
       "clothing.tarnished_amulet": {
-        probability: 0.05,
+        probability: 0.75,
         value: true,
         condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
@@ -89,12 +89,12 @@ export const basicActions: Record<string, Action> = {
       "resources.torch": -10,
       "resources.food": -20,
       "resources.stone": "random(3,8)",
-      "resources.coal": { probability: 0.3, value: "random(2,6)" },
-      "resources.iron": { probability: 0.3, value: "random(2,6)" },
-      "resources.sulfur": { probability: 0.3, value: "random(2,4)" },
-      "resources.bones": { probability: 0.2, value: "random(2,6)" },
+      "resources.coal": { probability: 0.6, value: "random(2,6)" },
+      "resources.iron": { probability: 0.6, value: "random(2,6)" },
+      "resources.sulfur": { probability: 0.4, value: "random(2,4)" },
+      "resources.bones": { probability: 0.5, value: "random(2,6)" },
       "clothing.tarnished_amulet": {
-        probability: 0.075,
+        probability: 0.1,
         value: true,
         condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
