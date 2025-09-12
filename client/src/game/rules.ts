@@ -197,7 +197,6 @@ export const gameActions: Record<string, Action> = {
     label: "Torch",
     show_when: {
       "flags.fireLit": true,
-      "story.seen.hasWood": true,
     },
     cost: {
       "resources.wood": 10,
@@ -308,7 +307,6 @@ export const gameActions: Record<string, Action> = {
     label: "Explore Cave",
     show_when: {
       "flags.fireLit": true,
-      "flags.torchBuilt": true,
     },
     cost: {
       "resources.torch": 5,
