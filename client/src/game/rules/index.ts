@@ -1,4 +1,3 @@
-
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability } from "../effects";
@@ -137,11 +136,11 @@ export const applyActionEffects = (
       // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet" }
       const probabilityEffect = effect as {
         probability: number;
-        value: number | string;
+        value: number | string | boolean;
         logMessage?: string;
         condition?: string;
       };
-      
+
       // Check condition if provided
       let conditionMet = true;
       if (probabilityEffect.condition) {
@@ -165,7 +164,7 @@ export const applyActionEffects = (
           conditionMet = !!current;
         }
       }
-      
+
       const totalLuck = getTotalLuck(state);
       const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
       const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
