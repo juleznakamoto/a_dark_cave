@@ -125,7 +125,7 @@ export const applyActionEffects = (
       // Handle probability-based effects like { probability: 0.3, value: 5 } or { probability: 0.5, value: "random(1,3)" }
       const probabilityEffect = effect as { probability: number; value: number | string };
       const shouldTrigger = Math.random() < probabilityEffect.probability;
-      
+
       if (shouldTrigger) {
         if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
           // Handle random value within probability effect
@@ -134,7 +134,7 @@ export const applyActionEffects = (
             const min = parseInt(match[1]);
             const max = parseInt(match[2]);
             const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-            
+
             if (pathParts[0] === "resources") {
               current[finalKey] =
                 (state.resources[finalKey as keyof typeof state.resources] || 0) +
@@ -165,6 +165,12 @@ export const applyActionEffects = (
       }
     } else if (typeof effect === "boolean") {
       current[finalKey] = effect;
+    } else if (pathParts[0] === "tools") {
+        // Handle tool effects (e.g., equipping/unequipping)
+        current[finalKey] = effect;
+    } else if (pathParts[0] === "clothing") {
+        // Handle clothing effects (e.g., equipping/unequipping)
+        current[finalKey] = effect;
     }
   }
 
