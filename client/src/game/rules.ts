@@ -197,6 +197,7 @@ export const gameActions: Record<string, Action> = {
     label: "Torch",
     show_when: {
       "flags.fireLit": true,
+      "story.seen.hasWood": true,
     },
     cost: {
       "resources.wood": 10,
@@ -204,7 +205,6 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.wood": -10,
       "resources.torch": 1,
-      "flags.torchBuilt": true,
       "story.seen.actionBuildTorch": true,
     },
     unlocks: ["exploreDeeper"],
@@ -307,6 +307,7 @@ export const gameActions: Record<string, Action> = {
     label: "Explore Cave",
     show_when: {
       "flags.fireLit": true,
+      "story.seen.actionBuildTorch": true,
     },
     cost: {
       "resources.torch": 5,

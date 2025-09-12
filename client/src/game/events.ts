@@ -101,7 +101,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   ironGift: {
     id: "ironGift",
-    condition: (state) => true,
+    condition: (state) => state.buildings.huts >= 1,
     triggerType: "resource",
     timeProbability: 15,
     message: [
