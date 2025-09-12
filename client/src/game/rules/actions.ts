@@ -21,10 +21,10 @@ export const basicActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(1,3)",
+      "resources.wood": "random(1,4)",
       "story.seen.hasWood": true,
     },
-    cooldown: 3,
+    cooldown: 5,
   },
 
   exploreCave: {
@@ -45,7 +45,7 @@ export const basicActions: Record<string, Action> = {
       "resources.iron": { probability: 0.5, value: "random(1,4)" },
       "resources.bones": { probability: 0.25, value: "random(1,4)" },
       "clothing.tarnished_amulet": {
-        probability: 0.75,
+        probability: 0.075,
         value: true,
         condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
@@ -72,7 +72,7 @@ export const basicActions: Record<string, Action> = {
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
     },
-    cooldown: 8,
+    cooldown: 10,
   },
 
   ventureDeeper: {
