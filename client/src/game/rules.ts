@@ -220,7 +220,7 @@ export const gameActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(1,3)", // 1-3 base + axe bonus
+      "resources.wood": "random(1,3)",
       "story.seen.hasWood": true,
     },
     cooldown: 3,
@@ -349,9 +349,10 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
-      "resources.coal": { probability: 0.3, value: "random(1,2)" }, // 30% chance to find 1-2 coal
-      "resources.bones": { probability: 0.15, value: 1 }, // 15% chance to find 1 bone
-      
+      "resources.coal": { probability: 0.1, value: "random(1,2)" },
+      "resources.iron": { probability: 0.1, value: "random(1,2)" },
+      "resources.bones": { probability: 0.05, value: 1 },
+      "clothing.tarnished_amulet": { probability: 0.01, value: true },
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
