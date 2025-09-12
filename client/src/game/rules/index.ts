@@ -50,7 +50,7 @@ const checkRequirements = (
       return current === expectedValue;
     }
 
-    return current >= expectedValue;
+    return current === expectedValue;
   });
 };
 
