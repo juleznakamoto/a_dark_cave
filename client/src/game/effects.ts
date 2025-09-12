@@ -48,14 +48,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: 'Enables mining and improves stone gathering',
     bonuses: {
       actionBonuses: {
-        exploreCave: {
-          resourceBonus: { stone: 2 }, // +2 stone when exploring
-          probabilityBonus: { coal: 0.1, iron: 0.05 } // Better chance to find minerals
-        },
-        mineIron: {
-          cooldownReduction: 0.15, // 15% faster mining
-          probabilityBonus: { coal: 0.1 } // 10% better chance for coal
-        }
+        
       }
     }
   },
@@ -66,10 +59,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: 'Improves hunting efficiency',
     bonuses: {
       actionBonuses: {
-        hunt: {
-          resourceBonus: { meat: 2, fur: 1 }, // Better hunting yields
-          cooldownReduction: 0.2 // 20% faster hunting
-        }
+        
       }
     }
   }
