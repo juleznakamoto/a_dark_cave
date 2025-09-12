@@ -30,7 +30,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: 'Hunters',
     production: [
       {
-        resource: 'meat',
+        resource: 'food',
         amount: 5,
         interval: 30000,
       },

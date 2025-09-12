@@ -33,6 +33,7 @@ export const basicActions: Record<string, Action> = {
     show_when: {
       "flags.fireLit": true,
       "story.seen.actionBuildTorch": true,
+      "buildings.lodges": 0,
     },
     cost: {
       "resources.torch": 5,

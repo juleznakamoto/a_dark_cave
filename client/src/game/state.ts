@@ -1,23 +1,26 @@
-import { create } from 'zustand';
-import { GameState } from '@shared/schema';
-import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
-import { LogEntry, EventManager } from '@/game/events';
-import { executeGameAction } from '@/game/actions';
-import { 
-  updateResource, 
-  updateFlag, 
-  updatePopulationCounts, 
-  assignVillagerToJob, 
-  unassignVillagerFromJob 
-} from '@/game/stateHelpers';
+import { create } from "zustand";
+import { GameState } from "@shared/schema";
+import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
+import { LogEntry, EventManager } from "@/game/events";
+import { executeGameAction } from "@/game/actions";
+import {
+  updateResource,
+  updateFlag,
+  updatePopulationCounts,
+  assignVillagerToJob,
+  unassignVillagerFromJob,
+} from "@/game/stateHelpers";
 
 interface GameStore extends GameState {
   // Actions
   gatherWood: () => void;
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
-  updateResource: (resource: keyof GameState['resources'], amount: number) => void;
-  setFlag: (flag: keyof GameState['flags'], value: boolean) => void;
+  updateResource: (
+    resource: keyof GameState["resources"],
+    amount: number,
+  ) => void;
+  setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
@@ -46,14 +49,14 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: 'gatherers' | 'hunters') => void;
-  unassignVillager: (job: 'gatherers' | 'hunters') => void;
+  assignVillager: (job: "gatherers" | "hunters") => void;
+  unassignVillager: (job: "gatherers" | "hunters") => void;
 }
 
 const defaultGameState: GameState = {
   resources: {
     wood: 0,
-    meat: 0,
+    food: 0,
     torch: 0,
     stone: 0,
     iron: 0,
@@ -66,6 +69,7 @@ const defaultGameState: GameState = {
   },
   stats: {
     luck: 0,
+    strength: 0,
   },
   flags: {
     fireLit: false,
@@ -83,6 +87,7 @@ const defaultGameState: GameState = {
   },
   clothing: {
     tarnished_amulet: false,
+    bloodstained_belt: false,
   },
   buildings: {
     huts: 0,
@@ -112,13 +117,10 @@ const defaultGameState: GameState = {
   version: 1,
 };
 
-
-
-
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
-  activeTab: 'cave',
-  lastSaved: 'Never',
+  activeTab: "cave",
+  lastSaved: "Never",
   isGameLoopActive: false,
   devMode: true,
   cooldowns: {},
@@ -127,24 +129,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
   current_population: 0,
   total_population: 0,
 
-  
-
   gatherWood: () => {
     const state = get();
-    if ((state.cooldowns['gatherWood'] || 0) > 0 && !state.devMode) return;
+    if ((state.cooldowns["gatherWood"] || 0) > 0 && !state.devMode) return;
 
-    get().executeAction('gatherWood');
+    get().executeAction("gatherWood");
   },
 
   setActiveTab: (tab: string) => {
     set({ activeTab: tab });
   },
 
-  updateResource: (resource: keyof GameState['resources'], amount: number) => {
+  updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
   },
 
-  setFlag: (flag: keyof GameState['flags'], value: boolean) => {
+  setFlag: (flag: keyof GameState["flags"], value: boolean) => {
     set((state) => updateFlag(state, flag, value));
   },
 
@@ -156,54 +156,67 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
-    if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
+    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode))
+      return;
+    if (
+      !shouldShowAction(actionId, state) ||
+      !canExecuteAction(actionId, state)
+    )
+      return;
 
     const result = executeGameAction(actionId, state);
 
     // Apply cooldown override for dev mode
     if (state.devMode) {
-      result.stateUpdates.cooldowns = { ...result.stateUpdates.cooldowns, [actionId]: 0 };
+      result.stateUpdates.cooldowns = {
+        ...result.stateUpdates.cooldowns,
+        [actionId]: 0,
+      };
     }
 
     // Apply state updates
     set((prevState) => ({
       ...prevState,
       ...result.stateUpdates,
-      log: result.logEntries ? [...prevState.log, ...result.logEntries].slice(-8) : prevState.log
+      log: result.logEntries
+        ? [...prevState.log, ...result.logEntries].slice(-8)
+        : prevState.log,
     }));
 
     // Handle delayed effects (like stranger event for first hut)
     if (result.delayedEffects) {
-      result.delayedEffects.forEach(effect => {
-        if (actionId === 'buildHut' && state.buildings.huts === 0) {
+      result.delayedEffects.forEach((effect) => {
+        if (actionId === "buildHut" && state.buildings.huts === 0) {
           setTimeout(() => {
             const strangerLogEntry: LogEntry = {
               id: `stranger-approaches-${Date.now()}`,
-              message: 'A stranger approaches through the woods.',
+              message: "A stranger approaches through the woods.",
               timestamp: Date.now(),
-              type: 'system',
+              type: "system",
             };
 
             get().addLogEntry(strangerLogEntry);
             setTimeout(() => {
               set((state) => {
-                const currentPopulation = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
+                const currentPopulation =
+                  state.villagers.free +
+                  state.villagers.gatherers +
+                  state.villagers.hunters;
                 const maxPopulation = state.buildings.huts * 2;
 
                 if (currentPopulation < maxPopulation) {
                   const newState = {
                     villagers: {
                       ...state.villagers,
-                      free: state.villagers.free + 1
+                      free: state.villagers.free + 1,
                     },
                     story: {
                       ...state.story,
                       seen: {
                         ...state.story.seen,
-                        hasVillagers: true
-                      }
-                    }
+                        hasVillagers: true,
+                      },
+                    },
                   };
                   setTimeout(() => get().updatePopulation(), 0);
                   return newState;
@@ -219,7 +232,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setCooldown: (action: string, duration: number) => {
     set((state) => ({
-      cooldowns: { ...state.cooldowns, [action]: duration }
+      cooldowns: { ...state.cooldowns, [action]: duration },
     }));
   },
 
@@ -240,8 +253,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // First clear the state
     set({
       ...defaultGameState,
-      activeTab: 'cave',
-      lastSaved: 'Never',
+      activeTab: "cave",
+      lastSaved: "Never",
       cooldowns: {},
       log: [],
       events: {},
@@ -250,10 +263,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Then add the initial cave description
     const initialLogEntry: LogEntry = {
-      id: 'initial-narrative',
-      message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+      id: "initial-narrative",
+      message:
+        "A dark cave. The air is cold and stale. You can barely make out the shapes around you.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     };
 
     get().addLogEntry(initialLogEntry);
@@ -264,7 +278,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const loadGame = async () => {
       // In a real scenario, this would fetch saved game data from local storage or an API
       // For demonstration purposes, we'll simulate loading a saved game or starting a new one
-      const savedState = localStorage.getItem('gameState');
+      const savedState = localStorage.getItem("gameState");
       return savedState ? JSON.parse(savedState) : null;
     };
 
@@ -273,8 +287,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (savedState) {
       set({
         ...savedState,
-        activeTab: 'cave',
-        lastSaved: 'Loaded',
+        activeTab: "cave",
+        lastSaved: "Loaded",
         cooldowns: {},
         events: get().events,
         devMode: true, // Ensure devMode is always true
@@ -283,8 +297,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // For new games, first set the initial state
       set({
         ...defaultGameState,
-        activeTab: 'cave',
-        lastSaved: 'Never',
+        activeTab: "cave",
+        lastSaved: "Never",
         cooldowns: {},
         log: [],
         events: {},
@@ -293,10 +307,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
-        id: 'initial-narrative',
-        message: 'A dark cave. The air is cold and stale. You can barely make out the shapes around you.',
+        id: "initial-narrative",
+        message:
+          "A dark cave. The air is cold and stale. You can barely make out the shapes around you.",
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       };
 
       get().addLogEntry(initialLogEntry);
@@ -320,11 +335,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [...prevState.log, ...newLogEntries].slice(-8),
         events: {
           ...prevState.events,
-          ...newLogEntries.reduce((acc, entry) => {
-            const eventId = entry.id.split('-')[0];
-            acc[eventId] = true;
-            return acc;
-          }, {} as Record<string, boolean>),
+          ...newLogEntries.reduce(
+            (acc, entry) => {
+              const eventId = entry.id.split("-")[0];
+              acc[eventId] = true;
+              return acc;
+            },
+            {} as Record<string, boolean>,
+          ),
         },
       }));
 
@@ -349,7 +367,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is always enabled - no-op
   },
 
-  assignVillager: (job: 'gatherers' | 'hunters') => {
+  assignVillager: (job: "gatherers" | "hunters") => {
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -359,7 +377,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: 'gatherers' | 'hunters') => {
+  unassignVillager: (job: "gatherers" | "hunters") => {
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {

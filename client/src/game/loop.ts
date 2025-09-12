@@ -9,7 +9,7 @@ const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 30000; // Auto-save every 30 seconds
 const FIRE_CONSUMPTION_INTERVAL = 30000; // Fire consumes wood every 30 seconds
 const GATHERER_PRODUCTION_INTERVAL = 30000; // Gatherers produce wood every 30 seconds
-const HUNTER_PRODUCTION_INTERVAL = 30000; // Hunters produce meat every 30 seconds
+const HUNTER_PRODUCTION_INTERVAL = 30000; // Hunters produce food every 30 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
