@@ -91,6 +91,11 @@ export const basicActions: Record<string, Action> = {
       "resources.coal": { probability: 0.2, value: "random(2,5)" },
       "resources.iron": { probability: 0.15, value: "random(2,4)" },
       "resources.bones": { probability: 0.1, value: "random(1,3)" },
+      "clothing.tarnished_amulet": {
+        probability: 0.05,
+        value: true,
+        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
+      },
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
     },
