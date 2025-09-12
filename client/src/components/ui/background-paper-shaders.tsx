@@ -4,7 +4,6 @@
 import { useRef, useMemo } from "react"
 import { useFrame } from "@react-three/fiber"
 import * as THREE from "three"
-
 // Custom shader material for advanced effects
 const vertexShader = `
   uniform float time;
@@ -53,8 +52,8 @@ const fragmentShader = `
 
 export function ShaderPlane({
   position,
-  color1 = "#333333",
-  color2 = "#666666",
+  color1 = "#ff5722",
+  color2 = "#ffffff",
 }: {
   position: [number, number, number]
   color1?: string
@@ -65,7 +64,7 @@ export function ShaderPlane({
   const uniforms = useMemo(
     () => ({
       time: { value: 0 },
-      intensity: { value: 0.3 },
+      intensity: { value: 1.0 },
       color1: { value: new THREE.Color(color1) },
       color2: { value: new THREE.Color(color2) },
     }),
@@ -74,14 +73,14 @@ export function ShaderPlane({
 
   useFrame((state) => {
     if (mesh.current) {
-      uniforms.time.value = state.clock.elapsedTime * 0.5
-      uniforms.intensity.value = 0.3 + Math.sin(state.clock.elapsedTime * 2) * 0.1
+      uniforms.time.value = state.clock.elapsedTime
+      uniforms.intensity.value = 1.0 + Math.sin(state.clock.elapsedTime * 2) * 0.3
     }
   })
 
   return (
     <mesh ref={mesh} position={position}>
-      <planeGeometry args={[4, 4, 32, 32]} />
+      <planeGeometry args={[2, 2, 32, 32]} />
       <shaderMaterial
         uniforms={uniforms}
         vertexShader={vertexShader}
@@ -104,16 +103,15 @@ export function EnergyRing({
 
   useFrame((state) => {
     if (mesh.current) {
-      mesh.current.rotation.z = state.clock.elapsedTime * 0.3
-      const material = mesh.current.material as THREE.MeshBasicMaterial
-      material.opacity = 0.2 + Math.sin(state.clock.elapsedTime * 2) * 0.1
+      mesh.current.rotation.z = state.clock.elapsedTime
+      mesh.current.material.opacity = 0.5 + Math.sin(state.clock.elapsedTime * 3) * 0.3
     }
   })
 
   return (
     <mesh ref={mesh} position={position}>
       <ringGeometry args={[radius * 0.8, radius, 32]} />
-      <meshBasicMaterial color="#444444" transparent opacity={0.2} side={THREE.DoubleSide} />
+      <meshBasicMaterial color="#ff5722" transparent opacity={0.6} side={THREE.DoubleSide} />
     </mesh>
   )
 }
