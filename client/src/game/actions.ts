@@ -164,6 +164,21 @@ function handleBuildingConstruction(
 
 function handleExploreCave(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('exploreCave', state);
+  
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -190,6 +205,21 @@ function handleCraftStonePickaxe(state: GameState, result: ActionResult): Action
 
 function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
+  
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

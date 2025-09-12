@@ -123,8 +123,12 @@ export const applyActionEffects = (
           baseAmount;
       }
     } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
-      // Handle probability-based effects like { probability: 0.3, value: 5 } or { probability: 0.5, value: "random(1,3)" }
-      const probabilityEffect = effect as { probability: number; value: number | string };
+      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!" }
+      const probabilityEffect = effect as {
+        probability: number;
+        value: number | string;
+        logMessage?: string;
+      };
       const totalLuck = getTotalLuck(state);
       const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
       const shouldTrigger = Math.random() < adjustedProbability;
@@ -157,6 +161,12 @@ export const applyActionEffects = (
         } else if (typeof probabilityEffect.value === "boolean") {
           current[finalKey] = probabilityEffect.value;
         }
+      }
+
+      // Store log message if provided
+      if (probabilityEffect.logMessage) {
+        if (!current.logMessages) current.logMessages = [];
+        current.logMessages.push(probabilityEffect.logMessage);
       }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
@@ -358,10 +368,13 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
-      "resources.coal": { probability: 0.1, value: "random(1,2)" },
-      "resources.iron": { probability: 0.1, value: "random(1,2)" },
-      "resources.bones": { probability: 0.05, value: 1 },
-      "clothing.tarnished_amulet": { probability: 0.05, value: true },
+      "resources.coal": { probability: 0.3, value: "random(1,2)" }, // 30% chance to find 1-2 coal
+      "resources.bones": { probability: 0.15, value: 1 }, // 15% chance to find 1 bone
+      "clothing.tarnished_amulet": {
+        probability: 0.05,
+        value: true,
+        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power."
+      }, // 5% chance to find the Tarnished Amulet
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
