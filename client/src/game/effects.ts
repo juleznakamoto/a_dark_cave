@@ -74,21 +74,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: 'An ancient amulet that brings good fortune (+10 Luck)',
     bonuses: {
       generalBonuses: {
-        explorationBonus: 1, // +1 to all exploration rewards
-        luck: 10 // +10 luck
-      },
-      actionBonuses: {
-        exploreCave: {
-          probabilityBonus: { 
-            bones: 0.05, // 5% better chance for bones
-            iron: 0.03   // 3% better chance for iron
-          }
-        },
-        mineIron: {
-          probabilityBonus: {
-            sulphur: 0.1 // 10% better chance for sulphur
-          }
-        }
+        luck: 10
       }
     }
   }

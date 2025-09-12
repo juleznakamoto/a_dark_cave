@@ -361,7 +361,7 @@ export const gameActions: Record<string, Action> = {
       "resources.coal": { probability: 0.1, value: "random(1,2)" },
       "resources.iron": { probability: 0.1, value: "random(1,2)" },
       "resources.bones": { probability: 0.05, value: 1 },
-      "clothing.tarnished_amulet": { probability: 0.01, value: true },
+      "clothing.tarnished_amulet": { probability: 0.05, value: true },
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
@@ -425,8 +425,6 @@ export const gameActions: Record<string, Action> = {
       "resources.torch": -10,
       "resources.food": -5,
       "resources.iron": "random(2,5)",
-      "resources.coal": { probability: 0.4, value: "random(1,3)" }, // 40% chance to find coal while mining
-      "resources.sulphur": { probability: 0.2, value: 1 }, // 20% chance to find sulphur
       "story.seen.hasIron": true,
     },
     cooldown: 8,
