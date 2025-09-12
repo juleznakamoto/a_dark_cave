@@ -11,7 +11,12 @@ export default function StartScreen() {
 
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
-      <main className="flex-1 flex items-center justify-center">
+      <main className="flex-1 flex flex-col items-center justify-center">
+        <div className="text-center mb-8">
+          <p className="text-lg text-gray-300 leading-relaxed">
+            A dark cave. The air is cold and stale. You can barely make out the shapes around you.
+          </p>
+        </div>
         <Button
           onClick={handleLightFire}
           className="bg-transparent border-none text-white hover:bg-transparent hover:text-gray-300 text-lg px-8 py-4"
