@@ -1,6 +1,6 @@
 
 import { GameState } from '@shared/schema';
-import { gameActions, applyActionEffects } from '@/game/rules';
+import { gameActions, applyActionEffects } from '@/game/rules/index';
 import { LogEntry } from '@/game/events';
 
 export interface ActionResult {
