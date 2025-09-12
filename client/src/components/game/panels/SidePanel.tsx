@@ -26,6 +26,19 @@ export default function SidePanel() {
       visible: true
     }));
 
+  // Dynamically generate clothing items from state
+  const clothingItems = Object.entries(resources) // Assuming clothing is a type of resource for now
+    .filter(([key]) => ['fur', 'leather'].includes(key)) // Filter for clothing-related resources
+    .map(([key, value]) => ({
+      id: key,
+      label: key.charAt(0).toUpperCase() + key.slice(1),
+      value: value ?? 0,
+      testId: `clothing-${key}`,
+      visible: (value ?? 0) > 0
+    }))
+    .filter(item => item.visible);
+
+
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
     .map(([key, value]) => ({
@@ -57,16 +70,13 @@ export default function SidePanel() {
         />
       )}
       {toolItems.length > 0 && (
-        <SidePanelSection 
-          title="Tools" 
-          items={toolItems}
-        />
+        <SidePanelSection title="Tools" items={toolItems} />
+      )}
+      {clothingItems.length > 0 && (
+        <SidePanelSection title="Clothing" items={clothingItems} />
       )}
       {buildingItems.length > 0 && (
-        <SidePanelSection 
-          title="Buildings" 
-          items={buildingItems}
-        />
+        <SidePanelSection title="Buildings" items={buildingItems} />
       )}
       {populationItems.length > 0 && (
         <SidePanelSection 

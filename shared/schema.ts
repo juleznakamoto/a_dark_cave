@@ -8,6 +8,12 @@ export const gameStateSchema = z.object({
     torch: z.number().min(0).default(0),
     stone: z.number().min(0).default(0),
     iron: z.number().min(0).default(0),
+    coal: z.number().min(0).default(0),
+    steel: z.number().min(0).default(0),
+    sulphur: z.number().min(0).default(0),
+    bones: z.number().min(0).default(0),
+    fur: z.number().min(0).default(0),
+    leather: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),
@@ -21,6 +27,9 @@ export const gameStateSchema = z.object({
     stone_axe: z.boolean().default(false),
     spear: z.boolean().default(false),
     stone_pickaxe: z.boolean().default(false),
+  }),
+  clothing: z.object({
+    tarnished_amulet: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),

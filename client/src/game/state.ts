@@ -57,6 +57,12 @@ const defaultGameState: GameState = {
     torch: 0,
     stone: 0,
     iron: 0,
+    coal: 0,
+    steel: 0,
+    sulphur: 0,
+    bones: 0,
+    fur: 0,
+    leather: 0,
   },
   flags: {
     fireLit: false,
@@ -70,6 +76,9 @@ const defaultGameState: GameState = {
     stone_axe: false,
     spear: false,
     stone_pickaxe: false,
+  },
+  clothing: {
+    tarnished_amulet: false,
   },
   buildings: {
     huts: 0,
