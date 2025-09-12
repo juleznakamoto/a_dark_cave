@@ -88,14 +88,19 @@ export default function SidePanel() {
         />
       )}
       {totalLuck > 0 && (
-        <SidePanelSection title="Stats" className="mb-4">
-          <div className="text-sm">
-            <div className="flex justify-between">
-              <span>Luck:</span>
-              <span className="text-green-400">{totalLuck}</span>
-            </div>
-          </div>
-        </SidePanelSection>
+        <SidePanelSection 
+          title="Stats" 
+          items={[
+            {
+              id: 'luck',
+              label: 'Luck',
+              value: totalLuck,
+              testId: 'stat-luck',
+              visible: true
+            }
+          ]}
+          className="mb-4"
+        />
       )}
     </div>
   );

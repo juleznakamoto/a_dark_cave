@@ -19,7 +19,7 @@ export default function SidePanelSection({
   visible = true, 
   className = "" 
 }: SidePanelSectionProps) {
-  const visibleItems = items.filter(item => item.visible !== false);
+  const visibleItems = (items || []).filter(item => item.visible !== false);
   
   if (!visible || visibleItems.length === 0) {
     return null;
