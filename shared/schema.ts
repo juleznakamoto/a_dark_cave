@@ -15,6 +15,9 @@ export const gameStateSchema = z.object({
     fur: z.number().min(0).default(0),
     leather: z.number().min(0).default(0),
   }),
+  stats: z.object({
+    luck: z.number().min(0).default(0),
+  }),
   flags: z.object({
     fireLit: z.boolean().default(false),
     villageUnlocked: z.boolean().default(false),

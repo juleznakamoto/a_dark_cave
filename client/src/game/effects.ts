@@ -23,6 +23,7 @@ export interface EffectDefinition {
       gatheringSpeed?: number; // Multiplier for all gathering actions
       craftingSpeed?: number; // Multiplier for crafting actions
       explorationBonus?: number; // Bonus resources when exploring
+      luck?: number; // Luck bonus
     };
   };
 }
@@ -70,10 +71,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
     id: 'tarnished_amulet',
     name: 'Tarnished Amulet',
-    description: 'An ancient amulet that brings good fortune',
+    description: 'An ancient amulet that brings good fortune (+10 Luck)',
     bonuses: {
       generalBonuses: {
-        explorationBonus: 1 // +1 to all exploration rewards
+        explorationBonus: 1, // +1 to all exploration rewards
+        luck: 10 // +10 luck
       },
       actionBonuses: {
         exploreCave: {
@@ -161,4 +163,25 @@ export const getExplorationBonuses = (state: GameState): number => {
   });
   
   return totalBonus;
+};
+
+// Helper function to calculate total luck
+export const getTotalLuck = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let totalLuck = state.stats?.luck || 0;
+  
+  activeEffects.forEach(effect => {
+    if (effect.bonuses.generalBonuses?.luck) {
+      totalLuck += effect.bonuses.generalBonuses.luck;
+    }
+  });
+  
+  return totalLuck;
+};
+
+// Helper function to apply luck bonus to probability (10 luck = 10% increase)
+export const applyLuckToprobability = (baseProbability: number, luck: number): number => {
+  const luckBonus = luck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
+  const adjustedProbability = baseProbability + (baseProbability * luckBonus);
+  return Math.min(adjustedProbability, 1.0); // Cap at 100%
 };

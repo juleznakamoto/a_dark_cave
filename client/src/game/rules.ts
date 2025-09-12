@@ -1,5 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
+import { getTotalLuck, applyLuckToprobability } from "./effects";
 
 // Utility function to get the next building level
 const getNextBuildingLevel = (actionId: string, state: GameState): number => {
@@ -124,7 +125,9 @@ export const applyActionEffects = (
     } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
       // Handle probability-based effects like { probability: 0.3, value: 5 } or { probability: 0.5, value: "random(1,3)" }
       const probabilityEffect = effect as { probability: number; value: number | string };
-      const shouldTrigger = Math.random() < probabilityEffect.probability;
+      const totalLuck = getTotalLuck(state);
+      const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
+      const shouldTrigger = Math.random() < adjustedProbability;
 
       if (shouldTrigger) {
         if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {

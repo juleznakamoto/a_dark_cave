@@ -1,5 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
+import { getTotalLuck } from '@/game/effects';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
@@ -61,6 +62,8 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
+  const totalLuck = getTotalLuck(useGameStore());
+
   return (
     <div>
       {resourceItems.length > 0 && (
@@ -83,6 +86,16 @@ export default function SidePanel() {
           title={`Population ${current_population}/${total_population}`} 
           items={populationItems}
         />
+      )}
+      {totalLuck > 0 && (
+        <SidePanelSection title="Stats" className="mb-4">
+          <div className="text-sm">
+            <div className="flex justify-between">
+              <span>Luck:</span>
+              <span className="text-green-400">{totalLuck}</span>
+            </div>
+          </div>
+        </SidePanelSection>
       )}
     </div>
   );

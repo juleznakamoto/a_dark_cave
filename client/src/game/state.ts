@@ -64,6 +64,9 @@ const defaultGameState: GameState = {
     fur: 0,
     leather: 0,
   },
+  stats: {
+    luck: 0,
+  },
   flags: {
     fireLit: false,
     villageUnlocked: false,
