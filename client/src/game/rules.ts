@@ -289,13 +289,13 @@ export const gameActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 100,
-        "resources.stone": 20,
+        "resources.stone": 25,
       },
     },
     effects: {
       1: {
         "resources.wood": -100,
-        "resources.stone": -20,
+        "resources.stone": -25,
         "buildings.workshops": 1,
       },
     },
@@ -371,9 +371,11 @@ export const gameActions: Record<string, Action> = {
     },
     cost: {
       "resources.torch": 10,
+      "resources.food": 5
     },
     effects: {
       "resources.torch": -10,
+      "resources.food": -5,
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
     },

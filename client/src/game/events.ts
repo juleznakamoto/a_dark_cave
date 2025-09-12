@@ -31,8 +31,7 @@ export interface LogEntry {
 export const gameEvents: Record<string, GameEvent> = {
   strangerApproaches: {
     id: "strangerApproaches",
-    condition: (state) =>
-      state.current_population < state.total_population,
+    condition: (state) => state.current_population < state.total_population,
     triggerType: "resource",
     timeProbability: 2, // Average 2 minutes between stranger arrivals
     message: [
@@ -59,6 +58,66 @@ export const gameEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  foodGone: {
+    id: "foodGone",
+    condition: (state) => state.resources.food > 50,
+    triggerType: "resource",
+    timeProbability: 15,
+    message: [
+      "At dawn, the food stores are lighter. Whispers lingered in the dark, voices that were never human.",
+      "The villagers awaken to find food missing. Some claim they heard the susurrus of ancient tongues in the night.",
+      "Half-seen shadows devoured what the stomachs of men should. Only the sound of faint chanting remained.",
+    ][Math.floor(Math.random() * 3)],
+    triggered: false,
+    priority: 2,
+    effect: (state) => ({
+      resources: {
+        ...state.resources,
+        food: state.resources.food - 50,
+      },
+    }),
+  },
+
+  villagerMissing: {
+    id: "villagerMissing",
+    condition: (state) => state.villagers.free > 0,
+    triggerType: "resource",
+    timeProbability: 10,
+    message: [
+      "One hut lies empty. Its occupant vanished as though swallowed by the void between worlds.",
+      "A villager is gone, leaving only claw-like marks upon the earth and a silence that will not break.",
+      "At sunrise, a bed is found unslept-in. The missing one’s name fades quickly from memory, as if the forest itself claimed them.",
+    ][Math.floor(Math.random() * 3)],
+    triggered: false,
+    priority: 2,
+    effect: (state) => ({
+      villagers: {
+        ...state.villagers,
+        free: Math.max(0, state.villagers.free - 1),
+      },
+    }),
+  },
+
+  ironGift: {
+    id: "ironGift",
+    condition: (state) => true,
+    triggerType: "resource",
+    timeProbability: 15,
+    message: [
+      "In the night, something left a heap of iron at the village’s edge. No tracks lead away.",
+      "A gift gleams in the morning mist. None know who or what brought it.",
+      "Iron rests where once was bare earth, as though conjured from realms unseen.",
+    ][Math.floor(Math.random() * 3)],
+    triggered: false,
+    priority: 2,
+    effect: (state) => ({
+      resources: {
+        ...state.resources,
+        iron: state.resources.iron + 50,
+      },
+    }),
+  },
 };
 
 export class EventManager {
@@ -81,7 +140,7 @@ export class EventManager {
 
       // Check condition with probability if specified
       let shouldTrigger = event.condition(state);
-      
+
       // Apply time-based probability if specified
       if (shouldTrigger && event.timeProbability) {
         // Game loop runs every 200ms (5 times per second)
@@ -89,7 +148,8 @@ export class EventManager {
         // Average ticks between events = timeProbability * 300
         // Probability per tick = 1 / (timeProbability * 300)
         const ticksPerMinute = 300;
-        const averageTicksBetweenEvents = event.timeProbability * ticksPerMinute;
+        const averageTicksBetweenEvents =
+          event.timeProbability * ticksPerMinute;
         const probabilityPerTick = 1 / averageTicksBetweenEvents;
         shouldTrigger = Math.random() < probabilityPerTick;
       }
