@@ -169,9 +169,9 @@ function handleExploreCave(state: GameState, result: ActionResult): ActionResult
   
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string, index: number) => {
+    effectUpdates.logMessages.forEach((message: string) => {
       result.logEntries!.push({
-        id: `explore-cave-effect-${Date.now()}-${index}`,
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
         type: 'system',
@@ -231,9 +231,9 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
   
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string, index: number) => {
+    effectUpdates.logMessages.forEach((message: string) => {
       result.logEntries!.push({
-        id: `venture-deeper-effect-${Date.now()}-${index}`,
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
         type: 'system',

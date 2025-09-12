@@ -45,7 +45,7 @@ export const basicActions: Record<string, Action> = {
       "resources.iron": { probability: 0.5, value: "random(1,4)" },
       "resources.bones": { probability: 0.25, value: "random(1,4)" },
       "clothing.tarnished_amulet": {
-        probability: 0.075,
+        probability: 0.75,
         value: true,
         condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
