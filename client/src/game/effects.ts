@@ -24,6 +24,7 @@ export interface EffectDefinition {
       craftingSpeed?: number; // Multiplier for crafting actions
       explorationBonus?: number; // Bonus resources when exploring
       luck?: number; // Luck bonus
+      strength?: number; // Strength bonus
     };
   };
 }
@@ -75,6 +76,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 10
+      }
+    }
+  },
+  
+  bloodstained_belt: {
+    id: 'bloodstained_belt',
+    name: 'Bloodstained Belt',
+    description: 'A leather belt stained with ancient blood that grants raw power (+5 Strength)',
+    bonuses: {
+      generalBonuses: {
+        strength: 5
       }
     }
   }
@@ -163,6 +175,20 @@ export const getTotalLuck = (state: GameState): number => {
   });
   
   return totalLuck;
+};
+
+// Helper function to calculate total strength
+export const getTotalStrength = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let totalStrength = state.stats?.strength || 0;
+  
+  activeEffects.forEach(effect => {
+    if (effect.bonuses.generalBonuses?.strength) {
+      totalStrength += effect.bonuses.generalBonuses.strength;
+    }
+  });
+  
+  return totalStrength;
 };
 
 // Helper function to apply luck bonus to probability (10 luck = 10% increase)

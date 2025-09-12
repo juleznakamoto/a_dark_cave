@@ -17,6 +17,7 @@ export const gameStateSchema = z.object({
   }),
   stats: z.object({
     luck: z.number().min(0).default(0),
+    strength: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),
@@ -34,6 +35,7 @@ export const gameStateSchema = z.object({
   }),
   clothing: z.object({
     tarnished_amulet: z.boolean().default(false),
+    bloodstained_belt: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),

@@ -98,6 +98,12 @@ export const basicActions: Record<string, Action> = {
         condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
       },
+      "clothing.bloodstained_belt": {
+        probability: 0.05,
+        value: true,
+        condition: "!clothing.bloodstained_belt",
+        logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power."
+      },
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
     },
