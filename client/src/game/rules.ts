@@ -74,52 +74,66 @@ export const applyActionEffects = (
 
   const updates: any = {};
 
-  for (const [path, effect] of Object.entries(action.effects)) {
+  let effects = action.effects;
+
+  // For building actions, get the effects for the next level
+  if (action.building) {
+    const level = getNextBuildingLevel(actionId, state);
+    effects = action.effects[level];
+  }
+
+  if (!effects) return {};
+
+  for (const [path, effect] of Object.entries(effects)) {
     const pathParts = path.split(".");
     let current = updates;
 
-    // Navigate to the correct nested object
+    // Navigate/create the path
     for (let i = 0; i < pathParts.length - 1; i++) {
-      const part = pathParts[i];
-      if (!current[part]) {
-        current[part] =
-          pathParts[i] === "resources"
-            ? { ...state.resources }
-            : pathParts[i] === "flags"
-              ? { ...state.flags }
-              : pathParts[i] === "tools"
-                ? { ...state.tools }
-                : pathParts[i] === "buildings"
-                  ? { ...state.buildings }
-                  : pathParts[i] === "story"
-                    ? { ...state.story, seen: { ...state.story.seen } }
-                    : {};
+      if (!current[pathParts[i]]) {
+        current[pathParts[i]] = {};
       }
-      current = current[part];
+      current = current[pathParts[i]];
     }
 
     const finalKey = pathParts[pathParts.length - 1];
 
     if (typeof effect === "string" && effect.startsWith("random(")) {
-      // Handle random effects like "random(1,3)"
+      // Parse random effect like "random(1,3)"
       const match = effect.match(/random\((\d+),(\d+)\)/);
       if (match) {
         const min = parseInt(match[1]);
         const max = parseInt(match[2]);
         let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        // Apply stone_axe bonus for wood gathering
-        if (
-          actionId === "gatherWood" &&
-          finalKey === "wood" &&
-          state.tools.stone_axe
-        ) {
-          baseAmount += 3; // +3 wood if stone_axe is owned
+        // Apply stone axe bonus for wood gathering
+        if (finalKey === "wood" && state.tools.stone_axe) {
+          baseAmount += Math.floor(Math.random() * 3) + 1; // +1-3 extra
         }
 
         current[finalKey] =
           (state.resources[finalKey as keyof typeof state.resources] || 0) +
           baseAmount;
+      }
+    } else if (typeof effect === "string" && effect.startsWith("chance(")) {
+      // Parse probability effect like "chance(0.3,coal,1,2)" for 30% chance of 1-2 coal
+      const match = effect.match(/chance\(([\d.]+),(\w+),(\d+),?(\d+)?\)/);
+      if (match) {
+        const probability = parseFloat(match[1]);
+        const itemType = match[2];
+        const minAmount = parseInt(match[3]);
+        const maxAmount = match[4] ? parseInt(match[4]) : minAmount;
+
+        // Roll for probability
+        if (Math.random() < probability) {
+          const amount = Math.floor(Math.random() * (maxAmount - minAmount + 1)) + minAmount;
+
+          // Initialize resources if not exists
+          if (!current.resources) current.resources = {};
+
+          current.resources[itemType] = 
+            (state.resources[itemType as keyof typeof state.resources] || 0) + amount;
+        }
       }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
@@ -304,22 +318,22 @@ export const gameActions: Record<string, Action> = {
 
   exploreCave: {
     id: "exploreCave",
-    label: "Explore Cave",
+    label: "Explore Further",
     show_when: {
-      "flags.fireLit": true,
-      "story.seen.actionBuildTorch": true,
+      "resources.torch": { ">": 0 },
     },
     cost: {
-      "resources.torch": 5,
+      "resources.torch": 1,
     },
     effects: {
-      "resources.torch": -5,
-      "resources.stone": "random(2,5)",
-      
-      "flags.caveExplored": true,
-      "story.seen.hasStone": true,
+      "resources.torch": -1,
+      "resources.stone": "random(1,4)",
+      "find_iron": "chance(0.25,iron,1,2)", // 25% chance to find 1-2 iron
+      "find_sulphur": "chance(0.15,sulphur,1)", // 15% chance to find 1 sulphur
+      "find_tarnished_amulet": "chance(0.05,tarnished_amulet,1)", // 5% chance to find rare amulet
+      "story.seen.caveExplored": true,
     },
-    cooldown: 10,
+    cooldown: 6,
   },
 
   craftStoneAxe: {
@@ -371,15 +385,27 @@ export const gameActions: Record<string, Action> = {
     show_when: {
       "tools.stone_pickaxe": true,
     },
-    cost: {
-      "resources.torch": 10,
-      "resources.food": 5
-    },
+    cost: {},
     effects: {
-      "resources.torch": -10,
-      "resources.food": -5,
-      "resources.iron": "random(2,5)",
-      "story.seen.hasIron": true,
+      "resources.iron": "random(1,2)",
+      "find_coal": "chance(0.2,coal,1,2)", // 20% chance to find 1-2 coal
+      "find_bones": "chance(0.1,bones,1)", // 10% chance to find 1 bone
+    },
+    cooldown: 4,
+  },
+  
+  hunt: {
+    id: "hunt",
+    label: "Hunt",
+    show_when: {
+      "tools.spear": true,
+    },
+    cost: {},
+    effects: {
+      "resources.meat": "random(2,4)",
+      "find_fur": "chance(0.4,fur,1,2)", // 40% chance to find 1-2 fur
+      "find_bones": "chance(0.3,bones,1,3)", // 30% chance to find 1-3 bones
+      "find_leather": "chance(0.2,leather,1)", // 20% chance to find 1 leather
     },
     cooldown: 8,
   },
