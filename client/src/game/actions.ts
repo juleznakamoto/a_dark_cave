@@ -49,8 +49,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftStonePickaxe(state, result);
     case 'mineIron':
       return handleMineIron(state, result);
-    case 'hunt':
-      return handleHunt(state, result);
     default:
       return result;
   }
@@ -192,12 +190,6 @@ function handleCraftStonePickaxe(state: GameState, result: ActionResult): Action
 
 function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-function handleHunt(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('hunt', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
