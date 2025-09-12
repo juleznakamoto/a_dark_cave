@@ -64,6 +64,7 @@ const defaultGameState: GameState = {
     worldDiscovered: false,
     torchBuilt: false,
     caveExplored: false,
+    gameStarted: false,
   },
   tools: {
     stone_axe: false,

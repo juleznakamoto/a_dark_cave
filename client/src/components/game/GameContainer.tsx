@@ -4,10 +4,21 @@ import CavePanel from './panels/CavePanel';
 import VillagePanel from './panels/VillagePanel';
 import WorldPanel from './panels/WorldPanel';
 import LogPanel from './panels/LogPanel';
+import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 
 export default function GameContainer() {
-  const { activeTab } = useGameStore();
+  const { activeTab, flags } = useGameStore();
+
+  // Show start screen if game hasn't started yet
+  if (!flags.gameStarted) {
+    return (
+      <>
+        <StartScreen />
+        <GameFooter />
+      </>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">

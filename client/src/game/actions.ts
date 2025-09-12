@@ -55,7 +55,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
 }
 
 function handleLightFire(state: GameState, result: ActionResult): ActionResult {
-  result.stateUpdates.flags = { ...state.flags, fireLit: true };
+  result.stateUpdates.flags = { ...state.flags, fireLit: true, gameStarted: true };
   result.stateUpdates.story = {
     ...state.story,
     seen: {
