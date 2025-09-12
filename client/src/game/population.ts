@@ -1,5 +1,3 @@
-import { GameState } from '@shared/schema';
-
 export interface PopulationJobConfig {
   id: string;
   label: string;
@@ -18,12 +16,12 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       {
         resource: 'wood',
         amount: 10,
-        interval: 30000, // 30 seconds
+        interval: 30000,
       },
       {
         resource: 'stone',
         amount: 2,
-        interval: 30000, // 30 seconds
+        interval: 30000,
       }
     ]
   },
@@ -34,7 +32,12 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       {
         resource: 'meat',
         amount: 5,
-        interval: 30000, // 30 seconds
+        interval: 30000,
+      },
+      {
+        resource: 'bones',
+        amount: 1,
+        interval: 30000,
       }
     ]
   }

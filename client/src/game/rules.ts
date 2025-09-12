@@ -448,13 +448,15 @@ export const gameActions: Record<string, Action> = {
     id: "ventureDeeper",
     label: "Venture Deeper",
     show_when: {
-      "buildings.huts": 1,
+      "buildings.lodges": 1,
     },
     cost: {
       "resources.torch": 10,
+      "resources.food": 20,
     },
     effects: {
       "resources.torch": -10,
+      "resources.food": -20,
       "resources.stone": "random(3,8)",
       "resources.coal": { probability: 0.2, value: "random(2,5)" },
       "resources.iron": { probability: 0.15, value: "random(2,4)" },
