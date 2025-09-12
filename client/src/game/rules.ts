@@ -368,13 +368,14 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
-      "resources.coal": { probability: 0.3, value: "random(1,2)" }, // 30% chance to find 1-2 coal
-      "resources.bones": { probability: 0.15, value: 1 }, // 15% chance to find 1 bone
+      "resources.coal": { probability: 0.1, value: "random(1,4)" },
+      "resources.iron": { probability: 0.1, value: "random(1,4)" },
+      "resources.bones": { probability: 0.05, value: "random(1,4)" },
       "clothing.tarnished_amulet": {
         probability: 0.05,
         value: true,
-        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power."
-      }, // 5% chance to find the Tarnished Amulet
+        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
+      },
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
