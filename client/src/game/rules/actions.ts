@@ -1,4 +1,3 @@
-
 import { Action } from "@shared/schema";
 
 export const basicActions: Record<string, Action> = {
@@ -47,6 +46,7 @@ export const basicActions: Record<string, Action> = {
       "clothing.tarnished_amulet": {
         probability: 0.05,
         value: true,
+        condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
       },
       "flags.caveExplored": true,
@@ -94,6 +94,7 @@ export const basicActions: Record<string, Action> = {
       "clothing.tarnished_amulet": {
         probability: 0.05,
         value: true,
+        condition: "!clothing.tarnished_amulet",
         logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
       },
       "flags.venturedDeeper": true,

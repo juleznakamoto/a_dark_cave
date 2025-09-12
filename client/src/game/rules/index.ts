@@ -134,15 +134,41 @@ export const applyActionEffects = (
           baseAmount;
       }
     } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
-      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!" }
+      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet" }
       const probabilityEffect = effect as {
         probability: number;
         value: number | string;
         logMessage?: string;
+        condition?: string;
       };
+      
+      // Check condition if provided
+      let conditionMet = true;
+      if (probabilityEffect.condition) {
+        const condition = probabilityEffect.condition;
+        if (condition.startsWith("!")) {
+          // Handle negation (e.g., "!clothing.tarnished_amulet")
+          const checkPath = condition.slice(1);
+          const pathParts = checkPath.split(".");
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+          conditionMet = !current;
+        } else {
+          // Handle positive condition
+          const pathParts = condition.split(".");
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+          conditionMet = !!current;
+        }
+      }
+      
       const totalLuck = getTotalLuck(state);
       const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
-      const shouldTrigger = Math.random() < adjustedProbability;
+      const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
 
       if (shouldTrigger) {
         if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
@@ -174,8 +200,8 @@ export const applyActionEffects = (
         }
       }
 
-      // Store log message if provided
-      if (probabilityEffect.logMessage) {
+      // Only store log message if the effect actually triggered
+      if (shouldTrigger && probabilityEffect.logMessage) {
         if (!current.logMessages) current.logMessages = [];
         current.logMessages.push(probabilityEffect.logMessage);
       }
