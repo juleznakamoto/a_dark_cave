@@ -121,6 +121,40 @@ export const applyActionEffects = (
           (state.resources[finalKey as keyof typeof state.resources] || 0) +
           baseAmount;
       }
+    } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
+      // Handle probability-based effects like { probability: 0.3, value: 5 } or { probability: 0.5, value: "random(1,3)" }
+      const probabilityEffect = effect as { probability: number; value: number | string };
+      const shouldTrigger = Math.random() < probabilityEffect.probability;
+      
+      if (shouldTrigger) {
+        if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
+          // Handle random value within probability effect
+          const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
+          if (match) {
+            const min = parseInt(match[1]);
+            const max = parseInt(match[2]);
+            const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+            
+            if (pathParts[0] === "resources") {
+              current[finalKey] =
+                (state.resources[finalKey as keyof typeof state.resources] || 0) +
+                randomAmount;
+            } else {
+              current[finalKey] = randomAmount;
+            }
+          }
+        } else if (typeof probabilityEffect.value === "number") {
+          if (pathParts[0] === "resources") {
+            current[finalKey] =
+              (state.resources[finalKey as keyof typeof state.resources] || 0) +
+              probabilityEffect.value;
+          } else {
+            current[finalKey] = probabilityEffect.value;
+          }
+        } else if (typeof probabilityEffect.value === "boolean") {
+          current[finalKey] = probabilityEffect.value;
+        }
+      }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
         current[finalKey] =
@@ -315,6 +349,8 @@ export const gameActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
+      "resources.coal": { probability: 0.3, value: "random(1,2)" }, // 30% chance to find 1-2 coal
+      "resources.bones": { probability: 0.15, value: 1 }, // 15% chance to find 1 bone
       
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
@@ -379,6 +415,8 @@ export const gameActions: Record<string, Action> = {
       "resources.torch": -10,
       "resources.food": -5,
       "resources.iron": "random(2,5)",
+      "resources.coal": { probability: 0.4, value: "random(1,3)" }, // 40% chance to find coal while mining
+      "resources.sulphur": { probability: 0.2, value: 1 }, // 20% chance to find sulphur
       "story.seen.hasIron": true,
     },
     cooldown: 8,
