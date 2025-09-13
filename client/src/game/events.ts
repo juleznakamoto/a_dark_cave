@@ -35,7 +35,7 @@ export const gameEvents: Record<string, GameEvent> = {
     id: "strangerApproaches",
     condition: (state) => state.current_population < state.total_population,
     triggerType: "resource",
-    timeProbability: 0.2, // Average 2 minutes between stranger arrivals
+    timeProbability: 0.15, // Average 1.5 minutes between stranger arrivals
     message: [
       "A stranger approaches through the woods and joins your village.",
       "A traveler arrives and decides to stay.",
