@@ -16,7 +16,7 @@ export default function GameTabs() {
   // Update population whenever the component renders
   useEffect(() => {
     updatePopulation();
-  }, [villagers, buildings.huts, updatePopulation]);
+  }, [villagers, buildings.hut, updatePopulation]);
 
   return (
     <nav className="w-48 border-r border-border bg-muted/30">

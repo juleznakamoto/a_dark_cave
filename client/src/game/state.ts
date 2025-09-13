@@ -122,10 +122,10 @@ const defaultGameState: GameState = {
     wooden_figure: false,
   },
   buildings: {
-    huts: 0,
+    hut: 0,
     traps: 0,
-    lodges: 0,
-    blacksmiths: 0,
+    lodge: 0,
+    blacksmith: 0,
   },
   villagers: {
     free: 0,
@@ -222,7 +222,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Handle delayed effects (like stranger event for first hut)
     if (result.delayedEffects) {
       result.delayedEffects.forEach((effect) => {
-        if (actionId === "buildHut" && state.buildings.huts === 0) {
+        if (actionId === "buildHut" && state.buildings.hut === 0) {
           setTimeout(() => {
             const strangerLogEntry: LogEntry = {
               id: `stranger-approaches-${Date.now()}`,
@@ -238,7 +238,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                   state.villagers.free +
                   state.villagers.gatherers +
                   state.villagers.hunters;
-                const maxPopulation = state.buildings.huts * 2;
+                const maxPopulation = state.buildings.hut * 2;
 
                 if (currentPopulation < maxPopulation) {
                   const newState = {
@@ -457,7 +457,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getMaxPopulation: () => {
     const state = get();
-    return state.buildings.huts * 2; // Each hut provides +2 max population
+    return state.buildings.hut * 2; // Each hut provides +2 max population
   },
 
   updatePopulation: () => {

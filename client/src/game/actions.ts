@@ -110,7 +110,7 @@ function handleBuildTorch(state: GameState, result: ActionResult): ActionResult 
 }
 
 function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
-  const level = state.buildings.huts + 1;
+  const level = state.buildings.hut + 1;
   const actionEffects = gameActions.buildHut.effects[level];
   const newResources = { ...state.resources };
 
@@ -124,10 +124,10 @@ function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
   result.stateUpdates.resources = newResources;
   result.stateUpdates.buildings = {
     ...state.buildings,
-    huts: state.buildings.huts + 1
+    hut: state.buildings.hut + 1
   };
 
-  if (state.buildings.huts === 0) {
+  if (state.buildings.hut === 0) {
     result.delayedEffects!.push(() => {
       // Stranger approaches logic will be handled by the caller
     });
@@ -137,11 +137,11 @@ function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
 }
 
 function handleBuildLodge(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildLodge', 'lodges');
+  return handleBuildingConstruction(state, result, 'buildLodge', 'lodge');
 }
 
 function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmiths');
+  return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
 }
 
 function handleBuildingConstruction(

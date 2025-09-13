@@ -65,10 +65,10 @@ export const gameStateSchema = z.object({
     wooden_figure: z.boolean().default(false),
   }),
   buildings: z.object({
-    huts: z.number().default(0),
+    hut: z.number().default(0),
     traps: z.number().default(0),
-    lodges: z.number().default(0),
-    blacksmiths: z.number().default(0),
+    lodge: z.number().default(0),
+    blacksmith: z.number().default(0),
   }),
   villagers: z.object({
     free: z.number().min(0).default(0),

@@ -103,7 +103,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   ironGift: {
     id: "ironGift",
-    condition: (state) => state.buildings.huts >= 1,
+    condition: (state) => state.buildings.hut >= 1,
     triggerType: "resource",
     timeProbability: 15,
     message: [
@@ -116,7 +116,7 @@ export const gameEvents: Record<string, GameEvent> = {
     effect: (state) => ({
       resources: {
         ...state.resources,
-        iron: state.resources.iron + 50 * state.buildings.huts,
+        iron: state.resources.iron + 50 * state.buildings.hut,
       },
     }),
   },
@@ -124,7 +124,7 @@ export const gameEvents: Record<string, GameEvent> = {
   paleFigure: {
     id: "paleFigure",
     condition: (state) =>
-      state.buildings.huts >= 2 && !state.relics.ravenfeather_mantle,
+      state.buildings.hut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 15,
     title: "The Pale Figure",
@@ -201,12 +201,12 @@ export const gameEvents: Record<string, GameEvent> = {
   
   whispersBeneathHut : {
     id: "whispersBeneathHut",
-    condition: (state) => state.buildings.huts >= 4 && !state.relics.whispering_amulet,
+    condition: (state) => state.buildings.hut >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
     message:
-      "At night, faint whispers seem to rise from under the floor of one of your huts. The villagers are uneasy. Do you investigate?",
+      "At night, faint whispers seem to rise from under the floor of one of your hut. The villagers are uneasy. Do you investigate?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -242,7 +242,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   blackenedMirror: {
     id: "blackenedMirror",
-    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200 && !state.relics.blackened_mirror,
+    condition: (state) => state.buildings.hut >= 5 && state.resources.iron >= 200 && !state.relics.blackened_mirror,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Blackened Mirror",
@@ -289,7 +289,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   cthulhuFigure : {
     id: "cthulhuFigure",
-    condition: (state) => state.buildings.huts >= 4 && !state.relics.wooden_figure,
+    condition: (state) => state.buildings.hut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
     timeProbability: 20,
     title: "A Strange Wooden Figure",

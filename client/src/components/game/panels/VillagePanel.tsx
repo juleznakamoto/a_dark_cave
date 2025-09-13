@@ -92,7 +92,7 @@ export default function VillagePanel() {
               </div>
             </div>
 
-            {buildings.lodges > 0 && (
+            {buildings.lodge > 0 && (
               <div className="flex items-center justify-between">
                 <span className="text-sm">Hunter ({getPopulationProductionText('hunters')})</span>
                 <div className="flex items-center gap-2">

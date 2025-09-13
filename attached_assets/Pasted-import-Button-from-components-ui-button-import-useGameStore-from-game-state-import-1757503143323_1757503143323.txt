@@ -10,7 +10,7 @@ export default function GameTabs() {
   // Update population whenever the component renders
   useEffect(() => {
     updatePopulation();
-  }, [villagers, buildings.huts, updatePopulation]);
+  }, [villagers, buildings.hut, updatePopulation]);
 
   return (
     <nav className="w-48 border-r border-border bg-muted/30">
@@ -50,20 +50,20 @@ export default function GameTabs() {
       </div>
 
       {/* Buildings Section */}
-      {(buildings.huts > 0 || buildings.lodges > 0) && (
+      {(buildings.hut > 0 || buildings.lodge > 0) && (
         <div className="mt-6">
           <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">Buildings</h3>
           <div className="space-y-1 px-3">
-            {buildings.huts > 0 && (
+            {buildings.hut > 0 && (
               <div className="flex justify-between items-center text-sm">
-                <span>Wooden Huts</span>
-                <span className="font-mono">{buildings.huts}</span>
+                <span>Wooden hut</span>
+                <span className="font-mono">{buildings.hut}</span>
               </div>
             )}
-            {buildings.lodges > 0 && (
+            {buildings.lodge > 0 && (
               <div className="flex justify-between items-center text-sm">
-                <span>Lodges</span>
-                <span className="font-mono">{buildings.lodges}</span>
+                <span>lodge</span>
+                <span className="font-mono">{buildings.lodge}</span>
               </div>
             )}
           </div>

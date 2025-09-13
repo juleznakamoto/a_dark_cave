@@ -33,7 +33,7 @@ export const basicActions: Record<string, Action> = {
     show_when: {
       "flags.fireLit": true,
       "story.seen.actionBuildTorch": true,
-      "buildings.lodges": 0,
+      "buildings.lodge": 0,
     },
     cost: {
       "resources.torch": 5,
@@ -98,7 +98,7 @@ export const basicActions: Record<string, Action> = {
     id: "ventureDeeper",
     label: "Venture Deeper",
     show_when: {
-      "buildings.lodges": 1,
+      "buildings.lodge": 1,
     },
     cost: {
       "resources.torch": 10,

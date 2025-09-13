@@ -11,10 +11,10 @@ export const buildingActions: Record<string, Action> = {
         "flags.villageUnlocked": true,
       },
       2: {
-        "buildings.lodges": 1,
+        "buildings.lodge": 1,
       },
       3: {
-        "buildings.blacksmiths": 1,
+        "buildings.blacksmith": 1,
       },
     },
     cost: {
@@ -31,15 +31,15 @@ export const buildingActions: Record<string, Action> = {
     effects: {
       1: {
         "resources.wood": -100,
-        "buildings.huts": 1,
+        "buildings.hut": 1,
       },
       2: {
         "resources.wood": -200,
-        "buildings.huts": 1,
+        "buildings.hut": 1,
       },
       3: {
         "resources.wood": -400,
-        "buildings.huts": 1,
+        "buildings.hut": 1,
       },
     },
     cooldown: 10,
@@ -51,7 +51,7 @@ export const buildingActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.huts": 1,
+        "buildings.hut": 1,
       },
     },
     cost: {
@@ -62,7 +62,7 @@ export const buildingActions: Record<string, Action> = {
     effects: {
       1: {
         "resources.wood": -250,
-        "buildings.lodges": 1,
+        "buildings.lodge": 1,
       },
     },
     cooldown: 15,
@@ -74,7 +74,7 @@ export const buildingActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.lodges": 1,
+        "buildings.lodge": 1,
       },
     },
     cost: {
@@ -87,7 +87,7 @@ export const buildingActions: Record<string, Action> = {
       1: {
         "resources.wood": -100,
         "resources.stone": -25,
-        "buildings.blacksmiths": 1,
+        "buildings.blacksmith": 1,
       },
     },
     cooldown: 20,
