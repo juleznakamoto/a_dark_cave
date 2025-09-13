@@ -72,8 +72,8 @@ export const gameStateSchema = z.object({
   }),
   villagers: z.object({
     free: z.number().min(0).default(0),
-    hunters: z.number().min(0).default(0),
-    gatherers: z.number().min(0).default(0),
+    hunter: z.number().min(0).default(0),
+    gatherer: z.number().min(0).default(0),
   }),
   world: z.object({
     discovered: z.boolean().default(false),

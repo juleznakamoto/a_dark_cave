@@ -36,7 +36,7 @@ export function updateFlag(
 }
 
 export function updatePopulationCounts(state: GameState): Partial<GameState> {
-  const current = state.villagers.free + state.villagers.gatherers + state.villagers.hunters;
+  const current = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
   const total = state.buildings.hut * 2;
   
   return {
@@ -47,7 +47,7 @@ export function updatePopulationCounts(state: GameState): Partial<GameState> {
 
 export function assignVillagerToJob(
   state: GameState,
-  job: 'gatherers' | 'hunters'
+  job: 'gatherer' | 'hunter'
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};
 
@@ -60,20 +60,20 @@ export function assignVillagerToJob(
   };
 
   // Track when population types are first assigned
-  if (job === 'hunters' && state.villagers.hunters === 0) {
+  if (job === 'hunter' && state.villagers.hunter === 0) {
     updates.story = {
       ...state.story,
       seen: {
         ...state.story.seen,
-        hasHunters: true
+        hashunter: true
       }
     };
-  } else if (job === 'gatherers' && state.villagers.gatherers === 0) {
+  } else if (job === 'gatherer' && state.villagers.gatherer === 0) {
     updates.story = {
       ...state.story,
       seen: {
         ...state.story.seen,
-        hasGatherers: true
+        hasgatherer: true
       }
     };
   }
@@ -83,7 +83,7 @@ export function assignVillagerToJob(
 
 export function unassignVillagerFromJob(
   state: GameState,
-  job: 'gatherers' | 'hunters'
+  job: 'gatherer' | 'hunter'
 ): Partial<GameState> {
   if (state.villagers[job] <= 0) return {};
 

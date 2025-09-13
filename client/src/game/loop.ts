@@ -9,8 +9,8 @@ let lastTick = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 30000; // Auto-save every 30 seconds
 const FIRE_CONSUMPTION_INTERVAL = 30000; // Fire consumes wood every 30 seconds
-const GATHERER_PRODUCTION_INTERVAL = 30000; // Gatherers produce wood every 30 seconds
-const HUNTER_PRODUCTION_INTERVAL = 30000; // Hunters produce food every 30 seconds
+const GATHERER_PRODUCTION_INTERVAL = 30000; // gatherer produce wood every 30 seconds
+const HUNTER_PRODUCTION_INTERVAL = 30000; // hunter produce food every 30 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
@@ -103,10 +103,10 @@ function handleGathererProduction() {
   // Pause gatherer production when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const gatherers = state.villagers.gatherers;
+  const gatherer = state.villagers.gatherer;
 
-  if (gatherers > 0) {
-    const production = getPopulationProduction('gatherers', gatherers);
+  if (gatherer > 0) {
+    const production = getPopulationProduction('gatherer', gatherer);
     production.forEach(prod => {
       state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
     });
@@ -119,10 +119,10 @@ function handleHunterProduction() {
   // Pause hunter production when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const hunters = state.villagers.hunters;
+  const hunter = state.villagers.hunter;
 
-  if (hunters > 0) {
-    const production = getPopulationProduction('hunters', hunters);
+  if (hunter > 0) {
+    const production = getPopulationProduction('hunter', hunter);
     production.forEach(prod => {
       state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
     });

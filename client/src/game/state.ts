@@ -53,8 +53,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: "gatherers" | "hunters") => void;
-  unassignVillager: (job: "gatherers" | "hunters") => void;
+  assignVillager: (job: "gatherer" | "hunter") => void;
+  unassignVillager: (job: "gatherer" | "hunter") => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
@@ -129,8 +129,8 @@ const defaultGameState: GameState = {
   },
   villagers: {
     free: 0,
-    hunters: 0,
-    gatherers: 0,
+    hunter: 0,
+    gatherer: 0,
   },
   world: {
     discovered: false,
@@ -236,8 +236,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
               set((state) => {
                 const currentPopulation =
                   state.villagers.free +
-                  state.villagers.gatherers +
-                  state.villagers.hunters;
+                  state.villagers.gatherer +
+                  state.villagers.hunter;
                 const maxPopulation = state.buildings.hut * 2;
 
                 if (currentPopulation < maxPopulation) {
@@ -435,7 +435,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is always enabled - no-op
   },
 
-  assignVillager: (job: "gatherers" | "hunters") => {
+  assignVillager: (job: "gatherer" | "hunter") => {
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -445,7 +445,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: "gatherers" | "hunters") => {
+  unassignVillager: (job: "gatherer" | "hunter") => {
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {

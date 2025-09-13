@@ -9,9 +9,9 @@ export interface PopulationJobConfig {
 }
 
 export const populationJobs: Record<string, PopulationJobConfig> = {
-  gatherers: {
-    id: 'gatherers',
-    label: 'Gatherers',
+  gatherer: {
+    id: 'gatherer',
+    label: 'gatherer',
     production: [
       {
         resource: 'wood',
@@ -25,9 +25,9 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       }
     ]
   },
-  hunters: {
-    id: 'hunters',
-    label: 'Hunters',
+  hunter: {
+    id: 'hunter',
+    label: 'hunter',
     production: [
       {
         resource: 'food',

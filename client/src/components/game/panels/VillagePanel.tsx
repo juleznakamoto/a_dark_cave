@@ -68,20 +68,20 @@ export default function VillagePanel() {
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <span className="text-sm">Gatherer ({getPopulationProductionText('gatherers')})</span>
+              <span className="text-sm">Gatherer ({getPopulationProductionText('gatherer')})</span>
               <div className="flex items-center gap-2">
                 <Button
-                  onClick={() => unassignVillager('gatherers')}
-                  disabled={villagers.gatherers === 0}
+                  onClick={() => unassignVillager('gatherer')}
+                  disabled={villagers.gatherer === 0}
                   variant="outline"
                   size="sm"
                   className="h-6 w-6 p-0"
                 >
                   -
                 </Button>
-                <span className="font-mono text-sm w-8 text-center">{villagers.gatherers}</span>
+                <span className="font-mono text-sm w-8 text-center">{villagers.gatherer}</span>
                 <Button
-                  onClick={() => assignVillager('gatherers')}
+                  onClick={() => assignVillager('gatherer')}
                   disabled={villagers.free === 0}
                   variant="outline"
                   size="sm"
@@ -94,20 +94,20 @@ export default function VillagePanel() {
 
             {buildings.lodge > 0 && (
               <div className="flex items-center justify-between">
-                <span className="text-sm">Hunter ({getPopulationProductionText('hunters')})</span>
+                <span className="text-sm">Hunter ({getPopulationProductionText('hunter')})</span>
                 <div className="flex items-center gap-2">
                   <Button
-                    onClick={() => unassignVillager('hunters')}
-                    disabled={villagers.hunters === 0}
+                    onClick={() => unassignVillager('hunter')}
+                    disabled={villagers.hunter === 0}
                     variant="outline"
                     size="sm"
                     className="h-6 w-6 p-0"
                   >
                     -
                   </Button>
-                  <span className="font-mono text-sm w-8 text-center">{villagers.hunters}</span>
+                  <span className="font-mono text-sm w-8 text-center">{villagers.hunter}</span>
                   <Button
-                    onClick={() => assignVillager('hunters')}
+                    onClick={() => assignVillager('hunter')}
                     disabled={villagers.free === 0}
                     variant="outline"
                     size="sm"
