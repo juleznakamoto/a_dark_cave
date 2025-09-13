@@ -217,6 +217,10 @@ export const gameEvents: Record<string, GameEvent> = {
         effect: (state) => {
           // Open for custom effects
           return {
+            items: {
+              ...state.items,
+              whispering_amulet: true,
+            },
             _logMessage:
               "You lift the floorboards and find a strange amulet, faintly whispering. Its purpose is unclear...",
             // e.g., add relic to state: relics: {...state.relics, whisperingAmulet: true}
@@ -243,7 +247,7 @@ export const gameEvents: Record<string, GameEvent> = {
     timeProbability: 25,
     title: "The Blackened Mirror",
     message:
-      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future. Do you buy it?",
+      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -311,6 +315,10 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Discard it",
         effect: (state) => {
           return {
+            items: {
+              ...state.items,
+                wooden_figure: true,
+            },
             _logMessage:
               "You discard the figure. The forest seems to watch silently as it disappears.",
           };
