@@ -46,6 +46,19 @@ export const gameEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 6)],
     triggered: false,
     priority: 1,
+    effect: (state) => ({
+      villagers: {
+        ...state.villagers,
+        free: state.villagers.free + 1,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasVillagers: true,
+        },
+      },
+    }),
   },
 
   foodGone: {
@@ -364,23 +377,6 @@ export class EventManager {
         // Apply effect if it exists and there are no choices
         if (event.effect && !event.choices) {
           stateChanges = event.effect(state);
-        }
-
-        // Handle specific event effects
-        if (event.id === 'strangerApproaches') {
-          stateChanges = {
-            villagers: {
-              ...state.villagers,
-              free: state.villagers.free + 1,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                hasVillagers: true,
-              },
-            },
-          };
         }
 
         // Mark as triggered
