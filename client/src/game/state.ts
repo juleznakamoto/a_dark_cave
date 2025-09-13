@@ -356,6 +356,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         },
       }));
 
+      // Check if any new log entry has choices and show event dialog
+      newLogEntries.forEach(entry => {
+        if (entry.choices && entry.choices.length > 0) {
+          get().setEventDialog(true, entry);
+        }
+      });
+
       // Update population after applying changes
       setTimeout(() => get().updatePopulation(), 0);
     }
