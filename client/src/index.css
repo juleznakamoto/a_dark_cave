@@ -113,9 +113,13 @@
     background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(4px);
   }
-  50% {
-    background-color: rgba(0, 0, 0, 0.6);
+  30% {
+    background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(6px);
+  }
+  60% {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
   }
   100% {
     background-color: rgba(0, 0, 0, 1.0);
@@ -125,7 +129,4 @@
 
 .animate-blur-to-black {
   animation: blur-to-black 3s ease-in-out forwards;
-  /* Set initial state */
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(4px);
 }
