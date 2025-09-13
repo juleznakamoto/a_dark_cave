@@ -37,6 +37,10 @@ interface GameStore extends GameState {
   lastSaved: string;
   isGameLoopActive: boolean;
   devMode: boolean;
+  eventDialog: {
+    isOpen: boolean;
+    currentEvent: LogEntry | null;
+  };
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -128,6 +132,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   events: {},
   current_population: 0,
   total_population: 0,
+  eventDialog: {
+    isOpen: false,
+    currentEvent: null,
+  },
 
   gatherWood: () => {
     const state = get();
@@ -395,4 +403,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updatePopulation: () => {
     set((state) => ({ ...state, ...updatePopulationCounts(state) }));
   },
-}));
+
+  setEventDialog: (isOpen: boolean, event?: LogEntry | null) => {
+    set({
+      eventDialog: {
+        isOpen,
+        currentEvent: event || null,
+      },
+    });
+  },
+});

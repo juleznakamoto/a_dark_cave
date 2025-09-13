@@ -6,9 +6,15 @@ import WorldPanel from './panels/WorldPanel';
 import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
+import EventDialog from './EventDialog';
+import { useEffect } from 'react';
+import { gameLoop } from '@/game/loop';
+import SidePanel from './panels/SidePanel';
+
 
 export default function GameContainer() {
-  const { activeTab, flags } = useGameStore();
+  const { activeTab, flags, eventDialog, setEventDialog } = useGameStore();
+  const isGameLoopActive = useGameStore((state) => state.isGameLoopActive);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -20,28 +26,47 @@ export default function GameContainer() {
     );
   }
 
+  useEffect(() => {
+    if (!isGameLoopActive) return;
+
+    const interval = setInterval(gameLoop, 200);
+    return () => clearInterval(interval);
+  }, [isGameLoopActive]);
+
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="h-screen bg-background text-foreground flex flex-col">
+      {/* Header */}
+      <div className="border-b border-border">
+        <GameTabs />
+      </div>
 
-      <main className="flex-1 p-6">
-        {/* Event Log - Full Width at Top */}
-        <div className="w-full mb-6">
-          <LogPanel />
-        </div>
-
-        {/* Main Content Area - Sidebar and Panel */}
-        <div className="flex">
-          <GameTabs />
-
-          <section className="flex-1 pl-6 overflow-y-auto">
+      {/* Main Content */}
+      <div className="flex-1 flex overflow-hidden">
+        {/* Left: Main Game Area */}
+        <div className="flex-1 flex flex-col">
+          <div className="flex-1 overflow-auto">
             {activeTab === 'cave' && <CavePanel />}
             {activeTab === 'village' && <VillagePanel />}
             {activeTab === 'world' && <WorldPanel />}
-          </section>
+          </div>
         </div>
-      </main>
 
+        {/* Right: Log Panel */}
+        <div className="w-80 border-l border-border">
+          <LogPanel />
+        </div>
+      </div>
+
+      {/* Footer */}
       <GameFooter />
+
+      {/* Event Dialog */}
+      <EventDialog
+        isOpen={eventDialog.isOpen}
+        onClose={() => setEventDialog(false)}
+        event={eventDialog.currentEvent}
+      />
     </div>
   );
 }

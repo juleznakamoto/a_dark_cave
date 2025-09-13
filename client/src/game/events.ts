@@ -105,7 +105,7 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 15,
     message: [
-      "In the night, something left a heap of iron at the village’s edge. No tracks lead away.",
+      "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
       "A gift gleams in the morning mist. None know who or what brought it.",
       "Iron rests where once was bare earth, as though conjured from realms unseen.",
     ][Math.floor(Math.random() * 3)],
@@ -117,6 +117,78 @@ export const gameEvents: Record<string, GameEvent> = {
         iron: state.resources.iron + 50,
       },
     }),
+  },
+
+  paleFigure: {
+    id: "paleFigure",
+    condition: (state) => state.villagers.free > 0 && state.buildings.huts >= 1,
+    triggerType: "resource",
+    timeProbability: 20,
+    message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "investigate",
+        label: "Investigate the figure",
+        effect: (state) => {
+          const rand = Math.random();
+          if (rand < 0.6) {
+            // Find resources
+            const resources = Math.floor(Math.random() * 30) + 20; // 20-50 resources
+            const resourceType = Math.random() < 0.5 ? 'wood' : 'stone';
+            return {
+              resources: {
+                ...state.resources,
+                [resourceType]: state.resources[resourceType] + resources,
+              },
+              _logMessage: `Your men approach cautiously and find a cache of ${resourceType} left behind. The figure has vanished without a trace.`,
+            };
+          } else if (rand < 0.8) {
+            // 1 man killed
+            return {
+              villagers: {
+                ...state.villagers,
+                free: Math.max(0, state.villagers.free - 1),
+              },
+              _logMessage: "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
+            };
+          } else {
+            // 2 men killed
+            return {
+              villagers: {
+                ...state.villagers,
+                free: Math.max(0, state.villagers.free - 2),
+              },
+              _logMessage: "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
+            };
+          }
+        },
+      },
+      {
+        id: "ignore",
+        label: "Ignore it and stay safe",
+        effect: (state) => {
+          const rand = Math.random();
+          if (rand < 0.5) {
+            // Nothing happens
+            return {
+              _logMessage: "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
+            };
+          } else {
+            // 1 man found dead
+            return {
+              villagers: {
+                ...state.villagers,
+                free: Math.max(0, state.villagers.free - 1),
+              },
+              _logMessage: "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
+            };
+          }
+        },
+      },
+    ],
   },
 };
 
