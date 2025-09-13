@@ -123,11 +123,27 @@
   }
 }
 
+@keyframes black-to-blur {
+  0% {
+    background-color: rgba(0, 0, 0, 1);
+    backdrop-filter: blur(0px);
+  }
+  30% {
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(2px);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(6px);
+  }
+}
+
 .animate-blur-to-black {
-  animation: blur-to-black 3s ease-in-out forwards;
-  /* Set initial state */
-  background-color: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(6px);
+  animation: blur-to-black 0.6s ease-in-out forwards;
+}
+
+.animate-black-to-blur {
+  animation: black-to-blur 0.6s ease-in-out forwards;
 }
 
 
