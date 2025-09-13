@@ -33,12 +33,10 @@ export default function GameContainer() {
       {/* Main Content */}
       <div className="flex-1 flex overflow-hidden">
         {/* Left: Main Game Area */}
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 overflow-auto">
-            {activeTab === 'cave' && <CavePanel />}
-            {activeTab === 'village' && <VillagePanel />}
-            {activeTab === 'world' && <WorldPanel />}
-          </div>
+        <div className="flex-1 overflow-auto p-6">
+          {activeTab === 'cave' && <CavePanel />}
+          {activeTab === 'village' && <VillagePanel />}
+          {activeTab === 'world' && <WorldPanel />}
         </div>
 
         {/* Right: Log Panel */}

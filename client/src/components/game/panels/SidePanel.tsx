@@ -3,7 +3,7 @@ import SidePanelSection from './SidePanelSection';
 import { getTotalLuck } from '@/game/effects';
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
+  const { resources, buildings, villagers, tools, clothing, current_population, total_population } = useGameStore();
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -65,7 +65,7 @@ export default function SidePanel() {
   const totalLuck = getTotalLuck(useGameStore());
 
   return (
-    <div>
+    <div className="flex space-x-8 px-6 py-4 text-sm">
       {resourceItems.length > 0 && (
         <SidePanelSection 
           title="Resources" 
