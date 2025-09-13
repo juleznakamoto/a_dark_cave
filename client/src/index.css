@@ -122,3 +122,7 @@
     backdrop-filter: blur(0px);
   }
 }
+
+.animate-blur-to-black {
+  animation: blur-to-black 3s ease-in-out forwards;
+}
