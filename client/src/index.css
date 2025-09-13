@@ -139,17 +139,11 @@
 }
 
 .animate-blur-to-black {
-  animation: blur-to-black 3s ease-in-out forwards;
-  /* Set initial state */
+  /* Set initial state immediately */
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(6px);
-}
-
-.animate-black-to-blur {
-  animation: black-to-blur 0.3s ease-out forwards;
-  /* Set initial state for closing */
-  background-color: rgba(0, 0, 0, 1);
-  backdrop-filter: blur(0px);
+  /* Then animate to final state */
+  animation: blur-to-black 3s ease-in-out forwards;
 }
 
 
