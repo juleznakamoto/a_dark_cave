@@ -123,7 +123,7 @@ export const gameEvents: Record<string, GameEvent> = {
     id: "paleFigure",
     condition: (state) => state.buildings.huts >= 2 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 0.1,
     message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
     triggered: false,
     priority: 3,

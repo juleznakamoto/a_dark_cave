@@ -73,7 +73,46 @@ export const canExecuteAction = (
   const action = gameActions[actionId];
   if (!action?.cost) return true;
 
-  return checkRequirements(action.cost, state, action);
+  // Check cooldown first
+  if (state.cooldowns[actionId] && state.cooldowns[actionId] > 0) {
+    return false;
+  }
+
+  let costs = action.cost;
+
+  // For building actions, get the cost for the next level
+  if (action.building) {
+    const level = getNextBuildingLevel(actionId, state);
+    costs = action.cost[level];
+  }
+
+  if (!costs || typeof costs !== 'object') return true;
+
+  // Check if we can afford all costs
+  for (const [path, requiredAmount] of Object.entries(costs)) {
+    if (typeof requiredAmount !== 'number') continue;
+    
+    const pathParts = path.split('.');
+    let current: any = state;
+
+    for (const part of pathParts) {
+      current = current?.[part];
+    }
+
+    // For resource costs, check if we have enough (>=)
+    if (path.startsWith('resources.')) {
+      if ((current || 0) < requiredAmount) {
+        return false;
+      }
+    } else {
+      // For other requirements, use exact equality check
+      if (current !== requiredAmount) {
+        return false;
+      }
+    }
+  }
+
+  return true;
 };
 
 // Utility function to apply action effects
