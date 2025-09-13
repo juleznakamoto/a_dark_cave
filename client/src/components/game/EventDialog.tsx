@@ -29,8 +29,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={isOpen} onOpenChange={() => {}}>
+      <DialogContent 
+        className="sm:max-w-md" 
+        onPointerDownOutside={(e) => e.preventDefault()}
+        onEscapeKeyDown={(e) => e.preventDefault()}
+      >
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
             {event.title || "Strange Encounter"}
