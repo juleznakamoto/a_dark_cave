@@ -41,9 +41,9 @@ export const basicActions: Record<string, Action> = {
     effects: {
       "resources.torch": -5,
       "resources.stone": "random(2,5)",
-      "resources.coal": { probability: 0.5, value: "random(1,4)" },
-      "resources.iron": { probability: 0.5, value: "random(1,4)" },
-      "resources.bones": { probability: 0.25, value: "random(1,4)" },
+      "resources.coal": { probability: 0.25, value: "random(1,4)" },
+      "resources.iron": { probability: 0.25, value: "random(1,4)" },
+      "resources.bones": { probability: 0.2, value: "random(1,4)" },
       "clothing.tarnished_amulet": {
         probability: 0.075,
         value: true,

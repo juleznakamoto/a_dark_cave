@@ -47,7 +47,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   stone_pickaxe: {
     id: 'stone_pickaxe',
     name: 'Stone Pickaxe',
-    description: 'Enables mining and improves stone gathering',
+    description: 'Enables mining',
     bonuses: {
       actionBonuses: {
         
