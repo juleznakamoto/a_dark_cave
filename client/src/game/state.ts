@@ -95,6 +95,9 @@ const defaultGameState: GameState = {
     tarnished_amulet: false,
     bloodstained_belt: false,
     ravenfeather_mantle: false,
+    blackened_mirror: false,
+    whispering_amulet: false,
+    wooden_figure: false,
   },
   buildings: {
     huts: 0,

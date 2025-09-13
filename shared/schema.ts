@@ -38,6 +38,9 @@ export const gameStateSchema = z.object({
     tarnished_amulet: z.boolean().default(false),
     bloodstained_belt: z.boolean().default(false),
     ravenfeather_mantle: z.boolean().default(false),
+    blackened_mirror: z.boolean().default(false),
+    whispering_amulet: z.boolean().default(false),
+    wooden_figure: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),
