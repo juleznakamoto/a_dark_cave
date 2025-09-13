@@ -134,7 +134,7 @@ export const gameEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        label: "Investigate the figure",
+        label: "Investigate",
         effect: (state) => {
           const rand = Math.random();
           if (rand < 0.5) {
@@ -169,7 +169,7 @@ export const gameEvents: Record<string, GameEvent> = {
       },
       {
         id: "ignore",
-        label: "Ignore it and stay safe",
+        label: "Ignore it",
         effect: (state) => {
           const rand = Math.random();
           if (rand < 0.6) {
