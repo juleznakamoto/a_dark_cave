@@ -33,7 +33,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-lg font-semibold">
-            Strange Encounter
+            {event.title || "Strange Encounter"}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
             {event.message}

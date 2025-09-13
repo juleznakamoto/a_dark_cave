@@ -4,6 +4,7 @@ export interface GameEvent {
   id: string;
   condition: (state: GameState) => boolean;
   triggerType: "time" | "resource" | "random" | "action";
+  title?: string;
   message: string;
   choices?: EventChoice[];
   triggered: boolean;
@@ -24,6 +25,7 @@ export interface LogEntry {
   message: string;
   timestamp: number;
   type: "event" | "action" | "system";
+  title?: string;
   choices?: EventChoice[];
 }
 
@@ -124,6 +126,7 @@ export const gameEvents: Record<string, GameEvent> = {
     condition: (state) => state.buildings.huts >= 0 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 0.1,
+    title: "The Pale Figure",
     message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
     triggered: false,
     priority: 3,
@@ -230,6 +233,7 @@ export class EventManager {
           message: event.message,
           timestamp: Date.now(),
           type: "event",
+          title: event.title,
           choices: event.choices,
         };
 
