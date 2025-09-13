@@ -235,8 +235,8 @@ export class EventManager {
 
         newLogEntries.push(logEntry);
 
-        // Apply effect if it exists
-        if (event.effect) {
+        // Apply effect if it exists and there are no choices
+        if (event.effect && !event.choices) {
           stateChanges = event.effect(state);
         }
 

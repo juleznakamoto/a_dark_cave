@@ -74,7 +74,22 @@ function processTick() {
   state.tickCooldowns();
 
   // Check and trigger events
-  state.checkEvents();
+  const eventResults = EventManager.checkEvents(currentState);
+    if (eventResults.newLogEntries.length > 0) {
+      eventResults.newLogEntries.forEach(entry => {
+        addLogEntry(entry);
+
+        // If event has choices, show the event dialog
+        if (entry.choices && entry.choices.length > 0) {
+          setEventDialog(true, entry);
+        }
+      });
+
+      // Apply any state changes from events
+      if (Object.keys(eventResults.stateChanges).length > 0) {
+        updateGameState(eventResults.stateChanges);
+      }
+    }
 }
 
 function handleFireConsumption() {
