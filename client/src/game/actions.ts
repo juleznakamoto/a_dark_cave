@@ -47,8 +47,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftStoneAxe(state, result);
     case 'craftStonePickaxe':
       return handleCraftStonePickaxe(state, result);
+    case 'craftIronAxe':
+      return handleCraftIronAxe(state, result);
+    case 'craftIronPickaxe':
+      return handleCraftIronPickaxe(state, result);
     case 'mineIron':
       return handleMineIron(state, result);
+    case 'mineCoal':
+      return handleMineCoal(state, result);
     case 'ventureDeeper':
       return handleVentureDeeper(state, result);
     default:
@@ -205,8 +211,41 @@ function handleCraftStonePickaxe(state: GameState, result: ActionResult): Action
   return result;
 }
 
+function handleCraftIronAxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftIronAxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftIronPickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftIronPickaxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
 function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
+  
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+  
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleMineCoal(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineCoal', state);
   
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {

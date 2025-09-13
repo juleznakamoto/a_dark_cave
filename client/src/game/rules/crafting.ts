@@ -62,4 +62,46 @@ export const craftingActions: Record<string, Action> = {
     },
     cooldown: 5,
   },
+
+  craftIronAxe: {
+    id: "craftIronAxe",
+    label: "Iron Axe",
+    show_when: {
+      "buildings.blacksmiths": 1,
+      "tools.iron_axe": false,
+    },
+    cost: {
+      "resources.iron": 50,
+      "resources.wood": 100,
+    },
+    effects: {
+      "resources.iron": -50,
+      "resources.wood": -100,
+      "tools.iron_axe": true,
+      "story.seen.hasIronAxe": true,
+      "story.seen.actionCraftIronAxe": true,
+    },
+    cooldown: 10,
+  },
+
+  craftIronPickaxe: {
+    id: "craftIronPickaxe",
+    label: "Iron Pickaxe",
+    show_when: {
+      "buildings.blacksmiths": 1,
+      "tools.iron_pickaxe": false,
+    },
+    cost: {
+      "resources.iron": 75,
+      "resources.wood": 150,
+    },
+    effects: {
+      "resources.iron": -75,
+      "resources.wood": -150,
+      "tools.iron_pickaxe": true,
+      "story.seen.hasIronPickaxe": true,
+      "story.seen.actionCraftIronPickaxe": true,
+    },
+    cooldown: 10,
+  },
 };

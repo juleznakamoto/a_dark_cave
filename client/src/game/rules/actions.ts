@@ -75,6 +75,25 @@ export const basicActions: Record<string, Action> = {
     cooldown: 10,
   },
 
+  mineCoal: {
+    id: "mineCoal",
+    label: "Mine Coal",
+    show_when: {
+      "tools.iron_pickaxe": true,
+    },
+    cost: {
+      "resources.torch": 15,
+      "resources.food": 10
+    },
+    effects: {
+      "resources.torch": -15,
+      "resources.food": -10,
+      "resources.coal": "random(3,6)",
+      "story.seen.hasCoal": true,
+    },
+    cooldown: 15,
+  },
+
   ventureDeeper: {
     id: "ventureDeeper",
     label: "Venture Deeper",

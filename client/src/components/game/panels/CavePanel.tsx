@@ -71,6 +71,18 @@ export default function CavePanel() {
             </CooldownButton>
           )}
 
+          {shouldShowAction('mineCoal', state) && (
+            <CooldownButton
+              onClick={() => executeAction('mineCoal')}
+              cooldownMs={gameActions.mineCoal.cooldown * 1000}
+              data-testid="button-mine-coal"
+              size="sm"
+              disabled={!canExecuteAction('mineCoal', state)}
+            >
+              Mine Coal{getCostText('mineCoal')}
+            </CooldownButton>
+          )}
+
           {showVentureDeeper && (
             <CooldownButton
               onClick={() => executeAction('ventureDeeper')}
@@ -123,6 +135,30 @@ export default function CavePanel() {
                 disabled={!canCraftStonePickaxe}
               >
                 Stone Pickaxe{getCostText('craftStonePickaxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftIronAxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftIronAxe')}
+                cooldownMs={gameActions.craftIronAxe.cooldown * 1000}
+                data-testid="button-craft-iron-axe"
+                size="sm"
+                disabled={!canExecuteAction('craftIronAxe', state)}
+              >
+                Iron Axe{getCostText('craftIronAxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftIronPickaxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftIronPickaxe')}
+                cooldownMs={gameActions.craftIronPickaxe.cooldown * 1000}
+                data-testid="button-craft-iron-pickaxe"
+                size="sm"
+                disabled={!canExecuteAction('craftIronPickaxe', state)}
+              >
+                Iron Pickaxe{getCostText('craftIronPickaxe')}
               </CooldownButton>
             )}
           </div>

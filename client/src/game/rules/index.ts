@@ -159,13 +159,20 @@ export const applyActionEffects = (
         const max = parseInt(match[2]);
         let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
-        // Apply stone_axe bonus for wood gathering
-        if (
-          actionId === "gatherWood" &&
-          finalKey === "wood" &&
-          state.tools.stone_axe
-        ) {
-          baseAmount += 3; // +3 wood if stone_axe is owned
+        // Apply axe bonuses for wood gathering
+        if (actionId === "gatherWood" && finalKey === "wood") {
+          if (state.tools.iron_axe) {
+            baseAmount += 6; // +6 wood if iron_axe is owned
+          } else if (state.tools.stone_axe) {
+            baseAmount += 3; // +3 wood if stone_axe is owned
+          }
+        }
+
+        // Apply pickaxe bonuses for iron mining
+        if (actionId === "mineIron" && finalKey === "iron") {
+          if (state.tools.iron_pickaxe) {
+            baseAmount += 3; // +3 iron if iron_pickaxe is owned
+          }
         }
 
         current[finalKey] =
