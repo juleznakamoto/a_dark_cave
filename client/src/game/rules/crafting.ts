@@ -46,7 +46,7 @@ export const craftingActions: Record<string, Action> = {
     id: "craftStonePickaxe",
     label: "Stone Pickaxe",
     show_when: {
-      "buildings.blacksmiths": 1,
+      "buildings.blacksmith": 1,
       "tools.stone_pickaxe": false,
     },
     cost: {
@@ -67,7 +67,7 @@ export const craftingActions: Record<string, Action> = {
     id: "craftIronAxe",
     label: "Iron Axe",
     show_when: {
-      "buildings.blacksmiths": 1,
+      "buildings.blacksmith": 1,
       "tools.stone_axe": true,
       "tools.iron_axe": false,
     },
@@ -89,7 +89,7 @@ export const craftingActions: Record<string, Action> = {
     id: "craftIronPickaxe",
     label: "Iron Pickaxe",
     show_when: {
-      "buildings.blacksmiths": 1,
+      "buildings.blacksmith": 1,
       "tools.stone_pickaxe": true,
       "tools.iron_pickaxe": false,
     },

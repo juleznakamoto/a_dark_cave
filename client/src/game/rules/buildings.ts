@@ -75,6 +75,7 @@ export const buildingActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.lodge": 1,
+        "buildings.blacksmith": 0,
       },
     },
     cost: {
