@@ -366,10 +366,35 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const changes = EventManager.applyEventChoice(state, choiceId, eventId);
 
     if (Object.keys(changes).length > 0) {
+      // Handle log messages from choice effects
+      let logMessage = null;
+      const updatedChanges = { ...changes };
+
+      if (updatedChanges._logMessage) {
+        logMessage = updatedChanges._logMessage;
+        delete updatedChanges._logMessage;
+      }
+
       set((prevState) => ({
         ...prevState,
-        ...changes,
+        ...updatedChanges,
       }));
+
+      // Add log message if present
+      if (logMessage) {
+        get().addLogEntry({
+          id: `choice-result-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'system',
+        });
+      }
+
+      // Close the event dialog
+      get().setEventDialog(false);
+
+      // Update population after applying changes
+      setTimeout(() => get().updatePopulation(), 0);
     }
   },
 
