@@ -7,14 +7,11 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
-import { useEffect } from 'react';
-import { gameLoop } from '@/game/loop';
 import SidePanel from './panels/SidePanel';
 
 
 export default function GameContainer() {
   const { activeTab, flags, eventDialog, setEventDialog } = useGameStore();
-  const isGameLoopActive = useGameStore((state) => state.isGameLoopActive);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -25,14 +22,6 @@ export default function GameContainer() {
       </>
     );
   }
-
-  useEffect(() => {
-    if (!isGameLoopActive) return;
-
-    const interval = setInterval(gameLoop, 200);
-    return () => clearInterval(interval);
-  }, [isGameLoopActive]);
-
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
