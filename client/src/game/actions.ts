@@ -1,3 +1,4 @@
+
 import { GameState } from '@shared/schema';
 import { gameActions, applyActionEffects } from '@/game/rules/index';
 import { LogEntry } from '@/game/events';
@@ -70,14 +71,14 @@ function handleLightFire(state: GameState, result: ActionResult): ActionResult {
       fireLit: true
     }
   };
-
+  
   result.logEntries!.push({
     id: `fire-lit-${Date.now()}`,
     message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
     timestamp: Date.now(),
     type: 'system',
   });
-
+  
   return result;
 }
 
@@ -104,7 +105,7 @@ function handleBuildTorch(state: GameState, result: ActionResult): ActionResult 
     });
     result.stateUpdates.story!.seen!.rumbleSound = true;
   }
-
+  
   return result;
 }
 
@@ -131,7 +132,7 @@ function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
       // Stranger approaches logic will be handled by the caller
     });
   }
-
+  
   return result;
 }
 
@@ -151,13 +152,6 @@ function handleBuildingConstruction(
 ): ActionResult {
   const level = state.buildings[buildingType] + 1;
   const actionEffects = gameActions[actionId].effects[level];
-
-  // Safety check - if no effects defined for this level, most buildings only support level 1
-  if (!actionEffects) {
-    console.warn(`No effects defined for ${actionId} at level ${level}. Building may already be at max level.`);
-    return result;
-  }
-
   const newResources = { ...state.resources };
 
   for (const [path, effect] of Object.entries(actionEffects)) {
@@ -172,13 +166,13 @@ function handleBuildingConstruction(
     ...state.buildings,
     [buildingType]: state.buildings[buildingType] + 1
   };
-
+  
   return result;
 }
 
 function handleExploreCave(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('exploreCave', state);
-
+  
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string) => {
@@ -192,7 +186,7 @@ function handleExploreCave(state: GameState, result: ActionResult): ActionResult
     // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
-
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -207,7 +201,7 @@ function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResu
     timestamp: Date.now(),
     type: 'system',
   });
-
+  
   return result;
 }
 
@@ -231,7 +225,7 @@ function handleCraftIronPickaxe(state: GameState, result: ActionResult): ActionR
 
 function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
-
+  
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string) => {
@@ -245,14 +239,14 @@ function handleMineIron(state: GameState, result: ActionResult): ActionResult {
     // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
-
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 function handleMineCoal(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineCoal', state);
-
+  
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string) => {
@@ -266,14 +260,14 @@ function handleMineCoal(state: GameState, result: ActionResult): ActionResult {
     // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
-
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
 function handleVentureDeeper(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('ventureDeeper', state);
-
+  
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string) => {
@@ -297,7 +291,7 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
       type: 'system',
     });
   }
-
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
