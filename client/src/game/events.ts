@@ -201,7 +201,7 @@ export const gameEvents: Record<string, GameEvent> = {
   
   whispersBeneathHut : {
     id: "whispersBeneathHut",
-    condition: (state) => state.buildings.huts >= 4,
+    condition: (state) => state.buildings.huts >= 4 && !state.clothing.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
@@ -236,30 +236,37 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
-  blackenedMirror : {
+  blackenedMirror: {
     id: "blackenedMirror",
-    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200,
+    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200 && !state.items.blackened_mirror,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Blackened Mirror",
     message:
-      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. The price is 200 iron. Do you buy it?",
+      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future. Do you buy it?",
     triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "buyMirror",
-        label: "Buy the mirror",
+        label: "Buy the mirror for 200 iron",
         effect: (state) => {
           return {
             resources: {
               ...state.resources,
               iron: state.resources.iron - 200,
             },
+            stats: {
+              ...state.stats,
+              knowledge: (state.stats.knowledge || 0) + 10,
+            },
+            items: {
+              ...state.items,
+              blackened_mirror: true,
+            },
             _logMessage:
-              "You purchase the mirror. Its purpose and effects remain a mystery...",
-            // e.g., add mirror to state: items: {...state.items, blackenedMirror: true}
+              "You purchase the mirror. Its purpose and effects remain a mystery, but you feel your understanding of hidden things deepen (+10 Knowledge).",
           };
         },
       },
@@ -278,7 +285,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   cthulhuFigure : {
     id: "cthulhuFigure",
-    condition: (state) => state.buildings.huts >= 4,
+    condition: (state) => state.buildings.huts >= 4 && !state.items.wooden_figure,
     triggerType: "resource",
     timeProbability: 20,
     title: "A Strange Wooden Figure",
