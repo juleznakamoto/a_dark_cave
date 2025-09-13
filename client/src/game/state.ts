@@ -93,6 +93,7 @@ const defaultGameState: GameState = {
   clothing: {
     tarnished_amulet: false,
     bloodstained_belt: false,
+    ravenfeather_mantle: false,
   },
   buildings: {
     huts: 0,

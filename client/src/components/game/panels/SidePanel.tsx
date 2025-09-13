@@ -28,16 +28,15 @@ export default function SidePanel() {
     }));
 
   // Dynamically generate clothing items from state
-  const clothingItems = Object.entries(resources) // Assuming clothing is a type of resource for now
-    .filter(([key]) => ['fur', 'leather'].includes(key)) // Filter for clothing-related resources
+  const clothingItems = Object.entries(useGameStore().clothing || {})
+    .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
-      value: value ?? 0,
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      value: 1,
       testId: `clothing-${key}`,
-      visible: (value ?? 0) > 0
-    }))
-    .filter(item => item.visible);
+      visible: true
+    }));
 
 
   // Dynamically generate building items from state

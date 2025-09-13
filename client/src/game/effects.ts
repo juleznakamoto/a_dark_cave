@@ -89,6 +89,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         strength: 5
       }
     }
+  },
+  
+  ravenfeather_mantle: {
+    id: 'ravenfeather_mantle',
+    name: 'Ravenfeather Mantle',
+    description: 'A mystical mantle woven from raven feathers that enhances both fortune and might (+5 Luck, +5 Strength)',
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        strength: 5
+      }
+    }
   }
 };
 

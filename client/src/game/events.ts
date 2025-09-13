@@ -121,7 +121,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   paleFigure: {
     id: "paleFigure",
-    condition: (state) => state.villagers.free > 0 && state.buildings.huts >= 1,
+    condition: (state) => state.villagers.free > 0 && state.buildings.huts >= 1 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 20,
     message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
@@ -134,8 +134,17 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Investigate the figure",
         effect: (state) => {
           const rand = Math.random();
-          if (rand < 0.6) {
-            // Find resources
+          if (rand < 0.15) {
+            // Find the Ravenfeather Mantle (15% chance)
+            return {
+              clothing: {
+                ...state.clothing,
+                ravenfeather_mantle: true,
+              },
+              _logMessage: "As your men approach, the pale figure beckons and vanishes. In its place lies a magnificent mantle woven from raven feathers, shimmering with an otherworldly power. When worn, it fills you with both fortune and strength.",
+            };
+          } else if (rand < 0.6) {
+            // Find resources (45% chance)
             const resources = Math.floor(Math.random() * 30) + 20; // 20-50 resources
             const resourceType = Math.random() < 0.5 ? 'wood' : 'stone';
             return {
@@ -146,7 +155,7 @@ export const gameEvents: Record<string, GameEvent> = {
               _logMessage: `Your men approach cautiously and find a cache of ${resourceType} left behind. The figure has vanished without a trace.`,
             };
           } else if (rand < 0.8) {
-            // 1 man killed
+            // 1 man killed (20% chance)
             return {
               villagers: {
                 ...state.villagers,
@@ -155,7 +164,7 @@ export const gameEvents: Record<string, GameEvent> = {
               _logMessage: "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
-            // 2 men killed
+            // 2 men killed (20% chance)
             return {
               villagers: {
                 ...state.villagers,

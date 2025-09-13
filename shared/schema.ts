@@ -36,6 +36,7 @@ export const gameStateSchema = z.object({
   clothing: z.object({
     tarnished_amulet: z.boolean().default(false),
     bloodstained_belt: z.boolean().default(false),
+    ravenfeather_mantle: z.boolean().default(false),
   }),
   buildings: z.object({
     huts: z.number().default(0),
