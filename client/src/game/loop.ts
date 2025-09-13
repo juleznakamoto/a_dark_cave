@@ -71,6 +71,13 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
+  // If event dialog is open, pause game logic but keep cooldowns ticking
+  if (state.eventDialog.isOpen) {
+    // Only tick down cooldowns, but don't process events or other game logic
+    state.tickCooldowns();
+    return;
+  }
+
   // Tick down cooldowns
   state.tickCooldowns();
 
@@ -81,6 +88,9 @@ function processTick() {
 function handleFireConsumption() {
   const state = useGameStore.getState();
 
+  // Pause fire consumption when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
   if (state.flags.fireLit && state.resources.wood > 0) {
     // Fire consumes 1 wood every 30 seconds
     state.updateResource("wood", -1);
@@ -89,6 +99,10 @@ function handleFireConsumption() {
 
 function handleGathererProduction() {
   const state = useGameStore.getState();
+
+  // Pause gatherer production when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
   const gatherers = state.villagers.gatherers;
 
   if (gatherers > 0) {
@@ -101,6 +115,10 @@ function handleGathererProduction() {
 
 function handleHunterProduction() {
   const state = useGameStore.getState();
+
+  // Pause hunter production when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
   const hunters = state.villagers.hunters;
 
   if (hunters > 0) {
