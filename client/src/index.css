@@ -114,13 +114,13 @@
     backdrop-filter: blur(0px);
   }
   100% {
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 1);
+    backdrop-filter: blur(10px);
   }
 }
 
 .animate-fade-in {
-  animation: fade-in 3s ease-in-out forwards;
+  animation: fade-in 5s ease-in-out forwards;
 }
 
 

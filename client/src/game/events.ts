@@ -124,9 +124,9 @@ export const gameEvents: Record<string, GameEvent> = {
   paleFigure: {
     id: "paleFigure",
     condition: (state) =>
-      state.buildings.huts >= 0 && !state.clothing.ravenfeather_mantle,
+      state.buildings.huts >= 2 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 0.1,
+    timeProbability: 15,
     title: "The Pale Figure",
     message:
       "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
@@ -198,6 +198,119 @@ export const gameEvents: Record<string, GameEvent> = {
       },
     ],
   },
+  
+  whispersBeneathHut : {
+    id: "whispersBeneathHut",
+    condition: (state) => state.buildings.huts >= 4,
+    triggerType: "resource",
+    timeProbability: 20,
+    title: "Whispers Beneath the Hut",
+    message:
+      "At night, faint whispers seem to rise from under the floor of one of your huts. The villagers are uneasy. Do you investigate?",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "investigateHut",
+        label: "Investigate the whispers",
+        effect: (state) => {
+          // Open for custom effects
+          return {
+            _logMessage:
+              "You lift the floorboards and find a strange amulet, faintly whispering. Its purpose is unclear...",
+            // e.g., add relic to state: relics: {...state.relics, whisperingAmulet: true}
+          };
+        },
+      },
+      {
+        id: "ignoreHut",
+        label: "Leave it be",
+        effect: (state) => {
+          return {
+            _logMessage:
+              "You choose to leave the hut alone. The whispers fade by morning, but a chill remains in the air.",
+          };
+        },
+      },
+    ],
+  },
+
+  blackenedMirror : {
+    id: "blackenedMirror",
+    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200,
+    triggerType: "resource",
+    timeProbability: 25,
+    title: "The Blackened Mirror",
+    message:
+      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. The price is 200 iron. Do you buy it?",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "buyMirror",
+        label: "Buy the mirror",
+        effect: (state) => {
+          return {
+            resources: {
+              ...state.resources,
+              iron: state.resources.iron - 200,
+            },
+            _logMessage:
+              "You purchase the mirror. Its purpose and effects remain a mystery...",
+            // e.g., add mirror to state: items: {...state.items, blackenedMirror: true}
+          };
+        },
+      },
+      {
+        id: "refuseMirror",
+        label: "Refuse the offer",
+        effect: (state) => {
+          return {
+            _logMessage:
+              "You decline the trader's offer. The mirror disappears into the night with him.",
+          };
+        },
+      },
+    ],
+  },
+
+  cthulhuFigure : {
+    id: "cthulhuFigure",
+    condition: (state) => state.buildings.huts >= 4,
+    triggerType: "resource",
+    timeProbability: 20,
+    title: "A Strange Wooden Figure",
+    message:
+      "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "keepFigure",
+        label: "Keep the figure",
+        effect: (state) => {
+          return {
+            _logMessage:
+              "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
+            // e.g., add figure to state: items: {...state.items, tentacledFigure: true}
+          };
+        },
+      },
+      {
+        id: "discardFigure",
+        label: "Discard it",
+        effect: (state) => {
+          return {
+            _logMessage:
+              "You discard the figure. The forest seems to watch silently as it disappears.",
+          };
+        },
+      },
+    ],
+  }
 };
 
 export class EventManager {
