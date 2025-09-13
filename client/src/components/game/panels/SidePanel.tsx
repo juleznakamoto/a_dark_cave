@@ -38,6 +38,17 @@ export default function SidePanel() {
       visible: true
     }));
 
+  // Dynamically generate relic items from state
+  const relicItems = Object.entries(useGameStore().relics || {})
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: clothingEffects[key]?.name || key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      value: 1,
+      testId: `relic-${key}`,
+      visible: true
+    }));
+
 
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
@@ -78,6 +89,9 @@ export default function SidePanel() {
       )}
       {clothingItems.length > 0 && (
         <SidePanelSection title="Clothing" items={clothingItems} />
+      )}
+      {relicItems.length > 0 && (
+        <SidePanelSection title="Relics" items={relicItems} />
       )}
       {buildingItems.length > 0 && (
         <SidePanelSection title="Buildings" items={buildingItems} />
