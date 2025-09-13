@@ -73,37 +73,8 @@ export default function SidePanel() {
           items={resourceItems}
         />
       )}
-      {/* Tools */}
-      {(state.tools.stone_axe || state.tools.iron_axe || state.tools.steel_axe || state.tools.obsidian_axe ||
-        state.tools.stone_pickaxe || state.tools.iron_pickaxe || state.tools.steel_pickaxe || state.tools.obsidian_pickaxe ||
-        state.tools.spear || state.tools.lantern) && (
-        <SidePanelSection title="Tools">
-          {/* Show best axe */}
-          {state.tools.obsidian_axe ? (
-            <div className="text-sm">Obsidian Axe</div>
-          ) : state.tools.steel_axe ? (
-            <div className="text-sm">Steel Axe</div>
-          ) : state.tools.iron_axe ? (
-            <div className="text-sm">Iron Axe</div>
-          ) : state.tools.stone_axe ? (
-            <div className="text-sm">Stone Axe</div>
-          ) : null}
-
-          {/* Show best pickaxe */}
-          {state.tools.obsidian_pickaxe ? (
-            <div className="text-sm">Obsidian Pickaxe</div>
-          ) : state.tools.steel_pickaxe ? (
-            <div className="text-sm">Steel Pickaxe</div>
-          ) : state.tools.iron_pickaxe ? (
-            <div className="text-sm">Iron Pickaxe</div>
-          ) : state.tools.stone_pickaxe ? (
-            <div className="text-sm">Stone Pickaxe</div>
-          ) : null}
-
-          {/* Other tools */}
-          {state.tools.spear && <div className="text-sm">Spear</div>}
-          {state.tools.lantern && <div className="text-sm">Lantern</div>}
-        </SidePanelSection>
+      {toolItems.length > 0 && (
+        <SidePanelSection title="Tools" items={toolItems} />
       )}
       {clothingItems.length > 0 && (
         <SidePanelSection title="Clothing" items={clothingItems} />
