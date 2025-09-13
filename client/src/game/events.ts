@@ -171,7 +171,7 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Ignore it and stay safe",
         effect: (state) => {
           const rand = Math.random();
-          if (rand < 0.5) {
+          if (rand < 0.6) {
             // Nothing happens
             return {
               _logMessage: "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
