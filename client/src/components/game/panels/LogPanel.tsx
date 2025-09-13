@@ -9,12 +9,9 @@ export default function LogPanel() {
   const recentEntries = log.slice(-8).reverse();
 
   return (
-    <div className="h-full flex flex-col">
-      <div className="p-4 border-b border-border">
-        <h3 className="font-medium text-sm text-muted-foreground">Events</h3>
-      </div>
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-3 text-sm">
+    <div className="h-48 overflow-hidden">
+      <div className="h-full overflow-y-auto p-4">
+        <div className="space-y-2 text-sm">
           {recentEntries.map((entry: LogEntry, index: number) => {
             const isThirdLast = index === recentEntries.length - 3;
             const isSecondLast = index === recentEntries.length - 2;

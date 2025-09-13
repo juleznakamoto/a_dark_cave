@@ -19,12 +19,11 @@ export default function GameTabs() {
   }, [villagers, buildings.huts, updatePopulation]);
 
   return (
-    <div className="flex">
-      {/* Navigation Tabs */}
-      <div className="flex space-x-1 px-6 py-4">
+    <nav className="w-48 border-r border-border bg-muted/30">
+      <div>
         <Button
           variant={activeTab === "cave" ? "default" : "ghost"}
-          className="text-sm"
+          className="w-full justify-start text-sm background-color: blue;"
           onClick={() => setActiveTab("cave")}
           data-testid="tab-cave"
           size="sm"
@@ -35,7 +34,7 @@ export default function GameTabs() {
         {flags.villageUnlocked && (
           <Button
             variant={activeTab === "village" ? "default" : "ghost"}
-            className="text-sm"
+            className="w-full justify-start text-sm"
             onClick={() => setActiveTab("village")}
             data-testid="tab-village"
             size="sm"
@@ -47,7 +46,7 @@ export default function GameTabs() {
         {flags.worldDiscovered && (
           <Button
             variant={activeTab === "world" ? "default" : "ghost"}
-            className="text-sm"
+            className="w-full justify-start text-sm"
             onClick={() => setActiveTab("world")}
             data-testid="tab-world"
             size="sm"
@@ -57,10 +56,7 @@ export default function GameTabs() {
         )}
       </div>
 
-      {/* Side Panel Info */}
-      <div className="ml-auto">
-        <SidePanel />
-      </div>
-    </div>
+      <SidePanel />
+    </nav>
   );
 }
