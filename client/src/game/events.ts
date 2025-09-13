@@ -116,18 +116,20 @@ export const gameEvents: Record<string, GameEvent> = {
     effect: (state) => ({
       resources: {
         ...state.resources,
-        iron: state.resources.iron + 50,
+        iron: state.resources.iron + 50 * state.buildings.huts,
       },
     }),
   },
 
   paleFigure: {
     id: "paleFigure",
-    condition: (state) => state.buildings.huts >= 0 && !state.clothing.ravenfeather_mantle,
+    condition: (state) =>
+      state.buildings.huts >= 0 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 0.1,
+    timeProbability: 0.15,
     title: "The Pale Figure",
-    message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
+    message:
+      "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -144,7 +146,8 @@ export const gameEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 ravenfeather_mantle: true,
               },
-              _logMessage: "As your men approach, the pale figure beckons and vanishes. In its place lies a magnificent mantle woven from raven feathers, shimmering with an otherworldly power. When worn, it fills you with both fortune and strength.",
+              _logMessage:
+                "As your men approach, the pale figure beckons and vanishes. In its place lies a magnificent mantle woven from raven feathers, shimmering with an otherworldly power. When worn, it fills you with both fortune and strength.",
             };
           } else if (rand < 0.8) {
             // 1 man killed (30% chance)
@@ -153,7 +156,8 @@ export const gameEvents: Record<string, GameEvent> = {
                 ...state.villagers,
                 free: Math.max(0, state.villagers.free - 1),
               },
-              _logMessage: "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
+              _logMessage:
+                "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
             // 2 men killed (20% chance)
@@ -162,7 +166,8 @@ export const gameEvents: Record<string, GameEvent> = {
                 ...state.villagers,
                 free: Math.max(0, state.villagers.free - 2),
               },
-              _logMessage: "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
+              _logMessage:
+                "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
             };
           }
         },
@@ -175,7 +180,8 @@ export const gameEvents: Record<string, GameEvent> = {
           if (rand < 0.6) {
             // Nothing happens
             return {
-              _logMessage: "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
+              _logMessage:
+                "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
             };
           } else {
             // 1 man found dead
@@ -184,7 +190,8 @@ export const gameEvents: Record<string, GameEvent> = {
                 ...state.villagers,
                 free: Math.max(0, state.villagers.free - 1),
               },
-              _logMessage: "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
+              _logMessage:
+                "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
             };
           }
         },
