@@ -19,7 +19,7 @@ export default function VillagePanel() {
   return (
     <div className="space-y-6">
       {/* Build Section */}
-      {(shouldShowAction('buildHut', state) || shouldShowAction('buildLodge', state) || shouldShowAction('buildWorkshop', state)) && (
+      {(shouldShowAction('buildHut', state) || shouldShowAction('buildLodge', state) || shouldShowAction('buildBlacksmith', state)) && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
           <div className="flex flex-wrap gap-2">
@@ -47,15 +47,15 @@ export default function VillagePanel() {
               </CooldownButton>
             )}
 
-            {shouldShowAction('buildWorkshop', state) && (
+            {shouldShowAction('buildBlacksmith', state) && (
               <CooldownButton
                 onClick={handleBuildBlacksmith}
-                cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
-                data-testid="button-build-workshop"
+                cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
+                data-testid="button-build-blacksmith"
                 disabled={!canBuildBlacksmith}
                 size="sm"
               >
-                Blacksmith{getCostText('buildWorkshop', state)}
+                Blacksmith{getCostText('buildBlacksmith', state)}
               </CooldownButton>
             )}
           </div>
