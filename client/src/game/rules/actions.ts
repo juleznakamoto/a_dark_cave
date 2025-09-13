@@ -88,7 +88,7 @@ export const basicActions: Record<string, Action> = {
     effects: {
       "resources.torch": -10,
       "resources.food": -20,
-      "resources.stone": "random(3,8)",
+      "resources.stone": "random(4,10)",
       "resources.coal": { probability: 0.6, value: "random(2,6)" },
       "resources.iron": { probability: 0.6, value: "random(2,6)" },
       "resources.sulfur": { probability: 0.4, value: "random(2,4)" },
