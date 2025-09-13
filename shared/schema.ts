@@ -18,6 +18,7 @@ export const gameStateSchema = z.object({
   stats: z.object({
     luck: z.number().min(0).default(0),
     strength: z.number().min(0).default(0),
+    knowledge: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),

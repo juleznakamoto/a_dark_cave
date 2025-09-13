@@ -75,7 +75,7 @@ const defaultGameState: GameState = {
   stats: {
     luck: 0,
     strength: 0,
-    knowledge:0,
+    knowledge: 0,
   },
   flags: {
     fireLit: false,
