@@ -31,7 +31,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent 
-        className="sm:max-w-md" 
+        className="sm:max-w-md [&>button]:hidden" 
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
