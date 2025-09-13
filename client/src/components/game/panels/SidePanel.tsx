@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { getTotalLuck } from '@/game/effects';
+import { getTotalLuck, clothingEffects } from '@/game/effects';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
