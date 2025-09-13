@@ -6,7 +6,6 @@ export const craftingActions: Record<string, Action> = {
     id: "buildTorch",
     label: "Torch",
     show_when: {
-      "flags.fireLit": true,
       "story.seen.hasWood": true,
     },
     cost: {

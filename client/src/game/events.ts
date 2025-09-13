@@ -121,7 +121,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   paleFigure: {
     id: "paleFigure",
-    condition: (state) => state.villagers.free > 0 && state.buildings.huts >= 1 && !state.clothing.ravenfeather_mantle,
+    condition: (state) => state.buildings.huts >= 2 && !state.clothing.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 20,
     message: "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
@@ -134,8 +134,8 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Investigate the figure",
         effect: (state) => {
           const rand = Math.random();
-          if (rand < 0.15) {
-            // Find the Ravenfeather Mantle (15% chance)
+          if (rand < 0.5) {
+            // Find the Ravenfeather Mantle (50% chance)
             return {
               clothing: {
                 ...state.clothing,
@@ -143,19 +143,8 @@ export const gameEvents: Record<string, GameEvent> = {
               },
               _logMessage: "As your men approach, the pale figure beckons and vanishes. In its place lies a magnificent mantle woven from raven feathers, shimmering with an otherworldly power. When worn, it fills you with both fortune and strength.",
             };
-          } else if (rand < 0.6) {
-            // Find resources (45% chance)
-            const resources = Math.floor(Math.random() * 30) + 20; // 20-50 resources
-            const resourceType = Math.random() < 0.5 ? 'wood' : 'stone';
-            return {
-              resources: {
-                ...state.resources,
-                [resourceType]: state.resources[resourceType] + resources,
-              },
-              _logMessage: `Your men approach cautiously and find a cache of ${resourceType} left behind. The figure has vanished without a trace.`,
-            };
           } else if (rand < 0.8) {
-            // 1 man killed (20% chance)
+            // 1 man killed (30% chance)
             return {
               villagers: {
                 ...state.villagers,
