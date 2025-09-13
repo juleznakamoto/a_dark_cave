@@ -106,4 +106,104 @@ export const craftingActions: Record<string, Action> = {
     },
     cooldown: 10,
   },
+
+  craftSteelAxe: {
+    id: "craftSteelAxe",
+    label: "Steel Axe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.iron_axe": true,
+      "tools.steel_axe": false,
+    },
+    cost: {
+      "resources.iron": 100,
+      "resources.coal": 50,
+      "resources.wood": 200,
+    },
+    effects: {
+      "resources.iron": -100,
+      "resources.coal": -50,
+      "resources.wood": -200,
+      "tools.steel_axe": true,
+      "story.seen.hasSteelAxe": true,
+      "story.seen.actionCraftSteelAxe": true,
+    },
+    cooldown: 15,
+  },
+
+  craftSteelPickaxe: {
+    id: "craftSteelPickaxe",
+    label: "Steel Pickaxe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.iron_pickaxe": true,
+      "tools.steel_pickaxe": false,
+    },
+    cost: {
+      "resources.iron": 125,
+      "resources.coal": 75,
+      "resources.wood": 250,
+    },
+    effects: {
+      "resources.iron": -125,
+      "resources.coal": -75,
+      "resources.wood": -250,
+      "tools.steel_pickaxe": true,
+      "story.seen.hasSteelPickaxe": true,
+      "story.seen.actionCraftSteelPickaxe": true,
+    },
+    cooldown: 15,
+  },
+
+  craftObsidianAxe: {
+    id: "craftObsidianAxe",
+    label: "Obsidian Axe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.steel_axe": true,
+      "tools.obsidian_axe": false,
+    },
+    cost: {
+      "resources.iron": 150,
+      "resources.coal": 100,
+      "resources.sulfur": 50,
+      "resources.wood": 300,
+    },
+    effects: {
+      "resources.iron": -150,
+      "resources.coal": -100,
+      "resources.sulfur": -50,
+      "resources.wood": -300,
+      "tools.obsidian_axe": true,
+      "story.seen.hasObsidianAxe": true,
+      "story.seen.actionCraftObsidianAxe": true,
+    },
+    cooldown: 20,
+  },
+
+  craftObsidianPickaxe: {
+    id: "craftObsidianPickaxe",
+    label: "Obsidian Pickaxe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.steel_pickaxe": true,
+      "tools.obsidian_pickaxe": false,
+    },
+    cost: {
+      "resources.iron": 200,
+      "resources.coal": 125,
+      "resources.sulfur": 75,
+      "resources.wood": 400,
+    },
+    effects: {
+      "resources.iron": -200,
+      "resources.coal": -125,
+      "resources.sulfur": -75,
+      "resources.wood": -400,
+      "tools.obsidian_pickaxe": true,
+      "story.seen.hasObsidianPickaxe": true,
+      "story.seen.actionCraftObsidianPickaxe": true,
+    },
+    cooldown: 20,
+  },
 };

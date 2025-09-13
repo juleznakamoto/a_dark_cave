@@ -161,6 +161,54 @@ export default function CavePanel() {
                 Iron Pickaxe{getCostText('craftIronPickaxe')}
               </CooldownButton>
             )}
+
+            {shouldShowAction('craftSteelAxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftSteelAxe')}
+                cooldownMs={gameActions.craftSteelAxe.cooldown * 1000}
+                data-testid="button-craft-steel-axe"
+                size="sm"
+                disabled={!canExecuteAction('craftSteelAxe', state)}
+              >
+                Steel Axe{getCostText('craftSteelAxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftSteelPickaxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftSteelPickaxe')}
+                cooldownMs={gameActions.craftSteelPickaxe.cooldown * 1000}
+                data-testid="button-craft-steel-pickaxe"
+                size="sm"
+                disabled={!canExecuteAction('craftSteelPickaxe', state)}
+              >
+                Steel Pickaxe{getCostText('craftSteelPickaxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftObsidianAxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftObsidianAxe')}
+                cooldownMs={gameActions.craftObsidianAxe.cooldown * 1000}
+                data-testid="button-craft-obsidian-axe"
+                size="sm"
+                disabled={!canExecuteAction('craftObsidianAxe', state)}
+              >
+                Obsidian Axe{getCostText('craftObsidianAxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftObsidianPickaxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftObsidianPickaxe')}
+                cooldownMs={gameActions.craftObsidianPickaxe.cooldown * 1000}
+                data-testid="button-craft-obsidian-pickaxe"
+                size="sm"
+                disabled={!canExecuteAction('craftObsidianPickaxe', state)}
+              >
+                Obsidian Pickaxe{getCostText('craftObsidianPickaxe')}
+              </CooldownButton>
+            )}
           </div>
         </div>
       )}

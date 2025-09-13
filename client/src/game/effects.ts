@@ -64,6 +64,93 @@ export const toolEffects: Record<string, EffectDefinition> = {
         
       }
     }
+  },
+
+  iron_axe: {
+    id: 'iron_axe',
+    name: 'Iron Axe',
+    description: 'Significantly increases wood gathering efficiency',
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceBonus: { wood: 8 }
+        }
+      }
+    }
+  },
+
+  iron_pickaxe: {
+    id: 'iron_pickaxe',
+    name: 'Iron Pickaxe',
+    description: 'Enables advanced mining operations',
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 2 }
+        },
+        mineCoal: {
+          resourceBonus: { coal: 2 }
+        }
+      }
+    }
+  },
+
+  steel_axe: {
+    id: 'steel_axe',
+    name: 'Steel Axe',
+    description: 'Superior wood gathering tool',
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceBonus: { wood: 15 }
+        }
+      }
+    }
+  },
+
+  steel_pickaxe: {
+    id: 'steel_pickaxe',
+    name: 'Steel Pickaxe',
+    description: 'High-efficiency mining tool',
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 5 }
+        },
+        mineCoal: {
+          resourceBonus: { coal: 5 }
+        }
+      }
+    }
+  },
+
+  obsidian_axe: {
+    id: 'obsidian_axe',
+    name: 'Obsidian Axe',
+    description: 'Legendary wood gathering tool with razor-sharp volcanic glass',
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceBonus: { wood: 25 }
+        }
+      }
+    }
+  },
+
+  obsidian_pickaxe: {
+    id: 'obsidian_pickaxe',
+    name: 'Obsidian Pickaxe',
+    description: 'Ultimate mining tool forged with volcanic glass',
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 10 }
+        },
+        mineCoal: {
+          resourceBonus: { coal: 10 }
+        }
+      }
+    }
   }
 };
 
