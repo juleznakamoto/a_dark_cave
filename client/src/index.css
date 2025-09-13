@@ -107,3 +107,18 @@
     @apply font-sans antialiased bg-background text-foreground;
   }
 }
+
+@keyframes blur-to-black {
+  0% {
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(4px);
+  }
+  50% {
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+  }
+  100% {
+    background-color: rgba(0, 0, 0, 1);
+    backdrop-filter: blur(0px);
+  }
+}
