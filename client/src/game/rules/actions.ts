@@ -21,7 +21,7 @@ export const basicActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(1,4)",
+      "resources.wood": "random(1,400)",
       "story.seen.hasWood": true,
     },
     cooldown: 5,
