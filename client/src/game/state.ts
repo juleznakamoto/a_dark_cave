@@ -55,6 +55,7 @@ interface GameStore extends GameState {
   applyEventChoice: (choiceId: string, eventId: string) => void;
   assignVillager: (job: "gatherers" | "hunters") => void;
   unassignVillager: (job: "gatherers" | "hunters") => void;
+  setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
 const defaultGameState: GameState = {
