@@ -1,3 +1,4 @@
+
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -7,8 +8,6 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
-import SidePanel from './panels/SidePanel';
-
 
 export default function GameContainer() {
   const { activeTab, flags, eventDialog, setEventDialog } = useGameStore();
@@ -24,30 +23,26 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col">
-      {/* Header */}
-      <div className="border-b border-border">
-        <GameTabs />
-      </div>
+    <div className="min-h-screen bg-background text-foreground flex flex-col">
 
-      {/* Main Content */}
-      <div className="flex-1 flex overflow-hidden">
-        {/* Left: Main Game Area */}
-        <div className="flex-1 flex flex-col">
-          <div className="flex-1 overflow-auto">
+      <main className="flex-1 p-6">
+        {/* Event Log - Full Width at Top */}
+        <div className="w-full mb-6">
+          <LogPanel />
+        </div>
+
+        {/* Main Content Area - Sidebar and Panel */}
+        <div className="flex">
+          <GameTabs />
+
+          <section className="flex-1 pl-6 overflow-y-auto">
             {activeTab === 'cave' && <CavePanel />}
             {activeTab === 'village' && <VillagePanel />}
             {activeTab === 'world' && <WorldPanel />}
-          </div>
+          </section>
         </div>
+      </main>
 
-        {/* Right: Log Panel */}
-        <div className="w-80 border-l border-border">
-          <LogPanel />
-        </div>
-      </div>
-
-      {/* Footer */}
       <GameFooter />
 
       {/* Event Dialog */}
