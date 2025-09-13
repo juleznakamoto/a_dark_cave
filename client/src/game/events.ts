@@ -124,7 +124,7 @@ export const gameEvents: Record<string, GameEvent> = {
   paleFigure: {
     id: "paleFigure",
     condition: (state) =>
-      state.buildings.huts >= 2 && !state.clothing.ravenfeather_mantle,
+      state.buildings.huts >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 15,
     title: "The Pale Figure",
@@ -142,8 +142,8 @@ export const gameEvents: Record<string, GameEvent> = {
           if (rand < 0.5) {
             // Find the Ravenfeather Mantle (50% chance)
             return {
-              clothing: {
-                ...state.clothing,
+              relics: {
+                ...state.relics,
                 ravenfeather_mantle: true,
               },
               _logMessage:
@@ -201,7 +201,7 @@ export const gameEvents: Record<string, GameEvent> = {
   
   whispersBeneathHut : {
     id: "whispersBeneathHut",
-    condition: (state) => state.buildings.huts >= 4 && !state.clothing.whispering_amulet,
+    condition: (state) => state.buildings.huts >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
@@ -217,8 +217,8 @@ export const gameEvents: Record<string, GameEvent> = {
         effect: (state) => {
           // Open for custom effects
           return {
-            items: {
-              ...state.items,
+            relics: {
+              ...state.relics,
               whispering_amulet: true,
             },
             _logMessage:
@@ -242,7 +242,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   blackenedMirror: {
     id: "blackenedMirror",
-    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200 && !state.items.blackened_mirror,
+    condition: (state) => state.buildings.huts >= 5 && state.resources.iron >= 200 && !state.relics.blackened_mirror,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Blackened Mirror",
@@ -265,8 +265,8 @@ export const gameEvents: Record<string, GameEvent> = {
               ...state.stats,
               knowledge: (state.stats.knowledge || 0) + 10,
             },
-            items: {
-              ...state.items,
+            relics: {
+              ...state.relics,
               blackened_mirror: true,
             },
             _logMessage:
@@ -289,7 +289,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
   cthulhuFigure : {
     id: "cthulhuFigure",
-    condition: (state) => state.buildings.huts >= 4 && !state.items.wooden_figure,
+    condition: (state) => state.buildings.huts >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
     timeProbability: 20,
     title: "A Strange Wooden Figure",
@@ -315,9 +315,9 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Discard it",
         effect: (state) => {
           return {
-            items: {
-              ...state.items,
-                wooden_figure: true,
+            relics: {
+              ...state.relics,
+              wooden_figure: true,
             },
             _logMessage:
               "You discard the figure. The forest seems to watch silently as it disappears.",
