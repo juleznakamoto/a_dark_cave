@@ -125,7 +125,7 @@ const defaultGameState: GameState = {
     huts: 0,
     traps: 0,
     lodges: 0,
-    workshops: 0,
+    blacksmiths: 0,
   },
   villagers: {
     free: 0,

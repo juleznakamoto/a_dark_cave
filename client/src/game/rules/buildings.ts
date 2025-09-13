@@ -14,7 +14,7 @@ export const buildingActions: Record<string, Action> = {
         "buildings.lodges": 1,
       },
       3: {
-        "buildings.workshops": 1,
+        "buildings.blacksmiths": 1,
       },
     },
     cost: {
@@ -68,9 +68,9 @@ export const buildingActions: Record<string, Action> = {
     cooldown: 15,
   },
 
-  buildWorkshop: {
-    id: "buildWorkshop",
-    label: "Workshop",
+  buildBlacksmith: {
+    id: "buildBlacksmith",
+    label: "Blacksmith",
     building: true,
     show_when: {
       1: {
@@ -87,7 +87,7 @@ export const buildingActions: Record<string, Action> = {
       1: {
         "resources.wood": -100,
         "resources.stone": -25,
-        "buildings.workshops": 1,
+        "buildings.blacksmiths": 1,
       },
     },
     cooldown: 20,

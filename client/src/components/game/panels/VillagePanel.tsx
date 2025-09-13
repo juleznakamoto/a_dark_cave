@@ -1,4 +1,3 @@
-
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -11,11 +10,11 @@ export default function VillagePanel() {
 
   const handleBuildHut = () => executeAction('buildHut');
   const handleBuildLodge = () => executeAction('buildLodge');
-  const handleBuildWorkshop = () => executeAction('buildWorkshop');
+  const handleBuildBlacksmith = () => executeAction('buildBlacksmith');
 
   const canBuildHut = canExecuteAction('buildHut', state);
   const canBuildLodge = canExecuteAction('buildLodge', state);
-  const canBuildWorkshop = canExecuteAction('buildWorkshop', state);
+  const canBuildBlacksmith = canExecuteAction('buildBlacksmith', state);
 
   return (
     <div className="space-y-6">
@@ -50,13 +49,13 @@ export default function VillagePanel() {
 
             {shouldShowAction('buildWorkshop', state) && (
               <CooldownButton
-                onClick={handleBuildWorkshop}
+                onClick={handleBuildBlacksmith}
                 cooldownMs={gameActions.buildWorkshop.cooldown * 1000}
                 data-testid="button-build-workshop"
-                disabled={!canBuildWorkshop}
+                disabled={!canBuildBlacksmith}
                 size="sm"
               >
-                Workshop{getCostText('buildWorkshop', state)}
+                Blacksmith{getCostText('buildWorkshop', state)}
               </CooldownButton>
             )}
           </div>
