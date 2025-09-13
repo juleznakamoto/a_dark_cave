@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { getTotalLuck, clothingEffects } from '@/game/effects';
+import { getTotalLuck, clothingEffects, getDisplayTools } from '@/game/effects';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
@@ -16,9 +16,9 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  // Dynamically generate tool items from state
-  const toolItems = Object.entries(tools)
-    .filter(([key, value]) => value === true)
+  // Dynamically generate tool items from state (only show best tools)
+  const displayTools = getDisplayTools(useGameStore());
+  const toolItems = Object.entries(displayTools)
     .map(([key, value]) => ({
       id: key,
       label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),

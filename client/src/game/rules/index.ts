@@ -1,10 +1,10 @@
-
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability } from "../effects";
 import { basicActions } from "./actions";
 import { craftingActions } from "./crafting";
 import { buildingActions } from "./buildings";
+import { getActionBonuses } from "../effects";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -32,7 +32,7 @@ const checkRequirements = (
   action: Action,
 ): boolean => {
   if (action.building) {
-    const level = getNextBuildingLevel(action.id, state);
+    const level = getNextBuildingLevel(actionId, state);
     const levelRequirements = requirements[level];
     if (!levelRequirements) return false;
     requirements = levelRequirements;
@@ -91,7 +91,7 @@ export const canExecuteAction = (
   // Check if we can afford all costs
   for (const [path, requiredAmount] of Object.entries(costs)) {
     if (typeof requiredAmount !== 'number') continue;
-    
+
     const pathParts = path.split('.');
     let current: any = state;
 
@@ -187,7 +187,7 @@ export const applyActionEffects = (
         logMessage?: string;
         condition?: string;
       };
-      
+
       // Check condition if provided
       let conditionMet = true;
       if (probabilityEffect.condition) {
@@ -211,7 +211,7 @@ export const applyActionEffects = (
           conditionMet = !!current;
         }
       }
-      
+
       const totalLuck = getTotalLuck(state);
       const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
       const shouldTrigger = conditionMet && Math.random() < adjustedProbability;

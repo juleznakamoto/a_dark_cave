@@ -191,13 +191,68 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   }
 };
 
-// Helper function to get all active effects for a given state
+// Tool hierarchy definitions
+const AXE_HIERARCHY = ['stone_axe', 'iron_axe', 'steel_axe', 'obsidian_axe'];
+const PICKAXE_HIERARCHY = ['stone_pickaxe', 'iron_pickaxe', 'steel_pickaxe', 'obsidian_pickaxe'];
+
+// Helper function to get the best tool of a specific type
+export const getBestTool = (state: GameState, toolType: 'axe' | 'pickaxe'): string | null => {
+  const hierarchy = toolType === 'axe' ? AXE_HIERARCHY : PICKAXE_HIERARCHY;
+  
+  // Find the highest tier tool that the player owns
+  for (let i = hierarchy.length - 1; i >= 0; i--) {
+    const toolId = hierarchy[i];
+    if (state.tools[toolId as keyof typeof state.tools]) {
+      return toolId;
+    }
+  }
+  
+  return null;
+};
+
+// Helper function to get all tools that should be displayed (only best of each type)
+export const getDisplayTools = (state: GameState): Record<string, boolean> => {
+  const displayTools: Record<string, boolean> = {};
+  
+  // Get best axe and pickaxe
+  const bestAxe = getBestTool(state, 'axe');
+  const bestPickaxe = getBestTool(state, 'pickaxe');
+  
+  // Add best tools to display
+  if (bestAxe) displayTools[bestAxe] = true;
+  if (bestPickaxe) displayTools[bestPickaxe] = true;
+  
+  // Add non-axe/pickaxe tools
+  Object.entries(state.tools).forEach(([toolId, owned]) => {
+    if (owned && !AXE_HIERARCHY.includes(toolId) && !PICKAXE_HIERARCHY.includes(toolId)) {
+      displayTools[toolId] = true;
+    }
+  });
+  
+  return displayTools;
+};
+
+// Helper function to get all active effects for a given state (modified to only use best tools)
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
   
-  // Check tools
+  // Check tools - only add best axe and pickaxe
+  const bestAxe = getBestTool(state, 'axe');
+  const bestPickaxe = getBestTool(state, 'pickaxe');
+  
+  // Add best tools
+  if (bestAxe && toolEffects[bestAxe]) {
+    activeEffects.push(toolEffects[bestAxe]);
+  }
+  if (bestPickaxe && toolEffects[bestPickaxe]) {
+    activeEffects.push(toolEffects[bestPickaxe]);
+  }
+  
+  // Add other tools (non-axe/pickaxe)
   Object.entries(state.tools).forEach(([toolId, owned]) => {
-    if (owned && toolEffects[toolId]) {
+    if (owned && toolEffects[toolId] && 
+        !AXE_HIERARCHY.includes(toolId) && 
+        !PICKAXE_HIERARCHY.includes(toolId)) {
       activeEffects.push(toolEffects[toolId]);
     }
   });
