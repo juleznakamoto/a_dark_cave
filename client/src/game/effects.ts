@@ -72,6 +72,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 8 },
+          cooldownReduction: 1, // -1 second cooldown
         },
       },
     },
@@ -85,12 +86,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 2 },
+          cooldownReduction: 2, // -2 seconds cooldown
         },
         mineCoal: {
           resourceBonus: { coal: 2 },
+          cooldownReduction: 2, // -2 seconds cooldown
         },
         mineSulfur: {
           resourceBonus: { sulfur: 2 },
+          cooldownReduction: 2, // -2 seconds cooldown
         },
       },
     },
@@ -104,6 +108,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 15 },
+          cooldownReduction: 2, // -2 seconds cooldown
         },
       },
     },
@@ -117,12 +122,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 7 },
+          cooldownReduction: 3, // -3 seconds cooldown
         },
         mineCoal: {
           resourceBonus: { coal: 7 },
+          cooldownReduction: 3, // -3 seconds cooldown
         },
         mineSulfur: {
           resourceBonus: { sulfur: 7 },
+          cooldownReduction: 3, // -3 seconds cooldown
         },
       },
     },
@@ -137,6 +145,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 35 },
+          cooldownReduction: 3, // -3 seconds cooldown
         },
       },
     },
@@ -150,15 +159,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 15 },
+          cooldownReduction: 5, // -5 seconds cooldown
         },
         mineCoal: {
           resourceBonus: { coal: 15 },
+          cooldownReduction: 5, // -5 seconds cooldown
         },
         mineSulfur: {
           resourceBonus: { sulfur: 15 },
+          cooldownReduction: 5, // -5 seconds cooldown
         },
         mineObsidian: {
           resourceBonus: { obsidian: 5 },
+          cooldownReduction: 5, // -5 seconds cooldown
         },
       },
     },
@@ -387,4 +400,20 @@ export const applyLuckToprobability = (
   const luckBonus = luck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
   const adjustedProbability = baseProbability + baseProbability * luckBonus;
   return Math.min(adjustedProbability, 1.0); // Cap at 100%
+};
+
+// Helper function to calculate cooldown reductions based on tools
+export const getCooldownReduction = (actionId: string, state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let totalReduction = 0;
+
+  // Apply cooldown reductions from tool effects
+  activeEffects.forEach((effect) => {
+    const actionBonus = effect.bonuses.actionBonuses?.[actionId];
+    if (actionBonus?.cooldownReduction) {
+      totalReduction += actionBonus.cooldownReduction;
+    }
+  });
+
+  return totalReduction;
 };
