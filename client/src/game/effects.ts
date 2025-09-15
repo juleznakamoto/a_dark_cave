@@ -173,7 +173,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   adamant_axe: {
     id: "adamant_axe",
     name: "Adamant Axe",
-    description: "The ultimate wood gathering tool forged from the hardest metal",
+    description:
+      "The ultimate wood gathering tool forged from the hardest metal",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -186,7 +187,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
 
   adamant_pickaxe: {
     id: "adamant_pickaxe",
-    name: "Adamant Pickaxe", 
+    name: "Adamant Pickaxe",
     description: "The ultimate mining tool forged from the hardest metal",
     bonuses: {
       actionBonuses: {
@@ -224,9 +225,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceBonus: { iron: 3 },
           cooldownReduction: 1,
         },
-        exploreCave: {
-          cooldownReduction: 2,
-        },
         ventureDeeper: {
           cooldownReduction: 2,
         },
@@ -248,8 +246,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceBonus: { coal: 5 },
           cooldownReduction: 2,
         },
-        exploreCave: {
-          cooldownReduction: 3,
+        mineSulfur: {
+          resourceBonus: { sulfur: 5 },
+          cooldownReduction: 2,
         },
         ventureDeeper: {
           cooldownReduction: 3,
@@ -266,22 +265,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 10 },
-          cooldownReduction: 4,
+          cooldownReduction: 3,
         },
         mineCoal: {
           resourceBonus: { coal: 10 },
-          cooldownReduction: 4,
+          cooldownReduction: 3,
         },
         mineSulfur: {
           resourceBonus: { sulfur: 10 },
-          cooldownReduction: 4,
+          cooldownReduction: 3,
         },
         mineObsidian: {
           resourceBonus: { obsidian: 3 },
-          cooldownReduction: 4,
-        },
-        exploreCave: {
-          cooldownReduction: 4,
+          cooldownReduction: 3,
         },
         ventureDeeper: {
           cooldownReduction: 4,
@@ -297,27 +293,24 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 20 },
-          cooldownReduction: 6,
+          resourceBonus: { iron: 15 },
+          cooldownReduction: 4,
         },
         mineCoal: {
-          resourceBonus: { coal: 20 },
-          cooldownReduction: 6,
+          resourceBonus: { coal: 15 },
+          cooldownReduction: 4,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 20 },
-          cooldownReduction: 6,
+          resourceBonus: { sulfur: 15 },
+          cooldownReduction: 4,
         },
         mineObsidian: {
-          resourceBonus: { obsidian: 8 },
-          cooldownReduction: 6,
+          resourceBonus: { obsidian: 15 },
+          cooldownReduction: 4,
         },
         mineAdamant: {
-          resourceBonus: { adamant: 5 },
-          cooldownReduction: 6,
-        },
-        exploreCave: {
-          cooldownReduction: 6,
+          resourceBonus: { adamant: 15 },
+          cooldownReduction: 4,
         },
         ventureDeeper: {
           cooldownReduction: 6,
@@ -367,7 +360,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 };
 
 // Tool hierarchy definitions
-const AXE_HIERARCHY = ["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"];
+const AXE_HIERARCHY = [
+  "stone_axe",
+  "iron_axe",
+  "steel_axe",
+  "obsidian_axe",
+  "adamant_axe",
+];
 const PICKAXE_HIERARCHY = [
   "stone_pickaxe",
   "iron_pickaxe",
@@ -375,16 +374,25 @@ const PICKAXE_HIERARCHY = [
   "obsidian_pickaxe",
   "adamant_pickaxe",
 ];
-const LANTERN_HIERARCHY = ["lantern", "iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"];
+const LANTERN_HIERARCHY = [
+  "lantern",
+  "iron_lantern",
+  "steel_lantern",
+  "obsidian_lantern",
+  "adamant_lantern",
+];
 
 // Helper function to get the best tool of a specific type
 export const getBestTool = (
   state: GameState,
   toolType: "axe" | "pickaxe" | "lantern",
 ): string | null => {
-  const hierarchy = toolType === "axe" ? AXE_HIERARCHY : 
-                   toolType === "pickaxe" ? PICKAXE_HIERARCHY : 
-                   LANTERN_HIERARCHY;
+  const hierarchy =
+    toolType === "axe"
+      ? AXE_HIERARCHY
+      : toolType === "pickaxe"
+        ? PICKAXE_HIERARCHY
+        : LANTERN_HIERARCHY;
 
   // Find the highest tier tool that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
@@ -564,7 +572,10 @@ export const applyLuckToprobability = (
 };
 
 // Helper function to calculate cooldown reductions based on tools
-export const getCooldownReduction = (actionId: string, state: GameState): number => {
+export const getCooldownReduction = (
+  actionId: string,
+  state: GameState,
+): number => {
   const activeEffects = getActiveEffects(state);
   let totalReduction = 0;
 
