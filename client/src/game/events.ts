@@ -333,7 +333,7 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "Old Trinket",
     message:
-      "While gathering wood, you discover an old trinket partially buried in the earth. Inside its ornate casing, an amber liquid glows with a faint, pulsing light. The substance seems almost alive, swirling gently within its container. Do you dare drink it?",
+      "While gathering wood, you find an old trinket with glowing amber liquid inside. Do you dare drink it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -356,7 +356,7 @@ export const gameEvents: Record<string, GameEvent> = {
               strength: (state.stats.strength || 0) + 5,
             },
             _logMessage:
-              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
+              "You drink the amber liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
           };
         },
       },

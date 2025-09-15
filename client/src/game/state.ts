@@ -412,7 +412,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
-    
+
     // Handle trinket event choices directly
     if (eventId.startsWith('trinketFound')) {
       if (choiceId === 'drinkTrinket') {
@@ -436,7 +436,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Add immediate log message with strength bonus
         get().addLogEntry({
           id: `trinket-drink-${Date.now()}`,
-          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
+          message: "You drink the amber liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
           timestamp: Date.now(),
           type: 'system',
         });
