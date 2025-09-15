@@ -1,6 +1,69 @@
 
 import { Action } from "@shared/schema";
 
+// Base relics for each cave exploration stage
+const caveRelics = {
+  exploreCave: [
+    {
+      key: "tarnished_amulet",
+      probability: 0.075,
+      logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
+    },
+  ],
+  ventureDeeper: [
+    {
+      key: "bloodstained_belt",
+      probability: 0.05,
+      logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
+    },
+  ],
+  descendFurther: [],
+  exploreRuins: [
+    {
+      key: "wooden_figure",
+      probability: 0.08,
+      logMessage: "Among the ancient rubble, you discover a small wooden figure, carved with intricate symbols. It feels warm to the touch and seems to pulse with a faint energy.",
+    },
+  ],
+  exploreTemple: [
+    {
+      key: "blackened_mirror",
+      probability: 0.1,
+      logMessage: "In the temple's inner sanctum, you find a mirror of polished obsidian. Its surface is darker than night, yet when you look into it, strange visions flicker across its depths.",
+    },
+  ],
+  exploreCitadel: [],
+};
+
+// Helper function to get inherited relics with 10% probability bonus
+function getInheritedRelics(actionId: string) {
+  const stageOrder = ['exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel'];
+  const currentIndex = stageOrder.indexOf(actionId);
+  
+  const inheritedRelics: any = {};
+  
+  // Add relics from all previous stages with 10% probability bonus
+  for (let i = 0; i <= currentIndex; i++) {
+    const stageId = stageOrder[i];
+    const relics = caveRelics[stageId as keyof typeof caveRelics];
+    
+    relics.forEach(relic => {
+      const adjustedProbability = i === currentIndex 
+        ? relic.probability // Current stage keeps original probability
+        : relic.probability + 0.1; // Previous stages get +10% bonus
+      
+      inheritedRelics[`relics.${relic.key}`] = {
+        probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
+        value: true,
+        condition: `!relics.${relic.key}`,
+        logMessage: relic.logMessage,
+      };
+    });
+  }
+  
+  return inheritedRelics;
+}
+
 export const caveActions: Record<string, Action> = {
   exploreCave: {
     id: "exploreCave",
@@ -19,13 +82,7 @@ export const caveActions: Record<string, Action> = {
       "resources.coal": { probability: 0.25, value: "random(1,4)" },
       "resources.iron": { probability: 0.25, value: "random(1,4)" },
       "resources.bones": { probability: 0.2, value: "random(1,4)" },
-      "relics.tarnished_amulet": {
-        probability: 0.075,
-        value: true,
-        condition: "!relics.tarnished_amulet",
-        logMessage:
-          "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
-      },
+      ...getInheritedRelics("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
@@ -50,20 +107,7 @@ export const caveActions: Record<string, Action> = {
       "resources.iron": { probability: 0.6, value: "random(2,6)" },
       "resources.sulfur": { probability: 0.4, value: "random(2,4)" },
       "resources.bones": { probability: 0.5, value: "random(2,6)" },
-      "relics.tarnished_amulet": {
-        probability: 0.1,
-        value: true,
-        condition: "!relics.tarnished_amulet",
-        logMessage:
-          "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
-      },
-      "relics.bloodstained_belt": {
-        probability: 0.05,
-        value: true,
-        condition: "!relics.bloodstained_belt",
-        logMessage:
-          "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
-      },
+      ...getInheritedRelics("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
       "stats.ventureDeeper": 1,
@@ -87,6 +131,7 @@ export const caveActions: Record<string, Action> = {
       "resources.coal": { probability: 0.7, value: "random(3,8)" },
       "resources.sulfur": { probability: 0.5, value: "random(2,6)" },
       "resources.bones": { probability: 0.6, value: "random(3,8)" },
+      ...getInheritedRelics("descendFurther"),
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
     },
@@ -108,13 +153,7 @@ export const caveActions: Record<string, Action> = {
       "resources.iron": { probability: 0.8, value: "random(4,10)" },
       "resources.silver": { probability: 0.4, value: "random(1,3)" },
       "resources.bones": { probability: 0.7, value: "random(4,10)" },
-      "relics.wooden_figure": {
-        probability: 0.08,
-        value: true,
-        condition: "!relics.wooden_figure",
-        logMessage:
-          "Among the ancient rubble, you discover a small wooden figure, carved with intricate symbols. It feels warm to the touch and seems to pulse with a faint energy.",
-      },
+      ...getInheritedRelics("exploreRuins"),
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
@@ -137,13 +176,7 @@ export const caveActions: Record<string, Action> = {
       "resources.gold": { probability: 0.3, value: "random(1,3)" },
       "resources.moonstone": { probability: 0.15, value: "random(1,2)" },
       "resources.bones": { probability: 0.8, value: "random(5,12)" },
-      "relics.blackened_mirror": {
-        probability: 0.1,
-        value: true,
-        condition: "!relics.blackened_mirror",
-        logMessage:
-          "In the temple's inner sanctum, you find a mirror of polished obsidian. Its surface is darker than night, yet when you look into it, strange visions flicker across its depths.",
-      },
+      ...getInheritedRelics("exploreTemple"),
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
@@ -167,6 +200,7 @@ export const caveActions: Record<string, Action> = {
       "resources.moonstone": { probability: 0.3, value: "random(1,4)" },
       "resources.adamant": { probability: 0.2, value: "random(1,3)" },
       "resources.bones": { probability: 0.9, value: "random(8,15)" },
+      ...getInheritedRelics("exploreCitadel"),
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
