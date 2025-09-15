@@ -176,4 +176,23 @@ export const basicActions: Record<string, Action> = {
     },
     cooldown: 15,
   },
+
+  mineAdamant: {
+    id: "mineAdamant",
+    label: "Mine Adamant",
+    show_when: {
+      "tools.obsidian_pickaxe": true,
+    },
+    cost: {
+      "resources.torch": 100,
+      "resources.food": 50,
+    },
+    effects: {
+      "resources.torch": -100,
+      "resources.food": -50,
+      "resources.adamant": "random(2,6)",
+      "story.seen.hasAdamant": true,
+    },
+    cooldown: 20,
+  },
 };

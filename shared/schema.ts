@@ -13,6 +13,7 @@ export const gameStateSchema = z.object({
     sulphur: z.number().min(0).default(0),
     silver: z.number().min(0).default(0),
     obsidian: z.number().min(0).default(0),
+    adamant: z.number().min(0).default(0),
     moonstone: z.number().min(0).default(0),
     gold: z.number().min(0).default(0),
     bones: z.number().min(0).default(0),
@@ -45,6 +46,8 @@ export const gameStateSchema = z.object({
     steel_pickaxe: z.boolean().default(false),
     obsidian_axe: z.boolean().default(false),
     obsidian_pickaxe: z.boolean().default(false),
+    adamant_axe: z.boolean().default(false),
+    adamant_pickaxe: z.boolean().default(false),
     lantern: z.boolean().default(false),
   }),
   weapons: z.object({

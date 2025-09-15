@@ -95,6 +95,18 @@ export default function CavePanel() {
             </CooldownButton>
           )}
 
+          {shouldShowAction('mineAdamant', state) && (
+            <CooldownButton
+              onClick={() => executeAction('mineAdamant')}
+              cooldownMs={gameActions.mineAdamant.cooldown * 1000}
+              data-testid="button-mine-adamant"
+              size="sm"
+              disabled={!canExecuteAction('mineAdamant', state)}
+            >
+              Mine Adamant{getCostText('mineAdamant')}
+            </CooldownButton>
+          )}
+
           {showVentureDeeper && (
             <CooldownButton
               onClick={() => executeAction('ventureDeeper')}
@@ -219,6 +231,30 @@ export default function CavePanel() {
                 disabled={!canExecuteAction('craftObsidianPickaxe', state)}
               >
                 Obsidian Pickaxe{getCostText('craftObsidianPickaxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftAdamantAxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftAdamantAxe')}
+                cooldownMs={gameActions.craftAdamantAxe.cooldown * 1000}
+                data-testid="button-craft-adamant-axe"
+                size="sm"
+                disabled={!canExecuteAction('craftAdamantAxe', state)}
+              >
+                Adamant Axe{getCostText('craftAdamantAxe')}
+              </CooldownButton>
+            )}
+
+            {shouldShowAction('craftAdamantPickaxe', state) && (
+              <CooldownButton
+                onClick={() => executeAction('craftAdamantPickaxe')}
+                cooldownMs={gameActions.craftAdamantPickaxe.cooldown * 1000}
+                data-testid="button-craft-adamant-pickaxe"
+                size="sm"
+                disabled={!canExecuteAction('craftAdamantPickaxe', state)}
+              >
+                Adamant Pickaxe{getCostText('craftAdamantPickaxe')}
               </CooldownButton>
             )}
           </div>

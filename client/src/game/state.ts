@@ -70,6 +70,7 @@ const defaultGameState: GameState = {
     sulphur: 0,
     silver: 0,
     obsidian: 0,
+    adamant: 0,
     moonstone: 0,
     gold: 0,
     bones: 0,
@@ -102,6 +103,8 @@ const defaultGameState: GameState = {
     steel_pickaxe: false,
     obsidian_axe: false,
     obsidian_pickaxe: false,
+    adamant_axe: false,
+    adamant_pickaxe: false,
     lantern: false,
   },
   weapons: {

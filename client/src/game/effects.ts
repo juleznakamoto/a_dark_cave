@@ -211,12 +211,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 };
 
 // Tool hierarchy definitions
-const AXE_HIERARCHY = ["stone_axe", "iron_axe", "steel_axe", "obsidian_axe"];
+const AXE_HIERARCHY = ["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"];
 const PICKAXE_HIERARCHY = [
   "stone_pickaxe",
   "iron_pickaxe",
   "steel_pickaxe",
   "obsidian_pickaxe",
+  "adamant_pickaxe",
 ];
 
 // Helper function to get the best tool of a specific type

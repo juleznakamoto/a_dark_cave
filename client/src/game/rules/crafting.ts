@@ -168,7 +168,7 @@ export const craftingActions: Record<string, Action> = {
       "resources.wood": 500,
     },
     effects: {
-      "resources.iron": -150,
+      "resources.obsidian": -150,
       "resources.coal": -100,
       "resources.sulfur": -50,
       "resources.wood": -300,
@@ -203,5 +203,57 @@ export const craftingActions: Record<string, Action> = {
       "story.seen.actionCraftObsidianPickaxe": true,
     },
     cooldown: 20,
+  },
+
+  craftAdamantAxe: {
+    id: "craftAdamantAxe",
+    label: "Adamant Axe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.obsidian_axe": true,
+      "tools.adamant_axe": false,
+    },
+    cost: {
+      "resources.adamant": 100,
+      "resources.iron": 200,
+      "resources.coal": 150,
+      "resources.wood": 600,
+    },
+    effects: {
+      "resources.adamant": -100,
+      "resources.iron": -200,
+      "resources.coal": -150,
+      "resources.wood": -600,
+      "tools.adamant_axe": true,
+      "story.seen.hasAdamantAxe": true,
+      "story.seen.actionCraftAdamantAxe": true,
+    },
+    cooldown: 25,
+  },
+
+  craftAdamantPickaxe: {
+    id: "craftAdamantPickaxe",
+    label: "Adamant Pickaxe",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.obsidian_pickaxe": true,
+      "tools.adamant_pickaxe": false,
+    },
+    cost: {
+      "resources.adamant": 150,
+      "resources.iron": 250,
+      "resources.coal": 175,
+      "resources.wood": 700,
+    },
+    effects: {
+      "resources.adamant": -150,
+      "resources.iron": -250,
+      "resources.coal": -175,
+      "resources.wood": -700,
+      "tools.adamant_pickaxe": true,
+      "story.seen.hasAdamantPickaxe": true,
+      "story.seen.actionCraftAdamantPickaxe": true,
+    },
+    cooldown: 25,
   },
 };
