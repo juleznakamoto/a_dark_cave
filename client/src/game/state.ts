@@ -416,50 +416,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Handle trinket event choices directly
     if (eventId.startsWith('trinketFound')) {
       if (choiceId === 'drinkTrinket') {
-        // Apply immediate effects
+        // Apply immediate effects including strength bonus
         set((prevState) => ({
           ...prevState,
           flags: {
             ...prevState.flags,
             trinketDrunk: true,
-            sleeping: true,
           },
           events: {
             ...prevState.events,
             trinket_found: true,
           },
+          stats: {
+            ...prevState.stats,
+            strength: (prevState.stats.strength || 0) + 5,
+          },
         }));
 
-        // Add immediate log message
+        // Add immediate log message with strength bonus
         get().addLogEntry({
           id: `trinket-drink-${Date.now()}`,
-          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep...",
+          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
           timestamp: Date.now(),
           type: 'system',
         });
-
-        // Sleep for 5 minutes (300 seconds)
-        setTimeout(() => {
-          set((prevState) => ({
-            ...prevState,
-            flags: {
-              ...prevState.flags,
-              sleeping: false,
-            },
-            stats: {
-              ...prevState.stats,
-              strength: (prevState.stats.strength || 0) + 5,
-            },
-          }));
-
-          // Add wake up message
-          get().addLogEntry({
-            id: `trinket-wakeup-${Date.now()}`,
-            message: "You awaken with a start. Your whole body aches terribly, but as you flex your muscles, you feel a strange new power coursing through you. Your body appears more muscular and you feel healthier than ever before. (+5 Strength)",
-            timestamp: Date.now(),
-            type: 'system',
-          });
-        }, 300000); // 5 minutes
 
         get().setEventDialog(false);
         return;

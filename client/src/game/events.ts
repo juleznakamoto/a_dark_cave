@@ -346,15 +346,17 @@ export const gameEvents: Record<string, GameEvent> = {
             flags: {
               ...state.flags,
               trinketDrunk: true,
-              sleeping: true,
             },
             events: {
               ...state.events,
               trinket_found: true,
             },
+            stats: {
+              ...state.stats,
+              strength: (state.stats.strength || 0) + 5,
+            },
             _logMessage:
-              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep...",
-            _sleepDuration: 300, // 5 minutes in seconds
+              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
           };
         },
       },
