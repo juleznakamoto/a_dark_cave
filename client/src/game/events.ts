@@ -356,7 +356,7 @@ export const gameEvents: Record<string, GameEvent> = {
               strength: (state.stats.strength || 0) + 5,
             },
             _logMessage:
-              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep... You awaken with a start. Your whole body aches terribly, but as you flex your muscles, you feel a strange new power coursing through you. Your body appears more muscular and you feel healthier than ever before. (+5 Strength)",
+              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
           };
         },
       },

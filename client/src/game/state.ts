@@ -436,7 +436,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Add immediate log message with strength bonus
         get().addLogEntry({
           id: `trinket-drink-${Date.now()}`,
-          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep... You awaken with a start. Your whole body aches terribly, but as you flex your muscles, you feel a strange new power coursing through you. Your body appears more muscular and you feel healthier than ever before. (+5 Strength)",
+          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, you feel a strange power coursing through your veins. Your body feels stronger and more resilient than before. (+5 Strength)",
           timestamp: Date.now(),
           type: 'system',
         });
