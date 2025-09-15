@@ -83,6 +83,18 @@ export default function CavePanel() {
             </CooldownButton>
           )}
 
+          {shouldShowAction('mineSulfur', state) && (
+            <CooldownButton
+              onClick={() => executeAction('mineSulfur')}
+              cooldownMs={gameActions.mineSulfur.cooldown * 1000}
+              data-testid="button-mine-sulfur"
+              size="sm"
+              disabled={!canExecuteAction('mineSulfur', state)}
+            >
+              Mine Sulfur{getCostText('mineSulfur')}
+            </CooldownButton>
+          )}
+
           {showVentureDeeper && (
             <CooldownButton
               onClick={() => executeAction('ventureDeeper')}
