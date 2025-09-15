@@ -196,4 +196,106 @@ export const basicActions: Record<string, Action> = {
     },
     cooldown: 20,
   },
+
+  descendFurther: {
+    id: "descendFurther",
+    label: "Descend Further",
+    show_when: {
+      "tools.iron_lantern": true,
+    },
+    cost: {
+      "resources.food": 30,
+    },
+    effects: {
+      "resources.food": -30,
+      "resources.stone": "random(6,12)",
+      "resources.iron": { probability: 0.7, value: "random(3,8)" },
+      "resources.coal": { probability: 0.7, value: "random(3,8)" },
+      "resources.sulfur": { probability: 0.5, value: "random(2,6)" },
+      "resources.bones": { probability: 0.6, value: "random(3,8)" },
+      "flags.descendedFurther": true,
+      "story.seen.descendedFurther": true,
+    },
+    cooldown: 18,
+  },
+
+  exploreRuins: {
+    id: "exploreRuins",
+    label: "Explore Ruins",
+    show_when: {
+      "tools.steel_lantern": true,
+    },
+    cost: {
+      "resources.food": 40,
+    },
+    effects: {
+      "resources.food": -40,
+      "resources.stone": "random(8,15)",
+      "resources.iron": { probability: 0.8, value: "random(4,10)" },
+      "resources.silver": { probability: 0.4, value: "random(1,3)" },
+      "resources.bones": { probability: 0.7, value: "random(4,10)" },
+      "relics.wooden_figure": {
+        probability: 0.08,
+        value: true,
+        condition: "!relics.wooden_figure",
+        logMessage:
+          "Among the ancient rubble, you discover a small wooden figure, carved with intricate symbols. It feels warm to the touch and seems to pulse with a faint energy.",
+      },
+      "flags.exploredRuins": true,
+      "story.seen.exploredRuins": true,
+    },
+    cooldown: 20,
+  },
+
+  exploreTemple: {
+    id: "exploreTemple",
+    label: "Explore Temple",
+    show_when: {
+      "tools.obsidian_lantern": true,
+    },
+    cost: {
+      "resources.food": 50,
+    },
+    effects: {
+      "resources.food": -50,
+      "resources.stone": "random(10,18)",
+      "resources.silver": { probability: 0.6, value: "random(2,5)" },
+      "resources.gold": { probability: 0.3, value: "random(1,3)" },
+      "resources.moonstone": { probability: 0.15, value: "random(1,2)" },
+      "resources.bones": { probability: 0.8, value: "random(5,12)" },
+      "relics.blackened_mirror": {
+        probability: 0.1,
+        value: true,
+        condition: "!relics.blackened_mirror",
+        logMessage:
+          "In the temple's inner sanctum, you find a mirror of polished obsidian. Its surface is darker than night, yet when you look into it, strange visions flicker across its depths.",
+      },
+      "flags.exploredTemple": true,
+      "story.seen.exploredTemple": true,
+    },
+    cooldown: 25,
+  },
+
+  exploreCitadel: {
+    id: "exploreCitadel",
+    label: "Explore Citadel",
+    show_when: {
+      "tools.adamant_lantern": true,
+    },
+    cost: {
+      "resources.food": 75,
+    },
+    effects: {
+      "resources.food": -75,
+      "resources.stone": "random(15,25)",
+      "resources.silver": { probability: 0.8, value: "random(3,8)" },
+      "resources.gold": { probability: 0.5, value: "random(2,6)" },
+      "resources.moonstone": { probability: 0.3, value: "random(1,4)" },
+      "resources.adamant": { probability: 0.2, value: "random(1,3)" },
+      "resources.bones": { probability: 0.9, value: "random(8,15)" },
+      "flags.exploredCitadel": true,
+      "story.seen.exploredCitadel": true,
+    },
+    cooldown: 30,
+  },
 };

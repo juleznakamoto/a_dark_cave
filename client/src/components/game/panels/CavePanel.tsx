@@ -118,6 +118,54 @@ export default function CavePanel() {
               Venture Deeper{getCostText('ventureDeeper')}
             </CooldownButton>
           )}
+
+          {shouldShowAction('descendFurther', state) && (
+            <CooldownButton
+              onClick={() => executeAction('descendFurther')}
+              cooldownMs={gameActions.descendFurther.cooldown * 1000}
+              data-testid="button-descend-further"
+              size="sm"
+              disabled={!canExecuteAction('descendFurther', state)}
+            >
+              Descend Further{getCostText('descendFurther')}
+            </CooldownButton>
+          )}
+
+          {shouldShowAction('exploreRuins', state) && (
+            <CooldownButton
+              onClick={() => executeAction('exploreRuins')}
+              cooldownMs={gameActions.exploreRuins.cooldown * 1000}
+              data-testid="button-explore-ruins"
+              size="sm"
+              disabled={!canExecuteAction('exploreRuins', state)}
+            >
+              Explore Ruins{getCostText('exploreRuins')}
+            </CooldownButton>
+          )}
+
+          {shouldShowAction('exploreTemple', state) && (
+            <CooldownButton
+              onClick={() => executeAction('exploreTemple')}
+              cooldownMs={gameActions.exploreTemple.cooldown * 1000}
+              data-testid="button-explore-temple"
+              size="sm"
+              disabled={!canExecuteAction('exploreTemple', state)}
+            >
+              Explore Temple{getCostText('exploreTemple')}
+            </CooldownButton>
+          )}
+
+          {shouldShowAction('exploreCitadel', state) && (
+            <CooldownButton
+              onClick={() => executeAction('exploreCitadel')}
+              cooldownMs={gameActions.exploreCitadel.cooldown * 1000}
+              data-testid="button-explore-citadel"
+              size="sm"
+              disabled={!canExecuteAction('exploreCitadel', state)}
+            >
+              Explore Citadel{getCostText('exploreCitadel')}
+            </CooldownButton>
+          )}
         </div>
       </div>
 

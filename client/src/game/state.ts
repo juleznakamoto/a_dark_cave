@@ -93,6 +93,10 @@ const defaultGameState: GameState = {
     gameStarted: false,
     trinketDrunk: false,
     sleeping: false,
+    descendedFurther: false,
+    exploredRuins: false,
+    exploredTemple: false,
+    exploredCitadel: false,
   },
   tools: {
     stone_axe: false,
