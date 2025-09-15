@@ -4,6 +4,7 @@ import { getTotalLuck, applyLuckToprobability } from "../effects";
 import { basicActions } from "./actions";
 import { craftingActions } from "./crafting";
 import { buildingActions } from "./buildings";
+import { caveActions } from "./caveActions";
 import { getActionBonuses } from "../effects";
 
 // Combine all actions
@@ -11,6 +12,7 @@ export const gameActions: Record<string, Action> = {
   ...basicActions,
   ...craftingActions,
   ...buildingActions,
+  ...caveActions,
 };
 
 // Utility function to get the next building level
