@@ -190,7 +190,7 @@ export const basicActions: Record<string, Action> = {
     effects: {
       "resources.torch": -100,
       "resources.food": -50,
-      "resources.adamant": "random(2,6)",
+      "resources.adamant": "random(6,12)",
       "story.seen.hasAdamant": true,
     },
     cooldown: 20,
