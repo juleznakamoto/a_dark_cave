@@ -30,6 +30,7 @@ const checkRequirements = (
   requirements: any,
   state: GameState,
   action: Action,
+  actionId: string,
 ): boolean => {
   if (action.building) {
     const level = getNextBuildingLevel(actionId, state);
@@ -62,7 +63,7 @@ export const shouldShowAction = (
   const action = gameActions[actionId];
   if (!action?.show_when) return false;
 
-  return checkRequirements(action.show_when, state, action);
+  return checkRequirements(action.show_when, state, action, actionId);
 };
 
 // Utility function to check if requirements are met for an action
