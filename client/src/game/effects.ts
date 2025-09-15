@@ -169,6 +169,162 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  adamant_axe: {
+    id: "adamant_axe",
+    name: "Adamant Axe",
+    description: "The ultimate wood gathering tool forged from the hardest metal",
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceBonus: { wood: 75 },
+          cooldownReduction: 3,
+        },
+      },
+    },
+  },
+
+  adamant_pickaxe: {
+    id: "adamant_pickaxe",
+    name: "Adamant Pickaxe", 
+    description: "The ultimate mining tool forged from the hardest metal",
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 30 },
+          cooldownReduction: 6,
+        },
+        mineCoal: {
+          resourceBonus: { coal: 30 },
+          cooldownReduction: 6,
+        },
+        mineSulfur: {
+          resourceBonus: { sulfur: 30 },
+          cooldownReduction: 6,
+        },
+        mineObsidian: {
+          resourceBonus: { obsidian: 15 },
+          cooldownReduction: 6,
+        },
+        mineAdamant: {
+          resourceBonus: { adamant: 10 },
+          cooldownReduction: 6,
+        },
+      },
+    },
+  },
+
+  iron_lantern: {
+    id: "iron_lantern",
+    name: "Iron Lantern",
+    description: "Provides better lighting for mining operations",
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 3 },
+          cooldownReduction: 1,
+        },
+        exploreCave: {
+          cooldownReduction: 2,
+        },
+        ventureDeeper: {
+          cooldownReduction: 2,
+        },
+      },
+    },
+  },
+
+  steel_lantern: {
+    id: "steel_lantern",
+    name: "Steel Lantern",
+    description: "Advanced lighting that improves all mining operations",
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 5 },
+          cooldownReduction: 2,
+        },
+        mineCoal: {
+          resourceBonus: { coal: 5 },
+          cooldownReduction: 2,
+        },
+        exploreCave: {
+          cooldownReduction: 3,
+        },
+        ventureDeeper: {
+          cooldownReduction: 3,
+        },
+      },
+    },
+  },
+
+  obsidian_lantern: {
+    id: "obsidian_lantern",
+    name: "Obsidian Lantern",
+    description: "Superior lighting that greatly enhances mining efficiency",
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 10 },
+          cooldownReduction: 4,
+        },
+        mineCoal: {
+          resourceBonus: { coal: 10 },
+          cooldownReduction: 4,
+        },
+        mineSulfur: {
+          resourceBonus: { sulfur: 10 },
+          cooldownReduction: 4,
+        },
+        mineObsidian: {
+          resourceBonus: { obsidian: 3 },
+          cooldownReduction: 4,
+        },
+        exploreCave: {
+          cooldownReduction: 4,
+        },
+        ventureDeeper: {
+          cooldownReduction: 4,
+        },
+      },
+    },
+  },
+
+  adamant_lantern: {
+    id: "adamant_lantern",
+    name: "Adamant Lantern",
+    description: "The ultimate lighting tool that maximizes mining potential",
+    bonuses: {
+      actionBonuses: {
+        mineIron: {
+          resourceBonus: { iron: 20 },
+          cooldownReduction: 6,
+        },
+        mineCoal: {
+          resourceBonus: { coal: 20 },
+          cooldownReduction: 6,
+        },
+        mineSulfur: {
+          resourceBonus: { sulfur: 20 },
+          cooldownReduction: 6,
+        },
+        mineObsidian: {
+          resourceBonus: { obsidian: 8 },
+          cooldownReduction: 6,
+        },
+        mineAdamant: {
+          resourceBonus: { adamant: 5 },
+          cooldownReduction: 6,
+        },
+        exploreCave: {
+          cooldownReduction: 6,
+        },
+        ventureDeeper: {
+          cooldownReduction: 6,
+        },
+      },
+    },
+  },
 };
 
 // Clothing effects
@@ -219,13 +375,16 @@ const PICKAXE_HIERARCHY = [
   "obsidian_pickaxe",
   "adamant_pickaxe",
 ];
+const LANTERN_HIERARCHY = ["lantern", "iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"];
 
 // Helper function to get the best tool of a specific type
 export const getBestTool = (
   state: GameState,
-  toolType: "axe" | "pickaxe",
+  toolType: "axe" | "pickaxe" | "lantern",
 ): string | null => {
-  const hierarchy = toolType === "axe" ? AXE_HIERARCHY : PICKAXE_HIERARCHY;
+  const hierarchy = toolType === "axe" ? AXE_HIERARCHY : 
+                   toolType === "pickaxe" ? PICKAXE_HIERARCHY : 
+                   LANTERN_HIERARCHY;
 
   // Find the highest tier tool that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
@@ -242,20 +401,23 @@ export const getBestTool = (
 export const getDisplayTools = (state: GameState): Record<string, boolean> => {
   const displayTools: Record<string, boolean> = {};
 
-  // Get best axe and pickaxe
+  // Get best axe, pickaxe, and lantern
   const bestAxe = getBestTool(state, "axe");
   const bestPickaxe = getBestTool(state, "pickaxe");
+  const bestLantern = getBestTool(state, "lantern");
 
   // Add best tools to display
   if (bestAxe) displayTools[bestAxe] = true;
   if (bestPickaxe) displayTools[bestPickaxe] = true;
+  if (bestLantern) displayTools[bestLantern] = true;
 
-  // Add non-axe/pickaxe tools
+  // Add non-hierarchical tools
   Object.entries(state.tools).forEach(([toolId, owned]) => {
     if (
       owned &&
       !AXE_HIERARCHY.includes(toolId) &&
-      !PICKAXE_HIERARCHY.includes(toolId)
+      !PICKAXE_HIERARCHY.includes(toolId) &&
+      !LANTERN_HIERARCHY.includes(toolId)
     ) {
       displayTools[toolId] = true;
     }
@@ -268,9 +430,10 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
-  // Check tools - only add best axe and pickaxe
+  // Check tools - only add best axe, pickaxe, and lantern
   const bestAxe = getBestTool(state, "axe");
   const bestPickaxe = getBestTool(state, "pickaxe");
+  const bestLantern = getBestTool(state, "lantern");
 
   // Add best tools
   if (bestAxe && toolEffects[bestAxe]) {
@@ -279,14 +442,18 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   if (bestPickaxe && toolEffects[bestPickaxe]) {
     activeEffects.push(toolEffects[bestPickaxe]);
   }
+  if (bestLantern && toolEffects[bestLantern]) {
+    activeEffects.push(toolEffects[bestLantern]);
+  }
 
-  // Add other tools (non-axe/pickaxe)
+  // Add other tools (non-hierarchical)
   Object.entries(state.tools).forEach(([toolId, owned]) => {
     if (
       owned &&
       toolEffects[toolId] &&
       !AXE_HIERARCHY.includes(toolId) &&
-      !PICKAXE_HIERARCHY.includes(toolId)
+      !PICKAXE_HIERARCHY.includes(toolId) &&
+      !LANTERN_HIERARCHY.includes(toolId)
     ) {
       activeEffects.push(toolEffects[toolId]);
     }

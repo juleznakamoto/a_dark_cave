@@ -81,6 +81,7 @@ const defaultGameState: GameState = {
     luck: 0,
     strength: 0,
     knowledge: 0,
+    ventureDeeper: 0,
   },
   flags: {
     fireLit: false,
@@ -106,6 +107,10 @@ const defaultGameState: GameState = {
     adamant_axe: false,
     adamant_pickaxe: false,
     lantern: false,
+    iron_lantern: false,
+    steel_lantern: false,
+    obsidian_lantern: false,
+    adamant_lantern: false,
   },
   weapons: {
     iron_knife: false,

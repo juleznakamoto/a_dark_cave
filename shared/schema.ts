@@ -24,6 +24,7 @@ export const gameStateSchema = z.object({
     luck: z.number().min(0).default(0),
     strength: z.number().min(0).default(0),
     knowledge: z.number().min(0).default(0),
+    ventureDeeper: z.number().min(0).default(0),
   }),
   flags: z.object({
     fireLit: z.boolean().default(false),
@@ -49,6 +50,10 @@ export const gameStateSchema = z.object({
     adamant_axe: z.boolean().default(false),
     adamant_pickaxe: z.boolean().default(false),
     lantern: z.boolean().default(false),
+    iron_lantern: z.boolean().default(false),
+    steel_lantern: z.boolean().default(false),
+    obsidian_lantern: z.boolean().default(false),
+    adamant_lantern: z.boolean().default(false),
   }),
   weapons: z.object({
     iron_knife: z.boolean().default(false),

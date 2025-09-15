@@ -173,6 +173,7 @@ export const basicActions: Record<string, Action> = {
       },
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
+      "stats.ventureDeeper": 1,
     },
     cooldown: 15,
   },

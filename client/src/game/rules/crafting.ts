@@ -242,4 +242,100 @@ export const craftingActions: Record<string, Action> = {
     },
     cooldown: 25,
   },
+
+  craftIronLantern: {
+    id: "craftIronLantern",
+    label: "Iron Lantern",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "stats.ventureDeeper": 5,
+      "tools.iron_lantern": false,
+    },
+    cost: {
+      "resources.iron": 100,
+      "resources.wood": 50,
+      "resources.coal": 25,
+    },
+    effects: {
+      "resources.iron": -100,
+      "resources.wood": -50,
+      "resources.coal": -25,
+      "tools.iron_lantern": true,
+      "story.seen.hasIronLantern": true,
+      "story.seen.actionCraftIronLantern": true,
+    },
+    cooldown: 15,
+  },
+
+  craftSteelLantern: {
+    id: "craftSteelLantern",
+    label: "Steel Lantern",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.iron_lantern": true,
+      "tools.steel_lantern": false,
+    },
+    cost: {
+      "resources.steel": 150,
+      "resources.wood": 100,
+      "resources.coal": 50,
+    },
+    effects: {
+      "resources.steel": -150,
+      "resources.wood": -100,
+      "resources.coal": -50,
+      "tools.steel_lantern": true,
+      "story.seen.hasSteelLantern": true,
+      "story.seen.actionCraftSteelLantern": true,
+    },
+    cooldown: 20,
+  },
+
+  craftObsidianLantern: {
+    id: "craftObsidianLantern",
+    label: "Obsidian Lantern",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.steel_lantern": true,
+      "tools.obsidian_lantern": false,
+    },
+    cost: {
+      "resources.obsidian": 200,
+      "resources.wood": 200,
+      "resources.coal": 100,
+    },
+    effects: {
+      "resources.obsidian": -200,
+      "resources.wood": -200,
+      "resources.coal": -100,
+      "tools.obsidian_lantern": true,
+      "story.seen.hasObsidianLantern": true,
+      "story.seen.actionCraftObsidianLantern": true,
+    },
+    cooldown: 25,
+  },
+
+  craftAdamantLantern: {
+    id: "craftAdamantLantern",
+    label: "Adamant Lantern",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "tools.obsidian_lantern": true,
+      "tools.adamant_lantern": false,
+    },
+    cost: {
+      "resources.adamant": 250,
+      "resources.wood": 300,
+      "resources.coal": 150,
+    },
+    effects: {
+      "resources.adamant": -250,
+      "resources.wood": -300,
+      "resources.coal": -150,
+      "tools.adamant_lantern": true,
+      "story.seen.hasAdamantLantern": true,
+      "story.seen.actionCraftAdamantLantern": true,
+    },
+    cooldown: 30,
+  },
 };
