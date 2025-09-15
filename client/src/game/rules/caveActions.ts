@@ -90,7 +90,7 @@ export const caveActions: Record<string, Action> = {
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
     },
-    cooldown: 18,
+    cooldown: 20,
   },
 
   exploreRuins: {
@@ -118,7 +118,7 @@ export const caveActions: Record<string, Action> = {
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
-    cooldown: 20,
+    cooldown: 25,
   },
 
   exploreTemple: {
@@ -147,7 +147,7 @@ export const caveActions: Record<string, Action> = {
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
-    cooldown: 25,
+    cooldown: 30,
   },
 
   exploreCitadel: {
@@ -170,7 +170,7 @@ export const caveActions: Record<string, Action> = {
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
-    cooldown: 30,
+    cooldown: 35,
   },
 
   mineIron: {
