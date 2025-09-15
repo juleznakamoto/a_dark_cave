@@ -221,6 +221,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         : prevState.log,
     }));
 
+    // Check if any new log entry has choices and show event dialog
+    if (result.logEntries) {
+      result.logEntries.forEach(entry => {
+        if (entry.choices && entry.choices.length > 0) {
+          setTimeout(() => {
+            get().setEventDialog(true, entry);
+          }, 100);
+        }
+      });
+    }
+
     // Handle delayed effects (like stranger event for first hut)
     if (result.delayedEffects) {
       result.delayedEffects.forEach((effect) => {
@@ -263,6 +274,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
               });
             }, 1000);
           }, 2000);
+        } else {
+          // Execute other delayed effects
+          effect();
         }
       });
     }
