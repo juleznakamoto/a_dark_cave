@@ -41,6 +41,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 3 },
+          cooldownReduction: 0.25,
         },
       },
     },
@@ -72,7 +73,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 8 },
-          cooldownReduction: 1, // -1 second cooldown
+          cooldownReduction: 0.5,
         },
       },
     },
@@ -86,15 +87,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 2 },
-          cooldownReduction: 2, // -2 seconds cooldown
-        },
-        mineCoal: {
-          resourceBonus: { coal: 2 },
-          cooldownReduction: 2, // -2 seconds cooldown
-        },
-        mineSulfur: {
-          resourceBonus: { sulfur: 2 },
-          cooldownReduction: 2, // -2 seconds cooldown
+          cooldownReduction: 1,
         },
       },
     },
@@ -108,7 +101,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 15 },
-          cooldownReduction: 2, // -2 seconds cooldown
+          cooldownReduction: 1,
         },
       },
     },
@@ -122,15 +115,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 7 },
-          cooldownReduction: 3, // -3 seconds cooldown
+          cooldownReduction: 2,
         },
         mineCoal: {
           resourceBonus: { coal: 7 },
-          cooldownReduction: 3, // -3 seconds cooldown
+          cooldownReduction: 2,
         },
         mineSulfur: {
           resourceBonus: { sulfur: 7 },
-          cooldownReduction: 3, // -3 seconds cooldown
+          cooldownReduction: 2,
         },
       },
     },
@@ -145,7 +138,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 35 },
-          cooldownReduction: 3, // -3 seconds cooldown
+          cooldownReduction: 2,
         },
       },
     },
@@ -159,19 +152,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mineIron: {
           resourceBonus: { iron: 15 },
-          cooldownReduction: 5, // -5 seconds cooldown
+          cooldownReduction: 4,
         },
         mineCoal: {
           resourceBonus: { coal: 15 },
-          cooldownReduction: 5, // -5 seconds cooldown
+          cooldownReduction: 4,
         },
         mineSulfur: {
           resourceBonus: { sulfur: 15 },
-          cooldownReduction: 5, // -5 seconds cooldown
+          cooldownReduction: 4,
         },
         mineObsidian: {
           resourceBonus: { obsidian: 5 },
-          cooldownReduction: 5, // -5 seconds cooldown
+          cooldownReduction: 4,
         },
       },
     },

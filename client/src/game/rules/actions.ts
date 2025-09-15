@@ -27,8 +27,8 @@ export const basicActions: Record<string, Action> = {
         probability: 0.0005,
         value: true,
         condition: "!events.trinket_found && buildings.lodge >= 1",
-        triggerEvent: "trinketFound"
-      }
+        triggerEvent: "trinketFound",
+      },
     },
     cooldown: 5,
   },
@@ -54,12 +54,13 @@ export const basicActions: Record<string, Action> = {
         probability: 0.075,
         value: true,
         condition: "!relics.tarnished_amulet",
-        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
+        logMessage:
+          "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
       },
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
-    cooldown: 10,
+    cooldown: 20,
   },
 
   mineIron: {
@@ -70,7 +71,7 @@ export const basicActions: Record<string, Action> = {
     },
     cost: {
       "resources.torch": 10,
-      "resources.food": 5
+      "resources.food": 5,
     },
     effects: {
       "resources.torch": -10,
@@ -78,7 +79,7 @@ export const basicActions: Record<string, Action> = {
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
     },
-    cooldown: 10,
+    cooldown: 15,
   },
 
   mineCoal: {
@@ -89,7 +90,7 @@ export const basicActions: Record<string, Action> = {
     },
     cost: {
       "resources.torch": 15,
-      "resources.food": 10
+      "resources.food": 10,
     },
     effects: {
       "resources.torch": -15,
@@ -108,7 +109,7 @@ export const basicActions: Record<string, Action> = {
     },
     cost: {
       "resources.torch": 20,
-      "resources.food": 15
+      "resources.food": 15,
     },
     effects: {
       "resources.torch": -20,
@@ -116,7 +117,26 @@ export const basicActions: Record<string, Action> = {
       "resources.sulphur": "random(2,4)",
       "story.seen.hasSulfur": true,
     },
-    cooldown: 20,
+    cooldown: 15,
+  },
+
+  mineObsidian: {
+    id: "mineObsidian",
+    label: "Mine Obsidian",
+    show_when: {
+      "tools.steel_pickaxe": true,
+    },
+    cost: {
+      "resources.torch": 50,
+      "resources.food": 30,
+    },
+    effects: {
+      "resources.torch": -50,
+      "resources.food": -30,
+      "resources.obsidian": "random(4,10)",
+      "story.seen.hasObsidian": true,
+    },
+    cooldown: 15,
   },
 
   ventureDeeper: {
@@ -141,13 +161,15 @@ export const basicActions: Record<string, Action> = {
         probability: 0.1,
         value: true,
         condition: "!relics.tarnished_amulet",
-        logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you."
+        logMessage:
+          "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
       },
       "relics.bloodstained_belt": {
         probability: 0.05,
         value: true,
         condition: "!relics.bloodstained_belt",
-        logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power."
+        logMessage:
+          "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
       },
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
