@@ -17,20 +17,14 @@ const caveRelics = {
       logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
   ],
-  descendFurther: [],
+  descendFurther: [
+    
+  ],
   exploreRuins: [
-    {
-      key: "wooden_figure",
-      probability: 0.08,
-      logMessage: "Among the ancient rubble, you discover a small wooden figure, carved with intricate symbols. It feels warm to the touch and seems to pulse with a faint energy.",
-    },
+  
   ],
   exploreTemple: [
-    {
-      key: "blackened_mirror",
-      probability: 0.1,
-      logMessage: "In the temple's inner sanctum, you find a mirror of polished obsidian. Its surface is darker than night, yet when you look into it, strange visions flicker across its depths.",
-    },
+    
   ],
   exploreCitadel: [],
 };
@@ -42,7 +36,7 @@ function getInheritedRelics(actionId: string) {
   
   const inheritedRelics: any = {};
   
-  // Add relics from all previous stages with 10% probability bonus
+  // Add relics from all previous stages with 1% probability bonus
   for (let i = 0; i <= currentIndex; i++) {
     const stageId = stageOrder[i];
     const relics = caveRelics[stageId as keyof typeof caveRelics];
@@ -50,7 +44,7 @@ function getInheritedRelics(actionId: string) {
     relics.forEach(relic => {
       const adjustedProbability = i === currentIndex 
         ? relic.probability // Current stage keeps original probability
-        : relic.probability + 0.1; // Previous stages get +10% bonus
+        : relic.probability + 0.01; // Previous stages get +1% bonus
       
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
@@ -78,15 +72,15 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.torch": -5,
-      "resources.stone": "random(2,5)",
+      "resources.stone": { probability: 0.8, value: "random(2,4)" },
       "resources.coal": { probability: 0.25, value: "random(1,4)" },
       "resources.iron": { probability: 0.25, value: "random(1,4)" },
-      "resources.bones": { probability: 0.2, value: "random(1,4)" },
+      "resources.bones": { probability: 0.25, value: "random(1,4)" },
       ...getInheritedRelics("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
     },
-    cooldown: 20,
+    cooldown: 10,
   },
 
   ventureDeeper: {
@@ -102,11 +96,11 @@ export const caveActions: Record<string, Action> = {
     effects: {
       "resources.torch": -10,
       "resources.food": -20,
-      "resources.stone": "random(4,10)",
-      "resources.coal": { probability: 0.6, value: "random(2,6)" },
-      "resources.iron": { probability: 0.6, value: "random(2,6)" },
-      "resources.sulfur": { probability: 0.4, value: "random(2,4)" },
-      "resources.bones": { probability: 0.5, value: "random(2,6)" },
+      "resources.stone": { probability: 0.85, value: "random(4,7)" },
+      "resources.coal": { probability: 0.3, value: "random(2,6)" },
+      "resources.iron": { probability: 0.3, value: "random(2,6)" },
+      "resources.bones": { probability: 0.3, value: "random(2,6)" },
+      "resources.sulfur": { probability: 0.3, value: "random(2,4)" },
       ...getInheritedRelics("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
@@ -122,15 +116,15 @@ export const caveActions: Record<string, Action> = {
       "tools.iron_lantern": true,
     },
     cost: {
-      "resources.food": 30,
+      "resources.food": 50,
     },
     effects: {
-      "resources.food": -30,
-      "resources.stone": "random(6,12)",
-      "resources.iron": { probability: 0.7, value: "random(3,8)" },
-      "resources.coal": { probability: 0.7, value: "random(3,8)" },
-      "resources.sulfur": { probability: 0.5, value: "random(2,6)" },
-      "resources.bones": { probability: 0.6, value: "random(3,8)" },
+      "resources.food": -50,
+      "resources.stone": { probability: 0.9, value: "random(6,10)" },
+      "resources.iron": { probability: 0.35, value: "random(3,8)" },
+      "resources.coal": { probability: 0.35, value: "random(3,8)" },
+      "resources.bones": { probability: 0.35, value: "random(3,8)" },
+      "resources.sulfur": { probability: 0.35, value: "random(2,6)" },          "resources.silver": { probability: 0.1, value: "random(1,3)" },
       ...getInheritedRelics("descendFurther"),
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
@@ -145,14 +139,17 @@ export const caveActions: Record<string, Action> = {
       "tools.steel_lantern": true,
     },
     cost: {
-      "resources.food": 40,
+      "resources.food": 100,
     },
     effects: {
-      "resources.food": -40,
-      "resources.stone": "random(8,15)",
-      "resources.iron": { probability: 0.8, value: "random(4,10)" },
-      "resources.silver": { probability: 0.4, value: "random(1,3)" },
-      "resources.bones": { probability: 0.7, value: "random(4,10)" },
+      "resources.food": -100,
+      "resources.stone": { probability: 0.9, value: "random(8,13)" },
+      "resources.iron": { probability: 0.4, value: "random(4,10)" },
+      "resources.coal": { probability: 0.4, value: "random(4,10)" },
+      "resources.bones": { probability: 0.4, value: "random(4,10)" },
+      "resources.sulfur": { probability: 0.4, value: "random(3,8)" },
+      "resources.silver": { probability: 0.15, value: "random(2,4)" },
+      "resources.gold": { probability: 0.05, value: "random(1,3)" },
       ...getInheritedRelics("exploreRuins"),
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
@@ -167,15 +164,17 @@ export const caveActions: Record<string, Action> = {
       "tools.obsidian_lantern": true,
     },
     cost: {
-      "resources.food": 50,
+      "resources.food": 150,
     },
     effects: {
-      "resources.food": -50,
-      "resources.stone": "random(10,18)",
-      "resources.silver": { probability: 0.6, value: "random(2,5)" },
-      "resources.gold": { probability: 0.3, value: "random(1,3)" },
-      "resources.moonstone": { probability: 0.15, value: "random(1,2)" },
-      "resources.bones": { probability: 0.8, value: "random(5,12)" },
+      "resources.food": -150,
+      "resources.stone": { probability: 0.9, value: "random(10,16)" },
+      "resources.iron": { probability: 0.45, value: "random(5,12)" },
+      "resources.coal": { probability: 0.45, value: "random(5,12)" },
+      "resources.bones": { probability: 0.45, value: "random(5,12)" },
+      "resources.sulfur": { probability: 0.45, value: "random(3,8)" },
+      "resources.silver": { probability: 0.25, value: "random(3,5)" },
+      "resources.gold": { probability: 0.15, value: "random(2,4)" },
       ...getInheritedRelics("exploreTemple"),
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
@@ -190,21 +189,22 @@ export const caveActions: Record<string, Action> = {
       "tools.adamant_lantern": true,
     },
     cost: {
-      "resources.food": 75,
+      "resources.food": 250,
     },
     effects: {
-      "resources.food": -75,
-      "resources.stone": "random(15,25)",
-      "resources.silver": { probability: 0.8, value: "random(3,8)" },
-      "resources.gold": { probability: 0.5, value: "random(2,6)" },
-      "resources.moonstone": { probability: 0.3, value: "random(1,4)" },
-      "resources.adamant": { probability: 0.2, value: "random(1,3)" },
-      "resources.bones": { probability: 0.9, value: "random(8,15)" },
+      "resources.food": -250,
+      "resources.stone": { probability: 0.9, value: "random(12,19)" },
+      "resources.iron": { probability: 0.5, value: "random(6,14)" },
+      "resources.coal": { probability: 0.5, value: "random(6,14)" },
+      "resources.bones": { probability: 0.5, value: "random(6,14)" },
+      "resources.sulfur": { probability: 0.5, value: "random(4,10)" },
+      "resources.silver": { probability: 0.3, value: "random(4,6)" },
+      "resources.gold": { probability: 0.2, value: "random(3,5)" },
       ...getInheritedRelics("exploreCitadel"),
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
-    cooldown: 35,
+    cooldown: 40,
   },
 
   mineIron: {
