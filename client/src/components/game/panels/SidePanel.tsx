@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { getTotalLuck, clothingEffects, getDisplayTools } from '@/game/effects';
+import { clothingEffects, getDisplayTools } from '@/game/effects';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
@@ -73,7 +73,6 @@ export default function SidePanel() {
     .filter(item => item.visible);
 
   const { stats } = useGameStore();
-  const gameStore = useGameStore();
 
   // Build stats items dynamically from all stats
   const statsItems = [];
@@ -90,20 +89,6 @@ export default function SidePanel() {
         visible: true
       });
     });
-
-  // Add calculated stats dynamically
-  const totalLuck = getTotalLuck(gameStore);
-  if (totalLuck > 0) {
-    statsItems.push({
-      id: 'luck',
-      label: 'Luck',
-      value: totalLuck,
-      testId: 'stat-luck',
-      visible: true
-    });
-  }
-
-  const state = useGameStore();
 
   return (
     <div>
