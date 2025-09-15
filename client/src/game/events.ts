@@ -38,9 +38,9 @@ export const gameEvents: Record<string, GameEvent> = {
     timeProbability: (state) => {
       let baseProbability = 1.5; // Base 1.5 minutes between stranger arrivals
       
-      // If population is 0, multiply by 0.5 (faster arrivals)
-      if (state.current_population === 0) {
-        baseProbability *= 0.5;
+      // If population is 0, multiply by 0.25 (faster arrivals)
+      if (state.if === 0) {
+        baseProbability *= 0.25;
       }
       
       // For each hut, multiply by 0.9 (slower arrivals with more huts)
