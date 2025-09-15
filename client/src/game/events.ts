@@ -10,7 +10,7 @@ export interface GameEvent {
   triggered: boolean;
   repeatable?: boolean;
   priority?: number; // Higher priority events check first
-  timeProbability?: number; // Average minutes between triggers
+  timeProbability?: number | ((state: GameState) => number); // Average minutes between triggers
 }
 
 export interface EventChoice {
@@ -198,7 +198,7 @@ export const gameEvents: Record<string, GameEvent> = {
       },
     ],
   },
-  
+
   whispersBeneathHut : {
     id: "whispersBeneathHut",
     condition: (state) => state.buildings.hut >= 4 && !state.relics.whispering_amulet,
@@ -406,9 +406,15 @@ export class EventManager {
         // Average ticks between events = timeProbability * 300
         // Probability per tick = 1 / (timeProbability * 300)
         const ticksPerMinute = 300;
-        const averageTicksBetweenEvents =
-          event.timeProbability * ticksPerMinute;
+
+        // Get timeProbability - can be number or function
+        const timeProbability = typeof event.timeProbability === 'function' 
+          ? event.timeProbability(state) 
+          : event.timeProbability;
+
+        const averageTicksBetweenEvents = timeProbability * ticksPerMinute;
         const probabilityPerTick = 1 / averageTicksBetweenEvents;
+
         shouldTrigger = Math.random() < probabilityPerTick;
       }
 
