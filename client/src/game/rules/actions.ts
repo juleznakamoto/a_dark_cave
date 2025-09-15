@@ -26,7 +26,7 @@ export const basicActions: Record<string, Action> = {
       "events.trinket_found": {
         probability: 0.0005,
         value: true,
-        condition: "!events.trinket_found" && "buildings.lodge": 1,
+        condition: "!events.trinket_found && buildings.lodge >= 1",
         triggerEvent: "trinketFound"
       }
     },

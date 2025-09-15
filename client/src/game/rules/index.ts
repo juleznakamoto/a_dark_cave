@@ -115,6 +115,64 @@ export const canExecuteAction = (
   return true;
 };
 
+// Helper function to evaluate complex conditions
+function evaluateCondition(condition: string, state: GameState): boolean {
+  // Handle AND conditions
+  if (condition.includes(" && ")) {
+    const parts = condition.split(" && ");
+    return parts.every(part => evaluateCondition(part.trim(), state));
+  }
+
+  // Handle OR conditions
+  if (condition.includes(" || ")) {
+    const parts = condition.split(" || ");
+    return parts.some(part => evaluateCondition(part.trim(), state));
+  }
+
+  // Handle single condition
+  return evaluateSingleCondition(condition.trim(), state);
+}
+
+// Helper function to evaluate a single condition
+function evaluateSingleCondition(condition: string, state: GameState): boolean {
+  // Handle negation (e.g., "!events.trinket_found")
+  if (condition.startsWith("!")) {
+    const checkPath = condition.slice(1);
+    return !getValueFromPath(checkPath, state);
+  }
+
+  // Handle comparison operators (e.g., "buildings.lodge >= 1")
+  const comparisonMatch = condition.match(/^(.+?)\s*(>=|<=|>|<|==|!=)\s*(.+)$/);
+  if (comparisonMatch) {
+    const [, leftPath, operator, rightValue] = comparisonMatch;
+    const leftVal = getValueFromPath(leftPath.trim(), state);
+    const rightVal = isNaN(Number(rightValue)) ? rightValue.trim() : Number(rightValue);
+
+    switch (operator) {
+      case ">=": return Number(leftVal) >= Number(rightVal);
+      case "<=": return Number(leftVal) <= Number(rightVal);
+      case ">": return Number(leftVal) > Number(rightVal);
+      case "<": return Number(leftVal) < Number(rightVal);
+      case "==": return leftVal == rightVal;
+      case "!=": return leftVal != rightVal;
+      default: return false;
+    }
+  }
+
+  // Handle simple boolean check (e.g., "flags.fireLit")
+  return !!getValueFromPath(condition, state);
+}
+
+// Helper function to get value from dot notation path
+function getValueFromPath(path: string, state: GameState): any {
+  const pathParts = path.split(".");
+  let current: any = state;
+  for (const part of pathParts) {
+    current = current?.[part];
+  }
+  return current;
+}
+
 // Utility function to apply action effects
 export const applyActionEffects = (
   actionId: string,
@@ -192,25 +250,7 @@ export const applyActionEffects = (
       // Check condition if provided
       let conditionMet = true;
       if (probabilityEffect.condition) {
-        const condition = probabilityEffect.condition;
-        if (condition.startsWith("!")) {
-          // Handle negation (e.g., "!clothing.tarnished_amulet")
-          const checkPath = condition.slice(1);
-          const pathParts = checkPath.split(".");
-          let current: any = state;
-          for (const part of pathParts) {
-            current = current?.[part];
-          }
-          conditionMet = !current;
-        } else {
-          // Handle positive condition
-          const pathParts = condition.split(".");
-          let current: any = state;
-          for (const part of pathParts) {
-            current = current?.[part];
-          }
-          conditionMet = !!current;
-        }
+        conditionMet = evaluateCondition(probabilityEffect.condition, state);
       }
 
       const totalLuck = getTotalLuck(state);
