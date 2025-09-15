@@ -32,6 +32,8 @@ export const gameStateSchema = z.object({
     caveExplored: z.boolean().default(false),
     venturedDeeper: z.boolean().default(false),
     gameStarted: z.boolean().default(false),
+    trinketDrunk: z.boolean().default(false),
+    sleeping: z.boolean().default(false),
   }),
   tools: z.object({
     stone_axe: z.boolean().default(false),

@@ -84,6 +84,59 @@ function handleLightFire(state: GameState, result: ActionResult): ActionResult {
 
 function handleGatherWood(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('gatherWood', state);
+  
+  // Handle triggered events
+  if (effectUpdates.triggeredEvents) {
+    effectUpdates.triggeredEvents.forEach((eventId: string) => {
+      if (eventId === 'trinketFound') {
+        result.delayedEffects!.push(() => {
+          // Trigger the trinket event dialog
+          const trinketLogEntry: LogEntry = {
+            id: `trinketFound-${Date.now()}`,
+            message: "While gathering wood, you discover an old trinket partially buried in the earth. Inside its ornate casing, an amber liquid glows with a faint, pulsing light. The substance seems almost alive, swirling gently within its container. Do you dare drink it?",
+            timestamp: Date.now(),
+            type: 'event',
+            title: 'Old Trinket',
+            choices: [
+              {
+                id: 'drinkTrinket',
+                label: 'Drink the glowing liquid',
+                effect: (state) => ({
+                  flags: {
+                    ...state.flags,
+                    trinketDrunk: true,
+                    sleeping: true,
+                  },
+                  events: {
+                    ...state.events,
+                    trinket_found: true,
+                  },
+                  _logMessage: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep...",
+                  _sleepDuration: 300,
+                })
+              },
+              {
+                id: 'ignoreTrinket',
+                label: 'Leave it be',
+                effect: (state) => ({
+                  events: {
+                    ...state.events,
+                    trinket_found: true,
+                  },
+                  _logMessage: "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood."
+                })
+              }
+            ]
+          };
+          
+          const gameStore = require('@/game/state').useGameStore.getState();
+          gameStore.setEventDialog(true, trinketLogEntry);
+        });
+      }
+    });
+    delete effectUpdates.triggeredEvents;
+  }
+  
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

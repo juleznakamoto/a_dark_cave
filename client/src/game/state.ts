@@ -89,6 +89,8 @@ const defaultGameState: GameState = {
     caveExplored: false,
     venturedDeeper: false,
     gameStarted: false,
+    trinketDrunk: false,
+    sleeping: false,
   },
   tools: {
     stone_axe: false,
@@ -396,6 +398,79 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
+    
+    // Handle trinket event choices directly
+    if (eventId.startsWith('trinketFound')) {
+      if (choiceId === 'drinkTrinket') {
+        // Apply immediate effects
+        set((prevState) => ({
+          ...prevState,
+          flags: {
+            ...prevState.flags,
+            trinketDrunk: true,
+            sleeping: true,
+          },
+          events: {
+            ...prevState.events,
+            trinket_found: true,
+          },
+        }));
+
+        // Add immediate log message
+        get().addLogEntry({
+          id: `trinket-drink-${Date.now()}`,
+          message: "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep...",
+          timestamp: Date.now(),
+          type: 'system',
+        });
+
+        // Sleep for 5 minutes (300 seconds)
+        setTimeout(() => {
+          set((prevState) => ({
+            ...prevState,
+            flags: {
+              ...prevState.flags,
+              sleeping: false,
+            },
+            stats: {
+              ...prevState.stats,
+              strength: (prevState.stats.strength || 0) + 5,
+            },
+          }));
+
+          // Add wake up message
+          get().addLogEntry({
+            id: `trinket-wakeup-${Date.now()}`,
+            message: "You awaken with a start. Your whole body aches terribly, but as you flex your muscles, you feel a strange new power coursing through you. Your body appears more muscular and you feel healthier than ever before. (+5 Strength)",
+            timestamp: Date.now(),
+            type: 'system',
+          });
+        }, 300000); // 5 minutes
+
+        get().setEventDialog(false);
+        return;
+      } else if (choiceId === 'ignoreTrinket') {
+        set((prevState) => ({
+          ...prevState,
+          events: {
+            ...prevState.events,
+            trinket_found: true,
+          },
+        }));
+
+        get().addLogEntry({
+          id: `trinket-ignore-${Date.now()}`,
+          message: "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood.",
+          timestamp: Date.now(),
+          type: 'system',
+        });
+
+        get().setEventDialog(false);
+        return;
+      }
+    }
+
+    // Handle other events using EventManager
     const changes = EventManager.applyEventChoice(state, choiceId, eventId);
 
     if (Object.keys(changes).length > 0) {

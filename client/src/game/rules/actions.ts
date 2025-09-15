@@ -23,6 +23,12 @@ export const basicActions: Record<string, Action> = {
     effects: {
       "resources.wood": "random(1,400)",
       "story.seen.hasWood": true,
+      "events.trinket_found": {
+        probability: 0.005,
+        value: true,
+        condition: "!events.trinket_found",
+        triggerEvent: "trinketFound"
+      }
     },
     cooldown: 5,
   },

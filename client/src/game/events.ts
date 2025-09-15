@@ -325,6 +325,54 @@ export const gameEvents: Record<string, GameEvent> = {
         },
       },
     ],
+  },
+
+  trinketFound: {
+    id: "trinketFound",
+    condition: (state) => false, // Only triggered by action effect
+    triggerType: "action",
+    title: "Old Trinket",
+    message:
+      "While gathering wood, you discover an old trinket partially buried in the earth. Inside its ornate casing, an amber liquid glows with a faint, pulsing light. The substance seems almost alive, swirling gently within its container. Do you dare drink it?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "drinkTrinket",
+        label: "Drink the glowing liquid",
+        effect: (state) => {
+          return {
+            flags: {
+              ...state.flags,
+              trinketDrunk: true,
+              sleeping: true,
+            },
+            events: {
+              ...state.events,
+              trinket_found: true,
+            },
+            _logMessage:
+              "You drink the amber liquid. It tastes bitter and burns as it goes down. Almost immediately, an overwhelming drowsiness washes over you. Your vision blurs and you collapse into a deep, unnatural sleep...",
+            _sleepDuration: 300, // 5 minutes in seconds
+          };
+        },
+      },
+      {
+        id: "ignoreTrinket",
+        label: "Leave it be",
+        effect: (state) => {
+          return {
+            events: {
+              ...state.events,
+              trinket_found: true,
+            },
+            _logMessage:
+              "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood.",
+          };
+        },
+      },
+    ],
   }
 };
 

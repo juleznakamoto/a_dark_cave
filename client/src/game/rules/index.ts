@@ -180,12 +180,13 @@ export const applyActionEffects = (
           baseAmount;
       }
     } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
-      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet" }
+      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
       const probabilityEffect = effect as {
         probability: number;
-        value: number | string;
+        value: number | string | boolean;
         logMessage?: string;
         condition?: string;
+        triggerEvent?: string;
       };
 
       // Check condition if provided
@@ -250,6 +251,12 @@ export const applyActionEffects = (
       if (shouldTrigger && probabilityEffect.logMessage) {
         if (!updates.logMessages) updates.logMessages = [];
         updates.logMessages.push(probabilityEffect.logMessage);
+      }
+
+      // Handle event triggering
+      if (shouldTrigger && probabilityEffect.triggerEvent) {
+        if (!updates.triggeredEvents) updates.triggeredEvents = [];
+        updates.triggeredEvents.push(probabilityEffect.triggerEvent);
       }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
