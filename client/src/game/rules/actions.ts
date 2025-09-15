@@ -24,7 +24,7 @@ export const basicActions: Record<string, Action> = {
       "resources.wood": "random(1,400)",
       "story.seen.hasWood": true,
       "events.trinket_found": {
-        probability: 0.005,
+        probability: 0.99,
         value: true,
         condition: "!events.trinket_found",
         triggerEvent: "trinketFound"
