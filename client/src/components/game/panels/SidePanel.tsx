@@ -72,7 +72,36 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  const totalLuck = getTotalLuck(useGameStore());
+  const { stats } = useGameStore();
+  const gameStore = useGameStore();
+
+  // Build stats items dynamically from all stats
+  const statsItems = [];
+
+  // Add base stats from the stats object
+  Object.entries(stats || {})
+    .filter(([key, value]) => (value || 0) > 0)
+    .forEach(([key, value]) => {
+      statsItems.push({
+        id: key,
+        label: key.charAt(0).toUpperCase() + key.slice(1),
+        value: value || 0,
+        testId: `stat-${key}`,
+        visible: true
+      });
+    });
+
+  // Add calculated stats dynamically
+  const totalLuck = getTotalLuck(gameStore);
+  if (totalLuck > 0) {
+    statsItems.push({
+      id: 'luck',
+      label: 'Luck',
+      value: totalLuck,
+      testId: 'stat-luck',
+      visible: true
+    });
+  }
 
   const state = useGameStore();
 
@@ -102,18 +131,10 @@ export default function SidePanel() {
           items={populationItems}
         />
       )}
-      {totalLuck > 0 && (
+      {statsItems.length > 0 && (
         <SidePanelSection 
           title="Stats" 
-          items={[
-            {
-              id: 'luck',
-              label: 'Luck',
-              value: totalLuck,
-              testId: 'stat-luck',
-              visible: true
-            }
-          ]}
+          items={statsItems}
           className="mb-4"
         />
       )}
