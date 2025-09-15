@@ -70,6 +70,8 @@ export const craftingActions: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.stone_axe": true,
       "tools.iron_axe": false,
+      "story.seen.hasIron": true,
+      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.iron": 50,
@@ -92,6 +94,8 @@ export const craftingActions: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.stone_pickaxe": true,
       "tools.iron_pickaxe": false,
+      "story.seen.hasIron": true,
+      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.iron": 75,
@@ -116,13 +120,11 @@ export const craftingActions: Record<string, Action> = {
       "tools.steel_axe": false,
     },
     cost: {
-      "resources.iron": 100,
-      "resources.coal": 50,
+      "resources.steel": 100,
       "resources.wood": 200,
     },
     effects: {
-      "resources.iron": -100,
-      "resources.coal": -50,
+      "resources.steel": -100,
       "resources.wood": -200,
       "tools.steel_axe": true,
       "story.seen.hasSteelAxe": true,
@@ -140,14 +142,12 @@ export const craftingActions: Record<string, Action> = {
       "tools.steel_pickaxe": false,
     },
     cost: {
-      "resources.iron": 125,
-      "resources.coal": 75,
-      "resources.wood": 250,
+      "resources.steel": 150,
+      "resources.wood": 300,
     },
     effects: {
-      "resources.iron": -125,
-      "resources.coal": -75,
-      "resources.wood": -250,
+      "resources.steel": -150,
+      "resources.wood": -300,
       "tools.steel_pickaxe": true,
       "story.seen.hasSteelPickaxe": true,
       "story.seen.actionCraftSteelPickaxe": true,
@@ -164,10 +164,8 @@ export const craftingActions: Record<string, Action> = {
       "tools.obsidian_axe": false,
     },
     cost: {
-      "resources.iron": 150,
-      "resources.coal": 100,
-      "resources.sulfur": 50,
-      "resources.wood": 300,
+      "resources.obsidian": 150,
+      "resources.wood": 500,
     },
     effects: {
       "resources.iron": -150,
