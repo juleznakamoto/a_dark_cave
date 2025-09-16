@@ -1,7 +1,7 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
 import { clothingEffects, getDisplayTools } from '@/game/effects';
-import { ScrollArea } from '@/components/ui/scroll-area';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
@@ -129,6 +129,7 @@ export default function SidePanel() {
           />
         )}
       </div>
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 }
