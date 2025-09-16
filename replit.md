@@ -73,5 +73,8 @@ Preferred communication style: Simple, everyday language.
 
 ## Development Rules
 
+### Data Management
+- **No Mock Data**: Never use hardcoded or mock data in this game. All data must be dynamically generated from the actual game state, rules, and definitions. Always use real game data from the state management system.
+
 ### Event System
 - **No Event Creation**: Do not create events, log messages, or narrative elements without explicit instruction from the user. Focus only on mechanical aspects (resources, buildings, villagers) unless specifically asked to work on the event system.

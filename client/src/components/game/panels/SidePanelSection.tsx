@@ -80,24 +80,24 @@ export default function SidePanelSection({
 
       if (currentValue > prevValue) {
         newAnimatedItems.add(item.id);
-        // Remove animation after 1.5 seconds
+        // Remove animation after 2 seconds
         setTimeout(() => {
           setAnimatedItems(prev => {
             const newSet = new Set(prev);
             newSet.delete(item.id);
             return newSet;
           });
-        }, 1500);
+        }, 2000);
       } else if (currentValue < prevValue) {
         newDecreaseAnimatedItems.add(item.id);
-        // Remove animation after 1.5 seconds
+        // Remove animation after 2 seconds
         setTimeout(() => {
           setDecreaseAnimatedItems(prev => {
             const newSet = new Set(prev);
             newSet.delete(item.id);
             return newSet;
           });
-        }, 1500);
+        }, 2000);
       }
 
       prevValuesRef.current.set(item.id, currentValue);
@@ -132,8 +132,8 @@ export default function SidePanelSection({
         <span className="text-muted-foreground">{item.label}</span>
         <span 
           className={`font-medium transition-all duration-300 ${
-            isAnimated ? 'scale-110 text-green-400' : 
-            isDecreaseAnimated ? 'scale-90 text-red-400' : ''
+            isAnimated ? 'scale-110 text-green-800' : 
+            isDecreaseAnimated ? 'scale-110 text-red-800' : ''
           }`}
         >
           {item.value}
