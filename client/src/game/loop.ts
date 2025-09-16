@@ -148,7 +148,13 @@ function handlePopulationSurvival() {
   if (totalPopulation === 0) return;
 
   // Only start starvation checks once the player has accumulated at least 5 food
-  if (state.resources.food < 5) return;
+  if (!state.flags.starvationActive) {
+    if (state.resources.food < 5) return;
+    // Activate starvation system permanently once food reaches 5
+    useGameStore.setState({ 
+      flags: { ...state.flags, starvationActive: true } 
+    });
+  }
 
   let totalDeaths = 0;
   let deathMessages: string[] = [];
