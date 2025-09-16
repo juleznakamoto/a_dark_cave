@@ -16,12 +16,12 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       {
         resource: 'wood',
         amount: 10,
-        interval: 30000,
+        interval: 15000,
       },
       {
         resource: 'stone',
         amount: 2,
-        interval: 30000,
+        interval: 15000,
       }
     ]
   },
@@ -32,12 +32,12 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       {
         resource: 'food',
         amount: 5,
-        interval: 30000,
+        interval: 15000,
       },
       {
         resource: 'bones',
         amount: 1,
-        interval: 30000,
+        interval: 15000,
       }
     ]
   }
@@ -59,5 +59,5 @@ export const getPopulationProductionText = (jobId: string): string => {
 
   return job.production
     .map(prod => `${prod.amount} ${prod.resource}`)
-    .join(', ') + ' per 30s';
+    .join(', ') + ' per 15s';
 };
