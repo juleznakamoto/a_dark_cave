@@ -1,7 +1,5 @@
-import { useGameStore } from '@/game/state';
-import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools } from '@/game/effects';
-import { useEffect, useRef } from 'react';
+
+import { useEffect, useRef, useState } from 'react';
 
 interface SidePanelItem {
   id: string;
@@ -25,6 +23,35 @@ export default function SidePanelSection({
   className = "" 
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter(item => item.visible !== false);
+  const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
+  const prevValuesRef = useRef<Map<string, number>>(new Map());
+
+  useEffect(() => {
+    const newAnimatedItems = new Set<string>();
+    
+    visibleItems.forEach((item) => {
+      const currentValue = typeof item.value === 'number' ? item.value : parseInt(item.value.toString()) || 0;
+      const prevValue = prevValuesRef.current.get(item.id) || 0;
+      
+      if (currentValue > prevValue) {
+        newAnimatedItems.add(item.id);
+        // Remove animation after 1 second
+        setTimeout(() => {
+          setAnimatedItems(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(item.id);
+            return newSet;
+          });
+        }, 1000);
+      }
+      
+      prevValuesRef.current.set(item.id, currentValue);
+    });
+    
+    if (newAnimatedItems.size > 0) {
+      setAnimatedItems(prev => new Set([...prev, ...newAnimatedItems]));
+    }
+  }, [visibleItems]);
 
   if (!visible || visibleItems.length === 0) {
     return null;
@@ -36,30 +63,21 @@ export default function SidePanelSection({
         {title}
       </h3>
       <div className="space-y-1 text-sm">
-        {visibleItems.map((item) => {
-          const valueRef = useRef<HTMLSpanElement>(null);
-          const prevValue = useGameStore((state) => state.resources.find((r) => r.id === item.id)?.value); // Assuming a way to get previous value
-
-          useEffect(() => {
-            if (valueRef.current && prevValue !== undefined && item.value > prevValue) {
-              valueRef.current.classList.add('animate-pulse'); // Example animation class
-              const timer = setTimeout(() => {
-                valueRef.current?.classList.remove('animate-pulse');
-              }, 1000); // 1 second duration
-
-              return () => clearTimeout(timer);
-            }
-          }, [item.value, prevValue]);
-
-          return (
-            <div key={item.id} className="flex justify-between">
-              <span>{item.label}</span>
-              <span ref={valueRef} className="font-mono" data-testid={item.testId}>
-                {item.value}
-              </span>
-            </div>
-          );
-        })}
+        {visibleItems.map((item) => (
+          <div key={item.id} className="flex justify-between">
+            <span>{item.label}</span>
+            <span 
+              className={`font-mono transition-all duration-300 ${
+                animatedItems.has(item.id) 
+                  ? 'font-bold text-green-600 scale-110' 
+                  : ''
+              }`}
+              data-testid={item.testId}
+            >
+              {item.value}
+            </span>
+          </div>
+        ))}
       </div>
     </div>
   );
