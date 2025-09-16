@@ -1,6 +1,7 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
 import { clothingEffects, getDisplayTools } from '@/game/effects';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
@@ -91,41 +92,43 @@ export default function SidePanel() {
     });
 
   return (
-    <div>
-      {resourceItems.length > 0 && (
-        <SidePanelSection 
-          title="Resources" 
-          items={resourceItems}
-          onValueChange={(itemId, oldValue, newValue) => {
-            console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
-          }}
-        />
-      )}
-      {toolItems.length > 0 && (
-        <SidePanelSection title="Tools" items={toolItems} />
-      )}
-      {clothingItems.length > 0 && (
-        <SidePanelSection title="Clothing" items={clothingItems} />
-      )}
-      {relicItems.length > 0 && (
-        <SidePanelSection title="Relics" items={relicItems} />
-      )}
-      {buildingItems.length > 0 && (
-        <SidePanelSection title="Buildings" items={buildingItems} />
-      )}
-      {populationItems.length > 0 && (
-        <SidePanelSection 
-          title={`Population ${current_population}/${total_population}`} 
-          items={populationItems}
-        />
-      )}
-      {statsItems.length > 0 && (
-        <SidePanelSection 
-          title="Stats" 
-          items={statsItems}
-          className="mb-4"
-        />
-      )}
-    </div>
+    <ScrollArea className="h-full">
+      <div>
+        {resourceItems.length > 0 && (
+          <SidePanelSection 
+            title="Resources" 
+            items={resourceItems}
+            onValueChange={(itemId, oldValue, newValue) => {
+              console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
+            }}
+          />
+        )}
+        {toolItems.length > 0 && (
+          <SidePanelSection title="Tools" items={toolItems} />
+        )}
+        {clothingItems.length > 0 && (
+          <SidePanelSection title="Clothing" items={clothingItems} />
+        )}
+        {relicItems.length > 0 && (
+          <SidePanelSection title="Relics" items={relicItems} />
+        )}
+        {buildingItems.length > 0 && (
+          <SidePanelSection title="Buildings" items={buildingItems} />
+        )}
+        {populationItems.length > 0 && (
+          <SidePanelSection 
+            title={`Population ${current_population}/${total_population}`} 
+            items={populationItems}
+          />
+        )}
+        {statsItems.length > 0 && (
+          <SidePanelSection 
+            title="Stats" 
+            items={statsItems}
+            className="mb-4"
+          />
+        )}
+      </div>
+    </ScrollArea>
   );
 }
