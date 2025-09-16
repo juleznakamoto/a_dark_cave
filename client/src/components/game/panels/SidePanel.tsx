@@ -75,12 +75,15 @@ export default function SidePanel() {
 
   const { stats } = useGameStore();
 
-  // Build stats items dynamically from all stats
+  // Define which stats should be visible to users (exclude internal tracking stats)
+  const visibleStats = ['luck', 'strength', 'knowledge'];
+
+  // Build stats items dynamically from whitelisted stats only
   const statsItems = [];
 
   // Add base stats from the stats object
   Object.entries(stats || {})
-    .filter(([key, value]) => (value || 0) > 0)
+    .filter(([key, value]) => visibleStats.includes(key) && (value || 0) > 0)
     .forEach(([key, value]) => {
       statsItems.push({
         id: key,
