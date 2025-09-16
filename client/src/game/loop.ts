@@ -7,11 +7,11 @@ import { EventManager } from "./rules/events";
 let gameLoopId: number | null = null;
 let lastTick = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
-const AUTO_SAVE_INTERVAL = 30000; // Auto-save every 30 seconds
-const FIRE_CONSUMPTION_INTERVAL = 30000; // Fire consumes wood every 30 seconds
-const GATHERER_PRODUCTION_INTERVAL = 30000; // gatherer produce wood every 30 seconds
-const HUNTER_PRODUCTION_INTERVAL = 30000; // hunter produce food every 30 seconds
-const CONSUMPTION_INTERVAL = 30000; // Population consumes food and checks wood every 30 seconds
+const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
+const FIRE_CONSUMPTION_INTERVAL = 15000; // Fire consumes wood every 15 seconds
+const GATHERER_PRODUCTION_INTERVAL = 15000; // gatherer produce wood every 15 seconds
+const HUNTER_PRODUCTION_INTERVAL = 15000; // hunter produce food every 15 seconds
+const CONSUMPTION_INTERVAL = 15000; // Population consumes food and checks wood every 15 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
@@ -100,7 +100,7 @@ function handleFireConsumption() {
   if (state.eventDialog.isOpen) return;
 
   if (state.flags.fireLit && state.resources.wood > 0) {
-    // Fire consumes 1 wood every 30 seconds
+    // Fire consumes 1 wood every 15 seconds
     state.updateResource("wood", -1);
   }
 }
