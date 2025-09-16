@@ -50,17 +50,6 @@ export default function CavePanel() {
         { id: 'craftSteelLantern', label: 'Steel Lantern' },
         { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
         { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
-      ]
-    },
-    {
-      title: 'Forge',
-      actions: [
-        { id: 'forgSteel', label: 'Steel' },
-      ]
-    },
-    {
-      title: 'Weapons',
-      actions: [
         { id: 'craftIronSword', label: 'Iron Sword' },
         { id: 'craftSteelSword', label: 'Steel Sword' },
         { id: 'craftObsidianSword', label: 'Obsidian Sword' },
@@ -70,6 +59,12 @@ export default function CavePanel() {
         { id: 'craftLongBow', label: 'Long Bow' },
         { id: 'craftWarBow', label: 'War Bow' },
         { id: 'craftMasterBow', label: 'Master Bow' },
+      ]
+    },
+    {
+      title: 'Forge',
+      actions: [
+        { id: 'forgSteel', label: 'Steel' },
       ]
     }
   ];

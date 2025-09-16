@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { GameState } from "@shared/schema";
+import { GameState, gameStateSchema } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
 import { EventManager, LogEntry } from "@/game/rules/events";
 import { executeGameAction } from "@/game/actions";
@@ -58,119 +58,10 @@ interface GameStore extends GameState {
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
-const defaultGameState: GameState = {
-  resources: {
-    wood: 0,
-    food: 0,
-    torch: 0,
-    stone: 0,
-    iron: 0,
-    coal: 0,
-    steel: 0,
-    sulfur: 0,
-    silver: 0,
-    obsidian: 0,
-    adamant: 0,
-    moonstone: 0,
-    gold: 0,
-    bones: 0,
-    fur: 0,
-    leather: 0,
-    bloodstone: 0,
-    frostglas: 0,
-  },
-  stats: {
-    luck: 0,
-    strength: 0,
-    knowledge: 0,
-  },
-  flags: {
-    fireLit: false,
-    villageUnlocked: false,
-    worldDiscovered: false,
-    torchBuilt: false,
-    caveExplored: false,
-    venturedDeeper: false,
-    gameStarted: false,
-    trinketDrunk: false,
-    sleeping: false,
-    descendedFurther: false,
-    exploredRuins: false,
-    exploredTemple: false,
-    exploredCitadel: false,
-    starvationActive: false,
-    forestUnlocked: false,
-  },
-  tools: {
-    stone_axe: false,
-    spear: false,
-    stone_pickaxe: false,
-    iron_axe: false,
-    iron_pickaxe: false,
-    steel_axe: false,
-    steel_pickaxe: false,
-    obsidian_axe: false,
-    obsidian_pickaxe: false,
-    adamant_axe: false,
-    adamant_pickaxe: false,
-    lantern: false,
-    iron_lantern: false,
-    steel_lantern: false,
-    obsidian_lantern: false,
-    adamant_lantern: false,
-  },
-  weapons: {
-    iron_sword: false,
-    steel_sword: false,
-    obsidian_sword: false,
-    adamant_sword: false,
-    crude_bow: false,
-    huntsman_bow: false,
-    long_bow: false,
-    war_bow: false,
-    master_bow: false,
-  },
-  clothing: {
-    iron_armor: false,
-    steel_armor: false,
-    obsidian_armor: false,
-  },
-  relics: {
-    tarnished_amulet: false,
-    bloodstained_belt: false,
-    ravenfeather_mantle: false,
-    blackened_mirror: false,
-    whispering_amulet: false,
-    wooden_figure: false,
-  },
-  buildings: {
-    hut: 0,
-    traps: 0,
-    lodge: 0,
-    blacksmith: 0,
-  },
-  villagers: {
-    free: 0,
-    hunter: 0,
-    gatherer: 0,
-  },
-  world: {
-    discovered: false,
-    position: { x: 0, y: 0 },
-  },
-  story: {
-    seen: {},
-  },
-  events: {
-    available: [],
-    active: [],
-    log: [],
-  },
-  log: [],
-  current_population: 0,
-  total_population: 0,
-  version: 1,
-};
+import { gameStateSchema } from "@shared/schema";
+
+// Generate default state from schema defaults - no more duplication!
+const defaultGameState: GameState = gameStateSchema.parse({});
 
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
