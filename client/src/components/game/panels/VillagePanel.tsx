@@ -100,7 +100,7 @@ export default function VillagePanel() {
       {/* Build Section */}
       {visibleBuildingActions.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
+          <h2 className="text-lg font-medium">Build</h2>
           <div className="flex flex-wrap gap-2">
             {visibleBuildingActions.map(action => 
               renderBuildingButton(action.id, action.label)

@@ -35,18 +35,18 @@ export default function GameContainer() {
         {/* Main Content Area - Sidebar and Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Left Sidebar for Resources */}
-          <div className="w-48 border-r border-border pr-6">
+          <div className="w-48 border-r">
             <GameTabs />
           </div>
 
           {/* Right Content Area with Horizontal Tabs and Actions */}
-          <section className="flex-1 pl-6 flex flex-col">
+          <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs */}
-            <nav className="border-b border-border mb-6">
-              <div className="flex space-x-1 p-1">
+            <nav className="border-t border-border pl-6 mb-6">
+              <div className="flex space-x-4 p-1">
                 <button
-                  className={`px-4 py-2 text-sm bg-transparent hover:bg-accent rounded-sm ${
-                    activeTab === "cave" ? "font-bold border-b-2 border-primary" : ""
+                  className={`py-2 text-sm bg-transparent ${
+                    activeTab === "cave" ? "font-bold " : ""
                   }`}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
@@ -56,8 +56,8 @@ export default function GameContainer() {
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`px-4 py-2 text-sm bg-transparent hover:bg-accent rounded-sm ${
-                      activeTab === "village" ? "font-bold border-b-2 border-primary" : ""
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "village" ? "font-bold " : ""
                     }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
@@ -68,8 +68,8 @@ export default function GameContainer() {
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`px-4 py-2 text-sm bg-transparent hover:bg-accent rounded-sm ${
-                      activeTab === "forest" ? "font-bold border-b-2 border-primary" : ""
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "forest" ? "font-bold " : ""
                     }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
@@ -80,8 +80,8 @@ export default function GameContainer() {
 
                 {flags.worldDiscovered && (
                   <button
-                    className={`px-4 py-2 text-sm bg-transparent hover:bg-accent rounded-sm ${
-                      activeTab === "world" ? "font-bold border-b-2 border-primary" : ""
+                    className={` py-2 text-sm bg-transparent ${
+                      activeTab === "world" ? "font-bold " : ""
                     }`}
                     onClick={() => setActiveTab("world")}
                     data-testid="tab-world"
@@ -93,7 +93,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-            <div className="flex-1 overflow-y-auto">
+            <div className="flex-1 overflow-y-auto pl-6">
               {activeTab === 'cave' && <CavePanel />}
               {activeTab === 'village' && <VillagePanel />}
               {activeTab === 'forest' && <ForestPanel />}
