@@ -43,6 +43,18 @@ export default function GameTabs() {
           </Button>
         )}
 
+        {flags.forestUnlocked && (
+          <Button
+            variant={activeTab === "forest" ? "default" : "ghost"}
+            className="w-full justify-start text-sm"
+            onClick={() => setActiveTab("forest")}
+            data-testid="tab-forest"
+            size="sm"
+          >
+            The Forest
+          </Button>
+        )}
+
         {flags.worldDiscovered && (
           <Button
             variant={activeTab === "world" ? "default" : "ghost"}

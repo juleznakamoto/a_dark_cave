@@ -2,7 +2,9 @@ import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability } from "../effects";
 import { basicActions } from "./actions";
-import { craftingActions } from "./crafting";
+import { craftingToolsActions } from './craftingTools';
+import { craftingWeaponsActions } from './craftingWeapons';
+import { forestActions } from './forestActions';
 import { buildingActions } from "./buildings";
 import { caveActions } from "./caveActions";
 import { forgingActions } from "./forging";
@@ -12,11 +14,13 @@ import { getActionBonuses } from "../effects";
 // Combine all actions
 export const gameActions: Record<string, Action> = {
   ...basicActions,
-  ...craftingActions,
-  ...buildingActions,
   ...caveActions,
+  ...craftingToolsActions,
+  ...craftingWeaponsActions,
   ...forgingActions,
   ...miningActions,
+  ...buildingActions,
+  ...forestActions,
 };
 
 // Utility function to get the next building level

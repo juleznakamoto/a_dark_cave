@@ -3,6 +3,7 @@ import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
 import VillagePanel from './panels/VillagePanel';
+import ForestPanel from './panels/ForestPanel';
 import WorldPanel from './panels/WorldPanel';
 import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
@@ -38,6 +39,7 @@ export default function GameContainer() {
           <section className="flex-1 pl-6 overflow-y-auto">
             {activeTab === 'cave' && <CavePanel />}
             {activeTab === 'village' && <VillagePanel />}
+            {activeTab === 'forest' && <ForestPanel />}
             {activeTab === 'world' && <WorldPanel />}
           </section>
         </div>

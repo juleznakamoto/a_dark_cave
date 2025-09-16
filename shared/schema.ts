@@ -42,6 +42,7 @@ export const gameStateSchema = z.object({
     exploredTemple: z.boolean().default(false),
     exploredCitadel: z.boolean().default(false),
     starvationActive: z.boolean().default(false),
+    forestUnlocked: z.boolean().default(false),
   }),
   tools: z.object({
     stone_axe: z.boolean().default(false),
@@ -62,11 +63,16 @@ export const gameStateSchema = z.object({
     adamant_lantern: z.boolean().default(false),
   }),
   weapons: z.object({
-    iron_knife: z.boolean().default(false),
     iron_sword: z.boolean().default(false),
     steel_sword: z.boolean().default(false),
     obsidian_sword: z.boolean().default(false),
-  }),
+    adamant_sword: z.boolean().default(false),
+    crude_bow: z.boolean().default(false),
+    huntsman_bow: z.boolean().default(false),
+    long_bow: z.boolean().default(false),
+    war_bow: z.boolean().default(false),
+    master_bow: z.boolean().default(false),
+  }).default({}),
   clothing: z.object({
     iron_armor: z.boolean().default(false),
     steel_armor: z.boolean().default(false),

@@ -99,6 +99,7 @@ const defaultGameState: GameState = {
     exploredTemple: false,
     exploredCitadel: false,
     starvationActive: false,
+    forestUnlocked: false,
   },
   tools: {
     stone_axe: false,
@@ -119,10 +120,15 @@ const defaultGameState: GameState = {
     adamant_lantern: false,
   },
   weapons: {
-    iron_knife: false,
     iron_sword: false,
     steel_sword: false,
     obsidian_sword: false,
+    adamant_sword: false,
+    crude_bow: false,
+    huntsman_bow: false,
+    long_bow: false,
+    war_bow: false,
+    master_bow: false,
   },
   clothing: {
     iron_armor: false,

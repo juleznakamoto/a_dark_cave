@@ -4,6 +4,16 @@ import { getCooldownReduction } from '@/game/effects';
 import { LogEntry } from '@/game/events';
 import { useGameStore } from '@/game/state';
 
+// Helper function to calculate bow hunting bonus
+function getBowHuntingBonus(state: GameState): number {
+  if (state.weapons.master_bow) return Math.floor(Math.random() * 15) + 25; // 25-40 food
+  if (state.weapons.war_bow) return Math.floor(Math.random() * 12) + 20; // 20-32 food
+  if (state.weapons.long_bow) return Math.floor(Math.random() * 10) + 15; // 15-25 food
+  if (state.weapons.huntsman_bow) return Math.floor(Math.random() * 8) + 10; // 10-18 food
+  if (state.weapons.crude_bow) return Math.floor(Math.random() * 5) + 5; // 5-10 food
+  return 0;
+}
+
 export interface ActionResult {
   stateUpdates: Partial<GameState>;
   logEntries?: LogEntry[];
@@ -58,6 +68,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleMineCoal(state, result);
     case 'ventureDeeper':
       return handleVentureDeeper(state, result);
+    case 'hunt':
+      return handleHunt(state, result);
     default:
       return result;
   }
@@ -150,10 +162,10 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
 }
 
 function handleBuildTorch(state: GameState, result: ActionResult): ActionResult {
-  result.stateUpdates.resources = { 
-    ...state.resources, 
-    wood: state.resources.wood - 10, 
-    torch: state.resources.torch + 1 
+  result.stateUpdates.resources = {
+    ...state.resources,
+    wood: state.resources.wood - 10,
+    torch: state.resources.torch + 1
   };
   result.stateUpdates.flags = { ...state.flags, torchBuilt: true };
 
@@ -206,9 +218,9 @@ function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionRe
 }
 
 function handleBuildingConstruction(
-  state: GameState, 
-  result: ActionResult, 
-  actionId: string, 
+  state: GameState,
+  result: ActionResult,
+  actionId: string,
   buildingType: keyof GameState['buildings']
 ): ActionResult {
   const level = state.buildings[buildingType] + 1;
@@ -268,7 +280,7 @@ function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResu
 
 function handleCraftStonePickaxe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftStonePickaxe', state);
-  Object.assign(result.stateUpdates, effectUpdates);  
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
@@ -354,5 +366,37 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleHunt(state: GameState, result: ActionResult): ActionResult {
+  const foodGained = getBowHuntingBonus(state);
+  const effectUpdates = applyActionEffects('hunt', state);
+
+  result.stateUpdates.resources = {
+    ...state.resources,
+    food: (state.resources.food || 0) + foodGained,
+  };
+
+  result.logEntries!.push({
+    id: `hunt-success-${Date.now()}`,
+    message: `You successfully hunted and gained ${foodGained} food.`,
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
+  // Update cooldowns and seen story flags
+  result.stateUpdates.cooldowns = {
+    ...state.cooldowns,
+    hunt: gameActions.hunt.cooldown,
+  };
+  result.stateUpdates.story = {
+    ...state.story,
+    seen: {
+      ...state.story.seen,
+      hunted: true,
+    },
+  };
+
   return result;
 }
