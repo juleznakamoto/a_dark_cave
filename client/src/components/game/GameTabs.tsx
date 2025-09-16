@@ -23,7 +23,7 @@ export default function GameTabs() {
       <div>
         <Button
           variant={activeTab === "cave" ? "default" : "ghost"}
-          className="w-full justify-start text-sm background-color: blue;"
+          className={`w-full justify-start text-sm ${activeTab === "cave" ? "bg-muted/50" : ""}`}
           onClick={() => setActiveTab("cave")}
           data-testid="tab-cave"
           size="sm"
@@ -34,7 +34,7 @@ export default function GameTabs() {
         {flags.villageUnlocked && (
           <Button
             variant={activeTab === "village" ? "default" : "ghost"}
-            className="w-full justify-start text-sm"
+            className={`w-full justify-start text-sm ${activeTab === "village" ? "bg-muted/50" : ""}`}
             onClick={() => setActiveTab("village")}
             data-testid="tab-village"
             size="sm"
@@ -46,7 +46,7 @@ export default function GameTabs() {
         {flags.forestUnlocked && (
           <Button
             variant={activeTab === "forest" ? "default" : "ghost"}
-            className="w-full justify-start text-sm"
+            className={`w-full justify-start text-sm ${activeTab === "forest" ? "bg-muted/50" : ""}`}
             onClick={() => setActiveTab("forest")}
             data-testid="tab-forest"
             size="sm"
@@ -58,7 +58,7 @@ export default function GameTabs() {
         {flags.worldDiscovered && (
           <Button
             variant={activeTab === "world" ? "default" : "ghost"}
-            className="w-full justify-start text-sm"
+            className={`w-full justify-start text-sm ${activeTab === "world" ? "bg-muted/50" : ""}`}
             onClick={() => setActiveTab("world")}
             data-testid="tab-world"
             size="sm"
