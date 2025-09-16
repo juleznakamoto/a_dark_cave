@@ -96,6 +96,9 @@ export default function SidePanel() {
         <SidePanelSection 
           title="Resources" 
           items={resourceItems}
+          onValueChange={(itemId, oldValue, newValue) => {
+            console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
+          }}
         />
       )}
       {toolItems.length > 0 && (

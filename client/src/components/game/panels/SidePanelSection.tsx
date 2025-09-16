@@ -1,3 +1,8 @@
+import { useGameStore } from '@/game/state';
+import SidePanelSection from './SidePanelSection';
+import { clothingEffects, getDisplayTools } from '@/game/effects';
+import { useEffect, useRef } from 'react';
+
 interface SidePanelItem {
   id: string;
   label: string;
@@ -20,7 +25,7 @@ export default function SidePanelSection({
   className = "" 
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter(item => item.visible !== false);
-  
+
   if (!visible || visibleItems.length === 0) {
     return null;
   }
@@ -31,14 +36,30 @@ export default function SidePanelSection({
         {title}
       </h3>
       <div className="space-y-1 text-sm">
-        {visibleItems.map((item) => (
-          <div key={item.id} className="flex justify-between">
-            <span>{item.label}</span>
-            <span className="font-mono" data-testid={item.testId}>
-              {item.value}
-            </span>
-          </div>
-        ))}
+        {visibleItems.map((item) => {
+          const valueRef = useRef<HTMLSpanElement>(null);
+          const prevValue = useGameStore((state) => state.resources.find((r) => r.id === item.id)?.value); // Assuming a way to get previous value
+
+          useEffect(() => {
+            if (valueRef.current && prevValue !== undefined && item.value > prevValue) {
+              valueRef.current.classList.add('animate-pulse'); // Example animation class
+              const timer = setTimeout(() => {
+                valueRef.current?.classList.remove('animate-pulse');
+              }, 1000); // 1 second duration
+
+              return () => clearTimeout(timer);
+            }
+          }, [item.value, prevValue]);
+
+          return (
+            <div key={item.id} className="flex justify-between">
+              <span>{item.label}</span>
+              <span ref={valueRef} className="font-mono" data-testid={item.testId}>
+                {item.value}
+              </span>
+            </div>
+          );
+        })}
       </div>
     </div>
   );
