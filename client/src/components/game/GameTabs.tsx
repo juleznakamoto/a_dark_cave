@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import SidePanel from "./panels/SidePanel"; // Assuming SidePanel is now in the same directory or adjust path as needed
 import { useEffect } from "react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { WorldPanel, VillagePanel, CavePanel, LogPanel } from './panels';
+import ProgressionPanel from './panels/ProgressionPanel';
 
 export default function GameTabs() {
   const {
