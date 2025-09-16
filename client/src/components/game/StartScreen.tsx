@@ -22,7 +22,9 @@ export default function StartScreen() {
           className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover"
           data-testid="button-light-fire"
         >
-          Light Fire
+          <span className="flame-text-wrapper" data-text="Light Fire">
+            <span className="flame-text">Light Fire</span>
+          </span>
         </Button>
       </main>
     </div>
