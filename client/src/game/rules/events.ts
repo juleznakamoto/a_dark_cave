@@ -88,7 +88,9 @@ export const gameEvents: Record<string, GameEvent> = {
     effect: (state) => ({
       resources: {
         ...state.resources,
-        food: state.resources.food - 50,
+        food:
+          state.resources.food -
+          Math.ceil(Math.random() * 50 * state.buildings.hut),
       },
     }),
   },
@@ -151,8 +153,9 @@ export const gameEvents: Record<string, GameEvent> = {
         label: "Investigate",
         effect: (state) => {
           const strength = state.stats.strength || 0;
-          // Base 50% chance + 2% per strength point to find the mantle
-          const mantleChance = 0.5 + (strength * 0.02);
+          const luck = state.stats.luck || 0;
+          // Base 50% chance
+          const mantleChance = 0.5 + (strength + luck) * 0.005;
 
           const rand = Math.random();
           if (rand < mantleChance) {
