@@ -92,8 +92,8 @@ export default function SidePanel() {
     });
 
   return (
-    <ScrollArea className="h-full">
-      <div>
+    <ScrollArea className="h-full max-h-full">
+      <div className="pb-4">
         {resourceItems.length > 0 && (
           <SidePanelSection 
             title="Resources" 
