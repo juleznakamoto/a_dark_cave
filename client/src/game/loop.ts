@@ -147,6 +147,9 @@ function handlePopulationSurvival() {
 
   if (totalPopulation === 0) return;
 
+  // Only start starvation checks once the player has accumulated at least 5 food
+  if (state.resources.food < 5) return;
+
   let totalDeaths = 0;
   let deathMessages: string[] = [];
 
