@@ -119,17 +119,10 @@
   }
 }
 
-.animate-fade-in {
-  animation: fade-in 5s ease-in-out forwards;
-}
-
 @keyframes flame-text {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
   100% { background-position: 0% 50%; }
-}
-
-.flame-text-wrapper {
 }
 
 .flame-text {
@@ -148,7 +141,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: flame-text 8s ease-in-out infinite;
+  animation: flame-text 10s ease-in-out infinite;
 }
 
 .fire-hover:hover {
@@ -167,6 +160,6 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: flame-text 8s ease-in-out infinite;
+  animation: flame-text 10s ease-in-out infinite;
   transition: all 4s ease;
 }

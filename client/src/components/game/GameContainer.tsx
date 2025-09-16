@@ -35,7 +35,7 @@ export default function GameContainer() {
         {/* Main Content Area - Sidebar and Panel */}
         <div className="flex flex-1 min-h-0">
           {/* Left Sidebar for Resources */}
-          <div className="w-48 border-r">
+          <div className="w-48 border-t border-r">
             <GameTabs />
           </div>
 
