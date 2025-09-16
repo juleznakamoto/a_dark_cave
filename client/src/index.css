@@ -135,9 +135,9 @@
   }
 }
 
-@keyframes white-overlay-fade {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
+@keyframes white-fade {
+  0% { -webkit-text-fill-color: white; }
+  100% { -webkit-text-fill-color: transparent; }
 }
 
 .flame-text {
@@ -145,21 +145,8 @@
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: flame-text 8s ease-in-out infinite;
-  position: relative;
-}
-
-.flame-text::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: white;
-  animation: white-overlay-fade 2s ease-out forwards;
-  pointer-events: none;
+  -webkit-text-fill-color: white;
+  animation: flame-text 8s ease-in-out infinite, white-fade 2s ease-out forwards;
 }
 
 .fire-hover:hover {
