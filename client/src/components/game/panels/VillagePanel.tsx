@@ -102,7 +102,7 @@ export default function VillagePanel() {
       {/* Build Section */}
       {visibleBuildingActions.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-lg font-medium">Build</h2>
+          <h2 className="text-sm font-medium">Build</h2>
           <div className="flex flex-wrap gap-2">
             {visibleBuildingActions.map(action => 
               renderBuildingButton(action.id, action.label)
@@ -114,7 +114,7 @@ export default function VillagePanel() {
       {/* Rule Section */}
       {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
+          <h2 className="text-sm font-medium">Rule</h2>
           <div className="space-y-3">
             {visiblePopulationJobs.map(job => 
               renderPopulationControl(job.id, job.label)

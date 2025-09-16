@@ -136,7 +136,7 @@ export default function CavePanel() {
         return (
           <div key={groupIndex} className="space-y-4">
             {group.title && (
-              <h3 className="text-lg font-semibold text-foreground">{group.title}</h3>
+              <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
             <div className="flex flex-wrap gap-2">
               {visibleActions.map(action => renderButton(action.id, action.label))}
