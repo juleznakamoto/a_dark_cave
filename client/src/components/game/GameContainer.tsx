@@ -45,8 +45,8 @@ export default function GameContainer() {
             <nav className="border-t border-border pl-6 mb-6">
               <div className="flex space-x-4 p-1">
                 <button
-                  className={`py-2 text-sm bg-transparent ${
-                    activeTab === "cave" ? "font-bold " : ""
+                  className={`px-3 py-2 text-sm border border-border rounded-sm hover:bg-accent ${
+                    activeTab === "cave" ? "border-primary bg-accent" : ""
                   }`}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
@@ -56,8 +56,8 @@ export default function GameContainer() {
 
                 {flags.villageUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "village" ? "font-bold " : ""
+                    className={`px-3 py-2 text-sm border border-border rounded-sm hover:bg-accent ${
+                      activeTab === "village" ? "border-primary bg-accent" : ""
                     }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
@@ -68,8 +68,8 @@ export default function GameContainer() {
 
                 {flags.forestUnlocked && (
                   <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "forest" ? "font-bold " : ""
+                    className={`px-3 py-2 text-sm border border-border rounded-sm hover:bg-accent ${
+                      activeTab === "forest" ? "border-primary bg-accent" : ""
                     }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
@@ -80,8 +80,8 @@ export default function GameContainer() {
 
                 {flags.worldDiscovered && (
                   <button
-                    className={` py-2 text-sm bg-transparent ${
-                      activeTab === "world" ? "font-bold " : ""
+                    className={`px-3 py-2 text-sm border border-border rounded-sm hover:bg-accent ${
+                      activeTab === "world" ? "border-primary bg-accent" : ""
                     }`}
                     onClick={() => setActiveTab("world")}
                     data-testid="tab-world"
