@@ -352,7 +352,7 @@ export const gameEvents: Record<string, GameEvent> = {
     timeProbability: 25,
     title: "Wolf Attack",
     message:
-      "In the dead of night, possessed wolves emerge from the darkness, their eyes glowing with an unnatural hunger. Their howls echo with otherworldly malice as they circle your village.",
+      "In the dead of night, wolves emerge from the darkness, their eyes glowing with an unnatural hunger. Their howls echo with otherworldly malice as they circle your village.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -370,7 +370,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
           const strength = state.stats.strength || 0;
           // Base chance of casualties (70%), reduced by 5% per strength point, minimum 20%
-          const casualtyChance = Math.max(0.2, 0.7 - (strength * 0.05));
+          const casualtyChance = Math.max(0.2, 0.7 - (strength * 0.02));
           
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 201); // 0-200 food loss
