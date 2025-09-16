@@ -134,35 +134,27 @@
   100% { opacity: 1; }
 }
 
-@keyframes white-fade {
-  0% { opacity: 1; }
-  100% { opacity: 0; }
-}
-
 .flame-text-wrapper {
-  position: relative;
-  display: inline-block;
-}
-
-.flame-text-wrapper::before {
-  content: attr(data-text);
-  position: absolute;
-  top: 0;
-  left: 0;
-  color: white;
-  animation: white-fade 2s ease-out forwards;
-  z-index: 1;
+  animation: flame-fade-in 2s ease-out forwards;
 }
 
 .flame-text {
-  background: linear-gradient(45deg, #ff4500, #ff6347, #ff8c00, #ffa500, #ff4500, #dc143c, #b22222, #ff4500);
+  background: linear-gradient(
+    45deg,
+    #ff4500,
+    #ff6347,
+    #ff8c00,
+    #ffa500,
+    #ff4500,
+    #dc143c,
+    #b22222,
+    #ff4500
+  );
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: flame-text 8s ease-in-out infinite;
-  position: relative;
-  z-index: 0;
 }
 
 .fire-hover:hover {
