@@ -135,23 +135,28 @@
   }
 }
 
+@keyframes white-fade {
+  0% { color: white; }
+  100% { color: transparent; }
+}
+
 .flame-text {
-  background: linear-gradient(
-    45deg,
-    #ff4500,
-    #ff6347,
-    #ff8c00,
-    #ffa500,
-    #ff4500,
-    #dc143c,
-    #b22222,
-    #ff4500
-  );
+  background: linear-gradient(45deg, #ff4500, #ff6347, #ff8c00, #ffa500, #ff4500, #dc143c, #b22222, #ff4500);
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   animation: flame-text 8s ease-in-out infinite;
+  position: relative;
+}
+
+.flame-text::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  animation: white-fade 2s ease-out forwards;
 }
 
 .fire-hover:hover {
@@ -173,5 +178,3 @@
   animation: flame-text 8s ease-in-out infinite;
   transition: all 4s ease;
 }
-
-
