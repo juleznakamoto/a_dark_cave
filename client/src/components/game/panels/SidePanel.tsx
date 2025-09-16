@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools } from '@/game/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength } from '@/game/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
@@ -73,26 +73,48 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  const { stats } = useGameStore();
+  const gameState = useGameStore();
+  const { stats } = gameState;
 
-  // Define which stats should be visible to users (exclude internal tracking stats)
-  const visibleStats = ['luck', 'strength', 'knowledge'];
+  // Calculate total stats including bonuses from relics/clothing
+  const totalLuck = getTotalLuck(gameState);
+  const totalStrength = getTotalStrength(gameState);
 
-  // Build stats items dynamically from whitelisted stats only
+  // Build stats items with total values
   const statsItems = [];
 
-  // Add base stats from the stats object
-  Object.entries(stats || {})
-    .filter(([key, value]) => visibleStats.includes(key) && (value || 0) > 0)
-    .forEach(([key, value]) => {
-      statsItems.push({
-        id: key,
-        label: key.charAt(0).toUpperCase() + key.slice(1),
-        value: value || 0,
-        testId: `stat-${key}`,
-        visible: true
-      });
+  // Add luck if it's greater than 0
+  if (totalLuck > 0) {
+    statsItems.push({
+      id: 'luck',
+      label: 'Luck',
+      value: totalLuck,
+      testId: 'stat-luck',
+      visible: true
     });
+  }
+
+  // Add strength if it's greater than 0
+  if (totalStrength > 0) {
+    statsItems.push({
+      id: 'strength',
+      label: 'Strength',
+      value: totalStrength,
+      testId: 'stat-strength',
+      visible: true
+    });
+  }
+
+  // Add knowledge from base stats if it exists and is greater than 0
+  if ((stats?.knowledge || 0) > 0) {
+    statsItems.push({
+      id: 'knowledge',
+      label: 'Knowledge',
+      value: stats.knowledge || 0,
+      testId: 'stat-knowledge',
+      visible: true
+    });
+  }
 
   return (
     <ScrollArea className="h-full max-h-full">
