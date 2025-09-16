@@ -87,6 +87,8 @@ export default function CavePanel() {
                 data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
                 size="sm"
                 disabled={!canExecute}
+                variant="outline"
+                className="hover:bg-transparent hover:text-foreground"
               >
                 {label}
               </CooldownButton>
@@ -109,6 +111,8 @@ export default function CavePanel() {
         data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
         size="sm"
         disabled={!canExecute}
+        variant="outline"
+        className="hover:bg-transparent hover:text-foreground"
       >
         {label}
       </CooldownButton>

@@ -38,6 +38,8 @@ export default function VillagePanel() {
               data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
               disabled={!canExecute}
               size="sm"
+              variant="outline"
+              className="hover:bg-transparent hover:text-foreground"
             >
               {label}
             </CooldownButton>
