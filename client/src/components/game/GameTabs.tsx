@@ -19,7 +19,7 @@ export default function GameTabs() {
   }, [villagers, buildings.hut, updatePopulation]);
 
   return (
-    <nav className="w-48 border-r border-border bg-muted/30">
+    <nav className="w-48 border-r border-border bg-muted/30 h-full flex flex-col">
       <div>
         <Button
           variant={activeTab === "cave" ? "default" : "ghost"}
@@ -56,7 +56,9 @@ export default function GameTabs() {
         )}
       </div>
 
-      <SidePanel />
+      <div className="flex-1 overflow-hidden">
+        <SidePanel />
+      </div>
     </nav>
   );
 }
