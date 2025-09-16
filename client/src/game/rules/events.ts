@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 
 export interface GameEvent {
@@ -38,15 +37,15 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: (state) => {
       let baseProbability = 1.5; // Base 1.5 minutes between stranger arrivals
-      
+
       // If population is 0, multiply by 0.25 (faster arrivals)
       if (state.if === 0) {
         baseProbability *= 0.25;
       }
-      
-      // For each hut, multiply by 0.9 (slower arrivals with more huts)
+
+      // For each hut, multiply by 0.9 (faster arrivals with more huts)
       baseProbability *= Math.pow(0.9, state.buildings.hut);
-      
+
       return baseProbability;
     },
     message: [
@@ -170,7 +169,10 @@ export const gameEvents: Record<string, GameEvent> = {
             };
             return {
               villagers: updatedVillagers,
-              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
+              current_population:
+                updatedVillagers.free +
+                updatedVillagers.gatherer +
+                updatedVillagers.hunter,
               _logMessage:
                 "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
@@ -182,7 +184,10 @@ export const gameEvents: Record<string, GameEvent> = {
             };
             return {
               villagers: updatedVillagers,
-              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
+              current_population:
+                updatedVillagers.free +
+                updatedVillagers.gatherer +
+                updatedVillagers.hunter,
               _logMessage:
                 "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
             };
@@ -208,7 +213,10 @@ export const gameEvents: Record<string, GameEvent> = {
             };
             return {
               villagers: updatedVillagers,
-              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
+              current_population:
+                updatedVillagers.free +
+                updatedVillagers.gatherer +
+                updatedVillagers.hunter,
               _logMessage:
                 "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
             };
@@ -218,9 +226,10 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
-  whispersBeneathHut : {
+  whispersBeneathHut: {
     id: "whispersBeneathHut",
-    condition: (state) => state.buildings.hut >= 4 && !state.relics.whispering_amulet,
+    condition: (state) =>
+      state.buildings.hut >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
@@ -261,7 +270,10 @@ export const gameEvents: Record<string, GameEvent> = {
 
   blackenedMirror: {
     id: "blackenedMirror",
-    condition: (state) => state.buildings.hut >= 5 && state.resources.iron >= 200 && !state.relics.blackened_mirror,
+    condition: (state) =>
+      state.buildings.hut >= 5 &&
+      state.resources.iron >= 200 &&
+      !state.relics.blackened_mirror,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Blackened Mirror",
@@ -306,9 +318,10 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
-  cthulhuFigure : {
+  cthulhuFigure: {
     id: "cthulhuFigure",
-    condition: (state) => state.buildings.hut >= 4 && !state.relics.wooden_figure,
+    condition: (state) =>
+      state.buildings.hut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
     timeProbability: 20,
     title: "A Strange Wooden Figure",
@@ -362,18 +375,22 @@ export const gameEvents: Record<string, GameEvent> = {
         id: "defendVillage",
         label: "Defend the village",
         effect: (state) => {
-          const currentPopulation = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
+          const currentPopulation =
+            state.villagers.free +
+            state.villagers.gatherer +
+            state.villagers.hunter;
           if (currentPopulation === 0) {
             return {
-              _logMessage: "The wolves find an empty village and move on, disappointed by the lack of prey."
+              _logMessage:
+                "The wolves find an empty village and move on, disappointed by the lack of prey.",
             };
           }
 
           const strength = state.stats.strength || 0;
-          
+
           // Check for victory: 10% base chance + 1% per strength point
-          const victoryChance = 0.1 + (strength * 0.01);
-          
+          const victoryChance = 0.1 + strength * 0.01;
+
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide
             return {
@@ -381,17 +398,18 @@ export const gameEvents: Record<string, GameEvent> = {
                 ...state.clothing,
                 alphas_hide: true,
               },
-              _logMessage: "Against all odds, your village manages to defeat the wolf pack! In a fierce battle, you slay the alpha wolf and claim its hide as a trophy. The Alpha's Hide radiates with primal power, granting you both fortune and strength.",
+              _logMessage:
+                "Against all odds, your village manages to defeat the wolf pack! In a fierce battle, you slay the alpha wolf and claim its hide as a trophy. The Alpha's Hide radiates with primal power, granting you both fortune and strength.",
             };
           }
 
           // Base chance of casualties (70%), reduced by 5% per strength point, minimum 20%
-          const casualtyChance = Math.max(0.2, 0.7 - (strength * 0.02));
-          
+          const casualtyChance = Math.max(0.2, 0.7 - strength * 0.02);
+
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 201); // 0-200 food loss
           let lodgeDestroyed = false;
-          
+
           // Determine villager casualties (1-6 potential deaths)
           const maxPotentialDeaths = Math.min(6, currentPopulation);
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -419,22 +437,30 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
-            const gathererDeaths = Math.min(remainingDeaths, updatedVillagers.gatherer);
+            const gathererDeaths = Math.min(
+              remainingDeaths,
+              updatedVillagers.gatherer,
+            );
             updatedVillagers.gatherer -= gathererDeaths;
             remainingDeaths -= gathererDeaths;
           }
 
           if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
-            const hunterDeaths = Math.min(remainingDeaths, updatedVillagers.hunter);
+            const hunterDeaths = Math.min(
+              remainingDeaths,
+              updatedVillagers.hunter,
+            );
             updatedVillagers.hunter -= hunterDeaths;
             remainingDeaths -= hunterDeaths;
           }
 
           // Construct result message
-          let message = "The village fights desperately against the possessed wolves. ";
-          
+          let message =
+            "The village fights desperately against the possessed wolves. ";
+
           if (villagerDeaths === 0) {
-            message += "Miraculously, all villagers survive the attack, though shaken by the encounter.";
+            message +=
+              "Miraculously, all villagers survive the attack, though shaken by the encounter.";
           } else if (villagerDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
@@ -446,7 +472,8 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           if (lodgeDestroyed) {
-            message += " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood and claw marks.";
+            message +=
+              " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood and claw marks.";
           }
 
           return {
@@ -455,10 +482,12 @@ export const gameEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            buildings: lodgeDestroyed ? {
-              ...state.buildings,
-              hut: Math.max(0, state.buildings.hut - 1),
-            } : state.buildings,
+            buildings: lodgeDestroyed
+              ? {
+                  ...state.buildings,
+                  hut: Math.max(0, state.buildings.hut - 1),
+                }
+              : state.buildings,
             _logMessage: message,
           };
         },
@@ -467,21 +496,25 @@ export const gameEvents: Record<string, GameEvent> = {
         id: "hideAndWait",
         label: "Hide and wait it out",
         effect: (state) => {
-          const currentPopulation = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
+          const currentPopulation =
+            state.villagers.free +
+            state.villagers.gatherer +
+            state.villagers.hunter;
           if (currentPopulation === 0) {
             return {
-              _logMessage: "The wolves find an empty village and move on, their supernatural hunger unsated."
+              _logMessage:
+                "The wolves find an empty village and move on, their supernatural hunger unsated.",
             };
           }
 
           // Hiding is more effective, lower casualty rate (60%)
           const strength = state.stats.strength || 0;
-          const casualtyChance = Math.max(0.1, 0.6 - (strength * 0.02));
-          
+          const casualtyChance = Math.max(0.1, 0.6 - strength * 0.02);
+
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
           let lodgeDestroyed = false;
-          
+
           // Determine villager casualties (1-4 potential deaths)
           const maxPotentialDeaths = Math.min(4, currentPopulation);
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -502,24 +535,33 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
-            const gathererDeaths = Math.min(remainingDeaths, updatedVillagers.gatherer);
+            const gathererDeaths = Math.min(
+              remainingDeaths,
+              updatedVillagers.gatherer,
+            );
             updatedVillagers.gatherer -= gathererDeaths;
             remainingDeaths -= gathererDeaths;
           }
 
           if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
-            const hunterDeaths = Math.min(remainingDeaths, updatedVillagers.hunter);
+            const hunterDeaths = Math.min(
+              remainingDeaths,
+              updatedVillagers.hunter,
+            );
             updatedVillagers.hunter -= hunterDeaths;
             remainingDeaths -= hunterDeaths;
           }
 
           // Construct result message
-          let message = "The villagers huddle in their huts as the wolves prowl outside, their claws scraping against doors and walls. ";
-          
+          let message =
+            "The villagers huddle in their huts as the wolves prowl outside, their claws scraping against doors and walls. ";
+
           if (villagerDeaths === 0) {
-            message += "By dawn, the wolves have departed, leaving only scratches and terror behind.";
+            message +=
+              "By dawn, the wolves have departed, leaving only scratches and terror behind.";
           } else if (villagerDeaths === 1) {
-            message += "One villager who ventured out is found torn apart at sunrise.";
+            message +=
+              "One villager who ventured out is found torn apart at sunrise.";
           } else {
             message += `${villagerDeaths} villagers are dragged from their hiding places, their screams echoing through the night.`;
           }
@@ -532,10 +574,12 @@ export const gameEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            buildings: lodgeDestroyed ? {
-              ...state.buildings,
-              hut: Math.max(0, state.buildings.hut - 1),
-            } : state.buildings,
+            buildings: lodgeDestroyed
+              ? {
+                  ...state.buildings,
+                  hut: Math.max(0, state.buildings.hut - 1),
+                }
+              : state.buildings,
             _logMessage: message,
           };
         },
@@ -591,7 +635,7 @@ export const gameEvents: Record<string, GameEvent> = {
         },
       },
     ],
-  }
+  },
 };
 
 export class EventManager {
@@ -624,9 +668,10 @@ export class EventManager {
         const ticksPerMinute = 300;
 
         // Get timeProbability - can be number or function
-        const timeProbability = typeof event.timeProbability === 'function' 
-          ? event.timeProbability(state) 
-          : event.timeProbability;
+        const timeProbability =
+          typeof event.timeProbability === "function"
+            ? event.timeProbability(state)
+            : event.timeProbability;
 
         const averageTicksBetweenEvents = timeProbability * ticksPerMinute;
         const probabilityPerTick = 1 / averageTicksBetweenEvents;
