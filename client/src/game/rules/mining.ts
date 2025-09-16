@@ -53,7 +53,7 @@ export const miningActions: Record<string, Action> = {
     effects: {
       "resources.torch": -10,
       "resources.food": -15,
-      "resources.sulphur": "random(2,4)",
+      "resources.sulfur": "random(2,4)",
       "story.seen.hasSulfur": true,
     },
     cooldown: 15,

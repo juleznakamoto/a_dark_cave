@@ -67,7 +67,7 @@ const defaultGameState: GameState = {
     iron: 0,
     coal: 0,
     steel: 0,
-    sulphur: 0,
+    sulfur: 0,
     silver: 0,
     obsidian: 0,
     adamant: 0,

@@ -10,7 +10,7 @@ export const gameStateSchema = z.object({
     iron: z.number().min(0).default(0),
     coal: z.number().min(0).default(0),
     steel: z.number().min(0).default(0),
-    sulphur: z.number().min(0).default(0),
+    sulfur: z.number().min(0).default(0),
     silver: z.number().min(0).default(0),
     obsidian: z.number().min(0).default(0),
     adamant: z.number().min(0).default(0),
