@@ -242,16 +242,16 @@ export const caveActions: Record<string, Action> = {
     id: "mineCoal",
     label: "Mine Coal",
     show_when: {
-      "tools.iron_pickaxe": true,
+      "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.torch": 15,
-      "resources.food": 10,
+      "resources.torch": 10,
+      "resources.food": 5,
     },
     effects: {
-      "resources.torch": -15,
-      "resources.food": -10,
-      "resources.coal": "random(3,6)",
+      "resources.torch": -10,
+      "resources.food": -5,
+      "resources.coal": "random(2,5)",
       "story.seen.hasCoal": true,
     },
     cooldown: 15,

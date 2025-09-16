@@ -37,24 +37,24 @@ export default function SidePanelSection({
       
       if (currentValue > prevValue) {
         newAnimatedItems.add(item.id);
-        // Remove animation after 1 second
+        // Remove animation after 1.5 seconds
         setTimeout(() => {
           setAnimatedItems(prev => {
             const newSet = new Set(prev);
             newSet.delete(item.id);
             return newSet;
           });
-        }, 1000);
+        }, 1500);
       } else if (currentValue < prevValue) {
         newDecreaseAnimatedItems.add(item.id);
-        // Remove animation after 1 second
+        // Remove animation after 1.5 seconds
         setTimeout(() => {
           setDecreaseAnimatedItems(prev => {
             const newSet = new Set(prev);
             newSet.delete(item.id);
             return newSet;
           });
-        }, 1000);
+        }, 1500);
       }
       
       prevValuesRef.current.set(item.id, currentValue);
