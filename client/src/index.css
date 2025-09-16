@@ -135,6 +135,21 @@
   }
 }
 
+@keyframes flame-fade {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 .flame-text {
   background: linear-gradient(
     45deg,
@@ -151,7 +166,7 @@
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: flame-text 8s ease-in-out infinite;
+  animation: flame-text 8s ease-in-out infinite, flame-fade 4s ease-in-out infinite;
 }
 
 .fire-hover:hover {
