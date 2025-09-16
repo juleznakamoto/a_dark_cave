@@ -136,14 +136,8 @@
 }
 
 @keyframes white-fade {
-  0% { 
-    background: white;
-    -webkit-text-fill-color: white;
-  }
-  100% { 
-    background: transparent;
-    -webkit-text-fill-color: transparent;
-  }
+  0% { color: white; }
+  100% { color: transparent; }
 }
 
 .flame-text {
@@ -151,8 +145,18 @@
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: white;
-  animation: flame-text 8s ease-in-out infinite, white-fade 2s ease-out forwards;
+  -webkit-text-fill-color: transparent;
+  animation: flame-text 8s ease-in-out infinite;
+  position: relative;
+}
+
+.flame-text::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: white;
+  animation: white-fade 2s ease-out forwards;
 }
 
 .fire-hover:hover {
