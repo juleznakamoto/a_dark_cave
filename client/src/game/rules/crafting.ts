@@ -118,6 +118,7 @@ export const craftingActions: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.iron_axe": true,
       "tools.steel_axe": false,
+      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.steel": 100,
@@ -140,6 +141,7 @@ export const craftingActions: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.iron_pickaxe": true,
       "tools.steel_pickaxe": false,
+      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.steel": 150,
@@ -273,6 +275,7 @@ export const craftingActions: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.iron_lantern": true,
       "tools.steel_lantern": false,
+      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.steel": 150,

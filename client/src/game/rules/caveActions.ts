@@ -72,7 +72,7 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.torch": -5,
-      "resources.stone": { probability: 0.8, value: "random(2,4)" },
+      "resources.stone": { probability: 1, value: "random(2,4)" },
       "resources.coal": { probability: 0.25, value: "random(1,4)" },
       "resources.iron": { probability: 0.25, value: "random(1,4)" },
       "resources.bones": { probability: 0.25, value: "random(1,4)" },
@@ -96,7 +96,7 @@ export const caveActions: Record<string, Action> = {
     effects: {
       "resources.torch": -10,
       "resources.food": -20,
-      "resources.stone": { probability: 0.85, value: "random(4,7)" },
+      "resources.stone": { probability: 1, value: "random(4,7)" },
       "resources.coal": { probability: 0.3, value: "random(2,6)" },
       "resources.iron": { probability: 0.3, value: "random(2,6)" },
       "resources.bones": { probability: 0.3, value: "random(2,6)" },
@@ -120,7 +120,7 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.food": -50,
-      "resources.stone": { probability: 0.9, value: "random(6,10)" },
+      "resources.stone": { probability: 1, value: "random(6,10)" },
       "resources.iron": { probability: 0.35, value: "random(3,8)" },
       "resources.coal": { probability: 0.35, value: "random(3,8)" },
       "resources.obsidian": { probability: 0.1, value: "random(1,3)" },
@@ -144,7 +144,7 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.food": -100,
-      "resources.stone": { probability: 0.9, value: "random(8,13)" },
+      "resources.stone": { probability: 1, value: "random(8,13)" },
       "resources.iron": { probability: 0.4, value: "random(4,10)" },
       "resources.coal": { probability: 0.4, value: "random(4,10)" },
       "resources.obsidian": { probability: 0.15, value: "random(2,4)" },
@@ -172,7 +172,7 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.food": -150,
-      "resources.stone": { probability: 0.9, value: "random(10,16)" },
+      "resources.stone": { probability: 1, value: "random(10,16)" },
       "resources.iron": { probability: 0.45, value: "random(5,12)" },
       "resources.coal": { probability: 0.45, value: "random(5,12)" },
       "resources.obsidian": { probability: 0.2, value: "random(3,5)" },
@@ -201,7 +201,7 @@ export const caveActions: Record<string, Action> = {
     },
     effects: {
       "resources.food": -250,
-      "resources.stone": { probability: 0.9, value: "random(12,19)" },
+      "resources.stone": { probability: 1, value: "random(12,19)" },
       "resources.iron": { probability: 0.5, value: "random(6,14)" },
       "resources.coal": { probability: 0.5, value: "random(6,14)" },
       "resources.obsidian": { probability: 0.25, value: "random(4,5)" },

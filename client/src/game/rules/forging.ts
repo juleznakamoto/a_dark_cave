@@ -6,8 +6,8 @@ export const forgingActions: Record<string, Action> = {
     id: "forgSteel",
     label: "Steel",
     show_when: {
-      "story.seen.hasCoal": true,
-      "story.seen.hasIron": true,
+      "story.seen.hasIronAxe": true,
+      "story.seen.hasIronPickaxe": true,
     },
     cost: {
       "resources.coal": 5,

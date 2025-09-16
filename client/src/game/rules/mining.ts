@@ -9,11 +9,11 @@ export const miningActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.torch": 10,
+      "resources.torch": 5,
       "resources.food": 5,
     },
     effects: {
-      "resources.torch": -10,
+      "resources.torch": -5,
       "resources.food": -5,
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
@@ -28,11 +28,11 @@ export const miningActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.torch": 10,
+      "resources.torch": 5,
       "resources.food": 5,
     },
     effects: {
-      "resources.torch": -10,
+      "resources.torch": -5,
       "resources.food": -5,
       "resources.coal": "random(2,5)",
       "story.seen.hasCoal": true,
@@ -47,11 +47,11 @@ export const miningActions: Record<string, Action> = {
       "tools.iron_pickaxe": true,
     },
     cost: {
-      "resources.torch": 20,
+      "resources.torch": 10,
       "resources.food": 15,
     },
     effects: {
-      "resources.torch": -20,
+      "resources.torch": -10,
       "resources.food": -15,
       "resources.sulphur": "random(2,4)",
       "story.seen.hasSulfur": true,
@@ -66,11 +66,11 @@ export const miningActions: Record<string, Action> = {
       "tools.steel_pickaxe": true,
     },
     cost: {
-      "resources.torch": 50,
+      "resources.torch": 15,
       "resources.food": 30,
     },
     effects: {
-      "resources.torch": -50,
+      "resources.torch": -15,
       "resources.food": -30,
       "resources.obsidian": "random(4,10)",
       "story.seen.hasObsidian": true,
@@ -85,11 +85,11 @@ export const miningActions: Record<string, Action> = {
       "tools.obsidian_pickaxe": true,
     },
     cost: {
-      "resources.torch": 100,
+      "resources.torch": 20,
       "resources.food": 50,
     },
     effects: {
-      "resources.torch": -100,
+      "resources.torch": -20,
       "resources.food": -50,
       "resources.adamant": "random(6,12)",
       "story.seen.hasAdamant": true,
