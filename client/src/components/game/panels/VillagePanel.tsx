@@ -3,6 +3,7 @@ import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 import { getPopulationProductionText } from '@/game/population';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
@@ -24,39 +25,69 @@ export default function VillagePanel() {
           <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
           <div className="flex flex-wrap gap-2">
             {shouldShowAction('buildHut', state) && (
-              <CooldownButton
-                onClick={handleBuildHut}
-                cooldownMs={gameActions.buildHut.cooldown * 1000}
-                data-testid="button-build-wooden-hut"
-                disabled={!canBuildHut}
-                size="sm"
-              >
-                Wooden Hut{getCostText('buildHut', state)}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={handleBuildHut}
+                    cooldownMs={gameActions.buildHut.cooldown * 1000}
+                    data-testid="button-build-wooden-hut"
+                    disabled={!canBuildHut}
+                    size="sm"
+                  >
+                    Wooden Hut
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Wooden Hut</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('buildHut', state).replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('buildLodge', state) && (
-              <CooldownButton
-                onClick={handleBuildLodge}
-                cooldownMs={gameActions.buildLodge.cooldown * 1000}
-                data-testid="button-build-lodge"
-                disabled={!canBuildLodge}
-                size="sm"
-              >
-                Lodge{getCostText('buildLodge', state)}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={handleBuildLodge}
+                    cooldownMs={gameActions.buildLodge.cooldown * 1000}
+                    data-testid="button-build-lodge"
+                    disabled={!canBuildLodge}
+                    size="sm"
+                  >
+                    Lodge
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Lodge</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('buildLodge', state).replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('buildBlacksmith', state) && (
-              <CooldownButton
-                onClick={handleBuildBlacksmith}
-                cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
-                data-testid="button-build-blacksmith"
-                disabled={!canBuildBlacksmith}
-                size="sm"
-              >
-                Blacksmith{getCostText('buildBlacksmith', state)}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={handleBuildBlacksmith}
+                    cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
+                    data-testid="button-build-blacksmith"
+                    disabled={!canBuildBlacksmith}
+                    size="sm"
+                  >
+                    Blacksmith
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Blacksmith</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('buildBlacksmith', state).replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
           </div>
         </div>

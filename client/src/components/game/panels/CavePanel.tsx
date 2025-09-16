@@ -1,6 +1,7 @@
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -48,123 +49,223 @@ export default function CavePanel() {
           )}
 
           {showExploreCave && (
-            <CooldownButton
-              onClick={() => executeAction('exploreCave')}
-              cooldownMs={gameActions.exploreCave.cooldown * 1000}
-              data-testid="button-explore-cave"
-              size="sm"
-              disabled={!canExploreCave}
-            >
-              Explore Cave{getCostText('exploreCave')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('exploreCave')}
+                  cooldownMs={gameActions.exploreCave.cooldown * 1000}
+                  data-testid="button-explore-cave"
+                  size="sm"
+                  disabled={!canExploreCave}
+                >
+                  Explore Cave
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Explore Cave</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('exploreCave').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {showMineIron && (
-            <CooldownButton
-              onClick={() => executeAction('mineIron')}
-              cooldownMs={gameActions.mineIron.cooldown * 1000}
-              data-testid="button-mine-iron"
-              size="sm"
-              disabled={!canMineIron}
-            >
-              Mine Iron{getCostText('mineIron')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('mineIron')}
+                  cooldownMs={gameActions.mineIron.cooldown * 1000}
+                  data-testid="button-mine-iron"
+                  size="sm"
+                  disabled={!canMineIron}
+                >
+                  Mine Iron
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Mine Iron</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('mineIron').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('mineCoal', state) && (
-            <CooldownButton
-              onClick={() => executeAction('mineCoal')}
-              cooldownMs={gameActions.mineCoal.cooldown * 1000}
-              data-testid="button-mine-coal"
-              size="sm"
-              disabled={!canExecuteAction('mineCoal', state)}
-            >
-              Mine Coal{getCostText('mineCoal')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('mineCoal')}
+                  cooldownMs={gameActions.mineCoal.cooldown * 1000}
+                  data-testid="button-mine-coal"
+                  size="sm"
+                  disabled={!canExecuteAction('mineCoal', state)}
+                >
+                  Mine Coal
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Mine Coal</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('mineCoal').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('mineSulfur', state) && (
-            <CooldownButton
-              onClick={() => executeAction('mineSulfur')}
-              cooldownMs={gameActions.mineSulfur.cooldown * 1000}
-              data-testid="button-mine-sulfur"
-              size="sm"
-              disabled={!canExecuteAction('mineSulfur', state)}
-            >
-              Mine Sulfur{getCostText('mineSulfur')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('mineSulfur')}
+                  cooldownMs={gameActions.mineSulfur.cooldown * 1000}
+                  data-testid="button-mine-sulfur"
+                  size="sm"
+                  disabled={!canExecuteAction('mineSulfur', state)}
+                >
+                  Mine Sulfur
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Mine Sulfur</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('mineSulfur').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('mineAdamant', state) && (
-            <CooldownButton
-              onClick={() => executeAction('mineAdamant')}
-              cooldownMs={gameActions.mineAdamant.cooldown * 1000}
-              data-testid="button-mine-adamant"
-              size="sm"
-              disabled={!canExecuteAction('mineAdamant', state)}
-            >
-              Mine Adamant{getCostText('mineAdamant')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('mineAdamant')}
+                  cooldownMs={gameActions.mineAdamant.cooldown * 1000}
+                  data-testid="button-mine-adamant"
+                  size="sm"
+                  disabled={!canExecuteAction('mineAdamant', state)}
+                >
+                  Mine Adamant
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Mine Adamant</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('mineAdamant').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {showVentureDeeper && (
-            <CooldownButton
-              onClick={() => executeAction('ventureDeeper')}
-              cooldownMs={gameActions.ventureDeeper.cooldown * 1000}
-              data-testid="button-venture-deeper"
-              size="sm"
-              disabled={!canVentureDeeper}
-            >
-              Venture Deeper{getCostText('ventureDeeper')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('ventureDeeper')}
+                  cooldownMs={gameActions.ventureDeeper.cooldown * 1000}
+                  data-testid="button-venture-deeper"
+                  size="sm"
+                  disabled={!canVentureDeeper}
+                >
+                  Venture Deeper
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Venture Deeper</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('ventureDeeper').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('descendFurther', state) && (
-            <CooldownButton
-              onClick={() => executeAction('descendFurther')}
-              cooldownMs={gameActions.descendFurther.cooldown * 1000}
-              data-testid="button-descend-further"
-              size="sm"
-              disabled={!canExecuteAction('descendFurther', state)}
-            >
-              Descend Further{getCostText('descendFurther')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('descendFurther')}
+                  cooldownMs={gameActions.descendFurther.cooldown * 1000}
+                  data-testid="button-descend-further"
+                  size="sm"
+                  disabled={!canExecuteAction('descendFurther', state)}
+                >
+                  Descend Further
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Descend Further</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('descendFurther').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('exploreRuins', state) && (
-            <CooldownButton
-              onClick={() => executeAction('exploreRuins')}
-              cooldownMs={gameActions.exploreRuins.cooldown * 1000}
-              data-testid="button-explore-ruins"
-              size="sm"
-              disabled={!canExecuteAction('exploreRuins', state)}
-            >
-              Explore Ruins{getCostText('exploreRuins')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('exploreRuins')}
+                  cooldownMs={gameActions.exploreRuins.cooldown * 1000}
+                  data-testid="button-explore-ruins"
+                  size="sm"
+                  disabled={!canExecuteAction('exploreRuins', state)}
+                >
+                  Explore Ruins
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Explore Ruins</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('exploreRuins').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('exploreTemple', state) && (
-            <CooldownButton
-              onClick={() => executeAction('exploreTemple')}
-              cooldownMs={gameActions.exploreTemple.cooldown * 1000}
-              data-testid="button-explore-temple"
-              size="sm"
-              disabled={!canExecuteAction('exploreTemple', state)}
-            >
-              Explore Temple{getCostText('exploreTemple')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('exploreTemple')}
+                  cooldownMs={gameActions.exploreTemple.cooldown * 1000}
+                  data-testid="button-explore-temple"
+                  size="sm"
+                  disabled={!canExecuteAction('exploreTemple', state)}
+                >
+                  Explore Temple
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Explore Temple</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('exploreTemple').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
 
           {shouldShowAction('exploreCitadel', state) && (
-            <CooldownButton
-              onClick={() => executeAction('exploreCitadel')}
-              cooldownMs={gameActions.exploreCitadel.cooldown * 1000}
-              data-testid="button-explore-citadel"
-              size="sm"
-              disabled={!canExecuteAction('exploreCitadel', state)}
-            >
-              Explore Citadel{getCostText('exploreCitadel')}
-            </CooldownButton>
+            <HoverCard>
+              <HoverCardTrigger asChild>
+                <CooldownButton
+                  onClick={() => executeAction('exploreCitadel')}
+                  cooldownMs={gameActions.exploreCitadel.cooldown * 1000}
+                  data-testid="button-explore-citadel"
+                  size="sm"
+                  disabled={!canExecuteAction('exploreCitadel', state)}
+                >
+                  Explore Citadel
+                </CooldownButton>
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <div className="text-sm">
+                  <div className="font-medium mb-1">Explore Citadel</div>
+                  <div className="text-muted-foreground">Cost: {getCostText('exploreCitadel').replace(/[()]/g, '')}</div>
+                </div>
+              </HoverCardContent>
+            </HoverCard>
           )}
         </div>
       </div>
@@ -175,135 +276,245 @@ export default function CavePanel() {
           <h3 className="text-lg font-semibold text-foreground">Craft</h3>
           <div className="flex flex-wrap gap-2">
             {showBuildTorch && (
-              <CooldownButton
-                onClick={() => executeAction('buildTorch')}
-                cooldownMs={gameActions.buildTorch.cooldown * 1000}
-                data-testid="button-build-torch"
-                size="sm"
-                disabled={!canBuildTorch}
-              >
-                Torch{getCostText('buildTorch')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('buildTorch')}
+                    cooldownMs={gameActions.buildTorch.cooldown * 1000}
+                    data-testid="button-build-torch"
+                    size="sm"
+                    disabled={!canBuildTorch}
+                  >
+                    Torch
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Torch</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('buildTorch').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {showCraftStoneAxe && (
-              <CooldownButton
-                onClick={() => executeAction('craftStoneAxe')}
-                cooldownMs={gameActions.craftStoneAxe.cooldown * 1000}
-                data-testid="button-craft-axe"
-                size="sm"
-                disabled={!canCraftStoneAxe}
-              >
-                Stone Axe{getCostText('craftStoneAxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftStoneAxe')}
+                    cooldownMs={gameActions.craftStoneAxe.cooldown * 1000}
+                    data-testid="button-craft-axe"
+                    size="sm"
+                    disabled={!canCraftStoneAxe}
+                  >
+                    Stone Axe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Stone Axe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftStoneAxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {showCraftStonePickaxe && (
-              <CooldownButton
-                onClick={() => executeAction('craftStonePickaxe')}
-                cooldownMs={gameActions.craftStonePickaxe.cooldown * 1000}
-                data-testid="button-craft-stone_pickaxe"
-                size="sm"
-                disabled={!canCraftStonePickaxe}
-              >
-                Stone Pickaxe{getCostText('craftStonePickaxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftStonePickaxe')}
+                    cooldownMs={gameActions.craftStonePickaxe.cooldown * 1000}
+                    data-testid="button-craft-stone_pickaxe"
+                    size="sm"
+                    disabled={!canCraftStonePickaxe}
+                  >
+                    Stone Pickaxe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Stone Pickaxe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftStonePickaxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftIronAxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftIronAxe')}
-                cooldownMs={gameActions.craftIronAxe.cooldown * 1000}
-                data-testid="button-craft-iron-axe"
-                size="sm"
-                disabled={!canExecuteAction('craftIronAxe', state)}
-              >
-                Iron Axe{getCostText('craftIronAxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftIronAxe')}
+                    cooldownMs={gameActions.craftIronAxe.cooldown * 1000}
+                    data-testid="button-craft-iron-axe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftIronAxe', state)}
+                  >
+                    Iron Axe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Iron Axe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftIronAxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftIronPickaxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftIronPickaxe')}
-                cooldownMs={gameActions.craftIronPickaxe.cooldown * 1000}
-                data-testid="button-craft-iron-pickaxe"
-                size="sm"
-                disabled={!canExecuteAction('craftIronPickaxe', state)}
-              >
-                Iron Pickaxe{getCostText('craftIronPickaxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftIronPickaxe')}
+                    cooldownMs={gameActions.craftIronPickaxe.cooldown * 1000}
+                    data-testid="button-craft-iron-pickaxe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftIronPickaxe', state)}
+                  >
+                    Iron Pickaxe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Iron Pickaxe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftIronPickaxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftSteelAxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftSteelAxe')}
-                cooldownMs={gameActions.craftSteelAxe.cooldown * 1000}
-                data-testid="button-craft-steel-axe"
-                size="sm"
-                disabled={!canExecuteAction('craftSteelAxe', state)}
-              >
-                Steel Axe{getCostText('craftSteelAxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftSteelAxe')}
+                    cooldownMs={gameActions.craftSteelAxe.cooldown * 1000}
+                    data-testid="button-craft-steel-axe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftSteelAxe', state)}
+                  >
+                    Steel Axe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Steel Axe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftSteelAxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftSteelPickaxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftSteelPickaxe')}
-                cooldownMs={gameActions.craftSteelPickaxe.cooldown * 1000}
-                data-testid="button-craft-steel-pickaxe"
-                size="sm"
-                disabled={!canExecuteAction('craftSteelPickaxe', state)}
-              >
-                Steel Pickaxe{getCostText('craftSteelPickaxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftSteelPickaxe')}
+                    cooldownMs={gameActions.craftSteelPickaxe.cooldown * 1000}
+                    data-testid="button-craft-steel-pickaxe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftSteelPickaxe', state)}
+                  >
+                    Steel Pickaxe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Steel Pickaxe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftSteelPickaxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftObsidianAxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftObsidianAxe')}
-                cooldownMs={gameActions.craftObsidianAxe.cooldown * 1000}
-                data-testid="button-craft-obsidian-axe"
-                size="sm"
-                disabled={!canExecuteAction('craftObsidianAxe', state)}
-              >
-                Obsidian Axe{getCostText('craftObsidianAxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftObsidianAxe')}
+                    cooldownMs={gameActions.craftObsidianAxe.cooldown * 1000}
+                    data-testid="button-craft-obsidian-axe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftObsidianAxe', state)}
+                  >
+                    Obsidian Axe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Obsidian Axe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftObsidianAxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftObsidianPickaxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftObsidianPickaxe')}
-                cooldownMs={gameActions.craftObsidianPickaxe.cooldown * 1000}
-                data-testid="button-craft-obsidian-pickaxe"
-                size="sm"
-                disabled={!canExecuteAction('craftObsidianPickaxe', state)}
-              >
-                Obsidian Pickaxe{getCostText('craftObsidianPickaxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftObsidianPickaxe')}
+                    cooldownMs={gameActions.craftObsidianPickaxe.cooldown * 1000}
+                    data-testid="button-craft-obsidian-pickaxe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftObsidianPickaxe', state)}
+                  >
+                    Obsidian Pickaxe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Obsidian Pickaxe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftObsidianPickaxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftAdamantAxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftAdamantAxe')}
-                cooldownMs={gameActions.craftAdamantAxe.cooldown * 1000}
-                data-testid="button-craft-adamant-axe"
-                size="sm"
-                disabled={!canExecuteAction('craftAdamantAxe', state)}
-              >
-                Adamant Axe{getCostText('craftAdamantAxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftAdamantAxe')}
+                    cooldownMs={gameActions.craftAdamantAxe.cooldown * 1000}
+                    data-testid="button-craft-adamant-axe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftAdamantAxe', state)}
+                  >
+                    Adamant Axe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Adamant Axe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftAdamantAxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
 
             {shouldShowAction('craftAdamantPickaxe', state) && (
-              <CooldownButton
-                onClick={() => executeAction('craftAdamantPickaxe')}
-                cooldownMs={gameActions.craftAdamantPickaxe.cooldown * 1000}
-                data-testid="button-craft-adamant-pickaxe"
-                size="sm"
-                disabled={!canExecuteAction('craftAdamantPickaxe', state)}
-              >
-                Adamant Pickaxe{getCostText('craftAdamantPickaxe')}
-              </CooldownButton>
+              <HoverCard>
+                <HoverCardTrigger asChild>
+                  <CooldownButton
+                    onClick={() => executeAction('craftAdamantPickaxe')}
+                    cooldownMs={gameActions.craftAdamantPickaxe.cooldown * 1000}
+                    data-testid="button-craft-adamant-pickaxe"
+                    size="sm"
+                    disabled={!canExecuteAction('craftAdamantPickaxe', state)}
+                  >
+                    Adamant Pickaxe
+                  </CooldownButton>
+                </HoverCardTrigger>
+                <HoverCardContent>
+                  <div className="text-sm">
+                    <div className="font-medium mb-1">Adamant Pickaxe</div>
+                    <div className="text-muted-foreground">Cost: {getCostText('craftAdamantPickaxe').replace(/[()]/g, '')}</div>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             )}
           </div>
         </div>
