@@ -89,7 +89,7 @@ export default function SidePanelSection({
       >
         <span className="text-muted-foreground">{item.label}</span>
         <span 
-          className={`transition-all duration-300 ${
+          className={`transition-all duration-300 font-mono ${
             isAnimated ? 'scale-100 text-green-800 font-medium' : 
             isDecreaseAnimated ? 'scale-100 text-red-800 font-medium' : ''
           }`}
