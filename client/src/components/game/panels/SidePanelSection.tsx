@@ -1,48 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-
-// Assuming these are imported from somewhere else.
-// For demonstration purposes, defining mock structures.
-interface RelicEffect {
-  name: string;
-  description: string;
-  bonuses: {
-    generalBonuses?: {
-      luck?: number;
-      strength?: number;
-    };
-  };
-}
-
-// Mock data for relic effects. In a real scenario, this would be fetched or imported.
-const clothingEffects: { [key: string]: RelicEffect } = {
-  "relic1": {
-    name: "Lucky Charm",
-    description: "Increases your luck.",
-    bonuses: {
-      generalBonuses: {
-        luck: 5
-      }
-    }
-  },
-  "relic2": {
-    name: "Strength Gauntlet",
-    description: "Boosts your strength.",
-    bonuses: {
-      generalBonuses: {
-        strength: 10
-      }
-    }
-  }
-};
-
-// Mocking HoverCard, HoverCardTrigger, and HoverCardContent for standalone execution
-// In a real React application, these would be imported from a UI library like shadcn/ui
-const HoverCard = ({ children }: { children: React.ReactNode }) => <>{children}</>;
-const HoverCardTrigger = ({ asChild, children }: { asChild?: boolean; children: React.ReactNode }) => <>{children}</>;
-const HoverCardContent = ({ className, children }: { className?: string; children: React.ReactNode }) => (
-  <div className={`hover-card-content ${className || ''}`}>{children}</div>
-);
-
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { clothingEffects } from '@/game/effects';
 
 interface SidePanelItem {
   id: string;
@@ -127,7 +85,7 @@ export default function SidePanelSection({
         data-testid={item.testId}
         className={`flex justify-between items-center transition-all duration-300 ${
           isAnimated ? 'text-green-400' : isDecreaseAnimated ? 'text-red-400' : ''
-        } ${relicEffect ? 'cursor-help' : ''}`}
+        } ${relicEffect && title === "Relics" ? 'cursor-help' : ''}`}
       >
         <span className="text-muted-foreground">{item.label}</span>
         <span 
@@ -150,7 +108,7 @@ export default function SidePanelSection({
           </HoverCardTrigger>
           <HoverCardContent className="w-80">
             <div className="space-y-2">
-              <h4 className="text-sm font-semibold">{relicEffect.name}</h4>
+              <h4 className="text-sm font-semibold text-amber-400">{relicEffect.name}</h4>
               <p className="text-sm text-muted-foreground">
                 {relicEffect.description}
               </p>
@@ -162,6 +120,15 @@ export default function SidePanelSection({
                   )}
                   {relicEffect.bonuses.generalBonuses.strength && (
                     <p className="text-xs text-red-400">+{relicEffect.bonuses.generalBonuses.strength} Strength</p>
+                  )}
+                  {relicEffect.bonuses.generalBonuses.gatheringSpeed && (
+                    <p className="text-xs text-green-400">+{Math.round((relicEffect.bonuses.generalBonuses.gatheringSpeed - 1) * 100)}% Gathering Speed</p>
+                  )}
+                  {relicEffect.bonuses.generalBonuses.craftingSpeed && (
+                    <p className="text-xs text-purple-400">+{Math.round((relicEffect.bonuses.generalBonuses.craftingSpeed - 1) * 100)}% Crafting Speed</p>
+                  )}
+                  {relicEffect.bonuses.generalBonuses.explorationBonus && (
+                    <p className="text-xs text-orange-400">+{relicEffect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</p>
                   )}
                 </div>
               )}
