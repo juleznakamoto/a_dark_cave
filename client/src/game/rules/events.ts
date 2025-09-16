@@ -150,9 +150,13 @@ export const gameEvents: Record<string, GameEvent> = {
         id: "investigate",
         label: "Investigate",
         effect: (state) => {
+          const strength = state.stats.strength || 0;
+          // Base 50% chance + 2% per strength point to find the mantle
+          const mantleChance = 0.5 + (strength * 0.02);
+
           const rand = Math.random();
-          if (rand < 0.5) {
-            // Find the Ravenfeather Mantle (50% chance)
+          if (rand < mantleChance) {
+            // Find the Ravenfeather Mantle (50% base + strength bonus)
             return {
               relics: {
                 ...state.relics,
