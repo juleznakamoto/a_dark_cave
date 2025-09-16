@@ -45,8 +45,7 @@ export default function VillagePanel() {
         </HoverCardTrigger>
         <HoverCardContent>
           <div className="text-sm">
-            <div className="font-medium mb-1">{label}</div>
-            <div className="text-muted-foreground">Cost: {getCostText(actionId, state).replace(/[()]/g, '')}</div>
+            {getCostText(actionId, state)}
           </div>
         </HoverCardContent>
       </HoverCard>

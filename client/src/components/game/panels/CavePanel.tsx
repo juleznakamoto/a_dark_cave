@@ -69,8 +69,7 @@ export default function CavePanel() {
           </HoverCardTrigger>
           <HoverCardContent>
             <div className="text-sm">
-              <div className="font-medium mb-1">{label}</div>
-              <div className="text-muted-foreground">Cost: {getCostText(actionId).replace(/[()]/g, '')}</div>
+              {getCostText(actionId)}
             </div>
           </HoverCardContent>
         </HoverCard>

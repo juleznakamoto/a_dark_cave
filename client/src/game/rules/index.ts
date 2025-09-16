@@ -344,9 +344,11 @@ export const getCostText = (actionId: string, state?: GameState) => {
       const resourceName = resource.includes(".")
         ? resource.split(".").pop()
         : resource;
-      return `${amount} ${resourceName}`;
+      // Capitalize first letter of resource name
+      const capitalizedName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
+      return `+${amount} ${capitalizedName}`;
     })
     .join(", ");
 
-  return costText ? ` (${costText})` : "";
+  return costText;
 };
