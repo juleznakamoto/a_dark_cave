@@ -1,5 +1,48 @@
-
 import { useEffect, useRef, useState } from 'react';
+
+// Assuming these are imported from somewhere else.
+// For demonstration purposes, defining mock structures.
+interface RelicEffect {
+  name: string;
+  description: string;
+  bonuses: {
+    generalBonuses?: {
+      luck?: number;
+      strength?: number;
+    };
+  };
+}
+
+// Mock data for relic effects. In a real scenario, this would be fetched or imported.
+const clothingEffects: { [key: string]: RelicEffect } = {
+  "relic1": {
+    name: "Lucky Charm",
+    description: "Increases your luck.",
+    bonuses: {
+      generalBonuses: {
+        luck: 5
+      }
+    }
+  },
+  "relic2": {
+    name: "Strength Gauntlet",
+    description: "Boosts your strength.",
+    bonuses: {
+      generalBonuses: {
+        strength: 10
+      }
+    }
+  }
+};
+
+// Mocking HoverCard, HoverCardTrigger, and HoverCardContent for standalone execution
+// In a real React application, these would be imported from a UI library like shadcn/ui
+const HoverCard = ({ children }: { children: React.ReactNode }) => <>{children}</>;
+const HoverCardTrigger = ({ asChild, children }: { asChild?: boolean; children: React.ReactNode }) => <>{children}</>;
+const HoverCardContent = ({ className, children }: { className?: string; children: React.ReactNode }) => (
+  <div className={`hover-card-content ${className || ''}`}>{children}</div>
+);
+
 
 interface SidePanelItem {
   id: string;
@@ -30,11 +73,11 @@ export default function SidePanelSection({
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
     const newDecreaseAnimatedItems = new Set<string>();
-    
+
     visibleItems.forEach((item) => {
       const currentValue = typeof item.value === 'number' ? item.value : parseInt(item.value.toString()) || 0;
       const prevValue = prevValuesRef.current.get(item.id) || 0;
-      
+
       if (currentValue > prevValue) {
         newAnimatedItems.add(item.id);
         // Remove animation after 1.5 seconds
@@ -56,10 +99,10 @@ export default function SidePanelSection({
           });
         }, 1500);
       }
-      
+
       prevValuesRef.current.set(item.id, currentValue);
     });
-    
+
     if (newAnimatedItems.size > 0) {
       setAnimatedItems(prev => new Set([...prev, ...newAnimatedItems]));
     }
@@ -72,29 +115,73 @@ export default function SidePanelSection({
     return null;
   }
 
+  const renderItemWithTooltip = (item: SidePanelItem) => {
+    const isAnimated = animatedItems.has(item.id);
+    const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
+
+    // Check if this is a relic that has effect information
+    const relicEffect = clothingEffects[item.id];
+
+    const itemContent = (
+      <div 
+        data-testid={item.testId}
+        className={`flex justify-between items-center transition-all duration-300 ${
+          isAnimated ? 'text-green-400' : isDecreaseAnimated ? 'text-red-400' : ''
+        } ${relicEffect ? 'cursor-help' : ''}`}
+      >
+        <span className="text-muted-foreground">{item.label}</span>
+        <span 
+          className={`font-medium transition-all duration-300 ${
+            isAnimated ? 'scale-110 text-green-400' : 
+            isDecreaseAnimated ? 'scale-90 text-red-400' : ''
+          }`}
+        >
+          {item.value}
+        </span>
+      </div>
+    );
+
+    // If this item has relic effects, wrap it in a hover card
+    if (relicEffect && title === "Relics") {
+      return (
+        <HoverCard key={item.id}>
+          <HoverCardTrigger asChild>
+            {itemContent}
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <div className="space-y-2">
+              <h4 className="text-sm font-semibold">{relicEffect.name}</h4>
+              <p className="text-sm text-muted-foreground">
+                {relicEffect.description}
+              </p>
+              {relicEffect.bonuses.generalBonuses && (
+                <div className="space-y-1">
+                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Effects:</p>
+                  {relicEffect.bonuses.generalBonuses.luck && (
+                    <p className="text-xs text-blue-400">+{relicEffect.bonuses.generalBonuses.luck} Luck</p>
+                  )}
+                  {relicEffect.bonuses.generalBonuses.strength && (
+                    <p className="text-xs text-red-400">+{relicEffect.bonuses.generalBonuses.strength} Strength</p>
+                  )}
+                </div>
+              )}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      );
+    }
+
+    // For non-relic items, return the content directly
+    return <div key={item.id}>{itemContent}</div>;
+  };
+
   return (
     <div className={`px-4 py-3 border-t border-border ${className}`}>
       <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
         {title}
       </h3>
       <div className="space-y-1 text-sm">
-        {visibleItems.map((item) => (
-          <div key={item.id} className="flex justify-between">
-            <span>{item.label}</span>
-            <span 
-              className={`font-mono transition-all duration-300 ${
-                animatedItems.has(item.id) 
-                  ? 'font-bold text-green-800 scale-110' 
-                  : decreaseAnimatedItems.has(item.id)
-                  ? 'font-bold text-red-800 scale-110'
-                  : ''
-              }`}
-              data-testid={item.testId}
-            >
-              {item.value}
-            </span>
-          </div>
-        ))}
+        {visibleItems.map(renderItemWithTooltip)}
       </div>
     </div>
   );
