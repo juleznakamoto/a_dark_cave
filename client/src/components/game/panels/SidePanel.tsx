@@ -1,9 +1,11 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
 import { clothingEffects, getDisplayTools } from '@/game/effects';
+import { useResourceAnimation } from '@/hooks/useResourceAnimation';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
+  const animatingResources = useResourceAnimation();
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -12,7 +14,8 @@ export default function SidePanel() {
       label: key.charAt(0).toUpperCase() + key.slice(1),
       value: value ?? 0,
       testId: `resource-${key}`,
-      visible: (value ?? 0) > 0
+      visible: (value ?? 0) > 0,
+      animated: animatingResources.has(key)
     }))
     .filter(item => item.visible);
 

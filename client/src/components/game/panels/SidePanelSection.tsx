@@ -1,9 +1,12 @@
+import { AnimatedCounter } from '@/components/ui/animated-counter';
+
 interface SidePanelItem {
   id: string;
   label: string;
   value: string | number;
   testId?: string;
   visible?: boolean;
+  animated?: boolean;
 }
 
 interface SidePanelSectionProps {
@@ -34,8 +37,12 @@ export default function SidePanelSection({
         {visibleItems.map((item) => (
           <div key={item.id} className="flex justify-between">
             <span>{item.label}</span>
-            <span className="font-mono" data-testid={item.testId}>
-              {item.value}
+            <span className={`font-mono ${item.animated ? 'font-bold' : ''}`} data-testid={item.testId}>
+              {item.animated && typeof item.value === 'number' ? (
+                <AnimatedCounter value={item.value} />
+              ) : (
+                item.value
+              )}
             </span>
           </div>
         ))}
