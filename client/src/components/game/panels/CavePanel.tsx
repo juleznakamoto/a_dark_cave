@@ -51,15 +51,17 @@ export default function CavePanel() {
           {showExploreCave && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('exploreCave')}
-                  cooldownMs={gameActions.exploreCave.cooldown * 1000}
-                  data-testid="button-explore-cave"
-                  size="sm"
-                  disabled={!canExploreCave}
-                >
-                  Explore Cave
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('exploreCave')}
+                    cooldownMs={gameActions.exploreCave.cooldown * 1000}
+                    data-testid="button-explore-cave"
+                    size="sm"
+                    disabled={!canExploreCave}
+                  >
+                    Explore Cave
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -73,15 +75,17 @@ export default function CavePanel() {
           {showMineIron && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('mineIron')}
-                  cooldownMs={gameActions.mineIron.cooldown * 1000}
-                  data-testid="button-mine-iron"
-                  size="sm"
-                  disabled={!canMineIron}
-                >
-                  Mine Iron
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('mineIron')}
+                    cooldownMs={gameActions.mineIron.cooldown * 1000}
+                    data-testid="button-mine-iron"
+                    size="sm"
+                    disabled={!canMineIron}
+                  >
+                    Mine Iron
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -95,15 +99,17 @@ export default function CavePanel() {
           {shouldShowAction('mineCoal', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('mineCoal')}
-                  cooldownMs={gameActions.mineCoal.cooldown * 1000}
-                  data-testid="button-mine-coal"
-                  size="sm"
-                  disabled={!canExecuteAction('mineCoal', state)}
-                >
-                  Mine Coal
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('mineCoal')}
+                    cooldownMs={gameActions.mineCoal.cooldown * 1000}
+                    data-testid="button-mine-coal"
+                    size="sm"
+                    disabled={!canExecuteAction('mineCoal', state)}
+                  >
+                    Mine Coal
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -117,15 +123,17 @@ export default function CavePanel() {
           {shouldShowAction('mineSulfur', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('mineSulfur')}
-                  cooldownMs={gameActions.mineSulfur.cooldown * 1000}
-                  data-testid="button-mine-sulfur"
-                  size="sm"
-                  disabled={!canExecuteAction('mineSulfur', state)}
-                >
-                  Mine Sulfur
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('mineSulfur')}
+                    cooldownMs={gameActions.mineSulfur.cooldown * 1000}
+                    data-testid="button-mine-sulfur"
+                    size="sm"
+                    disabled={!canExecuteAction('mineSulfur', state)}
+                  >
+                    Mine Sulfur
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -139,15 +147,17 @@ export default function CavePanel() {
           {shouldShowAction('mineAdamant', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('mineAdamant')}
-                  cooldownMs={gameActions.mineAdamant.cooldown * 1000}
-                  data-testid="button-mine-adamant"
-                  size="sm"
-                  disabled={!canExecuteAction('mineAdamant', state)}
-                >
-                  Mine Adamant
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('mineAdamant')}
+                    cooldownMs={gameActions.mineAdamant.cooldown * 1000}
+                    data-testid="button-mine-adamant"
+                    size="sm"
+                    disabled={!canExecuteAction('mineAdamant', state)}
+                  >
+                    Mine Adamant
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -161,15 +171,17 @@ export default function CavePanel() {
           {showVentureDeeper && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('ventureDeeper')}
-                  cooldownMs={gameActions.ventureDeeper.cooldown * 1000}
-                  data-testid="button-venture-deeper"
-                  size="sm"
-                  disabled={!canVentureDeeper}
-                >
-                  Venture Deeper
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('ventureDeeper')}
+                    cooldownMs={gameActions.ventureDeeper.cooldown * 1000}
+                    data-testid="button-venture-deeper"
+                    size="sm"
+                    disabled={!canVentureDeeper}
+                  >
+                    Venture Deeper
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -183,15 +195,17 @@ export default function CavePanel() {
           {shouldShowAction('descendFurther', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('descendFurther')}
-                  cooldownMs={gameActions.descendFurther.cooldown * 1000}
-                  data-testid="button-descend-further"
-                  size="sm"
-                  disabled={!canExecuteAction('descendFurther', state)}
-                >
-                  Descend Further
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('descendFurther')}
+                    cooldownMs={gameActions.descendFurther.cooldown * 1000}
+                    data-testid="button-descend-further"
+                    size="sm"
+                    disabled={!canExecuteAction('descendFurther', state)}
+                  >
+                    Descend Further
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -205,15 +219,17 @@ export default function CavePanel() {
           {shouldShowAction('exploreRuins', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('exploreRuins')}
-                  cooldownMs={gameActions.exploreRuins.cooldown * 1000}
-                  data-testid="button-explore-ruins"
-                  size="sm"
-                  disabled={!canExecuteAction('exploreRuins', state)}
-                >
-                  Explore Ruins
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('exploreRuins')}
+                    cooldownMs={gameActions.exploreRuins.cooldown * 1000}
+                    data-testid="button-explore-ruins"
+                    size="sm"
+                    disabled={!canExecuteAction('exploreRuins', state)}
+                  >
+                    Explore Ruins
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -227,15 +243,17 @@ export default function CavePanel() {
           {shouldShowAction('exploreTemple', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('exploreTemple')}
-                  cooldownMs={gameActions.exploreTemple.cooldown * 1000}
-                  data-testid="button-explore-temple"
-                  size="sm"
-                  disabled={!canExecuteAction('exploreTemple', state)}
-                >
-                  Explore Temple
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('exploreTemple')}
+                    cooldownMs={gameActions.exploreTemple.cooldown * 1000}
+                    data-testid="button-explore-temple"
+                    size="sm"
+                    disabled={!canExecuteAction('exploreTemple', state)}
+                  >
+                    Explore Temple
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -249,15 +267,17 @@ export default function CavePanel() {
           {shouldShowAction('exploreCitadel', state) && (
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CooldownButton
-                  onClick={() => executeAction('exploreCitadel')}
-                  cooldownMs={gameActions.exploreCitadel.cooldown * 1000}
-                  data-testid="button-explore-citadel"
-                  size="sm"
-                  disabled={!canExecuteAction('exploreCitadel', state)}
-                >
-                  Explore Citadel
-                </CooldownButton>
+                <div>
+                  <CooldownButton
+                    onClick={() => executeAction('exploreCitadel')}
+                    cooldownMs={gameActions.exploreCitadel.cooldown * 1000}
+                    data-testid="button-explore-citadel"
+                    size="sm"
+                    disabled={!canExecuteAction('exploreCitadel', state)}
+                  >
+                    Explore Citadel
+                  </CooldownButton>
+                </div>
               </HoverCardTrigger>
               <HoverCardContent>
                 <div className="text-sm">
@@ -278,15 +298,17 @@ export default function CavePanel() {
             {showBuildTorch && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('buildTorch')}
-                    cooldownMs={gameActions.buildTorch.cooldown * 1000}
-                    data-testid="button-build-torch"
-                    size="sm"
-                    disabled={!canBuildTorch}
-                  >
-                    Torch
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('buildTorch')}
+                      cooldownMs={gameActions.buildTorch.cooldown * 1000}
+                      data-testid="button-build-torch"
+                      size="sm"
+                      disabled={!canBuildTorch}
+                    >
+                      Torch
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -300,15 +322,17 @@ export default function CavePanel() {
             {showCraftStoneAxe && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftStoneAxe')}
-                    cooldownMs={gameActions.craftStoneAxe.cooldown * 1000}
-                    data-testid="button-craft-axe"
-                    size="sm"
-                    disabled={!canCraftStoneAxe}
-                  >
-                    Stone Axe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftStoneAxe')}
+                      cooldownMs={gameActions.craftStoneAxe.cooldown * 1000}
+                      data-testid="button-craft-axe"
+                      size="sm"
+                      disabled={!canCraftStoneAxe}
+                    >
+                      Stone Axe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -322,15 +346,17 @@ export default function CavePanel() {
             {showCraftStonePickaxe && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftStonePickaxe')}
-                    cooldownMs={gameActions.craftStonePickaxe.cooldown * 1000}
-                    data-testid="button-craft-stone_pickaxe"
-                    size="sm"
-                    disabled={!canCraftStonePickaxe}
-                  >
-                    Stone Pickaxe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftStonePickaxe')}
+                      cooldownMs={gameActions.craftStonePickaxe.cooldown * 1000}
+                      data-testid="button-craft-stone_pickaxe"
+                      size="sm"
+                      disabled={!canCraftStonePickaxe}
+                    >
+                      Stone Pickaxe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -344,15 +370,17 @@ export default function CavePanel() {
             {shouldShowAction('craftIronAxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftIronAxe')}
-                    cooldownMs={gameActions.craftIronAxe.cooldown * 1000}
-                    data-testid="button-craft-iron-axe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftIronAxe', state)}
-                  >
-                    Iron Axe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftIronAxe')}
+                      cooldownMs={gameActions.craftIronAxe.cooldown * 1000}
+                      data-testid="button-craft-iron-axe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftIronAxe', state)}
+                    >
+                      Iron Axe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -366,15 +394,17 @@ export default function CavePanel() {
             {shouldShowAction('craftIronPickaxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftIronPickaxe')}
-                    cooldownMs={gameActions.craftIronPickaxe.cooldown * 1000}
-                    data-testid="button-craft-iron-pickaxe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftIronPickaxe', state)}
-                  >
-                    Iron Pickaxe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftIronPickaxe')}
+                      cooldownMs={gameActions.craftIronPickaxe.cooldown * 1000}
+                      data-testid="button-craft-iron-pickaxe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftIronPickaxe', state)}
+                    >
+                      Iron Pickaxe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -388,15 +418,17 @@ export default function CavePanel() {
             {shouldShowAction('craftSteelAxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftSteelAxe')}
-                    cooldownMs={gameActions.craftSteelAxe.cooldown * 1000}
-                    data-testid="button-craft-steel-axe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftSteelAxe', state)}
-                  >
-                    Steel Axe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftSteelAxe')}
+                      cooldownMs={gameActions.craftSteelAxe.cooldown * 1000}
+                      data-testid="button-craft-steel-axe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftSteelAxe', state)}
+                    >
+                      Steel Axe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -410,15 +442,17 @@ export default function CavePanel() {
             {shouldShowAction('craftSteelPickaxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftSteelPickaxe')}
-                    cooldownMs={gameActions.craftSteelPickaxe.cooldown * 1000}
-                    data-testid="button-craft-steel-pickaxe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftSteelPickaxe', state)}
-                  >
-                    Steel Pickaxe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftSteelPickaxe')}
+                      cooldownMs={gameActions.craftSteelPickaxe.cooldown * 1000}
+                      data-testid="button-craft-steel-pickaxe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftSteelPickaxe', state)}
+                    >
+                      Steel Pickaxe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -432,15 +466,17 @@ export default function CavePanel() {
             {shouldShowAction('craftObsidianAxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftObsidianAxe')}
-                    cooldownMs={gameActions.craftObsidianAxe.cooldown * 1000}
-                    data-testid="button-craft-obsidian-axe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftObsidianAxe', state)}
-                  >
-                    Obsidian Axe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftObsidianAxe')}
+                      cooldownMs={gameActions.craftObsidianAxe.cooldown * 1000}
+                      data-testid="button-craft-obsidian-axe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftObsidianAxe', state)}
+                    >
+                      Obsidian Axe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -454,15 +490,17 @@ export default function CavePanel() {
             {shouldShowAction('craftObsidianPickaxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftObsidianPickaxe')}
-                    cooldownMs={gameActions.craftObsidianPickaxe.cooldown * 1000}
-                    data-testid="button-craft-obsidian-pickaxe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftObsidianPickaxe', state)}
-                  >
-                    Obsidian Pickaxe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftObsidianPickaxe')}
+                      cooldownMs={gameActions.craftObsidianPickaxe.cooldown * 1000}
+                      data-testid="button-craft-obsidian-pickaxe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftObsidianPickaxe', state)}
+                    >
+                      Obsidian Pickaxe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -476,15 +514,17 @@ export default function CavePanel() {
             {shouldShowAction('craftAdamantAxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftAdamantAxe')}
-                    cooldownMs={gameActions.craftAdamantAxe.cooldown * 1000}
-                    data-testid="button-craft-adamant-axe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftAdamantAxe', state)}
-                  >
-                    Adamant Axe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftAdamantAxe')}
+                      cooldownMs={gameActions.craftAdamantAxe.cooldown * 1000}
+                      data-testid="button-craft-adamant-axe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftAdamantAxe', state)}
+                    >
+                      Adamant Axe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -498,15 +538,17 @@ export default function CavePanel() {
             {shouldShowAction('craftAdamantPickaxe', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={() => executeAction('craftAdamantPickaxe')}
-                    cooldownMs={gameActions.craftAdamantPickaxe.cooldown * 1000}
-                    data-testid="button-craft-adamant-pickaxe"
-                    size="sm"
-                    disabled={!canExecuteAction('craftAdamantPickaxe', state)}
-                  >
-                    Adamant Pickaxe
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={() => executeAction('craftAdamantPickaxe')}
+                      cooldownMs={gameActions.craftAdamantPickaxe.cooldown * 1000}
+                      data-testid="button-craft-adamant-pickaxe"
+                      size="sm"
+                      disabled={!canExecuteAction('craftAdamantPickaxe', state)}
+                    >
+                      Adamant Pickaxe
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">

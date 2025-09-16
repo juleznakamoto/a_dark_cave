@@ -27,15 +27,17 @@ export default function VillagePanel() {
             {shouldShowAction('buildHut', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={handleBuildHut}
-                    cooldownMs={gameActions.buildHut.cooldown * 1000}
-                    data-testid="button-build-wooden-hut"
-                    disabled={!canBuildHut}
-                    size="sm"
-                  >
-                    Wooden Hut
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={handleBuildHut}
+                      cooldownMs={gameActions.buildHut.cooldown * 1000}
+                      data-testid="button-build-wooden-hut"
+                      disabled={!canBuildHut}
+                      size="sm"
+                    >
+                      Wooden Hut
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -49,15 +51,17 @@ export default function VillagePanel() {
             {shouldShowAction('buildLodge', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={handleBuildLodge}
-                    cooldownMs={gameActions.buildLodge.cooldown * 1000}
-                    data-testid="button-build-lodge"
-                    disabled={!canBuildLodge}
-                    size="sm"
-                  >
-                    Lodge
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={handleBuildLodge}
+                      cooldownMs={gameActions.buildLodge.cooldown * 1000}
+                      data-testid="button-build-lodge"
+                      disabled={!canBuildLodge}
+                      size="sm"
+                    >
+                      Lodge
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
@@ -71,15 +75,17 @@ export default function VillagePanel() {
             {shouldShowAction('buildBlacksmith', state) && (
               <HoverCard>
                 <HoverCardTrigger asChild>
-                  <CooldownButton
-                    onClick={handleBuildBlacksmith}
-                    cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
-                    data-testid="button-build-blacksmith"
-                    disabled={!canBuildBlacksmith}
-                    size="sm"
-                  >
-                    Blacksmith
-                  </CooldownButton>
+                  <div>
+                    <CooldownButton
+                      onClick={handleBuildBlacksmith}
+                      cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
+                      data-testid="button-build-blacksmith"
+                      disabled={!canBuildBlacksmith}
+                      size="sm"
+                    >
+                      Blacksmith
+                    </CooldownButton>
+                  </div>
                 </HoverCardTrigger>
                 <HoverCardContent>
                   <div className="text-sm">
