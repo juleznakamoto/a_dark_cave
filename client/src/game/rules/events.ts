@@ -610,7 +610,7 @@ export class EventManager {
       if (event.triggered && !event.repeatable) continue;
 
       // Skip if event was already triggered this session (for non-repeatable events)
-      if (state.events?.[event.id] && !event.repeatable) continue;
+      if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
 
       // Check condition with probability if specified
       let shouldTrigger = event.condition(state);

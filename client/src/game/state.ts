@@ -290,7 +290,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                 }
                 return state;
               });
-            }, 1000);
+            }, 100);
           }, 2000);
         } else {
           // Execute other delayed effects
@@ -442,8 +442,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...prevState.flags,
             trinketDrunk: true,
           },
-          events: {
-            ...prevState.events,
+          triggeredEvents: {
+            ...prevState.triggeredEvents,
             trinket_found: true,
           },
           stats: {
@@ -465,8 +465,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       } else if (choiceId === 'ignoreTrinket') {
         set((prevState) => ({
           ...prevState,
-          events: {
-            ...prevState.events,
+          triggeredEvents: {
+            ...prevState.triggeredEvents,
             trinket_found: true,
           },
         }));
