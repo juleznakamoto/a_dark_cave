@@ -129,13 +129,7 @@
   100% { background-position: 0% 50%; }
 }
 
-@keyframes flame-fade-in {
-  0% { opacity: 0; }
-  100% { opacity: 1; }
-}
-
 .flame-text-wrapper {
-  animation: flame-fade-in 2s ease-out forwards;
 }
 
 .flame-text {
