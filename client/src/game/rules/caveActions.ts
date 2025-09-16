@@ -104,7 +104,6 @@ export const caveActions: Record<string, Action> = {
       ...getInheritedRelics("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
-      "stats.ventureDeeper": 1,
     },
     cooldown: 15,
   },
