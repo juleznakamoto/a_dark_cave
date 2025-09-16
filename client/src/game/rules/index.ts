@@ -5,6 +5,8 @@ import { basicActions } from "./actions";
 import { craftingActions } from "./crafting";
 import { buildingActions } from "./buildings";
 import { caveActions } from "./caveActions";
+import { forgingActions } from "./forging";
+import { miningActions } from "./mining";
 import { getActionBonuses } from "../effects";
 
 // Combine all actions
@@ -13,6 +15,8 @@ export const gameActions: Record<string, Action> = {
   ...craftingActions,
   ...buildingActions,
   ...caveActions,
+  ...forgingActions,
+  ...miningActions,
 };
 
 // Utility function to get the next building level

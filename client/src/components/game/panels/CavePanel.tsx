@@ -15,15 +15,21 @@ export default function CavePanel() {
         { id: 'lightFire', label: 'Light Fire', showWhen: !flags.fireLit },
         { id: 'gatherWood', label: 'Gather Wood' },
         { id: 'exploreCave', label: 'Explore Cave' },
-        { id: 'mineIron', label: 'Mine Iron' },
-        { id: 'mineCoal', label: 'Mine Coal' },
-        { id: 'mineSulfur', label: 'Mine Sulfur' },
-        { id: 'mineAdamant', label: 'Mine Adamant' },
         { id: 'ventureDeeper', label: 'Venture Deeper' },
         { id: 'descendFurther', label: 'Descend Further' },
         { id: 'exploreRuins', label: 'Explore Ruins' },
         { id: 'exploreTemple', label: 'Explore Temple' },
         { id: 'exploreCitadel', label: 'Explore Citadel' },
+      ]
+    },
+    {
+      title: 'Mine',
+      actions: [
+        { id: 'mineIron', label: 'Mine Iron' },
+        { id: 'mineCoal', label: 'Mine Coal' },
+        { id: 'mineSulfur', label: 'Mine Sulfur' },
+        { id: 'mineObsidian', label: 'Mine Obsidian' },
+        { id: 'mineAdamant', label: 'Mine Adamant' },
       ]
     },
     {
@@ -40,6 +46,16 @@ export default function CavePanel() {
         { id: 'craftObsidianPickaxe', label: 'Obsidian Pickaxe' },
         { id: 'craftAdamantAxe', label: 'Adamant Axe' },
         { id: 'craftAdamantPickaxe', label: 'Adamant Pickaxe' },
+        { id: 'craftIronLantern', label: 'Iron Lantern' },
+        { id: 'craftSteelLantern', label: 'Steel Lantern' },
+        { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
+        { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
+      ]
+    },
+    {
+      title: 'Forge',
+      actions: [
+        { id: 'forgSteel', label: 'Steel' },
       ]
     }
   ];
