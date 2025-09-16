@@ -85,7 +85,7 @@ export default function SidePanelSection({
         data-testid={item.testId}
         className={`flex justify-between items-center transition-all duration-300 ${
           isAnimated ? 'text-green-400' : isDecreaseAnimated ? 'text-red-400' : ''
-        } ${relicEffect && title === "Relics" ? 'cursor-help' : ''}`}
+        }`}
       >
         <span className="text-muted-foreground">{item.label}</span>
         <span 
