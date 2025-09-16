@@ -24,10 +24,12 @@ export default function SidePanelSection({
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter(item => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
+  const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<Set<string>>(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
+    const newDecreaseAnimatedItems = new Set<string>();
     
     visibleItems.forEach((item) => {
       const currentValue = typeof item.value === 'number' ? item.value : parseInt(item.value.toString()) || 0;
@@ -43,6 +45,16 @@ export default function SidePanelSection({
             return newSet;
           });
         }, 1000);
+      } else if (currentValue < prevValue) {
+        newDecreaseAnimatedItems.add(item.id);
+        // Remove animation after 1 second
+        setTimeout(() => {
+          setDecreaseAnimatedItems(prev => {
+            const newSet = new Set(prev);
+            newSet.delete(item.id);
+            return newSet;
+          });
+        }, 1000);
       }
       
       prevValuesRef.current.set(item.id, currentValue);
@@ -50,6 +62,9 @@ export default function SidePanelSection({
     
     if (newAnimatedItems.size > 0) {
       setAnimatedItems(prev => new Set([...prev, ...newAnimatedItems]));
+    }
+    if (newDecreaseAnimatedItems.size > 0) {
+      setDecreaseAnimatedItems(prev => new Set([...prev, ...newDecreaseAnimatedItems]));
     }
   }, [visibleItems]);
 
@@ -69,7 +84,9 @@ export default function SidePanelSection({
             <span 
               className={`font-mono transition-all duration-300 ${
                 animatedItems.has(item.id) 
-                  ? 'font-bold text-green-600 scale-110' 
+                  ? 'font-bold text-green-800 scale-110' 
+                  : decreaseAnimatedItems.has(item.id)
+                  ? 'font-bold text-red-800 scale-110'
                   : ''
               }`}
               data-testid={item.testId}
