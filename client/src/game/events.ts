@@ -345,6 +345,199 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
+  wolfAttack: {
+    id: "wolfAttack",
+    condition: (state) => state.buildings.hut >= 3,
+    triggerType: "resource",
+    timeProbability: 25,
+    title: "Wolf Attack",
+    message:
+      "In the dead of night, possessed wolves emerge from the darkness, their eyes glowing with an unnatural hunger. Their howls echo with otherworldly malice as they circle your village.",
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    choices: [
+      {
+        id: "defendVillage",
+        label: "Defend the village",
+        effect: (state) => {
+          const currentPopulation = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
+          if (currentPopulation === 0) {
+            return {
+              _logMessage: "The wolves find an empty village and move on, disappointed by the lack of prey."
+            };
+          }
+
+          const strength = state.stats.strength || 0;
+          // Base chance of casualties (70%), reduced by 5% per strength point, minimum 20%
+          const casualtyChance = Math.max(0.2, 0.7 - (strength * 0.05));
+          
+          let villagerDeaths = 0;
+          let foodLoss = Math.floor(Math.random() * 201); // 0-200 food loss
+          let lodgeDestroyed = false;
+          
+          // Determine villager casualties (1-6 potential deaths)
+          const maxPotentialDeaths = Math.min(6, currentPopulation);
+          for (let i = 0; i < maxPotentialDeaths; i++) {
+            if (Math.random() < casualtyChance) {
+              villagerDeaths++;
+            }
+          }
+
+          // If 2+ villagers die and there's a lodge, 50% chance to destroy it
+          if (villagerDeaths >= 2 && state.buildings.lodge > 0) {
+            if (Math.random() < 0.5) {
+              lodgeDestroyed = true;
+            }
+          }
+
+          // Apply deaths to villagers
+          let updatedVillagers = { ...state.villagers };
+          let remainingDeaths = villagerDeaths;
+
+          // Remove villagers starting with free, then gatherers, then hunters
+          if (remainingDeaths > 0 && updatedVillagers.free > 0) {
+            const freeDeaths = Math.min(remainingDeaths, updatedVillagers.free);
+            updatedVillagers.free -= freeDeaths;
+            remainingDeaths -= freeDeaths;
+          }
+
+          if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
+            const gathererDeaths = Math.min(remainingDeaths, updatedVillagers.gatherer);
+            updatedVillagers.gatherer -= gathererDeaths;
+            remainingDeaths -= gathererDeaths;
+          }
+
+          if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
+            const hunterDeaths = Math.min(remainingDeaths, updatedVillagers.hunter);
+            updatedVillagers.hunter -= hunterDeaths;
+            remainingDeaths -= hunterDeaths;
+          }
+
+          // Construct result message
+          let message = "The village fights desperately against the possessed wolves. ";
+          
+          if (villagerDeaths === 0) {
+            message += "Miraculously, all villagers survive the attack, though shaken by the encounter.";
+          } else if (villagerDeaths === 1) {
+            message += "One villager falls to the wolves' supernatural fury.";
+          } else {
+            message += `${villagerDeaths} villagers are claimed by the wolves' unnatural hunger.`;
+          }
+
+          if (foodLoss > 0) {
+            message += ` The wolves also devour ${foodLoss} units of food from your stores.`;
+          }
+
+          if (lodgeDestroyed) {
+            message += " In their rampage, the possessed wolves destroy your lodge, leaving only splintered wood and claw marks.";
+          }
+
+          return {
+            villagers: updatedVillagers,
+            resources: {
+              ...state.resources,
+              food: Math.max(0, state.resources.food - foodLoss),
+            },
+            buildings: lodgeDestroyed ? {
+              ...state.buildings,
+              lodge: Math.max(0, state.buildings.lodge - 1),
+            } : state.buildings,
+            _logMessage: message,
+          };
+        },
+      },
+      {
+        id: "hideAndWait",
+        label: "Hide and wait it out",
+        effect: (state) => {
+          const currentPopulation = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
+          if (currentPopulation === 0) {
+            return {
+              _logMessage: "The wolves find an empty village and move on, their supernatural hunger unsated."
+            };
+          }
+
+          // Hiding is less effective, higher casualty rate (80%), only reduced by 3% per strength
+          const strength = state.stats.strength || 0;
+          const casualtyChance = Math.max(0.3, 0.8 - (strength * 0.03));
+          
+          let villagerDeaths = 0;
+          let foodLoss = Math.floor(Math.random() * 151) + 50; // 50-200 food loss (more than defending)
+          let lodgeDestroyed = false;
+          
+          // Determine villager casualties (1-6 potential deaths)
+          const maxPotentialDeaths = Math.min(6, currentPopulation);
+          for (let i = 0; i < maxPotentialDeaths; i++) {
+            if (Math.random() < casualtyChance) {
+              villagerDeaths++;
+            }
+          }
+
+          // If 2+ villagers die and there's a lodge, 70% chance to destroy it (higher than defending)
+          if (villagerDeaths >= 2 && state.buildings.lodge > 0) {
+            if (Math.random() < 0.7) {
+              lodgeDestroyed = true;
+            }
+          }
+
+          // Apply deaths to villagers
+          let updatedVillagers = { ...state.villagers };
+          let remainingDeaths = villagerDeaths;
+
+          // Remove villagers starting with free, then gatherers, then hunters
+          if (remainingDeaths > 0 && updatedVillagers.free > 0) {
+            const freeDeaths = Math.min(remainingDeaths, updatedVillagers.free);
+            updatedVillagers.free -= freeDeaths;
+            remainingDeaths -= freeDeaths;
+          }
+
+          if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
+            const gathererDeaths = Math.min(remainingDeaths, updatedVillagers.gatherer);
+            updatedVillagers.gatherer -= gathererDeaths;
+            remainingDeaths -= gathererDeaths;
+          }
+
+          if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
+            const hunterDeaths = Math.min(remainingDeaths, updatedVillagers.hunter);
+            updatedVillagers.hunter -= hunterDeaths;
+            remainingDeaths -= hunterDeaths;
+          }
+
+          // Construct result message
+          let message = "The villagers huddle in their huts as the wolves prowl outside, their claws scraping against doors and walls. ";
+          
+          if (villagerDeaths === 0) {
+            message += "By dawn, the wolves have departed, leaving only scratches and terror behind.";
+          } else if (villagerDeaths === 1) {
+            message += "One villager who ventured out is found torn apart at sunrise.";
+          } else {
+            message += `${villagerDeaths} villagers are dragged from their hiding places, their screams echoing through the night.`;
+          }
+
+          message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
+
+          if (lodgeDestroyed) {
+            message += " The possessed wolves tear apart your lodge in their supernatural fury.";
+          }
+
+          return {
+            villagers: updatedVillagers,
+            resources: {
+              ...state.resources,
+              food: Math.max(0, state.resources.food - foodLoss),
+            },
+            buildings: lodgeDestroyed ? {
+              ...state.buildings,
+              lodge: Math.max(0, state.buildings.lodge - 1),
+            } : state.buildings,
+            _logMessage: message,
+          };
+        },
+      },
+    ],
+  },
+
   trinketFound: {
     id: "trinketFound",
     condition: (state) => false, // Only triggered by action effect
