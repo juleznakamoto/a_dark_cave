@@ -1,48 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-
-// Assuming these are imported from somewhere else.
-// For demonstration purposes, defining mock structures.
-interface RelicEffect {
-  name: string;
-  description: string;
-  bonuses: {
-    generalBonuses?: {
-      luck?: number;
-      strength?: number;
-    };
-  };
-}
-
-// Mock data for relic effects. In a real scenario, this would be fetched or imported.
-const clothingEffects: { [key: string]: RelicEffect } = {
-  "relic1": {
-    name: "Lucky Charm",
-    description: "Increases your luck.",
-    bonuses: {
-      generalBonuses: {
-        luck: 5
-      }
-    }
-  },
-  "relic2": {
-    name: "Strength Gauntlet",
-    description: "Boosts your strength.",
-    bonuses: {
-      generalBonuses: {
-        strength: 10
-      }
-    }
-  }
-};
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { clothingEffects } from '@/game/effects';
 
 // Mocking HoverCard, HoverCardTrigger, and HoverCardContent for standalone execution
 // In a real React application, these would be imported from a UI library like shadcn/ui
-const HoverCard = ({ children }: { children: React.ReactNode }) => <>{children}</>;
-const HoverCardTrigger = ({ asChild, children }: { asChild?: boolean; children: React.ReactNode }) => <>{children}</>;
-const HoverCardContent = ({ className, children }: { className?: string; children: React.ReactNode }) => (
-  <div className={`hover-card-content ${className || ''}`}>{children}</div>
-);
-
+// Removed mock data for relicData as it's no longer needed and replaced with import from '@/game/effects'
 
 interface SidePanelItem {
   id: string;
@@ -59,11 +21,11 @@ interface SidePanelSectionProps {
   className?: string;
 }
 
-export default function SidePanelSection({ 
-  title, 
-  items, 
-  visible = true, 
-  className = "" 
+export default function SidePanelSection({
+  title,
+  items,
+  visible = true,
+  className = ""
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter(item => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
@@ -120,19 +82,19 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
 
     // Check if this is a relic that has effect information
-    const relicEffect = clothingEffects[item.id];
+    const relic = clothingEffects[item.id];
 
     const itemContent = (
-      <div 
+      <div
         data-testid={item.testId}
         className={`flex justify-between items-center transition-all duration-300 ${
           isAnimated ? 'text-green-400' : isDecreaseAnimated ? 'text-red-400' : ''
-        } ${relicEffect ? 'cursor-help' : ''}`}
+        } ${relic ? 'cursor-help' : ''}`}
       >
         <span className="text-muted-foreground">{item.label}</span>
-        <span 
+        <span
           className={`font-medium transition-all duration-300 ${
-            isAnimated ? 'scale-110 text-green-400' : 
+            isAnimated ? 'scale-110 text-green-400' :
             isDecreaseAnimated ? 'scale-90 text-red-400' : ''
           }`}
         >
@@ -142,7 +104,7 @@ export default function SidePanelSection({
     );
 
     // If this item has relic effects, wrap it in a hover card
-    if (relicEffect && title === "Relics") {
+    if (relic && title === "Relics") {
       return (
         <HoverCard key={item.id}>
           <HoverCardTrigger asChild>
@@ -150,18 +112,25 @@ export default function SidePanelSection({
           </HoverCardTrigger>
           <HoverCardContent className="w-80">
             <div className="space-y-2">
-              <h4 className="text-sm font-semibold">{relicEffect.name}</h4>
+              <h4 className="text-sm font-semibold text-amber-400">{relic.name}</h4>
               <p className="text-sm text-muted-foreground">
-                {relicEffect.description}
+                {relic.description}
               </p>
-              {relicEffect.bonuses.generalBonuses && (
+              {relic.bonuses && (
                 <div className="space-y-1">
                   <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Effects:</p>
-                  {relicEffect.bonuses.generalBonuses.luck && (
-                    <p className="text-xs text-blue-400">+{relicEffect.bonuses.generalBonuses.luck} Luck</p>
-                  )}
-                  {relicEffect.bonuses.generalBonuses.strength && (
-                    <p className="text-xs text-red-400">+{relicEffect.bonuses.generalBonuses.strength} Strength</p>
+                  {relic.bonuses.generalBonuses && (
+                    <>
+                      {relic.bonuses.generalBonuses.luck && (
+                        <p className="text-xs text-blue-400">• +{relic.bonuses.generalBonuses.luck} Luck</p>
+                      )}
+                      {relic.bonuses.generalBonuses.strength && (
+                        <p className="text-xs text-red-400">• +{relic.bonuses.generalBonuses.strength} Strength</p>
+                      )}
+                      {relic.bonuses.generalBonuses.knowledge && (
+                        <p className="text-xs text-purple-400">• +{relic.bonuses.generalBonuses.knowledge} Knowledge</p>
+                      )}
+                    </>
                   )}
                 </div>
               )}
