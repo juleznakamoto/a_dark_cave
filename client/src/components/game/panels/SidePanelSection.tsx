@@ -106,8 +106,8 @@ export default function SidePanelSection({
           <HoverCardTrigger asChild>
             {itemContent}
           </HoverCardTrigger>
-          <HoverCardContent className="w-auto">
-            <div className="text-sm">
+          <HoverCardContent className="w-auto p-2">
+            <div className="text-xs whitespace-nowrap">
               {relicEffect.bonuses.generalBonuses && (
                 <>
                   {relicEffect.bonuses.generalBonuses.luck && (

@@ -67,8 +67,8 @@ export default function CavePanel() {
               </CooldownButton>
             </div>
           </HoverCardTrigger>
-          <HoverCardContent>
-            <div className="text-sm">
+          <HoverCardContent className="w-auto p-2">
+            <div className="text-xs whitespace-nowrap">
               {getCostText(actionId)}
             </div>
           </HoverCardContent>
