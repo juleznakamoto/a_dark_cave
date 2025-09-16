@@ -384,8 +384,8 @@ export const gameEvents: Record<string, GameEvent> = {
             }
           }
 
-          // If 2+ villagers die and there's a lodge, 50% chance to destroy it
-          if (villagerDeaths >= 2 && state.buildings.lodge > 0) {
+          // If 2+ villagers die and there's a hut, 50% chance to destroy it
+          if (villagerDeaths >= 2 && state.buildings.hut > 0) {
             if (Math.random() < 0.5) {
               lodgeDestroyed = true;
             }
@@ -430,7 +430,7 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           if (lodgeDestroyed) {
-            message += " In their rampage, the possessed wolves destroy your lodge, leaving only splintered wood and claw marks.";
+            message += " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood and claw marks.";
           }
 
           return {
@@ -441,7 +441,7 @@ export const gameEvents: Record<string, GameEvent> = {
             },
             buildings: lodgeDestroyed ? {
               ...state.buildings,
-              lodge: Math.max(0, state.buildings.lodge - 1),
+              hut: Math.max(0, state.buildings.hut - 1),
             } : state.buildings,
             _logMessage: message,
           };
@@ -474,8 +474,8 @@ export const gameEvents: Record<string, GameEvent> = {
             }
           }
 
-          // If 2+ villagers die and there's a lodge, 70% chance to destroy it (higher than defending)
-          if (villagerDeaths >= 2 && state.buildings.lodge > 0) {
+          // If 2+ villagers die and there's a hut, 70% chance to destroy it (higher than defending)
+          if (villagerDeaths >= 2 && state.buildings.hut > 0) {
             if (Math.random() < 0.7) {
               lodgeDestroyed = true;
             }
@@ -518,7 +518,7 @@ export const gameEvents: Record<string, GameEvent> = {
           message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
 
           if (lodgeDestroyed) {
-            message += " The possessed wolves tear apart your lodge in their supernatural fury.";
+            message += " The possessed wolves tear apart one of your huts in their supernatural fury.";
           }
 
           return {
@@ -529,7 +529,7 @@ export const gameEvents: Record<string, GameEvent> = {
             },
             buildings: lodgeDestroyed ? {
               ...state.buildings,
-              lodge: Math.max(0, state.buildings.lodge - 1),
+              hut: Math.max(0, state.buildings.hut - 1),
             } : state.buildings,
             _logMessage: message,
           };
