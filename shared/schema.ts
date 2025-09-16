@@ -19,6 +19,8 @@ export const gameStateSchema = z.object({
     bones: z.number().min(0).default(0),
     fur: z.number().min(0).default(0),
     leather: z.number().min(0).default(0),
+    bloodstone: z.number().min(0).default(0),
+    frostglas: z.number().min(0).default(0),
   }),
   stats: z.object({
     luck: z.number().min(0).default(0),

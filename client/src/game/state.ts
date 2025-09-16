@@ -76,6 +76,8 @@ const defaultGameState: GameState = {
     bones: 0,
     fur: 0,
     leather: 0,
+    bloodstone: 0,
+    frostglas: 0,
   },
   stats: {
     luck: 0,
