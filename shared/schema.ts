@@ -106,6 +106,7 @@ export const gameStateSchema = z.object({
     active: z.array(z.string()).default([]),
     log: z.array(z.string()).default([]),
   }),
+  log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
   version: z.number().default(1),

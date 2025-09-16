@@ -250,12 +250,20 @@ async function handleAutoSave() {
   const state = useGameStore.getState();
   const gameState: GameState = {
     resources: state.resources,
+    stats: state.stats,
     flags: state.flags,
     tools: state.tools,
+    weapons: state.weapons,
+    clothing: state.clothing,
+    relics: state.relics,
     buildings: state.buildings,
     villagers: state.villagers,
     world: state.world,
     story: state.story,
+    events: state.events,
+    log: state.log,
+    current_population: state.current_population,
+    total_population: state.total_population,
     version: state.version,
   };
 

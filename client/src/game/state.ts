@@ -160,6 +160,7 @@ const defaultGameState: GameState = {
     active: [],
     log: [],
   },
+  log: [],
   current_population: 0,
   total_population: 0,
   version: 1,
@@ -201,7 +202,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (newState: GameState) => {
-    set({ ...newState });
+    set({ 
+      ...newState,
+      log: newState.log || [],
+    });
   },
 
   executeAction: (actionId: string) => {
@@ -356,7 +360,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         lastSaved: "Loaded",
         cooldowns: {},
-        events: get().events,
+        events: savedState.events || get().events,
+        log: savedState.log || [],
         devMode: true, // Ensure devMode is always true
       });
     } else {
