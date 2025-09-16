@@ -251,6 +251,8 @@ export const craftingActions: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.iron_lantern": false,
+      "story.seen.hasIron": true,
+      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.iron": 100,
