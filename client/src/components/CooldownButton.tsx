@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useCooldown } from '@/hooks/useCooldown';
@@ -31,10 +30,10 @@ export default function CooldownButton({
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
-    
+
     // Execute the action immediately
     onClick();
-    
+
     // Start the cooldown (skip in dev mode)
     if (!devMode) {
       startCooldown(cooldownMs);
@@ -59,7 +58,7 @@ export default function CooldownButton({
       >
         {/* Button content */}
         <span className="relative z-10">{children}</span>
-        
+
         {/* Cooldown progress overlay */}
         {showCooldownVisual && (
           <div

@@ -106,31 +106,26 @@ export default function SidePanelSection({
           <HoverCardTrigger asChild>
             {itemContent}
           </HoverCardTrigger>
-          <HoverCardContent className="w-80">
-            <div className="space-y-2">
-              <h4 className="text-sm font-semibold text-amber-400">{relicEffect.name}</h4>
-              <p className="text-sm text-muted-foreground">
-                {relicEffect.description}
-              </p>
+          <HoverCardContent className="w-auto">
+            <div className="text-sm">
               {relicEffect.bonuses.generalBonuses && (
-                <div className="space-y-1">
-                  <p className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Effects:</p>
+                <>
                   {relicEffect.bonuses.generalBonuses.luck && (
-                    <p className="text-xs text-blue-400">+{relicEffect.bonuses.generalBonuses.luck} Luck</p>
+                    <div>+{relicEffect.bonuses.generalBonuses.luck} Luck</div>
                   )}
                   {relicEffect.bonuses.generalBonuses.strength && (
-                    <p className="text-xs text-red-400">+{relicEffect.bonuses.generalBonuses.strength} Strength</p>
+                    <div>+{relicEffect.bonuses.generalBonuses.strength} Strength</div>
                   )}
                   {relicEffect.bonuses.generalBonuses.gatheringSpeed && (
-                    <p className="text-xs text-green-400">+{Math.round((relicEffect.bonuses.generalBonuses.gatheringSpeed - 1) * 100)}% Gathering Speed</p>
+                    <div>+{Math.round((relicEffect.bonuses.generalBonuses.gatheringSpeed - 1) * 100)}% Gathering Speed</div>
                   )}
                   {relicEffect.bonuses.generalBonuses.craftingSpeed && (
-                    <p className="text-xs text-purple-400">+{Math.round((relicEffect.bonuses.generalBonuses.craftingSpeed - 1) * 100)}% Crafting Speed</p>
+                    <div>+{Math.round((relicEffect.bonuses.generalBonuses.craftingSpeed - 1) * 100)}% Crafting Speed</div>
                   )}
                   {relicEffect.bonuses.generalBonuses.explorationBonus && (
-                    <p className="text-xs text-orange-400">+{relicEffect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</p>
+                    <div>+{relicEffect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</div>
                   )}
-                </div>
+                </>
               )}
             </div>
           </HoverCardContent>
