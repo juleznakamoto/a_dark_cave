@@ -124,29 +124,37 @@
 }
 
 @keyframes flame-text {
-  0% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
-  }
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
-@keyframes white-fade {
-  0% { -webkit-text-fill-color: white; }
-  100% { -webkit-text-fill-color: transparent; }
+@keyframes flame-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.flame-text-wrapper {
+  animation: flame-fade-in 2s ease-out forwards;
 }
 
 .flame-text {
-  background: linear-gradient(45deg, #ff4500, #ff6347, #ff8c00, #ffa500, #ff4500, #dc143c, #b22222, #ff4500);
+  background: linear-gradient(
+    45deg,
+    #ff4500,
+    #ff6347,
+    #ff8c00,
+    #ffa500,
+    #ff4500,
+    #dc143c,
+    #b22222,
+    #ff4500
+  );
   background-size: 300% 300%;
   -webkit-background-clip: text;
   background-clip: text;
-  -webkit-text-fill-color: white;
-  animation: flame-text 8s ease-in-out infinite, white-fade 2s ease-out forwards;
+  -webkit-text-fill-color: transparent;
+  animation: flame-text 8s ease-in-out infinite;
 }
 
 .fire-hover:hover {
