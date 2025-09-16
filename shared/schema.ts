@@ -41,6 +41,7 @@ export const gameStateSchema = z.object({
     exploredRuins: z.boolean().default(false),
     exploredTemple: z.boolean().default(false),
     exploredCitadel: z.boolean().default(false),
+    starvationActive: z.boolean().default(false),
   }),
   tools: z.object({
     stone_axe: z.boolean().default(false),

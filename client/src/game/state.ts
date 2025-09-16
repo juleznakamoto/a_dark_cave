@@ -98,6 +98,7 @@ const defaultGameState: GameState = {
     exploredRuins: false,
     exploredTemple: false,
     exploredCitadel: false,
+    starvationActive: false,
   },
   tools: {
     stone_axe: false,
