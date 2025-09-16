@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { GameState } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
-import { LogEntry, EventManager } from "@/game/events";
+import { EventManager, LogEntry } from "@/game/rules/events";
 import { executeGameAction } from "@/game/actions";
 import {
   updateResource,
@@ -201,7 +201,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (newState: GameState) => {
-    set({ 
+    set({
       ...newState,
       log: newState.log || [],
     });

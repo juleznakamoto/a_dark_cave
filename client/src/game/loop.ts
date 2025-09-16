@@ -2,7 +2,7 @@ import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction } from "./population";
-import { EventManager } from "./events";
+import { EventManager } from "./rules/events";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;

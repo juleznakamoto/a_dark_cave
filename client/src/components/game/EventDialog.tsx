@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useGameStore } from '@/game/state';
-import { LogEntry } from '@/game/events';
+import { LogEntry } from '@/game/rules/events';
 import {
   Dialog,
   DialogContent,
