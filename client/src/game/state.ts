@@ -509,8 +509,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Close the event dialog
       get().setEventDialog(false);
 
-      // Update population after applying changes
-      setTimeout(() => get().updatePopulation(), 0);
+      // Update population after applying changes - ensure it happens after state update
+      setTimeout(() => {
+        get().updatePopulation();
+      }, 100);
     }
   },
 

@@ -163,21 +163,25 @@ export const gameEvents: Record<string, GameEvent> = {
             };
           } else if (rand < 0.8) {
             // 1 man killed (30% chance)
+            const updatedVillagers = {
+              ...state.villagers,
+              free: Math.max(0, state.villagers.free - 1),
+            };
             return {
-              villagers: {
-                ...state.villagers,
-                free: Math.max(0, state.villagers.free - 1),
-              },
+              villagers: updatedVillagers,
+              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
               _logMessage:
                 "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
             // 2 men killed (20% chance)
+            const updatedVillagers = {
+              ...state.villagers,
+              free: Math.max(0, state.villagers.free - 2),
+            };
             return {
-              villagers: {
-                ...state.villagers,
-                free: Math.max(0, state.villagers.free - 2),
-              },
+              villagers: updatedVillagers,
+              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
               _logMessage:
                 "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
             };
@@ -197,11 +201,13 @@ export const gameEvents: Record<string, GameEvent> = {
             };
           } else {
             // 1 man found dead
+            const updatedVillagers = {
+              ...state.villagers,
+              free: Math.max(0, state.villagers.free - 1),
+            };
             return {
-              villagers: {
-                ...state.villagers,
-                free: Math.max(0, state.villagers.free - 1),
-              },
+              villagers: updatedVillagers,
+              current_population: updatedVillagers.free + updatedVillagers.gatherer + updatedVillagers.hunter,
               _logMessage:
                 "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
             };
