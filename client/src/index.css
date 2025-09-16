@@ -135,9 +135,9 @@
   }
 }
 
-@keyframes white-fade {
-  0% { color: white; }
-  100% { color: transparent; }
+@keyframes white-overlay-fade {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
 }
 
 .flame-text {
@@ -150,13 +150,16 @@
   position: relative;
 }
 
-.flame-text::before {
-  content: attr(data-text);
+.flame-text::after {
+  content: '';
   position: absolute;
   top: 0;
   left: 0;
-  color: white;
-  animation: white-fade 2s ease-out forwards;
+  right: 0;
+  bottom: 0;
+  background: white;
+  animation: white-overlay-fade 2s ease-out forwards;
+  pointer-events: none;
 }
 
 .fire-hover:hover {
