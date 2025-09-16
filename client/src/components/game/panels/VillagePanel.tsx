@@ -9,151 +9,114 @@ export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
   const state = useGameStore.getState();
 
-  const handleBuildHut = () => executeAction('buildHut');
-  const handleBuildLodge = () => executeAction('buildLodge');
-  const handleBuildBlacksmith = () => executeAction('buildBlacksmith');
+  // Define building actions
+  const buildingActions = [
+    { id: 'buildHut', label: 'Wooden Hut' },
+    { id: 'buildLodge', label: 'Lodge' },
+    { id: 'buildBlacksmith', label: 'Blacksmith' },
+  ];
 
-  const canBuildHut = canExecuteAction('buildHut', state);
-  const canBuildLodge = canExecuteAction('buildLodge', state);
-  const canBuildBlacksmith = canExecuteAction('buildBlacksmith', state);
+  // Define population jobs
+  const populationJobs = [
+    { id: 'gatherer', label: 'Gatherer', alwaysShow: true },
+    { id: 'hunter', label: 'Hunter', showWhen: () => buildings.lodge > 0 },
+  ];
+
+  const renderBuildingButton = (actionId: string, label: string) => {
+    const action = gameActions[actionId];
+    if (!action) return null;
+
+    const canExecute = canExecuteAction(actionId, state);
+
+    return (
+      <HoverCard key={actionId}>
+        <HoverCardTrigger asChild>
+          <div>
+            <CooldownButton
+              onClick={() => executeAction(actionId)}
+              cooldownMs={action.cooldown * 1000}
+              data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+              disabled={!canExecute}
+              size="sm"
+            >
+              {label}
+            </CooldownButton>
+          </div>
+        </HoverCardTrigger>
+        <HoverCardContent>
+          <div className="text-sm">
+            <div className="font-medium mb-1">{label}</div>
+            <div className="text-muted-foreground">Cost: {getCostText(actionId, state).replace(/[()]/g, '')}</div>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    );
+  };
+
+  const renderPopulationControl = (jobId: string, label: string) => {
+    const currentCount = villagers[jobId as keyof typeof villagers] || 0;
+
+    return (
+      <div key={jobId} className="flex items-center justify-between">
+        <span className="text-sm">{label} ({getPopulationProductionText(jobId)})</span>
+        <div className="flex items-center gap-2">
+          <Button
+            onClick={() => unassignVillager(jobId)}
+            disabled={currentCount === 0}
+            variant="outline"
+            size="sm"
+            className="h-6 w-6 p-0"
+          >
+            -
+          </Button>
+          <span className="font-mono text-sm w-8 text-center">{currentCount}</span>
+          <Button
+            onClick={() => assignVillager(jobId)}
+            disabled={villagers.free === 0}
+            variant="outline"
+            size="sm"
+            className="h-6 w-6 p-0"
+          >
+            +
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  // Filter visible building actions
+  const visibleBuildingActions = buildingActions.filter(action => 
+    shouldShowAction(action.id, state)
+  );
+
+  // Filter visible population jobs
+  const visiblePopulationJobs = populationJobs.filter(job => {
+    if (job.alwaysShow) return true;
+    if (job.showWhen) return job.showWhen();
+    return false;
+  });
 
   return (
     <div className="space-y-6">
       {/* Build Section */}
-      {(shouldShowAction('buildHut', state) || shouldShowAction('buildLodge', state) || shouldShowAction('buildBlacksmith', state)) && (
+      {visibleBuildingActions.length > 0 && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Build</h2>
           <div className="flex flex-wrap gap-2">
-            {shouldShowAction('buildHut', state) && (
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <CooldownButton
-                      onClick={handleBuildHut}
-                      cooldownMs={gameActions.buildHut.cooldown * 1000}
-                      data-testid="button-build-wooden-hut"
-                      disabled={!canBuildHut}
-                      size="sm"
-                    >
-                      Wooden Hut
-                    </CooldownButton>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Wooden Hut</div>
-                    <div className="text-muted-foreground">Cost: {getCostText('buildHut', state).replace(/[()]/g, '')}</div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            )}
-
-            {shouldShowAction('buildLodge', state) && (
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <CooldownButton
-                      onClick={handleBuildLodge}
-                      cooldownMs={gameActions.buildLodge.cooldown * 1000}
-                      data-testid="button-build-lodge"
-                      disabled={!canBuildLodge}
-                      size="sm"
-                    >
-                      Lodge
-                    </CooldownButton>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Lodge</div>
-                    <div className="text-muted-foreground">Cost: {getCostText('buildLodge', state).replace(/[()]/g, '')}</div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            )}
-
-            {shouldShowAction('buildBlacksmith', state) && (
-              <HoverCard>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <CooldownButton
-                      onClick={handleBuildBlacksmith}
-                      cooldownMs={gameActions.buildBlacksmith.cooldown * 1000}
-                      data-testid="button-build-blacksmith"
-                      disabled={!canBuildBlacksmith}
-                      size="sm"
-                    >
-                      Blacksmith
-                    </CooldownButton>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent>
-                  <div className="text-sm">
-                    <div className="font-medium mb-1">Blacksmith</div>
-                    <div className="text-muted-foreground">Cost: {getCostText('buildBlacksmith', state).replace(/[()]/g, '')}</div>
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
+            {visibleBuildingActions.map(action => 
+              renderBuildingButton(action.id, action.label)
             )}
           </div>
         </div>
       )}
 
       {/* Rule Section */}
-      {story.seen?.hasVillagers && (
+      {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-4">
           <h2 className="text-lg font-medium border-b border-border pb-2">Rule</h2>
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <span className="text-sm">Gatherer ({getPopulationProductionText('gatherer')})</span>
-              <div className="flex items-center gap-2">
-                <Button
-                  onClick={() => unassignVillager('gatherer')}
-                  disabled={villagers.gatherer === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  -
-                </Button>
-                <span className="font-mono text-sm w-8 text-center">{villagers.gatherer}</span>
-                <Button
-                  onClick={() => assignVillager('gatherer')}
-                  disabled={villagers.free === 0}
-                  variant="outline"
-                  size="sm"
-                  className="h-6 w-6 p-0"
-                >
-                  +
-                </Button>
-              </div>
-            </div>
-
-            {buildings.lodge > 0 && (
-              <div className="flex items-center justify-between">
-                <span className="text-sm">Hunter ({getPopulationProductionText('hunter')})</span>
-                <div className="flex items-center gap-2">
-                  <Button
-                    onClick={() => unassignVillager('hunter')}
-                    disabled={villagers.hunter === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    -
-                  </Button>
-                  <span className="font-mono text-sm w-8 text-center">{villagers.hunter}</span>
-                  <Button
-                    onClick={() => assignVillager('hunter')}
-                    disabled={villagers.free === 0}
-                    variant="outline"
-                    size="sm"
-                    className="h-6 w-6 p-0"
-                  >
-                    +
-                  </Button>
-                </div>
-              </div>
+            {visiblePopulationJobs.map(job => 
+              renderPopulationControl(job.id, job.label)
             )}
           </div>
         </div>
