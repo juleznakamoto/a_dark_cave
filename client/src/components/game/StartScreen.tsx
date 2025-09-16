@@ -14,7 +14,7 @@ export default function StartScreen() {
       <main className="flex-1 flex flex-col items-center justify-center">
         <div className="text-center mb-8">
           <p className="text-lg text-gray-300 leading-relaxed">
-            A dark cave. The air is cold and stale. You can barely make out the shapes around you.
+            A dark cave.<br></br>The air is cold and stale.<br></br>You can barely make out the shapes around you.
           </p>
         </div>
         <Button
