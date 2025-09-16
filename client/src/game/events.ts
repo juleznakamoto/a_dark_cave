@@ -458,26 +458,19 @@ export const gameEvents: Record<string, GameEvent> = {
             };
           }
 
-          // Hiding is less effective, higher casualty rate (80%), only reduced by 3% per strength
+          // Hiding is more effective, lower casualty rate (60%)
           const strength = state.stats.strength || 0;
-          const casualtyChance = Math.max(0.3, 0.8 - (strength * 0.03));
+          const casualtyChance = Math.max(0.1, 0.6 - (strength * 0.02));
           
           let villagerDeaths = 0;
-          let foodLoss = Math.floor(Math.random() * 151) + 50; // 50-200 food loss (more than defending)
+          let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
           let lodgeDestroyed = false;
           
-          // Determine villager casualties (1-6 potential deaths)
-          const maxPotentialDeaths = Math.min(6, currentPopulation);
+          // Determine villager casualties (1-4 potential deaths)
+          const maxPotentialDeaths = Math.min(4, currentPopulation);
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
               villagerDeaths++;
-            }
-          }
-
-          // If 2+ villagers die and there's a hut, 70% chance to destroy it (higher than defending)
-          if (villagerDeaths >= 2 && state.buildings.hut > 0) {
-            if (Math.random() < 0.7) {
-              lodgeDestroyed = true;
             }
           }
 
@@ -516,10 +509,6 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
-
-          if (lodgeDestroyed) {
-            message += " The possessed wolves tear apart one of your huts in their supernatural fury.";
-          }
 
           return {
             villagers: updatedVillagers,
