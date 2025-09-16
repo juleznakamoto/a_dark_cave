@@ -83,7 +83,6 @@ const defaultGameState: GameState = {
     luck: 0,
     strength: 0,
     knowledge: 0,
-    ventureDeeper: 0,
   },
   flags: {
     fireLit: false,

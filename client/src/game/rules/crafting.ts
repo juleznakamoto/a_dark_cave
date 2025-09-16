@@ -248,7 +248,6 @@ export const craftingActions: Record<string, Action> = {
     label: "Iron Lantern",
     show_when: {
       "buildings.blacksmith": 1,
-      "stats.ventureDeeper": 5,
       "tools.iron_lantern": false,
     },
     cost: {
