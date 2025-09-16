@@ -19,11 +19,11 @@ export default function GameTabs() {
   }, [villagers, buildings.hut, updatePopulation]);
 
   return (
-    <nav className="w-48 border-r border-border bg-muted/30 h-full flex flex-col">
+    <nav className="w-48 border-r border-border h-full flex flex-col">
       <div>
         <Button
-          variant={activeTab === "cave" ? "default" : "ghost"}
-          className={`w-full justify-start text-sm ${activeTab === "cave" ? "bg-muted/50" : ""}`}
+          variant="ghost"
+          className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "cave" ? "font-bold" : ""}`}
           onClick={() => setActiveTab("cave")}
           data-testid="tab-cave"
           size="sm"
@@ -33,8 +33,8 @@ export default function GameTabs() {
 
         {flags.villageUnlocked && (
           <Button
-            variant={activeTab === "village" ? "default" : "ghost"}
-            className={`w-full justify-start text-sm ${activeTab === "village" ? "bg-muted/50" : ""}`}
+            variant="ghost"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "village" ? "font-bold" : ""}`}
             onClick={() => setActiveTab("village")}
             data-testid="tab-village"
             size="sm"
@@ -45,8 +45,8 @@ export default function GameTabs() {
 
         {flags.forestUnlocked && (
           <Button
-            variant={activeTab === "forest" ? "default" : "ghost"}
-            className={`w-full justify-start text-sm ${activeTab === "forest" ? "bg-muted/50" : ""}`}
+            variant="ghost"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "forest" ? "font-bold" : ""}`}
             onClick={() => setActiveTab("forest")}
             data-testid="tab-forest"
             size="sm"
@@ -57,8 +57,8 @@ export default function GameTabs() {
 
         {flags.worldDiscovered && (
           <Button
-            variant={activeTab === "world" ? "default" : "ghost"}
-            className={`w-full justify-start text-sm ${activeTab === "world" ? "bg-muted/50" : ""}`}
+            variant="ghost"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "world" ? "font-bold" : ""}`}
             onClick={() => setActiveTab("world")}
             data-testid="tab-world"
             size="sm"
