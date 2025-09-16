@@ -451,39 +451,25 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
-  // Check tools - only add best axe, pickaxe, and lantern
-  const bestAxe = getBestTool(state, "axe");
-  const bestPickaxe = getBestTool(state, "pickaxe");
-  const bestLantern = getBestTool(state, "lantern");
-
-  // Add best tools
-  if (bestAxe && toolEffects[bestAxe]) {
-    activeEffects.push(toolEffects[bestAxe]);
-  }
-  if (bestPickaxe && toolEffects[bestPickaxe]) {
-    activeEffects.push(toolEffects[bestPickaxe]);
-  }
-  if (bestLantern && toolEffects[bestLantern]) {
-    activeEffects.push(toolEffects[bestLantern]);
-  }
-
-  // Add other tools (non-hierarchical)
-  Object.entries(state.tools).forEach(([toolId, owned]) => {
-    if (
-      owned &&
-      toolEffects[toolId] &&
-      !AXE_HIERARCHY.includes(toolId) &&
-      !PICKAXE_HIERARCHY.includes(toolId) &&
-      !LANTERN_HIERARCHY.includes(toolId)
-    ) {
-      activeEffects.push(toolEffects[toolId]);
+  // Check clothing effects
+  Object.entries(state.clothing || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
     }
   });
 
-  // Check clothing
-  Object.entries(state.clothing).forEach(([clothingId, owned]) => {
-    if (owned && clothingEffects[clothingId]) {
-      activeEffects.push(clothingEffects[clothingId]);
+  // Check relic effects (relics use the same effect definitions as clothing)
+  Object.entries(state.relics || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
+    }
+  });
+
+  // Check tool effects
+  const displayTools = getDisplayTools(state);
+  Object.keys(displayTools).forEach((toolKey) => {
+    if (toolEffects[toolKey]) {
+      activeEffects.push(toolEffects[toolKey]);
     }
   });
 
