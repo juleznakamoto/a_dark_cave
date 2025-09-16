@@ -10,7 +10,7 @@ export default function CavePanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
-      title: null, // No header for main actions
+      title: 'Explore',
       actions: [
         { id: 'lightFire', label: 'Light Fire', showWhen: !flags.fireLit },
         { id: 'gatherWood', label: 'Gather Wood' },
