@@ -32,12 +32,11 @@ export default function GameContainer() {
           <LogPanel />
         </div>
 
-        {/* Horizontal Game Tabs */}
-        <GameTabs />
-
-        {/* Main Content Area - Side Panel and Action Panel */}
+        {/* Main Content Area - Sidebar and Panel */}
         <div className="flex flex-1 min-h-0">
-          <section className="flex-1 pr-6 overflow-y-auto">
+          <GameTabs />
+
+          <section className="flex-1 pl-6 overflow-y-auto">
             {activeTab === 'cave' && <CavePanel />}
             {activeTab === 'village' && <VillagePanel />}
             {activeTab === 'forest' && <ForestPanel />}

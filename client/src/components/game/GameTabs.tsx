@@ -19,62 +19,58 @@ export default function GameTabs() {
   }, [villagers, buildings.hut, updatePopulation]);
 
   return (
-    <div className="flex flex-col">
-      <nav className="border-b border-border mb-6">
-        <div className="flex space-x-1 p-1">
+    <nav className="w-48 border-r border-border h-full flex flex-col">
+      <div>
+        <Button
+          variant="ghost"
+          className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "cave" ? "font-bold" : ""}`}
+          onClick={() => setActiveTab("cave")}
+          data-testid="tab-cave"
+          size="sm"
+        >
+          The Cave
+        </Button>
+
+        {flags.villageUnlocked && (
           <Button
             variant="ghost"
-            className={`px-4 py-2 text-sm bg-transparent hover:bg-transparent ${activeTab === "cave" ? "font-bold border-b-2 border-primary" : ""}`}
-            onClick={() => setActiveTab("cave")}
-            data-testid="tab-cave"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "village" ? "font-bold" : ""}`}
+            onClick={() => setActiveTab("village")}
+            data-testid="tab-village"
             size="sm"
           >
-            The Cave
+            The Village
           </Button>
+        )}
 
-          {flags.villageUnlocked && (
-            <Button
-              variant="ghost"
-              className={`px-4 py-2 text-sm bg-transparent hover:bg-transparent ${activeTab === "village" ? "font-bold border-b-2 border-primary" : ""}`}
-              onClick={() => setActiveTab("village")}
-              data-testid="tab-village"
-              size="sm"
-            >
-              The Village
-            </Button>
-          )}
+        {flags.forestUnlocked && (
+          <Button
+            variant="ghost"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "forest" ? "font-bold" : ""}`}
+            onClick={() => setActiveTab("forest")}
+            data-testid="tab-forest"
+            size="sm"
+          >
+            The Forest
+          </Button>
+        )}
 
-          {flags.forestUnlocked && (
-            <Button
-              variant="ghost"
-              className={`px-4 py-2 text-sm bg-transparent hover:bg-transparent ${activeTab === "forest" ? "font-bold border-b-2 border-primary" : ""}`}
-              onClick={() => setActiveTab("forest")}
-              data-testid="tab-forest"
-              size="sm"
-            >
-              The Forest
-            </Button>
-          )}
-
-          {flags.worldDiscovered && (
-            <Button
-              variant="ghost"
-              className={`px-4 py-2 text-sm bg-transparent hover:bg-transparent ${activeTab === "world" ? "font-bold border-b-2 border-primary" : ""}`}
-              onClick={() => setActiveTab("world")}
-              data-testid="tab-world"
-              size="sm"
-            >
-              The World
-            </Button>
-          )}
-        </div>
-      </nav>
-
-      <div className="flex flex-1 min-h-0">
-        <div className="w-48 border-r border-border pr-6">
-          <SidePanel />
-        </div>
+        {flags.worldDiscovered && (
+          <Button
+            variant="ghost"
+            className={`w-full justify-start text-sm bg-transparent hover:bg-transparent ${activeTab === "world" ? "font-bold" : ""}`}
+            onClick={() => setActiveTab("world")}
+            data-testid="tab-world"
+            size="sm"
+          >
+            The World
+          </Button>
+        )}
       </div>
-    </div>
+
+      <div className="flex-1 min-h-0">
+        <SidePanel />
+      </div>
+    </nav>
   );
 }
