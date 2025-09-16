@@ -369,6 +369,21 @@ export const gameEvents: Record<string, GameEvent> = {
           }
 
           const strength = state.stats.strength || 0;
+          
+          // Check for victory: 10% base chance + 1% per strength point
+          const victoryChance = 0.1 + (strength * 0.01);
+          
+          if (Math.random() < victoryChance) {
+            // Victory! Get Alpha's Hide
+            return {
+              clothing: {
+                ...state.clothing,
+                alphas_hide: true,
+              },
+              _logMessage: "Against all odds, your village manages to defeat the wolf pack! In a fierce battle, you slay the alpha wolf and claim its hide as a trophy. The Alpha's Hide radiates with primal power, granting you both fortune and strength.",
+            };
+          }
+
           // Base chance of casualties (70%), reduced by 5% per strength point, minimum 20%
           const casualtyChance = Math.max(0.2, 0.7 - (strength * 0.02));
           

@@ -357,6 +357,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  alphas_hide: {
+    id: "alphas_hide",
+    name: "Alpha's Hide",
+    description:
+      "The hide of the wolf pack leader, imbued with primal power (+3 Luck, +5 Strength)",
+    bonuses: {
+      generalBonuses: {
+        luck: 3,
+        strength: 5,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
