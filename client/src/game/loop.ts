@@ -160,7 +160,6 @@ function handleMinerProduction() {
   });
 }
 
-
 function handlePopulationSurvival() {
   const state = useGameStore.getState();
 

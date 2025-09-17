@@ -682,7 +682,7 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "time",
     timeProbability: 60,
     message:
-      "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead — scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
+      "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead, scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
     triggered: false,
     priority: 1,
     repeatable: false,
