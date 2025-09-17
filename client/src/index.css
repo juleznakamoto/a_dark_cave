@@ -146,29 +146,9 @@
   100% { background-position: 0% 50%; }
 }
 
-.flame-text {
-  background: linear-gradient(
-    45deg,
-    #ff4500,
-    #ff6347,
-    #ff8c00,
-    #ffa500,
-    #ff4500,
-    #dc143c,
-    #b22222,
-    #ff4500
-  );
-  background-size: 300% 300%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: flame-text 10s ease-in-out infinite;
-}
-
 .fire-hover:hover {
   background: linear-gradient(
-    45deg,
-    #ff4500,
+    50deg,
     #ff6347,
     #ff8c00,
     #ffa500,
@@ -177,10 +157,9 @@
     #b22222,
     #ff4500
   );
-  background-size: 300% 300%;
+  background-size: 250% 250%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: flame-text 10s ease-in-out infinite;
-  transition: all 4s ease;
+  animation: flame-text 5s ease-in-out infinite;
 }
