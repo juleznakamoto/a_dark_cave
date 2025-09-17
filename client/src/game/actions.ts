@@ -401,26 +401,6 @@ function handleCraftWarBow(state: GameState, result: ActionResult): ActionResult
   return result;
 }
 
-function handleHunt(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('hunt', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
 function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftMasterBow', state);
   Object.assign(result.stateUpdates, effectUpdates);
