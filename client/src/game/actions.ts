@@ -281,16 +281,6 @@ function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResu
     type: 'system',
   });
 
-  // Add forest unlock message if forest is being unlocked
-  if (effectUpdates.flags && effectUpdates.flags.forestUnlocked && !state.flags.forestUnlocked) {
-    result.logEntries!.push({
-      id: `forest-unlocked-${Date.now()}`,
-      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a place to hunt.',
-      timestamp: Date.now(),
-      type: 'system',
-    });
-  }
-
   return result;
 }
 
@@ -405,6 +395,17 @@ function handleHunt(state: GameState, result: ActionResult): ActionResult {
 function handleCraftCrudeBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftCrudeBow', state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  // Add forest unlock message when crude bow is crafted
+  if (effectUpdates.flags && effectUpdates.flags.forestUnlocked && !state.flags.forestUnlocked) {
+    result.logEntries!.push({
+      id: `forest-unlocked-${Date.now()}`,
+      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a place to hunt.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
   return result;
 }
 
