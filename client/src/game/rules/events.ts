@@ -151,7 +151,7 @@ export const gameEvents: Record<string, GameEvent> = {
           const strength = state.stats.strength || 0;
           const luck = state.stats.luck || 0;
           // Base 50% chance
-          const mantleChance = 0.5 + (strength + luck) * 0.005;
+          const mantleChance = 0.3 + (strength + luck) * 0.005;
 
           const rand = Math.random();
           if (rand < mantleChance) {
