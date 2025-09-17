@@ -1,3 +1,4 @@
+
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -13,43 +14,33 @@ import { useState, useEffect } from 'react';
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
+  const [previousFlags, setPreviousFlags] = useState(flags);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
-    const animatedTabsKey = 'gameTabsAnimated';
-    const animatedTabs = JSON.parse(localStorage.getItem(animatedTabsKey) || '{}');
     const newlyUnlocked: string[] = [];
-
-    // Check if village is unlocked and hasn't been animated yet
-    if (flags.villageUnlocked && !animatedTabs.village) {
+    
+    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
-      animatedTabs.village = true;
     }
-
-    // Check if forest is unlocked and hasn't been animated yet
-    if (flags.forestUnlocked && !animatedTabs.forest) {
+    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
       newlyUnlocked.push('forest');
-      animatedTabs.forest = true;
     }
-
-    // Check if world is unlocked and hasn't been animated yet
-    if (flags.worldDiscovered && !animatedTabs.world) {
+    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
       newlyUnlocked.push('world');
-      animatedTabs.world = true;
     }
 
     if (newlyUnlocked.length > 0) {
-      // Save to localStorage that these tabs have been animated
-      localStorage.setItem(animatedTabsKey, JSON.stringify(animatedTabs));
-
       setAnimatingTabs(new Set(newlyUnlocked));
-
+      
       // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
       }, 800);
     }
-  }, [flags.villageUnlocked, flags.forestUnlocked, flags.worldDiscovered]);
+
+    setPreviousFlags(flags);
+  }, [flags, previousFlags]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
