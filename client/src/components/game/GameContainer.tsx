@@ -9,56 +9,38 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const hasAnimatedRef = useRef<Set<string>>(new Set());
+  const [previousFlags, setPreviousFlags] = useState(flags);
 
-  // Load previously animated tabs from localStorage on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('animatedTabs');
-    if (saved) {
-      try {
-        const parsedTabs = JSON.parse(saved);
-        hasAnimatedRef.current = new Set(parsedTabs);
-      } catch (e) {
-        // Ignore errors
-      }
-    }
-  }, []);
-
-  // Check for newly unlocked tabs and animate them once
+  // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const newlyUnlocked: string[] = [];
     
-    if (flags.villageUnlocked && !hasAnimatedRef.current.has('village')) {
+    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
-      hasAnimatedRef.current.add('village');
     }
-    if (flags.forestUnlocked && !hasAnimatedRef.current.has('forest')) {
+    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
       newlyUnlocked.push('forest');
-      hasAnimatedRef.current.add('forest');
     }
-    if (flags.worldDiscovered && !hasAnimatedRef.current.has('world')) {
+    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
       newlyUnlocked.push('world');
-      hasAnimatedRef.current.add('world');
     }
 
     if (newlyUnlocked.length > 0) {
-      // Save to localStorage
-      localStorage.setItem('animatedTabs', JSON.stringify([...hasAnimatedRef.current]));
-      
-      // Trigger animation
       setAnimatingTabs(new Set(newlyUnlocked));
       
-      // Remove animation after it completes
+      // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
       }, 800);
     }
-  }, [flags.villageUnlocked, flags.forestUnlocked, flags.worldDiscovered]);
+
+    setPreviousFlags(flags);
+  }, [flags, previousFlags]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
