@@ -14,23 +14,35 @@ import { useState, useEffect } from 'react';
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const [previousFlags, setPreviousFlags] = useState(flags);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
+    const animatedTabsKey = 'gameTabsAnimated';
+    const animatedTabs = JSON.parse(localStorage.getItem(animatedTabsKey) || '{}');
     const newlyUnlocked: string[] = [];
     
-    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
+    // Check if village is unlocked and hasn't been animated yet
+    if (flags.villageUnlocked && !animatedTabs.village) {
       newlyUnlocked.push('village');
+      animatedTabs.village = true;
     }
-    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
+    
+    // Check if forest is unlocked and hasn't been animated yet
+    if (flags.forestUnlocked && !animatedTabs.forest) {
       newlyUnlocked.push('forest');
+      animatedTabs.forest = true;
     }
-    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
+    
+    // Check if world is unlocked and hasn't been animated yet
+    if (flags.worldDiscovered && !animatedTabs.world) {
       newlyUnlocked.push('world');
+      animatedTabs.world = true;
     }
 
     if (newlyUnlocked.length > 0) {
+      // Save to localStorage that these tabs have been animated
+      localStorage.setItem(animatedTabsKey, JSON.stringify(animatedTabs));
+      
       setAnimatingTabs(new Set(newlyUnlocked));
       
       // Remove animation class after animation completes
@@ -38,9 +50,7 @@ export default function GameContainer() {
         setAnimatingTabs(new Set());
       }, 800);
     }
-
-    setPreviousFlags(flags);
-  }, [flags, previousFlags]);
+  }, [flags.villageUnlocked, flags.forestUnlocked, flags.worldDiscovered]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
