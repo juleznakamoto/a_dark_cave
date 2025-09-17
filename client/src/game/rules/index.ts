@@ -1,26 +1,25 @@
+
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability } from "../effects";
-import { basicActions } from "./actions";
-import { craftingToolsActions } from './craftingTools';
-import { craftingWeaponsActions } from './craftingWeapons';
-import { forestActions } from './forestActions';
-import { buildingActions } from "./buildings";
-import { caveActions } from "./caveActions";
-import { forgingActions } from "./forging";
-import { miningActions } from "./mining";
+import { caveExploreActions } from './caveExploreActions';
+import { caveMiningActions } from './caveMiningActions';
+import { caveForgingActions } from './caveForgingActions';
+import { caveCraftTools } from './caveCraftTools';
+import { caveCraftWeapons } from './caveCraftWeapons';
+import { villageBuildActions } from './villageBuildActions';
+import { forestVentureActions } from './forestVentureActions';
 import { getActionBonuses } from "../effects";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
-  ...basicActions,
-  ...caveActions,
-  ...craftingToolsActions,
-  ...craftingWeaponsActions,
-  ...forgingActions,
-  ...miningActions,
-  ...buildingActions,
-  ...forestActions,
+  ...villageBuildActions,
+  ...caveExploreActions,
+  ...caveMiningActions,
+  ...caveForgingActions,
+  ...caveCraftTools,
+  ...caveCraftWeapons,
+  ...forestVentureActions,
 };
 
 // Utility function to get the next building level
