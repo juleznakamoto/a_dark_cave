@@ -100,11 +100,11 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border select-none;
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground select-none;
   }
 }
 
