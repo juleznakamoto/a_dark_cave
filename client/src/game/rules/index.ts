@@ -1,7 +1,7 @@
 
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { getTotalLuck, applyLuckToprobability } from "../effects";
+import { getTotalLuck, applyLuckToprobability, getActionBonuses } from "./effects";
 import { caveExploreActions } from './caveExploreActions';
 import { caveMiningActions } from './caveMiningActions';
 import { caveForgingActions } from './caveForgingActions';
@@ -9,7 +9,6 @@ import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { villageBuildActions } from './villageBuildActions';
 import { forestVentureActions } from './forestVentureActions';
-import { getActionBonuses } from "../effects";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
