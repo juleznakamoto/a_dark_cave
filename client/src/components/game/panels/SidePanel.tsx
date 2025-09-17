@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength } from '@/game/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
