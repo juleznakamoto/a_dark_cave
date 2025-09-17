@@ -9,24 +9,24 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const prevFlagsRef = useRef(flags);
+  const [previousFlags, setPreviousFlags] = useState(flags);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const newlyUnlocked: string[] = [];
     
-    if (flags.villageUnlocked && !prevFlagsRef.current.villageUnlocked) {
+    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
     }
-    if (flags.forestUnlocked && !prevFlagsRef.current.forestUnlocked) {
+    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
       newlyUnlocked.push('forest');
     }
-    if (flags.worldDiscovered && !prevFlagsRef.current.worldDiscovered) {
+    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
       newlyUnlocked.push('world');
     }
 
@@ -39,8 +39,8 @@ export default function GameContainer() {
       }, 800);
     }
 
-    prevFlagsRef.current = flags;
-  }, [flags]);
+    setPreviousFlags(flags);
+  }, [flags, previousFlags]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
