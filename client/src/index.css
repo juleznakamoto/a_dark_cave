@@ -119,6 +119,10 @@
   }
 }
 
+.animate-fade-in {
+  animation: fade-in 5s ease-in-out forwards;
+}
+
 @keyframes flame-text {
   0%   { background-position: 0% 50%; }
   50%  { background-position: 100% 50%; }
