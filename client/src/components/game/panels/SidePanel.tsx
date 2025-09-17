@@ -76,7 +76,7 @@ export default function SidePanel() {
   const populationItems = Object.entries(villagers)
     .map(([key, value]) => ({
       id: key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
       value: value ?? 0,
       testId: `population-${key}`,
       visible: (value ?? 0) > 0
