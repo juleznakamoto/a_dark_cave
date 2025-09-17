@@ -119,8 +119,7 @@ export const gameEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     message: [
       "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
-      "A gift gleams in the morning mist. None know who or what brought it.",
-      "Iron rests where once was bare earth, as though conjured from realms unseen.",
+      "A gift of iron gleams in the morning mist. None know who or what brought it."
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 2,
