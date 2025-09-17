@@ -1,4 +1,3 @@
-
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -14,33 +13,53 @@ import { useState, useEffect } from 'react';
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const [previousFlags, setPreviousFlags] = useState(flags);
+  const [previousFlags, setPreviousFlags] = useState({
+    villageUnlocked: false,
+    forestUnlocked: false,
+    worldDiscovered: false
+  });
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
+    const animatedTabsKey = 'gameTabsAnimated';
+    const animatedTabs = JSON.parse(localStorage.getItem(animatedTabsKey) || '{}');
     const newlyUnlocked: string[] = [];
-    
-    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
+
+    // Only animate if the flag just changed from false to true AND hasn't been animated before
+    if (flags.villageUnlocked && !previousFlags.villageUnlocked && !animatedTabs.village) {
       newlyUnlocked.push('village');
+      animatedTabs.village = true;
     }
-    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
+
+    if (flags.forestUnlocked && !previousFlags.forestUnlocked && !animatedTabs.forest) {
       newlyUnlocked.push('forest');
+      animatedTabs.forest = true;
     }
-    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
+
+    if (flags.worldDiscovered && !previousFlags.worldDiscovered && !animatedTabs.world) {
       newlyUnlocked.push('world');
+      animatedTabs.world = true;
     }
 
     if (newlyUnlocked.length > 0) {
+      // Save to localStorage that these tabs have been animated
+      localStorage.setItem(animatedTabsKey, JSON.stringify(animatedTabs));
+
       setAnimatingTabs(new Set(newlyUnlocked));
-      
+
       // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
       }, 800);
     }
 
-    setPreviousFlags(flags);
-  }, [flags, previousFlags]);
+    // Update previous flags for next comparison
+    setPreviousFlags({
+      villageUnlocked: flags.villageUnlocked,
+      forestUnlocked: flags.forestUnlocked,
+      worldDiscovered: flags.worldDiscovered
+    });
+  }, [flags.villageUnlocked, flags.forestUnlocked, flags.worldDiscovered, previousFlags.villageUnlocked, previousFlags.forestUnlocked, previousFlags.worldDiscovered]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
