@@ -62,6 +62,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleVentureDeeper(state, result);
     case 'hunt':
       return handleHunt(state, result);
+    case 'craftCrudeBow':
+      return handleCraftCrudeBow(state, result);
     default:
       return result;
   }
@@ -363,6 +365,12 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
 
 function handleHunt(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('hunt', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftCrudeBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftCrudeBow', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
