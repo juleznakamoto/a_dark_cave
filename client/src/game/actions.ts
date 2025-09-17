@@ -73,6 +73,23 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
     default:
+      // For actions not explicitly handled above, use generic rule-based processing
+      const effectUpdates = applyActionEffects(actionId, state);
+
+      // Handle any log messages from probability effects
+      if (effectUpdates.logMessages) {
+        effectUpdates.logMessages.forEach((message: string) => {
+          result.logEntries!.push({
+            id: `probability-effect-${Date.now()}-${Math.random()}`,
+            message: message,
+            timestamp: Date.now(),
+            type: 'system',
+          });
+        });
+        delete effectUpdates.logMessages;
+      }
+
+      Object.assign(result.stateUpdates, effectUpdates);
       return result;
   }
 }
