@@ -213,7 +213,9 @@ export const applyActionEffects = (
                   ? { ...state.buildings }
                   : pathParts[i] === "story"
                     ? { ...state.story, seen: { ...state.story.seen } }
-                    : {};
+                    : pathParts[i] === "relics"
+                      ? { ...state.relics }
+                      : {};
       }
       current = current[part];
     }

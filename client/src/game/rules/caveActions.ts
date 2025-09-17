@@ -6,14 +6,14 @@ const caveRelics = {
   exploreCave: [
     {
       key: "tarnished_amulet",
-      probability: 0.075,
+      probability: 0.05,
       logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
     },
   ],
   ventureDeeper: [
     {
       key: "bloodstained_belt",
-      probability: 0.05,
+      probability: 0.04,
       logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
   ],
