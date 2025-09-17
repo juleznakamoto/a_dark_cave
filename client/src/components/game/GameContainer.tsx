@@ -9,38 +9,9 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
-import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
-  const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const [previousFlags, setPreviousFlags] = useState(flags);
-
-  // Track when new tabs are unlocked and trigger animations
-  useEffect(() => {
-    const newlyUnlocked: string[] = [];
-    
-    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
-      newlyUnlocked.push('village');
-    }
-    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
-      newlyUnlocked.push('forest');
-    }
-    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
-      newlyUnlocked.push('world');
-    }
-
-    if (newlyUnlocked.length > 0) {
-      setAnimatingTabs(new Set(newlyUnlocked));
-      
-      // Remove animation class after animation completes
-      setTimeout(() => {
-        setAnimatingTabs(new Set());
-      }, 800);
-    }
-
-    setPreviousFlags(flags);
-  }, [flags, previousFlags]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -87,7 +58,7 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "village" ? "font-bold " : ""
-                    } ${animatingTabs.has('village') ? 'tab-fade-in' : ''}`}
+                    }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
@@ -99,7 +70,7 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "forest" ? "font-bold " : ""
-                    } ${animatingTabs.has('forest') ? 'tab-fade-in' : ''}`}
+                    }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
                   >
@@ -109,9 +80,9 @@ export default function GameContainer() {
 
                 {flags.worldDiscovered && (
                   <button
-                    className={` py-2 text-sm bg-transparent ${
+                    className={`py-2 text-sm bg-transparent ${
                       activeTab === "world" ? "font-bold " : ""
-                    } ${animatingTabs.has('world') ? 'tab-fade-in' : ''}`}
+                    }`}
                     onClick={() => setActiveTab("world")}
                     data-testid="tab-world"
                   >
