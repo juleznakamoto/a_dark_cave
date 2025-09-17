@@ -397,8 +397,8 @@ export const gameEvents: Record<string, GameEvent> = {
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide
             return {
-              clothing: {
-                ...state.clothing,
+              relics: {
+                ...state.relics,
                 alphas_hide: true,
               },
               _logMessage:
