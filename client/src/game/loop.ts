@@ -167,7 +167,7 @@ function handlePopulationSurvival() {
   // Pause survival checks when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const totalPopulation = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
+  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
 
   if (totalPopulation === 0) return;
 
@@ -240,23 +240,16 @@ function handlePopulationSurvival() {
     let remainingDeaths = totalDeaths;
     const currentVillagers = { ...state.villagers };
 
-    // Remove villagers starting with free, then gatherers, then hunters
-    if (remainingDeaths > 0 && currentVillagers.free > 0) {
-      const freeDeaths = Math.min(remainingDeaths, currentVillagers.free);
-      currentVillagers.free -= freeDeaths;
-      remainingDeaths -= freeDeaths;
-    }
-
-    if (remainingDeaths > 0 && currentVillagers.gatherer > 0) {
-      const gathererDeaths = Math.min(remainingDeaths, currentVillagers.gatherer);
-      currentVillagers.gatherer -= gathererDeaths;
-      remainingDeaths -= gathererDeaths;
-    }
-
-    if (remainingDeaths > 0 && currentVillagers.hunter > 0) {
-      const hunterDeaths = Math.min(remainingDeaths, currentVillagers.hunter);
-      currentVillagers.hunter -= hunterDeaths;
-      remainingDeaths -= hunterDeaths;
+    // Remove villagers starting with free, then others in order of assignment preference
+    const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner'];
+    
+    for (const villagerType of villagerTypes) {
+      if (remainingDeaths > 0 && currentVillagers[villagerType as keyof typeof currentVillagers] > 0) {
+        const deaths = Math.min(remainingDeaths, currentVillagers[villagerType as keyof typeof currentVillagers]);
+        currentVillagers[villagerType as keyof typeof currentVillagers] -= deaths;
+        remainingDeaths -= deaths;
+      }
+      if (remainingDeaths === 0) break;
     }
 
     // Update the state

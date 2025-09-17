@@ -35,12 +35,13 @@ export function updateFlag(
 }
 
 export function updatePopulationCounts(state: GameState): Partial<GameState> {
-  const current = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
-  const total = state.buildings.hut * 2;
+  // Calculate current population by summing all villager types
+  const current_population = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const total_population = current_population; // For now, same as current
 
   return {
-    current_population: current,
-    total_population: total
+    current_population,
+    total_population
   };
 }
 
