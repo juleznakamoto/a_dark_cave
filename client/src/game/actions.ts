@@ -92,6 +92,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCitadel(state, result);
     case 'mineSulfur':
       return handleMineSulfur(state, result);
+    case 'forgSteel':
+      return handleForgSteel(state, result);
     default:
       return result;
   }
@@ -395,7 +397,7 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
 
 function handleHunt(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('hunt', state);
-  
+
   // Apply weapon bonuses for hunting
   const actionBonuses = getActionBonuses('hunt', state);
   if (actionBonuses.resourceBonus && actionBonuses.resourceBonus.food) {
@@ -404,7 +406,7 @@ function handleHunt(state: GameState, result: ActionResult): ActionResult {
     }
     effectUpdates.resources.food = (effectUpdates.resources.food || 0) + actionBonuses.resourceBonus.food;
   }
-  
+
   Object.assign(result.stateUpdates, effectUpdates);
 
   return result;
@@ -609,6 +611,36 @@ function handleMineSulfur(state: GameState, result: ActionResult): ActionResult 
       });
     });
     delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleForgSteel(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('forgSteel', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for steel forging
+  if (!state.story.seen.hasSteel) {
+    result.logEntries!.push({
+      id: `steel-forged-${Date.now()}`,
+      message: 'The blacksmith forge roars to life as coal and iron merge in the intense heat. The resulting steel gleams with superior strength and durability.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
