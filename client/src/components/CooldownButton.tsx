@@ -50,7 +50,7 @@ export default function CooldownButton({
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 ${
+        className={`relative overflow-hidden transition-all duration-200 select-none ${
           showCooldownVisual ? 'opacity-60 cursor-not-allowed' : ''
         } ${className}`}
         data-testid={testId}
