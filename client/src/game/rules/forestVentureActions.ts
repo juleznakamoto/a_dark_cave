@@ -10,7 +10,7 @@ export const forestVentureActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": "random(5,10)",
+      "resources.food": "random(1,5)",
       "story.seen.hasHunted": true,
       "relics.blacksmith_hammer": { 
         probability: 0.0025, 

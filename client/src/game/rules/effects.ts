@@ -340,7 +340,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 500 },
+          resourceBonus: { food: 5 },
         },
       },
     },
