@@ -107,10 +107,6 @@ export default function VillagePanel() {
     return false;
   });
 
-  // Calculate max hunters if cabin exists, otherwise 0
-  const maxHunters = buildings.cabin > 0 ? 999 : 0; // Assuming 999 is a placeholder for unlimited or a large number
-  const hunterProduction = 5; // Assuming hunter production is 5 food per 15s
-
   return (
     <div className="space-y-6">
       {/* Build Section */}
