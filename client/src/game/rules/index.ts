@@ -185,151 +185,91 @@ function getValueFromPath(path: string, state: GameState): any {
 }
 
 // Utility function to apply action effects
-export const applyActionEffects = (
-  actionId: string,
-  state: GameState,
-): Partial<GameState> => {
+export function applyActionEffects(actionId: string, state: GameState): any {
   const action = gameActions[actionId];
-  if (!action?.effects) return {};
+  if (!action) return {};
 
   const updates: any = {};
+  const logMessages: string[] = [];
 
-  for (const [path, effect] of Object.entries(action.effects)) {
-    const pathParts = path.split(".");
-    let current = updates;
+  // Handle single effects object or level-based effects
+  let effects = action.effects;
+  if (typeof effects === 'object' && !Array.isArray(effects)) {
+    // Check if this is a level-based effect (has numeric keys)
+    const keys = Object.keys(effects);
+    const hasNumericKeys = keys.some(key => !isNaN(Number(key)));
 
-    // Navigate to the correct nested object
-    for (let i = 0; i < pathParts.length - 1; i++) {
-      const part = pathParts[i];
-      if (!current[part]) {
-        current[part] =
-          pathParts[i] === "resources"
-            ? { ...state.resources }
-            : pathParts[i] === "flags"
-              ? { ...state.flags }
-              : pathParts[i] === "tools"
-                ? { ...state.tools }
-                : pathParts[i] === "buildings"
-                  ? { ...state.buildings }
-                  : pathParts[i] === "story"
-                    ? { ...state.story, seen: { ...state.story.seen } }
-                    : {};
+    if (hasNumericKeys) {
+      // This is level-based, get the current level
+      let level = 1;
+      if (action.building && action.id.startsWith('build')) {
+        const buildingType = action.id.replace('build', '').toLowerCase();
+        level = (state.buildings[buildingType as keyof typeof state.buildings] || 0) + 1;
       }
-      current = current[part];
-    }
-
-    const finalKey = pathParts[pathParts.length - 1];
-
-    if (typeof effect === "string" && effect.startsWith("random(")) {
-      // Handle random effects like "random(1,3)"
-      const match = effect.match(/random\((\d+),(\d+)\)/);
-      if (match) {
-        const min = parseInt(match[1]);
-        const max = parseInt(match[2]);
-        let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-
-        // Apply axe bonuses for wood gathering
-        if (actionId === "gatherWood" && finalKey === "wood") {
-          if (state.tools.iron_axe) {
-            baseAmount += 6; // +6 wood if iron_axe is owned
-          } else if (state.tools.stone_axe) {
-            baseAmount += 3; // +3 wood if stone_axe is owned
-          }
-        }
-
-        // Apply pickaxe bonuses for iron mining
-        if (actionId === "mineIron" && finalKey === "iron") {
-          if (state.tools.iron_pickaxe) {
-            baseAmount += 3; // +3 iron if iron_pickaxe is owned
-          }
-        }
-
-        current[finalKey] =
-          (state.resources[finalKey as keyof typeof state.resources] || 0) +
-          baseAmount;
-      }
-    } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
-      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
-      const probabilityEffect = effect as {
-        probability: number;
-        value: number | string | boolean;
-        logMessage?: string;
-        condition?: string;
-        triggerEvent?: string;
-      };
-
-      // Check condition if provided
-      let conditionMet = true;
-      if (probabilityEffect.condition) {
-        conditionMet = evaluateCondition(probabilityEffect.condition, state);
-      }
-
-      const totalLuck = getTotalLuck(state);
-      const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
-      const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
-
-      if (shouldTrigger) {
-        if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
-          // Handle random value within probability effect
-          const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
-          if (match) {
-            const min = parseInt(match[1]);
-            const max = parseInt(match[2]);
-            const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-
-            if (pathParts[0] === "resources") {
-              current[finalKey] =
-                (state.resources[finalKey as keyof typeof state.resources] || 0) +
-                randomAmount;
-            } else {
-              current[finalKey] = randomAmount;
-            }
-          }
-        } else if (typeof probabilityEffect.value === "number") {
-          if (pathParts[0] === "resources") {
-            current[finalKey] =
-              (state.resources[finalKey as keyof typeof state.resources] || 0) +
-              probabilityEffect.value;
-          } else {
-            current[finalKey] = probabilityEffect.value;
-          }
-        } else if (typeof probabilityEffect.value === "boolean") {
-          current[finalKey] = probabilityEffect.value;
-        }
-      }
-
-      // Only store log message if the effect actually triggered
-      if (shouldTrigger && probabilityEffect.logMessage) {
-        if (!updates.logMessages) updates.logMessages = [];
-        updates.logMessages.push(probabilityEffect.logMessage);
-      }
-
-      // Handle event triggering
-      if (shouldTrigger && probabilityEffect.triggerEvent) {
-        if (!updates.triggeredEvents) updates.triggeredEvents = [];
-        updates.triggeredEvents.push(probabilityEffect.triggerEvent);
-      }
-    } else if (typeof effect === "number") {
-      if (pathParts[0] === "resources") {
-        current[finalKey] =
-          (state.resources[finalKey as keyof typeof state.resources] || 0) +
-          effect;
-      } else {
-        current[finalKey] = effect;
-      }
-    } else if (typeof effect === "boolean") {
-      current[finalKey] = effect;
-    } else if (pathParts[0] === "tools") {
-        // Handle tool effects (e.g., equipping/unequipping)
-        current[finalKey] = effect;
-    } else if (pathParts[0] === "clothing") {
-        // Handle clothing effects (e.g., equipping/unequipping)
-        current[finalKey] = effect;
+      effects = effects[level] || {};
     }
   }
 
+  Object.entries(effects).forEach(([path, effect]) => {
+    if (typeof effect === 'object' && effect !== null && 'probability' in effect) {
+      // This is a probability-based effect
+      const random = Math.random();
+      if (random < effect.probability) {
+        let value = effect.value;
+
+        // Handle random value generation
+        if (typeof value === 'string' && value.startsWith('random(')) {
+          const match = value.match(/random\((\d+),(\d+)\)/);
+          if (match) {
+            const min = parseInt(match[1]);
+            const max = parseInt(match[2]);
+            value = Math.floor(Math.random() * (max - min + 1)) + min;
+          }
+        }
+
+        // Apply the effect using nested path
+        setNestedValue(updates, path, value);
+
+        // Add log message if specified
+        if (effect.logMessage) {
+          logMessages.push(effect.logMessage);
+        }
+      }
+    } else {
+      // This is a direct effect
+      if (typeof effect === 'number') {
+        // For numeric effects, add to existing value
+        const currentValue = getNestedValue(state, path) || 0;
+        setNestedValue(updates, path, currentValue + effect);
+      } else {
+        // For non-numeric effects, set directly
+        setNestedValue(updates, path, effect);
+      }
+    }
+  });
+
+  if (logMessages.length > 0) {
+    updates.logMessages = logMessages;
+  }
+
   return updates;
-};
+}
+
+// Helper function to set nested values
+function setNestedValue(obj: any, path: string, value: any) {
+  const pathParts = path.split('.');
+  let current = obj;
+
+  for (let i = 0; i < pathParts.length - 1; i++) {
+    if (!current[pathParts[i]]) {
+      current[pathParts[i]] = {};
+    }
+    current = current[pathParts[i]];
+  }
+
+  const finalKey = pathParts[pathParts.length - 1];
+  current[finalKey] = value;
+}
 
 // Utility function to get cost text for actions
 export const getCostText = (actionId: string, state?: GameState) => {
