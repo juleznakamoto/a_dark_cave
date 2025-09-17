@@ -74,6 +74,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftWarBow(state, result);
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
+    case 'craftIronLantern':
+      return handleCraftIronLantern(state, result);
+    case 'craftSteelLantern':
+      return handleCraftSteelLantern(state, result);
+    case 'craftObsidianLantern':
+      return handleCraftObsidianLantern(state, result);
+    case 'craftAdamantLantern':
+      return handleCraftAdamantLantern(state, result);
     default:
       return result;
   }
@@ -429,6 +437,30 @@ function handleCraftWarBow(state: GameState, result: ActionResult): ActionResult
 
 function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftMasterBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftIronLantern(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftIronLantern', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftSteelLantern(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSteelLantern', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftObsidianLantern(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftObsidianLantern', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftAdamantLantern(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftAdamantLantern', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
