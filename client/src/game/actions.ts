@@ -164,11 +164,9 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
 }
 
 function handleBuildTorch(state: GameState, result: ActionResult): ActionResult {
-  result.stateUpdates.resources = {
-    ...state.resources,
-    wood: state.resources.wood - 10,
-    torch: state.resources.torch + 1
-  };
+  const effectUpdates = applyActionEffects('buildTorch', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  
   result.stateUpdates.flags = { ...state.flags, torchBuilt: true };
 
   if (!state.story.seen.rumbleSound) {
