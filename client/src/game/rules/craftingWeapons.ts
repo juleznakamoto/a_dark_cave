@@ -108,10 +108,10 @@ export const craftingWeaponsActions: Record<string, Action> = {
       "weapons.crude_bow": false,
     },
     cost: {
-      "resources.wood": 100,
+      "resources.wood": 200,
     },
     effects: {
-      "resources.wood": -100,
+      "resources.wood": -200,
       "weapons.crude_bow": true,
       "flags.forestUnlocked": true,
       "story.seen.hasCrudeBow": true,
@@ -130,11 +130,11 @@ export const craftingWeaponsActions: Record<string, Action> = {
       "story.seen.hasIron": true,
     },
     cost: {
-      "resources.wood": 200,
+      "resources.wood": 500,
       "resources.iron": 50,
     },
     effects: {
-      "resources.wood": -200,
+      "resources.wood": -500,
       "resources.iron": -50,
       "weapons.huntsman_bow": true,
       "story.seen.hasHuntsmanBow": true,
@@ -153,12 +153,12 @@ export const craftingWeaponsActions: Record<string, Action> = {
       "story.seen.hasSteel": true,
     },
     cost: {
-      "resources.wood": 300,
-      "resources.steel": 75,
+      "resources.wood": 1000,
+      "resources.steel": 100,
     },
     effects: {
-      "resources.wood": -300,
-      "resources.steel": -75,
+      "resources.wood": -1000,
+      "resources.steel": -100,
       "weapons.long_bow": true,
       "story.seen.hasLongBow": true,
       "story.seen.actionCraftLongBow": true,
@@ -175,11 +175,11 @@ export const craftingWeaponsActions: Record<string, Action> = {
       "weapons.war_bow": false,
     },
     cost: {
-      "resources.wood": 500,
+      "resources.wood": 1500,
       "resources.obsidian": 100,
     },
     effects: {
-      "resources.wood": -500,
+      "resources.wood": -1500,
       "resources.obsidian": -100,
       "weapons.war_bow": true,
       "story.seen.hasWarBow": true,
@@ -197,12 +197,12 @@ export const craftingWeaponsActions: Record<string, Action> = {
       "weapons.master_bow": false,
     },
     cost: {
-      "resources.wood": 750,
-      "resources.adamant": 150,
+      "resources.wood": 2500,
+      "resources.adamant": 100,
     },
     effects: {
-      "resources.wood": -750,
-      "resources.adamant": -150,
+      "resources.wood": -2500,
+      "resources.adamant": -100,
       "weapons.master_bow": true,
       "story.seen.hasMasterBow": true,
       "story.seen.actionCraftMasterBow": true,

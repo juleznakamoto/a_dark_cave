@@ -56,12 +56,14 @@ export const buildingActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 250,
+        "resources.wood": 200,
+        "resources.stone": 20,
       },
     },
     effects: {
       1: {
-        "resources.wood": -250,
+        "resources.wood": -200,
+        "resources.stone": -20,
         "buildings.lodge": 1,
       },
     },
