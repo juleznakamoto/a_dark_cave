@@ -69,6 +69,7 @@ export const gameStateSchema = z.object({
     steel_lantern: z.boolean().default(false),
     obsidian_lantern: z.boolean().default(false),
     adamant_lantern: z.boolean().default(false),
+    blacksmith_hammer: z.boolean().default(false),
   }).default({}),
   weapons: z.object({
     iron_sword: z.boolean().default(false),

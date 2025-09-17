@@ -318,6 +318,17 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  blacksmith_hammer: {
+    id: "blacksmith_hammer",
+    name: "Blacksmith Hammer",
+    description: "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 2,
+      },
+    },
+  },
 };
 
 // Weapon effects

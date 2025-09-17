@@ -643,6 +643,33 @@ export const gameEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  blacksmithHammer: {
+    id: "blacksmithHammer",
+    condition: (state) => false, // Only triggered by hunting action
+    triggerType: "action",
+    message:
+      "Deep in the forest, you discover ancient ruins dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent hammer catches the light, its head still bearing traces of ancient forge-fire. You take the Blacksmith Hammer, feeling its power flow through you. (+2 Strength, -10% crafting costs)",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state) => {
+      return {
+        tools: {
+          ...state.tools,
+          blacksmith_hammer: true,
+        },
+        stats: {
+          ...state.stats,
+          strength: (state.stats.strength || 0) + 2,
+        },
+        events: {
+          ...state.events,
+          blacksmith_hammer_found: true,
+        },
+      };
+    },
+  },
 };
 
 export class EventManager {

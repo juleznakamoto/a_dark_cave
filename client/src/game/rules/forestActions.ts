@@ -11,6 +11,7 @@ export const forestActions: Record<string, Action> = {
     effects: {
       "resources.food": "getBowHuntingBonus()", // Enhanced hunting with crude bow
       "story.seen.hasHunted": true,
+      "event.blacksmithHammer": { probability: 0.025 },
     },
     cooldown: 10,
   },
