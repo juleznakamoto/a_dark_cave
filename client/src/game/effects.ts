@@ -320,6 +320,74 @@ export const toolEffects: Record<string, EffectDefinition> = {
   },
 };
 
+// Weapon effects
+export const weaponEffects: Record<string, EffectDefinition> = {
+  crude_bow: {
+    id: "crude_bow",
+    name: "Crude Bow",
+    description: "Basic hunting bow for gathering food",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceBonus: { food: 7 }, // Average of 5-10 range
+        },
+      },
+    },
+  },
+
+  huntsman_bow: {
+    id: "huntsman_bow", 
+    name: "Huntsman Bow",
+    description: "Improved hunting bow for better food gathering",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceBonus: { food: 14 }, // Average of 10-18 range
+        },
+      },
+    },
+  },
+
+  long_bow: {
+    id: "long_bow",
+    name: "Long Bow", 
+    description: "Superior hunting bow with extended range",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceBonus: { food: 20 }, // Average of 15-25 range
+        },
+      },
+    },
+  },
+
+  war_bow: {
+    id: "war_bow",
+    name: "War Bow",
+    description: "Powerful military bow adapted for hunting",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceBonus: { food: 26 }, // Average of 20-32 range
+        },
+      },
+    },
+  },
+
+  master_bow: {
+    id: "master_bow", 
+    name: "Master Bow",
+    description: "The ultimate hunting weapon",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceBonus: { food: 32 }, // Average of 25-40 range
+        },
+      },
+    },
+  },
+};
+
 // Clothing effects
 export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
@@ -395,6 +463,14 @@ const LANTERN_HIERARCHY = [
   "adamant_lantern",
 ];
 
+const BOW_HIERARCHY = [
+  "crude_bow",
+  "huntsman_bow", 
+  "long_bow",
+  "war_bow",
+  "master_bow",
+];
+
 // Helper function to get the best tool of a specific type
 export const getBestTool = (
   state: GameState,
@@ -418,19 +494,39 @@ export const getBestTool = (
   return null;
 };
 
+// Helper function to get the best weapon of a specific type
+export const getBestWeapon = (
+  state: GameState,
+  weaponType: "bow",
+): string | null => {
+  const hierarchy = weaponType === "bow" ? BOW_HIERARCHY : [];
+
+  // Find the highest tier weapon that the player owns
+  for (let i = hierarchy.length - 1; i >= 0; i--) {
+    const weaponId = hierarchy[i];
+    if (state.weapons[weaponId as keyof typeof state.weapons]) {
+      return weaponId;
+    }
+  }
+
+  return null;
+};
+
 // Helper function to get all tools that should be displayed (only best of each type)
 export const getDisplayTools = (state: GameState): Record<string, boolean> => {
   const displayTools: Record<string, boolean> = {};
 
-  // Get best axe, pickaxe, and lantern
+  // Get best axe, pickaxe, lantern, and bow
   const bestAxe = getBestTool(state, "axe");
   const bestPickaxe = getBestTool(state, "pickaxe");
   const bestLantern = getBestTool(state, "lantern");
+  const bestBow = getBestWeapon(state, "bow");
 
   // Add best tools to display
   if (bestAxe) displayTools[bestAxe] = true;
   if (bestPickaxe) displayTools[bestPickaxe] = true;
   if (bestLantern) displayTools[bestLantern] = true;
+  if (bestBow) displayTools[bestBow] = true;
 
   // Add non-hierarchical tools
   Object.entries(state.tools).forEach(([toolId, owned]) => {
@@ -470,6 +566,9 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   Object.keys(displayTools).forEach((toolKey) => {
     if (toolEffects[toolKey]) {
       activeEffects.push(toolEffects[toolKey]);
+    }
+    if (weaponEffects[toolKey]) {
+      activeEffects.push(weaponEffects[toolKey]);
     }
   });
 

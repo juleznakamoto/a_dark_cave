@@ -4,15 +4,7 @@ import { getCooldownReduction } from '@/game/effects';
 import { LogEntry } from '@/game/events';
 import { useGameStore } from '@/game/state';
 
-// Helper function to calculate bow hunting bonus
-function getBowHuntingBonus(state: GameState): number {
-  if (state.weapons.master_bow) return Math.floor(Math.random() * 15) + 25; // 25-40 food
-  if (state.weapons.war_bow) return Math.floor(Math.random() * 12) + 20; // 20-32 food
-  if (state.weapons.long_bow) return Math.floor(Math.random() * 10) + 15; // 15-25 food
-  if (state.weapons.huntsman_bow) return Math.floor(Math.random() * 8) + 10; // 10-18 food
-  if (state.weapons.crude_bow) return Math.floor(Math.random() * 5) + 5; // 5-10 food
-  return 0;
-}
+
 
 export interface ActionResult {
   stateUpdates: Partial<GameState>;
@@ -370,33 +362,7 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
 }
 
 function handleHunt(state: GameState, result: ActionResult): ActionResult {
-  const foodGained = getBowHuntingBonus(state);
   const effectUpdates = applyActionEffects('hunt', state);
-
-  result.stateUpdates.resources = {
-    ...state.resources,
-    food: (state.resources.food || 0) + foodGained,
-  };
-
-  result.logEntries!.push({
-    id: `hunt-success-${Date.now()}`,
-    message: `You successfully hunted and gained ${foodGained} food.`,
-    timestamp: Date.now(),
-    type: 'system',
-  });
-
-  // Update cooldowns and seen story flags
-  result.stateUpdates.cooldowns = {
-    ...state.cooldowns,
-    hunt: gameActions.hunt.cooldown,
-  };
-  result.stateUpdates.story = {
-    ...state.story,
-    seen: {
-      ...state.story.seen,
-      hunted: true,
-    },
-  };
-
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
