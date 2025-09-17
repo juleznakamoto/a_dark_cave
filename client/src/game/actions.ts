@@ -64,6 +64,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleHunt(state, result);
     case 'craftCrudeBow':
       return handleCraftCrudeBow(state, result);
+    case 'craftHuntsmanBow':
+      return handleCraftHuntsmanBow(state, result);
+    case 'craftLongBow':
+      return handleCraftLongBow(state, result);
+    case 'craftWarBow':
+      return handleCraftWarBow(state, result);
+    case 'craftMasterBow':
+      return handleCraftMasterBow(state, result);
     default:
       return result;
   }
@@ -371,6 +379,30 @@ function handleHunt(state: GameState, result: ActionResult): ActionResult {
 
 function handleCraftCrudeBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftCrudeBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftHuntsmanBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftHuntsmanBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftLongBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftLongBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftWarBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftWarBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftMasterBow', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
