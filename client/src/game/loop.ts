@@ -55,6 +55,12 @@ export function startGameLoop() {
         handleHunterProduction();
       }
 
+      // Miner production logic
+      if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
+        lastConsumption = timestamp;
+        handleMinerProduction();
+      }
+
       // Population consumption and survival checks
       if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
         lastConsumption = timestamp;
@@ -136,6 +142,24 @@ function handleHunterProduction() {
     });
   }
 }
+
+function handleMinerProduction() {
+  const state = useGameStore.getState();
+
+  // Pause miner production when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
+  // Process each miner type
+  Object.entries(state.villagers).forEach(([job, count]) => {
+    if (count > 0 && job.endsWith('miner')) {
+      const production = getPopulationProduction(job, count);
+      production.forEach(prod => {
+        state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+      });
+    }
+  });
+}
+
 
 function handlePopulationSurvival() {
   const state = useGameStore.getState();

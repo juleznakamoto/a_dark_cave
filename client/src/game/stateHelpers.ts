@@ -1,4 +1,3 @@
-
 import { GameState } from '@shared/schema';
 
 export function updateResource(
@@ -38,7 +37,7 @@ export function updateFlag(
 export function updatePopulationCounts(state: GameState): Partial<GameState> {
   const current = state.villagers.free + state.villagers.gatherer + state.villagers.hunter;
   const total = state.buildings.hut * 2;
-  
+
   return {
     current_population: current,
     total_population: total
@@ -47,7 +46,7 @@ export function updatePopulationCounts(state: GameState): Partial<GameState> {
 
 export function assignVillagerToJob(
   state: GameState,
-  job: 'gatherer' | 'hunter'
+  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner"
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};
 
@@ -83,7 +82,7 @@ export function assignVillagerToJob(
 
 export function unassignVillagerFromJob(
   state: GameState,
-  job: 'gatherer' | 'hunter'
+  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner"
 ): Partial<GameState> {
   if (state.villagers[job] <= 0) return {};
 

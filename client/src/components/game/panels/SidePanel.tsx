@@ -53,13 +53,23 @@ export default function SidePanel() {
 
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
-    .map(([key, value]) => ({
-      id: key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
-      value: value ?? 0,
-      testId: `building-${key}`,
-      visible: (value ?? 0) > 0
-    }))
+    .map(([key, value]) => {
+      let label = key.charAt(0).toUpperCase() + key.slice(1);
+      
+      // Special naming for pit building levels
+      if (key === 'pit' && value > 0) {
+        const pitNames = ['', 'Shallow Pit', 'Deepening Pit', 'Deep Pit', 'Bottomless Pit'];
+        label = pitNames[value] || 'Pit';
+      }
+      
+      return {
+        id: key,
+        label,
+        value: value ?? 0,
+        testId: `building-${key}`,
+        visible: (value ?? 0) > 0
+      };
+    })
     .filter(item => item.visible);
 
   // Dynamically generate villager items from state

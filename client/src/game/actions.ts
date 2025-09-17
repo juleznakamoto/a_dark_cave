@@ -44,6 +44,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildCabin(state, result);
     case 'buildBlacksmith':
       return handleBuildBlacksmith(state, result);
+    case 'buildPit':
+      return handleBuildPit(state, result);
     case 'exploreCave':
       return handleExploreCave(state, result);
     case 'craftStoneAxe':
@@ -215,6 +217,10 @@ function handleBuildCabin(state: GameState, result: ActionResult): ActionResult 
 
 function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionResult {
   return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
+}
+
+function handleBuildPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildPit', 'pit');
 }
 
 function handleBuildingConstruction(

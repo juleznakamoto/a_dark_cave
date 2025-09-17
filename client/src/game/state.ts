@@ -53,8 +53,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: "gatherer" | "hunter") => void;
-  unassignVillager: (job: "gatherer" | "hunter") => void;
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => void;
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
@@ -422,7 +422,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is always enabled - no-op
   },
 
-  assignVillager: (job: "gatherer" | "hunter") => {
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => {
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -432,7 +432,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: "gatherer" | "hunter") => {
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => {
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {
