@@ -329,7 +329,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 7 }, // Average of 5-10 range
+          resourceBonus: { food: 5 },
         },
       },
     },
@@ -342,7 +342,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 14 }, // Average of 10-18 range
+          resourceBonus: { food: 10 },
         },
       },
     },
@@ -355,7 +355,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 20 }, // Average of 15-25 range
+          resourceBonus: { food: 15 },
         },
       },
     },
@@ -368,7 +368,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 26 }, // Average of 20-32 range
+          resourceBonus: { food: 20 },
         },
       },
     },
@@ -381,7 +381,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 32 }, // Average of 25-40 range
+          resourceBonus: { food: 25 },
         },
       },
     },
