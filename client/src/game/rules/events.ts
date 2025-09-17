@@ -94,10 +94,14 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 10,
     message: [
-      "One hut lies empty. Its occupant vanished as though swallowed by the void between worlds.",
-      "A villager is gone, leaving only claw-like marks upon the earth and a silence that will not break.",
-      "At sunrise, a bed is found unslept-in. The missing one's name fades quickly from memory, as if the forest itself claimed them.",
-    ][Math.floor(Math.random() * 3)],
+      "One hut lies empty. Its occupant is gone.",
+      "A villager is gone. Claw-like marks remain.",
+      "A bed lies cold. The forest has claimed them.",
+      "Mist shrouds an empty hut. The villager is gone.",
+      "A hut stands silent. Meals lie untouched. They are gone.",
+      "The wind moves through an empty hut. The villager is gone.",
+      "A door of a hut stands ajar. Its occupant is gone.",
+    ][Math.floor(Math.random() * 7)],
     triggered: false,
     priority: 2,
     effect: (state) => ({
@@ -642,7 +646,8 @@ export const gameEvents: Record<string, GameEvent> = {
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
     timeProbability: 60,
-    message: "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
+    message:
+      "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
     triggered: false,
     priority: 1,
     repeatable: false,
@@ -659,7 +664,8 @@ export const gameEvents: Record<string, GameEvent> = {
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
     timeProbability: 60,
-    message: "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
+    message:
+      "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
     triggered: false,
     priority: 1,
     repeatable: false,
@@ -676,7 +682,8 @@ export const gameEvents: Record<string, GameEvent> = {
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
     timeProbability: 60,
-    message: "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead — scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
+    message:
+      "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead — scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
     triggered: false,
     priority: 1,
     repeatable: false,
@@ -690,14 +697,15 @@ export const gameEvents: Record<string, GameEvent> = {
 
   findElderScroll: {
     id: "findElderScroll",
-    condition: (state) => 
+    condition: (state) =>
       state.events.dream_morrowind &&
       state.events.dream_oblivion &&
       state.events.dream_skyrim &&
       !state.relics.elder_scroll,
     triggerType: "time",
     timeProbability: 1,
-    message: "Night drapes the village in an uneasy silence. As you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
+    message:
+      "Night drapes the village in an uneasy silence. As you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
     triggered: false,
     priority: 5,
     repeatable: false,
