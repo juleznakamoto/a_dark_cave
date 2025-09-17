@@ -644,6 +644,86 @@ export const gameEvents: Record<string, GameEvent> = {
     ],
   },
 
+  dreamMorrowind: {
+    id: "dreamMorrowind",
+    condition: (state) => state.buildings.hut >= 1,
+    triggerType: "time",
+    timeProbability: 60,
+    message: "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
+    triggered: false,
+    priority: 1,
+    repeatable: false,
+    effect: (state) => ({
+      events: {
+        ...state.events,
+        dream_morrowind: true,
+      },
+    }),
+  },
+
+  dreamOblivion: {
+    id: "dreamOblivion",
+    condition: (state) => state.buildings.hut >= 1,
+    triggerType: "time",
+    timeProbability: 60,
+    message: "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
+    triggered: false,
+    priority: 1,
+    repeatable: false,
+    effect: (state) => ({
+      events: {
+        ...state.events,
+        dream_oblivion: true,
+      },
+    }),
+  },
+
+  dreamSkyrim: {
+    id: "dreamSkyrim",
+    condition: (state) => state.buildings.hut >= 1,
+    triggerType: "time",
+    timeProbability: 60,
+    message: "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead — scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
+    triggered: false,
+    priority: 1,
+    repeatable: false,
+    effect: (state) => ({
+      events: {
+        ...state.events,
+        dream_skyrim: true,
+      },
+    }),
+  },
+
+  findElderScroll: {
+    id: "findElderScroll",
+    condition: (state) => 
+      state.events.dream_morrowind &&
+      state.events.dream_oblivion &&
+      state.events.dream_skyrim &&
+      !state.relics.elder_scroll,
+    triggerType: "time",
+    timeProbability: 1,
+    message: "Night drapes the village in an uneasy silence. As you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state) => ({
+      relics: {
+        ...state.relics,
+        elder_scroll: true,
+      },
+      stats: {
+        ...state.stats,
+        knowledge: (state.stats.knowledge || 0) + 10,
+      },
+      events: {
+        ...state.events,
+        elder_scroll_found: true,
+      },
+    }),
+  },
+
   blacksmithHammer: {
     id: "blacksmithHammer",
     condition: (state) => false, // Only triggered by hunting action
