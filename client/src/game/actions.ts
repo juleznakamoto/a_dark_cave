@@ -82,6 +82,16 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftObsidianLantern(state, result);
     case 'craftAdamantLantern':
       return handleCraftAdamantLantern(state, result);
+    case 'descendFurther':
+      return handleDescendFurther(state, result);
+    case 'exploreRuins':
+      return handleExploreRuins(state, result);
+    case 'exploreTemple':
+      return handleExploreTemple(state, result);
+    case 'exploreCitadel':
+      return handleExploreCitadel(state, result);
+    case 'mineSulfur':
+      return handleMineSulfur(state, result);
     default:
       return result;
   }
@@ -461,6 +471,146 @@ function handleCraftObsidianLantern(state: GameState, result: ActionResult): Act
 
 function handleCraftAdamantLantern(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftAdamantLantern', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleDescendFurther(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('descendFurther', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for descending further
+  if (!state.story.seen.descendedFurther) {
+    result.logEntries!.push({
+      id: `descend-further-${Date.now()}`,
+      message: 'With your lantern casting a steady glow, you descend into the deepest chambers. The walls shimmer with veins of precious metals and the air hums with ancient power.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleExploreRuins(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('exploreRuins', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for exploring ruins
+  if (!state.story.seen.exploredRuins) {
+    result.logEntries!.push({
+      id: `explore-ruins-${Date.now()}`,
+      message: 'Ancient ruins sprawl before you, their crumbling walls telling stories of a lost civilization. Your steel lantern reveals treasures hidden in the shadows of time.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleExploreTemple(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('exploreTemple', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for exploring temple
+  if (!state.story.seen.exploredTemple) {
+    result.logEntries!.push({
+      id: `explore-temple-${Date.now()}`,
+      message: 'A magnificent temple rises from the cavern floor, its obsidian pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleExploreCitadel(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('exploreCitadel', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  // Add a special log message for exploring citadel
+  if (!state.story.seen.exploredCitadel) {
+    result.logEntries!.push({
+      id: `explore-citadel-${Date.now()}`,
+      message: 'The ultimate depths reveal a vast citadel, its adamantine walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleMineSulfur(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineSulfur', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
