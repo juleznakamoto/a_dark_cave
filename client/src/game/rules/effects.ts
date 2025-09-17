@@ -27,6 +27,7 @@ export interface EffectDefinition {
       explorationBonus?: number; // Bonus resources when exploring
       luck?: number; // Luck bonus
       strength?: number; // Strength bonus
+      knowledge?: number; // Knowledge bonus
     };
   };
 }
@@ -326,6 +327,17 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 2,
+      },
+    },
+  },
+
+  elder_scroll: {
+    id: "elder_scroll",
+    name: "Elder Scroll",
+    description: "An ancient scroll containing forbidden knowledge (+10 Knowledge)",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 10,
       },
     },
   },
@@ -668,6 +680,20 @@ export const getTotalStrength = (state: GameState): number => {
   });
 
   return totalStrength;
+};
+
+// Helper function to calculate total knowledge
+export const getTotalKnowledge = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let totalKnowledge = state.stats?.knowledge || 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.knowledge) {
+      totalKnowledge += effect.bonuses.generalBonuses.knowledge;
+    }
+  });
+
+  return totalKnowledge;
 };
 
 // Helper function to apply luck bonus to probability (10 luck = 10% increase)

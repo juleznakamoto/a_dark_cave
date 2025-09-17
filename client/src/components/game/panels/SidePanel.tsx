@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength } from '@/game/rules/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
@@ -89,6 +89,7 @@ export default function SidePanel() {
   // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);
   const totalStrength = getTotalStrength(gameState);
+  const totalKnowledge = getTotalKnowledge(gameState);
 
   // Build stats items with total values
   const statsItems = [];
@@ -115,12 +116,12 @@ export default function SidePanel() {
     });
   }
 
-  // Add knowledge from base stats if it exists and is greater than 0
-  if ((stats?.knowledge || 0) > 0) {
+  // Add knowledge if it's greater than 0
+  if (totalKnowledge > 0) {
     statsItems.push({
       id: 'knowledge',
       label: 'Knowledge',
-      value: stats.knowledge || 0,
+      value: totalKnowledge,
       testId: 'stat-knowledge',
       visible: true
     });

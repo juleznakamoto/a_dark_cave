@@ -713,10 +713,6 @@ export const gameEvents: Record<string, GameEvent> = {
         ...state.relics,
         elder_scroll: true,
       },
-      stats: {
-        ...state.stats,
-        knowledge: (state.stats.knowledge || 0) + 10,
-      },
       events: {
         ...state.events,
         elder_scroll_found: true,
@@ -738,10 +734,6 @@ export const gameEvents: Record<string, GameEvent> = {
         tools: {
           ...state.tools,
           blacksmith_hammer: true,
-        },
-        stats: {
-          ...state.stats,
-          strength: (state.stats.strength || 0) + 2,
         },
         events: {
           ...state.events,

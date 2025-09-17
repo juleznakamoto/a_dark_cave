@@ -125,6 +125,9 @@ export default function SidePanelSection({
                   {relicEffect.bonuses.generalBonuses.explorationBonus && (
                     <div>+{relicEffect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</div>
                   )}
+                  {relicEffect.bonuses.generalBonuses.knowledge && (
+                    <div>+{relicEffect.bonuses.generalBonuses.knowledge} Knowledge</div>
+                  )}
                 </>
               )}
             </div>

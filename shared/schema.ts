@@ -94,6 +94,7 @@ export const gameStateSchema = z.object({
     blackened_mirror: z.boolean().default(false),
     whispering_amulet: z.boolean().default(false),
     wooden_figure: z.boolean().default(false),
+    elder_scroll: z.boolean().default(false),
   }).default({}),
   buildings: z.object({
     hut: z.number().default(0),
