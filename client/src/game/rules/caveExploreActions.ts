@@ -6,14 +6,14 @@ const caveRelics = {
   exploreCave: [
     {
       key: "tarnished_amulet",
-      probability: 0.05,
+      probability: 0.04,
       logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
     },
   ],
   ventureDeeper: [
     {
       key: "bloodstained_belt",
-      probability: 0.04,
+      probability: 0.03,
       logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
   ],
@@ -97,7 +97,7 @@ export const caveExploreActions: Record<string, Action> = {
     show_when: {
       "flags.fireLit": true,
       "story.seen.actionBuildTorch": true,
-      "buildings.cabin": 0,
+      "buildings.blacksmith": 0,
     },
     cost: {
       "resources.torch": 5,
@@ -119,7 +119,7 @@ export const caveExploreActions: Record<string, Action> = {
     id: "ventureDeeper",
     label: "Venture Deeper",
     show_when: {
-      "buildings.cabin": 1,
+      "buildings.blacksmith": 1,
     },
     cost: {
       "resources.torch": 10,
