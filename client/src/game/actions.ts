@@ -166,7 +166,7 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
 function handleBuildTorch(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('buildTorch', state);
   Object.assign(result.stateUpdates, effectUpdates);
-  
+
   result.stateUpdates.flags = { ...state.flags, torchBuilt: true };
 
   if (!state.story.seen.rumbleSound) {
@@ -381,76 +381,8 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
 
 function handleHunt(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('hunt', state);
-
-  // Handle triggered events
-  if (effectUpdates.triggeredEvents) {
-    effectUpdates.triggeredEvents.forEach((eventId: string) => {
-      if (eventId === 'blacksmithHammer') {
-        // Create the blacksmith hammer event log entry immediately
-        const hammerLogEntry: LogEntry = {
-          id: `blacksmithHammer-${Date.now()}`,
-          message: "While hunting, you discover an ancient blacksmith's hammer hidden beneath fallen leaves. Its head gleams with an otherworldly sheen, and strange runes are etched along its handle.",
-          timestamp: Date.now(),
-          type: 'event',
-          title: 'Ancient Hammer',
-          choices: [
-            {
-              id: 'takeHammer',
-              label: 'Take the hammer',
-              effect: (state) => ({
-                tools: {
-                  ...state.tools,
-                  blacksmith_hammer: true,
-                },
-                events: {
-                  ...state.events,
-                  blacksmith_hammer_found: true,
-                },
-                _logMessage: "You claim the ancient hammer. Power courses through your hands as you grip its worn handle. (+2 Strength, 10% crafting cost reduction)",
-              })
-            },
-            {
-              id: 'leaveHammer',
-              label: 'Leave it be',
-              effect: (state) => ({
-                events: {
-                  ...state.events,
-                  blacksmith_hammer_found: true,
-                },
-                _logMessage: "You decide the hammer is best left undisturbed. Some powers are too dangerous to wield."
-              })
-            }
-          ]
-        };
-
-        // Add to log entries to trigger immediately
-        result.logEntries!.push(hammerLogEntry);
-
-        // Set up delayed effect to show dialog
-        result.delayedEffects!.push(() => {
-          setTimeout(() => {
-            useGameStore.getState().setEventDialog(true, hammerLogEntry);
-          }, 100);
-        });
-      }
-    });
-    delete effectUpdates.triggeredEvents;
-  }
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
   Object.assign(result.stateUpdates, effectUpdates);
+
   return result;
 }
 
