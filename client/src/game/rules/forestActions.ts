@@ -9,9 +9,9 @@ export const forestActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": "getBowHuntingBonus()", // Enhanced hunting with crude bow
+      "resources.food": 5 + "getBowHuntingBonus()",
       "story.seen.hasHunted": true,
-      "event.blacksmithHammer": { probability: 0.025 },
+      "event.blacksmithHammer": { probability: 0.25 },
     },
     cooldown: 10,
   },

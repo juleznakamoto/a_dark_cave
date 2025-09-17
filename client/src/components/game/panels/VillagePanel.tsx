@@ -12,14 +12,14 @@ export default function VillagePanel() {
   // Define building actions
   const buildingActions = [
     { id: 'buildHut', label: 'Wooden Hut' },
-    { id: 'buildLodge', label: 'Lodge' },
+    { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
   ];
 
   // Define population jobs
   const populationJobs = [
     { id: 'gatherer', label: 'Gatherer', alwaysShow: true },
-    { id: 'hunter', label: 'Hunter', showWhen: () => buildings.lodge > 0 },
+    { id: 'hunter', label: 'Hunter', showWhen: () => buildings.cabin > 0 },
   ];
 
   const renderBuildingButton = (actionId: string, label: string) => {

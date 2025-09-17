@@ -11,7 +11,7 @@ export const buildingActions: Record<string, Action> = {
         "flags.villageUnlocked": true,
       },
       2: {
-        "buildings.lodge": 1,
+        "buildings.cabin": 1,
       },
       3: {
         "buildings.blacksmith": 1,
@@ -45,9 +45,9 @@ export const buildingActions: Record<string, Action> = {
     cooldown: 10,
   },
 
-  buildLodge: {
-    id: "buildLodge",
-    label: "Lodge",
+  buildCabin: {
+    id: "buildCabin",
+    label: "Cabin",
     building: true,
     show_when: {
       1: {
@@ -64,7 +64,7 @@ export const buildingActions: Record<string, Action> = {
       1: {
         "resources.wood": -200,
         "resources.stone": -20,
-        "buildings.lodge": 1,
+        "buildings.cabin": 1,
       },
     },
     cooldown: 15,
@@ -76,7 +76,7 @@ export const buildingActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.lodge": 1,
+        "buildings.cabin": 1,
         "buildings.blacksmith": 0,
       },
     },

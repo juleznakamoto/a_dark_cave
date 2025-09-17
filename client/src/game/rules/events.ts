@@ -415,7 +415,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 201); // 0-200 food loss
-          let lodgeDestroyed = false;
+          let hutDestroyed = false;
 
           // Determine villager casualties (1-6 potential deaths)
           const maxPotentialDeaths = Math.min(6, currentPopulation);
@@ -428,7 +428,7 @@ export const gameEvents: Record<string, GameEvent> = {
           // If 2+ villagers die and there's a hut, 50% chance to destroy it
           if (villagerDeaths >= 2 && state.buildings.hut > 0) {
             if (Math.random() < 0.5) {
-              lodgeDestroyed = true;
+              hutDestroyed = true;
             }
           }
 
@@ -478,7 +478,7 @@ export const gameEvents: Record<string, GameEvent> = {
             message += ` The wolves also devour ${foodLoss} units of food from your stores.`;
           }
 
-          if (lodgeDestroyed) {
+          if (hutDestroyed) {
             message +=
               " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood and claw marks.";
           }
@@ -489,7 +489,7 @@ export const gameEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            buildings: lodgeDestroyed
+            buildings: hutDestroyed
               ? {
                   ...state.buildings,
                   hut: Math.max(0, state.buildings.hut - 1),
@@ -520,7 +520,7 @@ export const gameEvents: Record<string, GameEvent> = {
 
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
-          let lodgeDestroyed = false;
+          let hutDestroyed = false;
 
           // Determine villager casualties (1-4 potential deaths)
           const maxPotentialDeaths = Math.min(4, currentPopulation);
@@ -581,7 +581,7 @@ export const gameEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            buildings: lodgeDestroyed
+            buildings: hutDestroyed
               ? {
                   ...state.buildings,
                   hut: Math.max(0, state.buildings.hut - 1),

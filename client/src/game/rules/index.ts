@@ -27,8 +27,8 @@ export const gameActions: Record<string, Action> = {
 const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildHut") {
     return (state.buildings.hut || 0) + 1;
-  } else if (actionId === "buildLodge") {
-    return (state.buildings.lodge || 0) + 1;
+  } else if (actionId === "buildCabin") {
+    return (state.buildings.cabin || 0) + 1;
   } else if (actionId === "buildWorkshop") {
     return (state.buildings.workshops || 0) + 1;
   }
@@ -152,7 +152,7 @@ function evaluateSingleCondition(condition: string, state: GameState): boolean {
     return !getValueFromPath(checkPath, state);
   }
 
-  // Handle comparison operators (e.g., "buildings.lodge >= 1")
+  // Handle comparison operators (e.g., "buildings.cabin >= 1")
   const comparisonMatch = condition.match(/^(.+?)\s*(>=|<=|>|<|==|!=)\s*(.+)$/);
   if (comparisonMatch) {
     const [, leftPath, operator, rightValue] = comparisonMatch;

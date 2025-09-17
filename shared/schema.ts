@@ -98,7 +98,7 @@ export const gameStateSchema = z.object({
   buildings: z.object({
     hut: z.number().default(0),
     traps: z.number().default(0),
-    lodge: z.number().default(0),
+    cabin: z.number().default(0),
     blacksmith: z.number().default(0),
   }).default({}),
   villagers: z.object({

@@ -65,7 +65,7 @@ export const caveActions: Record<string, Action> = {
     show_when: {
       "flags.fireLit": true,
       "story.seen.actionBuildTorch": true,
-      "buildings.lodge": 0,
+      "buildings.cabin": 0,
     },
     cost: {
       "resources.torch": 5,
@@ -87,7 +87,7 @@ export const caveActions: Record<string, Action> = {
     id: "ventureDeeper",
     label: "Venture Deeper",
     show_when: {
-      "buildings.lodge": 1,
+      "buildings.cabin": 1,
     },
     cost: {
       "resources.torch": 10,

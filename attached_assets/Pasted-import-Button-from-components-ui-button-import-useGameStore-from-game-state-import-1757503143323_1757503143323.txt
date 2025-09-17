@@ -50,7 +50,7 @@ export default function GameTabs() {
       </div>
 
       {/* Buildings Section */}
-      {(buildings.hut > 0 || buildings.lodge > 0) && (
+      {(buildings.hut > 0 || buildings.cabin > 0) && (
         <div className="mt-6">
           <h3 className="text-sm font-medium text-muted-foreground mb-3 px-3">Buildings</h3>
           <div className="space-y-1 px-3">
@@ -60,10 +60,10 @@ export default function GameTabs() {
                 <span className="font-mono">{buildings.hut}</span>
               </div>
             )}
-            {buildings.lodge > 0 && (
+            {buildings.cabin > 0 && (
               <div className="flex justify-between items-center text-sm">
-                <span>lodge</span>
-                <span className="font-mono">{buildings.lodge}</span>
+                <span>cabin</span>
+                <span className="font-mono">{buildings.cabin}</span>
               </div>
             )}
           </div>
