@@ -1,4 +1,3 @@
-
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -15,11 +14,12 @@ export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const newlyUnlocked: string[] = [];
-    
+
     if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
     }
@@ -32,7 +32,7 @@ export default function GameContainer() {
 
     if (newlyUnlocked.length > 0) {
       setAnimatingTabs(new Set(newlyUnlocked));
-      
+
       // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
@@ -42,8 +42,18 @@ export default function GameContainer() {
     setPreviousFlags(flags);
   }, [flags, previousFlags]);
 
-  // Show start screen if game hasn't started yet
-  if (!flags.gameStarted) {
+  // Wait for game initialization to complete
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 100); // Small delay to allow game loading
+
+    return () => clearTimeout(timer);
+  }, []);
+
+
+  // Show start screen if game hasn't started yet or if loading
+  if (!flags.gameStarted || isLoading) {
     return (
       <>
         <StartScreen />
