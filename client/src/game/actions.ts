@@ -281,7 +281,7 @@ function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResu
   if (effectUpdates.flags && effectUpdates.flags.forestUnlocked && !state.flags.forestUnlocked) {
     result.logEntries!.push({
       id: `forest-unlocked-${Date.now()}`,
-      message: 'The village is surrounded by a dense and dark forest. It has a very dangerous aura, but it could be a good place to hunt.',
+      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a place to hunt.',
       timestamp: Date.now(),
       type: 'system',
     });
