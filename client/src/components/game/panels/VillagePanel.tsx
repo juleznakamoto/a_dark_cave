@@ -22,14 +22,14 @@ export default function VillagePanel() {
   const populationJobs = [
     { id: 'gatherer', label: 'Gatherer', alwaysShow: true },
     { id: 'hunter', label: 'Hunter', showWhen: () => buildings.cabin > 0 },
-    { id: 'iron_miner', label: 'Iron Miner (+5 Iron, -5 Food every 15s)', showWhen: () => buildings.pit >= 1 },
-    { id: 'coal_miner', label: 'Coal Miner (+5 Coal, -5 Food every 15s)', showWhen: () => buildings.pit >= 1 },
-    { id: 'sulfur_miner', label: 'Sulfur Miner (+5 Sulfur, -10 Food every 15s)', showWhen: () => buildings.pit >= 2 },
-    { id: 'silver_miner', label: 'Silver Miner (+5 Silver, -20 Food every 15s)', showWhen: () => buildings.pit >= 2 },
-    { id: 'gold_miner', label: 'Gold Miner (+5 Gold, -50 Food every 15s)', showWhen: () => buildings.pit >= 3 },
-    { id: 'obsidian_miner', label: 'Obsidian Miner (+5 Obsidian, -75 Food every 15s)', showWhen: () => buildings.pit >= 3 },
-    { id: 'adamant_miner', label: 'Adamant Miner (+5 Adamant, -100 Food every 15s)', showWhen: () => buildings.pit >= 4 },
-    { id: 'moonstone_miner', label: 'Moonstone Miner (+1 Moonstone, -150 Food every 15s)', showWhen: () => buildings.pit >= 4 },
+    { id: 'iron_miner', label: 'Iron Miner', showWhen: () => buildings.pit >= 1 },
+    { id: 'coal_miner', label: 'Coal Miner', showWhen: () => buildings.pit >= 1 },
+    { id: 'sulfur_miner', label: 'Sulfur Miner', showWhen: () => buildings.pit >= 2 },
+    { id: 'silver_miner', label: 'Silver Miner', showWhen: () => buildings.pit >= 2 },
+    { id: 'gold_miner', label: 'Gold Miner', showWhen: () => buildings.pit >= 3 },
+    { id: 'obsidian_miner', label: 'Obsidian Miner', showWhen: () => buildings.pit >= 3 },
+    { id: 'adamant_miner', label: 'Adamant Miner', showWhen: () => buildings.pit >= 4 },
+    { id: 'moonstone_miner', label: 'Moonstone Miner', showWhen: () => buildings.pit >= 4 },
   ];
 
   const renderBuildingButton = (actionId: string, label: string) => {
