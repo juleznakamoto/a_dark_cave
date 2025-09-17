@@ -120,6 +120,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Venture Deeper",
     show_when: {
       "buildings.blacksmith": 1,
+      "tools.iron_lantern": false,
     },
     cost: {
       "resources.torch": 10,
