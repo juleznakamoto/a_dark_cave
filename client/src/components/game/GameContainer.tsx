@@ -14,35 +14,20 @@ import { useState, useEffect } from 'react';
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-
-  // Check if tab should animate (only once per unlock)
-  const shouldAnimate = (tabName: string) => {
-    const key = `tab-animated-${tabName}`;
-    const hasAnimated = localStorage.getItem(key) === 'true';
-    return !hasAnimated;
-  };
-
-  // Mark tab as animated
-  const markAsAnimated = (tabName: string) => {
-    const key = `tab-animated-${tabName}`;
-    localStorage.setItem(key, 'true');
-  };
+  const [previousFlags, setPreviousFlags] = useState(flags);
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const newlyUnlocked: string[] = [];
     
-    if (flags.villageUnlocked && shouldAnimate('village')) {
+    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
-      markAsAnimated('village');
     }
-    if (flags.forestUnlocked && shouldAnimate('forest')) {
+    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
       newlyUnlocked.push('forest');
-      markAsAnimated('forest');
     }
-    if (flags.worldDiscovered && shouldAnimate('world')) {
+    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
       newlyUnlocked.push('world');
-      markAsAnimated('world');
     }
 
     if (newlyUnlocked.length > 0) {
@@ -53,7 +38,9 @@ export default function GameContainer() {
         setAnimatingTabs(new Set());
       }, 800);
     }
-  }, [flags]);
+
+    setPreviousFlags(flags);
+  }, [flags, previousFlags]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
