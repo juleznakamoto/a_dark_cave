@@ -37,11 +37,6 @@ export const gameEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: (state) => {
       let baseProbability = 1;
-      if (state.if === 0) {
-        baseProbability *= 0.2;
-      }
-
-      // For each hut, multiply by 0.9 (faster arrivals with more huts)
       baseProbability *= Math.pow(0.9, state.buildings.hut);
 
       return baseProbability;
