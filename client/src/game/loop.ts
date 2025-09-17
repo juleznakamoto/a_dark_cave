@@ -61,7 +61,7 @@ export function startGameLoop() {
         handleMinerProduction();
       }
 
-      // Population consumption and survival checks
+      // Population food consumption
       if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
         lastConsumption = timestamp;
         handlePopulationSurvival();
@@ -179,10 +179,7 @@ function handlePopulationSurvival() {
     });
   }
 
-  let totalDeaths = 0;
-  let deathMessages: string[] = [];
-
-  // Handle food consumption and starvation
+  // Handle food consumption (but not starvation - that's handled by events)
   const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
 
@@ -190,84 +187,8 @@ function handlePopulationSurvival() {
     // Everyone can eat, consume food normally
     state.updateResource("food", -foodNeeded);
   } else {
-    // Not enough food, consume all available food and potentially lose population
+    // Not enough food, consume all available food (starvation event will trigger separately)
     state.updateResource("food", -availableFood);
-
-    const unfedPopulation = foodNeeded - availableFood;
-    let starvationDeaths = 0;
-
-    // 20% chance for each unfed villager to die
-    for (let i = 0; i < unfedPopulation; i++) {
-      if (Math.random() < 0.2) {
-        starvationDeaths++;
-      }
-    }
-
-    if (starvationDeaths > 0) {
-      totalDeaths += starvationDeaths;
-      deathMessages.push(
-        starvationDeaths === 1 
-          ? "A villager starves to death. The others look gaunt and weak."
-          : `${starvationDeaths} villagers starve to death. The survivors grow desperate.`
-      );
-    }
-  }
-
-  // Handle wood shortage and freezing
-  if (state.resources.wood === 0) {
-    let freezingDeaths = 0;
-
-    // 10% chance for each villager to die from cold
-    for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.1) {
-        freezingDeaths++;
-      }
-    }
-
-    if (freezingDeaths > 0) {
-      totalDeaths += freezingDeaths;
-      deathMessages.push(
-        freezingDeaths === 1 
-          ? "A villager succumbs to the cold without wood for warmth. The others huddle together in fear."
-          : `${freezingDeaths} villagers freeze to death without wood for warmth. The survivors desperately search for shelter.`
-      );
-    }
-  }
-
-  // Apply all deaths if any occurred
-  if (totalDeaths > 0) {
-    let remainingDeaths = totalDeaths;
-    const currentVillagers = { ...state.villagers };
-
-    // Remove villagers starting with free, then others in order of assignment preference
-    const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner'];
-    
-    for (const villagerType of villagerTypes) {
-      if (remainingDeaths > 0 && currentVillagers[villagerType as keyof typeof currentVillagers] > 0) {
-        const deaths = Math.min(remainingDeaths, currentVillagers[villagerType as keyof typeof currentVillagers]);
-        currentVillagers[villagerType as keyof typeof currentVillagers] -= deaths;
-        remainingDeaths -= deaths;
-      }
-      if (remainingDeaths === 0) break;
-    }
-
-    // Update the state
-    useGameStore.setState({ villagers: currentVillagers });
-
-    // Add log entries for each type of death
-    deathMessages.forEach(message => {
-      const logEntry: import("@/game/events").LogEntry = {
-        id: `survival-${Date.now()}-${Math.random()}`,
-        message,
-        timestamp: Date.now(),
-        type: "system",
-      };
-
-      state.addLogEntry(logEntry);
-    });
-
-    // Update population counts
-    setTimeout(() => state.updatePopulation(), 0);
   }
 }
 
