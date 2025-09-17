@@ -1,6 +1,6 @@
 import { GameState } from '@shared/schema';
 import { gameActions, applyActionEffects } from '@/game/rules';
-import { getCooldownReduction } from '@/game/rules/effects';
+import { getCooldownReduction, getActionBonuses } from '@/game/rules/effects';
 import { LogEntry } from '@/game/events';
 import { useGameStore } from '@/game/state';
 
@@ -381,6 +381,16 @@ function handleVentureDeeper(state: GameState, result: ActionResult): ActionResu
 
 function handleHunt(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('hunt', state);
+  
+  // Apply weapon bonuses for hunting
+  const actionBonuses = getActionBonuses('hunt', state);
+  if (actionBonuses.resourceBonus && actionBonuses.resourceBonus.food) {
+    if (!effectUpdates.resources) {
+      effectUpdates.resources = { ...state.resources };
+    }
+    effectUpdates.resources.food = (effectUpdates.resources.food || 0) + actionBonuses.resourceBonus.food;
+  }
+  
   Object.assign(result.stateUpdates, effectUpdates);
 
   return result;
