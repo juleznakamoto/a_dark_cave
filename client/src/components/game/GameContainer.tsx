@@ -1,4 +1,3 @@
-
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -20,19 +19,19 @@ export default function GameContainer() {
     const animatedTabsKey = 'gameTabsAnimated';
     const animatedTabs = JSON.parse(localStorage.getItem(animatedTabsKey) || '{}');
     const newlyUnlocked: string[] = [];
-    
+
     // Check if village is unlocked and hasn't been animated yet
     if (flags.villageUnlocked && !animatedTabs.village) {
       newlyUnlocked.push('village');
       animatedTabs.village = true;
     }
-    
+
     // Check if forest is unlocked and hasn't been animated yet
     if (flags.forestUnlocked && !animatedTabs.forest) {
       newlyUnlocked.push('forest');
       animatedTabs.forest = true;
     }
-    
+
     // Check if world is unlocked and hasn't been animated yet
     if (flags.worldDiscovered && !animatedTabs.world) {
       newlyUnlocked.push('world');
@@ -42,9 +41,9 @@ export default function GameContainer() {
     if (newlyUnlocked.length > 0) {
       // Save to localStorage that these tabs have been animated
       localStorage.setItem(animatedTabsKey, JSON.stringify(animatedTabs));
-      
+
       setAnimatingTabs(new Set(newlyUnlocked));
-      
+
       // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
