@@ -94,6 +94,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleMineSulfur(state, result);
     case 'forgSteel':
       return handleForgSteel(state, result);
+    case 'craftSteelAxe':
+      return handleCraftSteelAxe(state, result);
+    case 'craftSteelPickaxe':
+      return handleCraftSteelPickaxe(state, result);
     default:
       return result;
   }
@@ -643,6 +647,18 @@ function handleForgSteel(state: GameState, result: ActionResult): ActionResult {
     });
   }
 
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftSteelAxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSteelAxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftSteelPickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSteelPickaxe', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
