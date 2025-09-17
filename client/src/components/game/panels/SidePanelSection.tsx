@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
-import { clothingEffects } from '@/game/effects';
+import { clothingEffects } from '@/game/rules/effects';
 
 interface SidePanelItem {
   id: string;
