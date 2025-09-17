@@ -10,7 +10,7 @@ export const forestVentureActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": 5 + "getBowHuntingBonus()",
+      "resources.food": "5 + getBowHuntingBonus()",
       "story.seen.hasHunted": true,
       "tools.blacksmith_hammer": { 
         probability: 0.25, 
