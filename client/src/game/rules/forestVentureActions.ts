@@ -12,10 +12,10 @@ export const forestVentureActions: Record<string, Action> = {
     effects: {
       "resources.food": "random(5,10)",
       "story.seen.hasHunted": true,
-      "tools.blacksmith_hammer": { 
+      "relics.blacksmith_hammer": { 
         probability: 0.0025, 
         value: true, 
-        condition: "!tools.blacksmith_hammer",
+        condition: "!relics.blacksmith_hammer",
         logMessage: "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent hammer catches the light, its head still bearing traces of ancient forge-fire. You take the Blacksmith Hammer with you. (+2 Strength, -10% crafting costs)"
       },
     },
