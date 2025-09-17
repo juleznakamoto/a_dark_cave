@@ -29,7 +29,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <DialogContent 
         className="sm:max-w-md [&>button]:hidden" 
         onPointerDownOutside={(e) => e.preventDefault()}
