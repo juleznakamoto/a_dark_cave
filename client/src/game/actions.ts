@@ -1,8 +1,7 @@
 import { GameState } from '@shared/schema';
 import { gameActions, applyActionEffects } from '@/game/rules';
-import { getCooldownReduction, getActionBonuses } from '@/game/rules/effects';
+import { getActionBonuses } from '@/game/rules/effects';
 import { LogEntry } from '@/game/events';
-import { useGameStore } from '@/game/state';
 
 
 

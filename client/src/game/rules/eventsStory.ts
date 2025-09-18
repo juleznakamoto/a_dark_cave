@@ -160,7 +160,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 0.25,
+    timeProbability: 25,
     title: "The Pale Figure",
     message: [
       "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
@@ -191,15 +191,13 @@ export const storyEvents: Record<string, GameEvent> = {
               _logMessage:
                 "As your men near, the pale figure beckons and vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
-          } else if (rand < 0.8) {
-            // 1 man killed (30% chance)
+          } else if (rand < 0.7) {
             return {
               ...killVillagers(state, 1),
               _logMessage:
                 "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
-            // 2 men killed (20% chance)
             return {
               ...killVillagers(state, 2),
               _logMessage:
