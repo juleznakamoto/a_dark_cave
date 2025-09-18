@@ -254,8 +254,8 @@ function handleStarvationCheck() {
       }
 
       const message = starvationDeaths === 1 
-        ? "One villager succumbs to starvation. The remaining villagers grow desperate." 
-        : `${starvationDeaths} villagers starve to death. The survivors look gaunt and hollow-eyed.`;
+        ? "One villager succumbs to starvation. Remaining villagers grow desperate." 
+        : `${starvationDeaths} villagers starve to death. Survivors look gaunt and hollow-eyed.`;
 
       useGameStore.setState({
         villagers: updatedVillagers,
@@ -308,8 +308,8 @@ function handleFreezingCheck() {
       }
 
       const message = freezingDeaths === 1 
-        ? "The bitter cold claims one villager's life. The others huddle together, shivering and afraid." 
-        : `${freezingDeaths} villagers freeze to death in the night. The survivors are weak and traumatized by the loss.`;
+        ? "The bitter cold claims one villager's life." 
+        : `${freezingDeaths} villagers freeze to death at night. Survivors are weak and traumatized.`;
 
       useGameStore.setState({
         villagers: updatedVillagers,

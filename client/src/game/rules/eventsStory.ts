@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 
 export const storyEvents: Record<string, GameEvent> = {
@@ -8,9 +7,9 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 15,
     message: [
-      "At dawn, the food stores are lighter. Whispers lingered in the dark, voices that were never human.",
-      "The villagers awaken to find food missing. Some claim they heard the susurrus of ancient tongues in the night.",
-      "Half-seen shadows devoured what the stomachs of men should. Only the sound of faint chanting remained.",
+      "Strange whispers were heard at night. At dawn, food stores are lighter.",
+      "Villagers wake to find food missing. Some heard ancient tongues in the night.",
+      "By morning, food stores are thinned. Some murmur of inhuman voices heard in the dark.",
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 2,
@@ -55,8 +54,8 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 25,
     message: [
       "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
-      "A gift of iron gleams in the morning mist. None know who or what brought it."
-    ][Math.floor(Math.random() * 3)],
+      "A gift of iron gleams in the morning mist. None know who or what brought it.",
+    ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
     effect: (state) => ({
@@ -74,8 +73,11 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 20,
     title: "The Pale Figure",
-    message:
-      "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
+    message: [
+      "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
+      "In the grey morning, a pale and slender shape lingers at the treeline, unmoving. What do you do?",
+      "Villagers report of a pale, slender figure in the mist, silent at the forest’s edge. What do you do?",
+    ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -87,7 +89,7 @@ export const storyEvents: Record<string, GameEvent> = {
           const strength = state.stats.strength || 0;
           const luck = state.stats.luck || 0;
           // Base 50% chance
-          const mantleChance = 0.3 + (strength + luck) * 0.005;
+          const mantleChance = 0.2 + (strength + luck) * 0.005;
 
           const rand = Math.random();
           if (rand < mantleChance) {
@@ -98,7 +100,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 ravenfeather_mantle: true,
               },
               _logMessage:
-                "As your men approach, the pale figure beckons and vanishes. In its place lies a magnificent mantle woven from raven feathers, shimmering with an otherworldly power. When worn, it fills you with both fortune and strength.",
+                "As your men near, the pale figure beckons and vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
           } else if (rand < 0.8) {
             // 1 man killed (30% chance)
@@ -145,7 +147,7 @@ export const storyEvents: Record<string, GameEvent> = {
             return {
               villagers: updatedVillagers,
               _logMessage:
-                "At dawn, one of the men who claimed to see the figure is found dead in his bed, his face frozen in terror.",
+                "At dawn, one of the men who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
             };
           }
         },
@@ -161,7 +163,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
     message:
-      "At night, faint whispers seem to rise from under the floor of one of your hut. The villagers are uneasy. Do you investigate?",
+      "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -202,7 +204,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.resources.iron >= 200 &&
       !state.relics.blackened_mirror,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 30,
     title: "The Blackened Mirror",
     message:
       "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
@@ -228,7 +230,7 @@ export const storyEvents: Record<string, GameEvent> = {
               blackened_mirror: true,
             },
             _logMessage:
-              "You purchase the mirror. Its purpose and effects remain a mystery, but you feel your understanding of hidden things deepen (+10 Knowledge).",
+              "You purchase the mirror. Its purpose and effects remain a mystery, but you feel your understanding of hidden things deepen.",
           };
         },
       },
@@ -412,7 +414,7 @@ export const storyEvents: Record<string, GameEvent> = {
             buildings: hutDestroyed
               ? {
                   ...state.buildings,
-                    woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
             _logMessage: message,
@@ -504,7 +506,7 @@ export const storyEvents: Record<string, GameEvent> = {
             buildings: hutDestroyed
               ? {
                   ...state.buildings,
-                    woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
             _logMessage: message,
