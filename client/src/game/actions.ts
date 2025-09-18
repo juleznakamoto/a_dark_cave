@@ -222,7 +222,7 @@ function handleBuildFoundry(state: GameState, result: ActionResult): ActionResul
   if (builtFoundry) {
     resultWithBuilding.logEntries!.push({
       id: `foundry-complete-${Date.now()}`,
-      message: 'The foundy roars to life as coal and iron merge in the intense heat. The resulting steel gleams with superior strength and durability.',
+      message: 'The foundry roars to life as fire and heat fuse the raw materials. The result is new matter of great strength and resilience.',
       timestamp: Date.now(),
       type: 'system',
     });

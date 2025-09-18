@@ -140,6 +140,105 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
+  buildPit: {
+    id: "buildPit",
+    label: "Mining Pit",
+    building: true,
+    show_when: {
+      1: {
+        "tools.iron_pickaxe": true,
+        "buildings.pit": 0,
+      },
+      2: {
+        "tools.steel_pickaxe": true,
+        "buildings.pit": 1,
+      },
+      3: {
+        "tools.obsidian_pickaxe": true,
+        "buildings.pit": 1,
+      },
+      4: {
+        "tools.adamant_pickaxe": true,
+        "buildings.pit": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+        "resources.stone": 250,
+      },
+      2: {
+        "resources.wood": 1000,
+        "resources.stone": 250,
+        "resources.iron": 50,
+      },
+      3: {
+        "resources.wood": 2500,
+        "resources.stone": 500,
+        "resources.steel": 100,
+      },
+      4: {
+        "resources.wood": 5000,
+        "resources.stone": 1000,
+        "resources.steel": 250,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -500,
+        "resources.stone": -250,
+        "buildings.pit": 1,
+      },
+      2: {
+        "resources.wood": -1000,
+        "resources.stone": -250,
+        "resources.iron": -50,
+        "buildings.pit": 1,
+      },
+      3: {
+        "resources.wood": -2500,
+        "resources.stone": -500,
+        "resources.steel": -100,
+        "buildings.pit": 1,
+      },
+      4: {
+        "resources.wood": -5000,
+        "resources.stone": -1000,
+        "resources.obsidian": -250,
+        "buildings.pit": 1,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildFoundry: {
+    id: "buildFoundry",
+    label: "Foundry",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.pit": 1,
+        "buildings.foundry": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+        "resources.stone": 250,
+        "resources.iron": 100,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -500,
+        "resources.stone": -250,
+        "resources.iron": -100,
+        "buildings.foundry": 1,
+      },
+    },
+    cooldown: 20,
+  },
+
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
