@@ -153,7 +153,7 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
         // Add log entry for the trinket discovery
         result.logEntries!.push({
           id: `trinketFound-${Date.now()}`,
-          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. You drink it without hesitation. The liquid burns as it goes down, but you feel stronger than before. (+5 Strength)",
+          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. You drink it without hesitation. The liquid burns as it goes down, but you feel stronger than before.",
           timestamp: Date.now(),
           type: 'event',
           title: 'Old Trinket',

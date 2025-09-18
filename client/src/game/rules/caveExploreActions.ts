@@ -6,7 +6,7 @@ const caveRelics = {
   exploreCave: [
     {
       key: "tarnished_amulet",
-      probability: 0.025,
+      probability: 0.02,
       logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
     },
   ],
@@ -44,7 +44,7 @@ function getInheritedRelics(actionId: string) {
     relics.forEach(relic => {
       const adjustedProbability = i === currentIndex 
         ? relic.probability // Current stage keeps original probability
-        : relic.probability + 0.01; // Previous stages get +1% bonus
+        : relic.probability + 0.005; // Previous stages get +1% bonus
       
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
