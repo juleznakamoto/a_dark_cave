@@ -532,48 +532,26 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "Old Trinket",
     message:
-      "While gathering wood, you find an old trinket with glowing amber liquid inside. Do you dare drink it?",
+      "While gathering wood, you find an old trinket with glowing amber liquid inside. You drink it without hesitation. The liquid burns as it goes down, but you feel stronger than before. (+5 Strength)",
     triggered: false,
     priority: 5,
     repeatable: false,
-    choices: [
-      {
-        id: "drinkTrinket",
-        label: "Drink the glowing liquid",
-        effect: (state) => {
-          return {
-            flags: {
-              ...state.flags,
-              trinketDrunk: true,
-            },
-            events: {
-              ...state.events,
-              trinket_found: true,
-            },
-            stats: {
-              ...state.stats,
-              strength: (state.stats.strength || 0) + 5,
-            },
-            _logMessage:
-              "You drink the amber liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
-          };
+    effect: (state) => {
+      return {
+        flags: {
+          ...state.flags,
+          trinketDrunk: true,
         },
-      },
-      {
-        id: "ignoreTrinket",
-        label: "Leave it be",
-        effect: (state) => {
-          return {
-            events: {
-              ...state.events,
-              trinket_found: true,
-            },
-            _logMessage:
-              "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood.",
-          };
+        events: {
+          ...state.events,
+          trinket_found: true,
         },
-      },
-    ],
+        stats: {
+          ...state.stats,
+          strength: (state.stats.strength || 0) + 5,
+        },
+      };
+    },
   },
 
   dreamMorrowind: {

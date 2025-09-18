@@ -130,55 +130,32 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
   if (effectUpdates.triggeredEvents) {
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
       if (eventId === 'trinketFound') {
-        // Create the trinket event log entry immediately
-        const trinketLogEntry: LogEntry = {
+        // Apply the trinket effects immediately
+        Object.assign(result.stateUpdates, {
+          flags: {
+            ...state.flags,
+            ...result.stateUpdates.flags,
+            trinketDrunk: true,
+          },
+          events: {
+            ...state.events,
+            ...result.stateUpdates.events,
+            trinket_found: true,
+          },
+          stats: {
+            ...state.stats,
+            ...result.stateUpdates.stats,
+            strength: (state.stats.strength || 0) + 5,
+          },
+        });
+
+        // Add log entry for the trinket discovery
+        result.logEntries!.push({
           id: `trinketFound-${Date.now()}`,
-          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. Do you dare drink it?",
+          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. You drink it without hesitation. The liquid burns as it goes down, but you feel stronger than before. (+5 Strength)",
           timestamp: Date.now(),
           type: 'event',
           title: 'Old Trinket',
-          choices: [
-            {
-              id: 'drinkTrinket',
-              label: 'Drink the glowing liquid',
-              effect: (state) => ({
-                flags: {
-                  ...state.flags,
-                  trinketDrunk: true,
-                },
-                events: {
-                  ...state.events,
-                  trinket_found: true,
-                },
-                stats: {
-                  ...state.stats,
-                  strength: (state.stats.strength || 0) + 5,
-                },
-                _logMessage: "You drink the amber liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
-              })
-            },
-            {
-              id: 'ignoreTrinket',
-              label: 'Leave it be',
-              effect: (state) => ({
-                events: {
-                  ...state.events,
-                  trinket_found: true,
-                },
-                _logMessage: "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood."
-              })
-            }
-          ]
-        };
-
-        // Add to log entries to trigger immediately
-        result.logEntries!.push(trinketLogEntry);
-
-        // Set up delayed effect to show dialog
-        result.delayedEffects!.push(() => {
-          setTimeout(() => {
-            useGameStore.getState().setEventDialog(true, trinketLogEntry);
-          }, 100);
         });
       }
     });
