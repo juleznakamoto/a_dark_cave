@@ -64,7 +64,6 @@ export default function CavePanel() {
     {
       title: 'Forge',
       actions: [
-        { id: 'forgeSteel', label: 'Steel' },
         { id: 'craftBoneTotem', label: 'Bone Totem' },
       ]
     },
