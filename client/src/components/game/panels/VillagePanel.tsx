@@ -15,7 +15,7 @@ export default function VillagePanel() {
     { id: 'buildWoodenHut', label: 'Wooden Hut' },
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
-    { id: 'buildPit', label: 'Build Pit' }, // Placeholder, actual label handled dynamically
+    { id: 'buildPit', label: 'Build Pit' },
     { id: 'buildFoundry', label: 'Foundry' }
   ];
 
