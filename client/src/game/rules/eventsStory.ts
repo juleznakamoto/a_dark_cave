@@ -626,8 +626,8 @@ export const storyEvents: Record<string, GameEvent> = {
     repeatable: false,
     effect: (state: GameState) => {
       return {
-        tools: {
-          ...state.tools,
+        relics: {
+          ...state.relics,
           blacksmith_hammer: true,
         },
         events: {

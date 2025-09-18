@@ -61,12 +61,7 @@ export default function CavePanel() {
         { id: 'craftMasterBow', label: 'Master Bow' },
       ]
     },
-    {
-      title: 'Forge',
-      actions: [
-        { id: 'forgeSteel', label: 'Steel' },
-      ]
-    }
+    
   ];
 
   const renderButton = (actionId: string, label: string) => {

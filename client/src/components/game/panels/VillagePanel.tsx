@@ -16,7 +16,8 @@ export default function VillagePanel() {
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
     { id: 'buildPit', label: 'Build Pit' },
-    { id: 'buildFoundry', label: 'Foundry' }
+    { id: 'buildFoundry', label: 'Foundry' },
+    { id: 'buildShrine', label: 'Shrine' }
   ];
 
   // Define population jobs

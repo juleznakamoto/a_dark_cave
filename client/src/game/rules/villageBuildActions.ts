@@ -215,4 +215,34 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 20,
   },
+
+  buildShrine: {
+    id: "buildShrine",
+    label: "Shrine",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.foundry": 1,
+        "buildings.shrine": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 1000,
+        "resources.stone": 500,
+        "resources.iron": 250,
+        "resources.silver": 25,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -1000,
+        "resources.stone": -500,
+        "resources.iron": -250,
+        "resources.silver": -25,
+        "buildings.shrine": 1,
+      },
+    },
+    cooldown: 25,
+  },
 };

@@ -327,30 +327,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  blacksmith_hammer: {
-    id: "blacksmith_hammer",
-    name: "Blacksmith Hammer",
-    description:
-      "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
-    bonuses: {
-      generalBonuses: {
-        strength: 5,
-      },
-    },
-  },
-
-  elder_scroll: {
-    id: "elder_scroll",
-    name: "Elder Scroll",
-    description:
-      "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
-    bonuses: {
-      generalBonuses: {
-        knowledge: 15,
-        luck: 10,
-      },
-    },
-  },
+  
 };
 
 // Weapon effects
@@ -417,7 +394,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   },
 };
 
-// Clothing effects
+// Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
     id: "tarnished_amulet",
@@ -489,6 +466,31 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         strength: 5,
         luck: 2,
+      },
+    },
+  },
+
+  blacksmith_hammer: {
+    id: "blacksmith_hammer",
+    name: "Blacksmith Hammer",
+    description:
+      "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+      },
+    },
+  },
+
+  elder_scroll: {
+    id: "elder_scroll",
+    name: "Elder Scroll",
+    description:
+      "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 15,
+        luck: 10,
       },
     },
   },
@@ -601,14 +603,14 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
-  // Check clothing effects
+  // Check clothing effects (legacy)
   Object.entries(state.clothing || {}).forEach(([key, value]) => {
     if (value && clothingEffects[key]) {
       activeEffects.push(clothingEffects[key]);
     }
   });
 
-  // Check relic effects (relics use the same effect definitions as clothing)
+  // Check relic effects
   Object.entries(state.relics || {}).forEach(([key, value]) => {
     if (value && clothingEffects[key]) {
       activeEffects.push(clothingEffects[key]);

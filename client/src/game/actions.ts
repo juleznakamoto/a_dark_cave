@@ -93,12 +93,12 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCitadel(state, result);
     case 'mineSulfur':
       return handleMineSulfur(state, result);
-    case 'forgeSteel':
-      return handleforgeSteel(state, result);
     case 'craftSteelAxe':
       return handleCraftSteelAxe(state, result);
     case 'craftSteelPickaxe':
       return handleCraftSteelPickaxe(state, result);
+    case 'buildShrine':
+      return handleBuildShrine(state, result);
     default:
       return result;
   }
@@ -204,7 +204,25 @@ function handleBuildPit(state: GameState, result: ActionResult): ActionResult {
 }
 
 function handleBuildFoundry(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildFoundry', 'foundry');
+  const builtFoundry = state.buildings.foundry === 0 && !state.story.seen.foundryComplete;
+  const resultWithBuilding = handleBuildingConstruction(state, result, 'buildFoundry', 'foundry');
+
+  if (builtFoundry) {
+    resultWithBuilding.logEntries!.push({
+      id: `foundry-complete-${Date.now()}`,
+      message: 'The foundy roars to life as coal and iron merge in the intense heat. The resulting steel gleams with superior strength and durability.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+    resultWithBuilding.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        foundryComplete: true,
+      },
+    };
+  }
+  return resultWithBuilding;
 }
 
 function handleBuildingConstruction(
@@ -249,6 +267,18 @@ function handleExploreCave(state: GameState, result: ActionResult): ActionResult
     // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
+
+  // Remove forge section from cave panel
+  if (state.panels?.cave?.actions) {
+    result.stateUpdates.panels = {
+      ...state.panels,
+      cave: {
+        ...state.panels.cave,
+        actions: state.panels.cave.actions.filter(action => action.id !== 'forgeSteel')
+      }
+    };
+  }
+
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -581,36 +611,6 @@ function handleMineSulfur(state: GameState, result: ActionResult): ActionResult 
   return result;
 }
 
-function handleforgeSteel(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('forgeSteel', state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: 'system',
-      });
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  // Add a special log message for steel forging
-  if (!state.story.seen.hasSteel) {
-    result.logEntries!.push({
-      id: `steel-forged-${Date.now()}`,
-      message: 'The blacksmith forge roars to life as coal and iron merge in the intense heat. The resulting steel gleams with superior strength and durability.',
-      timestamp: Date.now(),
-      type: 'system',
-    });
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
 function handleCraftSteelAxe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftSteelAxe', state);
   Object.assign(result.stateUpdates, effectUpdates);
@@ -622,3 +622,53 @@ function handleCraftSteelPickaxe(state: GameState, result: ActionResult): Action
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
+
+// New handler for Shrine building
+function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+}
+
+// Add blacksmith_hammer and elder_scroll to relic effects
+// Update existing effects or create new ones as needed
+// For now, we'll assume a placeholder for relic effects
+const relicEffects = {
+  blacksmith_hammer: {
+    type: 'resourceBonus',
+    resource: 'iron',
+    amount: 5,
+  },
+  elder_scroll: {
+    type: 'cooldownReduction',
+    action: 'exploreCave',
+    reduction: 10,
+  },
+};
+
+// Function to apply relic effects, this would need to be integrated into the game logic
+function applyRelicEffects(state: GameState, result: ActionResult) {
+  if (state.character.clothing?.includes('blacksmith_hammer')) {
+    const hammerEffect = relicEffects.blacksmith_hammer;
+    if (!result.stateUpdates.resources) {
+      result.stateUpdates.resources = { ...state.resources };
+    }
+    result.stateUpdates.resources![hammerEffect.resource as keyof GameState['resources']] = (result.stateUpdates.resources![hammerEffect.resource as keyof GameState['resources']] || 0) + hammerEffect.amount;
+  }
+  if (state.character.clothing?.includes('elder_scroll')) {
+    const scrollEffect = relicEffects.elder_scroll;
+    if (!result.stateUpdates.cooldowns) {
+      result.stateUpdates.cooldowns = { ...state.cooldowns };
+    }
+    result.stateUpdates.cooldowns![scrollEffect.action] = Math.max(0, (result.stateUpdates.cooldowns![scrollEffect.action] || 0) - scrollEffect.reduction);
+  }
+}
+
+// Example of how you might integrate relic effects (this is a simplified example and needs proper game logic integration)
+// You would typically call applyRelicEffects after applying action effects or when character stats are calculated.
+// For instance, within handleHunt:
+// function handleHunt(state: GameState, result: ActionResult): ActionResult {
+//   const effectUpdates = applyActionEffects('hunt', state);
+//   applyRelicEffects(state, result); // Apply relic effects
+//   // ... rest of the handleHunt logic
+//   Object.assign(result.stateUpdates, effectUpdates);
+//   return result;
+// }
