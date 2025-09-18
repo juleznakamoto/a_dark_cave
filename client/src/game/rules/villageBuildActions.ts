@@ -104,13 +104,13 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 400,
-        "resources.stone": 100,
+        "resources.stone": 200,
       },
     },
     effects: {
       1: {
         "resources.wood": -400,
-        "resources.stone": -100,
+        "resources.stone": -200,
         "buildings.blacksmith": 1,
       },
     },
@@ -141,46 +141,46 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 250,
-        "resources.stone": 50,
+        "resources.wood": 500,
+        "resources.stone": 250,
       },
       2: {
-        "resources.wood": 500,
-        "resources.stone": 100,
+        "resources.wood": 1000,
+        "resources.stone": 250,
         "resources.iron": 50,
       },
       3: {
-        "resources.wood": 1000,
-        "resources.stone": 250,
+        "resources.wood": 2500,
+        "resources.stone": 500,
         "resources.steel": 100,
       },
       4: {
-        "resources.wood": 2000,
-        "resources.stone": 500,
+        "resources.wood": 5000,
+        "resources.stone": 1000,
         "resources.steel": 250,
       },
     },
     effects: {
       1: {
-        "resources.wood": -250,
-        "resources.stone": -50,
+        "resources.wood": -500,
+        "resources.stone": -250,
         "buildings.pit": 1,
       },
       2: {
-        "resources.wood": -500,
-        "resources.stone": -100,
+        "resources.wood": -1000,
+        "resources.stone": -250,
         "resources.iron": -50,
         "buildings.pit": 1,
       },
       3: {
-        "resources.wood": -1000,
-        "resources.stone": -250,
+        "resources.wood": -2500,
+        "resources.stone": -500,
         "resources.steel": -100,
         "buildings.pit": 1,
       },
       4: {
-        "resources.wood": -2000,
-        "resources.stone": -500,
+        "resources.wood": -5000,
+        "resources.stone": -1000,
         "resources.obsidian": -250,
         "buildings.pit": 1,
       },
@@ -200,15 +200,15 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 250,
-        "resources.stone": 200,
+        "resources.wood": 500,
+        "resources.stone": 250,
         "resources.iron": 100,
       },
     },
     effects: {
       1: {
-        "resources.wood": -250,
-        "resources.stone": -200,
+        "resources.wood": -500,
+        "resources.stone": -250,
         "resources.iron": -100,
         "buildings.foundry": 1,
       },

@@ -9,11 +9,11 @@ export const caveMiningActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.torch": 5,
       "resources.food": 5,
+      "resources.torch": 1,
     },
     effects: {
-      "resources.torch": -5,
+      "resources.torch": -1,
       "resources.food": -5,
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
@@ -28,11 +28,11 @@ export const caveMiningActions: Record<string, Action> = {
       "tools.stone_pickaxe": true,
     },
     cost: {
-      "resources.torch": 5,
       "resources.food": 5,
+      "resources.torch": 1,
     },
     effects: {
-      "resources.torch": -5,
+      "resources.torch": -1,
       "resources.food": -5,
       "resources.coal": "random(2,5)",
       "story.seen.hasCoal": true,
@@ -47,13 +47,13 @@ export const caveMiningActions: Record<string, Action> = {
       "tools.iron_pickaxe": true,
     },
     cost: {
-      "resources.torch": 10,
       "resources.food": 15,
+      "resources.torch": 5,
     },
     effects: {
       "resources.torch": -10,
       "resources.food": -15,
-      "resources.sulfur": "random(2,4)",
+      "resources.sulfur": "random(2,5)",
       "story.seen.hasSulfur": true,
     },
     cooldown: 15,
@@ -66,13 +66,13 @@ export const caveMiningActions: Record<string, Action> = {
       "tools.steel_pickaxe": true,
     },
     cost: {
-      "resources.torch": 15,
       "resources.food": 30,
+      "resources.torch": 10,
     },
     effects: {
       "resources.torch": -15,
       "resources.food": -30,
-      "resources.obsidian": "random(4,10)",
+      "resources.obsidian": "random(2,5)",
       "story.seen.hasObsidian": true,
     },
     cooldown: 15,
@@ -85,13 +85,13 @@ export const caveMiningActions: Record<string, Action> = {
       "tools.obsidian_pickaxe": true,
     },
     cost: {
-      "resources.torch": 20,
       "resources.food": 50,
+      "resources.torch": 20,
     },
     effects: {
       "resources.torch": -20,
       "resources.food": -50,
-      "resources.adamant": "random(6,12)",
+      "resources.adamant": "random(2,5)",
       "story.seen.hasAdamant": true,
     },
     cooldown: 20,

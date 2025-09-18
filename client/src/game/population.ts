@@ -35,6 +35,8 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
         interval: 15000,
       },
       { resource: "fur", amount: 1, interval: 15000 },
+      { resource: "bones", amount: 1, interval: 15000 },
+
     ],
   },
   iron_miner: {

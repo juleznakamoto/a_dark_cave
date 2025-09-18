@@ -564,7 +564,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamOblivion: {
     id: "dreamOblivion",
-    condition: (state) => state.buildings.woodenHut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 3,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -582,7 +582,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamSkyrim: {
     id: "dreamSkyrim",
-    condition: (state) => state.buildings.woodenHut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 5,
     triggerType: "time",
     timeProbability: 90,
     message:

@@ -41,7 +41,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 3 },
+          resourceBonus: { wood: 5 },
+          cooldownReduction: 0.25,
+        },
+        buildTorch: {
           cooldownReduction: 0.25,
         },
       },
@@ -73,7 +76,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 8 },
+          resourceBonus: { wood: 10 },
+          cooldownReduction: 0.5,
+        },
+        buildTorch: {
           cooldownReduction: 0.5,
         },
       },
@@ -138,7 +144,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 35 },
+          resourceBonus: { wood: 25 },
           cooldownReduction: 1,
         },
       },
@@ -179,7 +185,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 75 },
+          resourceBonus: { wood: 50 },
           cooldownReduction: 1.5,
         },
       },

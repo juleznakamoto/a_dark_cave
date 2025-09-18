@@ -17,7 +17,7 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.actionBuildTorch": true,
     },
     unlocks: ["exploreDeeper"],
-    cooldown: 5,
+    cooldown: 2.5,
   },
 
   craftStoneAxe: {
@@ -50,8 +50,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.stone_pickaxe": false,
     },
     cost: {
-      "resources.wood": 10,
-      "resources.stone": 20,
+      "resources.wood": 50,
+      "resources.stone": 100,
     },
     effects: {
       "resources.wood": -10,
@@ -74,8 +74,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasCoal": true,
     },
     cost: {
-      "resources.iron": 50,
       "resources.wood": 100,
+      "resources.iron": 50,
     },
     effects: {
       "resources.iron": -50,
@@ -98,8 +98,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasCoal": true,
     },
     cost: {
-      "resources.iron": 75,
       "resources.wood": 150,
+      "resources.iron": 75,
     },
     effects: {
       "resources.iron": -75,
@@ -121,8 +121,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSteel": true,
     },
     cost: {
-      "resources.steel": 100,
       "resources.wood": 200,
+      "resources.steel": 100,
     },
     effects: {
       "resources.steel": -100,
@@ -144,8 +144,8 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasSteel": true,
     },
     cost: {
-      "resources.steel": 150,
       "resources.wood": 300,
+      "resources.steel": 150,
     },
     effects: {
       "resources.steel": -150,
@@ -166,8 +166,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.obsidian_axe": false,
     },
     cost: {
-      "resources.obsidian": 100,
       "resources.wood": 500,
+      "resources.obsidian": 100,
     },
     effects: {
       "resources.obsidian": -100,
@@ -188,8 +188,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.obsidian_pickaxe": false,
     },
     cost: {
-      "resources.obsidian": 150,
       "resources.wood": 750,
+      "resources.obsidian": 150,
     },
     effects: {
       "resources.obsidian": -150,
@@ -210,8 +210,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.adamant_axe": false,
     },
     cost: {
-      "resources.adamant": 100,
       "resources.wood": 1000,
+      "resources.adamant": 100,
     },
     effects: {
       "resources.adamant": -100,
