@@ -8,6 +8,7 @@ export const caveForgingActions: Record<string, Action> = {
     show_when: {
       "story.seen.hasIronAxe": true,
       "story.seen.hasIronPickaxe": true,
+      "story.buildings.foundry": 1,
     },
     cost: {
       "resources.coal": 5,

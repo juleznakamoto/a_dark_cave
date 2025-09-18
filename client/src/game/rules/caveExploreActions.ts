@@ -139,7 +139,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
     },
-    cooldown: 15,
+    cooldown: 20,
   },
 
   descendFurther: {
@@ -149,10 +149,10 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.iron_lantern": true,
     },
     cost: {
-      "resources.food": 50,
+      "resources.food": 100,
     },
     effects: {
-      "resources.food": -50,
+      "resources.food": -100,
       "resources.stone": { probability: 1, value: "random(6,11)" },
       "resources.iron": { probability: 0.35, value: "random(3,8)" },
       "resources.coal": { probability: 0.35, value: "random(3,8)" },
@@ -164,7 +164,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
     },
-    cooldown: 20,
+    cooldown: 30,
   },
 
   exploreRuins: {
@@ -174,10 +174,10 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.steel_lantern": true,
     },
     cost: {
-      "resources.food": 100,
+      "resources.food": 250,
     },
     effects: {
-      "resources.food": -100,
+      "resources.food": -250,
       "resources.stone": { probability: 1, value: "random(8,14)" },
       "resources.iron": { probability: 0.4, value: "random(4,10)" },
       "resources.coal": { probability: 0.4, value: "random(4,10)" },
@@ -192,7 +192,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
-    cooldown: 25,
+    cooldown: 60,
   },
 
   exploreTemple: {
@@ -202,10 +202,10 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.obsidian_lantern": true,
     },
     cost: {
-      "resources.food": 150,
+      "resources.food": 500,
     },
     effects: {
-      "resources.food": -150,
+      "resources.food": -500,
       "resources.stone": { probability: 1, value: "random(10,17)" },
       "resources.iron": { probability: 0.45, value: "random(5,12)" },
       "resources.coal": { probability: 0.45, value: "random(5,12)" },
@@ -221,7 +221,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
-    cooldown: 30,
+    cooldown: 90,
   },
 
   exploreCitadel: {
@@ -231,10 +231,10 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.adamant_lantern": true,
     },
     cost: {
-      "resources.food": 250,
+      "resources.food": 1000,
     },
     effects: {
-      "resources.food": -250,
+      "resources.food": -1000,
       "resources.stone": { probability: 1, value: "random(12,20)" },
       "resources.iron": { probability: 0.5, value: "random(6,14)" },
       "resources.coal": { probability: 0.5, value: "random(6,14)" },
@@ -250,6 +250,6 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
-    cooldown: 40,
+    cooldown: 120,
   },
 };

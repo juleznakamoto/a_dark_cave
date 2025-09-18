@@ -18,7 +18,10 @@ export const storyEvents: Record<string, GameEvent> = {
         ...state.resources,
         food:
           state.resources.food -
-          Math.ceil(Math.random() * 50 * state.buildings.hut),
+          Math.min(
+            state.resources.food,
+            Math.ceil(Math.random() * 50 * state.buildings.woodenHut),
+          ),
       },
     }),
   },
@@ -27,7 +30,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "villagerMissing",
     condition: (state) => state.villagers.free > 0,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 10,
     message: [
       "One hut lies empty. Its occupant is gone.",
       "A villager is gone. Claw-like marks remain.",
@@ -51,7 +54,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "ironGift",
     condition: (state) => state.buildings.woodenHut >= 1,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 30,
     message: [
       "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
       "A gift of iron gleams in the morning mist. None know who or what brought it.",
@@ -61,7 +64,7 @@ export const storyEvents: Record<string, GameEvent> = {
     effect: (state) => ({
       resources: {
         ...state.resources,
-        iron: state.resources.iron + 50 * state.buildings.woodenHut,
+        iron: state.resources.iron + 25 * state.buildings.woodenHut,
       },
     }),
   },
@@ -71,7 +74,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 0.25,
     title: "The Pale Figure",
     message: [
       "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
@@ -546,7 +549,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamMorrowind: {
     id: "dreamMorrowind",
-    condition: (state) => state.buildings.woodenHut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 3,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -564,7 +567,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamOblivion: {
     id: "dreamOblivion",
-    condition: (state) => state.buildings.woodenHut >= 3,
+    condition: (state) => state.buildings.woodenHut >= 4,
     triggerType: "time",
     timeProbability: 90,
     message:

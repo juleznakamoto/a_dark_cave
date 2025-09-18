@@ -253,6 +253,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.iron_lantern": false,
       "story.seen.hasIron": true,
       "story.seen.hasCoal": true,
+      "flags.venturedDeeper": true,
     },
     cost: {
       "resources.iron": 100,
