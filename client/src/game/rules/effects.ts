@@ -340,6 +340,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   elder_scroll: {
     id: "elder_scroll",
     name: "Elder Scroll",
+    description: "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
     bonuses: {
       generalBonuses: {
         knowledge: 15,
@@ -349,7 +350,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
   },
 
   old_trinket: {
+    id: "old_trinket",
     name: "Old Trinket",
+    description: "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
     bonuses: {
       generalBonuses: {
         strength: 5,
