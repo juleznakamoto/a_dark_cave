@@ -2,7 +2,6 @@ import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction } from "./population";
-import { EventManager } from "./rules/events";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -381,9 +380,9 @@ function handleStrangerApproach() {
   // +2.5% for each wooden hut
   probability += state.buildings.woodenHut * 0.025;
 
-  // +25% if population is 0
+  // +20% if population is 0
   if (currentPopulation === 0) {
-    probability += 0.25;
+    probability += 0.20;
   }
 
   // Check if stranger approaches based on probability

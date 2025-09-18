@@ -20,7 +20,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       },
       {
         resource: "stone",
-        amount: 2,
+        amount: 5,
         interval: 15000,
       },
     ],

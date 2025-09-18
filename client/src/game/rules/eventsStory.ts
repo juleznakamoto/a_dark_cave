@@ -5,7 +5,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "foodGone",
     condition: (state) => state.resources.food > 50,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 20,
     message: [
       "Strange whispers were heard at night. At dawn, food stores are lighter.",
       "Villagers wake to find food missing. Some heard ancient tongues in the night.",
@@ -27,7 +27,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "villagerMissing",
     condition: (state) => state.villagers.free > 0,
     triggerType: "resource",
-    timeProbability: 10,
+    timeProbability: 25,
     message: [
       "One hut lies empty. Its occupant is gone.",
       "A villager is gone. Claw-like marks remain.",

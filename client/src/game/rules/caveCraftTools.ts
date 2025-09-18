@@ -256,13 +256,11 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.iron": 100,
-      "resources.wood": 50,
-      "resources.coal": 25,
+      "resources.wood": 200,
     },
     effects: {
       "resources.iron": -100,
-      "resources.wood": -50,
-      "resources.coal": -25,
+      "resources.wood": -200,
       "tools.iron_lantern": true,
       "story.seen.hasIronLantern": true,
       "story.seen.actionCraftIronLantern": true,
@@ -281,13 +279,11 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.steel": 150,
-      "resources.wood": 100,
-      "resources.coal": 50,
+      "resources.wood": 400,
     },
     effects: {
       "resources.steel": -150,
-      "resources.wood": -100,
-      "resources.coal": -50,
+      "resources.wood": -400,
       "tools.steel_lantern": true,
       "story.seen.hasSteelLantern": true,
       "story.seen.actionCraftSteelLantern": true,
@@ -305,13 +301,11 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.obsidian": 200,
-      "resources.wood": 200,
-      "resources.coal": 100,
+      "resources.wood": 800,
     },
     effects: {
       "resources.obsidian": -200,
-      "resources.wood": -200,
-      "resources.coal": -100,
+      "resources.wood": -800,
       "tools.obsidian_lantern": true,
       "story.seen.hasObsidianLantern": true,
       "story.seen.actionCraftObsidianLantern": true,
@@ -329,13 +323,11 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.adamant": 250,
-      "resources.wood": 300,
-      "resources.coal": 150,
+      "resources.wood": 1600,
     },
     effects: {
       "resources.adamant": -250,
-      "resources.wood": -300,
-      "resources.coal": -150,
+      "resources.wood": -1600,
       "tools.adamant_lantern": true,
       "story.seen.hasAdamantLantern": true,
       "story.seen.actionCraftAdamantLantern": true,
