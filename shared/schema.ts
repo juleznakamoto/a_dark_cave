@@ -102,6 +102,7 @@ export const gameStateSchema = z.object({
     cabin: z.number().default(0),
     blacksmith: z.number().default(0),
     pit: z.number().default(0),
+    foundry: z.number().default(0),
   }).default({}),
   villagers: z.object({
     free: z.number().min(0).default(0),
@@ -115,6 +116,7 @@ export const gameStateSchema = z.object({
     obsidian_miner: z.number().min(0).default(0),
     adamant_miner: z.number().min(0).default(0),
     moonstone_miner: z.number().min(0).default(0),
+    steel_forger: z.number().min(0).default(0),
   }).default({}),
   world: z.object({
     discovered: z.boolean().default(false),
