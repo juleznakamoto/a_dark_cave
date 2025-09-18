@@ -274,9 +274,9 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Steel Lantern",
     show_when: {
       "buildings.blacksmith": 1,
+      "buildings.foundry": 1,
       "tools.iron_lantern": true,
       "tools.steel_lantern": false,
-      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.steel": 150,
