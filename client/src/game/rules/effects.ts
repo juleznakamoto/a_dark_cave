@@ -340,10 +340,20 @@ export const toolEffects: Record<string, EffectDefinition> = {
   elder_scroll: {
     id: "elder_scroll",
     name: "Elder Scroll",
-    description: "An ancient scroll containing forbidden knowledge (+10 Knowledge)",
     bonuses: {
       generalBonuses: {
-        knowledge: 10,
+        knowledge: 15,
+        luck: 10,
+      },
+    },
+  },
+
+  old_trinket: {
+    name: "Old Trinket",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+        luck: 2,
       },
     },
   },
@@ -365,7 +375,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   },
 
   huntsman_bow: {
-    id: "huntsman_bow", 
+    id: "huntsman_bow",
     name: "Huntsman Bow",
     description: "Improved hunting bow for better food gathering",
     bonuses: {
@@ -379,7 +389,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
   long_bow: {
     id: "long_bow",
-    name: "Long Bow", 
+    name: "Long Bow",
     description: "Superior hunting bow with extended range",
     bonuses: {
       actionBonuses: {
@@ -404,7 +414,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   },
 
   master_bow: {
-    id: "master_bow", 
+    id: "master_bow",
     name: "Master Bow",
     description: "The ultimate hunting weapon",
     bonuses: {
@@ -494,7 +504,7 @@ const LANTERN_HIERARCHY = [
 
 const BOW_HIERARCHY = [
   "crude_bow",
-  "huntsman_bow", 
+  "huntsman_bow",
   "long_bow",
   "war_bow",
   "master_bow",

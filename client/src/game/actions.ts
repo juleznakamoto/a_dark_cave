@@ -131,32 +131,23 @@ function handleGatherWood(state: GameState, result: ActionResult): ActionResult 
   if (effectUpdates.triggeredEvents) {
     effectUpdates.triggeredEvents.forEach((eventId: string) => {
       if (eventId === 'trinketFound') {
-        // Apply the trinket effects immediately
-        Object.assign(result.stateUpdates, {
-          flags: {
-            ...state.flags,
-            ...result.stateUpdates.flags,
-            trinketDrunk: true,
-          },
-          events: {
-            ...state.events,
-            ...result.stateUpdates.events,
-            trinket_found: true,
-          },
-          stats: {
-            ...state.stats,
-            ...result.stateUpdates.stats,
-            strength: (state.stats.strength || 0) + 5,
-          },
-        });
-
-        // Add log entry for the trinket discovery
+        // Add log entry for the trinket discovery with choices
         result.logEntries!.push({
           id: `trinketFound-${Date.now()}`,
-          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. You drink it without hesitation. The liquid burns as it goes down, but you feel stronger than before.",
+          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. The ancient vessel radiates mysterious power.",
           timestamp: Date.now(),
           type: 'event',
           title: 'Old Trinket',
+          choices: [
+            {
+              id: "takeTrinket",
+              label: "Take the trinket"
+            },
+            {
+              id: "leaveTrinket", 
+              label: "Leave it be"
+            }
+          ]
         });
       }
     });
