@@ -15,7 +15,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "resources.iron": -100,
       "weapons.iron_sword": true,
-      "story.seen.hasIronSword": true,
     },
     cooldown: 15,
   },
@@ -35,8 +34,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "resources.steel": -150,
       "weapons.steel_sword": true,
-      "story.seen.hasSteelSword": true,
-      "story.seen.actionCraftSteelSword": true,
     },
     cooldown: 20,
   },
@@ -47,7 +44,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "weapons.steel_sword": true,
-      "weapons.obsidian_sword": false,
     },
     cost: {
       "resources.obsidian": 200,
@@ -55,8 +51,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "resources.obsidian": -200,
       "weapons.obsidian_sword": true,
-      "story.seen.hasObsidianSword": true,
-      "story.seen.actionCraftObsidianSword": true,
     },
     cooldown: 25,
   },
@@ -75,8 +69,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     effects: {
       "resources.adamant": -250,
       "weapons.adamant_sword": true,
-      "story.seen.hasAdamantSword": true,
-      "story.seen.actionCraftAdamantSword": true,
     },
     cooldown: 30,
   },
@@ -95,8 +87,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.wood": -200,
       "weapons.crude_bow": true,
       "flags.forestUnlocked": true,
-      "story.seen.hasCrudeBow": true,
-      "story.seen.actionCraftCrudeBow": true,
     },
     cooldown: 10,
   },
@@ -118,8 +108,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.wood": -500,
       "resources.iron": -50,
       "weapons.huntsman_bow": true,
-      "story.seen.hasHuntsmanBow": true,
-      "story.seen.actionCraftHuntsmanBow": true,
     },
     cooldown: 15,
   },
@@ -141,8 +129,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.wood": -1000,
       "resources.steel": -100,
       "weapons.long_bow": true,
-      "story.seen.hasLongBow": true,
-      "story.seen.actionCraftLongBow": true,
     },
     cooldown: 20,
   },
