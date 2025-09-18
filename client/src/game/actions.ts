@@ -75,6 +75,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftWarBow(state, result);
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
+    case 'craftIronSword':
+      return handleCraftIronSword(state, result);
+    case 'craftSteelSword':
+      return handleCraftSteelSword(state, result);
+    case 'craftObsidianSword':
+      return handleCraftObsidianSword(state, result);
+    case 'craftAdamantSword':
+      return handleCraftAdamantSword(state, result);
     case 'craftIronLantern':
       return handleCraftIronLantern(state, result);
     case 'craftSteelLantern':
@@ -443,6 +451,30 @@ function handleCraftWarBow(state: GameState, result: ActionResult): ActionResult
 
 function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftMasterBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftIronSword(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftIronSword', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftSteelSword(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSteelSword', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftObsidianSword(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftObsidianSword', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftAdamantSword(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftAdamantSword', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
