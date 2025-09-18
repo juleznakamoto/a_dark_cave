@@ -54,7 +54,7 @@ export default function SidePanel() {
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
     .map(([key, value]) => {
-      let label = key.charAt(0).toUpperCase() + key.slice(1);
+      let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       
       // Special naming for pit building levels
       if (key === 'pit' && value > 0) {
