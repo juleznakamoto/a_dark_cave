@@ -60,8 +60,55 @@ interface GameStore extends GameState {
 
 import { gameStateSchema } from "@shared/schema";
 
-// Generate default state from schema defaults - no more duplication!
-const defaultGameState: GameState = gameStateSchema.parse({});
+// Recursively extract default values from Zod schema structure
+const extractDefaultsFromSchema = (schema: any): any => {
+  // Handle ZodObject
+  if (schema._def?.typeName === 'ZodObject') {
+    const result: any = {};
+    const shape = schema._def.shape();
+
+    for (const [key, fieldSchema] of Object.entries(shape)) {
+      result[key] = extractDefaultsFromSchema(fieldSchema);
+    }
+
+    return result;
+  }
+
+  // Handle ZodDefault (fields with .default())
+  if (schema._def?.typeName === 'ZodDefault') {
+    const defaultValue = schema._def.defaultValue();
+    const innerSchema = schema._def.innerType;
+
+    // If default is an empty object but inner schema is an object with fields,
+    // extract defaults from the inner schema instead
+    if (typeof defaultValue === 'object' && defaultValue !== null &&
+        Object.keys(defaultValue).length === 0 &&
+        innerSchema._def?.typeName === 'ZodObject') {
+      return extractDefaultsFromSchema(innerSchema);
+    }
+
+    return defaultValue;
+  }
+
+  // Handle other primitive types - return appropriate defaults
+  if (schema._def?.typeName === 'ZodNumber') return 0;
+  if (schema._def?.typeName === 'ZodBoolean') return false;
+  if (schema._def?.typeName === 'ZodString') return '';
+  if (schema._def?.typeName === 'ZodArray') return [];
+  if (schema._def?.typeName === 'ZodRecord') return {};
+
+  // Fallback
+  return undefined;
+};
+
+// Generate completely dynamic default state from schema
+const generateDefaultGameState = (): GameState => {
+  return extractDefaultsFromSchema(gameStateSchema) as GameState;
+};
+
+// Use the generated default state
+const defaultGameState: GameState = generateDefaultGameState();
+
 
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
