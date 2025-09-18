@@ -149,9 +149,9 @@ export default function SidePanel() {
       case 'cave':
         return ['resources', 'tools', 'weapons', 'clothing', 'relics', 'stats'].includes(sectionName);
       case 'village':
-        return ['buildings', 'population'].includes(sectionName);
+        return ['resources', 'buildings', 'population'].includes(sectionName);
       case 'forest':
-        return false; // Show no sections for forest panel
+        return ['resources'].includes(sectionName);
       case 'world':
         return ['resources', 'tools', 'weapons', 'clothing', 'relics', 'buildings', 'population', 'stats'].includes(sectionName);
       default:
