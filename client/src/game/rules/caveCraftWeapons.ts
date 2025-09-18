@@ -9,17 +9,12 @@ export const caveCraftWeapons: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "weapons.iron_sword": false,
       "story.seen.hasIron": true,
-      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.iron": 100,
-      "resources.wood": 75,
-      "resources.coal": 25,
     },
     effects: {
       "resources.iron": -100,
-      "resources.wood": -75,
-      "resources.coal": -25,
       "weapons.iron_sword": true,
       "story.seen.hasIronSword": true,
       "story.seen.actionCraftIronSword": true,
@@ -38,13 +33,9 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.steel": 150,
-      "resources.wood": 100,
-      "resources.coal": 50,
     },
     effects: {
       "resources.steel": -150,
-      "resources.wood": -100,
-      "resources.coal": -50,
       "weapons.steel_sword": true,
       "story.seen.hasSteelSword": true,
       "story.seen.actionCraftSteelSword": true,
@@ -62,13 +53,9 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.obsidian": 200,
-      "resources.wood": 150,
-      "resources.coal": 100,
     },
     effects: {
       "resources.obsidian": -200,
-      "resources.wood": -150,
-      "resources.coal": -100,
       "weapons.obsidian_sword": true,
       "story.seen.hasObsidianSword": true,
       "story.seen.actionCraftObsidianSword": true,
@@ -86,13 +73,9 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.adamant": 250,
-      "resources.wood": 200,
-      "resources.coal": 150,
     },
     effects: {
       "resources.adamant": -250,
-      "resources.wood": -200,
-      "resources.coal": -150,
       "weapons.adamant_sword": true,
       "story.seen.hasAdamantSword": true,
       "story.seen.actionCraftAdamantSword": true,

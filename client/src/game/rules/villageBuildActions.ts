@@ -22,22 +22,34 @@ export const villageBuildActions: Record<string, Action> = {
       5: {
         "buildings.foundry": 1,
       },
+      6: {
+        "buildings.foundry": 1,
+      },
+      7: {
+        "buildings.foundry": 1,
+      },
     },
     cost: {
       1: {
         "resources.wood": 100,
       },
       2: {
-        "resources.wood": 200,
+        "resources.wood": 250,
       },
       3: {
-        "resources.wood": 400,
+        "resources.wood": 500,
       },
       4: {
-        "resources.wood": 800,
+        "resources.wood": 750,
       },
       5: {
+        "resources.wood": 1000,
+      },
+      6: {
         "resources.wood": 1500,
+      },
+      7: {
+        "resources.wood": 2000,
       },
     },
     effects: {
@@ -46,19 +58,27 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
       2: {
-        "resources.wood": -200,
+        "resources.wood": -250,
         "buildings.woodenHut": 1,
       },
       3: {
-        "resources.wood": -400,
+        "resources.wood": -500,
         "buildings.woodenHut": 1,
       },
       4: {
-        "resources.wood": -800,
+        "resources.wood": -750,
         "buildings.woodenHut": 1,
       },
       5: {
+        "resources.wood": -1000,
+        "buildings.woodenHut": 1,
+      },
+      6: {
         "resources.wood": -1500,
+        "buildings.woodenHut": 1,
+      },
+      7: {
+        "resources.wood": -2000,
         "buildings.woodenHut": 1,
       },
     },
@@ -132,11 +152,11 @@ export const villageBuildActions: Record<string, Action> = {
       },
       3: {
         "tools.obsidian_pickaxe": true,
-        "buildings.pit": 2,
+        "buildings.pit": 1,
       },
       4: {
         "tools.adamant_pickaxe": true,
-        "buildings.pit": 3,
+        "buildings.pit": 1,
       },
     },
     cost: {

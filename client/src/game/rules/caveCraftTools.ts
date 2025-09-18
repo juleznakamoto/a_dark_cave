@@ -279,7 +279,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.steel_lantern": false,
     },
     cost: {
-      "resources.steel": 150,
+      "resources.steel": 100,
       "resources.wood": 400,
     },
     effects: {
