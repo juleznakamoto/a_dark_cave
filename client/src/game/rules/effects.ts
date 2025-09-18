@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import { fileURLToPath } from "url";
 
 // Define effects that tools and clothing provide
 export interface EffectDefinition {
@@ -329,10 +330,11 @@ export const toolEffects: Record<string, EffectDefinition> = {
   blacksmith_hammer: {
     id: "blacksmith_hammer",
     name: "Blacksmith Hammer",
-    description: "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
+    description:
+      "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 2,
+        strength: 5,
       },
     },
   },
@@ -340,7 +342,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   elder_scroll: {
     id: "elder_scroll",
     name: "Elder Scroll",
-    description: "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
+    description:
+      "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
     bonuses: {
       generalBonuses: {
         knowledge: 15,
@@ -357,11 +360,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     name: "Crude Bow",
     description: "Basic hunting bow for gathering food",
     bonuses: {
-      actionBonuses: {
-        hunt: {
-          resourceBonus: { food: 5 },
-        },
-      },
+      actionBonuses: {},
     },
   },
 
@@ -372,7 +371,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 10 },
+          resourceBonus: { food: 10, fur: 2, bones: 2 },
         },
       },
     },
@@ -385,7 +384,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 15 },
+          resourceBonus: { food: 15, fur: 4, bones: 4 },
         },
       },
     },
@@ -398,7 +397,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 20 },
+          resourceBonus: { food: 20, fur: 6, bones: 6 },
         },
       },
     },
@@ -411,7 +410,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 25 },
+          resourceBonus: { food: 25, fur: 8, bones: 8 },
         },
       },
     },
@@ -472,7 +471,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   whispering_amulet: {
     id: "whispering_amulet",
     name: "Whispering Amulet",
-    description: "A mysterious amulet that whispers ancient secrets (+5 Knowledge)",
+    description:
+      "A mysterious amulet that whispers ancient secrets (+5 Knowledge)",
     bonuses: {
       generalBonuses: {
         knowledge: 5,
@@ -483,7 +483,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   old_trinket: {
     id: "old_trinket",
     name: "Old Trinket",
-    description: "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
+    description:
+      "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
     bonuses: {
       generalBonuses: {
         strength: 5,

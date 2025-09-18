@@ -1,4 +1,3 @@
-
 import { Action } from "@shared/schema";
 
 export const forestVentureActions: Record<string, Action> = {
@@ -10,14 +9,16 @@ export const forestVentureActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": "random(1,5)",
+      "resources.food": "random(1,6)",
       "resources.fur": "random(0,2)",
+      "resources.bones": "random(0,2)",
       "story.seen.hasHunted": true,
-      "relics.blacksmith_hammer": { 
-        probability: 0.0025, 
-        value: true, 
+      "relics.blacksmith_hammer": {
+        probability: 0.0025,
+        value: true,
         condition: "!relics.blacksmith_hammer",
-        logMessage: "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent hammer catches the light, its head still bearing traces of ancient forge-fire. You take the Blacksmith Hammer with you. (+2 Strength, -10% crafting costs)"
+        logMessage:
+          "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent hammer catches the light, its head still bearing traces of ancient forge-fire. You take the Blacksmith Hammer with you. (+2 Strength, -10% crafting costs)",
       },
     },
     cooldown: 10,
