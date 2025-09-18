@@ -4,7 +4,7 @@ import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTo
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, current_population, total_population } = useGameStore();
+  const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -143,10 +143,26 @@ export default function SidePanel() {
     });
   }
 
+  // Determine which sections to show based on active tab
+  const shouldShowSection = (sectionName: string): boolean => {
+    switch (activeTab) {
+      case 'cave':
+        return ['resources', 'tools', 'weapons', 'clothing', 'relics', 'stats'].includes(sectionName);
+      case 'village':
+        return ['buildings', 'population'].includes(sectionName);
+      case 'forest':
+        return false; // Show no sections for forest panel
+      case 'world':
+        return ['resources', 'tools', 'weapons', 'clothing', 'relics', 'buildings', 'population', 'stats'].includes(sectionName);
+      default:
+        return true; // Show all sections by default
+    }
+  };
+
   return (
     <ScrollArea className="h-full max-h-full">
       <div className="pb-4">
-        {resourceItems.length > 0 && (
+        {resourceItems.length > 0 && shouldShowSection('resources') && (
           <SidePanelSection 
             title="Resources" 
             items={resourceItems}
@@ -155,28 +171,28 @@ export default function SidePanel() {
             }}
           />
         )}
-        {toolItems.length > 0 && (
+        {toolItems.length > 0 && shouldShowSection('tools') && (
           <SidePanelSection title="Tools" items={toolItems} />
         )}
-        {weaponItems.length > 0 && (
+        {weaponItems.length > 0 && shouldShowSection('weapons') && (
           <SidePanelSection title="Weapons" items={weaponItems} />
         )}
-        {clothingItems.length > 0 && (
+        {clothingItems.length > 0 && shouldShowSection('clothing') && (
           <SidePanelSection title="Clothing" items={clothingItems} />
         )}
-        {relicItems.length > 0 && (
+        {relicItems.length > 0 && shouldShowSection('relics') && (
           <SidePanelSection title="Relics" items={relicItems} />
         )}
-        {buildingItems.length > 0 && (
+        {buildingItems.length > 0 && shouldShowSection('buildings') && (
           <SidePanelSection title="Buildings" items={buildingItems} />
         )}
-        {populationItems.length > 0 && (
+        {populationItems.length > 0 && shouldShowSection('population') && (
           <SidePanelSection 
             title={`Population ${current_population}/${total_population}`} 
             items={populationItems}
           />
         )}
-        {statsItems.length > 0 && (
+        {statsItems.length > 0 && shouldShowSection('stats') && (
           <SidePanelSection 
             title="Stats" 
             items={statsItems}
