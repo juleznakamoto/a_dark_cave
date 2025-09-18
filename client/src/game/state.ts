@@ -53,8 +53,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => void;
-  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => void;
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => void;
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
@@ -422,7 +422,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is always enabled - no-op
   },
 
-  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => {
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -432,7 +432,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner") => {
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {

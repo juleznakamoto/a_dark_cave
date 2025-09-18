@@ -15,7 +15,8 @@ export default function VillagePanel() {
     { id: 'buildHut', label: 'Wooden Hut' },
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
-    { id: 'buildPit', label: 'Build Pit' } // Placeholder, actual label handled dynamically
+    { id: 'buildPit', label: 'Build Pit' }, // Placeholder, actual label handled dynamically
+    { id: 'buildFoundry', label: 'Foundry' }
   ];
 
   // Define population jobs
@@ -30,6 +31,7 @@ export default function VillagePanel() {
     { id: 'obsidian_miner', label: 'Obsidian Miner', showWhen: () => buildings.pit >= 3 },
     { id: 'adamant_miner', label: 'Adamant Miner', showWhen: () => buildings.pit >= 4 },
     { id: 'moonstone_miner', label: 'Moonstone Miner', showWhen: () => buildings.pit >= 4 },
+    { id: 'steel_forger', label: 'Steel Forger', showWhen: () => buildings.foundry >= 1 },
   ];
 
   const renderBuildingButton = (actionId: string, label: string) => {

@@ -166,4 +166,30 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  buildFoundry: {
+    id: "buildFoundry",
+    label: "Foundry",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.pit": 1,
+        "buildings.foundry": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 250,
+        "resources.iron": 100,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -250,
+        "resources.iron": -100,
+        "buildings.foundry": 1,
+      },
+    },
+    cooldown: 20,
+  },
 };
