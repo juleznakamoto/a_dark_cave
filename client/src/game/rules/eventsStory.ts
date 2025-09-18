@@ -52,7 +52,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "ironGift",
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 25,
     message: [
       "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
       "A gift of iron gleams in the morning mist. None know who or what brought it."
@@ -558,7 +558,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "dreamMorrowind",
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
-    timeProbability: 60,
+    timeProbability: 90,
     message:
       "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
     triggered: false,
@@ -576,7 +576,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "dreamOblivion",
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
-    timeProbability: 60,
+    timeProbability: 90,
     message:
       "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
     triggered: false,
@@ -594,7 +594,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "dreamSkyrim",
     condition: (state) => state.buildings.hut >= 1,
     triggerType: "time",
-    timeProbability: 60,
+    timeProbability: 90,
     message:
       "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead, scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
     triggered: false,

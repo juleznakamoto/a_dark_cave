@@ -1,5 +1,4 @@
 
-import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
 
 export const baseEvents: Record<string, GameEvent> = {
@@ -160,7 +159,7 @@ export const baseEvents: Record<string, GameEvent> = {
       return totalPopulation > 0 && state.resources.wood === 0;
     },
     triggerType: "resource",
-    timeProbability: 1, // Check every minute when conditions are met
+    timeProbability: 0.1, // Check every minute when conditions are met
     title: "The Cold Bites Deep",
     message: "With no wood left for fires, the bitter cold creeps into every hut. Frost forms on the walls and the villagers huddle together for warmth. Their breath mists in the frigid air. How do you respond to this crisis?",
     triggered: false,
