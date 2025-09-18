@@ -38,8 +38,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleGatherWood(state, result);
     case 'buildTorch':
       return handleBuildTorch(state, result);
-    case 'buildHut':
-      return handleBuildHut(state, result);
+    case 'buildWoodenHut':
+      return handleBuildWoodenHut(state, result);
     case 'buildCabin':
       return handleBuildCabin(state, result);
     case 'buildBlacksmith':

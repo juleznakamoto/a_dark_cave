@@ -2,8 +2,8 @@
 import { Action } from "@shared/schema";
 
 export const villageBuildActions: Record<string, Action> = {
-  buildHut: {
-    id: "buildHut",
+  buildWoodenHut: {
+    id: "buildWoodenHut",
     label: "Wooden Hut",
     building: true,
     show_when: {

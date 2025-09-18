@@ -288,7 +288,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    condition: (state) => state.buildings.hut >= 3,
+    condition: (state) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: 30,
     title: "Wolf Attack",

@@ -132,8 +132,8 @@
 @keyframes tab-fade-in {
   0% {
     opacity: 0;
-    filter: blur(4px);
-    transform: translateY(-6px);
+    filter: blur(5px);
+    transform: translateY(-5px);
   }
   100% {
     opacity: 1;
@@ -143,7 +143,7 @@
 }
 
 .tab-fade-in {
-  animation: tab-fade-in 0.8s ease-out forwards;
+  animation: tab-fade-in 1s ease-out forwards;
 }
 
 @keyframes flame-text {
