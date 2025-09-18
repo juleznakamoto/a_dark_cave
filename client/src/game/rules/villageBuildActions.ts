@@ -140,6 +140,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       "flags.forestUnlocked": true,
       "buildings.shrine": 0,
+      "tools.steel_axe": true,
     },
     cost: {
       "resources.wood": 300,

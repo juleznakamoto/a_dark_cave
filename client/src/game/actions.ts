@@ -667,7 +667,7 @@ function handleBuildShrine(state: GameState, result: ActionResult): ActionResult
   if (state.buildings.shrine === 0) {
     shrineResult.logEntries!.push({
       id: `shrine-built-${Date.now()}`,
-      message: 'A shrine has been built at the edge of the wood to pacify whatever lives in the woods.',
+      message: 'A shrine rises at the forest’s edge, raised to appease what dwells within.',
       timestamp: Date.now(),
       type: 'system',
     });
