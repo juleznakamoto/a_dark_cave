@@ -23,4 +23,22 @@ export const forestVentureActions: Record<string, Action> = {
     },
     cooldown: 10,
   },
+
+  boneTotems: {
+    id: "boneTotems",
+    label: "Bone Totems",
+    show_when: {
+      "buildings.shrine": 1,
+      "story.seen.hasBoneTotem": true,
+    },
+    cost: {
+      "resources.bone_totem": 10,
+    },
+    effects: {
+      "resources.bone_totem": -10,
+      // Note: Multiple possible events will be defined later via the event system
+      "story.seen.hasSacrificed": true,
+    },
+    cooldown: 30,
+  },
 };

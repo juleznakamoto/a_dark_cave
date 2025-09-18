@@ -107,6 +107,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftSteelPickaxe(state, result);
     case 'buildShrine':
       return handleBuildShrine(state, result);
+    case 'craftBoneTotem':
+      return handleCraftBoneTotem(state, result);
+    case 'boneTotems':
+      return handleBoneTotems(state, result);
     default:
       return result;
   }
@@ -657,7 +661,40 @@ function handleCraftSteelPickaxe(state: GameState, result: ActionResult): Action
 
 // New handler for Shrine building
 function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+  const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+  
+  // Add shrine completion message
+  if (state.buildings.shrine === 0) {
+    shrineResult.logEntries!.push({
+      id: `shrine-built-${Date.now()}`,
+      message: 'A shrine has been built at the edge of the wood to pacify whatever lives in the woods.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+  
+  return shrineResult;
+}
+
+function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBoneTotem', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('boneTotems', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  
+  // Add a basic message - more complex events will be handled later
+  result.logEntries!.push({
+    id: `bone-totems-sacrifice-${Date.now()}`,
+    message: 'The bone totems are consumed by the shrine. The forest seems to stir in response.',
+    timestamp: Date.now(),
+    type: 'system',
+  });
+  
+  return result;
 }
 
 // Add blacksmith_hammer and elder_scroll to relic effects

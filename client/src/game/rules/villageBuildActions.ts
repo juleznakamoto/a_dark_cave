@@ -1,4 +1,3 @@
-
 import { Action } from "@shared/schema";
 
 export const villageBuildActions: Record<string, Action> = {
@@ -116,124 +115,22 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Blacksmith",
     building: true,
     show_when: {
-      1: {
-        "buildings.cabin": 1,
-        "buildings.blacksmith": 0,
-      },
+      "tools.iron_axe": true,
+      "tools.iron_pickaxe": true,
     },
     cost: {
-      1: {
-        "resources.wood": 400,
-        "resources.stone": 200,
-      },
+      "resources.wood": 200,
+      "resources.stone": 100,
+      "resources.iron": 50,
     },
     effects: {
-      1: {
-        "resources.wood": -400,
-        "resources.stone": -200,
-        "buildings.blacksmith": 1,
-      },
+      "resources.wood": -200,
+      "resources.stone": -100,
+      "resources.iron": -50,
+      "buildings.blacksmith": 1,
+      "story.seen.hasBlacksmith": true,
     },
-    cooldown: 20,
-  },
-
-  buildPit: {
-    id: "buildPit",
-    label: "Mining Pit",
-    building: true,
-    show_when: {
-      1: {
-        "tools.iron_pickaxe": true,
-        "buildings.pit": 0,
-      },
-      2: {
-        "tools.steel_pickaxe": true,
-        "buildings.pit": 1,
-      },
-      3: {
-        "tools.obsidian_pickaxe": true,
-        "buildings.pit": 1,
-      },
-      4: {
-        "tools.adamant_pickaxe": true,
-        "buildings.pit": 1,
-      },
-    },
-    cost: {
-      1: {
-        "resources.wood": 500,
-        "resources.stone": 250,
-      },
-      2: {
-        "resources.wood": 1000,
-        "resources.stone": 250,
-        "resources.iron": 50,
-      },
-      3: {
-        "resources.wood": 2500,
-        "resources.stone": 500,
-        "resources.steel": 100,
-      },
-      4: {
-        "resources.wood": 5000,
-        "resources.stone": 1000,
-        "resources.steel": 250,
-      },
-    },
-    effects: {
-      1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
-        "buildings.pit": 1,
-      },
-      2: {
-        "resources.wood": -1000,
-        "resources.stone": -250,
-        "resources.iron": -50,
-        "buildings.pit": 1,
-      },
-      3: {
-        "resources.wood": -2500,
-        "resources.stone": -500,
-        "resources.steel": -100,
-        "buildings.pit": 1,
-      },
-      4: {
-        "resources.wood": -5000,
-        "resources.stone": -1000,
-        "resources.obsidian": -250,
-        "buildings.pit": 1,
-      },
-    },
-    cooldown: 30,
-  },
-
-  buildFoundry: {
-    id: "buildFoundry",
-    label: "Foundry",
-    building: true,
-    show_when: {
-      1: {
-        "buildings.pit": 1,
-        "buildings.foundry": 0,
-      },
-    },
-    cost: {
-      1: {
-        "resources.wood": 500,
-        "resources.stone": 250,
-        "resources.iron": 100,
-      },
-    },
-    effects: {
-      1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
-        "resources.iron": -100,
-        "buildings.foundry": 1,
-      },
-    },
-    cooldown: 20,
+    cooldown: 5,
   },
 
   buildShrine: {
@@ -241,28 +138,22 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Shrine",
     building: true,
     show_when: {
-      1: {
-        "buildings.foundry": 1,
-        "buildings.shrine": 0,
-      },
+      "flags.forestUnlocked": true,
+      "buildings.shrine": 0,
     },
     cost: {
-      1: {
-        "resources.wood": 1000,
-        "resources.stone": 500,
-        "resources.iron": 250,
-        "resources.silver": 25,
-      },
+      "resources.wood": 300,
+      "resources.stone": 200,
+      "resources.bones": 100,
     },
     effects: {
-      1: {
-        "resources.wood": -1000,
-        "resources.stone": -500,
-        "resources.iron": -250,
-        "resources.silver": -25,
-        "buildings.shrine": 1,
-      },
+      "resources.wood": -300,
+      "resources.stone": -200,
+      "resources.bones": -100,
+      "buildings.shrine": 1,
+      "flags.shrineBuilt": true,
+      "story.seen.hasShrine": true,
     },
-    cooldown: 25,
+    cooldown: 5,
   },
 };

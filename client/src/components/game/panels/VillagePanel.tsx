@@ -15,9 +15,9 @@ export default function VillagePanel() {
     { id: 'buildWoodenHut', label: 'Wooden Hut' },
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
-    { id: 'buildPit', label: 'Build Pit' },
+    { id: 'buildPit', label: 'Pit' },
     { id: 'buildFoundry', label: 'Foundry' },
-    { id: 'buildShrine', label: 'Shrine' }
+    { id: 'buildShrine', label: 'Shrine' },
   ];
 
   // Define population jobs
@@ -69,16 +69,16 @@ export default function VillagePanel() {
 
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
-    
+
     // Get total production for this job type
     const getTotalProductionText = (jobId: string, count: number): string => {
       if (count === 0) return "";
-      
+
       const production = getPopulationProduction(jobId, count);
       const productionText = production
         .map(prod => `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${prod.resource}`)
         .join(", ");
-      
+
       return productionText ? ` (${productionText})` : "";
     };
 

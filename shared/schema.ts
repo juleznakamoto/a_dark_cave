@@ -29,6 +29,7 @@ export const gameStateSchema = z.object({
     leather: z.number().min(0).default(0),
     bloodstone: z.number().min(0).default(0),
     frostglas: z.number().min(0).default(0),
+    bone_totem: z.number().min(0).default(0),
   }).default({}),
   stats: z.object({
     luck: z.number().min(0).default(0),
@@ -51,6 +52,7 @@ export const gameStateSchema = z.object({
     exploredCitadel: z.boolean().default(false),
     starvationActive: z.boolean().default(false),
     forestUnlocked: z.boolean().default(false),
+    shrineBuilt: z.boolean().default(false),
   }).default({}),
   tools: z.object({
     stone_axe: z.boolean().default(false),
@@ -104,6 +106,7 @@ export const gameStateSchema = z.object({
     blacksmith: z.number().default(0),
     pit: z.number().default(0),
     foundry: z.number().default(0),
+    shrine: z.number().default(0),
   }).default({}),
   villagers: z.object({
     free: z.number().min(0).default(0),

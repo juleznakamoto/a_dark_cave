@@ -12,6 +12,11 @@ export default function ForestPanel() {
     { id: 'hunt', label: 'Hunt' },
   ];
 
+  // Define sacrifice actions
+  const sacrificeActions = [
+    { id: 'boneTotems', label: 'Bone Totems' },
+  ];
+
   const renderActionButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
     if (!action || !shouldShowAction(actionId, state)) return null;
@@ -39,6 +44,10 @@ export default function ForestPanel() {
     shouldShowAction(action.id, state)
   );
 
+  const visibleSacrificeActions = sacrificeActions.filter(action => 
+    shouldShowAction(action.id, state)
+  );
+
   return (
     <div className="space-y-6">
       {/* Hunt actions without header, similar to gather wood */}
@@ -47,6 +56,18 @@ export default function ForestPanel() {
           {visibleActions.map(action => 
             renderActionButton(action.id, action.label)
           )}
+        </div>
+      )}
+
+      {/* Sacrifice section */}
+      {visibleSacrificeActions.length > 0 && (
+        <div className="space-y-4">
+          <h3 className="text-sm font-semibold text-foreground">Sacrifice</h3>
+          <div className="flex flex-wrap gap-2">
+            {visibleSacrificeActions.map(action => 
+              renderActionButton(action.id, action.label)
+            )}
+          </div>
         </div>
       )}
     </div>
