@@ -47,28 +47,31 @@ export default function SidePanelSection({
         typeof item.value === "number"
           ? item.value
           : parseInt(item.value.toString()) || 0;
-      const prevValue = prevValuesRef.current.get(item.id) || 0;
+      const prevValue = prevValuesRef.current.get(item.id);
 
-      if (currentValue > prevValue) {
-        newAnimatedItems.add(item.id);
-        // Remove animation after 2 seconds
-        setTimeout(() => {
-          setAnimatedItems((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(item.id);
-            return newSet;
-          });
-        }, 2000);
-      } else if (currentValue < prevValue) {
-        newDecreaseAnimatedItems.add(item.id);
-        // Remove animation after 2 seconds
-        setTimeout(() => {
-          setDecreaseAnimatedItems((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(item.id);
-            return newSet;
-          });
-        }, 2000);
+      // Only animate if we have a previous value to compare against
+      if (prevValue !== undefined) {
+        if (currentValue > prevValue) {
+          newAnimatedItems.add(item.id);
+          // Remove animation after 2 seconds
+          setTimeout(() => {
+            setAnimatedItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(item.id);
+              return newSet;
+            });
+          }, 2000);
+        } else if (currentValue < prevValue) {
+          newDecreaseAnimatedItems.add(item.id);
+          // Remove animation after 2 seconds
+          setTimeout(() => {
+            setDecreaseAnimatedItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(item.id);
+              return newSet;
+            });
+          }, 2000);
+        }
       }
 
       prevValuesRef.current.set(item.id, currentValue);
