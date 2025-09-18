@@ -50,7 +50,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   ironGift: {
     id: "ironGift",
-    condition: (state) => state.buildings.hut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 1,
     triggerType: "resource",
     timeProbability: 25,
     message: [
@@ -62,7 +62,7 @@ export const storyEvents: Record<string, GameEvent> = {
     effect: (state) => ({
       resources: {
         ...state.resources,
-        iron: state.resources.iron + 50 * state.buildings.hut,
+        iron: state.resources.iron + 50 * state.buildings.woodenHut,
       },
     }),
   },
@@ -70,7 +70,7 @@ export const storyEvents: Record<string, GameEvent> = {
   paleFigure: {
     id: "paleFigure",
     condition: (state) =>
-      state.buildings.hut >= 2 && !state.relics.ravenfeather_mantle,
+      state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 20,
     title: "The Pale Figure",
@@ -156,7 +156,7 @@ export const storyEvents: Record<string, GameEvent> = {
   whispersBeneathHut: {
     id: "whispersBeneathHut",
     condition: (state) =>
-      state.buildings.hut >= 4 && !state.relics.whispering_amulet,
+      state.buildings.woodenHut >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
     title: "Whispers Beneath the Hut",
@@ -198,7 +198,7 @@ export const storyEvents: Record<string, GameEvent> = {
   blackenedMirror: {
     id: "blackenedMirror",
     condition: (state) =>
-      state.buildings.hut >= 5 &&
+      state.buildings.woodenHut >= 5 &&
       state.resources.iron >= 200 &&
       !state.relics.blackened_mirror,
     triggerType: "resource",
@@ -248,7 +248,7 @@ export const storyEvents: Record<string, GameEvent> = {
   cthulhuFigure: {
     id: "cthulhuFigure",
     condition: (state) =>
-      state.buildings.hut >= 4 && !state.relics.wooden_figure,
+      state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
     timeProbability: 30,
     title: "A Strange Wooden Figure",
@@ -412,7 +412,7 @@ export const storyEvents: Record<string, GameEvent> = {
             buildings: hutDestroyed
               ? {
                   ...state.buildings,
-                  hut: Math.max(0, state.buildings.hut - 1),
+                    woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
             _logMessage: message,
@@ -504,7 +504,7 @@ export const storyEvents: Record<string, GameEvent> = {
             buildings: hutDestroyed
               ? {
                   ...state.buildings,
-                  hut: Math.max(0, state.buildings.hut - 1),
+                    woodenHut: Math.max(0, state.buildings.woodenHut - 1),
                 }
               : state.buildings,
             _logMessage: message,
@@ -544,7 +544,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamMorrowind: {
     id: "dreamMorrowind",
-    condition: (state) => state.buildings.hut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 1,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -562,7 +562,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamOblivion: {
     id: "dreamOblivion",
-    condition: (state) => state.buildings.hut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 1,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -580,7 +580,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamSkyrim: {
     id: "dreamSkyrim",
-    condition: (state) => state.buildings.hut >= 1,
+    condition: (state) => state.buildings.woodenHut >= 1,
     triggerType: "time",
     timeProbability: 90,
     message:

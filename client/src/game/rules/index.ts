@@ -23,12 +23,8 @@ export const gameActions: Record<string, Action> = {
 
 // Utility function to get the next building level
 const getNextBuildingLevel = (actionId: string, state: GameState): number => {
-  if (actionId === "buildHut") {
-    return (state.buildings.hut || 0) + 1;
-  } else if (actionId === "buildCabin") {
-    return (state.buildings.cabin || 0) + 1;
-  } else if (actionId === "buildWorkshop") {
-    return (state.buildings.workshops || 0) + 1;
+  if (actionId === "buildWoodenHut") {
+    return (state.buildings.woodenHut || 0) + 1;
   }
   return 1;
 };

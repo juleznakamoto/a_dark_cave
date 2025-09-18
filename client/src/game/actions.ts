@@ -185,9 +185,9 @@ function handleBuildTorch(state: GameState, result: ActionResult): ActionResult 
   return result;
 }
 
-function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
-  const level = state.buildings.hut + 1;
-  const actionEffects = gameActions.buildHut.effects[level];
+function handleBuildWoodenHut(state: GameState, result: ActionResult): ActionResult {
+  const level = state.buildings.woodenHut + 1;
+  const actionEffects = gameActions.buildWoodenHut.effects[level];
   const newResources = { ...state.resources };
 
   for (const [path, effect] of Object.entries(actionEffects)) {
@@ -200,10 +200,10 @@ function handleBuildHut(state: GameState, result: ActionResult): ActionResult {
   result.stateUpdates.resources = newResources;
   result.stateUpdates.buildings = {
     ...state.buildings,
-    hut: state.buildings.hut + 1
+    woodenHut: state.buildings.woodenHut + 1
   };
 
-  if (state.buildings.hut === 0) {
+  if (state.buildings.woodenHut === 0) {
     result.delayedEffects!.push(() => {
       // Stranger approaches logic will be handled by the caller
     });

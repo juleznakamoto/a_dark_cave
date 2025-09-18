@@ -12,7 +12,7 @@ export default function GameTabs() {
   // Update population whenever the component renders
   useEffect(() => {
     updatePopulation();
-  }, [villagers, buildings.hut, updatePopulation]);
+  }, [villagers, buildings.woodenHut, updatePopulation]);
 
   return (
     <div className="h-full flex flex-col">

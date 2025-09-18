@@ -12,7 +12,7 @@ export default function VillagePanel() {
 
   // Define building actions
   const buildingActions = [
-    { id: 'buildHut', label: 'Wooden Hut' },
+    { id: 'buildWoodenHut', label: 'Wooden Hut' },
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
     { id: 'buildPit', label: 'Build Pit' }, // Placeholder, actual label handled dynamically

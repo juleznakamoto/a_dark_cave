@@ -31,15 +31,15 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "resources.wood": -100,
-        "buildings.hut": 1,
+        "buildings.woodenHut": 1,
       },
       2: {
         "resources.wood": -200,
-        "buildings.hut": 1,
+        "buildings.woodenHut": 1,
       },
       3: {
         "resources.wood": -400,
-        "buildings.hut": 1,
+        "buildings.woodenHut": 1,
       },
     },
     cooldown: 10,
@@ -51,7 +51,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.hut": 1,
+        "buildings.woodenHut": 1,
       },
     },
     cost: {

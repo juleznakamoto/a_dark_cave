@@ -97,7 +97,7 @@ export const gameStateSchema = z.object({
     elder_scroll: z.boolean().default(false),
   }).default({}),
   buildings: z.object({
-    hut: z.number().default(0),
+    woodenHut: z.number().default(0),
     traps: z.number().default(0),
     cabin: z.number().default(0),
     blacksmith: z.number().default(0),

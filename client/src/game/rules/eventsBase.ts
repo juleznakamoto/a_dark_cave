@@ -8,7 +8,7 @@ export const baseEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: (state) => {
       let baseProbability = 1;
-      baseProbability *= Math.pow(0.9, state.buildings.hut);
+      baseProbability *= Math.pow(0.9, state.buildings.woodenHut);
 
       return baseProbability;
     },
