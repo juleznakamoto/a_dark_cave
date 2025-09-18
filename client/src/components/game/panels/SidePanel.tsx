@@ -17,9 +17,11 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  // Dynamically generate tool items from state (only show best tools and weapons)
-  const displayTools = getDisplayTools(useGameStore());
+  // Get game state once for the entire component
   const gameState = useGameStore();
+  
+  // Dynamically generate tool items from state (only show best tools and weapons)
+  const displayTools = getDisplayTools(gameState);
   
   const toolItems = Object.entries(displayTools)
     .map(([key, value]) => ({
@@ -31,7 +33,7 @@ export default function SidePanel() {
     }));
 
   // Dynamically generate clothing items from state
-  const clothingItems = Object.entries(useGameStore().clothing || {})
+  const clothingItems = Object.entries(gameState.clothing || {})
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
@@ -42,7 +44,7 @@ export default function SidePanel() {
     }));
 
   // Dynamically generate relic items from state
-  const relicItems = Object.entries(useGameStore().relics || {})
+  const relicItems = Object.entries(gameState.relics || {})
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
@@ -85,7 +87,6 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  const gameState = useGameStore();
   const { stats } = gameState;
 
   // Calculate total stats including bonuses from relics/clothing
