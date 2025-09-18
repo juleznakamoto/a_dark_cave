@@ -12,12 +12,16 @@ const FIRE_CONSUMPTION_INTERVAL = 15000; // Fire consumes wood every 15 seconds
 const GATHERER_PRODUCTION_INTERVAL = 15000; // gatherer produce wood every 15 seconds
 const HUNTER_PRODUCTION_INTERVAL = 15000; // hunter produce food every 15 seconds
 const CONSUMPTION_INTERVAL = 15000; // Population consumes food and checks wood every 15 seconds
+const STARVATION_CHECK_INTERVAL = 15000; // Check starvation every 15 seconds
+const FREEZING_CHECK_INTERVAL = 15000; // Check freezing every 15 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
 let lastGathererProduction = 0;
 let lastHunterProduction = 0;
 let lastConsumption = 0;
+let lastStarvationCheck = 0;
+let lastFreezingCheck = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -65,6 +69,18 @@ export function startGameLoop() {
       if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
         lastConsumption = timestamp;
         handlePopulationSurvival();
+      }
+
+      // Starvation checks
+      if (timestamp - lastStarvationCheck >= STARVATION_CHECK_INTERVAL) {
+        lastStarvationCheck = timestamp;
+        handleStarvationCheck();
+      }
+
+      // Freezing checks
+      if (timestamp - lastFreezingCheck >= FREEZING_CHECK_INTERVAL) {
+        lastFreezingCheck = timestamp;
+        handleFreezingCheck();
       }
     }
 
@@ -189,6 +205,143 @@ function handlePopulationSurvival() {
   } else {
     // Not enough food, consume all available food (starvation event will trigger separately)
     state.updateResource("food", -availableFood);
+  }
+}
+
+function handleStarvationCheck() {
+  const state = useGameStore.getState();
+
+  // Pause starvation checks when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
+  // Check if starvation conditions are met
+  if (!state.flags.starvationActive) {
+    if (state.resources.food < 5) return;
+    // Activate starvation system permanently once food reaches 5
+    useGameStore.setState({ 
+      flags: { ...state.flags, starvationActive: true } 
+    });
+  }
+
+  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  if (totalPopulation === 0) return;
+  
+  const foodNeeded = totalPopulation;
+  const availableFood = state.resources.food;
+  
+  if (availableFood < foodNeeded) {
+    const unfedPopulation = totalPopulation - availableFood;
+    
+    // 15% chance for each unfed villager to die from starvation
+    let starvationDeaths = 0;
+    for (let i = 0; i < unfedPopulation; i++) {
+      if (Math.random() < 0.15) {
+        starvationDeaths++;
+      }
+    }
+
+    if (starvationDeaths > 0) {
+      // Apply deaths to villagers
+      let updatedVillagers = { ...state.villagers };
+      let remainingDeaths = starvationDeaths;
+
+      const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner', 'steel_forger'];
+      
+      for (const villagerType of villagerTypes) {
+        if (remainingDeaths > 0 && updatedVillagers[villagerType as keyof typeof updatedVillagers] > 0) {
+          const deaths = Math.min(remainingDeaths, updatedVillagers[villagerType as keyof typeof updatedVillagers]);
+          updatedVillagers[villagerType as keyof typeof updatedVillagers] -= deaths;
+          remainingDeaths -= deaths;
+        }
+        if (remainingDeaths === 0) break;
+      }
+
+      const message = starvationDeaths === 1 
+        ? "One villager succumbs to starvation. The remaining villagers grow desperate." 
+        : `${starvationDeaths} villagers starve to death. The survivors look gaunt and hollow-eyed.`;
+
+      useGameStore.setState({
+        villagers: updatedVillagers,
+      });
+
+      state.addLogEntry({
+        id: `starvation-${Date.now()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+
+      // Update population after applying changes
+      setTimeout(() => state.updatePopulation(), 0);
+    } else {
+      state.addLogEntry({
+        id: `starvation-survived-${Date.now()}`,
+        message: "Despite the lack of food, everyone survives another day, though they grow weaker and more desperate.",
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    }
+  }
+}
+
+function handleFreezingCheck() {
+  const state = useGameStore.getState();
+
+  // Pause freezing checks when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
+  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  
+  if (totalPopulation > 0 && state.resources.wood === 0) {
+    // 10% chance for each villager to die from cold
+    let freezingDeaths = 0;
+    for (let i = 0; i < totalPopulation; i++) {
+      if (Math.random() < 0.1) {
+        freezingDeaths++;
+      }
+    }
+
+    if (freezingDeaths > 0) {
+      // Apply deaths to villagers
+      let updatedVillagers = { ...state.villagers };
+      let remainingDeaths = freezingDeaths;
+
+      const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner', 'steel_forger'];
+      
+      for (const villagerType of villagerTypes) {
+        if (remainingDeaths > 0 && updatedVillagers[villagerType as keyof typeof updatedVillagers] > 0) {
+          const deaths = Math.min(remainingDeaths, updatedVillagers[villagerType as keyof typeof updatedVillagers]);
+          updatedVillagers[villagerType as keyof typeof updatedVillagers] -= deaths;
+          remainingDeaths -= deaths;
+        }
+        if (remainingDeaths === 0) break;
+      }
+
+      const message = freezingDeaths === 1 
+        ? "The bitter cold claims one villager's life. The others huddle together, shivering and afraid." 
+        : `${freezingDeaths} villagers freeze to death in the night. The survivors are weak and traumatized by the loss.`;
+
+      useGameStore.setState({
+        villagers: updatedVillagers,
+      });
+
+      state.addLogEntry({
+        id: `freezing-${Date.now()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+
+      // Update population after applying changes
+      setTimeout(() => state.updatePopulation(), 0);
+    } else {
+      state.addLogEntry({
+        id: `freezing-survived-${Date.now()}`,
+        message: "The villagers endure another freezing night without wood. They huddle together for warmth, growing weaker but surviving.",
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    }
   }
 }
 
