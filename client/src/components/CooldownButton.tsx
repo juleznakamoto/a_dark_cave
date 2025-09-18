@@ -1,6 +1,6 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { useCooldown } from '@/hooks/useCooldown';
 import { useGameStore } from '@/game/state';
 
 interface CooldownButtonProps {
@@ -25,8 +25,15 @@ export default function CooldownButton({
   'data-testid': testId,
   ...props
 }: CooldownButtonProps) {
-  const { isCoolingDown, progress, startCooldown } = useCooldown();
-  const { devMode } = useGameStore();
+  const { devMode, cooldowns, setCooldown } = useGameStore();
+
+  // Get the action ID from the test ID or generate one
+  const actionId = testId?.replace('button-', '').replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || 'unknown';
+  
+  // Get current cooldown from game state
+  const currentCooldown = cooldowns[actionId] || 0;
+  const isCoolingDown = currentCooldown > 0;
+  const progress = isCoolingDown ? 1 - (currentCooldown / (cooldownMs / 1000)) : 1;
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
@@ -34,9 +41,9 @@ export default function CooldownButton({
     // Execute the action immediately
     onClick();
 
-    // Start the cooldown (skip in dev mode)
+    // Start the cooldown in game state (skip in dev mode)
     if (!devMode) {
-      startCooldown(cooldownMs);
+      setCooldown(actionId, cooldownMs / 1000); // Convert to seconds
     }
   };
 
