@@ -20,15 +20,28 @@ export default function SidePanel() {
   // Get game state once for the entire component
   const gameState = useGameStore();
   
-  // Dynamically generate tool items from state (only show best tools and weapons)
+  // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
   
+  // Filter out weapons from tools display
   const toolItems = Object.entries(displayTools)
+    .filter(([key, value]) => !Object.keys(gameState.weapons).includes(key))
     .map(([key, value]) => ({
       id: key,
       label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
       value: 1,
       testId: `tool-${key}`,
+      visible: true
+    }));
+
+  // Dynamically generate weapon items from state (only show weapons from displayTools)
+  const weaponItems = Object.entries(displayTools)
+    .filter(([key, value]) => Object.keys(gameState.weapons).includes(key))
+    .map(([key, value]) => ({
+      id: key,
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      value: 1,
+      testId: `weapon-${key}`,
       visible: true
     }));
 
@@ -144,6 +157,9 @@ export default function SidePanel() {
         )}
         {toolItems.length > 0 && (
           <SidePanelSection title="Tools" items={toolItems} />
+        )}
+        {weaponItems.length > 0 && (
+          <SidePanelSection title="Weapons" items={weaponItems} />
         )}
         {clothingItems.length > 0 && (
           <SidePanelSection title="Clothing" items={clothingItems} />
