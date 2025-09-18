@@ -78,7 +78,7 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="outline"
             size="sm"
-            className="h-6 w-6 p-0"
+            className="h-6 w-6 p-0 no-hover"
           >
             -
           </Button>
@@ -88,7 +88,7 @@ export default function VillagePanel() {
             disabled={villagers.free === 0}
             variant="outline"
             size="sm"
-            className="h-6 w-6 p-0"
+            className="h-6 w-6 p-0 no-hover"
           >
             +
           </Button>

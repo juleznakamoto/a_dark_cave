@@ -169,3 +169,10 @@
   -webkit-text-fill-color: transparent;
   animation: flame-text 5s ease-in-out infinite;
 }
+
+.no-hover:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  opacity: inherit !important;
+  transform: none !important;
+}

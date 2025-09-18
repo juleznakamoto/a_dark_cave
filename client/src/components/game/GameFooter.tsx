@@ -28,7 +28,7 @@ export default function GameFooter() {
             size="sm"
             onClick={handleSaveGame}
             data-testid="button-save-game"
-            className="px-3 py-1 text-xs"
+            className="px-3 py-1 text-xs no-hover"
           >
             Save Game
           </Button>
@@ -37,7 +37,7 @@ export default function GameFooter() {
             size="sm"
             onClick={handleRestartGame}
             data-testid="button-restart-game"
-            className="px-3 py-1 text-xs"
+            className="px-3 py-1 text-xs no-hover"
           >
             New Game
           </Button>
