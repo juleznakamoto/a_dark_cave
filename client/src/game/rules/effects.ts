@@ -399,7 +399,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "A sturdy iron blade that enhances your combat prowess (+5 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 5,
+        strength: 3,
       },
     },
   },
@@ -410,7 +410,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "A finely crafted steel blade with superior balance (+8 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 8,
+        strength: 5,
       },
     },
   },
@@ -421,7 +421,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "A razor-sharp blade forged from volcanic glass (+12 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 12,
+        strength: 10,
       },
     },
   },
@@ -432,7 +432,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "The ultimate weapon forged from the hardest metal (+20 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 20,
+        strength: 15,
       },
     },
   },
