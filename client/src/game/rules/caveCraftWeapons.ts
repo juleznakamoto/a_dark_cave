@@ -16,7 +16,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.iron": -100,
       "weapons.iron_sword": true,
       "story.seen.hasIronSword": true,
-      "story.seen.actionCraftIronSword": true,
     },
     cooldown: 15,
   },
