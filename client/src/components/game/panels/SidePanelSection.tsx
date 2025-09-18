@@ -96,7 +96,12 @@ export default function SidePanelSection({
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
-    const hasEffect = relicEffect || weaponEffect || toolEffect;
+    const effect = relicEffect || weaponEffect || toolEffect;
+    
+    // Check if the effect has actual content to display
+    const hasEffectContent = effect?.bonuses?.generalBonuses && 
+      Object.keys(effect.bonuses.generalBonuses).length > 0;
+    const hasEffect = effect && hasEffectContent;
 
     const itemContent = (
       <div
@@ -126,7 +131,6 @@ export default function SidePanelSection({
 
     // If this item has effects, wrap it in a hover card
     if (hasEffect && (title === "Relics" || title === "Tools")) {
-      const effect = relicEffect || weaponEffect || toolEffect;
 
       return (
         <HoverCard key={item.id}>
