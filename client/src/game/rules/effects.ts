@@ -348,18 +348,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-
-  old_trinket: {
-    id: "old_trinket",
-    name: "Old Trinket",
-    description: "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
-    bonuses: {
-      generalBonuses: {
-        strength: 5,
-        luck: 2,
-      },
-    },
-  },
 };
 
 // Weapon effects
@@ -477,6 +465,29 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 3,
         strength: 5,
+      },
+    },
+  },
+
+  whispering_amulet: {
+    id: "whispering_amulet",
+    name: "Whispering Amulet",
+    description: "A mysterious amulet that whispers ancient secrets (+5 Knowledge)",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 5,
+      },
+    },
+  },
+
+  old_trinket: {
+    id: "old_trinket",
+    name: "Old Trinket",
+    description: "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+        luck: 2,
       },
     },
   },
