@@ -81,11 +81,16 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.wood": "random(3,5)",
       "story.seen.hasWood": true,
-      "events.trinket_found": {
+      "relics.old_trinket": {
         probability: 0.0005,
         value: true,
-        condition: "!events.trinket_found && buildings.cabin >= 1",
-        triggerEvent: "trinketFound",
+        condition: "!relics.old_trinket && buildings.cabin >= 1",
+        logMessage: "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
+      },
+      "stats.strength": {
+        probability: 0.0005,
+        value: 5,
+        condition: "!relics.old_trinket && buildings.cabin >= 1",
       },
     },
     cooldown: 5,

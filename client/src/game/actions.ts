@@ -127,31 +127,18 @@ function handleLightFire(state: GameState, result: ActionResult): ActionResult {
 function handleGatherWood(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('gatherWood', state);
 
-  // Handle triggered events
-  if (effectUpdates.triggeredEvents) {
-    effectUpdates.triggeredEvents.forEach((eventId: string) => {
-      if (eventId === 'trinketFound') {
-        // Add log entry for the trinket discovery with choices
-        result.logEntries!.push({
-          id: `trinketFound-${Date.now()}`,
-          message: "While gathering wood, you find an old trinket with glowing amber liquid inside. The ancient vessel radiates mysterious power.",
-          timestamp: Date.now(),
-          type: 'event',
-          title: 'Old Trinket',
-          choices: [
-            {
-              id: "takeTrinket",
-              label: "Take the trinket"
-            },
-            {
-              id: "leaveTrinket", 
-              label: "Leave it be"
-            }
-          ]
-        });
-      }
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
     });
-    delete effectUpdates.triggeredEvents;
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
   }
 
   Object.assign(result.stateUpdates, effectUpdates);

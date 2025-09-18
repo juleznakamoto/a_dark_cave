@@ -329,57 +329,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
 
-    // Handle trinket event choices directly
-    if (eventId.startsWith('trinketFound')) {
-      if (choiceId === 'drinkTrinket') {
-        // Apply immediate effects including strength bonus
-        set((prevState) => ({
-          ...prevState,
-          flags: {
-            ...prevState.flags,
-            trinketDrunk: true,
-          },
-          triggeredEvents: {
-            ...prevState.triggeredEvents,
-            trinket_found: true,
-          },
-          stats: {
-            ...prevState.stats,
-            strength: (prevState.stats.strength || 0) + 5,
-          },
-        }));
-
-        // Add immediate log message with strength bonus
-        get().addLogEntry({
-          id: `trinket-drink-${Date.now()}`,
-          message: "You drink the amber liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
-          timestamp: Date.now(),
-          type: 'system',
-        });
-
-        get().setEventDialog(false);
-        return;
-      } else if (choiceId === 'ignoreTrinket') {
-        set((prevState) => ({
-          ...prevState,
-          triggeredEvents: {
-            ...prevState.triggeredEvents,
-            trinket_found: true,
-          },
-        }));
-
-        get().addLogEntry({
-          id: `trinket-ignore-${Date.now()}`,
-          message: "You decide not to risk drinking the mysterious liquid. You carefully bury the trinket back where you found it and continue gathering wood.",
-          timestamp: Date.now(),
-          type: 'system',
-        });
-
-        get().setEventDialog(false);
-        return;
-      }
-    }
-
     // Handle other events using EventManager
     const changes = EventManager.applyEventChoice(state, choiceId, eventId);
 
