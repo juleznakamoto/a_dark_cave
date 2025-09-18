@@ -326,8 +326,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-
-  
 };
 
 // Weapon effects
@@ -338,6 +336,9 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Basic hunting bow for gathering food",
     bonuses: {
       actionBonuses: {},
+      generalBonuses: {
+        strength: 1,
+      },
     },
   },
 
@@ -350,6 +351,9 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         hunt: {
           resourceBonus: { food: 10, fur: 2, bones: 2 },
         },
+      },
+      generalBonuses: {
+        strength: 2,
       },
     },
   },
@@ -364,6 +368,9 @@ export const weaponEffects: Record<string, EffectDefinition> = {
           resourceBonus: { food: 15, fur: 4, bones: 4 },
         },
       },
+      generalBonuses: {
+        strength: 3,
+      },
     },
   },
 
@@ -376,6 +383,9 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         hunt: {
           resourceBonus: { food: 20, fur: 6, bones: 6 },
         },
+      },
+      generalBonuses: {
+        strength: 4,
       },
     },
   },
@@ -390,13 +400,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
           resourceBonus: { food: 25, fur: 8, bones: 8 },
         },
       },
+      generalBonuses: {
+        strength: 5,
+      },
     },
   },
 
   iron_sword: {
     id: "iron_sword",
     name: "Iron Sword",
-    description: "A sturdy iron blade that enhances your combat prowess (+5 Strength)",
+    description:
+      "A sturdy iron blade that enhances your combat prowess (+5 Strength)",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -407,7 +421,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   steel_sword: {
     id: "steel_sword",
     name: "Steel Sword",
-    description: "A finely crafted steel blade with superior balance (+8 Strength)",
+    description:
+      "A finely crafted steel blade with superior balance (+8 Strength)",
     bonuses: {
       generalBonuses: {
         strength: 5,
@@ -418,7 +433,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   obsidian_sword: {
     id: "obsidian_sword",
     name: "Obsidian Sword",
-    description: "A razor-sharp blade forged from volcanic glass (+12 Strength)",
+    description:
+      "A razor-sharp blade forged from volcanic glass (+12 Strength)",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -429,7 +445,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   adamant_sword: {
     id: "adamant_sword",
     name: "Adamant Sword",
-    description: "The ultimate weapon forged from the hardest metal (+20 Strength)",
+    description:
+      "The ultimate weapon forged from the hardest metal (+20 Strength)",
     bonuses: {
       generalBonuses: {
         strength: 15,
@@ -606,7 +623,12 @@ export const getBestWeapon = (
   state: GameState,
   weaponType: "bow" | "sword",
 ): string | null => {
-  const hierarchy = weaponType === "bow" ? BOW_HIERARCHY : weaponType === "sword" ? SWORD_HIERARCHY : [];
+  const hierarchy =
+    weaponType === "bow"
+      ? BOW_HIERARCHY
+      : weaponType === "sword"
+        ? SWORD_HIERARCHY
+        : [];
 
   // Find the highest tier weapon that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
