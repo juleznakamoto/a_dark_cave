@@ -99,3 +99,54 @@ export function unassignVillagerFromJob(
     }
   };
 }
+
+export function killVillagers(state: GameState, deathCount: number): Partial<GameState> {
+  if (deathCount <= 0) return {};
+
+  let updatedVillagers = { ...state.villagers };
+  let remainingDeaths = deathCount;
+
+  // All villager types that can die
+  const villagerTypes = [
+    'free', 
+    'gatherer', 
+    'hunter', 
+    'iron_miner', 
+    'coal_miner', 
+    'sulfur_miner', 
+    'silver_miner', 
+    'gold_miner', 
+    'obsidian_miner', 
+    'adamant_miner', 
+    'moonstone_miner', 
+    'steel_forger'
+  ];
+
+  // Create a pool of all available villagers with their types
+  const villagerPool: string[] = [];
+  villagerTypes.forEach(type => {
+    const count = updatedVillagers[type as keyof typeof updatedVillagers] || 0;
+    for (let i = 0; i < count; i++) {
+      villagerPool.push(type);
+    }
+  });
+
+  // If we have fewer villagers than deaths requested, kill all available
+  const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
+  
+  // Randomly select villagers to kill
+  for (let i = 0; i < actualDeaths; i++) {
+    if (villagerPool.length === 0) break;
+    
+    const randomIndex = Math.floor(Math.random() * villagerPool.length);
+    const selectedType = villagerPool[randomIndex];
+    
+    // Remove the selected villager from the pool and from the state
+    villagerPool.splice(randomIndex, 1);
+    updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
+  }
+
+  return {
+    villagers: updatedVillagers
+  };
+}

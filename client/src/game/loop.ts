@@ -2,6 +2,14 @@ import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction } from "./population";
+import {
+  updateResource,
+  updateFlag,
+  updatePopulationCounts,
+  assignVillagerToJob,
+  unassignVillagerFromJob,
+  killVillagers,
+} from "@/game/stateHelpers";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -232,9 +240,9 @@ function handleStarvationCheck() {
 
   const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
   if (totalPopulation === 0) return;
-  
+
   const availableFood = state.resources.food;
-  
+
   if (availableFood === 0) {
     // 10% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
@@ -250,7 +258,7 @@ function handleStarvationCheck() {
       let remainingDeaths = starvationDeaths;
 
       const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner', 'steel_forger'];
-      
+
       for (const villagerType of villagerTypes) {
         if (remainingDeaths > 0 && updatedVillagers[villagerType as keyof typeof updatedVillagers] > 0) {
           const deaths = Math.min(remainingDeaths, updatedVillagers[villagerType as keyof typeof updatedVillagers]);
@@ -288,7 +296,7 @@ function handleFreezingCheck() {
   if (state.eventDialog.isOpen) return;
 
   const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-  
+
   if (totalPopulation > 0 && state.resources.wood === 0) {
     // 10% chance for each villager to die from cold
     let freezingDeaths = 0;
@@ -299,28 +307,8 @@ function handleFreezingCheck() {
     }
 
     if (freezingDeaths > 0) {
-      // Apply deaths to villagers
-      let updatedVillagers = { ...state.villagers };
-      let remainingDeaths = freezingDeaths;
-
-      const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner', 'steel_forger'];
-      
-      for (const villagerType of villagerTypes) {
-        if (remainingDeaths > 0 && updatedVillagers[villagerType as keyof typeof updatedVillagers] > 0) {
-          const deaths = Math.min(remainingDeaths, updatedVillagers[villagerType as keyof typeof updatedVillagers]);
-          updatedVillagers[villagerType as keyof typeof updatedVillagers] -= deaths;
-          remainingDeaths -= deaths;
-        }
-        if (remainingDeaths === 0) break;
-      }
-
-      const message = freezingDeaths === 1 
-        ? "The bitter cold claims one villager's life." 
-        : `${freezingDeaths} villagers freeze to death at night. Survivors are weak and traumatized.`;
-
-      useGameStore.setState({
-        villagers: updatedVillagers,
-      });
+      // Use the centralized killVillagers function
+      const message = killVillagers(freezingDeaths, "villagers");
 
       state.addLogEntry({
         id: `freezing-${Date.now()}`,

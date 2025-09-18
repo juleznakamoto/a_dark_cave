@@ -1,9 +1,95 @@
 import { GameEvent } from "./events";
 
+// Define a type for the villager counts in the state
+type VillagerCounts = {
+  free: number;
+  gatherer: number;
+  hunter: number;
+  iron_miner: number;
+  coal_miner: number;
+  sulfur_miner: number;
+  silver_miner: number;
+  gold_miner: number;
+  obsidian_miner: number;
+  adamant_miner: number;
+  moonstone_miner: number;
+  steel_forger: number;
+  [key: string]: number; // Allows for other villager types if added later
+};
+
+// Define a type for the game state
+type GameState = {
+  villagers: VillagerCounts;
+  resources: { food: number; iron: number };
+  buildings: { woodenHut: number; hut: number };
+  stats: { strength?: number; luck?: number; knowledge?: number };
+  relics: {
+    ravenfeather_mantle?: boolean;
+    whispering_amulet?: boolean;
+    blackened_mirror?: boolean;
+    wooden_figure?: boolean;
+    alphas_hide?: boolean;
+    elder_scroll?: boolean;
+  };
+  events: {
+    trinketDrunk?: boolean;
+    dream_morrowind?: boolean;
+    dream_oblivion?: boolean;
+    dream_skyrim?: boolean;
+    elder_scroll_found?: boolean;
+    blacksmith_hammer_found?: boolean;
+    trinket_found?: boolean;
+  };
+  flags: { trinketDrunk?: boolean };
+  tools: { blacksmith_hammer?: boolean };
+  // Add other properties of GameState as needed
+};
+
+// Centralized function to kill villagers
+function killVillagers(state: GameState, amount: number): Partial<GameState> {
+  let updatedVillagers = { ...state.villagers };
+  let remainingDeaths = amount;
+
+  // Define all possible villager types that can be killed
+  const villagerTypes: (keyof VillagerCounts)[] = [
+    'free',
+    'gatherer',
+    'hunter',
+    'iron_miner',
+    'coal_miner',
+    'sulfur_miner',
+    'silver_miner',
+    'gold_miner',
+    'obsidian_miner',
+    'adamant_miner',
+    'moonstone_miner',
+    'steel_forger',
+  ];
+
+  // Shuffle villager types to ensure random distribution of deaths
+  for (let i = villagerTypes.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [villagerTypes[i], villagerTypes[j]] = [villagerTypes[j], villagerTypes[i]];
+  }
+
+  for (const villagerType of villagerTypes) {
+    if (remainingDeaths <= 0) break;
+
+    const currentCount = updatedVillagers[villagerType] || 0;
+    if (currentCount > 0) {
+      const deaths = Math.min(remainingDeaths, currentCount);
+      updatedVillagers[villagerType] = currentCount - deaths;
+      remainingDeaths -= deaths;
+    }
+  }
+
+  return { villagers: updatedVillagers };
+}
+
 export const storyEvents: Record<string, GameEvent> = {
   foodGone: {
     id: "foodGone",
-    condition: (state) => state.resources.food > 50,
+    condition: (state: GameState) => state.resources.food > 50,
     triggerType: "resource",
     timeProbability: 20,
     message: [
@@ -13,7 +99,7 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 2,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       resources: {
         ...state.resources,
         food:
@@ -28,7 +114,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   villagerMissing: {
     id: "villagerMissing",
-    condition: (state) => state.villagers.free > 0,
+    condition: (state: GameState) => state.villagers.free > 0,
     triggerType: "resource",
     timeProbability: 10,
     message: [
@@ -42,7 +128,7 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 7)],
     triggered: false,
     priority: 2,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       villagers: {
         ...state.villagers,
         free: Math.max(0, state.villagers.free - 1),
@@ -52,7 +138,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   ironGift: {
     id: "ironGift",
-    condition: (state) => state.buildings.woodenHut >= 1,
+    condition: (state: GameState) => state.buildings.woodenHut >= 1,
     triggerType: "resource",
     timeProbability: 30,
     message: [
@@ -61,7 +147,7 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       resources: {
         ...state.resources,
         iron: state.resources.iron + 25 * state.buildings.woodenHut,
@@ -71,7 +157,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   paleFigure: {
     id: "paleFigure",
-    condition: (state) =>
+    condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
     timeProbability: 0.25,
@@ -88,7 +174,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         label: "Investigate",
-        effect: (state) => {
+        effect: (state: GameState) => {
           const strength = state.stats.strength || 0;
           const luck = state.stats.luck || 0;
           // Base 50% chance
@@ -107,23 +193,15 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           } else if (rand < 0.8) {
             // 1 man killed (30% chance)
-            const updatedVillagers = {
-              ...state.villagers,
-              free: Math.max(0, state.villagers.free - 1),
-            };
             return {
-              villagers: updatedVillagers,
+              ...killVillagers(state, 1),
               _logMessage:
                 "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
             // 2 men killed (20% chance)
-            const updatedVillagers = {
-              ...state.villagers,
-              free: Math.max(0, state.villagers.free - 2),
-            };
             return {
-              villagers: updatedVillagers,
+              ...killVillagers(state, 2),
               _logMessage:
                 "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
             };
@@ -133,7 +211,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "ignore",
         label: "Ignore it",
-        effect: (state) => {
+        effect: (state: GameState) => {
           const rand = Math.random();
           if (rand < 0.6) {
             // Nothing happens
@@ -143,12 +221,8 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           } else {
             // 1 man found dead
-            const updatedVillagers = {
-              ...state.villagers,
-              free: Math.max(0, state.villagers.free - 1),
-            };
             return {
-              villagers: updatedVillagers,
+              ...killVillagers(state, 1),
               _logMessage:
                 "At dawn, one of the men who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
             };
@@ -160,7 +234,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   whispersBeneathHut: {
     id: "whispersBeneathHut",
-    condition: (state) =>
+    condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
     timeProbability: 20,
@@ -174,8 +248,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "investigateHut",
         label: "Investigate the whispers",
-        effect: (state) => {
-          // Open for custom effects
+        effect: (state: GameState) => {
           return {
             relics: {
               ...state.relics,
@@ -183,14 +256,13 @@ export const storyEvents: Record<string, GameEvent> = {
             },
             _logMessage:
               "You lift the floorboards and find a strange amulet, faintly whispering. Its purpose is unclear...",
-            // e.g., add relic to state: relics: {...state.relics, whisperingAmulet: true}
           };
         },
       },
       {
         id: "ignoreHut",
         label: "Leave it be",
-        effect: (state) => {
+        effect: (state: GameState) => {
           return {
             _logMessage:
               "You choose to leave the hut alone. The whispers fade by morning, but a chill remains in the air.",
@@ -202,7 +274,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   blackenedMirror: {
     id: "blackenedMirror",
-    condition: (state) =>
+    condition: (state: GameState) =>
       state.buildings.woodenHut >= 5 &&
       state.resources.iron >= 200 &&
       !state.relics.blackened_mirror,
@@ -218,7 +290,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "buyMirror",
         label: "Buy the mirror for 200 iron",
-        effect: (state) => {
+        effect: (state: GameState) => {
           return {
             resources: {
               ...state.resources,
@@ -240,10 +312,9 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "refuseMirror",
         label: "Refuse the offer",
-        effect: (state) => {
+        effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -252,7 +323,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   cthulhuFigure: {
     id: "cthulhuFigure",
-    condition: (state) =>
+    condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
     timeProbability: 30,
@@ -266,18 +337,17 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "keepFigure",
         label: "Keep the figure",
-        effect: (state) => {
+        effect: (state: GameState) => {
           return {
             _logMessage:
               "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
-            // e.g., add figure to state: items: {...state.items, tentacledFigure: true}
           };
         },
       },
       {
         id: "discardFigure",
         label: "Discard it",
-        effect: (state) => {
+        effect: (state: GameState) => {
           return {
             relics: {
               ...state.relics,
@@ -293,7 +363,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    condition: (state) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: 30,
     title: "Wolf Attack",
@@ -306,7 +376,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "defendVillage",
         label: "Defend the village",
-        effect: (state) => {
+        effect: (state: GameState) => {
           const currentPopulation =
             state.villagers.free +
             state.villagers.gatherer +
@@ -358,33 +428,7 @@ export const storyEvents: Record<string, GameEvent> = {
           }
 
           // Apply deaths to villagers
-          let updatedVillagers = { ...state.villagers };
-          let remainingDeaths = villagerDeaths;
-
-          // Remove villagers starting with free, then gatherers, then hunters
-          if (remainingDeaths > 0 && updatedVillagers.free > 0) {
-            const freeDeaths = Math.min(remainingDeaths, updatedVillagers.free);
-            updatedVillagers.free -= freeDeaths;
-            remainingDeaths -= freeDeaths;
-          }
-
-          if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
-            const gathererDeaths = Math.min(
-              remainingDeaths,
-              updatedVillagers.gatherer,
-            );
-            updatedVillagers.gatherer -= gathererDeaths;
-            remainingDeaths -= gathererDeaths;
-          }
-
-          if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
-            const hunterDeaths = Math.min(
-              remainingDeaths,
-              updatedVillagers.hunter,
-            );
-            updatedVillagers.hunter -= hunterDeaths;
-            remainingDeaths -= hunterDeaths;
-          }
+          const deathResult = killVillagers(state, villagerDeaths);
 
           // Construct result message
           let message =
@@ -409,7 +453,7 @@ export const storyEvents: Record<string, GameEvent> = {
           }
 
           return {
-            villagers: updatedVillagers,
+            ...deathResult,
             resources: {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
@@ -427,7 +471,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "hideAndWait",
         label: "Hide and wait it out",
-        effect: (state) => {
+        effect: (state: GameState) => {
           const currentPopulation =
             state.villagers.free +
             state.villagers.gatherer +
@@ -456,33 +500,7 @@ export const storyEvents: Record<string, GameEvent> = {
           }
 
           // Apply deaths to villagers
-          let updatedVillagers = { ...state.villagers };
-          let remainingDeaths = villagerDeaths;
-
-          // Remove villagers starting with free, then gatherers, then hunters
-          if (remainingDeaths > 0 && updatedVillagers.free > 0) {
-            const freeDeaths = Math.min(remainingDeaths, updatedVillagers.free);
-            updatedVillagers.free -= freeDeaths;
-            remainingDeaths -= freeDeaths;
-          }
-
-          if (remainingDeaths > 0 && updatedVillagers.gatherer > 0) {
-            const gathererDeaths = Math.min(
-              remainingDeaths,
-              updatedVillagers.gatherer,
-            );
-            updatedVillagers.gatherer -= gathererDeaths;
-            remainingDeaths -= gathererDeaths;
-          }
-
-          if (remainingDeaths > 0 && updatedVillagers.hunter > 0) {
-            const hunterDeaths = Math.min(
-              remainingDeaths,
-              updatedVillagers.hunter,
-            );
-            updatedVillagers.hunter -= hunterDeaths;
-            remainingDeaths -= hunterDeaths;
-          }
+          const deathResult = killVillagers(state, villagerDeaths);
 
           // Construct result message
           let message =
@@ -501,7 +519,7 @@ export const storyEvents: Record<string, GameEvent> = {
           message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
 
           return {
-            villagers: updatedVillagers,
+            ...deathResult,
             resources: {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
@@ -521,7 +539,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   trinketFound: {
     id: "trinketFound",
-    condition: (state) => false, // Only triggered by action effect
+    condition: (state: GameState) => false, // Only triggered by action effect
     triggerType: "action",
     title: "Old Trinket",
     message:
@@ -529,7 +547,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state) => {
+    effect: (state: GameState) => {
       return {
         flags: {
           ...state.flags,
@@ -549,7 +567,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamMorrowind: {
     id: "dreamMorrowind",
-    condition: (state) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -557,7 +575,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       events: {
         ...state.events,
         dream_morrowind: true,
@@ -567,7 +585,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamOblivion: {
     id: "dreamOblivion",
-    condition: (state) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -575,7 +593,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       events: {
         ...state.events,
         dream_oblivion: true,
@@ -585,7 +603,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamSkyrim: {
     id: "dreamSkyrim",
-    condition: (state) => state.buildings.woodenHut >= 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     triggerType: "time",
     timeProbability: 90,
     message:
@@ -593,7 +611,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       events: {
         ...state.events,
         dream_skyrim: true,
@@ -603,7 +621,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   findElderScroll: {
     id: "findElderScroll",
-    condition: (state) =>
+    condition: (state: GameState) =>
       state.events.dream_morrowind &&
       state.events.dream_oblivion &&
       state.events.dream_skyrim &&
@@ -615,7 +633,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state) => ({
+    effect: (state: GameState) => ({
       relics: {
         ...state.relics,
         elder_scroll: true,
@@ -629,14 +647,14 @@ export const storyEvents: Record<string, GameEvent> = {
 
   blacksmithHammer: {
     id: "blacksmithHammer",
-    condition: (state) => false, // Only triggered by hunting action
+    condition: (state: GameState) => false, // Only triggered by hunting action
     triggerType: "action",
     message:
       "Deep in the forest, you discover ancient ruins dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent hammer catches the light, its head still bearing traces of ancient forge-fire. You take the Blacksmith Hammer, feeling its power flow through you. (+2 Strength, -10% crafting costs)",
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state) => {
+    effect: (state: GameState) => {
       return {
         tools: {
           ...state.tools,
