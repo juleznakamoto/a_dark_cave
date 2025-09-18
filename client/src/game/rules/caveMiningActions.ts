@@ -45,6 +45,7 @@ export const caveMiningActions: Record<string, Action> = {
     label: "Mine Sulfur",
     show_when: {
       "tools.iron_pickaxe": true,
+      "buildings.foundry": true,
     },
     cost: {
       "resources.food": 15,

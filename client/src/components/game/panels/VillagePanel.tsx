@@ -131,10 +131,10 @@ export default function VillagePanel() {
             {visibleBuildingActions.map(action => {
               let label = action.label;
               if (action.id === 'buildPit') {
-                label = buildings.pit === 0 ? "Build Shallow Pit" :
-                        buildings.pit === 1 ? "Upgrade to Deepening Pit" :
-                        buildings.pit === 2 ? "Upgrade to Deep Pit" :
-                        buildings.pit === 3 ? "Upgrade to Bottomless Pit" : "Build Pit"; // Fallback
+                label = buildings.pit === 0 ? "Shallow Pit" :
+                        buildings.pit === 1 ? "Deepening Pit" :
+                        buildings.pit === 2 ? "Deep Pit" :
+                        buildings.pit === 3 ? "Bottomless Pit" : "Build Pit"; // Fallback
               }
               return renderBuildingButton(action.id, label);
             })}
