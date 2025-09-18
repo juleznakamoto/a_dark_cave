@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --background: hsl(45, 20%, 97%);
   --foreground: hsl(0, 0%, 15%);
   --card: hsl(0, 0%, 100%);
@@ -49,10 +49,10 @@
   --shadow-2xl: 0px 2px 0px 0px hsl(202.8169, 89.1213%, 53.1373%, 0.00);
   --tracking-normal: 0em;
   --spacing: 0.25rem;
-}
+} */
 
 .dark {
-  --background: hsl(0, 0%, 0%);
+  --background: hsl(0, 0%, 5%);
   --foreground: hsl(200, 6.6667%, 91.1765%);
   --card: hsl(228, 9.8039%, 10%);
   --card-foreground: hsl(0, 0%, 85.0980%);
