@@ -68,7 +68,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   activeTab: "cave",
   lastSaved: "Never",
   isGameLoopActive: false,
-  devMode: true,
+  devMode: false,
   cooldowns: {},
   log: [],
   events: {},
