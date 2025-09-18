@@ -226,7 +226,6 @@ function handleStarvationCheck() {
   const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
   if (totalPopulation === 0) return;
   
-  const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
   
   if (availableFood === 0) {
