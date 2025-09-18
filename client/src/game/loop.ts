@@ -270,13 +270,6 @@ function handleStarvationCheck() {
 
       // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
-    } else {
-      state.addLogEntry({
-        id: `starvation-survived-${Date.now()}`,
-        message: "Despite the lack of food, everyone survives another day, though they grow weaker and more desperate.",
-        timestamp: Date.now(),
-        type: 'system',
-      });
     }
   }
 }
@@ -331,13 +324,6 @@ function handleFreezingCheck() {
 
       // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
-    } else {
-      state.addLogEntry({
-        id: `freezing-survived-${Date.now()}`,
-        message: "The villagers endure another freezing night without wood. They huddle together for warmth, growing weaker but surviving.",
-        timestamp: Date.now(),
-        type: 'system',
-      });
     }
   }
 }
