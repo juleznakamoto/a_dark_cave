@@ -1,4 +1,3 @@
-
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability, getActionBonuses } from "./effects";
@@ -321,6 +320,15 @@ export const applyActionEffects = (
     } else if (pathParts[0] === "clothing") {
         // Handle clothing effects (e.g., equipping/unequipping)
         current[finalKey] = effect;
+    }
+  }
+
+  // Apply dev mode 10x multiplier to resource gains
+  if (state.devMode && updates.resources) {
+    for (const [resource, amount] of Object.entries(updates.resources)) {
+      if (typeof amount === 'number' && amount > 0) {
+        updates.resources[resource] = amount * 10;
+      }
     }
   }
 
