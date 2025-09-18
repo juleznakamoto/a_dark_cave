@@ -34,16 +34,20 @@ export function updateFlag(
   };
 }
 
-export function updatePopulationCounts(state: GameState): Partial<GameState> {
-  // Calculate current population by summing all villager types
-  const current_population = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-  const total_population = current_population; // For now, same as current
+export const updatePopulationCounts = (state: GameState) => {
+  const current_population = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+
+  // Calculate max population based on buildings
+  const total_population = state.buildings.woodenHut * 2;
 
   return {
     current_population,
-    total_population
+    total_population,
   };
-}
+};
 
 export function assignVillagerToJob(
   state: GameState,
