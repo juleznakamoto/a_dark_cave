@@ -14,6 +14,7 @@ const HUNTER_PRODUCTION_INTERVAL = 15000; // hunter produce food every 15 second
 const CONSUMPTION_INTERVAL = 15000; // Population consumes food and checks wood every 15 seconds
 const STARVATION_CHECK_INTERVAL = 15000; // Check starvation every 15 seconds
 const FREEZING_CHECK_INTERVAL = 15000; // Check freezing every 15 seconds
+const STRANGER_CHECK_INTERVAL = 15000; // Check for stranger approach every 15 seconds
 
 let lastAutoSave = 0;
 let lastFireConsumption = 0;
@@ -22,6 +23,7 @@ let lastHunterProduction = 0;
 let lastConsumption = 0;
 let lastStarvationCheck = 0;
 let lastFreezingCheck = 0;
+let lastStrangerCheck = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -81,6 +83,12 @@ export function startGameLoop() {
       if (timestamp - lastFreezingCheck >= FREEZING_CHECK_INTERVAL) {
         lastFreezingCheck = timestamp;
         handleFreezingCheck();
+      }
+
+      // Stranger approach checks
+      if (timestamp - lastStrangerCheck >= STRANGER_CHECK_INTERVAL) {
+        lastStrangerCheck = timestamp;
+        handleStrangerApproach();
       }
     }
 
@@ -353,6 +361,70 @@ async function handleAutoSave() {
 
   const now = new Date().toLocaleTimeString();
   useGameStore.setState({ lastSaved: now });
+}
+
+function handleStrangerApproach() {
+  const state = useGameStore.getState();
+
+  // Pause stranger checks when event dialog is open
+  if (state.eventDialog.isOpen) return;
+
+  const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const maxPopulation = state.buildings.woodenHut * 2;
+
+  // Only trigger if there's room for more villagers
+  if (currentPopulation >= maxPopulation) return;
+
+  // Calculate probability based on your specifications
+  let probability = 0.1; // 10% base probability
+
+  // +2.5% for each wooden hut
+  probability += state.buildings.woodenHut * 0.025;
+
+  // +25% if population is 0
+  if (currentPopulation === 0) {
+    probability += 0.25;
+  }
+
+  // Check if stranger approaches based on probability
+  if (Math.random() < probability) {
+    const messages = [
+      "A stranger approaches through the woods and joins your village.",
+      "A traveler arrives and decides to stay.",
+      "A wanderer appears from the woods and becomes part of your community.",
+      "Someone approaches the village and settles in.",
+      "A stranger joins your community, bringing skills and hope.",
+      "A newcomer arrives and makes themselves at home.",
+    ];
+
+    const message = messages[Math.floor(Math.random() * messages.length)];
+
+    // Add the stranger to the village
+    useGameStore.setState({
+      villagers: {
+        ...state.villagers,
+        free: state.villagers.free + 1,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasVillagers: true,
+        },
+      },
+    });
+
+    // Add log entry
+    state.addLogEntry({
+      id: `stranger-approaches-${Date.now()}`,
+      message: message,
+      timestamp: Date.now(),
+      type: 'system',
+    });
+
+    // Update population after applying changes
+    setTimeout(() => state.updatePopulation(), 0);
+  }
 }
 
 // Export the manual save function
