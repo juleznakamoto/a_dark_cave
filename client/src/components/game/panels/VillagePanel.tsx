@@ -68,10 +68,22 @@ export default function VillagePanel() {
 
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
+    
+    // Get total production for this job type
+    const getTotalProductionText = (jobId: string, count: number): string => {
+      if (count === 0) return "";
+      
+      const production = getPopulationProduction(jobId, count);
+      const productionText = production
+        .map(prod => `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${prod.resource}`)
+        .join(", ");
+      
+      return productionText ? ` (${productionText})` : "";
+    };
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <span className="text-sm">{label} ({getPopulationProductionText(jobId)})</span>
+        <span className="text-sm">{label}{getTotalProductionText(jobId, currentCount)}</span>
         <div className="flex items-center gap-2">
           <Button
             onClick={() => unassignVillager(jobId)}
