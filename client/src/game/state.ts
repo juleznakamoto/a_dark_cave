@@ -174,10 +174,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     }
 
-    // Apply state updates
+    // Apply state updates - properly merge each section without overwriting
     set((prevState) => ({
       ...prevState,
-      ...result.stateUpdates,
+      resources: { ...prevState.resources, ...result.stateUpdates.resources },
+      weapons: { ...prevState.weapons, ...result.stateUpdates.weapons },
+      tools: { ...prevState.tools, ...result.stateUpdates.tools },
+      buildings: { ...prevState.buildings, ...result.stateUpdates.buildings },
+      flags: { ...prevState.flags, ...result.stateUpdates.flags },
+      villagers: { ...prevState.villagers, ...result.stateUpdates.villagers },
+      clothing: { ...prevState.clothing, ...result.stateUpdates.clothing },
+      relics: { ...prevState.relics, ...result.stateUpdates.relics },
+      cooldowns: { ...prevState.cooldowns, ...result.stateUpdates.cooldowns },
+      story: result.stateUpdates.story ? {
+        ...prevState.story,
+        seen: { ...prevState.story.seen, ...result.stateUpdates.story.seen }
+      } : prevState.story,
       log: result.logEntries
         ? [...prevState.log, ...result.logEntries].slice(-8)
         : prevState.log,
