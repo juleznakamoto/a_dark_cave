@@ -28,11 +28,11 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.stone_axe": false,
     },
     cost: {
-      "resources.wood": 5,
+      "resources.wood": 10,
       "resources.stone": 10,
     },
     effects: {
-      "resources.wood": -5,
+      "resources.wood": -10,
       "resources.stone": -10,
       "tools.stone_axe": true,
       "flags.villageUnlocked": true,

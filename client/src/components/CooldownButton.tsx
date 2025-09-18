@@ -1,7 +1,6 @@
-
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { useGameStore } from '@/game/state';
+import React from "react";
+import { Button } from "@/components/ui/button";
+import { useGameStore } from "@/game/state";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -9,9 +8,15 @@ interface CooldownButtonProps {
   cooldownMs: number;
   disabled?: boolean;
   className?: string;
-  variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link";
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
   size?: "default" | "sm" | "lg" | "icon";
-  'data-testid'?: string;
+  "data-testid"?: string;
 }
 
 export default function CooldownButton({
@@ -19,21 +24,26 @@ export default function CooldownButton({
   onClick,
   cooldownMs,
   disabled = false,
-  className = '',
-  variant = 'default',
-  size = 'default',
-  'data-testid': testId,
+  className = "",
+  variant = "default",
+  size = "default",
+  "data-testid": testId,
   ...props
 }: CooldownButtonProps) {
   const { devMode, cooldowns, setCooldown } = useGameStore();
 
   // Get the action ID from the test ID or generate one
-  const actionId = testId?.replace('button-', '').replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || 'unknown';
-  
+  const actionId =
+    testId
+      ?.replace("button-", "")
+      .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
+
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
-  const progress = isCoolingDown ? 1 - (currentCooldown / (cooldownMs / 1000)) : 1;
+  const progress = isCoolingDown
+    ? 1 - currentCooldown / (cooldownMs / 1000)
+    : 1;
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
@@ -58,7 +68,7 @@ export default function CooldownButton({
         variant={variant}
         size={size}
         className={`relative overflow-hidden transition-all duration-200 select-none ${
-          showCooldownVisual ? 'opacity-60 cursor-not-allowed' : ''
+          showCooldownVisual ? "opacity-60 cursor-not-allowed" : ""
         } ${className}`}
         data-testid={testId}
         {...props}
@@ -69,11 +79,11 @@ export default function CooldownButton({
         {/* Cooldown progress overlay */}
         {showCooldownVisual && (
           <div
-            className="absolute inset-0 bg-black/20 transition-all duration-75 ease-linear"
+            className="absolute inset-0 bg-white/15 transition-all duration-200 ease-linear"
             style={{
               width: `${(1 - progress) * 100}%`,
-              right: 0,
-              left: 'auto',
+              left: 0,
+              right: "auto",
             }}
           />
         )}
