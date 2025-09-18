@@ -114,9 +114,6 @@ export default function SidePanelSection({
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
               <div className="font-medium mb-1">{effect.name}</div>
-              {effect.description && (
-                <div className="text-muted-foreground mb-2">{effect.description}</div>
-              )}
               {effect.bonuses.generalBonuses && (
                 <>
                   {effect.bonuses.generalBonuses.luck && (
