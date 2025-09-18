@@ -116,9 +116,9 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Steel Axe",
     show_when: {
       "buildings.blacksmith": 1,
+      "buildings.foundry": 1,
       "tools.iron_axe": true,
       "tools.steel_axe": false,
-      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.wood": 200,
@@ -139,9 +139,9 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Steel Pickaxe",
     show_when: {
       "buildings.blacksmith": 1,
+      "buildings.foundry": 1,
       "tools.iron_pickaxe": true,
       "tools.steel_pickaxe": false,
-      "story.seen.hasSteel": true,
     },
     cost: {
       "resources.wood": 300,
