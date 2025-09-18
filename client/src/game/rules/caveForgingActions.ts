@@ -2,8 +2,8 @@
 import { Action } from "@shared/schema";
 
 export const caveForgingActions: Record<string, Action> = {
-  forgSteel: {
-    id: "forgSteel",
+  forgeSteel: {
+    id: "forgeSteel",
     label: "Steel",
     show_when: {
       "story.seen.hasIronAxe": true,

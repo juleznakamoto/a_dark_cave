@@ -64,7 +64,7 @@ export default function CavePanel() {
     {
       title: 'Forge',
       actions: [
-        { id: 'forgSteel', label: 'Steel' },
+        { id: 'forgeSteel', label: 'Steel' },
       ]
     }
   ];

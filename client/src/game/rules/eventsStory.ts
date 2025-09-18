@@ -1,5 +1,4 @@
 
-import { GameState } from "@shared/schema";
 import { GameEvent } from "./events";
 
 export const storyEvents: Record<string, GameEvent> = {
@@ -73,7 +72,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state) =>
       state.buildings.hut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 20,
     title: "The Pale Figure",
     message:
       "In the misty morning several men claim to have seen a pale figure at the edge of the woods. The figure stands motionless, watching. What do you do?",
@@ -263,7 +262,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state) =>
       state.buildings.hut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 30,
     title: "A Strange Wooden Figure",
     message:
       "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
@@ -303,7 +302,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "wolfAttack",
     condition: (state) => state.buildings.hut >= 3,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 30,
     title: "Wolf Attack",
     message:
       "In the dead of night, wolves emerge from the darkness, their eyes glowing with an unnatural hunger. Their howls echo with otherworldly malice as they circle your village.",

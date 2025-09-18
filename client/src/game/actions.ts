@@ -92,8 +92,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCitadel(state, result);
     case 'mineSulfur':
       return handleMineSulfur(state, result);
-    case 'forgSteel':
-      return handleForgSteel(state, result);
+    case 'forgeSteel':
+      return handleforgeSteel(state, result);
     case 'craftSteelAxe':
       return handleCraftSteelAxe(state, result);
     case 'craftSteelPickaxe':
@@ -621,8 +621,8 @@ function handleMineSulfur(state: GameState, result: ActionResult): ActionResult 
   return result;
 }
 
-function handleForgSteel(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('forgSteel', state);
+function handleforgeSteel(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('forgeSteel', state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
