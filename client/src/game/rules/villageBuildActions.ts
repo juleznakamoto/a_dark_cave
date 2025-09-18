@@ -115,8 +115,9 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Blacksmith",
     building: true,
     show_when: {
-      "tools.iron_axe": true,
-      "tools.iron_pickaxe": true,
+      "tools.stone_axe": true,
+      "tools.stone_pickaxe": true,
+      "buildings.blacksmith": 0,
     },
     cost: {
       "resources.wood": 200,

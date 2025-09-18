@@ -46,7 +46,6 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftStonePickaxe",
     label: "Stone Pickaxe",
     show_when: {
-      "buildings.blacksmith": 1,
       "tools.stone_pickaxe": false,
     },
     cost: {
