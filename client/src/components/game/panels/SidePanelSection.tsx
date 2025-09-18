@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
-import { clothingEffects } from '@/game/rules/effects';
+import { clothingEffects, weaponEffects, toolEffects } from '@/game/rules/effects';
 
 interface SidePanelItem {
   id: string;
@@ -77,8 +77,11 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
 
-    // Check if this is a relic that has effect information
+    // Check if this is a relic, weapon, or tool that has effect information
     const relicEffect = clothingEffects[item.id];
+    const weaponEffect = weaponEffects[item.id];
+    const toolEffect = toolEffects[item.id];
+    const hasEffect = relicEffect || weaponEffect || toolEffect;
 
     const itemContent = (
       <div 
@@ -99,8 +102,10 @@ export default function SidePanelSection({
       </div>
     );
 
-    // If this item has relic effects, wrap it in a hover card
-    if (relicEffect && title === "Relics") {
+    // If this item has effects, wrap it in a hover card
+    if (hasEffect && (title === "Relics" || title === "Tools")) {
+      const effect = relicEffect || weaponEffect || toolEffect;
+      
       return (
         <HoverCard key={item.id}>
           <HoverCardTrigger asChild>
@@ -108,25 +113,29 @@ export default function SidePanelSection({
           </HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {relicEffect.bonuses.generalBonuses && (
+              <div className="font-medium mb-1">{effect.name}</div>
+              {effect.description && (
+                <div className="text-muted-foreground mb-2">{effect.description}</div>
+              )}
+              {effect.bonuses.generalBonuses && (
                 <>
-                  {relicEffect.bonuses.generalBonuses.luck && (
-                    <div>+{relicEffect.bonuses.generalBonuses.luck} Luck</div>
+                  {effect.bonuses.generalBonuses.luck && (
+                    <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
                   )}
-                  {relicEffect.bonuses.generalBonuses.strength && (
-                    <div>+{relicEffect.bonuses.generalBonuses.strength} Strength</div>
+                  {effect.bonuses.generalBonuses.strength && (
+                    <div>+{effect.bonuses.generalBonuses.strength} Strength</div>
                   )}
-                  {relicEffect.bonuses.generalBonuses.gatheringSpeed && (
-                    <div>+{Math.round((relicEffect.bonuses.generalBonuses.gatheringSpeed - 1) * 100)}% Gathering Speed</div>
+                  {effect.bonuses.generalBonuses.gatheringSpeed && (
+                    <div>+{Math.round((effect.bonuses.generalBonuses.gatheringSpeed - 1) * 100)}% Gathering Speed</div>
                   )}
-                  {relicEffect.bonuses.generalBonuses.craftingSpeed && (
-                    <div>+{Math.round((relicEffect.bonuses.generalBonuses.craftingSpeed - 1) * 100)}% Crafting Speed</div>
+                  {effect.bonuses.generalBonuses.craftingSpeed && (
+                    <div>+{Math.round((effect.bonuses.generalBonuses.craftingSpeed - 1) * 100)}% Crafting Speed</div>
                   )}
-                  {relicEffect.bonuses.generalBonuses.explorationBonus && (
-                    <div>+{relicEffect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</div>
+                  {effect.bonuses.generalBonuses.explorationBonus && (
+                    <div>+{effect.bonuses.generalBonuses.explorationBonus} Exploration Bonus</div>
                   )}
-                  {relicEffect.bonuses.generalBonuses.knowledge && (
-                    <div>+{relicEffect.bonuses.generalBonuses.knowledge} Knowledge</div>
+                  {effect.bonuses.generalBonuses.knowledge && (
+                    <div>+{effect.bonuses.generalBonuses.knowledge} Knowledge</div>
                   )}
                 </>
               )}

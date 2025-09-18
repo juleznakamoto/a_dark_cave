@@ -392,6 +392,50 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  iron_sword: {
+    id: "iron_sword",
+    name: "Iron Sword",
+    description: "A sturdy iron blade that enhances your combat prowess (+5 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+      },
+    },
+  },
+
+  steel_sword: {
+    id: "steel_sword",
+    name: "Steel Sword",
+    description: "A finely crafted steel blade with superior balance (+8 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 8,
+      },
+    },
+  },
+
+  obsidian_sword: {
+    id: "obsidian_sword",
+    name: "Obsidian Sword",
+    description: "A razor-sharp blade forged from volcanic glass (+12 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 12,
+      },
+    },
+  },
+
+  adamant_sword: {
+    id: "adamant_sword",
+    name: "Adamant Sword",
+    description: "The ultimate weapon forged from the hardest metal (+20 Strength)",
+    bonuses: {
+      generalBonuses: {
+        strength: 20,
+      },
+    },
+  },
 };
 
 // Relic effects
@@ -527,6 +571,13 @@ const BOW_HIERARCHY = [
   "master_bow",
 ];
 
+const SWORD_HIERARCHY = [
+  "iron_sword",
+  "steel_sword",
+  "obsidian_sword",
+  "adamant_sword",
+];
+
 // Helper function to get the best tool of a specific type
 export const getBestTool = (
   state: GameState,
@@ -553,9 +604,9 @@ export const getBestTool = (
 // Helper function to get the best weapon of a specific type
 export const getBestWeapon = (
   state: GameState,
-  weaponType: "bow",
+  weaponType: "bow" | "sword",
 ): string | null => {
-  const hierarchy = weaponType === "bow" ? BOW_HIERARCHY : [];
+  const hierarchy = weaponType === "bow" ? BOW_HIERARCHY : weaponType === "sword" ? SWORD_HIERARCHY : [];
 
   // Find the highest tier weapon that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
@@ -572,17 +623,19 @@ export const getBestWeapon = (
 export const getDisplayTools = (state: GameState): Record<string, boolean> => {
   const displayTools: Record<string, boolean> = {};
 
-  // Get best axe, pickaxe, lantern, and bow
+  // Get best axe, pickaxe, lantern, bow, and sword
   const bestAxe = getBestTool(state, "axe");
   const bestPickaxe = getBestTool(state, "pickaxe");
   const bestLantern = getBestTool(state, "lantern");
   const bestBow = getBestWeapon(state, "bow");
+  const bestSword = getBestWeapon(state, "sword");
 
   // Add best tools to display
   if (bestAxe) displayTools[bestAxe] = true;
   if (bestPickaxe) displayTools[bestPickaxe] = true;
   if (bestLantern) displayTools[bestLantern] = true;
   if (bestBow) displayTools[bestBow] = true;
+  if (bestSword) displayTools[bestSword] = true;
 
   // Add non-hierarchical tools
   Object.entries(state.tools).forEach(([toolId, owned]) => {
@@ -593,6 +646,17 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
       !LANTERN_HIERARCHY.includes(toolId)
     ) {
       displayTools[toolId] = true;
+    }
+  });
+
+  // Add non-hierarchical weapons
+  Object.entries(state.weapons).forEach(([weaponId, owned]) => {
+    if (
+      owned &&
+      !BOW_HIERARCHY.includes(weaponId) &&
+      !SWORD_HIERARCHY.includes(weaponId)
+    ) {
+      displayTools[weaponId] = true;
     }
   });
 

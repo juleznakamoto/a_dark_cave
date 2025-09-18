@@ -17,8 +17,10 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  // Dynamically generate tool items from state (only show best tools)
+  // Dynamically generate tool items from state (only show best tools and weapons)
   const displayTools = getDisplayTools(useGameStore());
+  const gameState = useGameStore();
+  
   const toolItems = Object.entries(displayTools)
     .map(([key, value]) => ({
       id: key,
