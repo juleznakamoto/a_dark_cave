@@ -8,7 +8,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "weapons.iron_sword": false,
-      "story.seen.hasIron": true,
     },
     cost: {
       "resources.iron": 100,
@@ -88,7 +87,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     label: "Crude Bow",
     show_when: {
       "buildings.blacksmith": 1,
-      "tools.stone_pickaxe": true,
       "weapons.crude_bow": false,
     },
     cost: {

@@ -46,6 +46,7 @@ export const caveCraftTools: Record<string, Action> = {
     id: "craftStonePickaxe",
     label: "Stone Pickaxe",
     show_when: {
+      "flags.caveExplored": true,
       "tools.stone_pickaxe": false,
     },
     cost: {
@@ -69,8 +70,6 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.stone_axe": true,
       "tools.iron_axe": false,
-      "story.seen.hasIron": true,
-      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.wood": 100,
@@ -93,8 +92,6 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "tools.stone_pickaxe": true,
       "tools.iron_pickaxe": false,
-      "story.seen.hasIron": true,
-      "story.seen.hasCoal": true,
     },
     cost: {
       "resources.wood": 150,
