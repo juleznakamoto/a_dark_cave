@@ -72,6 +72,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 1,
+        "buildings.cabin": 0,
       },
     },
     cost: {
@@ -102,14 +103,14 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 100,
-        "resources.stone": 25,
+        "resources.wood": 400,
+        "resources.stone": 100,
       },
     },
     effects: {
       1: {
-        "resources.wood": -100,
-        "resources.stone": -25,
+        "resources.wood": -400,
+        "resources.stone": -100,
         "buildings.blacksmith": 1,
       },
     },

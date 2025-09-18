@@ -102,7 +102,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 15 },
-          cooldownReduction: 1,
+          cooldownReduction: 0.75,
         },
       },
     },
@@ -139,7 +139,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 35 },
-          cooldownReduction: 2,
+          cooldownReduction: 1,
         },
       },
     },
@@ -180,7 +180,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceBonus: { wood: 75 },
-          cooldownReduction: 3,
+          cooldownReduction: 1.5,
         },
       },
     },
