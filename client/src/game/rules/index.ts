@@ -323,11 +323,15 @@ export const applyActionEffects = (
     }
   }
 
-  // Apply dev mode 10x multiplier to resource gains
+  // Apply dev mode 10x multiplier to resource gains (only the added amount)
   if (state.devMode && updates.resources) {
     for (const [resource, amount] of Object.entries(updates.resources)) {
-      if (typeof amount === 'number' && amount > 0) {
-        updates.resources[resource] = amount * 10;
+      if (typeof amount === 'number') {
+        const currentAmount = state.resources[resource as keyof typeof state.resources] || 0;
+        const addedAmount = amount - currentAmount;
+        if (addedAmount > 0) {
+          updates.resources[resource] = currentAmount + (addedAmount * 10);
+        }
       }
     }
   }
