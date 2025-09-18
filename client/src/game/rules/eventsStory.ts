@@ -407,7 +407,7 @@ export const storyEvents: Record<string, GameEvent> = {
           const casualtyChance = Math.max(0.2, 0.7 - strength * 0.02);
 
           let villagerDeaths = 0;
-          let foodLoss = 50 + Math.floor(Math.random() * 251); // 50-250 food loss
+          let foodLoss = Math.min(state.resources.food, 50 + Math.floor(Math.random() * 251)); // 50-300 food loss
           let hutDestroyed = false;
 
           // Determine villager casualties (1-6 potential deaths)
