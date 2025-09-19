@@ -1,5 +1,5 @@
 
-import { Button } from '@/components/ui/button';
+import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 
 export default function StartScreen() {
@@ -17,13 +17,15 @@ export default function StartScreen() {
             A dark cave.<br></br>The air is cold and stale.<br></br>You can barely make out the shapes around you.
           </p>
         </div>
-        <Button
+        <ParticleButton
           onClick={handleLightFire}
           className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover"
           data-testid="button-light-fire"
+          hoverDelay={3000}
+          successDuration={1500}
         >
           Light Fire
-        </Button>
+        </ParticleButton>
       </main>
     </div>
   );
