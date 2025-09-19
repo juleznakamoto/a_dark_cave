@@ -126,7 +126,7 @@
 }
 
 .animate-fade-in {
-  animation: fade-in 5s ease-in-out forwards;
+  animation: fade-in 8s ease-in-out forwards;
 }
 
 @keyframes tab-fade-in {

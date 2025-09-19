@@ -156,6 +156,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Descend Further",
     show_when: {
       "tools.iron_lantern": true,
+      "tools.steel_lantern": false,
     },
     cost: {
       "resources.food": 100,
@@ -181,6 +182,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Explore Ruins",
     show_when: {
       "tools.steel_lantern": true,
+      "tools.obsidian_lantern": false,
     },
     cost: {
       "resources.food": 250,
@@ -209,6 +211,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Explore Temple",
     show_when: {
       "tools.obsidian_lantern": true,
+      "tools.adamant_lantern": false
     },
     cost: {
       "resources.food": 500,
