@@ -252,16 +252,18 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 300,
-        "resources.stone": 200,
+        "resources.wood": 500,
+        "resources.stone": 250,
         "resources.bones": 100,
+        "resources.silver": 10,
       },
     },
     effects: {
       1: {
-        "resources.wood": -300,
-        "resources.stone": -200,
+        "resources.wood": -500,
+        "resources.stone": -250,
         "resources.bones": -100,
+        "resources.silver": -10,
         "buildings.shrine": 1,
         "flags.shrineBuilt": true,
         "story.seen.hasShrine": true,
