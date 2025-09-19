@@ -294,16 +294,12 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.resources,
               iron: state.resources.iron - 200,
             },
-            stats: {
-              ...state.stats,
-              knowledge: (state.stats.knowledge || 0) + 10,
-            },
             relics: {
               ...state.relics,
               blackened_mirror: true,
             },
             _logMessage:
-              "You purchase the mirror. Its purpose and effects remain a mystery, but you feel your understanding of hidden things deepen.",
+              "You purchase the mirror. Its dark surface seems to hold secrets, and you feel your understanding of hidden things deepen.",
           };
         },
       },
