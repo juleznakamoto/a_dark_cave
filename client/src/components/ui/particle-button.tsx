@@ -20,35 +20,52 @@ function SuccessParticles({
     buttonRef: React.RefObject<HTMLButtonElement>;
 }) {
     const rect = buttonRef.current?.getBoundingClientRect();
-    if (!rect) return null;
+    if (!rect) {
+        console.log("No button rect found");
+        return null;
+    }
 
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
+    
+    console.log("Button position:", { centerX, centerY, rect });
 
     return (
         <AnimatePresence>
-            {[...Array(12)].map((_, i) => (
-                <motion.div
-                    key={i}
-                    className="fixed w-1 h-1 bg-orange-500 rounded-full"
-                    style={{ left: centerX, top: centerY, zIndex: 9999 }}
-                    initial={{
-                        scale: 0,
-                        x: 0,
-                        y: 0,
-                    }}
-                    animate={{
-                        scale: [0, 1, 0],
-                        x: [0, (Math.cos((i * 30) * Math.PI / 180)) * (Math.random() * 60 + 30)],
-                        y: [0, (Math.sin((i * 30) * Math.PI / 180)) * (Math.random() * 60 + 30)],
-                    }}
-                    transition={{
-                        duration: 1.2,
-                        delay: i * 0.05,
-                        ease: "easeOut",
-                    }}
-                />
-            ))}
+            {[...Array(12)].map((_, i) => {
+                const angle = (i * 30) * Math.PI / 180;
+                const distance = Math.random() * 60 + 30;
+                const endX = Math.cos(angle) * distance;
+                const endY = Math.sin(angle) * distance;
+                
+                return (
+                    <motion.div
+                        key={i}
+                        className="fixed w-2 h-2 bg-orange-500 rounded-full shadow-lg"
+                        style={{ 
+                            left: centerX - 1, 
+                            top: centerY - 1, 
+                            zIndex: 9999,
+                            pointerEvents: 'none'
+                        }}
+                        initial={{
+                            scale: 0,
+                            x: 0,
+                            y: 0,
+                        }}
+                        animate={{
+                            scale: [0, 1.5, 0],
+                            x: [0, endX],
+                            y: [0, endY],
+                        }}
+                        transition={{
+                            duration: 1.2,
+                            delay: i * 0.05,
+                            ease: "easeOut",
+                        }}
+                    />
+                );
+            })}
         </AnimatePresence>
     );
 }
@@ -68,18 +85,20 @@ function ParticleButton({
     const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseEnter = () => {
+        console.log("Mouse entered, starting hover timer");
         setIsHovered(true);
         hoverTimeoutRef.current = setTimeout(() => {
-            if (isHovered) {
-                setShowParticles(true);
-                setTimeout(() => {
-                    setShowParticles(false);
-                }, successDuration);
-            }
+            console.log("Hover delay completed, showing particles");
+            setShowParticles(true);
+            setTimeout(() => {
+                console.log("Hiding particles");
+                setShowParticles(false);
+            }, successDuration);
         }, hoverDelay);
     };
 
     const handleMouseLeave = () => {
+        console.log("Mouse left, clearing timer");
         setIsHovered(false);
         if (hoverTimeoutRef.current) {
             clearTimeout(hoverTimeoutRef.current);
