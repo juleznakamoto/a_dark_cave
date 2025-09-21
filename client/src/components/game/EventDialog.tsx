@@ -30,7 +30,6 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   // Initialize timer for timed choices
   useEffect(() => {
     if (!event || !event.isTimedChoice || !isOpen) {
-      console.log('EventDialog: Timer disabled - event:', !!event, 'isTimedChoice:', event?.isTimedChoice, 'isOpen:', isOpen);
       setTimeRemaining(null);
       setTotalTime(0);
       fallbackExecutedRef.current = false;
@@ -39,13 +38,6 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     const knowledge = getTotalKnowledge(gameState);
     const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
-    console.log('EventDialog: Starting timer -', {
-      eventId: event.id,
-      baseDecisionTime: event.baseDecisionTime,
-      knowledge,
-      totalDecisionTime: decisionTime,
-      fallbackChoice: event.fallbackChoice
-    });
     
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
@@ -54,7 +46,6 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     const interval = setInterval(() => {
       if (fallbackExecutedRef.current) {
-        console.log('EventDialog: Timer stopped - fallback already executed');
         return;
       }
       
@@ -64,29 +55,19 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       setTimeRemaining(remaining);
       
       if (remaining <= 0 && !fallbackExecutedRef.current) {
-        console.log('EventDialog: Timer expired! Executing fallback -', {
-          remaining,
-          fallbackChoice: event.fallbackChoice,
-          eventId: event.id.split('-')[0]
-        });
-        
         fallbackExecutedRef.current = true;
         clearInterval(interval);
         
         // Time expired, execute fallback choice
         if (event.fallbackChoice) {
           const eventId = event.id.split('-')[0];
-          console.log('EventDialog: Applying fallback choice:', event.fallbackChoice.id, 'for event:', eventId);
           applyEventChoice(event.fallbackChoice.id, eventId);
           onClose();
-        } else {
-          console.log('EventDialog: No fallback choice defined!');
         }
       }
     }, 100);
 
     return () => {
-      console.log('EventDialog: Cleaning up timer for event:', event.id);
       clearInterval(interval);
       fallbackExecutedRef.current = false;
     };
@@ -95,14 +76,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   if (!event || !event.choices) return null;
 
   const handleChoice = (choiceId: string) => {
-    console.log('EventDialog: Manual choice selected -', {
-      choiceId,
-      eventId: event?.id,
-      fallbackAlreadyExecuted: fallbackExecutedRef.current
-    });
-    
     if (fallbackExecutedRef.current) {
-      console.log('EventDialog: Ignoring manual choice - fallback already executed');
       return;
     }
     
