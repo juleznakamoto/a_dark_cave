@@ -704,7 +704,6 @@ export const storyEvents: Record<string, GameEvent> = {
   offerToTheForestGods: {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
-      state.villagers.hunter > 0 &&
       Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0) >= 6 &&
       !state.relics.ebony_ring && state.buildings.shrine == 1,
     triggerType: "resource",
