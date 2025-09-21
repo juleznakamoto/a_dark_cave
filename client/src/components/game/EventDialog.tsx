@@ -61,6 +61,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         // Time expired, execute fallback choice
         if (event.fallbackChoice) {
           const eventId = event.id.split('-')[0];
+          console.log(`[EventDialog] Timer expired, executing fallback choice: ${event.fallbackChoice.id} for event: ${eventId}`);
           applyEventChoice(event.fallbackChoice.id, eventId);
           onClose();
         }
@@ -82,6 +83,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     
     fallbackExecutedRef.current = true;
     const eventId = event!.id.split('-')[0];
+    console.log(`[EventDialog] User choice: ${choiceId} for event: ${eventId}`);
     applyEventChoice(choiceId, eventId);
     onClose();
   };

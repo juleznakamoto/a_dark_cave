@@ -419,8 +419,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
 
+    console.log(`[STATE] Applying event choice: ${choiceId} for event: ${eventId}`);
+    console.log(`[STATE] Available events:`, Object.keys(state.events || {}));
+
     // Handle other events using EventManager
     const changes = EventManager.applyEventChoice(state, choiceId, eventId);
+
+    console.log(`[STATE] EventManager returned changes:`, changes);
 
     if (Object.keys(changes).length > 0) {
       // Handle log messages from choice effects
@@ -463,6 +468,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       setTimeout(() => {
         get().updatePopulation();
       }, 100);
+    } else {
+      console.log(`[STATE] No changes returned from EventManager for choice: ${choiceId}, event: ${eventId}`);
+      // Still close the dialog even if no changes
+      get().setEventDialog(false);
     }
   },
 

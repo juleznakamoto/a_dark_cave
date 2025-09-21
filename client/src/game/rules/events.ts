@@ -122,12 +122,27 @@ export class EventManager {
     choiceId: string,
     eventId: string,
   ): Partial<GameState> {
+    console.log(`[EventManager] Applying choice: ${choiceId} for event: ${eventId}`);
+    console.log(`[EventManager] Available game events:`, Object.keys(gameEvents));
+    
     const event = gameEvents[eventId];
-    if (!event) return {};
+    if (!event) {
+      console.log(`[EventManager] Event not found: ${eventId}`);
+      return {};
+    }
+
+    console.log(`[EventManager] Found event:`, event.id, `with choices:`, event.choices?.map(c => c.id));
 
     const choice = event.choices?.find((c) => c.id === choiceId);
-    if (!choice) return {};
+    if (!choice) {
+      console.log(`[EventManager] Choice not found: ${choiceId} in event: ${eventId}`);
+      return {};
+    }
 
-    return choice.effect(state);
+    console.log(`[EventManager] Executing choice effect for: ${choiceId}`);
+    const result = choice.effect(state);
+    console.log(`[EventManager] Choice effect result:`, result);
+    
+    return result;
   }
 }
