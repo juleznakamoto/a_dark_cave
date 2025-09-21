@@ -15,7 +15,10 @@ export default function VillagePanel() {
     { id: 'buildWoodenHut', label: 'Wooden Hut' },
     { id: 'buildCabin', label: 'Cabin' },
     { id: 'buildBlacksmith', label: 'Blacksmith' },
-    { id: 'buildPit', label: 'Pit' },
+    { id: 'buildShallowPit', label: 'Shallow Pit' },
+    { id: 'buildDeepeningPit', label: 'Deepening Pit' },
+    { id: 'buildDeepPit', label: 'Deep Pit' },
+    { id: 'buildBottomlessPit', label: 'Bottomless Pit' },
     { id: 'buildFoundry', label: 'Foundry' },
     { id: 'buildShrine', label: 'Shrine' },
     { id: 'buildGreatCabin', label: 'Great Cabin' },
@@ -27,14 +30,14 @@ export default function VillagePanel() {
   const populationJobs = [
     { id: 'gatherer', label: 'Gatherer', alwaysShow: true },
     { id: 'hunter', label: 'Hunter', showWhen: () => buildings.cabin > 0 },
-    { id: 'iron_miner', label: 'Iron Miner', showWhen: () => buildings.pit >= 1 },
-    { id: 'coal_miner', label: 'Coal Miner', showWhen: () => buildings.pit >= 1 },
-    { id: 'sulfur_miner', label: 'Sulfur Miner', showWhen: () => buildings.pit >= 2 },
-    { id: 'silver_miner', label: 'Silver Miner', showWhen: () => buildings.pit >= 2 },
-    { id: 'gold_miner', label: 'Gold Miner', showWhen: () => buildings.pit >= 3 },
-    { id: 'obsidian_miner', label: 'Obsidian Miner', showWhen: () => buildings.pit >= 3 },
-    { id: 'adamant_miner', label: 'Adamant Miner', showWhen: () => buildings.pit >= 4 },
-    { id: 'moonstone_miner', label: 'Moonstone Miner', showWhen: () => buildings.pit >= 4 },
+    { id: 'iron_miner', label: 'Iron Miner', showWhen: () => buildings.shallowPit >= 1 },
+    { id: 'coal_miner', label: 'Coal Miner', showWhen: () => buildings.shallowPit >= 1 },
+    { id: 'sulfur_miner', label: 'Sulfur Miner', showWhen: () => buildings.deepeningPit >= 1 },
+    { id: 'silver_miner', label: 'Silver Miner', showWhen: () => buildings.deepeningPit >= 1 },
+    { id: 'gold_miner', label: 'Gold Miner', showWhen: () => buildings.deepPit >= 1 },
+    { id: 'obsidian_miner', label: 'Obsidian Miner', showWhen: () => buildings.deepPit >= 1 },
+    { id: 'adamant_miner', label: 'Adamant Miner', showWhen: () => buildings.bottomlessPit >= 1 },
+    { id: 'moonstone_miner', label: 'Moonstone Miner', showWhen: () => buildings.bottomlessPit >= 1 },
     { id: 'steel_forger', label: 'Steel Forger', showWhen: () => buildings.foundry >= 1 },
   ];
 
@@ -132,16 +135,9 @@ export default function VillagePanel() {
         <div className="space-y-4">
           <h2 className="text-sm font-medium">Build</h2>
           <div className="flex flex-wrap gap-2">
-            {visibleBuildingActions.map(action => {
-              let label = action.label;
-              if (action.id === 'buildPit') {
-                label = buildings.pit === 0 ? "Shallow Pit" :
-                        buildings.pit === 1 ? "Deepening Pit" :
-                        buildings.pit === 2 ? "Deep Pit" :
-                        buildings.pit === 3 ? "Bottomless Pit" : "Build Pit"; // Fallback
-              }
-              return renderBuildingButton(action.id, label);
-            })}
+            {visibleBuildingActions.map(action => 
+              renderBuildingButton(action.id, action.label)
+            )}
           </div>
         </div>
       )}

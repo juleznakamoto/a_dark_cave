@@ -43,8 +43,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildCabin(state, result);
     case 'buildBlacksmith':
       return handleBuildBlacksmith(state, result);
-    case 'buildPit':
-      return handleBuildPit(state, result);
+    case 'buildShallowPit':
+      return handleBuildShallowPit(state, result);
+    case 'buildDeepeningPit':
+      return handleBuildDeepeningPit(state, result);
+    case 'buildDeepPit':
+      return handleBuildDeepPit(state, result);
+    case 'buildBottomlessPit':
+      return handleBuildBottomlessPit(state, result);
     case 'buildFoundry':
       return handleBuildFoundry(state, result);
     case 'exploreCave':
@@ -211,8 +217,20 @@ function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionRe
   return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
 }
 
-function handleBuildPit(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildPit', 'pit');
+function handleBuildShallowPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildShallowPit', 'shallowPit');
+}
+
+function handleBuildDeepeningPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildDeepeningPit', 'deepeningPit');
+}
+
+function handleBuildDeepPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildDeepPit', 'deepPit');
+}
+
+function handleBuildBottomlessPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildBottomlessPit', 'bottomlessPit');
 }
 
 function handleBuildFoundry(state: GameState, result: ActionResult): ActionResult {

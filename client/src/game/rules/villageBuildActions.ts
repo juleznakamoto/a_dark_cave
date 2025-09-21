@@ -36,7 +36,7 @@ export const villageBuildActions: Record<string, Action> = {
       10: {
         "buildings.shrine": 1,
       },
-      
+
     },
     cost: {
       1: {
@@ -171,26 +171,17 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 5,
   },
 
-  buildPit: {
-    id: "buildPit",
-    label: "Mining Pit",
+  buildShallowPit: {
+    id: "buildShallowPit",
+    label: "Shallow Pit",
     building: true,
     show_when: {
       1: {
         "tools.iron_pickaxe": true,
-        "buildings.pit": 0,
-      },
-      2: {
-        "tools.steel_pickaxe": true,
-        "buildings.pit": 1,
-      },
-      3: {
-        "tools.obsidian_pickaxe": true,
-        "buildings.pit": 2,
-      },
-      4: {
-        "tools.adamant_pickaxe": true,
-        "buildings.pit": 3,
+        "buildings.shallowPit": 0,
+        "buildings.deepeningPit": 0,
+        "buildings.deepPit": 0,
+        "buildings.bottomlessPit": 0,
       },
     },
     cost: {
@@ -198,17 +189,88 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.wood": 500,
         "resources.stone": 250,
       },
-      2: {
+    },
+    effects: {
+      1: {
+        "resources.wood": -500,
+        "resources.stone": -250,
+        "buildings.shallowPit": 1,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildDeepeningPit: {
+    id: "buildDeepeningPit",
+    label: "Deepening Pit",
+    building: true,
+    show_when: {
+      1: {
+        "tools.steel_pickaxe": true,
+        "buildings.shallowPit": 1,
+        "buildings.deepeningPit": 0,
+      },
+    },
+    cost: {
+      1: {
         "resources.wood": 1000,
         "resources.stone": 250,
         "resources.iron": 50,
       },
-      3: {
+    },
+    effects: {
+      1: {
+        "resources.wood": -1000,
+        "resources.stone": -250,
+        "resources.iron": -50,
+        "buildings.deepeningPit": 1,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildDeepPit: {
+    id: "buildDeepPit",
+    label: "Deep Pit",
+    building: true,
+    show_when: {
+      1: {
+        "tools.obsidian_pickaxe": true,
+        "buildings.deepeningPit": 1,
+        "buildings.deepPit": 0,
+      },
+    },
+    cost: {
+      1: {
         "resources.wood": 2500,
         "resources.stone": 500,
         "resources.steel": 100,
       },
-      4: {
+    },
+    effects: {
+      1: {
+        "resources.wood": -2500,
+        "resources.stone": -500,
+        "resources.steel": -100,
+        "buildings.deepPit": 1,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildBottomlessPit: {
+    id: "buildBottomlessPit",
+    label: "Bottomless Pit",
+    building: true,
+    show_when: {
+      1: {
+        "tools.adamant_pickaxe": true,
+        "buildings.deepPit": 1,
+        "buildings.bottomlessPit": 0,
+      },
+    },
+    cost: {
+      1: {
         "resources.wood": 5000,
         "resources.stone": 1000,
         "resources.steel": 250,
@@ -216,27 +278,10 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
-        "buildings.pit": 1,
-      },
-      2: {
-        "resources.wood": -1000,
-        "resources.stone": -250,
-        "resources.iron": -50,
-        "buildings.pit": 1,
-      },
-      3: {
-        "resources.wood": -2500,
-        "resources.stone": -500,
-        "resources.steel": -100,
-        "buildings.pit": 1,
-      },
-      4: {
         "resources.wood": -5000,
         "resources.stone": -1000,
-        "resources.obsidian": -250,
-        "buildings.pit": 1,
+        "resources.steel": -250,
+        "buildings.bottomlessPit": 1,
       },
     },
     cooldown: 30,

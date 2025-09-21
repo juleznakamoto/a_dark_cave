@@ -73,12 +73,6 @@ export default function SidePanel() {
     .map(([key, value]) => {
       let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
       
-      // Special naming for pit building levels
-      if (key === 'pit' && value > 0) {
-        const pitNames = ['', 'Shallow Pit', 'Deepening Pit', 'Deep Pit', 'Bottomless Pit'];
-        label = pitNames[value] || 'Pit';
-      }
-      
       return {
         id: key,
         label,
@@ -87,7 +81,20 @@ export default function SidePanel() {
         visible: (value ?? 0) > 0
       };
     })
-    .filter(item => item.visible);
+    .filter(item => item.visible)
+    .filter(item => {
+      // Only show the highest pit level
+      if (item.id === 'shallowPit' && (buildings.deepeningPit > 0 || buildings.deepPit > 0 || buildings.bottomlessPit > 0)) {
+        return false;
+      }
+      if (item.id === 'deepeningPit' && (buildings.deepPit > 0 || buildings.bottomlessPit > 0)) {
+        return false;
+      }
+      if (item.id === 'deepPit' && buildings.bottomlessPit > 0) {
+        return false;
+      }
+      return true;
+    });
 
   // Dynamically generate villager items from state
   const populationItems = Object.entries(villagers)
