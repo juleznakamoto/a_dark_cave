@@ -52,18 +52,18 @@ function killVillagers(state: GameState, amount: number): Partial<GameState> {
 
   // Define all possible villager types that can be killed
   const villagerTypes: (keyof VillagerCounts)[] = [
-    'free',
-    'gatherer',
-    'hunter',
-    'iron_miner',
-    'coal_miner',
-    'sulfur_miner',
-    'silver_miner',
-    'gold_miner',
-    'obsidian_miner',
-    'adamant_miner',
-    'moonstone_miner',
-    'steel_forger',
+    "free",
+    "gatherer",
+    "hunter",
+    "iron_miner",
+    "coal_miner",
+    "sulfur_miner",
+    "silver_miner",
+    "gold_miner",
+    "obsidian_miner",
+    "adamant_miner",
+    "moonstone_miner",
+    "steel_forger",
   ];
 
   // Shuffle villager types to ensure random distribution of deaths
@@ -110,8 +110,9 @@ export const storyEvents: Record<string, GameEvent> = {
           ),
       },
     }),
-  },
+  },""
 
+  
   villagerMissing: {
     id: "villagerMissing",
     condition: (state: GameState) => state.villagers.free > 0,
@@ -159,10 +160,10 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "steelGift",
     condition: (state: GameState) => state.buildings.woodenHut >= 5,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 30,
     message: [
-      "Strange blue flames flickered through the night. At dawn, refined steel bars lie stacked at the village gates.",
-      "A mysterious benefactor has left gleaming steel ingots. The metal still radiates otherworldly heat.",
+      "At dawn, refined steel bars lie stacked at the village gates. Nobody knows where they come from.",
+      "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -178,10 +179,10 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "obsidianGift",
     condition: (state: GameState) => state.buildings.woodenHut >= 8,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 30,
     message: [
-      "The earth trembled in the darkness. By morning, jagged obsidian shards pierce the ground around your village like black teeth.",
-      "Dark volcanic glass materializes overnight, its surface reflecting impossible depths. The obsidian hums with ancient power.",
+      "By dawn, obsidian shards have been placed in the earth around your village, like a silent message left behind.",
+      "In the morning light, you notice obsidian laid carefully into the soil, surrounding your village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -197,10 +198,10 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "adamantGift",
     condition: (state: GameState) => state.buildings.woodenHut >= 10,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 30,
     message: [
-      "Reality itself seemed to bend during the night. At sunrise, impossible adamant crystals float just above the ground, defying all natural law.",
-      "The very air shimmered with ethereal light. When dawn breaks, pure adamant ore rests in perfect geometric patterns around your settlement.",
+      "By morning, raw adamant lies behind one of the huts of the village.",
+      "When dawn breaks, fragments of adamant protrude from the earth around your settlement."
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -365,7 +366,8 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
-            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage:
+              "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -460,7 +462,10 @@ export const storyEvents: Record<string, GameEvent> = {
           const casualtyChance = Math.max(0.2, 0.7 - strength * 0.02);
 
           let villagerDeaths = 0;
-          let foodLoss = Math.min(state.resources.food, 50 + Math.floor(Math.random() * 251)); // 50-300 food loss
+          let foodLoss = Math.min(
+            state.resources.food,
+            50 + Math.floor(Math.random() * 251),
+          ); // 50-300 food loss
           let hutDestroyed = false;
 
           // Determine villager casualties (1-6 potential deaths)
