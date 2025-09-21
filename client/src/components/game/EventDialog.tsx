@@ -40,18 +40,23 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
-        if (prev === null || prev <= 0) {
+        if (prev === null) return null;
+        
+        const newTime = prev - 0.1;
+        
+        if (newTime <= 0) {
           // Time expired, execute fallback choice
           if (event.fallbackChoice) {
             const eventId = event.id.split('-')[0];
-            applyEventChoice(event.fallbackChoice.id, eventId);
-            onClose();
+            setTimeout(() => {
+              applyEventChoice(event.fallbackChoice.id, eventId);
+              onClose();
+            }, 0);
           }
           return 0;
         }
 
-        const newTime = prev - 0.1;
-        return Math.max(0, newTime);
+        return newTime;
       });
     }, 100);
 
