@@ -16,6 +16,6 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bone_totem": 1,
       "story.seen.hasBoneTotem": true,
     },
-    cooldown: 15,
+    cooldown: 20,
   },
 };
