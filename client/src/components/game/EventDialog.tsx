@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useGameStore } from '@/game/state';
 import { LogEntry } from '@/game/rules/events';
 import { getTotalKnowledge } from '@/game/rules/effects';
@@ -24,12 +24,15 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
+  const startTimeRef = useRef<number>(0);
+  const fallbackExecutedRef = useRef(false);
 
-  // Simple timer implementation
+  // Initialize timer for timed choices
   useEffect(() => {
     if (!event || !event.isTimedChoice || !isOpen) {
       setTimeRemaining(null);
       setTotalTime(0);
+      fallbackExecutedRef.current = false;
       return;
     }
 
@@ -37,33 +40,41 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
+    startTimeRef.current = Date.now();
+    fallbackExecutedRef.current = false;
 
-    // Set a single timeout for the entire duration
-    const timeoutId = setTimeout(() => {
-      if (event.fallbackChoice) {
-        const eventId = event.id.split('-')[0];
-        applyEventChoice(event.fallbackChoice.id, eventId);
-        onClose();
+    const interval = setInterval(() => {
+      if (fallbackExecutedRef.current) return;
+      
+      const elapsed = (Date.now() - startTimeRef.current) / 1000;
+      const remaining = Math.max(0, decisionTime - elapsed);
+      
+      setTimeRemaining(remaining);
+      
+      if (remaining <= 0 && !fallbackExecutedRef.current) {
+        fallbackExecutedRef.current = true;
+        clearInterval(interval);
+        
+        // Time expired, execute fallback choice
+        if (event.fallbackChoice) {
+          const eventId = event.id.split('-')[0];
+          applyEventChoice(event.fallbackChoice.id, eventId);
+          onClose();
+        }
       }
-    }, decisionTime * 1000);
-
-    // Update display timer every 100ms
-    const intervalId = setInterval(() => {
-      setTimeRemaining(prev => {
-        if (prev === null || prev <= 0) return 0;
-        return Math.max(0, prev - 0.1);
-      });
     }, 100);
 
     return () => {
-      clearTimeout(timeoutId);
-      clearInterval(intervalId);
+      clearInterval(interval);
+      fallbackExecutedRef.current = false;
     };
-  }, [event?.id, event?.isTimedChoice, isOpen]);
+  }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
   if (!event || !event.choices) return null;
 
   const handleChoice = (choiceId: string) => {
+    if (fallbackExecutedRef.current) return;
+    fallbackExecutedRef.current = true;
     const eventId = event.id.split('-')[0];
     applyEventChoice(choiceId, eventId);
     onClose();
@@ -96,6 +107,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               onClick={() => handleChoice(choice.id)}
               variant="outline"
               className="w-full text-left justify-start"
+              disabled={timeRemaining === 0 || fallbackExecutedRef.current}
             >
               {choice.label}
             </Button>
