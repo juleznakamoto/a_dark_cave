@@ -1,0 +1,79 @@
+EventDialog: Starting timer - {eventId: 'offerToTheForestGods-1758476962487', baseDecisionTime: 15, knowledge: 0, totalDecisionTime: 15, fallbackChoice: {…}}baseDecisionTime: 15eventId: "offerToTheForestGods-1758476962487"fallbackChoice: {id: 'noDecision', label: 'No Decision Made', effect: ƒ}knowledge: 0totalDecisionTime: 15[[Prototype]]: Object
+save.ts:34 Failed to save game: DataCloneError: Failed to execute 'put' on 'IDBObjectStore': (state) => {
+          const totalLuck = getTotalLuck(state);
+          const successChance = 0.35 + totalLuck ...<omitted>... } could not be cloned.
+    at Proxy.<anonymous> (idb.js?v=a716914b:102:22)
+    at Proxy.method (idb.js?v=a716914b:188:30)
+    at saveGame (save.ts:32:14)
+    at async handleAutoSave (loop.ts:347:3)
+saveGame @ save.ts:34
+await in saveGame
+handleAutoSave @ loop.ts:347
+tick @ loop.ts:50
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102Understand this error
+EventDialog.tsx:67 EventDialog: Timer expired! Executing fallback - {remaining: 0, fallbackChoice: {…}, eventId: 'offerToTheForestGods'}
+EventDialog.tsx:79 EventDialog: Applying fallback choice: noDecision for event: offerToTheForestGods
+EventDialog.tsx:89 EventDialog: Cleaning up timer for event: offerToTheForestGods-1758476962487
+EventDialog.tsx:33 EventDialog: Timer disabled - event: false isTimedChoice: undefined isOpen: false
+2save.ts:34 Failed to save game: DataCloneError: Failed to e
