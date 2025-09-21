@@ -12,7 +12,7 @@ export default function StartScreen() {
   return (
     <div className="min-h-screen bg-black text-white flex flex-col">
       <main className="flex-1 flex flex-col items-center justify-center">
-        <div className="text-center mb-8">
+        <div className="text-center mb-4">
           <p className="text-lg text-gray-300 leading-relaxed">
             A dark cave.<br></br>The air is cold and stale.<br></br>You can barely make out the shapes around you.
           </p>
@@ -21,7 +21,7 @@ export default function StartScreen() {
           onClick={handleLightFire}
           className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
-          hoverDelay={1000}
+          hoverDelay={3000}
           successDuration={5500}
         >
           Light Fire

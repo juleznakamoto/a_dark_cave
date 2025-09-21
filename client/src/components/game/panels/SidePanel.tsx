@@ -10,7 +10,7 @@ export default function SidePanel() {
   const resourceItems = Object.entries(resources)
     .map(([key, value]) => ({
       id: key,
-      label: key.charAt(0).toUpperCase() + key.slice(1),
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
       value: value ?? 0,
       testId: `resource-${key}`,
       visible: (value ?? 0) > 0

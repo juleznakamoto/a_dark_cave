@@ -280,14 +280,14 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "The Blackened Mirror",
     message:
-      "A wandering trader offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
+      "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "buyMirror",
-        label: "Buy the mirror for 200 iron",
+        label: "Buy for 200 iron",
         effect: (state: GameState) => {
           return {
             resources: {

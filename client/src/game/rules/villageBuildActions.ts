@@ -27,6 +27,16 @@ export const villageBuildActions: Record<string, Action> = {
       7: {
         "buildings.foundry": 1,
       },
+      8: {
+        "buildings.shrine": 1,
+      },
+      9: {
+        "buildings.shrine": 1,
+      },
+      10: {
+        "buildings.shrine": 1,
+      },
+      
     },
     cost: {
       1: {
@@ -49,6 +59,15 @@ export const villageBuildActions: Record<string, Action> = {
       },
       7: {
         "resources.wood": 2000,
+      },
+      8: {
+        "resources.wood": 2500,
+      },
+      9: {
+        "resources.wood": 3000,
+      },
+      19: {
+        "resources.wood": 4000,
       },
     },
     effects: {
@@ -78,6 +97,18 @@ export const villageBuildActions: Record<string, Action> = {
       },
       7: {
         "resources.wood": -2000,
+        "buildings.woodenHut": 1,
+      },
+      8: {
+        "resources.wood": -2500,
+        "buildings.woodenHut": 1,
+      },
+      9: {
+        "resources.wood": -3000,
+        "buildings.woodenHut": 1,
+      },
+      10: {
+        "resources.wood": -4000,
         "buildings.woodenHut": 1,
       },
     },
