@@ -806,4 +806,50 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     },
   },
+
+  madBeduine: {
+    id: "madBeduine",
+    condition: (state: GameState) => state.buildings.woodenHut >= 6 && !state.relics.unnamed_book,
+    triggerType: "resource",
+    timeProbability: 35,
+    title: "The Mad Beduine",
+    message: "As evening falls, a strange figure emerges from the wilderness. Wrapped in desert robes and cloth, he approaches your village muttering in an unknown tongue. His eyes gleam with madness as he gestures wildly, speaking words that seem to twist in the air. The villagers are uneasy. Do you allow this mad beduine to stay the night?",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "allowStay",
+        label: "Allow him to stay",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              unnamed_book: true,
+            },
+            _logMessage: "You grant the stranger shelter. At dawn, he is gone, vanished without trace. Only his beduine robes remain where he slept, and within their folds you discover a book bound in what appears to be human skin. Its pages contain forbidden knowledge that makes your mind reel, yet you cannot help but read. The Unnamed Book grants you dark wisdom. (+10 Knowledge)",
+          };
+        },
+      },
+      {
+        id: "turnAway",
+        label: "Turn him away",
+        effect: (state: GameState) => {
+          const villagerDeaths = Math.floor(Math.random() * 5) + 1; // 1-5 villagers
+          const hutDestruction = Math.floor(Math.random() * 2) + 1; // 1-2 huts
+          
+          const deathResult = killVillagers(state, villagerDeaths);
+
+          return {
+            ...deathResult,
+            buildings: {
+              ...state.buildings,
+              woodenHut: Math.max(0, state.buildings.woodenHut - hutDestruction),
+            },
+            _logMessage: `You refuse the stranger entry. He departs screaming curses in his alien tongue, his voice echoing through the night like the wailing of the damned. Before dawn, a tribe of cannibals emerges from the darkness as if summoned by his words. They fall upon your village with primitive savagery, claiming ${villagerDeaths} lives and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before melting back into the wilderness. The mad beduine's curse has brought terrible vengeance.`,
+          };
+        },
+      },
+    ],
+  },
 };

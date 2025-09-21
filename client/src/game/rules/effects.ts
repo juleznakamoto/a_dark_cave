@@ -816,16 +816,12 @@ export const getTotalStrength = (state: GameState): number => {
 
 // Helper function to calculate total knowledge
 export const getTotalKnowledge = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let totalKnowledge = state.stats?.knowledge || 0;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.knowledge) {
-      totalKnowledge += effect.bonuses.generalBonuses.knowledge;
-    }
-  });
-
-  return totalKnowledge;
+  return (
+    (state.stats.knowledge || 0) +
+    (state.relics?.blackened_mirror ? 3 : 0) +
+    (state.relics?.elder_scroll ? 5 : 0) +
+    (state.relics?.unnamed_book ? 10 : 0)
+  );
 };
 
 // Helper function to apply luck bonus to probability (10 luck = 10% increase)
