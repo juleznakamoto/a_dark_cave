@@ -711,9 +711,9 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.villagers.hunter > 0 &&
       Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0) >= 6 &&
-      !state.relics.ebony_ring,
+      !state.relics.ebony_ring && statebuildings.shrine == 1,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 0.045,
     title: "Offer to the Forest Gods",
     message: "While hunting, the villagers report strange appearances in the forest. Whispers spread: soon the hunters will be too terrified to leave the village. The elders claim the gods of the forest demand a sacrifice — two villagers — to restore peace.",
     triggered: false,
