@@ -34,32 +34,44 @@ export default function CavePanel() {
     },
     {
       title: 'Craft',
-      actions: [
-        { id: 'buildTorch', label: 'Torch' },
-        { id: 'craftStoneAxe', label: 'Stone Axe' },
-        { id: 'craftStonePickaxe', label: 'Stone Pickaxe' },
-        { id: 'craftIronAxe', label: 'Iron Axe' },
-        { id: 'craftIronPickaxe', label: 'Iron Pickaxe' },
-        { id: 'craftSteelAxe', label: 'Steel Axe' },
-        { id: 'craftSteelPickaxe', label: 'Steel Pickaxe' },
-        { id: 'craftObsidianAxe', label: 'Obsidian Axe' },
-        { id: 'craftObsidianPickaxe', label: 'Obsidian Pickaxe' },
-        { id: 'craftAdamantAxe', label: 'Adamant Axe' },
-        { id: 'craftAdamantPickaxe', label: 'Adamant Pickaxe' },
-        { id: 'craftIronLantern', label: 'Iron Lantern' },
-        { id: 'craftSteelLantern', label: 'Steel Lantern' },
-        { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
-        { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
-        { id: 'craftIronSword', label: 'Iron Sword' },
-        { id: 'craftSteelSword', label: 'Steel Sword' },
-        { id: 'craftObsidianSword', label: 'Obsidian Sword' },
-        { id: 'craftAdamantSword', label: 'Adamant Sword' },
-        { id: 'craftCrudeBow', label: 'Crude Bow' },
-        { id: 'craftHuntsmanBow', label: 'Huntsman Bow' },
-        { id: 'craftLongBow', label: 'Long Bow' },
-        { id: 'craftWarBow', label: 'War Bow' },
-        { id: 'craftMasterBow', label: 'Master Bow' },
-        { id: 'craftBoneTotem', label: 'Bone Totem' },
+      subGroups: [
+        {
+          actions: [
+            { id: 'buildTorch', label: 'Torch' },
+            { id: 'craftBoneTotem', label: 'Bone Totem' },
+          ]
+        },
+        {
+          actions: [
+            { id: 'craftStoneAxe', label: 'Stone Axe' },
+            { id: 'craftIronAxe', label: 'Iron Axe' },
+            { id: 'craftSteelAxe', label: 'Steel Axe' },
+            { id: 'craftObsidianAxe', label: 'Obsidian Axe' },
+            { id: 'craftAdamantAxe', label: 'Adamant Axe' },
+            { id: 'craftStonePickaxe', label: 'Stone Pickaxe' },
+            { id: 'craftIronPickaxe', label: 'Iron Pickaxe' },
+            { id: 'craftSteelPickaxe', label: 'Steel Pickaxe' },
+            { id: 'craftObsidianPickaxe', label: 'Obsidian Pickaxe' },
+            { id: 'craftAdamantPickaxe', label: 'Adamant Pickaxe' },
+            { id: 'craftIronLantern', label: 'Iron Lantern' },
+            { id: 'craftSteelLantern', label: 'Steel Lantern' },
+            { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
+            { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
+          ]
+        },
+        {
+          actions: [
+            { id: 'craftIronSword', label: 'Iron Sword' },
+            { id: 'craftSteelSword', label: 'Steel Sword' },
+            { id: 'craftObsidianSword', label: 'Obsidian Sword' },
+            { id: 'craftAdamantSword', label: 'Adamant Sword' },
+            { id: 'craftCrudeBow', label: 'Crude Bow' },
+            { id: 'craftHuntsmanBow', label: 'Huntsman Bow' },
+            { id: 'craftLongBow', label: 'Long Bow' },
+            { id: 'craftWarBow', label: 'War Bow' },
+            { id: 'craftMasterBow', label: 'Master Bow' },
+          ]
+        }
       ]
     },
     
@@ -118,6 +130,45 @@ export default function CavePanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
+        // Handle groups with subGroups (like Craft)
+        if (group.subGroups) {
+          const hasAnyVisibleActions = group.subGroups.some(subGroup =>
+            subGroup.actions.some(action => {
+              if (action.showWhen !== undefined) {
+                return action.showWhen;
+              }
+              return shouldShowAction(action.id, state);
+            })
+          );
+
+          if (!hasAnyVisibleActions) return null;
+
+          return (
+            <div key={groupIndex} className="space-y-4">
+              {group.title && (
+                <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
+              )}
+              {group.subGroups.map((subGroup, subGroupIndex) => {
+                const visibleActions = subGroup.actions.filter(action => {
+                  if (action.showWhen !== undefined) {
+                    return action.showWhen;
+                  }
+                  return shouldShowAction(action.id, state);
+                });
+
+                if (visibleActions.length === 0) return null;
+
+                return (
+                  <div key={subGroupIndex} className="flex flex-wrap gap-2">
+                    {visibleActions.map(action => renderButton(action.id, action.label))}
+                  </div>
+                );
+              })}
+            </div>
+          );
+        }
+
+        // Handle regular groups (like Explore, Mine)
         const visibleActions = group.actions.filter(action => {
           // Handle custom show conditions
           if (action.showWhen !== undefined) {
