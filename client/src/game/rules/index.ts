@@ -27,6 +27,30 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildWoodenHut") {
     return (state.buildings.woodenHut || 0) + 1;
   }
+  if (actionId === "buildPit") {
+    return (state.buildings.pit || 0) + 1;
+  }
+  if (actionId === "buildCabin") {
+    return (state.buildings.cabin || 0) + 1;
+  }
+  if (actionId === "buildBlacksmith") {
+    return (state.buildings.blacksmith || 0) + 1;
+  }
+  if (actionId === "buildFoundry") {
+    return (state.buildings.foundry || 0) + 1;
+  }
+  if (actionId === "buildShrine") {
+    return (state.buildings.shrine || 0) + 1;
+  }
+  if (actionId === "buildGreatCabin") {
+    return (state.buildings.greatCabin || 0) + 1;
+  }
+  if (actionId === "buildTimberMill") {
+    return (state.buildings.timberMill || 0) + 1;
+  }
+  if (actionId === "buildQuarry") {
+    return (state.buildings.quarry || 0) + 1;
+  }
   return 1;
 };
 
