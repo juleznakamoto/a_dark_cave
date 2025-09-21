@@ -703,7 +703,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
-    condition: (state: GameState) => state.current_population > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
+    condition: (state: GameState) => state.current_population || 0 > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
     triggerType: "resource",
     timeProbability: 40,
     title: "Offer to the Forest Gods",
