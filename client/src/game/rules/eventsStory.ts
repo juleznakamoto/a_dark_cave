@@ -155,6 +155,63 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
+  steelGift: {
+    id: "steelGift",
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
+    triggerType: "resource",
+    timeProbability: 35,
+    message: [
+      "Strange blue flames flickered through the night. At dawn, refined steel bars lie stacked at the village gates.",
+      "A mysterious benefactor has left gleaming steel ingots. The metal still radiates otherworldly heat.",
+    ][Math.floor(Math.random() * 2)],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => ({
+      resources: {
+        ...state.resources,
+        steel: state.resources.steel + 15 * state.buildings.woodenHut,
+      },
+    }),
+  },
+
+  obsidianGift: {
+    id: "obsidianGift",
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
+    triggerType: "resource",
+    timeProbability: 40,
+    message: [
+      "The earth trembled in the darkness. By morning, jagged obsidian shards pierce the ground around your village like black teeth.",
+      "Dark volcanic glass materializes overnight, its surface reflecting impossible depths. The obsidian hums with ancient power.",
+    ][Math.floor(Math.random() * 2)],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => ({
+      resources: {
+        ...state.resources,
+        obsidian: state.resources.obsidian + 10 * state.buildings.woodenHut,
+      },
+    }),
+  },
+
+  adamantGift: {
+    id: "adamantGift",
+    condition: (state: GameState) => state.buildings.woodenHut >= 10,
+    triggerType: "resource",
+    timeProbability: 45,
+    message: [
+      "Reality itself seemed to bend during the night. At sunrise, impossible adamant crystals float just above the ground, defying all natural law.",
+      "The very air shimmered with ethereal light. When dawn breaks, pure adamant ore rests in perfect geometric patterns around your settlement.",
+    ][Math.floor(Math.random() * 2)],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => ({
+      resources: {
+        ...state.resources,
+        adamant: state.resources.adamant + 8 * state.buildings.woodenHut,
+      },
+    }),
+  },
+
   paleFigure: {
     id: "paleFigure",
     condition: (state: GameState) =>
