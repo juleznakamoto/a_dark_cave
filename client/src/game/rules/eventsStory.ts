@@ -44,6 +44,7 @@ type GameState = {
   tools: { blacksmith_hammer?: boolean };
   clothing?: { tarnished_amulet?: boolean }; // Added for potential luck bonus
   // Add other properties of GameState as needed
+  current_population?: number; // Added current_population to GameState
 };
 
 // Helper function to get total luck from various sources
@@ -440,10 +441,7 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "defendVillage",
         label: "Defend the village",
         effect: (state: GameState) => {
-          const currentPopulation =
-            state.villagers.free +
-            state.villagers.gatherer +
-            state.villagers.hunter;
+          const currentPopulation = state.current_population || Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
           if (currentPopulation === 0) {
             return {
               _logMessage:
@@ -538,10 +536,7 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "hideAndWait",
         label: "Hide and wait it out",
         effect: (state: GameState) => {
-          const currentPopulation =
-            state.villagers.free +
-            state.villagers.gatherer +
-            state.villagers.hunter;
+          const currentPopulation = state.current_population || Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
           if (currentPopulation === 0) {
             return {
               _logMessage:
