@@ -136,10 +136,9 @@ export class EventManager {
     // First try to find the choice in the main choices array
     let choice = event.choices?.find((c) => c.id === choiceId);
     
-    // If not found and this is a fallback choice, check the fallbackChoice property
+    // If not found and this is a fallback choice, use the fallbackChoice directly
     if (!choice && event.fallbackChoice && event.fallbackChoice.id === choiceId) {
-      // Find the actual choice in the choices array that matches the fallback ID
-      choice = event.choices?.find((c) => c.id === event.fallbackChoice!.id);
+      choice = event.fallbackChoice;
       console.log(`[EventManager] Using fallback choice: ${choiceId}`);
     }
     
