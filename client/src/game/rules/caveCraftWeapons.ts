@@ -44,6 +44,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "weapons.steel_sword": true,
+      "weapons.obsidian_sword": false,
     },
     cost: {
       "resources.obsidian": 200,
