@@ -1,0 +1,84 @@
+[STATE] Events Triggered: {newLogEntries: Array(1), stateChanges: {…}}
+state.ts:403 [STATE] New state after events: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+save.ts:34 Failed to save game: DataCloneError: Failed to execute 'put' on 'IDBObjectStore': (state) => {
+          const totalLuck = getTotalLuck(state);
+          const successChance = 0.35 + totalLuck ...<omitted>... } could not be cloned.
+    at Proxy.<anonymous> (idb.js?v=a716914b:102:22)
+    at Proxy.method (idb.js?v=a716914b:188:30)
+    at saveGame (save.ts:32:14)
+    at async handleAutoSave (loop.ts:347:3)
+saveGame @ save.ts:34
+await in saveGame
+handleAutoSave @ loop.ts:347
+tick @ loop.ts:50
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102
+requestAnimationFrame
+tick @ loop.ts:102Understand this error
+EventDialog.tsx:64 [EventDialog] Timer expired, executing fallback choice: noDecision for event: offerToTheForestGods
+state.ts:422 [STATE] Applying event choice: noDecision for event: offerToTheForestGods
+state.ts:423 [STATE] Available events: ['offerToTheForestGods']
+events.ts:125 [EventManager] Applying choice: noDecision for event: offerToTheForestGods
+events.ts:126 [EventManager] Available game events: (17) ['foodGone', 'villagerMissing', 'ironGift', 'steelGift', 'obsidianGift', 'adamantGift', 'paleFigure', 'whispersBeneathHut', 'blackenedMirror', 'cthulhuFigure', 'wolfAttack', 'dreamMorrowind', 'dreamOblivion', 'dreamSkyrim', 'findElderScroll', 'blacksmithHammer', 'offerToTheForestGods']
+events.ts:134 [EventManager] Found event: offerToTheForestGods with choices: (2) ['sacrifice', 'refuse']
+events.ts:138 [EventManager] Choice not found: noDecision in event: offerToTheForestGods
+state.ts:428 [STATE] EventManager returned changes: {}
+state.ts:472 [STATE] No changes returned from EventManager for choice: noDecision, event: offerToTheForestGods
