@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/game/state';
 import { LogEntry } from '@/game/rules/events';
@@ -22,7 +21,7 @@ interface EventDialogProps {
 export default function EventDialog({ isOpen, onClose, event }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
-  
+
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
 
@@ -30,6 +29,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   useEffect(() => {
     if (!event || !event.isTimedChoice || !isOpen) {
       setTimeRemaining(null);
+      setTotalTime(0);
       return;
     }
 
@@ -40,10 +40,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     const interval = setInterval(() => {
       setTimeRemaining((prev) => {
-        if (prev === null) return null;
-        const newTime = prev - 0.1;
-        
-        if (newTime <= 0) {
+        if (prev === null || prev <= 0) {
           // Time expired, execute fallback choice
           if (event.fallbackChoice) {
             const eventId = event.id.split('-')[0];
@@ -52,13 +49,14 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
           }
           return 0;
         }
-        
-        return newTime;
+
+        const newTime = prev - 0.1;
+        return Math.max(0, newTime);
       });
     }, 100);
 
     return () => clearInterval(interval);
-  }, [event, isOpen, gameState, applyEventChoice, onClose]);
+  }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
   if (!event || !event.choices) return null;
 
@@ -87,7 +85,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             {event.message}
           </DialogDescription>
         </DialogHeader>
-        
+
         <div className="flex flex-col gap-3 mt-4">
           {event.choices.map((choice) => (
             <Button
