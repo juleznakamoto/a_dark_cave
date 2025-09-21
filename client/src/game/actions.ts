@@ -107,6 +107,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCitadel(state, result);
     case 'mineSulfur':
       return handleMineSulfur(state, result);
+    case 'mineObsidian':
+      return handleMineObsidian(state, result);
+    case 'mineAdamant':
+      return handleMineAdamant(state, result);
     case 'craftSteelAxe':
       return handleCraftSteelAxe(state, result);
     case 'craftSteelPickaxe':
@@ -647,6 +651,46 @@ function handleExploreCitadel(state: GameState, result: ActionResult): ActionRes
 
 function handleMineSulfur(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineSulfur', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleMineObsidian(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineObsidian', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleMineAdamant(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineAdamant', state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
