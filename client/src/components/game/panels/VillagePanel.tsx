@@ -40,7 +40,7 @@ export default function VillagePanel() {
 
   const renderBuildingButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-    if (!action) return null;
+    if (!action || !shouldShowAction(actionId, state)) return null;
 
     const canExecute = canExecuteAction(actionId, state);
 
