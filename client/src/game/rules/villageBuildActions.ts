@@ -302,4 +302,86 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 5,
   },
+
+  buildGreatCabin: {
+    id: "buildGreatCabin",
+    label: "Great Cabin",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 8,
+        "buildings.cabin": 1,
+        "buildings.greatCabin": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2000,
+        "resources.stone": 2000,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -2000,
+        "resources.stone": -2000,
+        "buildings.greatCabin": 1,
+        "story.seen.hasGreatCabin": true,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildTimberMill: {
+    id: "buildTimberMill",
+    label: "Timber Mill",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 8,
+        "buildings.timberMill": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 4000,
+        "resources.stone": 2000,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -4000,
+        "resources.stone": -2000,
+        "buildings.timberMill": 1,
+        "story.seen.hasTimberMill": true,
+      },
+    },
+    cooldown: 30,
+  },
+
+  buildQuarry: {
+    id: "buildQuarry",
+    label: "Quarry",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 8,
+        "buildings.quarry": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 3000,
+        "resources.stone": 3000,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -3000,
+        "resources.stone": -3000,
+        "buildings.quarry": 1,
+        "story.seen.hasQuarry": true,
+      },
+    },
+    cooldown: 30,
+  },
 };

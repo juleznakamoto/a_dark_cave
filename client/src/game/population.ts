@@ -115,14 +115,43 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
-export const getPopulationProduction = (jobId: string, count: number) => {
+export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
   const job = populationJobs[jobId];
   if (!job) return [];
 
-  return job.production.map((prod) => ({
-    ...prod,
-    totalAmount: prod.amount * count,
-  }));
+  return job.production.map((prod) => {
+    let amount = prod.amount;
+    
+    // Apply building bonuses if state is provided
+    if (state) {
+      if (jobId === 'gatherer') {
+        // Timber Mill increases wood production from 10 to 15
+        if (prod.resource === 'wood' && state.buildings?.timberMill > 0) {
+          amount = 15;
+        }
+        // Quarry increases stone production from 5 to 10
+        if (prod.resource === 'stone' && state.buildings?.quarry > 0) {
+          amount = 10;
+        }
+      }
+      
+      if (jobId === 'hunter' && state.buildings?.greatCabin > 0) {
+        // Great Cabin increases hunter production: 10 food, 2 fur, 2 bones
+        if (prod.resource === 'food') {
+          amount = 10;
+        }
+        if (prod.resource === 'fur' || prod.resource === 'bones') {
+          amount = 2;
+        }
+      }
+    }
+    
+    return {
+      ...prod,
+      amount,
+      totalAmount: amount * count,
+    };
+  });
 };
 
 export const getPopulationProductionText = (jobId: string): string => {

@@ -151,7 +151,7 @@ function handleGathererProduction() {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    const production = getPopulationProduction('gatherer', gatherer);
+    const production = getPopulationProduction('gatherer', gatherer, state);
     production.forEach(prod => {
       state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
     });
@@ -167,7 +167,7 @@ function handleHunterProduction() {
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
-    const production = getPopulationProduction('hunter', hunter);
+    const production = getPopulationProduction('hunter', hunter, state);
     production.forEach(prod => {
       state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
     });
@@ -183,7 +183,7 @@ function handleMinerProduction() {
   // Process each miner type and steel forger
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (count > 0 && (job.endsWith('miner') || job === 'steel_forger')) {
-      const production = getPopulationProduction(job, count);
+      const production = getPopulationProduction(job, count, state);
       production.forEach(prod => {
         state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
       });

@@ -18,6 +18,9 @@ export default function VillagePanel() {
     { id: 'buildPit', label: 'Pit' },
     { id: 'buildFoundry', label: 'Foundry' },
     { id: 'buildShrine', label: 'Shrine' },
+    { id: 'buildGreatCabin', label: 'Great Cabin' },
+    { id: 'buildTimberMill', label: 'Timber Mill' },
+    { id: 'buildQuarry', label: 'Quarry' },
   ];
 
   // Define population jobs
@@ -74,7 +77,7 @@ export default function VillagePanel() {
     const getTotalProductionText = (jobId: string, count: number): string => {
       if (count === 0) return "";
 
-      const production = getPopulationProduction(jobId, count);
+      const production = getPopulationProduction(jobId, count, state);
       const productionText = production
         .map(prod => `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${prod.resource}`)
         .join(", ");
