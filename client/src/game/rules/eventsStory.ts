@@ -703,8 +703,8 @@ export const storyEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
-    condition: (state: GameState) =>
-      state.current_population > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
+    condition: (state: GameState) => state.current_population >= 0,
+      // state.current_population > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
     triggerType: "resource",
     timeProbability: 0.045,
     title: "Offer to the Forest Gods",
@@ -787,7 +787,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `You refuse the sacrifice, but during the night, ${disappearances} villager${disappearances > 1 ? 's' : ''} wander${disappearances === 1 ? 's' : ''} into the woods as if sleepwalking. They are never seen again.`,
+              _logMessage: `You refuse the sacrifice. During the night, ${disappearances} villager${disappearances > 1 ? 's' : ''} wander${disappearances === 1 ? 's' : ''} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
             };
           }
         },
