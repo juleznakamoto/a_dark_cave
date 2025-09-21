@@ -4,6 +4,7 @@ import { getTotalLuck, applyLuckToprobability, getActionBonuses } from "./effect
 import { caveExploreActions } from './caveExploreActions';
 import { caveMiningActions } from './caveMiningActions';
 import { caveForgingActions } from './caveForgingActions';
+import { caveCraftResources } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { villageBuildActions } from './villageBuildActions';
@@ -15,6 +16,7 @@ export const gameActions: Record<string, Action> = {
   ...caveExploreActions,
   ...caveMiningActions,
   ...caveForgingActions,
+  ...caveCraftResources,
   ...caveCraftTools,
   ...caveCraftWeapons,
   ...forestVentureActions,
