@@ -186,11 +186,11 @@ export const villageBuildActions: Record<string, Action> = {
       },
       3: {
         "tools.obsidian_pickaxe": true,
-        "buildings.pit": 1,
+        "buildings.pit": 2,
       },
       4: {
         "tools.adamant_pickaxe": true,
-        "buildings.pit": 1,
+        "buildings.pit": 3,
       },
     },
     cost: {
