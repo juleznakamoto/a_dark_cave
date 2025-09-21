@@ -107,7 +107,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               onClick={() => handleChoice(choice.id)}
               variant="outline"
               className="w-full text-left justify-start"
-              disabled={timeRemaining === 0 || fallbackExecutedRef.current}
+              disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
             >
               {choice.label}
             </Button>
