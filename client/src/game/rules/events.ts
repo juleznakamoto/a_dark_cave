@@ -15,6 +15,10 @@ export interface GameEvent {
   priority?: number; // Higher priority events check first
   timeProbability?: number | ((state: GameState) => number); // Average minutes between triggers
   effect?: (state: GameState) => Partial<GameState>;
+  // New timed choice properties
+  isTimedChoice?: boolean;
+  baseDecisionTime?: number; // Base decision time in seconds
+  fallbackChoice?: EventChoice; // Choice to execute if time runs out
 }
 
 export interface EventChoice {
@@ -31,6 +35,10 @@ export interface LogEntry {
   type: "event" | "action" | "system";
   title?: string;
   choices?: EventChoice[];
+  // New timed choice properties
+  isTimedChoice?: boolean;
+  baseDecisionTime?: number;
+  fallbackChoice?: EventChoice;
 }
 
 // Merge all events from separate files
@@ -88,6 +96,9 @@ export class EventManager {
           type: "event",
           title: event.title,
           choices: event.choices,
+          isTimedChoice: event.isTimedChoice,
+          baseDecisionTime: event.baseDecisionTime,
+          fallbackChoice: event.fallbackChoice,
         };
 
         newLogEntries.push(logEntry);

@@ -8,7 +8,6 @@ type VillagerCounts = {
   iron_miner: number;
   coal_miner: number;
   sulfur_miner: number;
-  silver_miner: number;
   gold_miner: number;
   obsidian_miner: number;
   adamant_miner: number;
@@ -30,6 +29,7 @@ type GameState = {
     wooden_figure?: boolean;
     alphas_hide?: boolean;
     elder_scroll?: boolean;
+    ebony_ring?: boolean; // Added Ebony Ring
   };
   events: {
     trinketDrunk?: boolean;
@@ -42,8 +42,22 @@ type GameState = {
   };
   flags: { trinketDrunk?: boolean };
   tools: { blacksmith_hammer?: boolean };
+  clothing?: { tarnished_amulet?: boolean }; // Added for potential luck bonus
   // Add other properties of GameState as needed
 };
+
+// Helper function to get total luck from various sources
+function getTotalLuck(state: GameState): number {
+  return (
+    (state.stats.luck || 0) +
+    (state.relics?.ravenfeather_mantle ? 5 : 0) +
+    (state.relics?.alphas_hide ? 3 : 0) +
+    (state.relics?.old_trinket ? 2 : 0) + // Assuming old_trinket exists
+    (state.relics?.elder_scroll ? 10 : 0) +
+    (state.clothing?.tarnished_amulet ? 10 : 0)
+  );
+}
+
 
 // Centralized function to kill villagers
 function killVillagers(state: GameState, amount: number): Partial<GameState> {
@@ -110,9 +124,8 @@ export const storyEvents: Record<string, GameEvent> = {
           ),
       },
     }),
-  },""
+  },
 
-  
   villagerMissing: {
     id: "villagerMissing",
     condition: (state: GameState) => state.villagers.free > 0,
@@ -366,8 +379,7 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -392,8 +404,7 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Keep the figure",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
+            _logMessage: "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
           };
         },
       },
@@ -406,8 +417,7 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               wooden_figure: true,
             },
-            _logMessage:
-              "You discard the figure. The forest seems to watch silently as it disappears.",
+            _logMessage: "You discard the figure. The forest seems to watch silently as it disappears.",
           };
         },
       },
@@ -693,6 +703,115 @@ export const storyEvents: Record<string, GameEvent> = {
           blacksmith_hammer_found: true,
         },
       };
+    },
+  },
+
+  offerToTheForestGods: {
+    id: "offerToTheForestGods",
+    condition: (state: GameState) =>
+      state.villagers.hunter > 0 &&
+      Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0) >= 6 &&
+      !state.relics.ebony_ring,
+    triggerType: "resource",
+    timeProbability: 45,
+    title: "Offer to the Forest Gods",
+    message: "While hunting, the villagers report strange appearances in the forest. Whispers spread: soon the hunters will be too terrified to leave the village. The elders claim the gods of the forest demand a sacrifice — two villagers — to restore peace.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "sacrifice",
+        label: "Sacrifice 4 villagers",
+        effect: (state: GameState) => {
+          const totalLuck = getTotalLuck(state);
+
+          const successChance = 0.35 + (totalLuck * 0.01);
+          const rand = Math.random();
+
+          // Kill 4 villagers first
+          const deathResult = killVillagers(state, 4);
+
+          if (rand < successChance) {
+            // Success: event resolved, get ebony ring
+            return {
+              ...deathResult,
+              relics: {
+                ...state.relics,
+                ebony_ring: true,
+              },
+              _logMessage: "The forest accepts your sacrifice. The strange appearances vanish, and an ebony ring appears on the altar where the villagers were offered. Peace returns to the woods.",
+            };
+          } else {
+            // Failure: additional suicides
+            const additionalDeaths = Math.floor(Math.random() * 5) + 2; // 2-6 additional deaths
+            const totalDeathResult = killVillagers({
+              ...state,
+              villagers: deathResult.villagers || state.villagers
+            }, additionalDeaths);
+
+            return {
+              villagers: totalDeathResult.villagers,
+              relics: {
+                ...state.relics,
+                ebony_ring: true,
+              },
+              _logMessage: `The forest accepts your sacrifice and the appearances vanish. You find an ebony ring where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} more villagers to take their own lives in despair.`,
+            };
+          }
+        },
+      },
+      {
+        id: "refuse",
+        label: "Do not make sacrifices",
+        effect: (state: GameState) => {
+          const totalLuck = getTotalLuck(state);
+
+          const successChance = 0.10 + (totalLuck * 0.01);
+          const nothingChance = 0.40;
+          const rand = Math.random();
+
+          if (rand < successChance) {
+            // Best outcome: event resolved, get ebony ring
+            return {
+              relics: {
+                ...state.relics,
+                ebony_ring: true,
+              },
+              _logMessage: "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift. Your moral stand has been rewarded.",
+            };
+          } else if (rand < successChance + nothingChance) {
+            // Nothing happens, event remains active
+            return {
+              _logMessage: "You refuse to sacrifice your people. The forest remains silent for now, but the strange appearances continue. The threat lingers...",
+            };
+          } else {
+            // Villagers disappear
+            const disappearances = Math.floor(Math.random() * 2) + 1; // 1-2 villagers
+            const deathResult = killVillagers(state, disappearances);
+
+            return {
+              ...deathResult,
+              _logMessage: `You refuse the sacrifice, but during the night, ${disappearances} villager${disappearances > 1 ? 's' : ''} wander${disappearances === 1 ? 's' : ''} into the woods as if sleepwalking. They are never seen again.`,
+            };
+          }
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "noDecision",
+      label: "No Decision Made",
+      effect: (state: GameState) => {
+        const departures = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
+        const deathResult = killVillagers(state, departures);
+
+        return {
+          ...deathResult,
+          _logMessage: `Your indecision angers the villagers. ${departures} villagers, frustrated with your lack of leadership during this crisis, pack their belongings and leave the village in disgust.`,
+        };
+      },
     },
   },
 };

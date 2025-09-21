@@ -555,6 +555,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  ebony_ring: {
+    id: "ebony_ring",
+    name: "Ebony Ring",
+    description:
+      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods (+5 Luck, +5 Knowledge)",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        knowledge: 5,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions

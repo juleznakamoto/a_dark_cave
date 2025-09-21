@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGameStore } from '@/game/state';
 import { LogEntry } from '@/game/rules/events';
+import { getTotalKnowledge } from '@/game/rules/effects';
 import {
   Dialog,
   DialogContent,
@@ -10,6 +11,7 @@ import {
   DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
+import { Progress } from '@/components/ui/progress';
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -19,6 +21,44 @@ interface EventDialogProps {
 
 export default function EventDialog({ isOpen, onClose, event }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
+  const gameState = useGameStore();
+  
+  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [totalTime, setTotalTime] = useState<number>(0);
+
+  // Initialize timer for timed choices
+  useEffect(() => {
+    if (!event || !event.isTimedChoice || !isOpen) {
+      setTimeRemaining(null);
+      return;
+    }
+
+    const knowledge = getTotalKnowledge(gameState);
+    const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
+    setTotalTime(decisionTime);
+    setTimeRemaining(decisionTime);
+
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev === null) return null;
+        const newTime = prev - 0.1;
+        
+        if (newTime <= 0) {
+          // Time expired, execute fallback choice
+          if (event.fallbackChoice) {
+            const eventId = event.id.split('-')[0];
+            applyEventChoice(event.fallbackChoice.id, eventId);
+            onClose();
+          }
+          return 0;
+        }
+        
+        return newTime;
+      });
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, [event, isOpen, gameState, applyEventChoice, onClose]);
 
   if (!event || !event.choices) return null;
 
@@ -27,6 +67,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     applyEventChoice(choiceId, eventId);
     onClose();
   };
+
+  const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0 
+    ? ((totalTime - timeRemaining) / totalTime) * 100 
+    : 0;
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
@@ -51,11 +95,31 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               onClick={() => handleChoice(choice.id)}
               variant="outline"
               className="w-full text-left justify-start"
+              disabled={timeRemaining === 0}
             >
               {choice.label}
             </Button>
           ))}
         </div>
+
+        {/* Timer bar for timed choices */}
+        {event.isTimedChoice && timeRemaining !== null && (
+          <div className="mt-4 space-y-2">
+            <div className="flex justify-between text-sm text-muted-foreground">
+              <span>Time remaining:</span>
+              <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
+            </div>
+            <Progress 
+              value={progress} 
+              className="h-2"
+            />
+            {timeRemaining <= 3 && timeRemaining > 0 && (
+              <div className="text-xs text-red-500 font-medium">
+                Warning: Time is running out!
+              </div>
+            )}
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
