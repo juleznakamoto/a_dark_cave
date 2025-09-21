@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useGameStore } from '@/game/state';
 import { LogEntry } from '@/game/rules/events';
 import { getTotalKnowledge } from '@/game/rules/effects';
@@ -22,67 +22,95 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
 
-  const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
+  const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [totalTime, setTotalTime] = useState<number>(0);
-  const startTimeRef = useRef<number>(0);
+  const [isTimerActive, setIsTimerActive] = useState<boolean>(false);
   const fallbackExecutedRef = useRef(false);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+
+  const executeFallback = useCallback(() => {
+    if (fallbackExecutedRef.current || !event?.fallbackChoice) return;
+    
+    fallbackExecutedRef.current = true;
+    setIsTimerActive(false);
+    
+    const eventId = event.id.split('-')[0];
+    applyEventChoice(event.fallbackChoice.id, eventId);
+    onClose();
+  }, [event, applyEventChoice, onClose]);
 
   // Initialize timer for timed choices
   useEffect(() => {
+    // Clear any existing timer
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+
     if (!event || !event.isTimedChoice || !isOpen) {
-      setTimeRemaining(null);
+      setTimeRemaining(0);
       setTotalTime(0);
+      setIsTimerActive(false);
       fallbackExecutedRef.current = false;
       return;
     }
 
     const knowledge = getTotalKnowledge(gameState);
     const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
+    
     setTotalTime(decisionTime);
-    setTimeRemaining(decisionTime);
-    startTimeRef.current = Date.now();
+    setTimeRemaining(decisionTime * 1000); // Convert to milliseconds for precision
+    setIsTimerActive(true);
     fallbackExecutedRef.current = false;
 
-    const interval = setInterval(() => {
-      if (fallbackExecutedRef.current) return;
-      
-      const elapsed = (Date.now() - startTimeRef.current) / 1000;
-      const remaining = Math.max(0, decisionTime - elapsed);
-      
-      setTimeRemaining(remaining);
-      
-      if (remaining <= 0 && !fallbackExecutedRef.current) {
-        fallbackExecutedRef.current = true;
-        clearInterval(interval);
+    // Use 50ms intervals for smooth updates, similar to cooldown system
+    intervalRef.current = setInterval(() => {
+      setTimeRemaining((prev) => {
+        const newRemaining = Math.max(0, prev - 50);
         
-        // Time expired, execute fallback choice
-        if (event.fallbackChoice) {
-          const eventId = event.id.split('-')[0];
-          applyEventChoice(event.fallbackChoice.id, eventId);
-          onClose();
+        if (newRemaining <= 0) {
+          // Timer expired, execute fallback
+          setTimeout(() => executeFallback(), 0);
+          return 0;
         }
-      }
-    }, 100);
+        
+        return newRemaining;
+      });
+    }, 50);
 
     return () => {
-      clearInterval(interval);
-      fallbackExecutedRef.current = false;
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
     };
-  }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
+  }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen, gameState, executeFallback]);
 
   if (!event || !event.choices) return null;
 
   const handleChoice = (choiceId: string) => {
     if (fallbackExecutedRef.current) return;
+    
+    // Stop the timer
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+    
     fallbackExecutedRef.current = true;
+    setIsTimerActive(false);
+    
     const eventId = event.id.split('-')[0];
     applyEventChoice(choiceId, eventId);
     onClose();
   };
 
-  const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0 
-    ? ((totalTime - timeRemaining) / totalTime) * 100 
+  // Calculate progress (0 = just started, 100 = finished)
+  const progress = event?.isTimedChoice && totalTime > 0 
+    ? ((totalTime * 1000 - timeRemaining) / (totalTime * 1000)) * 100 
     : 0;
+    
+  const displayTimeRemaining = Math.ceil(Math.max(0, timeRemaining / 1000));
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
@@ -107,7 +135,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               onClick={() => handleChoice(choice.id)}
               variant="outline"
               className="w-full text-left justify-start"
-              disabled={timeRemaining === 0 || fallbackExecutedRef.current}
+              disabled={!isTimerActive && event.isTimedChoice && timeRemaining <= 0}
             >
               {choice.label}
             </Button>
@@ -115,10 +143,11 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         </div>
 
         {/* Timer bar for timed choices */}
-        {event.isTimedChoice && timeRemaining !== null && (
+        {event.isTimedChoice && (
           <div className="mt-4 space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
+              <span>{displayTimeRemaining}s</span>
+              <span>Decision Time</span>
             </div>
             <Progress 
               value={progress} 
