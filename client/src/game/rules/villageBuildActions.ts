@@ -16,7 +16,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.blacksmith": 1,
       },
       4: {
-        "buildings.pit": 1,
+        "buildings.shallowPit": 1,
       },
       5: {
         "buildings.foundry": 1,
@@ -293,7 +293,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.pit": 1,
+        "buildings.shallowPit": 1,
         "buildings.foundry": 0,
       },
     },
