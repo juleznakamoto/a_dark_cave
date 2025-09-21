@@ -118,18 +118,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         {event.isTimedChoice && timeRemaining !== null && (
           <div className="mt-4 space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground">
-              <span>Time remaining:</span>
               <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
             </div>
             <Progress 
               value={progress} 
               className="h-2"
             />
-            {timeRemaining <= 3 && timeRemaining > 0 && (
-              <div className="text-xs text-red-500 font-medium">
-                Warning: Time is running out!
-              </div>
-            )}
           </div>
         )}
       </DialogContent>
