@@ -44,36 +44,43 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     fallbackExecutedRef.current = false;
 
     const interval = setInterval(() => {
-      if (fallbackExecutedRef.current) return;
+      if (fallbackExecutedRef.current) {
+        clearInterval(interval);
+        return;
+      }
       
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       const remaining = Math.max(0, decisionTime - elapsed);
       
       setTimeRemaining(remaining);
       
-      if (remaining <= 0 && !fallbackExecutedRef.current) {
+      // Execute fallback when time runs out or goes below 0
+      if (remaining <= 0.1 && !fallbackExecutedRef.current) {
         fallbackExecutedRef.current = true;
         clearInterval(interval);
         
         // Time expired, execute fallback choice
         if (event.fallbackChoice) {
           const eventId = event.id.split('-')[0];
-          applyEventChoice(event.fallbackChoice.id, eventId);
-          onClose();
+          // Use setTimeout to ensure state updates complete before triggering fallback
+          setTimeout(() => {
+            applyEventChoice(event.fallbackChoice.id, eventId);
+            onClose();
+          }, 0);
         }
       }
-    }, 100);
+    }, 50);
 
     return () => {
       clearInterval(interval);
-      fallbackExecutedRef.current = false;
+      // Don't reset fallbackExecutedRef here to prevent double execution
     };
   }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
   if (!event || !event.choices) return null;
 
   const handleChoice = (choiceId: string) => {
-    if (fallbackExecutedRef.current) return;
+    if (fallbackExecutedRef.current || timeRemaining === 0) return;
     fallbackExecutedRef.current = true;
     const eventId = event.id.split('-')[0];
     applyEventChoice(choiceId, eventId);
@@ -107,7 +114,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               onClick={() => handleChoice(choice.id)}
               variant="outline"
               className="w-full text-left justify-start"
-              disabled={timeRemaining === 0 || fallbackExecutedRef.current}
+              disabled={fallbackExecutedRef.current || (timeRemaining !== null && timeRemaining <= 0)}
             >
               {choice.label}
             </Button>
