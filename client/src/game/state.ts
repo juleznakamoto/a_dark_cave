@@ -138,11 +138,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    set((state) => updateResource(state, resource, amount));
+    console.log(`[STATE] Update Resource: ${resource} by ${amount}`);
+    set((state) => {
+      const updates = updateResource(state, resource, amount);
+      console.log(`[STATE] Resource update result:`, updates);
+      return updates;
+    });
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
-    set((state) => updateFlag(state, flag, value));
+    console.log(`[STATE] Set Flag: ${flag} = ${value}`);
+    set((state) => {
+      const updates = updateFlag(state, flag, value);
+      console.log(`[STATE] Flag update result:`, updates);
+      return updates;
+    });
   },
 
   initialize: (newState: GameState) => {
@@ -174,26 +184,38 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     }
 
+    // Log state changes for debugging
+    console.log(`[STATE] Action: ${actionId}`, {
+      stateUpdates: result.stateUpdates,
+      logEntries: result.logEntries,
+      delayedEffects: result.delayedEffects
+    });
+
     // Apply state updates - properly merge each section without overwriting
-    set((prevState) => ({
-      ...prevState,
-      resources: { ...prevState.resources, ...result.stateUpdates.resources },
-      weapons: { ...prevState.weapons, ...result.stateUpdates.weapons },
-      tools: { ...prevState.tools, ...result.stateUpdates.tools },
-      buildings: { ...prevState.buildings, ...result.stateUpdates.buildings },
-      flags: { ...prevState.flags, ...result.stateUpdates.flags },
-      villagers: { ...prevState.villagers, ...result.stateUpdates.villagers },
-      clothing: { ...prevState.clothing, ...result.stateUpdates.clothing },
-      relics: { ...prevState.relics, ...result.stateUpdates.relics },
-      cooldowns: { ...prevState.cooldowns, ...result.stateUpdates.cooldowns },
-      story: result.stateUpdates.story ? {
-        ...prevState.story,
-        seen: { ...prevState.story.seen, ...result.stateUpdates.story.seen }
-      } : prevState.story,
-      log: result.logEntries
-        ? [...prevState.log, ...result.logEntries].slice(-8)
-        : prevState.log,
-    }));
+    set((prevState) => {
+      const newState = {
+        ...prevState,
+        resources: { ...prevState.resources, ...result.stateUpdates.resources },
+        weapons: { ...prevState.weapons, ...result.stateUpdates.weapons },
+        tools: { ...prevState.tools, ...result.stateUpdates.tools },
+        buildings: { ...prevState.buildings, ...result.stateUpdates.buildings },
+        flags: { ...prevState.flags, ...result.stateUpdates.flags },
+        villagers: { ...prevState.villagers, ...result.stateUpdates.villagers },
+        clothing: { ...prevState.clothing, ...result.stateUpdates.clothing },
+        relics: { ...prevState.relics, ...result.stateUpdates.relics },
+        cooldowns: { ...prevState.cooldowns, ...result.stateUpdates.cooldowns },
+        story: result.stateUpdates.story ? {
+          ...prevState.story,
+          seen: { ...prevState.story.seen, ...result.stateUpdates.story.seen }
+        } : prevState.story,
+        log: result.logEntries
+          ? [...prevState.log, ...result.logEntries].slice(-8)
+          : prevState.log,
+      };
+      
+      console.log(`[STATE] New state after ${actionId}:`, newState);
+      return newState;
+    });
 
     // Check if any new log entry has choices and show event dialog
     if (result.logEntries) {
@@ -356,22 +378,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { newLogEntries, stateChanges } = EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
-      set((prevState) => ({
-        ...prevState,
-        ...stateChanges,
-        log: [...prevState.log, ...newLogEntries].slice(-8),
-        events: {
-          ...prevState.events,
-          ...newLogEntries.reduce(
-            (acc, entry) => {
-              const eventId = entry.id.split("-")[0];
-              acc[eventId] = true;
-              return acc;
-            },
-            {} as Record<string, boolean>,
-          ),
-        },
-      }));
+      console.log(`[STATE] Events Triggered:`, {
+        newLogEntries,
+        stateChanges
+      });
+
+      set((prevState) => {
+        const newState = {
+          ...prevState,
+          ...stateChanges,
+          log: [...prevState.log, ...newLogEntries].slice(-8),
+          events: {
+            ...prevState.events,
+            ...newLogEntries.reduce(
+              (acc, entry) => {
+                const eventId = entry.id.split("-")[0];
+                acc[eventId] = true;
+                return acc;
+              },
+              {} as Record<string, boolean>,
+            ),
+          },
+        };
+        console.log(`[STATE] New state after events:`, newState);
+        return newState;
+      });
 
       // Check if any new log entry has choices and show event dialog
       newLogEntries.forEach(entry => {
@@ -401,10 +432,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
         delete updatedChanges._logMessage;
       }
 
-      set((prevState) => ({
-        ...prevState,
-        ...updatedChanges,
-      }));
+      console.log(`[STATE] Event Choice: ${choiceId} for event ${eventId}`, {
+        changes: updatedChanges,
+        logMessage
+      });
+
+      set((prevState) => {
+        const newState = {
+          ...prevState,
+          ...updatedChanges,
+        };
+        console.log(`[STATE] New state after event choice ${choiceId}:`, newState);
+        return newState;
+      });
 
       // Add log message if present
       if (logMessage) {
@@ -431,8 +471,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
+    console.log(`[STATE] Assign Villager to: ${job}`);
     set((state) => {
       const updates = assignVillagerToJob(state, job);
+      console.log(`[STATE] Villager assignment result:`, updates);
       if (Object.keys(updates).length > 0) {
         setTimeout(() => get().updatePopulation(), 0);
       }
@@ -441,8 +483,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
+    console.log(`[STATE] Unassign Villager from: ${job}`);
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
+      console.log(`[STATE] Villager unassignment result:`, updates);
       if (Object.keys(updates).length > 0) {
         setTimeout(() => get().updatePopulation(), 0);
       }
