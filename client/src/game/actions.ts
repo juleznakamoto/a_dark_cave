@@ -115,6 +115,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftSteelAxe(state, result);
     case 'craftSteelPickaxe':
       return handleCraftSteelPickaxe(state, result);
+    case 'craftObsidianAxe':
+      return handleCraftObsidianAxe(state, result);
+    case 'craftObsidianPickaxe':
+      return handleCraftObsidianPickaxe(state, result);
+    case 'craftAdamantAxe':
+      return handleCraftAdamantAxe(state, result);
+    case 'craftAdamantPickaxe':
+      return handleCraftAdamantPickaxe(state, result);
     case 'buildShrine':
       return handleBuildShrine(state, result);
     case 'craftBoneTotem':
@@ -717,6 +725,30 @@ function handleCraftSteelAxe(state: GameState, result: ActionResult): ActionResu
 
 function handleCraftSteelPickaxe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftSteelPickaxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftObsidianAxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftObsidianAxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftObsidianPickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftObsidianPickaxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftAdamantAxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftAdamantAxe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+function handleCraftAdamantPickaxe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftAdamantPickaxe', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
