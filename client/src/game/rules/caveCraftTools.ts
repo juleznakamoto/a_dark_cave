@@ -228,8 +228,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.adamant_pickaxe": false,
     },
     cost: {
-      "resources.adamant": 150,
       "resources.wood": 1500,
+      "resources.adamant": 150,
     },
     effects: {
       "resources.adamant": -150,
@@ -252,8 +252,8 @@ export const caveCraftTools: Record<string, Action> = {
       "flags.venturedDeeper": true,
     },
     cost: {
-      "resources.iron": 100,
       "resources.wood": 200,
+      "resources.iron": 100,
     },
     effects: {
       "resources.iron": -100,
@@ -275,8 +275,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.steel_lantern": false,
     },
     cost: {
-      "resources.steel": 100,
       "resources.wood": 400,
+      "resources.steel": 100,
     },
     effects: {
       "resources.steel": -150,
@@ -297,8 +297,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.obsidian_lantern": false,
     },
     cost: {
-      "resources.obsidian": 200,
       "resources.wood": 800,
+      "resources.obsidian": 200,
     },
     effects: {
       "resources.obsidian": -200,
@@ -319,8 +319,8 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.adamant_lantern": false,
     },
     cost: {
-      "resources.adamant": 250,
       "resources.wood": 1600,
+      "resources.adamant": 250,
     },
     effects: {
       "resources.adamant": -250,

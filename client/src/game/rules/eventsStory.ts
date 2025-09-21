@@ -711,11 +711,11 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.villagers.hunter > 0 &&
       Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0) >= 6 &&
-      !state.relics.ebony_ring && statebuildings.shrine == 1,
+      !state.relics.ebony_ring && state.buildings.shrine == 1,
     triggerType: "resource",
     timeProbability: 0.045,
     title: "Offer to the Forest Gods",
-    message: "While hunting, the villagers report strange appearances in the forest. Whispers spread: soon the hunters will be too terrified to leave the village. The elders claim the gods of the forest demand a sacrifice — two villagers — to restore peace.",
+    message: "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to restore peace.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -742,7 +742,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 ebony_ring: true,
               },
-              _logMessage: "The forest accepts your sacrifice. The strange appearances vanish, and an ebony ring appears on the altar where the villagers were offered. Peace returns to the woods.",
+              _logMessage: "The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
             };
           } else {
             // Failure: additional suicides
@@ -758,7 +758,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 ebony_ring: true,
               },
-              _logMessage: `The forest accepts your sacrifice and the appearances vanish. You find an ebony ring where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} more villagers to take their own lives in despair.`,
+              _logMessage: `The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives in despair.`,
             };
           }
         },
@@ -785,7 +785,7 @@ export const storyEvents: Record<string, GameEvent> = {
           } else if (rand < successChance + nothingChance) {
             // Nothing happens, event remains active
             return {
-              _logMessage: "You refuse to sacrifice your people. The forest remains silent for now, but the strange appearances continue. The threat lingers...",
+              _logMessage: "You refuse to sacrifice your people. The forest remains silent for now. The threat lingers...",
             };
           } else {
             // Villagers disappear
