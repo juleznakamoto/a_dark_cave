@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge } from '@/game/rules/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
@@ -117,6 +117,7 @@ export default function SidePanel() {
   const totalLuck = getTotalLuck(gameState);
   const totalStrength = getTotalStrength(gameState);
   const totalKnowledge = getTotalKnowledge(gameState);
+  const totalMadness = getTotalMadness(gameState);
 
   // Build stats items with total values
   const statsItems = [];
@@ -150,6 +151,17 @@ export default function SidePanel() {
       label: 'Knowledge',
       value: totalKnowledge,
       testId: 'stat-knowledge',
+      visible: true
+    });
+  }
+
+  // Add madness if it's greater than 0
+  if (totalMadness > 0) {
+    statsItems.push({
+      id: 'madness',
+      label: 'Madness',
+      value: totalMadness,
+      testId: 'stat-madness',
       visible: true
     });
   }

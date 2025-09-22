@@ -29,6 +29,7 @@ export interface EffectDefinition {
       luck?: number; // Luck bonus
       strength?: number; // Strength bonus
       knowledge?: number; // Knowledge bonus
+      madness?: number; // Madness bonus
     };
   };
 }
@@ -581,6 +582,32 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  blackened_mirror: {
+    id: "blackened_mirror",
+    name: "Blackened Mirror",
+    description:
+      "A mirror that shows things that shouldn't be seen (+10 Knowledge, +3 Madness)",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 10,
+        madness: 3,
+      },
+    },
+  },
+
+  unnamed_book: {
+    id: "unnamed_book",
+    name: "Unnamed Book",
+    description:
+      "A book with no title, filled with disturbing knowledge (+10 Knowledge, +2 Madness)",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 10,
+        madness: 2,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
@@ -831,6 +858,15 @@ export const getTotalKnowledge = (state: GameState): number => {
     (state.relics?.elder_scroll ? 10 : 0) +
     (state.relics?.unnamed_book ? 10 : 0) +
     (state.relics?.cracked_crown ? 5 : 0)
+  );
+};
+
+// Helper function to calculate total madness
+export const getTotalMadness = (state: GameState): number => {
+  return (
+    (state.stats.madness || 0) +
+    (state.relics?.blackened_mirror ? 3 : 0) +
+    (state.relics?.unnamed_book ? 2 : 0)
   );
 };
 
