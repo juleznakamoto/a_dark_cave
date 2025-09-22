@@ -213,7 +213,7 @@ const toolTrades = [
       { resource: "silver", amounts: [50] },
       { resource: "gold", amounts: [25] }
     ],
-    message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places previously inaccessible in the deepest cave chambers."
+    message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers."
   },
   {
     id: "trade_alchemist_map",
