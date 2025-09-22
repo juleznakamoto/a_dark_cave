@@ -114,6 +114,8 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "buildings.foundry": 1,
       "tools.iron_axe": true,
+      "tools.iron_pickaxe": true,
+      "tools.iron_lantern": true,
       "tools.steel_axe": false,
     },
     cost: {
@@ -137,6 +139,8 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "buildings.foundry": 1,
       "tools.iron_pickaxe": true,
+      "tools.iron_axe": true,
+      "tools.iron_lantern": true,
       "tools.steel_pickaxe": false,
     },
     cost: {
@@ -159,6 +163,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.steel_axe": true,
+      "tools.steel_pickaxe": true,
+      "tools.steel_lantern": true,
       "tools.obsidian_axe": false,
     },
     cost: {
@@ -181,6 +187,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.steel_pickaxe": true,
+      "tools.steel_axe": true,
+      "tools.steel_lantern": true,
       "tools.obsidian_pickaxe": false,
     },
     cost: {
@@ -203,6 +211,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.obsidian_axe": true,
+      "tools.obsidian_pickaxe": true,
+      "tools.obsidian_lantern": true,
       "tools.adamant_axe": false,
     },
     cost: {
@@ -225,6 +235,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.obsidian_pickaxe": true,
+      "tools.obsidian_axe": true,
+      "tools.obsidian_lantern": true,
       "tools.adamant_pickaxe": false,
     },
     cost: {
@@ -272,6 +284,8 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "buildings.foundry": 1,
       "tools.iron_lantern": true,
+      "tools.iron_axe": true,
+      "tools.iron_pickaxe": true,
       "tools.steel_lantern": false,
     },
     cost: {
@@ -294,6 +308,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.steel_lantern": true,
+      "tools.steel_axe": true,
+      "tools.steel_pickaxe": true,
       "tools.obsidian_lantern": false,
     },
     cost: {
@@ -316,6 +332,8 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "buildings.blacksmith": 1,
       "tools.obsidian_lantern": true,
+      "tools.obsidian_axe": true,
+      "tools.obsidian_pickaxe": true,
       "tools.adamant_lantern": false,
     },
     cost: {
