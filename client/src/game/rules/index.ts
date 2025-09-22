@@ -1,6 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { getTotalLuck, applyLuckToprobability, getActionBonuses } from "./effects";
+import { getTotalLuck, applyLuckToprobability, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
 import { caveExploreActions } from './caveExploreActions';
 import { caveMiningActions } from './caveMiningActions';
 import { caveForgingActions } from './caveForgingActions';
@@ -127,6 +127,10 @@ export const canExecuteAction = (
 
   if (!costs || typeof costs !== 'object') return true;
 
+  // Get crafting cost reduction for crafting actions
+  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
+  const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
+
   // Check if we can afford all costs
   for (const [path, requiredAmount] of Object.entries(costs)) {
     if (typeof requiredAmount !== 'number') continue;
@@ -140,7 +144,9 @@ export const canExecuteAction = (
 
     // For resource costs, check if we have enough (>=)
     if (path.startsWith('resources.')) {
-      if ((current || 0) < requiredAmount) {
+      // Apply crafting cost reduction to resource costs for crafting actions
+      const adjustedCost = isCraftingAction ? Math.ceil(requiredAmount * (1 - craftingCostReduction)) : requiredAmount;
+      if ((current || 0) < adjustedCost) {
         return false;
       }
     } else {
@@ -221,6 +227,10 @@ export const applyActionEffects = (
   if (!action?.effects) return {};
 
   const updates: any = {};
+  
+  // Get crafting cost reduction for crafting actions
+  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
+  const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
 
   for (const [path, effect] of Object.entries(action.effects)) {
     const pathParts = path.split(".");
@@ -341,9 +351,14 @@ export const applyActionEffects = (
       }
     } else if (typeof effect === "number") {
       if (pathParts[0] === "resources") {
+        // Apply crafting cost reduction to negative resource effects (costs) for crafting actions
+        let adjustedEffect = effect;
+        if (isCraftingAction && effect < 0) {
+          adjustedEffect = Math.ceil(effect * (1 - craftingCostReduction));
+        }
         current[finalKey] =
           (state.resources[finalKey as keyof typeof state.resources] || 0) +
-          effect;
+          adjustedEffect;
       } else {
         current[finalKey] = effect;
       }
@@ -389,8 +404,18 @@ export const getCostText = (actionId: string, state?: GameState) => {
 
   if (!costs || Object.keys(costs).length === 0) return "";
 
+  // Get crafting cost reduction for crafting actions
+  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
+  const craftingCostReduction = (isCraftingAction && state) ? getTotalCraftingCostReduction(state) : 0;
+
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
+      // Apply crafting cost reduction to resource costs for crafting actions
+      let adjustedAmount = amount;
+      if (isCraftingAction && resource.startsWith('resources.')) {
+        adjustedAmount = Math.ceil(amount * (1 - craftingCostReduction));
+      }
+      
       // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
         ? resource.split(".").pop()
@@ -400,7 +425,7 @@ export const getCostText = (actionId: string, state?: GameState) => {
         .split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
-      return `-${amount} ${formattedName}`;
+      return `-${adjustedAmount} ${formattedName}`;
     })
     .join(", ");
 

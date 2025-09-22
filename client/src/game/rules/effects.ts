@@ -30,6 +30,7 @@ export interface EffectDefinition {
       strength?: number; // Strength bonus
       knowledge?: number; // Knowledge bonus
       madness?: number; // Madness bonus
+      craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
     };
   };
 }
@@ -540,6 +541,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 6,
+        craftingCostReduction: 0.1,
       },
     },
   },
@@ -879,6 +881,20 @@ export const getTotalMadness = (state: GameState): number => {
   });
 
   return madness;
+};
+
+// Helper function to calculate total crafting cost reduction
+export const getTotalCraftingCostReduction = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let reduction = 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.craftingCostReduction) {
+      reduction += effect.bonuses.generalBonuses.craftingCostReduction;
+    }
+  });
+
+  return reduction;
 };
 
 // Helper function to apply luck bonus to probability (10 luck = 10% increase)
