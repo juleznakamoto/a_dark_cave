@@ -102,13 +102,17 @@ export default function SidePanel() {
 
   // Dynamically generate villager items from state
   const populationItems = Object.entries(villagers)
-    .map(([key, value]) => ({
-      id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      value: value ?? 0,
-      testId: `population-${key}`,
-      visible: (value ?? 0) > 0
-    }))
+    .map(([key, value]) => {
+      // Ensure value is a number, handle complex objects
+      const numValue = typeof value === 'number' ? value : 0;
+      return {
+        id: key,
+        label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+        value: numValue,
+        testId: `population-${key}`,
+        visible: numValue > 0
+      };
+    })
     .filter(item => item.visible);
 
   const { stats } = gameState;
