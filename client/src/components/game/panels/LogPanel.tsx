@@ -1,6 +1,6 @@
 import React from "react";
 import { useGameStore } from "@/game/state";
-import { LogEntry } from "@/game/events";
+import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function LogPanel() {
@@ -33,7 +33,7 @@ export default function LogPanel() {
               return (
                 <div key={entry.id} className="pl-3">
                   <p className={`text-foreground leading-relaxed ${opacity}`}>
-                    {entry.message}
+                    {typeof entry.message === 'string' ? entry.message : JSON.stringify(entry.message)}
                   </p>
                 </div>
               );
