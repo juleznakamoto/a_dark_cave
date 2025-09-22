@@ -5,11 +5,6 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
-  
-  // Debug villagers object
-  console.log('Villagers object:', villagers);
-  console.log('Villagers type:', typeof villagers);
-  console.log('Villagers entries:', Object.entries(villagers || {}));
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -107,20 +102,13 @@ export default function SidePanel() {
 
   // Dynamically generate villager items from state
   const populationItems = Object.entries(villagers)
-    .map(([key, value]) => {
-      // Debug logging to identify problematic values
-      if (typeof value === 'object' && value !== null) {
-        console.error(`Villager ${key} has object value:`, value);
-      }
-      
-      return {
-        id: key,
-        label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-        value: typeof value === 'number' ? value : 0,
-        testId: `population-${key}`,
-        visible: (typeof value === 'number' ? value : 0) > 0
-      };
-    })
+    .map(([key, value]) => ({
+      id: key,
+      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      value: value ?? 0,
+      testId: `population-${key}`,
+      visible: (value ?? 0) > 0
+    }))
     .filter(item => item.visible);
 
   const { stats } = gameState;
