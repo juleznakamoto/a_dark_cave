@@ -80,10 +80,14 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       return;
     }
     
-    fallbackExecutedRef.current = true;
     const eventId = event!.id.split('-')[0];
     applyEventChoice(choiceId, eventId);
-    onClose();
+    
+    // Close dialog only for certain choices (goodbye, decline, or fallback choices)
+    if (choiceId === 'say_goodbye' || choiceId === 'decline_trade' || choiceId === event?.fallbackChoice?.id) {
+      fallbackExecutedRef.current = true;
+      onClose();
+    }
   };
 
   const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0 
@@ -110,7 +114,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
           {event.choices.map((choice) => {
             // Check if choice can be afforded (for merchant trades)
             let canAfford = true;
-            if (choice.id.startsWith('trade_') && choice.id !== 'decline_trade') {
+            if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
               // Check affordability for merchant trades
               const testResult = choice.effect(gameState);
               canAfford = Object.keys(testResult).length > 0;

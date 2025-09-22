@@ -248,17 +248,17 @@ const toolTrades = [
 ];
 
 // Helper function to create resource trade choices
-function createResourceTradeChoice(trade: typeof resourceTrades[0]) {
+function createResourceTradeChoice(trade: typeof resourceTrades[0], state: GameState) {
+  const knowledge = getTotalKnowledge(state);
+
+  // Select random cost option
+  const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+  const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
   return {
     id: trade.id,
-    label: trade.label,
+    label: `Buy ${trade.giveAmount} ${trade.give} for ${cost} ${costOption.resource}`,
     effect: (state: GameState) => {
-      const knowledge = getTotalKnowledge(state);
-
-      // Select random cost option
-      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
-
       if ((state.resources[costOption.resource] || 0) >= cost) {
         return {
           resources: {
@@ -274,17 +274,17 @@ function createResourceTradeChoice(trade: typeof resourceTrades[0]) {
 }
 
 // Helper function to create tool/relic trade choices
-function createToolTradeChoice(trade: typeof toolTrades[0]) {
+function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
+  const knowledge = getTotalKnowledge(state);
+
+  // Select random cost option
+  const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+  const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
   return {
     id: trade.id,
-    label: trade.label,
+    label: `${trade.label} for ${cost} ${costOption.resource}`,
     effect: (state: GameState) => {
-      const knowledge = getTotalKnowledge(state);
-
-      // Select random cost option
-      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
-
       if ((state.resources[costOption.resource] || 0) >= cost) {
         const result: any = {
           resources: {
@@ -319,20 +319,36 @@ export const merchantEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: true,
-    choices: [
-      // Randomly select 4 resource trades
-      ...resourceTrades.slice(0, 4).map(createResourceTradeChoice),
-      // Randomly select 2 tool/relic trades
-      ...toolTrades.slice(0, 2).map(createToolTradeChoice),
-      {
-        id: "decline_trade",
-        label: "Decline all trades",
-        effect: (state: GameState) => {
-          return {
-            _logMessage: "You politely decline the merchant's offers. He shrugs and continues on his way, muttering about missed opportunities.",
-          };
+    effect: (state: GameState) => {
+      // Generate dynamic choices based on current state
+      const availableResourceTrades = resourceTrades
+        .sort(() => Math.random() - 0.5) // Shuffle
+        .slice(0, 4) // Take first 4
+        .map(trade => createResourceTradeChoice(trade, state));
+
+      const availableToolTrades = toolTrades
+        .sort(() => Math.random() - 0.5) // Shuffle
+        .slice(0, 2) // Take first 2
+        .map(trade => createToolTradeChoice(trade, state));
+
+      const choices = [
+        ...availableResourceTrades,
+        ...availableToolTrades,
+        {
+          id: "say_goodbye",
+          label: "Say goodbye",
+          effect: (state: GameState) => {
+            return {
+              _logMessage: "You bid farewell to the merchant. He tips his hat and continues on his way, muttering about the roads ahead.",
+            };
+          },
         },
-      },
-    ],
+      ];
+
+      // Store choices in the event for the dialog
+      merchantEvents.merchant.choices = choices;
+
+      return {};
+    },
   },
 };
