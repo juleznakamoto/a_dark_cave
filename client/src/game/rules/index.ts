@@ -395,9 +395,12 @@ export const getCostText = (actionId: string, state?: GameState) => {
       const resourceName = resource.includes(".")
         ? resource.split(".").pop()
         : resource;
-      // Capitalize first letter of resource name
-      const capitalizedName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1);
-      return `-${amount} ${capitalizedName}`;
+      // Replace underscores with spaces and capitalize each word
+      const formattedName = resourceName
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      return `-${amount} ${formattedName}`;
     })
     .join(", ");
 
