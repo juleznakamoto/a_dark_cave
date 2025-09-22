@@ -606,7 +606,7 @@ function handleExploreRuins(state: GameState, result: ActionResult): ActionResul
   if (!state.story.seen.exploredRuins) {
     result.logEntries!.push({
       id: `explore-ruins-${Date.now()}`,
-      message: 'Ancient ruins sprawl before you, their crumbling walls telling stories of a lost civilization. Your steel lantern reveals treasures hidden in the shadows of time.',
+      message: 'Ancient ruins sprawl before you depp in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.',
       timestamp: Date.now(),
       type: 'system',
     });
@@ -636,7 +636,7 @@ function handleExploreTemple(state: GameState, result: ActionResult): ActionResu
   if (!state.story.seen.exploredTemple) {
     result.logEntries!.push({
       id: `explore-temple-${Date.now()}`,
-      message: 'A magnificent temple rises from the cavern floor, its obsidian pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.',
+      message: 'A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.',
       timestamp: Date.now(),
       type: 'system',
     });
@@ -666,7 +666,7 @@ function handleExploreCitadel(state: GameState, result: ActionResult): ActionRes
   if (!state.story.seen.exploredCitadel) {
     result.logEntries!.push({
       id: `explore-citadel-${Date.now()}`,
-      message: 'The ultimate depths reveal a vast citadel, its adamantine walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.',
+      message: 'The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.',
       timestamp: Date.now(),
       type: 'system',
     });

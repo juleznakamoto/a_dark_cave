@@ -223,7 +223,7 @@ const toolTrades = [
       { resource: "silver", amounts: [100] },
       { resource: "gold", amounts: [50] }
     ],
-    message: "You purchase the alchemist's map. The merchant whispers: 'An old alchemist, close to death, hid his secrets and possessions within a part of the cave. He covered the entrance with rock that locks like a door. This map will guide you there.'"
+    message: "You buy the alchemist’s map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'"
   },
   {
     id: "trade_murmuring_cube",
@@ -233,7 +233,7 @@ const toolTrades = [
       { resource: "silver", amounts: [150] },
       { resource: "gold", amounts: [75] }
     ],
-    message: "You purchase the murmuring cube. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable."
+    message: "You purchase a cube made of an unknown polished metal. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable."
   },
   {
     id: "trade_giant_trap",
@@ -311,11 +311,11 @@ function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 0.0120,
+    timeProbability: 18,
     title: "The Traveling Merchant",
-    message: "A weathered merchant approaches your village, his pack filled with exotic goods and strange contraptions. His eyes gleam with avarice as he surveys your settlement. 'I have rare items for trade,' he says with a crooked smile.",
+    message: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs, 'I have rare items for trade.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -328,7 +328,7 @@ export const merchantEvents: Record<string, GameEvent> = {
 
       const availableToolTrades = toolTrades
         .sort(() => Math.random() - 0.5) // Shuffle
-        .slice(0, 2) // Take first 2
+        .slice(0, 1) // Take first 1
         .map(trade => createToolTradeChoice(trade, state));
 
       const choices = [
@@ -339,7 +339,7 @@ export const merchantEvents: Record<string, GameEvent> = {
           label: "Say goodbye",
           effect: (state: GameState) => {
             return {
-              _logMessage: "You bid farewell to the merchant. He tips his hat and continues on his way, muttering about the roads ahead.",
+              _logMessage: "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
             };
           },
         },
