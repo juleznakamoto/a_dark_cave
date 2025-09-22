@@ -2,6 +2,7 @@
 import { GameState } from "@shared/schema";
 import { baseEvents } from "./eventsBase";
 import { storyEvents } from "./eventsStory";
+import { merchantEvents } from "./eventsMerchant";
 
 export interface GameEvent {
   id: string;
@@ -45,6 +46,7 @@ export interface LogEntry {
 export const gameEvents: Record<string, GameEvent> = {
   ...baseEvents,
   ...storyEvents,
+  ...merchantEvents,
 };
 
 export class EventManager {

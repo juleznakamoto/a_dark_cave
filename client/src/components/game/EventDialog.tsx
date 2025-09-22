@@ -111,9 +111,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             // Check if choice can be afforded (for merchant trades)
             let canAfford = true;
             if (choice.id.startsWith('trade_') && choice.id !== 'decline_trade') {
-              // This is a simplified check - in a real implementation you'd want to 
-              // properly parse the choice effect to determine affordability
-              canAfford = true; // For now, we'll let the choice effect handle the check
+              // Check affordability for merchant trades
+              const testResult = choice.effect(gameState);
+              canAfford = Object.keys(testResult).length > 0;
             }
             
             return (
@@ -127,7 +127,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {choice.label}
               </Button>
             );
-          })}
+          })}</div>
         </div>
 
         {/* Timer bar for timed choices */}
