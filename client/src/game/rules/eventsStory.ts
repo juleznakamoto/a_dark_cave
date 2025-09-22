@@ -814,7 +814,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 35,
     title: "The Mad Beduine",
-    message: "As evening falls, a strange figure emerges from the wilderness. Wrapped in desert robes and cloth, he approaches your village muttering in an unknown tongue. His eyes gleam with madness as he gestures wildly, speaking words that seem to twist in the air. The villagers are uneasy. Do you allow this mad beduine to stay the night?",
+    message: "As evening falls, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -828,7 +828,7 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               unnamed_book: true,
             },
-            _logMessage: "You grant the stranger shelter. At dawn, he is gone, vanished without trace. Only his beduine robes remain where he slept, and within their folds you discover a book bound in what appears to be human skin. Its pages contain forbidden knowledge that makes your mind reel, yet you cannot help but read. The Unnamed Book grants you dark wisdom. (+10 Knowledge)",
+            _logMessage: "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge. The Unnamed Book grants you dark wisdom. (+10 Knowledge)",
           };
         },
       },
@@ -847,20 +847,60 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.buildings,
               woodenHut: Math.max(0, state.buildings.woodenHut - hutDestruction),
             },
-            _logMessage: `You refuse the stranger entry. He departs screaming curses in his alien tongue, his voice echoing through the night like the wailing of the damned. Before dawn, a tribe of cannibals emerges from the darkness as if summoned by his words. They fall upon your village with primitive savagery, claiming ${villagerDeaths} lives and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before melting back into the wilderness.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing like the wailing of the damned. Before dawn, a tribe of cannibals descends as if summoned by his cries, killing ${villagerDeaths} and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before vanishing into the wilds.`,
           };
         },
       },
     ],
   },
 
+
+
+  // Create a merchant event:
+
+  // A merchant approaches the village. He offers several trade options in the pop-up window.
+  // As with the action button, if the user has not enough resources to purchase the button is inactive.
+  // 4 resource trading options:
+  // random choice of:
+  // - buy 100 steel for random(750 wood, 1000 wood, 1250 wood, 1000 stone, 10 gold, 5 silver)
+  // - buy 50 steel for random(400 bones, 500 wood, 600 wood, 300 fur, 400 fur, 500 fur, 500 stone, 5 gold, 10 silver)
+  // - buy 50 obsidian for random(1500 wood, 1750 wood, 2000 wood, 20 silver, 10 gold)
+  // - buy 25 obsidian for random(1000 bones, 1250 bones, 1500 bones, 1000 fur, 1250 fur, 1500 fur, 10 silver, 1500 stone)
+  // - buy 25 adamant for random(10 gold, 15 gold, 30 silver, 100 steel, 2500 wood, 500 food)
+  // - buy 500 wood for random(5 silver, 25 iron, 10 steel, 100 food)
+  // - buy 1000 wood  for random(5 gold, 10 silver, 50 iron, 25 steel, 200 food)
+  // - buy 500 food for random (5 gold, 10 silver)
+  // - buy 1000 food for random(10 gold, 20 silver)
+  // - buy 25 gold for random(200 steel, 2500 wood, 1500 stone, 2000 fur, 2500 food),
+  // - buy 50 silver for random(200 steel, 2500 wood, 1500 stone, 2000 fur, 2500 food)
+  // - buy 50 gold for random(500 steel, 5000 wood, 3000 stone, 5000 fur, 5000 food, 100 obsidian, 20 adamant),
+  // - buy 100 silver for random(500 steel, 5000 wood, 3000 stone, 5000 fur, 5000 food, 100 obsidian, 20 adamant)
+
+  // 2 relic/tool trading options:
+  // - reinforced rope for random(50 silver, 25 gold)
+  // - alchemist's map for random(100 silver, 50 gold)
+  // - murmuring cube for random (150 silver, 75 gold)
+  // - giant trap for random(20 silver, 10 gold)
+
+  // create the tools:
+  // - reinforced rope: add a new action under the cave explore area: low chamber, it is an event that can be executed once (it costs 500 food and 20 torches), create the event, the outcome will be defined later, when the tool is received event log should show a text explaining that the rope now allows access to a chamber in the cave that was inaccesibe without the rope.
+  // - alchemist's map: after piurchasing from merchant the event log should say that an old alchemist, close to death hid his secrets and possessions within a part of the cave that he covered with door locking like rock, add an action under cave explore area (it costs 750 food), the action can be executed once, it gives the user resources and an item defined later.
+  // -giant trap: add text to event log when bought that it can be used to trap something gigantic in the woods, add action to wood area called "lay trap", it cost 500 food, a gigantic black bear will be in the trap, the villagers fight it with all their strength (random(0-3) get killed) and kill it, player receives black bear fur
+
+  // create the relics:
+  // - murmuring cube, it's effects will be defined later
+  // - black bear fur: + 10 strength
+
+  // For each knowledge, the cost is 1 % lower (always round up to next int)
+
+  
   hiddenLake: {
     id: "hiddenLake",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4 && !state.relics.cracked_crown,
+    condition: (state: GameState) => state.flags.forestUnlocked && !state.relics.cracked_crown,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 35,
     title: "The Hidden Lake",
-    message: "While gathering wood in the deeper parts of the forest, your villagers stumble upon a pristine lake hidden among ancient trees. The water is unnaturally clear and still. One villager claims to have seen a creature briefly surface - resembling a beautiful woman with flowing hair, but something in her gaze was not quite human. What do you do?",
+    message: "While gathering wood deep in the forest, your villagers discover a pristine lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -875,27 +915,24 @@ export const storyEvents: Record<string, GameEvent> = {
           const rand = Math.random();
 
           if (rand < successChance) {
-            // Success: Overthrow creature and find cracked crown
             return {
               relics: {
                 ...state.relics,
                 cracked_crown: true,
               },
-              _logMessage: "Your men approach the lake cautiously. The creature emerges - a siren-like being with webbed fingers and predatory eyes. She attacks with supernatural fury, but your villagers' strength prevails. They manage to subdue her, and she retreats to the depths. Searching the lake bottom, they discover countless human bones and a magnificent cracked golden crown among the debris. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
+              _logMessage: "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers’ strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
             };
           } else if (rand < successChance + fleeChance) {
-            // Flee in terror
             return {
-              _logMessage: "Your men wade into the crystal waters, but the creature suddenly bursts from the depths with inhuman speed. Her beautiful facade melts away, revealing rows of razor-sharp teeth and glowing predatory eyes. Terrified by her monstrous transformation, your villagers flee in panic, never to speak of what they saw beneath the surface.",
+              _logMessage: "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee and vow never to speak of it again.",
             };
           } else {
-            // Villagers drown
-            const drownedCount = Math.floor(Math.random() * 4) + 1; // 1-4 villagers
+            const drownedCount = Math.floor(Math.random() * 4) + 1;
             const deathResult = killVillagers(state, drownedCount);
 
             return {
               ...deathResult,
-              _logMessage: `Your men enter the lake to investigate. The creature rises from the depths like a nightmare made flesh, her beauty masking deadly intent. With supernatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? 's' : ''} beneath the dark waters. They disappear without a trace, leaving only ripples and the echo of their final screams. The remaining men flee in terror.`,
+              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? 's' : ''} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
             };
           }
         },
@@ -905,21 +942,19 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Avoid the lake",
         effect: (state: GameState) => {
           const luck = getTotalLuck(state);
-          const successChance = 0.40 + (luck * 0.01); // 40% + 1% per luck point
+          const successChance = 0.40 + (luck * 0.01); 
           const rand = Math.random();
 
           if (rand < successChance) {
-            // Nothing happens
             return {
-              _logMessage: "You wisely order your villagers to stay away from the mysterious lake. Though some grumble about lost opportunities, they obey your command. The lake remains undisturbed, its secrets hidden beneath the still waters. Your caution has saved lives.",
+              _logMessage: "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
             };
           } else {
-            // Villager returns and dies
             const deathResult = killVillagers(state, 1);
 
             return {
               ...deathResult,
-              _logMessage: "You forbid your men from approaching the lake, but one villager cannot shake the memory of the beautiful creature. Night after night, she haunts his dreams with her ethereal song. Eventually, he can resist no longer and sneaks away to the lake under cover of darkness. At dawn, the others find only his torn clothing at the water's edge, stained with something that might be blood.",
+              _logMessage: "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water’s edge.",
             };
           }
         },
