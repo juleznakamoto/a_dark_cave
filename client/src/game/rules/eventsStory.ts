@@ -846,7 +846,7 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.buildings,
               woodenHut: Math.max(0, state.buildings.woodenHut - hutDestruction),
             },
-            _logMessage: `You refuse the stranger entry. He departs screaming curses in his alien tongue, his voice echoing through the night like the wailing of the damned. Before dawn, a tribe of cannibals emerges from the darkness as if summoned by his words. They fall upon your village with primitive savagery, claiming ${villagerDeaths} lives and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before melting back into the wilderness. The mad beduine's curse has brought terrible vengeance.`,
+            _logMessage: `You refuse the stranger entry. He departs screaming curses in his alien tongue, his voice echoing through the night like the wailing of the damned. Before dawn, a tribe of cannibals emerges from the darkness as if summoned by his words. They fall upon your village with primitive savagery, claiming ${villagerDeaths} lives and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before melting back into the wilderness.`,
           };
         },
       },
