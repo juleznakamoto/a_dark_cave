@@ -147,7 +147,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "weapons.long_bow": true,
       "weapons.steel_sword": true,
-      "weapons.obsidian_sword": true,
       "weapons.war_bow": false,
     },
     cost: {
