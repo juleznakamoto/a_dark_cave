@@ -168,12 +168,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             />
           </div>
         )}
-        {isMerchantEvent ? (
-          </DialogPrimitive.Content>
+      {isMerchantEvent ? (
+        </DialogPrimitive.Content>
         </DialogPortal>
-        ) : (
+      ) : (
         </DialogContent>
-        )}
+      )}
     </Dialog>
   );
 }
