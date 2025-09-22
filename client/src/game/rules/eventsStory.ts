@@ -392,7 +392,7 @@ export const storyEvents: Record<string, GameEvent> = {
               blackened_mirror: true,
             },
             _logMessage:
-              "You purchase the mirror. Its dark surface seems to hold secrets, and you feel your understanding of hidden things deepen.",
+              "You purchase the mirror. Its dark surface shimmers with hidden truths, and glimpses of your own future are revealed, nudging your sanity toward the edge.",
           };
         },
       },
