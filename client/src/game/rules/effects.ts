@@ -587,11 +587,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "blackened_mirror",
     name: "Blackened Mirror",
     description:
-      "A mirror that shows things that shouldn't be seen (+10 Knowledge, +3 Madness)",
+      "A mirror that shows things that shouldn't be seen (+10 Knowledge, +5 Madness)",
     bonuses: {
       generalBonuses: {
         knowledge: 10,
-        madness: 3,
+        madness: 5,
       },
     },
   },
