@@ -828,46 +828,58 @@ export const getExplorationBonuses = (state: GameState): number => {
 
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
-  return (
-    (state.stats.luck || 0) +
-    (state.relics?.ravenfeather_mantle ? 5 : 0) +
-    (state.relics?.alphas_hide ? 3 : 0) +
-    (state.relics?.elder_scroll ? 10 : 0) +
-    (state.relics?.ebony_ring ? 5 : 0) +
-    (state.relics?.cracked_crown ? 5 : 0)
-  );
+  const activeEffects = getActiveEffects(state);
+  let luck = state.stats.luck || 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.luck) {
+      luck += effect.bonuses.generalBonuses.luck;
+    }
+  });
+
+  return luck;
 };
 
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
   let strength = state.stats.strength || 0;
 
-  // Add strength bonuses from tools and relics
-  if (state.relics?.blacksmith_hammer) strength += 2;
-  if (state.relics?.bloodstained_belt) strength += 5;
-  if (state.relics?.black_bear_fur) strength += 10;
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.strength) {
+      strength += effect.bonuses.generalBonuses.strength;
+    }
+  });
 
   return strength;
 };
 
 // Helper function to calculate total knowledge
 export const getTotalKnowledge = (state: GameState): number => {
-  return (
-    (state.stats.knowledge || 0) +
-    (state.relics?.blackened_mirror ? 10 : 0) +
-    (state.relics?.elder_scroll ? 10 : 0) +
-    (state.relics?.unnamed_book ? 10 : 0) +
-    (state.relics?.cracked_crown ? 5 : 0)
-  );
+  const activeEffects = getActiveEffects(state);
+  let knowledge = state.stats.knowledge || 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.knowledge) {
+      knowledge += effect.bonuses.generalBonuses.knowledge;
+    }
+  });
+
+  return knowledge;
 };
 
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
-  return (
-    (state.stats.madness || 0) +
-    (state.relics?.blackened_mirror ? 3 : 0) +
-    (state.relics?.unnamed_book ? 2 : 0)
-  );
+  const activeEffects = getActiveEffects(state);
+  let madness = state.stats.madness || 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.madness) {
+      madness += effect.bonuses.generalBonuses.madness;
+    }
+  });
+
+  return madness;
 };
 
 // Helper function to apply luck bonus to probability (10 luck = 10% increase)

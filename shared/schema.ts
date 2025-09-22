@@ -100,6 +100,10 @@ export const gameStateSchema = z.object({
     elder_scroll: z.boolean().default(false),
     old_trinket: z.boolean().default(false),
     unnamed_book: z.boolean().default(false),
+    alphas_hide: z.boolean().default(false),
+    ebony_ring: z.boolean().default(false),
+    cracked_crown: z.boolean().default(false),
+    blacksmith_hammer: z.boolean().default(false),
   }).default({}),
   buildings: z.object({
     woodenHut: z.number().default(0),
