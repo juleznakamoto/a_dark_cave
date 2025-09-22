@@ -127,7 +127,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {choice.label}
               </Button>
             );
-          })}</div>
+          })}
         </div>
 
         {/* Timer bar for timed choices */}
