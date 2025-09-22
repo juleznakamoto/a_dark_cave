@@ -30,6 +30,7 @@ type GameState = {
     alphas_hide?: boolean;
     elder_scroll?: boolean;
     ebony_ring?: boolean; // Added Ebony Ring
+    cracked_crown?: boolean;
   };
   events: {
     trinketDrunk?: boolean;
@@ -848,6 +849,79 @@ export const storyEvents: Record<string, GameEvent> = {
             },
             _logMessage: `You refuse the stranger entry. He departs screaming curses in his alien tongue, his voice echoing through the night like the wailing of the damned. Before dawn, a tribe of cannibals emerges from the darkness as if summoned by his words. They fall upon your village with primitive savagery, claiming ${villagerDeaths} lives and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before melting back into the wilderness.`,
           };
+        },
+      },
+    ],
+  },
+
+  hiddenLake: {
+    id: "hiddenLake",
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && !state.relics.cracked_crown,
+    triggerType: "resource",
+    timeProbability: 30,
+    title: "The Hidden Lake",
+    message: "While gathering wood in the deeper parts of the forest, your villagers stumble upon a pristine lake hidden among ancient trees. The water is unnaturally clear and still. One villager claims to have seen a creature briefly surface - resembling a beautiful woman with flowing hair, but something in her gaze was not quite human. What do you do?",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "investigate",
+        label: "Investigate the lake",
+        effect: (state: GameState) => {
+          const strength = state.stats.strength || 0;
+          const successChance = 0.25 + (strength * 0.01); // 25% + 1% per strength point
+          const fleeChance = 0.20;
+          const rand = Math.random();
+
+          if (rand < successChance) {
+            // Success: Overthrow creature and find cracked crown
+            return {
+              relics: {
+                ...state.relics,
+                cracked_crown: true,
+              },
+              _logMessage: "Your men approach the lake cautiously. The creature emerges - a siren-like being with webbed fingers and predatory eyes. She attacks with supernatural fury, but your villagers' strength prevails. They manage to subdue her, and she retreats to the depths. Searching the lake bottom, they discover countless human bones and a magnificent cracked golden crown among the debris. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
+            };
+          } else if (rand < successChance + fleeChance) {
+            // Flee in terror
+            return {
+              _logMessage: "Your men wade into the crystal waters, but the creature suddenly bursts from the depths with inhuman speed. Her beautiful facade melts away, revealing rows of razor-sharp teeth and glowing predatory eyes. Terrified by her monstrous transformation, your villagers flee in panic, never to speak of what they saw beneath the surface.",
+            };
+          } else {
+            // Villagers drown
+            const drownedCount = Math.floor(Math.random() * 4) + 1; // 1-4 villagers
+            const deathResult = killVillagers(state, drownedCount);
+
+            return {
+              ...deathResult,
+              _logMessage: `Your men enter the lake to investigate. The creature rises from the depths like a nightmare made flesh, her beauty masking deadly intent. With supernatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? 's' : ''} beneath the dark waters. They disappear without a trace, leaving only ripples and the echo of their final screams. The remaining men flee in terror.`,
+            };
+          }
+        },
+      },
+      {
+        id: "avoidLake",
+        label: "Avoid the lake",
+        effect: (state: GameState) => {
+          const luck = getTotalLuck(state);
+          const successChance = 0.40 + (luck * 0.01); // 40% + 1% per luck point
+          const rand = Math.random();
+
+          if (rand < successChance) {
+            // Nothing happens
+            return {
+              _logMessage: "You wisely order your villagers to stay away from the mysterious lake. Though some grumble about lost opportunities, they obey your command. The lake remains undisturbed, its secrets hidden beneath the still waters. Your caution has saved lives.",
+            };
+          } else {
+            // Villager returns and dies
+            const deathResult = killVillagers(state, 1);
+
+            return {
+              ...deathResult,
+              _logMessage: "You forbid your men from approaching the lake, but one villager cannot shake the memory of the beautiful creature. Night after night, she haunts his dreams with her ethereal song. Eventually, he can resist no longer and sneaks away to the lake under cover of darkness. At dawn, the others find only his torn clothing at the water's edge, stained with something that might be blood.",
+            };
+          }
         },
       },
     ],

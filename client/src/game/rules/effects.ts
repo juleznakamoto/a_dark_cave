@@ -568,6 +568,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  cracked_crown: {
+    id: "cracked_crown",
+    name: "Cracked Crown",
+    description:
+      "A cracked golden crown that hums with ancient power (+5 Luck, +5 Knowledge)",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        knowledge: 5,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
@@ -730,7 +743,7 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   return activeEffects;
 };
 
-// Helper function to calculate total bonuses for a specific action
+// Helper function to calculate total bonuses for a given action
 export const getActionBonuses = (actionId: string, state: GameState) => {
   const activeEffects = getActiveEffects(state);
   const bonuses = {
@@ -788,16 +801,14 @@ export const getExplorationBonuses = (state: GameState): number => {
 
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let totalLuck = state.stats?.luck || 0;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.luck) {
-      totalLuck += effect.bonuses.generalBonuses.luck;
-    }
-  });
-
-  return totalLuck;
+  return (
+    (state.stats.luck || 0) +
+    (state.relics?.ravenfeather_mantle ? 5 : 0) +
+    (state.relics?.alphas_hide ? 3 : 0) +
+    (state.relics?.elder_scroll ? 10 : 0) +
+    (state.relics?.ebony_ring ? 5 : 0) +
+    (state.relics?.cracked_crown ? 5 : 0)
+  );
 };
 
 // Helper function to calculate total strength
@@ -818,9 +829,10 @@ export const getTotalStrength = (state: GameState): number => {
 export const getTotalKnowledge = (state: GameState): number => {
   return (
     (state.stats.knowledge || 0) +
-    (state.relics?.blackened_mirror ? 3 : 0) +
-    (state.relics?.elder_scroll ? 5 : 0) +
-    (state.relics?.unnamed_book ? 10 : 0)
+    (state.relics?.blackened_mirror ? 10 : 0) +
+    (state.relics?.elder_scroll ? 10 : 0) +
+    (state.relics?.unnamed_book ? 10 : 0) +
+    (state.relics?.cracked_crown ? 5 : 0)
   );
 };
 
