@@ -93,6 +93,10 @@ export default function SidePanel() {
       if (item.id === 'deepPit' && buildings.bottomlessPit > 0) {
         return false;
       }
+      // Hide cabin when greatCabin is built
+      if (item.id === 'cabin' && buildings.greatCabin > 0) {
+        return false;
+      }
       return true;
     });
 
