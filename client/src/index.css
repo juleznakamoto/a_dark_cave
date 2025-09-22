@@ -2,6 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes fade-to-black {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+  }
+  to {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}
+
 /* :root {
   --background: hsl(45, 20%, 97%);
   --foreground: hsl(0, 0%, 15%);
