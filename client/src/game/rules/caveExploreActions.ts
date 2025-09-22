@@ -264,4 +264,49 @@ export const caveExploreActions: Record<string, Action> = {
     },
     cooldown: 120,
   },
+
+  lowChamber: {
+    id: "lowChamber",
+    label: "Low Chamber",
+    show_when: {
+      "tools.reinforced_rope": true,
+      "flags.lowChamberExplored": false,
+    },
+    cost: {
+      "resources.food": 500,
+      "resources.torch": 20,
+    },
+    effects: {
+      "resources.food": -500,
+      "resources.torch": -20,
+      "resources.gold": { probability: 0.8, value: "random(15,25)" },
+      "resources.bloodstone": { probability: 0.3, value: "random(2,4)" },
+      "resources.frostglas": { probability: 0.2, value: "random(1,3)" },
+      "flags.lowChamberExplored": true,
+      "story.seen.lowChamberExplored": true,
+    },
+    cooldown: 1,
+  },
+
+  alchemistChamber: {
+    id: "alchemistChamber",
+    label: "Alchemist Chamber",
+    show_when: {
+      "tools.alchemist_map": true,
+      "flags.alchemistChamberExplored": false,
+    },
+    cost: {
+      "resources.food": 750,
+    },
+    effects: {
+      "resources.food": -750,
+      "resources.gold": { probability: 1, value: "random(20,30)" },
+      "resources.bloodstone": { probability: 0.5, value: "random(3,5)" },
+      "resources.frostglas": { probability: 0.4, value: "random(2,4)" },
+      "resources.adamant": { probability: 0.3, value: "random(5,8)" },
+      "flags.alchemistChamberExplored": true,
+      "story.seen.alchemistChamberExplored": true,
+    },
+    cooldown: 1,
+  },
 };

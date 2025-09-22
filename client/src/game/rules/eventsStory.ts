@@ -19,8 +19,22 @@ type VillagerCounts = {
 // Define a type for the game state
 type GameState = {
   villagers: VillagerCounts;
-  resources: { food: number; iron: number };
-  buildings: { woodenHut: number; hut: number };
+  resources: {
+    food: number;
+    iron: number;
+    wood?: number;
+    stone?: number;
+    gold?: number;
+    silver?: number;
+    bones?: number;
+    fur?: number;
+    steel?: number;
+    obsidian?: number;
+    adamant?: number;
+    food?: number;
+    [key: string]: number | undefined; // Allows for other resources
+  };
+  buildings: { woodenHut: number; hut: number; shrine?: number };
   stats: { strength?: number; luck?: number; knowledge?: number };
   relics: {
     ravenfeather_mantle?: boolean;
@@ -31,6 +45,8 @@ type GameState = {
     elder_scroll?: boolean;
     ebony_ring?: boolean; // Added Ebony Ring
     cracked_crown?: boolean;
+    murmuring_cube?: boolean; // Added Murmuring Cube
+    blacksmith_hammer?: boolean; // Added Blacksmith Hammer as a relic for simplicity
   };
   events: {
     trinketDrunk?: boolean;
@@ -41,8 +57,8 @@ type GameState = {
     blacksmith_hammer_found?: boolean;
     trinket_found?: boolean;
   };
-  flags: { trinketDrunk?: boolean };
-  tools: { blacksmith_hammer?: boolean };
+  flags: { trinketDrunk?: boolean; forestUnlocked?: boolean };
+  tools: { blacksmith_hammer?: boolean; reinforced_rope?: boolean; alchemist_map?: boolean; giant_trap?: boolean };
   clothing?: { tarnished_amulet?: boolean }; // Added for potential luck bonus
   // Add other properties of GameState as needed
   current_population?: number; // Added current_population to GameState
@@ -60,6 +76,10 @@ function getTotalLuck(state: GameState): number {
   );
 }
 
+// Helper function to get total knowledge from various sources
+function getTotalKnowledge(state: GameState): number {
+  return (state.stats.knowledge || 0);
+}
 
 // Centralized function to kill villagers
 function killVillagers(state: GameState, amount: number): Partial<GameState> {
@@ -704,7 +724,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
-    condition: (state: GameState) => state.current_population || 0 > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
+    condition: (state: GameState) => state.current_population > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
     triggerType: "resource",
     timeProbability: 40,
     title: "Offer to the Forest Gods",
@@ -778,7 +798,7 @@ export const storyEvents: Record<string, GameEvent> = {
           } else if (rand < successChance + nothingChance) {
             // Nothing happens, event remains active
             return {
-              _logMessage: "You refuse to sacrifice your people. The forest remains silent for now. The threat lingers...",
+              _logMessage: "You refuse the sacrifice. The forest remains silent for now. The threat lingers...",
             };
           } else {
             // Villagers disappear
@@ -838,7 +858,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const villagerDeaths = Math.floor(Math.random() * 5) + 1; // 1-5 villagers
           const hutDestruction = Math.floor(Math.random() * 2) + 1; // 1-2 huts
-          
+
           const deathResult = killVillagers(state, villagerDeaths);
 
           return {
@@ -853,8 +873,6 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
-
-
 
   // Create a merchant event:
 
@@ -893,7 +911,6 @@ export const storyEvents: Record<string, GameEvent> = {
 
   // For each knowledge, the cost is 1 % lower (always round up to next int)
 
-  
   hiddenLake: {
     id: "hiddenLake",
     condition: (state: GameState) => state.flags.forestUnlocked && !state.relics.cracked_crown,
@@ -920,7 +937,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 cracked_crown: true,
               },
-              _logMessage: "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers’ strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
+              _logMessage: "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
             };
           } else if (rand < successChance + fleeChance) {
             return {
@@ -942,7 +959,7 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Avoid the lake",
         effect: (state: GameState) => {
           const luck = getTotalLuck(state);
-          const successChance = 0.40 + (luck * 0.01); 
+          const successChance = 0.40 + (luck * 0.01);
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -954,9 +971,545 @@ export const storyEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water’s edge.",
+              _logMessage: "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water's edge.",
             };
           }
+        },
+      },
+    ],
+  },
+
+  merchant: {
+    id: "merchant",
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    triggerType: "resource",
+    timeProbability: 120,
+    title: "The Traveling Merchant",
+    message: "A weathered merchant approaches your village, his pack filled with exotic goods and strange contraptions. His eyes gleam with avarice as he surveys your settlement. 'I have rare items for trade,' he says with a crooked smile.",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      // Resource trades (4 random ones selected)
+      {
+        id: "trade_steel_100_wood",
+        label: "Buy 100 Steel for Wood",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const woodCosts = [750, 1000, 1250];
+          const cost = Math.ceil(woodCosts[Math.floor(Math.random() * woodCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.wood >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                wood: state.resources.wood - cost,
+                steel: state.resources.steel + 100,
+              },
+              _logMessage: `You trade ${cost} wood for 100 steel. The merchant nods approvingly.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient wood for this trade." };
+        },
+      },
+      {
+        id: "trade_steel_50_bones",
+        label: "Buy 50 Steel for Bones",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const boneCosts = [400, 500, 600];
+          const cost = Math.ceil(boneCosts[Math.floor(Math.random() * boneCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.bones >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                bones: state.resources.bones - cost,
+                steel: state.resources.steel + 50,
+              },
+              _logMessage: `You trade ${cost} bones for 50 steel. The merchant examines the bones with interest.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient bones for this trade." };
+        },
+      },
+      {
+        id: "trade_steel_50_wood",
+        label: "Buy 50 Steel for Wood",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const woodCosts = [400, 500, 600];
+          const cost = Math.ceil(woodCosts[Math.floor(Math.random() * woodCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.wood >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                wood: state.resources.wood - cost,
+                steel: state.resources.steel + 50,
+              },
+              _logMessage: `You trade ${cost} wood for 50 steel. The merchant examines the wood with interest.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient wood for this trade." };
+        },
+      },
+      {
+        id: "trade_obsidian_50_wood",
+        label: "Buy 50 Obsidian for Wood",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const woodCosts = [1500, 1750, 2000];
+          const cost = Math.ceil(woodCosts[Math.floor(Math.random() * woodCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.wood >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                wood: state.resources.wood - cost,
+                obsidian: state.resources.obsidian + 50,
+              },
+              _logMessage: `You trade ${cost} wood for 50 obsidian. The dark volcanic glass gleams ominously.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient wood for this trade." };
+        },
+      },
+      {
+        id: "trade_obsidian_25_bones",
+        label: "Buy 25 Obsidian for Bones",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const boneCosts = [1000, 1250, 1500];
+          const cost = Math.ceil(boneCosts[Math.floor(Math.random() * boneCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.bones >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                bones: state.resources.bones - cost,
+                obsidian: state.resources.obsidian + 25,
+              },
+              _logMessage: `You trade ${cost} bones for 25 obsidian. The merchant seems pleased with the unusual currency.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient bones for this trade." };
+        },
+      },
+      {
+        id: "trade_adamant_25_gold",
+        label: "Buy 25 Adamant for Gold",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const goldCosts = [10, 15];
+          const cost = Math.ceil(goldCosts[Math.floor(Math.random() * goldCosts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.gold >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                gold: state.resources.gold - cost,
+                adamant: state.resources.adamant + 25,
+              },
+              _logMessage: `You trade ${cost} gold for 25 adamant. The merchant handles the precious metal with reverence.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient gold for this trade." };
+        },
+      },
+      {
+        id: "trade_adamant_25_silver",
+        label: "Buy 25 Adamant for Silver",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const silverCosts = [30];
+          const cost = Math.ceil(silverCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.silver >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver - cost,
+                adamant: state.resources.adamant + 25,
+              },
+              _logMessage: `You trade ${cost} silver for 25 adamant. The merchant seems intrigued by your offer.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient silver for this trade." };
+        },
+      },
+      {
+        id: "trade_wood_500_silver",
+        label: "Buy 500 Wood for Silver",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const silverCosts = [5];
+          const cost = Math.ceil(silverCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.silver >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver - cost,
+                wood: state.resources.wood + 500,
+              },
+              _logMessage: `You trade ${cost} silver for 500 wood. The merchant acknowledges your resourcefulness.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient silver for this trade." };
+        },
+      },
+      {
+        id: "trade_wood_1000_gold",
+        label: "Buy 1000 Wood for Gold",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const goldCosts = [5];
+          const cost = Math.ceil(goldCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.gold >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                gold: state.resources.gold - cost,
+                wood: state.resources.wood + 1000,
+              },
+              _logMessage: `You trade ${cost} gold for 1000 wood. The merchant seems pleased with the transaction.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient gold for this trade." };
+        },
+      },
+      {
+        id: "trade_food_500_gold",
+        label: "Buy 500 Food for Gold",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const goldCosts = [5];
+          const cost = Math.ceil(goldCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.gold >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                gold: state.resources.gold - cost,
+                food: state.resources.food + 500,
+              },
+              _logMessage: `You trade ${cost} gold for 500 food. The merchant wishes you well with your provisions.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient gold for this trade." };
+        },
+      },
+      {
+        id: "trade_food_1000_silver",
+        label: "Buy 1000 Food for Silver",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const silverCosts = [20];
+          const cost = Math.ceil(silverCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.silver >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver - cost,
+                food: state.resources.food + 1000,
+              },
+              _logMessage: `You trade ${cost} silver for 1000 food. The merchant wishes you well with your harvest.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient silver for this trade." };
+        },
+      },
+      {
+        id: "trade_gold_25_steel",
+        label: "Buy 25 Gold for Steel",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const steelCosts = [200];
+          const cost = Math.ceil(steelCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.steel >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel - cost,
+                gold: state.resources.gold + 25,
+              },
+              _logMessage: `You trade ${cost} steel for 25 gold. The merchant seems satisfied with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient steel for this trade." };
+        },
+      },
+      {
+        id: "trade_gold_25_wood",
+        label: "Buy 25 Gold for Wood",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const woodCosts = [2500];
+          const cost = Math.ceil(woodCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.wood >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                wood: state.resources.wood - cost,
+                gold: state.resources.gold + 25,
+              },
+              _logMessage: `You trade ${cost} wood for 25 gold. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient wood for this trade." };
+        },
+      },
+      {
+        id: "trade_silver_50_steel",
+        label: "Buy 50 Silver for Steel",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const steelCosts = [500];
+          const cost = Math.ceil(steelCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.steel >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel - cost,
+                silver: state.resources.silver + 50,
+              },
+              _logMessage: `You trade ${cost} steel for 50 silver. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient steel for this trade." };
+        },
+      },
+      {
+        id: "trade_silver_50_wood",
+        label: "Buy 50 Silver for Wood",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const woodCosts = [5000];
+          const cost = Math.ceil(woodCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.wood >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                wood: state.resources.wood - cost,
+                silver: state.resources.silver + 50,
+              },
+              _logMessage: `You trade ${cost} wood for 50 silver. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient wood for this trade." };
+        },
+      },
+      {
+        id: "trade_gold_50_steel",
+        label: "Buy 50 Gold for Steel",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const steelCosts = [500];
+          const cost = Math.ceil(steelCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.steel >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel - cost,
+                gold: state.resources.gold + 50,
+              },
+              _logMessage: `You trade ${cost} steel for 50 gold. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient steel for this trade." };
+        },
+      },
+      {
+        id: "trade_gold_50_obsidian",
+        label: "Buy 50 Gold for Obsidian",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const obsidianCosts = [100];
+          const cost = Math.ceil(obsidianCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.obsidian >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                obsidian: state.resources.obsidian - cost,
+                gold: state.resources.gold + 50,
+              },
+              _logMessage: `You trade ${cost} obsidian for 50 gold. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient obsidian for this trade." };
+        },
+      },
+      {
+        id: "trade_silver_100_steel",
+        label: "Buy 100 Silver for Steel",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const steelCosts = [500];
+          const cost = Math.ceil(steelCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.steel >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel - cost,
+                silver: state.resources.silver + 100,
+              },
+              _logMessage: `You trade ${cost} steel for 100 silver. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient steel for this trade." };
+        },
+      },
+      {
+        id: "trade_silver_100_obsidian",
+        label: "Buy 100 Silver for Obsidian",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const obsidianCosts = [100];
+          const cost = Math.ceil(obsidianCosts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources.obsidian >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                obsidian: state.resources.obsidian - cost,
+                silver: state.resources.silver + 100,
+              },
+              _logMessage: `You trade ${cost} obsidian for 100 silver. The merchant seems pleased with the exchange.`,
+            };
+          }
+          return { _logMessage: "You lack sufficient obsidian for this trade." };
+        },
+      },
+      // Tool/Relic trades (2 random ones selected)
+      {
+        id: "trade_reinforced_rope",
+        label: "Buy Reinforced Rope",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const costs = [
+            { type: 'silver', amount: 50 },
+            { type: 'gold', amount: 25 }
+          ];
+          const selectedCost = costs[Math.floor(Math.random() * costs.length)];
+          const cost = Math.ceil(selectedCost.amount * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources[selectedCost.type] >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                [selectedCost.type]: state.resources[selectedCost.type] - cost,
+              },
+              tools: {
+                ...state.tools,
+                reinforced_rope: true,
+              },
+              _logMessage: `You purchase the reinforced rope for ${cost} ${selectedCost.type}. The merchant explains that this rope can withstand tremendous strain and reach places previously inaccessible in the deepest cave chambers.`,
+            };
+          }
+          return { _logMessage: `You lack sufficient ${selectedCost.type} for this trade.` };
+        },
+      },
+      {
+        id: "trade_alchemist_map",
+        label: "Buy Alchemist's Map",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const costs = [
+            { type: 'silver', amount: 100 },
+            { type: 'gold', amount: 50 }
+          ];
+          const selectedCost = costs[Math.floor(Math.random() * costs.length)];
+          const cost = Math.ceil(selectedCost.amount * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources[selectedCost.type] >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                [selectedCost.type]: state.resources[selectedCost.type] - cost,
+              },
+              tools: {
+                ...state.tools,
+                alchemist_map: true,
+              },
+              _logMessage: `You purchase the alchemist's map for ${cost} ${selectedCost.type}. The merchant whispers: 'An old alchemist, close to death, hid his secrets and possessions within a part of the cave. He covered the entrance with rock that locks like a door. This map will guide you there.'`,
+            };
+          }
+          return { _logMessage: `You lack sufficient ${selectedCost.type} for this trade.` };
+        },
+      },
+      {
+        id: "trade_murmuring_cube",
+        label: "Buy Murmuring Cube",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const costs = [
+            { type: 'silver', amount: 150 },
+            { type: 'gold', amount: 75 }
+          ];
+          const selectedCost = costs[Math.floor(Math.random() * costs.length)];
+          const cost = Math.ceil(selectedCost.amount * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources[selectedCost.type] >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                [selectedCost.type]: state.resources[selectedCost.type] - cost,
+              },
+              relics: {
+                ...state.relics,
+                murmuring_cube: true,
+              },
+              _logMessage: `You purchase the murmuring cube for ${cost} ${selectedCost.type}. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable.`,
+            };
+          }
+          return { _logMessage: `You lack sufficient ${selectedCost.type} for this trade.` };
+        },
+      },
+      {
+        id: "trade_giant_trap",
+        label: "Buy Giant Trap",
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const costs = [
+            { type: 'silver', amount: 20 },
+            { type: 'gold', amount: 10 }
+          ];
+          const selectedCost = costs[Math.floor(Math.random() * costs.length)];
+          const cost = Math.ceil(selectedCost.amount * Math.max(0.01, 1 - knowledge * 0.01));
+
+          if (state.resources[selectedCost.type] >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                [selectedCost.type]: state.resources[selectedCost.type] - cost,
+              },
+              tools: {
+                ...state.tools,
+                giant_trap: true,
+              },
+              _logMessage: `You purchase the giant trap for ${cost} ${selectedCost.type}. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'`,
+            };
+          }
+          return { _logMessage: `You lack sufficient ${selectedCost.type} for this trade.` };
+        },
+      },
+      {
+        id: "decline_trade",
+        label: "Decline all trades",
+        effect: (state: GameState) => {
+          return {
+            _logMessage: "You politely decline the merchant's offers. He shrugs and continues on his way, muttering about missed opportunities.",
+          };
         },
       },
     ],

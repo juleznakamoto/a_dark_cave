@@ -41,4 +41,20 @@ export const forestVentureActions: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  layTrap: {
+    id: "layTrap",
+    label: "Lay Trap",
+    show_when: {
+      "tools.giant_trap": true,
+    },
+    cost: {
+      "resources.food": 500,
+    },
+    effects: {
+      "resources.food": -500,
+      "story.seen.trapLaid": true,
+    },
+    cooldown: 20,
+  },
 };

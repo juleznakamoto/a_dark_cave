@@ -813,16 +813,14 @@ export const getTotalLuck = (state: GameState): number => {
 
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let totalStrength = state.stats?.strength || 0;
+  let strength = state.stats.strength || 0;
 
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.strength) {
-      totalStrength += effect.bonuses.generalBonuses.strength;
-    }
-  });
+  // Add strength bonuses from tools and relics
+  if (state.relics?.blacksmith_hammer) strength += 2;
+  if (state.relics?.bloodstained_belt) strength += 5;
+  if (state.relics?.black_bear_fur) strength += 10;
 
-  return totalStrength;
+  return strength;
 };
 
 // Helper function to calculate total knowledge

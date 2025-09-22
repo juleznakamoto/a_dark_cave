@@ -20,6 +20,8 @@ export default function CavePanel() {
         { id: 'exploreRuins', label: 'Explore Ruins' },
         { id: 'exploreTemple', label: 'Explore Temple' },
         { id: 'exploreCitadel', label: 'Explore Citadel' },
+        { id: 'lowChamber', label: 'Low Chamber' },
+        { id: 'alchemistChamber', label: 'Alchemist Chamber' },
       ]
     },
     {

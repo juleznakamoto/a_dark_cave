@@ -107,17 +107,27 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         </DialogHeader>
 
         <div className="flex flex-col gap-3 mt-4">
-          {event.choices.map((choice) => (
-            <Button
-              key={choice.id}
-              onClick={() => handleChoice(choice.id)}
-              variant="outline"
-              className="w-full text-left justify-start"
-              disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
-            >
-              {choice.label}
-            </Button>
-          ))}
+          {event.choices.map((choice) => {
+            // Check if choice can be afforded (for merchant trades)
+            let canAfford = true;
+            if (choice.id.startsWith('trade_') && choice.id !== 'decline_trade') {
+              // This is a simplified check - in a real implementation you'd want to 
+              // properly parse the choice effect to determine affordability
+              canAfford = true; // For now, we'll let the choice effect handle the check
+            }
+            
+            return (
+              <Button
+                key={choice.id}
+                onClick={() => handleChoice(choice.id)}
+                variant="outline"
+                className="w-full text-left justify-start"
+                disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
+              >
+                {choice.label}
+              </Button>
+            );
+          })}
         </div>
 
         {/* Timer bar for timed choices */}

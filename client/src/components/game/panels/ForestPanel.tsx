@@ -10,6 +10,7 @@ export default function ForestPanel() {
   // Define forest actions
   const forestActions = [
     { id: 'hunt', label: 'Hunt' },
+    { id: 'layTrap', label: 'Lay Trap' },
   ];
 
   // Define sacrifice actions
