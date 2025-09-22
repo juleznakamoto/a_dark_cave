@@ -473,10 +473,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
     description:
-      "A leather belt stained with ancient blood that grants raw power (+5 Strength)",
+      "A leather belt stained with ancient blood that grants raw power (+3 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 5,
+        strength: 3,
       },
     },
   },
