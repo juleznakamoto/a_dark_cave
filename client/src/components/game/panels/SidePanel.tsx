@@ -100,14 +100,26 @@ export default function SidePanel() {
       return true;
     });
 
+  // Debug villagers object to identify the issue
+  console.log('Villagers object:', villagers);
+  console.log('Villagers entries:', Object.entries(villagers));
+  
   // Dynamically generate villager items from state
   const populationItems = Object.entries(villagers)
+    .filter(([key, value]) => {
+      // Only include entries where value is a number
+      if (typeof value !== 'number') {
+        console.error(`Villager ${key} has non-number value:`, value, typeof value);
+        return false;
+      }
+      return true;
+    })
     .map(([key, value]) => ({
       id: key,
       label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      value: value ?? 0,
+      value: typeof value === 'number' ? value : 0,
       testId: `population-${key}`,
-      visible: (value ?? 0) > 0
+      visible: (typeof value === 'number' ? value : 0) > 0
     }))
     .filter(item => item.visible);
 
