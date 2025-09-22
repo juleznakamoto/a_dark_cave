@@ -101,13 +101,14 @@ export default function SidePanel() {
     });
 
   // Dynamically generate villager items from state
-  const populationItems = Object.entries(villagers)
+  const populationItems = Object.entries(villagers || {})
+    .filter(([key, value]) => typeof value === 'number')
     .map(([key, value]) => ({
       id: key,
       label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
-      value: value ?? 0,
+      value: Number(value) || 0,
       testId: `population-${key}`,
-      visible: (value ?? 0) > 0
+      visible: (Number(value) || 0) > 0
     }))
     .filter(item => item.visible);
 
