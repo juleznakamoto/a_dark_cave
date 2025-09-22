@@ -116,62 +116,104 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             onPointerDownOutside={(e) => e.preventDefault()}
             onEscapeKeyDown={(e) => e.preventDefault()}
           >
+            <DialogHeader>
+              <DialogTitle className="text-lg font-semibold">
+                {event.title || "Strange Encounter"}
+              </DialogTitle>
+              <DialogDescription className="text-sm text-muted-foreground mt-2">
+                {event.message}
+              </DialogDescription>
+            </DialogHeader>
+
+            <div className="flex flex-col gap-3 mt-4">
+              {event.choices.map((choice) => {
+                // Check if choice can be afforded (for merchant trades)
+                let canAfford = true;
+                if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
+                  // Check affordability for merchant trades
+                  const testResult = choice.effect(gameState);
+                  canAfford = Object.keys(testResult).length > 0;
+                }
+                
+                return (
+                  <Button
+                    key={choice.id}
+                    onClick={() => handleChoice(choice.id)}
+                    variant="outline"
+                    className="w-full text-left justify-start"
+                    disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
+                  >
+                    {choice.label}
+                  </Button>
+                );
+              })}
+            </div>
+
+            {/* Timer bar for timed choices */}
+            {event.isTimedChoice && timeRemaining !== null && (
+              <div className="mt-4 space-y-2">
+                <div className="flex justify-between text-sm text-muted-foreground">
+                  <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
+                </div>
+                <Progress 
+                  value={progress} 
+                  className="h-2"
+                />
+              </div>
+            )}
+          </DialogPrimitive.Content>
+        </DialogPortal>
       ) : (
         <DialogContent 
           className="sm:max-w-md [&>button]:hidden" 
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
-      )}
-        <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">
-            {event.title || "Strange Encounter"}
-          </DialogTitle>
-          <DialogDescription className="text-sm text-muted-foreground mt-2">
-            {event.message}
-          </DialogDescription>
-        </DialogHeader>
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold">
+              {event.title || "Strange Encounter"}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground mt-2">
+              {event.message}
+            </DialogDescription>
+          </DialogHeader>
 
-        <div className="flex flex-col gap-3 mt-4">
-          {event.choices.map((choice) => {
-            // Check if choice can be afforded (for merchant trades)
-            let canAfford = true;
-            if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
-              // Check affordability for merchant trades
-              const testResult = choice.effect(gameState);
-              canAfford = Object.keys(testResult).length > 0;
-            }
-            
-            return (
-              <Button
-                key={choice.id}
-                onClick={() => handleChoice(choice.id)}
-                variant="outline"
-                className="w-full text-left justify-start"
-                disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
-              >
-                {choice.label}
-              </Button>
-            );
-          })}
-        </div>
-
-        {/* Timer bar for timed choices */}
-        {event.isTimedChoice && timeRemaining !== null && (
-          <div className="mt-4 space-y-2">
-            <div className="flex justify-between text-sm text-muted-foreground">
-              <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
-            </div>
-            <Progress 
-              value={progress} 
-              className="h-2"
-            />
+          <div className="flex flex-col gap-3 mt-4">
+            {event.choices.map((choice) => {
+              // Check if choice can be afforded (for merchant trades)
+              let canAfford = true;
+              if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
+                // Check affordability for merchant trades
+                const testResult = choice.effect(gameState);
+                canAfford = Object.keys(testResult).length > 0;
+              }
+              
+              return (
+                <Button
+                  key={choice.id}
+                  onClick={() => handleChoice(choice.id)}
+                  variant="outline"
+                  className="w-full text-left justify-start"
+                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
+                >
+                  {choice.label}
+                </Button>
+              );
+            })}
           </div>
-        )}
-      {isMerchantEvent ? (
-        </DialogPrimitive.Content>
-        </DialogPortal>
-      ) : (
+
+          {/* Timer bar for timed choices */}
+          {event.isTimedChoice && timeRemaining !== null && (
+            <div className="mt-4 space-y-2">
+              <div className="flex justify-between text-sm text-muted-foreground">
+                <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
+              </div>
+              <Progress 
+                value={progress} 
+                className="h-2"
+              />
+            </div>
+          )}
         </DialogContent>
       )}
     </Dialog>
