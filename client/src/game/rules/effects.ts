@@ -536,10 +536,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "blacksmith_hammer",
     name: "Blacksmith Hammer",
     description:
-      "Ancient hammer that reduces crafting costs by 10% (+2 Strength)",
+      "Ancient hammer that reduces crafting costs by 10% (+6 Strength)",
     bonuses: {
       generalBonuses: {
-        strength: 5,
+        strength: 6,
       },
     },
   },
@@ -548,11 +548,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "elder_scroll",
     name: "Elder Scroll",
     description:
-      "Ancient scroll that grants both knowledge and luck (+10 Knowledge, +5 Luck)",
+      "Ancient scroll that grants both knowledge and luck (+10 Knowledge",
     bonuses: {
       generalBonuses: {
         knowledge: 15,
-        luck: 10,
       },
     },
   },
@@ -561,10 +560,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ebony_ring",
     name: "Ebony Ring",
     description:
-      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods (+5 Luck, +5 Knowledge)",
+      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods (+3 Luck, +5 Knowledge)",
     bonuses: {
       generalBonuses: {
-        luck: 5,
+        luck: 3,
         knowledge: 5,
       },
     },
@@ -574,11 +573,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "cracked_crown",
     name: "Cracked Crown",
     description:
-      "A cracked golden crown that hums with ancient power (+5 Luck, +5 Knowledge)",
+      "A cracked golden crown that hums with ancient power (+5 Luck, +3 Knowledge)",
     bonuses: {
       generalBonuses: {
         luck: 5,
-        knowledge: 5,
+        knowledge: 3,
       },
     },
   },
@@ -600,7 +599,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "unnamed_book",
     name: "Unnamed Book",
     description:
-      "A book with no title, filled with disturbing knowledge (+10 Knowledge, +2 Madness)",
+      "A book with no title, filled with disturbing knowledge (+10 Knowledge, +10 Madness)",
     bonuses: {
       generalBonuses: {
         knowledge: 10,
