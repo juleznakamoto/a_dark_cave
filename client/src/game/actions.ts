@@ -148,6 +148,12 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleAlchemistChamber(state, result);
     case 'layTrap':
       return handleLayTrap(state, result);
+    case 'buildGreatCabin':
+      return handleBuildGreatCabin(state, result);
+    case 'buildTimberMill':
+      return handleBuildTimberMill(state, result);
+    case 'buildQuarry':
+      return handleBuildQuarry(state, result);
     default:
       return result;
   }
@@ -284,6 +290,18 @@ function handleBuildFoundry(state: GameState, result: ActionResult): ActionResul
     };
   }
   return resultWithBuilding;
+}
+
+function handleBuildGreatCabin(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildGreatCabin', 'greatCabin');
+}
+
+function handleBuildTimberMill(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildTimberMill', 'timberMill');
+}
+
+function handleBuildQuarry(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildQuarry', 'quarry');
 }
 
 function handleBuildingConstruction(

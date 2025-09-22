@@ -1,7 +1,8 @@
-
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
+import { Button } from '@/components/ui/button';
 import CooldownButton from '@/components/CooldownButton';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function ForestPanel() {
   const { executeAction } = useGameStore();
@@ -65,9 +66,34 @@ export default function ForestPanel() {
         <div className="space-y-4">
           <h3 className="text-sm font-semibold text-foreground">Sacrifice</h3>
           <div className="flex flex-wrap gap-2">
-            {visibleSacrificeActions.map(action => 
-              renderActionButton(action.id, action.label)
-            )}
+            {visibleSacrificeActions.map(action => {
+              if (action.id === 'boneTotems') {
+                return (
+                  <HoverCard key={action.id}>
+                    <HoverCardTrigger asChild>
+                      <div>
+                        <CooldownButton
+                          onClick={() => executeAction(action.id)}
+                          cooldownMs={gameActions[action.id].cooldown * 1000}
+                          disabled={!canExecuteAction(action.id, state)}
+                          variant="outline"
+                          size="sm"
+                          className="hover:bg-transparent hover:text-foreground"
+                        >
+                          {action.label}
+                        </CooldownButton>
+                      </div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="w-auto p-2">
+                      <div className="text-xs whitespace-nowrap">
+                        {getCostText(action.id, state)}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
+                );
+              }
+              return renderActionButton(action.id, action.label);
+            })}
           </div>
         </div>
       )}
