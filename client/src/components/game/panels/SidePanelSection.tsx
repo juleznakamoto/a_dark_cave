@@ -180,6 +180,11 @@ export default function SidePanelSection({
                       +{effect.bonuses.generalBonuses.knowledge} Knowledge
                     </div>
                   )}
+                  {effect.bonuses.generalBonuses.madness && (
+                    <div>
+                      +{effect.bonuses.generalBonuses.madness} Madness
+                    </div>
+                  )}
                 </>
               )}
             </div>
