@@ -3,7 +3,7 @@ import { GameState } from "@shared/schema";
 import { getTotalLuck, applyLuckToprobability, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
 import { caveExploreActions } from './caveExploreActions';
 import { caveMiningActions } from './caveMiningActions';
-import { caveForgingActions } from './caveForgingActions';
+import { caveForgingActions } from './caveForgeActions';
 import { caveCraftResources } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
