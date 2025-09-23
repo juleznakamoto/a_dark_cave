@@ -30,6 +30,14 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   const [totalTime, setTotalTime] = useState<number>(0);
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
+  const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
+
+  // Reset purchased items when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      setPurchasedItems(new Set());
+    }
+  }, [isOpen, event?.id]);
 
   // Initialize timer for timed choices
   useEffect(() => {
@@ -42,7 +50,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     const knowledge = getTotalKnowledge(gameState);
     const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
-    
+
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
     startTimeRef.current = Date.now();
@@ -52,16 +60,16 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       if (fallbackExecutedRef.current) {
         return;
       }
-      
+
       const elapsed = (Date.now() - startTimeRef.current) / 1000;
       const remaining = Math.max(0, decisionTime - elapsed);
-      
+
       setTimeRemaining(remaining);
-      
+
       if (remaining <= 0 && !fallbackExecutedRef.current) {
         fallbackExecutedRef.current = true;
         clearInterval(interval);
-        
+
         // Time expired, execute fallback choice
         if (event.fallbackChoice) {
           const eventId = event.id.split('-')[0];
@@ -83,10 +91,16 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     if (fallbackExecutedRef.current) {
       return;
     }
-    
+
     const eventId = event!.id.split('-')[0];
     applyEventChoice(choiceId, eventId);
-    
+
+    // For merchant trades, mark as purchased but don't close dialog
+    if (choiceId.startsWith('trade_') && choiceId !== 'say_goodbye') {
+      setPurchasedItems(prev => new Set([...prev, choiceId]));
+      return; // Don't close dialog for trade purchases
+    }
+
     // Close dialog only for certain choices (goodbye, decline, or fallback choices)
     if (choiceId === 'say_goodbye' || choiceId === 'decline_trade' || choiceId === event?.fallbackChoice?.id) {
       fallbackExecutedRef.current = true;
@@ -125,28 +139,43 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               </DialogDescription>
             </DialogHeader>
 
-            <div className="flex flex-col gap-3 mt-4">
-              {event.choices.map((choice) => {
-                // Check if choice can be afforded (for merchant trades)
-                let canAfford = true;
-                if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
-                  // Check affordability for merchant trades
+            <div className="mt-4">
+              {/* Trade buttons in 2-column grid */}
+              <div className="grid grid-cols-2 gap-2 mb-4">
+                {event.choices.filter(choice => choice.id.startsWith('trade_') && choice.id !== 'say_goodbye').map((choice) => {
+                  // Check if choice can be afforded (for merchant trades)
                   const testResult = choice.effect(gameState);
-                  canAfford = Object.keys(testResult).length > 0;
-                }
-                
-                return (
-                  <Button
-                    key={choice.id}
-                    onClick={() => handleChoice(choice.id)}
-                    variant="outline"
-                    className="w-full text-left justify-start"
-                    disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
-                  >
-                    {choice.label}
-                  </Button>
-                );
-              })}
+                  const canAfford = Object.keys(testResult).length > 0;
+                  const isPurchased = purchasedItems.has(choice.id);
+
+                  return (
+                    <Button
+                      key={choice.id}
+                      onClick={() => handleChoice(choice.id)}
+                      variant={isPurchased ? "secondary" : "outline"}
+                      className="text-left justify-start text-xs h-auto py-3 px-2 min-h-[3rem]"
+                      disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
+                    >
+                      <span className="block text-left leading-tight">
+                        {isPurchased ? '✓ Purchased' : choice.label}
+                      </span>
+                    </Button>
+                  );
+                })}
+              </div>
+
+              {/* Say goodbye button - full width */}
+              {event.choices.filter(choice => choice.id === 'say_goodbye').map((choice) => (
+                <Button
+                  key={choice.id}
+                  onClick={() => handleChoice(choice.id)}
+                  variant="outline"
+                  className="w-full text-left justify-start"
+                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
+                >
+                  {choice.label}
+                </Button>
+              ))}
             </div>
 
             {/* Timer bar for timed choices */}
@@ -187,16 +216,18 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 const testResult = choice.effect(gameState);
                 canAfford = Object.keys(testResult).length > 0;
               }
-              
+
+              const isPurchased = purchasedItems.has(choice.id);
+
               return (
                 <Button
                   key={choice.id}
                   onClick={() => handleChoice(choice.id)}
-                  variant="outline"
+                  variant={isPurchased ? "secondary" : "outline"}
                   className="w-full text-left justify-start"
-                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford}
+                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                 >
-                  {choice.label}
+                  {isPurchased ? '✓ Purchased' : choice.label}
                 </Button>
               );
             })}
