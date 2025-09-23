@@ -154,8 +154,35 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const simplifiedLabel = itemMatch ? `Buy ${itemMatch[1]}` : choice.label.replace(/^Buy\s+/, 'Buy ');
 
                   // Extract cost from the choice label (format: "Buy X for Y resource")
-                  const costMatch = choice.label.match(/for (\d+) (\w+)$/);
-                  const costDisplay = costMatch ? `${costMatch[1]} ${costMatch[2]}` : 'Unknown cost';
+                  // Extract cost by examining what the effect would consume
+                  const getCostDisplay = () => {
+                    try {
+                      // Create a test state to see what resources would be consumed
+                      const testResult = choice.effect(gameState);
+                      if (testResult.resources) {
+                        // Find resources that would be decreased (negative values in the effect)
+                        const consumedResources = Object.entries(testResult.resources)
+                          .filter(([resource, newAmount]) => {
+                            const currentAmount = gameState.resources[resource] || 0;
+                            return typeof newAmount === 'number' && newAmount < currentAmount;
+                          })
+                          .map(([resource, newAmount]) => {
+                            const currentAmount = gameState.resources[resource] || 0;
+                            const cost = currentAmount - (newAmount as number);
+                            return `${cost} ${resource}`;
+                          });
+
+                        return consumedResources[0] || 'Unknown cost';
+                      }
+                    } catch (error) {
+                      // Fallback to parsing the label if effect fails
+                      const costMatch = choice.label.match(/for (\d+) (\w+)$/);
+                      return costMatch ? `${costMatch[1]} ${costMatch[2]}` : 'Unknown cost';
+                    }
+                    return 'Unknown cost';
+                  };
+
+                  const costDisplay = getCostDisplay();
 
                   const buttonContent = (
                     <Button
