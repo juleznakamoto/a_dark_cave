@@ -86,7 +86,19 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     };
   }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
-  if (!event || !event.choices) return null;
+  // For merchant events, generate fresh choices each time the dialog opens
+  const getEventChoices = () => {
+    if (event?.id.includes('merchant')) {
+      // Generate fresh choices for merchant events
+      const eventEffect = event.effect?.(gameState);
+      return eventEffect?._choices || [];
+    }
+    return event?.choices || [];
+  };
+
+  const eventChoices = getEventChoices();
+  
+  if (!event || !eventChoices.length) return null;
 
   const handleChoice = (choiceId: string) => {
     if (fallbackExecutedRef.current) {
@@ -102,7 +114,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         const newPurchasedItems = new Set([...prev, choiceId]);
         
         // Check if all trade choices are now purchased
-        const allTradeChoices = event.choices.filter(choice => choice.id.startsWith('trade_'));
+        const allTradeChoices = eventChoices.filter(choice => choice.id.startsWith('trade_'));
         const allPurchased = allTradeChoices.every(choice => newPurchasedItems.has(choice.id));
         
         // If all trades are purchased, close the dialog
@@ -159,7 +171,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             <div className="mt-4">
               {/* Trade buttons in 2-column grid */}
               <div className="grid grid-cols-2 gap-2 mb-4">
-                {event.choices.filter(choice => 
+                {eventChoices.filter(choice => 
                   choice.id.startsWith('trade_') && 
                   choice.id !== 'say_goodbye' && 
                   !purchasedItems.has(choice.id)
@@ -270,7 +282,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
           </DialogHeader>
 
           <div className="flex flex-col gap-3 mt-4">
-            {event.choices.map((choice) => {
+            {eventChoices.map((choice) => {
               // Check if choice can be afforded (for merchant trades)
               let canAfford = true;
               if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
