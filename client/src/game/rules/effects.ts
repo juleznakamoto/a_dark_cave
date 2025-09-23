@@ -628,6 +628,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  black_bear_fur: {
+    id: "black_bear_fur",
+    name: "Black Bear Fur",
+    description: "The magnificent fur of a giant black bear, radiating primal power but carrying a dark presence",
+    bonuses: {
+      generalBonuses: {
+        strength: 8,
+        madness: 2,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
