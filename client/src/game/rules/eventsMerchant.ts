@@ -324,11 +324,33 @@ export const merchantEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: true,
     effect: (state: GameState) => {
-      // Generate dynamic choices based on current state
+      // Generate completely fresh choices each time by creating new choice objects
       const availableResourceTrades = resourceTrades
         .sort(() => Math.random() - 0.5) // Shuffle
         .slice(0, 4) // Take first 4
-        .map(trade => createResourceTradeChoice(trade, state));
+        .map(trade => {
+          // Create a fresh choice with new random costs each time
+          const knowledge = getTotalKnowledge(state);
+          const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+          const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+          
+          return {
+            id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
+            label: `Buy ${trade.giveAmount} ${trade.give}`,
+            effect: (state: GameState) => {
+              if ((state.resources[costOption.resource] || 0) >= cost) {
+                return {
+                  resources: {
+                    ...state.resources,
+                    [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+                    [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
+                  },
+                };
+              }
+              return {};
+            },
+          };
+        });
 
       const availableToolTrades = toolTrades
         .filter(trade => {
@@ -343,7 +365,38 @@ export const merchantEvents: Record<string, GameEvent> = {
         })
         .sort(() => Math.random() - 0.5) // Shuffle
         .slice(0, 1) // Take first 1
-        .map(trade => createToolTradeChoice(trade, state));
+        .map(trade => {
+          // Create a fresh choice with new random costs each time
+          const knowledge = getTotalKnowledge(state);
+          const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+          const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+          
+          return {
+            id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
+            label: `${trade.label}`,
+            effect: (state: GameState) => {
+              if ((state.resources[costOption.resource] || 0) >= cost) {
+                const result: any = {
+                  resources: {
+                    ...state.resources,
+                    [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+                  },
+                  _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
+                };
+
+                if (trade.give === "tool") {
+                  result.tools = { ...state.tools, [trade.giveItem]: true };
+                }
+                if (trade.give === "relic") {
+                  result.relics = { ...state.relics, [trade.giveItem]: true };
+                }
+
+                return result;
+              }
+              return {};
+            },
+          };
+        });
 
       const choices = [
         ...availableResourceTrades,
