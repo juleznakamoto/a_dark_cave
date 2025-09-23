@@ -163,8 +163,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }}
-                      variant={isPurchased ? "secondary" : "outline"}
-                      className={`w-full justify-center text-xs h-10 ${isPurchased ? 'opacity-50' : ''}`}
+                      variant="outline"
+                      className={`w-full justify-center text-xs h-10 ${isPurchased ? 'opacity-30' : ''}`}
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">

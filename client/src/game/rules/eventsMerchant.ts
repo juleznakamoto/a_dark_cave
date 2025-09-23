@@ -251,67 +251,6 @@ const toolTrades = [
   }
 ];
 
-// Helper function to create resource trade choices
-function createResourceTradeChoice(trade: typeof resourceTrades[0], state: GameState) {
-  const knowledge = getTotalKnowledge(state);
-
-  // Select random cost option
-  const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-  const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
-
-  return {
-    id: trade.id,
-    label: `Buy ${trade.giveAmount} ${trade.give}`,
-    effect: (state: GameState) => {
-      if ((state.resources[costOption.resource] || 0) >= cost) {
-        return {
-          resources: {
-            ...state.resources,
-            [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-            [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
-          },
-        };
-      }
-      return {};
-    },
-  };
-}
-
-// Helper function to create tool/relic trade choices
-function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
-  const knowledge = getTotalKnowledge(state);
-
-  // Select random cost option
-  const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-  const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
-
-  return {
-    id: trade.id,
-    label: `${trade.label}`,
-    effect: (state: GameState) => {
-      if ((state.resources[costOption.resource] || 0) >= cost) {
-        const result: any = {
-          resources: {
-            ...state.resources,
-            [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-          },
-          _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
-        };
-
-        if (trade.give === "tool") {
-          result.tools = { ...state.tools, [trade.giveItem]: true };
-        }
-        if (trade.give === "relic") {
-          result.relics = { ...state.relics, [trade.giveItem]: true };
-        }
-
-        return result;
-      }
-      return {};
-    },
-  };
-}
-
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
   const availableResourceTrades = resourceTrades
@@ -409,7 +348,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 0.14,
+    timeProbability: 14,
     title: "The Traveling Merchant",
     message: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for trade'.",
     triggered: false,
