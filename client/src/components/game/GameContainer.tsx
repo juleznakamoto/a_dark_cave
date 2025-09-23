@@ -59,7 +59,10 @@ export default function GameContainer() {
 
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
-        <div className="w-full mb-6">
+        <div className={`w-full mb-6 ${
+          isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+            ? `madness-${currentEffect}` : ''
+        }`}>
           <LogPanel />
         </div>
 
@@ -130,7 +133,10 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-            <div className="flex-1 overflow-y-auto pl-6">
+            <div className={`flex-1 overflow-y-auto pl-6 ${
+              isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+                ? `madness-${currentEffect}` : ''
+            }`}>
               {activeTab === 'cave' && <CavePanel />}
               {activeTab === 'village' && <VillagePanel />}
               {activeTab === 'forest' && <ForestPanel />}
