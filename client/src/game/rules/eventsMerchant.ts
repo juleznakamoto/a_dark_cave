@@ -208,7 +208,8 @@ const toolTrades = [
   {
     id: "trade_reinforced_rope",
     label: "Buy Reinforced Rope",
-    tool: "reinforced_rope",
+    give: "tool",
+    giveItem: "reinforced_rope",
     costs: [
       { resource: "silver", amounts: [50] },
       { resource: "gold", amounts: [25] }
@@ -218,17 +219,19 @@ const toolTrades = [
   {
     id: "trade_alchemist_map",
     label: "Buy Alchemist's Map",
-    tool: "alchemist_map",
+    give: "tool",
+    giveItem: "alchemist_map",
     costs: [
       { resource: "silver", amounts: [100] },
       { resource: "gold", amounts: [50] }
     ],
-    message: "You buy the alchemist’s map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'"
+    message: "You buy the alchemist's map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'"
   },
   {
     id: "trade_murmuring_cube",
     label: "Buy Murmuring Cube",
-    relic: "murmuring_cube",
+    give: "relic",
+    giveItem: "murmuring_cube",
     costs: [
       { resource: "silver", amounts: [150] },
       { resource: "gold", amounts: [75] }
@@ -238,7 +241,8 @@ const toolTrades = [
   {
     id: "trade_giant_trap",
     label: "Buy Giant Trap",
-    tool: "giant_trap",
+    give: "tool",
+    giveItem: "giant_trap",
     costs: [
       { resource: "silver", amounts: [20] },
       { resource: "gold", amounts: [10] }
@@ -294,11 +298,11 @@ function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
           _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
         };
 
-        if (trade.tool) {
-          result.tools = { ...state.tools, [trade.tool]: true };
+        if (trade.give === "tool") {
+          result.tools = { ...state.tools, [trade.giveItem]: true };
         }
-        if (trade.relic) {
-          result.relics = { ...state.relics, [trade.relic]: true };
+        if (trade.give === "relic") {
+          result.relics = { ...state.relics, [trade.giveItem]: true };
         }
 
         return result;
