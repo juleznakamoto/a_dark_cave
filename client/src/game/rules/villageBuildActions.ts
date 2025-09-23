@@ -1,4 +1,7 @@
-import { Action } from "@shared/schema";
+
+import { Action, GameState } from "@shared/schema";
+import { ActionResult } from '@/game/actions';
+import { gameActions } from '@/game/rules';
 
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
@@ -573,3 +576,139 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 15,
   },
 };
+
+// Action handlers
+function handleBuildingConstruction(
+  state: GameState,
+  result: ActionResult,
+  actionId: string,
+  buildingType: keyof GameState['buildings']
+): ActionResult {
+  const level = state.buildings[buildingType] + 1;
+  const actionEffects = gameActions[actionId].effects[level];
+  const newResources = { ...state.resources };
+
+  for (const [path, effect] of Object.entries(actionEffects)) {
+    if (path.startsWith('resources.')) {
+      const resource = path.split('.')[1] as keyof typeof newResources;
+      newResources[resource] += effect;
+    }
+  }
+
+  result.stateUpdates.resources = newResources;
+  result.stateUpdates.buildings = {
+    ...state.buildings,
+    [buildingType]: state.buildings[buildingType] + 1
+  };
+
+  return result;
+}
+
+export function handleBuildWoodenHut(state: GameState, result: ActionResult): ActionResult {
+  const level = state.buildings.woodenHut + 1;
+  const actionEffects = gameActions.buildWoodenHut.effects[level];
+  const newResources = { ...state.resources };
+
+  for (const [path, effect] of Object.entries(actionEffects)) {
+    if (path.startsWith('resources.')) {
+      const resource = path.split('.')[1] as keyof typeof newResources;
+      newResources[resource] += effect;
+    }
+  }
+
+  result.stateUpdates.resources = newResources;
+  result.stateUpdates.buildings = {
+    ...state.buildings,
+    woodenHut: state.buildings.woodenHut + 1
+  };
+
+  if (state.buildings.woodenHut === 0) {
+    result.delayedEffects!.push(() => {
+      // Stranger approaches logic will be handled by the caller
+    });
+  }
+
+  return result;
+}
+
+export function handleBuildCabin(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildCabin', 'cabin');
+}
+
+export function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
+}
+
+export function handleBuildShallowPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildShallowPit', 'shallowPit');
+}
+
+export function handleBuildDeepeningPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildDeepeningPit', 'deepeningPit');
+}
+
+export function handleBuildDeepPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildDeepPit', 'deepPit');
+}
+
+export function handleBuildBottomlessPit(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildBottomlessPit', 'bottomlessPit');
+}
+
+export function handleBuildFoundry(state: GameState, result: ActionResult): ActionResult {
+  const builtFoundry = state.buildings.foundry === 0 && !state.story.seen.foundryComplete;
+  const resultWithBuilding = handleBuildingConstruction(state, result, 'buildFoundry', 'foundry');
+
+  if (builtFoundry) {
+    resultWithBuilding.logEntries!.push({
+      id: `foundry-complete-${Date.now()}`,
+      message: 'The foundry roars to life as fire and heat fuse the raw materials. The result is new matter of great strength and resilience.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+    resultWithBuilding.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        foundryComplete: true,
+      },
+    };
+  }
+  return resultWithBuilding;
+}
+
+export function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
+  const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+  
+  // Add shrine completion message
+  if (state.buildings.shrine === 0) {
+    shrineResult.logEntries!.push({
+      id: `shrine-built-${Date.now()}`,
+      message: 'A shrine rises at the forest's edge, raised to appease what dwells within.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+  
+  return shrineResult;
+}
+
+export function handleBuildGreatCabin(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildGreatCabin', 'greatCabin');
+}
+
+export function handleBuildTimberMill(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildTimberMill', 'timberMill');
+}
+
+export function handleBuildQuarry(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildQuarry', 'quarry');
+}
+
+export function handleBuildClerksHut(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
+}
+
+export function handleBuildStoneHut(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildStoneHut', 'stoneHut');
+}
