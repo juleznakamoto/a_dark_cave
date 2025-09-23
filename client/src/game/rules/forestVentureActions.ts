@@ -28,16 +28,23 @@ export const forestVentureActions: Record<string, Action> = {
     id: "boneTotems",
     label: "Bone Totems",
     show_when: {
+      "resources.bone_totem": 10,
       "buildings.shrine": 1,
-      "story.seen.hasBoneTotem": true,
     },
     cost: {
       "resources.bone_totem": 10,
     },
     effects: {
       "resources.bone_totem": -10,
-      // Note: Multiple possible events will be defined later via the event system
-      "story.seen.hasSacrificed": true,
+      "resources.gold": {
+        probability: "0.20 + (stats.luck * 0.005)",
+        value: "random(5,15)",
+      },
+      "resources.silver": {
+        probability: "0.20 + (stats.luck * 0.005)",
+        value: "random(15,30)",
+      },
+      "story.seen.actionBoneTotems": true,
     },
     cooldown: 30,
   },
