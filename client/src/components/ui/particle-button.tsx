@@ -190,10 +190,19 @@ function ParticleButton({
                 }
             }, 100);
 
-            // add flickering effect (will be stopped when max intensity is reached)
+            // add flickering effect 
             flickerRef.current = setInterval(() => {
-                const flicker = 0.65 + Math.random() * 0.3;
-                setGlowIntensity(prev => Math.min(1.3, prev * flicker));
+                setGlowIntensity(prev => {
+                    // If we haven't reached max intensity yet, use multiplicative flickering
+                    if (prev < 1.0) {
+                        const flicker = 0.65 + Math.random() * 0.3;
+                        return Math.min(1.3, prev * flicker);
+                    } else {
+                        // Once at max intensity, use additive flickering around 1.0
+                        const flicker = (Math.random() - 0.5) * 0.2; // -0.1 to +0.1
+                        return Math.max(0.8, Math.min(1.2, 1.0 + flicker));
+                    }
+                });
             }, 150);
         }, hoverDelay);
     };
