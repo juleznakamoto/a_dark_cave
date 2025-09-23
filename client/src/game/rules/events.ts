@@ -2,7 +2,7 @@
 import { GameState } from "@shared/schema";
 import { baseEvents } from "./eventsBase";
 import { storyEvents } from "./eventsStory";
-import { merchantEvents } from "./eventsMerchant";
+import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 
 export interface GameEvent {
   id: string;
@@ -94,8 +94,6 @@ export class EventManager {
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
-          // Import generateMerchantChoices function
-          const { generateMerchantChoices } = require("./eventsMerchant");
           eventChoices = generateMerchantChoices(state);
         }
 
