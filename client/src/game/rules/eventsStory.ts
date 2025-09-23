@@ -58,7 +58,12 @@ type GameState = {
     trinket_found?: boolean;
   };
   flags: { trinketDrunk?: boolean; forestUnlocked?: boolean };
-  tools: { blacksmith_hammer?: boolean; reinforced_rope?: boolean; alchemist_map?: boolean; giant_trap?: boolean };
+  tools: {
+    blacksmith_hammer?: boolean;
+    reinforced_rope?: boolean;
+    alchemist_map?: boolean;
+    giant_trap?: boolean;
+  };
   clothing?: { tarnished_amulet?: boolean }; // Added for potential luck bonus
   // Add other properties of GameState as needed
   current_population?: number; // Added current_population to GameState
@@ -231,7 +236,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     message: [
       "By morning, raw adamant lies behind one of the huts of the village.",
-      "When dawn breaks, fragments of adamant protrude from the earth around your settlement."
+      "When dawn breaks, fragments of adamant protrude from the earth around your settlement.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -248,7 +253,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 35,
     title: "The Pale Figure",
     message: [
       "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
@@ -323,7 +328,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.whispering_amulet,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 25,
     title: "Whispers Beneath the Hut",
     message:
       "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
@@ -396,7 +401,8 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
-            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage:
+              "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -408,7 +414,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
       "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
@@ -421,7 +427,8 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Keep the figure",
         effect: (state: GameState) => {
           return {
-            _logMessage: "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
+            _logMessage:
+              "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
           };
         },
       },
@@ -434,7 +441,8 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               wooden_figure: true,
             },
-            _logMessage: "You discard the figure. The forest seems to watch silently as it disappears.",
+            _logMessage:
+              "You discard the figure. The forest seems to watch silently as it disappears.",
           };
         },
       },
@@ -457,7 +465,12 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "defendVillage",
         label: "Defend the village",
         effect: (state: GameState) => {
-          const currentPopulation = state.current_population || Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+          const currentPopulation =
+            state.current_population ||
+            Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
           if (currentPopulation === 0) {
             return {
               _logMessage:
@@ -552,7 +565,12 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "hideAndWait",
         label: "Hide and wait it out",
         effect: (state: GameState) => {
-          const currentPopulation = state.current_population || Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+          const currentPopulation =
+            state.current_population ||
+            Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
           if (currentPopulation === 0) {
             return {
               _logMessage:
@@ -719,11 +737,15 @@ export const storyEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
-    condition: (state: GameState) => state.current_population > 6 && !state.relics.ebony_ring && state.buildings.shrine == 1,
+    condition: (state: GameState) =>
+      state.current_population > 6 &&
+      !state.relics.ebony_ring &&
+      state.buildings.shrine == 1,
     triggerType: "resource",
     timeProbability: 40,
     title: "Offer to the Forest Gods",
-    message: "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to restore peace.",
+    message:
+      "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to restore peace.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -736,7 +758,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const totalLuck = getTotalLuck(state);
 
-          const successChance = 0.35 + (totalLuck * 0.01);
+          const successChance = 0.35 + totalLuck * 0.01;
           const rand = Math.random();
 
           // Kill 4 villagers first
@@ -750,15 +772,19 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 ebony_ring: true,
               },
-              _logMessage: "The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
+              _logMessage:
+                "The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
             };
           } else {
             // Failure: additional suicides
             const additionalDeaths = Math.floor(Math.random() * 5) + 2; // 2-6 additional deaths
-            const totalDeathResult = killVillagers({
-              ...state,
-              villagers: deathResult.villagers || state.villagers
-            }, additionalDeaths);
+            const totalDeathResult = killVillagers(
+              {
+                ...state,
+                villagers: deathResult.villagers || state.villagers,
+              },
+              additionalDeaths,
+            );
 
             return {
               villagers: totalDeathResult.villagers,
@@ -777,8 +803,8 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const totalLuck = getTotalLuck(state);
 
-          const successChance = 0.10 + (totalLuck * 0.01);
-          const nothingChance = 0.40;
+          const successChance = 0.1 + totalLuck * 0.01;
+          const nothingChance = 0.4;
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -788,12 +814,14 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 ebony_ring: true,
               },
-              _logMessage: "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift. Your moral stand has been rewarded.",
+              _logMessage:
+                "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift. Your moral stand has been rewarded.",
             };
           } else if (rand < successChance + nothingChance) {
             // Nothing happens, event remains active
             return {
-              _logMessage: "You refuse the sacrifice. The forest remains silent for now. The threat lingers...",
+              _logMessage:
+                "You refuse the sacrifice. The forest remains silent for now. The threat lingers...",
             };
           } else {
             // Villagers disappear
@@ -802,7 +830,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `You refuse the sacrifice. During the night, ${disappearances} villager${disappearances > 1 ? 's' : ''} wander${disappearances === 1 ? 's' : ''} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
+              _logMessage: `You refuse the sacrifice. During the night, ${disappearances} villager${disappearances > 1 ? "s" : ""} wander${disappearances === 1 ? "s" : ""} into the woods as if sleepwalking, drawn by a voice only they could hear. They are never seen again.`,
             };
           }
         },
@@ -825,11 +853,13 @@ export const storyEvents: Record<string, GameEvent> = {
 
   madBeduine: {
     id: "madBeduine",
-    condition: (state: GameState) => state.buildings.woodenHut >= 6 && !state.relics.unnamed_book,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 8 && !state.relics.unnamed_book,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Mad Beduine",
-    message: "As evening falls, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
+    message:
+      "As evening falls, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -843,7 +873,8 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               unnamed_book: true,
             },
-            _logMessage: "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge. The Unnamed Book grants you dark wisdom. (+10 Knowledge)",
+            _logMessage:
+              "You grant the stranger shelter. At dawn, he has vanished. Only his robes remain, and within them lies a book bound in human skin. Its pages whisper forbidden knowledge.",
           };
         },
       },
@@ -860,9 +891,12 @@ export const storyEvents: Record<string, GameEvent> = {
             ...deathResult,
             buildings: {
               ...state.buildings,
-              woodenHut: Math.max(0, state.buildings.woodenHut - hutDestruction),
+              woodenHut: Math.max(
+                0,
+                state.buildings.woodenHut - hutDestruction,
+              ),
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing like the wailing of the damned. Before dawn, a tribe of cannibals descends as if summoned by his cries, killing ${villagerDeaths} and destroying ${hutDestruction} hut${hutDestruction > 1 ? 's' : ''} before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing like the wailing of the damned. Before dawn, a tribe of cannibals descends as if summoned by his cries, killing ${villagerDeaths} and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
           };
         },
       },
@@ -871,11 +905,13 @@ export const storyEvents: Record<string, GameEvent> = {
 
   hiddenLake: {
     id: "hiddenLake",
-    condition: (state: GameState) => state.flags.forestUnlocked && !state.relics.cracked_crown,
+    condition: (state: GameState) =>
+      state.flags.forestUnlocked && !state.relics.cracked_crown,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Hidden Lake",
-    message: "While gathering wood deep in the forest, your villagers discover a pristine lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+    message:
+      "While gathering wood deep in the forest, your villagers discover a pristine lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -885,8 +921,8 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Investigate the lake",
         effect: (state: GameState) => {
           const strength = state.stats.strength || 0;
-          const successChance = 0.25 + (strength * 0.01); // 25% + 1% per strength point
-          const fleeChance = 0.20;
+          const successChance = 0.25 + strength * 0.01; // 25% + 1% per strength point
+          const fleeChance = 0.2;
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -895,11 +931,13 @@ export const storyEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 cracked_crown: true,
               },
-              _logMessage: "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
+              _logMessage:
+                "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
             };
           } else if (rand < successChance + fleeChance) {
             return {
-              _logMessage: "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee and vow never to speak of it again.",
+              _logMessage:
+                "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee and vow never to speak of it again.",
             };
           } else {
             const drownedCount = Math.floor(Math.random() * 4) + 1;
@@ -907,7 +945,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? 's' : ''} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
+              _logMessage: `The creature rises like a nightmare, beauty masking deadly intent. With unnatural strength, she drags ${drownedCount} villager${drownedCount > 1 ? "s" : ""} beneath the waters. Only ripples and faint screams remain as the rest flee in terror.`,
             };
           }
         },
@@ -917,25 +955,25 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Avoid the lake",
         effect: (state: GameState) => {
           const luck = getTotalLuck(state);
-          const successChance = 0.40 + (luck * 0.01);
+          const successChance = 0.4 + luck * 0.01;
           const rand = Math.random();
 
           if (rand < successChance) {
             return {
-              _logMessage: "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
+              _logMessage:
+                "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
             };
           } else {
             const deathResult = killVillagers(state, 1);
 
             return {
               ...deathResult,
-              _logMessage: "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water's edge.",
+              _logMessage:
+                "You forbid any approach, but the villager who claimed to have seen the creature cannot resist. One night he sneaks away, never to return. At dawn, only his clothes lie at the water's edge.",
             };
           }
         },
       },
     ],
   },
-
-  
 };

@@ -180,7 +180,7 @@ export default function VillagePanel() {
 
             return effectsText && buildings.clerksHut > 0 ? (
               <div className="text-xs text-muted-foreground border-t pt-2 mt-2">
-                Total: {effectsText} per 15s
+                {effectsText} per 15s
               </div>
             ) : null;
           })()}
