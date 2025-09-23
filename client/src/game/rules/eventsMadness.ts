@@ -3,7 +3,6 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 export const madnessEvents: Record<string, GameEvent> = {
-  // Madness Level 10 Events
   whisperingVoices: {
     id: "whisperingVoices",
     condition: (state: GameState) =>
@@ -43,7 +42,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     }),
   },
 
-  // Madness Level 20 Events
   villagerStares: {
     id: "villagerStares",
     condition: (state: GameState) =>
@@ -115,8 +113,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     }),
   },
 
-  // Madness Level 30 Events
-  facesInWalls: {
+facesInWalls: {
     id: "facesInWalls",
     condition: (state: GameState) => (state.stats.madness || 0) >= 30,
     triggerType: "resource",
@@ -167,7 +164,7 @@ export const madnessEvents: Record<string, GameEvent> = {
              spaceForThree;
     },
     triggerType: "resource",
-    timeProbability: 90,
+    timeProbability: 30,
     message:
       "You count your villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice.",
     triggered: false,
@@ -185,7 +182,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     }),
   },
 
-  // Madness Level 40 Events
   skinCrawling: {
     id: "skinCrawling",
     condition: (state: GameState) => (state.stats.madness || 0) >= 40,
@@ -243,7 +239,6 @@ export const madnessEvents: Record<string, GameEvent> = {
     }),
   },
 
-  // Madness Level 50 Events
   realityBleed: {
     id: "realityBleed",
     condition: (state: GameState) => (state.stats.madness || 0) >= 50,
