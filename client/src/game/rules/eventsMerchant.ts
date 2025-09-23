@@ -412,10 +412,10 @@ export const merchantEvents: Record<string, GameEvent> = {
         },
       ];
 
-      // Store choices in the event for the dialog
-      merchantEvents.merchant.choices = choices;
-
-      return {};
+      // Return choices as part of the effect result instead of storing in event
+      return {
+        _choices: choices,
+      };
     },
   },
 };
