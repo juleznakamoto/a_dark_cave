@@ -378,31 +378,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { newLogEntries, stateChanges } = EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
-      console.log(`[STATE] Events Triggered:`, {
-        newLogEntries,
-        stateChanges
-      });
-
-      set((prevState) => {
-        const newState = {
-          ...prevState,
-          ...stateChanges,
-          log: [...prevState.log, ...newLogEntries].slice(-8),
-          events: {
-            ...prevState.events,
-            ...newLogEntries.reduce(
-              (acc, entry) => {
-                const eventId = entry.id.split("-")[0];
-                acc[eventId] = true;
-                return acc;
-              },
-              {} as Record<string, boolean>,
-            ),
-          },
-        };
-        console.log(`[STATE] New state after events:`, newState);
-        return newState;
-      });
+      set((prevState) => ({
+        ...prevState,
+        ...stateChanges,
+        log: [...prevState.log, ...newLogEntries].slice(-8),
+        events: {
+          ...prevState.events,
+          ...newLogEntries.reduce(
+            (acc, entry) => {
+              const eventId = entry.id.split("-")[0];
+              acc[eventId] = true;
+              return acc;
+            },
+            {} as Record<string, boolean>,
+          ),
+        },
+      }));
 
       // Check if any new log entry has choices and show event dialog
       newLogEntries.forEach(entry => {
@@ -412,20 +403,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           const hasActiveMerchantDialog = currentDialog.isOpen && 
             currentDialog.currentEvent?.id.includes('merchant');
           
-          console.log(`[STATE] New event with choices found:`, {
-            newEventId: entry.id,
-            isMerchantEvent,
-            currentDialogOpen: currentDialog.isOpen,
-            currentEventId: currentDialog.currentEvent?.id,
-            hasActiveMerchantDialog,
-            willReplaceDialog: !hasActiveMerchantDialog || !isMerchantEvent
-          });
-          
           // Only open dialog if there's no active merchant dialog, or if this isn't a merchant event
           if (!hasActiveMerchantDialog || !isMerchantEvent) {
             get().setEventDialog(true, entry);
-          } else {
-            console.log(`[STATE] Skipping dialog open - merchant dialog already active`);
           }
         }
       });
@@ -438,16 +418,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
 
-    console.log(`[STATE] Applying event choice: ${choiceId} for event: ${eventId}`);
-    console.log(`[STATE] Available events:`, Object.keys(state.events || {}));
-
     // Get the current event dialog log entry for merchant events
     const currentLogEntry = get().eventDialog.currentEvent;
 
     // Handle other events using EventManager
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
-
-    console.log(`[STATE] EventManager returned changes:`, changes);
 
     if (Object.keys(changes).length > 0) {
       // Handle log messages from choice effects
@@ -459,19 +434,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         delete updatedChanges._logMessage;
       }
 
-      console.log(`[STATE] Event Choice: ${choiceId} for event ${eventId}`, {
-        changes: updatedChanges,
-        logMessage
-      });
-
-      set((prevState) => {
-        const newState = {
-          ...prevState,
-          ...updatedChanges,
-        };
-        console.log(`[STATE] New state after event choice ${choiceId}:`, newState);
-        return newState;
-      });
+      set((prevState) => ({
+        ...prevState,
+        ...updatedChanges,
+      }));
 
       // Add log message if present
       if (logMessage) {
@@ -486,18 +452,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Close the event dialog (except for merchant trade choices)
       const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
       if (!isMerchantTradeChoice) {
-        console.log(`[STATE] Closing dialog for non-trade choice: ${choiceId}`);
         get().setEventDialog(false);
-      } else {
-        console.log(`[STATE] Keeping dialog open for merchant trade choice: ${choiceId}`);
       }
 
-      // Update population after applying changes - ensure it happens after state update
+      // Update population after applying changes
       setTimeout(() => {
         get().updatePopulation();
       }, 100);
     } else {
-      console.log(`[STATE] No changes returned from EventManager for choice: ${choiceId}, event: ${eventId}`);
       // Still close the dialog even if no changes
       get().setEventDialog(false);
     }
