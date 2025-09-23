@@ -86,17 +86,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     };
   }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
-  // For merchant events, generate fresh choices each time the dialog opens
-  const getEventChoices = () => {
-    if (event?.id.includes('merchant')) {
-      // Generate fresh choices for merchant events
-      const eventEffect = event.effect?.(gameState);
-      return eventEffect?._choices || [];
-    }
-    return event?.choices || [];
-  };
-
-  const eventChoices = getEventChoices();
+  // Use choices directly from the event (they're already generated fresh for merchant events)
+  const eventChoices = event?.choices || [];
   
   if (!event || !eventChoices.length) return null;
 
@@ -181,41 +172,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const canAfford = Object.keys(testResult).length > 0;
                   const isPurchased = purchasedItems.has(choice.id);
 
-                  // Use the original label from the trade object
+                  // Use the choice label directly (now includes cost info)
                   const displayLabel = choice.label;
 
-                  // Extract cost from the choice label (format: "Buy X for Y resource")
-                  // Extract cost by examining what the effect would consume
-                  const getCostDisplay = () => {
-                    try {
-                      // Create a test state to see what resources would be consumed
-                      const testResult = choice.effect(gameState);
-                      if (testResult.resources) {
-                        // Find resources that would be decreased (negative values in the effect)
-                        const consumedResources = Object.entries(testResult.resources)
-                          .filter(([resource, newAmount]) => {
-                            const currentAmount = gameState.resources[resource] || 0;
-                            return typeof newAmount === 'number' && newAmount < currentAmount;
-                          })
-                          .map(([resource, newAmount]) => {
-                            const currentAmount = gameState.resources[resource] || 0;
-                            const cost = currentAmount - (newAmount as number);
-                            return `${cost} ${resource}`;
-                          });
-
-                        return consumedResources[0] || 'Unknown cost';
-                      }
-                    } catch (error) {
-                      // Fallback to parsing the label if effect fails
-                      const costMatch = choice.label.match(/for (\d+) (\w+)$/);
-                      return costMatch ? `${costMatch[1]} ${costMatch[2]}` : 'Unknown cost';
-                    }
-                    return 'Unknown cost';
-                  };
-
-                  const costDisplay = getCostDisplay();
-
-                  const buttonContent = (
+                  return (
                     <Button
                       key={choice.id}
                       onClick={() => handleChoice(choice.id)}
@@ -227,24 +187,6 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                         {isPurchased ? '✓ Purchased' : displayLabel}
                       </span>
                     </Button>
-                  );
-
-                  // Only show hover for non-purchased items
-                  if (isPurchased) {
-                    return buttonContent;
-                  }
-
-                  return (
-                    <HoverCard key={choice.id} openDelay={200} closeDelay={100}>
-                      <HoverCardTrigger asChild>
-                        {buttonContent}
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-auto p-2">
-                        <div className="text-xs whitespace-nowrap">
-                          {costDisplay}
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
                   );
                 })}
               </div>

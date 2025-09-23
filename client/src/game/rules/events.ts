@@ -91,13 +91,21 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
+        // Generate fresh choices for merchant events
+        let eventChoices = event.choices;
+        if (event.id === "merchant") {
+          // Import generateMerchantChoices function
+          const { generateMerchantChoices } = require("./eventsMerchant");
+          eventChoices = generateMerchantChoices(state);
+        }
+
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
           message: event.message,
           timestamp: Date.now(),
           type: "event",
           title: event.title,
-          choices: event.choices,
+          choices: eventChoices,
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
           fallbackChoice: event.fallbackChoice,
@@ -106,7 +114,7 @@ export class EventManager {
         newLogEntries.push(logEntry);
 
         // Apply effect if it exists and there are no choices
-        if (event.effect && !event.choices) {
+        if (event.effect && !eventChoices?.length) {
           stateChanges = event.effect(state);
         }
 

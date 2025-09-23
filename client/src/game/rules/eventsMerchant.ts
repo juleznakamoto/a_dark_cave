@@ -312,6 +312,96 @@ function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
   };
 }
 
+// Function to generate fresh merchant choices
+export function generateMerchantChoices(state: GameState): EventChoice[] {
+  const availableResourceTrades = resourceTrades
+    .sort(() => Math.random() - 0.5) // Shuffle
+    .slice(0, 4) // Take first 4
+    .map(trade => {
+      // Create a fresh choice with new random costs each time
+      const knowledge = getTotalKnowledge(state);
+      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+      
+      return {
+        id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
+        label: `Buy ${trade.giveAmount} ${trade.give} for ${cost} ${costOption.resource}`,
+        effect: (state: GameState) => {
+          if ((state.resources[costOption.resource] || 0) >= cost) {
+            return {
+              resources: {
+                ...state.resources,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+                [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
+              },
+            };
+          }
+          return {};
+        },
+      };
+    });
+
+  const availableToolTrades = toolTrades
+    .filter(trade => {
+      // Don't offer tools/relics that the player already owns
+      if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) {
+        return false;
+      }
+      if (trade.give === "relic" && state.relics[trade.giveItem as keyof typeof state.relics]) {
+        return false;
+      }
+      return true;
+    })
+    .sort(() => Math.random() - 0.5) // Shuffle
+    .slice(0, 1) // Take first 1
+    .map(trade => {
+      // Create a fresh choice with new random costs each time
+      const knowledge = getTotalKnowledge(state);
+      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+      
+      return {
+        id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
+        label: `${trade.label} for ${cost} ${costOption.resource}`,
+        effect: (state: GameState) => {
+          if ((state.resources[costOption.resource] || 0) >= cost) {
+            const result: any = {
+              resources: {
+                ...state.resources,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+              },
+              _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
+            };
+
+            if (trade.give === "tool") {
+              result.tools = { ...state.tools, [trade.giveItem]: true };
+            }
+            if (trade.give === "relic") {
+              result.relics = { ...state.relics, [trade.giveItem]: true };
+            }
+
+            return result;
+          }
+          return {};
+        },
+      };
+    });
+
+  return [
+    ...availableResourceTrades,
+    ...availableToolTrades,
+    {
+      id: "say_goodbye",
+      label: "Say goodbye",
+      effect: (state: GameState) => {
+        return {
+          _logMessage: "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
+        };
+      },
+    },
+  ];
+}
+
 export const merchantEvents: Record<string, GameEvent> = {
   merchant: {
     id: "merchant",
@@ -323,100 +413,6 @@ export const merchantEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: true,
-    effect: (state: GameState) => {
-      // Generate completely fresh choices each time by creating new choice objects
-      const availableResourceTrades = resourceTrades
-        .sort(() => Math.random() - 0.5) // Shuffle
-        .slice(0, 4) // Take first 4
-        .map(trade => {
-          // Create a fresh choice with new random costs each time
-          const knowledge = getTotalKnowledge(state);
-          const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-          const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
-          
-          return {
-            id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-            label: `Buy ${trade.giveAmount} ${trade.give}`,
-            effect: (state: GameState) => {
-              if ((state.resources[costOption.resource] || 0) >= cost) {
-                return {
-                  resources: {
-                    ...state.resources,
-                    [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-                    [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
-                  },
-                };
-              }
-              return {};
-            },
-          };
-        });
-
-      const availableToolTrades = toolTrades
-        .filter(trade => {
-          // Don't offer tools/relics that the player already owns
-          if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) {
-            return false;
-          }
-          if (trade.give === "relic" && state.relics[trade.giveItem as keyof typeof state.relics]) {
-            return false;
-          }
-          return true;
-        })
-        .sort(() => Math.random() - 0.5) // Shuffle
-        .slice(0, 1) // Take first 1
-        .map(trade => {
-          // Create a fresh choice with new random costs each time
-          const knowledge = getTotalKnowledge(state);
-          const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-          const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
-          
-          return {
-            id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-            label: `${trade.label}`,
-            effect: (state: GameState) => {
-              if ((state.resources[costOption.resource] || 0) >= cost) {
-                const result: any = {
-                  resources: {
-                    ...state.resources,
-                    [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-                  },
-                  _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
-                };
-
-                if (trade.give === "tool") {
-                  result.tools = { ...state.tools, [trade.giveItem]: true };
-                }
-                if (trade.give === "relic") {
-                  result.relics = { ...state.relics, [trade.giveItem]: true };
-                }
-
-                return result;
-              }
-              return {};
-            },
-          };
-        });
-
-      const choices = [
-        ...availableResourceTrades,
-        ...availableToolTrades,
-        {
-          id: "say_goodbye",
-          label: "Say goodbye",
-          effect: (state: GameState) => {
-            return {
-              _logMessage: "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
-            };
-          },
-        },
-      ];
-
-      // Don't store choices in the event object - they should be generated fresh each time
-      // Return the choices as part of the effect result instead
-      return {
-        _choices: choices,
-      };
-    },
+    choices: [], // Will be populated when event triggers
   },
 };
