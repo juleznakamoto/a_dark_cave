@@ -113,7 +113,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     }),
   },
 
-facesInWalls: {
+  facesInWalls: {
     id: "facesInWalls",
     condition: (state: GameState) => (state.stats.madness || 0) >= 30,
     triggerType: "resource",
@@ -158,9 +158,9 @@ facesInWalls: {
       const currentPopulation = state.current_population || 0;
       const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
-      
-      return (state.stats.madness || 0) >= 30 && 
-             state.villagers.free > 2 && 
+
+      return (state.stats.madness || 0) >= 30 &&
+             state.villagers.free > 2 &&
              spaceForThree;
     },
     triggerType: "resource",
@@ -195,28 +195,43 @@ facesInWalls: {
     repeatable: true,
     choices: [
       {
-        id: "scratch",
-        label: "Scratch deeper to see what's underneath",
-        effect: (state: GameState) => ({
-          stats: {
-            ...state.stats,
-            madness: (state.stats.madness || 0) + 12,
-          },
-          _logMessage:
-            "You dig deep into your flesh. Beneath your skin, you find not muscle and bone, but writhing darkness filled with eyes that blink in unison. They all look directly at you and whisper 'welcome home.'",
-        }),
+        id: "calm_down",
+        label: "Try to calm down",
+        effect: (state: GameState) => {
+          const rand = Math.random();
+          if (rand < 0.5) {
+            return {
+              _logMessage:
+                "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
+            };
+          } else {
+            return {
+              stats: {
+                ...state.stats,
+                madness: (state.stats.madness || 0) + 3,
+              },
+              _logMessage:
+                "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
+            };
+          }
+        },
       },
       {
-        id: "endure",
-        label: "Endure the sensation",
-        effect: (state: GameState) => ({
-          stats: {
-            ...state.stats,
-            madness: (state.stats.madness || 0) + 6,
-          },
-          _logMessage:
-            "You clench your fists and endure. The crawling sensation grows stronger, and you realize the things under your skin are trying to spell out the true name of something that should never be named.",
-        }),
+        id: "keep_scratching",
+        label: "Keep scratching",
+        effect: (state: GameState) => {
+          const killedVillagers = Math.floor(Math.random() * 4) + 3; // 3-6 villagers
+          const deathResult = killVillagers(state, killedVillagers);
+          return {
+            ...deathResult,
+            stats: {
+              ...state.stats,
+              madness: (state.stats.madness || 0) + 2,
+            },
+            _logMessage:
+              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands.`,
+          };
+        },
       },
     ],
   },
