@@ -157,7 +157,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const buttonContent = (
                     <Button
                       key={choice.id}
-                      onClick={() => handleChoice(choice.id)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleChoice(choice.id);
+                      }}
                       variant={isPurchased ? "secondary" : "outline"}
                       className="w-full justify-center text-xs h-10"
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
@@ -192,7 +195,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {/* Say Goodbye button in the same grid */}
                 {eventChoices.find(choice => choice.id === 'say_goodbye') && (
                   <Button
-                    onClick={() => handleChoice('say_goodbye')}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleChoice('say_goodbye');
+                    }}
                     variant="outline"
                     className="text-xs h-10 px-4"
                     disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
