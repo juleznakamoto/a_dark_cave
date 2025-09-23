@@ -328,6 +328,28 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  reinforced_rope: {
+    id: "reinforced_rope",
+    name: "Reinforced Rope",
+    description: "Strong rope that enables access to deeper cave chambers",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
+  giant_trap: {
+    id: "giant_trap",
+    name: "Giant Trap",
+    description: "A massive trap capable of catching gigantic forest creatures",
+    bonuses: {
+      actionBonuses: {
+        layTrap: {
+          probabilityBonus: { success: 0.15 },
+        },
+      },
+    },
+  },
 };
 
 // Weapon effects
