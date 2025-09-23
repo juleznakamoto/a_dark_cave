@@ -683,7 +683,7 @@ export function handleBuildShrine(state: GameState, result: ActionResult): Actio
   if (state.buildings.shrine === 0) {
     shrineResult.logEntries!.push({
       id: `shrine-built-${Date.now()}`,
-      message: 'A shrine rises at the forest's edge, raised to appease what dwells within.',
+      message: "A shrine rises at the forest's edge, raised to appease what dwells within.",
       timestamp: Date.now(),
       type: 'system',
     });
