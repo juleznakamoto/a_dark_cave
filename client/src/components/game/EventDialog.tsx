@@ -207,6 +207,23 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   return buttonContent;
                 })}
               </div>
+
+              {/* Say Goodbye button */}
+              {eventChoices.find(choice => choice.id === 'say_goodbye') && (
+                <div className="flex justify-center">
+                  <Button
+                    onClick={() => {
+                      handleChoice('say_goodbye');
+                      onClose();
+                    }}
+                    variant="outline"
+                    className="text-xs h-10 px-4"
+                    disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
+                  >
+                    Say Goodbye
+                  </Button>
+                </div>
+              )}
             </div>
 
 
