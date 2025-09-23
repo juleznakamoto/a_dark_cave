@@ -1,4 +1,3 @@
-
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { gameActions } from '@/game/rules';
@@ -679,7 +678,7 @@ export function handleBuildFoundry(state: GameState, result: ActionResult): Acti
 
 export function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
   const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
-  
+
   // Add shrine completion message
   if (state.buildings.shrine === 0) {
     shrineResult.logEntries!.push({
@@ -689,7 +688,7 @@ export function handleBuildShrine(state: GameState, result: ActionResult): Actio
       type: 'system',
     });
   }
-  
+
   return shrineResult;
 }
 
