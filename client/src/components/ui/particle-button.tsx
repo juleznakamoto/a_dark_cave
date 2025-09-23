@@ -185,11 +185,7 @@ function ParticleButton({
                         setGlowIntensity(1.0); // max intensity
                         clearInterval(glowRampRef.current!);
                         glowRampRef.current = null;
-                        // stop flickering once max intensity is reached
-                        if (flickerRef.current) {
-                            clearInterval(flickerRef.current);
-                            flickerRef.current = null;
-                        }
+                        // continue flickering at max intensity
                     }
                 }
             }, 100);
