@@ -202,19 +202,19 @@
 @keyframes madness-fade {
   0%, 100% { 
     opacity: 1; 
-    color: inherit;
+    color: inherit !important;
   }
   25% { 
     opacity: 0.4; 
-    color: rgb(220, 38, 127);
+    color: rgb(220, 38, 127) !important;
   }
   50% { 
     opacity: 0.2; 
-    color: rgb(185, 28, 28);
+    color: rgb(185, 28, 28) !important;
   }
   75% { 
     opacity: 0.6; 
-    color: rgb(239, 68, 68);
+    color: rgb(239, 68, 68) !important;
   }
 }
 
@@ -289,7 +289,7 @@
   background-color: rgba(139, 0, 0, 0.08);
   pointer-events: none;
   z-index: 10000;
-  animation: madness-overlay-pulse 6s ease-in-out;
+  animation: madness-overlay-pulse 6s ease-in-out infinite;
 }
 
 /* Letter displacement for text distortion */
