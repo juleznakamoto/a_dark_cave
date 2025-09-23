@@ -14,6 +14,9 @@ import {
   handleAlchemistChamber,
 } from '@/game/rules/caveExploreActions';
 
+// Import forge actions (currently empty but reserved for future use)
+// import {} from '@/game/rules/caveForgeActions';
+
 import {
   handleBuildTorch,
   handleCraftStoneAxe,
