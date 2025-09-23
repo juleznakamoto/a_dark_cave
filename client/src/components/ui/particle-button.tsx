@@ -191,8 +191,8 @@ function ParticleButton({
 
             // add flickering effect
             flickerRef.current = setInterval(() => {
-                const flicker = 0.85 + Math.random() * 0.3; // random between 0.85 and 1.15
-                setGlowIntensity(prev => Math.min(1.2, prev * flicker));
+                const flicker = 0.65 + Math.random() * 0.3;
+                setGlowIntensity(prev => Math.min(1.3, prev * flicker));
             }, 150);
         }, hoverDelay);
     };
