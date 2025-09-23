@@ -97,28 +97,28 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     }
 
     const eventId = event!.id.split('-')[0];
-    
-    // For merchant trades, mark as purchased immediately
-    if (choiceId.startsWith('trade_')) {
-      setPurchasedItems(prev => new Set([...prev, choiceId]));
-    }
-
-    // Apply the choice and force a re-render by triggering state update
     applyEventChoice(choiceId, eventId);
 
-    // For merchant trades, don't close dialog immediately
+    // For merchant trades, mark as purchased but don't close dialog
     if (choiceId.startsWith('trade_')) {
-      // Check if all trade choices are now purchased after a small delay
-      setTimeout(() => {
-        const allTradeChoices = eventChoices.filter(choice => choice.id.startsWith('trade_'));
-        const allPurchased = allTradeChoices.every(choice => purchasedItems.has(choice.id) || choice.id === choiceId);
+      setPurchasedItems(prev => {
+        const newPurchasedItems = new Set([...prev, choiceId]);
 
+        // Check if all trade choices are now purchased
+        const allTradeChoices = eventChoices.filter(choice => choice.id.startsWith('trade_'));
+        const allPurchased = allTradeChoices.every(choice => newPurchasedItems.has(choice.id));
+
+        // If all trades are purchased, close the dialog
         if (allPurchased) {
-          fallbackExecutedRef.current = true;
-          onClose();
+          setTimeout(() => {
+            fallbackExecutedRef.current = true;
+            onClose();
+          }, 500); // Small delay to show the purchased state
         }
-      }, 100);
-      return;
+
+        return newPurchasedItems;
+      });
+      return; // Don't close dialog immediately for trade purchases
     }
 
     // Close dialog for fallback choices
@@ -171,8 +171,6 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const testResult = choice.effect(gameState);
                   const canAfford = Object.keys(testResult).length > 0;
                   const isPurchased = purchasedItems.has(choice.id);
-
-                  console.log(`[EventDialog] Choice ${choice.id} - canAfford: ${canAfford}, isPurchased: ${isPurchased}`, { testResult, gameState: gameState.resources });
 
                   const buttonContent = (
                     <Button
