@@ -117,16 +117,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   const isMerchantEvent = event?.id.includes('merchant');
 
   return (
-    <Dialog open={isOpen} onOpenChange={(open) => {
-      // For merchant events, prevent auto-closing by ignoring the change
-      if (isMerchantEvent && !open) {
-        return; // Prevent closing
-      }
-      // For non-merchant events, allow normal behavior
-      if (!open) {
-        onClose();
-      }
-    }}>
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       {isMerchantEvent ? (
         <DialogPortal>
           <DialogPrimitive.Overlay
