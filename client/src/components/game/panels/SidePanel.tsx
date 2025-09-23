@@ -184,44 +184,51 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-full">
-      <div className="pb-4">
-        {resourceItems.length > 0 && shouldShowSection('resources') && (
-          <SidePanelSection 
-            title="Resources" 
-            items={resourceItems}
-            onValueChange={(itemId, oldValue, newValue) => {
-              console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
-            }}
-          />
-        )}
-        {toolItems.length > 0 && shouldShowSection('tools') && (
-          <SidePanelSection title="Tools" items={toolItems} />
-        )}
-        {weaponItems.length > 0 && shouldShowSection('weapons') && (
-          <SidePanelSection title="Weapons" items={weaponItems} />
-        )}
-        {clothingItems.length > 0 && shouldShowSection('clothing') && (
-          <SidePanelSection title="Clothing" items={clothingItems} />
-        )}
-        {relicItems.length > 0 && shouldShowSection('relics') && (
-          <SidePanelSection title="Relics" items={relicItems} />
-        )}
-        {buildingItems.length > 0 && shouldShowSection('buildings') && (
-          <SidePanelSection title="Buildings" items={buildingItems} />
-        )}
-        {populationItems.length > 0 && shouldShowSection('population') && (
-          <SidePanelSection 
-            title={`Population ${current_population}/${total_population}`} 
-            items={populationItems}
-          />
-        )}
-        {statsItems.length > 0 && shouldShowSection('stats') && (
-          <SidePanelSection 
-            title="Stats" 
-            items={statsItems}
-            className="mb-4"
-          />
-        )}
+      <div className="pb-4 flex gap-4">
+        {/* First column - Resources */}
+        <div className="flex-1">
+          {resourceItems.length > 0 && shouldShowSection('resources') && (
+            <SidePanelSection 
+              title="Resources" 
+              items={resourceItems}
+              onValueChange={(itemId, oldValue, newValue) => {
+                console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
+              }}
+            />
+          )}
+        </div>
+
+        {/* Second column - Everything else */}
+        <div className="flex-1">
+          {toolItems.length > 0 && shouldShowSection('tools') && (
+            <SidePanelSection title="Tools" items={toolItems} />
+          )}
+          {weaponItems.length > 0 && shouldShowSection('weapons') && (
+            <SidePanelSection title="Weapons" items={weaponItems} />
+          )}
+          {clothingItems.length > 0 && shouldShowSection('clothing') && (
+            <SidePanelSection title="Clothing" items={clothingItems} />
+          )}
+          {relicItems.length > 0 && shouldShowSection('relics') && (
+            <SidePanelSection title="Relics" items={relicItems} />
+          )}
+          {buildingItems.length > 0 && shouldShowSection('buildings') && (
+            <SidePanelSection title="Buildings" items={buildingItems} />
+          )}
+          {populationItems.length > 0 && shouldShowSection('population') && (
+            <SidePanelSection 
+              title={`Population ${current_population}/${total_population}`} 
+              items={populationItems}
+            />
+          )}
+          {statsItems.length > 0 && shouldShowSection('stats') && (
+            <SidePanelSection 
+              title="Stats" 
+              items={statsItems}
+              className="mb-4"
+            />
+          )}
+        </div>
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
