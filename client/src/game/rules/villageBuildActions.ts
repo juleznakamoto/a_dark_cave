@@ -458,4 +458,118 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  buildStoneHut: {
+    id: "buildStoneHut",
+    label: "Stone Hut",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 10,
+        "buildings.stoneHut": 0,
+      },
+      2: {
+        "buildings.stoneHut": 1,
+      },
+      3: {
+        "buildings.stoneHut": 2,
+      },
+      4: {
+        "buildings.stoneHut": 3,
+      },
+      5: {
+        "buildings.stoneHut": 4,
+      },
+      6: {
+        "buildings.stoneHut": 5,
+      },
+      7: {
+        "buildings.stoneHut": 6,
+      },
+      8: {
+        "buildings.stoneHut": 7,
+      },
+      9: {
+        "buildings.stoneHut": 8,
+      },
+      10: {
+        "buildings.stoneHut": 9,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 1000,
+      },
+      2: {
+        "resources.stone": 1500,
+      },
+      3: {
+        "resources.stone": 2000,
+      },
+      4: {
+        "resources.stone": 2500,
+      },
+      5: {
+        "resources.stone": 3000,
+      },
+      6: {
+        "resources.stone": 3500,
+      },
+      7: {
+        "resources.stone": 4000,
+      },
+      8: {
+        "resources.stone": 4500,
+      },
+      9: {
+        "resources.stone": 5000,
+      },
+      10: {
+        "resources.stone": 5500,
+      },
+    },
+    effects: {
+      1: {
+        "resources.stone": -1000,
+        "buildings.stoneHut": 1,
+      },
+      2: {
+        "resources.stone": -1500,
+        "buildings.stoneHut": 1,
+      },
+      3: {
+        "resources.stone": -2000,
+        "buildings.stoneHut": 1,
+      },
+      4: {
+        "resources.stone": -2500,
+        "buildings.stoneHut": 1,
+      },
+      5: {
+        "resources.stone": -3000,
+        "buildings.stoneHut": 1,
+      },
+      6: {
+        "resources.stone": -3500,
+        "buildings.stoneHut": 1,
+      },
+      7: {
+        "resources.stone": -4000,
+        "buildings.stoneHut": 1,
+      },
+      8: {
+        "resources.stone": -4500,
+        "buildings.stoneHut": 1,
+      },
+      9: {
+        "resources.stone": -5000,
+        "buildings.stoneHut": 1,
+      },
+      10: {
+        "resources.stone": -5500,
+        "buildings.stoneHut": 1,
+      },
+    },
+    cooldown: 15,
+  },
 };

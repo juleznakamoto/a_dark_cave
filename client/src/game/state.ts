@@ -505,7 +505,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getMaxPopulation: () => {
     const state = get();
-    return state.buildings.woodenHut * 2; // Each wooden hut provides +2 max population
+    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4); // Wooden huts +2, stone huts +4 each
   },
 
   updatePopulation: () => {
