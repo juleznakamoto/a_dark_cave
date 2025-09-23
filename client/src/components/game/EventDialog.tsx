@@ -35,8 +35,17 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
   // Reset purchased items when dialog opens
   useEffect(() => {
+    console.log('🔄 Dialog open state changed:', {
+      isOpen,
+      eventId: event?.id,
+      isMerchantEvent: event?.id.includes('merchant')
+    });
+    
     if (isOpen) {
+      console.log('🔓 Dialog opened - resetting purchased items');
       setPurchasedItems(new Set());
+    } else {
+      console.log('🔒 Dialog closed');
     }
   }, [isOpen, event?.id]);
 
@@ -92,20 +101,33 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   if (!event || !eventChoices.length) return null;
 
   const handleChoice = (choiceId: string) => {
+    console.log('🔘 handleChoice called:', {
+      choiceId,
+      eventId: event?.id,
+      isMerchantEvent,
+      fallbackExecuted: fallbackExecutedRef.current,
+      isTradeChoice: choiceId.startsWith('trade_'),
+      dialogOpen: isOpen
+    });
+
     if (fallbackExecutedRef.current) {
+      console.log('❌ handleChoice aborted - fallback already executed');
       return;
     }
 
     const eventId = event!.id.split('-')[0];
+    console.log('📤 Applying event choice:', { choiceId, eventId });
     applyEventChoice(choiceId, eventId);
 
     // For merchant trades, mark as purchased but don't close dialog
     if (choiceId.startsWith('trade_')) {
+      console.log('🛒 Trade choice - marking as purchased, keeping dialog open');
       setPurchasedItems(prev => new Set([...prev, choiceId]));
       return; // Don't close dialog for trade purchases
     }
 
     // Close dialog for non-trade choices (like "Say Goodbye" or other fallback choices)
+    console.log('🚪 Non-trade choice - closing dialog');
     fallbackExecutedRef.current = true;
     onClose();
   };
@@ -117,7 +139,17 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   const isMerchantEvent = event?.id.includes('merchant');
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      console.log('🔄 Dialog onOpenChange triggered:', {
+        newOpenState: open,
+        currentOpenState: isOpen,
+        isMerchantEvent,
+        eventId: event?.id
+      });
+      
+      // Empty handler - we don't want automatic closing
+      // All closing should be handled explicitly through handleChoice
+    }}>
       {isMerchantEvent ? (
         <DialogPortal>
           <DialogPrimitive.Overlay
@@ -158,6 +190,14 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                     <Button
                       key={choice.id}
                       onClick={(e) => {
+                        console.log('🖱️ Merchant button clicked:', {
+                          choiceId: choice.id,
+                          event: e.type,
+                          target: e.target,
+                          currentTarget: e.currentTarget,
+                          bubbles: e.bubbles,
+                          defaultPrevented: e.defaultPrevented
+                        });
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }}
@@ -196,6 +236,13 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {eventChoices.find(choice => choice.id === 'say_goodbye') && (
                   <Button
                     onClick={(e) => {
+                      console.log('👋 Say Goodbye button clicked:', {
+                        event: e.type,
+                        target: e.target,
+                        currentTarget: e.currentTarget,
+                        bubbles: e.bubbles,
+                        defaultPrevented: e.defaultPrevented
+                      });
                       e.stopPropagation();
                       handleChoice('say_goodbye');
                     }}
@@ -255,7 +302,17 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               return (
                 <Button
                   key={choice.id}
-                  onClick={() => handleChoice(choice.id)}
+                  onClick={(e) => {
+                    console.log('🖱️ Non-merchant button clicked:', {
+                      choiceId: choice.id,
+                      event: e.type,
+                      target: e.target,
+                      currentTarget: e.currentTarget,
+                      bubbles: e.bubbles,
+                      defaultPrevented: e.defaultPrevented
+                    });
+                    handleChoice(choice.id);
+                  }}
                   variant={isPurchased ? "secondary" : "outline"}
                   className="w-full text-left justify-start"
                   disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
