@@ -1,7 +1,6 @@
-
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from '@/game/rules';
+import { gameActions, applyActionEffects } from '@/game/rules';
 
 // Base relics for each cave exploration stage
 const caveRelics = {
