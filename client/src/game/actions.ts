@@ -12,7 +12,7 @@ function getTotalLuck(state: GameState): number {
     (state.relics?.alphas_hide ? 3 : 0) +
     (state.relics?.old_trinket ? 2 : 0) +
     (state.relics?.elder_scroll ? 10 : 0) +
-    (state.clothing?.tarnished_amulet ? 10 : 0)
+    (state.relics?.tarnished_amulet ? 10 : 0)
   );
 }
 
