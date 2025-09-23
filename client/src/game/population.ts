@@ -67,15 +67,15 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     id: "silver_miner",
     label: "silver_miner",
     production: [
-      { resource: "silver", amount: 5, interval: 15000 },
-      { resource: "food", amount: -20, interval: 15000 },
+      { resource: "silver", amount: 1, interval: 15000 },
+      { resource: "food", amount: -25, interval: 15000 },
     ],
   },
   gold_miner: {
     id: "gold_miner",
     label: "gold_miner",
     production: [
-      { resource: "gold", amount: 5, interval: 15000 },
+      { resource: "gold", amount: 1, interval: 15000 },
       { resource: "food", amount: -50, interval: 15000 },
     ],
   },
