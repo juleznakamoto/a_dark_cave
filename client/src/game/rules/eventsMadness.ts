@@ -1,75 +1,7 @@
 
 import { GameEvent } from "./events";
-
-// Define a type for the game state
-type GameState = {
-  villagers: {
-    free: number;
-    gatherer: number;
-    hunter: number;
-    iron_miner: number;
-    coal_miner: number;
-    sulfur_miner: number;
-    gold_miner: number;
-    obsidian_miner: number;
-    adamant_miner: number;
-    moonstone_miner: number;
-    steel_forger: number;
-    [key: string]: number;
-  };
-  resources: {
-    [key: string]: number;
-  };
-  buildings: { woodenHut: number; hut: number; shrine?: number };
-  stats: { strength?: number; luck?: number; knowledge?: number; madness?: number };
-  relics: { [key: string]: boolean };
-  events: { [key: string]: boolean };
-  flags: { [key: string]: boolean };
-  tools: { [key: string]: boolean };
-  clothing?: { [key: string]: boolean };
-  current_population?: number;
-};
-
-// Centralized function to kill villagers
-function killVillagers(state: GameState, amount: number): Partial<GameState> {
-  let updatedVillagers = { ...state.villagers };
-  let remainingDeaths = amount;
-
-  // Define all possible villager types that can be killed
-  const villagerTypes: (keyof typeof updatedVillagers)[] = [
-    "free",
-    "gatherer",
-    "hunter",
-    "iron_miner",
-    "coal_miner",
-    "sulfur_miner",
-    "silver_miner",
-    "gold_miner",
-    "obsidian_miner",
-    "adamant_miner",
-    "moonstone_miner",
-    "steel_forger",
-  ];
-
-  // Shuffle villager types to ensure random distribution of deaths
-  for (let i = villagerTypes.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [villagerTypes[i], villagerTypes[j]] = [villagerTypes[j], villagerTypes[i]];
-  }
-
-  for (const villagerType of villagerTypes) {
-    if (remainingDeaths <= 0) break;
-
-    const currentCount = updatedVillagers[villagerType] || 0;
-    if (currentCount > 0) {
-      const deaths = Math.min(remainingDeaths, currentCount);
-      updatedVillagers[villagerType] = currentCount - deaths;
-      remainingDeaths -= deaths;
-    }
-  }
-
-  return { villagers: updatedVillagers };
-}
+import { GameState } from "@shared/schema";
+import { killVillagers } from "@/game/stateHelpers";
 
 export const madnessEvents: Record<string, GameEvent> = {
   // Madness Level 10 Events
