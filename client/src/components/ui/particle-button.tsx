@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { ButtonProps } from "@/components/ui/button";
+import { randomBytes } from "crypto";
 
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number; // how often sparks spawn
@@ -57,11 +58,11 @@ function SuccessParticles({
                         }}
                         initial={{
                             opacity: 1,
-                            scale: Math.random() * 0.5 + 0.5,
+                            scale: Math.random() * 0.6 + 0.2,
                         }}
                         animate={{
                             opacity: 0,
-                            scale: 0.2 + Math.random() * 0.2,
+                            scale: 0.15 + Math.random() * 0.2,
                             x:
                                 endX -
                                 startX +
@@ -83,7 +84,7 @@ function ParticleButton({
     children,
     onClick,
     spawnInterval = 300,
-    hoverDelay = 1500,
+    hoverDelay = 1000,
     className,
     ...props
 }: ParticleButtonProps) {
@@ -109,11 +110,11 @@ function ParticleButton({
         const count = spawnCountRef.current; // dynamic number of sparks
         const newSparks: Spark[] = Array.from({ length: count }).map(() => ({
             id: idRef.current++,
-            angle: (Math.random() * 90 - 135) * (Math.PI / 180),
-            distance: Math.random() * 150 + 40,
+            angle: (Math.random() * 120 - 150) * (Math.PI / 180),
+            distance: Math.random() * 180 + 40,
             color: colors[Math.floor(Math.random() * colors.length)],
-            lifetime: 0.6 + Math.random() * 1.2,
-            offsetX: buttonWidth * 0.5 + (Math.random() * 70 - 35),
+            lifetime: 0.8 + Math.random() * 1.2,
+            offsetX: buttonWidth * 0.5 + (Math.random() * 74 - 37),
         }));
 
         setSparks((prev) => [...prev, ...newSparks]);
@@ -159,27 +160,27 @@ function ParticleButton({
             spawnSparks(); // spawn immediately
             intervalRef.current = setInterval(spawnSparks, spawnInterval);
 
-            // gradually increase sparks over 8 seconds
+            // gradually increase sparks over 10 seconds
             rampUpRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
-                    if (elapsed < 8000) {
+                    if (elapsed < 10000) {
                         spawnCountRef.current =
-                            1 + Math.floor((elapsed / 8000) * 10);
+                            1 + Math.floor((elapsed / 10000) * 10);
                     } else {
-                        spawnCountRef.current = 10; // max
+                        spawnCountRef.current = 14; // max
                         clearInterval(rampUpRef.current!);
                         rampUpRef.current = null;
                     }
                 }
             }, 200);
 
-            // gradually increase glow intensity over 6 seconds
+            // gradually increase glow intensity over 1.5 seconds
             glowRampRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
-                    if (elapsed < 6000) {
-                        const progress = elapsed / 6000;
+                    if (elapsed < 1500) {
+                        const progress = elapsed / 1500;
                         setGlowIntensity(0.1 + (progress * 0.9)); // from 0.1 to 1.0
                     } else {
                         setGlowIntensity(1.0); // max intensity
@@ -189,15 +190,15 @@ function ParticleButton({
                         // Reset glow to max every 2 seconds to maintain intensity
                         glowRampRef.current = setInterval(() => {
                             setGlowIntensity(1.0);
-                        }, 900);
+                        }, Math.random() * 300 + 300);
                     }
                 }
             }, 100);
 
             // add flickering effect that continues throughout
             flickerRef.current = setInterval(() => {
-                const flicker = 0.65 + Math.random() * 0.3;
-                setGlowIntensity(prev => Math.min(1.3, prev * flicker));
+                const flicker = 0.75 + Math.random() * 0.35;
+                setGlowIntensity(prev => Math.min(1.75, prev * flicker));
             }, 150);
         }, hoverDelay);
     };
