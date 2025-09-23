@@ -157,8 +157,15 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   wrongVillagers: {
     id: "wrongVillagers",
-    condition: (state: GameState) =>
-      (state.stats.madness || 0) >= 30 && state.villagers.free > 2,
+    condition: (state: GameState) => {
+      const currentPopulation = state.current_population || 0;
+      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+      const spaceForThree = currentPopulation + 3 <= maxPopulation;
+      
+      return (state.stats.madness || 0) >= 30 && 
+             state.villagers.free > 2 && 
+             spaceForThree;
+    },
     triggerType: "resource",
     timeProbability: 90,
     message:
@@ -167,6 +174,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: true,
     effect: (state: GameState) => ({
+      villagers: {
+        ...state.villagers,
+        free: state.villagers.free + 3,
+      },
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 2,
