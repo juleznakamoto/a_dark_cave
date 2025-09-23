@@ -31,7 +31,7 @@ export const useMadnessEffects = () => {
       setIsEffectActive(true);
 
       // Effect duration
-      const effectDuration = randomEffect === 'overlay' ? 2000 : 
+      const effectDuration = randomEffect === 'overlay' ? 8000 : 
                            randomEffect === 'text-echo' ? 1200 :
                            randomEffect === 'text-fade' ? 800 : 400;
 
