@@ -221,20 +221,20 @@
   50% { transform: translate(1px, -1px) scale(0.998); }
 }
 
-.madness-text-jitter {
-  animation: madness-jitter 0.3s ease-in-out;
+.madness-text-jitter, .madness-text-jitter * {
+  animation: madness-jitter 0.3s ease-in-out !important;
 }
 
-.madness-text-fade {
-  animation: madness-fade 0.8s ease-in-out;
+.madness-text-fade, .madness-text-fade * {
+  animation: madness-fade 0.8s ease-in-out !important;
 }
 
-.madness-text-echo {
-  animation: madness-echo 1.2s ease-in-out;
+.madness-text-echo, .madness-text-echo * {
+  animation: madness-echo 1.2s ease-in-out !important;
 }
 
 .madness-button-shift {
-  animation: madness-button-shift 0.4s ease-in-out;
+  animation: madness-button-shift 0.4s ease-in-out !important;
 }
 
 @keyframes madness-overlay-pulse {

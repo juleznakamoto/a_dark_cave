@@ -27,6 +27,7 @@ export const useMadnessEffects = () => {
       const effects = ['text-jitter', 'text-fade', 'text-echo', 'button-shift', 'overlay'];
       const randomEffect = effects[Math.floor(Math.random() * effects.length)];
       
+      console.log(`Triggering madness effect: ${randomEffect}`);
       setCurrentEffect(randomEffect);
       setIsEffectActive(true);
 
