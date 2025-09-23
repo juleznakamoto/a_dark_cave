@@ -117,7 +117,16 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   const isMerchantEvent = event?.id.includes('merchant');
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {}}>
+    <Dialog open={isOpen} onOpenChange={(open) => {
+      // For merchant events, only allow closing via "Say Goodbye" button
+      if (isMerchantEvent && !open) {
+        return; // Prevent closing
+      }
+      // For non-merchant events, allow normal closing
+      if (!open) {
+        onClose();
+      }
+    }}>
       {isMerchantEvent ? (
         <DialogPortal>
           <DialogPrimitive.Overlay
@@ -157,7 +166,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const buttonContent = (
                     <Button
                       key={choice.id}
+                      type="button"
                       onClick={(e) => {
+                        e.preventDefault();
                         e.stopPropagation();
                         handleChoice(choice.id);
                       }}
@@ -195,7 +206,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {/* Say Goodbye button in the same grid */}
                 {eventChoices.find(choice => choice.id === 'say_goodbye') && (
                   <Button
+                    type="button"
                     onClick={(e) => {
+                      e.preventDefault();
                       e.stopPropagation();
                       handleChoice('say_goodbye');
                     }}
@@ -255,7 +268,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               return (
                 <Button
                   key={choice.id}
-                  onClick={() => handleChoice(choice.id)}
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleChoice(choice.id);
+                  }}
                   variant={isPurchased ? "secondary" : "outline"}
                   className="w-full text-left justify-start"
                   disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
