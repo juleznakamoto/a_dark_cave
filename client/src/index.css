@@ -242,11 +242,11 @@
 }
 
 .madness-text-jitter {
-  animation: madness-jitter 0.5s ease-in-out infinite;
+  animation: madness-jitter 5s ease-in-out infinite;
 }
 
 .madness-text-fade {
-  animation: madness-fade 1s ease-in-out infinite;
+  animation: madness-fade 10s ease-in-out infinite;
 }
 
 .madness-text-echo {
