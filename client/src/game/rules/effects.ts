@@ -412,7 +412,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     id: "iron_sword",
     name: "Iron Sword",
     description:
-      "A sturdy iron blade that enhances your combat prowess (+5 Strength)",
+      "A sturdy iron blade that enhances your combat prowess",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -424,7 +424,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     id: "steel_sword",
     name: "Steel Sword",
     description:
-      "A finely crafted steel blade with superior balance (+8 Strength)",
+      "A finely crafted steel blade with superior balance",
     bonuses: {
       generalBonuses: {
         strength: 5,
@@ -436,7 +436,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     id: "obsidian_sword",
     name: "Obsidian Sword",
     description:
-      "A razor-sharp blade forged from volcanic glass (+12 Strength)",
+      "A razor-sharp blade forged from volcanic glass",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -448,7 +448,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     id: "adamant_sword",
     name: "Adamant Sword",
     description:
-      "The ultimate weapon forged from the hardest metal (+20 Strength)",
+      "The ultimate weapon forged from the hardest metal",
     bonuses: {
       generalBonuses: {
         strength: 15,
@@ -462,10 +462,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",
-    description: "An ancient amulet that brings good fortune (+10 Luck)",
+    description: "An ancient amulet that brings good fortune",
     bonuses: {
       generalBonuses: {
-        luck: 10,
+        luck: 5,
       },
     },
   },
@@ -474,7 +474,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
     description:
-      "A leather belt stained with ancient blood that grants raw power (+3 Strength)",
+      "A leather belt stained with ancient blood that grants raw power",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -486,11 +486,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ravenfeather_mantle",
     name: "Ravenfeather Mantle",
     description:
-      "A mystical mantle woven from raven feathers that enhances both fortune and might (+5 Luck, +5 Strength)",
+      "A mystical mantle woven from raven feathers that enhances both fortune and might",
     bonuses: {
       generalBonuses: {
-        luck: 5,
-        strength: 5,
+        luck: 3,
+        strength: 3,
       },
     },
   },
@@ -499,11 +499,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "alphas_hide",
     name: "Alpha's Hide",
     description:
-      "The hide of the wolf pack leader, imbued with primal power (+3 Luck, +5 Strength)",
+      "The hide of the wolf pack leader, imbued with primal power",
     bonuses: {
       generalBonuses: {
         luck: 3,
-        strength: 5,
+        strength: 4,
       },
     },
   },
@@ -512,7 +512,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "whispering_amulet",
     name: "Whispering Amulet",
     description:
-      "A mysterious amulet that whispers ancient secrets (+5 Knowledge)",
+      "A mysterious amulet that whispers ancient secrets",
     bonuses: {
       generalBonuses: {
         knowledge: 5,
@@ -524,10 +524,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "old_trinket",
     name: "Old Trinket",
     description:
-      "An ancient trinket that grants both strength and luck (+5 Strength, +2 Luck)",
+      "An ancient trinket that grants both strength and luck",
     bonuses: {
       generalBonuses: {
-        strength: 5,
+        strength: 3,
         luck: 2,
       },
     },
@@ -537,10 +537,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "blacksmith_hammer",
     name: "Blacksmith Hammer",
     description:
-      "Ancient hammer that reduces crafting costs by 10% (+6 Strength)",
+      "Ancient hammer that reduces crafting costs by 10%",
     bonuses: {
       generalBonuses: {
-        strength: 6,
+        strength: 4,
         craftingCostReduction: 0.1,
       },
     },
@@ -550,7 +550,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "elder_scroll",
     name: "Elder Scroll",
     description:
-      "Ancient scroll that grants both knowledge and luck (+10 Knowledge",
+      "Ancient scroll that grants both knowledge and luck",
     bonuses: {
       generalBonuses: {
         knowledge: 15,
@@ -562,7 +562,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ebony_ring",
     name: "Ebony Ring",
     description:
-      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods (+3 Luck, +5 Knowledge)",
+      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods",
     bonuses: {
       generalBonuses: {
         luck: 3,
@@ -575,7 +575,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "cracked_crown",
     name: "Cracked Crown",
     description:
-      "A cracked golden crown that hums with ancient power (+5 Luck, +3 Knowledge)",
+      "A cracked golden crown that hums with ancient power",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -588,7 +588,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "blackened_mirror",
     name: "Blackened Mirror",
     description:
-      "A mirror that shows things that shouldn't be seen (+10 Knowledge, +5 Madness)",
+      "A mirror that shows things that shouldn't be seen",
     bonuses: {
       generalBonuses: {
         knowledge: 10,
@@ -601,7 +601,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "unnamed_book",
     name: "Unnamed Book",
     description:
-      "A book with no title, filled with disturbing knowledge (+10 Knowledge, +10 Madness)",
+      "A book with no title, filled with disturbing knowledge",
     bonuses: {
       generalBonuses: {
         knowledge: 10,
