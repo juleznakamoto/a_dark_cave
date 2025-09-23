@@ -89,7 +89,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
   // For merchant events, generate fresh choices each time the dialog opens
   const getEventChoices = () => {
     if (event?.id.includes('merchant')) {
-      // Generate fresh choices for merchant events by calling the effect
+      // Generate fresh choices for merchant events
       const eventEffect = event.effect?.(gameState);
       return eventEffect?._choices || [];
     }

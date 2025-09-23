@@ -412,7 +412,8 @@ export const merchantEvents: Record<string, GameEvent> = {
         },
       ];
 
-      // Return choices as part of the effect result instead of storing in event
+      // Don't store choices in the event object - they should be generated fresh each time
+      // Return the choices as part of the effect result instead
       return {
         _choices: choices,
       };
