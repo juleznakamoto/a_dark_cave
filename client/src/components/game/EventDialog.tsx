@@ -102,8 +102,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       return; // Don't close dialog for trade purchases
     }
 
-    // Close dialog only for certain choices (goodbye, decline, or fallback choices)
-    if (choiceId === 'say_goodbye' || choiceId === 'decline_trade' || choiceId === event?.fallbackChoice?.id) {
+    // Close dialog only for goodbye or fallback choices
+    if (choiceId === 'say_goodbye' || choiceId === event?.fallbackChoice?.id) {
       fallbackExecutedRef.current = true;
       onClose();
     }
@@ -179,10 +179,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       </HoverCardTrigger>
                       <HoverCardContent className="w-auto p-2">
                         <div className="text-xs whitespace-nowrap">
-                          <div className="font-medium mb-1">{choice.label}</div>
-                          <div className="text-muted-foreground">
-                            Cost: {choice.label.split(' - ')[1] || 'Unknown'}
-                          </div>
+                          {choice.label.split(' - ')[1] || 'Unknown'}
                         </div>
                       </HoverCardContent>
                     </HoverCard>
