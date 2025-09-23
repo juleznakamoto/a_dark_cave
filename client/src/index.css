@@ -200,10 +200,22 @@
 }
 
 @keyframes madness-fade {
-  0%, 100% { opacity: 1; }
-  25% { opacity: 0.4; }
-  50% { opacity: 0.2; }
-  75% { opacity: 0.6; }
+  0%, 100% { 
+    opacity: 1; 
+    color: inherit;
+  }
+  25% { 
+    opacity: 0.4; 
+    color: rgb(220, 38, 127);
+  }
+  50% { 
+    opacity: 0.2; 
+    color: rgb(185, 28, 28);
+  }
+  75% { 
+    opacity: 0.6; 
+    color: rgb(239, 68, 68);
+  }
 }
 
 @keyframes madness-echo {
