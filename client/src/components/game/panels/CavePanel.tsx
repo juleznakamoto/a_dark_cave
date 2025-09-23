@@ -2,14 +2,10 @@ import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { useMadnessEffects } from '@/hooks/useMadnessEffects';
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore();
-  const { isEffectActive, currentEffect } = useMadnessEffects();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -80,7 +76,7 @@ export default function CavePanel() {
         }
       ]
     },
-
+    
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -102,7 +98,7 @@ export default function CavePanel() {
                 size="sm"
                 disabled={!canExecute}
                 variant="outline"
-                className={`hover:bg-transparent hover:text-foreground ${isEffectActive && currentEffect === 'button-shift' ? `madness-${currentEffect}` : ''}`}
+                className="hover:bg-transparent hover:text-foreground"
               >
                 {label}
               </CooldownButton>
@@ -126,7 +122,7 @@ export default function CavePanel() {
         size="sm"
         disabled={!canExecute}
         variant="outline"
-        className={`hover:bg-transparent hover:text-foreground ${isEffectActive && currentEffect === 'button-shift' ? `madness-${currentEffect}` : ''}`}
+        className="hover:bg-transparent hover:text-foreground"
       >
         {label}
       </CooldownButton>
@@ -134,7 +130,7 @@ export default function CavePanel() {
   };
 
   return (
-    <div className={`space-y-6 ${isEffectActive && currentEffect === 'overlay' ? `madness-${currentEffect}` : ''}`}>
+    <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
         if (group.subGroups) {
@@ -150,35 +146,27 @@ export default function CavePanel() {
           if (!hasAnyVisibleActions) return null;
 
           return (
-            <Card key={groupIndex} className={isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') ? `madness-${currentEffect}` : ''}>
+            <div key={groupIndex} className="space-y-4">
               {group.title && (
-                <CardHeader>
-                  <CardTitle className={
-                    isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo')
-                      ? `madness-${currentEffect}` : ''
-                  }>{group.title}</CardTitle>
-                </CardHeader>
+                <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
               )}
-              <CardContent>
-                <Separator className="my-2" />
-                {group.subGroups.map((subGroup, subGroupIndex) => {
-                  const visibleActions = subGroup.actions.filter(action => {
-                    if (action.showWhen !== undefined) {
-                      return action.showWhen;
-                    }
-                    return shouldShowAction(action.id, state);
-                  });
+              {group.subGroups.map((subGroup, subGroupIndex) => {
+                const visibleActions = subGroup.actions.filter(action => {
+                  if (action.showWhen !== undefined) {
+                    return action.showWhen;
+                  }
+                  return shouldShowAction(action.id, state);
+                });
 
-                  if (visibleActions.length === 0) return null;
+                if (visibleActions.length === 0) return null;
 
-                  return (
-                    <div key={subGroupIndex} className="flex flex-wrap gap-2 py-2">
-                      {visibleActions.map(action => renderButton(action.id, action.label))}
-                    </div>
-                  );
-                })}
-              </CardContent>
-            </Card>
+                return (
+                  <div key={subGroupIndex} className="flex flex-wrap gap-2">
+                    {visibleActions.map(action => renderButton(action.id, action.label))}
+                  </div>
+                );
+              })}
+            </div>
           );
         }
 
@@ -195,22 +183,14 @@ export default function CavePanel() {
         if (visibleActions.length === 0) return null;
 
         return (
-          <Card key={groupIndex} className={isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') ? `madness-${currentEffect}` : ''}>
+          <div key={groupIndex} className="space-y-4">
             {group.title && (
-              <CardHeader>
-                <CardTitle className={
-                  isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo')
-                    ? `madness-${currentEffect}` : ''
-                }>{group.title}</CardTitle>
-              </CardHeader>
+              <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
-            <CardContent>
-              <Separator className="my-2" />
-              <div className="flex flex-wrap gap-2">
-                {visibleActions.map(action => renderButton(action.id, action.label))}
-              </div>
-            </CardContent>
-          </Card>
+            <div className="flex flex-wrap gap-2">
+              {visibleActions.map(action => renderButton(action.id, action.label))}
+            </div>
+          </div>
         );
       })}
     </div>

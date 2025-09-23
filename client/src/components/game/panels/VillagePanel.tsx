@@ -4,13 +4,11 @@ import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 import { getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
-import { useMadnessEffects } from '@/hooks/useMadnessEffects';
 
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
   const state = useGameStore.getState();
-  const { isEffectActive, currentEffect } = useMadnessEffects();
 
   // Define building actions
   const buildingActions = [
