@@ -261,7 +261,7 @@ function createResourceTradeChoice(trade: typeof resourceTrades[0], state: GameS
 
   return {
     id: trade.id,
-    label: `Buy ${trade.giveAmount} ${trade.give} for ${cost} ${costOption.resource}`,
+    label: `Buy ${trade.giveAmount} ${trade.give}`,
     effect: (state: GameState) => {
       if ((state.resources[costOption.resource] || 0) >= cost) {
         return {
@@ -287,7 +287,7 @@ function createToolTradeChoice(trade: typeof toolTrades[0], state: GameState) {
 
   return {
     id: trade.id,
-    label: `${trade.label} for ${cost} ${costOption.resource}`,
+    label: `${trade.label}`,
     effect: (state: GameState) => {
       if ((state.resources[costOption.resource] || 0) >= cost) {
         const result: any = {
