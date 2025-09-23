@@ -212,13 +212,13 @@
   }
   33% { 
     text-shadow: 
-      2px 2px 0px rgba(255, 255, 255, 0.4),
-      4px 4px 0px rgba(255, 255, 255, 0.2);
+      2px 2px 0px rgb(154, 14, 14, 0.4),
+      4px 4px 0px rgb(169, 40, 40, 0.2);
   }
   66% { 
     text-shadow: 
-      -1px -1px 0px rgba(255, 255, 255, 0.3),
-      -2px -2px 0px rgba(255, 255, 255, 0.15);
+      -1px -1px 0px rgb(126, 16, 16, 0.3),
+      -2px -2px 0px rgb(174, 55, 55, 0.15);
   }
 }
 
