@@ -73,10 +73,22 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
   const rand = Math.random();
 
   if (rand < successChance) {
-    // Success: Giant bear trapped
-    const villagerDeaths = Math.floor(Math.random() * 4); // 0-3 deaths
-    const deathResult = killVillagers(state, villagerDeaths);
+    // Success: Giant bear trapped - now determine combat outcome based on strength
+    const strength = state.stats.strength || 0;
+    const fightChance = 0.1 + (strength * 0.02); // 10% base + 2% per strength point
+    const fightRand = Math.random();
 
+    let villagerDeaths: number;
+    
+    if (fightRand < fightChance) {
+      // Victory with minimal or no casualties (0-2 deaths)
+      villagerDeaths = Math.floor(Math.random() * 3); // 0-2 deaths
+    } else {
+      // Defeat with heavy casualties (3-6 deaths)
+      villagerDeaths = Math.floor(Math.random() * 4) + 3; // 3-6 deaths
+    }
+
+    const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
     result.stateUpdates.relics = {
       ...state.relics,
@@ -86,14 +98,21 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
     if (villagerDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
-        message: 'The giant trap works perfectly! A massive black bear, larger than any normal bear, is caught. Your villagers fight with all their strength and manage to slay the beast without casualties. You claim its magnificent black fur as a trophy.',
+        message: 'The giant trap works perfectly! A massive black bear with glowing red eyes is caught, its otherworldly roar echoing through the forest. Your villagers fight with incredible strength and coordination, managing to slay the supernatural beast without casualties. You claim its magnificent black fur as a trophy.',
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    } else if (villagerDeaths <= 2) {
+      result.logEntries!.push({
+        id: `giant-bear-trapped-victory-${Date.now()}`,
+        message: `The giant trap snares a colossal black bear with burning red eyes! Its otherworldly roar chills the soul, but your villagers' strength prevails. ${villagerDeaths} brave villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to its supernatural claws before the beast is finally slain. You claim its magnificent black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: 'system',
       });
     } else {
       result.logEntries!.push({
-        id: `giant-bear-trapped-casualties-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear! The beast fights ferociously. ${villagerDeaths} villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to its claws before it is finally slain. You claim its magnificent black fur as a hard-won trophy.`,
+        id: `giant-bear-trapped-defeat-${Date.now()}`,
+        message: `The giant trap snares a nightmare - a colossal black bear with eyes like burning coals. Its roar seems to come from another realm entirely. Despite their courage, ${villagerDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed by sheer numbers. You claim its cursed black fur, still warm with otherworldly power.`,
         timestamp: Date.now(),
         type: 'system',
       });
@@ -102,7 +121,7 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
     // Failure: Nothing caught
     result.logEntries!.push({
       id: `giant-trap-failed-${Date.now()}`,
-      message: 'You set the giant trap with care, but when you return to check it, you find only disturbed earth and massive claw marks. Whatever prowls these woods is too cunning for your trap... this time. Perhaps you should try again.',
+      message: 'You set the giant trap with care, but when you return to check it, you find only disturbed earth and massive claw marks. In the silence, you swear you hear a distant, otherworldly roar echoing from deep within the woods. Whatever prowls these forests is too cunning for your trap... this time.',
       timestamp: Date.now(),
       type: 'system',
     });
