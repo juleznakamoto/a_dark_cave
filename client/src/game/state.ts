@@ -445,6 +445,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((prevState) => {
         const newState = {
           ...prevState,
+          resources: { ...prevState.resources, ...updatedChanges.resources },
+          tools: { ...prevState.tools, ...updatedChanges.tools },
+          relics: { ...prevState.relics, ...updatedChanges.relics },
           ...updatedChanges,
         };
         console.log(`[STATE] New state after event choice ${choiceId}:`, newState);
