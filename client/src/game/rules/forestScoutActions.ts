@@ -80,7 +80,7 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
     const fightRand = Math.random();
 
     let villagerDeaths: number;
-    
+
     if (fightRand < fightChance) {
       // Victory with minimal or no casualties (0-2 deaths)
       villagerDeaths = Math.floor(Math.random() * 3); // 0-2 deaths
@@ -127,6 +127,21 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
       type: 'system',
     });
   }
+
+  return result;
+}
+
+export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('boneTotems', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Add a basic message - more complex events will be handled later
+  result.logEntries!.push({
+    id: `bone-totems-sacrifice-${Date.now()}`,
+    message: 'The bone totems are consumed by the shrine. The forest seems to stir in response.',
+    timestamp: Date.now(),
+    type: 'system',
+  });
 
   return result;
 }
