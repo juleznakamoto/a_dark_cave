@@ -160,8 +160,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             </DialogHeader>
 
             <div className="mt-4">
-              {/* Trade buttons in 2-column grid */}
-              <div className="grid grid-cols-2 gap-2 mb-4">
+              {/* Trade buttons and Say Goodbye button in 2-column grid */}
+              <div className="grid grid-cols-2 gap-2">
                 {eventChoices.filter(choice =>
                   choice.id.startsWith('trade_') &&
                   choice.id !== 'say_goodbye' &&
@@ -206,11 +206,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
                   return buttonContent;
                 })}
-              </div>
 
-              {/* Say Goodbye button */}
-              {eventChoices.find(choice => choice.id === 'say_goodbye') && (
-                <div className="flex justify-center">
+                {/* Say Goodbye button in the same grid */}
+                {eventChoices.find(choice => choice.id === 'say_goodbye') && (
                   <Button
                     onClick={() => {
                       handleChoice('say_goodbye');
@@ -222,8 +220,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   >
                     Say Goodbye
                   </Button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
 
 
