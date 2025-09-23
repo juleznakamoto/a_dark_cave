@@ -483,8 +483,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       }
 
-      // Close the event dialog
-      get().setEventDialog(false);
+      // Close the event dialog (except for merchant trade choices)
+      const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
+      if (!isMerchantTradeChoice) {
+        console.log(`[STATE] Closing dialog for non-trade choice: ${choiceId}`);
+        get().setEventDialog(false);
+      } else {
+        console.log(`[STATE] Keeping dialog open for merchant trade choice: ${choiceId}`);
+      }
 
       // Update population after applying changes - ensure it happens after state update
       setTimeout(() => {
