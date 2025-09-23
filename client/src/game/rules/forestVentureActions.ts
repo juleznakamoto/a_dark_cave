@@ -1,6 +1,4 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { gameActions, applyActionEffects } from '@/game/rules';
 
 export const forestVentureActions: Record<string, Action> = {
   hunt: {
