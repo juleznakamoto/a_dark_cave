@@ -1,3 +1,4 @@
+
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -5,26 +6,30 @@ import { Button } from '@/components/ui/button';
 import { getPopulationProductionText, getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
-
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
   const state = useGameStore.getState();
 
-  // Define building actions
-  const buildingActions = [
-    { id: 'buildWoodenHut', label: 'Wooden Hut' },
-    { id: 'buildCabin', label: 'Cabin' },
-    { id: 'buildBlacksmith', label: 'Blacksmith' },
-    { id: 'buildShallowPit', label: 'Shallow Pit' },
-    { id: 'buildDeepeningPit', label: 'Deepening Pit' },
-    { id: 'buildDeepPit', label: 'Deep Pit' },
-    { id: 'buildBottomlessPit', label: 'Bottomless Pit' },
-    { id: 'buildFoundry', label: 'Foundry' },
-    { id: 'buildShrine', label: 'Shrine' },
-    { id: 'buildGreatCabin', label: 'Great Cabin' },
-    { id: 'buildTimberMill', label: 'Timber Mill' },
-    { id: 'buildQuarry', label: 'Quarry' },
-    { id: 'buildClerksHut', label: "Clerk's Hut" },
+  // Define action groups with their actions
+  const actionGroups = [
+    {
+      title: 'Build',
+      actions: [
+        { id: 'buildWoodenHut', label: 'Wooden Hut' },
+        { id: 'buildCabin', label: 'Cabin' },
+        { id: 'buildBlacksmith', label: 'Blacksmith' },
+        { id: 'buildShallowPit', label: 'Shallow Pit' },
+        { id: 'buildDeepeningPit', label: 'Deepening Pit' },
+        { id: 'buildDeepPit', label: 'Deep Pit' },
+        { id: 'buildBottomlessPit', label: 'Bottomless Pit' },
+        { id: 'buildFoundry', label: 'Foundry' },
+        { id: 'buildShrine', label: 'Shrine' },
+        { id: 'buildGreatCabin', label: 'Great Cabin' },
+        { id: 'buildTimberMill', label: 'Timber Mill' },
+        { id: 'buildQuarry', label: 'Quarry' },
+        { id: 'buildClerksHut', label: "Clerk's Hut" },
+      ]
+    }
   ];
 
   // Define population jobs
@@ -42,9 +47,9 @@ export default function VillagePanel() {
     { id: 'steel_forger', label: 'Steel Forger', showWhen: () => buildings.foundry >= 1 },
   ];
 
-  const renderBuildingButton = (actionId: string, label: string) => {
+  const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
-    if (!action || !shouldShowAction(actionId, state)) return null;
+    if (!action) return null;
 
     const canExecute = canExecuteAction(actionId, state);
 
@@ -117,11 +122,6 @@ export default function VillagePanel() {
     );
   };
 
-  // Filter visible building actions
-  const visibleBuildingActions = buildingActions.filter(action => 
-    shouldShowAction(action.id, state)
-  );
-
   // Filter visible population jobs
   const visiblePopulationJobs = populationJobs.filter(job => {
     if (job.alwaysShow) return true;
@@ -131,22 +131,29 @@ export default function VillagePanel() {
 
   return (
     <div className="space-y-6">
-      {/* Build Section */}
-      {visibleBuildingActions.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-sm font-medium">Build</h2>
-          <div className="flex flex-wrap gap-2">
-            {visibleBuildingActions.map(action => 
-              renderBuildingButton(action.id, action.label)
+      {actionGroups.map((group, groupIndex) => {
+        const visibleActions = group.actions.filter(action => 
+          shouldShowAction(action.id, state)
+        );
+
+        if (visibleActions.length === 0) return null;
+
+        return (
+          <div key={groupIndex} className="space-y-4">
+            {group.title && (
+              <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
+            <div className="flex flex-wrap gap-2">
+              {visibleActions.map(action => renderButton(action.id, action.label))}
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })}
 
       {/* Rule Section */}
       {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-4">
-          <h2 className="text-sm font-medium">Rule</h2>
+          <h3 className="text-sm font-semibold text-foreground">Rule</h3>
           <div className="space-y-1 leading-tight">
             {visiblePopulationJobs.map(job => 
               renderPopulationControl(job.id, job.label)
