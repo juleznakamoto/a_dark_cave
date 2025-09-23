@@ -683,7 +683,7 @@ export const getBestTool = (
   // Find the highest tier tool that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const toolId = hierarchy[i];
-    if (state.tools[toolId as keyof typeof state.tools]) {
+    if (toolId in state.tools && state.tools[toolId as keyof typeof state.tools]) {
       return toolId;
     }
   }
@@ -706,7 +706,7 @@ export const getBestWeapon = (
   // Find the highest tier weapon that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const weaponId = hierarchy[i];
-    if (state.weapons[weaponId as keyof typeof state.weapons]) {
+    if (weaponId in state.weapons && state.weapons[weaponId as keyof typeof state.weapons]) {
       return weaponId;
     }
   }
