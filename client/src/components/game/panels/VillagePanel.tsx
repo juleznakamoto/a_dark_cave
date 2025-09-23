@@ -146,7 +146,7 @@ export default function VillagePanel() {
       {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-4">
           <h2 className="text-sm font-medium">Rule</h2>
-          <div className="space-y-3">
+          <div className="space-y-1 leading-tight">
             {visiblePopulationJobs.map(job => 
               renderPopulationControl(job.id, job.label)
             )}
