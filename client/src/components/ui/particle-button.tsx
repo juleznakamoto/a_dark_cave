@@ -88,6 +88,7 @@ function ParticleButton({
     ...props
 }: ParticleButtonProps) {
     const [sparks, setSparks] = useState<Spark[]>([]);
+    const [isGlowing, setIsGlowing] = useState(false);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const rampUpRef = useRef<NodeJS.Timeout | null>(null);
@@ -139,6 +140,7 @@ function ParticleButton({
     const handleMouseEnter = () => {
         // start delayed spawn
         delayTimeoutRef.current = setTimeout(() => {
+            setIsGlowing(true);
             spawnCountRef.current = 2;
             rampStartRef.current = Date.now();
 
@@ -164,6 +166,7 @@ function ParticleButton({
 
     const handleMouseLeave = () => {
         clearAllTimers();
+        setIsGlowing(false);
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -185,9 +188,15 @@ function ParticleButton({
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 className={cn(
-                    "relative transition-transform duration-100",
+                    "relative transition-all duration-300",
+                    isGlowing && "text-shadow-glow",
                     className,
                 )}
+                style={{
+                    textShadow: isGlowing 
+                        ? "0 0 10px #ff6347, 0 0 20px #ff4500, 0 0 30px #ff8c00, 0 0 40px #ffa500"
+                        : "none",
+                }}
                 {...props}
             >
                 {children}
