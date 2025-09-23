@@ -177,7 +177,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       key={choice.id}
                       onClick={() => handleChoice(choice.id)}
                       variant={isPurchased ? "secondary" : "outline"}
-                      className="text-left w-full justify-start text-xs h-10"
+                      className="w-full justify-center text-xs h-10"
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
