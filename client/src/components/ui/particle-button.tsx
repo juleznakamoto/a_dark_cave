@@ -185,11 +185,16 @@ function ParticleButton({
                         setGlowIntensity(1.0); // max intensity
                         clearInterval(glowRampRef.current!);
                         glowRampRef.current = null;
+                        // stop flickering once max intensity is reached
+                        if (flickerRef.current) {
+                            clearInterval(flickerRef.current);
+                            flickerRef.current = null;
+                        }
                     }
                 }
             }, 100);
 
-            // add flickering effect
+            // add flickering effect (will be stopped when max intensity is reached)
             flickerRef.current = setInterval(() => {
                 const flicker = 0.65 + Math.random() * 0.3;
                 setGlowIntensity(prev => Math.min(1.3, prev * flicker));
