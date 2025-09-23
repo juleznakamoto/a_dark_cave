@@ -168,7 +168,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
-                        {isPurchased ? '✓ Purchased' : choice.label}
+                        {isPurchased ? `✓ ${choice.label}` : choice.label}
                       </span>
                     </Button>
                   );
@@ -262,7 +262,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   className="w-full text-left justify-start"
                   disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                 >
-                  {isPurchased ? '✓ Purchased' : choice.label}
+                  {isPurchased ? `✓ ${choice.label}` : choice.label}
                 </Button>
               );
             })}
