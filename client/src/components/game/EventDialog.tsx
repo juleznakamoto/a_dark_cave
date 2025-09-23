@@ -101,24 +101,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
     // For merchant trades, mark as purchased but don't close dialog
     if (choiceId.startsWith('trade_')) {
-      setPurchasedItems(prev => {
-        const newPurchasedItems = new Set([...prev, choiceId]);
-
-        // Check if all trade choices are now purchased
-        const allTradeChoices = eventChoices.filter(choice => choice.id.startsWith('trade_'));
-        const allPurchased = allTradeChoices.every(choice => newPurchasedItems.has(choice.id));
-
-        // If all trades are purchased, close the dialog
-        if (allPurchased) {
-          setTimeout(() => {
-            fallbackExecutedRef.current = true;
-            onClose();
-          }, 500); // Small delay to show the purchased state
-        }
-
-        return newPurchasedItems;
-      });
-      return; // Don't close dialog immediately for trade purchases
+      setPurchasedItems(prev => new Set([...prev, choiceId]));
+      return; // Don't close dialog for trade purchases
     }
 
     // Close dialog for fallback choices
