@@ -673,6 +673,8 @@ export const getBestTool = (
   state: GameState,
   toolType: "axe" | "pickaxe" | "lantern",
 ): string | null => {
+  if (!state.tools) return null;
+
   const hierarchy =
     toolType === "axe"
       ? AXE_HIERARCHY
@@ -683,7 +685,7 @@ export const getBestTool = (
   // Find the highest tier tool that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const toolId = hierarchy[i];
-    if (state.tools[toolId as keyof typeof state.tools]) {
+    if (toolId in state.tools && state.tools[toolId as keyof typeof state.tools]) {
       return toolId;
     }
   }
@@ -696,6 +698,8 @@ export const getBestWeapon = (
   state: GameState,
   weaponType: "bow" | "sword",
 ): string | null => {
+  if (!state.weapons) return null;
+
   const hierarchy =
     weaponType === "bow"
       ? BOW_HIERARCHY
@@ -706,7 +710,7 @@ export const getBestWeapon = (
   // Find the highest tier weapon that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const weaponId = hierarchy[i];
-    if (state.weapons[weaponId as keyof typeof state.weapons]) {
+    if (weaponId in state.weapons && state.weapons[weaponId as keyof typeof state.weapons]) {
       return weaponId;
     }
   }
@@ -733,27 +737,31 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
   if (bestSword) displayTools[bestSword] = true;
 
   // Add non-hierarchical tools
-  Object.entries(state.tools).forEach(([toolId, owned]) => {
-    if (
-      owned &&
-      !AXE_HIERARCHY.includes(toolId) &&
-      !PICKAXE_HIERARCHY.includes(toolId) &&
-      !LANTERN_HIERARCHY.includes(toolId)
-    ) {
-      displayTools[toolId] = true;
-    }
-  });
+  if (state.tools) {
+    Object.entries(state.tools).forEach(([toolId, owned]) => {
+      if (
+        owned &&
+        !AXE_HIERARCHY.includes(toolId) &&
+        !PICKAXE_HIERARCHY.includes(toolId) &&
+        !LANTERN_HIERARCHY.includes(toolId)
+      ) {
+        displayTools[toolId] = true;
+      }
+    });
+  }
 
   // Add non-hierarchical weapons
-  Object.entries(state.weapons).forEach(([weaponId, owned]) => {
-    if (
-      owned &&
-      !BOW_HIERARCHY.includes(weaponId) &&
-      !SWORD_HIERARCHY.includes(weaponId)
-    ) {
-      displayTools[weaponId] = true;
-    }
-  });
+  if (state.weapons) {
+    Object.entries(state.weapons).forEach(([weaponId, owned]) => {
+      if (
+        owned &&
+        !BOW_HIERARCHY.includes(weaponId) &&
+        !SWORD_HIERARCHY.includes(weaponId)
+      ) {
+        displayTools[weaponId] = true;
+      }
+    });
+  }
 
   return displayTools;
 };
