@@ -223,7 +223,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             </div>
 
             {/* Say goodbye button - full width */}
-            {event.choices.find(choice => choice.id === 'say_goodbye') && (
+            {event.choices.some(choice => choice.id === 'say_goodbye') && (
               <Button
                 onClick={() => handleChoice('say_goodbye')}
                 variant="outline"
