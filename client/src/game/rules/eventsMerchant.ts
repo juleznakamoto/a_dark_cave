@@ -325,7 +325,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: trade.label,
+        label: `Buy ${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -363,7 +363,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: trade.label,
+        label: `Buy ${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
