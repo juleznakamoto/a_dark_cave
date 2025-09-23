@@ -207,9 +207,21 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   return buttonContent;
                 })}
               </div>
+
+              {/* Say Goodbye button */}
+              {eventChoices.find(choice => choice.id === 'say_goodbye') && (
+                <div className="mt-3">
+                  <Button
+                    onClick={() => handleChoice('say_goodbye')}
+                    variant="secondary"
+                    className="w-full"
+                    disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
+                  >
+                    Say Goodbye
+                  </Button>
+                </div>
+              )}
             </div>
-
-
 
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (
