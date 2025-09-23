@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { gameActions } from '@/game/rules';
+import { gameActions, applyActionEffects } from '@/game/rules';
 
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
@@ -70,7 +70,7 @@ export const villageBuildActions: Record<string, Action> = {
       9: {
         "resources.wood": 3000,
       },
-      19: {
+      10: {
         "resources.wood": 4000,
       },
     },

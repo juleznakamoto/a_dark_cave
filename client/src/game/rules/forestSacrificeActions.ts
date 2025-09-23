@@ -1,7 +1,6 @@
-
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from '@/game/rules';
+import { gameActions, applyActionEffects } from '@/game/rules';
 
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
@@ -34,7 +33,7 @@ export const forestSacrificeActions: Record<string, Action> = {
 export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('boneTotems', state);
   Object.assign(result.stateUpdates, effectUpdates);
-  
+
   // Add a basic message - more complex events will be handled later
   result.logEntries!.push({
     id: `bone-totems-sacrifice-${Date.now()}`,
@@ -42,6 +41,6 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
     timestamp: Date.now(),
     type: 'system',
   });
-  
+
   return result;
 }

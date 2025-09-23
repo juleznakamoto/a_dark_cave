@@ -1,7 +1,7 @@
-
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { applyActionEffects, getActionBonuses, getTotalLuck } from '@/game/rules/effects';
+import { gameActions, applyActionEffects } from '@/game/rules';
+import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
 import { killVillagers } from '@/game/stateHelpers';
 
 export const forestScoutActions: Record<string, Action> = {

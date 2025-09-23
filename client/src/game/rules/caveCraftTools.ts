@@ -1,5 +1,6 @@
-
-import { Action } from "@shared/schema";
+import { Action, GameState } from "@shared/schema";
+import { ActionResult } from '@/game/actions';
+import { gameActions, applyActionEffects } from '@/game/rules';
 
 export const caveCraftTools: Record<string, Action> = {
   buildTorch: {
