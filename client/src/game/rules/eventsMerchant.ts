@@ -313,7 +313,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 18,
+    timeProbability: 14,
     title: "The Traveling Merchant",
     message: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs, 'I have rare items for trade.'",
     triggered: false,
