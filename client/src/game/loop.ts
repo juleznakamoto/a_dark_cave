@@ -253,28 +253,16 @@ function handleStarvationCheck() {
     }
 
     if (starvationDeaths > 0) {
-      // Apply deaths to villagers
-      let updatedVillagers = { ...state.villagers };
-      let remainingDeaths = starvationDeaths;
-
-      const villagerTypes = ['free', 'gatherer', 'hunter', 'iron_miner', 'coal_miner', 'sulfur_miner', 'silver_miner', 'gold_miner', 'obsidian_miner', 'adamant_miner', 'moonstone_miner', 'steel_forger'];
-
-      for (const villagerType of villagerTypes) {
-        if (remainingDeaths > 0 && updatedVillagers[villagerType as keyof typeof updatedVillagers] > 0) {
-          const deaths = Math.min(remainingDeaths, updatedVillagers[villagerType as keyof typeof updatedVillagers]);
-          updatedVillagers[villagerType as keyof typeof updatedVillagers] -= deaths;
-          remainingDeaths -= deaths;
-        }
-        if (remainingDeaths === 0) break;
-      }
+      // Use the centralized killVillagers function
+      const deathResult = killVillagers(state, starvationDeaths);
+      
+      useGameStore.setState({
+        villagers: deathResult.villagers || state.villagers,
+      });
 
       const message = starvationDeaths === 1 
         ? "One villager succumbs to starvation. Remaining villagers grow desperate." 
         : `${starvationDeaths} villagers starve to death. Survivors look gaunt and hollow-eyed.`;
-
-      useGameStore.setState({
-        villagers: updatedVillagers,
-      });
 
       state.addLogEntry({
         id: `starvation-${Date.now()}`,
@@ -308,7 +296,15 @@ function handleFreezingCheck() {
 
     if (freezingDeaths > 0) {
       // Use the centralized killVillagers function
-      const message = killVillagers(freezingDeaths, "villagers");
+      const deathResult = killVillagers(state, freezingDeaths);
+      
+      useGameStore.setState({
+        villagers: deathResult.villagers || state.villagers,
+      });
+
+      const message = freezingDeaths === 1 
+        ? "One villager freezes to death in the cold. The others huddle together for warmth." 
+        : `${freezingDeaths} villagers freeze to death in the harsh cold. Survivors seek shelter desperately.`;
 
       state.addLogEntry({
         id: `freezing-${Date.now()}`,
