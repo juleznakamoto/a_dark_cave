@@ -143,7 +143,11 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             <div className="mt-4">
               {/* Trade buttons in 2-column grid */}
               <div className="grid grid-cols-2 gap-2 mb-4">
-                {event.choices.filter(choice => choice.id.startsWith('trade_') && choice.id !== 'say_goodbye').map((choice) => {
+                {event.choices.filter(choice => 
+                  choice.id.startsWith('trade_') && 
+                  choice.id !== 'say_goodbye' && 
+                  !purchasedItems.has(choice.id)
+                ).map((choice) => {
                   // Check if choice can be afforded (for merchant trades)
                   const testResult = choice.effect(gameState);
                   const canAfford = Object.keys(testResult).length > 0;
@@ -219,17 +223,16 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             </div>
 
             {/* Say goodbye button - full width */}
-            {event.choices.filter(choice => choice.id === 'say_goodbye').map((choice) => (
+            {event.choices.find(choice => choice.id === 'say_goodbye') && (
               <Button
-                key={choice.id}
-                onClick={() => handleChoice(choice.id)}
+                onClick={() => handleChoice('say_goodbye')}
                 variant="outline"
                 className="w-full text-left justify-start"
                 disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
               >
-                {choice.label}
+                {event.choices.find(choice => choice.id === 'say_goodbye')?.label || 'Say goodbye'}
               </Button>
-            ))}
+            )}
 
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (
