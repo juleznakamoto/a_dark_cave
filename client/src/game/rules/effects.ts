@@ -609,6 +609,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  wooden_figure: {
+    id: "wooden_figure",
+    name: "Wooden Figure",
+    description:
+      "A small wooden figure carved with tentacled features that emanates a strange aura",
+    bonuses: {
+      generalBonuses: {
+        madness: 5,
+        luck: 2,
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
