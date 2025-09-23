@@ -237,6 +237,17 @@
   animation: madness-button-shift 0.4s ease-in-out;
 }
 
+@keyframes madness-overlay-pulse {
+  0%, 100% { 
+    background-color: rgba(139, 0, 0, 0.05);
+    opacity: 0.8;
+  }
+  50% { 
+    background-color: rgba(139, 0, 0, 0.15);
+    opacity: 1;
+  }
+}
+
 .madness-overlay {
   position: fixed;
   top: 0;
@@ -246,7 +257,7 @@
   background-color: rgba(139, 0, 0, 0.1);
   pointer-events: none;
   z-index: 10000;
-  animation: 5s ease-in-out;
+  animation: madness-overlay-pulse 2s ease-in-out;
 }
 
 /* Letter displacement for text distortion */
