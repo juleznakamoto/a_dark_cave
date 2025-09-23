@@ -154,6 +154,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildTimberMill(state, result);
     case 'buildQuarry':
       return handleBuildQuarry(state, result);
+    case 'buildClerksHut':
+      return handleBuildClerksHut(state, result);
     default:
       return result;
   }
@@ -302,6 +304,10 @@ function handleBuildTimberMill(state: GameState, result: ActionResult): ActionRe
 
 function handleBuildQuarry(state: GameState, result: ActionResult): ActionResult {
   return handleBuildingConstruction(state, result, 'buildQuarry', 'quarry');
+}
+
+function handleBuildClerksHut(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
 }
 
 function handleBuildingConstruction(
