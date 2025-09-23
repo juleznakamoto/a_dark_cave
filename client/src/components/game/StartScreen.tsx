@@ -21,8 +21,7 @@ export default function StartScreen() {
           onClick={handleLightFire}
           className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
-          hoverDelay={3000}
-          successDuration={5500}
+          hoverDelay={1500}
         >
           Light Fire
         </ParticleButton>

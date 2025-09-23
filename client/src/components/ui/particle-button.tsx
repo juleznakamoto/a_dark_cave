@@ -9,6 +9,7 @@ import type { ButtonProps } from "@/components/ui/button";
 
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number; // how often sparks spawn
+    hoverDelay?: number; // delay before sparks start spawning on hover
 }
 
 interface Spark {
@@ -82,6 +83,7 @@ function ParticleButton({
     children,
     onClick,
     spawnInterval = 300,
+    hoverDelay = 1500,
     className,
     ...props
 }: ParticleButtonProps) {
@@ -157,7 +159,7 @@ function ParticleButton({
                     }
                 }
             }, 200);
-        }, 1500); // 1.5 seconds delay
+        }, hoverDelay);
     };
 
     const handleMouseLeave = () => {
