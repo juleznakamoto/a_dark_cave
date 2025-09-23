@@ -89,9 +89,12 @@ function ParticleButton({
 }: ParticleButtonProps) {
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
+    const [glowIntensity, setGlowIntensity] = useState(0);
     const buttonRef = useRef<HTMLButtonElement>(null);
     const intervalRef = useRef<NodeJS.Timeout | null>(null);
     const rampUpRef = useRef<NodeJS.Timeout | null>(null);
+    const glowRampRef = useRef<NodeJS.Timeout | null>(null);
+    const flickerRef = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const idRef = useRef(0);
     const spawnCountRef = useRef(2); // initial number of sparks per spawn
@@ -131,6 +134,14 @@ function ParticleButton({
             clearInterval(rampUpRef.current);
             rampUpRef.current = null;
         }
+        if (glowRampRef.current) {
+            clearInterval(glowRampRef.current);
+            glowRampRef.current = null;
+        }
+        if (flickerRef.current) {
+            clearInterval(flickerRef.current);
+            flickerRef.current = null;
+        }
         if (delayTimeoutRef.current) {
             clearTimeout(delayTimeoutRef.current);
             delayTimeoutRef.current = null;
@@ -141,6 +152,7 @@ function ParticleButton({
         // start delayed spawn
         delayTimeoutRef.current = setTimeout(() => {
             setIsGlowing(true);
+            setGlowIntensity(0.1); // start with very small glow
             spawnCountRef.current = 2;
             rampStartRef.current = Date.now();
 
@@ -161,12 +173,34 @@ function ParticleButton({
                     }
                 }
             }, 200);
+
+            // gradually increase glow intensity over 6 seconds
+            glowRampRef.current = setInterval(() => {
+                if (rampStartRef.current) {
+                    const elapsed = Date.now() - rampStartRef.current;
+                    if (elapsed < 6000) {
+                        const progress = elapsed / 6000;
+                        setGlowIntensity(0.1 + (progress * 0.9)); // from 0.1 to 1.0
+                    } else {
+                        setGlowIntensity(1.0); // max intensity
+                        clearInterval(glowRampRef.current!);
+                        glowRampRef.current = null;
+                    }
+                }
+            }, 100);
+
+            // add flickering effect
+            flickerRef.current = setInterval(() => {
+                const flicker = 0.85 + Math.random() * 0.3; // random between 0.85 and 1.15
+                setGlowIntensity(prev => Math.min(1.2, prev * flicker));
+            }, 150);
         }, hoverDelay);
     };
 
     const handleMouseLeave = () => {
         clearAllTimers();
         setIsGlowing(false);
+        setGlowIntensity(0);
     };
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -194,7 +228,7 @@ function ParticleButton({
                 )}
                 style={{
                     textShadow: isGlowing 
-                        ? "0 0 10px #ff6347, 0 0 20px #ff4500, 0 0 30px #ff8c00, 0 0 40px #ffa500"
+                        ? `0 0 ${10 * glowIntensity}px #ff6347, 0 0 ${20 * glowIntensity}px #ff4500, 0 0 ${30 * glowIntensity}px #ff8c00, 0 0 ${40 * glowIntensity}px #ffa500`
                         : "none",
                 }}
                 {...props}
