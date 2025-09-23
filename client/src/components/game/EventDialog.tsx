@@ -149,9 +149,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const canAfford = Object.keys(testResult).length > 0;
                   const isPurchased = purchasedItems.has(choice.id);
 
-                  // Extract the item being bought from the label
-                  const itemMatch = choice.label.match(/Buy (\d+\s+\w+)/);
-                  const simplifiedLabel = itemMatch ? `Buy ${itemMatch[1]}` : choice.label.replace(/^Buy\s+/, 'Buy ');
+                  // Use the original label from the trade object
+                  const displayLabel = choice.label;
 
                   // Extract cost from the choice label (format: "Buy X for Y resource")
                   // Extract cost by examining what the effect would consume
@@ -193,7 +192,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
-                        {isPurchased ? '✓ Purchased' : simplifiedLabel}
+                        {isPurchased ? '✓ Purchased' : displayLabel}
                       </span>
                     </Button>
                   );
