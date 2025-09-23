@@ -14,6 +14,7 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { cn } from "@/lib/utils";
 
 interface EventDialogProps {
@@ -108,8 +109,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     }
   };
 
-  const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0 
-    ? ((totalTime - timeRemaining) / totalTime) * 100 
+  const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0
+    ? ((totalTime - timeRemaining) / totalTime) * 100
     : 0;
 
   const isMerchantEvent = event?.id.includes('merchant');
@@ -148,7 +149,11 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const canAfford = Object.keys(testResult).length > 0;
                   const isPurchased = purchasedItems.has(choice.id);
 
-                  return (
+                  // Extract the item being bought from the label
+                  const itemMatch = choice.label.match(/Buy (\d+\s+\w+)/);
+                  const simplifiedLabel = itemMatch ? `Buy ${itemMatch[1]}` : choice.label.replace(/^Buy\s+/, 'Buy ');
+
+                  const buttonContent = (
                     <Button
                       key={choice.id}
                       onClick={() => handleChoice(choice.id)}
@@ -157,26 +162,47 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
-                        {isPurchased ? '✓ Purchased' : choice.label}
+                        {isPurchased ? '✓ Purchased' : simplifiedLabel}
                       </span>
                     </Button>
                   );
+
+                  // Only show hover for non-purchased items
+                  if (isPurchased) {
+                    return buttonContent;
+                  }
+
+                  return (
+                    <HoverCard key={choice.id} openDelay={200} closeDelay={100}>
+                      <HoverCardTrigger asChild>
+                        {buttonContent}
+                      </HoverCardTrigger>
+                      <HoverCardContent className="w-auto p-2">
+                        <div className="text-xs whitespace-nowrap">
+                          <div className="font-medium mb-1">{choice.label}</div>
+                          <div className="text-muted-foreground">
+                            Cost: {choice.label.split(' - ')[1] || 'Unknown'}
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                  );
                 })}
               </div>
-
-              {/* Say goodbye button - full width */}
-              {event.choices.filter(choice => choice.id === 'say_goodbye').map((choice) => (
-                <Button
-                  key={choice.id}
-                  onClick={() => handleChoice(choice.id)}
-                  variant="outline"
-                  className="w-full text-left justify-start"
-                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
-                >
-                  {choice.label}
-                </Button>
-              ))}
             </div>
+
+            {/* Say goodbye button - full width */}
+            {event.choices.filter(choice => choice.id === 'say_goodbye').map((choice) => (
+              <Button
+                key={choice.id}
+                onClick={() => handleChoice(choice.id)}
+                variant="outline"
+                className="w-full text-left justify-start"
+                disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
+              >
+                {choice.label}
+              </Button>
+            ))}
 
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (
@@ -184,8 +210,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
                 </div>
-                <Progress 
-                  value={progress} 
+                <Progress
+                  value={progress}
                   className="h-2"
                 />
               </div>
@@ -193,8 +219,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
           </DialogPrimitive.Content>
         </DialogPortal>
       ) : (
-        <DialogContent 
-          className="sm:max-w-md [&>button]:hidden" 
+        <DialogContent
+          className="sm:max-w-md [&>button]:hidden"
           onPointerDownOutside={(e) => e.preventDefault()}
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
@@ -239,8 +265,8 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
               </div>
-              <Progress 
-                value={progress} 
+              <Progress
+                value={progress}
                 className="h-2"
               />
             </div>
