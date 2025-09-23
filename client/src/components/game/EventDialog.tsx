@@ -192,10 +192,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                 {/* Say Goodbye button in the same grid */}
                 {eventChoices.find(choice => choice.id === 'say_goodbye') && (
                   <Button
-                    onClick={() => {
-                      handleChoice('say_goodbye');
-                      onClose();
-                    }}
+                    onClick={() => handleChoice('say_goodbye')}
                     variant="outline"
                     className="text-xs h-10 px-4"
                     disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
