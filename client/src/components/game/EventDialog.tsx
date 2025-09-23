@@ -105,11 +105,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       return; // Don't close dialog for trade purchases
     }
 
-    // Close dialog for fallback choices
-    if (choiceId === event?.fallbackChoice?.id) {
-      fallbackExecutedRef.current = true;
-      onClose();
-    }
+    // Close dialog for non-trade choices (like "Say Goodbye" or other fallback choices)
+    fallbackExecutedRef.current = true;
+    onClose();
   };
 
   const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0
