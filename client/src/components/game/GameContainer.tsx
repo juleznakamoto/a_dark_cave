@@ -1,4 +1,3 @@
-
 import GameTabs from './GameTabs';
 import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
@@ -19,7 +18,7 @@ export default function GameContainer() {
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
     const newlyUnlocked: string[] = [];
-    
+
     if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
       newlyUnlocked.push('village');
     }
@@ -32,7 +31,7 @@ export default function GameContainer() {
 
     if (newlyUnlocked.length > 0) {
       setAnimatingTabs(new Set(newlyUnlocked));
-      
+
       // Remove animation class after animation completes
       setTimeout(() => {
         setAnimatingTabs(new Set());
