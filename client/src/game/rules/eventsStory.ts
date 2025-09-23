@@ -76,11 +76,6 @@ function getTotalLuck(state: GameState): number {
   );
 }
 
-// Helper function to get total knowledge from various sources
-function getTotalKnowledge(state: GameState): number {
-  return (state.stats.knowledge || 0);
-}
-
 // Centralized function to kill villagers
 function killVillagers(state: GameState, amount: number): Partial<GameState> {
   let updatedVillagers = { ...state.villagers };

@@ -439,6 +439,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.deepeningPit": 1,
+        "buildings.clerksHut": 0,
       },
     },
     cost: {
