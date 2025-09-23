@@ -153,6 +153,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const itemMatch = choice.label.match(/Buy (\d+\s+\w+)/);
                   const simplifiedLabel = itemMatch ? `Buy ${itemMatch[1]}` : choice.label.replace(/^Buy\s+/, 'Buy ');
 
+                  // Extract cost from the choice label (format: "Buy X for Y resource")
+                  const costMatch = choice.label.match(/for (\d+) (\w+)$/);
+                  const costDisplay = costMatch ? `${costMatch[1]} ${costMatch[2]}` : 'Unknown cost';
+
                   const buttonContent = (
                     <Button
                       key={choice.id}
@@ -179,7 +183,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       </HoverCardTrigger>
                       <HoverCardContent className="w-auto p-2">
                         <div className="text-xs whitespace-nowrap">
-                          {choice.label.split(' - ')[1] || 'Unknown'}
+                          {costDisplay}
                         </div>
                       </HoverCardContent>
                     </HoverCard>
