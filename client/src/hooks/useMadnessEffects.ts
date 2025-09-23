@@ -19,9 +19,9 @@ export const useMadnessEffects = () => {
     }
 
     // Calculate effect frequency based on madness level
-    const baseInterval = 8; // 8 seconds base for more frequent effects
-    const madnessMultiplier = Math.min(madness / 50, 0.7); // Max 70% reduction
-    const effectInterval = Math.max(2, baseInterval * (1 - madnessMultiplier)); // Minimum 2 seconds
+    const baseInterval = 15000; // 15 seconds base
+    const madnessMultiplier = Math.min(madness / 50, 0.8); // Max 80% reduction
+    const effectInterval = baseInterval * (1 - madnessMultiplier);
 
     const triggerRandomEffect = () => {
       const effects = ['text-jitter', 'text-fade', 'text-echo', 'button-shift', 'overlay'];
@@ -31,21 +31,21 @@ export const useMadnessEffects = () => {
       setIsEffectActive(true);
 
       // Effect duration
-      const effectDuration = randomEffect === 'overlay' ? 6000 : 
-                           randomEffect === 'text-echo' ? 1500 :
-                           randomEffect === 'text-fade' ? 10000 : 5000;
+      const effectDuration = randomEffect === 'overlay' ? 2000 : 
+                           randomEffect === 'text-echo' ? 1200 :
+                           randomEffect === 'text-fade' ? 800 : 400;
 
       setTimeout(() => {
         setIsEffectActive(false);
-        setTimeout(() => setCurrentEffect(null), 5000);
+        setTimeout(() => setCurrentEffect(null), 100);
       }, effectDuration);
     };
 
     const intervalId = setInterval(triggerRandomEffect, effectInterval);
 
-    // Also trigger an effect immediately with higher probability for testing
-    if (Math.random() < 0.8) {
-      setTimeout(triggerRandomEffect, Math.random() * 2000);
+    // Also trigger an effect immediately with some probability
+    if (Math.random() < 0.3) {
+      setTimeout(triggerRandomEffect, Math.random() * 3000);
     }
 
     return () => clearInterval(intervalId);

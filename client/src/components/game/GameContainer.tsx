@@ -55,14 +55,14 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col">
+    <div className={`h-screen bg-background text-foreground flex flex-col ${
+      isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+        ? `madness-${currentEffect}` : ''
+    }`}>
 
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
-        <div className={`w-full mb-6 ${
-          isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
-            ? `madness-${currentEffect}` : ''
-        }`}>
+        <div className="w-full mb-6">
           <LogPanel />
         </div>
 
@@ -133,10 +133,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-            <div className={`flex-1 overflow-y-auto pl-6 ${
-              isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
-                ? `madness-${currentEffect}` : ''
-            }`}>
+            <div className="flex-1 overflow-y-auto pl-6">
               {activeTab === 'cave' && <CavePanel />}
               {activeTab === 'village' && <VillagePanel />}
               {activeTab === 'forest' && <ForestPanel />}
@@ -147,12 +144,16 @@ export default function GameContainer() {
       </main>
 
       <GameFooter />
+
+      {/* Madness Overlay */}
+      <MadnessOverlay />
+
+      {/* Event Dialog */}
       <EventDialog
         isOpen={eventDialog.isOpen}
         onClose={() => setEventDialog(false)}
         event={eventDialog.currentEvent}
       />
-      <MadnessOverlay />
     </div>
   );
 }

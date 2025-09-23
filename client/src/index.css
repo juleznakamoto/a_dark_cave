@@ -188,96 +188,58 @@
 /* Madness Effects */
 @keyframes madness-jitter {
   0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-2px, -1px); }
-  20% { transform: translate(2px, -1px); }
-  30% { transform: translate(-1px, 2px); }
+  10% { transform: translate(-1px, -1px); }
+  20% { transform: translate(1px, -1px); }
+  30% { transform: translate(-1px, 1px); }
   40% { transform: translate(1px, 1px); }
-  50% { transform: translate(-3px, 0); }
-  60% { transform: translate(3px, 0); }
+  50% { transform: translate(-2px, 0); }
+  60% { transform: translate(2px, 0); }
   70% { transform: translate(0, -2px); }
-  80% { transform: translate(0, 3px); }
-  90% { transform: translate(-2px, 0); }
+  80% { transform: translate(0, 2px); }
+  90% { transform: translate(-1px, 0); }
 }
 
 @keyframes madness-fade {
-  0%, 100% { 
-    opacity: 1; 
-    color: inherit !important;
-  }
-  25% { 
-    opacity: 0.4; 
-    color: rgb(220, 38, 127) !important;
-  }
-  50% { 
-    opacity: 0.2; 
-    color: rgb(185, 28, 28) !important;
-  }
-  75% { 
-    opacity: 0.6; 
-    color: rgb(239, 68, 68) !important;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
 }
 
 @keyframes madness-echo {
   0%, 100% { 
     text-shadow: none; 
   }
-  33% { 
+  50% { 
     text-shadow: 
-      2px 2px 0px rgb(154, 14, 14, 0.4),
-      4px 4px 0px rgb(169, 40, 40, 0.2);
-  }
-  66% { 
-    text-shadow: 
-      -1px -1px 0px rgb(126, 16, 16, 0.3),
-      -2px -2px 0px rgb(174, 55, 55, 0.15);
+      1px 1px 0px rgba(255, 255, 255, 0.3),
+      2px 2px 0px rgba(255, 255, 255, 0.2),
+      -1px -1px 0px rgba(255, 255, 255, 0.1);
   }
 }
 
 @keyframes madness-button-shift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  25% { transform: translate(2px, -1px) scale(0.995); }
-  50% { transform: translate(-1px, 2px) scale(0.998); }
-  75% { transform: translate(1px, 1px) scale(0.996); }
-}
-
-.madness-text-jitter {
-  animation: madness-jitter 5s ease-in-out infinite;
-}
-
-.madness-text-fade {
-  animation: madness-fade 10s ease-in-out infinite;
-}
-
-.madness-text-echo {
-  animation: madness-echo 1.5s ease-in-out infinite;
-}
-
-.madness-button-shift {
-  animation: madness-button-shift 0.6s ease-in-out infinite;
+  50% { transform: translate(1px, -1px) scale(0.998); }
 }
 
 @keyframes madness-overlay-pulse {
-  0% { 
-    background-color: rgba(139, 0, 0, 0.02);
-    opacity: 0.3;
-  }
-  25% { 
-    background-color: rgba(139, 0, 0, 0.08);
-    opacity: 0.7;
-  }
-  50% { 
-    background-color: rgba(139, 0, 0, 0.15);
-    opacity: 1;
-  }
-  75% { 
-    background-color: rgba(139, 0, 0, 0.1);
-    opacity: 0.8;
-  }
-  100% { 
-    background-color: rgba(139, 0, 0, 0.03);
-    opacity: 0.4;
-  }
+  0%, 100% { opacity: 0; }
+  50% { opacity: 0.08; }
+}
+
+.madness-text-jitter {
+  animation: madness-jitter 0.3s ease-in-out;
+}
+
+.madness-text-fade {
+  animation: madness-fade 0.8s ease-in-out;
+}
+
+.madness-text-echo {
+  animation: madness-echo 1.2s ease-in-out;
+}
+
+.madness-button-shift {
+  animation: madness-button-shift 0.4s ease-in-out;
 }
 
 .madness-overlay {
@@ -286,10 +248,10 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(139, 0, 0, 0.08);
+  background-color: rgba(139, 0, 0, 0.1);
   pointer-events: none;
-  z-index: 10000;
-  animation: madness-overlay-pulse 6s ease-in-out infinite;
+  z-index: 1000;
+  animation: madness-overlay-pulse 2s ease-in-out;
 }
 
 /* Letter displacement for text distortion */

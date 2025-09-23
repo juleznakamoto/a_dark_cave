@@ -74,15 +74,17 @@ export default function CooldownButton({
           "relative overflow-hidden transition-all duration-200 select-none",
           showCooldownVisual ? "opacity-60 cursor-not-allowed" : "",
           isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : '',
-          isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
-            ? `madness-${currentEffect}` : '',
           className
         )}
         data-testid={testId}
         {...props}
       >
         {/* Button content */}
-        <span className="relative z-10">
+        <span className={cn(
+          "relative z-10",
+          isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+            ? `madness-${currentEffect}` : ''
+        )}>
           {children}
         </span>
 
