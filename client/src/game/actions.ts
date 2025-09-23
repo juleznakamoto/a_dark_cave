@@ -4,7 +4,7 @@ import { getActionBonuses } from '@/game/rules/effects';
 import { LogEntry } from '@/game/events';
 import { killVillagers } from '@/game/stateHelpers';
 
-// Helper function to get total luck from various sources
+
 function getTotalLuck(state: GameState): number {
   return (
     (state.stats.luck || 0) +

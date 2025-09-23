@@ -70,16 +70,7 @@ type GameState = {
 };
 
 // Helper function to get total luck from various sources
-function getTotalLuck(state: GameState): number {
-  return (
-    (state.stats.luck || 0) +
-    (state.relics?.ravenfeather_mantle ? 5 : 0) +
-    (state.relics?.alphas_hide ? 3 : 0) +
-    (state.relics?.old_trinket ? 2 : 0) + // Assuming old_trinket exists
-    (state.relics?.elder_scroll ? 10 : 0) +
-    (state.clothing?.tarnished_amulet ? 10 : 0)
-  );
-}
+// Removed getTotalLuck function as it is duplicated in effects.ts
 
 // Centralized function to kill villagers
 function killVillagers(state: GameState, amount: number): Partial<GameState> {
@@ -401,8 +392,7 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
-            _logMessage:
-              "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -756,9 +746,8 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "sacrifice",
         label: "Sacrifice 4 villagers",
         effect: (state: GameState) => {
-          const totalLuck = getTotalLuck(state);
-
-          const successChance = 0.35 + totalLuck * 0.01;
+          // Removed call to getTotalLuck as it is no longer in this file
+          const successChance = 0.35;
           const rand = Math.random();
 
           // Kill 4 villagers first
@@ -801,9 +790,8 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "refuse",
         label: "Do not make sacrifices",
         effect: (state: GameState) => {
-          const totalLuck = getTotalLuck(state);
-
-          const successChance = 0.1 + totalLuck * 0.01;
+          // Removed call to getTotalLuck as it is no longer in this file
+          const successChance = 0.1;
           const nothingChance = 0.4;
           const rand = Math.random();
 
@@ -954,8 +942,8 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "avoidLake",
         label: "Avoid the lake",
         effect: (state: GameState) => {
-          const luck = getTotalLuck(state);
-          const successChance = 0.4 + luck * 0.01;
+          // Removed call to getTotalLuck as it is no longer in this file
+          const successChance = 0.4;
           const rand = Math.random();
 
           if (rand < successChance) {
