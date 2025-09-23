@@ -177,7 +177,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       key={choice.id}
                       onClick={() => handleChoice(choice.id)}
                       variant={isPurchased ? "secondary" : "outline"}
-                      className="text-left justify-start text-xs h-auto py-3 px-2 min-h-[3rem]"
+                      className="text-left justify-start text-sm h-10 px-4 py-2"
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
