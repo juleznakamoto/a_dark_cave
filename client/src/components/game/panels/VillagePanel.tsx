@@ -24,6 +24,7 @@ export default function VillagePanel() {
     { id: 'buildGreatCabin', label: 'Great Cabin' },
     { id: 'buildTimberMill', label: 'Timber Mill' },
     { id: 'buildQuarry', label: 'Quarry' },
+    { id: 'buildClerksHut', label: "Clerk's Hut" },
   ];
 
   // Define population jobs
@@ -170,7 +171,7 @@ export default function VillagePanel() {
               .map(([resource, amount]) => `${amount > 0 ? "+" : ""}${amount} ${resource}`)
               .join(", ");
 
-            return effectsText ? (
+            return effectsText && buildings.clerksHut > 0 ? (
               <div className="text-xs text-muted-foreground border-t pt-2 mt-2">
                 Total: {effectsText} per 15s
               </div>

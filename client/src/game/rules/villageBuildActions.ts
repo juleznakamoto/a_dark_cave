@@ -431,4 +431,31 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  buildClerksHut: {
+    id: "buildClerksHut",
+    label: "Clerk's Hut",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 6,
+        "buildings.clerksHut": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+        "resources.stone": 500,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -500,
+        "resources.stone": -500,
+        "buildings.clerksHut": 1,
+        "story.seen.hasClerksHut": true,
+      },
+    },
+    cooldown: 30,
+  },
 };

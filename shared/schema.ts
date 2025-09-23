@@ -119,6 +119,7 @@ export const gameStateSchema = z.object({
     greatCabin: z.number().default(0),
     timberMill: z.number().default(0),
     quarry: z.number().default(0),
+    clerksHut: z.number().default(0),
   }).default({}),
   villagers: z.object({
     free: z.number().min(0).default(0),
