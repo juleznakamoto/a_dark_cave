@@ -55,10 +55,7 @@ export default function GameContainer() {
   }
 
   return (
-    <div className={`h-screen bg-background text-foreground flex flex-col ${
-      isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
-        ? `madness-${currentEffect}` : ''
-    }`}>
+    <div className="h-screen bg-background text-foreground flex flex-col">
 
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
