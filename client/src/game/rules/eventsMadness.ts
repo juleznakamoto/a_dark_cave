@@ -334,7 +334,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   wrongReflections: {
     id: "wrongReflections",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 25 && !state.events.wrongReflections,
+    condition: (state: GameState) => (state.stats.madness || 0) >= 40 && !state.events.wrongReflections,
     triggerType: "resource",
     timeProbability: 55,
     title: "Wrong Reflections",
@@ -354,7 +354,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 4,
+            madness: (state.stats.madness || 0) + 5,
           },
           _logMessage:
             "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
@@ -365,81 +365,28 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Cover the well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
-          const thirstDeaths = Math.floor(Math.random() * 5) + 4; // 4-8 deaths
+          const thirstDeaths = Math.floor(Math.random() * 5) + 6; // 6-10 deaths
           const deathResult = killVillagers(state, thirstDeaths);
           
           return {
             ...deathResult,
-            resources: {
-              ...state.resources,
-              wood: Math.max(0, state.resources.wood - 10),
-            },
             flags: {
               ...state.flags,
               needsNewWell: true,
             },
             _logMessage:
-              `You board up the well with wooden planks, forbidding all access to the contaminated water. Without a water source, ${thirstDeaths} of the older villagers die of thirst over the following days. The survivors demand you build a new well immediately.`,
+              `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
           };
         },
       },
     ],
   },
 
-  timeSkips: {
-    id: "timeSkips",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 35 && !state.events.timeSkips,
-    triggerType: "resource",
-    timeProbability: 35,
-    title: "Lost Hours",
-    message:
-      "You blink and the sun has moved. Hours have passed without your awareness. The villagers avoid your gaze and work with desperate efficiency, as if trying to make up for lost time. You find strange symbols carved into trees that weren't there before.",
-    triggered: false,
-    priority: 3,
-    repeatable: false,
-    effect: (state: GameState) => {
-      const rand = Math.random();
-      if (rand < 0.4) {
-        // Resources mysteriously appear
-        return {
-          events: {
-            ...state.events,
-            timeSkips: true,
-          },
-          resources: {
-            ...state.resources,
-            wood: state.resources.wood + Math.floor(Math.random() * 20) + 10,
-          },
-          stats: {
-            ...state.stats,
-            madness: (state.stats.madness || 0) + 2,
-          },
-          _logMessage:
-            "When awareness returns, you find piles of freshly cut wood arranged in perfect geometric patterns. The villagers claim they didn't gather it, but their hands are stained with sap.",
-        };
-      } else {
-        // Just madness increase
-        return {
-          events: {
-            ...state.events,
-            timeSkips: true,
-          },
-          stats: {
-            ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
-          },
-          _logMessage:
-            "The lost time feels like falling through darkness. You remember fragments - digging, chanting in voices not your own, and the taste of earth. The villagers won't meet your eyes.",
-        };
-      }
-    },
-  },
-
   villagersStareAtSky: {
     id: "villagersStareAtSky",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 28 && state.villagers.free > 1 && !state.events.villagersStareAtSky,
+    condition: (state: GameState) => (state.stats.madness || 0) >= 45 && !state.events.villagersStareAtSky,
     triggerType: "resource",
-    timeProbability: 50,
+    timeProbability: 40,
     title: "Skyward Gaze",
     message:
       "All your villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
@@ -460,10 +407,10 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 2,
+                madness: (state.stats.madness || 0) + 3,
               },
               _logMessage:
-                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit, but the black tears continue to fall.",
+                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -493,7 +440,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 5,
+            madness: (state.stats.madness || 0) + 6,
           },
           _logMessage:
             "You crane your neck skyward and suddenly see it - something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever.",
@@ -501,5 +448,4 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
     ],
   },
-
 }

@@ -527,6 +527,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 5,
+        madness: 1,
       },
     },
   },
@@ -561,7 +562,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Ancient scroll that grants both knowledge and luck",
     bonuses: {
       generalBonuses: {
-        knowledge: 15,
+        knowledge: 12,
       },
     },
   },
@@ -574,7 +575,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 3,
-        knowledge: 5,
+        knowledge: 4,
       },
     },
   },
