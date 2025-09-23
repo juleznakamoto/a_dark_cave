@@ -189,7 +189,7 @@ function ParticleButton({
                         // Reset glow to max every 2 seconds to maintain intensity
                         glowRampRef.current = setInterval(() => {
                             setGlowIntensity(1.0);
-                        }, 2000);
+                        }, 900);
                     }
                 }
             }, 100);
