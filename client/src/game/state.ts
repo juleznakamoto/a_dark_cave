@@ -422,8 +422,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     console.log(`[STATE] Applying event choice: ${choiceId} for event: ${eventId}`);
     console.log(`[STATE] Available events:`, Object.keys(state.events || {}));
 
+    // Get the current event dialog log entry for merchant events
+    const currentLogEntry = get().eventDialog.currentEvent;
+
     // Handle other events using EventManager
-    const changes = EventManager.applyEventChoice(state, choiceId, eventId);
+    const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
 
     console.log(`[STATE] EventManager returned changes:`, changes);
 

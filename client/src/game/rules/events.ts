@@ -130,6 +130,7 @@ export class EventManager {
     state: GameState,
     choiceId: string,
     eventId: string,
+    currentLogEntry?: LogEntry,
   ): Partial<GameState> {
     console.log(`[EventManager] Applying choice: ${choiceId} for event: ${eventId}`);
     console.log(`[EventManager] Available game events:`, Object.keys(gameEvents));
@@ -142,8 +143,15 @@ export class EventManager {
 
     console.log(`[EventManager] Found event:`, event.id, `with choices:`, event.choices?.map(c => c.id));
 
-    // First try to find the choice in the main choices array
-    let choice = event.choices?.find((c) => c.id === choiceId);
+    // For merchant events, use choices from the current log entry if available
+    let choicesSource = event.choices;
+    if (eventId === 'merchant' && currentLogEntry?.choices) {
+      choicesSource = currentLogEntry.choices;
+      console.log(`[EventManager] Using merchant choices from log entry:`, choicesSource.map(c => c.id));
+    }
+
+    // First try to find the choice in the choices array
+    let choice = choicesSource?.find((c) => c.id === choiceId);
     
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (!choice && event.fallbackChoice && event.fallbackChoice.id === choiceId) {
