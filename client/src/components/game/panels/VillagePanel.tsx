@@ -151,6 +151,31 @@ export default function VillagePanel() {
               renderPopulationControl(job.id, job.label)
             )}
           </div>
+          {/* Population Effects Summary */}
+          {(() => {
+            const totalEffects: Record<string, number> = {};
+            
+            visiblePopulationJobs.forEach(job => {
+              const currentCount = villagers[job.id as keyof typeof villagers] || 0;
+              if (currentCount > 0) {
+                const production = getPopulationProduction(job.id, currentCount, state);
+                production.forEach(prod => {
+                  totalEffects[prod.resource] = (totalEffects[prod.resource] || 0) + prod.totalAmount;
+                });
+              }
+            });
+
+            const effectsText = Object.entries(totalEffects)
+              .filter(([resource, amount]) => amount !== 0)
+              .map(([resource, amount]) => `${amount > 0 ? "+" : ""}${amount} ${resource}`)
+              .join(", ");
+
+            return effectsText ? (
+              <div className="text-xs text-muted-foreground border-t pt-2 mt-2">
+                Total: {effectsText} per 15s
+              </div>
+            ) : null;
+          })()}
         </div>
       )}
     </div>
