@@ -28,7 +28,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "shadowsMove",
     condition: (state: GameState) => (state.stats.madness || 0) >= 15,
     triggerType: "resource",
-    timeProbability: 90,
+    timeProbability: 75,
     message:
       "The shadows in your village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there.",
     triggered: false,
@@ -37,7 +37,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     effect: (state: GameState) => ({
       stats: {
         ...state.stats,
-        madness: (state.stats.madness || 0) + 1,
+        madness: (state.stats.madness || 0) + 2,
       },
     }),
   },
@@ -115,7 +115,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   facesInWalls: {
     id: "facesInWalls",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 30,
+    condition: (state: GameState) => (state.stats.madness || 0) >= 25,
     triggerType: "resource",
     timeProbability: 60,
     title: "Faces in the Walls",
@@ -238,12 +238,12 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   creatureInHut: {
     id: "creatureInHut",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 30 && state.buildings.woodenHut > 0,
+    condition: (state: GameState) => (state.stats.madness || 0) >= 35 && state.buildings.woodenHut > 0,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 50,
     title: "Something in the Hut",
     message:
-      "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves among the sleeping villagers, too tall and too thin to be human. Its limbs bend wrong, and when it turns toward you, you see eyes like dying stars.",
+      "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. Its limbs bend wrong, and when it turns toward you, you see eyes like dying stars.",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -272,7 +272,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               woodenHut: Math.max(0, state.buildings.woodenHut - 1),
             },
             _logMessage:
-              "You set the hut ablaze. The flames consume everything - the creature, the two villagers sleeping inside, and the structure itself. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
+              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside, and the structure itself. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
           };
         },
       },
@@ -286,7 +286,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 55,
     title: "Wrong Reflections",
     message:
-      "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness. The villagers' reflections move independently, sometimes waving when the person is still.",
+      "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness.",
     triggered: false,
     priority: 2,
     repeatable: true,
@@ -300,17 +300,13 @@ export const madnessEvents: Record<string, GameEvent> = {
             madness: (state.stats.madness || 0) + 4,
           },
           _logMessage:
-            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about the village's true history. You pull back, but the knowledge remains, burning in your mind.",
+            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
         }),
       },
       {
         id: "cover_well",
         label: "Cover the well with planks",
         effect: (state: GameState) => ({
-          resources: {
-            ...state.resources,
-            wood: Math.max(0, state.resources.wood - 10),
-          },
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 1,
