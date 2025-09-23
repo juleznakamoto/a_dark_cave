@@ -17,6 +17,8 @@ type VillagerCounts = {
 };
 
 // Define a type for the game state
+import { getTotalKnowledge } from './effects';
+
 type GameState = {
   villagers: VillagerCounts;
   resources: {
@@ -31,8 +33,6 @@ type GameState = {
   clothing?: { [key: string]: boolean };
   current_population?: number;
 };
-
-// Helper function to get total knowledge from various sources
 function getTotalKnowledge(state: GameState): number {
   return (state.stats.knowledge || 0);
 }

@@ -1,22 +1,8 @@
 import { GameState } from '@shared/schema';
 import { gameActions, applyActionEffects } from '@/game/rules';
-import { getActionBonuses } from '@/game/rules/effects';
+import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
 import { LogEntry } from '@/game/events';
 import { killVillagers } from '@/game/stateHelpers';
-
-
-function getTotalLuck(state: GameState): number {
-  return (
-    (state.stats.luck || 0) +
-    (state.relics?.ravenfeather_mantle ? 5 : 0) +
-    (state.relics?.alphas_hide ? 3 : 0) +
-    (state.relics?.old_trinket ? 2 : 0) +
-    (state.relics?.elder_scroll ? 10 : 0) +
-    (state.relics?.tarnished_amulet ? 10 : 0)
-  );
-}
-
-
 
 export interface ActionResult {
   stateUpdates: Partial<GameState>;
