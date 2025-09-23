@@ -41,7 +41,7 @@ function getTotalKnowledge(state: GameState): number {
 const resourceTrades = [
   {
     id: "trade_steel_100_wood",
-    label: "Buy 100 Steel for Wood",
+    label: "100 Steel",
     give: "steel",
     giveAmount: 100,
     costs: [
@@ -53,7 +53,7 @@ const resourceTrades = [
   },
   {
     id: "trade_steel_50_bones",
-    label: "Buy 50 Steel for Bones/Fur/etc",
+    label: "50 Steel",
     give: "steel",
     giveAmount: 50,
     costs: [
@@ -67,7 +67,7 @@ const resourceTrades = [
   },
   {
     id: "trade_obsidian_50_wood",
-    label: "Buy 50 Obsidian for Wood/Silver/Gold",
+    label: "50 Obsidian",
     give: "obsidian",
     giveAmount: 50,
     costs: [
@@ -78,7 +78,7 @@ const resourceTrades = [
   },
   {
     id: "trade_obsidian_25_bones",
-    label: "Buy 25 Obsidian for Bones/Fur/etc",
+    label: "25 Obsidian",
     give: "obsidian",
     giveAmount: 25,
     costs: [
@@ -90,7 +90,7 @@ const resourceTrades = [
   },
   {
     id: "trade_adamant_25_gold",
-    label: "Buy 25 Adamant",
+    label: "25 Adamant",
     give: "adamant",
     giveAmount: 25,
     costs: [
@@ -103,7 +103,7 @@ const resourceTrades = [
   },
   {
     id: "trade_wood_500",
-    label: "Buy 500 Wood",
+    label: "500 Wood",
     give: "wood",
     giveAmount: 500,
     costs: [
@@ -115,7 +115,7 @@ const resourceTrades = [
   },
   {
     id: "trade_wood_1000",
-    label: "Buy 1000 Wood",
+    label: "1000 Wood",
     give: "wood",
     giveAmount: 1000,
     costs: [
@@ -128,7 +128,7 @@ const resourceTrades = [
   },
   {
     id: "trade_food_500",
-    label: "Buy 500 Food",
+    label: "500 Food",
     give: "food",
     giveAmount: 500,
     costs: [
@@ -138,7 +138,7 @@ const resourceTrades = [
   },
   {
     id: "trade_food_1000",
-    label: "Buy 1000 Food",
+    label: "1000 Food",
     give: "food",
     giveAmount: 1000,
     costs: [
@@ -148,7 +148,7 @@ const resourceTrades = [
   },
   {
     id: "trade_gold_25",
-    label: "Buy 25 Gold",
+    label: "25 Gold",
     give: "gold",
     giveAmount: 25,
     costs: [
@@ -161,7 +161,7 @@ const resourceTrades = [
   },
   {
     id: "trade_silver_50",
-    label: "Buy 50 Silver",
+    label: "50 Silver",
     give: "silver",
     giveAmount: 50,
     costs: [
@@ -174,7 +174,7 @@ const resourceTrades = [
   },
   {
     id: "trade_gold_50",
-    label: "Buy 50 Gold",
+    label: "50 Gold",
     give: "gold",
     giveAmount: 50,
     costs: [
@@ -189,7 +189,7 @@ const resourceTrades = [
   },
   {
     id: "trade_silver_100",
-    label: "Buy 100 Silver",
+    label: "100 Silver",
     give: "silver",
     giveAmount: 100,
     costs: [
@@ -207,7 +207,7 @@ const resourceTrades = [
 const toolTrades = [
   {
     id: "trade_reinforced_rope",
-    label: "Buy Reinforced Rope",
+    label: "Reinforced Rope",
     give: "tool",
     giveItem: "reinforced_rope",
     costs: [
@@ -218,7 +218,7 @@ const toolTrades = [
   },
   {
     id: "trade_alchemist_map",
-    label: "Buy Alchemist's Map",
+    label: "Alchemist's Map",
     give: "tool",
     giveItem: "alchemist_map",
     costs: [
@@ -229,7 +229,7 @@ const toolTrades = [
   },
   {
     id: "trade_murmuring_cube",
-    label: "Buy Murmuring Cube",
+    label: "Murmuring Cube",
     give: "relic",
     giveItem: "murmuring_cube",
     costs: [
@@ -240,7 +240,7 @@ const toolTrades = [
   },
   {
     id: "trade_giant_trap",
-    label: "Buy Giant Trap",
+    label: "Giant Trap",
     give: "tool",
     giveItem: "giant_trap",
     costs: [
@@ -325,7 +325,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.giveAmount} ${trade.give} for ${cost} ${costOption.resource}`,
+        label: trade.label,
+        cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
             return {
@@ -362,7 +363,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `${trade.label} for ${cost} ${costOption.resource}`,
+        label: trade.label,
+        cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
             const result: any = {

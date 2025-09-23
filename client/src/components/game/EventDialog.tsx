@@ -88,7 +88,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
 
   // Use choices directly from the event (they're already generated fresh for merchant events)
   const eventChoices = event?.choices || [];
-  
+
   if (!event || !eventChoices.length) return null;
 
   const handleChoice = (choiceId: string) => {
@@ -103,11 +103,11 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     if (choiceId.startsWith('trade_')) {
       setPurchasedItems(prev => {
         const newPurchasedItems = new Set([...prev, choiceId]);
-        
+
         // Check if all trade choices are now purchased
         const allTradeChoices = eventChoices.filter(choice => choice.id.startsWith('trade_'));
         const allPurchased = allTradeChoices.every(choice => newPurchasedItems.has(choice.id));
-        
+
         // If all trades are purchased, close the dialog
         if (allPurchased) {
           setTimeout(() => {
@@ -115,7 +115,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             onClose();
           }, 500); // Small delay to show the purchased state
         }
-        
+
         return newPurchasedItems;
       });
       return; // Don't close dialog immediately for trade purchases
@@ -162,9 +162,9 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             <div className="mt-4">
               {/* Trade buttons in 2-column grid */}
               <div className="grid grid-cols-2 gap-2 mb-4">
-                {eventChoices.filter(choice => 
-                  choice.id.startsWith('trade_') && 
-                  choice.id !== 'say_goodbye' && 
+                {eventChoices.filter(choice =>
+                  choice.id.startsWith('trade_') &&
+                  choice.id !== 'say_goodbye' &&
                   !purchasedItems.has(choice.id)
                 ).map((choice) => {
                   // Check if choice can be afforded (for merchant trades)
@@ -172,10 +172,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   const canAfford = Object.keys(testResult).length > 0;
                   const isPurchased = purchasedItems.has(choice.id);
 
-                  // Use the choice label directly (now includes cost info)
-                  const displayLabel = choice.label;
-
-                  return (
+                  const buttonContent = (
                     <Button
                       key={choice.id}
                       onClick={() => handleChoice(choice.id)}
@@ -184,15 +181,35 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                       disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
                     >
                       <span className="block text-left leading-tight">
-                        {isPurchased ? '✓ Purchased' : displayLabel}
+                        {isPurchased ? '✓ Purchased' : choice.label}
                       </span>
                     </Button>
                   );
+
+                  // If there's cost info, wrap in HoverCard
+                  if (choice.cost && !isPurchased) {
+                    return (
+                      <HoverCard key={choice.id}>
+                        <HoverCardTrigger asChild>
+                          <div>
+                            {buttonContent}
+                          </div>
+                        </HoverCardTrigger>
+                        <HoverCardContent className="w-auto p-2">
+                          <div className="text-xs whitespace-nowrap">
+                            {choice.cost}
+                          </div>
+                        </HoverCardContent>
+                      </HoverCard>
+                    );
+                  }
+
+                  return buttonContent;
                 })}
               </div>
             </div>
 
-            
+
 
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (

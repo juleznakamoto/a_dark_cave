@@ -25,6 +25,7 @@ export interface GameEvent {
 export interface EventChoice {
   id: string;
   label: string;
+  cost?: string; // Optional cost information for hover display
   effect: (state: GameState) => Partial<GameState>;
   cooldown?: number; // Cooldown in seconds for choice buttons
 }
