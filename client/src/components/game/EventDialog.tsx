@@ -97,13 +97,29 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     applyEventChoice(choiceId, eventId);
 
     // For merchant trades, mark as purchased but don't close dialog
-    if (choiceId.startsWith('trade_') && choiceId !== 'say_goodbye') {
-      setPurchasedItems(prev => new Set([...prev, choiceId]));
-      return; // Don't close dialog for trade purchases
+    if (choiceId.startsWith('trade_')) {
+      setPurchasedItems(prev => {
+        const newPurchasedItems = new Set([...prev, choiceId]);
+        
+        // Check if all trade choices are now purchased
+        const allTradeChoices = event.choices.filter(choice => choice.id.startsWith('trade_'));
+        const allPurchased = allTradeChoices.every(choice => newPurchasedItems.has(choice.id));
+        
+        // If all trades are purchased, close the dialog
+        if (allPurchased) {
+          setTimeout(() => {
+            fallbackExecutedRef.current = true;
+            onClose();
+          }, 500); // Small delay to show the purchased state
+        }
+        
+        return newPurchasedItems;
+      });
+      return; // Don't close dialog immediately for trade purchases
     }
 
-    // Close dialog only for goodbye or fallback choices
-    if (choiceId === 'say_goodbye' || choiceId === event?.fallbackChoice?.id) {
+    // Close dialog for fallback choices
+    if (choiceId === event?.fallbackChoice?.id) {
       fallbackExecutedRef.current = true;
       onClose();
     }
@@ -222,17 +238,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               </div>
             </div>
 
-            {/* Say goodbye button - full width */}
-            {event.choices.some(choice => choice.id === 'say_goodbye') && (
-              <Button
-                onClick={() => handleChoice('say_goodbye')}
-                variant="outline"
-                className="w-full text-left justify-start"
-                disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
-              >
-                {event.choices.find(choice => choice.id === 'say_goodbye')?.label || 'Say goodbye'}
-              </Button>
-            )}
+            
 
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (
