@@ -8,10 +8,13 @@ import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
 import EventDialog from './EventDialog';
+import MadnessOverlay from './MadnessOverlay';
+import { useMadnessEffects } from '@/hooks/useMadnessEffects';
 import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
   const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
+  const { isEffectActive, currentEffect } = useMadnessEffects();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
 
@@ -52,7 +55,10 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col">
+    <div className={`h-screen bg-background text-foreground flex flex-col ${
+      isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+        ? `madness-${currentEffect}` : ''
+    }`}>
 
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
@@ -75,7 +81,7 @@ export default function GameContainer() {
                 <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "cave" ? "font-bold " : ""
-                  }`}
+                  } ${isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : ''}`}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
                 >
@@ -86,7 +92,9 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "village" ? "font-bold " : ""
-                    } ${animatingTabs.has('village') ? 'tab-fade-in' : ''}`}
+                    } ${animatingTabs.has('village') ? 'tab-fade-in' : ''} ${
+                      isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : ''
+                    }`}
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
@@ -98,7 +106,9 @@ export default function GameContainer() {
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "forest" ? "font-bold " : ""
-                    } ${animatingTabs.has('forest') ? 'tab-fade-in' : ''}`}
+                    } ${animatingTabs.has('forest') ? 'tab-fade-in' : ''} ${
+                      isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : ''
+                    }`}
                     onClick={() => setActiveTab("forest")}
                     data-testid="tab-forest"
                   >
@@ -108,9 +118,11 @@ export default function GameContainer() {
 
                 {flags.worldDiscovered && (
                   <button
-                    className={` py-2 text-sm bg-transparent ${
+                    className={`py-2 text-sm bg-transparent ${
                       activeTab === "world" ? "font-bold " : ""
-                    } ${animatingTabs.has('world') ? 'tab-fade-in' : ''}`}
+                    } ${animatingTabs.has('world') ? 'tab-fade-in' : ''} ${
+                      isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : ''
+                    }`}
                     onClick={() => setActiveTab("world")}
                     data-testid="tab-world"
                   >
@@ -132,6 +144,9 @@ export default function GameContainer() {
       </main>
 
       <GameFooter />
+
+      {/* Madness Overlay */}
+      <MadnessOverlay />
 
       {/* Event Dialog */}
       <EventDialog

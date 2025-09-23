@@ -1,6 +1,8 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
+import { cn } from "@/lib/utils";
+import { useMadnessEffects } from "@/hooks/useMadnessEffects";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -31,6 +33,7 @@ export default function CooldownButton({
   ...props
 }: CooldownButtonProps) {
   const { devMode, cooldowns, setCooldown } = useGameStore();
+  const { isEffectActive, currentEffect } = useMadnessEffects();
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -67,14 +70,23 @@ export default function CooldownButton({
         disabled={isButtonDisabled}
         variant={variant}
         size={size}
-        className={`relative overflow-hidden transition-all duration-200 select-none ${
-          showCooldownVisual ? "opacity-60 cursor-not-allowed" : ""
-        } ${className}`}
+        className={cn(
+          "relative overflow-hidden transition-all duration-200 select-none",
+          showCooldownVisual ? "opacity-60 cursor-not-allowed" : "",
+          isEffectActive && currentEffect === 'button-shift' ? 'madness-button-shift' : '',
+          className
+        )}
         data-testid={testId}
         {...props}
       >
         {/* Button content */}
-        <span className="relative z-10">{children}</span>
+        <span className={cn(
+          "relative z-10",
+          isEffectActive && (currentEffect === 'text-jitter' || currentEffect === 'text-fade' || currentEffect === 'text-echo') 
+            ? `madness-${currentEffect}` : ''
+        )}>
+          {children}
+        </span>
 
         {/* Cooldown progress overlay */}
         {showCooldownVisual && (
