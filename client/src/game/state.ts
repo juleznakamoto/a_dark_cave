@@ -407,7 +407,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Check if any new log entry has choices and show event dialog
       newLogEntries.forEach(entry => {
         if (entry.choices && entry.choices.length > 0) {
-          get().setEventDialog(true, entry);
+          const currentDialog = get().eventDialog;
+          const isMerchantEvent = entry.id.includes('merchant');
+          const hasActiveMerchantDialog = currentDialog.isOpen && 
+            currentDialog.currentEvent?.id.includes('merchant');
+          
+          console.log(`[STATE] New event with choices found:`, {
+            newEventId: entry.id,
+            isMerchantEvent,
+            currentDialogOpen: currentDialog.isOpen,
+            currentEventId: currentDialog.currentEvent?.id,
+            hasActiveMerchantDialog,
+            willReplaceDialog: !hasActiveMerchantDialog || !isMerchantEvent
+          });
+          
+          // Only open dialog if there's no active merchant dialog, or if this isn't a merchant event
+          if (!hasActiveMerchantDialog || !isMerchantEvent) {
+            get().setEventDialog(true, entry);
+          } else {
+            console.log(`[STATE] Skipping dialog open - merchant dialog already active`);
+          }
         }
       });
 
