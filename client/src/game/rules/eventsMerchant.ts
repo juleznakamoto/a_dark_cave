@@ -331,6 +331,16 @@ export const merchantEvents: Record<string, GameEvent> = {
         .map(trade => createResourceTradeChoice(trade, state));
 
       const availableToolTrades = toolTrades
+        .filter(trade => {
+          // Don't offer tools/relics that the player already owns
+          if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) {
+            return false;
+          }
+          if (trade.give === "relic" && state.relics[trade.giveItem as keyof typeof state.relics]) {
+            return false;
+          }
+          return true;
+        })
         .sort(() => Math.random() - 0.5) // Shuffle
         .slice(0, 1) // Take first 1
         .map(trade => createToolTradeChoice(trade, state));
