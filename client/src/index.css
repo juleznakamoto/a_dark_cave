@@ -188,53 +188,61 @@
 /* Madness Effects */
 @keyframes madness-jitter {
   0%, 100% { transform: translate(0, 0); }
-  10% { transform: translate(-1px, -1px); }
-  20% { transform: translate(1px, -1px); }
-  30% { transform: translate(-1px, 1px); }
+  10% { transform: translate(-2px, -1px); }
+  20% { transform: translate(2px, -1px); }
+  30% { transform: translate(-1px, 2px); }
   40% { transform: translate(1px, 1px); }
-  50% { transform: translate(-2px, 0); }
-  60% { transform: translate(2px, 0); }
+  50% { transform: translate(-3px, 0); }
+  60% { transform: translate(3px, 0); }
   70% { transform: translate(0, -2px); }
-  80% { transform: translate(0, 2px); }
-  90% { transform: translate(-1px, 0); }
+  80% { transform: translate(0, 3px); }
+  90% { transform: translate(-2px, 0); }
 }
 
 @keyframes madness-fade {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0.7; }
+  25% { opacity: 0.4; }
+  50% { opacity: 0.2; }
+  75% { opacity: 0.6; }
 }
 
 @keyframes madness-echo {
   0%, 100% { 
     text-shadow: none; 
   }
-  50% { 
+  33% { 
     text-shadow: 
-      1px 1px 0px rgba(255, 255, 255, 0.3),
-      2px 2px 0px rgba(255, 255, 255, 0.2),
-      -1px -1px 0px rgba(255, 255, 255, 0.1);
+      2px 2px 0px rgba(255, 255, 255, 0.4),
+      4px 4px 0px rgba(255, 255, 255, 0.2);
+  }
+  66% { 
+    text-shadow: 
+      -1px -1px 0px rgba(255, 255, 255, 0.3),
+      -2px -2px 0px rgba(255, 255, 255, 0.15);
   }
 }
 
 @keyframes madness-button-shift {
   0%, 100% { transform: translate(0, 0) scale(1); }
-  50% { transform: translate(1px, -1px) scale(0.998); }
+  25% { transform: translate(2px, -1px) scale(0.995); }
+  50% { transform: translate(-1px, 2px) scale(0.998); }
+  75% { transform: translate(1px, 1px) scale(0.996); }
 }
 
 .madness-text-jitter {
-  animation: madness-jitter 0.3s ease-in-out;
+  animation: madness-jitter 0.5s ease-in-out infinite;
 }
 
 .madness-text-fade {
-  animation: madness-fade 0.8s ease-in-out;
+  animation: madness-fade 1s ease-in-out infinite;
 }
 
 .madness-text-echo {
-  animation: madness-echo 1.2s ease-in-out;
+  animation: madness-echo 1.5s ease-in-out infinite;
 }
 
 .madness-button-shift {
-  animation: madness-button-shift 0.4s ease-in-out;
+  animation: madness-button-shift 0.6s ease-in-out infinite;
 }
 
 @keyframes madness-overlay-pulse {

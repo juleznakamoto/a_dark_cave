@@ -141,16 +141,12 @@ export default function GameContainer() {
       </main>
 
       <GameFooter />
-
-      {/* Madness Overlay */}
-      <MadnessOverlay />
-
-      {/* Event Dialog */}
       <EventDialog
         isOpen={eventDialog.isOpen}
         onClose={() => setEventDialog(false)}
         event={eventDialog.currentEvent}
       />
+      <MadnessOverlay />
     </div>
   );
 }
