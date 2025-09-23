@@ -597,7 +597,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "A mirror that shows things that shouldn't be seen",
     bonuses: {
       generalBonuses: {
-        knowledge: 10,
+        knowledge: 8,
         madness: 5,
       },
     },
