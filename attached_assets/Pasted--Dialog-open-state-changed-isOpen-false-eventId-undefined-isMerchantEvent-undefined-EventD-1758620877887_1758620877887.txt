@@ -1,0 +1,24 @@
+🔄 Dialog open state changed: {isOpen: false, eventId: undefined, isMerchantEvent: undefined}
+EventDialog.tsx:48 🔒 Dialog closed
+state.ts:381 [STATE] Events Triggered: {newLogEntries: Array(1), stateChanges: {…}}
+state.ts:403 [STATE] New state after events: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+state.ts:415 [STATE] New event with choices found: {newEventId: 'merchant-1758620863756', isMerchantEvent: true, currentDialogOpen: false, currentEventId: undefined, hasActiveMerchantDialog: false, …}
+EventDialog.tsx:38 🔄 Dialog open state changed: {isOpen: true, eventId: 'merchant-1758620863756', isMerchantEvent: true}
+EventDialog.tsx:45 🔓 Dialog opened - resetting purchased items
+EventDialog.tsx:193 🖱️ Merchant button clicked: {choiceId: 'trade_wood_1000_1758620863756_0.3905310026219332', event: 'click', target: span.block.text-left.leading-tight, currentTarget: button.inline-flex.items-center.gap-2.whitespace-nowrap.rounded-md.font-medium.ring-offset-backgrou…, bubbles: true, …}
+EventDialog.tsx:104 🔘 handleChoice called: {choiceId: 'trade_wood_1000_1758620863756_0.3905310026219332', eventId: 'merchant-1758620863756', isMerchantEvent: true, fallbackExecuted: false, isTradeChoice: true, …}
+EventDialog.tsx:119 📤 Applying event choice: {choiceId: 'trade_wood_1000_1758620863756_0.3905310026219332', eventId: 'merchant'}
+state.ts:441 [STATE] Applying event choice: trade_wood_1000_1758620863756_0.3905310026219332 for event: merchant
+state.ts:442 [STATE] Available events: (4) ['paleFigure', 'merchant', 'hiddenLake', 'blackenedMirror']
+events.ts:135 [EventManager] Applying choice: trade_wood_1000_1758620863756_0.3905310026219332 for event: merchant
+events.ts:136 [EventManager] Available game events: (20) ['foodGone', 'villagerMissing', 'ironGift', 'steelGift', 'obsidianGift', 'adamantGift', 'paleFigure', 'whispersBeneathHut', 'blackenedMirror', 'cthulhuFigure', 'wolfAttack', 'dreamMorrowind', 'dreamOblivion', 'dreamSkyrim', 'findElderScroll', 'blacksmithHammer', 'offerToTheForestGods', 'madBeduine', 'hiddenLake', 'merchant']
+events.ts:144 [EventManager] Found event: merchant with choices: []
+events.ts:150 [EventManager] Using merchant choices from log entry: (6) ['trade_steel_100_wood_1758620863756_0.25794411537719875', 'trade_wood_1000_1758620863756_0.3905310026219332', 'trade_food_500_1758620863756_0.41932516084549876', 'trade_silver_50_1758620863756_0.2395136699074466', 'trade_reinforced_rope_1758620863756_0.2084185462882323', 'say_goodbye']
+events.ts:167 [EventManager] Executing choice effect for: trade_wood_1000_1758620863756_0.3905310026219332
+events.ts:169 [EventManager] Choice effect result: {resources: {…}}
+state.ts:450 [STATE] EventManager returned changes: {resources: {…}}
+state.ts:462 [STATE] Event Choice: trade_wood_1000_1758620863756_0.3905310026219332 for event merchant {changes: {…}, logMessage: null}
+state.ts:472 [STATE] New state after event choice trade_wood_1000_1758620863756_0.3905310026219332: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+EventDialog.tsx:124 🛒 Trade choice - marking as purchased, keeping dialog open
+EventDialog.tsx:38 🔄 Dialog open state changed: {isOpen: false, eventId: undefined, isMerchantEvent: undefined}
+EventDialog.tsx:48 🔒 Dialog closed
