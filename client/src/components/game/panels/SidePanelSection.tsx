@@ -187,7 +187,7 @@ export default function SidePanelSection({
                   )}
                   {effect.bonuses.generalBonuses.craftingCostReduction && (
                     <div>
-                      {Math.round(effect.bonuses.generalBonuses.craftingCostReduction * 100)}% Crafting Cost Reduction
+                      -{Math.round(effect.bonuses.generalBonuses.craftingCostReduction * 100)}% Crafting Cost
                     </div>
                   )}
                 </>

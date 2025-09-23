@@ -111,8 +111,6 @@ export default function SidePanel() {
     }))
     .filter(item => item.visible);
 
-  const { stats } = gameState;
-
   // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);
   const totalStrength = getTotalStrength(gameState);
@@ -184,7 +182,7 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-full">
-      <div className="pb-4 flex gap-4">
+      <div className="pb-4 flex">
         {/* First column - Resources */}
         <div className="flex-1">
           {resourceItems.length > 0 && shouldShowSection('resources') && (
