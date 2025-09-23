@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { gameActions, applyActionEffects } from '@/game/rules';
+import { applyActionEffects } from '@/game/rules';
 import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
 import { killVillagers } from '@/game/stateHelpers';
 
@@ -98,14 +98,14 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
     if (villagerDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
-        message: 'The giant trap works perfectly! A massive black bear with glowing red eyes is caught, its otherworldly roar echoing through the forest. Your villagers fight with incredible strength and coordination, managing to slay the supernatural beast without casualties. You claim its magnificent black fur as a trophy.',
+        message: 'The giant trap works perfectly! A massive black bear with glowing red eyes is caught, its otherworldly roar echoing through the forest. Your villagers fight with incredible strength and coordination, managing to slay the supernatural beast without casualties. You claim its cursed black fur as a trophy.',
         timestamp: Date.now(),
         type: 'system',
       });
     } else if (villagerDeaths <= 2) {
       result.logEntries!.push({
         id: `giant-bear-trapped-victory-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with burning red eyes! Its otherworldly roar chills the soul, but your villagers' strength prevails. ${villagerDeaths} brave villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to its supernatural claws before the beast is finally slain. You claim its magnificent black fur as a hard-won trophy.`,
+        message: `The giant trap snares a colossal black bear with burning red eyes! Its otherworldly roar chills the soul, but your villagers' strength prevails. ${villagerDeaths} brave villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: 'system',
       });
