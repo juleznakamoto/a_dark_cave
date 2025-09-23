@@ -19,7 +19,7 @@ export const useMadnessEffects = () => {
     }
 
     // Calculate effect frequency based on madness level
-    const baseInterval = 15000; // 15 seconds base
+    const baseInterval = 15; // 15 seconds base
     const madnessMultiplier = Math.min(madness / 50, 0.8); // Max 80% reduction
     const effectInterval = baseInterval * (1 - madnessMultiplier);
 
@@ -37,7 +37,7 @@ export const useMadnessEffects = () => {
 
       setTimeout(() => {
         setIsEffectActive(false);
-        setTimeout(() => setCurrentEffect(null), 100);
+        setTimeout(() => setCurrentEffect(null), 5000);
       }, effectDuration);
     };
 

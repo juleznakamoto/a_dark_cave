@@ -221,11 +221,6 @@
   50% { transform: translate(1px, -1px) scale(0.998); }
 }
 
-@keyframes madness-overlay-pulse {
-  0%, 100% { opacity: 0; }
-  50% { opacity: 0.08; }
-}
-
 .madness-text-jitter {
   animation: madness-jitter 0.3s ease-in-out;
 }
@@ -250,8 +245,8 @@
   bottom: 0;
   background-color: rgba(139, 0, 0, 0.1);
   pointer-events: none;
-  z-index: 1000;
-  animation: madness-overlay-pulse 2s ease-in-out;
+  z-index: 10000;
+  animation: 5s ease-in-out;
 }
 
 /* Letter displacement for text distortion */
