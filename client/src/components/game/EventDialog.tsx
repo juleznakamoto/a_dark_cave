@@ -58,7 +58,7 @@ export default function EventDialog({
     }
 
     const knowledge = getTotalKnowledge(gameState);
-    const decisionTime = (event.baseDecisionTime || 15) + 0.5 * knowledge;
+    const decisionTime = (event.baseDecisionTime || 15) + 0.25 * knowledge;
 
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
