@@ -334,17 +334,17 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 500,
-        "resources.stone": 250,
-        "resources.bones": 100,
-        "resources.silver": 10,
+        "resources.stone": 500,
+        "resources.bones": 500,
+        "resources.silver": 25,
       },
     },
     effects: {
       1: {
         "resources.wood": -500,
-        "resources.stone": -250,
-        "resources.bones": -100,
-        "resources.silver": -10,
+        "resources.stone": -500,
+        "resources.bones": -500,
+        "resources.silver": -25,
         "buildings.altar": 1,
         "flags.altarBuilt": true,
         "story.seen.hasAltar": true,
@@ -504,6 +504,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 2000,
         "resources.stone": 1000,
+        "resources.silver": 50,
         "resources.gold": 25,
         "resources.obsidian": 50,
       },
@@ -512,6 +513,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": -2000,
         "resources.stone": -1000,
+        "resources.silver": -50,
         "resources.gold": -25,
         "resources.obsidian": -50,
         "buildings.shrine": 1,
