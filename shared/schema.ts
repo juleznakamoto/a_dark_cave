@@ -38,7 +38,6 @@ export const gameStateSchema = z.object({
     madness: z.number().min(0).default(0),
   }).default({}),
   flags: z.object({
-    fireLit: z.boolean().default(false),
     villageUnlocked: z.boolean().default(false),
     worldDiscovered: z.boolean().default(false),
     torchBuilt: z.boolean().default(false),

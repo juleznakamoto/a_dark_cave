@@ -12,7 +12,6 @@ export default function CavePanel() {
     {
       title: 'Explore',
       actions: [
-        { id: 'lightFire', label: 'Light Fire', showWhen: !flags.fireLit },
         { id: 'gatherWood', label: 'Gather Wood' },
         { id: 'exploreCave', label: 'Explore Cave' },
         { id: 'ventureDeeper', label: 'Venture Deeper' },

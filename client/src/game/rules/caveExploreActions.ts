@@ -67,10 +67,9 @@ export const caveExploreActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
-    show_when: { "flags.fireLit": false },
+    show_when: { },
     cost: {},
     effects: {
-      "flags.fireLit": true,
       "story.seen.fireLit": true,
     },
     cooldown: 1,
@@ -80,7 +79,6 @@ export const caveExploreActions: Record<string, Action> = {
     id: "gatherWood",
     label: "Gather Wood",
     show_when: {
-      "flags.fireLit": true,
     },
     cost: {},
     effects: {
@@ -106,9 +104,8 @@ export const caveExploreActions: Record<string, Action> = {
     id: "exploreCave",
     label: "Explore Cave",
     show_when: {
-      "flags.fireLit": true,
       "story.seen.actionBuildTorch": true,
-      "buildings.blacksmith": 0
+      "buildings.blacksmith": 1,
     },
     cost: {
       "resources.torch": 5,
@@ -315,7 +312,7 @@ export const caveExploreActions: Record<string, Action> = {
 
 // Action handlers
 export function handleLightFire(state: GameState, result: ActionResult): ActionResult {
-  result.stateUpdates.flags = { ...state.flags, fireLit: true, gameStarted: true };
+  result.stateUpdates.flags = { ...state.flags, gameStarted: true };
   result.stateUpdates.story = {
     ...state.story,
     seen: {

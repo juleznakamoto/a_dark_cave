@@ -136,7 +136,7 @@ function handleFireConsumption() {
   // Pause fire consumption when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  if (state.flags.fireLit && state.resources.wood > 0) {
+  if (state.resources.wood > 0) {
     // Fire consumes 1 wood every 15 seconds
     state.updateResource("wood", -1);
   }
