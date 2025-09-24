@@ -33,7 +33,13 @@ import {
   handleCraftSteelLantern,
   handleCraftObsidianLantern,
   handleCraftAdamantLantern,
+} from '@/game/rules/caveCraftTools';
+
+import {
   handleCraftBoneTotem,
+} from '@/game/rules/caveCraftResources';
+
+import {
   handleCraftIronSword,
   handleCraftSteelSword,
   handleCraftObsidianSword,
@@ -43,7 +49,7 @@ import {
   handleCraftLongBow,
   handleCraftWarBow,
   handleCraftMasterBow,
-} from '@/game/rules/caveCraftActions';
+} from '@/game/rules/caveCraftWeapons';
 
 import {
   handleBuildWoodenHut,
