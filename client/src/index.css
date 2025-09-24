@@ -188,23 +188,3 @@
 .timer-progress .bg-primary {
   background-color: #8b0000 !important; /* Dark red */
 }
-
-/* Dialog button hover effects - red theme */
-[data-radix-dialog-content] button:hover {
-  background-color: #dc2626 !important; /* Red hover background */
-  color: white !important;
-  border-color: #dc2626 !important;
-}
-
-[data-radix-dialog-content] button[variant="outline"]:hover {
-  background-color: #dc2626 !important;
-  color: white !important;
-  border-color: #dc2626 !important;
-}
-
-[data-radix-dialog-content] button[disabled]:hover {
-  background-color: inherit !important;
-  color: inherit !important;
-  border-color: inherit !important;
-  opacity: 0.5 !important;
-}
