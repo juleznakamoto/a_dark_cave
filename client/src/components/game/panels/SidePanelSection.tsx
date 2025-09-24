@@ -126,7 +126,7 @@ export default function SidePanelSection({
     const hasActionBonuses =
       effect?.bonuses?.actionBonuses &&
       Object.keys(effect.bonuses.actionBonuses).length > 0;
-    const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses);
+    const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses || effect.name || effect.description);
 
 
     const itemContent = (
@@ -165,6 +165,12 @@ export default function SidePanelSection({
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
+              {effect.name && (
+                <div className="font-semibold mb-1">{effect.name}</div>
+              )}
+              {effect.description && (
+                <div className="text-gray-400 mb-2 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+              )}
               {effect.bonuses.generalBonuses && (
                 <>
                   {effect.bonuses.generalBonuses.luck && (
@@ -217,41 +223,36 @@ export default function SidePanelSection({
                       % Craft Discount
                     </div>
                   )}
-                  {/* Show action bonuses like hunt multiplier */}
-                  {effect.bonuses.actionBonuses &&
-                    Object.entries(effect.bonuses.actionBonuses).map(
-                      ([actionId, bonus]) => (
-                        <div key={actionId}>
-                          {bonus.resourceMultiplier &&
-                            bonus.resourceMultiplier !== 1 && (
-                              <div>
-                                +
-                                {Math.round(
-                                  (bonus.resourceMultiplier - 1) * 100,
-                                )}
-                                % {capitalizeWords(actionId)} Bonus
-                              </div>
-                            )}
-                          {bonus.resourceBonus &&
-                            Object.entries(bonus.resourceBonus).map(
-                              ([resource, amount]) => (
-                                <div key={resource}>
-                                  +{amount} {capitalizeWords(resource)} (
-                                  {capitalizeWords(actionId)})
-                                </div>
-                              ),
-                            )}
-                          {bonus.cooldownReduction && (
-                            <div>
-                              -{Math.round(bonus.cooldownReduction * 100)}%{" "}
-                              {capitalizeWords(actionId)} Cooldown
-                            </div>
-                          )}
-                        </div>
-                      ),
-                    )}
+                  
                 </>
               )}
+              {effect.bonuses.actionBonuses &&
+                Object.entries(effect.bonuses.actionBonuses).map(
+                  ([actionId, bonus]) => (
+                    <div key={actionId}>
+                      {bonus.resourceMultiplier &&
+                        bonus.resourceMultiplier !== 1 && (
+                          <div>
+                            {capitalizeWords(actionId)}:{" "}
+                            +{Math.round((bonus.resourceMultiplier - 1) * 100)}% resources
+                          </div>
+                        )}
+                      {bonus.cooldownReduction && (
+                        <div>
+                          {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s cooldown
+                        </div>
+                      )}
+                      {bonus.resourceBonus &&
+                        Object.entries(bonus.resourceBonus).map(
+                          ([resource, amount]) => (
+                            <div key={resource}>
+                              {capitalizeWords(actionId)}: +{amount} {capitalizeWords(resource)}
+                            </div>
+                          ),
+                        )}
+                    </div>
+                  ),
+                )}
             </div>
           </HoverCardContent>
         </HoverCard>
