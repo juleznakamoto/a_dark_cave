@@ -76,7 +76,7 @@ export default function CavePanel() {
         }
       ]
     },
-    
+
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -88,7 +88,7 @@ export default function CavePanel() {
 
     if (showCost) {
       return (
-        <HoverCard key={actionId}>
+        <HoverCard key={actionId} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
             <div>
               <CooldownButton

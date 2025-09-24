@@ -1,4 +1,3 @@
-
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -57,7 +56,7 @@ export default function VillagePanel() {
     const canExecute = canExecuteAction(actionId, state);
 
     return (
-      <HoverCard key={actionId}>
+      <HoverCard key={actionId} openDelay={100} closeDelay={100}>
         <HoverCardTrigger asChild>
           <div>
             <CooldownButton
@@ -165,7 +164,7 @@ export default function VillagePanel() {
           {/* Population Effects Summary */}
           {(() => {
             const totalEffects: Record<string, number> = {};
-            
+
             visiblePopulationJobs.forEach(job => {
               const currentCount = villagers[job.id as keyof typeof villagers] || 0;
               if (currentCount > 0) {

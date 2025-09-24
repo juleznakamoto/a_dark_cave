@@ -149,7 +149,7 @@ export default function SidePanelSection({
     if (hasEffect && (title === "Relics" || title === "Tools" || title === "Weapons")) {
 
       return (
-        <HoverCard key={item.id} openDelay={200} closeDelay={100}>
+        <HoverCard key={item.id} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">

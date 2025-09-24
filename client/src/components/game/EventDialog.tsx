@@ -203,7 +203,7 @@ export default function EventDialog({
                     // If there's cost info, wrap in HoverCard
                     if (choice.cost && !isPurchased) {
                       return (
-                        <HoverCard key={choice.id}>
+                        <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
                           <HoverCardTrigger asChild>
                             <div>{buttonContent}</div>
                           </HoverCardTrigger>
