@@ -358,7 +358,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 12,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "investigate",
@@ -410,7 +410,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 10,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "shake_them",

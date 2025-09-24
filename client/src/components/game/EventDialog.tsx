@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useGameStore } from '@/game/state';
-import { LogEntry } from '@/game/rules/events';
-import { getTotalKnowledge } from '@/game/rules/effects';
+import React, { useState, useEffect, useRef } from "react";
+import { useGameStore } from "@/game/state";
+import { LogEntry } from "@/game/rules/events";
+import { getTotalKnowledge } from "@/game/rules/effects";
 import {
   Dialog,
   DialogContent,
@@ -10,11 +10,15 @@ import {
   DialogDescription,
   DialogOverlay,
   DialogPortal,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { cn } from "@/lib/utils";
 
 interface EventDialogProps {
@@ -23,7 +27,11 @@ interface EventDialogProps {
   event: LogEntry | null;
 }
 
-export default function EventDialog({ isOpen, onClose, event }: EventDialogProps) {
+export default function EventDialog({
+  isOpen,
+  onClose,
+  event,
+}: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
 
@@ -50,7 +58,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     }
 
     const knowledge = getTotalKnowledge(gameState);
-    const decisionTime = (event.baseDecisionTime || 15) + (0.5 * knowledge);
+    const decisionTime = (event.baseDecisionTime || 15) + 0.5 * knowledge;
 
     setTotalTime(decisionTime);
     setTimeRemaining(decisionTime);
@@ -71,17 +79,18 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         fallbackExecutedRef.current = true;
         clearInterval(interval);
 
-        const eventId = event.id.split('-')[0];
-        
+        const eventId = event.id.split("-")[0];
+
         if (event.fallbackChoice) {
           // Use defined fallback choice
           applyEventChoice(event.fallbackChoice.id, eventId);
         } else if (eventChoices.length > 0) {
           // No fallback defined, choose randomly from available choices
-          const randomChoice = eventChoices[Math.floor(Math.random() * eventChoices.length)];
+          const randomChoice =
+            eventChoices[Math.floor(Math.random() * eventChoices.length)];
           applyEventChoice(randomChoice.id, eventId);
         }
-        
+
         onClose();
       }
     }, 100);
@@ -102,12 +111,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
       return;
     }
 
-    const eventId = event!.id.split('-')[0];
+    const eventId = event!.id.split("-")[0];
     applyEventChoice(choiceId, eventId);
 
     // For merchant trades, mark as purchased but don't close dialog
-    if (choiceId.startsWith('trade_')) {
-      setPurchasedItems(prev => new Set([...prev, choiceId]));
+    if (choiceId.startsWith("trade_")) {
+      setPurchasedItems((prev) => new Set([...prev, choiceId]));
       return; // Don't close dialog for trade purchases
     }
 
@@ -116,27 +125,31 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
     onClose();
   };
 
-  const progress = event.isTimedChoice && timeRemaining !== null && totalTime > 0
-    ? ((totalTime - timeRemaining) / totalTime) * 100
-    : 0;
+  const progress =
+    event.isTimedChoice && timeRemaining !== null && totalTime > 0
+      ? ((totalTime - timeRemaining) / totalTime) * 100
+      : 0;
 
-  const isMerchantEvent = event?.id.includes('merchant');
+  const isMerchantEvent = event?.id.includes("merchant");
 
   return (
-    <Dialog open={isOpen} onOpenChange={() => {
-      // Empty handler - we don't want automatic closing
-      // All closing should be handled explicitly through handleChoice
-    }}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={() => {
+        // Empty handler - we don't want automatic closing
+        // All closing should be handled explicitly through handleChoice
+      }}
+    >
       {isMerchantEvent ? (
         <DialogPortal>
           <DialogPrimitive.Overlay
             className={cn(
-              "fixed inset-0 z-50 bg-black/0 animate-[fade-to-black_8s_ease-in-out_forwards]"
+              "fixed inset-0 z-50 bg-black/0 animate-[fade-to-black_8s_ease-in-out_forwards]",
             )}
           />
           <DialogPrimitive.Content
             className={cn(
-              "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg sm:max-w-md [&>button]:hidden"
+              "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg sm:max-w-md [&>button]:hidden",
             )}
             onPointerDownOutside={(e) => e.preventDefault()}
             onEscapeKeyDown={(e) => e.preventDefault()}
@@ -153,63 +166,72 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             <div className="mt-4">
               {/* Trade buttons and Say Goodbye button in 2-column grid */}
               <div className="grid grid-cols-2 gap-2">
-                {eventChoices.filter(choice =>
-                  choice.id.startsWith('trade_') &&
-                  choice.id !== 'say_goodbye'
-                ).map((choice) => {
-                  // Check if choice can be afforded (for merchant trades)
-                  const testResult = choice.effect(gameState);
-                  const canAfford = Object.keys(testResult).length > 0;
-                  const isPurchased = purchasedItems.has(choice.id);
+                {eventChoices
+                  .filter(
+                    (choice) =>
+                      choice.id.startsWith("trade_") &&
+                      choice.id !== "say_goodbye",
+                  )
+                  .map((choice) => {
+                    // Check if choice can be afforded (for merchant trades)
+                    const testResult = choice.effect(gameState);
+                    const canAfford = Object.keys(testResult).length > 0;
+                    const isPurchased = purchasedItems.has(choice.id);
 
-                  const buttonContent = (
-                    <Button
-                      key={choice.id}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleChoice(choice.id);
-                      }}
-                      variant="outline"
-                      className={`w-full justify-center text-xs h-10 ${isPurchased ? 'opacity-30' : ''}`}
-                      disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
-                    >
-                      <span className="block text-left leading-tight">
-                        {isPurchased ? `✓ ${choice.label}` : choice.label}
-                      </span>
-                    </Button>
-                  );
-
-                  // If there's cost info, wrap in HoverCard
-                  if (choice.cost && !isPurchased) {
-                    return (
-                      <HoverCard key={choice.id}>
-                        <HoverCardTrigger asChild>
-                          <div>
-                            {buttonContent}
-                          </div>
-                        </HoverCardTrigger>
-                        <HoverCardContent className="w-auto p-2">
-                          <div className="text-xs whitespace-nowrap">
-                            {choice.cost}
-                          </div>
-                        </HoverCardContent>
-                      </HoverCard>
+                    const buttonContent = (
+                      <Button
+                        key={choice.id}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleChoice(choice.id);
+                        }}
+                        variant="outline"
+                        className={`w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}`}
+                        disabled={
+                          (timeRemaining !== null && timeRemaining <= 0) ||
+                          fallbackExecutedRef.current ||
+                          !canAfford ||
+                          isPurchased
+                        }
+                      >
+                        <span className="block text-left leading-tight">
+                          {isPurchased ? `✓ ${choice.label}` : choice.label}
+                        </span>
+                      </Button>
                     );
-                  }
 
-                  return buttonContent;
-                })}
+                    // If there's cost info, wrap in HoverCard
+                    if (choice.cost && !isPurchased) {
+                      return (
+                        <HoverCard key={choice.id}>
+                          <HoverCardTrigger asChild>
+                            <div>{buttonContent}</div>
+                          </HoverCardTrigger>
+                          <HoverCardContent className="w-auto p-2">
+                            <div className="text-xs whitespace-nowrap">
+                              {choice.cost}
+                            </div>
+                          </HoverCardContent>
+                        </HoverCard>
+                      );
+                    }
+
+                    return buttonContent;
+                  })}
 
                 {/* Say Goodbye button in the same grid */}
-                {eventChoices.find(choice => choice.id === 'say_goodbye') && (
+                {eventChoices.find((choice) => choice.id === "say_goodbye") && (
                   <Button
                     onClick={(e) => {
                       e.stopPropagation();
-                      handleChoice('say_goodbye');
+                      handleChoice("say_goodbye");
                     }}
                     variant="outline"
                     className="text-xs h-10 px-4"
-                    disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current}
+                    disabled={
+                      (timeRemaining !== null && timeRemaining <= 0) ||
+                      fallbackExecutedRef.current
+                    }
                   >
                     Say Goodbye
                   </Button>
@@ -217,18 +239,11 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               </div>
             </div>
 
-
-
             {/* Timer bar for timed choices */}
             {event.isTimedChoice && timeRemaining !== null && (
               <div className="mt-4 space-y-2">
-                <div className="flex justify-between text-sm text-muted-foreground">
-                  <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
-                </div>
-                <Progress
-                  value={progress}
-                  className="h-2"
-                />
+                <div className="flex justify-between text-sm text-muted-foreground"></div>
+                <Progress value={progress} className="h-2" />
               </div>
             )}
           </DialogPrimitive.Content>
@@ -252,7 +267,10 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
             {eventChoices.map((choice) => {
               // Check if choice can be afforded (for merchant trades)
               let canAfford = true;
-              if (choice.id.startsWith('trade_') && choice.id !== 'say_goodbye') {
+              if (
+                choice.id.startsWith("trade_") &&
+                choice.id !== "say_goodbye"
+              ) {
                 // Check affordability for merchant trades
                 const testResult = choice.effect(gameState);
                 canAfford = Object.keys(testResult).length > 0;
@@ -266,7 +284,12 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
                   onClick={() => handleChoice(choice.id)}
                   variant={isPurchased ? "secondary" : "outline"}
                   className="w-full text-left justify-start"
-                  disabled={(timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current || !canAfford || isPurchased}
+                  disabled={
+                    (timeRemaining !== null && timeRemaining <= 0) ||
+                    fallbackExecutedRef.current ||
+                    !canAfford ||
+                    isPurchased
+                  }
                 >
                   {isPurchased ? `✓ ${choice.label}` : choice.label}
                 </Button>
@@ -280,10 +303,7 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
               </div>
-              <Progress
-                value={progress}
-                className="h-2"
-              />
+              <Progress value={progress} className="h-2" />
             </div>
           )}
         </DialogContent>
