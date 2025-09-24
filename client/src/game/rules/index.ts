@@ -302,7 +302,7 @@ export const applyActionEffects = (
           if (isCraftingAction && path.startsWith('resources.') && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
           }
-          current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) + adjustedCost;
+          current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) - adjustedCost;
         }
       });
     }
