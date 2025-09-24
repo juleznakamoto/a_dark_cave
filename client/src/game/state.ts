@@ -141,8 +141,16 @@ const generateDefaultGameState = (): GameState => {
   return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
-// Use the generated default state
-const defaultGameState: GameState = generateDefaultGameState();
+// Use the generated default state and ensure effects is properly initialized
+const defaultGameState: GameState = {
+  ...generateDefaultGameState(),
+  effects: {
+    resource_bonus: {},
+    resource_multiplier: {},
+    probability_bonus: {},
+    cooldown_reduction: {},
+  }
+};
 
 
 export const useGameStore = create<GameStore>((set, get) => ({
@@ -194,7 +202,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const stateWithEffects = {
       ...newState,
       log: newState.log || [],
-      effects: calculateTotalEffects(newState),
+      effects: newState.effects || calculateTotalEffects(newState),
     };
     set(stateWithEffects);
     // Force update effects after initialization
