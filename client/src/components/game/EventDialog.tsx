@@ -243,7 +243,10 @@ export default function EventDialog({
             {event.isTimedChoice && timeRemaining !== null && (
               <div className="mt-4 space-y-2">
                 <div className="flex justify-between text-sm text-muted-foreground"></div>
-                <Progress value={progress} className="h-2" />
+                <Progress
+                  value={progress}
+                  className="h-2 timer-progress"
+                />
               </div>
             )}
           </DialogPrimitive.Content>
@@ -303,7 +306,7 @@ export default function EventDialog({
               <div className="flex justify-between text-sm text-muted-foreground">
                 <span>{Math.ceil(Math.max(0, timeRemaining))}s</span>
               </div>
-              <Progress value={progress} className="h-2" />
+              <Progress value={progress} className="h-2 timer-progress" />
             </div>
           )}
         </DialogContent>

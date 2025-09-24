@@ -184,3 +184,7 @@
   opacity: inherit !important;
   transform: none !important;
 }
+
+.timer-progress .bg-primary {
+  background-color: #8b0000 !important; /* Dark red */
+}
