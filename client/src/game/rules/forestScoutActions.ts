@@ -50,13 +50,28 @@ export const forestScoutActions: Record<string, Action> = {
 export function handleHunt(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('hunt', state);
 
-  // Apply weapon bonuses for hunting
+  // Apply weapon bonuses and multipliers for hunting
   const actionBonuses = getActionBonuses('hunt', state);
-  if (actionBonuses.resourceBonus && actionBonuses.resourceBonus.food) {
-    if (!effectUpdates.resources) {
-      effectUpdates.resources = { ...state.resources };
-    }
-    effectUpdates.resources.food = (effectUpdates.resources.food || 0) + actionBonuses.resourceBonus.food;
+  
+  if (!effectUpdates.resources) {
+    effectUpdates.resources = { ...state.resources };
+  }
+
+  // Apply fixed resource bonuses
+  if (actionBonuses.resourceBonus) {
+    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+      effectUpdates.resources[resource] = (effectUpdates.resources[resource] || 0) + bonus;
+    });
+  }
+
+  // Apply resource multipliers (like 25% bonus from black bear fur)
+  if (actionBonuses.resourceMultiplier) {
+    Object.entries(actionBonuses.resourceMultiplier).forEach(([resource, multiplier]) => {
+      const currentAmount = effectUpdates.resources[resource] || 0;
+      const baseAmount = currentAmount - (state.resources[resource] || 0);
+      const bonusAmount = Math.floor(baseAmount * (multiplier - 1));
+      effectUpdates.resources[resource] = currentAmount + bonusAmount;
+    });
   }
 
   Object.assign(result.stateUpdates, effectUpdates);

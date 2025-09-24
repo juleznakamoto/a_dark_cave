@@ -634,6 +634,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     name: "Black Bear Fur",
     description: "The magnificent fur of a giant black bear, radiating primal power but carrying a dark presence",
     bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: { food: 1.25, fur: 1.25, bones: 1.25 },
+        },
+      },
       generalBonuses: {
         strength: 6,
         madness: 2,
