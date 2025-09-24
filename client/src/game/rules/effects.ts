@@ -67,7 +67,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Stone Pickaxe",
     description: "Enables mining",
     bonuses: {
-      actionBonuses: {},
+      actionBonuses: {
+        mineIron: {
+          resourceMultiplier: 1.05,
+          cooldownReduction: 1,
+        },
+      },
     },
   },
 
@@ -104,6 +109,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
+          resourceMultiplier: 1.1,
+          cooldownReduction: 1,
+        },
+        mineCoal: {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
