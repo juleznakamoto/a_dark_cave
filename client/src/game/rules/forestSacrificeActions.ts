@@ -9,7 +9,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     label: "Bone Totems",
     show_when: {
       "resources.bone_totem": 10,
-      "buildings.shrine": 1,
+      "buildings.altar": 1,
     },
     cost: {
       "resources.bone_totem": 10,
@@ -65,7 +65,7 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
   // Add a basic message - more complex events will be handled later
   result.logEntries!.push({
     id: `bone-totems-sacrifice-${Date.now()}`,
-    message: 'The bone totems are consumed by the shrine. The forest seems to stir in response.',
+    message: 'The bone totems are consumed by the altar. The forest seems to stir in response.',
     timestamp: Date.now(),
     type: 'system',
   });

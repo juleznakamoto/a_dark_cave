@@ -24,7 +24,7 @@ type GameState = {
   resources: {
     [key: string]: number;
   };
-  buildings: { woodenHut: number; hut: number; shrine?: number };
+  buildings: { woodenHut: number; hut: number; altar?: number };
   stats: { strength?: number; luck?: number; knowledge?: number };
   relics: { [key: string]: boolean };
   events: { [key: string]: boolean };

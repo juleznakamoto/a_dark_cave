@@ -60,7 +60,7 @@ import {
   handleBuildDeepPit,
   handleBuildBottomlessPit,
   handleBuildFoundry,
-  handleBuildShrine,
+  handleBuildAltar,
   handleBuildGreatCabin,
   handleBuildTimberMill,
   handleBuildQuarry,
@@ -215,8 +215,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildBottomlessPit(state, result);
     case 'buildFoundry':
       return handleBuildFoundry(state, result);
-    case 'buildShrine':
-      return handleBuildShrine(state, result);
+    case 'buildAltar':
+      return handleBuildAltar(state, result);
     case 'buildGreatCabin':
       return handleBuildGreatCabin(state, result);
     case 'buildTimberMill':

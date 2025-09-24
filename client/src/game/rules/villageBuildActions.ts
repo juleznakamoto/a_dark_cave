@@ -30,7 +30,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.foundry": 1,
       },
       8: {
-        "buildings.shrine": 1,
+        "buildings.altar": 1,
       },
       9: {
         "buildings.greatCabin": 1,
@@ -320,14 +320,14 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 20,
   },
 
-  buildShrine: {
-    id: "buildShrine",
-    label: "Shrine",
+  buildAltar: {
+    id: "buildAltar",
+    label: "Altar",
     building: true,
     show_when: {
       1: {
         "flags.forestUnlocked": true,
-        "buildings.shrine": 0,
+        "buildings.altar": 0,
         "tools.steel_axe": true,
       },
     },
@@ -345,9 +345,9 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": -250,
         "resources.bones": -100,
         "resources.silver": -10,
-        "buildings.shrine": 1,
-        "flags.shrineBuilt": true,
-        "story.seen.hasShrine": true,
+        "buildings.altar": 1,
+        "flags.altarBuilt": true,
+        "story.seen.hasAltar": true,
       },
     },
     cooldown: 5,
@@ -704,20 +704,20 @@ export function handleBuildFoundry(state: GameState, result: ActionResult): Acti
   return resultWithBuilding;
 }
 
-export function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
-  const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+export function handleBuildAltar(state: GameState, result: ActionResult): ActionResult {
+  const altarResult = handleBuildingConstruction(state, result, 'buildAltar', 'altar');
 
-  // Add shrine completion message
-  if (state.buildings.shrine === 0) {
-    shrineResult.logEntries!.push({
-      id: `shrine-built-${Date.now()}`,
-      message: "A shrine rises at the forest's edge, raised to appease what dwells within.",
+  // Add altar completion message
+  if (state.buildings.altar === 0) {
+    altarResult.logEntries!.push({
+      id: `altar-built-${Date.now()}`,
+      message: "An altar rises at the forest's edge, raised to appease what dwells within.",
       timestamp: Date.now(),
       type: 'system',
     });
   }
 
-  return shrineResult;
+  return altarResult;
 }
 
 export function handleBuildGreatCabin(state: GameState, result: ActionResult): ActionResult {

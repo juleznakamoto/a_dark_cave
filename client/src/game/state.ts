@@ -324,7 +324,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
       message:
-        "A dark cave. The air is cold and stale. You can barely make out the shapes around you.",
+        "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
@@ -369,7 +369,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
         message:
-          "A dark cave. The air is cold and stale. You can barely make out the shapes around you.",
+          "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };

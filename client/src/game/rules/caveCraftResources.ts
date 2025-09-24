@@ -7,7 +7,7 @@ export const caveCraftResources: Record<string, Action> = {
     id: "craftBoneTotem",
     label: "Bone Totem",
     show_when: {
-      "buildings.shrine": 1,
+      "buildings.altar": 1,
     },
     cost: {
       "resources.bones": 50,

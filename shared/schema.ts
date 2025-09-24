@@ -53,7 +53,7 @@ export const gameStateSchema = z.object({
     exploredCitadel: z.boolean().default(false),
     starvationActive: z.boolean().default(false),
     forestUnlocked: z.boolean().default(false),
-    shrineBuilt: z.boolean().default(false),
+    altarBuilt: z.boolean().default(false),
     needsNewWell: z.boolean().default(false),
   }).default({}),
   tools: z.object({
@@ -118,7 +118,7 @@ export const gameStateSchema = z.object({
     deepPit: z.number().default(0),
     bottomlessPit: z.number().default(0),
     foundry: z.number().default(0),
-    shrine: z.number().default(0),
+    altar: z.number().default(0),
     greatCabin: z.number().default(0),
     timberMill: z.number().default(0),
     quarry: z.number().default(0),
