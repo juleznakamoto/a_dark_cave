@@ -827,29 +827,63 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to calculate total bonuses for a given action
-export const getActionBonuses = (actionId: string, state: GameState) => {
-  const activeEffects = getActiveEffects(state);
-  const bonuses = {
-    resourceBonus: {} as Record<string, number>,
-    resourceMultiplier: 1 as number,
+export const getActionBonuses = (actionId: string, state: GameState): ActionBonuses => {
+  const bonuses: ActionBonuses = {
+    resourceBonus: {},
+    resourceMultiplier: 1,
     probabilityBonus: {} as Record<string, number>,
     cooldownReduction: 0,
   };
 
-  activeEffects.forEach((effect) => {
-    const actionBonus = effect.bonuses.actionBonuses?.[actionId];
-    if (actionBonus) {
-      // Combine resource bonuses
+  // Apply weapon bonuses
+  Object.entries(weaponEffects).forEach(([weapon, effect]) => {
+    if (state.weapons[weapon as keyof typeof state.weapons]) {
+      if (effect.actionBonuses && effect.actionBonuses[actionId]) {
+        const actionBonus = effect.actionBonuses[actionId];
+
+        // Add resource bonuses
+        if (actionBonus.resourceBonus) {
+          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+          });
+        }
+
+        // Apply resource multipliers
+        if (actionBonus.resourceMultiplier) {
+          bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
+        }
+
+        // Combine probability bonuses
+        if (actionBonus.probabilityBonus) {
+          Object.entries(actionBonus.probabilityBonus).forEach(
+            ([resource, bonus]) => {
+              bonuses.probabilityBonus[resource] =
+                (bonuses.probabilityBonus[resource] || 0) + bonus;
+            },
+          );
+        }
+
+        // Combine cooldown reductions (additive)
+        if (actionBonus.cooldownReduction) {
+          bonuses.cooldownReduction += actionBonus.cooldownReduction;
+        }
+      }
+    }
+  });
+
+  // Apply clothing and relic bonuses
+  Object.entries(clothingEffects).forEach(([item, effect]) => {
+    if ((state.clothing?.[item] || state.relics?.[item]) && effect.actionBonuses && effect.actionBonuses[actionId]) {
+      const actionBonus = effect.actionBonuses[actionId];
+
+      // Add resource bonuses
       if (actionBonus.resourceBonus) {
-        Object.entries(actionBonus.resourceBonus).forEach(
-          ([resource, bonus]) => {
-            bonuses.resourceBonus[resource] =
-              (bonuses.resourceBonus[resource] || 0) + bonus;
-          },
-        );
+        Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+        });
       }
 
-      // Combine resource multipliers (multiplicative)
+      // Apply resource multipliers
       if (actionBonus.resourceMultiplier) {
         bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
       }
@@ -873,6 +907,23 @@ export const getActionBonuses = (actionId: string, state: GameState) => {
 
   return bonuses;
 };
+
+// Helper function to get sacrifice bonuses from religious buildings
+export function getSacrificeBonus(state: GameState): number {
+  let bonus = 0;
+
+  if (state.buildings.shrine > 0) {
+    bonus += 0.1; // 10% bonus
+  }
+  if (state.buildings.temple > 0) {
+    bonus += 0.2; // 20% bonus
+  }
+  if (state.buildings.sanctum > 0) {
+    bonus += 0.3; // 30% bonus
+  }
+
+  return bonus;
+}
 
 // Helper function to get exploration bonuses
 export const getExplorationBonuses = (state: GameState): number => {
@@ -932,16 +983,33 @@ export const getTotalKnowledge = (state: GameState): number => {
 
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let madness = state.stats.madness || 0;
+  const baseMadness = state.stats.madness || 0;
+  let totalMadness = baseMadness;
 
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.madness) {
-      madness += effect.bonuses.generalBonuses.madness;
+  // Apply modifiers from clothing and relics
+  Object.entries(clothingEffects).forEach(([key, effect]) => {
+    if (state.clothing?.[key] || state.relics?.[key]) {
+      if (effect.bonuses.generalBonuses?.madness) {
+        totalMadness += effect.bonuses.generalBonuses.madness;
+      }
     }
   });
 
-  return madness;
+  // Apply religious building bonuses
+  if (state.buildings.altar > 0) {
+    totalMadness -= 1;
+  }
+  if (state.buildings.shrine > 0) {
+    totalMadness -= 5;
+  }
+  if (state.buildings.temple > 0) {
+    totalMadness -= 10;
+  }
+  if (state.buildings.sanctum > 0) {
+    totalMadness -= 15;
+  }
+
+  return Math.max(0, totalMadness);
 };
 
 // Helper function to calculate total crafting cost reduction

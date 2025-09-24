@@ -9,26 +9,27 @@ import {
   weaponEffects,
   toolEffects,
 } from "@/game/rules/effects";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface SidePanelItem {
   id: string;
   label: string;
-  value: string | number;
+  value: number;
   testId?: string;
   visible?: boolean;
+  tooltip?: string;
 }
 
 interface SidePanelSectionProps {
   title: string;
   items: SidePanelItem[];
-  visible?: boolean;
   className?: string;
+  onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
 }
 
 export default function SidePanelSection({
   title,
   items,
-  visible = true,
   className = "",
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
@@ -87,20 +88,32 @@ export default function SidePanelSection({
     }
   }, [visibleItems]);
 
-  if (!visible || visibleItems.length === 0) {
+  if (visibleItems.length === 0) {
     return null;
   }
+
+  const formatValue = (value: number) => {
+    if (value < 0) {
+      return `${value}`;
+    } else if (value === -1) {
+      return "done";
+    } else if (value > 0 && value < 1) {
+      return `${Math.round(value * 100)}%`;
+    }
+    return value.toString();
+  };
 
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
+    const displayValue = formatValue(item.value);
 
     // Check if this is a relic, weapon, or tool that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
     const effect = relicEffect || weaponEffect || toolEffect;
-    
+
     // Check if the effect has actual content to display
     const hasEffectContent = effect?.bonuses?.generalBonuses && 
       Object.keys(effect.bonuses.generalBonuses).length > 0;
@@ -127,7 +140,7 @@ export default function SidePanelSection({
                 : ""
           }`}
         >
-          {item.value}
+          {displayValue}
         </span>
       </div>
     );
@@ -218,7 +231,23 @@ export default function SidePanelSection({
       );
     }
 
-    // For non-relic items, return the content directly
+    // If this item has a tooltip, wrap it in a tooltip
+    if (item.tooltip) {
+      return (
+        <TooltipProvider key={item.id}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              {itemContent}
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>{item.tooltip}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
+
+    // For non-relic items without tooltips, return the content directly
     return <div key={item.id}>{itemContent}</div>;
   };
 

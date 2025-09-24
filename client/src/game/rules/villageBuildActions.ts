@@ -489,6 +489,108 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 20,
   },
 
+  buildShrine: {
+    id: "buildShrine",
+    label: "Shrine",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 9,
+        "buildings.altar": 1,
+        "buildings.shrine": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2000,
+        "resources.stone": 1000,
+        "resources.gold": 25,
+        "resources.obsidian": 50,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -2000,
+        "resources.stone": -1000,
+        "resources.gold": -25,
+        "resources.obsidian": -50,
+        "buildings.shrine": 1,
+        "story.seen.hasShrine": true,
+      },
+    },
+    cooldown: 40,
+  },
+
+  buildTemple: {
+    id: "buildTemple",
+    label: "Temple",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 4,
+        "buildings.shrine": 1,
+        "buildings.temple": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+        "resources.gold": 100,
+        "resources.silver": 200,
+        "resources.obsidian": 500,
+        "resources.adamant": 250,
+      },
+    },
+    effects: {
+      1: {
+        "resources.stone": -5000,
+        "resources.gold": -100,
+        "resources.silver": -200,
+        "resources.obsidian": -500,
+        "resources.adamant": -250,
+        "buildings.temple": 1,
+        "story.seen.hasTemple": true,
+      },
+    },
+    cooldown: 60,
+  },
+
+  buildSanctum: {
+    id: "buildSanctum",
+    label: "Sanctum",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 8,
+        "buildings.temple": 1,
+        "buildings.sanctum": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.gold": 250,
+        "resources.silver": 500,
+        "resources.obsidian": 1000,
+        "resources.adamant": 500,
+        "resources.bloodstone": 50,
+      },
+    },
+    effects: {
+      1: {
+        "resources.stone": -10000,
+        "resources.gold": -250,
+        "resources.silver": -500,
+        "resources.obsidian": -1000,
+        "resources.adamant": -500,
+        "resources.bloodstone": -50,
+        "buildings.sanctum": 1,
+        "story.seen.hasSanctum": true,
+      },
+    },
+    cooldown: 80,
+  },
+
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -742,4 +844,52 @@ export function handleBuildTannery(state: GameState, result: ActionResult): Acti
 
 export function handleBuildStoneHut(state: GameState, result: ActionResult): ActionResult {
   return handleBuildingConstruction(state, result, 'buildStoneHut', 'stoneHut');
+}
+
+export function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
+  const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+
+  // Add shrine completion message
+  if (state.buildings.shrine === 0) {
+    shrineResult.logEntries!.push({
+      id: `shrine-built-${Date.now()}`,
+      message: "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return shrineResult;
+}
+
+export function handleBuildTemple(state: GameState, result: ActionResult): ActionResult {
+  const templeResult = handleBuildingConstruction(state, result, 'buildTemple', 'temple');
+
+  // Add temple completion message
+  if (state.buildings.temple === 0) {
+    templeResult.logEntries!.push({
+      id: `temple-built-${Date.now()}`,
+      message: "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return templeResult;
+}
+
+export function handleBuildSanctum(state: GameState, result: ActionResult): ActionResult {
+  const sanctumResult = handleBuildingConstruction(state, result, 'buildSanctum', 'sanctum');
+
+  // Add sanctum completion message
+  if (state.buildings.sanctum === 0) {
+    sanctumResult.logEntries!.push({
+      id: `sanctum-built-${Date.now()}`,
+      message: "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return sanctumResult;
 }

@@ -7,7 +7,7 @@ import { caveCraftResources } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
-import { villageBuildActions } from './villageBuildActions';
+import { villageBuildActions, handleBuildShrine, handleBuildTemple, handleBuildSanctum } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
 
 // Combine all actions
@@ -63,6 +63,16 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   }
   if (actionId === "buildTannery") {
     return (state.buildings.tannery || 0) + 1;
+  }
+  // Add new religious buildings
+  if (actionId === "buildShrine") {
+    return (state.buildings.shrine || 0) + 1;
+  }
+  if (actionId === "buildTemple") {
+    return (state.buildings.temple || 0) + 1;
+  }
+  if (actionId === "buildSanctum") {
+    return (state.buildings.sanctum || 0) + 1;
   }
   return 1;
 };
@@ -432,20 +442,6 @@ export const getCostText = (actionId: string, state?: GameState) => {
 
   return costText;
 };
-
-// Register action handlers
-export const registerActionHandler = (
-  actionId: string,
-  handler: (state: GameState, action: Action) => Partial<GameState>
-) => {
-  // This function is a placeholder to register handlers.
-  // In a real application, you would likely have a map or registry
-  // to store and retrieve these handlers.
-  console.log(`Handler registered for action: ${actionId}`);
-};
-
-
-
 
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here

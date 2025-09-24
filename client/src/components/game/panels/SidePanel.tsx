@@ -68,6 +68,17 @@ export default function SidePanel() {
     }));
 
 
+  // Get madness reduction for religious buildings
+  const getMadnessReduction = (buildingKey: string): string | undefined => {
+    switch (buildingKey) {
+      case 'altar': return '-1 Madness';
+      case 'shrine': return '-5 Madness';
+      case 'temple': return '-10 Madness';
+      case 'sanctum': return '-15 Madness';
+      default: return undefined;
+    }
+  };
+
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
     .map(([key, value]) => {
@@ -78,7 +89,8 @@ export default function SidePanel() {
         label,
         value: value ?? 0,
         testId: `building-${key}`,
-        visible: (value ?? 0) > 0
+        visible: (value ?? 0) > 0,
+        tooltip: getMadnessReduction(key)
       };
     })
     .filter(item => item.visible)
