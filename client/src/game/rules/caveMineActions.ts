@@ -46,15 +46,13 @@ export const caveMiningActions: Record<string, Action> = {
     label: "Mine Sulfur",
     show_when: {
       "tools.iron_pickaxe": true,
-      "buildings.foundry": true,
+      "buildings.foundry": 1,
     },
     cost: {
       "resources.food": 15,
-      "resources.torch": 5,
+      "resources.torch": 2,
     },
     effects: {
-      "resources.torch": -10,
-      "resources.food": -15,
       "resources.sulfur": "random(2,5)",
       "story.seen.hasSulfur": true,
     },
@@ -69,15 +67,13 @@ export const caveMiningActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 30,
-      "resources.torch": 10,
+      "resources.torch": 3,
     },
     effects: {
-      "resources.torch": -15,
-      "resources.food": -30,
       "resources.obsidian": "random(2,5)",
       "story.seen.hasObsidian": true,
     },
-    cooldown: 15,
+    cooldown: 20,
   },
 
   mineAdamant: {
@@ -88,7 +84,7 @@ export const caveMiningActions: Record<string, Action> = {
     },
     cost: {
       "resources.food": 50,
-      "resources.torch": 20,
+      "resources.torch": 10,
     },
     effects: {
       "resources.torch": -20,
@@ -96,7 +92,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.adamant": "random(2,5)",
       "story.seen.hasAdamant": true,
     },
-    cooldown: 20,
+    cooldown: 25,
   },
 };
 
