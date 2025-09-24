@@ -48,7 +48,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   stone_axe: {
     id: "stone_axe",
     name: "Stone Axe",
-    description: "Increases wood gathering efficiency",
+    description: "Basic axe for chopping wood",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -65,7 +65,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   stone_pickaxe: {
     id: "stone_pickaxe",
     name: "Stone Pickaxe",
-    description: "Enables mining",
+    description: "Rudimentary pickaxe for mining",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -88,7 +88,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   iron_axe: {
     id: "iron_axe",
     name: "Iron Axe",
-    description: "Significantly increases wood gathering efficiency",
+    description: "Sharp axe for heavy chopping",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -105,7 +105,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   iron_pickaxe: {
     id: "iron_pickaxe",
     name: "Iron Pickaxe",
-    description: "Enables advanced mining operations",
+    description: "Durable pickaxe for mining efficiently",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -123,7 +123,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   steel_axe: {
     id: "steel_axe",
     name: "Steel Axe",
-    description: "Superior wood gathering tool",
+    description: "Finely crafted axe forged from tempered steel",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -137,7 +137,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   steel_pickaxe: {
     id: "steel_pickaxe",
     name: "Steel Pickaxe",
-    description: "High-efficiency mining tool",
+    description: "Very sturdy mining tool crafted from resilient steel",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -160,7 +160,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "obsidian_axe",
     name: "Obsidian Axe",
     description:
-      "Legendary wood gathering tool with razor-sharp volcanic glass",
+      "Legendary axe with razor-sharp volcanic edges",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -174,7 +174,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   obsidian_pickaxe: {
     id: "obsidian_pickaxe",
     name: "Obsidian Pickaxe",
-    description: "Ultimate mining tool forged with volcanic glass",
+    description: "Masterful tool for mining made of volcanic glass",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -201,7 +201,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "adamant_axe",
     name: "Adamant Axe",
     description:
-      "The ultimate wood gathering tool forged from the hardest metal",
+      "Unbreakable axe, forged from the hardest metal",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -215,7 +215,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   adamant_pickaxe: {
     id: "adamant_pickaxe",
     name: "Adamant Pickaxe",
-    description: "The ultimate mining tool forged from the hardest metal",
+    description: "Pinnacle of mining tools, unyielding and precise",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -245,7 +245,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   iron_lantern: {
     id: "iron_lantern",
     name: "Iron Lantern",
-    description: "Provides better lighting for mining operations",
+    description: "Simple lantern providing reliable light",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -262,7 +262,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   steel_lantern: {
     id: "steel_lantern",
     name: "Steel Lantern",
-    description: "Advanced lighting that improves all mining operations",
+    description: "Bright and sturdy, illuminating the darkest places.",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -287,7 +287,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   obsidian_lantern: {
     id: "obsidian_lantern",
     name: "Obsidian Lantern",
-    description: "Superior lighting that greatly enhances mining efficiency",
+    description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -316,7 +316,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   adamant_lantern: {
     id: "adamant_lantern",
     name: "Adamant Lantern",
-    description: "The ultimate lighting tool that maximizes mining potential",
+    description: "Ultimate light source, illuminating every path",
     bonuses: {
       actionBonuses: {
         mineIron: {
@@ -358,7 +358,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   giant_trap: {
     id: "giant_trap",
     name: "Giant Trap",
-    description: "A massive trap capable of catching gigantic forest creatures",
+    description: "Massive trap capable of catching gigantic forest creatures",
     bonuses: {
       actionBonuses: {},
     },
@@ -370,7 +370,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   crude_bow: {
     id: "crude_bow",
     name: "Crude Bow",
-    description: "Basic hunting bow for gathering food",
+    description: "Simple bow, reliable for any challenge",
     bonuses: {
       actionBonuses: {},
       generalBonuses: {
@@ -382,7 +382,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   huntsman_bow: {
     id: "huntsman_bow",
     name: "Huntsman Bow",
-    description: "Improved hunting bow for better food gathering",
+    description: "Improved bow, finely balanced and precise",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -398,7 +398,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   long_bow: {
     id: "long_bow",
     name: "Long Bow",
-    description: "Superior hunting bow with extended range",
+    description: "Superior bow with extended reach and accuracy",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -414,7 +414,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   war_bow: {
     id: "war_bow",
     name: "War Bow",
-    description: "Powerful military bow adapted for hunting",
+    description: "Very powerful bow, crafted for strength and precision",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -430,7 +430,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   master_bow: {
     id: "master_bow",
     name: "Master Bow",
-    description: "The ultimate hunting weapon",
+    description: "Ultimate bow, unmatched in power and control",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -446,7 +446,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   iron_sword: {
     id: "iron_sword",
     name: "Iron Sword",
-    description: "A sturdy iron blade that enhances your combat prowess",
+    description: "Sturdy iron blade that enhances your combat prowess",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -457,7 +457,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   steel_sword: {
     id: "steel_sword",
     name: "Steel Sword",
-    description: "A finely crafted steel blade with superior balance",
+    description: "Finely crafted steel blade with superior balance",
     bonuses: {
       generalBonuses: {
         strength: 5,
@@ -468,7 +468,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   obsidian_sword: {
     id: "obsidian_sword",
     name: "Obsidian Sword",
-    description: "A razor-sharp blade forged from volcanic glass",
+    description: "Razor-sharp blade forged from volcanic glass",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -479,7 +479,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   adamant_sword: {
     id: "adamant_sword",
     name: "Adamant Sword",
-    description: "The ultimate weapon forged from the hardest metal",
+    description: "Ultimate weapon forged from the hardest metal",
     bonuses: {
       generalBonuses: {
         strength: 15,
@@ -493,7 +493,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",
-    description: "An ancient amulet that brings good fortune",
+    description: "Timeworn amulet that brings good fortune",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -505,7 +505,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
     description:
-      "A leather belt stained with ancient blood that grants raw power",
+      "Leather belt stained with old blood that grants raw power",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -517,7 +517,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ravenfeather_mantle",
     name: "Ravenfeather Mantle",
     description:
-      "A mystical mantle woven from raven feathers that enhances both fortune and might",
+      "Mystical mantle woven from shimmering raven feathers",
     bonuses: {
       generalBonuses: {
         luck: 3,
@@ -529,7 +529,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   alphas_hide: {
     id: "alphas_hide",
     name: "Alpha's Hide",
-    description: "The hide of the wolf pack leader, imbued with primal power",
+    description: "Hide of the wolf pack leader, imbued with primal power",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -546,7 +546,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   whispering_amulet: {
     id: "whispering_amulet",
     name: "Whispering Amulet",
-    description: "A mysterious amulet that whispers ancient secrets",
+    description: "Mysterious amulet that whispers ancient secrets",
     bonuses: {
       generalBonuses: {
         knowledge: 5,
@@ -558,7 +558,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   old_trinket: {
     id: "old_trinket",
     name: "Old Trinket",
-    description: "An ancient trinket that grants both strength and luck",
+    description: "Ancient trinket that grants both strength and luck",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -570,7 +570,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   blacksmith_hammer: {
     id: "blacksmith_hammer",
     name: "Blacksmith Hammer",
-    description: "Ancient hammer that reduces crafting costs by 10%",
+    description: "Legendary blacksmith hammer once owned by a great blacksmith",
     bonuses: {
       generalBonuses: {
         strength: 4,
@@ -582,7 +582,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   elder_scroll: {
     id: "elder_scroll",
     name: "Elder Scroll",
-    description: "Ancient scroll that grants both knowledge and luck",
+    description: "Eldritch scroll containing old wisdom",
     bonuses: {
       generalBonuses: {
         knowledge: 12,
@@ -594,7 +594,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "ebony_ring",
     name: "Ebony Ring",
     description:
-      "A dark ring carved from petrified ebony wood, given to those favored by the forest gods",
+      "Dark ring carved from petrified ebony wood, given to those favored by the forest gods",
     bonuses: {
       actionBonuses: {
         boneTotems: {
@@ -611,7 +611,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
-    description: "A cracked golden crown that hums with ancient power",
+    description: "Cracked golden crown that hums with ancestral power",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -623,7 +623,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   blackened_mirror: {
     id: "blackened_mirror",
     name: "Blackened Mirror",
-    description: "A mirror that shows things that shouldn't be seen",
+    description: "Mirror that shows things that shouldn't be seen",
     bonuses: {
       generalBonuses: {
         knowledge: 8,
@@ -635,7 +635,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   unnamed_book: {
     id: "unnamed_book",
     name: "Unnamed Book",
-    description: "A book with no title, filled with disturbing knowledge",
+    description: "Book bound in human skin, filled with forbidden knowledge",
     bonuses: {
       generalBonuses: {
         knowledge: 10,
@@ -648,7 +648,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "wooden_figure",
     name: "Wooden Figure",
     description:
-      "A small wooden figure carved with tentacled features that emanates a strange aura",
+      "Small wooden figure carved with tentacled features that emanates a strange aura",
     bonuses: {
       generalBonuses: {
         madness: 5,
@@ -660,7 +660,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   black_bear_fur: {
     id: "black_bear_fur",
     name: "Black Bear Fur",
-    description: "The magnificent fur of a giant black bear, radiating primal power but carrying a dark presence",
+    description: "Fur of an otherworldy giant black bear, radiating raw primal power",
     bonuses: {
       actionBonuses: {
         hunt: {
