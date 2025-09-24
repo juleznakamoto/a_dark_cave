@@ -8,7 +8,6 @@ export const forestSacrificeActions: Record<string, Action> = {
     id: "boneTotems",
     label: "Bone Totems",
     show_when: {
-      "resources.bone_totem": 10,
       "buildings.altar": 1,
     },
     cost: {

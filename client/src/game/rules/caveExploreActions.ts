@@ -49,7 +49,7 @@ function getInheritedRelics(actionId: string) {
       const adjustedProbability =
         i === currentIndex
           ? relic.probability // Current stage keeps original probability
-          : relic.probability + 0.005; // Previous stages get +1% bonus
+          : relic.probability + 0.005; // Previous stages get +0.5% bonus
 
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
@@ -267,15 +267,12 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.lowChamberExplored": false,
     },
     cost: {
-      "resources.food": 500,
-      "resources.torch": 20,
+      "resources.food": 1000,
     },
     effects: {
-      "resources.food": -500,
-      "resources.torch": -20,
-      "resources.gold": { probability: 0.8, value: "random(15,25)" },
-      "resources.bloodstone": { probability: 0.3, value: "random(2,4)" },
-      "resources.frostglas": { probability: 0.2, value: "random(1,3)" },
+      "resources.gold": { probability: 1, value: "random(15,35)" },
+      "resources.bloodstone": { probability: 1, value: "random(2,8)" },
+      "resources.frostglas": { probability: 1, value: "random(1,6)" },
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
     },
@@ -290,14 +287,13 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.alchemistChamberExplored": false,
     },
     cost: {
-      "resources.food": 750,
+      "resources.food": 1000,
     },
     effects: {
-      "resources.food": -750,
       "resources.gold": { probability: 1, value: "random(20,30)" },
-      "resources.bloodstone": { probability: 0.5, value: "random(3,5)" },
-      "resources.frostglas": { probability: 0.4, value: "random(2,4)" },
-      "resources.adamant": { probability: 0.3, value: "random(5,8)" },
+      "resources.bloodstone": { probability: 1, value: "random(3,6)" },
+      "resources.frostglas": { probability: 1, value: "random(2,4)" },
+      "resources.adamant": { probability: 1, value: "random(5,15)" },
       "flags.alchemistChamberExplored": true,
       "story.seen.alchemistChamberExplored": true,
     },
@@ -460,7 +456,7 @@ export function handleExploreRuins(state: GameState, result: ActionResult): Acti
   if (!state.story.seen.exploredRuins) {
     result.logEntries!.push({
       id: `explore-ruins-${Date.now()}`,
-      message: 'Ancient ruins sprawl before you depp in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.',
+      message: 'Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.',
       timestamp: Date.now(),
       type: 'system',
     });
