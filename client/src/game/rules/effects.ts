@@ -68,11 +68,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Rudimentary pickaxe for mining",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 1.10,
-          cooldownReduction: 1,
-        },
-        mineCoal: {
+        mining: {
           resourceMultiplier: 1.10,
           cooldownReduction: 1,
         },
@@ -112,11 +108,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Durable pickaxe for mining efficiently",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 1.25,
-          cooldownReduction: 1,
-        },
-        mineCoal: {
+        mining: {
           resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
@@ -144,15 +136,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Very sturdy mining tool crafted from resilient steel",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 1.5,
-          cooldownReduction: 2,
-        },
-        mineCoal: {
-          resourceMultiplier: 1.5,
-          cooldownReduction: 2,
-        },
-        mineSulfur: {
+        mining: {
           resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
@@ -181,19 +165,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Masterful tool for mining made of volcanic glass",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 4,
-        },
-        mineCoal: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 4,
-        },
-        mineSulfur: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 4,
-        },
-        mineObsidian: {
+        mining: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -222,23 +194,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Pinnacle of mining tools, unyielding and precise",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 6,
-        },
-        mineCoal: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 6,
-        },
-        mineSulfur: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 6,
-        },
-        mineObsidian: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 6,
-        },
-        mineAdamant: {
+        mining: {
           resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
@@ -252,8 +208,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Simple lantern providing reliable light",
     bonuses: {
       actionBonuses: {
-        mineIron: {
-          resourceMultiplier: 1.1,
+        mining: {
+          resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
         ventureDeeper: {
@@ -269,20 +225,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Bright and sturdy, illuminating the darkest places.",
     bonuses: {
       actionBonuses: {
-        mineIron: {
+        mining: {
           resourceMultiplier: 1.5,
           cooldownReduction: 2,
-        },
-        mineCoal: {
-          resourceMultiplier: 1.5,
-          cooldownReduction: 2,
-        },
-        mineSulfur: {
-          resourceMultiplier: 1.5,
-          cooldownReduction: 2,
-        },
-        ventureDeeper: {
-          cooldownReduction: 3,
         },
       },
     },
@@ -294,24 +239,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
       actionBonuses: {
-        mineIron: {
+        mining: {
           resourceMultiplier: 2.0,
           cooldownReduction: 3,
-        },
-        mineCoal: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 3,
-        },
-        mineSulfur: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 3,
-        },
-        mineObsidian: {
-          resourceMultiplier: 2.0,
-          cooldownReduction: 3,
-        },
-        ventureDeeper: {
-          cooldownReduction: 4,
         },
       },
     },
@@ -323,28 +253,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Ultimate light source, illuminating every path",
     bonuses: {
       actionBonuses: {
-        mineIron: {
+        mining: {
           resourceMultiplier: 3.0,
           cooldownReduction: 4,
-        },
-        mineCoal: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 4,
-        },
-        mineSulfur: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 4,
-        },
-        mineObsidian: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 4,
-        },
-        mineAdamant: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 4,
-        },
-        ventureDeeper: {
-          cooldownReduction: 6,
         },
       },
     },
@@ -848,46 +759,78 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to get action bonuses from pre-calculated effects in state
-export const getActionBonuses = (actionId: string, state: GameState): ActionBonuses => {
-  const bonuses: ActionBonuses = {
+export function getActionBonuses(actionId: string, state: GameState): ActionBonuses {
+  const effects = calculateTotalEffects(state);
+  let bonuses: ActionBonuses = {
     resourceBonus: {},
     resourceMultiplier: 1,
-    probabilityBonus: {} as Record<string, number>,
     cooldownReduction: 0,
+    probabilityBonus: 0,
   };
 
-  if (!state.effects) {
-    return bonuses;
-  }
+  // Define mining actions
+  const miningActions = ['mineIron', 'mineCoal', 'mineSulfur', 'mineObsidian', 'mineAdamant'];
+  const isMiningAction = miningActions.includes(actionId);
 
-  // Get resource bonuses for this action
-  Object.entries(state.effects.resource_bonus).forEach(([key, bonus]) => {
-    if (key.startsWith(`${actionId}_`)) {
-      const resource = key.substring(actionId.length + 1);
-      bonuses.resourceBonus[resource] = bonus;
+  // Apply bonuses for this specific action
+  Object.entries(effects.actionBonuses).forEach(([itemId, itemBonuses]) => {
+    // Check for specific action bonuses
+    if (itemBonuses[actionId]) {
+      const actionBonus = itemBonuses[actionId];
+
+      // Apply resource bonuses
+      if (actionBonus.resourceBonus) {
+        Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+        });
+      }
+
+      // Apply multipliers (multiplicative)
+      if (actionBonus.resourceMultiplier) {
+        bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
+      }
+
+      // Apply cooldown reduction (additive)
+      if (actionBonus.cooldownReduction) {
+        bonuses.cooldownReduction += actionBonus.cooldownReduction;
+      }
+
+      // Apply probability bonus (additive)
+      if (actionBonus.probabilityBonus) {
+        bonuses.probabilityBonus += actionBonus.probabilityBonus;
+      }
+    }
+
+    // Check for general "mining" bonuses that apply to all mining actions
+    if (isMiningAction && itemBonuses.mining) {
+      const miningBonus = itemBonuses.mining;
+
+      // Apply resource bonuses
+      if (miningBonus.resourceBonus) {
+        Object.entries(miningBonus.resourceBonus).forEach(([resource, bonus]) => {
+          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+        });
+      }
+
+      // Apply multipliers (multiplicative)
+      if (miningBonus.resourceMultiplier) {
+        bonuses.resourceMultiplier *= miningBonus.resourceMultiplier;
+      }
+
+      // Apply cooldown reduction (additive)
+      if (miningBonus.cooldownReduction) {
+        bonuses.cooldownReduction += miningBonus.cooldownReduction;
+      }
+
+      // Apply probability bonus (additive)
+      if (miningBonus.probabilityBonus) {
+        bonuses.probabilityBonus += miningBonus.probabilityBonus;
+      }
     }
   });
-
-  // Get resource multiplier for this action
-  if (state.effects.resource_multiplier[actionId]) {
-    bonuses.resourceMultiplier = state.effects.resource_multiplier[actionId];
-  }
-
-  // Get probability bonuses for this action
-  Object.entries(state.effects.probability_bonus).forEach(([key, bonus]) => {
-    if (key.startsWith(`${actionId}_`)) {
-      const resource = key.substring(actionId.length + 1);
-      bonuses.probabilityBonus[resource] = bonus;
-    }
-  });
-
-  // Get cooldown reduction for this action
-  if (state.effects.cooldown_reduction[actionId]) {
-    bonuses.cooldownReduction = state.effects.cooldown_reduction[actionId];
-  }
 
   return bonuses;
-};
+}
 
 // Helper function to get sacrifice bonuses from religious buildings
 export function getSacrificeBonus(state: GameState): number {

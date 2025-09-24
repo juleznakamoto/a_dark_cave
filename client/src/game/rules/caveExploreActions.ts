@@ -82,7 +82,7 @@ export const caveExploreActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.wood": "random(3,5)",
+      "resources.wood": "random(3,9)",
       "story.seen.hasWood": true,
       "relics.old_trinket": {
         probability: 0.0005,
@@ -92,7 +92,7 @@ export const caveExploreActions: Record<string, Action> = {
           "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before.",
       }
     },
-    cooldown: 5,
+    cooldown: 6,
   },
 
   exploreCave: {
