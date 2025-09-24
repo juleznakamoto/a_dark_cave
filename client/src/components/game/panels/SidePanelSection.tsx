@@ -237,11 +237,6 @@ export default function SidePanelSection({
                             +{Math.round((bonus.resourceMultiplier - 1) * 100)}% resources
                           </div>
                         )}
-                      {bonus.cooldownReduction && (
-                        <div>
-                          {capitalizeWords(actionId)}: -{bonus.cooldownReduction}s cooldown
-                        </div>
-                      )}
                       {bonus.resourceBonus &&
                         Object.entries(bonus.resourceBonus).map(
                           ([resource, amount]) => (
