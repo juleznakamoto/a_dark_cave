@@ -9,7 +9,6 @@ import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
 import { villageBuildActions, handleBuildShrine, handleBuildTemple, handleBuildSanctum } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
-import { forestSacrificeActions } from './forestSacrificeActions';
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -22,7 +21,6 @@ export const gameActions: Record<string, Action> = {
   ...caveMiningActions,
   ...caveCraftWeapons,
   ...forestScoutActions,
-  ...forestSacrificeActions,
 };
 
 // Utility function to get the next building level
