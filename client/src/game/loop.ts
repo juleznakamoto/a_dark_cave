@@ -180,9 +180,9 @@ function handleMinerProduction() {
   // Pause miner production when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  // Process each miner type and steel forger
+  // Process each miner type, steel forger, and tanner
   Object.entries(state.villagers).forEach(([job, count]) => {
-    if (count > 0 && (job.endsWith('miner') || job === 'steel_forger')) {
+    if (count > 0 && (job.endsWith('miner') || job === 'steel_forger' || job === 'tanner')) {
       const production = getPopulationProduction(job, count, state);
       production.forEach(prod => {
         state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);

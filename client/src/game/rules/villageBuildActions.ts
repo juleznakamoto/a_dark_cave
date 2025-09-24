@@ -462,6 +462,33 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
+  buildTannery: {
+    id: "buildTannery",
+    label: "Tannery",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 6,
+        "buildings.tannery": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+        "resources.stone": 250,
+      },
+    },
+    effects: {
+      1: {
+        "resources.wood": -500,
+        "resources.stone": -250,
+        "buildings.tannery": 1,
+        "story.seen.hasTannery": true,
+      },
+    },
+    cooldown: 20,
+  },
+
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -707,6 +734,10 @@ export function handleBuildQuarry(state: GameState, result: ActionResult): Actio
 
 export function handleBuildClerksHut(state: GameState, result: ActionResult): ActionResult {
   return handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
+}
+
+export function handleBuildTannery(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildTannery', 'tannery');
 }
 
 export function handleBuildStoneHut(state: GameState, result: ActionResult): ActionResult {

@@ -75,8 +75,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => void;
-  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => void;
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => void;
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
 }
 
@@ -223,7 +223,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? [...prevState.log, ...result.logEntries].slice(-8)
           : prevState.log,
       };
-      
+
       console.log(`[STATE] New state after ${actionId}:`, newState);
       return newState;
     });
@@ -411,9 +411,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         if (entry.choices && entry.choices.length > 0) {
           const currentDialog = get().eventDialog;
           const isMerchantEvent = entry.id.includes('merchant');
-          const hasActiveMerchantDialog = currentDialog.isOpen && 
+          const hasActiveMerchantDialog = currentDialog.isOpen &&
             currentDialog.currentEvent?.id.includes('merchant');
-          
+
           // Only open dialog if there's no active merchant dialog, or if this isn't a merchant event
           if (!hasActiveMerchantDialog || !isMerchantEvent) {
             get().setEventDialog(true, entry);
@@ -480,7 +480,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is always enabled - no-op
   },
 
-  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
+  assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => {
     console.log(`[STATE] Assign Villager to: ${job}`);
     set((state) => {
       const updates = assignVillagerToJob(state, job);
@@ -492,7 +492,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger") => {
+  unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => {
     console.log(`[STATE] Unassign Villager from: ${job}`);
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);

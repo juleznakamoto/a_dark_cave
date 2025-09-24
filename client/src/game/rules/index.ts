@@ -61,6 +61,9 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildQuarry") {
     return (state.buildings.quarry || 0) + 1;
   }
+  if (actionId === "buildTannery") {
+    return (state.buildings.tannery || 0) + 1;
+  }
   return 1;
 };
 
@@ -428,4 +431,78 @@ export const getCostText = (actionId: string, state?: GameState) => {
     .join(", ");
 
   return costText;
+};
+
+// Register action handlers
+export const registerActionHandler = (
+  actionId: string,
+  handler: (state: GameState, action: Action) => Partial<GameState>
+) => {
+  // This function is a placeholder to register handlers.
+  // In a real application, you would likely have a map or registry
+  // to store and retrieve these handlers.
+  console.log(`Handler registered for action: ${actionId}`);
+};
+
+// Dummy handler for buildTannery (replace with actual logic)
+const handleBuildTannery = (state: GameState, action: Action): Partial<GameState> => {
+  const updates = applyActionEffects("buildTannery", state);
+  const currentHutCount = state.buildings.woodenHut || 0;
+
+  if (currentHutCount < 6) {
+    return {
+      logMessages: ["You need at least 6 huts to build a Tannery."],
+    };
+  }
+
+  return {
+    ...updates,
+    buildings: {
+      ...state.buildings,
+      tannery: (state.buildings.tannery || 0) + 1,
+    },
+    cooldowns: {
+      ...state.cooldowns,
+      buildTannery: 10, // Example cooldown
+    },
+  };
+};
+
+// Dummy handler for Tanner villager production (replace with actual logic)
+const handleTannerProduction = (state: GameState): Partial<GameState> => {
+  const tanneryCount = state.buildings.tannery || 0;
+  if (tanneryCount === 0) return {};
+
+  const tannerVillagers = state.population.tanner || 0;
+  const availableFur = state.resources.fur || 0;
+  const leatherProduced = tanneryCount * 5; // Each tannery produces 5 leather
+
+  if (availableFur >= tanneryCount * 5) {
+    return {
+      resources: {
+        ...state.resources,
+        fur: state.resources.fur - tanneryCount * 5,
+        leather: (state.resources.leather || 0) + leatherProduced,
+      },
+      population: {
+        ...state.population,
+        tanner: tannerVillagers + tanneryCount, // Add tanner villagers
+      },
+      logMessages: [`Tanneries produced ${leatherProduced} leather and trained ${tanneryCount} new Tanners.`],
+    };
+  } else {
+    return {
+      logMessages: ["Not enough fur to produce leather and train Tanners."],
+    };
+  }
+};
+
+
+// Register action handlers
+// This is a simplified example. In a real app, you'd have a more robust system.
+const actionHandlers: Record<string, (state: GameState, action: Action) => Partial<GameState>> = {
+  case "buildTannery":
+      return handleBuildTannery(state, result);
+    case "buildStoneHut":
+      return handleBuildStoneHut(state, result);
 };
