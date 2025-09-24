@@ -972,18 +972,11 @@ export const getTotalMadness = (state: GameState): number => {
     }
   });
 
-  // Apply religious building bonuses
-  if (state.buildings.altar > 0) {
-    totalMadness -= 1;
-  }
-  if (state.buildings.shrine > 0) {
-    totalMadness -= 5;
-  }
-  if (state.buildings.temple > 0) {
-    totalMadness -= 10;
-  }
-  if (state.buildings.sanctum > 0) {
-    totalMadness -= 15;
+  // Apply madness reduction from pre-calculated effects
+  if (state.effects?.madness_reduction) {
+    Object.values(state.effects.madness_reduction).forEach((reduction) => {
+      totalMadness -= reduction;
+    });
   }
 
   return Math.max(0, totalMadness);
@@ -1020,12 +1013,19 @@ export const calculateTotalEffects = (state: GameState) => {
     resource_multiplier: {} as Record<string, number>,
     probability_bonus: {} as Record<string, number>,
     cooldown_reduction: {} as Record<string, number>,
+    madness_reduction: {} as Record<string, number>,
   };
 
   const activeEffects = getActiveEffects(state);
 
   // Process all active effects
   activeEffects.forEach((effect) => {
+    // Process madness bonuses from general bonuses
+    if (effect.bonuses.generalBonuses?.madness) {
+      const effectKey = `${effect.id}_madness`;
+      effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
+    }
+
     if (effect.bonuses.actionBonuses) {
       Object.entries(effect.bonuses.actionBonuses).forEach(([actionId, actionBonus]) => {
         // Resource bonuses

@@ -175,6 +175,7 @@ export const gameStateSchema = z.object({
     resource_multiplier: z.record(z.string(), z.number()).default({}),
     probability_bonus: z.record(z.string(), z.number()).default({}),
     cooldown_reduction: z.record(z.string(), z.number()).default({}),
+    madness_reduction: z.record(z.string(), z.number()).default({}),
   }).default({}),
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),

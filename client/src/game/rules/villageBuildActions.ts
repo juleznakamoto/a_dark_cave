@@ -314,6 +314,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.altar": 1,
         "story.seen.hasAltar": true,
+        "effects.madness_reduction.altar": 1,
       },
     },
     cooldown: 5,
@@ -469,6 +470,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.shrine": 1,
         "story.seen.hasShrine": true,
+        "effects.madness_reduction.shrine": 5,
       },
     },
     cooldown: 40,
@@ -498,6 +500,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.temple": 1,
         "story.seen.hasTemple": true,
+        "effects.madness_reduction.temple": 10,
       },
     },
     cooldown: 60,
@@ -528,6 +531,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.sanctum": 1,
         "story.seen.hasSanctum": true,
+        "effects.madness_reduction.sanctum": 15,
       },
     },
     cooldown: 80,
