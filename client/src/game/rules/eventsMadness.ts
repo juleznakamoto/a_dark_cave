@@ -58,6 +58,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "confront",
@@ -164,6 +166,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "examine",
@@ -262,6 +266,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 4,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 12,
     choices: [
       {
         id: "calm_down",
@@ -358,6 +364,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 10,
     choices: [
       {
         id: "do_nothing",
@@ -425,6 +433,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 12,
     choices: [
       {
         id: "investigate",
@@ -491,6 +501,8 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 10,
     choices: [
       {
         id: "shake_them",
