@@ -109,6 +109,16 @@ export default function SidePanel() {
       if (item.id === 'cabin' && buildings.greatCabin > 0) {
         return false;
       }
+      // Only show the highest religious building level
+      if (item.id === 'altar' && (buildings.shrine > 0 || buildings.temple > 0 || buildings.sanctum > 0)) {
+        return false;
+      }
+      if (item.id === 'shrine' && (buildings.temple > 0 || buildings.sanctum > 0)) {
+        return false;
+      }
+      if (item.id === 'temple' && buildings.sanctum > 0) {
+        return false;
+      }
       return true;
     });
 
