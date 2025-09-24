@@ -65,11 +65,11 @@ export function handleHunt(state: GameState, result: ActionResult): ActionResult
   }
 
   // Apply resource multipliers (like 25% bonus from black bear fur)
-  if (actionBonuses.resourceMultiplier) {
-    Object.entries(actionBonuses.resourceMultiplier).forEach(([resource, multiplier]) => {
+  if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+    Object.keys(effectUpdates.resources).forEach((resource) => {
       const currentAmount = effectUpdates.resources[resource] || 0;
       const baseAmount = currentAmount - (state.resources[resource] || 0);
-      const bonusAmount = Math.floor(baseAmount * (multiplier - 1));
+      const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
       effectUpdates.resources[resource] = currentAmount + bonusAmount;
     });
   }

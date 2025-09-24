@@ -16,6 +16,7 @@ export interface EffectDefinition {
       {
         cooldownReduction?: number; // Percentage reduction (0.1 = 10% reduction)
         resourceBonus?: Record<string, number>; // Fixed bonus to specific resources
+        resourceMultiplier?: number; // Multiplier for all resources (1.25 = 25% bonus)
         probabilityBonus?: Record<string, number>; // Bonus to probability effects
       }
     >;
@@ -636,7 +637,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: { food: 1.25, fur: 1.25, bones: 1.25 },
+          resourceMultiplier: 1.25,
         },
       },
       generalBonuses: {
@@ -820,6 +821,7 @@ export const getActionBonuses = (actionId: string, state: GameState) => {
   const activeEffects = getActiveEffects(state);
   const bonuses = {
     resourceBonus: {} as Record<string, number>,
+    resourceMultiplier: 1 as number,
     probabilityBonus: {} as Record<string, number>,
     cooldownReduction: 0,
   };
@@ -835,6 +837,11 @@ export const getActionBonuses = (actionId: string, state: GameState) => {
               (bonuses.resourceBonus[resource] || 0) + bonus;
           },
         );
+      }
+
+      // Combine resource multipliers (multiplicative)
+      if (actionBonus.resourceMultiplier) {
+        bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
       }
 
       // Combine probability bonuses

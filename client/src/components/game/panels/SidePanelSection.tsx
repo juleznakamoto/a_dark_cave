@@ -190,6 +190,26 @@ export default function SidePanelSection({
                       {Math.round(effect.bonuses.generalBonuses.craftingCostReduction * 100)}% Crafting Cost Reduction
                     </div>
                   )}
+                  {/* Show action bonuses like hunt multiplier */}
+                  {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([actionId, bonus]) => (
+                    <div key={actionId}>
+                      {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
+                        <div>
+                          +{Math.round((bonus.resourceMultiplier - 1) * 100)}% {actionId} bonus
+                        </div>
+                      )}
+                      {bonus.resourceBonus && Object.entries(bonus.resourceBonus).map(([resource, amount]) => (
+                        <div key={resource}>
+                          +{amount} {resource} ({actionId})
+                        </div>
+                      ))}
+                      {bonus.cooldownReduction && (
+                        <div>
+                          -{Math.round(bonus.cooldownReduction * 100)}% {actionId} cooldown
+                        </div>
+                      )}
+                    </div>
+                  ))}
                 </>
               )}
             </div>
