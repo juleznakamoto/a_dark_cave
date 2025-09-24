@@ -9,7 +9,12 @@ import {
   weaponEffects,
   toolEffects,
 } from "@/game/rules/effects";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SidePanelItem {
   id: string;
@@ -115,7 +120,8 @@ export default function SidePanelSection({
     const effect = relicEffect || weaponEffect || toolEffect;
 
     // Check if the effect has actual content to display
-    const hasEffectContent = effect?.bonuses?.generalBonuses && 
+    const hasEffectContent =
+      effect?.bonuses?.generalBonuses &&
       Object.keys(effect.bonuses.generalBonuses).length > 0;
     const hasEffect = effect && hasEffectContent;
 
@@ -146,8 +152,10 @@ export default function SidePanelSection({
     );
 
     // If this item has effects, wrap it in a hover card
-    if (hasEffect && (title === "Relics" || title === "Tools" || title === "Weapons")) {
-
+    if (
+      hasEffect &&
+      (title === "Relics" || title === "Tools" || title === "Weapons")
+    ) {
       return (
         <HoverCard key={item.id} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
@@ -194,35 +202,50 @@ export default function SidePanelSection({
                     </div>
                   )}
                   {effect.bonuses.generalBonuses.madness && (
-                    <div>
-                      +{effect.bonuses.generalBonuses.madness} Madness
-                    </div>
+                    <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
                   )}
                   {effect.bonuses.generalBonuses.craftingCostReduction && (
                     <div>
-                      {Math.round(effect.bonuses.generalBonuses.craftingCostReduction * 100)}% Crafting Cost Reduction
+                      {Math.round(
+                        effect.bonuses.generalBonuses.craftingCostReduction *
+                          100,
+                      )}
+                      % Craft Discount
                     </div>
                   )}
                   {/* Show action bonuses like hunt multiplier */}
-                  {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([actionId, bonus]) => (
-                    <div key={actionId}>
-                      {bonus.resourceMultiplier && bonus.resourceMultiplier !== 1 && (
-                        <div>
-                          +{Math.round((bonus.resourceMultiplier - 1) * 100)}% {actionId} bonus
+                  {effect.bonuses.actionBonuses &&
+                    Object.entries(effect.bonuses.actionBonuses).map(
+                      ([actionId, bonus]) => (
+                        <div key={actionId}>
+                          {bonus.resourceMultiplier &&
+                            bonus.resourceMultiplier !== 1 && (
+                              <div>
+                                +
+                                {Math.round(
+                                  (bonus.resourceMultiplier - 1) * 100,
+                                )}
+                                % {capitalizeWords(actionId)} Bonus
+                              </div>
+                            )}
+                          {bonus.resourceBonus &&
+                            Object.entries(bonus.resourceBonus).map(
+                              ([resource, amount]) => (
+                                <div key={resource}>
+                                  +{amount} {capitalizeWords(resource)} (
+                                  {capitalizeWords(actionId)})
+                                </div>
+                              ),
+                            )}
+                          {bonus.cooldownReduction && (
+                            <div>
+                              -{Math.round(bonus.cooldownReduction * 100)}%{" "}
+                              {capitalizeWords(actionId)} Cooldown
+                            </div>
+                          )}
                         </div>
-                      )}
-                      {bonus.resourceBonus && Object.entries(bonus.resourceBonus).map(([resource, amount]) => (
-                        <div key={resource}>
-                          +{amount} {resource} ({actionId})
-                        </div>
-                      ))}
-                      {bonus.cooldownReduction && (
-                        <div>
-                          -{Math.round(bonus.cooldownReduction * 100)}% {actionId} cooldown
-                        </div>
-                      )}
-                    </div>
-                  ))}
+                      ),
+                    )}
                 </>
               )}
             </div>
@@ -235,9 +258,7 @@ export default function SidePanelSection({
     if (item.tooltip) {
       return (
         <Tooltip key={item.id}>
-          <TooltipTrigger asChild>
-            {itemContent}
-          </TooltipTrigger>
+          <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
           <TooltipContent>
             <p>{item.tooltip}</p>
           </TooltipContent>
@@ -259,4 +280,9 @@ export default function SidePanelSection({
       </div>
     </div>
   );
+}
+
+// Utility function to capitalize first letter of each word
+function capitalizeWords(str: string) {
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }

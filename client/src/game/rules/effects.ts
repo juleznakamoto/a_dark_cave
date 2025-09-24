@@ -87,7 +87,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 10 },
+            resourceMultiplier: 1.1,
           cooldownReduction: 0.5,
         },
         buildTorch: {
@@ -104,7 +104,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 2 },
+          resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
       },
@@ -118,7 +118,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 15 },
+          resourceMultiplier: 1.25,
           cooldownReduction: 0.75,
         },
       },
@@ -132,15 +132,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 7 },
+          resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
         mineCoal: {
-          resourceBonus: { coal: 7 },
+          resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 7 },
+          resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
       },
@@ -155,7 +155,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 25 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 1,
         },
       },
@@ -169,19 +169,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 15 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 4,
         },
         mineCoal: {
-          resourceBonus: { coal: 15 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 4,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 15 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 4,
         },
         mineObsidian: {
-          resourceBonus: { obsidian: 5 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 4,
         },
       },
@@ -196,7 +196,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 50 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 1.5,
         },
       },
@@ -210,23 +210,23 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 30 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 6,
         },
         mineCoal: {
-          resourceBonus: { coal: 30 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 6,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 30 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 6,
         },
         mineObsidian: {
-          resourceBonus: { obsidian: 15 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 6,
         },
         mineAdamant: {
-          resourceBonus: { adamant: 10 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 6,
         },
       },
@@ -240,7 +240,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 3 },
+          resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
         ventureDeeper: {
@@ -257,15 +257,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 5 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
         mineCoal: {
-          resourceBonus: { coal: 5 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 5 },
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
         ventureDeeper: {
@@ -282,19 +282,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 10 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 3,
         },
         mineCoal: {
-          resourceBonus: { coal: 10 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 3,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 10 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 3,
         },
         mineObsidian: {
-          resourceBonus: { obsidian: 3 },
+          resourceMultiplier: 2.0,
           cooldownReduction: 3,
         },
         ventureDeeper: {
@@ -311,23 +311,23 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceBonus: { iron: 15 },
+          resourceMultiplier: 3.0,
           cooldownReduction: 4,
         },
         mineCoal: {
-          resourceBonus: { coal: 15 },
+          resourceMultiplier: 3.0,
           cooldownReduction: 4,
         },
         mineSulfur: {
-          resourceBonus: { sulfur: 15 },
+          resourceMultiplier: 3.0,
           cooldownReduction: 4,
         },
         mineObsidian: {
-          resourceBonus: { obsidian: 15 },
+          resourceMultiplier: 3.0,
           cooldownReduction: 4,
         },
         mineAdamant: {
-          resourceBonus: { adamant: 15 },
+          resourceMultiplier: 3.0,
           cooldownReduction: 4,
         },
         ventureDeeper: {
@@ -377,7 +377,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 10, fur: 2, bones: 2 },
+          resourceMultiplier: 1.1,
         },
       },
       generalBonuses: {
@@ -393,7 +393,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 15, fur: 4, bones: 4 },
+          resourceMultiplier: 1.25,
         },
       },
       generalBonuses: {
@@ -409,7 +409,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 20, fur: 6, bones: 6 },
+          resourceMultiplier: 1.5,
         },
       },
       generalBonuses: {
@@ -425,7 +425,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceBonus: { food: 25, fur: 8, bones: 8 },
+          resourceMultiplier: 2.0,
         },
       },
       generalBonuses: {
@@ -524,7 +524,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.05,
+          resourceMultiplier: 1.10,
         },
       },
       generalBonuses: {
