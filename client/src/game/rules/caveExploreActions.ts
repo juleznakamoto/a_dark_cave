@@ -105,7 +105,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Explore Cave",
     show_when: {
       "story.seen.actionBuildTorch": true,
-      "buildings.blacksmith": 1,
+      "buildings.blacksmith": 0,
     },
     cost: {
       "resources.torch": 5,

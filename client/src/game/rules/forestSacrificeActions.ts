@@ -41,7 +41,7 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
       const currentAmount = effectUpdates.resources[resource] || state.resources[resource] || 0;
       const baseAmount = currentAmount - (state.resources[resource] || 0);
       if (baseAmount > 0) { // Only apply multiplier to positive gains
-        const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
+        const bonusAmount = Math.ceil(baseAmount * (actionBonuses.resourceMultiplier - 1));
         effectUpdates.resources[resource] = currentAmount + bonusAmount;
       }
     });
