@@ -46,14 +46,6 @@ import {
 } from '@/game/rules/caveCraftActions';
 
 import {
-  handleMineIron,
-  handleMineCoal,
-  handleMineSulfur,
-  handleMineObsidian,
-  handleMineAdamant,
-} from '@/game/rules/caveMineActions';
-
-import {
   handleBuildWoodenHut,
   handleBuildCabin,
   handleBuildBlacksmith,
@@ -178,16 +170,16 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftMasterBow(state, result);
 
     // Cave Mine Actions
-    case 'mineIron':
-      return handleMineIron(state, result);
-    case 'mineCoal':
-      return handleMineCoal(state, result);
-    case 'mineSulfur':
-      return handleMineSulfur(state, result);
-    case 'mineObsidian':
-      return handleMineObsidian(state, result);
-    case 'mineAdamant':
-      return handleMineAdamant(state, result);
+    // case 'mineIron':
+    //   return handleMineIron(state, result);
+    // case 'mineCoal':
+    //   return handleMineCoal(state, result);
+    // case 'mineSulfur':
+    //   return handleMineSulfur(state, result);
+    // case 'mineObsidian':
+    //   return handleMineObsidian(state, result);
+    // case 'mineAdamant':
+    //   return handleMineAdamant(state, result);
 
     // Village Build Actions
     case 'buildWoodenHut':
