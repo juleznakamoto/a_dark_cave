@@ -84,6 +84,11 @@ export default function ForestPanel() {
 
         if (visibleActions.length === 0) return null;
 
+        // Special condition for Sacrifice section - only show if altar is built
+        if (group.title === 'Sacrifice' && state.buildings.altar === 0) {
+          return null;
+        }
+
         return (
           <div key={groupIndex} className="space-y-4">
             {group.title && (
