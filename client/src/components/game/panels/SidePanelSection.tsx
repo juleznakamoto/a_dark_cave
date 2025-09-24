@@ -165,13 +165,7 @@ export default function SidePanelSection({
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {effect.name && (
-                <div className="font-semibold mb-1">{effect.name}</div>
-              )}
-              {effect.description && (
-                <div className="text-gray-400 mb-2 max-w-xs whitespace-normal">{effect.description}</div>
-              )}
-              {effect.bonuses?.generalBonuses && (
+              {effect.bonuses.generalBonuses && (
                 <>
                   {effect.bonuses.generalBonuses.luck && (
                     <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
@@ -197,49 +191,65 @@ export default function SidePanelSection({
                       {Math.round(
                         (effect.bonuses.generalBonuses.craftingSpeed - 1) * 100,
                       )}
-                      % Crafting Speed</div>
+                      % Crafting Speed
+                    </div>
                   )}
-                  {effect.bonuses.generalBonuses.madness && (
-                    <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
+                  {effect.bonuses.generalBonuses.explorationBonus && (
+                    <div>
+                      +{effect.bonuses.generalBonuses.explorationBonus}{" "}
+                      Exploration Bonus
+                    </div>
                   )}
                   {effect.bonuses.generalBonuses.knowledge && (
                     <div>
                       +{effect.bonuses.generalBonuses.knowledge} Knowledge
                     </div>
                   )}
-                </>
-              )}
-              {effect.bonuses?.actionBonuses && (
-                <>
-                  {Object.entries(effect.bonuses.actionBonuses).map(
-                    ([actionId, bonuses]: [string, any]) => (
-                      <div key={actionId}>
-                        {bonuses.resourceMultiplier &&
-                          bonuses.resourceMultiplier !== 1 && (
+                  {effect.bonuses.generalBonuses.madness && (
+                    <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
+                  )}
+                  {effect.bonuses.generalBonuses.craftingCostReduction && (
+                    <div>
+                      {Math.round(
+                        effect.bonuses.generalBonuses.craftingCostReduction *
+                          100,
+                      )}
+                      % Craft Discount
+                    </div>
+                  )}
+                  {/* Show action bonuses like hunt multiplier */}
+                  {effect.bonuses.actionBonuses &&
+                    Object.entries(effect.bonuses.actionBonuses).map(
+                      ([actionId, bonus]) => (
+                        <div key={actionId}>
+                          {bonus.resourceMultiplier &&
+                            bonus.resourceMultiplier !== 1 && (
+                              <div>
+                                +
+                                {Math.round(
+                                  (bonus.resourceMultiplier - 1) * 100,
+                                )}
+                                % {capitalizeWords(actionId)} Bonus
+                              </div>
+                            )}
+                          {bonus.resourceBonus &&
+                            Object.entries(bonus.resourceBonus).map(
+                              ([resource, amount]) => (
+                                <div key={resource}>
+                                  +{amount} {capitalizeWords(resource)} (
+                                  {capitalizeWords(actionId)})
+                                </div>
+                              ),
+                            )}
+                          {bonus.cooldownReduction && (
                             <div>
-                              {actionId}:{" "}
-                              {Math.round(
-                                (bonuses.resourceMultiplier - 1) * 100,
-                              )}
-                              % more resources
+                              -{Math.round(bonus.cooldownReduction * 100)}%{" "}
+                              {capitalizeWords(actionId)} Cooldown
                             </div>
                           )}
-                        {bonuses.cooldownReduction && (
-                          <div>
-                            {actionId}: -{bonuses.cooldownReduction}s cooldown
-                          </div>
-                        )}
-                        {bonuses.resourceBonus &&
-                          Object.entries(bonuses.resourceBonus).map(
-                            ([resource, bonus]: [string, any]) => (
-                              <div key={resource}>
-                                {actionId}: +{bonus} {resource}
-                              </div>
-                            ),
-                          )}
-                      </div>
-                    ),
-                  )}
+                        </div>
+                      ),
+                    )}
                 </>
               )}
             </div>
