@@ -145,18 +145,3 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
 
   return result;
 }
-
-export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('boneTotems', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  // Add a basic message - more complex events will be handled later
-  result.logEntries!.push({
-    id: `bone-totems-sacrifice-${Date.now()}`,
-    message: 'The bone totems are consumed by the shrine. The forest seems to stir in response.',
-    timestamp: Date.now(),
-    type: 'system',
-  });
-
-  return result;
-}
