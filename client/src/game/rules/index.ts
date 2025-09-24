@@ -67,7 +67,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
 
 // Helper function to check requirements for both building and non-building actions
 const checkRequirements = (
-  requirements: any,
+  requirements: Record<string, any>,
   state: GameState,
   action: Action,
   actionId: string,
@@ -211,11 +211,15 @@ function evaluateSingleCondition(condition: string, state: GameState): boolean {
 }
 
 // Helper function to get value from dot notation path
-function getValueFromPath(path: string, state: GameState): any {
+function getValueFromPath(path: string, state: GameState): unknown {
   const pathParts = path.split(".");
-  let current: any = state;
+  let current: unknown = state;
   for (const part of pathParts) {
-    current = current?.[part];
+    if (current && typeof current === 'object' && part in current) {
+      current = (current as Record<string, unknown>)[part];
+    } else {
+      return undefined;
+    }
   }
   return current;
 }
@@ -228,7 +232,10 @@ export const applyActionEffects = (
   const action = gameActions[actionId];
   if (!action?.effects) return {};
 
-  const updates: any = {};
+  const updates: Partial<GameState> & {
+    logMessages?: string[];
+    triggeredEvents?: string[];
+  } = {};
 
   // Get crafting cost reduction for crafting actions
   const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
@@ -236,7 +243,7 @@ export const applyActionEffects = (
 
   for (const [path, effect] of Object.entries(action.effects)) {
     const pathParts = path.split(".");
-    let current = updates;
+    let current: any = updates;
 
     // Navigate to the correct nested object
     for (let i = 0; i < pathParts.length - 1; i++) {

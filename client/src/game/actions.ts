@@ -87,7 +87,9 @@ import {
 } from '@/game/rules/caveMineActions';
 
 export interface ActionResult {
-  stateUpdates: Partial<GameState>;
+  stateUpdates: Partial<GameState> & {
+    _logMessage?: string;
+  };
   logEntries?: LogEntry[];
   delayedEffects?: Array<() => void>;
 }

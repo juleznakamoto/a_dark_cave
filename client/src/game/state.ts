@@ -11,6 +11,28 @@ import {
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
 
+// Helper function to merge state updates
+const mergeStateUpdates = (
+  prevState: GameState,
+  stateUpdates: Partial<GameState>
+): Partial<GameState> => {
+  return {
+    resources: { ...prevState.resources, ...stateUpdates.resources },
+    weapons: { ...prevState.weapons, ...stateUpdates.weapons },
+    tools: { ...prevState.tools, ...stateUpdates.tools },
+    buildings: { ...prevState.buildings, ...stateUpdates.buildings },
+    flags: { ...prevState.flags, ...stateUpdates.flags },
+    villagers: { ...prevState.villagers, ...stateUpdates.villagers },
+    clothing: { ...prevState.clothing, ...stateUpdates.clothing },
+    relics: { ...prevState.relics, ...stateUpdates.relics },
+    cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
+    story: stateUpdates.story ? {
+      ...prevState.story,
+      seen: { ...prevState.story.seen, ...stateUpdates.story.seen }
+    } : prevState.story,
+  };
+};
+
 interface GameStore extends GameState {
   // Actions
   gatherWood: () => void;
@@ -191,23 +213,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delayedEffects: result.delayedEffects
     });
 
-    // Apply state updates - properly merge each section without overwriting
+    // Apply state updates using helper function
     set((prevState) => {
+      const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
       const newState = {
         ...prevState,
-        resources: { ...prevState.resources, ...result.stateUpdates.resources },
-        weapons: { ...prevState.weapons, ...result.stateUpdates.weapons },
-        tools: { ...prevState.tools, ...result.stateUpdates.tools },
-        buildings: { ...prevState.buildings, ...result.stateUpdates.buildings },
-        flags: { ...prevState.flags, ...result.stateUpdates.flags },
-        villagers: { ...prevState.villagers, ...result.stateUpdates.villagers },
-        clothing: { ...prevState.clothing, ...result.stateUpdates.clothing },
-        relics: { ...prevState.relics, ...result.stateUpdates.relics },
-        cooldowns: { ...prevState.cooldowns, ...result.stateUpdates.cooldowns },
-        story: result.stateUpdates.story ? {
-          ...prevState.story,
-          seen: { ...prevState.story.seen, ...result.stateUpdates.story.seen }
-        } : prevState.story,
+        ...mergedUpdates,
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(-8)
           : prevState.log,
