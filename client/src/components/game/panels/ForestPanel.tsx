@@ -82,17 +82,6 @@ export default function ForestPanel() {
           shouldShowAction(action.id, state)
         );
 
-        // Debug logging for Sacrifice section
-        if (group.title === 'Sacrifice') {
-          console.log('Sacrifice section debug:', {
-            boneTotems: state.resources.bone_totem,
-            altar: state.buildings.altar,
-            visibleActions: visibleActions.map(a => a.id),
-            shouldShowBoneTotems: shouldShowAction('boneTotems', state),
-            gameActionsHasBoneTotems: !!gameActions['boneTotems']
-          });
-        }
-
         if (visibleActions.length === 0) return null;
 
         return (
