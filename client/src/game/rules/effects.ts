@@ -1101,6 +1101,10 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   });
 
+  // Debug logging to see what effects are being calculated
+  console.log('[EFFECTS] Active effects:', activeEffects.map(e => e.id));
+  console.log('[EFFECTS] Calculated effects:', effects);
+
   return effects;
 };
 

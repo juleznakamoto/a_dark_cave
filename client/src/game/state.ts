@@ -197,6 +197,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       effects: calculateTotalEffects(newState),
     };
     set(stateWithEffects);
+    // Force update effects after initialization
+    setTimeout(() => get().updateEffects(), 0);
   },
 
   executeAction: (actionId: string) => {
@@ -343,6 +345,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
     set(resetState);
 
+    // Force update effects after restart
+    setTimeout(() => get().updateEffects(), 0);
+
     // Then add the initial cave description
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
@@ -378,6 +383,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(savedState),
       };
       set(loadedState);
+      // Force update effects after loading
+      setTimeout(() => get().updateEffects(), 0);
     } else {
       // For new games, first set the initial state
       const newGameState = {
@@ -391,6 +398,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(defaultGameState),
       };
       set(newGameState);
+
+      // Force update effects for new game
+      setTimeout(() => get().updateEffects(), 0);
 
       // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
