@@ -11,7 +11,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 90,
     title: "Whispering Voices",
     message:
-      "You hear faint whispers in the wind, speaking words in no language you recognize. The villagers seem oblivious, but the voices grow clearer each day. They speak of ancient things buried beneath the earth.",
+      "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
     triggered: false,
     priority: 2,
     repeatable: false,
@@ -20,7 +20,10 @@ export const madnessEvents: Record<string, GameEvent> = {
         ...state.events,
         whisperingVoices: true,
       },
-      stats: {},
+      stats: {
+        ...state.stats,
+        madness: (state.stats.madness || 0) + 1,
+      },
     }),
   },
 
@@ -54,7 +57,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "Hollow Stares",
     message:
-      "One of your villagers has begun staring at nothing for hours. When you approach, their eyes are completely black, reflecting depths that seem to go on forever. They smile when they notice you watching.",
+      "One of your villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -151,7 +154,10 @@ export const madnessEvents: Record<string, GameEvent> = {
         ...state.events,
         bloodInWater: true,
       },
-      stats: {},
+      stats: {
+        ...state.stats,
+        madness: (state.stats.madness || 0) + 3,
+      },
     }),
   },
 
@@ -182,7 +188,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madness: (state.stats.madness || 0) + 5,
           },
           _logMessage:
-            "You lean close to one of the faces. Its eyes snap open and it whispers your name, along with the name. You recognize it as someone who died years ago.",
+            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago.",
         }),
       },
       {
@@ -198,7 +204,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madness: (state.stats.madness || 0) + 3,
           },
           _logMessage:
-            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls.",
+            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
         }),
       },
     ],
@@ -215,7 +221,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           madness: (state.stats.madness || 0) + 3,
         },
         _logMessage:
-          "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls.",
+        "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
       }),
     },
   },
@@ -262,12 +268,12 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 40,
     title: "Crawling Skin",
     message:
-      "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, creating patterns that spell out words in languages that predate humanity. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
+      "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
     triggered: false,
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 12,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "calm_down",
@@ -365,7 +371,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 3,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 10,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "do_nothing",
@@ -385,7 +391,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "burn_hut",
-        label: "Burn the hut to destroy the creature",
+        label: "Burn the hut",
         effect: (state: GameState) => {
           const deathResult = killVillagers(state, 2);
           return {
@@ -399,7 +405,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               woodenHut: Math.max(0, state.buildings.woodenHut - 1),
             },
             _logMessage:
-              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside, and the structure itself. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
+              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside,. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
           };
         },
       },
@@ -542,7 +548,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "look_up_too",
-        label: "Look up at what they're seeing",
+        label: "Stare at the sky too",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
