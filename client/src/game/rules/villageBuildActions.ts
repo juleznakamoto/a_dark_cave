@@ -151,6 +151,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
+        "buildings.woodenHut": 1,
         "tools.stone_axe": true,
         "tools.stone_pickaxe": true,
         "buildings.blacksmith": 0,
