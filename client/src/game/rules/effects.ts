@@ -773,61 +773,63 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
   const isMiningAction = miningActions.includes(actionId);
 
   // Apply bonuses for this specific action
-  Object.entries(effects.actionBonuses).forEach(([itemId, itemBonuses]) => {
-    // Check for specific action bonuses
-    if (itemBonuses[actionId]) {
-      const actionBonus = itemBonuses[actionId];
+  if (effects.actionBonuses) {
+    Object.entries(effects.actionBonuses).forEach(([itemId, itemBonuses]) => {
+      // Check for specific action bonuses
+      if (itemBonuses[actionId]) {
+        const actionBonus = itemBonuses[actionId];
 
-      // Apply resource bonuses
-      if (actionBonus.resourceBonus) {
-        Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-        });
+        // Apply resource bonuses
+        if (actionBonus.resourceBonus) {
+          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+          });
+        }
+
+        // Apply multipliers (multiplicative)
+        if (actionBonus.resourceMultiplier) {
+          bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
+        }
+
+        // Apply cooldown reduction (additive)
+        if (actionBonus.cooldownReduction) {
+          bonuses.cooldownReduction += actionBonus.cooldownReduction;
+        }
+
+        // Apply probability bonus (additive)
+        if (actionBonus.probabilityBonus) {
+          bonuses.probabilityBonus += actionBonus.probabilityBonus;
+        }
       }
 
-      // Apply multipliers (multiplicative)
-      if (actionBonus.resourceMultiplier) {
-        bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
-      }
+      // Check for general "mining" bonuses that apply to all mining actions
+      if (isMiningAction && itemBonuses.mining) {
+        const miningBonus = itemBonuses.mining;
 
-      // Apply cooldown reduction (additive)
-      if (actionBonus.cooldownReduction) {
-        bonuses.cooldownReduction += actionBonus.cooldownReduction;
-      }
+        // Apply resource bonuses
+        if (miningBonus.resourceBonus) {
+          Object.entries(miningBonus.resourceBonus).forEach(([resource, bonus]) => {
+            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+          });
+        }
 
-      // Apply probability bonus (additive)
-      if (actionBonus.probabilityBonus) {
-        bonuses.probabilityBonus += actionBonus.probabilityBonus;
-      }
-    }
+        // Apply multipliers (multiplicative)
+        if (miningBonus.resourceMultiplier) {
+          bonuses.resourceMultiplier *= miningBonus.resourceMultiplier;
+        }
 
-    // Check for general "mining" bonuses that apply to all mining actions
-    if (isMiningAction && itemBonuses.mining) {
-      const miningBonus = itemBonuses.mining;
+        // Apply cooldown reduction (additive)
+        if (miningBonus.cooldownReduction) {
+          bonuses.cooldownReduction += miningBonus.cooldownReduction;
+        }
 
-      // Apply resource bonuses
-      if (miningBonus.resourceBonus) {
-        Object.entries(miningBonus.resourceBonus).forEach(([resource, bonus]) => {
-          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-        });
+        // Apply probability bonus (additive)
+        if (miningBonus.probabilityBonus) {
+          bonuses.probabilityBonus += miningBonus.probabilityBonus;
+        }
       }
-
-      // Apply multipliers (multiplicative)
-      if (miningBonus.resourceMultiplier) {
-        bonuses.resourceMultiplier *= miningBonus.resourceMultiplier;
-      }
-
-      // Apply cooldown reduction (additive)
-      if (miningBonus.cooldownReduction) {
-        bonuses.cooldownReduction += miningBonus.cooldownReduction;
-      }
-
-      // Apply probability bonus (additive)
-      if (miningBonus.probabilityBonus) {
-        bonuses.probabilityBonus += miningBonus.probabilityBonus;
-      }
-    }
-  });
+    });
+  }
 
   return bonuses;
 }
