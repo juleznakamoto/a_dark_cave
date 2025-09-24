@@ -33,8 +33,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.stone": 10,
     },
     effects: {
-      "resources.wood": -10,
-      "resources.stone": -10,
       "tools.stone_axe": true,
       "flags.villageUnlocked": true,
       "story.seen.hasStoneAxe": true,
@@ -55,8 +53,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.stone": 100,
     },
     effects: {
-      "resources.wood": -10,
-      "resources.stone": -20,
       "tools.stone_pickaxe": true,
       "story.seen.hasStonePickaxe": true,
       "story.seen.actionCraftStonePickaxe": true,
@@ -77,8 +73,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.iron": 50,
     },
     effects: {
-      "resources.iron": -50,
-      "resources.wood": -100,
       "tools.iron_axe": true,
       "story.seen.hasIronAxe": true,
       "story.seen.actionCraftIronAxe": true,
@@ -99,8 +93,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.iron": 75,
     },
     effects: {
-      "resources.iron": -75,
-      "resources.wood": -150,
       "tools.iron_pickaxe": true,
       "story.seen.hasIronPickaxe": true,
       "story.seen.actionCraftIronPickaxe": true,
@@ -124,8 +116,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.steel": 100,
     },
     effects: {
-      "resources.steel": -100,
-      "resources.wood": -200,
       "tools.steel_axe": true,
       "story.seen.hasSteelAxe": true,
       "story.seen.actionCraftSteelAxe": true,
@@ -149,8 +139,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.steel": 150,
     },
     effects: {
-      "resources.steel": -150,
-      "resources.wood": -300,
       "tools.steel_pickaxe": true,
       "story.seen.hasSteelPickaxe": true,
       "story.seen.actionCraftSteelPickaxe": true,
@@ -173,8 +161,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.obsidian": 100,
     },
     effects: {
-      "resources.obsidian": -100,
-      "resources.wood": -500,
       "tools.obsidian_axe": true,
       "story.seen.hasObsidianAxe": true,
       "story.seen.actionCraftObsidianAxe": true,
@@ -197,8 +183,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.obsidian": 150,
     },
     effects: {
-      "resources.obsidian": -150,
-      "resources.wood": -750,
       "tools.obsidian_pickaxe": true,
       "story.seen.hasObsidianPickaxe": true,
       "story.seen.actionCraftObsidianPickaxe": true,
@@ -221,8 +205,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.adamant": 100,
     },
     effects: {
-      "resources.adamant": -100,
-      "resources.wood": -1000,
       "tools.adamant_axe": true,
       "story.seen.hasAdamantAxe": true,
       "story.seen.actionCraftAdamantAxe": true,
@@ -245,8 +227,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.adamant": 150,
     },
     effects: {
-      "resources.adamant": -150,
-      "resources.wood": -1500,
       "tools.adamant_pickaxe": true,
       "story.seen.hasAdamantPickaxe": true,
       "story.seen.actionCraftAdamantPickaxe": true,
@@ -269,8 +249,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.iron": 100,
     },
     effects: {
-      "resources.iron": -100,
-      "resources.wood": -200,
       "tools.iron_lantern": true,
       "story.seen.hasIronLantern": true,
       "story.seen.actionCraftIronLantern": true,
@@ -294,8 +272,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.steel": 100,
     },
     effects: {
-      "resources.steel": -150,
-      "resources.wood": -400,
       "tools.steel_lantern": true,
       "story.seen.hasSteelLantern": true,
       "story.seen.actionCraftSteelLantern": true,
@@ -318,8 +294,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.obsidian": 200,
     },
     effects: {
-      "resources.obsidian": -200,
-      "resources.wood": -800,
       "tools.obsidian_lantern": true,
       "story.seen.hasObsidianLantern": true,
       "story.seen.actionCraftObsidianLantern": true,
@@ -342,8 +316,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.adamant": 250,
     },
     effects: {
-      "resources.adamant": -250,
-      "resources.wood": -1600,
       "tools.adamant_lantern": true,
       "story.seen.hasAdamantLantern": true,
       "story.seen.actionCraftAdamantLantern": true,

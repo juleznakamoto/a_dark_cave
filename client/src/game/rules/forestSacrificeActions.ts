@@ -15,7 +15,6 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.bone_totem": 10,
     },
     effects: {
-      "resources.bone_totem": -10,
       "resources.gold": {
         probability: "0.20 + (stats.luck * 0.005)",
         value: "random(5,15)",
@@ -36,7 +35,7 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
 
   // Apply sacrifice bonuses and multipliers
   const actionBonuses = getActionBonuses('boneTotems', state);
-  
+
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
   }

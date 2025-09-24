@@ -14,7 +14,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.iron": 100,
     },
     effects: {
-      "resources.iron": -100,
       "weapons.iron_sword": true,
     },
     cooldown: 15,
@@ -35,7 +34,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.steel": 150,
     },
     effects: {
-      "resources.steel": -150,
       "weapons.steel_sword": true,
     },
     cooldown: 20,
@@ -54,7 +52,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.obsidian": 200,
     },
     effects: {
-      "resources.obsidian": -200,
       "weapons.obsidian_sword": true,
     },
     cooldown: 25,
@@ -73,7 +70,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.adamant": 250,
     },
     effects: {
-      "resources.adamant": -250,
       "weapons.adamant_sword": true,
     },
     cooldown: 30,
@@ -90,7 +86,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.wood": 200,
     },
     effects: {
-      "resources.wood": -200,
       "weapons.crude_bow": true,
       "flags.forestUnlocked": true,
     },
@@ -111,8 +106,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.iron": 50,
     },
     effects: {
-      "resources.wood": -500,
-      "resources.iron": -50,
       "weapons.huntsman_bow": true,
     },
     cooldown: 15,
@@ -134,8 +127,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.steel": 100,
     },
     effects: {
-      "resources.wood": -1000,
-      "resources.steel": -100,
       "weapons.long_bow": true,
     },
     cooldown: 20,
@@ -155,8 +146,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.obsidian": 100,
     },
     effects: {
-      "resources.wood": -1500,
-      "resources.obsidian": -100,
       "weapons.war_bow": true,
       "story.seen.hasWarBow": true,
       "story.seen.actionCraftWarBow": true,
@@ -179,8 +168,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "resources.adamant": 100,
     },
     effects: {
-      "resources.wood": -2500,
-      "resources.adamant": -100,
       "weapons.master_bow": true,
       "story.seen.hasMasterBow": true,
       "story.seen.actionCraftMasterBow": true,

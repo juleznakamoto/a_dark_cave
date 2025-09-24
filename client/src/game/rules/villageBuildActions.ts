@@ -76,43 +76,33 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -100,
         "buildings.woodenHut": 1,
       },
       2: {
-        "resources.wood": -250,
         "buildings.woodenHut": 1,
       },
       3: {
-        "resources.wood": -500,
         "buildings.woodenHut": 1,
       },
       4: {
-        "resources.wood": -750,
         "buildings.woodenHut": 1,
       },
       5: {
-        "resources.wood": -1000,
         "buildings.woodenHut": 1,
       },
       6: {
-        "resources.wood": -1500,
         "buildings.woodenHut": 1,
       },
       7: {
-        "resources.wood": -2000,
         "buildings.woodenHut": 1,
       },
       8: {
-        "resources.wood": -2500,
         "buildings.woodenHut": 1,
       },
       9: {
-        "resources.wood": -3000,
         "buildings.woodenHut": 1,
       },
       10: {
-        "resources.wood": -4000,
         "buildings.woodenHut": 1,
       },
     },
@@ -137,8 +127,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -200,
-        "resources.stone": -25,
         "buildings.cabin": 1,
       },
     },
@@ -166,9 +154,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -200,
-        "resources.stone": -100,
-        "resources.iron": -50,
         "buildings.blacksmith": 1,
         "story.seen.hasBlacksmith": true,
       },
@@ -197,8 +182,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
         "buildings.shallowPit": 1,
       },
     },
@@ -225,9 +208,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -1000,
-        "resources.stone": -250,
-        "resources.iron": -50,
         "buildings.deepeningPit": 1,
       },
     },
@@ -254,9 +234,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -2500,
-        "resources.stone": -500,
-        "resources.steel": -100,
         "buildings.deepPit": 1,
       },
     },
@@ -283,9 +260,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -5000,
-        "resources.stone": -1000,
-        "resources.steel": -250,
         "buildings.bottomlessPit": 1,
       },
     },
@@ -311,9 +285,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
-        "resources.iron": -100,
         "buildings.foundry": 1,
       },
     },
@@ -341,12 +312,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -500,
-        "resources.bones": -500,
-        "resources.silver": -25,
         "buildings.altar": 1,
-        "flags.altarBuilt": true,
         "story.seen.hasAltar": true,
       },
     },
@@ -372,8 +338,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -2000,
-        "resources.stone": -2000,
         "buildings.greatCabin": 1,
         "story.seen.hasGreatCabin": true,
       },
@@ -399,8 +363,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -4000,
-        "resources.stone": -2000,
         "buildings.timberMill": 1,
         "story.seen.hasTimberMill": true,
       },
@@ -426,8 +388,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -3000,
-        "resources.stone": -3000,
         "buildings.quarry": 1,
         "story.seen.hasQuarry": true,
       },
@@ -453,8 +413,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -500,
         "buildings.clerksHut": 1,
         "story.seen.hasClerksHut": true,
       },
@@ -480,8 +438,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -500,
-        "resources.stone": -250,
         "buildings.tannery": 1,
         "story.seen.hasTannery": true,
       },
@@ -511,11 +467,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.wood": -2000,
-        "resources.stone": -1000,
-        "resources.silver": -50,
-        "resources.gold": -25,
-        "resources.obsidian": -50,
         "buildings.shrine": 1,
         "story.seen.hasShrine": true,
       },
@@ -545,11 +496,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.stone": -5000,
-        "resources.gold": -100,
-        "resources.silver": -200,
-        "resources.obsidian": -500,
-        "resources.adamant": -250,
         "buildings.temple": 1,
         "story.seen.hasTemple": true,
       },
@@ -580,12 +526,6 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.stone": -10000,
-        "resources.gold": -250,
-        "resources.silver": -500,
-        "resources.obsidian": -1000,
-        "resources.adamant": -500,
-        "resources.bloodstone": -50,
         "buildings.sanctum": 1,
         "story.seen.hasSanctum": true,
       },
@@ -664,43 +604,33 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.stone": -1000,
         "buildings.stoneHut": 1,
       },
       2: {
-        "resources.stone": -1500,
         "buildings.stoneHut": 1,
       },
       3: {
-        "resources.stone": -2000,
         "buildings.stoneHut": 1,
       },
       4: {
-        "resources.stone": -2500,
         "buildings.stoneHut": 1,
       },
       5: {
-        "resources.stone": -3000,
         "buildings.stoneHut": 1,
       },
       6: {
-        "resources.stone": -3500,
         "buildings.stoneHut": 1,
       },
       7: {
-        "resources.stone": -4000,
         "buildings.stoneHut": 1,
       },
       8: {
-        "resources.stone": -4500,
         "buildings.stoneHut": 1,
       },
       9: {
-        "resources.stone": -5000,
         "buildings.stoneHut": 1,
       },
       10: {
-        "resources.stone": -5500,
         "buildings.stoneHut": 1,
       },
     },
