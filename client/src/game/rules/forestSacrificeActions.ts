@@ -16,7 +16,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     },
     effects: {
       "resources.gold": {
-        probability: "0.20 + (stats.luck * 0.005)",
+        probability: 0.20 + (state.stats.luck * 0.005),
         value: "random(5,15)",
       },
       "resources.silver": {
