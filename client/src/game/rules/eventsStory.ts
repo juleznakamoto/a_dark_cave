@@ -635,7 +635,6 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "sacrifice",
         label: "Sacrifice 4 villagers",
         effect: (state: GameState) => {
-          // Removed call to getTotalLuck as it is no longer in this file
           const successChance = 0.35;
           const rand = Math.random();
 
@@ -679,7 +678,6 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "refuse",
         label: "Do not make sacrifices",
         effect: (state: GameState) => {
-          // Removed call to getTotalLuck as it is no longer in this file
           const successChance = 0.1;
           const nothingChance = 0.4;
           const rand = Math.random();
@@ -809,7 +807,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 cracked_crown: true,
               },
               _logMessage:
-                "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power. (+5 Luck, +5 Knowledge)",
+                "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power.",
             };
           } else if (rand < successChance + fleeChance) {
             return {
@@ -831,11 +829,11 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "avoidLake",
         label: "Avoid the lake",
         effect: (state: GameState) => {
-          // Removed call to getTotalLuck as it is no longer in this file
           const successChance = 0.4;
+          const luck = state.stats.luck || 0;
           const rand = Math.random();
 
-          if (rand < successChance) {
+          if (rand < successChance + (luck * 0.01)) {
             return {
               _logMessage:
                 "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
