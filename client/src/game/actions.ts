@@ -66,6 +66,10 @@ import {
   handleBuildQuarry,
   handleBuildClerksHut,
   handleBuildStoneHut,
+  handleBuildShrine,
+  handleBuildTemple,
+  handleBuildSanctum,
+  handleBuildTannery,
 } from '@/game/rules/villageBuildActions';
 
 import {
@@ -227,6 +231,14 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildClerksHut(state, result);
     case 'buildStoneHut':
       return handleBuildStoneHut(state, result);
+    case 'buildShrine':
+      return handleBuildShrine(state, result);
+    case 'buildTemple':
+      return handleBuildTemple(state, result);
+    case 'buildSanctum':
+      return handleBuildSanctum(state, result);
+    case 'buildTannery':
+      return handleBuildTannery(state, result);
 
     // Forest Scout Actions
     case 'hunt':
