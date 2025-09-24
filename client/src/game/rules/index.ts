@@ -106,7 +106,22 @@ const checkRequirements = (
     }
 
     if (typeof expectedValue === "number") {
-      return (current || 0) >= expectedValue;
+      // For buildings: 0 means exactly 0 (===), any number >=1 means >= comparison
+      if (path.startsWith("buildings.")) {
+        if (expectedValue === 0) {
+          return (current || 0) === 0;
+        } else {
+          return (current || 0) >= expectedValue;
+        }
+      }
+      // For all other numeric comparisons, use exact equality
+      return (current || 0) === expectedValue;
+    }
+
+    // Handle string values that might indicate >= comparison
+    if (typeof expectedValue === "string" && expectedValue.startsWith(">=")) {
+      const numValue = parseFloat(expectedValue.slice(2));
+      return (current || 0) >= numValue;
     }
 
     return current === expectedValue;
