@@ -106,9 +106,9 @@ export const caveExploreActions: Record<string, Action> = {
     id: "exploreCave",
     label: "Explore Cave",
     show_when: {
-      "flags.fireLit": true,
-      "story.seen.actionBuildTorch": true,
-      "buildings.blacksmith": 0,
+      // "flags.fireLit": true,
+      // "story.seen.actionBuildTorch": true,
+      // "buildings.blacksmith": 0
     },
     cost: {
       "resources.torch": 5,
@@ -132,7 +132,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Venture Deeper",
     show_when: {
       "buildings.blacksmith": 1,
-      "tools.iron_lantern": false,
+      // "tools.iron_lantern": false,
     },
     cost: {
       "resources.torch": 10,

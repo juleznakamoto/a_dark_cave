@@ -72,6 +72,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.05,
           cooldownReduction: 1,
         },
+        mineCoal: {
+          resourceMultiplier: 1.05,
+          cooldownReduction: 1,
+        },
       },
     },
   },
