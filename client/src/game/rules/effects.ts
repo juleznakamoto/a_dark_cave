@@ -843,7 +843,7 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   return activeEffects;
 };
 
-// Helper function to calculate total bonuses for a given action
+// Helper function to get action bonuses from pre-calculated effects in state
 export const getActionBonuses = (actionId: string, state: GameState): ActionBonuses => {
   const bonuses: ActionBonuses = {
     resourceBonus: {},
@@ -852,77 +852,35 @@ export const getActionBonuses = (actionId: string, state: GameState): ActionBonu
     cooldownReduction: 0,
   };
 
-  // Apply weapon bonuses
-  if (state.weapons) {
-    Object.entries(weaponEffects).forEach(([weapon, effect]) => {
-      if (state.weapons && state.weapons[weapon as keyof typeof state.weapons]) {
-        if (effect.actionBonuses && effect.actionBonuses[actionId]) {
-          const actionBonus = effect.actionBonuses[actionId];
-
-          // Add resource bonuses
-          if (actionBonus.resourceBonus) {
-            Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-              bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-            });
-          }
-
-          // Apply resource multipliers
-          if (actionBonus.resourceMultiplier) {
-            bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
-          }
-
-          // Combine probability bonuses
-          if (actionBonus.probabilityBonus) {
-            Object.entries(actionBonus.probabilityBonus).forEach(
-              ([resource, bonus]) => {
-                bonuses.probabilityBonus[resource] =
-                  (bonuses.probabilityBonus[resource] || 0) + bonus;
-              },
-            );
-          }
-
-          // Combine cooldown reductions (additive)
-          if (actionBonus.cooldownReduction) {
-            bonuses.cooldownReduction += actionBonus.cooldownReduction;
-          }
-        }
-      }
-    });
+  if (!state.effects) {
+    return bonuses;
   }
 
-  // Apply clothing and relic bonuses
-  Object.entries(clothingEffects).forEach(([item, effect]) => {
-    if ((state.clothing?.[item] || state.relics?.[item]) && effect.actionBonuses && effect.actionBonuses[actionId]) {
-      const actionBonus = effect.actionBonuses[actionId];
-
-      // Add resource bonuses
-      if (actionBonus.resourceBonus) {
-        Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-        });
-      }
-
-      // Apply resource multipliers
-      if (actionBonus.resourceMultiplier) {
-        bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
-      }
-
-      // Combine probability bonuses
-      if (actionBonus.probabilityBonus) {
-        Object.entries(actionBonus.probabilityBonus).forEach(
-          ([resource, bonus]) => {
-            bonuses.probabilityBonus[resource] =
-              (bonuses.probabilityBonus[resource] || 0) + bonus;
-          },
-        );
-      }
-
-      // Combine cooldown reductions (additive)
-      if (actionBonus.cooldownReduction) {
-        bonuses.cooldownReduction += actionBonus.cooldownReduction;
-      }
+  // Get resource bonuses for this action
+  Object.entries(state.effects.resource_bonus).forEach(([key, bonus]) => {
+    if (key.startsWith(`${actionId}_`)) {
+      const resource = key.substring(actionId.length + 1);
+      bonuses.resourceBonus[resource] = bonus;
     }
   });
+
+  // Get resource multiplier for this action
+  if (state.effects.resource_multiplier[actionId]) {
+    bonuses.resourceMultiplier = state.effects.resource_multiplier[actionId];
+  }
+
+  // Get probability bonuses for this action
+  Object.entries(state.effects.probability_bonus).forEach(([key, bonus]) => {
+    if (key.startsWith(`${actionId}_`)) {
+      const resource = key.substring(actionId.length + 1);
+      bonuses.probabilityBonus[resource] = bonus;
+    }
+  });
+
+  // Get cooldown reduction for this action
+  if (state.effects.cooldown_reduction[actionId]) {
+    bonuses.cooldownReduction = state.effects.cooldown_reduction[actionId];
+  }
 
   return bonuses;
 };
