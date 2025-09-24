@@ -514,6 +514,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     name: "Alpha's Hide",
     description: "The hide of the wolf pack leader, imbued with primal power",
     bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.05,
+        },
+      },
       generalBonuses: {
         luck: 3,
         strength: 4,
@@ -574,6 +579,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description:
       "A dark ring carved from petrified ebony wood, given to those favored by the forest gods",
     bonuses: {
+      actionBonuses: {
+        boneTotems: {
+          resourceMultiplier: 1.20,
+        },
+      },
       generalBonuses: {
         luck: 3,
         knowledge: 4,

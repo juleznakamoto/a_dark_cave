@@ -1,6 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
+import { getActionBonuses } from '@/game/rules/effects';
 
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
@@ -32,6 +33,33 @@ export const forestSacrificeActions: Record<string, Action> = {
 // Action handlers
 export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('boneTotems', state);
+
+  // Apply sacrifice bonuses and multipliers
+  const actionBonuses = getActionBonuses('boneTotems', state);
+  
+  if (!effectUpdates.resources) {
+    effectUpdates.resources = { ...state.resources };
+  }
+
+  // Apply fixed resource bonuses
+  if (actionBonuses.resourceBonus) {
+    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+      effectUpdates.resources[resource] = (effectUpdates.resources[resource] || 0) + bonus;
+    });
+  }
+
+  // Apply resource multipliers (like 20% bonus from ebony ring)
+  if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+    Object.keys(effectUpdates.resources).forEach((resource) => {
+      const currentAmount = effectUpdates.resources[resource] || 0;
+      const baseAmount = currentAmount - (state.resources[resource] || 0);
+      if (baseAmount > 0) { // Only apply multiplier to positive gains
+        const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
+        effectUpdates.resources[resource] = currentAmount + bonusAmount;
+      }
+    });
+  }
+
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Add a basic message - more complex events will be handled later
