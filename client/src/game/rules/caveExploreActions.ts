@@ -7,7 +7,7 @@ const caveRelics = {
   exploreCave: [
     {
       key: "tarnished_amulet",
-      probability: 0.02,
+      probability: 0.01,
       logMessage:
         "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
     },
@@ -15,7 +15,7 @@ const caveRelics = {
   ventureDeeper: [
     {
       key: "bloodstained_belt",
-      probability: 0.01,
+      probability: 0.005,
       logMessage:
         "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
@@ -90,12 +90,7 @@ export const caveExploreActions: Record<string, Action> = {
         condition: "!relics.old_trinket && buildings.cabin >= 1",
         logMessage:
           "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before.",
-      },
-      "stats.strength": {
-        probability: 0.0005,
-        value: 5,
-        condition: "!relics.old_trinket && buildings.cabin >= 1",
-      },
+      }
     },
     cooldown: 5,
   },

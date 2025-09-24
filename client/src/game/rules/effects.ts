@@ -52,7 +52,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceMultiplier: 1.05,
+          resourceMultiplier: 1.10,
           cooldownReduction: 0.25,
         },
         buildTorch: {
@@ -69,11 +69,11 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceMultiplier: 1.05,
+          resourceMultiplier: 1.10,
           cooldownReduction: 1,
         },
         mineCoal: {
-          resourceMultiplier: 1.05,
+          resourceMultiplier: 1.10,
           cooldownReduction: 1,
         },
       },
@@ -96,7 +96,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-            resourceMultiplier: 1.1,
+            resourceMultiplier: 1.25,
           cooldownReduction: 0.5,
         },
         buildTorch: {
@@ -113,11 +113,11 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceMultiplier: 1.1,
+          resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
         mineCoal: {
-          resourceMultiplier: 1.1,
+          resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
       },
@@ -131,7 +131,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
           cooldownReduction: 0.75,
         },
       },
@@ -145,15 +145,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
         mineCoal: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
         mineSulfur: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
       },
@@ -168,7 +168,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 1,
         },
       },
@@ -182,19 +182,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
         mineCoal: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
         mineSulfur: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
         mineObsidian: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
       },
@@ -209,7 +209,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 1.5,
         },
       },
@@ -223,23 +223,23 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mineIron: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
         mineCoal: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
         mineSulfur: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
         mineObsidian: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
         mineAdamant: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
       },
