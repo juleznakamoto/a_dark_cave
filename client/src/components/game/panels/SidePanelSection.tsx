@@ -120,10 +120,14 @@ export default function SidePanelSection({
     const effect = relicEffect || weaponEffect || toolEffect;
 
     // Check if the effect has actual content to display
-    const hasEffectContent =
+    const hasGeneralBonuses =
       effect?.bonuses?.generalBonuses &&
       Object.keys(effect.bonuses.generalBonuses).length > 0;
-    const hasEffect = effect && hasEffectContent;
+    const hasActionBonuses =
+      effect?.bonuses?.actionBonuses &&
+      Object.keys(effect.bonuses.actionBonuses).length > 0;
+    const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses);
+
 
     const itemContent = (
       <div
