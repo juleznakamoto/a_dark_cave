@@ -242,7 +242,7 @@ export const applyActionEffects = (
   state: GameState,
 ): Partial<GameState> => {
   const action = gameActions[actionId];
-  if (!action?.effects) return {};
+  if (!action) return {};
 
   const updates: Partial<GameState> & {
     logMessages?: string[];
@@ -253,134 +253,186 @@ export const applyActionEffects = (
   const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
   const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
 
-  for (const [path, effect] of Object.entries(action.effects)) {
-    const pathParts = path.split(".");
-    let current: any = updates;
-
-    // Navigate to the correct nested object
-    for (let i = 0; i < pathParts.length - 1; i++) {
-      const part = pathParts[i];
-      if (!current[part]) {
-        current[part] =
-          pathParts[i] === "resources"
-            ? { ...state.resources }
-            : pathParts[i] === "flags"
-              ? { ...state.flags }
-              : pathParts[i] === "tools"
-                ? { ...state.tools }
-                : pathParts[i] === "buildings"
-                  ? { ...state.buildings }
-                  : pathParts[i] === "story"
-                    ? { ...state.story, seen: { ...state.story.seen } }
-                    : pathParts[i] === "relics"
-                      ? { ...state.relics }
-                      : {};
-      }
-      current = current[part];
+  // First apply costs (as negative effects)
+  if (action.cost) {
+    let costs = action.cost;
+    // For building actions, get the cost for the next level
+    if (action.building) {
+      const level = getNextBuildingLevel(actionId, state);
+      costs = action.cost[level];
     }
 
-    const finalKey = pathParts[pathParts.length - 1];
+    if (costs) {
+      Object.entries(costs).forEach(([path, cost]) => {
+        if (typeof cost === 'number') {
+          const pathParts = path.split(".");
+          let current: any = updates;
 
-    if (typeof effect === "string" && effect.startsWith("random(")) {
-      // Handle random effects like "random(1,3)"
-      const match = effect.match(/random\((\d+),(\d+)\)/);
-      if (match) {
-        const min = parseInt(match[1]);
-        const max = parseInt(match[2]);
-        let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+          // Navigate to the correct nested object
+          for (let i = 0; i < pathParts.length - 1; i++) {
+            const part = pathParts[i];
+            if (!current[part]) {
+              current[part] =
+                pathParts[i] === "resources"
+                  ? { ...state.resources }
+                  : pathParts[i] === "flags"
+                    ? { ...state.flags }
+                    : pathParts[i] === "tools"
+                      ? { ...state.tools }
+                      : pathParts[i] === "buildings"
+                        ? { ...state.buildings }
+                        : pathParts[i] === "story"
+                          ? { ...state.story, seen: { ...state.story.seen } }
+                          : pathParts[i] === "relics"
+                            ? { ...state.relics }
+                            : {};
+            }
+            current = current[part];
+          }
 
-        // Apply action bonuses from the centralized effects system
-        const actionBonuses = getActionBonuses(state, actionId);
-        if (actionBonuses?.resourceBonus?.[finalKey as keyof typeof actionBonuses.resourceBonus]) {
-          baseAmount += actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
+          const finalKey = pathParts[pathParts.length - 1];
+          // Apply crafting cost reduction to resource costs for crafting actions
+          let adjustedCost = cost;
+          if (isCraftingAction && path.startsWith('resources.') && cost < 0) {
+            adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
+          }
+          current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) + adjustedCost;
+        }
+      });
+    }
+  }
+
+  // Then apply effects
+  if (action.effects) {
+    for (const [path, effect] of Object.entries(action.effects)) {
+      const pathParts = path.split(".");
+      let current: any = updates;
+
+      // Navigate to the correct nested object
+      for (let i = 0; i < pathParts.length - 1; i++) {
+        const part = pathParts[i];
+        if (!current[part]) {
+          current[part] =
+            pathParts[i] === "resources"
+              ? { ...state.resources }
+              : pathParts[i] === "flags"
+                ? { ...state.flags }
+                : pathParts[i] === "tools"
+                  ? { ...state.tools }
+                  : pathParts[i] === "buildings"
+                    ? { ...state.buildings }
+                    : pathParts[i] === "story"
+                      ? { ...state.story, seen: { ...state.story.seen } }
+                      : pathParts[i] === "relics"
+                        ? { ...state.relics }
+                        : {};
+        }
+        current = current[part];
+      }
+
+      const finalKey = pathParts[pathParts.length - 1];
+
+      if (typeof effect === "string" && effect.startsWith("random(")) {
+        // Handle random effects like "random(1,3)"
+        const match = effect.match(/random\((\d+),(\d+)\)/);
+        if (match) {
+          const min = parseInt(match[1]);
+          const max = parseInt(match[2]);
+          let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+
+          // Apply action bonuses from the centralized effects system
+          const actionBonuses = getActionBonuses(state, actionId);
+          if (actionBonuses?.resourceBonus?.[finalKey as keyof typeof actionBonuses.resourceBonus]) {
+            baseAmount += actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
+          }
+
+          current[finalKey] =
+            (state.resources[finalKey as keyof typeof state.resources] || 0) +
+            baseAmount;
+        }
+      } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
+        // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
+        const probabilityEffect = effect as {
+          probability: number;
+          value: number | string | boolean;
+          logMessage?: string;
+          condition?: string;
+          triggerEvent?: string;
+        };
+
+        // Check condition if provided
+        let conditionMet = true;
+        if (probabilityEffect.condition) {
+          conditionMet = evaluateCondition(probabilityEffect.condition, state);
         }
 
-        current[finalKey] =
-          (state.resources[finalKey as keyof typeof state.resources] || 0) +
-          baseAmount;
-      }
-    } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
-      // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
-      const probabilityEffect = effect as {
-        probability: number;
-        value: number | string | boolean;
-        logMessage?: string;
-        condition?: string;
-        triggerEvent?: string;
-      };
+        const totalLuck = getTotalLuck(state);
+        const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
+        const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
 
-      // Check condition if provided
-      let conditionMet = true;
-      if (probabilityEffect.condition) {
-        conditionMet = evaluateCondition(probabilityEffect.condition, state);
-      }
+        if (shouldTrigger) {
+          if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
+            // Handle random value within probability effect
+            const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
+            if (match) {
+              const min = parseInt(match[1]);
+              const max = parseInt(match[2]);
+              const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
-      const totalLuck = getTotalLuck(state);
-      const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
-      const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
-
-      if (shouldTrigger) {
-        if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
-          // Handle random value within probability effect
-          const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
-          if (match) {
-            const min = parseInt(match[1]);
-            const max = parseInt(match[2]);
-            const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-
+              if (pathParts[0] === "resources") {
+                current[finalKey] =
+                  (state.resources[finalKey as keyof typeof state.resources] || 0) +
+                  randomAmount;
+              } else {
+                current[finalKey] = randomAmount;
+              }
+            }
+          } else if (typeof probabilityEffect.value === "number") {
             if (pathParts[0] === "resources") {
               current[finalKey] =
                 (state.resources[finalKey as keyof typeof state.resources] || 0) +
-                randomAmount;
+                probabilityEffect.value;
             } else {
-              current[finalKey] = randomAmount;
+              current[finalKey] = probabilityEffect.value;
             }
-          }
-        } else if (typeof probabilityEffect.value === "number") {
-          if (pathParts[0] === "resources") {
-            current[finalKey] =
-              (state.resources[finalKey as keyof typeof state.resources] || 0) +
-              probabilityEffect.value;
-          } else {
+          } else if (typeof probabilityEffect.value === "boolean") {
             current[finalKey] = probabilityEffect.value;
           }
-        } else if (typeof probabilityEffect.value === "boolean") {
-          current[finalKey] = probabilityEffect.value;
         }
-      }
 
-      // Only store log message if the effect actually triggered
-      if (shouldTrigger && probabilityEffect.logMessage) {
-        if (!updates.logMessages) updates.logMessages = [];
-        updates.logMessages.push(probabilityEffect.logMessage);
-      }
-
-      // Handle event triggering
-      if (shouldTrigger && probabilityEffect.triggerEvent) {
-        if (!updates.triggeredEvents) updates.triggeredEvents = [];
-        updates.triggeredEvents.push(probabilityEffect.triggerEvent);
-      }
-    } else if (typeof effect === "number") {
-      if (pathParts[0] === "resources") {
-        // Apply crafting cost reduction to negative resource effects (costs) for crafting actions
-        let adjustedEffect = effect;
-        if (isCraftingAction && effect < 0) {
-          adjustedEffect = Math.floor(effect * (1 - craftingCostReduction));
+        // Only store log message if the effect actually triggered
+        if (shouldTrigger && probabilityEffect.logMessage) {
+          if (!updates.logMessages) updates.logMessages = [];
+          updates.logMessages.push(probabilityEffect.logMessage);
         }
-        current[finalKey] =
-          (state.resources[finalKey as keyof typeof state.resources] || 0) +
-          adjustedEffect;
-      } else {
+
+        // Handle event triggering
+        if (shouldTrigger && probabilityEffect.triggerEvent) {
+          if (!updates.triggeredEvents) updates.triggeredEvents = [];
+          updates.triggeredEvents.push(probabilityEffect.triggerEvent);
+        }
+      } else if (typeof effect === "number") {
+        if (pathParts[0] === "resources") {
+          // Apply crafting cost reduction to negative resource effects (costs) for crafting actions
+          let adjustedEffect = effect;
+          if (isCraftingAction && effect < 0) {
+            adjustedEffect = Math.floor(effect * (1 - craftingCostReduction));
+          }
+          current[finalKey] =
+            (state.resources[finalKey as keyof typeof state.resources] || 0) +
+            adjustedEffect;
+        } else {
+          current[finalKey] = effect;
+        }
+      } else if (typeof effect === "boolean") {
         current[finalKey] = effect;
+      } else if (pathParts[0] === "tools") {
+          // Handle tool effects (e.g., equipping/unequipping)
+          current[finalKey] = effect;
+      } else if (pathParts[0] === "clothing") {
+          // Handle clothing effects (e.g., equipping/unequipping)
+          current[finalKey] = effect;
       }
-    } else if (typeof effect === "boolean") {
-      current[finalKey] = effect;
-    } else if (pathParts[0] === "tools") {
-        // Handle tool effects (e.g., equipping/unequipping)
-        current[finalKey] = effect;
-    } else if (pathParts[0] === "clothing") {
-        // Handle clothing effects (e.g., equipping/unequipping)
-        current[finalKey] = effect;
     }
   }
 
