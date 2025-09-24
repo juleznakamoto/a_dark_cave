@@ -1055,6 +1055,55 @@ export const applyLuckToprobability = (
   return Math.min(adjustedProbability, 1.0); // Cap at 100%
 };
 
+// Helper function to calculate all effects for the current state
+export const calculateTotalEffects = (state: GameState) => {
+  const effects = {
+    resource_bonus: {} as Record<string, number>,
+    resource_multiplier: {} as Record<string, number>,
+    probability_bonus: {} as Record<string, number>,
+    cooldown_reduction: {} as Record<string, number>,
+  };
+
+  const activeEffects = getActiveEffects(state);
+
+  // Process all active effects
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.actionBonuses) {
+      Object.entries(effect.bonuses.actionBonuses).forEach(([actionId, actionBonus]) => {
+        // Resource bonuses
+        if (actionBonus.resourceBonus) {
+          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+            const key = `${actionId}_${resource}`;
+            effects.resource_bonus[key] = (effects.resource_bonus[key] || 0) + bonus;
+          });
+        }
+
+        // Resource multipliers
+        if (actionBonus.resourceMultiplier && actionBonus.resourceMultiplier !== 1) {
+          effects.resource_multiplier[actionId] = 
+            (effects.resource_multiplier[actionId] || 1) * actionBonus.resourceMultiplier;
+        }
+
+        // Probability bonuses
+        if (actionBonus.probabilityBonus) {
+          Object.entries(actionBonus.probabilityBonus).forEach(([resource, bonus]) => {
+            const key = `${actionId}_${resource}`;
+            effects.probability_bonus[key] = (effects.probability_bonus[key] || 0) + bonus;
+          });
+        }
+
+        // Cooldown reductions
+        if (actionBonus.cooldownReduction) {
+          effects.cooldown_reduction[actionId] = 
+            (effects.cooldown_reduction[actionId] || 0) + actionBonus.cooldownReduction;
+        }
+      });
+    }
+  });
+
+  return effects;
+};
+
 // Helper function to calculate cooldown reductions based on tools
 export const getCooldownReduction = (
   actionId: string,

@@ -10,13 +10,16 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
+import { calculateTotalEffects } from '@/game/rules/effects';
+
+import { calculateTotalEffects } from '@/game/rules/effects';
 
 // Helper function to merge state updates
 const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>
 ): Partial<GameState> => {
-  return {
+  const merged = {
     resources: { ...prevState.resources, ...stateUpdates.resources },
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
@@ -30,7 +33,16 @@ const mergeStateUpdates = (
       ...prevState.story,
       seen: { ...prevState.story.seen, ...stateUpdates.story.seen }
     } : prevState.story,
+    effects: stateUpdates.effects || prevState.effects,
   };
+
+  // Calculate and update effects when tools, weapons, clothing, or relics change
+  if (stateUpdates.tools || stateUpdates.weapons || stateUpdates.clothing || stateUpdates.relics) {
+    const tempState = { ...prevState, ...merged };
+    merged.effects = calculateTotalEffects(tempState);
+  }
+
+  return merged;
 };
 
 interface GameStore extends GameState {
@@ -78,6 +90,7 @@ interface GameStore extends GameState {
   assignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => void;
   unassignVillager: (job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner") => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
+  updateEffects: () => void;
 }
 
 import { gameStateSchema } from "@shared/schema";
@@ -178,10 +191,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (newState: GameState) => {
-    set({
+    const stateWithEffects = {
       ...newState,
       log: newState.log || [],
-    });
+      effects: calculateTotalEffects(newState),
+    };
+    set(stateWithEffects);
   },
 
   executeAction: (actionId: string) => {
@@ -227,6 +242,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       console.log(`[STATE] New state after ${actionId}:`, newState);
       return newState;
     });
+
+    // Update effects if items/tools/weapons/relics changed
+    if (result.stateUpdates.tools || result.stateUpdates.weapons || 
+        result.stateUpdates.clothing || result.stateUpdates.relics) {
+      setTimeout(() => get().updateEffects(), 0);
+    }
 
     // Check if any new log entry has choices and show event dialog
     if (result.logEntries) {
@@ -310,7 +331,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     // First clear the state
-    set({
+    const resetState = {
       ...defaultGameState,
       activeTab: "cave",
       lastSaved: "Never",
@@ -318,7 +339,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       events: {},
       devMode: true,
-    });
+      effects: calculateTotalEffects(defaultGameState),
+    };
+    set(resetState);
 
     // Then add the initial cave description
     const initialLogEntry: LogEntry = {
@@ -344,7 +367,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const savedState = await loadGame();
 
     if (savedState) {
-      set({
+      const loadedState = {
         ...savedState,
         activeTab: "cave",
         lastSaved: "Loaded",
@@ -352,10 +375,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         events: savedState.events || get().events,
         log: savedState.log || [],
         devMode: true, // Ensure devMode is always true
-      });
+        effects: calculateTotalEffects(savedState),
+      };
+      set(loadedState);
     } else {
       // For new games, first set the initial state
-      set({
+      const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
         lastSaved: "Never",
@@ -363,7 +388,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [],
         events: {},
         devMode: true,
-      });
+        effects: calculateTotalEffects(defaultGameState),
+      };
+      set(newGameState);
 
       // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
@@ -520,5 +547,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentEvent: event || null,
       },
     });
+  },
+
+  updateEffects: () => {
+    set((state) => ({
+      effects: calculateTotalEffects(state),
+    }));
   },
 }));

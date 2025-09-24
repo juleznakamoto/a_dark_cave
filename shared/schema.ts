@@ -170,6 +170,12 @@ export const gameStateSchema = z.object({
     wrongReflections: z.boolean().default(false),
     villagersStareAtSky: z.boolean().default(false),
   }).default({}),
+  effects: z.object({
+    resource_bonus: z.record(z.string(), z.number()).default({}),
+    resource_multiplier: z.record(z.string(), z.number()).default({}),
+    probability_bonus: z.record(z.string(), z.number()).default({}),
+    cooldown_reduction: z.record(z.string(), z.number()).default({}),
+  }).default({}),
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
