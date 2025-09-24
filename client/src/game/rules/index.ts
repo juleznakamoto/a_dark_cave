@@ -105,6 +105,10 @@ const checkRequirements = (
       return current === expectedValue;
     }
 
+    if (typeof expectedValue === "number") {
+      return (current || 0) >= expectedValue;
+    }
+
     return current === expectedValue;
   });
 };
