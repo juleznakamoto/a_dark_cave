@@ -25,7 +25,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       },
       "story.seen.actionBoneTotems": true,
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 };
 
