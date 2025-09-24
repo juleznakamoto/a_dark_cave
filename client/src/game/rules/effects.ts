@@ -1,5 +1,13 @@
 import { GameState } from "@shared/schema";
 
+// Define action bonuses interface
+export interface ActionBonuses {
+  resourceBonus: Record<string, number>;
+  resourceMultiplier: number;
+  probabilityBonus: Record<string, number>;
+  cooldownReduction: number;
+}
+
 // Define effects that tools and clothing provide
 export interface EffectDefinition {
   id: string;
@@ -836,40 +844,42 @@ export const getActionBonuses = (actionId: string, state: GameState): ActionBonu
   };
 
   // Apply weapon bonuses
-  Object.entries(weaponEffects).forEach(([weapon, effect]) => {
-    if (state.weapons[weapon as keyof typeof state.weapons]) {
-      if (effect.actionBonuses && effect.actionBonuses[actionId]) {
-        const actionBonus = effect.actionBonuses[actionId];
+  if (state.weapons) {
+    Object.entries(weaponEffects).forEach(([weapon, effect]) => {
+      if (state.weapons && state.weapons[weapon as keyof typeof state.weapons]) {
+        if (effect.actionBonuses && effect.actionBonuses[actionId]) {
+          const actionBonus = effect.actionBonuses[actionId];
 
-        // Add resource bonuses
-        if (actionBonus.resourceBonus) {
-          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-          });
-        }
+          // Add resource bonuses
+          if (actionBonus.resourceBonus) {
+            Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
+              bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
+            });
+          }
 
-        // Apply resource multipliers
-        if (actionBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
-        }
+          // Apply resource multipliers
+          if (actionBonus.resourceMultiplier) {
+            bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
+          }
 
-        // Combine probability bonuses
-        if (actionBonus.probabilityBonus) {
-          Object.entries(actionBonus.probabilityBonus).forEach(
-            ([resource, bonus]) => {
-              bonuses.probabilityBonus[resource] =
-                (bonuses.probabilityBonus[resource] || 0) + bonus;
-            },
-          );
-        }
+          // Combine probability bonuses
+          if (actionBonus.probabilityBonus) {
+            Object.entries(actionBonus.probabilityBonus).forEach(
+              ([resource, bonus]) => {
+                bonuses.probabilityBonus[resource] =
+                  (bonuses.probabilityBonus[resource] || 0) + bonus;
+              },
+            );
+          }
 
-        // Combine cooldown reductions (additive)
-        if (actionBonus.cooldownReduction) {
-          bonuses.cooldownReduction += actionBonus.cooldownReduction;
+          // Combine cooldown reductions (additive)
+          if (actionBonus.cooldownReduction) {
+            bonuses.cooldownReduction += actionBonus.cooldownReduction;
+          }
         }
       }
-    }
-  });
+    });
+  }
 
   // Apply clothing and relic bonuses
   Object.entries(clothingEffects).forEach(([item, effect]) => {
