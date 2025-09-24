@@ -7,7 +7,7 @@ import { caveCraftResources } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
-import { villageBuildActions, handleBuildShrine, handleBuildTemple, handleBuildSanctum } from './villageBuildActions';
+import { villageBuildActions } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions } from './forestSacrificeActions';
 
