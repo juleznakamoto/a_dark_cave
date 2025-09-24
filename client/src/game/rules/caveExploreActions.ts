@@ -108,7 +108,7 @@ export const caveExploreActions: Record<string, Action> = {
     show_when: {
       // "flags.fireLit": true,
       // "story.seen.actionBuildTorch": true,
-      // "buildings.blacksmith": 0
+      "buildings.blacksmith": 0
     },
     cost: {
       "resources.torch": 5,
