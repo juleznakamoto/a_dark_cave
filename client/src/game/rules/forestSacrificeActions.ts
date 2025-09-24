@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
-import { getActionBonuses } from '@/game/rules/effects';
+import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
 
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
@@ -31,26 +31,51 @@ export const forestSacrificeActions: Record<string, Action> = {
 
 // Action handlers
 export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
+  // First apply the base effects (cost and story flags)
   const effectUpdates = applyActionEffects('boneTotems', state);
-
-  // Apply sacrifice bonuses and multipliers
-  const actionBonuses = getActionBonuses('boneTotems', state);
 
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
   }
 
-  // Apply fixed resource bonuses
-  if (actionBonuses.resourceBonus) {
-    Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-      effectUpdates.resources[resource] = (effectUpdates.resources[resource] || 0) + bonus;
+  // Calculate luck-based probabilities manually
+  const totalLuck = getTotalLuck(state);
+  const goldProbability = 0.20 + (totalLuck * 0.005);
+  const silverProbability = 0.20 + (totalLuck * 0.005);
+
+  // Roll for gold
+  if (Math.random() < goldProbability) {
+    const goldAmount = Math.floor(Math.random() * 11) + 5; // random(5,15)
+    effectUpdates.resources.gold = (state.resources.gold || 0) + goldAmount;
+    
+    result.logEntries!.push({
+      id: `bone-totems-gold-${Date.now()}`,
+      message: `The forest spirits reward your offering with ${goldAmount} gold.`,
+      timestamp: Date.now(),
+      type: 'system',
     });
   }
 
+  // Roll for silver
+  if (Math.random() < silverProbability) {
+    const silverAmount = Math.floor(Math.random() * 16) + 15; // random(15,30)
+    effectUpdates.resources.silver = (state.resources.silver || 0) + silverAmount;
+    
+    result.logEntries!.push({
+      id: `bone-totems-silver-${Date.now()}`,
+      message: `The ancient powers bestow ${silverAmount} silver upon you.`,
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  // Apply sacrifice bonuses and multipliers from relics/items
+  const actionBonuses = getActionBonuses('boneTotems', state);
+
   // Apply resource multipliers (like 20% bonus from ebony ring)
   if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
-    Object.keys(effectUpdates.resources).forEach((resource) => {
-      const currentAmount = effectUpdates.resources[resource] || 0;
+    ['gold', 'silver'].forEach((resource) => {
+      const currentAmount = effectUpdates.resources[resource] || state.resources[resource] || 0;
       const baseAmount = currentAmount - (state.resources[resource] || 0);
       if (baseAmount > 0) { // Only apply multiplier to positive gains
         const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
@@ -61,10 +86,10 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
 
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Add a basic message - more complex events will be handled later
+  // Add base message
   result.logEntries!.push({
     id: `bone-totems-sacrifice-${Date.now()}`,
-    message: 'The bone totems are consumed by the altar. The forest seems to stir in response.',
+    message: 'You place the bone totems on the altar. They crumble to dust as dark energy flows through the forest.',
     timestamp: Date.now(),
     type: 'system',
   });
