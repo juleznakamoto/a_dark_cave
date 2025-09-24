@@ -110,14 +110,14 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-
+  
   steel_axe: {
     id: "steel_axe",
     name: "Steel Axe",
     description: "Superior wood gathering tool",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        hunt: {
           resourceMultiplier: 1.25,
           cooldownReduction: 0.75,
         },
