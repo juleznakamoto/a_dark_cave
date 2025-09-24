@@ -71,6 +71,15 @@ import {
   handleBoneTotems,
 } from '@/game/rules/forestSacrificeActions';
 
+// Import mining actions
+import {
+  handleMineIron,
+  handleMineCoal,
+  handleMineSulfur,
+  handleMineObsidian,
+  handleMineAdamant,
+} from '@/game/rules/caveMineActions';
+
 export interface ActionResult {
   stateUpdates: Partial<GameState>;
   logEntries?: LogEntry[];

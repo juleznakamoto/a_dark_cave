@@ -6,6 +6,8 @@ import { caveForgingActions } from './caveForgeActions';
 import { caveCraftResources } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
+import { caveMiningActions } from './caveMineActions';
+import { caveCraftWeapons } from './caveCraftWeapons';
 import { villageBuildActions } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
 
@@ -16,6 +18,8 @@ export const gameActions: Record<string, Action> = {
   ...caveForgingActions,
   ...caveCraftResources,
   ...caveCraftTools,
+  ...caveCraftWeapons,
+  ...caveMiningActions,
   ...caveCraftWeapons,
   ...forestScoutActions,
 };

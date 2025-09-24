@@ -20,3 +20,10 @@ export const caveCraftResources: Record<string, Action> = {
     cooldown: 20,
   },
 };
+
+// Action handlers
+export function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBoneTotem', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
