@@ -91,7 +91,7 @@ export const caveExploreActions: Record<string, Action> = {
         value: true,
         condition: "!relics.old_trinket && buildings.cabin >= 1",
         logMessage:
-          "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before. (+5 Strength)",
+          "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before.",
       },
       "stats.strength": {
         probability: 0.0005,
