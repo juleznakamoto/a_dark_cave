@@ -831,17 +831,11 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 
   // Check tool effects
   const displayTools = getDisplayTools(state);
-  console.log('[EFFECTS] Display tools:', displayTools);
-  console.log('[EFFECTS] State tools:', state.tools);
-  console.log('[EFFECTS] Available tool effects:', Object.keys(toolEffects));
-  
   Object.keys(displayTools).forEach((toolKey) => {
     if (toolEffects[toolKey]) {
-      console.log('[EFFECTS] Found tool effect for:', toolKey);
       activeEffects.push(toolEffects[toolKey]);
     }
     if (weaponEffects[toolKey]) {
-      console.log('[EFFECTS] Found weapon effect for:', toolKey);
       activeEffects.push(weaponEffects[toolKey]);
     }
   });
@@ -1106,10 +1100,6 @@ export const calculateTotalEffects = (state: GameState) => {
       });
     }
   });
-
-  // Debug logging to see what effects are being calculated
-  console.log('[EFFECTS] Active effects:', activeEffects.map(e => e.id));
-  console.log('[EFFECTS] Calculated effects:', effects);
 
   return effects;
 };
