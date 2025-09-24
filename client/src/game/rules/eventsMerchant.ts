@@ -60,6 +60,7 @@ const resourceTrades = [
       { resource: "bones", amounts: [400, 500, 600] },
       { resource: "wood", amounts: [500, 600] },
       { resource: "fur", amounts: [300, 400, 500] },
+      { resource: "leather", amounts: [200, 300, 400] },
       { resource: "stone", amounts: [500] },
       { resource: "gold", amounts: [5] },
       { resource: "silver", amounts: [10] }
@@ -98,7 +99,8 @@ const resourceTrades = [
       { resource: "silver", amounts: [30] },
       { resource: "steel", amounts: [100] },
       { resource: "wood", amounts: [2500] },
-      { resource: "food", amounts: [500] }
+      { resource: "food", amounts: [500] },
+      { resource: "leather", amounts: [600, 700, 800] },
     ]
   },
   {
@@ -156,7 +158,8 @@ const resourceTrades = [
       { resource: "wood", amounts: [2500] },
       { resource: "stone", amounts: [1500] },
       { resource: "fur", amounts: [2000] },
-      { resource: "food", amounts: [2500] }
+      { resource: "food", amounts: [2500] },
+      { resource: "leather", amounts: [1200, 1300, 1400] },
     ]
   },
   {
@@ -182,6 +185,7 @@ const resourceTrades = [
       { resource: "wood", amounts: [5000] },
       { resource: "stone", amounts: [3000] },
       { resource: "fur", amounts: [5000] },
+      { resource: "leather", amounts: [3500] },
       { resource: "food", amounts: [5000] },
       { resource: "obsidian", amounts: [100] },
       { resource: "adamant", amounts: [20] }
@@ -197,6 +201,7 @@ const resourceTrades = [
       { resource: "wood", amounts: [5000] },
       { resource: "stone", amounts: [3000] },
       { resource: "fur", amounts: [5000] },
+      { resource: "leather", amounts: [3500] },
       { resource: "food", amounts: [5000] },
       { resource: "obsidian", amounts: [100] },
       { resource: "adamant", amounts: [20] }

@@ -141,7 +141,7 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
           amount = 10;
         }
         if (prod.resource === 'fur' || prod.resource === 'bones') {
-          amount = 2;
+          amount = 5;
         }
       }
     }
