@@ -86,13 +86,5 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
 
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Add base message
-  result.logEntries!.push({
-    id: `bone-totems-sacrifice-${Date.now()}`,
-    message: 'You place the bone totems on the altar. They crumble to dust as dark energy flows through the forest.',
-    timestamp: Date.now(),
-    type: 'system',
-  });
-
   return result;
 }
