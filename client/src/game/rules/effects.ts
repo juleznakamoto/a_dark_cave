@@ -52,7 +52,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceBonus: { wood: 5 },
+          resourceMultiplier: 1.05,
           cooldownReduction: 0.25,
         },
         buildTorch: {
