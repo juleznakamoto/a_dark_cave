@@ -15,7 +15,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { gameActions } from "@/game/actions"; // Assuming gameActions is imported from here
 
 interface SidePanelItem {
   id: string;
@@ -224,38 +223,30 @@ export default function SidePanelSection({
                       % Craft Discount
                     </div>
                   )}
-
+                  
                 </>
               )}
               {effect.bonuses.actionBonuses &&
                 Object.entries(effect.bonuses.actionBonuses).map(
-                  ([actionId, bonus]) => {
-                    const actionLabel = gameActions[actionId]?.label || capitalizeWords(actionId);
-                    return (
-                      <div key={actionId}>
-                        {bonus.resourceMultiplier &&
-                          bonus.resourceMultiplier !== 1 && (
-                            <div>
-                              {actionLabel}:{" "}
-                              +{Math.round((bonus.resourceMultiplier - 1) * 100)}% resources
-                            </div>
-                          )}
-                        {bonus.cooldownReduction && (
+                  ([actionId, bonus]) => (
+                    <div key={actionId}>
+                      {bonus.resourceMultiplier &&
+                        bonus.resourceMultiplier !== 1 && (
                           <div>
-                            {actionLabel}: -{bonus.cooldownReduction}s cooldown
+                            {capitalizeWords(actionId)}:{" "}
+                            +{Math.round((bonus.resourceMultiplier - 1) * 100)}% resources
                           </div>
                         )}
-                        {bonus.resourceBonus &&
-                          Object.entries(bonus.resourceBonus).map(
-                            ([resource, amount]) => (
-                              <div key={resource}>
-                                {actionLabel}: +{amount} {capitalizeWords(resource)}
-                              </div>
-                            ),
-                          )}
-                      </div>
-                    );
-                  },
+                      {bonus.resourceBonus &&
+                        Object.entries(bonus.resourceBonus).map(
+                          ([resource, amount]) => (
+                            <div key={resource}>
+                              {capitalizeWords(actionId)}: +{amount} {capitalizeWords(resource)}
+                            </div>
+                          ),
+                        )}
+                    </div>
+                  ),
                 )}
             </div>
           </HoverCardContent>
