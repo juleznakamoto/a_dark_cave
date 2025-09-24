@@ -71,12 +71,18 @@ export default function EventDialog({ isOpen, onClose, event }: EventDialogProps
         fallbackExecutedRef.current = true;
         clearInterval(interval);
 
-        // Time expired, execute fallback choice
+        const eventId = event.id.split('-')[0];
+        
         if (event.fallbackChoice) {
-          const eventId = event.id.split('-')[0];
+          // Use defined fallback choice
           applyEventChoice(event.fallbackChoice.id, eventId);
-          onClose();
+        } else if (eventChoices.length > 0) {
+          // No fallback defined, choose randomly from available choices
+          const randomChoice = eventChoices[Math.floor(Math.random() * eventChoices.length)];
+          applyEventChoice(randomChoice.id, eventId);
         }
+        
+        onClose();
       }
     }, 100);
 

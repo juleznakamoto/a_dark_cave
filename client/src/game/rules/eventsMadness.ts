@@ -117,26 +117,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "avoid",
-      label: "Avoid them",
-      effect: (state: GameState) => {
-        const deathResult = killVillagers(state, 1);
-        return {
-          ...deathResult,
-          events: {
-            ...state.events,
-            villagerStares: true,
-          },
-          stats: {
-            ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
-          },
-          _logMessage:
-            "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime.",
-        };
-      },
-    },
   },
 
   bloodInWater: {
@@ -208,22 +188,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         }),
       },
     ],
-    fallbackChoice: {
-      id: "ignore",
-      label: "Try to ignore them",
-      effect: (state: GameState) => ({
-        events: {
-          ...state.events,
-          facesInWalls: true,
-        },
-        stats: {
-          ...state.stats,
-          madness: (state.stats.madness || 0) + 3,
-        },
-        _logMessage:
-        "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
-      }),
-    },
   },
 
   wrongVillagers: {
@@ -327,36 +291,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "calm_down",
-      label: "Try to calm down",
-      effect: (state: GameState) => {
-        const rand = Math.random();
-        if (rand < 0.5) {
-          return {
-            events: {
-              ...state.events,
-              skinCrawling: true,
-            },
-            _logMessage:
-              "You take deep breaths and force yourself to remain still. The crawling sensation gradually fades, and your skin returns to normal. You have conquered this horror through sheer willpower.",
-          };
-        } else {
-          return {
-            events: {
-              ...state.events,
-              skinCrawling: true,
-            },
-            stats: {
-              ...state.stats,
-              madness: (state.stats.madness || 0) + 3,
-            },
-            _logMessage:
-              "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
-          };
-        }
-      },
-    },
   },
 
   creatureInHut: {
@@ -410,22 +344,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "do_nothing",
-      label: "Do nothing and look away",
-      effect: (state: GameState) => ({
-        events: {
-          ...state.events,
-          creatureInHut: true,
-        },
-        stats: {
-          ...state.stats,
-          madness: (state.stats.madness || 0) + 3,
-        },
-        _logMessage:
-          "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth.",
-      }),
-    },
   },
 
   wrongReflections: {
@@ -478,22 +396,6 @@ export const madnessEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "investigate",
-      label: "Look deeper into the well",
-      effect: (state: GameState) => ({
-        events: {
-          ...state.events,
-          wrongReflections: true,
-        },
-        stats: {
-          ...state.stats,
-          madness: (state.stats.madness || 0) + 5,
-        },
-        _logMessage:
-          "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
-      }),
-    },
   },
 
   villagersStareAtSky: {
@@ -563,41 +465,5 @@ export const madnessEvents: Record<string, GameEvent> = {
         }),
       },
     ],
-    fallbackChoice: {
-      id: "shake_them",
-      label: "Try to shake them out of it",
-      effect: (state: GameState) => {
-        const rand = Math.random();
-        if (rand < 0.6) {
-          return {
-            events: {
-              ...state.events,
-              villagersStareAtSky: true,
-            },
-            stats: {
-              ...state.stats,
-              madness: (state.stats.madness || 0) + 3,
-            },
-            _logMessage:
-              "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
-          };
-        } else {
-          const deathResult = killVillagers(state, 1);
-          return {
-            ...deathResult,
-            events: {
-              ...state.events,
-              villagersStareAtSky: true,
-            },
-            stats: {
-              ...state.stats,
-              madness: (state.stats.madness || 0) + 4,
-            },
-            _logMessage:
-              "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too - something vast and hungry watching from above.",
-          };
-        }
-      },
-    },
   },
 }
