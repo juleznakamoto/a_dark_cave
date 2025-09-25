@@ -946,9 +946,12 @@ export const storyEvents: Record<string, GameEvent> = {
       id: "leaveFlute",
       label: "Leave it behind",
       effect: (state: GameState) => {
+        const devoured = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
+        const deathResult = killVillagers(state, devoured);
         return {
+          ...deathResult,
           _logMessage:
-            "The shadows grow more agitated as you hesitate. Finally, you step back in fear, leaving the cursed flute behind. The shadows settle as you retreat.",
+            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship, pulling them into the darkness between worlds. Their screams echo briefly before being swallowed by silence.`,
         };
       },
     },
