@@ -189,6 +189,30 @@
   background-color: #8b0000 !important; /* Dark red */
 }
 
+/* Custom madness pulse animation */
+@keyframes madness-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.05);
+  }
+}
+
+.madness-pulse {
+  animation: madness-pulse 1.5s ease-in-out infinite;
+}
+
+.madness-pulse-slow {
+  animation: madness-pulse 2.5s ease-in-out infinite;
+}
+
+.madness-pulse-fast {
+  animation: madness-pulse 0.8s ease-in-out infinite;
+}
+
 /* Madness intensity effects */
 .madness-light {
   text-shadow: 0 0 5px rgb(195, 40, 29, 0.5);
