@@ -124,6 +124,35 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
+// Helper function to get building production effects directly from building state
+const getBuildingProductionEffects = (state: any) => {
+  const buildingEffects: Record<string, Record<string, number>> = {};
+  const buildings = state.buildings || {};
+
+  // Great Cabin effects - adds to hunter production
+  if (buildings.greatCabin > 0) {
+    buildingEffects.hunter = {
+      food: 5,
+      fur: 4,
+      bones: 4
+    };
+  }
+
+  // Timber Mill effects - adds to gatherer wood production
+  if (buildings.timberMill > 0) {
+    if (!buildingEffects.gatherer) buildingEffects.gatherer = {};
+    buildingEffects.gatherer.wood = 5;
+  }
+
+  // Quarry effects - adds to gatherer stone production
+  if (buildings.quarry > 0) {
+    if (!buildingEffects.gatherer) buildingEffects.gatherer = {};
+    buildingEffects.gatherer.stone = 5;
+  }
+
+  return buildingEffects;
+};
+
 export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
   const job = populationJobs[jobId];
   if (!job) return [];
@@ -133,8 +162,6 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
 
     // Apply building bonuses dynamically if state is provided
     if (state) {
-      // Import getBuildingProductionEffects here to avoid circular dependencies
-      const { getBuildingProductionEffects } = require('../rules/effects');
       const buildingEffects = getBuildingProductionEffects(state);
 
       // Check if this job has building effects
