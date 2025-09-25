@@ -51,7 +51,7 @@ export const updatePopulationCounts = (state: GameState) => {
 
 export function assignVillagerToJob(
   state: GameState,
-  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner"
+  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner"
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};
 
@@ -87,7 +87,7 @@ export function assignVillagerToJob(
 
 export function unassignVillagerFromJob(
   state: GameState,
-  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner"
+  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner"
 ): Partial<GameState> {
   if (state.villagers[job] <= 0) return {};
 
@@ -119,7 +119,8 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
     'obsidian_miner', 
     'adamant_miner', 
     'moonstone_miner', 
-    'steel_forger'
+    'steel_forger',
+    'tanner'
   ];
 
   // Create a pool of all available villagers with their types
