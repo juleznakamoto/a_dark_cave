@@ -189,8 +189,19 @@
   background-color: #8b0000 !important; /* Dark red */
 }
 
-/* Custom madness pulse animation */
-@keyframes madness-pulse {
+/* Custom madness pulse animations - 3 levels */
+@keyframes madness-pulse-light {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.85;
+    transform: scale(1.02);
+  }
+}
+
+@keyframes madness-pulse-medium {
   0%, 100% {
     opacity: 1;
     transform: scale(1);
@@ -201,16 +212,35 @@
   }
 }
 
-.madness-pulse {
-  animation: madness-pulse 1.5s ease-in-out infinite;
+@keyframes madness-pulse-intense {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  25% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.12);
+  }
+  75% {
+    opacity: 0.6;
+    transform: scale(1.08);
+  }
 }
 
 .madness-pulse-slow {
-  animation: madness-pulse 2.5s ease-in-out infinite;
+  animation: madness-pulse-light 2.5s ease-in-out infinite;
+}
+
+.madness-pulse {
+  animation: madness-pulse-medium 1.5s ease-in-out infinite;
 }
 
 .madness-pulse-fast {
-  animation: madness-pulse 0.8s ease-in-out infinite;
+  animation: madness-pulse-intense 0.8s ease-in-out infinite;
 }
 
 /* Madness intensity effects */
