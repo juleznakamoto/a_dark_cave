@@ -48,7 +48,13 @@ export default function VillagePanel() {
     { id: 'obsidian_miner', label: 'Obsidian Miner', showWhen: () => buildings.deepPit >= 1 },
     { id: 'adamant_miner', label: 'Adamant Miner', showWhen: () => buildings.bottomlessPit >= 1 },
     { id: 'moonstone_miner', label: 'Moonstone Miner', showWhen: () => buildings.bottomlessPit >= 1 },
-    { id: 'steel_forger', label: 'Steel Forger', showWhen: () => buildings.foundry >= 1 },
+    { id: 'steel_forger', label: 'Steel Forger', showWhen: () => state.buildings.foundry > 0 },
+    {
+      id: 'tanner',
+      label: 'Tanner',
+      alwaysShow: false,
+      showWhen: () => state.buildings.tannery > 0,
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
