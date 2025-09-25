@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { gameActions, applyActionEffects } from '@/game/rules';
+import { ActionResult } from "@/game/actions";
+import { gameActions, applyActionEffects } from "@/game/rules";
 
 // Base relics for each cave exploration stage
 const caveRelics = {
@@ -33,8 +33,7 @@ const caveRelics = {
     {
       key: "coin_of_drowned",
       probability: 0.025,
-      logMessage:
-        "A ring, perpetually wet and cold to the touch, lies half-buried in the ruins. It seems to hum with a strange energy.",
+      logMessage: "",
       luck: 4,
       madness: 2,
       isChoice: true,
@@ -45,8 +44,7 @@ const caveRelics = {
     {
       key: "shadow_flute",
       probability: 0.03,
-      logMessage:
-        "Nestled amongst the temple relics, you discover a bone flute. When you pick it up, the shadows in the temple seem to writhe and twist in unnatural ways.",
+      logMessage: "",
       luck: 3,
       knowledge: 2,
       madness: 3,
@@ -58,8 +56,7 @@ const caveRelics = {
     {
       key: "hollow_kings_scepter",
       probability: 0.035,
-      logMessage:
-        "On a crumbling throne in the heart of the citadel, rests a scepter carved from bone and obsidian. It emanates an aura of immense, albeit dark, power.",
+      logMessage: "",
       strength: 3,
       knowledge: 7,
       madness: 5,
@@ -91,8 +88,8 @@ function getInheritedRelics(actionId: string) {
     relics.forEach((relic) => {
       const adjustedProbability =
         i === currentIndex
-          ? relic.probability // Current stage keeps original probability
-          : relic.probability + 0.005; // Previous stages get +0.5% bonus
+          ? relic.probability
+          : relic.probability + 0.005 * (currentIndex - i);
 
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
@@ -116,7 +113,7 @@ export const caveExploreActions: Record<string, Action> = {
   lightFire: {
     id: "lightFire",
     label: "Light Fire",
-    show_when: { },
+    show_when: {},
     cost: {},
     effects: {
       "story.seen.fireLit": true,
@@ -127,8 +124,7 @@ export const caveExploreActions: Record<string, Action> = {
   gatherWood: {
     id: "gatherWood",
     label: "Gather Wood",
-    show_when: {
-    },
+    show_when: {},
     cost: {},
     effects: {
       "resources.wood": "random(3,9)",
@@ -139,7 +135,7 @@ export const caveExploreActions: Record<string, Action> = {
         condition: "!relics.old_trinket && buildings.cabin >= 1",
         logMessage:
           "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before.",
-      }
+      },
     },
     cooldown: 6,
   },
@@ -254,7 +250,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Explore Temple",
     show_when: {
       "tools.obsidian_lantern": true,
-      "tools.adamant_lantern": false
+      "tools.adamant_lantern": false,
     },
     cost: {
       "resources.food": 500,
@@ -351,28 +347,35 @@ export const caveExploreActions: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleLightFire(state: GameState, result: ActionResult): ActionResult {
+export function handleLightFire(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
   result.stateUpdates.flags = { ...state.flags, gameStarted: true };
   result.stateUpdates.story = {
     ...state.story,
     seen: {
       ...state.story.seen,
-      fireLit: true
-    }
+      fireLit: true,
+    },
   };
 
   result.logEntries!.push({
     id: `fire-lit-${Date.now()}`,
-    message: 'The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.',
+    message:
+      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   return result;
 }
 
-export function handleGatherWood(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('gatherWood', state);
+export function handleGatherWood(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("gatherWood", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -381,7 +384,7 @@ export function handleGatherWood(state: GameState, result: ActionResult): Action
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     // Remove logMessages from state updates as it's not part of the game state
@@ -392,8 +395,11 @@ export function handleGatherWood(state: GameState, result: ActionResult): Action
   return result;
 }
 
-export function handleExploreCave(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('exploreCave', state);
+export function handleExploreCave(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("exploreCave", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -402,7 +408,7 @@ export function handleExploreCave(state: GameState, result: ActionResult): Actio
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     // Remove logMessages from state updates as it's not part of the game state
@@ -415,8 +421,10 @@ export function handleExploreCave(state: GameState, result: ActionResult): Actio
       ...state.panels,
       cave: {
         ...state.panels.cave,
-        actions: state.panels.cave.actions.filter(action => action.id !== 'forgeSteel')
-      }
+        actions: state.panels.cave.actions.filter(
+          (action) => action.id !== "forgeSteel",
+        ),
+      },
     };
   }
 
@@ -424,8 +432,11 @@ export function handleExploreCave(state: GameState, result: ActionResult): Actio
   return result;
 }
 
-export function handleVentureDeeper(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('ventureDeeper', state);
+export function handleVentureDeeper(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("ventureDeeper", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -434,7 +445,7 @@ export function handleVentureDeeper(state: GameState, result: ActionResult): Act
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     // Remove logMessages from state updates as it's not part of the game state
@@ -445,9 +456,10 @@ export function handleVentureDeeper(state: GameState, result: ActionResult): Act
   if (!state.story.seen.venturedDeeper) {
     result.logEntries!.push({
       id: `venture-deeper-${Date.now()}`,
-      message: 'The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend, but the promise of greater treasures draws you forward.',
+      message:
+        "The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend, but the promise of greater treasures draws you forward.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
@@ -455,8 +467,11 @@ export function handleVentureDeeper(state: GameState, result: ActionResult): Act
   return result;
 }
 
-export function handleDescendFurther(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('descendFurther', state);
+export function handleDescendFurther(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("descendFurther", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -465,7 +480,7 @@ export function handleDescendFurther(state: GameState, result: ActionResult): Ac
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -475,9 +490,10 @@ export function handleDescendFurther(state: GameState, result: ActionResult): Ac
   if (!state.story.seen.descendedFurther) {
     result.logEntries!.push({
       id: `descend-further-${Date.now()}`,
-      message: 'With your lantern casting a steady glow, you descend into the deepest chambers. The walls shimmer with veins of precious metals and the air hums with ancient power.',
+      message:
+        "With your lantern casting a steady glow, you descend into the deepest chambers. The walls shimmer with veins of precious metals and the air hums with ancient power.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
@@ -485,8 +501,11 @@ export function handleDescendFurther(state: GameState, result: ActionResult): Ac
   return result;
 }
 
-export function handleExploreRuins(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('exploreRuins', state);
+export function handleExploreRuins(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("exploreRuins", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -495,7 +514,7 @@ export function handleExploreRuins(state: GameState, result: ActionResult): Acti
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -505,9 +524,10 @@ export function handleExploreRuins(state: GameState, result: ActionResult): Acti
   if (!state.story.seen.exploredRuins) {
     result.logEntries!.push({
       id: `explore-ruins-${Date.now()}`,
-      message: 'Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.',
+      message:
+        "Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
@@ -515,8 +535,11 @@ export function handleExploreRuins(state: GameState, result: ActionResult): Acti
   return result;
 }
 
-export function handleExploreTemple(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('exploreTemple', state);
+export function handleExploreTemple(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("exploreTemple", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -525,7 +548,7 @@ export function handleExploreTemple(state: GameState, result: ActionResult): Act
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -535,9 +558,10 @@ export function handleExploreTemple(state: GameState, result: ActionResult): Act
   if (!state.story.seen.exploredTemple) {
     result.logEntries!.push({
       id: `explore-temple-${Date.now()}`,
-      message: 'A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.',
+      message:
+        "A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
@@ -545,8 +569,11 @@ export function handleExploreTemple(state: GameState, result: ActionResult): Act
   return result;
 }
 
-export function handleExploreCitadel(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('exploreCitadel', state);
+export function handleExploreCitadel(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("exploreCitadel", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -555,7 +582,7 @@ export function handleExploreCitadel(state: GameState, result: ActionResult): Ac
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -565,9 +592,10 @@ export function handleExploreCitadel(state: GameState, result: ActionResult): Ac
   if (!state.story.seen.exploredCitadel) {
     result.logEntries!.push({
       id: `explore-citadel-${Date.now()}`,
-      message: 'The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.',
+      message:
+        "The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
@@ -575,8 +603,11 @@ export function handleExploreCitadel(state: GameState, result: ActionResult): Ac
   return result;
 }
 
-export function handleLowChamber(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('lowChamber', state);
+export function handleLowChamber(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("lowChamber", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -585,7 +616,7 @@ export function handleLowChamber(state: GameState, result: ActionResult): Action
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -593,17 +624,21 @@ export function handleLowChamber(state: GameState, result: ActionResult): Action
 
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
-    message: 'Using the reinforced rope, you descend into a previously inaccessible chamber deep within the cave. Ancient treasures glimmer in the torchlight, hidden for centuries in this forgotten place.',
+    message:
+      "Using the reinforced rope, you descend into a previously inaccessible chamber deep within the cave. Ancient treasures glimmer in the torchlight, hidden for centuries in this forgotten place.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleAlchemistChamber(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('alchemistChamber', state);
+export function handleAlchemistChamber(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("alchemistChamber", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -612,7 +647,7 @@ export function handleAlchemistChamber(state: GameState, result: ActionResult): 
         id: `probability-effect-${Date.now()}-${Math.random()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
     });
     delete effectUpdates.logMessages;
@@ -620,9 +655,10 @@ export function handleAlchemistChamber(state: GameState, result: ActionResult): 
 
   result.logEntries!.push({
     id: `alchemist-chamber-explored-${Date.now()}`,
-    message: 'Following the alchemist\'s map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the alchemist\'s greatest treasures and experiments await, preserved in death.',
+    message:
+      "Following the alchemist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the alchemist's greatest treasures and experiments await, preserved in death.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   Object.assign(result.stateUpdates, effectUpdates);

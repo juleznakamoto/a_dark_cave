@@ -858,7 +858,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Coin of Drowned",
     message:
-      "Among the rubble, you find a peculiar ring that drips constantly with water, despite no source being nearby. The ring seems to whisper promises of fortune, but also radiates an aura of madness. Do you dare to keep it?",
+      "Among the rubble of the fogotten city, you find a peculiar ring that drips constantly with water, despite there being no source. Do you dare to keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -875,7 +875,7 @@ export const storyEvents: Record<string, GameEvent> = {
               coin_of_drowned: true,
             },
             _logMessage:
-              "You slip the ring onto your finger. Immediately, water begins to drip from it continuously, never stopping. You feel your luck change, but dark thoughts begin to creep into your mind.",
+              "You slip the ring onto your finger. Water continues to drip from it continuously, never stopping.",
           };
         },
       },
@@ -885,7 +885,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is visible.",
+              "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is nearby.",
           };
         },
       },
