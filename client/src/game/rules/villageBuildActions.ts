@@ -712,7 +712,15 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
     woodenHut: state.buildings.woodenHut + 1
   };
 
+  // Add completion message for first wooden hut
   if (state.buildings.woodenHut === 0) {
+    result.logEntries!.push({
+      id: `first-hut-built-${Date.now()}`,
+      message: "Your first wooden hut stands complete, a modest shelter against the darkness. The village begins to take shape.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+
     result.delayedEffects!.push(() => {
       // Stranger approaches logic will be handled by the caller
     });
@@ -726,7 +734,19 @@ export function handleBuildCabin(state: GameState, result: ActionResult): Action
 }
 
 export function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
+  const blacksmithResult = handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
+
+  // Add blacksmith completion message
+  if (state.buildings.blacksmith === 0) {
+    blacksmithResult.logEntries!.push({
+      id: `blacksmith-built-${Date.now()}`,
+      message: "The blacksmith's forge roars to life, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return blacksmithResult;
 }
 
 export function handleBuildShallowPit(state: GameState, result: ActionResult): ActionResult {
