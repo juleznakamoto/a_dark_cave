@@ -372,7 +372,7 @@ function handleStrangerApproach() {
     (sum, count) => sum + (count || 0),
     0,
   );
-  const maxPopulation = state.buildings.woodenHut * 2;
+  const maxPopulation = state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
 
   // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) return;
