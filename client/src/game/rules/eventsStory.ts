@@ -894,9 +894,11 @@ export const storyEvents: Record<string, GameEvent> = {
       id: "leaveCoin",
       label: "Leave it behind",
       effect: (state: GameState) => {
+        const deathResult = killVillagers(state, 1);
         return {
+          ...deathResult,
           _logMessage:
-            "Your hesitation costs you the opportunity. When you look again, the ring has vanished, leaving only a small puddle of water that quickly dries.",
+            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring's pull, picks it up despite your indecision. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land as the cursed ring claims its price.",
         };
       },
     },
