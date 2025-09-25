@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import { villageBuildActions } from './villageBuildActions';
 
 // Define action bonuses interface
 export interface ActionBonuses {
@@ -1045,7 +1046,6 @@ export const getCooldownReduction = (
 
 // Helper function to get building stats effects
 export const getBuildingStatsEffects = (state: GameState) => {
-  const { villageBuildActions } = require('./villageBuildActions');
   const statsEffects: Record<string, number> = {};
 
   // Check each building action for stats effects
