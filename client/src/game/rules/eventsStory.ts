@@ -874,6 +874,13 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               coin_of_drowned: true,
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                coinOfDrownedChoice: true,
+              },
+            },
             _logMessage:
               "You slip the ring onto your finger. Water continues to drip from it continuously, never stopping.",
           };
@@ -884,6 +891,13 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Leave it behind",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                coinOfDrownedChoice: true,
+              },
+            },
             _logMessage:
               "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is nearby.",
           };
@@ -897,8 +911,15 @@ export const storyEvents: Record<string, GameEvent> = {
         const deathResult = killVillagers(state, 1);
         return {
           ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              coinOfDrownedChoice: true,
+            },
+          },
           _logMessage:
-            "As you hesitate, one of your men slips the ring onto his finger. Instantly, he chokes, gasping for air. Water gushes from his mouth in an unending torrent. On dry land, he drowns as the cursed ring claims its toll."
+            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring's pull, picks it up despite your indecision. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land as the cursed ring claims its price.",
         };
       },
     },
@@ -926,8 +947,15 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               shadow_flute: true,
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                shadowFluteChoice: true,
+              },
+            },
             _logMessage:
-              "You keep the bone flute. Its tunes are beautiful, yet there’s a subtle dissonance that gnaws quietly at your mind.",
+              "You keep the bone flute. Its tunes are beautiful, yet there's a subtle dissonance that gnaws quietly at your mind.",
           };
         },
       },
@@ -936,6 +964,13 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Leave it behind",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                shadowFluteChoice: true,
+              },
+            },
             _logMessage:
               "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts.",
           };
@@ -950,8 +985,15 @@ export const storyEvents: Record<string, GameEvent> = {
         const deathResult = killVillagers(state, devoured);
         return {
           ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              shadowFluteChoice: true,
+            },
+          },
           _logMessage:
-            `Your hesitation proves costly. The shadows suddenly grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship, pulling them into the darkness while their screams echo briefly before being swallowed by silence.`,
+            "Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour 2 members of your fellowship, pulling them into the darkness between worlds. Their screams echo briefly before being swallowed by silence.",
         };
       },
     },
@@ -979,6 +1021,13 @@ export const storyEvents: Record<string, GameEvent> = {
               ...state.relics,
               hollow_kings_scepter: true,
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                hollowKingsScepterChoice: true,
+              },
+            },
             _logMessage:
               "You grasp the Hollow King's Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days.",
           };
@@ -989,6 +1038,13 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Leave the throne undisturbed",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                hollowKingsScepterChoice: true,
+              },
+            },
             _logMessage:
               "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
           };
@@ -1003,8 +1059,15 @@ export const storyEvents: Record<string, GameEvent> = {
         const deathResult = killVillagers(state, deaths);
         return {
           ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              hollowKingsScepterChoice: true,
+            },
+          },
           _logMessage:
-            `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows, ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
+            "Your indecision proves disastrous. As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows, 7 of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.",
         };
       },
     },

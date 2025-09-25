@@ -94,7 +94,7 @@ function getInheritedRelics(actionId: string) {
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
-        condition: `!relics.${relic.key}`,
+        condition: `!relics.${relic.key}` + (relic.eventId ? ` && !story.seen.${relic.eventId}` : ""),
         logMessage: relic.logMessage,
         ...(relic.isChoice && { isChoice: relic.isChoice }),
         ...(relic.eventId && { eventId: relic.eventId }),
