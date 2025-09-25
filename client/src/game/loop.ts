@@ -382,6 +382,8 @@ function handleStrangerApproach() {
 
   // +2.5% for each wooden hut
   probability += state.buildings.woodenHut * 0.025;
+  // +2.5% for each stone hut
+  probability += state.buildings.stoneHut * 0.025;
 
   // +20% if population is 0
   if (currentPopulation === 0) {
