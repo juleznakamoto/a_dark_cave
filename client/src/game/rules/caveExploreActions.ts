@@ -20,10 +20,53 @@ const caveRelics = {
         "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
   ],
-  descendFurther: [],
-  exploreRuins: [],
-  exploreTemple: [],
-  exploreCitadel: [],
+  descendFurther: [
+    {
+      key: "dragon_bone_dice",
+      probability: 0.02,
+      logMessage:
+        "As you descend further, you find a set of dragon bone dice. Rolling them, you feel a surge of luck, but a subtle unease lingers.",
+      luck: 3,
+    },
+  ],
+  exploreRuins: [
+    {
+      key: "coin_of_drowned",
+      probability: 0.025,
+      logMessage:
+        "A ring, perpetually wet and cold to the touch, lies half-buried in the ruins. It seems to hum with a strange energy.",
+      luck: 4,
+      madness: 2,
+      isChoice: true,
+      eventId: "coinOfDrownedChoice",
+    },
+  ],
+  exploreTemple: [
+    {
+      key: "shadow_flute",
+      probability: 0.03,
+      logMessage:
+        "Nestled amongst the temple relics, you discover a bone flute. When you pick it up, the shadows in the temple seem to writhe and twist in unnatural ways.",
+      luck: 3,
+      knowledge: 2,
+      madness: 3,
+      isChoice: true,
+      eventId: "shadowFluteChoice",
+    },
+  ],
+  exploreCitadel: [
+    {
+      key: "hollow_kings_scepter",
+      probability: 0.035,
+      logMessage:
+        "On a crumbling throne in the heart of the citadel, rests a scepter carved from bone and obsidian. It emanates an aura of immense, albeit dark, power.",
+      strength: 3,
+      knowledge: 7,
+      madness: 5,
+      isChoice: true,
+      eventId: "hollowKingsScepterChoice",
+    },
+  ],
 };
 
 // Helper function to get inherited relics with 10% probability bonus
@@ -56,6 +99,12 @@ function getInheritedRelics(actionId: string) {
         value: true,
         condition: `!relics.${relic.key}`,
         logMessage: relic.logMessage,
+        ...(relic.isChoice && { isChoice: relic.isChoice }),
+        ...(relic.eventId && { eventId: relic.eventId }),
+        ...(relic.luck && { luck: relic.luck }),
+        ...(relic.madness && { madness: relic.madness }),
+        ...(relic.knowledge && { knowledge: relic.knowledge }),
+        ...(relic.strength && { strength: relic.strength }),
       };
     });
   }

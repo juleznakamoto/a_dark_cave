@@ -851,4 +851,154 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  coinOfDrownedChoice: {
+    id: "coinOfDrownedChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Coin of Drowned",
+    message:
+      "Among the rubble, you find a peculiar ring that drips constantly with water, despite no source being nearby. The ring seems to whisper promises of fortune, but also radiates an aura of madness. Do you dare to keep it?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "keepCoin",
+        label: "Keep the ring",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              coin_of_drowned: true,
+            },
+            _logMessage:
+              "You slip the ring onto your finger. Immediately, water begins to drip from it continuously, never stopping. You feel your luck change, but dark thoughts begin to creep into your mind.",
+          };
+        },
+      },
+      {
+        id: "leaveCoin",
+        label: "Leave it behind",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decide the risk is too great. As you turn away, you hear a faint splash behind you, as if something has fallen into deep water, though no water is visible.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveCoin",
+      label: "Leave it behind",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "Your hesitation costs you the opportunity. When you look again, the ring has vanished, leaving only a small puddle of water that quickly dries.",
+        };
+      },
+    },
+  },
+
+  shadowFluteChoice: {
+    id: "shadowFluteChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Shadow Flute",
+    message:
+      "In the temple's inner sanctum, you discover a bone flute of disturbing craftsmanship. When you pick it up, the shadows around you begin to move in unnatural ways, dancing to a melody only they can hear. Do you keep this cursed instrument?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "keepFlute",
+        label: "Keep the flute",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              shadow_flute: true,
+            },
+            _logMessage:
+              "You clutch the bone flute tightly. Immediately, forbidden knowledge flows into your mind, along with whispers of madness. The shadows continue to dance around you, responding to your presence.",
+          };
+        },
+      },
+      {
+        id: "leaveFlute",
+        label: "Leave it behind",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts. Some knowledge is too dangerous to possess.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveFlute",
+      label: "Leave it behind",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "The shadows grow more agitated as you hesitate. Finally, you step back in fear, leaving the cursed flute behind. The shadows settle as you retreat.",
+        };
+      },
+    },
+  },
+
+  hollowKingsScepterChoice: {
+    id: "hollowKingsScepterChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Hollow King's Scepter",
+    message:
+      "In the throne room of the ruined citadel, you find a magnificent scepter of bone and obsidian. This must have belonged to the king of this lost city. Dark knowledge flows from it like a river, but so does terrible madness. The power it offers is immense, but so is the cost.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "keepScepter",
+        label: "Claim the scepter",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              hollow_kings_scepter: true,
+            },
+            _logMessage:
+              "You grasp the Hollow King's Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days. You feel stronger, wiser, but something dark has taken root in your thoughts.",
+          };
+        },
+      },
+      {
+        id: "leaveScepter",
+        label: "Leave the throne undisturbed",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of either approval or disappointment echoing through the empty throne room.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveScepter",
+      label: "Leave the throne undisturbed",
+      effect: (state: GameState) => {
+        return {
+          _logMessage:
+            "The weight of decision paralyzes you. As you stand frozen, the scepter seems to lose its luster, and you lose your nerve. You back away, leaving the throne room as you found it.",
+        };
+      },
+    },
+  },
 };

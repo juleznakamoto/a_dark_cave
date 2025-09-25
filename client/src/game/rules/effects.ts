@@ -496,111 +496,56 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
 
   elder_scroll: {
-    id: "elder_scroll",
-    name: "Elder Scroll",
-    description: "Eldritch scroll containing old wisdom",
-    bonuses: {
-      generalBonuses: {
-        knowledge: 12,
-      },
-    },
-  },
-
-  ebony_ring: {
-    id: "ebony_ring",
-    name: "Ebony Ring",
-    description:
-      "Dark ring carved from petrified ebony wood, given to those favored by the forest gods",
-    bonuses: {
-      actionBonuses: {
-        boneTotems: {
-          resourceMultiplier: 1.20,
+      name: "Elder Scroll",
+      description: "Ancient scroll containing forbidden knowledge",
+      bonuses: {
+        generalBonuses: {
+          knowledge: 10,
+          madness: 3,
         },
       },
-      generalBonuses: {
-        luck: 3,
-        knowledge: 4,
-      },
     },
-  },
-
-  cracked_crown: {
-    id: "cracked_crown",
-    name: "Cracked Crown",
-    description: "Cracked golden crown that hums with ancestral power",
-    bonuses: {
-      generalBonuses: {
-        luck: 5,
-        knowledge: 3,
-      },
-    },
-  },
-
-  blackened_mirror: {
-    id: "blackened_mirror",
-    name: "Blackened Mirror",
-    description: "Mirror that shows things that shouldn't be seen",
-    bonuses: {
-      generalBonuses: {
-        knowledge: 8,
-        madness: 5,
-      },
-    },
-  },
-
-  unnamed_book: {
-    id: "unnamed_book",
-    name: "Unnamed Book",
-    description: "Book bound in human skin, filled with forbidden knowledge",
-    bonuses: {
-      generalBonuses: {
-        knowledge: 10,
-        madness: 10,
-      },
-    },
-  },
-
-  wooden_figure: {
-    id: "wooden_figure",
-    name: "Wooden Figure",
-    description:
-      "Small wooden figure carved with tentacled features that emanates a strange aura",
-    bonuses: {
-      generalBonuses: {
-        madness: 5,
-        luck: 2,
-      },
-    },
-  },
-
-  murmuring_cube: {
-    id: "murmuring_cube",
-    name: "Murmuring Cube",
-    description: "A strange geometric cube that whispers secrets of forgotten knowledge",
-    bonuses: {
-      generalBonuses: {
-        knowledge: 5,
-        madness: 3,
-      },
-    },
-  },
-
-  black_bear_fur: {
-    id: "black_bear_fur",
-    name: "Black Bear Fur",
-    description: "Fur of an otherworldy giant black bear, radiating raw primal power",
-    bonuses: {
-      actionBonuses: {
-        hunt: {
-          resourceMultiplier: 1.25,
+    dragon_bone_dice: {
+      name: "Dragon Bone Dice",
+      description: "Six-sided dice carved from ancient dragon bone",
+      bonuses: {
+        generalBonuses: {
+          luck: 3,
         },
       },
-      generalBonuses: {
-        strength: 6,
-        madness: 2,
+    },
+    coin_of_drowned: {
+      name: "Coin of Drowned",
+      description: "A ring that is always wet, bringing fortune and madness",
+      bonuses: {
+        generalBonuses: {
+          luck: 4,
+          madness: 2,
+        },
       },
     },
-  },
+    shadow_flute: {
+      name: "Shadow Flute",
+      description: "A bone flute that makes shadows move unnaturally",
+      bonuses: {
+        generalBonuses: {
+          luck: 3,
+          knowledge: 2,
+          madness: 3,
+        },
+      },
+    },
+    hollow_kings_scepter: {
+      name: "Hollow King's Scepter",
+      description: "Scepter of the lost king, radiating power and madness",
+      bonuses: {
+        generalBonuses: {
+          strength: 3,
+          knowledge: 7,
+          madness: 5,
+        },
+      },
+    },
 };
 
 // Tool hierarchy definitions
@@ -1023,7 +968,7 @@ export const calculateTotalEffects = (state: GameState) => {
   return effects;
 };
 
-// Helper function to calculate cooldown reductions based on tools
+// Helper function to get cooldown reductions based on tools
 export const getCooldownReduction = (
   actionId: string,
   state: GameState,
