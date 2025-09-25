@@ -572,6 +572,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  murmuring_cube: {
+    id: "murmuring_cube",
+    name: "Murmuring Cube",
+    description: "A strange geometric cube that whispers secrets of forgotten knowledge",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 8,
+        madness: 3,
+      },
+    },
+  },
+
   black_bear_fur: {
     id: "black_bear_fur",
     name: "Black Bear Fur",
