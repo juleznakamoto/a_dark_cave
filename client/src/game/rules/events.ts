@@ -1,9 +1,9 @@
-
 import { GameState } from "@shared/schema";
 import { baseEvents } from "./eventsBase";
 import { storyEvents } from "./eventsStory";
 import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
+import { caveEvents } from "./eventsCave";
 
 export interface GameEvent {
   id: string;
@@ -50,6 +50,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...storyEvents,
   ...merchantEvents,
   ...madnessEvents,
+  ...caveEvents,
 };
 
 export class EventManager {
@@ -136,7 +137,7 @@ export class EventManager {
   ): Partial<GameState> {
     console.log(`[EventManager] Applying choice: ${choiceId} for event: ${eventId}`);
     console.log(`[EventManager] Available game events:`, Object.keys(gameEvents));
-    
+
     const event = gameEvents[eventId];
     if (!event) {
       console.log(`[EventManager] Event not found: ${eventId}`);
@@ -154,13 +155,13 @@ export class EventManager {
 
     // First try to find the choice in the choices array
     let choice = choicesSource?.find((c) => c.id === choiceId);
-    
+
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (!choice && event.fallbackChoice && event.fallbackChoice.id === choiceId) {
       choice = event.fallbackChoice;
       console.log(`[EventManager] Using fallback choice: ${choiceId}`);
     }
-    
+
     if (!choice) {
       console.log(`[EventManager] Choice not found: ${choiceId} in event: ${eventId}`);
       return {};
@@ -169,7 +170,7 @@ export class EventManager {
     console.log(`[EventManager] Executing choice effect for: ${choiceId}`);
     const result = choice.effect(state);
     console.log(`[EventManager] Choice effect result:`, result);
-    
+
     return result;
   }
 }
