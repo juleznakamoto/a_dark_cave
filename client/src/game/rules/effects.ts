@@ -592,7 +592,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     black_bear_fur: {
       id: "black_bear_fur",
       name: "Black Bear Fur",
-      description: "Cursed fur from a supernatural giant bear, enhancing hunting prowess",
+      description: "Cursed fur from a otherworldy giant bear",
       bonuses: {
         actionBonuses: {
           hunt: {
