@@ -304,16 +304,15 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Bloodstained Belt",
     message:
-      "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Do you dare to wear it?",
+      "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Without hesitation, you fasten it around your waist.",
     triggered: false,
     priority: 5,
     repeatable: false,
-    isTimedChoice: true,
-    baseDecisionTime: 15,
+    isTimedChoice: false,
     choices: [
       {
-        id: "wearBelt",
-        label: "Wear the belt",
+        id: "takeBelt",
+        label: "Continue",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -332,44 +331,7 @@ export const caveEvents: Record<string, GameEvent> = {
           };
         },
       },
-      {
-        id: "leaveBelt",
-        label: "Leave it behind",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                bloodstainedBeltChoice: true,
-              },
-            },
-            _logMessage:
-              "You decide the belt's bloody history makes it too dangerous to take. As you turn away, you swear you hear a faint growl of disappointment.",
-          };
-        },
-      },
     ],
-    fallbackChoice: {
-      id: "leaveBelt",
-      label: "Leave it behind",
-      effect: (state: GameState) => {
-        const wounded = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
-        const deathResult = killVillagers(state, wounded);
-        return {
-          ...deathResult,
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              bloodstainedBeltChoice: true,
-            },
-          },
-          _logMessage:
-            `Your indecision awakens something dark. The bloodstained belt suddenly comes alive, lashing out like a serpent. Its leather coils wrap around ${wounded} of your men, draining their life force before finally going still. The belt lies innocent once more, but now stained with fresh blood.`,
-        };
-      },
-    },
   },
 
   dragonBoneDiceChoice: {

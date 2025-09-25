@@ -45,9 +45,7 @@ const caveRelics = {
     {
       key: "bloodstained_belt",
       probability: 0.015,
-      logMessage: "",
-      isChoice: true,
-      eventId: "bloodstainedBeltChoice",
+      logMessage: "You fasten the bloodstained belt around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
     },
   ],
   descendFurther: [
