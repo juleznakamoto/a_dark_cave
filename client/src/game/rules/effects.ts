@@ -563,6 +563,31 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
       },
     },
+
+    blackened_mirror: {
+      id: "blackened_mirror",
+      name: "Blackened Mirror",
+      description: "A tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
+      bonuses: {
+        generalBonuses: {
+          knowledge: 8,
+          madness: 4,
+        },
+      },
+    },
+
+    ebony_ring: {
+      id: "ebony_ring",
+      name: "Ebony Ring",
+      description: "Dark ring left as a gift by the forest gods, pulsing with otherworldly power",
+      bonuses: {
+        generalBonuses: {
+          luck: 6,
+          strength: 3,
+          madness: 2,
+        },
+      },
+    },
 };
 
 // Tool hierarchy definitions
