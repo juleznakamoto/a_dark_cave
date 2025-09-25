@@ -306,6 +306,10 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Keep the figure",
         effect: (state: GameState) => {
           return {
+            relics: {
+              ...state.relics,
+              wooden_figure: true,
+            },
             _logMessage:
               "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
           };
@@ -316,10 +320,6 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Discard it",
         effect: (state: GameState) => {
           return {
-            relics: {
-              ...state.relics,
-              wooden_figure: true,
-            },
             _logMessage:
               "You discard the figure. The forest seems to watch silently as it disappears.",
           };
