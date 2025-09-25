@@ -51,7 +51,7 @@ export const updatePopulationCounts = (state: GameState) => {
 
 export function assignVillagerToJob(
   state: GameState,
-  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner"
+  job: keyof GameState['villagers']
 ): Partial<GameState> {
   if (state.villagers.free <= 0) return {};
 
@@ -87,9 +87,9 @@ export function assignVillagerToJob(
 
 export function unassignVillagerFromJob(
   state: GameState,
-  job: "gatherer" | "hunter" | "iron_miner" | "coal_miner" | "sulfur_miner" | "silver_miner" | "gold_miner" | "obsidian_miner" | "adamant_miner" | "moonstone_miner" | "steel_forger" | "tanner"
+  job: keyof GameState['villagers']
 ): Partial<GameState> {
-  if (state.villagers[job] <= 0) return {};
+  if (job === 'free' || state.villagers[job] <= 0) return {};
 
   return {
     villagers: {
