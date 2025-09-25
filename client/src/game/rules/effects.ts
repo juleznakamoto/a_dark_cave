@@ -578,7 +578,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "A strange geometric cube that whispers secrets of forgotten knowledge",
     bonuses: {
       generalBonuses: {
-        knowledge: 8,
+        knowledge: 5,
         madness: 3,
       },
     },
