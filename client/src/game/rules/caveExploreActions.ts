@@ -1,6 +1,34 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { gameActions, applyActionEffects } from "@/game/rules";
+import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
+import { killVillagers } from '@/game/stateHelpers';
+
+// Helper function to apply luck bonuses to cave exploration probability effects
+function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effectUpdates: any): void {
+  const luck = getTotalLuck(state);
+  const luckBonus = luck * 0.01; // 1% per luck point
+
+  // Define which resources can benefit from luck in cave exploration
+  const caveResources = ['wood', 'stone', 'coal', 'iron', 'bones', 'sulfur', 'silver', 'gold', 'obsidian', 'adamant', 'bloodstone', 'frostglas'];
+
+  // Apply luck bonus to probability-based resource effects
+  if (effectUpdates.resources) {
+    Object.keys(effectUpdates.resources).forEach(resource => {
+      if (caveResources.includes(resource)) {
+        const currentAmount = effectUpdates.resources[resource] || 0;
+        if (currentAmount > 0) {
+          // Add luck bonus as additional resources
+          const luckBonusAmount = Math.floor(currentAmount * luckBonus);
+          if (luckBonusAmount > 0) {
+            effectUpdates.resources[resource] = currentAmount + luckBonusAmount;
+          }
+        }
+      }
+    });
+  }
+}
+
 
 // Base relics for each cave exploration stage
 const caveRelics = {
@@ -393,6 +421,7 @@ export function handleExploreCave(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCave", state);
+  applyCaveExplorationLuckBonus(state, "exploreCave", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -430,6 +459,8 @@ export function handleVentureDeeper(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("ventureDeeper", state);
+  applyCaveExplorationLuckBonus(state, "ventureDeeper", effectUpdates);
+
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -465,6 +496,7 @@ export function handleDescendFurther(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("descendFurther", state);
+  applyCaveExplorationLuckBonus(state, "descendFurther", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -499,6 +531,7 @@ export function handleExploreRuins(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreRuins", state);
+  applyCaveExplorationLuckBonus(state, "exploreRuins", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -533,6 +566,7 @@ export function handleExploreTemple(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreTemple", state);
+  applyCaveExplorationLuckBonus(state, "exploreTemple", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -567,6 +601,7 @@ export function handleExploreCitadel(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCitadel", state);
+  applyCaveExplorationLuckBonus(state, "exploreCitadel", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -601,6 +636,7 @@ export function handleLowChamber(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("lowChamber", state);
+  applyCaveExplorationLuckBonus(state, "lowChamber", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -632,6 +668,7 @@ export function handleAlchemistChamber(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("alchemistChamber", state);
+  applyCaveExplorationLuckBonus(state, "alchemistChamber", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
