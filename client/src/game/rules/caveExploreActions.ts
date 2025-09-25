@@ -45,7 +45,7 @@ const caveRelics = {
     {
       key: "bloodstained_belt",
       probability: 0.015,
-      logMessage: "You fasten the bloodstained belt around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
+      logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Without hesitation, you fasten it around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
     },
   ],
   descendFurther: [

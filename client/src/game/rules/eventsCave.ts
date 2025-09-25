@@ -298,41 +298,7 @@ export const caveEvents: Record<string, GameEvent> = {
     },
   },
 
-  bloodstainedBeltChoice: {
-    id: "bloodstainedBeltChoice",
-    condition: (state: GameState) => false, // Only triggered by cave exploration
-    triggerType: "action",
-    title: "The Bloodstained Belt",
-    message:
-      "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Without hesitation, you fasten it around your waist.",
-    triggered: false,
-    priority: 5,
-    repeatable: false,
-    isTimedChoice: false,
-    choices: [
-      {
-        id: "takeBelt",
-        label: "Continue",
-        effect: (state: GameState) => {
-          return {
-            relics: {
-              ...state.relics,
-              bloodstained_belt: true,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                bloodstainedBeltChoice: true,
-              },
-            },
-            _logMessage:
-              "You fasten the bloodstained belt around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
-          };
-        },
-      },
-    ],
-  },
+  
 
   dragonBoneDiceChoice: {
     id: "dragonBoneDiceChoice",
