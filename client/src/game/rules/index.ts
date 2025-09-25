@@ -1,6 +1,6 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { getTotalLuck, applyLuckToprobability, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
+import { getTotalLuck, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
 import { caveExploreActions } from './caveExploreActions';
 import { caveForgingActions } from './caveForgeActions';
 import { caveCraftResources } from './caveCraftResources';
@@ -391,7 +391,8 @@ export const applyActionEffects = (
         }
 
         const totalLuck = getTotalLuck(state);
-        const adjustedProbability = applyLuckToprobability(probabilityEffect.probability, totalLuck);
+        const luckBonus = totalLuck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
+        const adjustedProbability = Math.min(probabilityEffect.probability + probabilityEffect.probability * luckBonus, 1.0);
         const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
 
         if (shouldTrigger) {
