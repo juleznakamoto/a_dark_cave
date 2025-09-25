@@ -898,7 +898,7 @@ export const storyEvents: Record<string, GameEvent> = {
         return {
           ...deathResult,
           _logMessage:
-            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring's pull, picks it up despite your indecision. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land as the cursed ring claims its price.",
+            "As you hesitate, one of your men slips the ring onto his finger. Instantly, he chokes, gasping for air. Water gushes from his mouth in an unending torrent. On dry land, he drowns as the cursed ring claims its toll."
         };
       },
     },
@@ -910,7 +910,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Shadow Flute",
     message:
-      "In the temple's inner sanctum, you discover a bone flute of disturbing craftsmanship. When you pick it up, the shadows around you begin to move in unnatural ways, dancing to a melody only they can hear. Do you keep this cursed instrument?",
+      "You discover a bone flute of disturbing craftsmanship. When you pick it up and play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep the instrument?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -927,7 +927,7 @@ export const storyEvents: Record<string, GameEvent> = {
               shadow_flute: true,
             },
             _logMessage:
-              "You clutch the bone flute tightly. Immediately, forbidden knowledge flows into your mind, along with whispers of madness. The shadows continue to dance around you, responding to your presence.",
+              "You keep the bone flute. Immediately, forbidden knowledge flows into your mind, along with whispers of madness. The shadows continue to dance around you, responding to your presence.",
           };
         },
       },
@@ -937,7 +937,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts. Some knowledge is too dangerous to possess.",
+              "You set the flute back down carefully. The shadows return to their natural stillness, and the oppressive atmosphere lifts.",
           };
         },
       },
