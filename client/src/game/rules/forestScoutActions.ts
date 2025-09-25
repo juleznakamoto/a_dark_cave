@@ -14,11 +14,11 @@ export const forestScoutActions: Record<string, Action> = {
     cost: {},
     effects: {
       "resources.food": "random(1,6)",
-      "resources.fur": "random(0,2)",
+      "resources.fur": "random(0,3)",
       "resources.bones": "random(0,2)",
       "story.seen.hasHunted": true,
       "relics.blacksmith_hammer": {
-        probability: 0.0025,
+        probability: 0.005,
         value: true,
         condition: "!relics.blacksmith_hammer",
         logMessage:
