@@ -1079,25 +1079,3 @@ export const getCooldownReduction = (
 
   return totalReduction;
 };
-
-// Add new events here
-export const events: Record<string, any> = {
-  forestScoutActions: [
-    // Existing events here...
-
-    // New event: Raven
-    {
-      id: "raven_encounter",
-      name: "Strange Raven",
-      description:
-        "While hunting you see an odly big black raven staring at you from a broken tree. Even when you come more near he keeps staring. Suddenly he croaks. It sounds like he is saying a word you dont understand again and again. Ass come closer he flies away. On the floor in front of the tree is laying a mask out of red leather.",
-      probability: 0.0025,
-      effect: (state: GameState) => {
-        // Add the red_mask relic to the player's inventory
-        if (!state.relics) state.relics = {};
-        state.relics.red_mask = true;
-        return { message: "You found a red leather mask." };
-      },
-    },
-  ],
-};
