@@ -151,7 +151,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.torch": 5,
     },
     effects: {
-      "resources.torch": -5,
       "resources.wood": { probability: 0.5, value: "random(2,5)" },
       "resources.stone": { probability: 1, value: "random(2,5)" },
       "resources.coal": { probability: 0.3, value: "random(2,5)" },
@@ -176,8 +175,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 20,
     },
     effects: {
-      "resources.torch": -10,
-      "resources.food": -20,
       "resources.stone": { probability: 1, value: "random(4,8)" },
       "resources.coal": { probability: 0.35, value: "random(4,8)" },
       "resources.iron": { probability: 0.35, value: "random(4,8)" },
@@ -201,7 +198,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 100,
     },
     effects: {
-      "resources.food": -100,
       "resources.stone": { probability: 1, value: "random(6,11)" },
       "resources.iron": { probability: 0.4, value: "random(6,11)" },
       "resources.coal": { probability: 0.4, value: "random(6,11)" },
@@ -227,7 +223,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 250,
     },
     effects: {
-      "resources.food": -250,
       "resources.stone": { probability: 1, value: "random(8,14)" },
       "resources.iron": { probability: 0.45, value: "random(8,14)" },
       "resources.coal": { probability: 0.45, value: "random(8,14)" },
@@ -242,7 +237,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
-    cooldown: 60,
+    cooldown: 40,
   },
 
   exploreTemple: {
@@ -256,7 +251,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 500,
     },
     effects: {
-      "resources.food": -500,
       "resources.stone": { probability: 1, value: "random(10,17)" },
       "resources.iron": { probability: 0.5, value: "random(10,17)" },
       "resources.coal": { probability: 0.5, value: "random(10,17" },
@@ -272,7 +266,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
-    cooldown: 90,
+    cooldown: 50,
   },
 
   exploreCitadel: {
@@ -282,10 +276,9 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.adamant_lantern": true,
     },
     cost: {
-      "resources.food": 1000,
+      "resources.food": 750,
     },
     effects: {
-      "resources.food": -1000,
       "resources.stone": { probability: 1, value: "random(12,20)" },
       "resources.iron": { probability: 0.55, value: "random(12,20)" },
       "resources.coal": { probability: 0.55, value: "random(12,20)" },
@@ -301,7 +294,7 @@ export const caveExploreActions: Record<string, Action> = {
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
-    cooldown: 120,
+    cooldown: 60,
   },
 
   lowChamber: {
@@ -315,7 +308,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": { probability: 1, value: "random(15,35)" },
+      "resources.gold": { probability: 1, value: "random(15,45)" },
       "resources.bloodstone": { probability: 1, value: "random(2,8)" },
       "resources.frostglas": { probability: 1, value: "random(1,6)" },
       "flags.lowChamberExplored": true,
@@ -335,7 +328,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": { probability: 1, value: "random(20,30)" },
+      "resources.gold": { probability: 1, value: "random(20,40)" },
       "resources.bloodstone": { probability: 1, value: "random(3,6)" },
       "resources.frostglas": { probability: 1, value: "random(2,4)" },
       "resources.adamant": { probability: 1, value: "random(5,15)" },
