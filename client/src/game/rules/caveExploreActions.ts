@@ -15,7 +15,7 @@ const caveRelics = {
   ventureDeeper: [
     {
       key: "bloodstained_belt",
-      probability: 0.005,
+      probability: 0.015,
       logMessage:
         "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
     },
