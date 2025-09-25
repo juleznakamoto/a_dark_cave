@@ -131,13 +131,13 @@ export default function SidePanelSection({
     // Determine madness intensity classes
     const getMadnessClasses = (value: number) => {
       if (value >= 40) {
-        return "madness-intense madness-pulse-fast text-red-600";
+        return "madness-extreme madness-pulse-fast-extreme text-red-800";
       } else if (value >= 30) {
-        return "madness-medium madness-pulse text-red-500";
+        return "madness-intense madness-pulse-intense text-red-600";
       } else if (value >= 20) {
-        return "madness-light madness-pulse text-red-400";
+        return "madness-medium madness-pulse-medium text-red-400";
       } else if (value >= 10) {
-        return "madness-light madness-pulse-slow text-red-200";
+        return "madness-light madness-pulse-light text-red-300";
       }
       return "";
     };

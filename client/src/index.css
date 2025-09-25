@@ -6,6 +6,7 @@
   from {
     background-color: rgba(0, 0, 0, 0);
   }
+
   to {
     background-color: rgba(0, 0, 0, 0.5);
   }
@@ -128,6 +129,7 @@
     background-color: rgba(0, 0, 0, 0);
     backdrop-filter: blur(0px);
   }
+
   100% {
     background-color: rgba(0, 0, 0, 1);
     backdrop-filter: blur(10px);
@@ -144,6 +146,7 @@
     filter: blur(5px);
     transform: translateY(-5px);
   }
+
   100% {
     opacity: 1;
     filter: blur(0px);
@@ -156,21 +159,27 @@
 }
 
 @keyframes flame-text {
-  0%   { background-position: 0% 50%; }
-  50%  { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .fire-hover:hover {
-  background: linear-gradient(
-    50deg,
-    #ff6347,
-    #ff8c00,
-    #ffa500,
-    #ff4500,
-    #dc143c,
-    #ff4500
-  );
+  background: linear-gradient(50deg,
+      #ff6347,
+      #ff8c00,
+      #ffa500,
+      #ff4500,
+      #dc143c,
+      #ff4500);
   background-size: 250% 250%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -186,72 +195,96 @@
 }
 
 .timer-progress .bg-primary {
-  background-color: #8b0000 !important; /* Dark red */
+  background-color: #8b0000 !important;
+  /* Dark red */
 }
 
-/* Custom madness pulse animations - 3 levels */
+/* Custom madness pulse animations - 4 levels */
 @keyframes madness-pulse-light {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.85;
-    transform: scale(1.02);
-  }
-}
-
-@keyframes madness-pulse-medium {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.7;
     transform: scale(1.05);
   }
 }
 
-@keyframes madness-pulse-intense {
-  0%, 100% {
+@keyframes madness-pulse-medium {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
-  25% {
-    opacity: 0.6;
-    transform: scale(1.08);
-  }
+
   50% {
-    opacity: 0.4;
-    transform: scale(1.12);
-  }
-  75% {
-    opacity: 0.6;
-    transform: scale(1.08);
+    opacity: 0.75;
+    transform: scale(1.07);
   }
 }
 
-.madness-pulse-slow {
-  animation: madness-pulse-light 2.5s ease-in-out infinite;
+@keyframes madness-pulse-intense {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.65;
+    transform: scale(1.10);
+  }
 }
 
-.madness-pulse {
+@keyframes madness-pulse-extreme {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(1.15);
+  }
+}
+
+.madness-pulse-light {
+  animation: madness-pulse-light 2.0s ease-in-out infinite;
+}
+
+.madness-pulse-medium {
   animation: madness-pulse-medium 1.5s ease-in-out infinite;
 }
 
-.madness-pulse-fast {
-  animation: madness-pulse-intense 0.8s ease-in-out infinite;
+.madness-pulse-fast-intense {
+  animation: madness-pulse-intense 1.0s ease-in-out infinite;
+}
+
+.madness-pulse-fast-extreme {
+  animation: madness-pulse-intense 0.7s ease-in-out infinite;
 }
 
 /* Madness intensity effects */
 .madness-light {
-  text-shadow: 0 0 5px rgb(191, 59, 49, 0.5);
+  text-shadow: 0 0 4x oklch(70.4% 0.191 22.216), 0 0 4px oklch(70.4% 0.191 22.216);
 }
 
 .madness-medium {
-  text-shadow: 0 0 8px rgb(187, 27, 27, 0.7);
+  text-shadow: 0 0 5px oklch(63.7% 0.237 25.331), 0 0 5px oklch(63.7% 0.237 25.331);
 }
 
 .madness-intense {
-  text-shadow: 0 0 12px rgba(220, 38, 38, 0.9), 0 0 20px rgba(220, 38, 38, 0.5);
+  text-shadow: 0 0 6px oklch(57.7% 0.245 27.325), 0 0 6px oklch(57.7% 0.245 27.325);
+}
+
+.madness-extreme {
+  text-shadow: 0 0 7px oklch(50.5% 0.213 27.518), 0 0 7px oklch(50.5% 0.213 27.518);
 }
