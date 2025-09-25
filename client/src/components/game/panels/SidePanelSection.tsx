@@ -128,6 +128,22 @@ export default function SidePanelSection({
       Object.keys(effect.bonuses.actionBonuses).length > 0;
     const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses || effect.name || effect.description);
 
+    // Determine madness intensity classes
+    const getMadnessClasses = (value: number) => {
+      if (value >= 40) {
+        return "madness-intense animate-pulse text-red-600";
+      } else if (value >= 30) {
+        return "madness-medium animate-pulse text-red-500";
+      } else if (value >= 20) {
+        return "madness-light animate-pulse text-red-400";
+      } else if (value >= 10) {
+        return "madness-light animate-pulse text-orange-400";
+      }
+      return "";
+    };
+
+    const isMadness = item.id === 'madness';
+    const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
 
     const itemContent = (
       <div
@@ -140,14 +156,16 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span className="text-muted-foreground">{item.label}</span>
+        <span className={`text-muted-foreground ${isMadness ? madnessClasses : ""}`}>{item.label}</span>
         <span
           className={`transition-all duration-300 font-mono ${
             isAnimated
               ? "scale-100 text-green-800 font-bold"
               : isDecreaseAnimated
                 ? "scale-100 text-red-800 font-bold"
-                : ""
+                : isMadness
+                  ? madnessClasses
+                  : ""
           }`}
         >
           {displayValue}

@@ -188,3 +188,16 @@
 .timer-progress .bg-primary {
   background-color: #8b0000 !important; /* Dark red */
 }
+
+/* Madness intensity effects */
+.madness-light {
+  text-shadow: 0 0 5px rgba(251, 146, 60, 0.5);
+}
+
+.madness-medium {
+  text-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+}
+
+.madness-intense {
+  text-shadow: 0 0 12px rgba(220, 38, 38, 0.9), 0 0 20px rgba(220, 38, 38, 0.5);
+}
