@@ -201,6 +201,8 @@ export const actionSchema = z.object({
     z.record(z.string(), z.any()),
     z.record(z.number(), z.record(z.string(), z.any()))
   ]),
+  productionEffects: z.record(z.string(), z.record(z.string(), z.number())).optional(),
+  statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
   cooldown: z.number().optional(),
 });
