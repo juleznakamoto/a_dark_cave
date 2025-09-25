@@ -317,6 +317,9 @@ export const villageBuildActions: Record<string, Action> = {
         "effects.madness_reduction.altar": 1,
       },
     },
+    statsEffects: {
+      madness: -1
+    },
     cooldown: 5,
   },
 
@@ -343,6 +346,13 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasGreatCabin": true,
       },
     },
+    productionEffects: {
+      hunter: {
+        food: 5,
+        fur: 4,
+        bones: 4
+      }
+    },
     cooldown: 30,
   },
 
@@ -368,6 +378,11 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasTimberMill": true,
       },
     },
+    productionEffects: {
+      gatherer: {
+        wood: 5
+      }
+    },
     cooldown: 30,
   },
 
@@ -392,6 +407,11 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.quarry": 1,
         "story.seen.hasQuarry": true,
       },
+    },
+    productionEffects: {
+      gatherer: {
+        stone: 5
+      }
     },
     cooldown: 30,
   },
@@ -473,6 +493,9 @@ export const villageBuildActions: Record<string, Action> = {
         "effects.madness_reduction.shrine": 5,
       },
     },
+    statsEffects: {
+      madness: -5
+    },
     cooldown: 40,
   },
 
@@ -502,6 +525,9 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasTemple": true,
         "effects.madness_reduction.temple": 10,
       },
+    },
+    statsEffects: {
+      madness: -10
     },
     cooldown: 60,
   },
@@ -533,6 +559,9 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasSanctum": true,
         "effects.madness_reduction.sanctum": 15,
       },
+    },
+    statsEffects: {
+      madness: -15
     },
     cooldown: 80,
   },

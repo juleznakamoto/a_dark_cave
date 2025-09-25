@@ -987,7 +987,7 @@ export const calculateTotalEffects = (state: GameState) => {
 
         // Resource multipliers
         if (actionBonus.resourceMultiplier && actionBonus.resourceMultiplier !== 1) {
-          effects.resource_multiplier[actionId] = 
+          effects.resource_multiplier[actionId] =
             (effects.resource_multiplier[actionId] || 1) * actionBonus.resourceMultiplier;
         }
 
@@ -1001,7 +1001,7 @@ export const calculateTotalEffects = (state: GameState) => {
 
         // Cooldown reductions
         if (actionBonus.cooldownReduction) {
-          effects.cooldown_reduction[actionId] = 
+          effects.cooldown_reduction[actionId] =
             (effects.cooldown_reduction[actionId] || 0) + actionBonus.cooldownReduction;
         }
       });
@@ -1028,4 +1028,55 @@ export const getCooldownReduction = (
   });
 
   return totalReduction;
+};
+
+// Helper function to get building production effects
+export const getBuildingProductionEffects = (state: GameState) => {
+  const { villageBuildActions } = require('./villageBuildActions');
+  const buildingEffects: Record<string, Record<string, number>> = {};
+
+  // Check each building action for production effects
+  Object.entries(villageBuildActions).forEach(([actionId, action]: [string, any]) => {
+    if (action.productionEffects) {
+      const buildingName = actionId.replace('build', '').toLowerCase();
+      const buildingKey = buildingName.charAt(0).toLowerCase() + buildingName.slice(1);
+
+      // Check if this building is built
+      if (state.buildings && state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
+        Object.entries(action.productionEffects).forEach(([jobId, resourceEffects]) => {
+          if (!buildingEffects[jobId]) {
+            buildingEffects[jobId] = {};
+          }
+          Object.assign(buildingEffects[jobId], resourceEffects);
+        });
+      }
+    }
+  });
+
+  return buildingEffects;
+};
+
+// Helper function to get building stats effects
+export const getBuildingStatsEffects = (state: GameState) => {
+  const { villageBuildActions } = require('./villageBuildActions');
+  const statsEffects: Record<string, number> = {};
+
+  // Check each building action for stats effects
+  Object.entries(villageBuildActions).forEach(([actionId, action]: [string, any]) => {
+    if (action.statsEffects) {
+      const buildingName = actionId.replace('build', '').toLowerCase();
+      const buildingKey = buildingName.charAt(0).toLowerCase() + buildingName.slice(1);
+
+      // Check if this building is built
+      if (state.buildings && state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
+        Object.entries(action.statsEffects).forEach(([stat, effect]) => {
+          if (typeof effect === 'number') {
+            statsEffects[stat] = (statsEffects[stat] || 0) + effect;
+          }
+        });
+      }
+    }
+  });
+
+  return statsEffects;
 };

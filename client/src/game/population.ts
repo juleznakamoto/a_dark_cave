@@ -130,31 +130,20 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
 
   return job.production.map((prod) => {
     let amount = prod.amount;
-    
-    // Apply building bonuses if state is provided
+
+    // Apply building bonuses dynamically if state is provided
     if (state) {
-      if (jobId === 'gatherer') {
-        // Timber Mill increases wood production from 10 to 15
-        if (prod.resource === 'wood' && state.buildings?.timberMill > 0) {
-          amount = 15;
-        }
-        // Quarry increases stone production from 5 to 10
-        if (prod.resource === 'stone' && state.buildings?.quarry > 0) {
-          amount = 10;
-        }
-      }
-      
-      if (jobId === 'hunter' && state.buildings?.greatCabin > 0) {
-        // Great Cabin increases hunter production: 10 food, 2 fur, 2 bones
-        if (prod.resource === 'food') {
-          amount = 10;
-        }
-        if (prod.resource === 'fur' || prod.resource === 'bones') {
-          amount = 5;
-        }
+      // Import getBuildingProductionEffects here to avoid circular dependencies
+      const { getBuildingProductionEffects } = require('../rules/effects');
+      const buildingEffects = getBuildingProductionEffects(state);
+
+      // Check if this job has building effects
+      if (buildingEffects[jobId] && buildingEffects[jobId][prod.resource]) {
+        const effect = buildingEffects[jobId][prod.resource];
+        amount += effect; // Add the bonus effect to the base amount
       }
     }
-    
+
     return {
       ...prod,
       amount,
