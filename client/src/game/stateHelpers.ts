@@ -41,7 +41,7 @@ export const updatePopulationCounts = (state: GameState) => {
   );
 
   // Calculate max population based on buildings
-  const total_population = state.buildings.woodenHut * 2;
+  const total_population = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
 
   return {
     current_population,
