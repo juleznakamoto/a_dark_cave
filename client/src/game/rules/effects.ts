@@ -834,36 +834,7 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
   return bonuses;
 }
 
-// Helper function to get sacrifice bonuses from religious buildings
-export function getSacrificeBonus(state: GameState): number {
-  let bonus = 0;
 
-  if (state.buildings.shrine > 0) {
-    bonus += 0.1; // 10% bonus
-  }
-  if (state.buildings.temple > 0) {
-    bonus += 0.2; // 20% bonus
-  }
-  if (state.buildings.sanctum > 0) {
-    bonus += 0.3; // 30% bonus
-  }
-
-  return bonus;
-}
-
-// Helper function to get exploration bonuses
-export const getExplorationBonuses = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let totalBonus = 0;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.explorationBonus) {
-      totalBonus += effect.bonuses.generalBonuses.explorationBonus;
-    }
-  });
-
-  return totalBonus;
-};
 
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
@@ -921,12 +892,6 @@ export const getTotalMadness = (state: GameState): number => {
     }
   });
 
-  // Apply madness reduction from buildings dynamically
-  const buildingStatsEffects = getBuildingStatsEffects(state);
-  if (buildingStatsEffects.madness) {
-    totalMadness += buildingStatsEffects.madness; // buildingStatsEffects.madness is negative for reduction
-  }
-
   return Math.max(0, totalMadness);
 };
 
@@ -944,15 +909,7 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   return reduction;
 };
 
-// Helper function to apply luck bonus to probability (10 luck = 10% increase)
-export const applyLuckToprobability = (
-  baseProbability: number,
-  luck: number,
-): number => {
-  const luckBonus = luck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
-  const adjustedProbability = baseProbability + baseProbability * luckBonus;
-  return Math.min(adjustedProbability, 1.0); // Cap at 100%
-};
+
 
 // Helper function to calculate all effects for the current state
 export const calculateTotalEffects = (state: GameState) => {
@@ -1031,26 +988,3 @@ export const getCooldownReduction = (
 
 
 
-// Helper function to get building stats effects
-export const getBuildingStatsEffects = (state: GameState) => {
-  const statsEffects: Record<string, number> = {};
-
-  // Check each building action for stats effects
-  Object.entries(villageBuildActions).forEach(([actionId, action]: [string, any]) => {
-    if (action.statsEffects) {
-      const buildingName = actionId.replace('build', '').toLowerCase();
-      const buildingKey = buildingName.charAt(0).toLowerCase() + buildingName.slice(1);
-
-      // Check if this building is built
-      if (state.buildings && state.buildings[buildingKey as keyof typeof state.buildings] > 0) {
-        Object.entries(action.statsEffects).forEach(([stat, effect]) => {
-          if (typeof effect === 'number') {
-            statsEffects[stat] = (statsEffects[stat] || 0) + effect;
-          }
-        });
-      }
-    }
-  });
-
-  return statsEffects;
-};
