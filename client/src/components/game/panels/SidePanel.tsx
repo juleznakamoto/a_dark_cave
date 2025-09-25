@@ -68,32 +68,9 @@ export default function SidePanel() {
       visible: true
     }));
 
-  // Define a custom display order for buildings
-  const buildingDisplayOrder = [
-    'cabin', 'greatCabin',
-    'shallowPit', 'deepeningPit', 'deepPit', 'bottomlessPit',
-    'altar', 'shrine', 'temple', 'sanctum',
-    'workshop', 'forge', 'laboratory', 'observatory',
-    'barracks', 'trainingGrounds', 'arena',
-    'market', 'tradingPost', 'guildHall',
-    'farm', 'granary', 'mill',
-    'well', 'waterworks', 'aqueduct',
-    'watchtower', 'guardhouse', 'fortress',
-    'library', 'scriptorium', 'archive',
-    'hospital', 'infirmary', 'sanatorium',
-    'inn', 'tavern', 'residence',
-    'storageYard', 'warehouse', 'depot',
-    'stable', 'kennel', 'aviary',
-    'templeDistrict', 'monastery', 'cathedral',
-    'embassy', 'consulate', 'embassyQuarter',
-    'palace', 'citadel', 'royalCourt'
-  ];
-
-
-  // Dynamically generate building items from state in custom order
-  const buildingItems = buildingDisplayOrder
-    .map(key => {
-      const value = buildings[key];
+  // Dynamically generate building items from state
+  const buildingItems = Object.entries(buildings)
+    .map(([key, value]) => {
       if ((value ?? 0) === 0) return null;
 
       let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
@@ -238,8 +215,8 @@ export default function SidePanel() {
         {/* First column - Resources */}
         <div className="flex-1">
           {resourceItems.length > 0 && shouldShowSection('resources') && (
-            <SidePanelSection 
-              title="Resources" 
+            <SidePanelSection
+              title="Resources"
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
                 console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
@@ -266,14 +243,14 @@ export default function SidePanel() {
             <SidePanelSection title="Buildings" items={buildingItems} />
           )}
           {populationItems.length > 0 && shouldShowSection('population') && (
-            <SidePanelSection 
-              title={`Population ${current_population}/${total_population}`} 
+            <SidePanelSection
+              title={`Population ${current_population}/${total_population}`}
               items={populationItems}
             />
           )}
           {statsItems.length > 0 && shouldShowSection('stats') && (
-            <SidePanelSection 
-              title="Stats" 
+            <SidePanelSection
+              title="Stats"
               items={statsItems}
               className="mb-4"
             />
