@@ -76,6 +76,9 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildSanctum") {
     return (state.buildings.sanctum || 0) + 1;
   }
+  if (actionId === "buildStoneHut") {
+    return (state.buildings.stoneHut || 0) + 1;
+  }
   return 1;
 };
 
