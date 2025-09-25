@@ -965,6 +965,21 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   });
 
+  // Apply specific effects that need to be handled outside the general loop
+  // Ravenfeather Mantle - +15% hunting resources
+  if (state.relics?.ravenfeather_mantle) {
+    effects.resource_multiplier.food = (effects.resource_multiplier.food || 1) + 0.15;
+    effects.resource_multiplier.fur = (effects.resource_multiplier.fur || 1) + 0.15;
+    effects.resource_multiplier.bones = (effects.resource_multiplier.bones || 1) + 0.15;
+  }
+
+  // Wooden Figure - +2 madness, +5 luck
+  if (state.relics?.wooden_figure) {
+    effects.probability_bonus.luck = (effects.probability_bonus.luck || 0) + 5;
+    effects.resource_bonus.madness = (effects.resource_bonus.madness || 0) + 2;
+  }
+
+
   return effects;
 };
 
