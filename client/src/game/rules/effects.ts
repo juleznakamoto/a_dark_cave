@@ -496,6 +496,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
 
   elder_scroll: {
+      id: "elder_scroll",
       name: "Elder Scroll",
       description: "Ancient scroll containing forbidden knowledge",
       bonuses: {
@@ -506,6 +507,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
     dragon_bone_dice: {
+      id: "dragon_bone_dice",
       name: "Dragon Bone Dice",
       description: "Six-sided dice carved from ancient dragon bone",
       bonuses: {
@@ -515,6 +517,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
     coin_of_drowned: {
+      id: "coin_of_drowned",
       name: "Coin of Drowned",
       description: "A ring that is always wet and cold",
       bonuses: {
@@ -525,6 +528,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
     shadow_flute: {
+      id: "shadow_flute",
       name: "Shadow Flute",
       description: "A bone flute that makes shadows move unnaturally",
       bonuses: {
@@ -536,6 +540,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
     hollow_kings_scepter: {
+      id: "hollow_kings_scepter",
       name: "Hollow King's Scepter",
       description: "Scepter of the lost king, radiating power and madness",
       bonuses: {
