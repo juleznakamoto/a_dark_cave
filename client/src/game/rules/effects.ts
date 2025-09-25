@@ -933,11 +933,10 @@ export const getTotalMadness = (state: GameState): number => {
     }
   });
 
-  // Apply madness reduction from pre-calculated effects
-  if (state.effects?.madness_reduction) {
-    Object.values(state.effects.madness_reduction).forEach((reduction) => {
-      totalMadness -= reduction;
-    });
+  // Apply madness reduction from buildings dynamically
+  const buildingStatsEffects = getBuildingStatsEffects(state);
+  if (buildingStatsEffects.madness) {
+    totalMadness += buildingStatsEffects.madness; // buildingStatsEffects.madness is negative for reduction
   }
 
   return Math.max(0, totalMadness);
