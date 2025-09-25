@@ -570,7 +570,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       description: "A tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
       bonuses: {
         generalBonuses: {
-          knowledge: 8,
+          knowledge: 7,
           madness: 4,
         },
       },
@@ -582,9 +582,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       description: "Dark ring left as a gift by the forest gods, pulsing with otherworldly power",
       bonuses: {
         generalBonuses: {
-          luck: 6,
+          luck: 5,
           strength: 3,
-          madness: 2,
+          madness: 1,
         },
       },
     },
