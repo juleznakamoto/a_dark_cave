@@ -406,6 +406,32 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
 // Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
+  cracked_crown: {
+    id: "cracked_crown",
+    name: "Cracked Crown",
+    description: "An ancient golden crown radiating with mysterious power.",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        knowledge: 3,
+        madness: 1,
+      },
+      actionBonuses: {},
+    },
+  },
+
+  rough_cloak: {
+    id: "rough_cloak",
+    name: "Rough Cloak",
+    description: "A simple cloak that provides basic protection.",
+    bonuses: {
+      generalBonuses: {
+        gatheringSpeed: 1.1, // 10% faster gathering
+      },
+      actionBonuses: {},
+    },
+  },
+
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",
@@ -1002,6 +1028,3 @@ export const getCooldownReduction = (
 
   return totalReduction;
 };
-
-
-
