@@ -36,25 +36,28 @@ const caveRelics = {
     {
       key: "tarnished_amulet",
       probability: 0.01,
-      logMessage:
-        "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you.",
+      logMessage: "",
+      isChoice: true,
+      eventId: "tarnishedAmuletChoice",
     },
   ],
   ventureDeeper: [
     {
       key: "bloodstained_belt",
       probability: 0.015,
-      logMessage:
-        "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power.",
+      logMessage: "",
+      isChoice: true,
+      eventId: "bloodstainedBeltChoice",
     },
   ],
   descendFurther: [
     {
       key: "dragon_bone_dice",
       probability: 0.02,
-      logMessage:
-        "As you descend further, you find a set of dragon bone dice. Rolling them, you feel a surge of luck, but a subtle unease lingers.",
+      logMessage: "",
       luck: 3,
+      isChoice: true,
+      eventId: "dragonBoneDiceChoice",
     },
   ],
   exploreRuins: [

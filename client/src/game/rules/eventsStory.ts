@@ -1072,4 +1072,225 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     },
   },
+
+  tarnishedAmuletChoice: {
+    id: "tarnishedAmuletChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Tarnished Amulet",
+    message:
+      "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. When you wear it, an uncanny calm settles over you. Do you keep this mysterious artifact?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "keepAmulet",
+        label: "Keep the amulet",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              tarnished_amulet: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                tarnishedAmuletChoice: true,
+              },
+            },
+            _logMessage:
+              "You place the tarnished amulet around your neck. Despite its worn appearance, you feel a strange sense of protection emanating from it.",
+          };
+        },
+      },
+      {
+        id: "leaveAmulet",
+        label: "Leave it behind",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                tarnishedAmuletChoice: true,
+              },
+            },
+            _logMessage:
+              "You decide the amulet feels too ominous and leave it where you found it. The shadows seem to swallow it once more.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveAmulet",
+      label: "Leave it behind",
+      effect: (state: GameState) => {
+        const deathResult = killVillagers(state, 1);
+        return {
+          ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              tarnishedAmuletChoice: true,
+            },
+          },
+          _logMessage:
+            "Your hesitation proves costly. One of your men, drawn by the amulet's power, reaches for it despite your indecision. The moment he touches it, shadows pour from the amulet and consume him entirely, leaving only his screams echoing in the cave.",
+        };
+      },
+    },
+  },
+
+  bloodstainedBeltChoice: {
+    id: "bloodstainedBeltChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Bloodstained Belt",
+    message:
+      "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Do you dare to wear it?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "wearBelt",
+        label: "Wear the belt",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              bloodstained_belt: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                bloodstainedBeltChoice: true,
+              },
+            },
+            _logMessage:
+              "You fasten the bloodstained belt around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
+          };
+        },
+      },
+      {
+        id: "leaveBelt",
+        label: "Leave it behind",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                bloodstainedBeltChoice: true,
+              },
+            },
+            _logMessage:
+              "You decide the belt's bloody history makes it too dangerous to take. As you turn away, you swear you hear a faint growl of disappointment.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveBelt",
+      label: "Leave it behind",
+      effect: (state: GameState) => {
+        const wounded = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
+        const deathResult = killVillagers(state, wounded);
+        return {
+          ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              bloodstainedBeltChoice: true,
+            },
+          },
+          _logMessage:
+            `Your indecision awakens something dark. The bloodstained belt suddenly comes alive, lashing out like a serpent. Its leather coils wrap around ${wounded} of your men, draining their life force before finally going still. The belt lies innocent once more, but now stained with fresh blood.`,
+        };
+      },
+    },
+  },
+
+  dragonBoneDiceChoice: {
+    id: "dragonBoneDiceChoice",
+    condition: (state: GameState) => false, // Only triggered by cave exploration
+    triggerType: "action",
+    title: "The Dragon Bone Dice",
+    message:
+      "As you descend further, you find a set of dragon bone dice carved with ancient runes. Rolling them in your palm, you feel a surge of luck, but a subtle unease lingers. These dice have seen much fortune... and much tragedy. Do you keep them?",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    isTimedChoice: true,
+    baseDecisionTime: 15,
+    choices: [
+      {
+        id: "keepDice",
+        label: "Keep the dice",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              dragon_bone_dice: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                dragonBoneDiceChoice: true,
+              },
+            },
+            _logMessage:
+              "You pocket the dragon bone dice. They feel warm in your hand, and you sense that fortune will favor you more often, though at what cost remains to be seen.",
+          };
+        },
+      },
+      {
+        id: "leaveDice",
+        label: "Leave them behind",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                dragonBoneDiceChoice: true,
+              },
+            },
+            _logMessage:
+              "You decide the dice carry too much risk and leave them on the cave floor. As you walk away, you hear them rattle once, as if rolling themselves in farewell.",
+          };
+        },
+      },
+    ],
+    fallbackChoice: {
+      id: "leaveDice",
+      label: "Leave them behind",
+      effect: (state: GameState) => {
+        const cursed = Math.floor(Math.random() * 2) + 1; // 1-2 villagers
+        const deathResult = killVillagers(state, cursed);
+        return {
+          ...deathResult,
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              dragonBoneDiceChoice: true,
+            },
+          },
+          _logMessage:
+            `Your hesitation angers the ancient magic within the dice. They begin rolling on their own, each result bringing misfortune. ${cursed} of your men suddenly collapse, victims of the dice's terrible curse. The bones finally stop rolling, their revenge complete.`,
+        };
+      },
+    },
+  },
 };
