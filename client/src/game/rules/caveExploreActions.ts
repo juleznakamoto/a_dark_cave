@@ -36,9 +36,7 @@ const caveRelics = {
     {
       key: "tarnished_amulet",
       probability: 0.01,
-      logMessage: "",
-      isChoice: true,
-      eventId: "tarnishedAmuletChoice",
+      logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. Without hesitation, you place it around your neck. Despite its worn appearance, you feel a strange sense of protection and good fortune emanating from it.",
     },
   ],
   ventureDeeper: [
