@@ -2,14 +2,7 @@ import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction } from "./population";
-import {
-  updateResource,
-  updateFlag,
-  updatePopulationCounts,
-  assignVillagerToJob,
-  unassignVillagerFromJob,
-  killVillagers,
-} from "@/game/stateHelpers";
+import { killVillagers } from "@/game/stateHelpers";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -151,9 +144,12 @@ function handleGathererProduction() {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    const production = getPopulationProduction('gatherer', gatherer, state);
-    production.forEach(prod => {
-      state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+    const production = getPopulationProduction("gatherer", gatherer, state);
+    production.forEach((prod) => {
+      state.updateResource(
+        prod.resource as keyof typeof state.resources,
+        prod.totalAmount,
+      );
     });
   }
 }
@@ -167,9 +163,12 @@ function handleHunterProduction() {
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
-    const production = getPopulationProduction('hunter', hunter, state);
-    production.forEach(prod => {
-      state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+    const production = getPopulationProduction("hunter", hunter, state);
+    production.forEach((prod) => {
+      state.updateResource(
+        prod.resource as keyof typeof state.resources,
+        prod.totalAmount,
+      );
     });
   }
 }
@@ -182,10 +181,16 @@ function handleMinerProduction() {
 
   // Process each miner type, steel forger, and tanner
   Object.entries(state.villagers).forEach(([job, count]) => {
-    if (count > 0 && (job.endsWith('miner') || job === 'steel_forger' || job === 'tanner')) {
+    if (
+      count > 0 &&
+      (job.endsWith("miner") || job === "steel_forger" || job === "tanner")
+    ) {
       const production = getPopulationProduction(job, count, state);
-      production.forEach(prod => {
-        state.updateResource(prod.resource as keyof typeof state.resources, prod.totalAmount);
+      production.forEach((prod) => {
+        state.updateResource(
+          prod.resource as keyof typeof state.resources,
+          prod.totalAmount,
+        );
       });
     }
   });
@@ -197,7 +202,10 @@ function handlePopulationSurvival() {
   // Pause survival checks when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
 
   if (totalPopulation === 0) return;
 
@@ -205,8 +213,8 @@ function handlePopulationSurvival() {
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
     // Activate starvation system permanently once food reaches 5
-    useGameStore.setState({ 
-      flags: { ...state.flags, starvationActive: true } 
+    useGameStore.setState({
+      flags: { ...state.flags, starvationActive: true },
     });
   }
 
@@ -233,12 +241,15 @@ function handleStarvationCheck() {
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
     // Activate starvation system permanently once food reaches 5
-    useGameStore.setState({ 
-      flags: { ...state.flags, starvationActive: true } 
+    useGameStore.setState({
+      flags: { ...state.flags, starvationActive: true },
     });
   }
 
-  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
   if (totalPopulation === 0) return;
 
   const availableFood = state.resources.food;
@@ -255,20 +266,21 @@ function handleStarvationCheck() {
     if (starvationDeaths > 0) {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, starvationDeaths);
-      
+
       useGameStore.setState({
         villagers: deathResult.villagers || state.villagers,
       });
 
-      const message = starvationDeaths === 1 
-        ? "One villager succumbs to starvation. Remaining villagers grow desperate." 
-        : `${starvationDeaths} villagers starve to death. Survivors look gaunt and hollow-eyed.`;
+      const message =
+        starvationDeaths === 1
+          ? "One villager succumbs to starvation. Remaining villagers grow desperate."
+          : `${starvationDeaths} villagers starve to death. Survivors look gaunt and hollow-eyed.`;
 
       state.addLogEntry({
         id: `starvation-${Date.now()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
 
       // Update population after applying changes
@@ -283,7 +295,10 @@ function handleFreezingCheck() {
   // Pause freezing checks when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const totalPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
 
   if (totalPopulation > 0 && state.resources.wood === 0) {
     // 10% chance for each villager to die from cold
@@ -297,20 +312,21 @@ function handleFreezingCheck() {
     if (freezingDeaths > 0) {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, freezingDeaths);
-      
+
       useGameStore.setState({
         villagers: deathResult.villagers || state.villagers,
       });
 
-      const message = freezingDeaths === 1 
-        ? "One villager freezes to death in the cold. The others huddle together for warmth." 
-        : `${freezingDeaths} villagers freeze to death in the harsh cold. Survivors seek shelter desperately.`;
+      const message =
+        freezingDeaths === 1
+          ? "One villager freezes to death in the cold. The others huddle together for warmth."
+          : `${freezingDeaths} villagers freeze to death in the harsh cold. Survivors seek shelter desperately.`;
 
       state.addLogEntry({
         id: `freezing-${Date.now()}`,
         message: message,
         timestamp: Date.now(),
-        type: 'system',
+        type: "system",
       });
 
       // Update population after applying changes
@@ -352,7 +368,10 @@ function handleStrangerApproach() {
   // Pause stranger checks when event dialog is open
   if (state.eventDialog.isOpen) return;
 
-  const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+  const currentPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
   const maxPopulation = state.buildings.woodenHut * 2;
 
   // Only trigger if there's room for more villagers
@@ -366,7 +385,7 @@ function handleStrangerApproach() {
 
   // +20% if population is 0
   if (currentPopulation === 0) {
-    probability += 0.20;
+    probability += 0.2;
   }
 
   // Check if stranger approaches based on probability
@@ -402,7 +421,7 @@ function handleStrangerApproach() {
       id: `stranger-approaches-${Date.now()}`,
       message: message,
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
 
     // Update population after applying changes
