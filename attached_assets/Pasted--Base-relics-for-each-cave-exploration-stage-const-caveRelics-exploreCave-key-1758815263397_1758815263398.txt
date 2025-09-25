@@ -1,0 +1,91 @@
+// Base relics for each cave exploration stage
+const caveRelics = {
+  exploreCave: [
+    {
+      key: "tarnished_amulet",
+      probability: 0.01,
+      logMessage: "",
+      isChoice: true,
+      eventId: "tarnishedAmuletChoice",
+    },
+  ],
+  ventureDeeper: [
+    {
+      key: "bloodstained_belt",
+      probability: 0.015,
+      logMessage: "",
+      isChoice: true,
+      eventId: "bloodstainedBeltChoice",
+    },
+  ],
+  descendFurther: [
+    {
+      key: "dragon_bone_dice",
+      probability: 0.02,
+      logMessage: "",
+      luck: 3,
+      isChoice: true,
+      eventId: "dragonBoneDiceChoice",
+    },
+  ],
+  exploreRuins: [
+    {
+      key: "coin_of_drowned",
+      probability: 0.025,
+      logMessage: "",
+      luck: 4,
+      madness: 2,
+      isChoice: true,
+      eventId: "coinOfDrownedChoice",
+    },
+  ],
+  exploreTemple: [
+    {
+      key: "shadow_flute",
+      probability: 0.03,
+      logMessage: "",
+      luck: 3,
+      knowledge: 2,
+      madness: 3,
+      isChoice: true,
+      eventId: "shadowFluteChoice",
+    },
+  ],
+  exploreCitadel: [
+    {
+      key: "hollow_kings_scepter",
+      probability: 0.035,
+      logMessage: "",
+      strength: 3,
+      knowledge: 7,
+      madness: 5,
+      isChoice: true,
+      eventId: "hollowKingsScepterChoice",
+    },
+  ],
+};
+
+// Helper function to get inherited relics with 10% probability bonus
+function getInheritedRelics(actionId: string) {
+  const stageOrder = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+  ];
+  const currentIndex = stageOrder.indexOf(actionId);
+
+  const inheritedRelics: any = {};
+
+  // Add relics from all previous stages with 1% probability bonus
+  for (let i = 0; i <= currentIndex; i++) {
+    const stageId = stageOrder[i];
+    const relics = caveRelics[stageId as keyof typeof caveRelics];
+
+    relics.forEach((relic) => {
+      const adjustedProbability =
+        i === currentIndex
+          ? relic.probability
+          : relic.probability + 0.005 * (currentIndex - i);
