@@ -1,7 +1,8 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness, getBuildingStatsEffects } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { villageBuildActions } from '@/game/rules/villageBuildActions';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
@@ -19,10 +20,10 @@ export default function SidePanel() {
 
   // Get game state once for the entire component
   const gameState = useGameStore();
-  
+
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
-  
+
   // Filter out weapons from tools display
   const toolItems = Object.entries(displayTools)
     .filter(([key, value]) => !Object.keys(gameState.weapons).includes(key))
@@ -68,29 +69,20 @@ export default function SidePanel() {
     }));
 
 
-  // Get madness reduction for religious buildings
-  const getMadnessReduction = (buildingKey: string): string | undefined => {
-    switch (buildingKey) {
-      case 'altar': return '-1 Madness';
-      case 'shrine': return '-5 Madness';
-      case 'temple': return '-10 Madness';
-      case 'sanctum': return '-15 Madness';
-      default: return undefined;
-    }
-  };
-
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
     .map(([key, value]) => {
       let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      
+      const statsEffects = getBuildingStatsEffects(key);
+      const madnessReduction = statsEffects?.madness ? `${statsEffects.madness} Madness` : undefined;
+
       return {
         id: key,
         label,
         value: value ?? 0,
         testId: `building-${key}`,
         visible: (value ?? 0) > 0,
-        tooltip: getMadnessReduction(key)
+        tooltip: madnessReduction
       };
     })
     .filter(item => item.visible)
