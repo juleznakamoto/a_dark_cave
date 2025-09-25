@@ -1,3 +1,5 @@
+import { villageBuildActions } from '@/game/rules/villageBuildActions';
+
 export interface PopulationJobConfig {
   id: string;
   label: string;
@@ -124,35 +126,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
-// Helper function to get building production effects directly from building state
-const getBuildingProductionEffects = (state: any) => {
-  const buildingEffects: Record<string, Record<string, number>> = {};
-  const buildings = state.buildings || {};
-
-  // Great Cabin effects - adds to hunter production
-  if (buildings.greatCabin > 0) {
-    buildingEffects.hunter = {
-      food: 5,
-      fur: 4,
-      bones: 4
-    };
-  }
-
-  // Timber Mill effects - adds to gatherer wood production
-  if (buildings.timberMill > 0) {
-    if (!buildingEffects.gatherer) buildingEffects.gatherer = {};
-    buildingEffects.gatherer.wood = 5;
-  }
-
-  // Quarry effects - adds to gatherer stone production
-  if (buildings.quarry > 0) {
-    if (!buildingEffects.gatherer) buildingEffects.gatherer = {};
-    buildingEffects.gatherer.stone = 5;
-  }
-
-  return buildingEffects;
-};
-
 export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
   const job = populationJobs[jobId];
   if (!job) return [];
@@ -160,15 +133,21 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
   return job.production.map((prod) => {
     let amount = prod.amount;
 
-    // Apply building bonuses dynamically if state is provided
-    if (state) {
-      const buildingEffects = getBuildingProductionEffects(state);
-
-      // Check if this job has building effects
-      if (buildingEffects[jobId] && buildingEffects[jobId][prod.resource]) {
-        const effect = buildingEffects[jobId][prod.resource];
-        amount += effect; // Add the bonus effect to the base amount
-      }
+    // Apply building production effects from villageBuildActions if state is provided
+    if (state && state.buildings) {
+      // Check each building type for productionEffects that affect this job
+      Object.entries(state.buildings).forEach(([buildingType, buildingCount]) => {
+        if (buildingCount > 0) {
+          const buildingAction = villageBuildActions[`build${buildingType.charAt(0).toUpperCase() + buildingType.slice(1)}`];
+          
+          if (buildingAction && buildingAction.productionEffects && buildingAction.productionEffects[jobId]) {
+            const jobEffects = buildingAction.productionEffects[jobId];
+            if (jobEffects[prod.resource]) {
+              amount += jobEffects[prod.resource];
+            }
+          }
+        }
+      });
     }
 
     return {
