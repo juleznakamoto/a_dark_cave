@@ -106,22 +106,8 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   let updatedVillagers = { ...state.villagers };
   let remainingDeaths = deathCount;
 
-  // All villager types that can die
-  const villagerTypes = [
-    'free', 
-    'gatherer', 
-    'hunter', 
-    'iron_miner', 
-    'coal_miner', 
-    'sulfur_miner', 
-    'silver_miner', 
-    'gold_miner', 
-    'obsidian_miner', 
-    'adamant_miner', 
-    'moonstone_miner', 
-    'steel_forger',
-    'tanner'
-  ];
+  // Get all villager types dynamically from the state
+  const villagerTypes = Object.keys(updatedVillagers);
 
   // Create a pool of all available villagers with their types
   const villagerPool: string[] = [];
