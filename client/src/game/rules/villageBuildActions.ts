@@ -740,7 +740,7 @@ export function handleBuildBlacksmith(state: GameState, result: ActionResult): A
   if (state.buildings.blacksmith === 0) {
     blacksmithResult.logEntries!.push({
       id: `blacksmith-built-${Date.now()}`,
-      message: "The blacksmith's forge roars to life, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
+      message: "The blacksmith's forge comes alive, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
       timestamp: Date.now(),
       type: 'system',
     });
