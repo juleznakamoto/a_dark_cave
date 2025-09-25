@@ -191,11 +191,11 @@
 
 /* Madness intensity effects */
 .madness-light {
-  text-shadow: 0 0 5px rgba(251, 146, 60, 0.5);
+  text-shadow: 0 0 5px rgb(195, 40, 29, 0.5);
 }
 
 .madness-medium {
-  text-shadow: 0 0 8px rgba(239, 68, 68, 0.7);
+  text-shadow: 0 0 8px rgb(187, 27, 27, 0.7);
 }
 
 .madness-intense {
