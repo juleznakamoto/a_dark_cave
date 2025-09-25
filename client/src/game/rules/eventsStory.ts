@@ -1004,7 +1004,7 @@ export const storyEvents: Record<string, GameEvent> = {
         return {
           ...deathResult,
           _logMessage:
-            `Your hesitation proves disastrous. As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows, ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
+            `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows, ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
         };
       },
     },
