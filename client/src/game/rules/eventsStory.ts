@@ -629,7 +629,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: false,
     isTimedChoice: true,
-    baseDecisionTime: 3,
+    baseDecisionTime: 15,
     choices: [
       {
         id: "sacrifice",
