@@ -137,7 +137,7 @@ export default function SidePanelSection({
       } else if (value >= 20) {
         return "madness-light madness-pulse text-red-400";
       } else if (value >= 10) {
-        return "madness-light madness-pulse-slow text-orange-400";
+        return "madness-light madness-pulse-slow text-red-200";
       }
       return "";
     };
