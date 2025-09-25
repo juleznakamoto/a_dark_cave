@@ -979,6 +979,12 @@ export const calculateTotalEffects = (state: GameState) => {
     probability_bonus: {} as Record<string, number>,
     cooldown_reduction: {} as Record<string, number>,
     madness_reduction: {} as Record<string, number>,
+    statBonuses: { // Added statBonuses here
+      strength: 0,
+      luck: 0,
+      knowledge: 0,
+      madness: 0,
+    },
   };
 
   const activeEffects = getActiveEffects(state);
@@ -989,6 +995,8 @@ export const calculateTotalEffects = (state: GameState) => {
     if (effect.bonuses.generalBonuses?.madness) {
       const effectKey = `${effect.id}_madness`;
       effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
+      // Update statBonuses for madness
+      effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
     }
 
     if (effect.bonuses.actionBonuses) {
@@ -1022,7 +1030,33 @@ export const calculateTotalEffects = (state: GameState) => {
         }
       });
     }
+
+    // Process general bonuses
+    if (effect.bonuses.generalBonuses) {
+      if (effect.bonuses.generalBonuses.strength) {
+        effects.statBonuses.strength += effect.bonuses.generalBonuses.strength;
+      }
+      if (effect.bonuses.generalBonuses.luck) {
+        effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
+      }
+      if (effect.bonuses.generalBonuses.knowledge) {
+        effects.statBonuses.knowledge += effect.bonuses.generalBonuses.knowledge;
+      }
+    }
   });
+
+  // Hollow King's Scepter effects
+  if (state.relics.hollow_kings_scepter) {
+    effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 5;
+    effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 2;
+  }
+
+  // Red Mask effects
+  if (state.relics.red_mask) {
+    effects.statBonuses.luck = (effects.statBonuses.luck || 0) + 3;
+    effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 2;
+    effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 1;
+  }
 
   return effects;
 };
@@ -1044,4 +1078,26 @@ export const getCooldownReduction = (
   });
 
   return totalReduction;
+};
+
+// Add new events here
+export const events: Record<string, any> = {
+  forestScoutActions: [
+    // Existing events here...
+
+    // New event: Raven
+    {
+      id: "raven_encounter",
+      name: "Strange Raven",
+      description:
+        "While hunting you see an odly big black raven staring at you from a broken tree. Even when you come more near he keeps staring. Suddenly he croaks. It sounds like he is saying a word you dont understand again and again. Ass come closer he flies away. On the floor in front of the tree is laying a mask out of red leather.",
+      probability: 0.0025,
+      effect: (state: GameState) => {
+        // Add the red_mask relic to the player's inventory
+        if (!state.relics) state.relics = {};
+        state.relics.red_mask = true;
+        return { message: "You found a red leather mask." };
+      },
+    },
+  ],
 };

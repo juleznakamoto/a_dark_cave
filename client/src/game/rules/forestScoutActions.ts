@@ -13,9 +13,9 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": "random(1,6)",
+      "resources.food": "random(2,6)",
       "resources.fur": "random(0,3)",
-      "resources.bones": "random(0,2)",
+      "resources.bones": "random(0,3)",
       "story.seen.hasHunted": true,
       "relics.blacksmith_hammer": {
         probability: 0.005,
@@ -23,6 +23,13 @@ export const forestScoutActions: Record<string, Action> = {
         condition: "!relics.blacksmith_hammer",
         logMessage:
           "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent blacksmith hammer catches the light, its head still bearing traces of ancient forge-fire. You take the hammer with you.",
+      },
+      "relics.red_mask": {
+        probability: 0.0025,
+        value: true,
+        condition: "!relics.red_mask",
+        logMessage:
+          "While hunting, you see an oddly big black raven staring at you from a broken tree. Even when you come nearer he keeps staring. Suddenly he croaks. It sounds like he is saying a word you don't understand again and again. As you come closer he flies away. On the floor in front of the tree is laying a mask out of red leather.",
       },
     },
     cooldown: 10,
