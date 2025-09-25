@@ -68,13 +68,48 @@ export default function SidePanel() {
       visible: true
     }));
 
+  // Define a custom display order for buildings
+  const buildingDisplayOrder = [
+    'cabin', 'greatCabin',
+    'shallowPit', 'deepeningPit', 'deepPit', 'bottomlessPit',
+    'altar', 'shrine', 'temple', 'sanctum',
+    'workshop', 'forge', 'laboratory', 'observatory',
+    'barracks', 'trainingGrounds', 'arena',
+    'market', 'tradingPost', 'guildHall',
+    'farm', 'granary', 'mill',
+    'well', 'waterworks', 'aqueduct',
+    'watchtower', 'guardhouse', 'fortress',
+    'library', 'scriptorium', 'archive',
+    'hospital', 'infirmary', 'sanatorium',
+    'inn', 'tavern', 'residence',
+    'storageYard', 'warehouse', 'depot',
+    'stable', 'kennel', 'aviary',
+    'templeDistrict', 'monastery', 'cathedral',
+    'embassy', 'consulate', 'embassyQuarter',
+    'palace', 'citadel', 'royalCourt'
+  ];
 
-  // Dynamically generate building items from state
-  const buildingItems = Object.entries(buildings)
-    .map(([key, value]) => {
+
+  // Dynamically generate building items from state in custom order
+  const buildingItems = buildingDisplayOrder
+    .map(key => {
+      const value = buildings[key];
+      if ((value ?? 0) === 0) return null;
+
       let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-      const statsEffects = getBuildingStatsEffects(key);
-      const madnessReduction = statsEffects?.madness ? `${statsEffects.madness} Madness` : undefined;
+
+      // Get stats effects for this specific building from villageBuildActions
+      let tooltip = undefined;
+      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+      if (buildAction?.statsEffects) {
+        const effects = Object.entries(buildAction.statsEffects)
+          .map(([stat, value]) => `${value > 0 ? '+' : ''}${value} ${stat}`)
+          .join(', ');
+        if (effects) {
+          tooltip = effects;
+        }
+      }
 
       return {
         id: key,
@@ -82,10 +117,10 @@ export default function SidePanel() {
         value: value ?? 0,
         testId: `building-${key}`,
         visible: (value ?? 0) > 0,
-        tooltip: madnessReduction
+        tooltip: tooltip
       };
     })
-    .filter(item => item.visible)
+    .filter(item => item !== null) // Remove nulls from buildings not present
     .filter(item => {
       // Only show the highest pit level
       if (item.id === 'shallowPit' && (buildings.deepeningPit > 0 || buildings.deepPit > 0 || buildings.bottomlessPit > 0)) {
@@ -113,6 +148,7 @@ export default function SidePanel() {
       }
       return true;
     });
+
 
   // Dynamically generate villager items from state
   const populationItems = Object.entries(villagers)
