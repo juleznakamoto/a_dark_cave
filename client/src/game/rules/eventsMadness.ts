@@ -193,7 +193,7 @@ export const madnessEvents: Record<string, GameEvent> = {
   wrongVillagers: {
     id: "wrongVillagers",
     condition: (state: GameState) => {
-      const currentPopulation = state.current_population || 0;
+      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
       const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
 

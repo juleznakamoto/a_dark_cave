@@ -269,11 +269,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().addLogEntry(strangerLogEntry);
             setTimeout(() => {
               set((state) => {
-                const currentPopulation =
-                  state.villagers.free +
-                  state.villagers.gatherer +
-                  state.villagers.hunter;
-                const maxPopulation = state.buildings.woodenHut * 2;
+                const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+                const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
 
                 if (currentPopulation < maxPopulation) {
                   const newState = {
@@ -522,7 +519,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   updatePopulation: () => {
-    set((state) => ({ ...state, ...updatePopulationCounts(state) }));
+    set((state) => {
+      const updates = updatePopulationCounts(state);
+      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+      
+      return { 
+        ...state, 
+        ...updates,
+        current_population: currentPopulation,
+        total_population: maxPopulation
+      };
+    });
   },
 
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => {
