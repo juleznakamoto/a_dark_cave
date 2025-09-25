@@ -12,8 +12,6 @@ import {
 } from "@/game/stateHelpers";
 import { calculateTotalEffects } from '@/game/rules/effects';
 
-import { calculateTotalEffects } from '@/game/rules/effects';
-
 // Helper function to merge state updates
 const mergeStateUpdates = (
   prevState: GameState,
@@ -47,7 +45,6 @@ const mergeStateUpdates = (
 
 interface GameStore extends GameState {
   // Actions
-  gatherWood: () => void;
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   updateResource: (
@@ -68,8 +65,6 @@ interface GameStore extends GameState {
 
   // UI state
   activeTab: string;
-  lastSaved: string;
-  isGameLoopActive: boolean;
   devMode: boolean;
   eventDialog: {
     isOpen: boolean;
@@ -83,7 +78,6 @@ interface GameStore extends GameState {
 
   // Event system
   log: LogEntry[];
-  events: Record<string, boolean>;
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
@@ -156,24 +150,14 @@ const defaultGameState: GameState = {
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
-  lastSaved: "Never",
-  isGameLoopActive: false,
   devMode: true,
   cooldowns: {},
   log: [],
-  events: {},
   current_population: 0,
   total_population: 0,
   eventDialog: {
     isOpen: false,
     currentEvent: null,
-  },
-
-  gatherWood: () => {
-    const state = get();
-    if ((state.cooldowns["gatherWood"] || 0) > 0 && !state.devMode) return;
-
-    get().executeAction("gatherWood");
   },
 
   setActiveTab: (tab: string) => {
@@ -344,10 +328,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resetState = {
       ...defaultGameState,
       activeTab: "cave",
-      lastSaved: "Never",
       cooldowns: {},
       log: [],
-      events: {},
       devMode: true,
       effects: calculateTotalEffects(defaultGameState),
     };
@@ -383,9 +365,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const loadedState = {
         ...savedState,
         activeTab: "cave",
-        lastSaved: "Loaded",
         cooldowns: {},
-        events: savedState.events || get().events,
         log: savedState.log || [],
         devMode: true, // Ensure devMode is always true
         effects: calculateTotalEffects(savedState),
@@ -398,10 +378,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
-        lastSaved: "Never",
         cooldowns: {},
         log: [],
-        events: {},
         devMode: true,
         effects: calculateTotalEffects(defaultGameState),
       };
@@ -438,17 +416,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...stateChanges,
         log: [...prevState.log, ...newLogEntries].slice(-8),
-        events: {
-          ...prevState.events,
-          ...newLogEntries.reduce(
-            (acc, entry) => {
-              const eventId = entry.id.split("-")[0];
-              acc[eventId] = true;
-              return acc;
-            },
-            {} as Record<string, boolean>,
-          ),
-        },
       }));
 
       // Check if any new log entry has choices and show event dialog
