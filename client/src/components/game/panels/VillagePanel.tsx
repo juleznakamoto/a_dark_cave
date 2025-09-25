@@ -15,6 +15,7 @@ export default function VillagePanel() {
       title: 'Build',
       actions: [
         { id: 'buildWoodenHut', label: 'Wooden Hut' },
+        { id: 'buildStoneHut', label: 'Stone Hut' },
         { id: 'buildCabin', label: 'Cabin' },
         { id: 'buildBlacksmith', label: 'Blacksmith' },
         { id: 'buildShallowPit', label: 'Shallow Pit' },
@@ -30,7 +31,6 @@ export default function VillagePanel() {
         { id: 'buildTimberMill', label: 'Timber Mill' },
         { id: 'buildQuarry', label: 'Quarry' },
         { id: 'buildClerksHut', label: "Clerk's Hut" },
-        { id: 'buildStoneHut', label: 'Stone Hut' },
         { id: 'buildTannery', label: 'Tannery' },
       ]
     }
