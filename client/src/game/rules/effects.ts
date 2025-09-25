@@ -935,20 +935,22 @@ export const getTotalMadness = (state: GameState): number => {
     }
   });
 
-  // Apply madness reductions from buildings
-  const buildingMadnessReductions = {
-    altar: -1,
-    shrine: -5,
-    temple: -10,
-    sanctum: -15,
-  };
+  // Apply madness reductions from buildings (only highest tier building applies)
+  const buildingMadnessReductions = [
+    { key: 'sanctum', reduction: -15 },
+    { key: 'temple', reduction: -10 },
+    { key: 'shrine', reduction: -5 },
+    { key: 'altar', reduction: -1 },
+  ];
 
-  Object.entries(buildingMadnessReductions).forEach(([buildingKey, reduction]) => {
-    const buildingCount = state.buildings[buildingKey as keyof typeof state.buildings] || 0;
+  // Find the highest tier building that exists and apply only its effect
+  for (const building of buildingMadnessReductions) {
+    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
     if (buildingCount > 0) {
-      totalMadness += reduction;
+      totalMadness += building.reduction;
+      break; // Only apply the highest tier building's effect
     }
-  });
+  }
 
   return Math.max(0, totalMadness);
 };
