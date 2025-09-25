@@ -935,6 +935,21 @@ export const getTotalMadness = (state: GameState): number => {
     }
   });
 
+  // Apply madness reductions from buildings
+  const buildingMadnessReductions = {
+    altar: -1,
+    shrine: -5,
+    temple: -10,
+    sanctum: -15,
+  };
+
+  Object.entries(buildingMadnessReductions).forEach(([buildingKey, reduction]) => {
+    const buildingCount = state.buildings[buildingKey as keyof typeof state.buildings] || 0;
+    if (buildingCount > 0) {
+      totalMadness += reduction;
+    }
+  });
+
   return Math.max(0, totalMadness);
 };
 
