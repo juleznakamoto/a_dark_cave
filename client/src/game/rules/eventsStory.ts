@@ -951,7 +951,7 @@ export const storyEvents: Record<string, GameEvent> = {
         return {
           ...deathResult,
           _logMessage:
-            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship, pulling them into the darkness between worlds. Their screams echo briefly before being swallowed by silence.`,
+            `Your hesitation proves costly. The shadows suddenly grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship, pulling them into the darkness while their screams echo briefly before being swallowed by silence.`,
         };
       },
     },
@@ -963,7 +963,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Hollow King's Scepter",
     message:
-      "In the throne room of the ruined citadel, you find a magnificent scepter of bone and obsidian. This must have belonged to the king of this lost city. Dark knowledge flows from it like a river, but so does terrible madness. The power it offers is immense, but so is the cost.",
+      "In the throne room of the ruined citadel, you find a magnificent scepter of obsidian. This must have belonged to the king of this lost city. Dark knowledge flows from it, but so does terrible madness. Do you keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -980,7 +980,7 @@ export const storyEvents: Record<string, GameEvent> = {
               hollow_kings_scepter: true,
             },
             _logMessage:
-              "You grasp the Hollow King's Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days. You feel stronger, wiser, but something dark has taken root in your thoughts.",
+              "You grasp the Hollow King's Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days.",
           };
         },
       },
@@ -990,7 +990,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of either approval or disappointment echoing through the empty throne room.",
+              "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
           };
         },
       },
