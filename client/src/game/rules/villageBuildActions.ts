@@ -796,7 +796,19 @@ export function handleBuildQuarry(state: GameState, result: ActionResult): Actio
 }
 
 export function handleBuildClerksHut(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
+  const clerksHutResult = handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
+
+  // Add clerk's hut completion message
+  if (state.buildings.clerksHut === 0) {
+    clerksHutResult.logEntries!.push({
+      id: `clerks-hut-built-${Date.now()}`,
+      message: "A modest clerk's hut is erected, its occupant ready to track the ebb and flow of village resources with meticulous care.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return clerksHutResult;
 }
 
 export function handleBuildTannery(state: GameState, result: ActionResult): ActionResult {
