@@ -999,9 +999,12 @@ export const storyEvents: Record<string, GameEvent> = {
       id: "leaveScepter",
       label: "Leave the throne undisturbed",
       effect: (state: GameState) => {
+        const deaths = Math.floor(Math.random() * 5) + 4; // 4-8 villagers
+        const deathResult = killVillagers(state, deaths);
         return {
+          ...deathResult,
           _logMessage:
-            "The weight of decision paralyzes you. As you stand frozen, the scepter seems to lose its luster, and you lose your nerve. You back away, leaving the throne room as you found it.",
+            `Your hesitation proves disastrous. As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows, ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
         };
       },
     },
