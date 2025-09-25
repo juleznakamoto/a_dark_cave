@@ -184,12 +184,23 @@ export default function SidePanel() {
 
   // Add madness if it's greater than 0
   if (totalMadness > 0) {
+    // Determine madness intensity level for visual effects
+    let madnessIntensity = 'normal';
+    if (totalMadness >= 40) {
+      madnessIntensity = 'intense';
+    } else if (totalMadness >= 30) {
+      madnessIntensity = 'medium';
+    } else if (totalMadness >= 10) {
+      madnessIntensity = 'light';
+    }
+
     statsItems.push({
       id: 'madness',
       label: 'Madness',
       value: totalMadness,
       testId: 'stat-madness',
-      visible: true
+      visible: true,
+      madnessIntensity: madnessIntensity
     });
   }
 

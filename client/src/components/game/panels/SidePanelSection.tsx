@@ -16,13 +16,41 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Helper functions for madness styling
+const getMadnessLabelClasses = (intensity: 'light' | 'medium' | 'intense'): string => {
+  switch (intensity) {
+    case 'light':
+      return 'text-red-300';
+    case 'medium':
+      return 'text-red-400';
+    case 'intense':
+      return 'text-red-500 font-semibold';
+    default:
+      return '';
+  }
+};
+
+const getMadnessValueClasses = (intensity: 'light' | 'medium' | 'intense'): string => {
+  switch (intensity) {
+    case 'light':
+      return 'text-red-300';
+    case 'medium':
+      return 'text-red-400 font-semibold';
+    case 'intense':
+      return 'text-red-500 font-bold';
+    default:
+      return '';
+  }
+};
+
 interface SidePanelItem {
   id: string;
   label: string;
   value: number;
-  testId?: string;
-  visible?: boolean;
+  testId: string;
+  visible: boolean;
   tooltip?: string;
+  madnessIntensity?: 'normal' | 'light' | 'medium' | 'intense';
 }
 
 interface SidePanelSectionProps {
@@ -54,6 +82,24 @@ export default function SidePanelSection({
           ? item.value
           : parseInt(item.value.toString()) || 0;
       const prevValue = prevValuesRef.current.get(item.id);
+
+      // Calculate madness intensity
+      let madnessIntensity: 'normal' | 'light' | 'medium' | 'intense' = 'normal';
+      if (item.id === 'madness') {
+        if (currentValue >= 0 && currentValue <= 9) {
+          madnessIntensity = 'normal';
+        } else if (currentValue >= 10 && currentValue <= 19) {
+          madnessIntensity = 'light';
+        } else if (currentValue >= 20 && currentValue <= 29) {
+          madnessIntensity = 'light';
+        } else if (currentValue >= 30 && currentValue <= 39) {
+          madnessIntensity = 'medium';
+        } else if (currentValue >= 40 && currentValue <= 49) {
+          madnessIntensity = 'intense';
+        }
+        // Assign the calculated intensity to the item for rendering
+        item.madnessIntensity = madnessIntensity;
+      }
 
       // Only animate if we have a previous value to compare against
       if (prevValue !== undefined) {
@@ -223,7 +269,7 @@ export default function SidePanelSection({
                       % Craft Discount
                     </div>
                   )}
-                  
+
                 </>
               )}
               {effect.bonuses.actionBonuses &&
@@ -257,7 +303,16 @@ export default function SidePanelSection({
     if (item.tooltip) {
       return (
         <Tooltip key={item.id}>
-          <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+          <TooltipTrigger asChild>
+            <span className={`text-sm cursor-help ${item.id === 'madness' && item.madnessIntensity !== 'normal' ? getMadnessLabelClasses(item.madnessIntensity!) : ''}`}
+                  style={item.id === 'madness' && item.madnessIntensity !== 'normal' ? {
+                    animation: item.madnessIntensity === 'light' ? 'madness-pulse-light 2s ease-in-out infinite' :
+                              item.madnessIntensity === 'medium' ? 'madness-pulse-medium 1.5s ease-in-out infinite' :
+                              item.madnessIntensity === 'intense' ? 'madness-pulse-intense 1s ease-in-out infinite' : 'none'
+                  } : {}}>
+              {item.label}
+            </span>
+          </TooltipTrigger>
           <TooltipContent>
             <p>{item.tooltip}</p>
           </TooltipContent>
@@ -266,7 +321,29 @@ export default function SidePanelSection({
     }
 
     // For non-relic items without tooltips, return the content directly
-    return <div key={item.id}>{itemContent}</div>;
+    return (
+      <div key={item.id} className="flex justify-between items-center">
+        <span className={`text-sm ${item.id === 'madness' && item.madnessIntensity !== 'normal' ? getMadnessLabelClasses(item.madnessIntensity!) : ''}`}
+              style={item.id === 'madness' && item.madnessIntensity !== 'normal' ? {
+                animation: item.madnessIntensity === 'light' ? 'madness-pulse-light 2s ease-in-out infinite' :
+                          item.madnessIntensity === 'medium' ? 'madness-pulse-medium 1.5s ease-in-out infinite' :
+                          item.madnessIntensity === 'intense' ? 'madness-pulse-intense 1s ease-in-out infinite' : 'none'
+              } : {}}>
+          {item.label}
+        </span>
+        <span 
+          className={`text-sm font-medium ${item.id === 'madness' && item.madnessIntensity !== 'normal' ? getMadnessValueClasses(item.madnessIntensity!) : ''}`} 
+          style={item.id === 'madness' && item.madnessIntensity !== 'normal' ? {
+            animation: item.madnessIntensity === 'light' ? 'madness-pulse-light 2s ease-in-out infinite' :
+                      item.madnessIntensity === 'medium' ? 'madness-pulse-medium 1.5s ease-in-out infinite' :
+                      item.madnessIntensity === 'intense' ? 'madness-pulse-intense 1s ease-in-out infinite' : 'none'
+          } : {}}
+          data-testid={item.testId}
+        >
+          {item.value}
+        </span>
+      </div>
+    );
   };
 
   return (
