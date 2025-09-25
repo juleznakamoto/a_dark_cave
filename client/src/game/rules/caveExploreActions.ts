@@ -403,15 +403,18 @@ export function handleGatherWood(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -428,15 +431,18 @@ export function handleExploreCave(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -467,15 +473,18 @@ export function handleVentureDeeper(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -503,13 +512,17 @@ export function handleDescendFurther(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }
@@ -538,13 +551,17 @@ export function handleExploreRuins(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }
@@ -573,13 +590,17 @@ export function handleExploreTemple(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }
@@ -608,13 +629,17 @@ export function handleExploreCitadel(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }
@@ -643,13 +668,17 @@ export function handleLowChamber(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }
@@ -675,13 +704,17 @@ export function handleAlchemistChamber(
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string) => {
-      result.logEntries!.push({
-        id: `probability-effect-${Date.now()}-${Math.random()}`,
-        message: message,
-        timestamp: Date.now(),
-        type: "system",
-      });
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
     });
     delete effectUpdates.logMessages;
   }

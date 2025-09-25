@@ -10,6 +10,7 @@ import { caveMiningActions } from './caveMineActions';
 import { villageBuildActions } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions } from './forestSacrificeActions';
+import { caveEvents } from "./eventsCave";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -378,10 +379,12 @@ export const applyActionEffects = (
         // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
         const probabilityEffect = effect as {
           probability: number;
-          value: number | string | boolean;
+          value: number | string | boolean | { probability: number; value: number | string | boolean; logMessage?: string; isChoice?: boolean; eventId?: string };
           logMessage?: string;
           condition?: string;
           triggerEvent?: string;
+          isChoice?: boolean; // Added for cave relics
+          eventId?: string; // Added for cave relics
         };
 
         // Check condition if provided
@@ -396,6 +399,30 @@ export const applyActionEffects = (
         const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
 
         if (shouldTrigger) {
+          // Check if this is a choice event (cave relic with eventId)
+          if (probabilityEffect.isChoice && probabilityEffect.eventId) {
+            const event = caveEvents[probabilityEffect.eventId];
+            // Ensure the event exists and hasn't been seen before
+            if (event && !state.story.seen[probabilityEffect.eventId]) {
+              // Trigger the cave event instead of directly applying the effect
+              if (!updates.logMessages) updates.logMessages = [];
+              // Construct a unique log message ID for the event
+              updates.logMessages.push({
+                type: "event",
+                id: `${probabilityEffect.eventId}-${Date.now()}`,
+                message: event.message,
+                timestamp: Date.now(),
+                title: event.title,
+                choices: event.choices,
+                isTimedChoice: event.isTimedChoice,
+                baseDecisionTime: event.baseDecisionTime,
+                fallbackChoice: event.fallbackChoice,
+              } as any); // Asserting as any to bypass strict type checking for logMessages array
+              // Skip applying the default effect if it's a triggered event
+              continue;
+            }
+          }
+
           if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
             // Handle random value within probability effect
             const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
@@ -431,7 +458,7 @@ export const applyActionEffects = (
           updates.logMessages.push(probabilityEffect.logMessage);
         }
 
-        // Handle event triggering
+        // Handle event triggering (this part might be redundant if handled by the isChoice/eventId logic above)
         if (shouldTrigger && probabilityEffect.triggerEvent) {
           if (!updates.triggeredEvents) updates.triggeredEvents = [];
           updates.triggeredEvents.push(probabilityEffect.triggerEvent);
