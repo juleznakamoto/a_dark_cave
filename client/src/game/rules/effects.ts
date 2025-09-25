@@ -615,6 +615,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
 
+    red_mask: {
+      id: "red_mask",
+      name: "Red Mask",
+      description: "A mask crafted from deep crimson leather, left behind by a mysterious raven",
+      bonuses: {
+        generalBonuses: {
+          luck: 3,
+          knowledge: 2,
+          madness: 1,
+        },
+      },
+    },
+
     black_bear_fur: {
       id: "black_bear_fur",
       name: "Black Bear Fur",
@@ -1049,13 +1062,6 @@ export const calculateTotalEffects = (state: GameState) => {
   if (state.relics.hollow_kings_scepter) {
     effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 5;
     effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 2;
-  }
-
-  // Red Mask effects
-  if (state.relics.red_mask) {
-    effects.statBonuses.luck = (effects.statBonuses.luck || 0) + 3;
-    effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 2;
-    effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 1;
   }
 
   return effects;
