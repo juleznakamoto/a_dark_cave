@@ -156,7 +156,7 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span className={`text-muted-foreground ${isMadness ? madnessClasses : ""}`}>{item.label}</span>
+        <span className="text-muted-foreground">{item.label}</span>
         <span
           className={`transition-all duration-300 font-mono ${
             isAnimated
