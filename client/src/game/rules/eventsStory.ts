@@ -927,7 +927,7 @@ export const storyEvents: Record<string, GameEvent> = {
               shadow_flute: true,
             },
             _logMessage:
-              "You keep the bone flute. Immediately, forbidden knowledge flows into your mind, along with whispers of madness. The shadows continue to dance around you, responding to your presence.",
+              "You keep the bone flute. Its tunes are beautiful, yet there’s a subtle dissonance that gnaws quietly at your mind.",
           };
         },
       },
