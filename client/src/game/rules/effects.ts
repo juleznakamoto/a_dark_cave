@@ -315,6 +315,19 @@ export const toolEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  leather_cloak: {
+    id: "leather_cloak",
+    name: "Leather Cloak",
+    description: "Supple leather cloak that enhances hunting prowess",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.2,
+        },
+      },
+    },
+  },
 };
 
 // Weapon effects

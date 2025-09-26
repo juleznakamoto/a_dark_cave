@@ -40,13 +40,6 @@ export default function CavePanel() {
         {
           actions: [
             { id: 'buildTorch', label: 'Torch' },
-            { id: 'craftBoneTotem', label: 'Bone Totem' },
-            { id: 'craftEmberBomb', label: 'Ember Bomb' },
-            { id: 'craftSeekerPack', label: "Seeker's Pack" },
-          ]
-        },
-        {
-          actions: [
             { id: 'craftStoneAxe', label: 'Stone Axe' },
             { id: 'craftIronAxe', label: 'Iron Axe' },
             { id: 'craftSteelAxe', label: 'Steel Axe' },
@@ -61,6 +54,7 @@ export default function CavePanel() {
             { id: 'craftSteelLantern', label: 'Steel Lantern' },
             { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
             { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
+            { id: 'craftLeatherCloak', label: 'Leather Cloak' },
           ]
         },
         {

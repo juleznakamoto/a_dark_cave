@@ -340,6 +340,24 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 20,
   },
+
+  craftLeatherCloak: {
+    id: "craftLeatherCloak",
+    label: "Leather Cloak",
+    show_when: {
+      "buildings.tannery": 1,
+      "tools.leather_cloak": false,
+    },
+    cost: {
+      "resources.leather": 750,
+    },
+    effects: {
+      "tools.leather_cloak": true,
+      "story.seen.hasLeatherCloak": true,
+      "story.seen.actionCraftLeatherCloak": true,
+    },
+    cooldown: 25,
+  },
 };
 
 // Action handlers
@@ -435,6 +453,12 @@ export function handleCraftAdamantLantern(state: GameState, result: ActionResult
 
 export function handleCraftSeekerPack(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftSeekerPack', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftLeatherCloak(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftLeatherCloak', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
