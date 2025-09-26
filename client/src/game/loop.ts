@@ -8,7 +8,6 @@ let gameLoopId: number | null = null;
 let lastTick = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
-const FIRE_CONSUMPTION_INTERVAL = 15000; // Fire consumes wood every 15 seconds
 const GATHERER_PRODUCTION_INTERVAL = 15000; // gatherer produce wood every 15 seconds
 const HUNTER_PRODUCTION_INTERVAL = 15000; // hunter produce food every 15 seconds
 const CONSUMPTION_INTERVAL = 15000; // Population consumes food and checks wood every 15 seconds
@@ -17,7 +16,6 @@ const FREEZING_CHECK_INTERVAL = 15000; // Check freezing every 15 seconds
 const STRANGER_CHECK_INTERVAL = 15000; // Check for stranger approach every 15 seconds
 
 let lastAutoSave = 0;
-let lastFireConsumption = 0;
 let lastGathererProduction = 0;
 let lastHunterProduction = 0;
 let lastConsumption = 0;
@@ -41,12 +39,6 @@ export function startGameLoop() {
       if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
         lastAutoSave = timestamp;
         handleAutoSave();
-      }
-
-      // Fire wood consumption logic
-      if (timestamp - lastFireConsumption >= FIRE_CONSUMPTION_INTERVAL) {
-        lastFireConsumption = timestamp;
-        handleFireConsumption();
       }
 
       // Gatherer production logic
@@ -121,18 +113,6 @@ function processTick() {
 
   // Check and trigger events
   state.checkEvents();
-}
-
-function handleFireConsumption() {
-  const state = useGameStore.getState();
-
-  // Pause fire consumption when event dialog is open
-  if (state.eventDialog.isOpen) return;
-
-  if (state.resources.wood > 0) {
-    // Fire consumes 1 wood every 15 seconds
-    state.updateResource("wood", -1);
-  }
 }
 
 function handleGathererProduction() {
