@@ -215,7 +215,7 @@ export default function VillagePanel() {
                   strokeWidth={2}
                   className="text-primary"
                 />
-                <span>{effectsText} per 15s</span>
+                <span>{effectsText}</span>
               </div>
             ) : null;
           })()}
