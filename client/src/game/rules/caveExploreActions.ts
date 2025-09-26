@@ -18,13 +18,16 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
   if (effectUpdates.resources) {
     Object.keys(effectUpdates.resources).forEach(resource => {
       if (caveResources.includes(resource)) {
-        const addedAmount = effectUpdates.resources[resource] || 0;
-        if (addedAmount > 0) {
+        const totalAmount = effectUpdates.resources[resource] || 0;
+        const existingAmount = state.resources[resource] || 0;
+        const actuallyAddedAmount = totalAmount - existingAmount;
+        
+        if (actuallyAddedAmount > 0) {
           // Calculate luck bonus based only on the newly added resources
-          const luckBonusAmount = Math.floor(addedAmount * luckBonus);
+          const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
           if (luckBonusAmount > 0) {
-            console.log(`[LUCK] Applying luck bonus to ${resource}: ${addedAmount} + ${luckBonusAmount} (luck: ${luck})`);
-            effectUpdates.resources[resource] = addedAmount + luckBonusAmount;
+            console.log(`[LUCK] Applying luck bonus to ${resource}: added ${actuallyAddedAmount} + bonus ${luckBonusAmount} (luck: ${luck})`);
+            effectUpdates.resources[resource] = totalAmount + luckBonusAmount;
           }
         }
       }
