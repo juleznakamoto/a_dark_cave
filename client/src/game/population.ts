@@ -124,6 +124,16 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -5, interval: 15000 },
     ],
   },
+  powder_maker: {
+    id: "powder_maker",
+    label: "powder_maker",
+    production: [
+      { resource: "black_powder", amount: 1, interval: 15000 },
+      { resource: "sulfur", amount: -5, interval: 15000 },
+      { resource: "coal", amount: -5, interval: 15000 },
+      { resource: "food", amount: -5, interval: 15000 },
+    ],
+  },
 };
 
 export const getPopulationProduction = (jobId: string, count: number, state?: any) => {

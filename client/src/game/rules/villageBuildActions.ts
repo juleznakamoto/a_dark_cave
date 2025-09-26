@@ -582,6 +582,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.alchemistTower": 1,
         "story.seen.hasAlchemistTower": true,
+        "story.seen.powderMakerUnlocked": true,
       },
     },
     cooldown: 30,

@@ -30,6 +30,7 @@ export const gameStateSchema = z.object({
     moonstone: z.number().min(0).default(0),
     bloodstone: z.number().min(0).default(0),
     frostglas: z.number().min(0).default(0),
+    black_powder: z.number().min(0).default(0),
   }).default({}),
   stats: z.object({
     strength: z.number().min(0).default(0),
@@ -150,6 +151,7 @@ export const gameStateSchema = z.object({
     adamant_miner: z.number().min(0).default(0),
     moonstone_miner: z.number().min(0).default(0),
     steel_forger: z.number().min(0).default(0),
+    powder_maker: z.number().min(0).default(0),
   }).default({}),
   world: z.object({
     discovered: z.boolean().default(false),
