@@ -1,5 +1,4 @@
 import { GameState } from "@shared/schema";
-import { villageBuildActions } from './villageBuildActions';
 
 // Define action bonuses interface
 export interface ActionBonuses {
@@ -618,7 +617,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     red_mask: {
       id: "red_mask",
       name: "Red Mask",
-      description: "A mask crafted from deep crimson leather, left behind by a mysterious raven",
+      description: "A mask crafted from deep crimson leather",
       bonuses: {
         generalBonuses: {
           luck: 3,
