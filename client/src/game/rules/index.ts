@@ -568,3 +568,6 @@ export function getActionCostDisplay(actionId: string, state?: GameState): strin
 
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
+
+// Export getCostText as an alias for getActionCostDisplay for backward compatibility
+export const getCostText = getActionCostDisplay;
