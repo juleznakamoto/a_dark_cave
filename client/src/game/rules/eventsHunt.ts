@@ -53,25 +53,6 @@ export const huntEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "leaveHammer",
-      label: "Leave it undisturbed",
-      effect: (state: GameState) => {
-        const deathResult = killVillagers(state, 1);
-        return {
-          ...deathResult,
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              blacksmithHammerChoice: true,
-            },
-          },
-          _logMessage:
-            "Your hesitation awakens the giant's restless spirit. In a fit of ancient rage, spectral flames burst from the forge, consuming one of your hunters before you can react. The hammer remains where it lies, forever guarded by its creator's wrath.",
-        };
-      },
-    },
   },
 
   redMaskChoice: {
@@ -124,24 +105,5 @@ export const huntEvents: Record<string, GameEvent> = {
         },
       },
     ],
-    fallbackChoice: {
-      id: "leaveMask",
-      label: "Leave it behind",
-      effect: (state: GameState) => {
-        const deathResult = killVillagers(state, 1);
-        return {
-          ...deathResult,
-          story: {
-            ...state.story,
-            seen: {
-              ...state.story.seen,
-              redMaskChoice: true,
-            },
-          },
-          _logMessage:
-            "Your indecision angers the forest spirits. The raven's call becomes a harsh shriek that seems to summon dark shapes from between the trees. One of your hunters is pulled into the shadows and never returns. The red mask vanishes with the wind.",
-        };
-      },
-    },
   },
 };
