@@ -68,7 +68,6 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildTannery") {
     return (state.buildings.tannery || 0) + 1;
   }
-  // Add new religious buildings
   if (actionId === "buildShrine") {
     return (state.buildings.shrine || 0) + 1;
   }

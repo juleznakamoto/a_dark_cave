@@ -54,7 +54,7 @@ export default function CavePanel() {
             { id: 'craftSteelLantern', label: 'Steel Lantern' },
             { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
             { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
-            { id: 'craftLeatherCloak', label: 'Leather Cloak' },
+            { id: 'craftLeatherCloak', label: 'Hunter Cloak' },
           ]
         },
         {

@@ -316,9 +316,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  leather_cloak: {
-    id: "leather_cloak",
-    name: "Leather Cloak",
+  Hunter_cloak: {
+    id: "Hunter_cloak",
+    name: "Hunter Cloak",
     description: "Supple leather cloak that silences every movement",
     bonuses: {
       actionBonuses: {
