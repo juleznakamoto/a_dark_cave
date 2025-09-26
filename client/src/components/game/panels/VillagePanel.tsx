@@ -4,10 +4,26 @@ import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 import { getPopulationProductionText, getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { CircularProgress } from '@/components/ui/circular-progress';
+import { useEffect, useState } from 'react';
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
   const state = useGameStore.getState();
+  
+  // Production timer state (0-100 representing 15 second cycle)
+  const [productionProgress, setProductionProgress] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setProductionProgress(prev => {
+        const newProgress = (prev + (100 / 75)) % 100; // 75 intervals of 200ms = 15 seconds
+        return newProgress;
+      });
+    }, 200); // Update every 200ms to match game loop
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Define action groups with their actions
   const actionGroups = [
@@ -190,8 +206,14 @@ export default function VillagePanel() {
               .join(", ");
 
             return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground border-t pt-2 mt-2">
-                {effectsText} per 15s
+              <div className="text-xs text-muted-foreground border-t pt-2 mt-2 flex items-center gap-2">
+                <CircularProgress 
+                  value={productionProgress} 
+                  size={16} 
+                  strokeWidth={2}
+                  className="text-primary"
+                />
+                <span>{effectsText} per 15s</span>
               </div>
             ) : null;
           })()}
