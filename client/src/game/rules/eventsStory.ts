@@ -243,6 +243,28 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  ringOfClarityFound: {
+    id: "ringOfClarityFound",
+    condition: (state: GameState) => false, // Only triggered by sacrifice actions
+    triggerType: "action",
+    title: "Ring of Clarity",
+    message:
+      "As the ritual concludes, something glints among the ashes of the altar. A crystal-clear ring catches the light - its surface perfectly smooth and radiating a sense of peace and mental clarity.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => {
+      return {
+        relics: {
+          ...state.relics,
+          ring_of_clarity: true,
+        },
+        _logMessage:
+          "You slip the Ring of Clarity onto your finger. Immediately, your thoughts become clearer and the dark whispers in your mind quiet to a whisper.",
+      };
+    },
+  },
+
   blackenedMirror: {
     id: "blackenedMirror",
     condition: (state: GameState) =>

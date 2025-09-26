@@ -444,6 +444,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  ring_of_clarity: {
+    id: "ring_of_clarity",
+    name: "Ring of Clarity",
+    description: "A crystal-clear ring that sharpens the mind and banishes dark thoughts",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 2,
+        madness: -5,
+      },
+    },
+  },
+
   bloodstained_belt: {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
