@@ -188,8 +188,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftWarBow(state, result);
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
-    case 'craftSeekerPack':
-      return handleCraftSeekerPack(state, result);
 
     // Cave Mine Actions
     case 'mineIron':
