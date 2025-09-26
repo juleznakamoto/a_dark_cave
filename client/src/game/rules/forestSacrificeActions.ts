@@ -17,7 +17,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       "buildings.altar": 1,
     },
     cost: {
-      "resources.bone_totem": 10,
+      "resources.bone_totem": 5,
     },
     effects: {
       "resources.gold": "random(1,10)",
