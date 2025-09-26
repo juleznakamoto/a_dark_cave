@@ -164,7 +164,7 @@ export const storyEvents: Record<string, GameEvent> = {
               _logMessage:
                 "As your men near, the pale figure beckons and vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
-          } else if (rand < 0.7) {
+          } else if (rand < 0.6) {
             return {
               ...killVillagers(state, 1),
               _logMessage:
@@ -172,7 +172,7 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           } else {
             return {
-              ...killVillagers(state, 2),
+              ...killVillagers(state, 2 + state.buildings.woodenHut),
               _logMessage:
                 "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
             };
@@ -265,7 +265,7 @@ export const storyEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              iron: state.resources.iron - 200,
+              iron: state.resources.iron - 100 * state.buildings.woodenHut,
             },
             relics: {
               ...state.relics,
@@ -281,7 +281,8 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Refuse the offer",
         effect: (state: GameState) => {
           return {
-            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage:
+              "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -380,12 +381,15 @@ export const storyEvents: Record<string, GameEvent> = {
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            50 + Math.floor(Math.random() * 251),
-          ); // 50-300 food loss
+            state.buildings.woodenHut * 25 + Math.floor(Math.random() * 251),
+          );
           let hutDestroyed = false;
 
-          // Determine villager casualties (1-6 potential deaths)
-          const maxPotentialDeaths = Math.min(6, currentPopulation);
+          // Determine villager casualties
+          const maxPotentialDeaths = Math.min(
+            6 + state.buildings.woodenHut,
+            currentPopulation,
+          );
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
               villagerDeaths++;
@@ -466,7 +470,10 @@ export const storyEvents: Record<string, GameEvent> = {
           let hutDestroyed = false;
 
           // Determine villager casualties (1-4 potential deaths)
-          const maxPotentialDeaths = Math.min(4, currentPopulation);
+          const maxPotentialDeaths = Math.min(
+            2 + state.buildings.woodenHut,
+            currentPopulation,
+          );
           for (let i = 0; i < maxPotentialDeaths; i++) {
             if (Math.random() < casualtyChance) {
               villagerDeaths++;
@@ -617,7 +624,7 @@ export const storyEvents: Record<string, GameEvent> = {
   offerToTheForestGods: {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
-      state.current_population > 6 &&
+      state.current_population > 10 &&
       !state.relics.ebony_ring &&
       state.buildings.altar == 1,
     triggerType: "resource",
@@ -700,7 +707,7 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           } else {
             // Villagers disappear
-            const disappearances = Math.floor(Math.random() * 2) + 1; // 1-2 villagers
+            const disappearances = Math.floor(Math.random() * 3) + 1;
             const deathResult = killVillagers(state, disappearances);
 
             return {
@@ -715,7 +722,7 @@ export const storyEvents: Record<string, GameEvent> = {
       id: "noDecision",
       label: "No Decision Made",
       effect: (state: GameState) => {
-        const departures = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
+        const departures = Math.floor(Math.random() * 4) + 2;
         const deathResult = killVillagers(state, departures);
 
         return {
@@ -729,7 +736,9 @@ export const storyEvents: Record<string, GameEvent> = {
   madBeduine: {
     id: "madBeduine",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8 && !state.relics.unnamed_book,
+      state.buildings.woodenHut >= 8 &&
+      state.current_population > 8 &&
+      !state.relics.unnamed_book,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Mad Beduine",
@@ -757,8 +766,10 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "turnAway",
         label: "Turn him away",
         effect: (state: GameState) => {
-          const villagerDeaths = Math.floor(Math.random() * 5) + 1; // 1-5 villagers
-          const hutDestruction = Math.floor(Math.random() * 2) + 1; // 1-2 huts
+          const villagerDeaths = Math.floor(
+            Math.random() * state.buildings.woodenHut,
+          );
+          const hutDestruction = Math.floor(Math.random() * 2) + 1;
 
           const deathResult = killVillagers(state, villagerDeaths);
 
@@ -833,7 +844,7 @@ export const storyEvents: Record<string, GameEvent> = {
           const luck = state.stats.luck || 0;
           const rand = Math.random();
 
-          if (rand < successChance + (luck * 0.01)) {
+          if (rand < successChance + luck * 0.01) {
             return {
               _logMessage:
                 "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
@@ -851,6 +862,4 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
-
-  
 };
