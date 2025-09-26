@@ -257,7 +257,7 @@ export default function SidePanelSection({
                       {bonus.resourceMultiplier &&
                         bonus.resourceMultiplier !== 1 && (
                           <div>
-                            +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}{capitalizeWords(actionId)}{" "}Bonus
+                            +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}{capitalizeWords(actionId).replace('Mining', 'Mine')}{" "}Bonus
                           </div>
                         )}
                       {bonus.resourceBonus &&
