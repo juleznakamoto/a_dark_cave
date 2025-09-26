@@ -44,6 +44,15 @@ const mergeStateUpdates = (
 };
 
 interface GameStore extends GameState {
+  // Production timing
+  productionTiming: {
+    lastGathererProduction: number;
+    lastHunterProduction: number;
+    lastConsumption: number;
+    currentTime: number;
+    interval: number;
+  };
+
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
@@ -155,6 +164,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   log: [],
   current_population: 0,
   total_population: 0,
+  productionTiming: {
+    lastGathererProduction: 0,
+    lastHunterProduction: 0,
+    lastConsumption: 0,
+    currentTime: 0,
+    interval: 15000
+  },
   eventDialog: {
     isOpen: false,
     currentEvent: null,

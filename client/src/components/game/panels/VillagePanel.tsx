@@ -8,24 +8,21 @@ import { CircularProgress } from '@/components/ui/circular-progress';
 import { useEffect, useState } from 'react';
 
 export default function VillagePanel() {
-  const { villagers, buildings, story, executeAction, assignVillager, unassignVillager } = useGameStore();
+  const { villagers, buildings, story, executeAction, assignVillager, unassignVillager, productionTiming } = useGameStore();
   const state = useGameStore.getState();
   
-  // Production timer state (0-100 representing 15 second cycle)
-  const [productionProgress, setProductionProgress] = useState(0);
-
-  useEffect(() => {
-    // Get the initial timestamp to sync with game loop
-    const startTime = Date.now();
+  // Calculate production progress based on actual game loop timing
+  const getProductionProgress = () => {
+    if (!productionTiming.currentTime || !productionTiming.lastGathererProduction) {
+      return 0;
+    }
     
-    const interval = setInterval(() => {
-      const elapsed = Date.now() - startTime;
-      const cyclePosition = (elapsed % 15000) / 15000; // 15000ms = 15 seconds
-      setProductionProgress(cyclePosition * 100);
-    }, 200); // Update every 200ms to match game loop tick interval
+    const elapsed = productionTiming.currentTime - productionTiming.lastGathererProduction;
+    const progress = (elapsed / productionTiming.interval) * 100;
+    return Math.min(progress, 100);
+  };
 
-    return () => clearInterval(interval);
-  }, []);
+  const productionProgress = getProductionProgress();
 
   // Define action groups with their actions
   const actionGroups = [
