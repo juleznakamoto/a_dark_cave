@@ -298,4 +298,28 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     },
   },
+
+  portalDiscovered: {
+    id: "portalDiscovered",
+    condition: (state: GameState) =>
+      state.buildings.alchemistTower >= 1 &&
+      state.flags.exploredCitadel &&
+      !state.story.seen.portalDiscovered,
+    triggerType: "resource",
+    timeProbability: 1, // Triggers immediately when conditions are met
+    message:
+      "At the lowest level of the citadel there is a massive portal out of an unknown metal, it looks like it keeps something within. Maybe you can destroy it with the power of fire (a bomb).",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          portalDiscovered: true,
+        },
+      },
+    }),
+  },
 };

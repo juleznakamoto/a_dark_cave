@@ -31,6 +31,7 @@ export const gameStateSchema = z.object({
     bloodstone: z.number().min(0).default(0),
     frostglas: z.number().min(0).default(0),
     black_powder: z.number().min(0).default(0),
+    ember_bomb: z.number().min(0).default(0),
   }).default({}),
   stats: z.object({
     strength: z.number().min(0).default(0),
@@ -57,6 +58,7 @@ export const gameStateSchema = z.object({
     forestUnlocked: z.boolean().default(false),
     altarBuilt: z.boolean().default(false),
     needsNewWell: z.boolean().default(false),
+    portalBlasted: z.boolean().default(false),
   }).default({}),
   tools: z.object({
     stone_axe: z.boolean().default(false),

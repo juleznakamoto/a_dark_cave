@@ -1,9 +1,9 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import { getTotalLuck, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
-import { caveExploreActions } from './caveExploreActions';
+import { caveExploreActions, handleBlastPortal } from './caveExploreActions';
 import { caveForgingActions } from './caveForgeActions';
-import { caveCraftResources } from './caveCraftResources';
+import { caveCraftResources, handleCraftEmberBomb } from './caveCraftResources';
 import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
@@ -571,3 +571,14 @@ export function getActionCostDisplay(actionId: string, state?: GameState): strin
 
 // Export getCostText as an alias for getActionCostDisplay for backward compatibility
 export const getCostText = getActionCostDisplay;
+
+// Register new action handlers
+gameActions.craftEmberBomb = {
+  ...caveCraftResources.craftEmberBomb,
+  handle: handleCraftEmberBomb,
+};
+
+gameActions.blastPortal = {
+  ...caveExploreActions.blastPortal,
+  handle: handleBlastPortal,
+};

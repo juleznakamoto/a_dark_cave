@@ -21,6 +21,7 @@ export default function CavePanel() {
         { id: 'exploreCitadel', label: 'Explore Citadel' },
         { id: 'lowChamber', label: 'Low Chamber' },
         { id: 'alchemistChamber', label: 'Alchemist Chamber' },
+        { id: 'blastPortal', label: 'Blast Portal' },
       ]
     },
     {
@@ -40,6 +41,7 @@ export default function CavePanel() {
           actions: [
             { id: 'buildTorch', label: 'Torch' },
             { id: 'craftBoneTotem', label: 'Bone Totem' },
+            { id: 'craftEmberBomb', label: 'Ember Bomb' },
             { id: 'craftSeekerPack', label: "Seeker's Pack" },
           ]
         },

@@ -369,6 +369,24 @@ export const caveExploreActions: Record<string, Action> = {
     },
     cooldown: 1,
   },
+
+  blastPortal: {
+    id: "blastPortal",
+    label: "Blast Portal",
+    show_when: {
+      "story.seen.portalDiscovered": true,
+      "flags.portalBlasted": false,
+    },
+    cost: {
+      "resources.ember_bomb": 10,
+    },
+    effects: {
+      "resources.ember_bomb": -10,
+      "flags.portalBlasted": true,
+      "story.seen.portalBlasted": true,
+    },
+    cooldown: 1,
+  },
 };
 
 // Action handlers
@@ -726,6 +744,24 @@ export function handleAlchemistChamber(
     id: `alchemist-chamber-explored-${Date.now()}`,
     message:
       "Following the alchemist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the alchemist's greatest treasures and experiments await, preserved in death.",
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleBlastPortal(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("blastPortal", state);
+
+  result.logEntries!.push({
+    id: `portal-blasted-${Date.now()}`,
+    message:
+      "The ember bombs detonate in a brilliant flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to your explosive power. Whatever was sealed within has been released... or destroyed. The citadel trembles as ancient energies dissipate into the darkness.",
     timestamp: Date.now(),
     type: "system",
   });
