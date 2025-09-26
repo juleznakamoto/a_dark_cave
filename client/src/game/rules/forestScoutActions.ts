@@ -59,7 +59,7 @@ export function handleHunt(state: GameState, result: ActionResult): ActionResult
 
   // Apply weapon bonuses and multipliers for hunting
   const actionBonuses = getActionBonuses('hunt', state);
-  
+
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
   }
@@ -83,6 +83,23 @@ export function handleHunt(state: GameState, result: ActionResult): ActionResult
         effectUpdates.resources[resource] = currentAmount + bonusAmount;
       }
     });
+  }
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string | any) => {
+      if (typeof message === 'string') {
+        result.logEntries!.push({
+          id: `probability-effect-${Date.now()}-${Math.random()}`,
+          message: message,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      } else if (message.type === 'event') {
+        result.logEntries!.push(message);
+      }
+    });
+    delete effectUpdates.logMessages;
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
