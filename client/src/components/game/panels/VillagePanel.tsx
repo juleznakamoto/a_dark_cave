@@ -15,12 +15,14 @@ export default function VillagePanel() {
   const [productionProgress, setProductionProgress] = useState(0);
 
   useEffect(() => {
+    // Get the initial timestamp to sync with game loop
+    const startTime = Date.now();
+    
     const interval = setInterval(() => {
-      setProductionProgress(prev => {
-        const newProgress = (prev + (100 / 75)) % 100; // 75 intervals of 200ms = 15 seconds
-        return newProgress;
-      });
-    }, 200); // Update every 200ms to match game loop
+      const elapsed = Date.now() - startTime;
+      const cyclePosition = (elapsed % 15000) / 15000; // 15000ms = 15 seconds
+      setProductionProgress(cyclePosition * 100);
+    }, 200); // Update every 200ms to match game loop tick interval
 
     return () => clearInterval(interval);
   }, []);
