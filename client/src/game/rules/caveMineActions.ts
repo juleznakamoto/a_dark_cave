@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { gameActions, applyActionEffects } from '@/game/rules';
+import { applyActionEffects } from '@/game/rules';
 
 export const caveMiningActions: Record<string, Action> = {
   mineIron: {
@@ -14,8 +14,6 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 1,
     },
     effects: {
-      "resources.torch": -1,
-      "resources.food": -5,
       "resources.iron": "random(2,5)",
       "story.seen.hasIron": true,
     },
@@ -26,15 +24,13 @@ export const caveMiningActions: Record<string, Action> = {
     id: "mineCoal",
     label: "Mine Coal",
     show_when: {
-      "tools.stone_pickaxe": true,
+      "tools.iron_pickaxe": true,
     },
     cost: {
       "resources.food": 5,
       "resources.torch": 1,
     },
     effects: {
-      "resources.torch": -1,
-      "resources.food": -5,
       "resources.coal": "random(2,5)",
       "story.seen.hasCoal": true,
     },
@@ -45,7 +41,7 @@ export const caveMiningActions: Record<string, Action> = {
     id: "mineSulfur",
     label: "Mine Sulfur",
     show_when: {
-      "tools.iron_pickaxe": true,
+      "tools.steel_pickaxe": true,
       "buildings.foundry": 1,
     },
     cost: {
@@ -87,8 +83,6 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 10,
     },
     effects: {
-      "resources.torch": -20,
-      "resources.food": -50,
       "resources.adamant": "random(2,5)",
       "story.seen.hasAdamant": true,
     },
