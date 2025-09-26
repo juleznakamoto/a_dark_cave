@@ -20,6 +20,7 @@ interface Spark {
     color: string;
     lifetime: number;
     offsetX: number;
+    createdAt: number;
 }
 
 function SuccessParticles({
@@ -115,6 +116,7 @@ function ParticleButton({
             color: colors[Math.floor(Math.random() * colors.length)],
             lifetime: 0.8 + Math.random() * 1.2,
             offsetX: buttonWidth * 0.5 + (Math.random() * 74 - 37),
+            createdAt: Date.now(),
         }));
 
         setSparks((prev) => [...prev, ...newSparks]);
@@ -125,6 +127,20 @@ function ParticleButton({
             setSparks((prev) => prev.slice(-300)); // prevent memory bloat
         }
     }, [sparks]);
+
+    // Clean up particles after 3 seconds
+    useEffect(() => {
+        const cleanup = setInterval(() => {
+            const now = Date.now();
+            setSparks((prev) => prev.filter(spark => {
+                // Remove sparks older than 3 seconds
+                const sparkAge = now - spark.createdAt;
+                return sparkAge < 3000;
+            }));
+        }, 1000); // Check every second
+
+        return () => clearInterval(cleanup);
+    }, []);
 
     const clearAllTimers = () => {
         if (intervalRef.current) {
