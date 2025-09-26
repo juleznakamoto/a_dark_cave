@@ -209,9 +209,6 @@ export default function SidePanel() {
     }
   };
 
-  // Add logic to apply seeker pack bonus to wood gathering
-  const gatherWoodBonus = gameState.tools.seeker_pack ? 1.20 : 1;
-
   return (
     <ScrollArea className="h-full max-h-full">
       <div className="pb-4 flex gap-4">
@@ -260,19 +257,6 @@ export default function SidePanel() {
           )}
         </div>
       </div>
-
-      {/* Seeker Pack tooltip */}
-      {gameState.tools.seeker_pack && (
-        <div className="flex items-center gap-2 p-2 bg-green-900/20 rounded border border-green-700/30">
-          <div className="w-8 h-8 bg-green-800/40 rounded flex items-center justify-center">
-            🎒
-          </div>
-          <div>
-            <div className="text-green-300 text-sm font-medium">Seeker's Pack</div>
-            <div className="text-green-400/70 text-xs">+20% Explore Bonus</div>
-          </div>
-        </div>
-      )}
       <ScrollBar orientation="vertical" />
     </ScrollArea>
   );

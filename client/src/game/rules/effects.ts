@@ -1032,8 +1032,6 @@ export const calculateTotalEffects = (state: GameState) => {
       knowledge: 0,
       madness: 0,
     },
-    damage_reduction: 0, // Added damage_reduction
-    wood_gathering_bonus: 0, // Added wood_gathering_bonus
   };
 
   const activeEffects = getActiveEffects(state);
@@ -1091,28 +1089,8 @@ export const calculateTotalEffects = (state: GameState) => {
       if (effect.bonuses.generalBonuses.knowledge) {
         effects.statBonuses.knowledge += effect.bonuses.generalBonuses.knowledge;
       }
-      if (effect.bonuses.generalBonuses.explorationBonus) {
-        effects.resource_multiplier['explore'] =
-          (effects.resource_multiplier['explore'] || 1) * effect.bonuses.generalBonuses.explorationBonus;
-      }
     }
   });
-
-  // Clothing effects
-  if (state.clothing.iron_armor) {
-    effects.damage_reduction = (effects.damage_reduction || 0) + 0.1; // 10% damage reduction
-  }
-  if (state.clothing.steel_armor) {
-    effects.damage_reduction = (effects.damage_reduction || 0) + 0.15; // 15% damage reduction
-  }
-  if (state.clothing.obsidian_armor) {
-    effects.damage_reduction = (effects.damage_reduction || 0) + 0.2; // 20% damage reduction
-  }
-
-  // Tool effects
-  if (state.tools.seeker_pack) {
-    effects.wood_gathering_bonus = (effects.wood_gathering_bonus || 0) + 0.2; // 20% wood gathering bonus
-  }
 
   // Hollow King's Scepter effects
   if (state.relics?.hollow_kings_scepter) {

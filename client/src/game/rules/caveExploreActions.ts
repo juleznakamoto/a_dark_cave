@@ -402,16 +402,6 @@ export function handleGatherWood(
 ): ActionResult {
   const effectUpdates = applyActionEffects("gatherWood", state);
 
-  // Apply seeker pack bonus to wood gathering
-  if (state.tools.seeker_pack && effectUpdates.resources?.wood) {
-    const currentWood = state.resources.wood || 0;
-    const woodGained = effectUpdates.resources.wood - currentWood;
-    if (woodGained > 0) {
-      const bonus = Math.floor(woodGained * 0.2); // 20% bonus
-      effectUpdates.resources.wood += bonus;
-    }
-  }
-
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
