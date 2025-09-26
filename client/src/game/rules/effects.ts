@@ -319,7 +319,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   leather_cloak: {
     id: "leather_cloak",
     name: "Leather Cloak",
-    description: "Supple leather cloak that enhances hunting prowess",
+    description: "Supple leather cloak that silences every movement",
     bonuses: {
       actionBonuses: {
         hunt: {
