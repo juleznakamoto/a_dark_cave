@@ -35,14 +35,14 @@ const caveRelics = {
     {
       key: "tarnished_amulet",
       probability: 0.01,
-      logMessage: "In the shadows of the cave, something glints. You reach down and find a tarnished amulet, its surface worn but emanating an ancient power. Without hesitation, you place it around your neck. Despite its worn appearance, you feel a strange sense of protection and good fortune emanating from it.",
+      logMessage: "In the cave’s shadows, something glints. You pick up a tarnished amulet and place it around your neck. Despite its worn surface, a strange sense of protection and fortune washes over you.",
     },
   ],
   ventureDeeper: [
     {
       key: "bloodstained_belt",
       probability: 0.015,
-      logMessage: "Among the bones and debris, you discover a leather belt stained with dark, ancient blood. Despite its grim appearance, it radiates an aura of raw strength and power. Without hesitation, you fasten it around your waist. Immediately, you feel a surge of physical power coursing through your body, though the blood never seems to dry.",
+      logMessage: "Among the bones, you find a leather belt stained with ancient blood. You fasten it, and a surge of strength courses through you, though the blood never seems to dry.",
     },
   ],
   descendFurther: [
