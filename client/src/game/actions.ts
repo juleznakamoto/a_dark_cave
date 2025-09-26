@@ -169,6 +169,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftObsidianLantern(state, result);
     case 'craftAdamantLantern':
       return handleCraftAdamantLantern(state, result);
+    case 'craftSeekerPack':
+      return handleCraftSeekerPack(state, result);
     case 'craftBoneTotem':
       return handleCraftBoneTotem(state, result);
     case 'craftIronSword':
