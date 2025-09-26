@@ -68,6 +68,7 @@ import {
   handleBuildTemple,
   handleBuildSanctum,
   handleBuildTannery,
+  handleBuildAlchemistTower,
 } from '@/game/rules/villageBuildActions';
 
 import {
@@ -238,6 +239,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildSanctum(state, result);
     case 'buildTannery':
       return handleBuildTannery(state, result);
+    case 'buildAlchemistTower':
+      return handleBuildAlchemistTower(state, result);
 
     // Forest Scout Actions
     case 'hunt':
