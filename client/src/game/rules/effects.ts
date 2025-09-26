@@ -278,6 +278,40 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
+
+  seeker_pack: {
+    id: "seeker_pack",
+    name: "Seeker's Pack",
+    description: "Well-crafted pack that enhances cave exploration efficiency",
+    bonuses: {
+      actionBonuses: {
+        exploreCave: {
+          resourceMultiplier: 1.2,
+        },
+        ventureDeeper: {
+          resourceMultiplier: 1.2,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.2,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.2,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.2,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.2,
+        },
+        lowChamber: {
+          resourceMultiplier: 1.2,
+        },
+        alchemistChamber: {
+          resourceMultiplier: 1.2,
+        },
+      },
+    },
+  },
 };
 
 // Weapon effects

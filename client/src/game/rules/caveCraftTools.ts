@@ -322,6 +322,24 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  craftSeekerPack: {
+    id: "craftSeekerPack",
+    label: "Seeker's Pack",
+    show_when: {
+      "buildings.tannery": 1,
+      "tools.seeker_pack": false,
+    },
+    cost: {
+      "resources.leather": 500,
+    },
+    effects: {
+      "tools.seeker_pack": true,
+      "story.seen.hasSeekerPack": true,
+      "story.seen.actionCraftSeekerPack": true,
+    },
+    cooldown: 20,
+  },
 };
 
 // Action handlers
@@ -411,6 +429,12 @@ export function handleCraftObsidianLantern(state: GameState, result: ActionResul
 
 export function handleCraftAdamantLantern(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftAdamantLantern', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftSeekerPack(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSeekerPack', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

@@ -74,6 +74,7 @@ export const gameStateSchema = z.object({
     blacksmith_hammer: z.boolean().default(false),
     reinforced_rope: z.boolean().default(false),
     giant_trap: z.boolean().default(false),
+    seeker_pack: z.boolean().default(false),
   }).default({}),
   weapons: z.object({
     iron_sword: z.boolean().default(false),
