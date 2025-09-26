@@ -9,7 +9,7 @@ import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
 import { villageBuildActions } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
-import { forestSacrificeActions } from './forestSacrificeActions';
+import { forestSacrificeActions, handleBoneTotems, getBoneTotemsCost } from './forestSacrificeActions';
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
 
@@ -148,12 +148,15 @@ export const shouldShowAction = (
 };
 
 // Utility function to check if requirements are met for an action
-export const canExecuteAction = (
-  actionId: string,
-  state: GameState,
-): boolean => {
+export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];
-  if (!action?.cost) return true;
+  if (!action) return false;
+
+  // Handle dynamic cost for bone totems
+  if (actionId === 'boneTotems') {
+    const dynamicCost = getBoneTotemsCost(state);
+    return (state.resources.bone_totem || 0) >= dynamicCost;
+  }
 
   // Check cooldown first
   if (state.cooldowns[actionId] && state.cooldowns[actionId] > 0) {
@@ -325,7 +328,13 @@ export const applyActionEffects = (
           if (isCraftingAction && path.startsWith('resources.') && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
           }
-          current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) - adjustedCost;
+          // Handle bone totem cost specifically
+          if (actionId === 'boneTotems' && path === 'resources.bone_totem') {
+            const dynamicCost = getBoneTotemsCost(state);
+            current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
+          } else {
+            current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) - adjustedCost;
+          }
         }
       });
     }
@@ -508,10 +517,16 @@ export const applyActionEffects = (
   return updates;
 };
 
-// Utility function to get cost text for actions
-export const getCostText = (actionId: string, state?: GameState) => {
+// Helper function to get readable action cost for display
+export function getActionCostDisplay(actionId: string, state?: GameState): string {
+  // Handle dynamic cost for bone totems
+  if (actionId === 'boneTotems') {
+    const dynamicCost = getBoneTotemsCost(state);
+    return `${dynamicCost} Bone Totem${dynamicCost !== 1 ? 's' : ''}`;
+  }
+
   const action = gameActions[actionId];
-  if (!action?.cost) return "";
+  if (!action?.cost) return '';
 
   let costs = action.cost;
 
