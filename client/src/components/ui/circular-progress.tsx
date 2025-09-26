@@ -1,6 +1,4 @@
-
 "use client"
-
 import * as React from "react"
 import { cn } from "@/lib/utils"
 
@@ -15,6 +13,22 @@ const CircularProgress = React.forwardRef<
   HTMLDivElement,
   CircularProgressProps
 >(({ value, size = 20, strokeWidth = 2, className }, ref) => {
+  const [prevValue, setPrevValue] = React.useState(value)
+  const [shouldAnimate, setShouldAnimate] = React.useState(true)
+
+  React.useEffect(() => {
+    // Detect if we're resetting from a high value to a low value
+    const isResetting = prevValue > value && prevValue > 80 && value < 20
+
+    if (isResetting) {
+      setShouldAnimate(false)
+      // Re-enable animation after a brief moment
+      setTimeout(() => setShouldAnimate(true), 50)
+    }
+
+    setPrevValue(value)
+  }, [value, prevValue])
+
   const radius = (size - strokeWidth) / 2
   const circumference = radius * 2 * Math.PI
   const strokeDashoffset = circumference - (value / 100) * circumference
@@ -35,7 +49,7 @@ const CircularProgress = React.forwardRef<
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="red"
+          stroke="#333333"
           strokeWidth={strokeWidth}
           fill="none"
           className="text-muted-foreground/20"
@@ -45,12 +59,15 @@ const CircularProgress = React.forwardRef<
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="green"
+          stroke="lightgrey"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
-          className="text-primary transition-all duration-300 ease-in-out"
+          className={cn(
+            "text-primary",
+            shouldAnimate && "transition-all duration-300 ease-in-out"
+          )}
           strokeLinecap="round"
         />
       </svg>
@@ -59,5 +76,4 @@ const CircularProgress = React.forwardRef<
 })
 
 CircularProgress.displayName = "CircularProgress"
-
 export { CircularProgress }

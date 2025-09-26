@@ -208,7 +208,7 @@ export default function VillagePanel() {
               <div className="text-xs text-muted-foreground border-t pt-2 mt-2 flex items-center gap-2">
                 <CircularProgress 
                   value={productionProgress} 
-                  size={16} 
+                  size={14} 
                   strokeWidth={2}
                   className="text-primary"
                 />
