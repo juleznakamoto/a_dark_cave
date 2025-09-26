@@ -308,7 +308,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 1, // Triggers immediately when conditions are met
     message:
-      "At the lowest level of the citadel there is a massive portal out of an unknown metal, it looks like it keeps something within. Maybe you can destroy it with the power of fire (a bomb).",
+      "In the citadel’s lowest depths stands a colossal portal forged from an unknown, unyielding metal. Its sheer sturdiness suggests it was built to keep something trapped within. Perhaps only the fury of fire can shatter its seal.",
     triggered: false,
     priority: 5,
     repeatable: false,
