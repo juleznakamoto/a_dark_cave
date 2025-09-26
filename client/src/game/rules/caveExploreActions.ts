@@ -1,8 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { gameActions, applyActionEffects } from "@/game/rules";
-import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
-import { killVillagers } from '@/game/stateHelpers';
+import { applyActionEffects } from "@/game/rules";
+import { getTotalLuck } from '@/game/rules/effects';
 
 // Helper function to apply luck bonuses to cave exploration probability effects
 function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effectUpdates: any): void {
