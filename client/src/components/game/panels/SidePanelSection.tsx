@@ -241,11 +241,17 @@ export default function SidePanelSection({
                       % Craft Discount
                     </div>
                   )}
-                  
+
                 </>
               )}
               {effect.bonuses.actionBonuses &&
-                Object.entries(effect.bonuses.actionBonuses).map(
+              (() => {
+                // Special case for seeker pack - show simplified tooltip
+                if (effect.id === 'seeker_pack') {
+                  return <div>+20% Explore Bonus</div>;
+                }
+
+                return Object.entries(effect.bonuses.actionBonuses).map(
                   ([actionId, bonus]) => (
                     <div key={actionId}>
                       {bonus.resourceMultiplier &&
@@ -264,7 +270,8 @@ export default function SidePanelSection({
                         )}
                     </div>
                   ),
-                )}
+                );
+              })()}
             </div>
           </HoverCardContent>
         </HoverCard>

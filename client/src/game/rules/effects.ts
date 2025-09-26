@@ -285,6 +285,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Well-crafted leather pack easing the weight upon your shoulders",
     bonuses: {
       actionBonuses: {
+        gatherWood: {
+          resourceMultiplier: 1.2,
+        },
         exploreCave: {
           resourceMultiplier: 1.2,
         },
