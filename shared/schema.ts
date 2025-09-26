@@ -97,6 +97,8 @@ export const gameStateSchema = z.object({
     iron_armor: z.boolean().default(false),
     steel_armor: z.boolean().default(false),
     obsidian_armor: z.boolean().default(false),
+    seeker_pack: z.boolean().default(false),
+    hunter_cloak: z.boolean().default(false),
   }).default({}),
   relics: z.object({
     tarnished_amulet: z.boolean().default(false),

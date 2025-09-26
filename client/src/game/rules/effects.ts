@@ -279,55 +279,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  seeker_pack: {
-    id: "seeker_pack",
-    name: "Seeker's Pack",
-    description: "Well-crafted leather backpack easing the weight upon your shoulders",
-    bonuses: {
-      actionBonuses: {
-        gatherWood: {
-          resourceMultiplier: 1.2,
-        },
-        exploreCave: {
-          resourceMultiplier: 1.2,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.2,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.2,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.2,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.2,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.2,
-        },
-        lowChamber: {
-          resourceMultiplier: 1.2,
-        },
-        alchemistChamber: {
-          resourceMultiplier: 1.2,
-        },
-      },
-    },
-  },
-
-  Hunter_cloak: {
-    id: "Hunter_cloak",
-    name: "Hunter Cloak",
-    description: "Supple leather cloak that silences every movement",
-    bonuses: {
-      actionBonuses: {
-        hunt: {
-          resourceMultiplier: 1.2,
-        },
-      },
-    },
-  },
+  
 };
 
 // Weapon effects
@@ -691,6 +643,56 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           strength: 5,
           madness: 3,
+        },
+      },
+    },
+
+    seeker_pack: {
+      id: "seeker_pack",
+      name: "Seeker's Pack",
+      description: "Well-crafted leather backpack easing the weight upon your shoulders",
+      bonuses: {
+        actionBonuses: {
+          gatherWood: {
+            resourceMultiplier: 1.2,
+          },
+          exploreCave: {
+            resourceMultiplier: 1.2,
+          },
+          ventureDeeper: {
+            resourceMultiplier: 1.2,
+          },
+          descendFurther: {
+            resourceMultiplier: 1.2,
+          },
+          exploreRuins: {
+            resourceMultiplier: 1.2,
+          },
+          exploreTemple: {
+            resourceMultiplier: 1.2,
+          },
+          exploreCitadel: {
+            resourceMultiplier: 1.2,
+          },
+          lowChamber: {
+            resourceMultiplier: 1.2,
+          },
+          alchemistChamber: {
+            resourceMultiplier: 1.2,
+          },
+        },
+      },
+    },
+
+    hunter_cloak: {
+      id: "hunter_cloak",
+      name: "Hunter Cloak",
+      description: "Supple leather cloak that silences every movement",
+      bonuses: {
+        actionBonuses: {
+          hunt: {
+            resourceMultiplier: 1.2,
+          },
         },
       },
     },

@@ -328,13 +328,13 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Seeker's Pack",
     show_when: {
       "buildings.tannery": 1,
-      "tools.seeker_pack": false,
+      "clothing.seeker_pack": false,
     },
     cost: {
       "resources.leather": 500,
     },
     effects: {
-      "tools.seeker_pack": true,
+      "clothing.seeker_pack": true,
       "story.seen.hasSeekerPack": true,
       "story.seen.actionCraftSeekerPack": true,
     },
@@ -346,13 +346,13 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Hunter Cloak",
     show_when: {
       "buildings.tannery": 1,
-      "tools.Hunter_cloak": false,
+      "clothing.hunter_cloak": false,
     },
     cost: {
       "resources.leather": 750,
     },
     effects: {
-      "tools.Hunter_cloak": true,
+      "clothing.hunter_cloak": true,
       "story.seen.hasHunterCloak": true,
       "story.seen.actionCraftHunterCloak": true,
     },
