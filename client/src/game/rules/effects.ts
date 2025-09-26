@@ -282,7 +282,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   seeker_pack: {
     id: "seeker_pack",
     name: "Seeker's Pack",
-    description: "Well-crafted pack that enhances cave exploration efficiency",
+    description: "Well-crafted leather pack easing the weight upon your shoulders",
     bonuses: {
       actionBonuses: {
         exploreCave: {

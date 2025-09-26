@@ -14,9 +14,6 @@ import {
   handleAlchemistChamber,
 } from '@/game/rules/caveExploreActions';
 
-// Import forge actions (currently empty but reserved for future use)
-// import {} from '@/game/rules/caveForgeActions';
-
 import {
   handleBuildTorch,
   handleCraftStoneAxe,
@@ -82,7 +79,6 @@ import {
   handleBoneTotems,
 } from '@/game/rules/forestSacrificeActions';
 
-// Import mining actions
 import {
   handleMineIron,
   handleMineCoal,
@@ -192,6 +188,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftWarBow(state, result);
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
+    case 'craftSeekerPack':
+      return handleCraftSeekerPack(state, result);
 
     // Cave Mine Actions
     case 'mineIron':
