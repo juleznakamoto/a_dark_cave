@@ -26,7 +26,6 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
           // Calculate luck bonus based only on the newly added resources
           const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
           if (luckBonusAmount > 0) {
-            console.log(`[LUCK] Applying luck bonus to ${resource}: added ${actuallyAddedAmount} + bonus ${luckBonusAmount} (luck: ${luck})`);
             effectUpdates.resources[resource] = totalAmount + luckBonusAmount;
           }
         }
