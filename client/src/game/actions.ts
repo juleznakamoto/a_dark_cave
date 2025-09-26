@@ -33,6 +33,7 @@ import {
   handleCraftSteelLantern,
   handleCraftObsidianLantern,
   handleCraftAdamantLantern,
+  handleCraftSeekerPack,
 } from '@/game/rules/caveCraftTools';
 
 import {
