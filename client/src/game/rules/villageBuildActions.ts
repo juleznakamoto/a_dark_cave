@@ -562,6 +562,31 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 80,
   },
 
+  buildAlchemistTower: {
+    id: "buildAlchemistTower",
+    label: "Alchemist's Tower",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 2,
+        "buildings.alchemistTower": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 2500,
+        "resources.steel": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.alchemistTower": 1,
+        "story.seen.hasAlchemistTower": true,
+      },
+    },
+    cooldown: 30,
+  },
+
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -885,4 +910,20 @@ export function handleBuildSanctum(state: GameState, result: ActionResult): Acti
   }
 
   return sanctumResult;
+}
+
+export function handleBuildAlchemistTower(state: GameState, result: ActionResult): ActionResult {
+  const alchemistTowerResult = handleBuildingConstruction(state, result, 'buildAlchemistTower', 'alchemistTower');
+
+  // Add alchemist tower completion message
+  if (state.buildings.alchemistTower === 0) {
+    alchemistTowerResult.logEntries!.push({
+      id: `alchemist-tower-built-${Date.now()}`,
+      message: "The Alchemist's Tower spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return alchemistTowerResult;
 }

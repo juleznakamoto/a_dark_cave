@@ -32,6 +32,7 @@ export default function VillagePanel() {
         { id: 'buildQuarry', label: 'Quarry' },
         { id: 'buildClerksHut', label: "Clerk's Hut" },
         { id: 'buildTannery', label: 'Tannery' },
+        { id: 'buildAlchemistTower', label: "Alchemist's Tower" },
       ]
     }
   ];
