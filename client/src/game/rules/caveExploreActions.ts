@@ -8,6 +8,9 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
   const luck = getTotalLuck(state);
   const luckBonus = luck * 0.01; // 1% per luck point
 
+  // Skip if no luck
+  if (luck <= 0) return;
+
   // Define which resources can benefit from luck in cave exploration
   const caveResources = ['wood', 'stone', 'coal', 'iron', 'bones', 'sulfur', 'silver', 'gold', 'obsidian', 'adamant', 'bloodstone', 'frostglas'];
 
@@ -20,6 +23,7 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
           // Calculate luck bonus based only on the newly added resources
           const luckBonusAmount = Math.floor(addedAmount * luckBonus);
           if (luckBonusAmount > 0) {
+            console.log(`[LUCK] Applying luck bonus to ${resource}: ${addedAmount} + ${luckBonusAmount} (luck: ${luck})`);
             effectUpdates.resources[resource] = addedAmount + luckBonusAmount;
           }
         }
@@ -422,6 +426,8 @@ export function handleExploreCave(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCave", state);
+
+  // Apply luck bonus to the resolved resource amounts
   applyCaveExplorationLuckBonus(state, "exploreCave", effectUpdates);
 
   // Handle any log messages from probability effects
