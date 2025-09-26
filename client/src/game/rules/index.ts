@@ -11,6 +11,7 @@ import { villageBuildActions } from './villageBuildActions';
 import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions } from './forestSacrificeActions';
 import { caveEvents } from "./eventsCave";
+import { huntEvents } from "./eventsHunt";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -401,7 +402,7 @@ export const applyActionEffects = (
         if (shouldTrigger) {
           // Check if this is a choice event (cave relic with eventId)
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
-            const event = caveEvents[probabilityEffect.eventId];
+            const event = caveEvents[probabilityEffect.eventId] || huntEvents[probabilityEffect.eventId];
             // Ensure the event exists and hasn't been seen before
             if (event && !state.story.seen[probabilityEffect.eventId]) {
               // Trigger the cave event instead of directly applying the effect

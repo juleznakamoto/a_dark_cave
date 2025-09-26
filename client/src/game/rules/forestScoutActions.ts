@@ -20,16 +20,18 @@ export const forestScoutActions: Record<string, Action> = {
       "relics.blacksmith_hammer": {
         probability: 0.005,
         value: true,
-        condition: "!relics.blacksmith_hammer",
-        logMessage:
-          "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent blacksmith hammer catches the light, its head still bearing traces of ancient forge-fire. You take the hammer with you.",
+        condition: "!relics.blacksmith_hammer && !story.seen.blacksmithHammerChoice",
+        logMessage: "",
+        isChoice: true,
+        eventId: "blacksmithHammerChoice",
       },
       "relics.red_mask": {
         probability: 0.0025,
         value: true,
-        condition: "!relics.red_mask",
-        logMessage:
-          "While hunting, you see an oddly big black raven staring at you from a broken tree. Even when you come nearer he keeps staring. Suddenly he croaks. It sounds like he is saying a word you don't understand again and again. As you come closer he flies away. On the floor in front of the tree is laying a mask out of red leather.",
+        condition: "!relics.red_mask && !story.seen.redMaskChoice",
+        logMessage: "",
+        isChoice: true,
+        eventId: "redMaskChoice",
       },
     },
     cooldown: 10,
