@@ -192,25 +192,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
     console.log(`[STATE] Set Flag: ${flag} = ${value}`);
     set((state) => {
-      // Check if village is being unlocked for the first time before applying updates
-      const wasVillageAlreadyUnlocked = state.flags.villageUnlocked;
       const updates = updateFlag(state, flag, value);
-      
-      // Add event log message when village is unlocked for the first time
-      if (flag === "villageUnlocked" && value === true && !wasVillageAlreadyUnlocked) {
-        const villageUnlockedEntry = {
-          id: `village-unlocked-${Date.now()}`,
-          message: "Outside the cave a clearing opens. This could be the start of something great.",
-          timestamp: Date.now(),
-          type: "system" as const,
-        };
-        console.log(`[STATE] Adding village unlocked log entry:`, villageUnlockedEntry);
-        return {
-          ...state,
-          ...updates,
-          log: [...state.log, villageUnlockedEntry].slice(-8),
-        };
-      }
       console.log(`[STATE] Flag update result:`, updates);
       return updates;
     });
