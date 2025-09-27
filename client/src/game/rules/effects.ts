@@ -447,7 +447,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ring_of_clarity: {
     id: "ring_of_clarity",
     name: "Ring of Clarity",
-    description: "A crystal-clear ring that sharpens the mind and banishes dark thoughts",
+    description: "Ring out of clear crystal sharpening the mind",
     bonuses: {
       generalBonuses: {
         knowledge: 2,
