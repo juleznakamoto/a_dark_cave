@@ -159,7 +159,7 @@ const defaultGameState: GameState = {
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
-  devMode: true,
+  devMode: import.meta.env.DEV,
   cooldowns: {},
   log: [],
   current_population: 0,
@@ -343,7 +343,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       activeTab: "cave",
       cooldowns: {},
       log: [],
-      devMode: true,
+      devMode: import.meta.env.DEV,
       effects: calculateTotalEffects(defaultGameState),
     };
     set(resetState);
@@ -380,7 +380,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         cooldowns: {},
         log: savedState.log || [],
-        devMode: true, // Ensure devMode is always true
+        devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(savedState),
       };
       set(loadedState);
@@ -393,7 +393,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         cooldowns: {},
         log: [],
-        devMode: true,
+        devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(defaultGameState),
       };
       set(newGameState);
@@ -502,7 +502,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   toggleDevMode: () => {
-    // Dev mode is always enabled - no-op
+    // Dev mode is controlled by NODE_ENV - no-op in production
   },
 
   assignVillager: (job: keyof GameState['villagers']) => {
