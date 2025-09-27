@@ -371,6 +371,17 @@ export function handleBuildTorch(state: GameState, result: ActionResult): Action
 export function handleCraftStoneAxe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftStoneAxe', state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  // Add village unlocked message when stone axe is crafted
+  if (!state.flags.villageUnlocked) {
+    result.logEntries!.push({
+      id: `village-unlocked-${Date.now()}`,
+      message: "Outside the cave a clearing opens. This could be the start of something great.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
   return result;
 }
 
