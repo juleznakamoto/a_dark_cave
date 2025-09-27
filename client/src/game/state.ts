@@ -193,6 +193,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
     console.log(`[STATE] Set Flag: ${flag} = ${value}`);
     set((state) => {
       const updates = updateFlag(state, flag, value);
+      // Add event log message when village is unlocked
+      if (flag === "villageUnlocked" && value === true) {
+        const villageUnlockedEntry = {
+          id: `village-unlocked-${Date.now()}`,
+          message: "Beyond the cave's entrance, you discover a clearing that could serve as a place to build something.",
+          timestamp: Date.now(),
+          type: "system" as const,
+        };
+        console.log(`[STATE] Adding log entry:`, villageUnlockedEntry);
+        return {
+          ...state,
+          ...updates,
+          log: [...state.log, villageUnlockedEntry].slice(-8),
+        };
+      }
       console.log(`[STATE] Flag update result:`, updates);
       return updates;
     });
@@ -539,7 +554,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const updates = updatePopulationCounts(state);
       const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
       const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
-      
+
       return { 
         ...state, 
         ...updates,
