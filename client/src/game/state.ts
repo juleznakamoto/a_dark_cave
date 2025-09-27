@@ -193,8 +193,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     console.log(`[STATE] Set Flag: ${flag} = ${value}`);
     set((state) => {
       const updates = updateFlag(state, flag, value);
-      // Add event log message when village is unlocked
-      if (flag === "villageUnlocked" && value === true) {
+      // Add event log message when village is unlocked for the first time
+      if (flag === "villageUnlocked" && value === true && !state.flags.villageUnlocked) {
         const villageUnlockedEntry = {
           id: `village-unlocked-${Date.now()}`,
           message: "Outside the cave a clearing opens. This could be the start of something great.",
