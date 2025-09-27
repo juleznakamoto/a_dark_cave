@@ -47,6 +47,7 @@ export const caveCraftTools: Record<string, Action> = {
     show_when: {
       "flags.caveExplored": true,
       "tools.stone_pickaxe": false,
+      "tools.stone_axe": true,
     },
     cost: {
       "resources.wood": 50,
