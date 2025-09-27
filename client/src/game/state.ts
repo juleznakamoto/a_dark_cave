@@ -197,7 +197,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       if (flag === "villageUnlocked" && value === true) {
         const villageUnlockedEntry = {
           id: `village-unlocked-${Date.now()}`,
-          message: "Beyond the cave's entrance, you discover a clearing that could serve as a place to build something.",
+          message: "Outside the cave a clearing opens. This could be the start of something great.",
           timestamp: Date.now(),
           type: "system" as const,
         };
