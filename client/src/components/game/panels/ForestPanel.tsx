@@ -102,15 +102,24 @@ export default function ForestPanel() {
           <h3 className="text-sm font-semibold text-foreground">Trade</h3>
           <div className="flex flex-wrap gap-2">
             {[
-              { id: 'tradeGoldForWood', label: 'Buy 500 Wood', cost: '5 gold' },
-              { id: 'tradeGoldForStone', label: 'Buy 500 Stone', cost: '10 gold' },
-              { id: 'tradeGoldForSteel', label: 'Buy 100 Steel', cost: '15 gold' },
-              { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian', cost: '25 gold' },
-              { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant', cost: '50 gold' },
-              { id: 'tradeGoldForTorch', label: 'Buy 50 Torch', cost: '10 gold' },
-              { id: 'tradeSilverForGold', label: 'Buy 50 Gold', cost: '100 silver' },
+              { id: 'tradeGoldForWood', label: 'Buy 500 Wood', resource: 'gold', amount: 5 },
+              { id: 'tradeGoldForStone', label: 'Buy 500 Stone', resource: 'gold', amount: 10 },
+              { id: 'tradeGoldForSteel', label: 'Buy 100 Steel', resource: 'gold', amount: 15 },
+              { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian', resource: 'gold', amount: 25 },
+              { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant', resource: 'gold', amount: 50 },
+              { id: 'tradeGoldForTorch', label: 'Buy 50 Torch', resource: 'gold', amount: 10 },
+              { id: 'tradeSilverForGold', label: 'Buy 50 Gold', resource: 'silver', amount: 100 },
             ].map(trade => {
-              const canExecute = canExecuteAction(trade.id, state);
+              // Check if user has enough resources
+              const currentAmount = state.resources[trade.resource] || 0;
+              const hasEnoughResources = currentAmount >= trade.amount;
+              
+              // Check cooldown
+              const isOnCooldown = state.cooldowns[trade.id] && state.cooldowns[trade.id] > 0;
+              
+              // Button should be disabled if either no resources or on cooldown
+              const canExecute = hasEnoughResources && !isOnCooldown;
+              
               const knowledge = state.stats.knowledge || 0;
               const cooldownReduction = Math.min(0.5 * knowledge, 15);
               const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -134,7 +143,7 @@ export default function ForestPanel() {
                   </HoverCardTrigger>
                   <HoverCardContent className="w-auto p-2">
                     <div className="text-xs whitespace-nowrap">
-                      -{trade.cost}
+                      -{trade.amount} {trade.resource}
                     </div>
                   </HoverCardContent>
                 </HoverCard>
