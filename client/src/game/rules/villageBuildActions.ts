@@ -588,6 +588,31 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
+  buildTradePost: {
+    id: "buildTradePost",
+    label: "Trade Post",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 1,
+        "buildings.tradePost": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2000,
+        "resources.stone": 1000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.tradePost": 1,
+        "story.seen.hasTradePost": true,
+      },
+    },
+    cooldown: 40,
+  },
+
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -927,4 +952,20 @@ export function handleBuildAlchemistTower(state: GameState, result: ActionResult
   }
 
   return alchemistTowerResult;
+}
+
+export function handleBuildTradePost(state: GameState, result: ActionResult): ActionResult {
+  const tradePostResult = handleBuildingConstruction(state, result, 'buildTradePost', 'tradePost');
+
+  // Add trade post completion message
+  if (state.buildings.tradePost === 0) {
+    tradePostResult.logEntries!.push({
+      id: `trade-post-built-${Date.now()}`,
+      message: "A trade post is built near the forest attracting tradesman who look to sell their goods for precious metals.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return tradePostResult;
 }

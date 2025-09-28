@@ -12,6 +12,7 @@ import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions, handleBoneTotems, getBoneTotemsCost } from './forestSacrificeActions';
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
+import { forestTradeActions } from './forestTradeActions';
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -22,9 +23,9 @@ export const gameActions: Record<string, Action> = {
   ...caveCraftTools,
   ...caveCraftWeapons,
   ...caveMiningActions,
-  ...caveCraftWeapons,
   ...forestScoutActions,
   ...forestSacrificeActions,
+  ...forestTradeActions,
 };
 
 // Utility function to get the next building level
@@ -82,6 +83,9 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   }
   if (actionId === "buildAlchemistTower") {
     return (state.buildings.alchemistTower || 0) + 1;
+  }
+  if (actionId === "buildTradePost") {
+    return (state.buildings.tradePost || 0) + 1;
   }
   return 1;
 };
