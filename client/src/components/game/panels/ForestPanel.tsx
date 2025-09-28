@@ -1,33 +1,36 @@
-import { useGameStore } from "@/game/state";
-import { forestTradeActions } from "@/game/rules/forestTradeActions";
-import { forestSacrificeActions } from "@/game/rules/forestSacrificeActions";
-import { forestScoutActions } from "@/game/rules/forestScoutActions";
-import { shouldShowAction, canExecuteAction } from "@/game/rules";
-import CooldownButton from "@/components/CooldownButton";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+
+import { useGameStore } from '@/game/state';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
+import CooldownButton from '@/components/CooldownButton';
+import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function ForestPanel() {
-  const { executeAction, buildings, cooldowns, ...gameState } = useGameStore(); // Destructure gameState and cooldowns
+  const { executeAction, buildings } = useGameStore();
+  const state = useGameStore();
 
   // Define action groups with their actions
   const actionGroups = [
     {
       title: 'Scout',
-      actions: Object.values(forestScoutActions),
+      actions: [
+        { id: 'hunt', label: 'Hunt' },
+        { id: 'layTrap', label: 'Lay Trap' },
+      ]
     },
     {
       title: 'Sacrifice',
-      actions: Object.values(forestSacrificeActions),
+      actions: [
+        { id: 'boneTotems', label: 'Bone Totems' },
+      ]
     },
   ];
 
   const renderButton = (actionId: string, label: string) => {
-    const action = forestScoutActions[actionId] || forestSacrificeActions[actionId] || forestTradeActions[actionId]; // Get action details
+    const action = gameActions[actionId];
     if (!action) return null;
 
-    const canExecute = canExecuteAction(actionId, gameState);
+    const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
-    const isOnCooldown = (cooldowns[actionId] || 0) > 0;
 
     if (showCost) {
       return (
@@ -39,7 +42,7 @@ export default function ForestPanel() {
                 cooldownMs={action.cooldown * 1000}
                 data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
                 size="sm"
-                disabled={isOnCooldown || !canExecute}
+                disabled={!canExecute}
                 variant="outline"
                 className="hover:bg-transparent hover:text-foreground"
               >
@@ -49,9 +52,7 @@ export default function ForestPanel() {
           </HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              Cost: {Object.entries(action.cost)
-                .map(([resource, amount]) => `${amount} ${resource.replace('resources.', '')}`)
-                .join(', ')}
+              {getCostText(actionId, state)}
             </div>
           </HoverCardContent>
         </HoverCard>
@@ -65,7 +66,7 @@ export default function ForestPanel() {
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
         size="sm"
-        disabled={isOnCooldown || !canExecute}
+        disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
       >
@@ -77,9 +78,8 @@ export default function ForestPanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
-        // Filter actions that should be shown
-        const visibleActions = group.actions.filter(action =>
-          shouldShowAction(action.id, gameState)
+        const visibleActions = group.actions.filter(action => 
+          shouldShowAction(action.id, state)
         );
 
         if (visibleActions.length === 0) return null;
@@ -101,43 +101,45 @@ export default function ForestPanel() {
         <div className="space-y-4">
           <h3 className="text-sm font-semibold text-foreground">Trade</h3>
           <div className="flex flex-wrap gap-2">
-            {Object.entries(forestTradeActions).map(([actionId, action]) => {
-                const isOnCooldown = (cooldowns[actionId] || 0) > 0;
-                const shouldShow = shouldShowAction(actionId, gameState);
+            {[
+              { id: 'tradeGoldForWood', label: 'Buy 500 Wood', cost: '5 gold' },
+              { id: 'tradeGoldForStone', label: 'Buy 500 Stone', cost: '10 gold' },
+              { id: 'tradeGoldForSteel', label: 'Buy 100 Steel', cost: '15 gold' },
+              { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian', cost: '25 gold' },
+              { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant', cost: '50 gold' },
+              { id: 'tradeGoldForTorch', label: 'Buy 50 Torch', cost: '10 gold' },
+              { id: 'tradeSilverForGold', label: 'Buy 50 Gold', cost: '100 silver' },
+            ].map(trade => {
+              const canExecute = canExecuteAction(trade.id, state);
+              const knowledge = state.stats.knowledge || 0;
+              const cooldownReduction = Math.min(0.5 * knowledge, 15);
+              const actualCooldown = Math.max(15, 30 - cooldownReduction);
 
-                if (!shouldShow) return null;
-
-                // Check if player can afford the trade
-                const canAfford = canExecuteAction(actionId, gameState);
-
-                return (
-                  <CooldownButton
-                    key={actionId}
-                    onClick={() => executeAction(actionId)}
-                    disabled={isOnCooldown || !canAfford}
-                    cooldownMs={action.cooldown * 1000}
-                    data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-                    size="sm"
-                    variant="outline"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    <div className="flex flex-col items-start w-full">
-                      <span className="font-medium text-sm leading-tight">
-                        {action.label}
-                      </span>
-                      {action.cost?.[1] && (
-                        <span className="text-xs text-muted-foreground mt-1">
-                          Cost: {Object.entries(action.cost[1])
-                            .map(([resource, amount]) =>
-                              `${amount} ${resource.replace('resources.', '')}`
-                            )
-                            .join(', ')}
-                        </span>
-                      )}
+              return (
+                <HoverCard key={trade.id} openDelay={100} closeDelay={100}>
+                  <HoverCardTrigger asChild>
+                    <div>
+                      <CooldownButton
+                        onClick={() => executeAction(trade.id)}
+                        cooldownMs={actualCooldown * 1000}
+                        data-testid={`button-${trade.id.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+                        disabled={!canExecute}
+                        size="sm"
+                        variant="outline"
+                        className="hover:bg-transparent hover:text-foreground"
+                      >
+                        {trade.label}
+                      </CooldownButton>
                     </div>
-                  </CooldownButton>
-                );
-              })}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-auto p-2">
+                    <div className="text-xs whitespace-nowrap">
+                      -{trade.cost}
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              );
+            })}
           </div>
         </div>
       )}
