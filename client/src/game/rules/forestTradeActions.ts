@@ -2,6 +2,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { getTotalKnowledge } from './effects';
+import { applyActionEffects } from './index';
 
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForWood: {
@@ -118,6 +119,9 @@ export const forestTradeActions: Record<string, Action> = {
 };
 
 export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForWood', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -131,6 +135,9 @@ export function handleTradeGoldForWood(state: GameState, result: ActionResult): 
 }
 
 export function handleTradeGoldForStone(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForStone', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -144,6 +151,9 @@ export function handleTradeGoldForStone(state: GameState, result: ActionResult):
 }
 
 export function handleTradeGoldForSteel(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForSteel', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -157,6 +167,9 @@ export function handleTradeGoldForSteel(state: GameState, result: ActionResult):
 }
 
 export function handleTradeGoldForObsidian(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForObsidian', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -170,6 +183,9 @@ export function handleTradeGoldForObsidian(state: GameState, result: ActionResul
 }
 
 export function handleTradeGoldForAdamant(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForAdamant', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -183,6 +199,9 @@ export function handleTradeGoldForAdamant(state: GameState, result: ActionResult
 }
 
 export function handleTradeGoldForTorch(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeGoldForTorch', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
@@ -196,6 +215,9 @@ export function handleTradeGoldForTorch(state: GameState, result: ActionResult):
 }
 
 export function handleTradeSilverForGold(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('tradeSilverForGold', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
