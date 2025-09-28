@@ -585,7 +585,3 @@ gameActions.blastPortal = {
   ...caveExploreActions.blastPortal,
   handle: handleBlastPortal,
 };
-
-// Export all trade actions
-export { forestTradeActions } from './forestTradeActions';
-export * from './forestTradeActions';
