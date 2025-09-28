@@ -71,6 +71,9 @@ import {
   handleBuildTannery,
   handleBuildAlchemistTower,
   handleBuildTradePost,
+} from './rules/villageBuildActions';
+
+import {
   handleTradeWoodForGold,
   handleTradeStoneForGold,
   handleTradeSteelForGold,
@@ -78,7 +81,7 @@ import {
   handleTradeAdamantForGold,
   handleTradeTorchForGold,
   handleTradeGoldForSilver,
-} from './rules/villageBuildActions';
+} from './rules/forestTradeActions';
 
 import {
   handleHunt,
