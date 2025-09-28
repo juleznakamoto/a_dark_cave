@@ -181,18 +181,6 @@ export function shouldShowAction(actionId: string, state: GameState): boolean {
 
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
-  // Handle trade actions from forestTradeActions
-  if (actionId.startsWith('trade')) {
-    const tradeAction = tradePostActions[actionId];
-    if (tradeAction && tradeAction.cost && tradeAction.cost[1]) {
-      const costs = tradeAction.cost[1];
-      return Object.entries(costs).every(([resource, amount]) => {
-        const resourceKey = resource.includes('.') ? resource.split('.')[1] : resource;
-        return (state.resources[resourceKey as keyof typeof state.resources] || 0) >= amount;
-      });
-    }
-  }
-
   const action = gameActions[actionId];
   if (!action) return false;
 
@@ -562,41 +550,29 @@ export const applyActionEffects = (
 };
 
 // Helper function to get readable action cost for display
-export function getCostText(actionId: string, state: GameState): string {
-  // Handle trade actions from forestTradeActions
-  if (actionId.startsWith('trade')) {
-    const tradeAction = tradePostActions[actionId];
-    if (tradeAction && tradeAction.cost && tradeAction.cost[1]) {
-      const costs = tradeAction.cost[1];
-      return Object.entries(costs)
-        .map(([resource, amount]) => {
-          const resourceName = resource.includes(".")
-            ? resource.split(".").pop()
-            : resource;
-          const formattedName = resourceName
-            .split('_')
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-            .join(' ');
-          return `${amount} ${formattedName}`;
-        })
-        .join(", ");
-    }
+export function getActionCostDisplay(actionId: string, state?: GameState): string {
+  // Handle dynamic cost for bone totems
+  if (actionId === 'boneTotems') {
+    const dynamicCost = getBoneTotemsCost(state);
+    return `${dynamicCost} Bone Totem${dynamicCost !== 1 ? 's' : ''}`;
   }
 
   const action = gameActions[actionId];
-  if (!action || !action.cost) return "";
+  if (!action?.cost) return '';
 
-  const level = 1;
-  const costs = action.cost[level] || action.cost;
+  let costs = action.cost;
 
-  // Skip if no costs
+  // For building actions, get the cost for the next level
+  if (action.building && state) {
+    const level = getNextBuildingLevel(actionId, state);
+    costs = action.cost[level];
+  }
+
   if (!costs || Object.keys(costs).length === 0) return "";
 
-  // Check if this is a crafting action (starts with "craft" or "build")
-  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('build');
-
-  // Calculate crafting cost reduction
-  const craftingCostReduction = getTotalCraftingCostReduction(state);
+  // Get crafting cost reduction for crafting actions
+  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
+  const craftingCostReduction = (isCraftingAction && state) ? getTotalCraftingCostReduction(state) : 0;
 
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
@@ -620,12 +596,13 @@ export function getCostText(actionId: string, state: GameState): string {
     .join(", ");
 
   return costText;
-}
+};
 
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
 
-// Note: getCostText function handles both trade actions and regular actions
+// Export getCostText as an alias for getActionCostDisplay for backward compatibility
+export const getCostText = getActionCostDisplay;
 
 // Register new action handlers
 gameActions.craftEmberBomb = {
