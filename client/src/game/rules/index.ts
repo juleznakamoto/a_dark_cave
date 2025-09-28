@@ -158,6 +158,11 @@ export function shouldShowAction(actionId: string, state: GameState): boolean {
     for (const [path, requiredValue] of Object.entries(conditions)) {
       const actualValue = getValueFromPath(state, path);
 
+      // Debug logging for tradeWoodForGold
+      if (actionId === 'tradeWoodForGold') {
+        console.log(`[DEBUG] tradeWoodForGold check - path: ${path}, required: ${requiredValue}, actual: ${actualValue}`);
+      }
+
       if (typeof requiredValue === 'boolean') {
         if (actualValue !== requiredValue) {
           allConditionsMet = false;
@@ -172,10 +177,16 @@ export function shouldShowAction(actionId: string, state: GameState): boolean {
     }
 
     if (allConditionsMet) {
+      if (actionId === 'tradeWoodForGold') {
+        console.log(`[DEBUG] tradeWoodForGold - conditions met at level ${level}`);
+      }
       return true;
     }
   }
 
+  if (actionId === 'tradeWoodForGold') {
+    console.log(`[DEBUG] tradeWoodForGold - no conditions met`);
+  }
   return false;
 }
 
