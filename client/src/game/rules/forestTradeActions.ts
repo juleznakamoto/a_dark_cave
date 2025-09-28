@@ -8,20 +8,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForWood",
     label: "Buy 500 Wood",
     show_when: {
-      1: {
-        "buildings.blacksmith": 1,
-      },
+      "buildings.blacksmith": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 5,
-      },
+      "resources.gold": 5,
     },
     effects: {
-      1: {
-        "resources.gold": -5,
-        "resources.wood": 500,
-      },
+      "resources.gold": -5,
+      "resources.wood": 500,
     },
     cooldown: 30,
   },
@@ -30,20 +24,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForStone",
     label: "Buy 500 Stone",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 10,
-      },
+      "resources.gold": 10,
     },
     effects: {
-      1: {
-        "resources.gold": -10,
-        "resources.stone": 500,
-      },
+      "resources.gold": -10,
+      "resources.stone": 500,
     },
     cooldown: 30,
   },
@@ -52,20 +40,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForSteel",
     label: "Buy 100 Steel",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 15,
-      },
+      "resources.gold": 15,
     },
     effects: {
-      1: {
-        "resources.gold": -15,
-        "resources.steel": 100,
-      },
+      "resources.gold": -15,
+      "resources.steel": 100,
     },
     cooldown: 30,
   },
@@ -74,20 +56,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForObsidian",
     label: "Buy 50 Obsidian",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 25,
-      },
+      "resources.gold": 25,
     },
     effects: {
-      1: {
-        "resources.gold": -25,
-        "resources.obsidian": 50,
-      },
+      "resources.gold": -25,
+      "resources.obsidian": 50,
     },
     cooldown: 30,
   },
@@ -96,20 +72,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForAdamant",
     label: "Buy 50 Adamant",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 50,
-      },
+      "resources.gold": 50,
     },
     effects: {
-      1: {
-        "resources.gold": -50,
-        "resources.adamant": 50,
-      },
+      "resources.gold": -50,
+      "resources.adamant": 50,
     },
     cooldown: 30,
   },
@@ -118,20 +88,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForTorch",
     label: "Buy 50 Torch",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.gold": 10,
-      },
+      "resources.gold": 10,
     },
     effects: {
-      1: {
-        "resources.gold": -10,
-        "resources.torch": 50,
-      },
+      "resources.gold": -10,
+      "resources.torch": 50,
     },
     cooldown: 30,
   },
@@ -140,20 +104,14 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeSilverForGold",
     label: "Buy 50 Gold",
     show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
+      "buildings.tradePost": 1,
     },
     cost: {
-      1: {
-        "resources.silver": 100,
-      },
+      "resources.silver": 100,
     },
     effects: {
-      1: {
-        "resources.silver": -100,
-        "resources.gold": 50,
-      },
+      "resources.silver": -100,
+      "resources.gold": 50,
     },
     cooldown: 30,
   },
