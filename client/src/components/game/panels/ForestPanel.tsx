@@ -5,7 +5,7 @@ import CooldownButton from '@/components/CooldownButton';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function ForestPanel() {
-  const { executeAction, buildings } = useGameStore();
+  const { executeAction } = useGameStore();
   const state = useGameStore();
 
   // Define action groups with their actions
@@ -21,6 +21,18 @@ export default function ForestPanel() {
       title: 'Sacrifice',
       actions: [
         { id: 'boneTotems', label: 'Bone Totems' },
+      ]
+    },
+    {
+      title: 'Trade',
+      actions: [
+        { id: 'tradeGoldForWood', label: 'Buy 500 Wood' },
+        { id: 'tradeGoldForStone', label: 'Buy 500 Stone' },
+        { id: 'tradeGoldForSteel', label: 'Buy 100 Steel' },
+        { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian' },
+        { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant' },
+        { id: 'tradeGoldForTorch', label: 'Buy 50 Torch' },
+        { id: 'tradeSilverForGold', label: 'Buy 50 Gold' },
       ]
     },
   ];
@@ -96,62 +108,7 @@ export default function ForestPanel() {
         );
       })}
 
-      {/* Trade Section */}
-      {buildings.blacksmith > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-foreground">Trade</h3>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'tradeGoldForWood', label: 'Buy 500 Wood', resource: 'gold', amount: 5 },
-              { id: 'tradeGoldForStone', label: 'Buy 500 Stone', resource: 'gold', amount: 10 },
-              { id: 'tradeGoldForSteel', label: 'Buy 100 Steel', resource: 'gold', amount: 15 },
-              { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian', resource: 'gold', amount: 25 },
-              { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant', resource: 'gold', amount: 50 },
-              { id: 'tradeGoldForTorch', label: 'Buy 50 Torch', resource: 'gold', amount: 10 },
-              { id: 'tradeSilverForGold', label: 'Buy 50 Gold', resource: 'silver', amount: 100 },
-            ].map(trade => {
-              // Check if user has enough resources
-              const currentAmount = state.resources[trade.resource] || 0;
-              const hasEnoughResources = currentAmount >= trade.amount;
-              
-              // Check cooldown
-              const isOnCooldown = state.cooldowns[trade.id] && state.cooldowns[trade.id] > 0;
-              
-              // Button should be disabled if either no resources or on cooldown
-              const canExecute = hasEnoughResources && !isOnCooldown;
-              
-              const knowledge = state.stats.knowledge || 0;
-              const cooldownReduction = Math.min(0.5 * knowledge, 15);
-              const actualCooldown = Math.max(15, 30 - cooldownReduction);
-
-              return (
-                <HoverCard key={trade.id} openDelay={100} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <div>
-                      <CooldownButton
-                        onClick={() => executeAction(trade.id)}
-                        cooldownMs={actualCooldown * 1000}
-                        data-testid={`button-${trade.id.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-                        disabled={!canExecute}
-                        size="sm"
-                        variant="outline"
-                        className="hover:bg-transparent hover:text-foreground"
-                      >
-                        {trade.label}
-                      </CooldownButton>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-2">
-                    <div className="text-xs whitespace-nowrap">
-                      -{trade.amount} {trade.resource}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }
