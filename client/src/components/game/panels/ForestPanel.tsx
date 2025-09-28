@@ -90,6 +90,12 @@ export default function ForestPanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
+        // Special handling for Trade group
+        if (group.title === 'Trade') {
+          const showTradeGroup = state.buildings.woodenHut >= 3 || state.buildings.tradePost >= 1;
+          if (!showTradeGroup) return null;
+        }
+
         const visibleActions = group.actions.filter(action => 
           shouldShowAction(action.id, state)
         );
