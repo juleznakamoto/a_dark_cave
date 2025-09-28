@@ -220,53 +220,7 @@ export default function VillagePanel() {
         </div>
       )}
 
-      {/* Trade Section */}
-      {buildings.tradePost > 0 && (
-        <div className="space-y-4">
-          <h3 className="text-sm font-semibold text-foreground">Trade</h3>
-          <div className="flex flex-wrap gap-2">
-            {[
-              { id: 'tradeWoodForGold', label: 'Buy 5 Gold', cost: '500 wood' },
-              { id: 'tradeStoneForGold', label: 'Buy 10 Gold', cost: '500 stone' },
-              { id: 'tradeSteelForGold', label: 'Buy 15 Gold', cost: '100 steel' },
-              { id: 'tradeObsidianForGold', label: 'Buy 25 Gold', cost: '50 obsidian' },
-              { id: 'tradeAdamantForGold', label: 'Buy 50 Gold', cost: '50 adamant' },
-              { id: 'tradeTorchForGold', label: 'Buy 10 Gold', cost: '50 torch' },
-              { id: 'tradeGoldForSilver', label: 'Buy 100 Silver', cost: '50 gold' },
-            ].map(trade => {
-              const canExecute = canExecuteAction(trade.id, state);
-              const knowledge = state.stats.knowledge || 0;
-              const cooldownReduction = Math.min(0.5 * knowledge, 15);
-              const actualCooldown = Math.max(15, 30 - cooldownReduction);
-
-              return (
-                <HoverCard key={trade.id} openDelay={100} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <div>
-                      <CooldownButton
-                        onClick={() => executeAction(trade.id)}
-                        cooldownMs={actualCooldown * 1000}
-                        data-testid={`button-${trade.id.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-                        disabled={!canExecute}
-                        size="sm"
-                        variant="outline"
-                        className="hover:bg-transparent hover:text-foreground"
-                      >
-                        {trade.label}
-                      </CooldownButton>
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-2">
-                    <div className="text-xs whitespace-nowrap">
-                      {trade.cost}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              );
-            })}
-          </div>
-        </div>
-      )}
+      
     </div>
   );
 }
