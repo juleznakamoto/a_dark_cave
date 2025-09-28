@@ -410,24 +410,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
-    description: "An ancient golden crown radiating with mysterious power.",
+    description: "Ancient golden crown radiating with mysterious power",
     bonuses: {
       generalBonuses: {
         luck: 5,
         knowledge: 3,
         madness: 1,
-      },
-      actionBonuses: {},
-    },
-  },
-
-  rough_cloak: {
-    id: "rough_cloak",
-    name: "Rough Cloak",
-    description: "A simple cloak that provides basic protection.",
-    bonuses: {
-      generalBonuses: {
-        gatheringSpeed: 1.1, // 10% faster gathering
       },
       actionBonuses: {},
     },
@@ -505,7 +493,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 5,
-        madness: 1,
+        madness: 2,
       },
     },
   },
@@ -541,7 +529,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       bonuses: {
         generalBonuses: {
           knowledge: 10,
-          madness: 3,
+          madness: 2,
         },
       },
     },
@@ -559,23 +547,23 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     coin_of_drowned: {
       id: "coin_of_drowned",
       name: "Coin of Drowned",
-      description: "A ring that is always wet and cold",
+      description: "Ring that is always wet and cold",
       bonuses: {
         generalBonuses: {
           luck: 4,
-          madness: 2,
+          madness: 3,
         },
       },
     },
     shadow_flute: {
       id: "shadow_flute",
       name: "Shadow Flute",
-      description: "A bone flute that makes shadows move unnaturally",
+      description: "Bone flute that makes shadows move unnaturally",
       bonuses: {
         generalBonuses: {
           luck: 3,
-          knowledge: 2,
-          madness: 3,
+          knowledge: 3,
+          madness: 4,
         },
       },
     },
@@ -607,7 +595,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     blackened_mirror: {
       id: "blackened_mirror",
       name: "Blackened Mirror",
-      description: "A tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
+      description: "Tall, cracked mirror framed in black iron that radiates cold",
       bonuses: {
         generalBonuses: {
           knowledge: 7,
@@ -624,7 +612,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           luck: 5,
           strength: 3,
-          madness: 1,
+          madness: 2,
         },
       },
     },
@@ -632,12 +620,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     red_mask: {
       id: "red_mask",
       name: "Red Mask",
-      description: "A mask crafted from deep crimson leather",
+      description: "Mask crafted from deep crimson leather left behind by a black raven",
       bonuses: {
         generalBonuses: {
           luck: 3,
           knowledge: 2,
-          madness: 1,
+          madness: 2,
         },
       },
     },
@@ -645,7 +633,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     black_bear_fur: {
       id: "black_bear_fur",
       name: "Black Bear Fur",
-      description: "Cursed fur from a otherworldy giant bear",
+      description: "Cursed fur from an otherworldy giant bear",
       bonuses: {
         actionBonuses: {
           hunt: {

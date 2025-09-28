@@ -1,4 +1,4 @@
-import { villageBuildActions } from '@/game/rules/villageBuildActions';
+import { villageBuildActions } from "@/game/rules/villageBuildActions";
 
 export interface PopulationJobConfig {
   id: string;
@@ -38,7 +38,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       },
       { resource: "fur", amount: 1, interval: 15000 },
       { resource: "bones", amount: 1, interval: 15000 },
-
     ],
   },
   iron_miner: {
@@ -136,7 +135,11 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
-export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
+export const getPopulationProduction = (
+  jobId: string,
+  count: number,
+  state?: any,
+) => {
   const job = populationJobs[jobId];
   if (!job) return [];
 
@@ -146,18 +149,27 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
     // Apply building production effects from villageBuildActions if state is provided
     if (state && state.buildings) {
       // Check each building type for productionEffects that affect this job
-      Object.entries(state.buildings).forEach(([buildingType, buildingCount]) => {
-        if (buildingCount > 0) {
-          const buildingAction = villageBuildActions[`build${buildingType.charAt(0).toUpperCase() + buildingType.slice(1)}`];
-          
-          if (buildingAction && buildingAction.productionEffects && buildingAction.productionEffects[jobId]) {
-            const jobEffects = buildingAction.productionEffects[jobId];
-            if (jobEffects[prod.resource]) {
-              amount += jobEffects[prod.resource];
+      Object.entries(state.buildings).forEach(
+        ([buildingType, buildingCount]) => {
+          if (buildingCount > 0) {
+            const buildingAction =
+              villageBuildActions[
+                `build${buildingType.charAt(0).toUpperCase() + buildingType.slice(1)}`
+              ];
+
+            if (
+              buildingAction &&
+              buildingAction.productionEffects &&
+              buildingAction.productionEffects[jobId]
+            ) {
+              const jobEffects = buildingAction.productionEffects[jobId];
+              if (jobEffects[prod.resource]) {
+                amount += jobEffects[prod.resource];
+              }
             }
           }
-        }
-      });
+        },
+      );
     }
 
     return {

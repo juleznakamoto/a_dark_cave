@@ -40,7 +40,7 @@ function getTotalKnowledge(state: GameState): number {
 // Define trade configurations
 const resourceTrades = [
   {
-    id: "trade_steel_100_wood",
+    id: "trade_steel_100",
     label: "100 Steel",
     give: "steel",
     giveAmount: 100,
@@ -52,7 +52,7 @@ const resourceTrades = [
     ]
   },
   {
-    id: "trade_steel_50_bones",
+    id: "trade_steel_50",
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
@@ -67,7 +67,7 @@ const resourceTrades = [
     ]
   },
   {
-    id: "trade_obsidian_50_wood",
+    id: "trade_obsidian_50",
     label: "50 Obsidian",
     give: "obsidian",
     giveAmount: 50,
@@ -78,7 +78,7 @@ const resourceTrades = [
     ]
   },
   {
-    id: "trade_obsidian_25_bones",
+    id: "trade_obsidian_25",
     label: "25 Obsidian",
     give: "obsidian",
     giveAmount: 25,
@@ -90,7 +90,7 @@ const resourceTrades = [
     ]
   },
   {
-    id: "trade_adamant_25_gold",
+    id: "trade_adamant_25",
     label: "25 Adamant",
     give: "adamant",
     giveAmount: 25,
