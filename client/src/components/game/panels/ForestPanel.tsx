@@ -26,13 +26,13 @@ export default function ForestPanel() {
     {
       title: 'Trade',
       actions: [
-        { id: 'tradeWoodForGold', label: 'Buy 5 Gold' },
-        { id: 'tradeStoneForGold', label: 'Buy 10 Gold' },
-        { id: 'tradeSteelForGold', label: 'Buy 15 Gold' },
-        { id: 'tradeObsidianForGold', label: 'Buy 25 Gold' },
-        { id: 'tradeAdamantForGold', label: 'Buy 50 Gold' },
-        { id: 'tradeTorchForGold', label: 'Buy 10 Gold' },
-        { id: 'tradeGoldForSilver', label: 'Buy 100 Silver' },
+        { id: 'tradeWoodForGold', label: '5 Gold' },
+        { id: 'tradeStoneForGold', label: '10 Gold' },
+        { id: 'tradeSteelForGold', label: '15 Gold' },
+        { id: 'tradeObsidianForGold', label: '25 Gold' },
+        { id: 'tradeAdamantForGold', label: '50 Gold' },
+        { id: 'tradeTorchForGold', label: '10 Gold' },
+        { id: 'tradeGoldForSilver', label: '100 Silver' },
       ],
       showWhen: () => state.buildings.woodenHut >= 3 || state.buildings.tradePost > 0
     },
@@ -45,6 +45,35 @@ export default function ForestPanel() {
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
+    // For trade actions, always show cost in tooltip
+    if (actionId.startsWith('trade')) {
+      return (
+        <HoverCard key={actionId}>
+          <HoverCardTrigger asChild>
+            <div>
+              <CooldownButton
+                onClick={() => executeAction(actionId)}
+                cooldownMs={action.cooldown * 1000}
+                data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+                size="sm"
+                disabled={!canExecute}
+                variant="outline"
+                className="hover:bg-transparent hover:text-foreground"
+              >
+                {label}
+              </CooldownButton>
+            </div>
+          </HoverCardTrigger>
+          <HoverCardContent className="w-auto p-2">
+            <div className="text-xs whitespace-nowrap">
+              {getCostText(actionId, state)}
+            </div>
+          </HoverCardContent>
+        </HoverCard>
+      );
+    }
+
+    // For non-trade actions, show cost in button if it exists
     if (showCost) {
       return (
         <HoverCard key={actionId}>
