@@ -26,15 +26,14 @@ export default function ForestPanel() {
     {
       title: 'Trade',
       actions: [
-        { id: 'tradeWoodForGold', label: 'Buy 5 Gold' },
-        { id: 'tradeStoneForGold', label: 'Buy 10 Gold' },
-        { id: 'tradeSteelForGold', label: 'Buy 15 Gold' },
-        { id: 'tradeObsidianForGold', label: 'Buy 25 Gold' },
-        { id: 'tradeAdamantForGold', label: 'Buy 50 Gold' },
-        { id: 'tradeTorchForGold', label: 'Buy 10 Gold' },
-        { id: 'tradeGoldForSilver', label: 'Buy 100 Silver' },
-      ],
-      showWhen: () => state.buildings.woodenHut >= 3 || state.buildings.tradePost > 0
+        { id: 'tradeWoodForGold', label: '500 Wood → 5 Gold' },
+        { id: 'tradeStoneForGold', label: '500 Stone → 10 Gold' },
+        { id: 'tradeSteelForGold', label: '100 Steel → 15 Gold' },
+        { id: 'tradeObsidianForGold', label: '50 Obsidian → 25 Gold' },
+        { id: 'tradeAdamantForGold', label: '50 Adamant → 50 Gold' },
+        { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
+        { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
+      ]
     },
   ];
 
