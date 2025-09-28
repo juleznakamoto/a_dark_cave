@@ -183,7 +183,6 @@ export function shouldShowAction(actionId: string, state: GameState): boolean {
 export function canExecuteAction(actionId: string, state: GameState): boolean {
   // Handle trade actions from forestTradeActions
   if (actionId.startsWith('trade')) {
-    const { tradePostActions } = require('./forestTradeActions');
     const tradeAction = tradePostActions[actionId];
     if (tradeAction && tradeAction.cost && tradeAction.cost[1]) {
       const costs = tradeAction.cost[1];
@@ -566,7 +565,6 @@ export const applyActionEffects = (
 export function getCostText(actionId: string, state: GameState): string {
   // Handle trade actions from forestTradeActions
   if (actionId.startsWith('trade')) {
-    const { tradePostActions } = require('./forestTradeActions');
     const tradeAction = tradePostActions[actionId];
     if (tradeAction && tradeAction.cost && tradeAction.cost[1]) {
       const costs = tradeAction.cost[1];
