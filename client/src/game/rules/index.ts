@@ -620,7 +620,7 @@ export function getCostText(actionId: string, state: GameState): string {
     .join(", ");
 
   return costText;
-};
+}
 
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
