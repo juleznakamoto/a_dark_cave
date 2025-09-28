@@ -6,7 +6,6 @@ import { ParticleButton } from '@/components/ui/particle-button';
 import { getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { CircularProgress } from '@/components/ui/circular-progress';
-import { useEffect, useState } from 'react';
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager, productionTiming } = useGameStore();
@@ -51,19 +50,6 @@ export default function VillagePanel() {
         { id: 'buildAlchemistTower', label: "Alchemist's Tower" },
         { id: 'buildTradePost', label: 'Trade Post' },
       ]
-    },
-    {
-      title: 'Trade',
-      actions: [
-        { id: 'tradeWoodForGold', label: '500 Wood → 5 Gold' },
-        { id: 'tradeStoneForGold', label: '500 Stone → 10 Gold' },
-        { id: 'tradeSteelForGold', label: '100 Steel → 15 Gold' },
-        { id: 'tradeObsidianForGold', label: '50 Obsidian → 25 Gold' },
-        { id: 'tradeAdamantForGold', label: '50 Adamant → 50 Gold' },
-        { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
-        { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
-      ],
-      showWhen: () => buildings.woodenHut >= 3 || buildings.tradePost > 0
     }
   ];
 
