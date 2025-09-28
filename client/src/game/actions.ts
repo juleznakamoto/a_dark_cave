@@ -70,7 +70,15 @@ import {
   handleBuildSanctum,
   handleBuildTannery,
   handleBuildAlchemistTower,
-} from '@/game/rules/villageBuildActions';
+  handleBuildTradePost,
+  handleTradeWoodForGold,
+  handleTradeStoneForGold,
+  handleTradeSteelForGold,
+  handleTradeObsidianForGold,
+  handleTradeAdamantForGold,
+  handleTradeTorchForGold,
+  handleTradeGoldForSilver,
+} from './rules/villageBuildActions';
 
 import {
   handleHunt,
@@ -244,6 +252,23 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildTannery(state, result);
     case 'buildAlchemistTower':
       return handleBuildAlchemistTower(state, result);
+    case 'buildTradePost':
+      return handleBuildTradePost(state, result);
+    case 'tradeWoodForGold':
+      return handleTradeWoodForGold(state, result);
+    case 'tradeStoneForGold':
+      return handleTradeStoneForGold(state, result);
+    case 'tradeSteelForGold':
+      return handleTradeSteelForGold(state, result);
+    case 'tradeObsidianForGold':
+      return handleTradeObsidianForGold(state, result);
+    case 'tradeAdamantForGold':
+      return handleTradeAdamantForGold(state, result);
+    case 'tradeTorchForGold':
+      return handleTradeTorchForGold(state, result);
+    case 'tradeGoldForSilver':
+      return handleTradeGoldForSilver(state, result);
+
 
     // Forest Scout Actions
     case 'hunt':

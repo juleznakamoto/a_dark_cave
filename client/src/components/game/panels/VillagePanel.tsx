@@ -2,6 +2,7 @@ import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
+import { ParticleButton } from '@/components/ui/particle-button';
 import { getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { CircularProgress } from '@/components/ui/circular-progress';
@@ -48,7 +49,21 @@ export default function VillagePanel() {
         { id: 'buildClerksHut', label: "Clerk's Hut" },
         { id: 'buildTannery', label: 'Tannery' },
         { id: 'buildAlchemistTower', label: "Alchemist's Tower" },
+        { id: 'buildTradePost', label: 'Trade Post' },
       ]
+    },
+    {
+      title: 'Trade',
+      actions: [
+        { id: 'tradeWoodForGold', label: '500 Wood → 5 Gold' },
+        { id: 'tradeStoneForGold', label: '500 Stone → 10 Gold' },
+        { id: 'tradeSteelForGold', label: '100 Steel → 15 Gold' },
+        { id: 'tradeObsidianForGold', label: '50 Obsidian → 25 Gold' },
+        { id: 'tradeAdamantForGold', label: '50 Adamant → 50 Gold' },
+        { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
+        { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
+      ],
+      showWhen: () => buildings.tradePost > 0
     }
   ];
 
@@ -94,6 +109,38 @@ export default function VillagePanel() {
             >
               {label}
             </CooldownButton>
+          </div>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-auto p-2">
+          <div className="text-xs whitespace-nowrap">
+            {getCostText(actionId, state)}
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    );
+  };
+
+  const renderTradeButton = (actionId: string, label: string) => {
+    const action = gameActions[actionId];
+    if (!action) return null;
+
+    const canExecute = canExecuteAction(actionId, state);
+
+    return (
+      <HoverCard key={actionId} openDelay={100} closeDelay={100}>
+        <HoverCardTrigger asChild>
+          <div>
+            <ParticleButton
+              onClick={() => executeAction(actionId)}
+              disabled={!canExecute}
+              size="sm"
+              variant="outline"
+              className="hover:bg-transparent hover:text-foreground w-full"
+              spawnInterval={200}
+              hoverDelay={500}
+            >
+              {label}
+            </ParticleButton>
           </div>
         </HoverCardTrigger>
         <HoverCardContent className="w-auto p-2">
@@ -158,6 +205,9 @@ export default function VillagePanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
+        // Check if the group should be shown
+        if (group.showWhen && !group.showWhen()) return null;
+
         const visibleActions = group.actions.filter(action => 
           shouldShowAction(action.id, state)
         );
@@ -170,7 +220,10 @@ export default function VillagePanel() {
               <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
             <div className="flex flex-wrap gap-2">
-              {visibleActions.map(action => renderButton(action.id, action.label))}
+              {group.title === 'Trade' 
+                ? visibleActions.map(action => renderTradeButton(action.id, action.label))
+                : visibleActions.map(action => renderButton(action.id, action.label))
+              }
             </div>
           </div>
         );
