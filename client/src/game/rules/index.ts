@@ -598,7 +598,7 @@ export function getCostText(actionId: string, state: GameState): string {
   const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('build');
 
   // Calculate crafting cost reduction
-  const craftingCostReduction = getCraftingCostReduction(state);
+  const craftingCostReduction = getTotalCraftingCostReduction(state);
 
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
@@ -627,11 +627,7 @@ export function getCostText(actionId: string, state: GameState): string {
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
 
-// Export getCostText as an alias for getActionCostDisplay for backward compatibility
-// Note: The original getCostText logic was partially duplicated and potentially incorrect.
-// The new implementation above directly addresses the trade action issue.
-// This alias is kept for backward compatibility but the new getCostText should be preferred.
-export const getCostText_deprecated = getActionCostDisplay;
+// Note: getCostText function handles both trade actions and regular actions
 
 // Register new action handlers
 gameActions.craftEmberBomb = {
