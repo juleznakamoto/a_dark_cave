@@ -12,7 +12,7 @@ import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions, handleBoneTotems, getBoneTotemsCost } from './forestSacrificeActions';
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
-import { forestTradeActions, handleTradeGoldForWood, handleTradeGoldForStone, handleTradeGoldForSteel, handleTradeGoldForObsidian, handleTradeGoldForAdamant, handleTradeGoldForTorch, handleTradeSilverForGold } from './forestTradeActions';
+import { forestTradeActions } from './forestTradeActions';
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -584,33 +584,4 @@ gameActions.craftEmberBomb = {
 gameActions.blastPortal = {
   ...caveExploreActions.blastPortal,
   handle: handleBlastPortal,
-};
-
-gameActions.tradeGoldForWood = {
-  ...forestTradeActions.tradeGoldForWood,
-  handle: handleTradeGoldForWood,
-};
-gameActions.tradeGoldForStone = {
-  ...forestTradeActions.tradeGoldForStone,
-  handle: handleTradeGoldForStone,
-};
-gameActions.tradeGoldForSteel = {
-  ...forestTradeActions.tradeGoldForSteel,
-  handle: handleTradeGoldForSteel,
-};
-gameActions.tradeGoldForObsidian = {
-  ...forestTradeActions.tradeGoldForObsidian,
-  handle: handleTradeGoldForObsidian,
-};
-gameActions.tradeGoldForAdamant = {
-  ...forestTradeActions.tradeGoldForAdamant,
-  handle: handleTradeGoldForAdamant,
-};
-gameActions.tradeGoldForTorch = {
-  ...forestTradeActions.tradeGoldForTorch,
-  handle: handleTradeGoldForTorch,
-};
-gameActions.tradeSilverForGold = {
-  ...forestTradeActions.tradeSilverForGold,
-  handle: handleTradeSilverForGold,
 };
