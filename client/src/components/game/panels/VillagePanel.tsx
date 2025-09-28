@@ -208,9 +208,13 @@ export default function VillagePanel() {
         // Check if the group should be shown
         if (group.showWhen && !group.showWhen()) return null;
 
-        const visibleActions = group.actions.filter(action => 
-          shouldShowAction(action.id, state)
-        );
+        const visibleActions = group.actions.filter(action => {
+          const shouldShow = shouldShowAction(action.id, state);
+          if (action.id === 'tradeWoodForGold') {
+            console.log(`[DEBUG] VillagePanel - tradeWoodForGold shouldShow: ${shouldShow}, woodenHut count: ${buildings.woodenHut}`);
+          }
+          return shouldShow;
+        });
 
         if (visibleActions.length === 0) return null;
 

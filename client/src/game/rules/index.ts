@@ -141,15 +141,54 @@ const checkRequirements = (
 };
 
 // Utility function to check if an action should be shown
-export const shouldShowAction = (
-  actionId: string,
-  state: GameState,
-): boolean => {
+export function shouldShowAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];
-  if (!action?.show_when) return false;
+  if (!action) return false;
 
-  return checkRequirements(action.show_when, state, action, actionId);
-};
+  if (!action.show_when) return true;
+
+  // Find the highest level where all conditions are met
+  const maxLevel = Math.max(...Object.keys(action.show_when).map(Number));
+
+  for (let level = 1; level <= maxLevel; level++) {
+    const conditions = action.show_when[level];
+    if (!conditions) continue;
+
+    let allConditionsMet = true;
+    for (const [path, requiredValue] of Object.entries(conditions)) {
+      const actualValue = getValueFromPath(state, path);
+
+      // Debug logging for tradeWoodForGold
+      if (actionId === 'tradeWoodForGold') {
+        console.log(`[DEBUG] tradeWoodForGold check - path: ${path}, required: ${requiredValue}, actual: ${actualValue}`);
+      }
+
+      if (typeof requiredValue === 'boolean') {
+        if (actualValue !== requiredValue) {
+          allConditionsMet = false;
+          break;
+        }
+      } else {
+        if (actualValue < requiredValue) {
+          allConditionsMet = false;
+          break;
+        }
+      }
+    }
+
+    if (allConditionsMet) {
+      if (actionId === 'tradeWoodForGold') {
+        console.log(`[DEBUG] tradeWoodForGold - conditions met at level ${level}`);
+      }
+      return true;
+    }
+  }
+
+  if (actionId === 'tradeWoodForGold') {
+    console.log(`[DEBUG] tradeWoodForGold - no conditions met`);
+  }
+  return false;
+}
 
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
@@ -259,7 +298,7 @@ function evaluateSingleCondition(condition: string, state: GameState): boolean {
 }
 
 // Helper function to get value from dot notation path
-function getValueFromPath(path: string, state: GameState): unknown {
+function getValueFromPath(state: GameState, path: string): unknown {
   const pathParts = path.split(".");
   let current: unknown = state;
   for (const part of pathParts) {
