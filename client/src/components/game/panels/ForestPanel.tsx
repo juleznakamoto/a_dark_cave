@@ -13,11 +13,11 @@ export default function ForestPanel() {
   const actionGroups = [
     {
       title: 'Scout',
-      actions: forestScoutActions,
+      actions: Object.values(forestScoutActions),
     },
     {
       title: 'Sacrifice',
-      actions: forestSacrificeActions,
+      actions: Object.values(forestSacrificeActions),
     },
   ];
 
@@ -77,8 +77,8 @@ export default function ForestPanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
-        // Convert object to array and then filter
-        const visibleActions = Object.values(group.actions).filter(action =>
+        // Filter actions that should be shown
+        const visibleActions = group.actions.filter(action =>
           shouldShowAction(action.id, gameState)
         );
 
