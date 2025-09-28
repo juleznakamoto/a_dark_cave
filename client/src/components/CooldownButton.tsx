@@ -30,7 +30,7 @@ export default function CooldownButton({
   "data-testid": testId,
   ...props
 }: CooldownButtonProps) {
-  const { devMode, cooldowns, setCooldown, stats } = useGameStore();
+  const { devMode, cooldowns, setCooldown } = useGameStore();
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -51,19 +51,9 @@ export default function CooldownButton({
     // Execute the action immediately
     onClick();
 
-    // Calculate cooldown with knowledge reduction for trade actions
-    let finalCooldownMs = cooldownMs;
-    if (actionId.startsWith('trade') && actionId.includes('ForGold') || actionId === 'tradeGoldForSilver') {
-      const knowledge = stats?.knowledge || 0;
-      const reductionSeconds = Math.min(0.5 * knowledge, 15);
-      const baseCooldownSeconds = 30;
-      const finalCooldownSeconds = Math.max(baseCooldownSeconds - reductionSeconds, 0);
-      finalCooldownMs = finalCooldownSeconds * 1000;
-    }
-
     // Start the cooldown in game state (skip in dev mode)
     if (!devMode) {
-      setCooldown(actionId, finalCooldownMs / 1000); // Convert to seconds
+      setCooldown(actionId, cooldownMs / 1000); // Convert to seconds
     }
   };
 

@@ -70,18 +70,7 @@ import {
   handleBuildSanctum,
   handleBuildTannery,
   handleBuildAlchemistTower,
-  handleBuildTradePost,
-} from './rules/villageBuildActions';
-
-import {
-  handleTradeWoodForGold,
-  handleTradeStoneForGold,
-  handleTradeSteelForGold,
-  handleTradeObsidianForGold,
-  handleTradeAdamantForGold,
-  handleTradeTorchForGold,
-  handleTradeGoldForSilver,
-} from './rules/forestTradeActions';
+} from '@/game/rules/villageBuildActions';
 
 import {
   handleHunt,
@@ -111,7 +100,7 @@ export interface ActionResult {
 export function executeGameAction(actionId: string, state: GameState): ActionResult {
   const result: ActionResult = {
     stateUpdates: {
-      cooldowns: { ...state.cooldowns, [actionId]: getActionCooldown(actionId, state) },
+      cooldowns: { ...state.cooldowns, [actionId]: getActionCooldown(actionId) },
       story: {
         ...state.story,
         seen: {
@@ -255,23 +244,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildTannery(state, result);
     case 'buildAlchemistTower':
       return handleBuildAlchemistTower(state, result);
-    case 'buildTradePost':
-      return handleBuildTradePost(state, result);
-    case 'tradeWoodForGold':
-      return handleTradeWoodForGold(state, result);
-    case 'tradeStoneForGold':
-      return handleTradeStoneForGold(state, result);
-    case 'tradeSteelForGold':
-      return handleTradeSteelForGold(state, result);
-    case 'tradeObsidianForGold':
-      return handleTradeObsidianForGold(state, result);
-    case 'tradeAdamantForGold':
-      return handleTradeAdamantForGold(state, result);
-    case 'tradeTorchForGold':
-      return handleTradeTorchForGold(state, result);
-    case 'tradeGoldForSilver':
-      return handleTradeGoldForSilver(state, result);
-
 
     // Forest Scout Actions
     case 'hunt':
@@ -288,21 +260,9 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
   }
 }
 
-import { getTradeActionCooldown } from './rules/forestTradeActions';
-
-// Helper function to get action cooldown
-function getActionCooldown(actionId: string, state?: GameState): number {
-  // Handle dynamic trade action cooldowns
-  const tradeActions = [
-    'tradeWoodForGold', 'tradeStoneForGold', 'tradeSteelForGold',
-    'tradeObsidianForGold', 'tradeAdamantForGold', 'tradeTorchForGold',
-    'tradeGoldForSilver'
-  ];
-  
-  if (tradeActions.includes(actionId) && state) {
-    return getTradeActionCooldown(state);
-  }
-  
-  // Default cooldown for other actions
+// Helper function to get action cooldown (you may need to import this from the rules)
+function getActionCooldown(actionId: string): number {
+  // This would need to be imported from your game rules or calculated
+  // For now, returning a default value
   return 1;
 }

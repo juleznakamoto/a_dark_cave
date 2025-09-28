@@ -53,7 +53,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 0.5,
+          cooldownReduction: 0.25,
         },
         buildTorch: {
           cooldownReduction: 0.25,
@@ -70,7 +70,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 1.0,
+          cooldownReduction: 1,
         },
       },
     },
@@ -93,7 +93,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
             resourceMultiplier: 1.5,
-          cooldownReduction: 1.0,
+          cooldownReduction: 0.5,
         },
         buildTorch: {
           cooldownReduction: 0.5,
@@ -110,7 +110,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 2.5,
+          cooldownReduction: 1,
         },
       },
     },
@@ -124,9 +124,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 1.75,
-          cooldownReduction: 1.5,
-        },
-        buildTorch: {
           cooldownReduction: 0.75,
         },
       },
@@ -141,7 +138,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.75,
-          cooldownReduction: 5.0,
+          cooldownReduction: 2,
         },
       },
     },
@@ -156,10 +153,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 7.5,
-        },
-        buildTorch: {
-          cooldownReduction: 1.0,
+          cooldownReduction: 1,
         },
       },
     },
@@ -172,7 +166,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 7.5,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
       },
@@ -188,9 +182,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 3.0,
-          cooldownReduction: 3.0,
-        },
-        buildTorch: {
           cooldownReduction: 1.5,
         },
       },
@@ -205,7 +196,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.0,
-          cooldownReduction: 10.0,
+          cooldownReduction: 6,
         },
       },
     },
@@ -219,7 +210,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 0.5,
+          cooldownReduction: 1,
         },
         ventureDeeper: {
           cooldownReduction: 2,
@@ -236,7 +227,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 1.0,
+          cooldownReduction: 2,
         },
       },
     },
@@ -250,7 +241,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 1.5,
+          cooldownReduction: 3,
         },
       },
     },
@@ -264,7 +255,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.0,
-          cooldownReduction: 2.0,
+          cooldownReduction: 4,
         },
       },
     },
@@ -419,12 +410,24 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
-    description: "Ancient golden crown radiating with mysterious power",
+    description: "An ancient golden crown radiating with mysterious power.",
     bonuses: {
       generalBonuses: {
         luck: 5,
         knowledge: 3,
         madness: 1,
+      },
+      actionBonuses: {},
+    },
+  },
+
+  rough_cloak: {
+    id: "rough_cloak",
+    name: "Rough Cloak",
+    description: "A simple cloak that provides basic protection.",
+    bonuses: {
+      generalBonuses: {
+        gatheringSpeed: 1.1, // 10% faster gathering
       },
       actionBonuses: {},
     },
@@ -502,7 +505,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 5,
-        madness: 2,
+        madness: 1,
       },
     },
   },
@@ -538,7 +541,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       bonuses: {
         generalBonuses: {
           knowledge: 10,
-          madness: 2,
+          madness: 3,
         },
       },
     },
@@ -556,23 +559,23 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     coin_of_drowned: {
       id: "coin_of_drowned",
       name: "Coin of Drowned",
-      description: "Ring that is always wet and cold",
+      description: "A ring that is always wet and cold",
       bonuses: {
         generalBonuses: {
           luck: 4,
-          madness: 3,
+          madness: 2,
         },
       },
     },
     shadow_flute: {
       id: "shadow_flute",
       name: "Shadow Flute",
-      description: "Bone flute that makes shadows move unnaturally",
+      description: "A bone flute that makes shadows move unnaturally",
       bonuses: {
         generalBonuses: {
           luck: 3,
-          knowledge: 3,
-          madness: 4,
+          knowledge: 2,
+          madness: 3,
         },
       },
     },
@@ -604,7 +607,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     blackened_mirror: {
       id: "blackened_mirror",
       name: "Blackened Mirror",
-      description: "Tall, cracked mirror framed in black iron that radiates cold",
+      description: "A tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
       bonuses: {
         generalBonuses: {
           knowledge: 7,
@@ -621,7 +624,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           luck: 5,
           strength: 3,
-          madness: 2,
+          madness: 1,
         },
       },
     },
@@ -629,12 +632,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     red_mask: {
       id: "red_mask",
       name: "Red Mask",
-      description: "Mask crafted from deep crimson leather left behind by a black raven",
+      description: "A mask crafted from deep crimson leather",
       bonuses: {
         generalBonuses: {
           luck: 3,
           knowledge: 2,
-          madness: 2,
+          madness: 1,
         },
       },
     },
@@ -642,7 +645,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     black_bear_fur: {
       id: "black_bear_fur",
       name: "Black Bear Fur",
-      description: "Cursed fur from an otherworldy giant bear",
+      description: "Cursed fur from a otherworldy giant bear",
       bonuses: {
         actionBonuses: {
           hunt: {

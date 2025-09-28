@@ -348,8 +348,8 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: {
       hunter: {
         food: 5,
-        fur: 1,
-        bones: 1
+        fur: 4,
+        bones: 4
       }
     },
     cooldown: 30,
@@ -588,31 +588,6 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
-  buildTradePost: {
-    id: "buildTradePost",
-    label: "Trade Post",
-    building: true,
-    show_when: {
-      1: {
-        "buildings.stoneHut": 1,
-        "buildings.tradePost": 0,
-      },
-    },
-    cost: {
-      1: {
-        "resources.wood": 2000,
-        "resources.stone": 1000,
-      },
-    },
-    effects: {
-      1: {
-        "buildings.tradePost": 1,
-        "story.seen.hasTradePost": true,
-      },
-    },
-    cooldown: 30,
-  },
-
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -655,31 +630,31 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 1000,
       },
       2: {
-        "resources.stone": 2000,
+        "resources.stone": 1500,
       },
       3: {
-        "resources.stone": 3000,
+        "resources.stone": 2000,
       },
       4: {
-        "resources.stone": 4000,
+        "resources.stone": 2500,
       },
       5: {
-        "resources.stone": 5000,
+        "resources.stone": 3000,
       },
       6: {
-        "resources.stone": 6000,
+        "resources.stone": 3500,
       },
       7: {
-        "resources.stone": 7000,
+        "resources.stone": 4000,
       },
       8: {
-        "resources.stone": 8000,
+        "resources.stone": 4500,
       },
       9: {
-        "resources.stone": 9000,
+        "resources.stone": 5000,
       },
       10: {
-        "resources.stone": 10000,
+        "resources.stone": 5500,
       },
     },
     effects: {
@@ -953,20 +928,3 @@ export function handleBuildAlchemistTower(state: GameState, result: ActionResult
 
   return alchemistTowerResult;
 }
-
-export function handleBuildTradePost(state: GameState, result: ActionResult): ActionResult {
-  const tradePostResult = handleBuildingConstruction(state, result, 'buildTradePost', 'tradePost');
-
-  // Add trade post completion message
-  if (state.buildings.tradePost === 0) {
-    tradePostResult.logEntries!.push({
-      id: `trade-post-built-${Date.now()}`,
-      message: "A trade post is built near the forest, attracting tradesman who look to sell their goods for precious metals.",
-      timestamp: Date.now(),
-      type: 'system',
-    });
-  }
-
-  return tradePostResult;
-}
-

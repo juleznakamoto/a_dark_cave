@@ -23,18 +23,6 @@ export default function ForestPanel() {
         { id: 'boneTotems', label: 'Bone Totems' },
       ]
     },
-    {
-      title: 'Trade',
-      actions: [
-        { id: 'tradeWoodForGold', label: '500 Wood → 5 Gold' },
-        { id: 'tradeStoneForGold', label: '500 Stone → 10 Gold' },
-        { id: 'tradeSteelForGold', label: '100 Steel → 15 Gold' },
-        { id: 'tradeObsidianForGold', label: '50 Obsidian → 25 Gold' },
-        { id: 'tradeAdamantForGold', label: '50 Adamant → 50 Gold' },
-        { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
-        { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
-      ]
-    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -87,46 +75,6 @@ export default function ForestPanel() {
     );
   };
 
-  const renderTradeButton = (actionId: string, label: string) => {
-    const action = gameActions[actionId];
-    if (!action) return null;
-
-    const canExecute = canExecuteAction(actionId, state);
-    const costText = getCostText(actionId, state);
-    
-    // Ensure we display a proper string, handle case where getCostText might return object
-    const displayText = typeof costText === 'string' ? costText : JSON.stringify(costText);
-    // Remove negative signs for trade display (cost becomes requirement)
-    const tradeCostText = displayText.replace(/-/g, '');
-
-    return (
-      <HoverCard key={actionId}>
-        <HoverCardTrigger asChild>
-          <div>
-            <CooldownButton
-              onClick={() => executeAction(actionId)}
-              cooldownMs={action.cooldown * 1000}
-              data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-              size="sm"
-              disabled={!canExecute}
-              variant="outline"
-              className={`hover:bg-transparent hover:text-foreground ${
-                !canExecute ? 'opacity-50' : ''
-              }`}
-            >
-              Buy {label.split(' → ')[1]}
-            </CooldownButton>
-          </div>
-        </HoverCardTrigger>
-        <HoverCardContent className="w-auto p-2">
-          <div className="text-xs whitespace-nowrap">
-            {tradeCostText}
-          </div>
-        </HoverCardContent>
-      </HoverCard>
-    );
-  };
-
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
@@ -142,10 +90,7 @@ export default function ForestPanel() {
               <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
             <div className="flex flex-wrap gap-2">
-              {group.title === 'Trade' 
-                ? visibleActions.map(action => renderTradeButton(action.id, action.label))
-                : visibleActions.map(action => renderButton(action.id, action.label))
-              }
+              {visibleActions.map(action => renderButton(action.id, action.label))}
             </div>
           </div>
         );

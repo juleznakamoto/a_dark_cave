@@ -17,7 +17,7 @@ type VillagerCounts = {
 };
 
 // Define a type for the game state
-import { getTotalKnowledge } from "./effects";
+import { getTotalKnowledge } from './effects';
 
 type GameState = {
   villagers: VillagerCounts;
@@ -34,13 +34,13 @@ type GameState = {
   current_population?: number;
 };
 function getTotalKnowledge(state: GameState): number {
-  return state.stats.knowledge || 0;
+  return (state.stats.knowledge || 0);
 }
 
 // Define trade configurations
 const resourceTrades = [
   {
-    id: "trade_steel_100",
+    id: "trade_steel_100_wood",
     label: "100 Steel",
     give: "steel",
     giveAmount: 100,
@@ -48,11 +48,11 @@ const resourceTrades = [
       { resource: "wood", amounts: [750, 1000, 1250] },
       { resource: "stone", amounts: [1000] },
       { resource: "gold", amounts: [10] },
-      { resource: "silver", amounts: [5] },
-    ],
+      { resource: "silver", amounts: [5] }
+    ]
   },
   {
-    id: "trade_steel_50",
+    id: "trade_steel_50_bones",
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
@@ -63,22 +63,22 @@ const resourceTrades = [
       { resource: "leather", amounts: [200, 300, 400] },
       { resource: "stone", amounts: [500] },
       { resource: "gold", amounts: [5] },
-      { resource: "silver", amounts: [10] },
-    ],
+      { resource: "silver", amounts: [10] }
+    ]
   },
   {
-    id: "trade_obsidian_50",
+    id: "trade_obsidian_50_wood",
     label: "50 Obsidian",
     give: "obsidian",
     giveAmount: 50,
     costs: [
       { resource: "wood", amounts: [1500, 1750, 2000] },
       { resource: "silver", amounts: [20] },
-      { resource: "gold", amounts: [10] },
-    ],
+      { resource: "gold", amounts: [10] }
+    ]
   },
   {
-    id: "trade_obsidian_25",
+    id: "trade_obsidian_25_bones",
     label: "25 Obsidian",
     give: "obsidian",
     giveAmount: 25,
@@ -86,11 +86,11 @@ const resourceTrades = [
       { resource: "bones", amounts: [1000, 1250, 1500] },
       { resource: "fur", amounts: [1000, 1250, 1500] },
       { resource: "silver", amounts: [10] },
-      { resource: "stone", amounts: [1500] },
-    ],
+      { resource: "stone", amounts: [1500] }
+    ]
   },
   {
-    id: "trade_adamant_25",
+    id: "trade_adamant_25_gold",
     label: "25 Adamant",
     give: "adamant",
     giveAmount: 25,
@@ -101,7 +101,7 @@ const resourceTrades = [
       { resource: "wood", amounts: [2500] },
       { resource: "food", amounts: [500] },
       { resource: "leather", amounts: [600, 700, 800] },
-    ],
+    ]
   },
   {
     id: "trade_wood_500",
@@ -112,8 +112,8 @@ const resourceTrades = [
       { resource: "silver", amounts: [5] },
       { resource: "iron", amounts: [25] },
       { resource: "steel", amounts: [10] },
-      { resource: "food", amounts: [100] },
-    ],
+      { resource: "food", amounts: [100] }
+    ]
   },
   {
     id: "trade_wood_1000",
@@ -125,8 +125,8 @@ const resourceTrades = [
       { resource: "silver", amounts: [10] },
       { resource: "iron", amounts: [50] },
       { resource: "steel", amounts: [25] },
-      { resource: "food", amounts: [200] },
-    ],
+      { resource: "food", amounts: [200] }
+    ]
   },
   {
     id: "trade_food_500",
@@ -135,8 +135,8 @@ const resourceTrades = [
     giveAmount: 500,
     costs: [
       { resource: "gold", amounts: [5] },
-      { resource: "silver", amounts: [10] },
-    ],
+      { resource: "silver", amounts: [10] }
+    ]
   },
   {
     id: "trade_food_1000",
@@ -145,8 +145,8 @@ const resourceTrades = [
     giveAmount: 1000,
     costs: [
       { resource: "gold", amounts: [10] },
-      { resource: "silver", amounts: [20] },
-    ],
+      { resource: "silver", amounts: [20] }
+    ]
   },
   {
     id: "trade_gold_25",
@@ -160,7 +160,7 @@ const resourceTrades = [
       { resource: "fur", amounts: [2000] },
       { resource: "food", amounts: [2500] },
       { resource: "leather", amounts: [1200, 1300, 1400] },
-    ],
+    ]
   },
   {
     id: "trade_silver_50",
@@ -172,8 +172,8 @@ const resourceTrades = [
       { resource: "wood", amounts: [2500] },
       { resource: "stone", amounts: [1500] },
       { resource: "fur", amounts: [2000] },
-      { resource: "food", amounts: [2500] },
-    ],
+      { resource: "food", amounts: [2500] }
+    ]
   },
   {
     id: "trade_gold_50",
@@ -188,8 +188,8 @@ const resourceTrades = [
       { resource: "leather", amounts: [3500] },
       { resource: "food", amounts: [5000] },
       { resource: "obsidian", amounts: [100] },
-      { resource: "adamant", amounts: [20] },
-    ],
+      { resource: "adamant", amounts: [20] }
+    ]
   },
   {
     id: "trade_silver_100",
@@ -197,83 +197,16 @@ const resourceTrades = [
     give: "silver",
     giveAmount: 100,
     costs: [
-      { resource: "steel", amounts: [500, 600, 700] },
-      { resource: "wood", amounts: [5000, 7500] },
-      { resource: "stone", amounts: [3000, 4000] },
+      { resource: "steel", amounts: [500] },
+      { resource: "wood", amounts: [5000] },
+      { resource: "stone", amounts: [3000] },
       { resource: "fur", amounts: [5000] },
       { resource: "leather", amounts: [3500] },
       { resource: "food", amounts: [5000] },
       { resource: "obsidian", amounts: [100] },
-      { resource: "adamant", amounts: [20] },
-    ],
-  },
-
-  {
-    id: "trade_adamant_10",
-    label: "10 Adamant",
-    give: "adamant",
-    giveAmount: 10,
-    costs: [
-      { resource: "gold", amounts: [5, 8] },
-      { resource: "silver", amounts: [15] },
-      { resource: "steel", amounts: [50] },
-      { resource: "wood", amounts: [1000] },
-      { resource: "leather", amounts: [250, 300, 350] },
-    ],
-  },
-  {
-    id: "trade_obsidian_10",
-    label: "10 Obsidian",
-    give: "obsidian",
-    giveAmount: 10,
-    costs: [
-      { resource: "wood", amounts: [500, 750, 1000] },
-      { resource: "silver", amounts: [5] },
-      { resource: "gold", amounts: [3] },
-    ],
-  },
-  {
-    id: "trade_steel_25",
-    label: "25 Steel",
-    give: "steel",
-    giveAmount: 25,
-    costs: [
-      { resource: "bones", amounts: [200, 250, 300] },
-      { resource: "wood", amounts: [250, 300] },
-      { resource: "fur", amounts: [150, 200, 250] },
-      { resource: "leather", amounts: [100, 150, 200] },
-      { resource: "stone", amounts: [250] },
-      { resource: "gold", amounts: [2] },
-      { resource: "silver", amounts: [5] },
-    ],
-  },
-  {
-    id: "trade_steel_500",
-    label: "500 Steel",
-    give: "steel",
-    giveAmount: 500,
-    costs: [
-      { resource: "wood", amounts: [5000, 6000, 7000] },
-      { resource: "stone", amounts: [4000] },
-      { resource: "gold", amounts: [50] },
-      { resource: "silver", amounts: [25] },
-      { resource: "obsidian", amounts: [40, 50] },
-    ],
-  },
-  {
-    id: "trade_adamant_50",
-    label: "50 Adamant",
-    give: "adamant",
-    giveAmount: 50,
-    costs: [
-      { resource: "gold", amounts: [25, 30] },
-      { resource: "silver", amounts: [100] },
-      { resource: "steel", amounts: [250] },
-      { resource: "wood", amounts: [6000] },
-      { resource: "leather", amounts: [1500, 1750, 2000] },
-      { resource: "obsidian", amounts: [150, 200] },
-    ],
-  },
+      { resource: "adamant", amounts: [20] }
+    ]
+  }
 ];
 
 const toolTrades = [
@@ -284,10 +217,9 @@ const toolTrades = [
     giveItem: "reinforced_rope",
     costs: [
       { resource: "silver", amounts: [50] },
-      { resource: "gold", amounts: [25] },
+      { resource: "gold", amounts: [25] }
     ],
-    message:
-      "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers.",
+    message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers."
   },
   {
     id: "trade_alchemist_map",
@@ -296,10 +228,9 @@ const toolTrades = [
     giveItem: "alchemist_map",
     costs: [
       { resource: "silver", amounts: [100] },
-      { resource: "gold", amounts: [50] },
+      { resource: "gold", amounts: [50] }
     ],
-    message:
-      "You buy the alchemist's map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'",
+    message: "You buy the alchemist's map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'"
   },
   {
     id: "trade_murmuring_cube",
@@ -308,10 +239,9 @@ const toolTrades = [
     giveItem: "murmuring_cube",
     costs: [
       { resource: "silver", amounts: [150] },
-      { resource: "gold", amounts: [75] },
+      { resource: "gold", amounts: [75] }
     ],
-    message:
-      "You purchase a cube made of an unknown polished metal. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable.",
+    message: "You purchase a cube made of an unknown polished metal. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable."
   },
   {
     id: "trade_giant_trap",
@@ -320,11 +250,10 @@ const toolTrades = [
     giveItem: "giant_trap",
     costs: [
       { resource: "silver", amounts: [20] },
-      { resource: "gold", amounts: [10] },
+      { resource: "gold", amounts: [10] }
     ],
-    message:
-      "You purchase the giant trap. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'",
-  },
+    message: "You purchase the giant trap. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'"
+  }
 ];
 
 // Function to generate fresh merchant choices
@@ -332,17 +261,12 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   const availableResourceTrades = resourceTrades
     .sort(() => Math.random() - 0.5) // Shuffle
     .slice(0, 4) // Take first 4
-    .map((trade) => {
+    .map(trade => {
       // Create a fresh choice with new random costs each time
       const knowledge = getTotalKnowledge(state);
-      const costOption =
-        trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(
-        costOption.amounts[
-          Math.floor(Math.random() * costOption.amounts.length)
-        ] * Math.max(0.01, 1 - knowledge * 0.01),
-      );
-
+      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+      
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
         label: `Buy ${trade.label}`,
@@ -352,10 +276,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             return {
               resources: {
                 ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
-                [trade.give]:
-                  (state.resources[trade.give] || 0) + trade.giveAmount,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+                [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
               },
             };
           }
@@ -365,33 +287,24 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     });
 
   const availableToolTrades = toolTrades
-    .filter((trade) => {
+    .filter(trade => {
       // Don't offer tools/relics that the player already owns
-      if (
-        trade.give === "tool" &&
-        state.tools[trade.giveItem as keyof typeof state.tools]
-      ) {
+      if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) {
         return false;
       }
-      if (
-        trade.give === "relic" &&
-        state.relics[trade.giveItem as keyof typeof state.relics]
-      ) {
+      if (trade.give === "relic" && state.relics[trade.giveItem as keyof typeof state.relics]) {
         return false;
       }
       return true;
     })
     .sort(() => Math.random() - 0.5) // Shuffle
     .slice(0, 1) // Take first 1
-    .map((trade) => {
+    .map(trade => {
       // Create a fresh choice with new random costs each time
       const knowledge = getTotalKnowledge(state);
-      const costOption =
-        trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(
-        costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01),
-      );
-
+      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
+      
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
         label: `Buy ${trade.label}`,
@@ -401,12 +314,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             const result: any = {
               resources: {
                 ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
               },
-              _logMessage: trade.message
-                .replace("${cost}", cost.toString())
-                .replace("${selectedCost.type}", costOption.resource),
+              _logMessage: trade.message.replace('${cost}', cost.toString()).replace('${selectedCost.type}', costOption.resource),
             };
 
             if (trade.give === "tool") {
@@ -431,8 +341,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       label: "Say goodbye",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
+          _logMessage: "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
         };
       },
     },
@@ -444,10 +353,9 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 12,
+    timeProbability: 14,
     title: "The Traveling Merchant",
-    message:
-      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for trade'.",
+    message: "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for trade'.",
     triggered: false,
     priority: 3,
     repeatable: true,

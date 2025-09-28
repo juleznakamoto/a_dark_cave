@@ -8,7 +8,6 @@ import { caveCraftTools } from './caveCraftTools';
 import { caveCraftWeapons } from './caveCraftWeapons';
 import { caveMiningActions } from './caveMineActions';
 import { villageBuildActions } from './villageBuildActions';
-import { tradePostActions } from './forestTradeActions';
 import { forestScoutActions } from './forestScoutActions';
 import { forestSacrificeActions, handleBoneTotems, getBoneTotemsCost } from './forestSacrificeActions';
 import { caveEvents } from "./eventsCave";
@@ -26,7 +25,6 @@ export const gameActions: Record<string, Action> = {
   ...caveCraftWeapons,
   ...forestScoutActions,
   ...forestSacrificeActions,
-  ...tradePostActions,
 };
 
 // Utility function to get the next building level
@@ -84,9 +82,6 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   }
   if (actionId === "buildAlchemistTower") {
     return (state.buildings.alchemistTower || 0) + 1;
-  }
-  if (actionId === "buildTradePost") {
-    return (state.buildings.tradePost || 0) + 1;
   }
   return 1;
 };
@@ -147,25 +142,6 @@ export const shouldShowAction = (
 ): boolean => {
   const action = gameActions[actionId];
   if (!action?.show_when) return false;
-
-  // Handle level-based show_when conditions (for both building and trade actions)
-  if (typeof action.show_when === 'object' && !Array.isArray(action.show_when)) {
-    const keys = Object.keys(action.show_when);
-    if (keys.length > 0 && !isNaN(Number(keys[0]))) {
-      // For building actions, use the next building level
-      if (action.building) {
-        const level = getNextBuildingLevel(actionId, state);
-        const levelRequirements = action.show_when[level];
-        if (!levelRequirements) return false;
-        return checkRequirements(levelRequirements, state, action, actionId);
-      } else {
-        // For non-building actions with level structure, use level 1
-        const levelRequirements = action.show_when[1];
-        if (!levelRequirements) return false;
-        return checkRequirements(levelRequirements, state, action, actionId);
-      }
-    }
-  }
 
   return checkRequirements(action.show_when, state, action, actionId);
 };
