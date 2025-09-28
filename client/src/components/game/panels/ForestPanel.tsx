@@ -87,6 +87,41 @@ export default function ForestPanel() {
     );
   };
 
+  const renderTradeButton = (actionId: string, label: string) => {
+    const action = gameActions[actionId];
+    if (!action) return null;
+
+    const canExecute = canExecuteAction(actionId, state);
+    const costText = getCostText(actionId, state);
+
+    return (
+      <HoverCard key={actionId}>
+        <HoverCardTrigger asChild>
+          <div>
+            <CooldownButton
+              onClick={() => executeAction(actionId)}
+              cooldownMs={action.cooldown * 1000}
+              data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+              size="sm"
+              disabled={!canExecute}
+              variant="outline"
+              className={`hover:bg-transparent hover:text-foreground ${
+                !canExecute ? 'opacity-50' : ''
+              }`}
+            >
+              Buy {label.split(' → ')[1]}
+            </CooldownButton>
+          </div>
+        </HoverCardTrigger>
+        <HoverCardContent className="w-auto p-2">
+          <div className="text-xs whitespace-nowrap">
+            {costText}
+          </div>
+        </HoverCardContent>
+      </HoverCard>
+    );
+  };
+
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
@@ -102,7 +137,10 @@ export default function ForestPanel() {
               <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
             )}
             <div className="flex flex-wrap gap-2">
-              {visibleActions.map(action => renderButton(action.id, action.label))}
+              {group.title === 'Trade' 
+                ? visibleActions.map(action => renderTradeButton(action.id, action.label))
+                : visibleActions.map(action => renderButton(action.id, action.label))
+              }
             </div>
           </div>
         );
