@@ -97,7 +97,7 @@ export default function ForestPanel() {
       })}
 
       {/* Trade Section */}
-      {buildings.tradePost > 0 && (
+      {buildings.blacksmith > 0 && (
         <div className="space-y-4">
           <h3 className="text-sm font-semibold text-foreground">Trade</h3>
           <div className="flex flex-wrap gap-2">
@@ -134,7 +134,7 @@ export default function ForestPanel() {
                   </HoverCardTrigger>
                   <HoverCardContent className="w-auto p-2">
                     <div className="text-xs whitespace-nowrap">
-                      {trade.cost}
+                      -{trade.cost}
                     </div>
                   </HoverCardContent>
                 </HoverCard>
