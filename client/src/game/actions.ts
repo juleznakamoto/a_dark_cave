@@ -111,7 +111,7 @@ export interface ActionResult {
 export function executeGameAction(actionId: string, state: GameState): ActionResult {
   const result: ActionResult = {
     stateUpdates: {
-      cooldowns: { ...state.cooldowns, [actionId]: getActionCooldown(actionId) },
+      cooldowns: { ...state.cooldowns, [actionId]: getActionCooldown(actionId, state) },
       story: {
         ...state.story,
         seen: {
@@ -288,9 +288,21 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
   }
 }
 
-// Helper function to get action cooldown (you may need to import this from the rules)
-function getActionCooldown(actionId: string): number {
-  // This would need to be imported from your game rules or calculated
-  // For now, returning a default value
+import { getTradeActionCooldown } from './rules/forestTradeActions';
+
+// Helper function to get action cooldown
+function getActionCooldown(actionId: string, state?: GameState): number {
+  // Handle dynamic trade action cooldowns
+  const tradeActions = [
+    'tradeWoodForGold', 'tradeStoneForGold', 'tradeSteelForGold',
+    'tradeObsidianForGold', 'tradeAdamantForGold', 'tradeTorchForGold',
+    'tradeGoldForSilver'
+  ];
+  
+  if (tradeActions.includes(actionId) && state) {
+    return getTradeActionCooldown(state);
+  }
+  
+  // Default cooldown for other actions
   return 1;
 }

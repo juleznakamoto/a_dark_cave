@@ -2,6 +2,13 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 
+// Helper function to calculate dynamic cooldown for trade actions
+export function getTradeActionCooldown(state: GameState): number {
+  const knowledge = state.resources.knowledge || 0;
+  const reduction = Math.min(0.5 * knowledge, 15);
+  return Math.max(30 - reduction, 0);
+}
+
 // Trade Post Actions
 export const tradePostActions: Record<string, Action> = {
   tradeWoodForGold: {
@@ -24,6 +31,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeStoneForGold: {
@@ -46,6 +54,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeSteelForGold: {
@@ -68,6 +77,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeObsidianForGold: {
@@ -90,6 +100,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeAdamantForGold: {
@@ -112,6 +123,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeTorchForGold: {
@@ -134,6 +146,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 
   tradeGoldForSilver: {
@@ -156,6 +169,7 @@ export const tradePostActions: Record<string, Action> = {
       },
     },
     cooldown: 30,
+    dynamicCooldown: true,
   },
 };
 
