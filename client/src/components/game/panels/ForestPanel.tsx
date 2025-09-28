@@ -23,6 +23,18 @@ export default function ForestPanel() {
         { id: 'boneTotems', label: 'Bone Totems' },
       ]
     },
+    {
+      title: 'Trade',
+      actions: [
+        { id: 'tradeWoodForGold', label: '500 Wood → 5 Gold' },
+        { id: 'tradeStoneForGold', label: '500 Stone → 10 Gold' },
+        { id: 'tradeSteelForGold', label: '100 Steel → 15 Gold' },
+        { id: 'tradeObsidianForGold', label: '50 Obsidian → 25 Gold' },
+        { id: 'tradeAdamantForGold', label: '50 Adamant → 50 Gold' },
+        { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
+        { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
+      ]
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
