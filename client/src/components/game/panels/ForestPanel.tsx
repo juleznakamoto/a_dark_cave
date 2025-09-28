@@ -13,16 +13,21 @@ export default function ForestPanel() {
   const actionGroups = [
     {
       title: 'Scout',
-      actions: forestScoutActions,
+      actions: [
+        { id: 'hunt', label: 'Hunt' },
+        { id: 'layTrap', label: 'Lay Trap' },
+      ],
     },
     {
       title: 'Sacrifice',
-      actions: forestSacrificeActions,
+      actions: [
+        { id: 'boneTotems', label: 'Bone Totems' },
+      ],
     },
   ];
 
   const renderButton = (actionId: string, label: string) => {
-    const action = forestScoutActions[actionId] || forestSacrificeActions[actionId]; // Get action details
+    const action = forestScoutActions[actionId] || forestSacrificeActions[actionId] || forestTradeActions[actionId]; // Get action details
     if (!action) return null;
 
     const canExecute = canExecuteAction(actionId, gameState);
