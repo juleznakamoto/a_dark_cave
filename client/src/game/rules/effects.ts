@@ -53,7 +53,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 0.25,
+          cooldownReduction: 0.5,
         },
         buildTorch: {
           cooldownReduction: 0.25,
@@ -70,7 +70,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 1,
+          cooldownReduction: 1.0,
         },
       },
     },
@@ -93,7 +93,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
             resourceMultiplier: 1.5,
-          cooldownReduction: 0.5,
+          cooldownReduction: 1.0,
         },
         buildTorch: {
           cooldownReduction: 0.5,
@@ -110,7 +110,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 1,
+          cooldownReduction: 2.5,
         },
       },
     },
@@ -124,6 +124,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 1.75,
+          cooldownReduction: 1.5,
+        },
+        buildTorch: {
           cooldownReduction: 0.75,
         },
       },
@@ -138,7 +141,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.75,
-          cooldownReduction: 2,
+          cooldownReduction: 5.0,
         },
       },
     },
@@ -153,7 +156,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 1,
+          cooldownReduction: 7.5,
+        },
+        buildTorch: {
+          cooldownReduction: 1.0,
         },
       },
     },
@@ -166,7 +172,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 7.5,
           cooldownReduction: 4,
         },
       },
@@ -182,6 +188,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         gatherWood: {
           resourceMultiplier: 3.0,
+          cooldownReduction: 3.0,
+        },
+        buildTorch: {
           cooldownReduction: 1.5,
         },
       },
@@ -196,7 +205,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.0,
-          cooldownReduction: 6,
+          cooldownReduction: 10.0,
         },
       },
     },
@@ -210,7 +219,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.25,
-          cooldownReduction: 1,
+          cooldownReduction: 0.5,
         },
         ventureDeeper: {
           cooldownReduction: 2,
@@ -227,7 +236,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 1.5,
-          cooldownReduction: 2,
+          cooldownReduction: 1.0,
         },
       },
     },
@@ -241,7 +250,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 2.0,
-          cooldownReduction: 3,
+          cooldownReduction: 1.5,
         },
       },
     },
@@ -255,7 +264,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {
         mining: {
           resourceMultiplier: 3.0,
-          cooldownReduction: 4,
+          cooldownReduction: 2.0,
         },
       },
     },
