@@ -16,7 +16,7 @@ export const tradePostActions: Record<string, Action> = {
     label: "500 Wood → 5 Gold",
     show_when: {
       1: {
-        "buildings.woodenHut": 3,
+        "buildings.blacksmith": 1,
       },
     },
     cost: {
