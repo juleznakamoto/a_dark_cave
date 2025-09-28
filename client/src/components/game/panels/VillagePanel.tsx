@@ -63,7 +63,7 @@ export default function VillagePanel() {
         { id: 'tradeTorchForGold', label: '50 Torch → 10 Gold' },
         { id: 'tradeGoldForSilver', label: '50 Gold → 100 Silver' },
       ],
-      showWhen: () => buildings.tradePost > 0
+      showWhen: () => buildings.woodenHut >= 3 || buildings.tradePost > 0
     }
   ];
 
