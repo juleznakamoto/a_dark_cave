@@ -83,13 +83,13 @@ import {
 } from '@/game/rules/forestSacrificeActions';
 
 import {
-  handleTradeWoodForGold,
-  handleTradeStoneForGold,
-  handleTradeSteelForGold,
-  handleTradeObsidianForGold,
-  handleTradeAdamantForGold,
-  handleTradeTorchForGold,
-  handleTradeGoldForSilver,
+  handleTradeGoldForWood,
+  handleTradeGoldForStone,
+  handleTradeGoldForSteel,
+  handleTradeGoldForObsidian,
+  handleTradeGoldForAdamant,
+  handleTradeGoldForTorch,
+  handleTradeSilverForGold,
 } from '@/game/rules/forestTradeActions';
 
 import {
@@ -269,20 +269,20 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBoneTotems(state, result);
 
     // Forest Trade Actions
-    case 'tradeWoodForGold':
-      return handleTradeWoodForGold(state, result);
-    case 'tradeStoneForGold':
-      return handleTradeStoneForGold(state, result);
-    case 'tradeSteelForGold':
-      return handleTradeSteelForGold(state, result);
-    case 'tradeObsidianForGold':
-      return handleTradeObsidianForGold(state, result);
-    case 'tradeAdamantForGold':
-      return handleTradeAdamantForGold(state, result);
-    case 'tradeTorchForGold':
-      return handleTradeTorchForGold(state, result);
-    case 'tradeGoldForSilver':
-      return handleTradeGoldForSilver(state, result);
+    case 'tradeGoldForWood':
+      return handleTradeGoldForWood(state, result);
+    case 'tradeGoldForStone':
+      return handleTradeGoldForStone(state, result);
+    case 'tradeGoldForSteel':
+      return handleTradeGoldForSteel(state, result);
+    case 'tradeGoldForObsidian':
+      return handleTradeGoldForObsidian(state, result);
+    case 'tradeGoldForAdamant':
+      return handleTradeGoldForAdamant(state, result);
+    case 'tradeGoldForTorch':
+      return handleTradeGoldForTorch(state, result);
+    case 'tradeSilverForGold':
+      return handleTradeSilverForGold(state, result);
 
     default:
       return result;
