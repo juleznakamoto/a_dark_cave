@@ -102,13 +102,13 @@ export default function ForestPanel() {
           <h3 className="text-sm font-semibold text-foreground">Trade</h3>
           <div className="flex flex-wrap gap-2">
             {[
-              { id: 'tradeWoodForGold', label: 'Buy 5 Gold', cost: '500 wood' },
-              { id: 'tradeStoneForGold', label: 'Buy 10 Gold', cost: '500 stone' },
-              { id: 'tradeSteelForGold', label: 'Buy 15 Gold', cost: '100 steel' },
-              { id: 'tradeObsidianForGold', label: 'Buy 25 Gold', cost: '50 obsidian' },
-              { id: 'tradeAdamantForGold', label: 'Buy 50 Gold', cost: '50 adamant' },
-              { id: 'tradeTorchForGold', label: 'Buy 10 Gold', cost: '50 torch' },
-              { id: 'tradeGoldForSilver', label: 'Buy 100 Silver', cost: '50 gold' },
+              { id: 'tradeGoldForWood', label: 'Buy 500 Wood', cost: '5 gold' },
+              { id: 'tradeGoldForStone', label: 'Buy 500 Stone', cost: '10 gold' },
+              { id: 'tradeGoldForSteel', label: 'Buy 100 Steel', cost: '15 gold' },
+              { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian', cost: '25 gold' },
+              { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant', cost: '50 gold' },
+              { id: 'tradeGoldForTorch', label: 'Buy 50 Torch', cost: '10 gold' },
+              { id: 'tradeSilverForGold', label: 'Buy 50 Gold', cost: '100 silver' },
             ].map(trade => {
               const canExecute = canExecuteAction(trade.id, state);
               const knowledge = state.stats.knowledge || 0;

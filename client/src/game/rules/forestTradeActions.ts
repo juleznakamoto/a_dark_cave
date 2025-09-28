@@ -4,9 +4,9 @@ import { ActionResult } from '@/game/actions';
 import { getTotalKnowledge } from './effects';
 
 export const forestTradeActions: Record<string, Action> = {
-  tradeWoodForGold: {
-    id: "tradeWoodForGold",
-    label: "Buy 5 Gold",
+  tradeGoldForWood: {
+    id: "tradeGoldForWood",
+    label: "Buy 500 Wood",
     show_when: {
       1: {
         "buildings.blacksmith": 1,
@@ -14,21 +14,21 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 500,
-      },
-    },
-    effects: {
-      1: {
-        "resources.wood": -500,
         "resources.gold": 5,
       },
     },
+    effects: {
+      1: {
+        "resources.gold": -5,
+        "resources.wood": 500,
+      },
+    },
     cooldown: 30,
   },
 
-  tradeStoneForGold: {
-    id: "tradeStoneForGold",
-    label: "Buy 10 Gold",
+  tradeGoldForStone: {
+    id: "tradeGoldForStone",
+    label: "Buy 500 Stone",
     show_when: {
       1: {
         "buildings.tradePost": 1,
@@ -36,21 +36,21 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
+        "resources.gold": 10,
+      },
+    },
+    effects: {
+      1: {
+        "resources.gold": -10,
         "resources.stone": 500,
       },
     },
-    effects: {
-      1: {
-        "resources.stone": -500,
-        "resources.gold": 10,
-      },
-    },
     cooldown: 30,
   },
 
-  tradeSteelForGold: {
-    id: "tradeSteelForGold",
-    label: "Buy 15 Gold",
+  tradeGoldForSteel: {
+    id: "tradeGoldForSteel",
+    label: "Buy 100 Steel",
     show_when: {
       1: {
         "buildings.tradePost": 1,
@@ -58,21 +58,21 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.steel": 100,
-      },
-    },
-    effects: {
-      1: {
-        "resources.steel": -100,
         "resources.gold": 15,
       },
     },
+    effects: {
+      1: {
+        "resources.gold": -15,
+        "resources.steel": 100,
+      },
+    },
     cooldown: 30,
   },
 
-  tradeObsidianForGold: {
-    id: "tradeObsidianForGold",
-    label: "Buy 25 Gold",
+  tradeGoldForObsidian: {
+    id: "tradeGoldForObsidian",
+    label: "Buy 50 Obsidian",
     show_when: {
       1: {
         "buildings.tradePost": 1,
@@ -80,65 +80,21 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.obsidian": 50,
-      },
-    },
-    effects: {
-      1: {
-        "resources.obsidian": -50,
         "resources.gold": 25,
       },
     },
-    cooldown: 30,
-  },
-
-  tradeAdamantForGold: {
-    id: "tradeAdamantForGold",
-    label: "Buy 50 Gold",
-    show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
-    },
-    cost: {
-      1: {
-        "resources.adamant": 50,
-      },
-    },
     effects: {
       1: {
-        "resources.adamant": -50,
-        "resources.gold": 50,
+        "resources.gold": -25,
+        "resources.obsidian": 50,
       },
     },
     cooldown: 30,
   },
 
-  tradeTorchForGold: {
-    id: "tradeTorchForGold",
-    label: "Buy 10 Gold",
-    show_when: {
-      1: {
-        "buildings.tradePost": 1,
-      },
-    },
-    cost: {
-      1: {
-        "resources.torch": 50,
-      },
-    },
-    effects: {
-      1: {
-        "resources.torch": -50,
-        "resources.gold": 10,
-      },
-    },
-    cooldown: 30,
-  },
-
-  tradeGoldForSilver: {
-    id: "tradeGoldForSilver",
-    label: "Buy 100 Silver",
+  tradeGoldForAdamant: {
+    id: "tradeGoldForAdamant",
+    label: "Buy 50 Adamant",
     show_when: {
       1: {
         "buildings.tradePost": 1,
@@ -152,99 +108,143 @@ export const forestTradeActions: Record<string, Action> = {
     effects: {
       1: {
         "resources.gold": -50,
+        "resources.adamant": 50,
+      },
+    },
+    cooldown: 30,
+  },
+
+  tradeGoldForTorch: {
+    id: "tradeGoldForTorch",
+    label: "Buy 50 Torch",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 10,
+      },
+    },
+    effects: {
+      1: {
+        "resources.gold": -10,
+        "resources.torch": 50,
+      },
+    },
+    cooldown: 30,
+  },
+
+  tradeSilverForGold: {
+    id: "tradeSilverForGold",
+    label: "Buy 50 Gold",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+      },
+    },
+    cost: {
+      1: {
         "resources.silver": 100,
+      },
+    },
+    effects: {
+      1: {
+        "resources.silver": -100,
+        "resources.gold": 50,
       },
     },
     cooldown: 30,
   },
 };
 
-export function handleTradeWoodForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeWoodForGold: actualCooldown,
+    tradeGoldForWood: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeStoneForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForStone(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeStoneForGold: actualCooldown,
+    tradeGoldForStone: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeSteelForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForSteel(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeSteelForGold: actualCooldown,
+    tradeGoldForSteel: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeObsidianForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForObsidian(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeObsidianForGold: actualCooldown,
+    tradeGoldForObsidian: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeAdamantForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForAdamant(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeAdamantForGold: actualCooldown,
+    tradeGoldForAdamant: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeTorchForGold(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeGoldForTorch(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeTorchForGold: actualCooldown,
+    tradeGoldForTorch: actualCooldown,
   };
 
   return result;
 }
 
-export function handleTradeGoldForSilver(state: GameState, result: ActionResult): ActionResult {
+export function handleTradeSilverForGold(state: GameState, result: ActionResult): ActionResult {
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
   const actualCooldown = Math.max(15, 30 - cooldownReduction);
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeGoldForSilver: actualCooldown,
+    tradeSilverForGold: actualCooldown,
   };
 
   return result;
