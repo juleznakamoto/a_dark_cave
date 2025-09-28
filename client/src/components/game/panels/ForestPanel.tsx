@@ -93,6 +93,11 @@ export default function ForestPanel() {
 
     const canExecute = canExecuteAction(actionId, state);
     const costText = getCostText(actionId, state);
+    
+    // Ensure we display a proper string, handle case where getCostText might return object
+    const displayText = typeof costText === 'string' ? costText : JSON.stringify(costText);
+    // Remove negative signs for trade display (cost becomes requirement)
+    const tradeCostText = displayText.replace(/-/g, '');
 
     return (
       <HoverCard key={actionId}>
@@ -115,7 +120,7 @@ export default function ForestPanel() {
         </HoverCardTrigger>
         <HoverCardContent className="w-auto p-2">
           <div className="text-xs whitespace-nowrap">
-            {costText}
+            {tradeCostText}
           </div>
         </HoverCardContent>
       </HoverCard>
