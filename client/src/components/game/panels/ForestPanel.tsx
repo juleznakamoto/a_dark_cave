@@ -22,7 +22,7 @@ export default function ForestPanel() {
   ];
 
   const renderButton = (actionId: string, label: string) => {
-    const action = forestScoutActions[actionId] || forestSacrificeActions[actionId]; // Get action details
+    const action = forestScoutActions[actionId] || forestSacrificeActions[actionId] || forestTradeActions[actionId]; // Get action details
     if (!action) return null;
 
     const canExecute = canExecuteAction(actionId, gameState);
@@ -77,7 +77,8 @@ export default function ForestPanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
-        const visibleActions = group.actions.filter(action =>
+        // Convert object to array and then filter
+        const visibleActions = Object.values(group.actions).filter(action =>
           shouldShowAction(action.id, gameState)
         );
 
