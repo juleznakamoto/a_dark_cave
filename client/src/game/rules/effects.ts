@@ -415,7 +415,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 5,
         knowledge: 3,
-        madness: 1,
+        madness: 2,
       },
       actionBonuses: {},
     },
@@ -505,7 +505,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 5,
-        madness: 1,
+        madness: 2,
       },
     },
   },
@@ -552,7 +552,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       bonuses: {
         generalBonuses: {
           luck: 3,
-          madness: 1,
+          madness: 2,
         },
       },
     },
@@ -563,7 +563,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       bonuses: {
         generalBonuses: {
           luck: 4,
-          madness: 2,
+          madness: 3,
         },
       },
     },
@@ -573,9 +573,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       description: "A bone flute that makes shadows move unnaturally",
       bonuses: {
         generalBonuses: {
-          luck: 3,
-          knowledge: 2,
-          madness: 3,
+          luck: 2,
+          knowledge: 4,
+          madness: 4,
         },
       },
     },
@@ -587,7 +587,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           strength: 3,
           knowledge: 7,
-          madness: 5,
+          madness: 6,
         },
       },
     },
@@ -599,7 +599,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       bonuses: {
         generalBonuses: {
           luck: 5,
-          madness: 2,
+          madness: 3,
         },
       },
     },
@@ -624,7 +624,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           luck: 5,
           strength: 3,
-          madness: 1,
+          madness: 2,
         },
       },
     },
@@ -637,7 +637,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         generalBonuses: {
           luck: 3,
           knowledge: 2,
-          madness: 1,
+          madness: 2,
         },
       },
     },
@@ -654,7 +654,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
         generalBonuses: {
           strength: 5,
-          madness: 3,
+          madness: 4,
         },
       },
     },
@@ -689,7 +689,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           lowChamber: {
             resourceMultiplier: 1.2,
           },
-          occultistChamber: {
+          alchemistChamber: {
             resourceMultiplier: 1.2,
           },
         },

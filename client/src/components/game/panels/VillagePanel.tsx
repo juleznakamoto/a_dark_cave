@@ -70,11 +70,6 @@ export default function VillagePanel() {
         { id: "buildTannery", label: "Tannery" },
         { id: "buildAlchemistTower", label: "Alchemist's Tower" },
         { id: "buildTradePost", label: "Trade Post" },
-      ],
-    },
-    {
-      title: "Fortifications",
-      actions: [
         { id: "buildBastion", label: "Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
         { id: "buildWoodenPalisades", label: "Wooden Palisades" },
