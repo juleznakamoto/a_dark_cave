@@ -729,6 +729,29 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
       },
     },
+
+    occultist_grimoire: {
+      id: "occultist_grimoire",
+      name: "Occultist Grimoire",
+      description: "Ancient tome of forbidden knowledge found in the occultist's chamber",
+      bonuses: {
+        generalBonuses: {
+          knowledge: 7,
+          madness: 3,
+        },
+      },
+    },
+
+    mastermason_chisel: {
+      id: "mastermason_chisel",
+      name: "Mastermason Chisel",
+      description: "Precision tool of a master builder, reduces construction costs",
+      bonuses: {
+        generalBonuses: {
+          craftingCostReduction: 0.1,
+        },
+      },
+    },
 };
 
 // Tool hierarchy definitions
