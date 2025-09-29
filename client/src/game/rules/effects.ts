@@ -1131,12 +1131,6 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   });
 
-  // Hollow King Scepter effects
-  if (state.relics?.hollow_King_scepter) {
-    effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 5;
-    effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 2;
-  }
-
   return effects;
 };
 
