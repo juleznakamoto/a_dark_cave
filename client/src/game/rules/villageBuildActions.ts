@@ -879,7 +879,8 @@ function handleBuildingConstruction(
   actionId: string,
   buildingType: keyof GameState['buildings']
 ): ActionResult {
-  const level = state.buildings[buildingType] + 1;
+  const currentCount = state.buildings[buildingType] || 0;
+  const level = currentCount + 1;
   const action = villageBuildActions[actionId];
   const actionEffects = action?.effects?.[level];
   
@@ -900,7 +901,7 @@ function handleBuildingConstruction(
   result.stateUpdates.resources = newResources;
   result.stateUpdates.buildings = {
     ...state.buildings,
-    [buildingType]: state.buildings[buildingType] + 1
+    [buildingType]: currentCount + 1
   };
 
   return result;
