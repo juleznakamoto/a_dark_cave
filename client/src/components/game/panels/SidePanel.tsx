@@ -1,12 +1,44 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
+import ResourceChangeNotification from './ResourceChangeNotification';
 import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { villageBuildActions } from '@/game/rules/villageBuildActions';
 import { capitalizeWords } from "@/lib/utils";
+import { useEffect, useRef, useState } from 'react';
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
+  
+  // Track resource changes for notifications
+  const [resourceChanges, setResourceChanges] = useState<Array<{resource: string, amount: number, timestamp: number}>>([]);
+  const previousResources = useRef<typeof resources>(resources);
+
+  useEffect(() => {
+    // Only track changes if clerk's hut is built
+    if (buildings.clerksHut > 0) {
+      const changes: Array<{resource: string, amount: number, timestamp: number}> = [];
+      
+      Object.entries(resources).forEach(([resource, currentValue]) => {
+        const previousValue = previousResources.current[resource as keyof typeof resources] || 0;
+        const difference = (currentValue || 0) - previousValue;
+        
+        if (difference !== 0) {
+          changes.push({
+            resource,
+            amount: difference,
+            timestamp: Date.now()
+          });
+        }
+      });
+      
+      if (changes.length > 0) {
+        setResourceChanges(prev => [...prev, ...changes]);
+      }
+    }
+    
+    previousResources.current = resources;
+  }, [resources, buildings.clerksHut]);
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -228,7 +260,7 @@ export default function SidePanel() {
     <ScrollArea className="h-full max-h-full">
       <div className="pb-4 flex gap-4">
         {/* First column - Resources */}
-        <div className="flex-1">
+        <div className="flex-1 relative">
           {resourceItems.length > 0 && shouldShowSection('resources') && (
             <SidePanelSection
               title="Resources"
@@ -237,6 +269,9 @@ export default function SidePanel() {
                 console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
               }}
             />
+          )}
+          {buildings.clerksHut > 0 && (
+            <ResourceChangeNotification changes={resourceChanges} />
           )}
         </div>
 
