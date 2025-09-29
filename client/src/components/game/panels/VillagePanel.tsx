@@ -198,13 +198,13 @@ export default function VillagePanel() {
           {label}
           {getTotalProductionText(jobId, currentCount)}
         </span>
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
           <Button
             onClick={() => unassignVillager(jobId)}
             disabled={currentCount === 0}
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="h-5 w-5 p-0 no-hover"
+            className="h-5 w-5 no-hover"
           >
             -
           </Button>
@@ -214,9 +214,9 @@ export default function VillagePanel() {
           <Button
             onClick={() => assignVillager(jobId)}
             disabled={villagers.free === 0}
-            variant="outline"
+            variant="ghost"
             size="sm"
-            className="h-5 w-5 p-0 no-hover"
+            className="h-5 w-5 no-hover"
           >
             +
           </Button>
