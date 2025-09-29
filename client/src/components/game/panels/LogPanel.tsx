@@ -1,35 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function LogPanel() {
   const { log } = useGameStore();
-  const [newEntryIds, setNewEntryIds] = useState<Set<string>>(new Set());
-  const previousLogLength = useRef(log.length);
 
   // Get only the last 8 entries and reverse them so latest is at top
   const recentEntries = log.slice(-8).reverse();
-
-  // Track new entries
-  useEffect(() => {
-    if (log.length > previousLogLength.current) {
-      // Get the new entries (those added since last check)
-      const newEntries = log.slice(previousLogLength.current);
-      const newIds = new Set(newEntries.map(entry => entry.id));
-      
-      setNewEntryIds(newIds);
-      
-      // Remove blur after 500ms
-      const timer = setTimeout(() => {
-        setNewEntryIds(new Set());
-      }, 500);
-
-      previousLogLength.current = log.length;
-      
-      return () => clearTimeout(timer);
-    }
-  }, [log.length]);
 
   return (
     <div className="h-48">
@@ -40,7 +18,6 @@ export default function LogPanel() {
               const isThirdLast = index === recentEntries.length - 3;
               const isSecondLast = index === recentEntries.length - 2;
               const isLast = index === recentEntries.length - 1;
-              const isNewEntry = newEntryIds.has(entry.id);
 
               let opacity = "";
               if (recentEntries.length >= 8) {
@@ -55,9 +32,7 @@ export default function LogPanel() {
 
               return (
                 <div key={entry.id} className="pl-3">
-                  <p className={`text-foreground leading-relaxed transition-all duration-500 ${opacity} ${
-                    isNewEntry ? 'blur-sm' : 'blur-none'
-                  }`}>
+                  <p className={`text-foreground leading-relaxed ${opacity}`}>
                     {typeof entry.message === 'string' ? entry.message : JSON.stringify(entry.message)}
                   </p>
                 </div>
