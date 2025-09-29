@@ -56,30 +56,7 @@ export default function SidePanelSection({
       const prevValue = prevValuesRef.current.get(item.id);
 
       // Animate if we have a previous value to compare against
-      if (prevValue !== undefined) {
-        if (currentValue > prevValue) {
-          newAnimatedItems.add(item.id);
-          // Remove animation after 2.5 seconds
-          setTimeout(() => {
-            setAnimatedItems((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(item.id);
-              return newSet;
-            });
-          }, 2500);
-        } else if (currentValue < prevValue) {
-          newDecreaseAnimatedItems.add(item.id);
-          // Remove animation after 2.5 seconds
-          setTimeout(() => {
-            setDecreaseAnimatedItems((prev) => {
-              const newSet = new Set(prev);
-              newSet.delete(item.id);
-              return newSet;
-            });
-          }, 2500);
-        }
-      } else if (currentValue > 0) {
-        // First time seeing this item with a positive value - animate it
+      if (prevValue === undefined || currentValue > prevValue) {
         newAnimatedItems.add(item.id);
         // Remove animation after 2.5 seconds
         setTimeout(() => {
@@ -89,7 +66,18 @@ export default function SidePanelSection({
             return newSet;
           });
         }, 2500);
+      } else if (currentValue < prevValue) {
+        newDecreaseAnimatedItems.add(item.id);
+        // Remove animation after 2.5 seconds
+        setTimeout(() => {
+          setDecreaseAnimatedItems((prev) => {
+            const newSet = new Set(prev);
+            newSet.delete(item.id);
+            return newSet;
+          });
+        }, 2500);
       }
+      
 
       prevValuesRef.current.set(item.id, currentValue);
     });
