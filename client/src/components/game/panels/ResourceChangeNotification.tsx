@@ -1,5 +1,5 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 interface ResourceChange {
   resource: string;
@@ -14,6 +14,8 @@ interface ResourceChangeNotificationProps {
 
 export default function ResourceChangeNotification({ resource, changes }: ResourceChangeNotificationProps) {
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(null);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const lastChangeTimestampRef = useRef<number>(0);
 
   useEffect(() => {
     // Find the latest change for this specific resource
@@ -21,16 +23,43 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
       .filter(change => change.resource === resource)
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
-    if (latestChangeForResource) {
+    // Only update if we have a new change (different timestamp)
+    if (latestChangeForResource && latestChangeForResource.timestamp !== lastChangeTimestampRef.current) {
+      // Clear any existing timer
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+
       setVisibleChange(latestChangeForResource);
+      lastChangeTimestampRef.current = latestChangeForResource.timestamp;
 
-      const timer = setTimeout(() => {
+      // Set new timer
+      timerRef.current = setTimeout(() => {
         setVisibleChange(null);
+        timerRef.current = null;
       }, 2500);
-
-      return () => clearTimeout(timer);
     }
+
+    // Cleanup function
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
   }, [changes, resource]);
+
+  // Also clear notification if changes array becomes empty
+  useEffect(() => {
+    if (changes.length === 0 && visibleChange) {
+      setVisibleChange(null);
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    }
+  }, [changes.length, visibleChange]);
 
   if (!visibleChange) {
     return null;
