@@ -148,6 +148,14 @@ export default function VillagePanel() {
 
     const canExecute = canExecuteAction(actionId, state);
 
+    // Dynamic label for watchtower based on current level
+    let displayLabel = label;
+    if (actionId === "buildWatchtower") {
+      const watchtowerLevel = buildings.watchtower || 0;
+      const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+      displayLabel = watchtowerLabels[watchtowerLevel] || "Watchtower";
+    }
+
     return (
       <HoverCard key={actionId} openDelay={100} closeDelay={100}>
         <HoverCardTrigger asChild>
@@ -161,7 +169,7 @@ export default function VillagePanel() {
               variant="outline"
               className="hover:bg-transparent hover:text-foreground"
             >
-              {label}
+              {displayLabel}
             </CooldownButton>
           </div>
         </HoverCardTrigger>

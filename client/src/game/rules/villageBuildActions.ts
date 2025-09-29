@@ -647,18 +647,58 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.bastion": 1,
         "buildings.watchtower": 0,
       },
+      2: {
+        "buildings.watchtower": 1,
+      },
+      3: {
+        "buildings.watchtower": 2,
+      },
+      4: {
+        "buildings.watchtower": 3,
+      },
     },
     cost: {
       1: {
-        "resources.stone": 5000,
-        "resources.wood": 2500,
+        "resources.wood": 5000,
+        "resources.stone": 2500,
         "resources.steel": 500,
+      },
+      2: {
+        "resources.wood": 7500,
+        "resources.stone": 5000,
+        "resources.steel": 1000,
+        "resources.iron": 2500,
+      },
+      3: {
+        "resources.wood": 10000,
+        "resources.stone": 7500,
+        "resources.steel": 2000,
+        "resources.obsidian": 500,
+      },
+      4: {
+        "resources.wood": 15000,
+        "resources.stone": 10000,
+        "resources.steel": 3000,
+        "resources.obsidian": 1000,
+        "resources.adamant": 500,
       },
     },
     effects: {
       1: {
         "buildings.watchtower": 1,
         "story.seen.hasWatchtower": true,
+      },
+      2: {
+        "buildings.watchtower": 1,
+        "story.seen.hasGuardTower": true,
+      },
+      3: {
+        "buildings.watchtower": 1,
+        "story.seen.hasFortifiedTower": true,
+      },
+      4: {
+        "buildings.watchtower": 1,
+        "story.seen.hasCannonTower": true,
       },
     },
     cooldown: 60,
@@ -884,7 +924,7 @@ function handleBuildingConstruction(
   const level = currentCount + 1;
   const action = villageBuildActions[actionId];
   const actionEffects = action?.effects?.[level];
-  
+
   if (!actionEffects) {
     console.warn(`No effects found for action ${actionId} at level ${level}`);
     return result;
@@ -912,7 +952,7 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
   const level = state.buildings.woodenHut + 1;
   const action = villageBuildActions.buildWoodenHut;
   const actionEffects = action?.effects?.[level];
-  
+
   if (!actionEffects) {
     console.warn(`No effects found for buildWoodenHut at level ${level}`);
     return result;
