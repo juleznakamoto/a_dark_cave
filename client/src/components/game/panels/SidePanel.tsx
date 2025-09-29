@@ -76,16 +76,17 @@ export default function SidePanel() {
 
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
+    .filter(([key, value]) => {
+      // Filter out fortification buildings from the buildings section
+      if (['bastion', 'watchtower', 'woodenPalisades', 'fortifiedPalisades', 'stoneWall', 'reinforcedWall'].includes(key)) {
+        return false;
+      }
+      return (value ?? 0) > 0;
+    })
     .map(([key, value]) => {
-      if ((value ?? 0) === 0) return null;
-
       let label = key === 'clerksHut' ? "Clerk's Hut" :
              key === 'alchemistTower' ? "Alchemist's Tower" :
              key === 'tradePost' ? 'Trade Post' :
-             key === 'woodenPalisades' ? 'Wooden Palisades' :
-             key === 'fortifiedPalisades' ? 'Fortified Palisades' :
-             key === 'stoneWall' ? 'Stone Wall' :
-             key === 'reinforcedWall' ? 'Reinforced Wall' :
              capitalizeWords(key);
 
       // Get stats effects for this specific building from villageBuildActions
@@ -134,14 +135,6 @@ export default function SidePanel() {
         return false;
       }
       if (item.id === 'temple' && buildings.sanctum > 0) {
-        return false;
-      }
-      // Hide basic palisades when fortified are built
-      if (item.id === 'woodenPalisades' && buildings.fortifiedPalisades > 0) {
-        return false;
-      }
-      // Hide stone wall when reinforced are built
-      if (item.id === 'stoneWall' && buildings.reinforcedWall > 0) {
         return false;
       }
       return true;
