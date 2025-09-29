@@ -212,6 +212,7 @@ export default function VillagePanel() {
 
             const effectsText = Object.entries(totalEffects)
               .filter(([resource, amount]) => amount !== 0)
+              .sort(([, a], [, b]) => b - a) // Sort from positive to negative
               .map(([resource, amount]) => `${amount > 0 ? "+" : ""}${amount} ${resource}`)
               .join(", ");
 
