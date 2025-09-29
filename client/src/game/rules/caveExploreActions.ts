@@ -761,7 +761,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a brilliant flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to your explosive power. Whatever was sealed within has been released... or destroyed. The citadel trembles as ancient energies dissipate into the darkness.",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released... You feel that the true trial has only just begun. Ready yourself.",
     timestamp: Date.now(),
     type: "system",
   });
