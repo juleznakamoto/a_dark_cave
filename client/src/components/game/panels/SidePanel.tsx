@@ -218,8 +218,7 @@ export default function SidePanel() {
         return ['resources', 'buildings', 'population'].includes(sectionName);
       case 'forest':
         return ['resources'].includes(sectionName);
-      case 'world':
-        return ['resources', 'tools', 'weapons', 'clothing', 'relics', 'buildings', 'population', 'stats'].includes(sectionName);
+      
       default:
         return true; // Show all sections by default
     }

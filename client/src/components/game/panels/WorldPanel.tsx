@@ -1,10 +1,2 @@
 
-export default function WorldPanel() {
-  return (
-    <div className="space-y-6">
-      <div className="space-y-4">
-
-      </div>
-    </div>
-  );
-}
+// This file has been removed - WorldPanel is no longer needed

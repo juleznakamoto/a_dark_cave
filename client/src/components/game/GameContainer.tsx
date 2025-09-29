@@ -3,7 +3,6 @@ import GameFooter from './GameFooter';
 import CavePanel from './panels/CavePanel';
 import VillagePanel from './panels/VillagePanel';
 import ForestPanel from './panels/ForestPanel';
-import WorldPanel from './panels/WorldPanel';
 import BastionPanel from './panels/BastionPanel'; // Import BastionPanel
 import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
@@ -25,9 +24,6 @@ export default function GameContainer() {
     }
     if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
       newlyUnlocked.push('forest');
-    }
-    if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
-      newlyUnlocked.push('world');
     }
     // Check for Bastion unlock condition
     if (flags.bastionUnlocked && !previousFlags.bastionUnlocked) {
@@ -112,18 +108,6 @@ export default function GameContainer() {
                   </button>
                 )}
 
-                {flags.worldDiscovered && (
-                  <button
-                    className={` py-2 text-sm bg-transparent ${
-                      activeTab === "world" ? "font-bold " : ""
-                    } ${animatingTabs.has('world') ? 'tab-fade-in' : ''}`}
-                    onClick={() => setActiveTab("world")}
-                    data-testid="tab-world"
-                  >
-                    The World
-                  </button>
-                )}
-
                 {/* Bastion Tab Button */}
                 {flags.bastionUnlocked && (
                   <button
@@ -144,7 +128,6 @@ export default function GameContainer() {
               {activeTab === 'cave' && <CavePanel />}
               {activeTab === 'village' && <VillagePanel />}
               {activeTab === 'forest' && <ForestPanel />}
-              {activeTab === 'world' && <WorldPanel />}
               {activeTab === 'bastion' && <BastionPanel />} {/* Render BastionPanel */}
             </div>
           </section>
