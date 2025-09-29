@@ -15,6 +15,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { capitalizeWords } from "@/lib/utils";
 
 interface SidePanelItem {
   id: string;

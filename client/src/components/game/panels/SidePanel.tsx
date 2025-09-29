@@ -3,6 +3,7 @@ import SidePanelSection from './SidePanelSection';
 import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { villageBuildActions } from '@/game/rules/villageBuildActions';
+import { capitalizeWords } from "@/lib/utils";
 
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
@@ -11,7 +12,7 @@ export default function SidePanel() {
   const resourceItems = Object.entries(resources)
     .map(([key, value]) => ({
       id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: capitalizeWords(key),
       value: value ?? 0,
       testId: `resource-${key}`,
       visible: (value ?? 0) > 0
@@ -29,7 +30,7 @@ export default function SidePanel() {
     .filter(([key, value]) => !Object.keys(gameState.weapons).includes(key))
     .map(([key, value]) => ({
       id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: capitalizeWords(key),
       value: 1,
       testId: `tool-${key}`,
       visible: true
@@ -40,7 +41,7 @@ export default function SidePanel() {
     .filter(([key, value]) => Object.keys(gameState.weapons).includes(key))
     .map(([key, value]) => ({
       id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: capitalizeWords(key),
       value: 1,
       testId: `weapon-${key}`,
       visible: true
@@ -51,7 +52,7 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: capitalizeWords(key),
       value: 1,
       testId: `clothing-${key}`,
       visible: true
@@ -62,7 +63,7 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: clothingEffects[key]?.name || capitalizeWords(key),
       value: 1,
       testId: `relic-${key}`,
       visible: true
@@ -80,7 +81,7 @@ export default function SidePanel() {
              key === 'fortifiedPalisades' ? 'Fortified Palisades' :
              key === 'stoneWall' ? 'Stone Wall' :
              key === 'reinforcedWall' ? 'Reinforced Wall' :
-             key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+             capitalizeWords(key);
 
       // Get stats effects for this specific building from villageBuildActions
       let tooltip = undefined;
@@ -146,7 +147,7 @@ export default function SidePanel() {
   const populationItems = Object.entries(villagers)
     .map(([key, value]) => ({
       id: key,
-      label: key.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' '),
+      label: capitalizeWords(key),
       value: value ?? 0,
       testId: `population-${key}`,
       visible: (value ?? 0) > 0

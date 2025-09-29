@@ -14,6 +14,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { CircularProgress } from "@/components/ui/circular-progress";
+import { capitalizeWords } from "@/lib/utils";
 
 export default function VillagePanel() {
   const {
@@ -315,12 +316,4 @@ export default function VillagePanel() {
       )}
     </div>
   );
-}
-
-// Utility function to capitalize first letter of each word and convert camelCase to spaced words
-function capitalizeWords(str: string) {
-  // Convert camelCase to spaced words, then capitalize each word
-  return str
-    .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
-    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
 }
