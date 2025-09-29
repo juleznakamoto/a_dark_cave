@@ -778,18 +778,21 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
       },
       3: {
+        "buildings.tradePost": 1,
         "buildings.stoneHut": 2,
       },
       4: {
         "buildings.stoneHut": 3,
       },
       5: {
+        "buildings.alchemistTower": 1,
         "buildings.stoneHut": 4,
       },
       6: {
         "buildings.stoneHut": 5,
       },
       7: {
+        "buildings.shrine": 1,
         "buildings.stoneHut": 6,
       },
       8: {
