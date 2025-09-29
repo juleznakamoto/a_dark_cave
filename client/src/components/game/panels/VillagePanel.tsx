@@ -189,7 +189,7 @@ export default function VillagePanel() {
       const productionText = production
         .map(
           (prod) =>
-            `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${prod.resource}`,
+            `${prod.totalAmount > 0 ? "+" : ""}${prod.totalAmount} ${capitalizeWords(prod.resource)}`,
         )
         .join(", ");
 
@@ -315,4 +315,12 @@ export default function VillagePanel() {
       )}
     </div>
   );
+}
+
+// Utility function to capitalize first letter of each word and convert camelCase to spaced words
+function capitalizeWords(str: string) {
+  // Convert camelCase to spaced words, then capitalize each word
+  return str
+    .replace(/([a-z])([A-Z])/g, '$1 $2') // Add space before capital letters
+    .replace(/\b\w/g, (char) => char.toUpperCase()); // Capitalize first letter of each word
 }
