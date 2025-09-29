@@ -61,13 +61,3 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
 
   return result;
 }
-
-  result.logEntries!.push({
-    id: `ember-bomb-crafted-${Date.now()}`,
-    message: "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
-    timestamp: Date.now(),
-    type: 'system',
-  });
-
-  return result;
-}
