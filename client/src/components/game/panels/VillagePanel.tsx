@@ -10,14 +10,6 @@ export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager, productionTiming } = useGameStore();
   const state = useGameStore.getState();
   
-  // Dynamic panel title based on stone huts
-  const getPanelTitle = () => {
-    if (buildings.stoneHut >= 6) {
-      return "The City";
-    }
-    return "Village";
-  };
-  
   // Calculate production progress based on actual game loop timing
   const getProductionProgress = () => {
     if (!productionTiming.currentTime || !productionTiming.lastGathererProduction) {
@@ -173,9 +165,6 @@ export default function VillagePanel() {
     if (job.showWhen) return job.showWhen();
     return false;
   });
-
-  // Export the title for the SidePanel to use
-  VillagePanel.getPanelTitle = getPanelTitle;
 
   return (
     <div className="space-y-6">
