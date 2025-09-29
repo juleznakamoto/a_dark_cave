@@ -270,6 +270,15 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  occultist_map: {
+    id: "occultist_map",
+    name: "Occultist Map",
+    description: "Time-worn map revealing the hidden chamber of an accultist in the cave",
+    bonuses: {
+      actionBonuses: {},
+    },
+  },
+
   giant_trap: {
     id: "giant_trap",
     name: "Giant Trap",
