@@ -96,7 +96,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
-                    {flags.hasStoneHuts ? "The City" : "The Village"}
+                    {flags.caveExplored ? "The City" : "The Village"}
                   </button>
                 )}
 
