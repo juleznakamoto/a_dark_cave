@@ -37,7 +37,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="absolute left-full ml-2 top-0 z-50 pointer-events-none">
+    <div className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-full ml-10 z-50 pointer-events-none">
       <div
         className={`
           font-mono text-sm
