@@ -8,18 +8,7 @@ import { capitalizeWords } from "@/lib/utils";
 import { useEffect, useRef, useState } from 'react';
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, current_population, total_population, activeTab, actionTriggeredChanges, clearActionTriggeredChanges } = useGameStore();
-
-  // Clear old notifications after they've been displayed
-  useEffect(() => {
-    if (actionTriggeredChanges.length > 0) {
-      const timer = setTimeout(() => {
-        clearActionTriggeredChanges();
-      }, 3000); // Clear after 3 seconds
-
-      return () => clearTimeout(timer);
-    }
-  }, [actionTriggeredChanges, clearActionTriggeredChanges]);
+  const { resources, tools, buildings, villagers, current_population, total_population, activeTab  } = useGameStore();
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
