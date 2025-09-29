@@ -613,6 +613,158 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 40,
   },
 
+  buildBastion: {
+    id: "buildBastion",
+    label: "Bastion",
+    building: true,
+    show_when: {
+      1: {
+        "flags.portalBlasted": true,
+        "buildings.bastion": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+        "resources.steel": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.bastion": 1,
+        "story.seen.hasBastion": true,
+      },
+    },
+    cooldown: 60,
+  },
+
+  buildWatchtower: {
+    id: "buildWatchtower",
+    label: "Watchtower",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.bastion": 1,
+        "buildings.watchtower": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+        "resources.wood": 2500,
+        "resources.steel": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.watchtower": 1,
+        "story.seen.hasWatchtower": true,
+      },
+    },
+    cooldown: 60,
+  },
+
+  buildWoodenPalisades: {
+    id: "buildWoodenPalisades",
+    label: "Wooden Palisades",
+    building: true,
+    show_when: {
+      1: {
+        "flags.portalBlasted": true,
+        "buildings.woodenPalisades": 0,
+        "buildings.fortifiedPalisades": 0,
+        "buildings.stoneWall": 0,
+        "buildings.reinforcedWall": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.woodenPalisades": 1,
+        "story.seen.hasWoodenPalisades": true,
+      },
+    },
+    cooldown: 40,
+  },
+
+  buildFortifiedPalisades: {
+    id: "buildFortifiedPalisades",
+    label: "Fortified Palisades",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenPalisades": 1,
+        "buildings.fortifiedPalisades": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 7500,
+        "resources.iron": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.fortifiedPalisades": 1,
+        "story.seen.hasFortifiedPalisades": true,
+      },
+    },
+    cooldown: 50,
+  },
+
+  buildStoneWall: {
+    id: "buildStoneWall",
+    label: "Stone Wall",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.fortifiedPalisades": 1,
+        "buildings.stoneWall": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.stoneWall": 1,
+        "story.seen.hasStoneWall": true,
+      },
+    },
+    cooldown: 50,
+  },
+
+  buildReinforcedWall: {
+    id: "buildReinforcedWall",
+    label: "Reinforced Wall",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneWall": 1,
+        "buildings.reinforcedWall": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 7500,
+        "resources.steel": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.reinforcedWall": 1,
+        "story.seen.hasReinforcedWall": true,
+      },
+    },
+    cooldown: 60,
+  },
+
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
@@ -968,4 +1120,52 @@ export function handleBuildTradePost(state: GameState, result: ActionResult): Ac
   }
 
   return tradePostResult;
+}
+
+export function handleBuildBastion(state: GameState, result: ActionResult): ActionResult {
+  const bastionResult = handleBuildingConstruction(state, result, 'buildBastion', 'bastion');
+
+  // Add bastion completion message
+  if (state.buildings.bastion === 0) {
+    bastionResult.logEntries!.push({
+      id: `bastion-built-${Date.now()}`,
+      message: "The bastion rises like a stone mountain, its walls thick and imposing. You feel you need to prepare for something bad that will come from the depths of the cave.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return bastionResult;
+}
+
+export function handleBuildWatchtower(state: GameState, result: ActionResult): ActionResult {
+  const watchtowerResult = handleBuildingConstruction(state, result, 'buildWatchtower', 'watchtower');
+
+  // Add watchtower completion message
+  if (state.buildings.watchtower === 0) {
+    watchtowerResult.logEntries!.push({
+      id: `watchtower-built-${Date.now()}`,
+      message: "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return watchtowerResult;
+}
+
+export function handleBuildWoodenPalisades(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildWoodenPalisades', 'woodenPalisades');
+}
+
+export function handleBuildFortifiedPalisades(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildFortifiedPalisades', 'fortifiedPalisades');
+}
+
+export function handleBuildStoneWall(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildStoneWall', 'stoneWall');
+}
+
+export function handleBuildReinforcedWall(state: GameState, result: ActionResult): ActionResult {
+  return handleBuildingConstruction(state, result, 'buildReinforcedWall', 'reinforcedWall');
 }

@@ -49,6 +49,17 @@ export default function VillagePanel() {
         { id: 'buildAlchemistTower', label: "Alchemist's Tower" },
         { id: 'buildTradePost', label: 'Trade Post' },
       ]
+    },
+    {
+      title: 'Fortifications',
+      actions: [
+        { id: 'buildBastion', label: 'Bastion' },
+        { id: 'buildWatchtower', label: 'Watchtower' },
+        { id: 'buildWoodenPalisades', label: 'Wooden Palisades' },
+        { id: 'buildFortifiedPalisades', label: 'Fortified Palisades' },
+        { id: 'buildStoneWall', label: 'Stone Wall' },
+        { id: 'buildReinforcedWall', label: 'Reinforced Wall' },
+      ]
     }
   ];
 

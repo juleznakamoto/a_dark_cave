@@ -71,7 +71,13 @@ import {
   handleBuildTannery,
   handleBuildAlchemistTower,
   handleBuildTradePost,
-} from '@/game/rules/villageBuildActions';
+  handleBuildBastion,
+  handleBuildWatchtower,
+  handleBuildWoodenPalisades,
+  handleBuildFortifiedPalisades,
+  handleBuildStoneWall,
+  handleBuildReinforcedWall,
+} from './rules/villageBuildActions';
 
 import {
   handleHunt,
@@ -257,6 +263,18 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildAlchemistTower(state, result);
     case 'buildTradePost':
       return handleBuildTradePost(state, result);
+    case 'buildBastion':
+      return handleBuildBastion(state, result);
+    case 'buildWatchtower':
+      return handleBuildWatchtower(state, result);
+    case 'buildWoodenPalisades':
+      return handleBuildWoodenPalisades(state, result);
+    case 'buildFortifiedPalisades':
+      return handleBuildFortifiedPalisades(state, result);
+    case 'buildStoneWall':
+      return handleBuildStoneWall(state, result);
+    case 'buildReinforcedWall':
+      return handleBuildReinforcedWall(state, result);
 
     // Forest Scout Actions
     case 'hunt':

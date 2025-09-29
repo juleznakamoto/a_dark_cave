@@ -140,6 +140,13 @@ export const gameStateSchema = z.object({
     temple: z.number().default(0),
     sanctum: z.number().default(0),
     alchemistTower: z.number().default(0),
+    tradePost: z.number().default(0),
+    bastion: z.number().default(0),
+    watchtower: z.number().default(0),
+    woodenPalisades: z.number().default(0),
+    fortifiedPalisades: z.number().default(0),
+    stoneWall: z.number().default(0),
+    reinforcedWall: z.number().default(0),
   }).default({}),
   villagers: z.object({
     free: z.number().min(0).default(0),

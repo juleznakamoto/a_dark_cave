@@ -4,6 +4,7 @@ import CavePanel from './panels/CavePanel';
 import VillagePanel from './panels/VillagePanel';
 import ForestPanel from './panels/ForestPanel';
 import WorldPanel from './panels/WorldPanel';
+import BastionPanel from './panels/BastionPanel'; // Import BastionPanel
 import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
@@ -28,6 +29,11 @@ export default function GameContainer() {
     if (flags.worldDiscovered && !previousFlags.worldDiscovered) {
       newlyUnlocked.push('world');
     }
+    // Check for Bastion unlock condition
+    if (flags.bastionUnlocked && !previousFlags.bastionUnlocked) {
+      newlyUnlocked.push('bastion');
+    }
+
 
     if (newlyUnlocked.length > 0) {
       setAnimatingTabs(new Set(newlyUnlocked));
@@ -90,7 +96,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
-                    The Village
+                    {flags.hasStoneHuts ? "The City" : "The Village"}
                   </button>
                 )}
 
@@ -117,6 +123,19 @@ export default function GameContainer() {
                     The World
                   </button>
                 )}
+
+                {/* Bastion Tab Button */}
+                {flags.bastionUnlocked && (
+                  <button
+                    className={` py-2 text-sm bg-transparent ${
+                      activeTab === "bastion" ? "font-bold " : ""
+                    } ${animatingTabs.has('bastion') ? 'tab-fade-in' : ''}`}
+                    onClick={() => setActiveTab("bastion")}
+                    data-testid="tab-bastion"
+                  >
+                    The Bastion
+                  </button>
+                )}
               </div>
             </nav>
 
@@ -126,6 +145,7 @@ export default function GameContainer() {
               {activeTab === 'village' && <VillagePanel />}
               {activeTab === 'forest' && <ForestPanel />}
               {activeTab === 'world' && <WorldPanel />}
+              {activeTab === 'bastion' && <BastionPanel />} {/* Render BastionPanel */}
             </div>
           </section>
         </div>

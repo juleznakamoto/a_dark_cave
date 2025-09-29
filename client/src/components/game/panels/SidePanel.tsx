@@ -73,7 +73,14 @@ export default function SidePanel() {
     .map(([key, value]) => {
       if ((value ?? 0) === 0) return null;
 
-      let label = key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+      let label = key === 'clerksHut' ? "Clerk's Hut" :
+             key === 'alchemistTower' ? "Alchemist's Tower" :
+             key === 'tradePost' ? 'Trade Post' :
+             key === 'woodenPalisades' ? 'Wooden Palisades' :
+             key === 'fortifiedPalisades' ? 'Fortified Palisades' :
+             key === 'stoneWall' ? 'Stone Wall' :
+             key === 'reinforcedWall' ? 'Reinforced Wall' :
+             key.split(/(?=[A-Z])/).map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
       // Get stats effects for this specific building from villageBuildActions
       let tooltip = undefined;
@@ -121,6 +128,14 @@ export default function SidePanel() {
         return false;
       }
       if (item.id === 'temple' && buildings.sanctum > 0) {
+        return false;
+      }
+      // Hide basic palisades when fortified are built
+      if (item.id === 'woodenPalisades' && buildings.fortifiedPalisades > 0) {
+        return false;
+      }
+      // Hide stone wall when reinforced are built
+      if (item.id === 'stoneWall' && buildings.reinforcedWall > 0) {
         return false;
       }
       return true;
