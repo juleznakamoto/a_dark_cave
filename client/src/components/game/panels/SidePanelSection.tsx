@@ -74,6 +74,19 @@ export default function SidePanelSection({
       if (prevValue !== undefined) {
         if (currentValue > prevValue) {
           newAnimatedItems.add(item.id);
+          
+          // Add to resourceChanges for notifications if showNotifications is enabled
+          if (showNotifications) {
+            const changeAmount = currentValue - prevValue;
+            const newChange = {
+              resource: item.id,
+              amount: changeAmount,
+              timestamp: Date.now()
+            };
+            // Update resourceChanges by adding this change
+            resourceChanges.push(newChange);
+          }
+          
           // Remove animation after 2.5 seconds
           setTimeout(() => {
             setAnimatedItems((prev) => {
@@ -84,6 +97,19 @@ export default function SidePanelSection({
           }, 2500);
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
+          
+          // Add to resourceChanges for notifications if showNotifications is enabled
+          if (showNotifications) {
+            const changeAmount = currentValue - prevValue;
+            const newChange = {
+              resource: item.id,
+              amount: changeAmount,
+              timestamp: Date.now()
+            };
+            // Update resourceChanges by adding this change
+            resourceChanges.push(newChange);
+          }
+          
           // Remove animation after 2.5 seconds
           setTimeout(() => {
             setDecreaseAnimatedItems((prev) => {
@@ -106,7 +132,7 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems]);
+  }, [visibleItems, showNotifications, resourceChanges]);
 
   if (visibleItems.length === 0) {
     return null;
