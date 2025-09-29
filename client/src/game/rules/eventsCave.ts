@@ -171,7 +171,7 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             relics: {
               ...state.relics,
-              hollow_King_scepter: true,
+              hollow_king_scepter: true,
             },
             story: {
               ...state.story,

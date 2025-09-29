@@ -86,7 +86,7 @@ const caveRelics = {
   ],
   exploreCitadel: [
     {
-      key: "hollow_King_scepter",
+      key: "hollow_king_scepter",
       probability: 0.035,
       logMessage: "",
       strength: 3,

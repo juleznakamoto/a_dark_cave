@@ -588,8 +588,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
       },
     },
-    hollow_King_scepter: {
-      id: "hollow_King_scepter",
+    hollow_king_scepter: {
+      id: "hollow_king_scepter",
       name: "Hollow King Scepter",
       description: "Scepter of the lost king, radiating power and madness",
       bonuses: {
@@ -721,7 +721,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     unnamed_book: {
       id: "unnamed_book",
       name: "Unnamed Book",
-      description: "A mysterious tome filled with arcane knowledge and forbidden secrets",
+      description: "Book bound in human skin filled with forbidden knowledge",
       bonuses: {
         generalBonuses: {
           knowledge: 8,
