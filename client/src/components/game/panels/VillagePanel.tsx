@@ -10,6 +10,9 @@ export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager, productionTiming } = useGameStore();
   const state = useGameStore.getState();
   
+  // Determine if this should be called "The City" based on stone huts
+  const isCity = buildings.stoneHut >= 5;
+  
   // Calculate production progress based on actual game loop timing
   const getProductionProgress = () => {
     if (!productionTiming.currentTime || !productionTiming.lastGathererProduction) {
