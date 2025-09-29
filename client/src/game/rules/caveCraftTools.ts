@@ -332,7 +332,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.seeker_pack": false,
     },
     cost: {
-      "resources.leather": 250,
+      "resources.leather": 200,
     },
     effects: {
       "clothing.seeker_pack": true,
@@ -350,7 +350,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.hunter_cloak": false,
     },
     cost: {
-      "resources.leather": 500,
+      "resources.leather": 400,
     },
     effects: {
       "clothing.hunter_cloak": true,
