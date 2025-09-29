@@ -12,7 +12,7 @@ import EventDialog from './EventDialog';
 import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
-  const { activeTab, setActiveTab, flags, eventDialog, setEventDialog } = useGameStore();
+  const { activeTab, setActiveTab, flags, eventDialog, setEventDialog, buildings } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
 
@@ -96,7 +96,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("village")}
                     data-testid="tab-village"
                   >
-                    {flags.caveExplored ? "The City" : "The Village"}
+                    {buildings.stoneHut >= 5 ? "The City" : "The Village"}
                   </button>
                 )}
 
