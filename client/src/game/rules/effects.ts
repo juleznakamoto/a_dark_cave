@@ -717,6 +717,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
       },
     },
+
+    unnamed_book: {
+      id: "unnamed_book",
+      name: "Unnamed Book",
+      description: "A mysterious tome filled with arcane knowledge and forbidden secrets",
+      bonuses: {
+        generalBonuses: {
+          knowledge: 8,
+          madness: 5,
+        },
+      },
+    },
 };
 
 // Tool hierarchy definitions
