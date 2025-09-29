@@ -29,11 +29,11 @@ export const caveCraftResources: Record<string, Action> = {
     },
     cost: {
       "resources.iron": 100,
-      "resources.blackPowder": 50,
+      "resources.black_powder": 50,
     },
     effects: {
       "resources.iron": -100,
-      "resources.blackPowder": -50,
+      "resources.black_powder": -50,
       "resources.ember_bomb": 1,
       "story.seen.hasEmberBomb": true,
     },
