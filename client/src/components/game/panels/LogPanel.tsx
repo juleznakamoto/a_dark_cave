@@ -6,8 +6,8 @@ import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 export default function LogPanel() {
   const { log } = useGameStore();
 
-  // Get only the last 8 entries and reverse them so latest is at top
-  const recentEntries = log.slice(-8).reverse();
+  // Get only the last 10 entries and reverse them so latest is at top
+  const recentEntries = log.slice(-10).reverse();
 
   return (
     <div className="h-48">
@@ -15,17 +15,16 @@ export default function LogPanel() {
         <div className="p-4">
           <div className="space-y-2 text-sm">
             {recentEntries.map((entry: LogEntry, index: number) => {
-              const isThirdLast = index === recentEntries.length - 3;
-              const isSecondLast = index === recentEntries.length - 2;
-              const isLast = index === recentEntries.length - 1;
 
               let opacity = "";
-              if (recentEntries.length >= 8) {
-                if (isLast) {
+              if (recentEntries.length >= 10) {
+                if (index === recentEntries.length - 1) {
+                  opacity = "opacity-20";
+                } else if (index === recentEntries.length - 2) {
                   opacity = "opacity-40";
-                } else if (isSecondLast) {
+                } else if (index === recentEntries.length - 3) {
                   opacity = "opacity-60";
-                } else if (isThirdLast) {
+                }else if (index === recentEntries.length - 4) {
                   opacity = "opacity-80";
                 }
               }
