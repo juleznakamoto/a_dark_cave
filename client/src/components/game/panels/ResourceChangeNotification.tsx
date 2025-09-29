@@ -38,15 +38,15 @@ export default function ResourceChangeNotification({ changes }: ResourceChangeNo
         <div
           key={`${change.resource}-${change.timestamp}`}
           className={`
-            px-2 py-1 rounded text-sm font-medium shadow-lg border
+            font-mono text-sm
             animate-in fade-in-0 slide-in-from-left-2 duration-200
             ${change.amount > 0 
-              ? 'bg-green-50 text-green-700 border-green-200' 
-              : 'bg-red-50 text-red-700 border-red-200'
+              ? 'text-green-600' 
+              : 'text-red-600'
             }
           `}
         >
-          {change.amount > 0 ? '+' : ''}{change.amount} {capitalizeWords(change.resource)}
+          {change.amount > 0 ? '+' : ''}{change.amount}
         </div>
       ))}
     </div>
