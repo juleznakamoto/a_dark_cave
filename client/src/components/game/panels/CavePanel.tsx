@@ -58,6 +58,7 @@ export default function CavePanel() {
           actions: [
             { id: "buildTorch", label: "Torch" },
             { id: "craftBoneTotem", label: "Bone Totem" },
+            { id: "craftEmberBomb", label: "Ember Bomb" },
             { id: "craftIronLantern", label: "Iron Lantern" },
             { id: "craftSteelLantern", label: "Steel Lantern" },
             { id: "craftObsidianLantern", label: "Obsidian Lantern" },
