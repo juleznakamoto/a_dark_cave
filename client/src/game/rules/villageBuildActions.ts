@@ -1,6 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
-import { gameActions } from '@/game/rules';
 
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
@@ -881,7 +880,14 @@ function handleBuildingConstruction(
   buildingType: keyof GameState['buildings']
 ): ActionResult {
   const level = state.buildings[buildingType] + 1;
-  const actionEffects = gameActions[actionId].effects[level];
+  const action = villageBuildActions[actionId];
+  const actionEffects = action?.effects?.[level];
+  
+  if (!actionEffects) {
+    console.warn(`No effects found for action ${actionId} at level ${level}`);
+    return result;
+  }
+
   const newResources = { ...state.resources };
 
   for (const [path, effect] of Object.entries(actionEffects)) {
@@ -902,7 +908,14 @@ function handleBuildingConstruction(
 
 export function handleBuildWoodenHut(state: GameState, result: ActionResult): ActionResult {
   const level = state.buildings.woodenHut + 1;
-  const actionEffects = gameActions.buildWoodenHut.effects[level];
+  const action = villageBuildActions.buildWoodenHut;
+  const actionEffects = action?.effects?.[level];
+  
+  if (!actionEffects) {
+    console.warn(`No effects found for buildWoodenHut at level ${level}`);
+    return result;
+  }
+
   const newResources = { ...state.resources };
 
   for (const [path, effect] of Object.entries(actionEffects)) {
