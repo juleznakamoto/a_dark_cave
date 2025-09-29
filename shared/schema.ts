@@ -117,7 +117,7 @@ export const gameStateSchema = z.object({
     dragon_bone_dice: z.boolean().default(false),
     coin_of_drowned: z.boolean().default(false),
     shadow_flute: z.boolean().default(false),
-    hollow_kings_scepter: z.boolean().default(false),
+    hollow_King_scepter: z.boolean().default(false),
     red_mask: z.boolean().default(false),
   }).default({}),
   buildings: z.object({

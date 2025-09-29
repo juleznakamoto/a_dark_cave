@@ -86,14 +86,14 @@ const caveRelics = {
   ],
   exploreCitadel: [
     {
-      key: "hollow_kings_scepter",
+      key: "hollow_King_scepter",
       probability: 0.035,
       logMessage: "",
       strength: 3,
       knowledge: 7,
       madness: 5,
       isChoice: true,
-      eventId: "hollowKingsScepterChoice",
+      eventId: "hollowKingScepterChoice",
     },
   ],
 };

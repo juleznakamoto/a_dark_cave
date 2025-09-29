@@ -1,6 +1,5 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
 
 export const huntEvents: Record<string, GameEvent> = {
   blacksmithHammerChoice: {

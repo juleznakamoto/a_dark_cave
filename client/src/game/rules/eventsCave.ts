@@ -151,11 +151,11 @@ export const caveEvents: Record<string, GameEvent> = {
     },
   },
 
-  hollowKingsScepterChoice: {
-    id: "hollowKingsScepterChoice",
+  hollowKingScepterChoice: {
+    id: "hollowKingScepterChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
     triggerType: "action",
-    title: "The Hollow King's Scepter",
+    title: "The Hollow King Scepter",
     message:
       "In the throne room of the ruined citadel, you find a magnificent scepter of obsidian. This must have belonged to the king of this lost city. Dark knowledge flows from it, but so does terrible madness. Do you keep it?",
     triggered: false,
@@ -171,17 +171,17 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             relics: {
               ...state.relics,
-              hollow_kings_scepter: true,
+              hollow_King_scepter: true,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                hollowKingsScepterChoice: true,
+                hollowKingScepterChoice: true,
               },
             },
             _logMessage:
-              "You grasp the Hollow King's Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the king's memories of his final, maddening days.",
+              "You grasp the Hollow King Scepter, feeling immense power flow through you. Ancient knowledge floods your mind, along with the King memories of his final, maddening days.",
           };
         },
       },
@@ -194,11 +194,11 @@ export const caveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                hollowKingsScepterChoice: true,
+                hollowKingScepterChoice: true,
               },
             },
             _logMessage:
-              "You decide to leave the dead king's scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
+              "You decide to leave the dead King scepter where it belongs. As you turn away, you swear you hear a faint whisper of disappointment echoing through the empty throne room.",
           };
         },
       },
@@ -215,7 +215,7 @@ export const caveEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-              hollowKingsScepterChoice: true,
+              hollowKingScepterChoice: true,
             },
           },
           _logMessage:

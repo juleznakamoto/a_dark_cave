@@ -36,12 +36,10 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "One hut lies empty. Its occupant is gone.",
       "A villager is gone. Claw-like marks remain.",
-      "A bed lies cold. The forest has claimed them.",
-      "Mist shrouds an empty hut. The villager is gone.",
       "A hut stands silent. Meals lie untouched. They are gone.",
       "The wind moves through an empty hut. The villager is gone.",
       "A door of a hut stands ajar. Its occupant is gone.",
-    ][Math.floor(Math.random() * 7)],
+    ][Math.floor(Math.random() * 5)],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
@@ -545,7 +543,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "dreamMorrowind",
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "time",
-    timeProbability: 90,
+    timeProbability: 80,
     message:
       "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
     triggered: false,
@@ -561,9 +559,9 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamOblivion: {
     id: "dreamOblivion",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     triggerType: "time",
-    timeProbability: 90,
+    timeProbability: 70,
     message:
       "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
     triggered: false,
@@ -579,9 +577,9 @@ export const storyEvents: Record<string, GameEvent> = {
 
   dreamSkyrim: {
     id: "dreamSkyrim",
-    condition: (state: GameState) => state.buildings.woodenHut >= 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7,
     triggerType: "time",
-    timeProbability: 90,
+    timeProbability: 60,
     message:
       "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead, scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
     triggered: false,
@@ -621,29 +619,6 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-  blacksmithHammer: {
-    id: "blacksmithHammer",
-    condition: (state: GameState) => false, // Only triggered by hunting action
-    triggerType: "action",
-    message:
-      "Deep in the forest, you discover ancient ruins dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent blacksmith hammer catches the light, its head still bearing traces of ancient forge-fire. You take the hammer, feeling its power flow through you.",
-    triggered: false,
-    priority: 5,
-    repeatable: false,
-    effect: (state: GameState) => {
-      return {
-        relics: {
-          ...state.relics,
-          blacksmith_hammer: true,
-        },
-        events: {
-          ...state.events,
-          blacksmith_hammer_found: true,
-        },
-      };
-    },
-  },
-
   offerToTheForestGods: {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
@@ -651,7 +626,7 @@ export const storyEvents: Record<string, GameEvent> = {
       !state.relics.ebony_ring &&
       state.buildings.altar == 1,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 30,
     title: "Offer to the Forest Gods",
     message:
       "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to restore peace.",
@@ -759,7 +734,7 @@ export const storyEvents: Record<string, GameEvent> = {
   madBeduine: {
     id: "madBeduine",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8 &&
+      state.buildings.woodenHut >= 6 &&
       state.current_population > 8 &&
       !state.relics.unnamed_book,
     triggerType: "resource",

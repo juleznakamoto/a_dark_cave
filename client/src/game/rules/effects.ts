@@ -588,9 +588,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
         },
       },
     },
-    hollow_kings_scepter: {
-      id: "hollow_kings_scepter",
-      name: "Hollow King's Scepter",
+    hollow_King_scepter: {
+      id: "hollow_King_scepter",
+      name: "Hollow King Scepter",
       description: "Scepter of the lost king, radiating power and madness",
       bonuses: {
         generalBonuses: {
@@ -1131,8 +1131,8 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   });
 
-  // Hollow King's Scepter effects
-  if (state.relics?.hollow_kings_scepter) {
+  // Hollow King Scepter effects
+  if (state.relics?.hollow_King_scepter) {
     effects.statBonuses.knowledge = (effects.statBonuses.knowledge || 0) + 5;
     effects.statBonuses.madness = (effects.statBonuses.madness || 0) + 2;
   }
