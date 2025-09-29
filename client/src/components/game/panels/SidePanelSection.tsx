@@ -78,16 +78,6 @@ export default function SidePanelSection({
             });
           }, 2500);
         }
-      } else if (currentValue > 0) {
-        // If it's the first time we see this item and its value is positive, animate it.
-        newAnimatedItems.add(item.id);
-        setTimeout(() => {
-          setAnimatedItems((prev) => {
-            const newSet = new Set(prev);
-            newSet.delete(item.id);
-            return newSet;
-          });
-        }, 2500);
       }
 
       prevValuesRef.current.set(item.id, currentValue);
