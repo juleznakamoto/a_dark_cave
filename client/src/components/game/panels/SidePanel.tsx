@@ -260,7 +260,7 @@ export default function SidePanel() {
     <ScrollArea className="h-full max-h-full">
       <div className="pb-4 flex gap-4">
         {/* First column - Resources */}
-        <div className="flex-1 relative">
+        <div className="flex-1">
           {resourceItems.length > 0 && shouldShowSection('resources') && (
             <SidePanelSection
               title="Resources"
@@ -268,10 +268,9 @@ export default function SidePanel() {
               onValueChange={(itemId, oldValue, newValue) => {
                 console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
               }}
+              resourceChanges={resourceChanges}
+              showNotifications={buildings.clerksHut > 0}
             />
-          )}
-          {buildings.clerksHut > 0 && (
-            <ResourceChangeNotification changes={resourceChanges} />
           )}
         </div>
 

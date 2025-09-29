@@ -26,17 +26,51 @@ interface SidePanelItem {
   tooltip?: string;
 }
 
+interface ResourceChange {
+  resource: string;
+  amount: number;
+  timestamp: number;
+}
+
 interface SidePanelSectionProps {
   title: string;
   items: SidePanelItem[];
   className?: string;
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
+  resourceChanges?: ResourceChange[];
+  showNotifications?: boolean;
 }
+
+// Placeholder for ResourceChangeNotification component
+// In a real scenario, this would be imported from its own file.
+const ResourceChangeNotification = ({ resource, changes }: { resource: string; changes: ResourceChange[] }) => {
+  const relevantChanges = changes.filter(change => change.resource === resource);
+  if (relevantChanges.length === 0) {
+    return null;
+  }
+
+  // For simplicity, display the latest change
+  const latestChange = relevantChanges[relevantChanges.length - 1];
+  const sign = latestChange.amount >= 0 ? '+' : '';
+
+  return (
+    <div className="absolute right-2 top-1/2 -translate-y-1/2 text-xs font-mono">
+      <span className={`
+        ${latestChange.amount > 0 ? 'text-green-500' : latestChange.amount < 0 ? 'text-red-500' : 'text-gray-500'}
+      `}>
+        {sign}{latestChange.amount}
+      </span>
+    </div>
+  );
+};
+
 
 export default function SidePanelSection({
   title,
   items,
   className = "",
+  resourceChanges = [],
+  showNotifications = false
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
@@ -301,7 +335,17 @@ export default function SidePanelSection({
         {title}
       </h3>
       <div className="space-y-1 text-sm">
-        {visibleItems.map(renderItemWithTooltip)}
+        {visibleItems.map((item) => (
+          <div key={item.id} className="relative">
+            {renderItemWithTooltip(item)}
+            {showNotifications && (
+              <ResourceChangeNotification
+                resource={item.id}
+                changes={resourceChanges}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
