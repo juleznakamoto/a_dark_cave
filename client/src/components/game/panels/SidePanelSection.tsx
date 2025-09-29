@@ -176,7 +176,7 @@ export default function SidePanelSection({
     // If this item has effects, wrap it in a hover card
     if (
       hasEffect &&
-      (title === "Relics" || title === "Tools" || title === "Weapons")
+      (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")
     ) {
       return (
         <HoverCard key={item.id} openDelay={100} closeDelay={100}>
