@@ -1,6 +1,6 @@
 import { useGameStore } from '@/game/state';
 import SidePanelSection from './SidePanelSection';
-import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness, getBuildingStatsEffects } from '@/game/rules/effects';
+import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { villageBuildActions } from '@/game/rules/villageBuildActions';
 
