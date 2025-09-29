@@ -5,7 +5,6 @@ import { Button } from '@/components/ui/button';
 import { getPopulationProduction } from '@/game/population';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 import { CircularProgress } from '@/components/ui/circular-progress';
-import { useEffect, useState } from 'react';
 
 export default function VillagePanel() {
   const { villagers, buildings, story, executeAction, assignVillager, unassignVillager, productionTiming } = useGameStore();

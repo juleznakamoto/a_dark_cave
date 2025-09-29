@@ -9,7 +9,7 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeGoldForWood",
     label: "Buy 500 Wood",
     show_when: {
-      "buildings.blacksmith": 1,
+      "buildings.tradePost": 1,
     },
     cost: {
       "resources.gold": 5,
@@ -105,7 +105,7 @@ export const forestTradeActions: Record<string, Action> = {
     id: "tradeSilverForGold",
     label: "Buy 50 Gold",
     show_when: {
-      "buildings.blacksmith": 1,
+      "buildings.tradePost": 1,
     },
     cost: {
       "resources.silver": 100,
