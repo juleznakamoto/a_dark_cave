@@ -204,11 +204,11 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="outline"
             size="sm"
-            className="h-6 w-6 p-0 no-hover"
+            className="h-5 w-5 p-0 no-hover"
           >
             -
           </Button>
-          <span className="font-mono text-sm w-8 text-center">
+          <span className="font-mono text-sm w-5 text-center">
             {currentCount}
           </span>
           <Button
@@ -216,7 +216,7 @@ export default function VillagePanel() {
             disabled={villagers.free === 0}
             variant="outline"
             size="sm"
-            className="h-6 w-6 p-0 no-hover"
+            className="h-5 w-5 p-0 no-hover"
           >
             +
           </Button>
