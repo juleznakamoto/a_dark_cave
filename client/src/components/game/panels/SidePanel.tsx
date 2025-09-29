@@ -214,6 +214,43 @@ export default function SidePanel() {
     });
   }
 
+  // Dynamically generate fortification items from state
+  const fortificationItems = Object.entries(buildings)
+    .map(([key, value]) => {
+      // Only include fortification buildings
+      if (!['bastion', 'watchtower', 'woodenPalisades', 'fortifiedPalisades', 'stoneWall', 'reinforcedWall'].includes(key)) {
+        return null;
+      }
+      
+      if ((value ?? 0) === 0) return null;
+
+      let label = key === 'woodenPalisades' ? 'Wooden Palisades' :
+                 key === 'fortifiedPalisades' ? 'Fortified Palisades' :
+                 key === 'stoneWall' ? 'Stone Wall' :
+                 key === 'reinforcedWall' ? 'Reinforced Wall' :
+                 capitalizeWords(key);
+
+      return {
+        id: key,
+        label,
+        value: value ?? 0,
+        testId: `fortification-${key}`,
+        visible: (value ?? 0) > 0
+      };
+    })
+    .filter(item => item !== null) // Remove nulls from buildings not present
+    .filter(item => {
+      // Hide basic palisades when fortified are built
+      if (item.id === 'woodenPalisades' && buildings.fortifiedPalisades > 0) {
+        return false;
+      }
+      // Hide stone wall when reinforced are built
+      if (item.id === 'stoneWall' && buildings.reinforcedWall > 0) {
+        return false;
+      }
+      return true;
+    });
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
@@ -223,6 +260,8 @@ export default function SidePanel() {
         return ['resources', 'buildings', 'population'].includes(sectionName);
       case 'forest':
         return ['resources'].includes(sectionName);
+      case 'bastion':
+        return ['resources', 'fortifications'].includes(sectionName);
       
       default:
         return true; // Show all sections by default
@@ -281,6 +320,13 @@ export default function SidePanel() {
             <SidePanelSection
               title="Stats"
               items={statsItems}
+              className="mb-4"
+            />
+          )}
+          {fortificationItems.length > 0 && shouldShowSection('fortifications') && (
+            <SidePanelSection
+              title="Fortifications"
+              items={fortificationItems}
               className="mb-4"
             />
           )}
