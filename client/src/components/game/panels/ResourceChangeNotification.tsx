@@ -48,7 +48,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           }
         `}
       >
-        {visibleChange.amount > 0 ? '+' : ''}{visibleChange.amount}
+        {visibleChange.amount > 0 ? '+' : ''}{Math.round(visibleChange.amount)}
       </div>
     </div>
   );
