@@ -3,9 +3,15 @@ import SidePanelSection from './SidePanelSection';
 import { clothingEffects, getDisplayTools, getTotalLuck, getTotalStrength, getTotalKnowledge, getTotalMadness } from '@/game/rules/effects';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { villageBuildActions } from '@/game/rules/villageBuildActions';
+import CavePanel from './CavePanel';
+import VillagePanel from './VillagePanel';
+import ForestPanel from './ForestPanel';
+import BastionPanel from './BastionPanel';
+import WorldPanel from './WorldPanel';
+
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
+  const { resources, tools, buildings, villagers, current_population, total_population, activeTab, flags } = useGameStore();
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -223,6 +229,40 @@ export default function SidePanel() {
         return true; // Show all sections by default
     }
   };
+
+  const tabs = [
+    {
+      id: 'cave',
+      label: 'Cave',
+      component: <CavePanel />,
+      showWhen: () => true,
+    },
+    {
+      id: 'village',
+      label: buildings.stoneHut >= 6 ? 'The City' : 'Village',
+      component: <VillagePanel />,
+      showWhen: () => flags.villageUnlocked,
+    },
+    {
+      id: 'forest',
+      label: 'Forest',
+      component: <ForestPanel />,
+      showWhen: () => flags.forestUnlocked,
+    },
+    {
+      id: 'bastion',
+      label: 'Bastion',
+      component: <BastionPanel />,
+      showWhen: () => flags.bastionUnlocked,
+    },
+    {
+      id: 'world',
+      label: 'World',
+      component: <WorldPanel />,
+      showWhen: () => flags.worldUnlocked,
+    },
+  ];
+
 
   return (
     <ScrollArea className="h-full max-h-full">
