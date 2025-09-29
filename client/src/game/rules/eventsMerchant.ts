@@ -222,15 +222,15 @@ const toolTrades = [
     message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers."
   },
   {
-    id: "trade_alchemist_map",
-    label: "Alchemist's Map",
+    id: "trade_occultist_map",
+    label: "Occultists's Map",
     give: "tool",
-    giveItem: "alchemist_map",
+    giveItem: "occultist_map",
     costs: [
       { resource: "silver", amounts: [100] },
       { resource: "gold", amounts: [50] }
     ],
-    message: "You buy the alchemist's map. The merchant whispers: 'An old alchemist hid his secrets in a chamber deep in the cave, sealed by a dorr that looks like stone. This map will guide you.'"
+    message: "You buy the occultists's map. The merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave, sealed by a door that looks like stone. This map will guide you.'"
   },
   {
     id: "trade_murmuring_cube",

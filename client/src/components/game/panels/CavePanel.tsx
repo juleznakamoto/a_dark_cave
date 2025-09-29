@@ -1,7 +1,16 @@
-import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
-import CooldownButton from '@/components/CooldownButton';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
+import { useGameStore } from "@/game/state";
+import {
+  gameActions,
+  shouldShowAction,
+  canExecuteAction,
+  getCostText,
+} from "@/game/rules";
+import CooldownButton from "@/components/CooldownButton";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -10,70 +19,84 @@ export default function CavePanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
-      title: 'Explore',
-      actions: [
-        { id: 'gatherWood', label: 'Gather Wood' },
-        { id: 'exploreCave', label: 'Explore Cave' },
-        { id: 'ventureDeeper', label: 'Venture Deeper' },
-        { id: 'descendFurther', label: 'Descend Further' },
-        { id: 'exploreRuins', label: 'Explore Ruins' },
-        { id: 'exploreTemple', label: 'Explore Temple' },
-        { id: 'exploreCitadel', label: 'Explore Citadel' },
-        { id: 'lowChamber', label: 'Low Chamber' },
-        { id: 'alchemistChamber', label: 'Alchemist Chamber' },
-        { id: 'blastPortal', label: 'Blast Portal' },
-      ]
-    },
-    {
-      title: 'Mine',
-      actions: [
-        { id: 'mineIron', label: 'Iron' },
-        { id: 'mineCoal', label: 'Coal' },
-        { id: 'mineSulfur', label: 'Sulfur' },
-        { id: 'mineObsidian', label: 'Obsidian' },
-        { id: 'mineAdamant', label: 'Adamant' },
-      ]
-    },
-    {
-      title: 'Craft',
+      title: "Explore",
       subGroups: [
         {
           actions: [
-            { id: 'buildTorch', label: 'Torch' },
-            { id: 'craftStoneAxe', label: 'Stone Axe' },
-            { id: 'craftIronAxe', label: 'Iron Axe' },
-            { id: 'craftSteelAxe', label: 'Steel Axe' },
-            { id: 'craftObsidianAxe', label: 'Obsidian Axe' },
-            { id: 'craftAdamantAxe', label: 'Adamant Axe' },
-            { id: 'craftStonePickaxe', label: 'Stone Pickaxe' },
-            { id: 'craftIronPickaxe', label: 'Iron Pickaxe' },
-            { id: 'craftSteelPickaxe', label: 'Steel Pickaxe' },
-            { id: 'craftObsidianPickaxe', label: 'Obsidian Pickaxe' },
-            { id: 'craftAdamantPickaxe', label: 'Adamant Pickaxe' },
-            { id: 'craftIronLantern', label: 'Iron Lantern' },
-            { id: 'craftSteelLantern', label: 'Steel Lantern' },
-            { id: 'craftObsidianLantern', label: 'Obsidian Lantern' },
-            { id: 'craftAdamantLantern', label: 'Adamant Lantern' },
-            { id: 'craftSeekerPack', label: "Seeker's Pack" },
-            { id: 'craftHunterCloak', label: 'Hunter Cloak' },
-          ]
+            { id: "gatherWood", label: "Gather Wood" },
+            { id: "exploreCave", label: "Explore Cave" },
+            { id: "ventureDeeper", label: "Venture Deeper" },
+            { id: "descendFurther", label: "Descend Further" },
+            { id: "exploreRuins", label: "Explore Ruins" },
+            { id: "exploreTemple", label: "Explore Temple" },
+            { id: "exploreCitadel", label: "Explore Citadel" },
+          ],
         },
         {
           actions: [
-            { id: 'craftIronSword', label: 'Iron Sword' },
-            { id: 'craftSteelSword', label: 'Steel Sword' },
-            { id: 'craftObsidianSword', label: 'Obsidian Sword' },
-            { id: 'craftAdamantSword', label: 'Adamant Sword' },
-            { id: 'craftCrudeBow', label: 'Crude Bow' },
-            { id: 'craftHuntsmanBow', label: 'Huntsman Bow' },
-            { id: 'craftLongBow', label: 'Long Bow' },
-            { id: 'craftWarBow', label: 'War Bow' },
-            { id: 'craftMasterBow', label: 'Master Bow' },
-          ]
-        }
-      ]
+            { id: "lowChamber", label: "Low Chamber" },
+            { id: "occultistChamber", label: "Occultist Chamber" },
+            { id: "blastPortal", label: "Blast Portal" },
+          ],
+        },
+      ],
     },
-
+    {
+      title: "Mine",
+      actions: [
+        { id: "mineIron", label: "Iron" },
+        { id: "mineCoal", label: "Coal" },
+        { id: "mineSulfur", label: "Sulfur" },
+        { id: "mineObsidian", label: "Obsidian" },
+        { id: "mineAdamant", label: "Adamant" },
+      ],
+    },
+    {
+      title: "Craft",
+      subGroups: [
+        {
+          actions: [
+            { id: "buildTorch", label: "Torch" },
+            { id: "craftBoneTotem", label: "Bone Totem" },
+            { id: "craftIronLantern", label: "Iron Lantern" },
+            { id: "craftSteelLantern", label: "Steel Lantern" },
+            { id: "craftObsidianLantern", label: "Obsidian Lantern" },
+            { id: "craftAdamantLantern", label: "Adamant Lantern" },
+          ],
+        },
+        {actions: [
+            { id: "craftSeekerPack", label: "Seeker Pack" },
+            { id: "craftHunterCloak", label: "Hunter Cloak" },          
+        ]},
+        {
+          actions: [
+            { id: "craftStoneAxe", label: "Stone Axe" },
+            { id: "craftIronAxe", label: "Iron Axe" },
+            { id: "craftSteelAxe", label: "Steel Axe" },
+            { id: "craftObsidianAxe", label: "Obsidian Axe" },
+            { id: "craftAdamantAxe", label: "Adamant Axe" },
+            { id: "craftStonePickaxe", label: "Stone Pickaxe" },
+            { id: "craftIronPickaxe", label: "Iron Pickaxe" },
+            { id: "craftSteelPickaxe", label: "Steel Pickaxe" },
+            { id: "craftObsidianPickaxe", label: "Obsidian Pickaxe" },
+            { id: "craftAdamantPickaxe", label: "Adamant Pickaxe" },
+          ],
+        },
+        {
+          actions: [
+            { id: "craftIronSword", label: "Iron Sword" },
+            { id: "craftSteelSword", label: "Steel Sword" },
+            { id: "craftObsidianSword", label: "Obsidian Sword" },
+            { id: "craftAdamantSword", label: "Adamant Sword" },
+            { id: "craftCrudeBow", label: "Crude Bow" },
+            { id: "craftHuntsmanBow", label: "Huntsman Bow" },
+            { id: "craftLongBow", label: "Long Bow" },
+            { id: "craftWarBow", label: "War Bow" },
+            { id: "craftMasterBow", label: "Master Bow" },
+          ],
+        },
+      ],
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
@@ -91,7 +114,7 @@ export default function CavePanel() {
               <CooldownButton
                 onClick={() => executeAction(actionId)}
                 cooldownMs={action.cooldown * 1000}
-                data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+                data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
                 size="sm"
                 disabled={!canExecute}
                 variant="outline"
@@ -115,7 +138,7 @@ export default function CavePanel() {
         key={actionId}
         onClick={() => executeAction(actionId)}
         cooldownMs={action.cooldown * 1000}
-        data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+        data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
         size="sm"
         disabled={!canExecute}
         variant="outline"
@@ -131,13 +154,13 @@ export default function CavePanel() {
       {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
         if (group.subGroups) {
-          const hasAnyVisibleActions = group.subGroups.some(subGroup =>
-            subGroup.actions.some(action => {
+          const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
+            subGroup.actions.some((action) => {
               if (action.showWhen !== undefined) {
                 return action.showWhen;
               }
               return shouldShowAction(action.id, state);
-            })
+            }),
           );
 
           if (!hasAnyVisibleActions) return null;
@@ -145,10 +168,12 @@ export default function CavePanel() {
           return (
             <div key={groupIndex} className="space-y-4">
               {group.title && (
-                <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
+                <h3 className="text-sm font-semibold text-foreground">
+                  {group.title}
+                </h3>
               )}
               {group.subGroups.map((subGroup, subGroupIndex) => {
-                const visibleActions = subGroup.actions.filter(action => {
+                const visibleActions = subGroup.actions.filter((action) => {
                   if (action.showWhen !== undefined) {
                     return action.showWhen;
                   }
@@ -159,7 +184,9 @@ export default function CavePanel() {
 
                 return (
                   <div key={subGroupIndex} className="flex flex-wrap gap-2">
-                    {visibleActions.map(action => renderButton(action.id, action.label))}
+                    {visibleActions.map((action) =>
+                      renderButton(action.id, action.label),
+                    )}
                   </div>
                 );
               })}
@@ -168,7 +195,7 @@ export default function CavePanel() {
         }
 
         // Handle regular groups (like Explore, Mine)
-        const visibleActions = group.actions.filter(action => {
+        const visibleActions = group.actions.filter((action) => {
           // Handle custom show conditions
           if (action.showWhen !== undefined) {
             return action.showWhen;
@@ -182,10 +209,14 @@ export default function CavePanel() {
         return (
           <div key={groupIndex} className="space-y-4">
             {group.title && (
-              <h3 className="text-sm font-semibold text-foreground">{group.title}</h3>
+              <h3 className="text-sm font-semibold text-foreground">
+                {group.title}
+              </h3>
             )}
             <div className="flex flex-wrap gap-2">
-              {visibleActions.map(action => renderButton(action.id, action.label))}
+              {visibleActions.map((action) =>
+                renderButton(action.id, action.label),
+              )}
             </div>
           </div>
         );

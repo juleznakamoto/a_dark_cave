@@ -53,7 +53,7 @@ export const gameStateSchema = z.object({
     exploredTemple: z.boolean().default(false),
     exploredCitadel: z.boolean().default(false),
     lowChamberExplored: z.boolean().default(false),
-    alchemistChamberExplored: z.boolean().default(false),
+    occultistChamberExplored: z.boolean().default(false),
     starvationActive: z.boolean().default(false),
     forestUnlocked: z.boolean().default(false),
     altarBuilt: z.boolean().default(false),
@@ -80,7 +80,7 @@ export const gameStateSchema = z.object({
     reinforced_rope: z.boolean().default(false),
     giant_trap: z.boolean().default(false),
     seeker_pack: z.boolean().default(false),
-    alchemist_map: z.boolean().default(false),
+    occultist_map: z.boolean().default(false),
   }).default({}),
   weapons: z.object({
     iron_sword: z.boolean().default(false),

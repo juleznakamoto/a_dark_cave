@@ -171,10 +171,11 @@ export const storyEvents: Record<string, GameEvent> = {
                 "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
+            const deaths =
+              2 + Math.floor(Math.random() * state.buildings.woodenHut);
             return {
-              ...killVillagers(state, 2 + state.buildings.woodenHut),
-              _logMessage:
-                "The pale figure moves with inhuman speed. Two men vanish into the mist, their screams echoing through the trees.",
+              ...killVillagers(state, deaths),
+              _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
             };
           }
         },

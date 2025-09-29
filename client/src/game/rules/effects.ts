@@ -661,7 +661,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
     seeker_pack: {
       id: "seeker_pack",
-      name: "Seeker's Pack",
+      name: "Seeker Pack",
       description: "Well-crafted leather backpack easing the weight upon your shoulders",
       bonuses: {
         actionBonuses: {
@@ -689,7 +689,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           lowChamber: {
             resourceMultiplier: 1.2,
           },
-          alchemistChamber: {
+          occultistChamber: {
             resourceMultiplier: 1.2,
           },
         },

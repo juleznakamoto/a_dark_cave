@@ -11,7 +11,7 @@ import {
   handleExploreTemple,
   handleExploreCitadel,
   handleLowChamber,
-  handleAlchemistChamber,
+  handleoccultistChamber,
 } from '@/game/rules/caveExploreActions';
 
 import {
@@ -145,8 +145,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleExploreCitadel(state, result);
     case 'lowChamber':
       return handleLowChamber(state, result);
-    case 'alchemistChamber':
-      return handleAlchemistChamber(state, result);
+    case 'occultistChamber':
+      return handleoccultistChamber(state, result);
 
     // Cave Craft Actions
     case 'buildTorch':

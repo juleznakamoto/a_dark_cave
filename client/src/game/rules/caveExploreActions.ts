@@ -180,7 +180,7 @@ export const caveExploreActions: Record<string, Action> = {
       "buildings.blacksmith": 0,
     },
     cost: {
-      "resources.torch": 5,
+      "resources.torch": 3,
     },
     effects: {
       "resources.wood": { probability: 0.5, value: "random(2,5)" },
@@ -203,8 +203,8 @@ export const caveExploreActions: Record<string, Action> = {
       "tools.iron_lantern": false,
     },
     cost: {
-      "resources.torch": 10,
-      "resources.food": 20,
+      "resources.torch": 5,
+      "resources.food": 25,
     },
     effects: {
       "resources.stone": { probability: 1, value: "random(4,8)" },
@@ -349,12 +349,12 @@ export const caveExploreActions: Record<string, Action> = {
     cooldown: 1,
   },
 
-  alchemistChamber: {
-    id: "alchemistChamber",
-    label: "Alchemist Chamber",
+  occultistChamber: {
+    id: "occultistChamber",
+    label: "Occultist Chamber",
     show_when: {
-      "tools.alchemist_map": true,
-      "flags.alchemistChamberExplored": false,
+      "tools.occultist_map": true,
+      "flags.occultistChamberExplored": false,
     },
     cost: {
       "resources.food": 1000,
@@ -364,8 +364,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.bloodstone": { probability: 1, value: "random(3,6)" },
       "resources.frostglas": { probability: 1, value: "random(2,4)" },
       "resources.adamant": { probability: 1, value: "random(5,15)" },
-      "flags.alchemistChamberExplored": true,
-      "story.seen.alchemistChamberExplored": true,
+      "flags.occultistChamberExplored": true,
+      "story.seen.occultistChamberExplored": true,
     },
     cooldown: 1,
   },
@@ -716,12 +716,12 @@ export function handleLowChamber(
   return result;
 }
 
-export function handleAlchemistChamber(
+export function handleoccultistChamber(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const effectUpdates = applyActionEffects("alchemistChamber", state);
-  applyCaveExplorationLuckBonus(state, "alchemistChamber", effectUpdates);
+  const effectUpdates = applyActionEffects("occultistChamber", state);
+  applyCaveExplorationLuckBonus(state, "occultistChamber", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -741,9 +741,9 @@ export function handleAlchemistChamber(
   }
 
   result.logEntries!.push({
-    id: `alchemist-chamber-explored-${Date.now()}`,
+    id: `occultist-chamber-explored-${Date.now()}`,
     message:
-      "Following the alchemist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the alchemist's greatest treasures and experiments await, preserved in death.",
+      "Following the occultists's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the occultists's greatest treasures and experiments await, preserved in death.",
     timestamp: Date.now(),
     type: "system",
   });
