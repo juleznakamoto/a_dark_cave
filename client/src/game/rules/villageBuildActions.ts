@@ -632,6 +632,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.bastion": 1,
         "story.seen.hasBastion": true,
+        "flags.bastionUnlocked": true,
       },
     },
     cooldown: 60,
