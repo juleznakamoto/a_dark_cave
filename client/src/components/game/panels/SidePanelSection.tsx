@@ -40,6 +40,7 @@ interface SidePanelSectionProps {
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
   resourceChanges?: ResourceChange[];
   showNotifications?: boolean;
+  onResourceChange?: (change: ResourceChange) => void;
 }
 
 
@@ -50,7 +51,8 @@ export default function SidePanelSection({
   items,
   className = "",
   resourceChanges = [],
-  showNotifications = false
+  showNotifications = false,
+  onResourceChange
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
@@ -74,19 +76,18 @@ export default function SidePanelSection({
       if (prevValue !== undefined) {
         if (currentValue > prevValue) {
           newAnimatedItems.add(item.id);
-          
+
           // Add to resourceChanges for notifications if showNotifications is enabled
-          if (showNotifications) {
+          if (showNotifications && onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
               amount: changeAmount,
               timestamp: Date.now()
             };
-            // Update resourceChanges by adding this change
-            resourceChanges.push(newChange);
+            onResourceChange(newChange);
           }
-          
+
           // Remove animation after 2.5 seconds
           setTimeout(() => {
             setAnimatedItems((prev) => {
@@ -97,19 +98,18 @@ export default function SidePanelSection({
           }, 2500);
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
-          
+
           // Add to resourceChanges for notifications if showNotifications is enabled
-          if (showNotifications) {
+          if (showNotifications && onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
               amount: changeAmount,
               timestamp: Date.now()
             };
-            // Update resourceChanges by adding this change
-            resourceChanges.push(newChange);
+            onResourceChange(newChange);
           }
-          
+
           // Remove animation after 2.5 seconds
           setTimeout(() => {
             setDecreaseAnimatedItems((prev) => {
@@ -132,7 +132,7 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems, showNotifications, resourceChanges]);
+  }, [visibleItems, showNotifications, onResourceChange]);
 
   if (visibleItems.length === 0) {
     return null;

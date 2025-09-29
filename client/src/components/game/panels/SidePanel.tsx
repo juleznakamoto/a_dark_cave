@@ -10,6 +10,9 @@ import { useEffect, useRef, useState } from 'react';
 export default function SidePanel() {
   const { resources, tools, buildings, villagers, current_population, total_population, activeTab  } = useGameStore();
 
+  // Track resource changes for notifications
+  const [resourceChanges, setResourceChanges] = useState<Array<{resource: string, amount: number, timestamp: number}>>([]);
+
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
     .map(([key, value]) => ({
@@ -238,8 +241,15 @@ export default function SidePanel() {
               onValueChange={(itemId, oldValue, newValue) => {
                 console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
               }}
-              resourceChanges={actionTriggeredChanges}
+              resourceChanges={resourceChanges}
               showNotifications={buildings.clerksHut > 0}
+              onResourceChange={(change) => {
+                setResourceChanges(prev => [...prev, change]);
+                // Clean up old changes after 3 seconds
+                setTimeout(() => {
+                  setResourceChanges(prev => prev.filter(c => c.timestamp !== change.timestamp));
+                }, 3000);
+              }}
             />
           )}
         </div>
