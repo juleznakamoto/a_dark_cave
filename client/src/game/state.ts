@@ -53,6 +53,10 @@ interface GameStore extends GameState {
     interval: number;
   };
 
+  // Resource change tracking for notifications
+  actionTriggeredChanges: Array<{resource: string, amount: number, timestamp: number}>;
+  clearActionTriggeredChanges: () => void;
+
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
@@ -164,6 +168,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   log: [],
   current_population: 0,
   total_population: 0,
+  actionTriggeredChanges: [],
   productionTiming: {
     lastGathererProduction: 0,
     lastHunterProduction: 0,
@@ -241,9 +246,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state updates using helper function
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
+      
+      // Track resource changes from this action for notifications
+      const actionChanges: Array<{resource: string, amount: number, timestamp: number}> = [];
+      if (result.stateUpdates.resources) {
+        Object.entries(result.stateUpdates.resources).forEach(([resource, newValue]) => {
+          const previousValue = prevState.resources[resource as keyof typeof prevState.resources] || 0;
+          const difference = (newValue || 0) - previousValue;
+          
+          if (difference !== 0) {
+            actionChanges.push({
+              resource,
+              amount: difference,
+              timestamp: Date.now()
+            });
+          }
+        });
+      }
+
       const newState = {
         ...prevState,
         ...mergedUpdates,
+        actionTriggeredChanges: [...prevState.actionTriggeredChanges, ...actionChanges],
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(-8)
           : prevState.log,
@@ -562,5 +586,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       effects: calculateTotalEffects(state),
     }));
+  },
+
+  clearActionTriggeredChanges: () => {
+    set({ actionTriggeredChanges: [] });
   },
 }));

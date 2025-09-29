@@ -8,37 +8,18 @@ import { capitalizeWords } from "@/lib/utils";
 import { useEffect, useRef, useState } from 'react';
 
 export default function SidePanel() {
-  const { resources, tools, buildings, villagers, current_population, total_population, activeTab } = useGameStore();
-  
-  // Track resource changes for notifications
-  const [resourceChanges, setResourceChanges] = useState<Array<{resource: string, amount: number, timestamp: number}>>([]);
-  const previousResources = useRef<typeof resources>(resources);
+  const { resources, tools, buildings, villagers, current_population, total_population, activeTab, actionTriggeredChanges, clearActionTriggeredChanges } = useGameStore();
 
+  // Clear old notifications after they've been displayed
   useEffect(() => {
-    // Only track changes if clerk's hut is built
-    if (buildings.clerksHut > 0) {
-      const changes: Array<{resource: string, amount: number, timestamp: number}> = [];
-      
-      Object.entries(resources).forEach(([resource, currentValue]) => {
-        const previousValue = previousResources.current[resource as keyof typeof resources] || 0;
-        const difference = (currentValue || 0) - previousValue;
-        
-        if (difference !== 0) {
-          changes.push({
-            resource,
-            amount: difference,
-            timestamp: Date.now()
-          });
-        }
-      });
-      
-      if (changes.length > 0) {
-        setResourceChanges(prev => [...prev, ...changes]);
-      }
+    if (actionTriggeredChanges.length > 0) {
+      const timer = setTimeout(() => {
+        clearActionTriggeredChanges();
+      }, 3000); // Clear after 3 seconds
+
+      return () => clearTimeout(timer);
     }
-    
-    previousResources.current = resources;
-  }, [resources, buildings.clerksHut]);
+  }, [actionTriggeredChanges, clearActionTriggeredChanges]);
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -268,7 +249,7 @@ export default function SidePanel() {
               onValueChange={(itemId, oldValue, newValue) => {
                 console.log(`Resource ${itemId} increased from ${oldValue} to ${newValue}`);
               }}
-              resourceChanges={resourceChanges}
+              resourceChanges={actionTriggeredChanges}
               showNotifications={buildings.clerksHut > 0}
             />
           )}
