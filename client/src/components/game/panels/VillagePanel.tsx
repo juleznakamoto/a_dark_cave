@@ -296,7 +296,7 @@ export default function VillagePanel() {
               .sort(([, a], [, b]) => b - a) // Sort from positive to negative
               .map(
                 ([resource, amount]) =>
-                  `${amount > 0 ? "+" : ""}${amount} ${resource}`,
+                  `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
               )
               .join(", ");
 
