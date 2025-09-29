@@ -881,17 +881,13 @@ function handleBuildingConstruction(
   buildingType: keyof GameState['buildings']
 ): ActionResult {
   const level = state.buildings[buildingType] + 1;
-  const action = gameActions[actionId];
-  const actionEffects = action?.effects?.[level];
+  const actionEffects = gameActions[actionId].effects[level];
   const newResources = { ...state.resources };
 
-  // Only process effects if they exist
-  if (actionEffects) {
-    for (const [path, effect] of Object.entries(actionEffects)) {
-      if (path.startsWith('resources.')) {
-        const resource = path.split('.')[1] as keyof typeof newResources;
-        newResources[resource] += effect;
-      }
+  for (const [path, effect] of Object.entries(actionEffects)) {
+    if (path.startsWith('resources.')) {
+      const resource = path.split('.')[1] as keyof typeof newResources;
+      newResources[resource] += effect;
     }
   }
 
