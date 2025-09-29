@@ -233,7 +233,7 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="space-y-1">
+    <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter((action) =>
           shouldShowAction(action.id, state),
@@ -244,7 +244,7 @@ export default function VillagePanel() {
         return (
           <div key={groupIndex} className="space-y-4">
             {group.title && (
-              <h3 className="text-sm font-semibold text-foreground">
+              <h3 className="text-sm font-semibold text-foreground ">
                 {group.title}
               </h3>
             )}
@@ -296,7 +296,7 @@ export default function VillagePanel() {
               .join(", ");
 
             return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground border-t pt-2 mt-2 flex items-center gap-2">
+              <div className="text-xs text-muted-foreground flex items-center gap-2">
                 <CircularProgress
                   value={productionProgress}
                   size={14}
