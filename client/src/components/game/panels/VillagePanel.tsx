@@ -233,7 +233,7 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-1">
       {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter((action) =>
           shouldShowAction(action.id, state),
