@@ -895,7 +895,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 2,
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls,' he declares gravely. 'The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, cold as the void between stars, and a staff crowned with bloodstone, pulsing with dark energy. Without these, your village will fall to the ancient evil below.'",
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls,' he declares gravely. 'The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, cold as the void between stars, and a staff crowned with a bloodstone, pulsing with dark energy. Without these, we will not stand a chance against the ancient evil below.'",
     triggered: false,
     priority: 5,
     repeatable: false,
