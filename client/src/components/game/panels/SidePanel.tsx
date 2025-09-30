@@ -278,12 +278,35 @@ export default function SidePanel() {
                 ? "Reinforced Wall"
                 : capitalizeWords(key);
 
+      // Get bastion stats contribution for this building
+      let tooltip = undefined;
+      
+      // Map building keys to their contributions (based on bastionStats.ts logic)
+      if (key === "watchtower") {
+        const level = value ?? 0;
+        const defense = level * 5;
+        const attack = level * 3;
+        const integrity = level * 10;
+        tooltip = `+${defense} Defense, +${attack} Attack, +${integrity} Integrity`;
+      } else if (key === "bastion") {
+        tooltip = "+20 Defense, +10 Attack, +50 Integrity";
+      } else if (["woodenPalisades", "fortifiedPalisades", "stoneWall", "reinforcedWall"].includes(key)) {
+        // For palisades, we need to check the actual palisades level
+        const palisadesLevel = buildings.palisades || 0;
+        if (palisadesLevel > 0) {
+          const defense = palisadesLevel * 3;
+          const integrity = palisadesLevel * 8;
+          tooltip = `+${defense} Defense, +${integrity} Integrity`;
+        }
+      }
+
       return {
         id: key,
         label,
         value: value ?? 0,
         testId: `fortification-${key}`,
         visible: (value ?? 0) > 0,
+        tooltip: tooltip,
       };
     })
     .filter((item) => item !== null) // Remove nulls from buildings not present

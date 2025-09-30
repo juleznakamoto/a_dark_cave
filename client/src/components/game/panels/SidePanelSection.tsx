@@ -184,6 +184,9 @@ export default function SidePanelSection({
       effect?.bonuses?.actionBonuses &&
       Object.keys(effect.bonuses.actionBonuses).length > 0;
     const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses || effect.name || effect.description);
+    
+    // Check if this item has a tooltip (for buildings with stats)
+    const hasTooltip = item.tooltip && item.tooltip.length > 0;
 
     // Determine madness intensity classes
     const getMadnessClasses = (value: number) => {
@@ -235,23 +238,28 @@ export default function SidePanelSection({
       </div>
     );
 
-    // If this item has effects, wrap it in a hover card
+    // If this item has effects or tooltip, wrap it in a hover card
     if (
-      hasEffect &&
-      (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")
+      (hasEffect &&
+        (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")) ||
+      (hasTooltip && title === "Fortifications")
     ) {
       return (
         <HoverCard key={item.id} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {effect.name && (
-                <div className="font-bold mb-1">{effect.name}</div>
-              )}
-              {effect.description && (
-                <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
-              )}
-              {effect.bonuses.generalBonuses && (
+              {hasTooltip && title === "Fortifications" ? (
+                <div>{item.tooltip}</div>
+              ) : (
+                <>
+                  {effect.name && (
+                    <div className="font-bold mb-1">{effect.name}</div>
+                  )}
+                  {effect.description && (
+                    <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+                  )}
+                  {effect.bonuses.generalBonuses && (
                 <>
                   {effect.bonuses.generalBonuses.luck && (
                     <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
@@ -334,6 +342,8 @@ export default function SidePanelSection({
                   ),
                 );
               })()}
+                </>
+              )}
             </div>
           </HoverCardContent>
         </HoverCard>
