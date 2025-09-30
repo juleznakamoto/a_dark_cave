@@ -269,10 +269,10 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "blackenedMirror",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 5 &&
-      state.resources.iron >= 200 &&
+      state.resources.iron >= 500 &&
       !state.relics.blackened_mirror,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 35,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
@@ -282,12 +282,12 @@ export const storyEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: "Buy for 200 iron",
+        label: 'Buy the mirror for 500 iron',
         effect: (state: GameState) => {
           return {
             resources: {
               ...state.resources,
-              iron: state.resources.iron - 100 * state.buildings.woodenHut,
+              iron: state.resources.iron - 500,
             },
             relics: {
               ...state.relics,
