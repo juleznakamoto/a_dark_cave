@@ -284,16 +284,16 @@ export default function SidePanel() {
         const defense = level * 5;
         const attack = level * 3;
         const integrity = level * 10;
-        tooltip = `+${defense} Defense, +${attack} Attack, +${integrity} Integrity`;
+        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
       } else if (key === "bastion") {
-        tooltip = "+20 Defense, +10 Attack, +50 Integrity";
+        tooltip = "+20 Defense\n+10 Attack\n+50 Integrity";
       } else if (["woodenPalisades", "fortifiedPalisades", "stoneWall", "reinforcedWall"].includes(key)) {
         // For palisades, we need to check the actual palisades level
         const palisadesLevel = buildings.palisades || 0;
         if (palisadesLevel > 0) {
           const defense = palisadesLevel * 3;
           const integrity = palisadesLevel * 8;
-          tooltip = `+${defense} Defense, +${integrity} Integrity`;
+          tooltip = `+${defense} Defense\n+${integrity} Integrity`;
         }
       }
 

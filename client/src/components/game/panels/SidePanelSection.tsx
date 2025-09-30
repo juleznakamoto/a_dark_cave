@@ -250,7 +250,7 @@ export default function SidePanelSection({
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
               {hasTooltip && title === "Fortifications" ? (
-                <div>{item.tooltip}</div>
+                <div className="whitespace-pre-line">{item.tooltip}</div>
               ) : (
                 <>
                   {effect.name && (
