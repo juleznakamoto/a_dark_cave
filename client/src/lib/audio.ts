@@ -28,12 +28,17 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
+      console.log(`Loading sound: ${name} from ${url}`);
       const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
+      console.log(`Successfully loaded sound: ${name}`);
     } catch (error) {
-      console.warn(`Failed to load sound ${name}:`, error);
+      console.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
   }
 
@@ -63,16 +68,20 @@ export class AudioManager {
     }
   }
 
-  preloadSounds(): void {
-    // Load the new villager sound
-    this.loadSound('newVillager', '/sounds/new_villager.wav');
-    // Load the event sound
-    this.loadSound('event', '/sounds/event.wav');
-    // Load the madness event sound
-    this.loadSound('eventMadness', '/sounds/event_madness.wav');
+  async preloadSounds(): Promise<void> {
+    console.log('Starting to preload sounds...');
+    // Load all sounds in parallel
+    await Promise.all([
+      this.loadSound('newVillager', '/sounds/new_villager.wav'),
+      this.loadSound('event', '/sounds/event.wav'),
+      this.loadSound('eventMadness', '/sounds/event_madness.wav'),
+    ]);
+    console.log('Finished preloading sounds');
   }
 }
 
 // Initialize and preload sounds
 export const audioManager = AudioManager.getInstance();
-audioManager.preloadSounds();
+audioManager.preloadSounds().catch(error => {
+  console.warn('Failed to preload some sounds:', error);
+});
