@@ -861,4 +861,28 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  wizardArrives: {
+    id: "wizardArrives",
+    condition: (state: GameState) =>
+      state.buildings.sanctum >= 1 &&
+      state.buildings.bastion >= 1 &&
+      !state.story.seen.wizardArrives,
+    triggerType: "resource",
+    timeProbability: 100,
+    message:
+      "An old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Your sanctum calls to me, and your bastion shows you understand the dangers ahead. Build me a tower, and I shall aid you with powers beyond mortal ken.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardArrives: true,
+        },
+      },
+    }),
+  },
 };

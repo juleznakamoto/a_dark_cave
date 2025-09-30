@@ -909,6 +909,34 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 15,
   },
+
+  buildWizardTower: {
+    id: "buildWizardTower",
+    label: "Wizard Tower",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.sanctum": 1,
+        "buildings.bastion": 1,
+        "buildings.wizardTower": 0,
+        "story.seen.wizardArrives": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.steel": 5000,
+        "resources.adamant": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.wizardTower": 1,
+        "story.seen.hasWizardTower": true,
+      },
+    },
+    cooldown: 120,
+  },
 };
 
 // Action handlers
@@ -1441,4 +1469,29 @@ export function handleBuildReinforcedWall(
     "buildReinforcedWall",
     "reinforcedWall",
   );
+}
+
+export function handleBuildWizardTower(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const wizardTowerResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildWizardTower",
+    "wizardTower",
+  );
+
+  // Add wizard tower completion message
+  if (state.buildings.wizardTower === 0) {
+    wizardTowerResult.logEntries!.push({
+      id: `wizard-tower-built-${Date.now()}`,
+      message:
+        "The Wizard Tower spirals into the sky, its crystalline spire crackling with arcane energy. The old wizard moves in with his collection of ancient tomes and mysterious artifacts, ready to aid your settlement with his powerful magic.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return wizardTowerResult;
 }

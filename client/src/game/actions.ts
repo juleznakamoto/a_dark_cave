@@ -73,6 +73,7 @@ import {
   handleBuildTannery,
   handleBuildAlchemistTower,
   handleBuildTradePost,
+  handleBuildWizardTower,
   handleBuildBastion,
   handleBuildWatchtower,
   handleBuildWoodenPalisades,
@@ -269,6 +270,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildAlchemistTower(state, result);
     case 'buildTradePost':
       return handleBuildTradePost(state, result);
+    case 'buildWizardTower':
+      return handleBuildWizardTower(state, result);
     case 'buildBastion':
       return handleBuildBastion(state, result);
     case 'buildWatchtower':
