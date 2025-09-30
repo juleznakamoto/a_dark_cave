@@ -188,13 +188,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const updates = updateResource(state, resource, amount);
       console.log(`[STATE] Resource update result:`, updates);
-      
+
       // Trigger a small delay to ensure UI has time to update before showing notifications
       setTimeout(() => {
         // Force a state update to trigger change detection in components
         set((currentState) => ({ ...currentState }));
       }, 10);
-      
+
       return updates;
     });
   },
@@ -598,13 +598,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  setEventDialog: (isOpen: boolean, event?: LogEntry | null) => {
-    set({
+  setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
+    set((state) => ({
+      ...state,
       eventDialog: {
         isOpen,
-        currentEvent: event || null,
+        currentEvent: currentEvent || null,
       },
-    });
+    }));
+
+    // Play appropriate sound when dialog opens
+    if (isOpen && currentEvent) {
+      const eventId = currentEvent.id.split('-')[0];
+      const madnessEventIds = [
+        'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
+        'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
+        'wrongReflections', 'villagersStareAtSky'
+      ];
+
+      const isMadnessEvent = madnessEventIds.includes(eventId);
+
+      if (isMadnessEvent) {
+        audioManager.playSound('eventMadness', 0.4);
+      } else {
+        audioManager.playSound('event', 0.4);
+      }
+    }
   },
 
   updateEffects: () => {
