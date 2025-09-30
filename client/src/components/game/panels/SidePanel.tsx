@@ -331,7 +331,7 @@ export default function SidePanel() {
                 );
               }}
               resourceChanges={resourceChanges}
-              showNotifications={buildings.clerksHut > 0}
+              showNotifications={true}
               onResourceChange={(change) => {
                 setResourceChanges((prev) => [...prev, change]);
                 // Clean up old changes after 3 seconds

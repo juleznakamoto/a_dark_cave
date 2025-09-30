@@ -923,6 +923,7 @@ function handleBuildingConstruction(
   const currentCount = state.buildings[buildingType] || 0;
   const level = currentCount + 1;
   const action = villageBuildActions[actionId];
+  const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
 
   if (!actionEffects) {
@@ -930,20 +931,28 @@ function handleBuildingConstruction(
     return result;
   }
 
-  const newResources = { ...state.resources };
-
-  for (const [path, effect] of Object.entries(actionEffects)) {
-    if (path.startsWith('resources.')) {
-      const resource = path.split('.')[1] as keyof typeof newResources;
-      newResources[resource] += effect;
+  // Apply resource costs (negative changes)
+  if (actionCosts) {
+    const newResources = { ...state.resources };
+    for (const [path, cost] of Object.entries(actionCosts)) {
+      if (path.startsWith('resources.')) {
+        const resource = path.split('.')[1] as keyof typeof newResources;
+        newResources[resource] -= cost; // Subtract the cost
+      }
     }
+    result.stateUpdates.resources = newResources;
   }
 
-  result.stateUpdates.resources = newResources;
-  result.stateUpdates.buildings = {
-    ...state.buildings,
-    [buildingType]: currentCount + 1
-  };
+  // Apply building effects
+  for (const [path, effect] of Object.entries(actionEffects)) {
+    if (path.startsWith('buildings.')) {
+      const building = path.split('.')[1] as keyof GameState['buildings'];
+      result.stateUpdates.buildings = {
+        ...result.stateUpdates.buildings,
+        [building]: (state.buildings[building] || 0) + effect
+      };
+    }
+  }
 
   return result;
 }
@@ -951,6 +960,7 @@ function handleBuildingConstruction(
 export function handleBuildWoodenHut(state: GameState, result: ActionResult): ActionResult {
   const level = state.buildings.woodenHut + 1;
   const action = villageBuildActions.buildWoodenHut;
+  const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
 
   if (!actionEffects) {
@@ -958,16 +968,19 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
     return result;
   }
 
-  const newResources = { ...state.resources };
-
-  for (const [path, effect] of Object.entries(actionEffects)) {
-    if (path.startsWith('resources.')) {
-      const resource = path.split('.')[1] as keyof typeof newResources;
-      newResources[resource] += effect;
+  // Apply resource costs (negative changes)
+  if (actionCosts) {
+    const newResources = { ...state.resources };
+    for (const [path, cost] of Object.entries(actionCosts)) {
+      if (path.startsWith('resources.')) {
+        const resource = path.split('.')[1] as keyof typeof newResources;
+        newResources[resource] -= cost; // Subtract the cost
+      }
     }
+    result.stateUpdates.resources = newResources;
   }
 
-  result.stateUpdates.resources = newResources;
+  // Apply building effects
   result.stateUpdates.buildings = {
     ...state.buildings,
     woodenHut: state.buildings.woodenHut + 1
