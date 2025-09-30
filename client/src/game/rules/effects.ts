@@ -932,14 +932,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
     probabilityBonus: 0,
   };
 
-  console.log(`🔍 DEBUGGING BONUSES for action: ${actionId}`);
-  console.log(`📋 Available tools:`, Object.entries(state.tools || {}).filter(([key, value]) => value));
-  console.log(`📋 Available weapons:`, Object.entries(state.weapons || {}).filter(([key, value]) => value));
-  console.log(`📋 Available relics:`, Object.entries(state.relics || {}).filter(([key, value]) => value));
-  console.log(`📋 Display tools from getDisplayTools:`, Object.keys(getDisplayTools(state)));
-  console.log(`📋 Active effects:`, getActiveEffects(state).map(e => e.id));
-  console.log(`📋 Total effects actionBonuses:`, effects.actionBonuses);
-
   // Define mining actions
   const miningActions = ['mineIron', 'mineCoal', 'mineSulfur', 'mineObsidian', 'mineAdamant'];
   const isMiningAction = miningActions.includes(actionId);
@@ -947,12 +939,9 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
   // Apply bonuses for this specific action
   if (effects.actionBonuses) {
     Object.entries(effects.actionBonuses).forEach(([itemId, itemBonuses]) => {
-      console.log(`🔧 Checking item: ${itemId}, bonuses:`, itemBonuses);
-      
       // Check for specific action bonuses
       if (itemBonuses[actionId]) {
         const actionBonus = itemBonuses[actionId];
-        console.log(`✅ Found ${actionId} bonus from ${itemId}:`, actionBonus);
 
         // Apply resource bonuses
         if (actionBonus.resourceBonus) {
@@ -963,7 +952,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
 
         // Apply multipliers (multiplicative)
         if (actionBonus.resourceMultiplier) {
-          console.log(`🚀 Applying multiplier ${actionBonus.resourceMultiplier} from ${itemId}`);
           bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
         }
 
@@ -981,7 +969,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
       // Check for general "mining" bonuses that apply to all mining actions
       if (isMiningAction && itemBonuses.mining) {
         const miningBonus = itemBonuses.mining;
-        console.log(`⛏️ Found mining bonus from ${itemId}:`, miningBonus);
 
         // Apply resource bonuses
         if (miningBonus.resourceBonus) {
@@ -992,7 +979,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
 
         // Apply multipliers (multiplicative)
         if (miningBonus.resourceMultiplier) {
-          console.log(`🚀 Applying mining multiplier ${miningBonus.resourceMultiplier} from ${itemId}`);
           bonuses.resourceMultiplier *= miningBonus.resourceMultiplier;
         }
 
@@ -1009,7 +995,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
     });
   }
 
-  console.log(`🎯 Final bonuses for ${actionId}:`, bonuses);
   return bonuses;
 }
 
