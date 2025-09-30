@@ -27,8 +27,7 @@ function applyCaveExplorationLuckBonus(
     "gold",
     "obsidian",
     "adamant",
-    "bloodstone",
-    "frostglas",
+    "moonstone",
   ];
 
   // Apply luck bonus to probability-based resource effects
@@ -283,7 +282,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.sulfur": { probability: 0.45, value: "random(8,14)" },
       "resources.silver": { probability: 0.2, value: "random(2,4)" },
       "resources.gold": { probability: 0.05, value: "random(1,3)" },
-      "resources.bloodstone": { probability: 0.025, value: "random(1,2)" },
       ...getInheritedRelics("exploreRuins"),
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
@@ -311,8 +309,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.sulfur": { probability: 0.5, value: "random(10,17)" },
       "resources.silver": { probability: 0.3, value: "random(3,5)" },
       "resources.gold": { probability: 0.15, value: "random(2,4)" },
-      "resources.bloodstone": { probability: 0.05, value: "random(1,2)" },
-      "resources.frostglas": { probability: 0.025, value: "random(1,2)" },
       ...getInheritedRelics("exploreTemple"),
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
@@ -339,8 +335,6 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.sulfur": { probability: 0.55, value: "random(12,20)" },
       "resources.silver": { probability: 0.4, value: "random(4,6)" },
       "resources.gold": { probability: 0.2, value: "random(3,5)" },
-      "resources.bloodstone": { probability: 0.075, value: "random(1,3)" },
-      "resources.frostglas": { probability: 0.05, value: "random(1,3)" },
       ...getInheritedRelics("exploreCitadel"),
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
@@ -361,7 +355,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.gold": { probability: 1, value: "random(15,45)" },
       "resources.bloodstone": { probability: 1, value: "random(2,8)" },
-      "resources.frostglas": { probability: 1, value: "random(1,6)" },
+      "resources.frostglas": { probability: 1, value: "random(2,8" },
       "relics.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
@@ -382,8 +376,8 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.gold": { probability: 1, value: "random(20,40)" },
       "resources.bloodstone": { probability: 1, value: "random(3,6)" },
-      "resources.frostglas": { probability: 1, value: "random(2,4)" },
-      "resources.adamant": { probability: 1, value: "random(5,15)" },
+      "resources.frostglas": { probability: 1, value: "random(3,6)" },
+      "resources.adamant": { probability: 1, value: "random(15,25)" },
       "relics.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,
