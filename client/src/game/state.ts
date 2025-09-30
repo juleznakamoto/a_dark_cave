@@ -11,6 +11,7 @@ import {
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
 import { calculateTotalEffects } from '@/game/rules/effects';
+import { calculateBastionStats } from '@/game/bastionStats';
 import { audioManager } from '@/lib/audio';
 
 // Helper function to merge state updates
@@ -97,6 +98,7 @@ interface GameStore extends GameState {
   unassignVillager: (job: keyof GameState['villagers']) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   updateEffects: () => void;
+  updateBastionStats: () => void;
 }
 
 import { gameStateSchema } from "@shared/schema";
@@ -147,7 +149,7 @@ const generateDefaultGameState = (): GameState => {
   return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
-// Use the generated default state and ensure effects is properly initialized
+// Use the generated default state and ensure effects and bastion_stats are properly initialized
 const defaultGameState: GameState = {
   ...generateDefaultGameState(),
   effects: {
@@ -155,6 +157,11 @@ const defaultGameState: GameState = {
     resource_multiplier: {},
     probability_bonus: {},
     cooldown_reduction: {},
+  },
+  bastion_stats: {
+    defense: 0,
+    attack: 0,
+    integrity: 0,
   }
 };
 
@@ -211,10 +218,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ...newState,
       log: newState.log || [],
       effects: newState.effects || calculateTotalEffects(newState),
+      bastion_stats: newState.bastion_stats || calculateBastionStats(newState),
     };
     set(stateWithEffects);
-    // Force update effects after initialization
-    setTimeout(() => get().updateEffects(), 0);
+    // Force update effects and bastion stats after initialization
+    setTimeout(() => {
+      get().updateEffects();
+      get().updateBastionStats();
+    }, 0);
   },
 
   executeAction: (actionId: string) => {
@@ -266,6 +277,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (result.stateUpdates.tools || result.stateUpdates.weapons || 
         result.stateUpdates.clothing || result.stateUpdates.relics) {
       setTimeout(() => get().updateEffects(), 0);
+    }
+
+    // Update bastion stats if buildings changed
+    if (result.stateUpdates.buildings) {
+      setTimeout(() => get().updateBastionStats(), 0);
     }
 
     // Check if any new log entry has choices and show event dialog
@@ -354,11 +370,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       devMode: import.meta.env.DEV,
       effects: calculateTotalEffects(defaultGameState),
+      bastion_stats: calculateBastionStats(defaultGameState),
     };
     set(resetState);
 
-    // Force update effects after restart
-    setTimeout(() => get().updateEffects(), 0);
+    // Force update effects and bastion stats after restart
+    setTimeout(() => {
+      get().updateEffects();
+      get().updateBastionStats();
+    }, 0);
 
     // Then add the initial cave description
     const initialLogEntry: LogEntry = {
@@ -391,10 +411,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(savedState),
+        bastion_stats: calculateBastionStats(savedState),
       };
       set(loadedState);
-      // Force update effects after loading
-      setTimeout(() => get().updateEffects(), 0);
+      // Force update effects and bastion stats after loading
+      setTimeout(() => {
+        get().updateEffects();
+        get().updateBastionStats();
+      }, 0);
     } else {
       // For new games, first set the initial state
       const newGameState = {
@@ -404,11 +428,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [],
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(defaultGameState),
+        bastion_stats: calculateBastionStats(defaultGameState),
       };
       set(newGameState);
 
-      // Force update effects for new game
-      setTimeout(() => get().updateEffects(), 0);
+      // Force update effects and bastion stats for new game
+      setTimeout(() => {
+        get().updateEffects();
+        get().updateBastionStats();
+      }, 0);
 
       // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
@@ -611,6 +639,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updateEffects: () => {
     set((state) => ({
       effects: calculateTotalEffects(state),
+    }));
+  },
+
+  updateBastionStats: () => {
+    set((state) => ({
+      bastion_stats: calculateBastionStats(state),
     }));
   },
 

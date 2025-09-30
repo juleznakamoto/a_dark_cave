@@ -1,8 +1,8 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalKnowledge } from "./effects";
+import { calculateBastionStats } from "../bastionStats";
 
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
@@ -133,9 +133,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const palisadesLevel = state.buildings.palisades || 0;
-          const fortificationBonus = 
+          const bastionStats = calculateBastionStats(state);
+          const fortificationBonus =
             palisadesLevel * 15 + // Each level provides 15 points
-            (state.buildings.bastion || 0) * 50;
+            bastionStats.defense * 50; // Bastion defense contributes to fortification
 
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
@@ -196,7 +197,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);
           const magicalItems = Object.values(state.relics).filter(Boolean).length;
-          
+
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
@@ -268,15 +269,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           const strength = getTotalStrength(state);
           const knowledge = getTotalKnowledge(state);
           const magicalItems = Object.values(state.relics).filter(Boolean).length;
+          const bastionStats = calculateBastionStats(state);
           const hasSpecialWeapons = state.relics.frostfang && state.relics.blood_scepter;
-          
+
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          let successChance = 0.1 + strength * 0.01 + knowledge * 0.01 + magicalItems * 0.02;
-          
+          let successChance = 0.1 + strength * 0.01 + knowledge * 0.01 + magicalItems * 0.02 + bastionStats.attack * 0.05;
+
           // Special weapons from wizard's prophecy provide significant bonus
           if (hasSpecialWeapons) {
             successChance += 0.4; // +40% chance with both special weapons
@@ -295,7 +297,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                   gameCompleted: true,
                 },
               },
-              _logMessage: hasSpecialWeapons 
+              _logMessage: hasSpecialWeapons
                 ? "Armed with the frostfang sword and blood scepter, as foretold by the ancient scrolls, your champions face the towering horror. The weapons blaze with otherworldly power, cutting through the creature's defenses. After an epic battle that shakes the very foundations of reality, the shadow lord falls. The portal seals itself, and peace returns to the land. You have achieved the impossible - victory against the ancient evil."
                 : "Through incredible courage, sacrifice, and perhaps divine intervention, your villagers achieve the impossible. The towering creature falls after a battle that costs everything, but the portal seals and the threat ends. Your village has saved the world, though few will ever know the price that was paid.",
             };

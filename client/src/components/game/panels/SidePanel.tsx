@@ -21,6 +21,7 @@ export default function SidePanel() {
     current_population,
     total_population,
     activeTab,
+    bastion_stats, // Added bastion_stats
   } = useGameStore();
 
   // Track resource changes for notifications
@@ -298,6 +299,17 @@ export default function SidePanel() {
       return true;
     });
 
+  // Dynamically generate bastion stats items from state
+  const bastionStatsItems = Object.entries(bastion_stats || {})
+    .map(([key, value]) => ({
+      id: key,
+      label: capitalizeWords(key),
+      value: value ?? 0,
+      testId: `bastion-stat-${key}`,
+      visible: (value ?? 0) > 0,
+    }))
+    .filter((item) => item.visible);
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
@@ -310,7 +322,7 @@ export default function SidePanel() {
       case "forest":
         return ["resources", "relics"].includes(sectionName);
       case "bastion":
-        return ["resources", "fortifications"].includes(sectionName);
+        return ["resources", "fortifications", "bastion"].includes(sectionName); // Added bastion to show
 
       default:
         return true; // Show all sections by default
@@ -382,6 +394,9 @@ export default function SidePanel() {
                 items={fortificationItems}
               />
             )}
+          {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
+            <SidePanelSection title="Bastion" items={bastionStatsItems} />
+          )}
         </div>
       </div>
       <ScrollBar orientation="vertical" />
