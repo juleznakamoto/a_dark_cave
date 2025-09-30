@@ -32,6 +32,8 @@ export const gameStateSchema = z.object({
     frostglas: z.number().min(0).default(0),
     black_powder: z.number().min(0).default(0),
     ember_bomb: z.number().min(0).default(0),
+    cinderflame_dust: z.number().min(0).default(0),
+    cinderflame_bomb: z.number().min(0).default(0),
   }).default({}),
   stats: z.object({
     strength: z.number().min(0).default(0),

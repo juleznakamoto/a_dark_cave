@@ -39,6 +39,24 @@ export const caveCraftResources: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  craftCinderflameBomb: {
+    id: "craftCinderflameBomb",
+    label: "Cinderflame Bomb",
+    show_when: {
+      "buildings.alchemistHall": 1,
+      "story.seen.portalDiscovered": true,
+    },
+    cost: {
+      "resources.cinderflame_dust": 10,
+    },
+    effects: {
+      "resources.cinderflame_dust": -10,
+      "resources.cinderflame_bomb": 1,
+      "story.seen.hasCinderflameBomb": true,
+    },
+    cooldown: 35,
+  },
 };
 
 // Action handlers
@@ -55,6 +73,20 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
   result.logEntries!.push({
     id: `ember-bomb-crafted-${Date.now()}`,
     message: "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
+  return result;
+}
+
+export function handleCraftCinderflameBomb(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftCinderflameBomb', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `cinderflame-bomb-crafted-${Date.now()}`,
+    message: "Using the mystical cinderflame dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
     timestamp: Date.now(),
     type: 'system',
   });

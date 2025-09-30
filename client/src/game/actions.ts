@@ -38,6 +38,7 @@ import {
 import {
   handleCraftBoneTotem,
   handleCraftEmberBomb,
+  handleCraftCinderflameBomb,
 } from '@/game/rules/caveCraftResources';
 
 import {
@@ -196,6 +197,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftBoneTotem(state, result);
     case 'craftEmberBomb':
       return handleCraftEmberBomb(state, result);
+    case 'craftCinderflameBomb':
+      return handleCraftCinderflameBomb(state, result);
     case 'craftIronSword':
       return handleCraftIronSword(state, result);
     case 'craftSteelSword':
