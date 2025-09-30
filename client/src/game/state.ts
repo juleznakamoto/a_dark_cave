@@ -11,6 +11,7 @@ import {
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
 import { calculateTotalEffects } from '@/game/rules/effects';
+import { audioManager } from '@/lib/audio';
 
 // Helper function to merge state updates
 const mergeStateUpdates = (
@@ -418,6 +419,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
+    // Play event sound for event type log entries
+    if (entry.type === 'event') {
+      audioManager.playSound('event', 0.3);
+    }
+    
     set((state) => ({
       log: [...state.log, entry].slice(-8), // Keep only last 8 entries
     }));

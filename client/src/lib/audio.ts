@@ -66,6 +66,8 @@ export class AudioManager {
   preloadSounds(): void {
     // Load the new villager sound
     this.loadSound('newVillager', '/sounds/new_villager.wav');
+    // Load the event sound
+    this.loadSound('event', '/sounds/event.wav');
   }
 }
 
