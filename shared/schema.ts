@@ -123,6 +123,8 @@ export const gameStateSchema = z.object({
     occultist_grimoire: z.boolean().default(false),
     mastermason_chisel: z.boolean().default(false),
     ancient_scrolls: z.boolean().default(false),
+    frostfang: z.boolean().default(false),
+    blood_scepter: z.boolean().default(false),
   }).default({}),
   buildings: z.object({
     woodenHut: z.number().default(0),

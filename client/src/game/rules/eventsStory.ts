@@ -885,4 +885,33 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  wizardDecryptsScrolls: {
+    id: "wizardDecryptsScrolls",
+    condition: (state: GameState) =>
+      state.relics.ancient_scrolls &&
+      state.buildings.wizardTower >= 1 &&
+      !state.story.seen.wizardDecryptsScrolls,
+    triggerType: "resource",
+    timeProbability: 2,
+    message:
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls,' he declares gravely. 'The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, cold as the void between stars, and a staff crowned with bloodstone, pulsing with dark energy. Without these, your village will fall to the ancient evil below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      relics: {
+        ...state.relics,
+        frostfang: true,
+        blood_scepter: true,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardDecryptsScrolls: true,
+        },
+      },
+    }),
+  },
 };
