@@ -479,9 +479,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         );
 
         if (hasMadnessEvent) {
-          audioManager.playSound('eventMadness', 0.7);
+          audioManager.playSound('eventMadness', 0.4);
         } else {
-          audioManager.playSound('event', 0.7);
+          audioManager.playSound('event', 0.4);
         }
       }
     }
@@ -521,9 +521,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         // Play appropriate event sound
         if (isMadnessEvent) {
-          audioManager.playSound('eventMadness', 0.7);
+          audioManager.playSound('eventMadness', 0.4);
         } else {
-          audioManager.playSound('event', 0.7);
+          audioManager.playSound('event', 0.4);
         }
 
         return {
