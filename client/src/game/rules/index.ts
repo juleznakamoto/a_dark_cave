@@ -1,18 +1,26 @@
 import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
-import { getTotalLuck, getActionBonuses, getTotalCraftingCostReduction } from "./effects";
-import { caveExploreActions, handleBlastPortal } from './caveExploreActions';
-import { caveForgingActions } from './caveForgeActions';
-import { caveCraftResources, handleCraftEmberBomb } from './caveCraftResources';
-import { caveCraftTools } from './caveCraftTools';
-import { caveCraftWeapons } from './caveCraftWeapons';
-import { caveMiningActions } from './caveMineActions';
-import { villageBuildActions } from './villageBuildActions';
-import { forestScoutActions } from './forestScoutActions';
-import { forestSacrificeActions, handleBoneTotems, getBoneTotemsCost } from './forestSacrificeActions';
+import {
+  getTotalLuck,
+  getActionBonuses,
+  getTotalCraftingCostReduction,
+} from "./effects";
+import { caveExploreActions, handleBlastPortal } from "./caveExploreActions";
+import { caveForgingActions } from "./caveForgeActions";
+import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
+import { caveCraftTools } from "./caveCraftTools";
+import { caveCraftWeapons } from "./caveCraftWeapons";
+import { caveMiningActions } from "./caveMineActions";
+import { villageBuildActions } from "./villageBuildActions";
+import { forestScoutActions } from "./forestScoutActions";
+import {
+  forestSacrificeActions,
+  handleBoneTotems,
+  getBoneTotemsCost,
+} from "./forestSacrificeActions";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
-import { forestTradeActions } from './forestTradeActions';
+import { forestTradeActions } from "./forestTradeActions";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -156,7 +164,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (!action) return false;
 
   // Handle dynamic cost for bone totems
-  if (actionId === 'boneTotems') {
+  if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
     return (state.resources.bone_totem || 0) >= dynamicCost;
   }
@@ -174,17 +182,20 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     costs = action.cost[level];
   }
 
-  if (!costs || typeof costs !== 'object') return true;
+  if (!costs || typeof costs !== "object") return true;
 
   // Get crafting cost reduction for crafting actions
-  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
-  const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
+  const craftingCostReduction = isCraftingAction
+    ? getTotalCraftingCostReduction(state)
+    : 0;
 
   // Check if we can afford all costs
   for (const [path, requiredAmount] of Object.entries(costs)) {
-    if (typeof requiredAmount !== 'number') continue;
+    if (typeof requiredAmount !== "number") continue;
 
-    const pathParts = path.split('.');
+    const pathParts = path.split(".");
     let current: any = state;
 
     for (const part of pathParts) {
@@ -192,9 +203,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     }
 
     // For resource costs, check if we have enough (>=)
-    if (path.startsWith('resources.')) {
+    if (path.startsWith("resources.")) {
       // Apply crafting cost reduction to resource costs for crafting actions
-      const adjustedCost = isCraftingAction ? Math.floor(requiredAmount * (1 - craftingCostReduction)) : requiredAmount;
+      const adjustedCost = isCraftingAction
+        ? Math.floor(requiredAmount * (1 - craftingCostReduction))
+        : requiredAmount;
       if ((current || 0) < adjustedCost) {
         return false;
       }
@@ -207,20 +220,20 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   }
 
   return true;
-};
+}
 
 // Helper function to evaluate complex conditions
 function evaluateCondition(condition: string, state: GameState): boolean {
   // Handle AND conditions
   if (condition.includes(" && ")) {
     const parts = condition.split(" && ");
-    return parts.every(part => evaluateCondition(part.trim(), state));
+    return parts.every((part) => evaluateCondition(part.trim(), state));
   }
 
   // Handle OR conditions
   if (condition.includes(" || ")) {
     const parts = condition.split(" || ");
-    return parts.some(part => evaluateCondition(part.trim(), state));
+    return parts.some((part) => evaluateCondition(part.trim(), state));
   }
 
   // Handle single condition
@@ -240,16 +253,25 @@ function evaluateSingleCondition(condition: string, state: GameState): boolean {
   if (comparisonMatch) {
     const [, leftPath, operator, rightValue] = comparisonMatch;
     const leftVal = getValueFromPath(leftPath.trim(), state);
-    const rightVal = isNaN(Number(rightValue)) ? rightValue.trim() : Number(rightValue);
+    const rightVal = isNaN(Number(rightValue))
+      ? rightValue.trim()
+      : Number(rightValue);
 
     switch (operator) {
-      case ">=": return Number(leftVal) >= Number(rightVal);
-      case "<=": return Number(leftVal) <= Number(rightVal);
-      case ">": return Number(leftVal) > Number(rightVal);
-      case "<": return Number(leftVal) < Number(rightVal);
-      case "==": return leftVal == rightVal;
-      case "!=": return leftVal != rightVal;
-      default: return false;
+      case ">=":
+        return Number(leftVal) >= Number(rightVal);
+      case "<=":
+        return Number(leftVal) <= Number(rightVal);
+      case ">":
+        return Number(leftVal) > Number(rightVal);
+      case "<":
+        return Number(leftVal) < Number(rightVal);
+      case "==":
+        return leftVal == rightVal;
+      case "!=":
+        return leftVal != rightVal;
+      default:
+        return false;
     }
   }
 
@@ -262,7 +284,7 @@ function getValueFromPath(path: string, state: GameState): unknown {
   const pathParts = path.split(".");
   let current: unknown = state;
   for (const part of pathParts) {
-    if (current && typeof current === 'object' && part in current) {
+    if (current && typeof current === "object" && part in current) {
       current = (current as Record<string, unknown>)[part];
     } else {
       return undefined;
@@ -285,8 +307,11 @@ export const applyActionEffects = (
   } = {};
 
   // Get crafting cost reduction for crafting actions
-  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
-  const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
+  const craftingCostReduction = isCraftingAction
+    ? getTotalCraftingCostReduction(state)
+    : 0;
 
   // Get action bonuses from tools, weapons, and relics
   const actionBonuses = getActionBonuses(actionId, state);
@@ -302,7 +327,7 @@ export const applyActionEffects = (
 
     if (costs) {
       Object.entries(costs).forEach(([path, cost]) => {
-        if (typeof cost === 'number') {
+        if (typeof cost === "number") {
           const pathParts = path.split(".");
           let current: any = updates;
 
@@ -331,15 +356,17 @@ export const applyActionEffects = (
           const finalKey = pathParts[pathParts.length - 1];
           // Apply crafting cost reduction to resource costs for crafting actions
           let adjustedCost = cost;
-          if (isCraftingAction && path.startsWith('resources.') && cost < 0) {
+          if (isCraftingAction && path.startsWith("resources.") && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
           }
           // Handle bone totem cost specifically
-          if (actionId === 'boneTotems' && path === 'resources.bone_totem') {
+          if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
             current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
           } else {
-            current[finalKey] = (state.resources[finalKey as keyof typeof state.resources] || 0) - adjustedCost;
+            current[finalKey] =
+              (state.resources[finalKey as keyof typeof state.resources] || 0) -
+              adjustedCost;
           }
         }
       });
@@ -383,26 +410,54 @@ export const applyActionEffects = (
           const min = parseInt(match[1]);
           const max = parseInt(match[2]);
           let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
-          
-          console.log(`🎲 RANDOM GENERATION - ${finalKey}: rolled ${baseAmount} from range [${min}, ${max}]`);
+
+          console.log(
+            `🎲 RANDOM GENERATION - ${finalKey}: rolled ${baseAmount} from range [${min}, ${max}]`,
+          );
 
           // Apply action bonuses from the centralized effects system
           const actionBonuses = getActionBonuses(actionId, state);
-          if (actionBonuses?.resourceBonus?.[finalKey as keyof typeof actionBonuses.resourceBonus]) {
-            const bonus = actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
+          if (
+            actionBonuses?.resourceBonus?.[
+              finalKey as keyof typeof actionBonuses.resourceBonus
+            ]
+          ) {
+            const bonus =
+              actionBonuses.resourceBonus[
+                finalKey as keyof typeof actionBonuses.resourceBonus
+              ];
             baseAmount += bonus;
-            console.log(`🎲 Added fixed bonus: ${baseAmount - bonus} + ${bonus} = ${baseAmount}`);
+            console.log(
+              `🎲 Added fixed bonus: ${baseAmount - bonus} + ${bonus} = ${baseAmount}`,
+            );
           }
 
-          const originalAmount = state.resources[finalKey as keyof typeof state.resources] || 0;
+          const originalAmount =
+            state.resources[finalKey as keyof typeof state.resources] || 0;
           current[finalKey] = originalAmount + baseAmount;
-          console.log(`🎲 Final amount: ${originalAmount} + ${baseAmount} = ${current[finalKey]}`);
+          console.log(
+            `🎲 Final amount: ${originalAmount} + ${baseAmount} = ${current[finalKey]}`,
+          );
         }
-      } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
+      } else if (
+        typeof effect === "object" &&
+        effect !== null &&
+        "probability" in effect
+      ) {
         // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
         const probabilityEffect = effect as {
           probability: number;
-          value: number | string | boolean | { probability: number; value: number | string | boolean; logMessage?: string; isChoice?: boolean; eventId?: string };
+          value:
+            | number
+            | string
+            | boolean
+            | {
+                probability: number;
+                value: number | string | boolean;
+                logMessage?: string;
+                isChoice?: boolean;
+                eventId?: string;
+              };
           logMessage?: string;
           condition?: string;
           triggerEvent?: string;
@@ -418,13 +473,20 @@ export const applyActionEffects = (
 
         const totalLuck = getTotalLuck(state);
         const luckBonus = totalLuck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
-        const adjustedProbability = Math.min(probabilityEffect.probability + probabilityEffect.probability * luckBonus, 1.0);
-        const shouldTrigger = conditionMet && Math.random() < adjustedProbability;
+        const adjustedProbability = Math.min(
+          probabilityEffect.probability +
+            probabilityEffect.probability * luckBonus,
+          1.0,
+        );
+        const shouldTrigger =
+          conditionMet && Math.random() < adjustedProbability;
 
         if (shouldTrigger) {
           // Check if this is a choice event (cave relic with eventId)
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
-            const event = caveEvents[probabilityEffect.eventId] || huntEvents[probabilityEffect.eventId];
+            const event =
+              caveEvents[probabilityEffect.eventId] ||
+              huntEvents[probabilityEffect.eventId];
             // Ensure the event exists and hasn't been seen before
             if (event && !state.story.seen[probabilityEffect.eventId]) {
               // Trigger the cave event instead of directly applying the effect
@@ -446,18 +508,24 @@ export const applyActionEffects = (
             }
           }
 
-          if (typeof probabilityEffect.value === "string" && probabilityEffect.value.startsWith("random(")) {
+          if (
+            typeof probabilityEffect.value === "string" &&
+            probabilityEffect.value.startsWith("random(")
+          ) {
             // Handle random value within probability effect
-            const match = probabilityEffect.value.match(/random\((\d+),(\d+)\)/);
+            const match = probabilityEffect.value.match(
+              /random\((\d+),(\d+)\)/,
+            );
             if (match) {
               const min = parseInt(match[1]);
               const max = parseInt(match[2]);
-              const randomAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+              const randomAmount =
+                Math.floor(Math.random() * (max - min + 1)) + min;
 
               if (pathParts[0] === "resources") {
                 current[finalKey] =
-                  (state.resources[finalKey as keyof typeof state.resources] || 0) +
-                  randomAmount;
+                  (state.resources[finalKey as keyof typeof state.resources] ||
+                    0) + randomAmount;
               } else {
                 current[finalKey] = randomAmount;
               }
@@ -465,8 +533,8 @@ export const applyActionEffects = (
           } else if (typeof probabilityEffect.value === "number") {
             if (pathParts[0] === "resources") {
               current[finalKey] =
-                (state.resources[finalKey as keyof typeof state.resources] || 0) +
-                probabilityEffect.value;
+                (state.resources[finalKey as keyof typeof state.resources] ||
+                  0) + probabilityEffect.value;
             } else {
               current[finalKey] = probabilityEffect.value;
             }
@@ -502,11 +570,11 @@ export const applyActionEffects = (
       } else if (typeof effect === "boolean") {
         current[finalKey] = effect;
       } else if (pathParts[0] === "tools") {
-          // Handle tool effects (e.g., equipping/unequipping)
-          current[finalKey] = effect;
+        // Handle tool effects (e.g., equipping/unequipping)
+        current[finalKey] = effect;
       } else if (pathParts[0] === "clothing") {
-          // Handle clothing effects (e.g., equipping/unequipping)
-          current[finalKey] = effect;
+        // Handle clothing effects (e.g., equipping/unequipping)
+        current[finalKey] = effect;
       }
     }
   }
@@ -518,50 +586,66 @@ export const applyActionEffects = (
     console.log(`🔧 Action bonuses:`, actionBonuses);
 
     // Apply fixed resource bonuses
-    if (actionBonuses.resourceBonus && Object.keys(actionBonuses.resourceBonus).length > 0) {
-      console.log(`➕ Applying fixed resource bonuses:`, actionBonuses.resourceBonus);
-      Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
-        if (typeof bonus === 'number') {
-          const before = updates.resources![resource] || 0;
-          updates.resources![resource] = before + bonus;
-          console.log(`  ${resource}: ${before} → ${updates.resources![resource]} (+${bonus})`);
-        }
-      });
+    if (
+      actionBonuses.resourceBonus &&
+      Object.keys(actionBonuses.resourceBonus).length > 0
+    ) {
+      console.log(
+        `➕ Applying fixed resource bonuses:`,
+        actionBonuses.resourceBonus,
+      );
+      Object.entries(actionBonuses.resourceBonus).forEach(
+        ([resource, bonus]) => {
+          if (typeof bonus === "number") {
+            const before = updates.resources![resource] || 0;
+            updates.resources![resource] = before + bonus;
+            console.log(
+              `  ${resource}: ${before} → ${updates.resources![resource]} (+${bonus})`,
+            );
+          }
+        },
+      );
     }
 
     // Apply resource multipliers (like 300% bonus from adamant axe)
-    if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
-      console.log(`✨ Applying resource multiplier: ${actionBonuses.resourceMultiplier}x (${Math.round((actionBonuses.resourceMultiplier - 1) * 100)}% bonus)`);
+    if (
+      actionBonuses.resourceMultiplier &&
+      actionBonuses.resourceMultiplier !== 1
+    ) {
+      console.log(
+        `✨ Applying resource multiplier: ${actionBonuses.resourceMultiplier}x (${Math.round((actionBonuses.resourceMultiplier - 1) * 100)}% bonus)`,
+      );
       Object.keys(updates.resources).forEach((resource) => {
         const currentAmount = updates.resources![resource] || 0;
-        const originalAmount = state.resources[resource as keyof typeof state.resources] || 0;
+        const originalAmount =
+          state.resources[resource as keyof typeof state.resources] || 0;
         const baseAmount = currentAmount - originalAmount;
-        
-        console.log(`  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseAmount}`);
-        
-        if (baseAmount > 0) { // Only apply multiplier to positive gains
-          const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
+
+        console.log(
+          `  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseAmount}`,
+        );
+
+        if (baseAmount > 0) {
+          // Only apply multiplier to positive gains
+          const bonusAmount = Math.floor(
+            baseAmount * (actionBonuses.resourceMultiplier - 1),
+          );
           const finalAmount = currentAmount + bonusAmount;
           updates.resources![resource] = finalAmount;
-          console.log(`    Multiplier applied: ${currentAmount} + ${bonusAmount} = ${finalAmount}`);
-        } else {
-          console.log(`    No multiplier applied (no positive gain)`);
         }
       });
     }
-
-    console.log(`📊 Resources after bonuses:`, updates.resources);
-    console.log(`─────────────────────────────────────`);
   }
 
   // Apply dev mode 10x multiplier to resource gains (only the added amount)
   if (state.devMode && updates.resources) {
     for (const [resource, amount] of Object.entries(updates.resources)) {
-      if (typeof amount === 'number') {
-        const currentAmount = state.resources[resource as keyof typeof state.resources] || 0;
+      if (typeof amount === "number") {
+        const currentAmount =
+          state.resources[resource as keyof typeof state.resources] || 0;
         const addedAmount = amount - currentAmount;
         if (addedAmount > 0) {
-          updates.resources[resource] = currentAmount + (addedAmount * 10);
+          updates.resources[resource] = currentAmount + addedAmount * 10;
         }
       }
     }
@@ -571,15 +655,18 @@ export const applyActionEffects = (
 };
 
 // Helper function to get readable action cost for display
-export function getActionCostDisplay(actionId: string, state?: GameState): string {
+export function getActionCostDisplay(
+  actionId: string,
+  state?: GameState,
+): string {
   // Handle dynamic cost for bone totems
-  if (actionId === 'boneTotems') {
+  if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
-    return `${dynamicCost} Bone Totem${dynamicCost !== 1 ? 's' : ''}`;
+    return `${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
   const action = gameActions[actionId];
-  if (!action?.cost) return '';
+  if (!action?.cost) return "";
 
   let costs = action.cost;
 
@@ -592,14 +679,16 @@ export function getActionCostDisplay(actionId: string, state?: GameState): strin
   if (!costs || Object.keys(costs).length === 0) return "";
 
   // Get crafting cost reduction for crafting actions
-  const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
-  const craftingCostReduction = (isCraftingAction && state) ? getTotalCraftingCostReduction(state) : 0;
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
+  const craftingCostReduction =
+    isCraftingAction && state ? getTotalCraftingCostReduction(state) : 0;
 
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
       // Apply crafting cost reduction to resource costs for crafting actions
       let adjustedAmount = amount;
-      if (isCraftingAction && resource.startsWith('resources.')) {
+      if (isCraftingAction && resource.startsWith("resources.")) {
         adjustedAmount = Math.floor(amount * (1 - craftingCostReduction));
       }
 
@@ -609,15 +698,15 @@ export function getActionCostDisplay(actionId: string, state?: GameState): strin
         : resource;
       // Replace underscores with spaces and capitalize each word
       const formattedName = resourceName
-        .split('_')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+        .split("_")
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(" ");
       return `-${adjustedAmount} ${formattedName}`;
     })
     .join(", ");
 
   return costText;
-};
+}
 
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
