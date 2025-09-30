@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { getTotalStrength, getTotalLuck } from "./effects";
 
 export const storyEvents: Record<string, GameEvent> = {
   foodGone: {
@@ -146,9 +147,9 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "investigate",
         label: "Investigate",
         effect: (state: GameState) => {
-          const strength = state.stats.strength || 0;
-          const luck = state.stats.luck || 0;
-          // Base 50% chance
+          const strength = getTotalStrength(state);
+          const luck = getTotalLuck(state);
+          // Base 20% chance + 0.5% per strength/luck point
           const mantleChance = 0.2 + (strength + luck) * 0.005;
 
           const rand = Math.random();
@@ -379,7 +380,7 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           }
 
-          const strength = state.stats.strength || 0;
+          const strength = getTotalStrength(state);
 
           // Check for victory: 10% base chance + 1% per strength point
           const victoryChance = 0.1 + strength * 0.01;
@@ -396,7 +397,7 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           }
 
-          // Base chance of casualties (70%), reduced by 5% per strength point, minimum 20%
+          // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
           const casualtyChance = Math.max(0.2, 0.7 - strength * 0.02);
 
           let villagerDeaths = 0;
@@ -482,9 +483,9 @@ export const storyEvents: Record<string, GameEvent> = {
             };
           }
 
-          // Hiding is more effective, lower casualty rate (60%)
-          const strength = state.stats.strength || 0;
-          const casualtyChance = Math.max(0.1, 0.6 - strength * 0.02);
+          // Hiding is more effective, lower casualty rate (50%)
+          const strength = getTotalStrength(state);
+          const casualtyChance = Math.max(0.1, 0.5 - strength * 0.02);
 
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
