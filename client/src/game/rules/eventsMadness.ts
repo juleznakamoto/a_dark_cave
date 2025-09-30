@@ -8,7 +8,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       (state.stats.madness || 0) >= 10 && !state.events.whisperingVoices,
     triggerType: "resource",
-    timeProbability: 90,
+    timeProbability: 0.090,
     title: "Whispering Voices",
     message:
       "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",

@@ -411,7 +411,7 @@ function handleStrangerApproach() {
     });
 
     // Play new villager sound
-    audioManager.playSound('newVillager', 0.01);
+    audioManager.playSound('newVillager', 0.02);
 
     // Add log entry
     state.addLogEntry({
