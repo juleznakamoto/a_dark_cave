@@ -383,16 +383,20 @@ export const applyActionEffects = (
           const min = parseInt(match[1]);
           const max = parseInt(match[2]);
           let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
+          
+          console.log(`🎲 RANDOM GENERATION - ${finalKey}: rolled ${baseAmount} from range [${min}, ${max}]`);
 
           // Apply action bonuses from the centralized effects system
           const actionBonuses = getActionBonuses(actionId, state);
           if (actionBonuses?.resourceBonus?.[finalKey as keyof typeof actionBonuses.resourceBonus]) {
-            baseAmount += actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
+            const bonus = actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
+            baseAmount += bonus;
+            console.log(`🎲 Added fixed bonus: ${baseAmount - bonus} + ${bonus} = ${baseAmount}`);
           }
 
-          current[finalKey] =
-            (state.resources[finalKey as keyof typeof state.resources] || 0) +
-            baseAmount;
+          const originalAmount = state.resources[finalKey as keyof typeof state.resources] || 0;
+          current[finalKey] = originalAmount + baseAmount;
+          console.log(`🎲 Final amount: ${originalAmount} + ${baseAmount} = ${current[finalKey]}`);
         }
       } else if (typeof effect === "object" && effect !== null && "probability" in effect) {
         // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
@@ -509,26 +513,45 @@ export const applyActionEffects = (
 
   // Apply action bonuses and multipliers from tools, weapons, and relics
   if (updates.resources) {
+    console.log(`🎯 BONUS SYSTEM - Action: ${actionId}`);
+    console.log(`📊 Resources before bonuses:`, updates.resources);
+    console.log(`🔧 Action bonuses:`, actionBonuses);
+
     // Apply fixed resource bonuses
     if (actionBonuses.resourceBonus && Object.keys(actionBonuses.resourceBonus).length > 0) {
+      console.log(`➕ Applying fixed resource bonuses:`, actionBonuses.resourceBonus);
       Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
         if (typeof bonus === 'number') {
-          updates.resources![resource] = (updates.resources![resource] || 0) + bonus;
+          const before = updates.resources![resource] || 0;
+          updates.resources![resource] = before + bonus;
+          console.log(`  ${resource}: ${before} → ${updates.resources![resource]} (+${bonus})`);
         }
       });
     }
 
     // Apply resource multipliers (like 300% bonus from adamant axe)
     if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+      console.log(`✨ Applying resource multiplier: ${actionBonuses.resourceMultiplier}x (${Math.round((actionBonuses.resourceMultiplier - 1) * 100)}% bonus)`);
       Object.keys(updates.resources).forEach((resource) => {
         const currentAmount = updates.resources![resource] || 0;
-        const baseAmount = currentAmount - (state.resources[resource as keyof typeof state.resources] || 0);
+        const originalAmount = state.resources[resource as keyof typeof state.resources] || 0;
+        const baseAmount = currentAmount - originalAmount;
+        
+        console.log(`  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseAmount}`);
+        
         if (baseAmount > 0) { // Only apply multiplier to positive gains
           const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
-          updates.resources![resource] = currentAmount + bonusAmount;
+          const finalAmount = currentAmount + bonusAmount;
+          updates.resources![resource] = finalAmount;
+          console.log(`    Multiplier applied: ${currentAmount} + ${bonusAmount} = ${finalAmount}`);
+        } else {
+          console.log(`    No multiplier applied (no positive gain)`);
         }
       });
     }
+
+    console.log(`📊 Resources after bonuses:`, updates.resources);
+    console.log(`─────────────────────────────────────`);
   }
 
   // Apply dev mode 10x multiplier to resource gains (only the added amount)
