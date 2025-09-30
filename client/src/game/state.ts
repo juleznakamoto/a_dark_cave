@@ -459,7 +459,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       setTimeout(() => get().updatePopulation(), 0);
 
       // Play event sound for events that trigger automatically
-      if (triggeredEvents.length > 0) {
+      if (triggeredEvents && triggeredEvents.length > 0) {
         // Check if any triggered event is a madness event
         const madnessEventIds = [
           'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
