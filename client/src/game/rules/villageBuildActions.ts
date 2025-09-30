@@ -709,6 +709,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "flags.portalBlasted": true,
+        "buildings.bastion": 1,
         "buildings.woodenPalisades": 0,
         "buildings.fortifiedPalisades": 0,
         "buildings.stoneWall": 0,

@@ -668,7 +668,7 @@ export const applyActionEffects = (
           state.resources[resource as keyof typeof state.resources] || 0;
         const addedAmount = amount - currentAmount;
         if (addedAmount > 0) {
-          updates.resources[resource] = currentAmount + addedAmount * 10;
+          updates.resources[resource] = currentAmount + addedAmount * 100;
         }
       }
     }

@@ -183,7 +183,7 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
     
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
-      message: 'Your expedition to the necromancer\'s castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it. Your villagers return triumphant, bearing this crucial knowledge.',
+      message: 'Your expedition to the necromancer\'s castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it.',
       timestamp: Date.now(),
       type: 'system',
     });
@@ -211,7 +211,7 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
       
       result.logEntries!.push({
         id: `castle-ruins-major-attack-${Date.now()}`,
-        message: `Your expedition enters the cursed castle ruins only to trigger an ancient necromantic trap. The very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
+        message: `Shortly after your expedition enters the cursed castle ruins the very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
         timestamp: Date.now(),
         type: 'system',
       });

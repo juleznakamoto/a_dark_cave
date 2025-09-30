@@ -1,10 +1,14 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects, getActionBonuses } from '@/game/rules';
-import { getTotalLuck } from '@/game/rules/effects';
+import { applyActionEffects, getActionBonuses } from "@/game/rules";
+import { getTotalLuck } from "@/game/rules/effects";
 
 // Helper function to apply luck bonuses to cave exploration probability effects
-function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effectUpdates: any): void {
+function applyCaveExplorationLuckBonus(
+  state: GameState,
+  actionId: string,
+  effectUpdates: any,
+): void {
   const luck = getTotalLuck(state);
   const luckBonus = luck * 0.01; // 1% per luck point
 
@@ -12,11 +16,24 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
   if (luck <= 0) return;
 
   // Define which resources can benefit from luck in cave exploration
-  const caveResources = ['wood', 'stone', 'coal', 'iron', 'bones', 'sulfur', 'silver', 'gold', 'obsidian', 'adamant', 'bloodstone', 'frostglas'];
+  const caveResources = [
+    "wood",
+    "stone",
+    "coal",
+    "iron",
+    "bones",
+    "sulfur",
+    "silver",
+    "gold",
+    "obsidian",
+    "adamant",
+    "bloodstone",
+    "frostglas",
+  ];
 
   // Apply luck bonus to probability-based resource effects
   if (effectUpdates.resources) {
-    Object.keys(effectUpdates.resources).forEach(resource => {
+    Object.keys(effectUpdates.resources).forEach((resource) => {
       if (caveResources.includes(resource)) {
         const totalAmount = effectUpdates.resources[resource] || 0;
         const existingAmount = state.resources[resource] || 0;
@@ -34,21 +51,21 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
   }
 }
 
-
 // Base relics for each cave exploration stage
 const caveRelics = {
-  exploreCave: [
+  exploreCave: [],
+  ventureDeeper: [
     {
       key: "tarnished_amulet",
-      probability: 0.01,
-      logMessage: "In the cave’s shadows, something glints. You pick up a tarnished amulet and place it around your neck. Despite its worn surface, a strange sense of protection and fortune washes over you.",
+      probability: 0.02,
+      logMessage:
+        "In the cave’s shadows, something glints. You pick up a tarnished amulet and place it around your neck. Despite its worn surface, a strange sense of protection and fortune washes over you.",
     },
-  ],
-  ventureDeeper: [
     {
       key: "bloodstained_belt",
       probability: 0.015,
-      logMessage: "Among the bones, you find a leather belt stained with ancient blood. You fasten it, and a surge of strength courses through you, though the blood never seems to dry.",
+      logMessage:
+        "Among the bones, you find a leather belt stained with ancient blood. You fasten it, and a surge of strength courses through you, though the blood never seems to dry.",
     },
   ],
   descendFurther: [
@@ -126,7 +143,9 @@ function getInheritedRelics(actionId: string) {
       inheritedRelics[`relics.${relic.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
-        condition: `!relics.${relic.key}` + (relic.eventId ? ` && !story.seen.${relic.eventId}` : ""),
+        condition:
+          `!relics.${relic.key}` +
+          (relic.eventId ? ` && !story.seen.${relic.eventId}` : ""),
         logMessage: relic.logMessage,
         ...(relic.isChoice && { isChoice: relic.isChoice }),
         ...(relic.eventId && { eventId: relic.eventId }),
@@ -425,14 +444,14 @@ export function handleGatherWood(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -455,14 +474,14 @@ export function handleExploreCave(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -493,18 +512,17 @@ export function handleVentureDeeper(
   const effectUpdates = applyActionEffects("ventureDeeper", state);
   applyCaveExplorationLuckBonus(state, "ventureDeeper", effectUpdates);
 
-
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -536,14 +554,14 @@ export function handleDescendFurther(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -575,14 +593,14 @@ export function handleExploreRuins(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -614,14 +632,14 @@ export function handleExploreTemple(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -653,14 +671,14 @@ export function handleExploreCitadel(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -692,14 +710,14 @@ export function handleLowChamber(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });
@@ -728,14 +746,14 @@ export function handleoccultistChamber(
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === 'string') {
+      if (typeof message === "string") {
         result.logEntries!.push({
           id: `probability-effect-${Date.now()}-${Math.random()}`,
           message: message,
           timestamp: Date.now(),
           type: "system",
         });
-      } else if (message.type === 'event') {
+      } else if (message.type === "event") {
         result.logEntries!.push(message);
       }
     });

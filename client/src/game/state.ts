@@ -426,7 +426,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   addLogEntry: (entry: LogEntry) => {
     // Play event sound for event type log entries
     if (entry.type === 'event') {
-      audioManager.playSound('event', 0.3);
+      audioManager.playSound('event', 0.02);
     }
 
     set((state) => ({
@@ -477,9 +477,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         );
 
         if (hasMadnessEvent) {
-          audioManager.playSound('eventMadness', 0.4);
+          audioManager.playSound('eventMadness', 0.02);
         } else {
-          audioManager.playSound('event', 0.4);
+          audioManager.playSound('event', 0.02);
         }
       }
     }
@@ -601,9 +601,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const isMadnessEvent = madnessEventIds.includes(eventId);
 
       if (isMadnessEvent) {
-        audioManager.playSound('eventMadness', 0.4);
+        audioManager.playSound('eventMadness', 0.02);
       } else {
-        audioManager.playSound('event', 0.4);
+        audioManager.playSound('event', 0.02);
       }
     }
   },
