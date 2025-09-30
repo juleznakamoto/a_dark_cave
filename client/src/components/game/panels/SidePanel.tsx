@@ -13,6 +13,13 @@ import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState } from "react";
 
+// Define the type for resource changes for better type safety
+type ResourceChange = {
+  resource: string;
+  amount: number;
+  timestamp: number;
+};
+
 export default function SidePanel() {
   const {
     resources,
@@ -24,9 +31,23 @@ export default function SidePanel() {
   } = useGameStore();
 
   // Track resource changes for notifications
-  const [resourceChanges, setResourceChanges] = useState<
-    Array<{ resource: string; amount: number; timestamp: number }>
-  >([]);
+  const [resourceChanges, setResourceChanges] = useState<ResourceChange[]>([]);
+
+  const handleResourceChange = (change: ResourceChange) => {
+    setResourceChanges(prev => {
+      // Keep changes from the last 5 seconds
+      const fiveSecondsAgo = Date.now() - 5000;
+      const recentChanges = prev.filter(c => c.timestamp > fiveSecondsAgo);
+      return [...recentChanges, change];
+    });
+
+    // Clean up old changes after 5 seconds
+    setTimeout(() => {
+      setResourceChanges(prev =>
+        prev.filter(c => c.timestamp > Date.now() - 5000)
+      );
+    }, 5000);
+  };
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -316,70 +337,46 @@ export default function SidePanel() {
     }
   };
 
+  // Consolidate sections for easier mapping
+  const sections = [
+    { title: "Resources", items: resourceItems, className: "flex-1" },
+    { title: "Tools", items: toolItems, className: "flex-1" },
+    { title: "Weapons", items: weaponItems, className: "flex-1" },
+    { title: "Clothing", items: clothingItems, className: "flex-1" },
+    { title: "Relics", items: relicItems, className: "flex-1" },
+    { title: "Buildings", items: buildingItems, className: "flex-1" },
+    {
+      title: `Population ${current_population}/${total_population}`,
+      items: populationItems,
+      className: "flex-1",
+    },
+    { title: "Stats", items: statsItems, className: "flex-1" },
+    { title: "Fortifications", items: fortificationItems, className: "flex-1" },
+  ];
+
   return (
     <ScrollArea className="h-full max-h-full">
       <div className="pb-4 flex gap-4">
-        {/* First column - Resources */}
-        <div className="flex-1">
-          {resourceItems.length > 0 && shouldShowSection("resources") && (
-            <SidePanelSection
-              title="Resources"
-              items={resourceItems}
-              onValueChange={(itemId, oldValue, newValue) => {
-                console.log(
-                  `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
-                );
-              }}
-              resourceChanges={resourceChanges}
-              showNotifications={buildings.clerksHut > 0}
-              onResourceChange={(change) => {
-                setResourceChanges((prev) => [...prev, change]);
-                // Clean up old changes after 3 seconds
-                setTimeout(() => {
-                  setResourceChanges((prev) =>
-                    prev.filter((c) => c.timestamp !== change.timestamp),
-                  );
-                }, 3000);
-              }}
-              forceNotifications={true}
-            />
-          )}
-        </div>
+        {sections.map((section) => {
+          // Conditionally render sections based on active tab
+          if (!shouldShowSection(section.title.toLowerCase())) {
+            return null;
+          }
 
-        {/* Second column - Everything else */}
-        <div className="flex-1">
-          {toolItems.length > 0 && shouldShowSection("tools") && (
-            <SidePanelSection title="Tools" items={toolItems} />
-          )}
-          {weaponItems.length > 0 && shouldShowSection("weapons") && (
-            <SidePanelSection title="Weapons" items={weaponItems} />
-          )}
-          {clothingItems.length > 0 && shouldShowSection("clothing") && (
-            <SidePanelSection title="Clothing" items={clothingItems} />
-          )}
-          {relicItems.length > 0 && shouldShowSection("relics") && (
-            <SidePanelSection title="Relics" items={relicItems} />
-          )}
-          {buildingItems.length > 0 && shouldShowSection("buildings") && (
-            <SidePanelSection title="Buildings" items={buildingItems} />
-          )}
-          {populationItems.length > 0 && shouldShowSection("population") && (
-            <SidePanelSection
-              title={`Population ${current_population}/${total_population}`}
-              items={populationItems}
-            />
-          )}
-          {statsItems.length > 0 && shouldShowSection("stats") && (
-            <SidePanelSection title="Stats" items={statsItems} />
-          )}
-          {fortificationItems.length > 0 &&
-            shouldShowSection("fortifications") && (
-              <SidePanelSection
-                title="Fortifications"
-                items={fortificationItems}
-              />
-            )}
-        </div>
+          return (
+            <div key={section.title} className={section.className}>
+              {section.items.length > 0 && (
+                <SidePanelSection
+                  title={section.title}
+                  items={section.items}
+                  resourceChanges={resourceChanges}
+                  showNotifications={true} // Always show notifications for buildings
+                  onResourceChange={handleResourceChange}
+                />
+              )}
+            </div>
+          );
+        })}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>

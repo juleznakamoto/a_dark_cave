@@ -190,11 +190,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       console.log(`[STATE] Resource update result:`, updates);
       return updates;
     });
-
-    // Force a re-render after a brief delay to ensure change detection works
-    setTimeout(() => {
-      set((currentState) => ({ ...currentState }));
-    }, 50);
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
