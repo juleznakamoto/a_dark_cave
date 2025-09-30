@@ -53,6 +53,22 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cooldown: 20,
   },
+
+  castleRuins: {
+    id: "castleRuins",
+    label: "Castle Ruins",
+    show_when: {
+      "buildings.wizardTower": 1,
+    },
+    cost: {
+      "resources.food": 2000,
+    },
+    effects: {
+      "resources.food": -2000,
+      "story.seen.castleRuinsExplored": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -143,6 +159,63 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
       timestamp: Date.now(),
       type: 'system',
     });
+  }
+
+  return result;
+}
+
+export function handleCastleRuins(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('castleRuins', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Calculate success based on strength and knowledge
+  const strength = state.stats.strength || 0;
+  const knowledge = state.stats.knowledge || 0;
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    // Success: Find ancient scrolls
+    result.stateUpdates.relics = {
+      ...state.relics,
+      ancient_scrolls: true,
+    };
+    
+    result.logEntries!.push({
+      id: `castle-ruins-success-${Date.now()}`,
+      message: 'Your expedition to the necromancer\'s castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it. Your villagers return triumphant, bearing this crucial knowledge.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  } else {
+    // Failure: Undead attack scenarios
+    const failureRand = Math.random();
+    
+    if (failureRand < 0.5) {
+      // Scenario 1: Minor undead attack (1-4 deaths)
+      const villagerDeaths = Math.floor(Math.random() * 4) + 1; // 1-4 deaths
+      const deathResult = killVillagers(state, villagerDeaths);
+      Object.assign(result.stateUpdates, deathResult);
+      
+      result.logEntries!.push({
+        id: `castle-ruins-minor-attack-${Date.now()}`,
+        message: `Your expedition reaches the ruined castle but is ambushed by shambling undead - grotesque experiments left behind by the necromancer. Skeletal hands claw at your villagers as rotting corpses attack with unnatural hunger. Despite fighting bravely, ${villagerDeaths} villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to the undead horde before the survivors manage to retreat to safety.`,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    } else {
+      // Scenario 2: Major undead attack (5-10 deaths)
+      const villagerDeaths = Math.floor(Math.random() * 6) + 5; // 5-10 deaths
+      const deathResult = killVillagers(state, villagerDeaths);
+      Object.assign(result.stateUpdates, deathResult);
+      
+      result.logEntries!.push({
+        id: `castle-ruins-major-attack-${Date.now()}`,
+        message: `Your expedition enters the cursed castle ruins only to trigger an ancient necromantic trap. The very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    }
   }
 
   return result;

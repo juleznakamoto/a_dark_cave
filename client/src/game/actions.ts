@@ -85,6 +85,7 @@ import {
 import {
   handleHunt,
   handleLayTrap,
+  handleCastleRuins,
 } from '@/game/rules/forestScoutActions';
 
 import {
@@ -290,6 +291,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleHunt(state, result);
     case 'layTrap':
       return handleLayTrap(state, result);
+    case 'castleRuins':
+      return handleCastleRuins(state, result);
 
     // Forest Sacrifice Actions
     case 'boneTotems':
