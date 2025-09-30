@@ -331,19 +331,21 @@ export default function SidePanel() {
                 );
               }}
               resourceChanges={resourceChanges}
-              showNotifications={true}
+              showNotifications={buildings.clerksHut > 0}
               onResourceChange={(change) => {
-                setResourceChanges((prev) => [...prev, change]);
-                // Clean up old changes after 3 seconds
-                setTimeout(() => {
-                  setResourceChanges((prev) =>
-                    prev.filter((c) => c.timestamp !== change.timestamp),
-                  );
-                }, 3000);
+                if (buildings.clerksHut > 0) {
+                  setResourceChanges((prev) => [...prev, change]);
+                  // Clean up old changes after 3 seconds
+                  setTimeout(() => {
+                    setResourceChanges((prev) =>
+                      prev.filter((c) => c.timestamp !== change.timestamp),
+                    );
+                  }, 3000);
+                }
               }}
-              forceNotifications={true}
+              forceNotifications={buildings.clerksHut > 0}
             />
-          )}
+          )}</div>
         </div>
 
         {/* Second column - Everything else */}
