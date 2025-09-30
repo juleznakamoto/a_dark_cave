@@ -83,10 +83,10 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   }
 
   return (
-    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-0.5 z-50 pointer-events-none">
+    <div className="absolute left-full top-1/2 -translate-y-1/2 ml-1 z-50 pointer-events-none">
       <div
         className={`
-          font-mono text-xs font-extralight 
+          text-xs font-light font-stretch-condensed
           animate-in fade-in-0 slide-in-from-left-2 duration-200
           ${visibleChange.amount > 0 
             ? 'text-green-600' 

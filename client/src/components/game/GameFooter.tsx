@@ -25,7 +25,7 @@ export default function GameFooter() {
           <span>Last saved: {lastSaved}</span>
           <Button 
             variant="outline"
-            size="sm"
+            size="xs"
             onClick={handleSaveGame}
             data-testid="button-save-game"
             className="px-3 py-1 text-xs no-hover"
@@ -34,7 +34,7 @@ export default function GameFooter() {
           </Button>
           <Button 
             variant="outline"
-            size="sm"
+            size="xs"
             onClick={handleRestartGame}
             data-testid="button-restart-game"
             className="px-3 py-1 text-xs no-hover"

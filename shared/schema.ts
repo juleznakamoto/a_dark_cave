@@ -42,7 +42,7 @@ export const gameStateSchema = z.object({
   }).default({}),
   flags: z.object({
     villageUnlocked: z.boolean().default(false),
-    worldDiscovered: z.boolean().default(false),
+    bastionUnlocked: z.boolean().default(false),
     torchBuilt: z.boolean().default(false),
     caveExplored: z.boolean().default(false),
     venturedDeeper: z.boolean().default(false),
