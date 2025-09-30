@@ -1,0 +1,49 @@
+🎲 RANDOM GENERATION - wood: rolled 9 from range [3, 9]
+index.ts:399 🎲 Final amount: 440 + 9 = 449
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 449, food: 955, stone: 1504, iron: 70, coal: 0, …}
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:534 ✨ Applying resource multiplier: 1.75x (75% bonus)
+index.ts:540   wood: current=449, original=440, base_gain=9
+index.ts:546     Multiplier applied: 449 + 6 = 455
+index.ts:540   food: current=955, original=955, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   stone: current=1504, original=1504, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   iron: current=70, original=70, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   coal: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   steel: current=500, original=500, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   sulfur: current=1014, original=1014, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bones: current=2868, original=2868, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bone_totem: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   fur: current=2260, original=2260, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   leather: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   torch: current=71, original=71, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   silver: current=79, original=79, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   gold: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   obsidian: current=361, original=361, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   adamant: current=21, original=21, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   moonstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bloodstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   frostglas: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   black_powder: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   ember_bomb: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:553 📊 Resources after bonuses: {wood: 455, food: 955, stone: 1504, iron: 70, coal: 0, …}
