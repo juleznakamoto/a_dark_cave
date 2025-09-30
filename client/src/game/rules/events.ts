@@ -5,6 +5,7 @@ import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from './eventsHunt';
+import { attackWaveEvents } from './eventsAttackWaves';
 
 export interface GameEvent {
   id: string;
@@ -53,6 +54,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...madnessEvents,
   ...caveEvents,
   ...huntEvents,
+  ...attackWaveEvents,
 };
 
 export class EventManager {
