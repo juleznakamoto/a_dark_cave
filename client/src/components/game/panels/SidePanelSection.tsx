@@ -63,6 +63,7 @@ export default function SidePanelSection({
     Set<string>
   >(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
+  const isInitialRender = useRef(true);
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
@@ -74,6 +75,12 @@ export default function SidePanelSection({
           ? item.value
           : parseInt(item.value.toString()) || 0;
       const prevValue = prevValuesRef.current.get(item.id);
+
+      // Skip animations on initial render to avoid false positives
+      if (isInitialRender.current) {
+        prevValuesRef.current.set(item.id, currentValue);
+        return;
+      }
 
       // We have a previous value to compare against
       if (prevValue !== undefined) {
@@ -124,8 +131,14 @@ export default function SidePanelSection({
         }
       }
 
+      // Always update the ref with current value for next comparison
       prevValuesRef.current.set(item.id, currentValue);
     });
+
+    // Mark initial render as complete after processing all items
+    if (isInitialRender.current) {
+      isInitialRender.current = false;
+    }
 
     if (newAnimatedItems.size > 0) {
       setAnimatedItems((prev) => new Set([...prev, ...newAnimatedItems]));
