@@ -138,7 +138,7 @@ export default function VillagePanel() {
     {
       id: "powder_maker",
       label: "Powder Maker",
-      showWhen: () => buildings.alchemistTower >= 1,
+      showWhen: () => buildings.alchemistHall >= 1,
     },
   ];
 

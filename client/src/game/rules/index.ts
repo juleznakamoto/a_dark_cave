@@ -91,7 +91,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     return (state.buildings.stoneHut || 0) + 1;
   }
   if (actionId === "buildAlchemistTower") {
-    return (state.buildings.alchemistTower || 0) + 1;
+    return (state.buildings.alchemistHall || 0) + 1;
   }
   if (actionId === "buildTradePost") {
     return (state.buildings.tradePost || 0) + 1;

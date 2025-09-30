@@ -302,7 +302,7 @@ export const caveEvents: Record<string, GameEvent> = {
   portalDiscovered: {
     id: "portalDiscovered",
     condition: (state: GameState) =>
-      state.buildings.alchemistTower >= 1 &&
+      state.buildings.alchemistHall >= 1 &&
       state.flags.exploredCitadel &&
       !state.story.seen.portalDiscovered,
     triggerType: "resource",

@@ -24,7 +24,7 @@ export const caveCraftResources: Record<string, Action> = {
     id: "craftEmberBomb",
     label: "Ember Bomb",
     show_when: {
-      "buildings.alchemistTower": 1,
+      "buildings.alchemistHall": 1,
       "story.seen.portalDiscovered": true,
     },
     cost: {

@@ -111,7 +111,7 @@ export default function SidePanel() {
       let label =
         key === "clerksHut"
           ? "Clerk's Hut"
-          : key === "alchemistTower"
+          : key === "alchemistHall"
             ? "Alchemist's Tower"
             : key === "tradePost"
               ? "Trade Post"

@@ -131,7 +131,7 @@
         "shrine": 1,
         "temple": 1,
         "sanctum": 1,
-        "alchemistTower": 1,
+        "alchemistHall": 1,
         "tradePost": 1,
         "bastion": 1,
         "watchtower": 1,

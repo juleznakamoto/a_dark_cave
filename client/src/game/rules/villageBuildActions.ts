@@ -1,5 +1,5 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
+import { ActionResult } from "@/game/actions";
 
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
@@ -34,12 +34,11 @@ export const villageBuildActions: Record<string, Action> = {
       9: {
         "buildings.greatCabin": 1,
         "buildings.timberMill": 1,
-        "buildings.quarry": 1
+        "buildings.quarry": 1,
       },
       10: {
         "buildings.woodenHut": 9,
       },
-
     },
     cost: {
       1: {
@@ -316,7 +315,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -1
+      madness: -1,
     },
     cooldown: 5,
   },
@@ -348,8 +347,8 @@ export const villageBuildActions: Record<string, Action> = {
       hunter: {
         food: 5,
         fur: 4,
-        bones: 4
-      }
+        bones: 4,
+      },
     },
     cooldown: 30,
   },
@@ -378,8 +377,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     productionEffects: {
       gatherer: {
-        wood: 5
-      }
+        wood: 5,
+      },
     },
     cooldown: 30,
   },
@@ -408,8 +407,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     productionEffects: {
       gatherer: {
-        stone: 5
-      }
+        stone: 5,
+      },
     },
     cooldown: 30,
   },
@@ -491,7 +490,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -5
+      madness: -5,
     },
     cooldown: 40,
   },
@@ -523,7 +522,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -10
+      madness: -10,
     },
     cooldown: 60,
   },
@@ -556,7 +555,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -15
+      madness: -15,
     },
     cooldown: 80,
   },
@@ -568,7 +567,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.stoneHut": 2,
-        "buildings.alchemistTower": 0,
+        "buildings.alchemistHall": 0,
       },
     },
     cost: {
@@ -579,7 +578,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "buildings.alchemistTower": 1,
+        "buildings.alchemistHall": 1,
         "story.seen.hasAlchemistTower": true,
         "story.seen.powderMakerUnlocked": true,
       },
@@ -632,7 +631,6 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.bastion": 1,
         "story.seen.hasBastion": true,
-        "flags.bastionUnlocked": true,
       },
     },
     cooldown: 60,
@@ -825,7 +823,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 3,
       },
       5: {
-        "buildings.alchemistTower": 1,
+        "buildings.alchemistHall": 1,
         "buildings.stoneHut": 4,
       },
       6: {
@@ -918,7 +916,7 @@ function handleBuildingConstruction(
   state: GameState,
   result: ActionResult,
   actionId: string,
-  buildingType: keyof GameState['buildings']
+  buildingType: keyof GameState["buildings"],
 ): ActionResult {
   const currentCount = state.buildings[buildingType] || 0;
   const level = currentCount + 1;
@@ -935,8 +933,8 @@ function handleBuildingConstruction(
   if (actionCosts) {
     const newResources = { ...state.resources };
     for (const [path, cost] of Object.entries(actionCosts)) {
-      if (path.startsWith('resources.')) {
-        const resource = path.split('.')[1] as keyof typeof newResources;
+      if (path.startsWith("resources.")) {
+        const resource = path.split(".")[1] as keyof typeof newResources;
         newResources[resource] -= cost; // Subtract the cost
       }
     }
@@ -945,11 +943,11 @@ function handleBuildingConstruction(
 
   // Apply building effects
   for (const [path, effect] of Object.entries(actionEffects)) {
-    if (path.startsWith('buildings.')) {
-      const building = path.split('.')[1] as keyof GameState['buildings'];
+    if (path.startsWith("buildings.")) {
+      const building = path.split(".")[1] as keyof GameState["buildings"];
       result.stateUpdates.buildings = {
         ...result.stateUpdates.buildings,
-        [building]: (state.buildings[building] || 0) + effect
+        [building]: (state.buildings[building] || 0) + effect,
       };
     }
   }
@@ -957,7 +955,10 @@ function handleBuildingConstruction(
   return result;
 }
 
-export function handleBuildWoodenHut(state: GameState, result: ActionResult): ActionResult {
+export function handleBuildWoodenHut(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
   const level = state.buildings.woodenHut + 1;
   const action = villageBuildActions.buildWoodenHut;
   const actionCosts = action?.cost?.[level];
@@ -972,8 +973,8 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
   if (actionCosts) {
     const newResources = { ...state.resources };
     for (const [path, cost] of Object.entries(actionCosts)) {
-      if (path.startsWith('resources.')) {
-        const resource = path.split('.')[1] as keyof typeof newResources;
+      if (path.startsWith("resources.")) {
+        const resource = path.split(".")[1] as keyof typeof newResources;
         newResources[resource] -= cost; // Subtract the cost
       }
     }
@@ -983,16 +984,17 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
   // Apply building effects
   result.stateUpdates.buildings = {
     ...state.buildings,
-    woodenHut: state.buildings.woodenHut + 1
+    woodenHut: state.buildings.woodenHut + 1,
   };
 
   // Add completion message for first wooden hut
   if (state.buildings.woodenHut === 0) {
     result.logEntries!.push({
       id: `first-hut-built-${Date.now()}`,
-      message: "Your first wooden hut stands complete, a modest shelter against the darkness. The village begins to take shape.",
+      message:
+        "Your first wooden hut stands complete, a modest shelter against the darkness. The village begins to take shape.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
 
     result.delayedEffects!.push(() => {
@@ -1003,52 +1005,101 @@ export function handleBuildWoodenHut(state: GameState, result: ActionResult): Ac
   return result;
 }
 
-export function handleBuildCabin(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildCabin', 'cabin');
+export function handleBuildCabin(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildCabin", "cabin");
 }
 
-export function handleBuildBlacksmith(state: GameState, result: ActionResult): ActionResult {
-  const blacksmithResult = handleBuildingConstruction(state, result, 'buildBlacksmith', 'blacksmith');
+export function handleBuildBlacksmith(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const blacksmithResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildBlacksmith",
+    "blacksmith",
+  );
 
   // Add blacksmith completion message
   if (state.buildings.blacksmith === 0) {
     blacksmithResult.logEntries!.push({
       id: `blacksmith-built-${Date.now()}`,
-      message: "The blacksmith's forge comes alive, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
+      message:
+        "The blacksmith's forge comes alive, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return blacksmithResult;
 }
 
-export function handleBuildShallowPit(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildShallowPit', 'shallowPit');
+export function handleBuildShallowPit(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildShallowPit",
+    "shallowPit",
+  );
 }
 
-export function handleBuildDeepeningPit(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildDeepeningPit', 'deepeningPit');
+export function handleBuildDeepeningPit(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildDeepeningPit",
+    "deepeningPit",
+  );
 }
 
-export function handleBuildDeepPit(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildDeepPit', 'deepPit');
+export function handleBuildDeepPit(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildDeepPit", "deepPit");
 }
 
-export function handleBuildBottomlessPit(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildBottomlessPit', 'bottomlessPit');
+export function handleBuildBottomlessPit(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildBottomlessPit",
+    "bottomlessPit",
+  );
 }
 
-export function handleBuildFoundry(state: GameState, result: ActionResult): ActionResult {
-  const builtFoundry = state.buildings.foundry === 0 && !state.story.seen.foundryComplete;
-  const resultWithBuilding = handleBuildingConstruction(state, result, 'buildFoundry', 'foundry');
+export function handleBuildFoundry(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const builtFoundry =
+    state.buildings.foundry === 0 && !state.story.seen.foundryComplete;
+  const resultWithBuilding = handleBuildingConstruction(
+    state,
+    result,
+    "buildFoundry",
+    "foundry",
+  );
 
   if (builtFoundry) {
     resultWithBuilding.logEntries!.push({
       id: `foundry-complete-${Date.now()}`,
-      message: 'The foundry roars to life as fire and heat fuse the raw materials. The result is new matter of great strength and resilience.',
+      message:
+        "The foundry roars to life as fire and heat fuse the raw materials. The result is new matter of great strength and resilience.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
     resultWithBuilding.stateUpdates.story = {
       ...state.story,
@@ -1061,182 +1112,333 @@ export function handleBuildFoundry(state: GameState, result: ActionResult): Acti
   return resultWithBuilding;
 }
 
-export function handleBuildAltar(state: GameState, result: ActionResult): ActionResult {
-  const altarResult = handleBuildingConstruction(state, result, 'buildAltar', 'altar');
+export function handleBuildAltar(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const altarResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildAltar",
+    "altar",
+  );
 
   // Add altar completion message
   if (state.buildings.altar === 0) {
     altarResult.logEntries!.push({
       id: `altar-built-${Date.now()}`,
-      message: "An altar rises at the forest's edge, raised to appease what dwells within.",
+      message:
+        "An altar rises at the forest's edge, raised to appease what dwells within.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return altarResult;
 }
 
-export function handleBuildGreatCabin(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildGreatCabin', 'greatCabin');
+export function handleBuildGreatCabin(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildGreatCabin",
+    "greatCabin",
+  );
 }
 
-export function handleBuildTimberMill(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildTimberMill', 'timberMill');
+export function handleBuildTimberMill(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildTimberMill",
+    "timberMill",
+  );
 }
 
-export function handleBuildQuarry(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildQuarry', 'quarry');
+export function handleBuildQuarry(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildQuarry", "quarry");
 }
 
-export function handleBuildClerksHut(state: GameState, result: ActionResult): ActionResult {
-  const clerksHutResult = handleBuildingConstruction(state, result, 'buildClerksHut', 'clerksHut');
+export function handleBuildClerksHut(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const clerksHutResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildClerksHut",
+    "clerksHut",
+  );
 
   // Add clerk's hut completion message
   if (state.buildings.clerksHut === 0) {
     clerksHutResult.logEntries!.push({
       id: `clerks-hut-built-${Date.now()}`,
-      message: "A modest clerks hut is erected, its occupant ready to track the flow of village resources with meticulous care.",
+      message:
+        "A modest clerks hut is erected, its occupant ready to track the flow of village resources with meticulous care.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return clerksHutResult;
 }
 
-export function handleBuildTannery(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildTannery', 'tannery');
+export function handleBuildTannery(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildTannery", "tannery");
 }
 
-export function handleBuildStoneHut(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildStoneHut', 'stoneHut');
+export function handleBuildStoneHut(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
 }
 
-export function handleBuildShrine(state: GameState, result: ActionResult): ActionResult {
-  const shrineResult = handleBuildingConstruction(state, result, 'buildShrine', 'shrine');
+export function handleBuildShrine(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const shrineResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildShrine",
+    "shrine",
+  );
 
   // Add shrine completion message
   if (state.buildings.shrine === 0) {
     shrineResult.logEntries!.push({
       id: `shrine-built-${Date.now()}`,
-      message: "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
+      message:
+        "A sacred shrine rises beside the altar, its presence bringing peace and focus to troubled minds.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return shrineResult;
 }
 
-export function handleBuildTemple(state: GameState, result: ActionResult): ActionResult {
-  const templeResult = handleBuildingConstruction(state, result, 'buildTemple', 'temple');
+export function handleBuildTemple(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const templeResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildTemple",
+    "temple",
+  );
 
   // Add temple completion message
   if (state.buildings.temple === 0) {
     templeResult.logEntries!.push({
       id: `temple-built-${Date.now()}`,
-      message: "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
+      message:
+        "A grand temple stands complete, its sacred halls echoing with whispered prayers that calm the tormented soul.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return templeResult;
 }
 
-export function handleBuildSanctum(state: GameState, result: ActionResult): ActionResult {
-  const sanctumResult = handleBuildingConstruction(state, result, 'buildSanctum', 'sanctum');
+export function handleBuildSanctum(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const sanctumResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildSanctum",
+    "sanctum",
+  );
 
   // Add sanctum completion message
   if (state.buildings.sanctum === 0) {
     sanctumResult.logEntries!.push({
       id: `sanctum-built-${Date.now()}`,
-      message: "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
+      message:
+        "The sanctum rises as a beacon of divine protection, its blessed aura driving away the darkest thoughts and fears.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return sanctumResult;
 }
 
-export function handleBuildAlchemistTower(state: GameState, result: ActionResult): ActionResult {
-  const alchemistTowerResult = handleBuildingConstruction(state, result, 'buildAlchemistTower', 'alchemistTower');
+export function handleBuildAlchemistTower(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const alchemistHallResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildAlchemistTower",
+    "alchemistHall",
+  );
 
   // Add alchemist tower completion message
-  if (state.buildings.alchemistTower === 0) {
-    alchemistTowerResult.logEntries!.push({
+  if (state.buildings.alchemistHall === 0) {
+    alchemistHallResult.logEntries!.push({
       id: `alchemist-tower-built-${Date.now()}`,
-      message: "The Alchemist's Tower spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
+      message:
+        "The Alchemist's Tower spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
-  return alchemistTowerResult;
+  return alchemistHallResult;
 }
 
-export function handleBuildTradePost(state: GameState, result: ActionResult): ActionResult {
-  const tradePostResult = handleBuildingConstruction(state, result, 'buildTradePost', 'tradePost');
+export function handleBuildTradePost(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const tradePostResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildTradePost",
+    "tradePost",
+  );
 
   // Add trade post completion message
   if (state.buildings.tradePost === 0) {
     tradePostResult.logEntries!.push({
       id: `trade-post-built-${Date.now()}`,
-      message: "A trade post is built near the forest attracting tradesman who look to sell their goods for precious metals.",
+      message:
+        "A trade post is built near the forest attracting tradesman who look to sell their goods for precious metals.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return tradePostResult;
 }
 
-export function handleBuildBastion(state: GameState, result: ActionResult): ActionResult {
-  const bastionResult = handleBuildingConstruction(state, result, 'buildBastion', 'bastion');
+export function handleBuildBastion(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const bastionResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildBastion",
+    "bastion",
+  );
 
   // Add bastion completion message
   if (state.buildings.bastion === 0) {
     bastionResult.logEntries!.push({
       id: `bastion-built-${Date.now()}`,
-      message: "The bastion rises like a stone mountain, its walls thick and imposing. You feel you need to prepare for something bad that will come from the depths of the cave.",
+      message:
+        "The bastion rises like a stone mountain, its walls thick and imposing. You feel you need to prepare for something bad that will come from the depths of the cave.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
+    // Set the bastion unlocked flag and story flag
+    bastionResult.stateUpdates.flags = {
+      ...bastionResult.stateUpdates.flags,
+      bastionUnlocked: true,
+    };
+
+    bastionResult.stateUpdates.story = {
+      ...bastionResult.stateUpdates.story,
+      seen: {
+        ...bastionResult.stateUpdates.story?.seen,
+        hasBastion: true,
+      },
+    };
   }
 
   return bastionResult;
 }
 
-export function handleBuildWatchtower(state: GameState, result: ActionResult): ActionResult {
-  const watchtowerResult = handleBuildingConstruction(state, result, 'buildWatchtower', 'watchtower');
+export function handleBuildWatchtower(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const watchtowerResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildWatchtower",
+    "watchtower",
+  );
 
   // Add watchtower completion message
   if (state.buildings.watchtower === 0) {
     watchtowerResult.logEntries!.push({
       id: `watchtower-built-${Date.now()}`,
-      message: "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
+      message:
+        "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return watchtowerResult;
 }
 
-export function handleBuildWoodenPalisades(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildWoodenPalisades', 'woodenPalisades');
+export function handleBuildWoodenPalisades(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildWoodenPalisades",
+    "woodenPalisades",
+  );
 }
 
-export function handleBuildFortifiedPalisades(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildFortifiedPalisades', 'fortifiedPalisades');
+export function handleBuildFortifiedPalisades(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildFortifiedPalisades",
+    "fortifiedPalisades",
+  );
 }
 
-export function handleBuildStoneWall(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildStoneWall', 'stoneWall');
+export function handleBuildStoneWall(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildStoneWall",
+    "stoneWall",
+  );
 }
 
-export function handleBuildReinforcedWall(state: GameState, result: ActionResult): ActionResult {
-  return handleBuildingConstruction(state, result, 'buildReinforcedWall', 'reinforcedWall');
+export function handleBuildReinforcedWall(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleBuildingConstruction(
+    state,
+    result,
+    "buildReinforcedWall",
+    "reinforcedWall",
+  );
 }
