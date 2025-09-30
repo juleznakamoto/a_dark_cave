@@ -41,6 +41,7 @@ interface SidePanelSectionProps {
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
   resourceChanges?: ResourceChange[];
   showNotifications?: boolean;
+  forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
 }
 
@@ -53,6 +54,7 @@ export default function SidePanelSection({
   className = "",
   resourceChanges = [],
   showNotifications = false,
+  forceNotifications = false, // Default value for the new prop
   onResourceChange,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
