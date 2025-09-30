@@ -328,28 +328,24 @@ export default function SidePanelSection({
     // If this is madness with events, show tooltip
     if (isEventMadnessTooltip) {
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
-            <TooltipContent>
-              <p>+{eventMadness} Madness from Events</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip key={item.id}>
+          <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+          <TooltipContent>
+            <p>+{eventMadness} Madness from Events</p>
+          </TooltipContent>
+        </Tooltip>
       );
     }
 
     // If this item has a tooltip, wrap it in a tooltip
     if (item.tooltip) {
       return (
-        <TooltipProvider key={item.id}>
-          <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
-            <TooltipContent>
-              <p>{item.tooltip}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+        <Tooltip key={item.id}>
+          <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+          <TooltipContent>
+            <p>{item.tooltip}</p>
+          </TooltipContent>
+        </Tooltip>
       );
     }
 
