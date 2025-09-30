@@ -76,10 +76,7 @@ import {
   handleBuildWizardTower,
   handleBuildBastion,
   handleBuildWatchtower,
-  handleBuildWoodenPalisades,
-  handleBuildFortifiedPalisades,
-  handleBuildStoneWall,
-  handleBuildReinforcedWall,
+  handleBuildPalisades,
 } from './rules/villageBuildActions';
 
 import {
