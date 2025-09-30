@@ -15,7 +15,7 @@ interface CooldownButtonProps {
     | "secondary"
     | "ghost"
     | "link";
-  size?: "default" | "sm" | "lg" | "icon";
+  size?: "default" | "sm" | "xs" | "lg" | "icon";
   "data-testid"?: string;
 }
 

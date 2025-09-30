@@ -165,7 +165,7 @@ export default function VillagePanel() {
               cooldownMs={action.cooldown * 1000}
               data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
               disabled={!canExecute}
-              size="sm"
+              size="xs"
               variant="outline"
               className="hover:bg-transparent hover:text-foreground"
             >
@@ -210,7 +210,7 @@ export default function VillagePanel() {
             onClick={() => unassignVillager(jobId)}
             disabled={currentCount === 0}
             variant="ghost"
-            size="sm"
+            size="xs"
             className="h-5 w-5 no-hover"
           >
             -
@@ -222,7 +222,7 @@ export default function VillagePanel() {
             onClick={() => assignVillager(jobId)}
             disabled={villagers.free === 0}
             variant="ghost"
-            size="sm"
+            size="xs"
             className="h-5 w-5 no-hover"
           >
             +

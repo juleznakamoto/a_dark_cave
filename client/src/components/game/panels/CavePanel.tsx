@@ -116,7 +116,7 @@ export default function CavePanel() {
                 onClick={() => executeAction(actionId)}
                 cooldownMs={action.cooldown * 1000}
                 data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-                size="sm"
+                size="xs"
                 disabled={!canExecute}
                 variant="outline"
                 className="hover:bg-transparent hover:text-foreground"
@@ -140,7 +140,7 @@ export default function CavePanel() {
         onClick={() => executeAction(actionId)}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-        size="sm"
+        size="xs"
         disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
