@@ -4,6 +4,7 @@ import {
   getTotalLuck,
   getActionBonuses,
   getTotalCraftingCostReduction,
+  getTotalBuildingCostReduction,
 } from "./effects";
 import { caveExploreActions, handleBlastPortal } from "./caveExploreActions";
 import { caveForgingActions } from "./caveForgeActions";
@@ -313,6 +314,12 @@ export const applyActionEffects = (
     ? getTotalCraftingCostReduction(state)
     : 0;
 
+  // Get building cost reduction for building actions
+  const isBuildingAction = action.building;
+  const buildingCostReduction = isBuildingAction
+    ? getTotalBuildingCostReduction(state)
+    : 0;
+
   // Get action bonuses from tools, weapons, and relics
   const actionBonuses = getActionBonuses(actionId, state);
 
@@ -359,6 +366,11 @@ export const applyActionEffects = (
           if (isCraftingAction && path.startsWith("resources.") && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
           }
+          // Apply building cost reduction to resource costs for building actions
+          if (isBuildingAction && path.startsWith("resources.") && cost < 0) {
+            adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
+          }
+
           // Handle bone totem cost specifically
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
@@ -561,6 +573,11 @@ export const applyActionEffects = (
           if (isCraftingAction && effect < 0) {
             adjustedEffect = Math.floor(effect * (1 - craftingCostReduction));
           }
+          // Apply building cost reduction to negative resource effects (costs) for building actions
+          if (isBuildingAction && effect < 0) {
+            adjustedEffect = Math.floor(effect * (1 - buildingCostReduction));
+          }
+
           current[finalKey] =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
@@ -619,19 +636,22 @@ export const applyActionEffects = (
         const currentAmount = updates.resources![resource] || 0;
         const originalAmount =
           state.resources[resource as keyof typeof state.resources] || 0;
-        const baseAmount = currentAmount - originalAmount;
+        const baseGain = currentAmount - originalAmount; // This is the amount gained from the action itself, before bonuses
 
         console.log(
-          `  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseAmount}`,
+          `  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseGain}`,
         );
 
-        if (baseAmount > 0) {
+        if (baseGain > 0) {
           // Only apply multiplier to positive gains
           const bonusAmount = Math.floor(
-            baseAmount * (actionBonuses.resourceMultiplier - 1),
+            baseGain * (actionBonuses.resourceMultiplier - 1),
           );
           const finalAmount = currentAmount + bonusAmount;
           updates.resources![resource] = finalAmount;
+          console.log(
+            `  ${resource}: ${currentAmount} + ${bonusAmount} = ${finalAmount}`,
+          );
         }
       });
     }
@@ -684,12 +704,21 @@ export function getActionCostDisplay(
   const craftingCostReduction =
     isCraftingAction && state ? getTotalCraftingCostReduction(state) : 0;
 
+  // Get building cost reduction for building actions
+  const isBuildingAction = action.building;
+  const buildingCostReduction =
+    isBuildingAction && state ? getTotalBuildingCostReduction(state) : 0;
+
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
       // Apply crafting cost reduction to resource costs for crafting actions
       let adjustedAmount = amount;
       if (isCraftingAction && resource.startsWith("resources.")) {
         adjustedAmount = Math.floor(amount * (1 - craftingCostReduction));
+      }
+      // Apply building cost reduction to resource costs for building actions
+      if (isBuildingAction && resource.startsWith("resources.")) {
+        adjustedAmount = Math.floor(amount * (1 - buildingCostReduction));
       }
 
       // Extract the clean resource name from paths like "resources.wood"

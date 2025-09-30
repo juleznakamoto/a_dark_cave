@@ -39,6 +39,7 @@ export interface EffectDefinition {
       knowledge?: number; // Knowledge bonus
       madness?: number; // Madness bonus
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
+      buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
     };
   };
 }
@@ -746,6 +747,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         craftingCostReduction: 0.1,
+        buildingCostReduction: 0.1,
       },
     },
   },
@@ -1101,6 +1103,20 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.craftingCostReduction) {
       reduction += effect.bonuses.generalBonuses.craftingCostReduction;
+    }
+  });
+
+  return reduction;
+};
+
+// Helper function to calculate total building cost reduction
+export const getTotalBuildingCostReduction = (state: GameState): number => {
+  const activeEffects = getActiveEffects(state);
+  let reduction = 0;
+
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.buildingCostReduction) {
+      reduction += effect.bonuses.generalBonuses.buildingCostReduction;
     }
   });
 
