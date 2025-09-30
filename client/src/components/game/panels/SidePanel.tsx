@@ -99,10 +99,7 @@ export default function SidePanel() {
           "bastion",
           "wizardTower",
           "watchtower",
-          "woodenPalisades",
-          "fortifiedPalisades",
-          "stoneWall",
-          "reinforcedWall",
+          "palisades",
         ].includes(key)
       ) {
         return false;
