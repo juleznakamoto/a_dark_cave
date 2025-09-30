@@ -7,6 +7,23 @@ interface ResourceChange {
   timestamp: number;
 }
 
+// Helper function to abbreviate large numbers
+const abbreviateNumber = (num: number): string => {
+  const absNum = Math.abs(num);
+  const sign = num < 0 ? '-' : '';
+  
+  if (absNum >= 1000000000) {
+    return sign + (absNum / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+  }
+  if (absNum >= 1000000) {
+    return sign + (absNum / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+  }
+  if (absNum >= 1000) {
+    return sign + (absNum / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+  }
+  return num.toString();
+};
+
 interface ResourceChangeNotificationProps {
   resource: string;
   changes: ResourceChange[];
@@ -77,7 +94,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           }
         `}
       >
-        {visibleChange.amount > 0 ? '+' : ''}{Math.round(visibleChange.amount)}
+        {visibleChange.amount > 0 ? '+' : ''}{abbreviateNumber(Math.round(visibleChange.amount))}
       </div>
     </div>
   );
