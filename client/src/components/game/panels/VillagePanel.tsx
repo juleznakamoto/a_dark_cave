@@ -197,7 +197,7 @@ export default function VillagePanel() {
         )
         .join(", ");
 
-      return productionText ? ` (${productionText})` : "";
+      return productionText ? ` ${productionText}` : "";
     };
 
     return (

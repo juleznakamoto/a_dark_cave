@@ -92,7 +92,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-            resourceMultiplier: 1.5,
+          resourceMultiplier: 1.5,
           cooldownReduction: 0.5,
         },
         buildTorch: {
@@ -147,8 +147,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   obsidian_axe: {
     id: "obsidian_axe",
     name: "Obsidian Axe",
-    description:
-      "Legendary axe with razor-sharp volcanic edges",
+    description: "Legendary axe with razor-sharp volcanic edges",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -176,8 +175,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   adamant_axe: {
     id: "adamant_axe",
     name: "Adamant Axe",
-    description:
-      "Unbreakable axe, forged from the hardest metal",
+    description: "Unbreakable axe, forged from the hardest metal",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -273,7 +271,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   occultist_map: {
     id: "occultist_map",
     name: "Occultist Map",
-    description: "Time-worn map revealing the hidden chamber of an accultist in the cave",
+    description:
+      "Time-worn map revealing the hidden chamber of an accultist in the cave",
     bonuses: {
       actionBonuses: {},
     },
@@ -287,8 +286,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
-
-  
 };
 
 // Weapon effects
@@ -298,7 +295,11 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     name: "Crude Bow",
     description: "Simple bow, reliable for any challenge",
     bonuses: {
-      actionBonuses: {},
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.25,
+        },
+      },
       generalBonuses: {
         strength: 1,
       },
@@ -312,7 +313,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.1,
+          resourceMultiplier: 1.5,
         },
       },
       generalBonuses: {
@@ -328,7 +329,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.75,
         },
       },
       generalBonuses: {
@@ -344,7 +345,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 2.0,
         },
       },
       generalBonuses: {
@@ -360,7 +361,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 3.0,
         },
       },
       generalBonuses: {
@@ -430,18 +431,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  rough_cloak: {
-    id: "rough_cloak",
-    name: "Rough Cloak",
-    description: "A simple cloak that provides basic protection.",
-    bonuses: {
-      generalBonuses: {
-        gatheringSpeed: 1.1, // 10% faster gathering
-      },
-      actionBonuses: {},
-    },
-  },
-
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",
@@ -468,8 +457,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bloodstained_belt: {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
-    description:
-      "Leather belt stained with old blood that grants raw power",
+    description: "Leather belt stained with old blood that grants raw power",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -480,8 +468,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravenfeather_mantle: {
     id: "ravenfeather_mantle",
     name: "Ravenfeather Mantle",
-    description:
-      "Mystical mantle woven from shimmering raven feathers",
+    description: "Mystical mantle woven from shimmering raven feathers",
     bonuses: {
       generalBonuses: {
         luck: 3,
@@ -497,7 +484,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.10,
+          resourceMultiplier: 1.15,
         },
       },
       generalBonuses: {
@@ -544,214 +531,224 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
 
   elder_scroll: {
-      id: "elder_scroll",
-      name: "Elder Scroll",
-      description: "Ancient scroll containing forbidden knowledge",
-      bonuses: {
-        generalBonuses: {
-          knowledge: 10,
-          madness: 3,
-        },
+    id: "elder_scroll",
+    name: "Elder Scroll",
+    description: "Ancient scroll containing forbidden knowledge",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 10,
+        madness: 3,
       },
     },
-    dragon_bone_dice: {
-      id: "dragon_bone_dice",
-      name: "Dragon Bone Dice",
-      description: "Six-sided dice carved from ancient dragon bone",
-      bonuses: {
-        generalBonuses: {
-          luck: 3,
-          madness: 2,
-        },
+  },
+  dragon_bone_dice: {
+    id: "dragon_bone_dice",
+    name: "Dragon Bone Dice",
+    description: "Six-sided dice carved from ancient dragon bone",
+    bonuses: {
+      generalBonuses: {
+        luck: 3,
+        madness: 2,
       },
     },
-    coin_of_drowned: {
-      id: "coin_of_drowned",
-      name: "Coin of Drowned",
-      description: "A ring that is always wet and cold",
-      bonuses: {
-        generalBonuses: {
-          luck: 4,
-          madness: 3,
-        },
+  },
+  coin_of_drowned: {
+    id: "coin_of_drowned",
+    name: "Coin of Drowned",
+    description: "A ring that is always wet and cold",
+    bonuses: {
+      generalBonuses: {
+        luck: 4,
+        madness: 3,
       },
     },
-    shadow_flute: {
-      id: "shadow_flute",
-      name: "Shadow Flute",
-      description: "A bone flute that makes shadows move unnaturally",
-      bonuses: {
-        generalBonuses: {
-          luck: 2,
-          knowledge: 4,
-          madness: 4,
-        },
+  },
+  shadow_flute: {
+    id: "shadow_flute",
+    name: "Shadow Flute",
+    description: "Bone flute that makes shadows move unnaturally",
+    bonuses: {
+      generalBonuses: {
+        luck: 2,
+        knowledge: 4,
+        madness: 4,
       },
     },
-    hollow_king_scepter: {
-      id: "hollow_king_scepter",
-      name: "Hollow King Scepter",
-      description: "Scepter of the lost king, radiating power and madness",
-      bonuses: {
-        generalBonuses: {
-          strength: 3,
-          knowledge: 7,
-          madness: 6,
+  },
+  hollow_king_scepter: {
+    id: "hollow_king_scepter",
+    name: "Hollow King Scepter",
+    description: "Scepter of the lost king, radiating power and madness",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 1.25,
         },
       },
+      generalBonuses: {
+        strength: 3,
+        knowledge: 7,
+        madness: 6,
+      },
     },
+  },
 
-    wooden_figure: {
-      id: "wooden_figure",
-      name: "Wooden Figure",
-      description: "Carved wooden figure of Cthulhu that whispers forbidden secrets",
-      bonuses: {
-        generalBonuses: {
-          luck: 5,
-          madness: 3,
-        },
+  wooden_figure: {
+    id: "wooden_figure",
+    name: "Wooden Figure",
+    description:
+      "Carved wooden figure of an unsettling creature with tentacles",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        madness: 3,
       },
     },
+  },
 
-    blackened_mirror: {
-      id: "blackened_mirror",
-      name: "Blackened Mirror",
-      description: "A tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
-      bonuses: {
-        generalBonuses: {
-          knowledge: 7,
-          madness: 4,
-        },
+  blackened_mirror: {
+    id: "blackened_mirror",
+    name: "Blackened Mirror",
+    description:
+      "Tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 7,
+        madness: 4,
       },
     },
+  },
 
-    ebony_ring: {
-      id: "ebony_ring",
-      name: "Ebony Ring",
-      description: "Dark ring left as a gift by the forest gods, pulsing with otherworldly power",
-      bonuses: {
-        generalBonuses: {
-          luck: 5,
-          strength: 3,
-          madness: 2,
-        },
+  ebony_ring: {
+    id: "ebony_ring",
+    name: "Ebony Ring",
+    description:
+      "Dark ring left as a gift by the forest gods, pulsing with otherworldly power",
+    bonuses: {
+      generalBonuses: {
+        luck: 5,
+        strength: 3,
+        madness: 2,
       },
     },
+  },
 
-    red_mask: {
-      id: "red_mask",
-      name: "Red Mask",
-      description: "A mask crafted from deep crimson leather",
-      bonuses: {
-        generalBonuses: {
-          luck: 3,
-          knowledge: 2,
-          madness: 2,
-        },
+  red_mask: {
+    id: "red_mask",
+    name: "Red Mask",
+    description: "Mask crafted from deep crimson leather",
+    bonuses: {
+      generalBonuses: {
+        luck: 3,
+        knowledge: 2,
+        madness: 2,
       },
     },
+  },
 
-    black_bear_fur: {
-      id: "black_bear_fur",
-      name: "Black Bear Fur",
-      description: "Cursed fur from a otherworldy giant bear",
-      bonuses: {
-        actionBonuses: {
-          hunt: {
-            resourceMultiplier: 1.25,
-          },
-        },
-        generalBonuses: {
-          strength: 5,
-          madness: 4,
+  black_bear_fur: {
+    id: "black_bear_fur",
+    name: "Black Bear Fur",
+    description: "Cursed fur from a otherworldy giant bear",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.25,
         },
       },
+      generalBonuses: {
+        strength: 5,
+        madness: 4,
+      },
     },
+  },
 
-    seeker_pack: {
-      id: "seeker_pack",
-      name: "Seeker Pack",
-      description: "Well-crafted leather backpack easing the weight upon your shoulders",
-      bonuses: {
-        actionBonuses: {
-          gatherWood: {
-            resourceMultiplier: 1.2,
-          },
-          exploreCave: {
-            resourceMultiplier: 1.2,
-          },
-          ventureDeeper: {
-            resourceMultiplier: 1.2,
-          },
-          descendFurther: {
-            resourceMultiplier: 1.2,
-          },
-          exploreRuins: {
-            resourceMultiplier: 1.2,
-          },
-          exploreTemple: {
-            resourceMultiplier: 1.2,
-          },
-          exploreCitadel: {
-            resourceMultiplier: 1.2,
-          },
-          lowChamber: {
-            resourceMultiplier: 1.2,
-          },
-          alchemistChamber: {
-            resourceMultiplier: 1.2,
-          },
+  seeker_pack: {
+    id: "seeker_pack",
+    name: "Seeker Pack",
+    description:
+      "Well-crafted leather backpack easing the weight upon your shoulders",
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceMultiplier: 1.2,
+        },
+        exploreCave: {
+          resourceMultiplier: 1.2,
+        },
+        ventureDeeper: {
+          resourceMultiplier: 1.2,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.2,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.2,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.2,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.2,
+        },
+        lowChamber: {
+          resourceMultiplier: 1.2,
+        },
+        alchemistChamber: {
+          resourceMultiplier: 1.2,
         },
       },
     },
+  },
 
-    hunter_cloak: {
-      id: "hunter_cloak",
-      name: "Hunter Cloak",
-      description: "Supple leather cloak that silences every movement",
-      bonuses: {
-        actionBonuses: {
-          hunt: {
-            resourceMultiplier: 1.2,
-          },
+  hunter_cloak: {
+    id: "hunter_cloak",
+    name: "Hunter Cloak",
+    description: "Supple leather cloak that silences every movement",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.2,
         },
       },
     },
+  },
 
-    unnamed_book: {
-      id: "unnamed_book",
-      name: "Unnamed Book",
-      description: "Book bound in human skin filled with forbidden knowledge",
-      bonuses: {
-        generalBonuses: {
-          knowledge: 8,
-          madness: 5,
-        },
+  unnamed_book: {
+    id: "unnamed_book",
+    name: "Unnamed Book",
+    description: "Book bound in human skin filled with forbidden knowledge",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 8,
+        madness: 5,
       },
     },
+  },
 
-    occultist_grimoire: {
-      id: "occultist_grimoire",
-      name: "Occultist Grimoire",
-      description: "Grimoire containing the unholy knowledge of a great occultist",
-      bonuses: {
-        generalBonuses: {
-          knowledge: 7,
-          madness: 3,
-        },
+  occultist_grimoire: {
+    id: "occultist_grimoire",
+    name: "Occultist Grimoire",
+    description:
+      "Grimoire containing the unholy knowledge of a great occultist",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 7,
+        madness: 3,
       },
     },
+  },
 
-    mastermason_chisel: {
-      id: "mastermason_chisel",
-      name: "Mastermason Chisel",
-      description: "Precision tool of a long fotgotten master builder",
-      bonuses: {
-        generalBonuses: {
-          craftingCostReduction: 0.1,
-        },
+  mastermason_chisel: {
+    id: "mastermason_chisel",
+    name: "Mastermason Chisel",
+    description: "Precision crafting tool of a long forgotten master builder",
+    bonuses: {
+      generalBonuses: {
+        craftingCostReduction: 0.1,
       },
     },
+  },
 };
 
 // Tool hierarchy definitions
@@ -809,7 +806,10 @@ export const getBestTool = (
   // Find the highest tier tool that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const toolId = hierarchy[i];
-    if (toolId in state.tools && state.tools[toolId as keyof typeof state.tools]) {
+    if (
+      toolId in state.tools &&
+      state.tools[toolId as keyof typeof state.tools]
+    ) {
       return toolId;
     }
   }
@@ -834,7 +834,10 @@ export const getBestWeapon = (
   // Find the highest tier weapon that the player owns
   for (let i = hierarchy.length - 1; i >= 0; i--) {
     const weaponId = hierarchy[i];
-    if (weaponId in state.weapons && state.weapons[weaponId as keyof typeof state.weapons]) {
+    if (
+      weaponId in state.weapons &&
+      state.weapons[weaponId as keyof typeof state.weapons]
+    ) {
       return weaponId;
     }
   }
@@ -923,7 +926,10 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to get action bonuses from pre-calculated effects in state
-export function getActionBonuses(actionId: string, state: GameState): ActionBonuses {
+export function getActionBonuses(
+  actionId: string,
+  state: GameState,
+): ActionBonuses {
   const effects = calculateTotalEffects(state);
   let bonuses: ActionBonuses = {
     resourceBonus: {},
@@ -933,7 +939,13 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
   };
 
   // Define mining actions
-  const miningActions = ['mineIron', 'mineCoal', 'mineSulfur', 'mineObsidian', 'mineAdamant'];
+  const miningActions = [
+    "mineIron",
+    "mineCoal",
+    "mineSulfur",
+    "mineObsidian",
+    "mineAdamant",
+  ];
   const isMiningAction = miningActions.includes(actionId);
 
   // Apply bonuses for this specific action
@@ -945,9 +957,12 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
 
         // Apply resource bonuses
         if (actionBonus.resourceBonus) {
-          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-          });
+          Object.entries(actionBonus.resourceBonus).forEach(
+            ([resource, bonus]) => {
+              bonuses.resourceBonus[resource] =
+                (bonuses.resourceBonus[resource] || 0) + bonus;
+            },
+          );
         }
 
         // Apply multipliers (multiplicative)
@@ -972,9 +987,12 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
 
         // Apply resource bonuses
         if (miningBonus.resourceBonus) {
-          Object.entries(miningBonus.resourceBonus).forEach(([resource, bonus]) => {
-            bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + bonus;
-          });
+          Object.entries(miningBonus.resourceBonus).forEach(
+            ([resource, bonus]) => {
+              bonuses.resourceBonus[resource] =
+                (bonuses.resourceBonus[resource] || 0) + bonus;
+            },
+          );
         }
 
         // Apply multipliers (multiplicative)
@@ -997,8 +1015,6 @@ export function getActionBonuses(actionId: string, state: GameState): ActionBonu
 
   return bonuses;
 }
-
-
 
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
@@ -1058,15 +1074,16 @@ export const getTotalMadness = (state: GameState): number => {
 
   // Apply madness reductions from buildings (only highest tier building applies)
   const buildingMadnessReductions = [
-    { key: 'sanctum', reduction: -15 },
-    { key: 'temple', reduction: -10 },
-    { key: 'shrine', reduction: -5 },
-    { key: 'altar', reduction: -1 },
+    { key: "sanctum", reduction: -15 },
+    { key: "temple", reduction: -10 },
+    { key: "shrine", reduction: -5 },
+    { key: "altar", reduction: -1 },
   ];
 
   // Find the highest tier building that exists and apply only its effect
   for (const building of buildingMadnessReductions) {
-    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
+    const buildingCount =
+      state.buildings[building.key as keyof typeof state.buildings] || 0;
     if (buildingCount > 0) {
       totalMadness += building.reduction;
       break; // Only apply the highest tier building's effect
@@ -1090,8 +1107,6 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   return reduction;
 };
 
-
-
 // Helper function to calculate all effects for the current state
 export const calculateTotalEffects = (state: GameState) => {
   const effects = {
@@ -1101,7 +1116,8 @@ export const calculateTotalEffects = (state: GameState) => {
     cooldown_reduction: {} as Record<string, number>,
     madness_reduction: {} as Record<string, number>,
     actionBonuses: {} as Record<string, Record<string, any>>,
-    statBonuses: { // Added statBonuses here
+    statBonuses: {
+      // Added statBonuses here
       strength: 0,
       luck: 0,
       knowledge: 0,
@@ -1116,7 +1132,8 @@ export const calculateTotalEffects = (state: GameState) => {
     // Process madness bonuses from general bonuses
     if (effect.bonuses.generalBonuses?.madness) {
       const effectKey = `${effect.id}_madness`;
-      effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
+      effects.madness_reduction[effectKey] =
+        -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
       // Update statBonuses for madness
       effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
     }
@@ -1127,35 +1144,48 @@ export const calculateTotalEffects = (state: GameState) => {
     }
 
     if (effect.bonuses.actionBonuses) {
-      Object.entries(effect.bonuses.actionBonuses).forEach(([actionId, actionBonus]) => {
-        // Resource bonuses
-        if (actionBonus.resourceBonus) {
-          Object.entries(actionBonus.resourceBonus).forEach(([resource, bonus]) => {
-            const key = `${actionId}_${resource}`;
-            effects.resource_bonus[key] = (effects.resource_bonus[key] || 0) + bonus;
-          });
-        }
+      Object.entries(effect.bonuses.actionBonuses).forEach(
+        ([actionId, actionBonus]) => {
+          // Resource bonuses
+          if (actionBonus.resourceBonus) {
+            Object.entries(actionBonus.resourceBonus).forEach(
+              ([resource, bonus]) => {
+                const key = `${actionId}_${resource}`;
+                effects.resource_bonus[key] =
+                  (effects.resource_bonus[key] || 0) + bonus;
+              },
+            );
+          }
 
-        // Resource multipliers
-        if (actionBonus.resourceMultiplier && actionBonus.resourceMultiplier !== 1) {
-          effects.resource_multiplier[actionId] =
-            (effects.resource_multiplier[actionId] || 1) * actionBonus.resourceMultiplier;
-        }
+          // Resource multipliers
+          if (
+            actionBonus.resourceMultiplier &&
+            actionBonus.resourceMultiplier !== 1
+          ) {
+            effects.resource_multiplier[actionId] =
+              (effects.resource_multiplier[actionId] || 1) *
+              actionBonus.resourceMultiplier;
+          }
 
-        // Probability bonuses
-        if (actionBonus.probabilityBonus) {
-          Object.entries(actionBonus.probabilityBonus).forEach(([resource, bonus]) => {
-            const key = `${actionId}_${resource}`;
-            effects.probability_bonus[key] = (effects.probability_bonus[key] || 0) + bonus;
-          });
-        }
+          // Probability bonuses
+          if (actionBonus.probabilityBonus) {
+            Object.entries(actionBonus.probabilityBonus).forEach(
+              ([resource, bonus]) => {
+                const key = `${actionId}_${resource}`;
+                effects.probability_bonus[key] =
+                  (effects.probability_bonus[key] || 0) + bonus;
+              },
+            );
+          }
 
-        // Cooldown reductions
-        if (actionBonus.cooldownReduction) {
-          effects.cooldown_reduction[actionId] =
-            (effects.cooldown_reduction[actionId] || 0) + actionBonus.cooldownReduction;
-        }
-      });
+          // Cooldown reductions
+          if (actionBonus.cooldownReduction) {
+            effects.cooldown_reduction[actionId] =
+              (effects.cooldown_reduction[actionId] || 0) +
+              actionBonus.cooldownReduction;
+          }
+        },
+      );
     }
 
     // Process general bonuses
@@ -1167,7 +1197,8 @@ export const calculateTotalEffects = (state: GameState) => {
         effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
       }
       if (effect.bonuses.generalBonuses.knowledge) {
-        effects.statBonuses.knowledge += effect.bonuses.generalBonuses.knowledge;
+        effects.statBonuses.knowledge +=
+          effect.bonuses.generalBonuses.knowledge;
       }
     }
   });
