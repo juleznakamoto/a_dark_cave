@@ -9,7 +9,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
     triggerType: "resource",
-    timeProbability: 0.090,
+    timeProbability: 30,
     title: "Whispering Voices",
     message:
       "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
@@ -32,7 +32,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "shadowsMove",
     condition: (state: GameState) => getTotalMadness(state) >= 15 && !state.events.shadowsMove,
     triggerType: "resource",
-    timeProbability: 75,
+    timeProbability: 30,
     message:
       "The shadows in your village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there.",
     triggered: false,
@@ -55,7 +55,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       getTotalMadness(state) >= 20 && state.villagers.free > 0 && !state.events.villagerStares,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 30,
     title: "Hollow Stares",
     message:
       "One of your villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
@@ -124,7 +124,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "bloodInWater",
     condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.bloodInWater,
     triggerType: "resource",
-    timeProbability: 75,
+    timeProbability: 30,
     message:
       "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water.",
     triggered: false,
@@ -146,7 +146,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "facesInWalls",
     condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.facesInWalls,
     triggerType: "resource",
-    timeProbability: 60,
+    timeProbability: 30,
     title: "Faces in the Walls",
     message:
       "The wooden walls of your huts have begun showing faces - twisted, agonized expressions that seem to push through from the other side. They mouth silent screams and pleas. The villagers step around them as if they've always been there.",
@@ -232,7 +232,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "skinCrawling",
     condition: (state: GameState) => getTotalMadness(state) >= 35 && !state.events.skinCrawling,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 30,
     title: "Crawling Skin",
     message:
       "Your skin begins to crawl - literally. You can see shapes moving beneath the surface, seamingly creating patterns. The villagers watch you scratch bloody furrows in your arms with expressions of great worry.",
@@ -301,7 +301,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "creatureInHut",
     condition: (state: GameState) => getTotalMadness(state) >= 35 && state.buildings.woodenHut > 0 && !state.events.creatureInHut,
     triggerType: "resource",
-    timeProbability: 50,
+    timeProbability: 30,
     title: "Something in the Hut",
     message:
       "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. Its limbs bend wrong, and when it turns toward you, you see eyes like dying stars.",
@@ -355,7 +355,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "wrongReflections",
     condition: (state: GameState) => getTotalMadness(state) >= 40 && !state.events.wrongReflections,
     triggerType: "resource",
-    timeProbability: 55,
+    timeProbability: 30,
     title: "Wrong Reflections",
     message:
       "The surface of the village well shows reflections that don't match reality. You see yourself, but older, with hollow eyes and a mouth full of darkness.",
@@ -408,7 +408,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "villagersStareAtSky",
     condition: (state: GameState) => getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 30,
     title: "Skyward Gaze",
     message:
       "All your villagers have stopped their work and stand motionless, staring at the empty sky. They remain like this for hours, unblinking, while tears of black liquid stream down their faces. When you follow their gaze, you see only ordinary clouds, but something feels terribly wrong.",
