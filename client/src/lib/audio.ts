@@ -3,6 +3,8 @@ export class AudioManager {
   private static instance: AudioManager;
   private audioContext: AudioContext | null = null;
   private sounds: Map<string, AudioBuffer> = new Map();
+  private soundUrls: Map<string, string> = new Map();
+  private initialized: boolean = false;
 
   private constructor() {}
 
@@ -24,6 +26,14 @@ export class AudioManager {
   }
 
   async loadSound(name: string, url: string): Promise<void> {
+    // Store the URL for later loading
+    this.soundUrls.set(name, url);
+    
+    // Only actually load if audio context is available
+    if (!this.initialized) {
+      return;
+    }
+
     try {
       await this.initAudioContext();
       if (!this.audioContext) return;
@@ -42,8 +52,43 @@ export class AudioManager {
     }
   }
 
+  private async loadAllSounds(): Promise<void> {
+    if (this.soundUrls.size === 0) return;
+
+    console.log('Loading all sounds after user gesture...');
+    const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) => 
+      this.loadActualSound(name, url)
+    );
+    await Promise.all(loadPromises);
+    console.log('Finished loading all sounds');
+  }
+
+  private async loadActualSound(name: string, url: string): Promise<void> {
+    try {
+      await this.initAudioContext();
+      if (!this.audioContext) return;
+
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      }
+      const arrayBuffer = await response.arrayBuffer();
+      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
+      this.sounds.set(name, audioBuffer);
+      console.log(`Successfully loaded sound: ${name}`);
+    } catch (error) {
+      console.warn(`Failed to load sound ${name} from ${url}:`, error);
+    }
+  }
+
   async playSound(name: string, volume: number = 1): Promise<void> {
     try {
+      // Initialize audio on first play attempt
+      if (!this.initialized) {
+        this.initialized = true;
+        await this.loadAllSounds();
+      }
+
       await this.initAudioContext();
       if (!this.audioContext) return;
 
@@ -69,14 +114,12 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    console.log('Starting to preload sounds...');
-    // Load all sounds in parallel
-    await Promise.all([
-      this.loadSound('newVillager', '/sounds/new_villager.wav'),
-      this.loadSound('event', '/sounds/event.wav'),
-      this.loadSound('eventMadness', '/sounds/event_madness.wav'),
-    ]);
-    console.log('Finished preloading sounds');
+    console.log('Registering sounds for lazy loading...');
+    // Just register the sound URLs, don't load yet
+    this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
+    this.soundUrls.set('event', '/sounds/event.wav');
+    this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
+    console.log('Sound URLs registered for lazy loading');
   }
 }
 
