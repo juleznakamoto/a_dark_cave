@@ -167,9 +167,9 @@ export default function CavePanel() {
           if (!hasAnyVisibleActions) return null;
 
           return (
-            <div key={groupIndex} className="space-y-4">
+            <div key={groupIndex} className="space-y-2">
               {group.title && (
-                <h3 className="text-xs font-semibold text-foreground">
+                <h3 className="text-xs font-bold text-foreground">
                   {group.title}
                 </h3>
               )}
@@ -208,9 +208,9 @@ export default function CavePanel() {
         if (visibleActions.length === 0) return null;
 
         return (
-          <div key={groupIndex} className="space-y-4">
+          <div key={groupIndex} className="space-y-2">
             {group.title && (
-              <h3 className="text-xs font-semibold text-foreground">
+              <h3 className="text-xs font-bold text-foreground">
                 {group.title}
               </h3>
             )}

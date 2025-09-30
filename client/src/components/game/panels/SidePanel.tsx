@@ -16,7 +16,6 @@ import { useState } from "react";
 export default function SidePanel() {
   const {
     resources,
-    tools,
     buildings,
     villagers,
     current_population,
@@ -193,8 +192,6 @@ export default function SidePanel() {
       visible: (value ?? 0) > 0,
     }))
     .filter((item) => item.visible);
-
-  const { stats } = gameState;
 
   // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);

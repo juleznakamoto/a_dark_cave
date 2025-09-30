@@ -83,7 +83,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Shadow Flute",
     message:
-      "You discover a bone flute of disturbing craftsmanship. When you pick it up and play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep the instrument?",
+      "Deep in the cave you discover a bone flute of disturbing craftsmanship. When you pick it up and play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep the instrument?",
     triggered: false,
     priority: 5,
     repeatable: false,
