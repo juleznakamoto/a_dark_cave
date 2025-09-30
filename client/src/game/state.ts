@@ -510,22 +510,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Apply event effect and get updated state
         const updatedState = { ...prevState, ...changes };
 
-        // Check if this is a madness event and play appropriate sound
-        const madnessEventIds = [
-          'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
-          'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
-          'wrongReflections', 'villagersStareAtSky'
-        ];
-
-        const isMadnessEvent = madnessEventIds.includes(eventId);
-
-        // Play appropriate event sound
-        if (isMadnessEvent) {
-          audioManager.playSound('eventMadness', 0.4);
-        } else {
-          audioManager.playSound('event', 0.4);
-        }
-
         return {
           ...updatedState,
           log: logMessage
