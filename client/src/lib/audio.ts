@@ -68,6 +68,8 @@ export class AudioManager {
     this.loadSound('newVillager', '/sounds/new_villager.wav');
     // Load the event sound
     this.loadSound('event', '/sounds/event.wav');
+    // Load the madness event sound
+    this.loadSound('eventMadness', '/sounds/event_madness.wav');
   }
 }
 

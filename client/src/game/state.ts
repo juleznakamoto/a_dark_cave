@@ -54,7 +54,7 @@ interface GameStore extends GameState {
     interval: number;
   };
 
-  
+
 
   // Actions
   executeAction: (actionId: string) => void;
@@ -244,7 +244,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state updates using helper function
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-      
+
       const newState = {
         ...prevState,
         ...mergedUpdates,
@@ -423,7 +423,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (entry.type === 'event') {
       audioManager.playSound('event', 0.3);
     }
-    
+
     set((state) => ({
       log: [...state.log, entry].slice(-8), // Keep only last 8 entries
     }));
@@ -431,7 +431,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   checkEvents: () => {
     const state = get();
-    const { newLogEntries, stateChanges } = EventManager.checkEvents(state);
+    const { newLogEntries, stateChanges, triggeredEvents } = EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
       set((prevState) => ({
@@ -457,6 +457,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Update population after applying changes
       setTimeout(() => get().updatePopulation(), 0);
+
+      // Play event sound for events that trigger automatically
+      if (triggeredEvents.length > 0) {
+        // Check if any triggered event is a madness event
+        const madnessEventIds = [
+          'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
+          'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
+          'wrongReflections', 'villagersStareAtSky'
+        ];
+
+        const hasMadnessEvent = triggeredEvents.some(event => 
+          madnessEventIds.includes(event.id.split('-')[0])
+        );
+
+        if (hasMadnessEvent) {
+          audioManager.playSound('eventMadness', 0.7);
+        } else {
+          audioManager.playSound('event', 0.7);
+        }
+      }
     }
   },
 
@@ -479,20 +499,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
         delete updatedChanges._logMessage;
       }
 
-      set((prevState) => ({
-        ...prevState,
-        ...updatedChanges,
-      }));
+      set((prevState) => {
+        // Apply event effect and get updated state
+        const effectResult = changes.effect(state); // Assuming 'effect' is part of changes
+        const updatedState = { ...prevState, ...effectResult };
 
-      // Add log message if present
-      if (logMessage) {
-        get().addLogEntry({
-          id: `choice-result-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: 'system',
-        });
-      }
+        // Check if this is a madness event and play appropriate sound
+        const madnessEventIds = [
+          'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
+          'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
+          'wrongReflections', 'villagersStareAtSky'
+        ];
+
+        const isMadnessEvent = madnessEventIds.includes(eventId);
+
+        // Play appropriate event sound
+        if (isMadnessEvent) {
+          audioManager.playSound('eventMadness', 0.7);
+        } else {
+          audioManager.playSound('event', 0.7);
+        }
+
+        return {
+          ...updatedState,
+          log: logMessage
+            ? [...prevState.log, { id: `choice-result-${Date.now()}`, message: logMessage, timestamp: Date.now(), type: 'system' }].slice(-8)
+            : prevState.log,
+        };
+      });
 
       // Close the event dialog (except for merchant trade choices)
       const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
@@ -573,5 +607,5 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  
+
 }));
