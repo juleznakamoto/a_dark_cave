@@ -96,6 +96,7 @@ export default function SidePanel() {
       if (
         [
           "bastion",
+          "wizardTower",
           "watchtower",
           "woodenPalisades",
           "fortifiedPalisades",

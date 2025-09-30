@@ -560,9 +560,9 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 80,
   },
 
-  buildAlchemistTower: {
-    id: "buildAlchemistTower",
-    label: "Alchemist's Tower",
+  buildAlchemistHall: {
+    id: "buildAlchemistHall",
+    label: "Alchemist's Hall",
     building: true,
     show_when: {
       1: {
@@ -579,7 +579,7 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.alchemistHall": 1,
-        "story.seen.hasAlchemistTower": true,
+        "story.seen.hasAlchemistHall": true,
         "story.seen.powderMakerUnlocked": true,
       },
     },
