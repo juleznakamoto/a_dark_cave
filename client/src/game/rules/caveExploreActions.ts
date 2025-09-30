@@ -343,6 +343,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.gold": { probability: 1, value: "random(15,45)" },
       "resources.bloodstone": { probability: 1, value: "random(2,8)" },
       "resources.frostglas": { probability: 1, value: "random(1,6)" },
+      "tools.grandmaster_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
     },
@@ -364,6 +365,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.bloodstone": { probability: 1, value: "random(3,6)" },
       "resources.frostglas": { probability: 1, value: "random(2,4)" },
       "resources.adamant": { probability: 1, value: "random(5,15)" },
+      "tools.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,
     },
@@ -707,7 +709,7 @@ export function handleLowChamber(
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
     message:
-      "Using the reinforced rope, you descend into a previously inaccessible chamber deep within the cave. Ancient treasures glimmer in the torchlight, hidden for centuries in this forgotten place.",
+      "Using the reinforced rope, you descend into a previously inaccessible chamber deep within the cave. Ancient treasures glimmer in the torchlight, hidden for centuries in this forgotten place. Among the relics, you discover the legendary Grandmaster Chisel, its blade still sharp after all these years.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -743,7 +745,7 @@ export function handleoccultistChamber(
   result.logEntries!.push({
     id: `occultist-chamber-explored-${Date.now()}`,
     message:
-      "Following the occultists's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the occultists's greatest treasures and experiments await, preserved in death.",
+      "Following the occultist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the occultist's greatest treasures and experiments await, preserved in death. Most precious of all is his grimoire, filled with forbidden knowledge and arcane secrets.",
     timestamp: Date.now(),
     type: "system",
   });
