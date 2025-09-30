@@ -336,11 +336,11 @@ export default function SidePanelSection({
   };
 
   return (
-    <div className={`px-4 py-3 border-border ${className}`}>
-      <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wide mb-2">
+    <div className={`px-3 py-3 border-border ${className}`}>
+      <h3 className="text-xs font-medium uppercase tracking-wide mb-1">
         {title}
       </h3>
-      <div className="space-y-1 text-sm">
+      <div className="space-y-0.5 text-sm">
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
             {renderItemWithTooltip(item)}
