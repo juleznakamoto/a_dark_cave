@@ -1,12 +1,13 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { getTotalMadness } from "./effects";
 
 export const madnessEvents: Record<string, GameEvent> = {
   whisperingVoices: {
     id: "whisperingVoices",
     condition: (state: GameState) =>
-      (state.stats.madness || 0) >= 10 && !state.events.whisperingVoices,
+      getTotalMadness(state) >= 10 && !state.events.whisperingVoices,
     triggerType: "resource",
     timeProbability: 0.090,
     title: "Whispering Voices",
@@ -29,7 +30,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   shadowsMove: {
     id: "shadowsMove",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 15 && !state.events.shadowsMove,
+    condition: (state: GameState) => getTotalMadness(state) >= 15 && !state.events.shadowsMove,
     triggerType: "resource",
     timeProbability: 75,
     message:
@@ -52,7 +53,7 @@ export const madnessEvents: Record<string, GameEvent> = {
   villagerStares: {
     id: "villagerStares",
     condition: (state: GameState) =>
-      (state.stats.madness || 0) >= 20 && state.villagers.free > 0 && !state.events.villagerStares,
+      getTotalMadness(state) >= 20 && state.villagers.free > 0 && !state.events.villagerStares,
     triggerType: "resource",
     timeProbability: 45,
     title: "Hollow Stares",
@@ -121,7 +122,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   bloodInWater: {
     id: "bloodInWater",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 25 && !state.events.bloodInWater,
+    condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.bloodInWater,
     triggerType: "resource",
     timeProbability: 75,
     message:
@@ -143,7 +144,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   facesInWalls: {
     id: "facesInWalls",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 25 && !state.events.facesInWalls,
+    condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.facesInWalls,
     triggerType: "resource",
     timeProbability: 60,
     title: "Faces in the Walls",
@@ -199,7 +200,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
 
-      return (state.stats.madness || 0) >= 30 &&
+      return getTotalMadness(state) >= 30 &&
              state.villagers.free > 2 &&
              spaceForThree &&
              !state.events.wrongVillagers;
@@ -229,7 +230,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   skinCrawling: {
     id: "skinCrawling",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 35 && !state.events.skinCrawling,
+    condition: (state: GameState) => getTotalMadness(state) >= 35 && !state.events.skinCrawling,
     triggerType: "resource",
     timeProbability: 40,
     title: "Crawling Skin",
@@ -298,7 +299,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   creatureInHut: {
     id: "creatureInHut",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 35 && state.buildings.woodenHut > 0 && !state.events.creatureInHut,
+    condition: (state: GameState) => getTotalMadness(state) >= 35 && state.buildings.woodenHut > 0 && !state.events.creatureInHut,
     triggerType: "resource",
     timeProbability: 50,
     title: "Something in the Hut",
@@ -352,7 +353,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   wrongReflections: {
     id: "wrongReflections",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 40 && !state.events.wrongReflections,
+    condition: (state: GameState) => getTotalMadness(state) >= 40 && !state.events.wrongReflections,
     triggerType: "resource",
     timeProbability: 55,
     title: "Wrong Reflections",
@@ -405,7 +406,7 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   villagersStareAtSky: {
     id: "villagersStareAtSky",
-    condition: (state: GameState) => (state.stats.madness || 0) >= 45 && !state.events.villagersStareAtSky,
+    condition: (state: GameState) => getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
     triggerType: "resource",
     timeProbability: 40,
     title: "Skyward Gaze",
