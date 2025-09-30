@@ -501,8 +501,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set((prevState) => {
         // Apply event effect and get updated state
-        const effectResult = changes.effect(state); // Assuming 'effect' is part of changes
-        const updatedState = { ...prevState, ...effectResult };
+        const updatedState = { ...prevState, ...changes };
 
         // Check if this is a madness event and play appropriate sound
         const madnessEventIds = [
