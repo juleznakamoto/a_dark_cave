@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects } from "@/game/rules";
+import { applyActionEffects, getActionBonuses } from '@/game/rules';
 import { getTotalLuck } from '@/game/rules/effects';
 
 // Helper function to apply luck bonuses to cave exploration probability effects
@@ -21,7 +21,7 @@ function applyCaveExplorationLuckBonus(state: GameState, actionId: string, effec
         const totalAmount = effectUpdates.resources[resource] || 0;
         const existingAmount = state.resources[resource] || 0;
         const actuallyAddedAmount = totalAmount - existingAmount;
-        
+
         if (actuallyAddedAmount > 0) {
           // Calculate luck bonus based only on the newly added resources
           const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
