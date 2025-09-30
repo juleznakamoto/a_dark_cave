@@ -112,7 +112,7 @@ export default function SidePanel() {
         key === "clerksHut"
           ? "Clerk's Hut"
           : key === "alchemistHall"
-            ? "Alchemist's Tower"
+            ? "Alchemist's Hall"
             : key === "tradePost"
               ? "Trade Post"
               : capitalizeWords(key);

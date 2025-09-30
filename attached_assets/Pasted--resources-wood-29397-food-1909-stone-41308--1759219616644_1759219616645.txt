@@ -253,7 +253,7 @@
             "hollowKingsScepterChoice": true,
             "lowChamberExplored": true,
             "actionTradeGoldForSteel": true,
-            "actionBuildAlchemistTower": true,
+            "actionBuildAlchemistHall": true,
             "actionBuildDeepPit": true,
             "actionBuildBottomlessPit": true,
             "actionTradeGoldForAdamant": true,
