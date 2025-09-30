@@ -385,7 +385,7 @@ export const applyActionEffects = (
           let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
           // Apply action bonuses from the centralized effects system
-          const actionBonuses = getActionBonuses(state, actionId);
+          const actionBonuses = getActionBonuses(actionId, state);
           if (actionBonuses?.resourceBonus?.[finalKey as keyof typeof actionBonuses.resourceBonus]) {
             baseAmount += actionBonuses.resourceBonus[finalKey as keyof typeof actionBonuses.resourceBonus];
           }
