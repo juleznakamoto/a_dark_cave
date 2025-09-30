@@ -184,10 +184,8 @@ export default function SidePanelSection({
       return "";
     };
 
-    // Check if the item is 'madness' and if there's any madness from events to display
-    const gameState = useGameStore.getState();
-    const eventMadness = item.id === 'madness' ? (gameState.stats.madnessFromEvents || 0) : 0;
-    const isEventMadnessTooltip = item.id === 'madness' && eventMadness > 0;
+    // Check if the item is 'madness' to show tooltip
+    const isMadnessTooltip = item.id === 'madness' && item.value > 0;
 
     const isMadness = item.id === 'madness';
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
@@ -325,14 +323,14 @@ export default function SidePanelSection({
       );
     }
 
-    // If this is madness with events, show tooltip
-    if (isEventMadnessTooltip) {
+    // If this is madness, show tooltip
+    if (isMadnessTooltip) {
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
             <TooltipContent>
-              <p>+{eventMadness} Madness from Events</p>
+              <p>Current Madness: {item.value}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
