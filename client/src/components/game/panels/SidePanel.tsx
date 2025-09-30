@@ -345,7 +345,7 @@ export default function SidePanel() {
               }}
               forceNotifications={buildings.clerksHut > 0}
             />
-          )}</div>
+          )}
         </div>
 
         {/* Second column - Everything else */}
