@@ -19,16 +19,6 @@ export default function BastionPanel() {
            ));
   });
 
-  if (!flags.bastionUnlocked) {
-    return (
-      <div className="space-y-6">
-        <div className="text-center text-muted-foreground">
-          <p>The bastion must be built first.</p>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="space-y-6">
       <div className="text-center">
