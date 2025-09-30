@@ -187,6 +187,7 @@ export default function SidePanelSection({
     // Check if the item is 'madness' and if there's any madness from events to display
     const gameState = useGameStore.getState();
     const eventMadness = item.id === 'madness' ? (gameState.stats.madnessFromEvents || 0) : 0;
+    const baseMadness = item.id === 'madness' ? gameState.stats.madness : 0; // Assuming gameState.stats.madness holds the base madness
     const isEventMadnessTooltip = item.id === 'madness' && eventMadness > 0;
 
     const isMadness = item.id === 'madness';
@@ -220,21 +221,35 @@ export default function SidePanelSection({
       </div>
     );
 
-    // If this item has effects, wrap it in a hover card
-    if (
-      hasEffect &&
-      (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")
-    ) {
+    // Show tooltip if effect exists or if it's a building with tooltip or madness breakdown
+    if (hasEffect || item.tooltip || isEventMadnessTooltip) {
       return (
         <HoverCard key={item.id} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
-          <HoverCardContent className="w-auto p-2">
-            <div className="text-xs whitespace-nowrap">
-              {effect.name && (
-                <div className="font-bold mb-1">{effect.name}</div>
+          <HoverCardContent className="w-64">
+            <div className="space-y-1 text-sm">
+              {item.tooltip && (
+                <div className="text-muted-foreground">{item.tooltip}</div>
               )}
-              {effect.description && (
-                <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+              {isEventMadnessTooltip && (
+                <div>
+                  <div className="font-semibold">Madness Breakdown</div>
+                  {baseMadness > 0 && (
+                    <div className="text-muted-foreground">Base: {baseMadness}</div>
+                  )}
+                  {eventMadness > 0 && (
+                    <div className="text-muted-foreground">From Events: {eventMadness}</div>
+                  )}
+                  <div className="text-muted-foreground">Total: {item.value}</div>
+                </div>
+              )}
+              {effect?.name && (
+                <div className="font-semibold">{effect.name}</div>
+              )}
+              {effect?.description && (
+                <div className="text-muted-foreground italic">
+                  {effect.description}
+                </div>
               )}
               {effect.bonuses.generalBonuses && (
                 <>
