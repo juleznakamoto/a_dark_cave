@@ -132,11 +132,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         label: "Use fortifications",
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
+          const palisadesLevel = state.buildings.palisades || 0;
           const fortificationBonus = 
-            (state.buildings.woodenPalisades || 0) * 10 +
-            (state.buildings.fortifiedPalisades || 0) * 20 +
-            (state.buildings.stoneWall || 0) * 30 +
-            (state.buildings.reinforcedWall || 0) * 40 +
+            palisadesLevel * 15 + // Each level provides 15 points
             (state.buildings.bastion || 0) * 50;
 
           const currentPopulation = Object.values(state.villagers).reduce(
@@ -170,10 +168,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
             // Damage some fortifications
             let buildingDamage = {};
-            if (state.buildings.woodenPalisades > 0) {
-              buildingDamage = { woodenPalisades: 0 };
-            } else if (state.buildings.reinforcedWall > 0) {
-              buildingDamage = { reinforcedWall: Math.max(0, state.buildings.reinforcedWall - 1) };
+            if (state.buildings.palisades > 0) {
+              buildingDamage = { palisades: Math.max(0, state.buildings.palisades - 1) };
             }
 
             return {

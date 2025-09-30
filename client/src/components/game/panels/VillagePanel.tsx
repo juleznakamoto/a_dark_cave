@@ -73,10 +73,7 @@ export default function VillagePanel() {
         { id: "buildWizardTower", label: "Wizard Tower" },
         { id: "buildBastion", label: "Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
-        { id: "buildWoodenPalisades", label: "Wooden Palisades" },
-        { id: "buildFortifiedPalisades", label: "Fortified Palisades" },
-        { id: "buildStoneWall", label: "Stone Wall" },
-        { id: "buildReinforcedWall", label: "Reinforced Wall" },
+        { id: "buildPalisades", label: "Palisades" },
       ],
     },
   ];
@@ -155,6 +152,13 @@ export default function VillagePanel() {
       const watchtowerLevel = buildings.watchtower || 0;
       const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
       displayLabel = watchtowerLabels[watchtowerLevel] || "Watchtower";
+    }
+    
+    // Dynamic label for palisades based on current level
+    if (actionId === "buildPalisades") {
+      const palisadesLevel = buildings.palisades || 0;
+      const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+      displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
     return (

@@ -702,106 +702,61 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 60,
   },
 
-  buildWoodenPalisades: {
-    id: "buildWoodenPalisades",
-    label: "Wooden Palisades",
+  buildPalisades: {
+    id: "buildPalisades",
+    label: "Palisades",
     building: true,
     show_when: {
       1: {
         "flags.portalBlasted": true,
         "buildings.bastion": 1,
-        "buildings.woodenPalisades": 0,
-        "buildings.fortifiedPalisades": 0,
-        "buildings.stoneWall": 0,
-        "buildings.reinforcedWall": 0,
+        "buildings.palisades": 0,
+      },
+      2: {
+        "buildings.palisades": 1,
+      },
+      3: {
+        "buildings.palisades": 2,
+      },
+      4: {
+        "buildings.palisades": 3,
       },
     },
     cost: {
       1: {
         "resources.wood": 5000,
       },
-    },
-    effects: {
-      1: {
-        "buildings.woodenPalisades": 1,
-        "story.seen.hasWoodenPalisades": true,
-      },
-    },
-    cooldown: 40,
-  },
-
-  buildFortifiedPalisades: {
-    id: "buildFortifiedPalisades",
-    label: "Fortified Palisades",
-    building: true,
-    show_when: {
-      1: {
-        "buildings.woodenPalisades": 1,
-        "buildings.fortifiedPalisades": 0,
-      },
-    },
-    cost: {
-      1: {
+      2: {
         "resources.wood": 7500,
         "resources.iron": 2500,
       },
-    },
-    effects: {
-      1: {
-        "buildings.fortifiedPalisades": 1,
-        "story.seen.hasFortifiedPalisades": true,
-      },
-    },
-    cooldown: 50,
-  },
-
-  buildStoneWall: {
-    id: "buildStoneWall",
-    label: "Stone Wall",
-    building: true,
-    show_when: {
-      1: {
-        "buildings.fortifiedPalisades": 1,
-        "buildings.stoneWall": 0,
-      },
-    },
-    cost: {
-      1: {
+      3: {
         "resources.stone": 5000,
       },
-    },
-    effects: {
-      1: {
-        "buildings.stoneWall": 1,
-        "story.seen.hasStoneWall": true,
-      },
-    },
-    cooldown: 50,
-  },
-
-  buildReinforcedWall: {
-    id: "buildReinforcedWall",
-    label: "Reinforced Wall",
-    building: true,
-    show_when: {
-      1: {
-        "buildings.stoneWall": 1,
-        "buildings.reinforcedWall": 0,
-      },
-    },
-    cost: {
-      1: {
+      4: {
         "resources.stone": 7500,
         "resources.steel": 2500,
       },
     },
     effects: {
       1: {
-        "buildings.reinforcedWall": 1,
+        "buildings.palisades": 1,
+        "story.seen.hasWoodenPalisades": true,
+      },
+      2: {
+        "buildings.palisades": 1,
+        "story.seen.hasFortifiedPalisades": true,
+      },
+      3: {
+        "buildings.palisades": 1,
+        "story.seen.hasStoneWall": true,
+      },
+      4: {
+        "buildings.palisades": 1,
         "story.seen.hasReinforcedWall": true,
       },
     },
-    cooldown: 60,
+    cooldown: 50,
   },
 
   buildStoneHut: {
@@ -1424,52 +1379,37 @@ export function handleBuildWatchtower(
   return watchtowerResult;
 }
 
-export function handleBuildWoodenPalisades(
+export function handleBuildPalisades(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(
+  const palisadesResult = handleBuildingConstruction(
     state,
     result,
-    "buildWoodenPalisades",
-    "woodenPalisades",
+    "buildPalisades",
+    "palisades",
   );
-}
 
-export function handleBuildFortifiedPalisades(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleBuildingConstruction(
-    state,
-    result,
-    "buildFortifiedPalisades",
-    "fortifiedPalisades",
-  );
-}
+  // Add palisades completion message based on level
+  const currentLevel = state.buildings.palisades || 0;
+  const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+  const palisadesMessages = [
+    "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
+    "Iron reinforcements strengthen the wooden walls, creating formidable fortified palisades.",
+    "Stone walls replace the wooden defenses, forming an imposing barrier that speaks of permanence and strength.",
+    "Steel reinforcements are added to the stone walls, creating an nearly impenetrable defensive barrier."
+  ];
 
-export function handleBuildStoneWall(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleBuildingConstruction(
-    state,
-    result,
-    "buildStoneWall",
-    "stoneWall",
-  );
-}
+  if (currentLevel < palisadesLabels.length) {
+    palisadesResult.logEntries!.push({
+      id: `palisades-built-level-${currentLevel + 1}-${Date.now()}`,
+      message: palisadesMessages[currentLevel],
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
 
-export function handleBuildReinforcedWall(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  return handleBuildingConstruction(
-    state,
-    result,
-    "buildReinforcedWall",
-    "reinforcedWall",
-  );
+  return palisadesResult;
 }
 
 export function handleBuildWizardTower(

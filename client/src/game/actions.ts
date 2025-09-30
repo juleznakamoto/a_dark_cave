@@ -277,14 +277,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildBastion(state, result);
     case 'buildWatchtower':
       return handleBuildWatchtower(state, result);
-    case 'buildWoodenPalisades':
-      return handleBuildWoodenPalisades(state, result);
-    case 'buildFortifiedPalisades':
-      return handleBuildFortifiedPalisades(state, result);
-    case 'buildStoneWall':
-      return handleBuildStoneWall(state, result);
-    case 'buildReinforcedWall':
-      return handleBuildReinforcedWall(state, result);
+    case 'buildPalisades':
+      return handleBuildPalisades(state, result);
 
     // Forest Scout Actions
     case 'hunt':
