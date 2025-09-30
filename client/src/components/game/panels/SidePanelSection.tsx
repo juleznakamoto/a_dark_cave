@@ -80,8 +80,8 @@ export default function SidePanelSection({
         if (currentValue > prevValue) {
           newAnimatedItems.add(item.id);
 
-          // Add to resourceChanges for notifications if showNotifications is enabled or forceNotifications is true
-          if ((showNotifications || forceNotifications) && onResourceChange) {
+          // Add to resourceChanges for notifications - always trigger if onResourceChange is provided
+          if (onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
@@ -102,8 +102,8 @@ export default function SidePanelSection({
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
 
-          // Add to resourceChanges for notifications if showNotifications is enabled or forceNotifications is true
-          if ((showNotifications || forceNotifications) && onResourceChange) {
+          // Add to resourceChanges for notifications - always trigger if onResourceChange is provided
+          if (onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
@@ -135,7 +135,7 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems, showNotifications, forceNotifications, onResourceChange]); // Added forceNotifications to dependency array
+  }, [visibleItems, onResourceChange]); // Simplified dependencies
 
   if (visibleItems.length === 0) {
     return null;
@@ -368,7 +368,7 @@ export default function SidePanelSection({
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
             {renderItemWithTooltip(item)}
-            {(showNotifications || forceNotifications) && ( // Updated condition here
+            {onResourceChange && ( // Show notifications whenever onResourceChange callback is provided
               <ResourceChangeNotification
                 resource={item.id}
                 changes={resourceChanges}
