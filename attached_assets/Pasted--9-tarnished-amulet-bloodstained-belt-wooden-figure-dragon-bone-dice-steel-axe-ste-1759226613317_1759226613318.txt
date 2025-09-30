@@ -1,0 +1,162 @@
+(9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
+effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
+effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
+effects.ts:966 🚀 Applying multiplier 1.75 from steel_axe
+effects.ts:950 🔧 Checking item: steel_pickaxe, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: steel_lantern, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: long_bow, bonuses: {hunt: {…}}
+effects.ts:1012 🎯 Final bonuses for gatherWood: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:387 🎲 RANDOM GENERATION - wood: rolled 8 from range [3, 9]
+effects.ts:935 🔍 DEBUGGING BONUSES for action: gatherWood
+effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
+effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
+effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
+effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
+effects.ts:966 🚀 Applying multiplier 1.75 from steel_axe
+effects.ts:950 🔧 Checking item: steel_pickaxe, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: steel_lantern, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: long_bow, bonuses: {hunt: {…}}
+effects.ts:1012 🎯 Final bonuses for gatherWood: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:399 🎲 Final amount: 860 + 8 = 868
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 868, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:534 ✨ Applying resource multiplier: 1.75x (75% bonus)
+index.ts:540   wood: current=868, original=860, base_gain=8
+index.ts:546     Multiplier applied: 868 + 6 = 874
+index.ts:540   food: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   stone: current=1504, original=1504, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   iron: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   coal: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   steel: current=500, original=500, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   sulfur: current=714, original=714, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bones: current=2418, original=2418, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bone_totem: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   fur: current=1740, original=1740, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   leather: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   torch: current=99, original=99, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   silver: current=134, original=134, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   gold: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   obsidian: current=31, original=31, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   adamant: current=21, original=21, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   moonstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bloodstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   frostglas: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   black_powder: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   ember_bomb: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:553 📊 Resources after bonuses: {wood: 874, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:554 ─────────────────────────────────────
+state.ts:243 [STATE] Action: gatherWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:261 [STATE] New state after gatherWood: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+effects.ts:935 🔍 DEBUGGING BONUSES for action: gatherWood
+effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
+effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
+effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
+effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
+effects.ts:966 🚀 Applying multiplier 1.75 from steel_axe
+effects.ts:950 🔧 Checking item: steel_pickaxe, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: steel_lantern, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: long_bow, bonuses: {hunt: {…}}
+effects.ts:1012 🎯 Final bonuses for gatherWood: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:387 🎲 RANDOM GENERATION - wood: rolled 8 from range [3, 9]
+effects.ts:935 🔍 DEBUGGING BONUSES for action: gatherWood
+effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
+effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
+effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
+effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
+effects.ts:966 🚀 Applying multiplier 1.75 from steel_axe
+effects.ts:950 🔧 Checking item: steel_pickaxe, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: steel_lantern, bonuses: {mining: {…}}
+effects.ts:950 🔧 Checking item: long_bow, bonuses: {hunt: {…}}
+effects.ts:1012 🎯 Final bonuses for gatherWood: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:399 🎲 Final amount: 1000 + 8 = 1008
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 1008, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1.75, cooldownReduction: 0.75, probabilityBonus: 0}
+index.ts:534 ✨ Applying resource multiplier: 1.75x (75% bonus)
+index.ts:540   wood: current=1008, original=1000, base_gain=8
+index.ts:546     Multiplier applied: 1008 + 6 = 1014
+index.ts:540   food: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   stone: current=1504, original=1504, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   iron: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   coal: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   steel: current=500, original=500, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   sulfur: current=714, original=714, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bones: current=2418, original=2418, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bone_totem: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   fur: current=1740, original=1740, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   leather: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   torch: current=99, original=99, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   silver: current=134, original=134, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   gold: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   obsidian: current=31, original=31, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   adamant: current=21, original=21, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   moonstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   bloodstone: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   frostglas: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   black_powder: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:540   ember_bomb: current=0, original=0, base_gain=0
+index.ts:548     No multiplier applied (no positive gain)
+index.ts:553 📊 Resources after bonuses: {wood: 1014, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:554 ─────────────────────────────────────
+state.ts:243 [STATE] Action: gatherWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:261 [STATE] New state after gatherWood: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+effects.ts:935 🔍 DEBUGGING BONUSES for action: gatherWood
+effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
+effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
+effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {
