@@ -160,6 +160,11 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
       });
     }
 
+    // Apply 100x multiplier in dev mode
+    if (state && state.devMode) {
+      amount *= 100;
+    }
+
     return {
       ...prod,
       amount,
