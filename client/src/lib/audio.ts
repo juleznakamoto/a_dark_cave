@@ -65,7 +65,7 @@ export class AudioManager {
 
   preloadSounds(): void {
     // Load the new villager sound
-    this.loadSound('newVillager', '/attached_assets/new_villager_1759216472749.wav');
+    this.loadSound('newVillager', '/sounds/new_villager.wav');
   }
 }
 
