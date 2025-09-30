@@ -129,11 +129,24 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "powder_maker",
     production: [
       { resource: "black_powder", amount: 1, interval: 15000 },
-      { resource: "sulfur", amount: -5, interval: 15000 },
-      { resource: "coal", amount: -5, interval: 15000 },
+      { resource: "sulfur", amount: -10, interval: 15000 },
+      { resource: "coal", amount: -10, interval: 15000 },
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
+  
+  cinderflame_dust_maker: {
+    id: "cinderflame_dust_maker",
+    label: "cinderflame_dust_maker",
+    production: [
+      { resource: "cinderflame_dust", amount: 1, interval: 15000 },
+      { resource: "sulfur", amount: -10, interval: 15000 },
+      { resource: "coal", amount: -10, interval: 15000 },
+      { resource: "coal", amount: -10, interval: 15000 },
+      { resource: "food", amount: -10, interval: 15000 },
+    ],
+  },
+  
 };
 
 export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
