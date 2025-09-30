@@ -731,7 +731,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "occultist_grimoire",
     name: "Occultist Grimoire",
     description:
-      "Grimoire containing the unholy knowledge of a great occultist",
+      "Grimoire containing the unholy knowledge of a heretic occultist",
     bonuses: {
       generalBonuses: {
         knowledge: 7,
@@ -743,7 +743,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   mastermason_chisel: {
     id: "mastermason_chisel",
     name: "Mastermason Chisel",
-    description: "Precision crafting tool of a long forgotten master builder",
+    description: "Exquisitely crafted tool of a long-forgotten master builder",
     bonuses: {
       generalBonuses: {
         craftingCostReduction: 0.1,
