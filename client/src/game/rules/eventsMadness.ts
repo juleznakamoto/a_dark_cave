@@ -166,6 +166,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 5,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
             "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago.",
@@ -182,6 +183,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 3,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
           },
           _logMessage:
             "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
@@ -262,6 +264,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 3,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
               },
               _logMessage:
                 "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
@@ -318,6 +321,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 3,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
           },
           _logMessage:
             "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth.",
@@ -371,6 +375,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 5,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
             "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",

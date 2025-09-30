@@ -38,6 +38,7 @@ export const gameStateSchema = z.object({
     knowledge: z.number().min(0).default(0),
     luck: z.number().min(0).default(0),
     madness: z.number().min(0).default(0),
+    madnessFromEvents: z.number().min(0).default(0),
   }).default({}),
   flags: z.object({
     villageUnlocked: z.boolean().default(false),

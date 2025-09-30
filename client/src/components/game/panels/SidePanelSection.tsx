@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import { capitalizeWords } from "@/lib/utils";
 import ResourceChangeNotification from "./ResourceChangeNotification";
+import { useGameStore } from "@/game/state";
 
 interface SidePanelItem {
   id: string;
@@ -182,6 +183,11 @@ export default function SidePanelSection({
       }
       return "";
     };
+
+    // Check if the item is 'madness' and if there's any madness from events to display
+    const gameState = useGameStore.getState();
+    const eventMadness = item.id === 'madness' ? (gameState.stats.madnessFromEvents || 0) : 0;
+    const isEventMadnessTooltip = item.id === 'madness' && eventMadness > 0;
 
     const isMadness = item.id === 'madness';
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
