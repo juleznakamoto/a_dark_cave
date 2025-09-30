@@ -288,6 +288,9 @@ export const applyActionEffects = (
   const isCraftingAction = actionId.startsWith('craft') || actionId.startsWith('forge');
   const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReduction(state) : 0;
 
+  // Get action bonuses from tools, weapons, and relics
+  const actionBonuses = getActionBonuses(actionId, state);
+
   // First apply costs (as negative effects)
   if (action.cost) {
     let costs = action.cost;
@@ -501,6 +504,30 @@ export const applyActionEffects = (
           // Handle clothing effects (e.g., equipping/unequipping)
           current[finalKey] = effect;
       }
+    }
+  }
+
+  // Apply action bonuses and multipliers from tools, weapons, and relics
+  if (updates.resources) {
+    // Apply fixed resource bonuses
+    if (actionBonuses.resourceBonus && Object.keys(actionBonuses.resourceBonus).length > 0) {
+      Object.entries(actionBonuses.resourceBonus).forEach(([resource, bonus]) => {
+        if (typeof bonus === 'number') {
+          updates.resources![resource] = (updates.resources![resource] || 0) + bonus;
+        }
+      });
+    }
+
+    // Apply resource multipliers (like 300% bonus from adamant axe)
+    if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+      Object.keys(updates.resources).forEach((resource) => {
+        const currentAmount = updates.resources![resource] || 0;
+        const baseAmount = currentAmount - (state.resources[resource as keyof typeof state.resources] || 0);
+        if (baseAmount > 0) { // Only apply multiplier to positive gains
+          const bonusAmount = Math.floor(baseAmount * (actionBonuses.resourceMultiplier - 1));
+          updates.resources![resource] = currentAmount + bonusAmount;
+        }
+      });
     }
   }
 
