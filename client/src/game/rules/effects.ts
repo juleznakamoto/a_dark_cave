@@ -1115,6 +1115,7 @@ export const calculateTotalEffects = (state: GameState) => {
     probability_bonus: {} as Record<string, number>,
     cooldown_reduction: {} as Record<string, number>,
     madness_reduction: {} as Record<string, number>,
+    actionBonuses: {} as Record<string, Record<string, any>>,
     statBonuses: { // Added statBonuses here
       strength: 0,
       luck: 0,
@@ -1133,6 +1134,11 @@ export const calculateTotalEffects = (state: GameState) => {
       effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
       // Update statBonuses for madness
       effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
+    }
+
+    // Populate actionBonuses directly from effects
+    if (effect.bonuses.actionBonuses) {
+      effects.actionBonuses[effect.id] = effect.bonuses.actionBonuses;
     }
 
     if (effect.bonuses.actionBonuses) {
