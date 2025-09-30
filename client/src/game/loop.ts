@@ -3,6 +3,7 @@ import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction } from "./population";
 import { killVillagers } from "@/game/stateHelpers";
+import { audioManager } from "@/lib/audio";
 
 let gameLoopId: number | null = null;
 let lastTick = 0;
@@ -408,6 +409,9 @@ function handleStrangerApproach() {
         },
       },
     });
+
+    // Play new villager sound
+    audioManager.playSound('newVillager', 0.7);
 
     // Add log entry
     state.addLogEntry({
