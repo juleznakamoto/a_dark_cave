@@ -341,6 +341,7 @@ export default function SidePanel() {
                   );
                 }, 3000);
               }}
+              forceNotifications={true}
             />
           )}
         </div>

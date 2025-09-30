@@ -41,6 +41,7 @@ interface SidePanelSectionProps {
   onValueChange?: (itemId: string, oldValue: number, newValue: number) => void;
   resourceChanges?: ResourceChange[];
   showNotifications?: boolean;
+  forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
 }
 
@@ -53,6 +54,7 @@ export default function SidePanelSection({
   className = "",
   resourceChanges = [],
   showNotifications = false,
+  forceNotifications = false, // Default value for the new prop
   onResourceChange,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
@@ -78,8 +80,8 @@ export default function SidePanelSection({
         if (currentValue > prevValue) {
           newAnimatedItems.add(item.id);
 
-          // Add to resourceChanges for notifications if showNotifications is enabled
-          if (showNotifications && onResourceChange) {
+          // Add to resourceChanges for notifications if showNotifications is enabled or forceNotifications is true
+          if ((showNotifications || forceNotifications) && onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
@@ -100,8 +102,8 @@ export default function SidePanelSection({
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
 
-          // Add to resourceChanges for notifications if showNotifications is enabled
-          if (showNotifications && onResourceChange) {
+          // Add to resourceChanges for notifications if showNotifications is enabled or forceNotifications is true
+          if ((showNotifications || forceNotifications) && onResourceChange) {
             const changeAmount = currentValue - prevValue;
             const newChange = {
               resource: item.id,
@@ -133,7 +135,7 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems, showNotifications, onResourceChange]);
+  }, [visibleItems, showNotifications, forceNotifications, onResourceChange]); // Added forceNotifications to dependency array
 
   if (visibleItems.length === 0) {
     return null;
@@ -366,7 +368,7 @@ export default function SidePanelSection({
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
             {renderItemWithTooltip(item)}
-            {showNotifications && (
+            {(showNotifications || forceNotifications) && ( // Updated condition here
               <ResourceChangeNotification
                 resource={item.id}
                 changes={resourceChanges}
