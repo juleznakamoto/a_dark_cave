@@ -1,0 +1,37 @@
+ RANDOM GENERATION - wood: rolled 9 from range [3, 9]
+index.ts:399 🎲 Final amount: 490 + 9 = 499
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 499, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1, cooldownReduction: 0, probabilityBonus: 0}
+index.ts:553 📊 Resources after bonuses: {wood: 499, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:554 ─────────────────────────────────────
+state.ts:243 [STATE] Action: gatherWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:261 [STATE] New state after gatherWood: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+state.ts:187 [STATE] Update Resource: steel by 100
+state.ts:190 [STATE] Resource update result: {resources: {…}}
+state.ts:187 [STATE] Update Resource: iron by -500
+state.ts:190 [STATE] Resource update result: {resources: {…}}
+state.ts:187 [STATE] Update Resource: coal by -500
+state.ts:190 [STATE] Resource update result: {resources: {…}}
+state.ts:187 [STATE] Update Resource: food by -500
+state.ts:190 [STATE] Resource update result: {resources: {…}}
+audio.ts:58 Loading all sounds after user gesture...
+audio.ts:78 Successfully loaded sound: newVillager
+audio.ts:78 Successfully loaded sound: eventMadness
+audio.ts:78 Successfully loaded sound: event
+audio.ts:63 Finished loading all sounds
+index.ts:387 🎲 RANDOM GENERATION - wood: rolled 6 from range [3, 9]
+index.ts:399 🎲 Final amount: 580 + 6 = 586
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 586, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1, cooldownReduction: 0, probabilityBonus: 0}
+index.ts:553 📊 Resources after bonuses: {wood: 586, food: 0, stone: 1504, iron: 0, coal: 0, …}
+index.ts:554 ─────────────────────────────────────
+state.ts:243 [STATE] Action: gatherWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:261 [STATE] New state after gatherWood: {resources: {…}, stats: {…}, flags: {…}, tools: {…}, weapons: {…}, …}
+index.ts:387 🎲 RANDOM GENERATION - wood: rolled 4 from range [3, 9]
+index.ts:399 🎲 Final amount: 640 + 4 = 644
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWood
+index.ts:517 📊 Resources before bonuses: {wood: 644, food: 0, stone: 1504, iron: 0, coal: 0, …}adamant: 21black_powder: 0bloodstone: 0bone_totem: 0bones: 2418coal: 0ember_bomb: 0food: 0frostglas: 0fur: 1740gold: 0iron: 0leather: 0moonstone: 0obsidian: 31silver: 134steel: 400stone: 1504sulfur: 714torch: 99wood: 680[[Prototype]]: Object
+index.ts:518 🔧 Action bonuses: {resourceBonus: {…}, resourceMultiplier: 1, cooldownReduction: 0, probabilityBonus: 0}cooldownReduction: 0probabilityBonus: 0resourceBonus: {}resourceMultiplier: 1[[Prototype]]: Object
+index.ts:553 📊 Resources after bonuses: {wood: 644, food: 0, stone: 1504, iron: 0, coal: 0, …}
