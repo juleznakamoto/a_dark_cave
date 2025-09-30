@@ -188,6 +188,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const updates = updateResource(state, resource, amount);
       console.log(`[STATE] Resource update result:`, updates);
+      
+      // Trigger a small delay to ensure UI has time to update before showing notifications
+      setTimeout(() => {
+        // Force a state update to trigger change detection in components
+        set((currentState) => ({ ...currentState }));
+      }, 10);
+      
       return updates;
     });
   },

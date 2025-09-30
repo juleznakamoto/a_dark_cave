@@ -53,7 +53,7 @@ export default function SidePanelSection({
   className = "",
   resourceChanges = [],
   showNotifications = false,
-  onResourceChange
+  onResourceChange,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
