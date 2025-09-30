@@ -337,7 +337,7 @@ export default function SidePanelSection({
 
   return (
     <div className={`px-3 py-3 border-border ${className}`}>
-      <h3 className="text-xs font-medium uppercase tracking-wide mb-1">
+      <h3 className="text-xs font-medium tracking-wide mb-1">
         {title}
       </h3>
       <div className="space-y-0.5 text-sm">
