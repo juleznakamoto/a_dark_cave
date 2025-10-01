@@ -279,7 +279,7 @@ export default function CombatDialog({
 
                 <div className="text-xs">
                   <div>
-                    Attack: {bastionStats.attack} enemDefense: {bastionStats.defense}
+                    Attack: {bastionStats.attack} Defense: {bastionStats.defense}
                   </div>
 
                 </div>
