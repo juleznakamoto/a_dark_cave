@@ -15,8 +15,8 @@ export function calculateBastionStats(state: GameState): BastionStats {
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
     defense += 5;
-    attack += 5;
-    integrity += 5;
+    attack += 2;
+    integrity += 10;
   }
 
   // Watchtower contributions (levels provide different bonuses)
