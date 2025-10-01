@@ -18,6 +18,7 @@ export default function GameContainer() {
     buildings,
     eventDialog,
     combatDialog,
+    setActiveTab,
     setEventDialog,
     setCombatDialog,
     addLogEntry,
