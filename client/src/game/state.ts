@@ -1,4 +1,3 @@
-
 import { create } from "zustand";
 import { GameState, gameStateSchema } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
@@ -163,7 +162,7 @@ class StateManager {
 
   static scheduleEffectsUpdate(store: () => GameStore) {
     if (this.updateTimer) return;
-    
+
     this.updateTimer = setTimeout(() => {
       const state = store();
       state.updateEffects();
@@ -203,7 +202,7 @@ class StateManager {
       };
 
       store().addLogEntry(strangerLogEntry);
-      
+
       setTimeout(() => {
         const state = store();
         const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
@@ -255,7 +254,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (import.meta.env.DEV) {
       console.log(`[STATE] Update Resource: ${resource} by ${amount}`);
     }
-    
+
     set((state) => updateResource(state, resource, amount));
   },
 
@@ -263,7 +262,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (import.meta.env.DEV) {
       console.log(`[STATE] Set Flag: ${flag} = ${value}`);
     }
-    
+
     set((state) => updateFlag(state, flag, value));
   },
 
@@ -317,8 +316,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Schedule updates
     if (result.stateUpdates.tools || result.stateUpdates.weapons || 
-        result.stateUpdates.clothing || result.stateUpdates.relics ||
-        result.stateUpdates.buildings) {
+        result.stateUpdates.clothing || result.stateUpdates.relics) {
       StateManager.scheduleEffectsUpdate(get);
     }
 
@@ -344,7 +342,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tickCooldowns: () => {
     set((state) => {
       if (state.devMode) return { cooldowns: {} };
-      
+
       const newCooldowns = { ...state.cooldowns };
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
@@ -384,7 +382,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
 
     const savedState = await loadGame();
-    
+
     if (savedState) {
       const loadedState = {
         ...savedState,
@@ -416,7 +414,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       get().addLogEntry(initialLogEntry);
     }
-    
+
     StateManager.scheduleEffectsUpdate(get);
   },
 
@@ -629,7 +627,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (import.meta.env.DEV) {
       console.log(`[STATE] Assign Villager to: ${job}`);
     }
-    
+
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -643,7 +641,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (import.meta.env.DEV) {
       console.log(`[STATE] Unassign Villager from: ${job}`);
     }
-    
+
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {

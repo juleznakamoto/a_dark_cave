@@ -780,13 +780,69 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   },
 
   // Relic effects
-  ravens_orb: { name: "Raven's Orb", knowledge: 6 },
+  ravens_orb: {
+    id: "ravens_orb",
+    name: "Raven's Orb",
+    description: "A dark orb blessed by ravens with ancient knowledge",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 6,
+      },
+    },
+  },
 
   // Blessings
-  dagons_gift: { name: "Dagon's Gift", description: "+100% resources when hunting" },
-  flames_touch: { name: "Flame's Touch", description: "+1 steel from Steel Forger" },
-  ravens_mark: { name: "Raven's Mark", description: "New Villagers join more frequently (+20%)" },
-  ashen_embrace: { name: "Ashen Embrace", description: "+100% resources when mining" },
+  dagons_gift: {
+    id: "dagons_gift",
+    name: "Dagon's Gift",
+    description: "+100% resources when hunting",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 2.0,
+        },
+      },
+    },
+  },
+
+  flames_touch: {
+    id: "flames_touch",
+    name: "Flame's Touch",
+    description: "+1 steel from Steel Forger",
+    bonuses: {
+      actionBonuses: {
+        forge: {
+          resourceBonus: {
+            steel: 1,
+          },
+        },
+      },
+    },
+  },
+
+  ravens_mark: {
+    id: "ravens_mark",
+    name: "Raven's Mark",
+    description: "New Villagers join more frequently (+20%)",
+    bonuses: {
+      generalBonuses: {
+        luck: 2, // Represents improved villager recruitment
+      },
+    },
+  },
+
+  ashen_embrace: {
+    id: "ashen_embrace",
+    name: "Ashen Embrace",
+    description: "+100% resources when mining",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 2.0,
+        },
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
@@ -1266,16 +1322,16 @@ export const calculateTotalEffects = (state: GameState) => {
   if (state.relics.ravens_orb) effects.statBonuses.knowledge += 6;
 
   // Blessing effects
-  if (state.blessings.dagons_gift) {
+  if (state.blessings?.dagons_gift) {
     effects.resource_multiplier.hunt = (effects.resource_multiplier.hunt || 1) * 2; // +100% hunting resources
   }
-  if (state.blessings.flames_touch) {
+  if (state.blessings?.flames_touch) {
     effects.resource_bonus.steel = (effects.resource_bonus.steel || 0) + 1; // +1 steel from forging
   }
-  if (state.blessings.ravens_mark) {
+  if (state.blessings?.ravens_mark) {
     effects.probability_bonus.newVillager = (effects.probability_bonus.newVillager || 0) + 0.2; // +20% new villager chance
   }
-  if (state.blessings.ashen_embrace) {
+  if (state.blessings?.ashen_embrace) {
     effects.resource_multiplier.mining = (effects.resource_multiplier.mining || 1) * 2; // +100% mining resources
   }
 
