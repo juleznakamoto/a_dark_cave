@@ -243,7 +243,39 @@ export default function CombatDialog({
                 )}
               </div>
 
-              
+              {/* Combat Items */}
+              {combatItems.some(item => item.available) && (
+                <div className="border-t pt-3">
+                  <div className="text-sm font-medium mb-2">Combat Items</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    {combatItems
+                      .filter(item => item.available)
+                      .map(item => (
+                        <Button
+                          key={item.id}
+                          onClick={() => handleUseItem(item)}
+                          disabled={usedItems.has(item.id) || isProcessingRound}
+                          variant="outline"
+                          size="sm"
+                          className="text-xs"
+                        >
+                          {usedItems.has(item.id) ? "Used" : `${item.name} (${item.damage})`}
+                        </Button>
+                      ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Fight Button */}
+              <div className="border-t pt-3">
+                <Button
+                  onClick={handleFight}
+                  disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
+                  className="w-full"
+                >
+                  {isProcessingRound ? "Fighting..." : "Fight"}
+                </Button>
+              </div>
 
               {/* Combat Log */}
               {combatLog.length > 0 && (
