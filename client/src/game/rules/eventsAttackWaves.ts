@@ -20,117 +20,49 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "standAndFight",
-        label: "Stand and fight",
+        id: "startFight",
+        label: "Start Fight",
         effect: (state: GameState) => {
-          const bastionStats = calculateBastionStats(state);
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-
-          // First wave enemy stats
-          const enemy = {
-            attack: 8,
-            health: 15,
-          };
-
-          // Combat simulation
-          let totalVictims = 0;
-          let enemyHealth = enemy.health;
-          let waveNumber = 1;
-
-          while (enemyHealth > 0) {
-            // Enemy attacks first
-            if (enemy.attack > bastionStats.defense) {
-              const victims = enemy.attack - bastionStats.defense;
-              totalVictims += victims;
-            }
-
-            // Bastion counterattacks
-            enemyHealth -= bastionStats.attack;
-
-            // If enemy dies this wave, no victims for this wave
-            if (enemyHealth <= 0) {
-              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
-              totalVictims -= waveVictims; // Remove victims from the final wave
-              break;
-            }
-
-            waveNumber++;
-          }
-
-          const actualCasualties = Math.min(totalVictims, currentPopulation);
-
-          if (actualCasualties === 0) {
-            // Victory - no casualties
-            return {
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  firstWave: true,
-                  firstWaveVictory: true,
-                },
-              },
-              _logMessage:
-                `Your defenses hold strong through ${waveNumber} waves of combat! The pale creatures crash against your fortifications but cannot penetrate your defenses. Your bastion's attack of ${bastionStats.attack} proves superior to their health of ${enemy.health}, while your defense of ${bastionStats.defense} protects against their attacks. Victory is yours with no casualties!`,
-            };
-          } else {
-            const deathResult = killVillagers(state, actualCasualties);
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  firstWave: true,
-                },
-              },
-              _logMessage: `The battle rages through ${waveNumber} waves of desperate combat. Despite your defenses, the creatures' attack of ${enemy.attack} overwhelms your defense of ${bastionStats.defense} in several waves. ${actualCasualties} villagers fall before your bastion's attack of ${bastionStats.attack} finally destroys the enemy (health: ${enemy.health}). The village is scarred, but the threat has been repelled.`,
-            };
-          }
-        },
-      },
-      {
-        id: "evacuateAndHide",
-        label: "Evacuate to the forests",
-        effect: (state: GameState) => {
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-
-          // Evacuation is safer but costs resources and some buildings
-          const casualties = Math.min(
-            Math.floor(Math.random() * 3) + 1,
-            currentPopulation,
-          );
-          const deathResult = killVillagers(state, casualties);
-
-          const buildingLoss = Math.min(2, state.buildings.woodenHut);
-          const resourceLoss = Math.floor(state.resources.food * 0.6);
-
           return {
-            ...deathResult,
-            buildings: {
-              ...state.buildings,
-              woodenHut: Math.max(0, state.buildings.woodenHut - buildingLoss),
-            },
-            resources: {
-              ...state.resources,
-              food: Math.max(0, state.resources.food - resourceLoss),
-            },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
                 firstWave: true,
-                firstWaveEvacuation: true,
               },
             },
-            _logMessage: `You order an immediate evacuation to the deep forests. Most villagers escape, but ${casualties} are caught by the creatures during the chaotic retreat. The abandoned village is ransacked - ${buildingLoss} huts are destroyed and ${resourceLoss} food is lost. You'll have to rebuild when it's safe to return.`,
+            _combatData: {
+              enemy: {
+                name: "Pale Creatures",
+                attack: 8,
+                maxHealth: 15,
+                currentHealth: 15,
+              },
+              eventTitle: "The First Wave",
+              onVictory: () => ({
+                story: {
+                  ...state.story,
+                  seen: {
+                    ...state.story.seen,
+                    firstWaveVictory: true,
+                  },
+                },
+                _logMessage: "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours with no casualties!",
+              }),
+              onDefeat: () => {
+                const currentPopulation = Object.values(state.villagers).reduce(
+                  (sum, count) => sum + (count || 0),
+                  0,
+                );
+                const casualties = Math.min(5, currentPopulation);
+                const deathResult = killVillagers(state, casualties);
+                
+                return {
+                  ...deathResult,
+                  _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
+                };
+              },
+            },
           };
         },
       },
@@ -152,140 +84,60 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "fortifiedDefense",
-        label: "Use fortifications",
+        id: "startFight",
+        label: "Start Fight",
         effect: (state: GameState) => {
-          const bastionStats = calculateBastionStats(state);
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-
-          // Second wave enemy stats - stronger than first wave
-          const enemy = {
-            attack: 12,
-            health: 25,
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                secondWave: true,
+              },
+            },
+            _combatData: {
+              enemy: {
+                name: "Armored Creatures",
+                attack: 12,
+                maxHealth: 25,
+                currentHealth: 25,
+              },
+              eventTitle: "The Second Wave",
+              onVictory: () => ({
+                story: {
+                  ...state.story,
+                  seen: {
+                    ...state.story.seen,
+                    secondWaveVictory: true,
+                  },
+                },
+                _logMessage: "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Your defensive mastery is complete!",
+              }),
+              onDefeat: () => {
+                const currentPopulation = Object.values(state.villagers).reduce(
+                  (sum, count) => sum + (count || 0),
+                  0,
+                );
+                const casualties = Math.min(8, currentPopulation);
+                const deathResult = killVillagers(state, casualties);
+                
+                // Damage some fortifications if available
+                let buildingDamage = {};
+                if (state.buildings.woodenPalisades > 0) {
+                  buildingDamage = { woodenPalisades: Math.max(0, state.buildings.woodenPalisades - 1) };
+                }
+                
+                return {
+                  ...deathResult,
+                  buildings: {
+                    ...state.buildings,
+                    ...buildingDamage,
+                  },
+                  _logMessage: `The armored creatures prove more dangerous. ${casualties} villagers fall before the creatures withdraw. ${buildingDamage.woodenPalisades !== undefined ? 'Your fortifications are damaged in the assault.' : 'The attack leaves its mark on your defenses.'}`,
+                };
+              },
+            },
           };
-
-          // Combat simulation
-          let totalVictims = 0;
-          let enemyHealth = enemy.health;
-          let waveNumber = 1;
-
-          while (enemyHealth > 0) {
-            // Enemy attacks first
-            if (enemy.attack > bastionStats.defense) {
-              const victims = enemy.attack - bastionStats.defense;
-              totalVictims += victims;
-            }
-
-            // Bastion counterattacks
-            enemyHealth -= bastionStats.attack;
-
-            // If enemy dies this wave, no victims for this wave
-            if (enemyHealth <= 0) {
-              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
-              totalVictims -= waveVictims; // Remove victims from the final wave
-              break;
-            }
-
-            waveNumber++;
-          }
-
-          const actualCasualties = Math.min(totalVictims, currentPopulation);
-
-          if (actualCasualties === 0) {
-            return {
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  secondWave: true,
-                  secondWaveVictory: true,
-                },
-              },
-              _logMessage:
-                `Your fortifications prove impenetrable! Through ${waveNumber} waves of combat, the armored creatures cannot break through your defense of ${bastionStats.defense} against their attack of ${enemy.attack}. Your bastion's attack of ${bastionStats.attack} systematically destroys their forces (health: ${enemy.health}) with zero casualties. Your defensive mastery is complete!`,
-            };
-          } else {
-            const deathResult = killVillagers(state, actualCasualties);
-
-            // Damage some fortifications if casualties are high
-            let buildingDamage = {};
-            if (actualCasualties > 10 && state.buildings.palisades > 0) {
-              buildingDamage = { palisades: Math.max(0, state.buildings.palisades - 1) };
-            }
-
-            return {
-              ...deathResult,
-              buildings: {
-                ...state.buildings,
-                ...buildingDamage,
-              },
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  secondWave: true,
-                },
-              },
-              _logMessage: `The armored creatures prove more dangerous, battling through ${waveNumber} waves. Their attack of ${enemy.attack} repeatedly breaches your defense of ${bastionStats.defense}, causing ${actualCasualties} casualties before your attack of ${bastionStats.attack} finally destroys them (health: ${enemy.health}). ${buildingDamage.palisades !== undefined ? 'Your fortifications are damaged in the prolonged assault.' : 'Your fortifications hold despite the losses.'}`,
-            };
-          }
-        },
-      },
-      {
-        id: "magicalDefense",
-        label: "Use magical artifacts",
-        effect: (state: GameState) => {
-          const knowledge = getTotalKnowledge(state);
-          const magicalItems = Object.values(state.relics).filter(Boolean).length;
-
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-
-          // 20% base + 2% per knowledge + 5% per magical item
-          const successChance = 0.2 + knowledge * 0.02 + magicalItems * 0.05;
-          const rand = Math.random();
-
-          if (rand < successChance && currentPopulation > 0) {
-            return {
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  secondWave: true,
-                  secondWaveMagicalVictory: true,
-                },
-              },
-              _logMessage:
-                "The ancient relics and magical artifacts respond to the otherworldly threat. Dark energies clash as your mystical defenses create barriers of force and unleash eldritch counterattacks. The armored creatures are driven back by powers they cannot comprehend.",
-            };
-          } else {
-            const casualties = Math.min(
-              Math.floor(currentPopulation * 0.3) + Math.floor(Math.random() * 4) + 2,
-              currentPopulation,
-            );
-            const deathResult = killVillagers(state, casualties);
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  secondWave: true,
-                },
-              },
-              stats: {
-                ...state.stats,
-                madness: (state.stats.madness || 0) + 5,
-              },
-              _logMessage: `Your magical artifacts unleash chaotic energies, but the creatures' own dark power corrupts the spells. ${casualties} villagers are caught in the magical backlash, and those who survive are left traumatized by witnessing forces beyond mortal comprehension.`,
-            };
-          }
         },
       },
     ],
