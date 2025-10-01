@@ -384,7 +384,18 @@ function handleStrangerApproach() {
     probability = 0.9;
   }
 
-  // Check if stranger approaches based on probability
+  let strangersCount = 1; // Default to 1 stranger
+
+  // Check for the new condition: 10 stone houses built and a stranger approaches
+  if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
+    // 25% chance for 2 strangers instead of 1
+    if (Math.random() < 0.25) {
+      strangersCount = 2;
+    }
+  }
+
+
+  // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {
     const messages = [
       "A stranger approaches through the woods and joins your village.",
@@ -395,36 +406,32 @@ function handleStrangerApproach() {
       "A newcomer arrives and makes themselves at home.",
     ];
 
-    const message = messages[Math.floor(Math.random() * messages.length)];
+    // Adjust message if multiple strangers arrive
+    if (strangersCount > 1) {
+        messages.push(`${strangersCount} strangers approach through the woods and join your village.`);
+        messages.push(`${strangersCount} travelers arrive and decide to stay.`);
+        messages.push(`${strangersCount} wanderers appear from the woods and become part of your community.`);
+        messages.push(`Several people approach the village and settle in.`);
+    }
 
-    // Add the stranger to the village
-    useGameStore.setState({
-      villagers: {
-        ...state.villagers,
-        free: state.villagers.free + 1,
-      },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          hasVillagers: true,
-        },
-      },
-    });
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    // Play new villager sound
-    audioManager.playSound('newVillager', 0.02);
+    // Add the villager(s)
+    state.updateResource("free" as any, strangersCount);
 
     // Add log entry
     state.addLogEntry({
       id: `stranger-approaches-${Date.now()}`,
-      message: message,
+      message: randomMessage,
       timestamp: Date.now(),
       type: "system",
     });
 
     // Update population after applying changes
     setTimeout(() => state.updatePopulation(), 0);
+
+    // Play new villager sound
+    audioManager.playSound('newVillager', 0.02);
   }
 }
 
