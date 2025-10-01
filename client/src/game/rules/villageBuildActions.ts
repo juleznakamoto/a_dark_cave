@@ -1056,12 +1056,25 @@ export function handleBuildBottomlessPit(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(
+  const bottomlessPitResult = handleBuildingConstruction(
     state,
     result,
     "buildBottomlessPit",
     "bottomlessPit",
   );
+
+  // Add moonstone discovery message
+  if (state.buildings.bottomlessPit === 0) {
+    bottomlessPitResult.logEntries!.push({
+      id: `moonstone-discovered-${Date.now()}`,
+      message:
+        "As the workers dig the bottomless pit, their tools strike something extraordinary. Deep in the earth, they uncover veins of moonstone - a pale, luminescent mineral that pulses with otherworldly energy. Its purpose remains a mystery.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return bottomlessPitResult;
 }
 
 export function handleBuildFoundry(
