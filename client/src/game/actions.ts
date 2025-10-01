@@ -267,8 +267,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildSanctum(state, result);
     case 'buildTannery':
       return handleBuildTannery(state, result);
-    case 'buildAlchemistTower':
-      return handleBuildAlchemistTower(state, result);
+    case 'buildAlchemistHall':
+      return handleBuildAlchemistHall(state, result);
     case 'buildTradePost':
       return handleBuildTradePost(state, result);
     case 'buildWizardTower':
