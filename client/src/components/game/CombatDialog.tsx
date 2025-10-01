@@ -57,6 +57,8 @@ export default function CombatDialog({
   const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
 
+  const bastionStats = calculateBastionStats(gameState);
+
   // Reset state when dialog opens
   useEffect(() => {
     if (isOpen && enemy) {
@@ -72,8 +74,6 @@ export default function CombatDialog({
       setCurrentIntegrity(bastionStats.integrity);
     }
   }, [isOpen, enemy, bastionStats.integrity]);
-
-  const bastionStats = calculateBastionStats(gameState);
 
   // Available combat items
   const combatItems: CombatItem[] = [
