@@ -254,7 +254,7 @@ export default function CombatDialog({
                 </div>
                 <Progress 
                   value={healthPercentage} 
-                  className="h-3 mt-1 [&>div]:bg-red-700" // Dark red for enemy health
+                  className="h-3 mt-1 [&>div]:bg-red-900" // Darker red for enemy health
                 />
                 <div className="text-xs mt-1">
                   Attack: {currentEnemy?.attack}
@@ -273,7 +273,7 @@ export default function CombatDialog({
                   </div>
                   <Progress 
                     value={(currentIntegrity / maxIntegrityForCombat) * 100} 
-                    className="h-3 mt-1 [&>div]:bg-green-700" // Dark green for bastion integrity
+                    className="h-3 mt-1 [&>div]:bg-green-900" // Darker green for bastion integrity
                   />
                 </div>
 
