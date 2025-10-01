@@ -23,18 +23,46 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         id: "standAndFight",
         label: "Stand and fight",
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
           const bastionStats = calculateBastionStats(state);
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          // Base 30% success chance + 2% per strength point + bastion defense bonus
-          const successChance = 0.3 + strength * 0.02 + bastionStats.defense * 0.01;
-          const rand = Math.random();
+          // First wave enemy stats
+          const enemy = {
+            attack: 8,
+            health: 15,
+          };
 
-          if (rand < successChance && currentPopulation > 0) {
+          // Combat simulation
+          let totalVictims = 0;
+          let enemyHealth = enemy.health;
+          let waveNumber = 1;
+
+          while (enemyHealth > 0) {
+            // Enemy attacks first
+            if (enemy.attack > bastionStats.defense) {
+              const victims = enemy.attack - bastionStats.defense;
+              totalVictims += victims;
+            }
+
+            // Bastion counterattacks
+            enemyHealth -= bastionStats.attack;
+
+            // If enemy dies this wave, no victims for this wave
+            if (enemyHealth <= 0) {
+              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
+              totalVictims -= waveVictims; // Remove victims from the final wave
+              break;
+            }
+
+            waveNumber++;
+          }
+
+          const actualCasualties = Math.min(totalVictims, currentPopulation);
+
+          if (actualCasualties === 0) {
             // Victory - no casualties
             return {
               story: {
@@ -46,15 +74,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your villagers fight with desperate courage, using every weapon and fortification at their disposal. Against all odds, they manage to repel the first wave of creatures, their alien blood staining the village grounds. The victory gives hope, but everyone knows this is just the beginning.",
+                `Your defenses hold strong through ${waveNumber} waves of combat! The pale creatures crash against your fortifications but cannot penetrate your defenses. Your bastion's attack of ${bastionStats.attack} proves superior to their health of ${enemy.health}, while your defense of ${bastionStats.defense} protects against their attacks. Victory is yours with no casualties!`,
             };
           } else {
-            // Defeat - heavy casualties
-            const casualties = Math.min(
-              Math.floor(currentPopulation * 0.4) + Math.floor(Math.random() * 5) + 3,
-              currentPopulation,
-            );
-            const deathResult = killVillagers(state, casualties);
+            const deathResult = killVillagers(state, actualCasualties);
 
             return {
               ...deathResult,
@@ -65,7 +88,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                   firstWave: true,
                 },
               },
-              _logMessage: `The pale creatures overwhelm your defenses with their supernatural speed and strength. ${casualties} villagers fall to their razor-sharp claws and burning touch before the remaining survivors manage to drive them back. The village is scarred, but the threat has only begun.`,
+              _logMessage: `The battle rages through ${waveNumber} waves of desperate combat. Despite your defenses, the creatures' attack of ${enemy.attack} overwhelms your defense of ${bastionStats.defense} in several waves. ${actualCasualties} villagers fall before your bastion's attack of ${bastionStats.attack} finally destroys the enemy (health: ${enemy.health}). The village is scarred, but the threat has been repelled.`,
             };
           }
         },
@@ -132,20 +155,46 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         id: "fortifiedDefense",
         label: "Use fortifications",
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
           const bastionStats = calculateBastionStats(state);
-          const fortificationBonus = bastionStats.defense * 10; // Bastion defense contributes to fortification
-
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          // 25% base + 1.5% per strength + fortification bonus
-          const successChance = 0.25 + strength * 0.015 + fortificationBonus * 0.01;
-          const rand = Math.random();
+          // Second wave enemy stats - stronger than first wave
+          const enemy = {
+            attack: 12,
+            health: 25,
+          };
 
-          if (rand < successChance && currentPopulation > 0) {
+          // Combat simulation
+          let totalVictims = 0;
+          let enemyHealth = enemy.health;
+          let waveNumber = 1;
+
+          while (enemyHealth > 0) {
+            // Enemy attacks first
+            if (enemy.attack > bastionStats.defense) {
+              const victims = enemy.attack - bastionStats.defense;
+              totalVictims += victims;
+            }
+
+            // Bastion counterattacks
+            enemyHealth -= bastionStats.attack;
+
+            // If enemy dies this wave, no victims for this wave
+            if (enemyHealth <= 0) {
+              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
+              totalVictims -= waveVictims; // Remove victims from the final wave
+              break;
+            }
+
+            waveNumber++;
+          }
+
+          const actualCasualties = Math.min(totalVictims, currentPopulation);
+
+          if (actualCasualties === 0) {
             return {
               story: {
                 ...state.story,
@@ -156,18 +205,14 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your fortifications prove their worth as the armored creatures crash against stone walls and wooden palisades. The defensive structures channel the attackers into kill zones where your villagers can strike effectively. After hours of brutal combat, the second wave is repelled.",
+                `Your fortifications prove impenetrable! Through ${waveNumber} waves of combat, the armored creatures cannot break through your defense of ${bastionStats.defense} against their attack of ${enemy.attack}. Your bastion's attack of ${bastionStats.attack} systematically destroys their forces (health: ${enemy.health}) with zero casualties. Your defensive mastery is complete!`,
             };
           } else {
-            const casualties = Math.min(
-              Math.floor(currentPopulation * 0.5) + Math.floor(Math.random() * 6) + 4,
-              currentPopulation,
-            );
-            const deathResult = killVillagers(state, casualties);
+            const deathResult = killVillagers(state, actualCasualties);
 
-            // Damage some fortifications
+            // Damage some fortifications if casualties are high
             let buildingDamage = {};
-            if (state.buildings.palisades > 0) {
+            if (actualCasualties > 10 && state.buildings.palisades > 0) {
               buildingDamage = { palisades: Math.max(0, state.buildings.palisades - 1) };
             }
 
@@ -184,7 +229,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                   secondWave: true,
                 },
               },
-              _logMessage: `The armored creatures prove more cunning than expected, finding weak points in your defenses. ${casualties} villagers die in the prolonged battle, and your fortifications are severely damaged. The creatures retreat, but they're learning your tactics.`,
+              _logMessage: `The armored creatures prove more dangerous, battling through ${waveNumber} waves. Their attack of ${enemy.attack} repeatedly breaches your defense of ${bastionStats.defense}, causing ${actualCasualties} casualties before your attack of ${bastionStats.attack} finally destroys them (health: ${enemy.health}). ${buildingDamage.palisades !== undefined ? 'Your fortifications are damaged in the prolonged assault.' : 'Your fortifications hold despite the losses.'}`,
             };
           }
         },
@@ -264,27 +309,50 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         id: "lastStand",
         label: "Make your last stand",
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const knowledge = getTotalKnowledge(state);
-          const magicalItems = Object.values(state.relics).filter(Boolean).length;
           const bastionStats = calculateBastionStats(state);
           const hasSpecialWeapons = state.relics.frostfang && state.relics.blood_scepter;
-
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          let successChance = 0.1 + strength * 0.01 + knowledge * 0.01 + magicalItems * 0.02 + (bastionStats.attack + bastionStats.defense) * 0.02;
+          // Final wave enemy stats - the shadow lord
+          const enemy = {
+            attack: 20,
+            health: hasSpecialWeapons ? 40 : 60, // Special weapons make it more vulnerable
+          };
 
-          // Special weapons from wizard's prophecy provide significant bonus
-          if (hasSpecialWeapons) {
-            successChance += 0.4; // +40% chance with both special weapons
+          // Apply special weapon bonus to attack
+          const effectiveAttack = bastionStats.attack + (hasSpecialWeapons ? 15 : 0);
+
+          // Combat simulation
+          let totalVictims = 0;
+          let enemyHealth = enemy.health;
+          let waveNumber = 1;
+
+          while (enemyHealth > 0) {
+            // Enemy attacks first
+            if (enemy.attack > bastionStats.defense) {
+              const victims = enemy.attack - bastionStats.defense;
+              totalVictims += victims;
+            }
+
+            // Bastion counterattacks (with special weapon bonus)
+            enemyHealth -= effectiveAttack;
+
+            // If enemy dies this wave, no victims for this wave
+            if (enemyHealth <= 0) {
+              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
+              totalVictims -= waveVictims; // Remove victims from the final wave
+              break;
+            }
+
+            waveNumber++;
           }
 
-          const rand = Math.random();
+          const actualCasualties = Math.min(totalVictims, currentPopulation);
 
-          if (rand < successChance && currentPopulation > 0) {
+          if (actualCasualties === 0 || actualCasualties < currentPopulation * 0.2) {
             // Epic victory
             return {
               story: {
@@ -296,14 +364,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage: hasSpecialWeapons
-                ? "Armed with the frostfang sword and blood scepter, as foretold by the ancient scrolls, your champions face the towering horror. The weapons blaze with otherworldly power, cutting through the creature's defenses. After an epic battle that shakes the very foundations of reality, the shadow lord falls. The portal seals itself, and peace returns to the land. You have achieved the impossible - victory against the ancient evil."
-                : "Through incredible courage, sacrifice, and perhaps divine intervention, your villagers achieve the impossible. The towering creature falls after a battle that costs everything, but the portal seals and the threat ends. Your village has saved the world, though few will ever know the price that was paid.",
+                ? `Armed with the frostfang sword and blood scepter, your champions face the shadow lord through ${waveNumber} waves of epic combat. The special weapons boost your attack to ${effectiveAttack}, cutting through the creature's defenses (health: ${enemy.health}). Despite the shadow lord's devastating attack of ${enemy.attack} against your defense of ${bastionStats.defense}, only ${actualCasualties} heroes fall. The portal seals itself, and peace returns to the land!`
+                : `Through ${waveNumber} waves of incredible courage and sacrifice, your villagers achieve the impossible. With attack ${effectiveAttack} against the shadow lord's health of ${enemy.health}, and defense ${bastionStats.defense} against its attack of ${enemy.attack}, ${actualCasualties} brave souls fall, but the towering creature is destroyed. The portal seals and the threat ends forever.`,
             };
           } else {
-            // Heroic defeat
-            const survivors = Math.max(0, Math.floor(currentPopulation * 0.1));
-            const casualties = currentPopulation - survivors;
-            const deathResult = killVillagers(state, casualties);
+            // Heroic defeat or pyrrhic victory
+            const deathResult = killVillagers(state, actualCasualties);
+            const isVictory = enemyHealth <= 0;
 
             return {
               ...deathResult,
@@ -312,10 +379,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 seen: {
                   ...state.story.seen,
                   finalWave: true,
-                  heroicDefeat: true,
+                  heroicDefeat: !isVictory,
+                  gameCompleted: isVictory,
                 },
               },
-              _logMessage: `The final battle rages for hours as your villagers give everything they have. ${casualties} brave souls fall defending their home, but their sacrifice is not in vain. Though the creature cannot be destroyed, it is weakened enough that it retreats back through the portal, which partially seals itself. ${survivors} villagers survive to tell the tale of incredible heroism in the face of cosmic horror.`,
+              _logMessage: isVictory
+                ? `The final battle spans ${waveNumber} devastating waves. Your attack of ${effectiveAttack}${hasSpecialWeapons ? ' (boosted by special weapons)' : ''} eventually destroys the shadow lord (health: ${enemy.health}), but its attack of ${enemy.attack} overwhelms your defense of ${bastionStats.defense} repeatedly. ${actualCasualties} heroes fall in this pyrrhic victory. The portal seals, but the cost was everything.`
+                : `Through ${waveNumber} waves of desperate combat, your villagers give everything. Despite your attack of ${effectiveAttack} and defense of ${bastionStats.defense}, the shadow lord's overwhelming power (attack: ${enemy.attack}, health: ${enemy.health}) proves too much. ${actualCasualties} brave souls fall, but their sacrifice weakens the creature enough that it retreats. The portal partially seals - evil is contained, if not destroyed.`,
             };
           }
         },
