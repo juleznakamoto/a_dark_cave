@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 interface Enemy {
   name: string;
@@ -336,18 +337,23 @@ export default function CombatDialog({
               {/* Combat Log */}
               <div className="border-t pt-3">
                 <div className="text-sm font-medium mb-2">Combat Log</div>
-                <div className="h-32 overflow-y-auto space-y-1 border rounded p-2 bg-muted/20">
-                  {combatLog.length > 0 ? (
-                    combatLog.map((entry, index) => (
-                      <div key={index} className="text-xs text-muted-foreground">
-                        {entry}
-                      </div>
-                    ))
-                  ) : (
-                    <div className="text-xs text-muted-foreground/50">
-                      Combat log will appear here...
+                <div className="h-32">
+                  <ScrollArea className="h-full max-h-full">
+                    <div className="p-2 space-y-1">
+                      {combatLog.length > 0 ? (
+                        combatLog.map((entry, index) => (
+                          <div key={index} className="text-xs text-muted-foreground">
+                            {entry}
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-xs text-muted-foreground/50">
+                          Combat log will appear here...
+                        </div>
+                      )}
                     </div>
-                  )}
+                    <ScrollBar orientation="vertical" />
+                  </ScrollArea>
                 </div>
               </div>
             </div>
