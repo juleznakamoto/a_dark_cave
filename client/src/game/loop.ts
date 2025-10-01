@@ -387,11 +387,20 @@ function handleStrangerApproach() {
     probability = 0.9;
   }
 
+  // Calculate available room first
+  const currentPop = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+  const maxPop = getMaxPopulation(state);
+  const availableRoom = maxPop - currentPop;
+
   let strangersCount = 1; // Default to 1 stranger
 
   // Check for the new condition: 10 stone houses built and a stranger approaches
-  if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
-    if (Math.random() < 0.1) {
+  // But only if there's room for multiple strangers
+  if (state.buildings.stoneHut >= 10 && Math.random() < probability && availableRoom >= 2) {
+    if (availableRoom >= 3 && Math.random() < 0.1) {
       strangersCount = 3;
     } else if (Math.random() < 0.30) {
       strangersCount = 2;
@@ -424,12 +433,7 @@ function handleStrangerApproach() {
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
     // Calculate how many villagers can actually be added (respect max population)
-    const currentPop = Object.values(state.villagers).reduce(
-      (sum, count) => sum + (count || 0),
-      0,
-    );
-    const maxPop = getMaxPopulation(state);
-    const actualStrangersToAdd = Math.min(strangersCount, maxPop - currentPop);
+    const actualStrangersToAdd = Math.min(strangersCount, availableRoom);
 
     if (actualStrangersToAdd <= 0) return; // No room for anyone
 
