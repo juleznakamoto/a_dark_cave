@@ -37,7 +37,7 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.ember_bomb": 1,
       "story.seen.hasEmberBomb": true,
     },
-    cooldown: 30,
+    cooldown: 20,
   },
 
   craftCinderflameBomb: {
@@ -46,6 +46,12 @@ export const caveCraftResources: Record<string, Action> = {
     show_when: {
       "buildings.alchemistHall": 1,
       "story.seen.portalDiscovered": true,
+      // TODO
+      // TODO
+      // TODO
+      // TODO
+      // TODO
+
     },
     cost: {
       "resources.cinderflame_dust": 10,
@@ -55,7 +61,7 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.cinderflame_bomb": 1,
       "story.seen.hasCinderflameBomb": true,
     },
-    cooldown: 35,
+    cooldown: 30,
   },
 };
 

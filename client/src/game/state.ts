@@ -265,7 +265,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(-8)
+          ? [...prevState.log, ...result.logEntries].slice(-10)
           : prevState.log,
       };
 
@@ -458,7 +458,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set((state) => ({
-      log: [...state.log, entry].slice(-8), // Keep only last 8 entries
+      log: [...state.log, entry].slice(-10), // Keep only last 8 entries
     }));
   },
 
@@ -470,7 +470,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((prevState) => ({
         ...prevState,
         ...stateChanges,
-        log: [...prevState.log, ...newLogEntries].slice(-8),
+        log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
       // Check if any new log entry has choices and show event dialog
@@ -539,7 +539,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return {
           ...updatedState,
           log: logMessage
-            ? [...prevState.log, { id: `choice-result-${Date.now()}`, message: logMessage, timestamp: Date.now(), type: 'system' }].slice(-8)
+            ? [...prevState.log, { id: `choice-result-${Date.now()}`, message: logMessage, timestamp: Date.now(), type: 'system' }].slice(-10)
             : prevState.log,
         };
       });
