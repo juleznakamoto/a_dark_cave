@@ -24,13 +24,14 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         label: "Stand and fight",
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
+          const bastionStats = calculateBastionStats(state);
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          // Base 30% success chance + 2% per strength point
-          const successChance = 0.3 + strength * 0.02;
+          // Base 30% success chance + 2% per strength point + bastion defense bonus
+          const successChance = 0.3 + strength * 0.02 + bastionStats.defense * 0.01;
           const rand = Math.random();
 
           if (rand < successChance && currentPopulation > 0) {
@@ -132,11 +133,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         label: "Use fortifications",
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
-          const palisadesLevel = state.buildings.palisades || 0;
           const bastionStats = calculateBastionStats(state);
-          const fortificationBonus =
-            palisadesLevel * 15 + // Each level provides 15 points
-            bastionStats.defense * 50; // Bastion defense contributes to fortification
+          const fortificationBonus = bastionStats.defense * 10; // Bastion defense contributes to fortification
 
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
@@ -277,7 +275,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             0,
           );
 
-          let successChance = 0.1 + strength * 0.01 + knowledge * 0.01 + magicalItems * 0.02 + bastionStats.attack * 0.05;
+          let successChance = 0.1 + strength * 0.01 + knowledge * 0.01 + magicalItems * 0.02 + (bastionStats.attack + bastionStats.defense) * 0.02;
 
           // Special weapons from wizard's prophecy provide significant bonus
           if (hasSpecialWeapons) {

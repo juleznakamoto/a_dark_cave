@@ -204,7 +204,6 @@ export const gameStateSchema = z.object({
   bastion_stats: z.object({
     defense: z.number().min(0).default(0),
     attack: z.number().min(0).default(0),
-    integrity: z.number().min(0).default(0),
   }).default({}),
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),

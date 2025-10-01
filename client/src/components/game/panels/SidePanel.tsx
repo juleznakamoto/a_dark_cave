@@ -277,7 +277,7 @@ export default function SidePanel() {
 
       // Get bastion stats contribution for this building
       let tooltip = undefined;
-      
+
       // Map building keys to their contributions (based on bastionStats.ts logic)
       if (key === "watchtower") {
         const level = value ?? 0;
@@ -415,7 +415,13 @@ export default function SidePanel() {
               />
             )}
           {bastionStatsItems.length > 0 && shouldShowSection("bastion") && (
-            <SidePanelSection title="Bastion" items={bastionStatsItems} />
+            <SidePanelSection title="Bastion" items={bastionStatsItems}>
+              {bastion_stats && (
+                <div className="text-xs text-gray-400">
+                  Defense: {bastion_stats.defense} | Attack: {bastion_stats.attack}
+                </div>
+              )}
+            </SidePanelSection>
           )}
         </div>
       </div>
