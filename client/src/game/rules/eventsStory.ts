@@ -920,8 +920,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     triggerType: "time",
-    timeProbability: 1.0, // 100% chance after 3 minutes
-    timeDelay: 180000, // 3 minutes
+    timeProbability: 1.0, 
     title: "The Blind Druid",
     message:
       "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a religion. Choose wisely, for this choice will shape your community's destiny forever.'",
@@ -947,7 +946,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You dedicate the temple to Dagon, the ancient sea god. The druid nods knowingly: 'The waters will provide for those who honor the deep ones. Human sacrifice will now be permitted in your sacred places, and the hunt shall be blessed.'",
+              "You dedicate the temple to Dagon, the ancient and mysterious god of the deep.",
           };
         },
       },
@@ -977,7 +976,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              `You dedicate the temple to the Way of the First Flame. The druid smiles: 'The eternal flame burns bright. ${canAdd} Followers of the Way have joined your community and will live in the temple. The forge shall be blessed with their touch.'`,
+              "You dedicate the temple to the Way of the First Flame, an ancient path of fire and rebirth.",
           };
         },
       },
@@ -1003,7 +1002,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You dedicate the temple to the Cult of the Ravenborn. The druid presents you with a dark orb: 'The ravens have blessed this relic with knowledge beyond mortal understanding. New souls will be drawn to your community more freely.'",
+              "You dedicate the temple to the Cult of the Ravenborn, an enigmatic and shadowed order.",
           };
         },
       },
@@ -1029,7 +1028,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You dedicate the temple to the Order of the Ashbringer. The druid hands you an ancient dagger wreathed in grey flames: 'This blade carries the strength of the first ash. The earth shall yield its treasures more readily to those who embrace the ash.'",
+              "You dedicate the temple to the Order of the Ashbringer, a solemn and fire-bound brotherhood.",
           };
         },
       },
