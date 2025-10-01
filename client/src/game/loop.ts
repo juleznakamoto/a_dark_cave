@@ -113,8 +113,8 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // If event dialog is open, pause game logic but keep cooldowns ticking
-  if (state.eventDialog.isOpen) {
+  // If event dialog or combat dialog is open, pause game logic but keep cooldowns ticking
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) {
     // Only tick down cooldowns, but don't process events or other game logic
     state.tickCooldowns();
     return;
@@ -130,8 +130,8 @@ function processTick() {
 function handleGathererProduction() {
   const state = useGameStore.getState();
 
-  // Pause gatherer production when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause gatherer production when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const gatherer = state.villagers.gatherer;
 
@@ -149,8 +149,8 @@ function handleGathererProduction() {
 function handleHunterProduction() {
   const state = useGameStore.getState();
 
-  // Pause hunter production when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause hunter production when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const hunter = state.villagers.hunter;
 
@@ -168,8 +168,8 @@ function handleHunterProduction() {
 function handleMinerProduction() {
   const state = useGameStore.getState();
 
-  // Pause miner production when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause miner production when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   // Process each miner type, steel forger, tanner, and powder maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -191,8 +191,8 @@ function handleMinerProduction() {
 function handlePopulationSurvival() {
   const state = useGameStore.getState();
 
-  // Pause survival checks when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause survival checks when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
@@ -226,8 +226,8 @@ function handlePopulationSurvival() {
 function handleStarvationCheck() {
   const state = useGameStore.getState();
 
-  // Pause starvation checks when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause starvation checks when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   // Check if starvation conditions are met
   if (!state.flags.starvationActive) {
@@ -284,8 +284,8 @@ function handleStarvationCheck() {
 function handleFreezingCheck() {
   const state = useGameStore.getState();
 
-  // Pause freezing checks when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause freezing checks when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
@@ -357,8 +357,8 @@ async function handleAutoSave() {
 function handleStrangerApproach() {
   const state = useGameStore.getState();
 
-  // Pause stranger checks when event dialog is open
-  if (state.eventDialog.isOpen) return;
+  // Pause stranger checks when event dialog or combat dialog is open
+  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const currentPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
