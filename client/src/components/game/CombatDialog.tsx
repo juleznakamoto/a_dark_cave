@@ -297,7 +297,7 @@ export default function CombatDialog({
                       className="h-3 mt-1 [&>div]:bg-green-900" // Darker green for bastion integrity
                     />
                     {integrityDamageIndicator.visible && (
-                      <div className="absolute inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none animate-pulse">
+                      <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none animate-pulse">
                         -{integrityDamageIndicator.amount}
                       </div>
                     )}
