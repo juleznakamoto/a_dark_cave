@@ -1295,7 +1295,7 @@ export function handleBuildAlchemistHall(
     alchemistHallResult.logEntries!.push({
       id: `alchemist-hall-built-${Date.now()}`,
       message:
-        "The Alchemist's Halls spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
+       "The Alchemist’s Halls rise in twisting ascent, their chambers alive with bubbling crucibles and gleaming instruments of forgotten design. Within, the veils of transmutation whisper their secrets to those who dare to listen.",
       timestamp: Date.now(),
       type: "system",
     });
