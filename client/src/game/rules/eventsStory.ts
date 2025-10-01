@@ -914,9 +914,6 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     }),
   },
-};
-
-
 
   templeDedication: {
     id: "templeDedication",
@@ -961,7 +958,7 @@ export const storyEvents: Record<string, GameEvent> = {
           const currentPop = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
           const maxPop = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
           const canAdd = Math.min(4, maxPop - currentPop);
-          
+
           return {
             villagers: {
               ...state.villagers,
@@ -1006,7 +1003,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You dedicate the temple to the Cult of the Ravenborn. The druid presents you with a dark orb: 'The ravens have blessed this relic with knowledge beyond mortal understanding. New souls will be drawn to your community more frequently.'",
+              "You dedicate the temple to the Cult of the Ravenborn. The druid presents you with a dark orb: 'The ravens have blessed this relic with knowledge beyond mortal understanding. New souls will be drawn to your community more freely.'",
           };
         },
       },
@@ -1038,3 +1035,4 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+};
