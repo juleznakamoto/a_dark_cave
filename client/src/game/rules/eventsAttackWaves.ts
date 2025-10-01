@@ -1,8 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalKnowledge } from "./effects";
-import { calculateBastionStats } from "../bastionStats";
 
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
@@ -30,9 +28,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pale Creatures",
-            attack: 8,
-            maxHealth: 15,
-            currentHealth: 15,
+            attack: 15,
+            maxHealth: 50,
+            currentHealth: 50,
           },
           eventTitle: "The First Wave",
           eventMessage: "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
