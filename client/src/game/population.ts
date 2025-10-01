@@ -204,7 +204,13 @@ export const getMaxPopulation = (gameState: GameState): number => {
   const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
   const longhouseCapacity = (gameState.buildings.longhouse || 0) * 8;
 
-  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity;
+  // Temple dedication bonuses
+  let templeBonus = 0;
+  if (gameState.story?.seen?.templeDedicatedTo === "flame") {
+    templeBonus = 4; // Way of the First Flame adds +4 max population
+  }
+
+  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
 };
 
 // Alias for backward compatibility

@@ -2,7 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalMadness } from "./effects";
-import { getMaxPopulation } from "./population";
+import { getMaxPopulation } from "../population";
 
 export const madnessEvents: Record<string, GameEvent> = {
   whisperingVoices: {
