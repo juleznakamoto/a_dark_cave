@@ -209,21 +209,9 @@ class StateManager {
         const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
 
         if (currentPopulation < maxPopulation) {
-          // Use the store's built-in state update
-          const gameStore = store() as any;
-          gameStore.setState((prevState: GameState) => ({
-            villagers: {
-              ...prevState.villagers,
-              free: prevState.villagers.free + 1,
-            },
-            story: {
-              ...prevState.story,
-              seen: {
-                ...prevState.story.seen,
-                hasVillagers: true,
-              },
-            },
-          }));
+          // Update villagers directly through the store
+          state.updateResource('free' as any, 1);
+          state.setFlag('hasVillagers' as any, true);
           StateManager.schedulePopulationUpdate(store);
         }
       }, 100);
