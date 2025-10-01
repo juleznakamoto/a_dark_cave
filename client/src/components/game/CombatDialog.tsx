@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Enemy {
@@ -52,13 +51,15 @@ export default function CombatDialog({
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
   const [usedItemsInCombat, setUsedItemsInCombat] = useState<Set<string>>(new Set());
-  const [combatLog, setCombatLog] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
   const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
   const [maxIntegrityForCombat, setMaxIntegrityForCombat] = useState(0);
+  const [enemyDamageIndicator, setEnemyDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
+  const [playerDamageIndicator, setPlayerDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
+  const [integrityDamageIndicator, setIntegrityDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
 
   const bastionStats = calculateBastionStats(gameState);
 
@@ -69,11 +70,13 @@ export default function CombatDialog({
       setCurrentEnemy({ ...enemy });
       setRound(1);
       setUsedItemsInCombat(new Set());
-      setCombatLog([]);
       setIsProcessingRound(false);
       setCasualties(0);
       setCombatEnded(false);
       setCombatResult(null);
+      setEnemyDamageIndicator({amount: 0, visible: false});
+      setPlayerDamageIndicator({amount: 0, visible: false});
+      setIntegrityDamageIndicator({amount: 0, visible: false});
       // Reset integrity to full calculated amount for this combat
       const maxIntegrity = bastionStats.defense * 2 + (bastionStats.attackFromFortifications > 0 ? 50 : 0);
       setMaxIntegrityForCombat(maxIntegrity);
@@ -99,7 +102,6 @@ export default function CombatDialog({
 
   const handleStartFight = () => {
     setCombatStarted(true);
-    setCombatLog([`Round ${round} begins!`]);
   };
 
   const handleUseItem = (item: CombatItem) => {
@@ -120,15 +122,15 @@ export default function CombatDialog({
     // Update game state to consume the item
     gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
 
-    const damageText = knowledgeBonus > 0 
-      ? `Used ${item.name} for ${finalDamage} damage! (${item.damage} + ${knowledgeBonus} knowledge bonus)`
-      : `Used ${item.name} for ${finalDamage} damage!`;
-    setCombatLog(prev => [...prev, damageText]);
+    // Show damage indicator on enemy health bar
+    setEnemyDamageIndicator({amount: finalDamage, visible: true});
+    setTimeout(() => {
+      setEnemyDamageIndicator({amount: 0, visible: false});
+    }, 3000);
 
     // Check if enemy is defeated
     if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0) {
       setTimeout(() => {
-        setCombatLog(prev => [...prev, `${currentEnemy.name} is defeated!`]);
         setCombatEnded(true);
         setCombatResult('victory');
       }, 500);
@@ -153,7 +155,6 @@ export default function CombatDialog({
     setIsProcessingRound(true);
 
     setTimeout(() => {
-      let newLog = [...combatLog];
       let newCasualties = casualties;
 
       // Enemy attacks first
@@ -161,12 +162,15 @@ export default function CombatDialog({
         const integrityDamage = currentEnemy.attack - bastionStats.defense;
         const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
         setCurrentIntegrity(newIntegrityValue);
-        newLog.push(`Enemy breaches defenses! Bastion integrity damaged by ${integrityDamage}! (Attack ${currentEnemy.attack} vs Defense ${bastionStats.defense})`);
+        
+        // Show damage indicator on integrity bar
+        setIntegrityDamageIndicator({amount: integrityDamage, visible: true});
+        setTimeout(() => {
+          setIntegrityDamageIndicator({amount: 0, visible: false});
+        }, 3000);
 
         // Check if integrity is depleted
         if (newIntegrityValue <= 0) {
-          newLog.push("Your bastion has fallen! The enemy overruns your defenses!");
-          setCombatLog(newLog);
           setTimeout(() => {
             setCombatEnded(true);
             setCombatResult('defeat');
@@ -174,22 +178,22 @@ export default function CombatDialog({
           }, 1000);
           return;
         }
-      } else {
-        newLog.push(`Your defenses hold! (Defense ${bastionStats.defense} vs Attack ${currentEnemy.attack})`);
       }
 
       // Player attacks
       const newHealth = Math.max(0, currentEnemy.currentHealth - bastionStats.attack);
-      newLog.push(`You deal ${bastionStats.attack} damage!`);
+      
+      // Show damage indicator on enemy health bar
+      setEnemyDamageIndicator({amount: bastionStats.attack, visible: true});
+      setTimeout(() => {
+        setEnemyDamageIndicator({amount: 0, visible: false});
+      }, 3000);
 
       setCurrentEnemy(prev => prev ? { ...prev, currentHealth: newHealth } : null);
-      setCombatLog(newLog);
       setCasualties(newCasualties);
 
       // Check battle outcome
       if (newHealth <= 0) {
-        newLog.push(`${currentEnemy.name} is defeated!`);
-        setCombatLog(newLog);
         setTimeout(() => {
           // Apply casualties before victory
           if (newCasualties > 0) {
@@ -208,8 +212,6 @@ export default function CombatDialog({
         // Next round
         setRound(prev => prev + 1);
         setUsedItemsInCombat(new Set()); // Reset item usage for new round
-        newLog.push(`Round ${round + 1} begins!`);
-        setCombatLog(newLog);
         setIsProcessingRound(false);
       }
     }, 1000);
@@ -258,15 +260,22 @@ export default function CombatDialog({
 
             {/* Enemy Stats */}
             <div className="space-y-3">
-              <div>
+              <div className="relative">
                 <div className="flex justify-between text-sm">
                   <span className="font-medium">{currentEnemy?.name} Health</span>
                   <span>{currentEnemy?.currentHealth}/{currentEnemy?.maxHealth} </span>
                 </div>
-                <Progress 
-                  value={healthPercentage} 
-                  className="h-3 mt-1 [&>div]:bg-red-900" // Darker red for enemy health
-                />
+                <div className="relative">
+                  <Progress 
+                    value={healthPercentage} 
+                    className="h-3 mt-1 [&>div]:bg-red-900" // Darker red for enemy health
+                  />
+                  {enemyDamageIndicator.visible && (
+                    <div className="absolute inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none animate-pulse">
+                      -{enemyDamageIndicator.amount}
+                    </div>
+                  )}
+                </div>
                 <div className="text-xs mt-1">
                   Attack: {currentEnemy?.attack}
                 </div>
@@ -277,15 +286,22 @@ export default function CombatDialog({
 
 
                 {/* Bastion Integrity */}
-                <div className="mb-3">
+                <div className="mb-3 relative">
                   <div className="flex justify-between text-sm">
                     <span className="font-medium">Bastion Integrity</span>
                     <span>{currentIntegrity}/{maxIntegrityForCombat}</span>
                   </div>
-                  <Progress 
-                    value={(currentIntegrity / maxIntegrityForCombat) * 100} 
-                    className="h-3 mt-1 [&>div]:bg-green-900" // Darker green for bastion integrity
-                  />
+                  <div className="relative">
+                    <Progress 
+                      value={(currentIntegrity / maxIntegrityForCombat) * 100} 
+                      className="h-3 mt-1 [&>div]:bg-green-900" // Darker green for bastion integrity
+                    />
+                    {integrityDamageIndicator.visible && (
+                      <div className="absolute inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none animate-pulse">
+                        -{integrityDamageIndicator.amount}
+                      </div>
+                    )}
+                  </div>
                 </div>
 
                 <div className="text-xs">
@@ -356,28 +372,7 @@ export default function CombatDialog({
                 )}
               </div>
 
-              {/* Combat Log */}
-              <div className="border-t pt-3">
-                <div className="text-sm font-medium mb-2">Combat Log</div>
-                <div className="h-32">
-                  <ScrollArea className="h-full max-h-full">
-                    <div className="p-2 space-y-1">
-                      {combatLog.length > 0 ? (
-                        combatLog.map((entry, index) => (
-                          <div key={index} className="text-xs text-muted-foreground">
-                            {entry}
-                          </div>
-                        ))
-                      ) : (
-                        <div className="text-xs text-muted-foreground/50">
-                          Combat log will appear here...
-                        </div>
-                      )}
-                    </div>
-                    <ScrollBar orientation="vertical" />
-                  </ScrollArea>
-                </div>
-              </div>
+              
             </div>
           </>
         )}
