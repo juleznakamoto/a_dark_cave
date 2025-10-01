@@ -419,7 +419,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.deepeningPit": 1,
+        "buildings.woodenHut": 6,
         "buildings.clerksHut": 0,
       },
     },
@@ -1279,23 +1279,23 @@ export function handleBuildSanctum(
   return sanctumResult;
 }
 
-export function handleBuildAlchemistTower(
+export function handleBuildAlchemistHall(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
   const alchemistHallResult = handleBuildingConstruction(
     state,
     result,
-    "buildAlchemistTower",
+    "buildAlchemistHall",
     "alchemistHall",
   );
 
-  // Add alchemist tower completion message
+  // Add alchemist hall completion message
   if (state.buildings.alchemistHall === 0) {
     alchemistHallResult.logEntries!.push({
-      id: `alchemist-tower-built-${Date.now()}`,
+      id: `alchemist-hall-built-${Date.now()}`,
       message:
-        "The Alchemist's Tower spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
+        "The Alchemist's Halls spirals skyward, its chambers filled with bubbling apparatus and arcane instruments. The mysteries of transmutation await within.",
       timestamp: Date.now(),
       type: "system",
     });
