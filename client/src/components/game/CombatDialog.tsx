@@ -56,6 +56,7 @@ export default function CombatDialog({
   const [combatEnded, setCombatEnded] = useState(false);
   const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
+  const [maxIntegrityForCombat, setMaxIntegrityForCombat] = useState(0);
 
   const bastionStats = calculateBastionStats(gameState);
 
@@ -71,9 +72,12 @@ export default function CombatDialog({
       setCasualties(0);
       setCombatEnded(false);
       setCombatResult(null);
-      setCurrentIntegrity(bastionStats.integrity);
+      // Reset integrity to full calculated amount for this combat
+      const maxIntegrity = bastionStats.defense * 2 + (bastionStats.attackFromFortifications > 0 ? 50 : 0);
+      setMaxIntegrityForCombat(maxIntegrity);
+      setCurrentIntegrity(maxIntegrity);
     }
-  }, [isOpen, enemy, bastionStats.integrity]);
+  }, [isOpen, enemy, bastionStats.defense, bastionStats.attackFromFortifications]);
 
   // Available combat items
   const combatItems: CombatItem[] = [
@@ -263,8 +267,12 @@ export default function CombatDialog({
                 <div className="mb-3">
                   <div className="flex justify-between text-sm">
                     <span className="font-medium">Bastion Integrity</span>
-                    <span>{currentIntegrity}</span>
+                    <span>{currentIntegrity}/{maxIntegrityForCombat}</span>
                   </div>
+                  <Progress 
+                    value={(currentIntegrity / maxIntegrityForCombat) * 100} 
+                    className="h-3 mt-1"
+                  />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 text-xs">
