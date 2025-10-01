@@ -1,3 +1,4 @@
+
 import { create } from "zustand";
 import { GameState, gameStateSchema } from "@shared/schema";
 import { gameActions, shouldShowAction, canExecuteAction } from "@/game/rules";
@@ -14,7 +15,56 @@ import { calculateTotalEffects } from '@/game/rules/effects';
 import { calculateBastionStats } from '@/game/bastionStats';
 import { audioManager } from '@/lib/audio';
 
-// Helper function to merge state updates
+// Types
+interface GameStore extends GameState {
+  // Production timing
+  productionTiming: {
+    lastGathererProduction: number;
+    lastHunterProduction: number;
+    lastConsumption: number;
+    currentTime: number;
+    interval: number;
+  };
+
+  // UI state
+  activeTab: string;
+  devMode: boolean;
+  eventDialog: {
+    isOpen: boolean;
+    currentEvent: LogEntry | null;
+  };
+
+  // Cooldown management
+  cooldowns: Record<string, number>;
+
+  // Population helpers
+  current_population: number;
+  total_population: number;
+
+  // Actions
+  executeAction: (actionId: string) => void;
+  setActiveTab: (tab: string) => void;
+  updateResource: (resource: keyof GameState["resources"], amount: number) => void;
+  setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
+  initialize: (state: GameState) => void;
+  restartGame: () => void;
+  loadGame: () => Promise<void>;
+  toggleDevMode: () => void;
+  getMaxPopulation: () => number;
+  updatePopulation: () => void;
+  setCooldown: (action: string, duration: number) => void;
+  tickCooldowns: () => void;
+  addLogEntry: (entry: LogEntry) => void;
+  checkEvents: () => void;
+  applyEventChoice: (choiceId: string, eventId: string) => void;
+  assignVillager: (job: keyof GameState['villagers']) => void;
+  unassignVillager: (job: keyof GameState['villagers']) => void;
+  setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
+  updateEffects: () => void;
+  updateBastionStats: () => void;
+}
+
+// Helper functions
 const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>
@@ -36,7 +86,7 @@ const mergeStateUpdates = (
     effects: stateUpdates.effects || prevState.effects,
   };
 
-  // Calculate and update effects when tools, weapons, clothing, or relics change
+  // Calculate and update effects when items change
   if (stateUpdates.tools || stateUpdates.weapons || stateUpdates.clothing || stateUpdates.relics) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -45,67 +95,7 @@ const mergeStateUpdates = (
   return merged;
 };
 
-interface GameStore extends GameState {
-  // Production timing
-  productionTiming: {
-    lastGathererProduction: number;
-    lastHunterProduction: number;
-    lastConsumption: number;
-    currentTime: number;
-    interval: number;
-  };
-
-
-
-  // Actions
-  executeAction: (actionId: string) => void;
-  setActiveTab: (tab: string) => void;
-  updateResource: (
-    resource: keyof GameState["resources"],
-    amount: number,
-  ) => void;
-  setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
-  initialize: (state: GameState) => void;
-  restartGame: () => void;
-  loadGame: () => Promise<void>;
-  toggleDevMode: () => void;
-  getMaxPopulation: () => number;
-
-  // Population helpers
-  current_population: number;
-  total_population: number;
-  updatePopulation: () => void;
-
-  // UI state
-  activeTab: string;
-  devMode: boolean;
-  eventDialog: {
-    isOpen: boolean;
-    currentEvent: LogEntry | null;
-  };
-
-  // Cooldown management
-  cooldowns: Record<string, number>;
-  setCooldown: (action: string, duration: number) => void;
-  tickCooldowns: () => void;
-
-  // Event system
-  log: LogEntry[];
-  addLogEntry: (entry: LogEntry) => void;
-  checkEvents: () => void;
-  applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: keyof GameState['villagers']) => void;
-  unassignVillager: (job: keyof GameState['villagers']) => void;
-  setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
-  updateEffects: () => void;
-  updateBastionStats: () => void;
-}
-
-import { gameStateSchema } from "@shared/schema";
-
-// Recursively extract default values from Zod schema structure
 const extractDefaultsFromSchema = (schema: any): any => {
-  // Handle ZodObject
   if (schema._def?.typeName === 'ZodObject') {
     const result: any = {};
     const shape = schema._def.shape();
@@ -113,43 +103,34 @@ const extractDefaultsFromSchema = (schema: any): any => {
     for (const [key, fieldSchema] of Object.entries(shape)) {
       result[key] = extractDefaultsFromSchema(fieldSchema);
     }
-
     return result;
   }
 
-  // Handle ZodDefault (fields with .default())
   if (schema._def?.typeName === 'ZodDefault') {
     const defaultValue = schema._def.defaultValue();
     const innerSchema = schema._def.innerType;
 
-    // If default is an empty object but inner schema is an object with fields,
-    // extract defaults from the inner schema instead
     if (typeof defaultValue === 'object' && defaultValue !== null &&
         Object.keys(defaultValue).length === 0 &&
         innerSchema._def?.typeName === 'ZodObject') {
       return extractDefaultsFromSchema(innerSchema);
     }
-
     return defaultValue;
   }
 
-  // Handle other primitive types - return appropriate defaults
   if (schema._def?.typeName === 'ZodNumber') return 0;
   if (schema._def?.typeName === 'ZodBoolean') return false;
   if (schema._def?.typeName === 'ZodString') return '';
   if (schema._def?.typeName === 'ZodArray') return [];
   if (schema._def?.typeName === 'ZodRecord') return {};
 
-  // Fallback
   return undefined;
 };
 
-// Generate completely dynamic default state from schema
 const generateDefaultGameState = (): GameState => {
   return extractDefaultsFromSchema(gameStateSchema) as GameState;
 };
 
-// Use the generated default state and ensure effects and bastion_stats are properly initialized
 const defaultGameState: GameState = {
   ...generateDefaultGameState(),
   effects: {
@@ -165,7 +146,83 @@ const defaultGameState: GameState = {
   }
 };
 
+// State management utilities
+class StateManager {
+  private static queuedEffectUpdates = new Set<string>();
+  private static updateTimer: NodeJS.Timeout | null = null;
 
+  static scheduleEffectsUpdate(store: () => GameStore) {
+    if (this.updateTimer) return;
+    
+    this.updateTimer = setTimeout(() => {
+      const state = store();
+      state.updateEffects();
+      state.updateBastionStats();
+      this.updateTimer = null;
+    }, 0);
+  }
+
+  static schedulePopulationUpdate(store: () => GameStore) {
+    setTimeout(() => store().updatePopulation(), 0);
+  }
+
+  static handleDelayedEffects(
+    delayedEffects: Array<() => void> | undefined,
+    actionId: string,
+    state: GameState,
+    store: () => GameStore
+  ) {
+    if (!delayedEffects) return;
+
+    delayedEffects.forEach((effect) => {
+      if (actionId === "buildWoodenHut" && state.buildings.woodenHut === 0) {
+        this.handleStrangerEvent(store);
+      } else {
+        effect();
+      }
+    });
+  }
+
+  private static handleStrangerEvent(store: () => GameStore) {
+    setTimeout(() => {
+      const strangerLogEntry: LogEntry = {
+        id: `stranger-approaches-${Date.now()}`,
+        message: "A stranger approaches through the woods.",
+        timestamp: Date.now(),
+        type: "system",
+      };
+
+      store().addLogEntry(strangerLogEntry);
+      
+      setTimeout(() => {
+        const state = store();
+        const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+        const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+
+        if (currentPopulation < maxPopulation) {
+          // Use the store's built-in state update
+          const gameStore = store() as any;
+          gameStore.setState((prevState: GameState) => ({
+            villagers: {
+              ...prevState.villagers,
+              free: prevState.villagers.free + 1,
+            },
+            story: {
+              ...prevState.story,
+              seen: {
+                ...prevState.story.seen,
+                hasVillagers: true,
+              },
+            },
+          }));
+          StateManager.schedulePopulationUpdate(store);
+        }
+      }, 100);
+    }, 2000);
+  }
+}
+
+// Main store
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
@@ -186,31 +243,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     currentEvent: null,
   },
 
-  setActiveTab: (tab: string) => {
-    set({ activeTab: tab });
-  },
+  setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    console.log(`[STATE] Update Resource: ${resource} by ${amount}`);
-    set((state) => {
-      const updates = updateResource(state, resource, amount);
-      console.log(`[STATE] Resource update result:`, updates);
-      return updates;
-    });
-
-    // Force a re-render after a brief delay to ensure change detection works
-    setTimeout(() => {
-      set((currentState) => ({ ...currentState }));
-    }, 50);
+    if (import.meta.env.DEV) {
+      console.log(`[STATE] Update Resource: ${resource} by ${amount}`);
+    }
+    
+    set((state) => updateResource(state, resource, amount));
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
-    console.log(`[STATE] Set Flag: ${flag} = ${value}`);
-    set((state) => {
-      const updates = updateFlag(state, flag, value);
-      console.log(`[STATE] Flag update result:`, updates);
-      return updates;
-    });
+    if (import.meta.env.DEV) {
+      console.log(`[STATE] Set Flag: ${flag} = ${value}`);
+    }
+    
+    set((state) => updateFlag(state, flag, value));
   },
 
   initialize: (newState: GameState) => {
@@ -221,24 +269,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: newState.bastion_stats || calculateBastionStats(newState),
     };
     set(stateWithEffects);
-    // Force update effects and bastion stats after initialization
-    setTimeout(() => {
-      get().updateEffects();
-      get().updateBastionStats();
-    }, 0);
+    StateManager.scheduleEffectsUpdate(get);
   },
 
   executeAction: (actionId: string) => {
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode))
-      return;
-    if (
-      !shouldShowAction(actionId, state) ||
-      !canExecuteAction(actionId, state)
-    )
-      return;
+    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
+    if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
     const result = executeGameAction(actionId, state);
 
@@ -250,96 +289,44 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
     }
 
-    // Log state changes for debugging
-    console.log(`[STATE] Action: ${actionId}`, {
-      stateUpdates: result.stateUpdates,
-      logEntries: result.logEntries,
-      delayedEffects: result.delayedEffects
-    });
+    if (import.meta.env.DEV) {
+      console.log(`[STATE] Action: ${actionId}`, {
+        stateUpdates: result.stateUpdates,
+        logEntries: result.logEntries,
+        delayedEffects: result.delayedEffects
+      });
+    }
 
-    // Apply state updates using helper function
+    // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-
-      const newState = {
+      return {
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(-10)
           : prevState.log,
       };
-
-      console.log(`[STATE] New state after ${actionId}:`, newState);
-      return newState;
     });
 
-    // Update effects if items/tools/weapons/relics changed
+    // Schedule updates
     if (result.stateUpdates.tools || result.stateUpdates.weapons || 
-        result.stateUpdates.clothing || result.stateUpdates.relics) {
-      setTimeout(() => get().updateEffects(), 0);
+        result.stateUpdates.clothing || result.stateUpdates.relics ||
+        result.stateUpdates.buildings) {
+      StateManager.scheduleEffectsUpdate(get);
     }
 
-    // Update bastion stats if buildings changed
-    if (result.stateUpdates.buildings) {
-      setTimeout(() => get().updateBastionStats(), 0);
-    }
-
-    // Check if any new log entry has choices and show event dialog
+    // Handle event dialogs
     if (result.logEntries) {
       result.logEntries.forEach(entry => {
         if (entry.choices && entry.choices.length > 0) {
-          setTimeout(() => {
-            get().setEventDialog(true, entry);
-          }, 100);
+          setTimeout(() => get().setEventDialog(true, entry), 100);
         }
       });
     }
 
-    // Handle delayed effects (like stranger event for first wooden hut)
-    if (result.delayedEffects) {
-      result.delayedEffects.forEach((effect) => {
-        if (actionId === "buildWoodenHut" && state.buildings.woodenHut === 0) {
-          setTimeout(() => {
-            const strangerLogEntry: LogEntry = {
-              id: `stranger-approaches-${Date.now()}`,
-              message: "A stranger approaches through the woods.",
-              timestamp: Date.now(),
-              type: "system",
-            };
-
-            get().addLogEntry(strangerLogEntry);
-            setTimeout(() => {
-              set((state) => {
-                const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-                const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
-
-                if (currentPopulation < maxPopulation) {
-                  const newState = {
-                    villagers: {
-                      ...state.villagers,
-                      free: state.villagers.free + 1,
-                    },
-                    story: {
-                      ...state.story,
-                      seen: {
-                        ...state.story.seen,
-                        hasVillagers: true,
-                      },
-                    },
-                  };
-                  setTimeout(() => get().updatePopulation(), 0);
-                  return newState;
-                }
-                return state;
-              });
-            }, 100);
-          }, 2000);
-        } else {
-          // Execute other delayed effects
-          effect();
-        }
-      });
-    }
+    // Handle delayed effects
+    StateManager.handleDelayedEffects(result.delayedEffects, actionId, state, get);
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -350,11 +337,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   tickCooldowns: () => {
     set((state) => {
-      if (state.devMode) return { cooldowns: {} }; // Clear all cooldowns in dev mode
+      if (state.devMode) return { cooldowns: {} };
+      
       const newCooldowns = { ...state.cooldowns };
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
-          newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2); // Tick down by 200ms
+          newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
         }
       }
       return { cooldowns: newCooldowns };
@@ -362,7 +350,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
-    // First clear the state
     const resetState = {
       ...defaultGameState,
       activeTab: "cave",
@@ -373,36 +360,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: calculateBastionStats(defaultGameState),
     };
     set(resetState);
+    StateManager.scheduleEffectsUpdate(get);
 
-    // Force update effects and bastion stats after restart
-    setTimeout(() => {
-      get().updateEffects();
-      get().updateBastionStats();
-    }, 0);
-
-    // Then add the initial cave description
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message:
-        "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      message: "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
-
     get().addLogEntry(initialLogEntry);
   },
 
   loadGame: async () => {
-    // Placeholder for actual game loading logic
     const loadGame = async () => {
-      // In a real scenario, this would fetch saved game data from local storage or an API
-      // For demonstration purposes, we'll simulate loading a saved game or starting a new one
       const savedState = localStorage.getItem("gameState");
       return savedState ? JSON.parse(savedState) : null;
     };
 
     const savedState = await loadGame();
-
+    
     if (savedState) {
       const loadedState = {
         ...savedState,
@@ -414,13 +390,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         bastion_stats: calculateBastionStats(savedState),
       };
       set(loadedState);
-      // Force update effects and bastion stats after loading
-      setTimeout(() => {
-        get().updateEffects();
-        get().updateBastionStats();
-      }, 0);
     } else {
-      // For new games, first set the initial state
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
@@ -432,33 +402,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       set(newGameState);
 
-      // Force update effects and bastion stats for new game
-      setTimeout(() => {
-        get().updateEffects();
-        get().updateBastionStats();
-      }, 0);
-
-      // Then immediately add the initial cave description
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message:
-          "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+        message: "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };
-
       get().addLogEntry(initialLogEntry);
     }
+    
+    StateManager.scheduleEffectsUpdate(get);
   },
 
   addLogEntry: (entry: LogEntry) => {
-    // Play event sound for event type log entries
     if (entry.type === 'event') {
       audioManager.playSound('event', 0.02);
     }
 
     set((state) => ({
-      log: [...state.log, entry].slice(-10), // Keep only last 8 entries
+      log: [...state.log, entry].slice(-10),
     }));
   },
 
@@ -473,7 +435,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
-      // Check if any new log entry has choices and show event dialog
       newLogEntries.forEach(entry => {
         if (entry.choices && entry.choices.length > 0) {
           const currentDialog = get().eventDialog;
@@ -481,19 +442,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           const hasActiveMerchantDialog = currentDialog.isOpen &&
             currentDialog.currentEvent?.id.includes('merchant');
 
-          // Only open dialog if there's no active merchant dialog, or if this isn't a merchant event
           if (!hasActiveMerchantDialog || !isMerchantEvent) {
             get().setEventDialog(true, entry);
           }
         }
       });
 
-      // Update population after applying changes
-      setTimeout(() => get().updatePopulation(), 0);
+      StateManager.schedulePopulationUpdate(get);
 
-      // Play event sound for events that trigger automatically
       if (triggeredEvents && triggeredEvents.length > 0) {
-        // Check if any triggered event is a madness event
         const madnessEventIds = [
           'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
           'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
@@ -504,26 +461,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madnessEventIds.includes(event.id.split('-')[0])
         );
 
-        if (hasMadnessEvent) {
-          audioManager.playSound('eventMadness', 0.02);
-        } else {
-          audioManager.playSound('event', 0.02);
-        }
+        audioManager.playSound(hasMadnessEvent ? 'eventMadness' : 'event', 0.02);
       }
     }
   },
 
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
-
-    // Get the current event dialog log entry for merchant events
     const currentLogEntry = get().eventDialog.currentEvent;
-
-    // Handle other events using EventManager
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
 
     if (Object.keys(changes).length > 0) {
-      // Handle log messages from choice effects
       let logMessage = null;
       const updatedChanges = { ...changes };
 
@@ -533,29 +481,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       set((prevState) => {
-        // Apply event effect and get updated state
         const updatedState = { ...prevState, ...changes };
-
         return {
           ...updatedState,
           log: logMessage
-            ? [...prevState.log, { id: `choice-result-${Date.now()}`, message: logMessage, timestamp: Date.now(), type: 'system' }].slice(-10)
+            ? [...prevState.log, { 
+                id: `choice-result-${Date.now()}`, 
+                message: logMessage, 
+                timestamp: Date.now(), 
+                type: 'system' 
+              }].slice(-10)
             : prevState.log,
         };
       });
 
-      // Close the event dialog (except for merchant trade choices)
       const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
       if (!isMerchantTradeChoice) {
         get().setEventDialog(false);
       }
 
-      // Update population after applying changes
-      setTimeout(() => {
-        get().updatePopulation();
-      }, 100);
+      StateManager.schedulePopulationUpdate(get);
     } else {
-      // Still close the dialog even if no changes
       get().setEventDialog(false);
     }
   },
@@ -565,24 +511,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   assignVillager: (job: keyof GameState['villagers']) => {
-    console.log(`[STATE] Assign Villager to: ${job}`);
+    if (import.meta.env.DEV) {
+      console.log(`[STATE] Assign Villager to: ${job}`);
+    }
+    
     set((state) => {
       const updates = assignVillagerToJob(state, job);
-      console.log(`[STATE] Villager assignment result:`, updates);
       if (Object.keys(updates).length > 0) {
-        setTimeout(() => get().updatePopulation(), 0);
+        StateManager.schedulePopulationUpdate(get);
       }
       return updates;
     });
   },
 
   unassignVillager: (job: keyof GameState['villagers']) => {
-    console.log(`[STATE] Unassign Villager from: ${job}`);
+    if (import.meta.env.DEV) {
+      console.log(`[STATE] Unassign Villager from: ${job}`);
+    }
+    
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
-      console.log(`[STATE] Villager unassignment result:`, updates);
       if (Object.keys(updates).length > 0) {
-        setTimeout(() => get().updatePopulation(), 0);
+        StateManager.schedulePopulationUpdate(get);
       }
       return updates;
     });
@@ -590,7 +540,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getMaxPopulation: () => {
     const state = get();
-    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4); // Wooden huts +2, stone huts +4 each
+    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
   },
 
   updatePopulation: () => {
@@ -617,7 +567,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
     }));
 
-    // Play appropriate sound when dialog opens
     if (isOpen && currentEvent) {
       const eventId = currentEvent.id.split('-')[0];
       const madnessEventIds = [
@@ -627,12 +576,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-
-      if (isMadnessEvent) {
-        audioManager.playSound('eventMadness', 0.02);
-      } else {
-        audioManager.playSound('event', 0.02);
-      }
+      audioManager.playSound(isMadnessEvent ? 'eventMadness' : 'event', 0.02);
     }
   },
 
@@ -647,6 +591,4 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: calculateBastionStats(state),
     }));
   },
-
-
 }));
