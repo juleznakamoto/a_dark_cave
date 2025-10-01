@@ -315,7 +315,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -1,
+      madness: -2,
     },
     cooldown: 5,
   },
@@ -522,7 +522,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -10,
+      madness: -8,
     },
     cooldown: 60,
   },
@@ -555,7 +555,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -15,
+      madness: -12,
     },
     cooldown: 80,
   },

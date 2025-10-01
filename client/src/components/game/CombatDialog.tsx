@@ -231,7 +231,7 @@ export default function CombatDialog({
             </DialogHeader>
 
             <div className="flex justify-center mt-4">
-              <Button onClick={handleStartFight} className="w-full">
+              <Button onClick={handleStartFight} className="w-full" variant="outline">
                 Start Fight
               </Button>
             </div>
@@ -249,18 +249,18 @@ export default function CombatDialog({
             <div className="space-y-3">
               <div>
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium">{currentEnemy?.name}</span>
-                  <span>{currentEnemy?.currentHealth}/{currentEnemy?.maxHealth} HP</span>
+                  <span className="font-medium">{currentEnemy?.name} Health</span>
+                  <span>{currentEnemy?.currentHealth}/{currentEnemy?.maxHealth} </span>
                 </div>
                 <Progress value={healthPercentage} className="h-3 mt-1" />
-                <div className="text-xs text-muted-foreground mt-1">
+                <div className="text-xs mt-1">
                   Attack: {currentEnemy?.attack}
                 </div>
               </div>
 
               {/* Player Stats */}
               <div className="border-t pt-3">
-                <div className="text-sm font-medium mb-2">Your Forces</div>
+                
                 
                 {/* Bastion Integrity */}
                 <div className="mb-3">
@@ -274,13 +274,11 @@ export default function CombatDialog({
                   />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4 text-xs">
+                <div className="text-xs">
                   <div>
-                    <span className="text-muted-foreground">Attack:</span> {bastionStats.attack}
+                    Attack: {bastionStats.attack} enemDefense: {bastionStats.defense}
                   </div>
-                  <div>
-                    <span className="text-muted-foreground">Defense:</span> {bastionStats.defense}
-                  </div>
+                  
                 </div>
                 {casualties > 0 && (
                   <div className="text-xs text-red-600 mt-1">
@@ -317,7 +315,7 @@ export default function CombatDialog({
                 {combatEnded ? (
                   <Button
                     onClick={handleEndFight}
-                    className="w-full"
+                    className="w-full" variant="outline"
                   >
                     End Fight
                   </Button>
@@ -325,7 +323,7 @@ export default function CombatDialog({
                   <Button
                     onClick={handleFight}
                     disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
-                    className="w-full"
+                    className="w-full" variant="outline"
                   >
                     {isProcessingRound ? "Fighting..." : "Fight"}
                   </Button>
