@@ -72,7 +72,7 @@ import {
   handleBuildTemple,
   handleBuildSanctum,
   handleBuildTannery,
-  handleBuildAlchemistTower,
+  handleBuildAlchemistHall,
   handleBuildTradePost,
   handleBuildWizardTower,
   handleBuildBastion,
