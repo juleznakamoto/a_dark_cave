@@ -1,5 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
+import { LogEntry } from "../state";
+import { calculateBastionStats } from "../bastionStats";
 import { killVillagers } from "@/game/stateHelpers";
 
 export const attackWaveEvents: Record<string, GameEvent> = {
