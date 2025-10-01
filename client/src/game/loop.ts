@@ -440,18 +440,10 @@ function handleStrangerApproach() {
     // Add the villager(s) - only the amount that fits
     state.updateResource("free" as any, actualStrangersToAdd);
 
-    // Update message if we couldn't add all strangers
-    let finalMessage = randomMessage;
-    if (actualStrangersToAdd < strangersCount) {
-      finalMessage = actualStrangersToAdd === 1 
-        ? "A stranger approaches, but your village can only accommodate one more person."
-        : `${actualStrangersToAdd} strangers approach, but your village can only accommodate ${actualStrangersToAdd} more people.`;
-    }
-
     // Add log entry
     state.addLogEntry({
       id: `stranger-approaches-${Date.now()}`,
-      message: finalMessage,
+      message: randomMessage,
       timestamp: Date.now(),
       type: "system",
     });
