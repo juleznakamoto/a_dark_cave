@@ -11,6 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface Enemy {
   name: string;
@@ -299,16 +300,24 @@ export default function CombatDialog({
                     {combatItems
                       .filter(item => item.available)
                       .map(item => (
-                        <Button
-                          key={item.id}
-                          onClick={() => handleUseItem(item)}
-                          disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
-                          variant="outline"
-                          size="sm"
-                          className="text-xs"
-                        >
-                          {usedItemsInCombat.has(item.id) ? "Used" : `${item.name} (${item.damage})`}
-                        </Button>
+                        <TooltipProvider key={item.id}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                onClick={() => handleUseItem(item)}
+                                disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
+                                variant="outline"
+                                size="sm"
+                                className="text-xs"
+                              >
+                                {item.name}
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Damage: {item.damage}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
                       ))}
                   </div>
                 </div>
