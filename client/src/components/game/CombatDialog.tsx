@@ -334,18 +334,22 @@ export default function CombatDialog({
               </div>
 
               {/* Combat Log */}
-              {combatLog.length > 0 && (
-                <div className="border-t pt-3">
-                  <div className="text-sm font-medium mb-2">Combat Log</div>
-                  <div className="max-h-32 overflow-y-auto space-y-1">
-                    {combatLog.map((entry, index) => (
+              <div className="border-t pt-3">
+                <div className="text-sm font-medium mb-2">Combat Log</div>
+                <div className="h-32 overflow-y-auto space-y-1 border rounded p-2 bg-muted/20">
+                  {combatLog.length > 0 ? (
+                    combatLog.map((entry, index) => (
                       <div key={index} className="text-xs text-muted-foreground">
                         {entry}
                       </div>
-                    ))}
-                  </div>
+                    ))
+                  ) : (
+                    <div className="text-xs text-muted-foreground/50">
+                      Combat log will appear here...
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
             </div>
           </>
         )}
