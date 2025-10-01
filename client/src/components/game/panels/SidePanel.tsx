@@ -321,13 +321,28 @@ export default function SidePanel() {
 
   // Dynamically generate bastion stats items from state
   const bastionStatsItems = Object.entries(bastion_stats || {})
-    .map(([key, value]) => ({
-      id: key,
-      label: capitalizeWords(key),
-      value: value ?? 0,
-      testId: `bastion-stat-${key}`,
-      visible: (value ?? 0) > 0,
-    }))
+    .filter(([key]) => !["attackFromFortifications", "attackFromStrength"].includes(key)) // Exclude breakdown fields from display
+    .map(([key, value]) => {
+      let tooltip = undefined;
+      
+      // Add detailed tooltip for attack showing breakdown
+      if (key === "attack" && bastion_stats) {
+        const fortAttack = bastion_stats.attackFromFortifications || 0;
+        const strengthAttack = bastion_stats.attackFromStrength || 0;
+        if (fortAttack > 0 || strengthAttack > 0) {
+          tooltip = `${fortAttack} Attack from Fortifications\n${strengthAttack} Attack from Strength`;
+        }
+      }
+      
+      return {
+        id: key,
+        label: capitalizeWords(key),
+        value: value ?? 0,
+        testId: `bastion-stat-${key}`,
+        visible: (value ?? 0) > 0,
+        tooltip,
+      };
+    })
     .filter((item) => item.visible);
 
   // Determine which sections to show based on active tab

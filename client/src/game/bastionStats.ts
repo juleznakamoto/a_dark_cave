@@ -1,19 +1,22 @@
 
 import { GameState } from "@shared/schema";
+import { getTotalStrength } from "./rules/effects";
 
 export interface BastionStats {
   defense: number;
   attack: number;
+  attackFromFortifications: number;
+  attackFromStrength: number;
 }
 
 export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;
-  let attack = 0;
+  let attackFromFortifications = 0;
 
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
     defense += 5;
-    attack += 2;
+    attackFromFortifications += 2;
   }
 
   // Watchtower contributions (levels provide different bonuses)
@@ -21,24 +24,24 @@ export function calculateBastionStats(state: GameState): BastionStats {
   if (watchtowerLevel > 0) {
     // Level 1: Watchtower
     defense += 1;
-    attack += 4;
+    attackFromFortifications += 4;
     
     if (watchtowerLevel >= 2) {
       // Level 2: Guard Tower
       defense += 2;
-      attack += 6;
+      attackFromFortifications += 6;
     }
     
     if (watchtowerLevel >= 3) {
       // Level 3: Fortified Tower
       defense += 3;
-      attack += 8;
+      attackFromFortifications += 8;
     }
     
     if (watchtowerLevel >= 4) {
       // Level 4: Cannon Tower
       defense += 4;
-      attack += 10;
+      attackFromFortifications += 10;
     }
   }
 
@@ -64,9 +67,15 @@ export function calculateBastionStats(state: GameState): BastionStats {
     }
   }
 
+  // Add strength from stats to attack
+  const attackFromStrength = getTotalStrength(state);
+  const totalAttack = attackFromFortifications + attackFromStrength;
+
   return {
     defense,
-    attack,
+    attack: totalAttack,
+    attackFromFortifications,
+    attackFromStrength,
   };
 }
 
