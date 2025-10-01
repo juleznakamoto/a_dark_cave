@@ -309,85 +309,49 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         id: "lastStand",
         label: "Make your last stand",
         effect: (state: GameState) => {
-          const bastionStats = calculateBastionStats(state);
           const hasSpecialWeapons = state.relics.frostfang && state.relics.blood_scepter;
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
 
-          // Final wave enemy stats - the shadow lord
-          const enemy = {
-            attack: 20,
-            health: hasSpecialWeapons ? 40 : 60, // Special weapons make it more vulnerable
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                finalWave: true,
+              },
+            },
+            _combatData: {
+              enemy: {
+                name: "Shadow Lord",
+                attack: 20,
+                maxHealth: hasSpecialWeapons ? 40 : 60,
+                currentHealth: hasSpecialWeapons ? 40 : 60,
+              },
+              eventTitle: "The Final Wave",
+              hasSpecialWeapons,
+              onVictory: () => ({
+                story: {
+                  ...state.story,
+                  seen: {
+                    ...state.story.seen,
+                    gameCompleted: true,
+                  },
+                },
+                _logMessage: hasSpecialWeapons
+                  ? "Armed with the frostfang sword and blood scepter, your champions achieve victory! The shadow lord is destroyed and the portal seals itself. Peace returns to the land!"
+                  : "Through incredible courage, your villagers achieve the impossible! The shadow lord is destroyed and the portal seals forever.",
+              }),
+              onDefeat: () => ({
+                story: {
+                  ...state.story,
+                  seen: {
+                    ...state.story.seen,
+                    heroicDefeat: true,
+                  },
+                },
+                _logMessage: "Despite valiant efforts, the shadow lord proves too powerful. Your brave villagers' sacrifice weakens it enough to force a retreat, partially sealing the portal.",
+              }),
+            },
           };
-
-          // Apply special weapon bonus to attack
-          const effectiveAttack = bastionStats.attack + (hasSpecialWeapons ? 15 : 0);
-
-          // Combat simulation
-          let totalVictims = 0;
-          let enemyHealth = enemy.health;
-          let waveNumber = 1;
-
-          while (enemyHealth > 0) {
-            // Enemy attacks first
-            if (enemy.attack > bastionStats.defense) {
-              const victims = enemy.attack - bastionStats.defense;
-              totalVictims += victims;
-            }
-
-            // Bastion counterattacks (with special weapon bonus)
-            enemyHealth -= effectiveAttack;
-
-            // If enemy dies this wave, no victims for this wave
-            if (enemyHealth <= 0) {
-              const waveVictims = enemy.attack > bastionStats.defense ? enemy.attack - bastionStats.defense : 0;
-              totalVictims -= waveVictims; // Remove victims from the final wave
-              break;
-            }
-
-            waveNumber++;
-          }
-
-          const actualCasualties = Math.min(totalVictims, currentPopulation);
-
-          if (actualCasualties === 0 || actualCasualties < currentPopulation * 0.2) {
-            // Epic victory
-            return {
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  finalWave: true,
-                  gameCompleted: true,
-                },
-              },
-              _logMessage: hasSpecialWeapons
-                ? `Armed with the frostfang sword and blood scepter, your champions face the shadow lord through ${waveNumber} waves of epic combat. The special weapons boost your attack to ${effectiveAttack}, cutting through the creature's defenses (health: ${enemy.health}). Despite the shadow lord's devastating attack of ${enemy.attack} against your defense of ${bastionStats.defense}, only ${actualCasualties} heroes fall. The portal seals itself, and peace returns to the land!`
-                : `Through ${waveNumber} waves of incredible courage and sacrifice, your villagers achieve the impossible. With attack ${effectiveAttack} against the shadow lord's health of ${enemy.health}, and defense ${bastionStats.defense} against its attack of ${enemy.attack}, ${actualCasualties} brave souls fall, but the towering creature is destroyed. The portal seals and the threat ends forever.`,
-            };
-          } else {
-            // Heroic defeat or pyrrhic victory
-            const deathResult = killVillagers(state, actualCasualties);
-            const isVictory = enemyHealth <= 0;
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  finalWave: true,
-                  heroicDefeat: !isVictory,
-                  gameCompleted: isVictory,
-                },
-              },
-              _logMessage: isVictory
-                ? `The final battle spans ${waveNumber} devastating waves. Your attack of ${effectiveAttack}${hasSpecialWeapons ? ' (boosted by special weapons)' : ''} eventually destroys the shadow lord (health: ${enemy.health}), but its attack of ${enemy.attack} overwhelms your defense of ${bastionStats.defense} repeatedly. ${actualCasualties} heroes fall in this pyrrhic victory. The portal seals, but the cost was everything.`
-                : `Through ${waveNumber} waves of desperate combat, your villagers give everything. Despite your attack of ${effectiveAttack} and defense of ${bastionStats.defense}, the shadow lord's overwhelming power (attack: ${enemy.attack}, health: ${enemy.health}) proves too much. ${actualCasualties} brave souls fall, but their sacrifice weakens the creature enough that it retreats. The portal partially seals - evil is contained, if not destroyed.`,
-            };
-          }
         },
       },
       {

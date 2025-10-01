@@ -33,6 +33,14 @@ interface GameStore extends GameState {
     isOpen: boolean;
     currentEvent: LogEntry | null;
   };
+  combatDialog: {
+    isOpen: boolean;
+    enemy: any | null;
+    eventTitle: string;
+    eventMessage: string;
+    onVictory: (() => Partial<GameState>) | null;
+    onDefeat: (() => Partial<GameState>) | null;
+  };
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -60,6 +68,7 @@ interface GameStore extends GameState {
   assignVillager: (job: keyof GameState['villagers']) => void;
   unassignVillager: (job: keyof GameState['villagers']) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
+  setCombatDialog: (isOpen: boolean, data?: any) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
 }
@@ -241,6 +250,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   eventDialog: {
     isOpen: false,
     currentEvent: null,
+  },
+  combatDialog: {
+    isOpen: false,
+    enemy: null,
+    eventTitle: "",
+    eventMessage: "",
+    onVictory: null,
+    onDefeat: null,
   },
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
@@ -473,6 +490,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     if (Object.keys(changes).length > 0) {
       let logMessage = null;
+      let combatData = null;
       const updatedChanges = { ...changes };
 
       if (updatedChanges._logMessage) {
@@ -480,8 +498,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         delete updatedChanges._logMessage;
       }
 
+      if (updatedChanges._combatData) {
+        combatData = updatedChanges._combatData;
+        delete updatedChanges._combatData;
+      }
+
       set((prevState) => {
-        const updatedState = { ...prevState, ...changes };
+        const updatedState = { ...prevState, ...updatedChanges };
         return {
           ...updatedState,
           log: logMessage
@@ -494,6 +517,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
             : prevState.log,
         };
       });
+
+      // Handle combat dialog
+      if (combatData) {
+        get().setEventDialog(false);
+        get().setCombatDialog(true, {
+          enemy: combatData.enemy,
+          eventTitle: combatData.eventTitle,
+          eventMessage: currentLogEntry?.message || "",
+          onVictory: combatData.onVictory,
+          onDefeat: combatData.onDefeat,
+        });
+        return;
+      }
 
       const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
       if (!isMerchantTradeChoice) {
@@ -578,6 +614,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const isMadnessEvent = madnessEventIds.includes(eventId);
       audioManager.playSound(isMadnessEvent ? 'eventMadness' : 'event', 0.02);
     }
+  },
+
+  setCombatDialog: (isOpen: boolean, data?: any) => {
+    set((state) => ({
+      ...state,
+      combatDialog: {
+        isOpen,
+        enemy: data?.enemy || null,
+        eventTitle: data?.eventTitle || "",
+        eventMessage: data?.eventMessage || "",
+        onVictory: data?.onVictory || null,
+        onDefeat: data?.onDefeat || null,
+      },
+    }));
   },
 
   updateEffects: () => {

@@ -7,11 +7,19 @@ import BastionPanel from './panels/BastionPanel'; // Import BastionPanel
 import LogPanel from './panels/LogPanel';
 import StartScreen from './StartScreen';
 import { useGameStore } from '@/game/state';
-import EventDialog from './EventDialog';
+import EventDialog from "./EventDialog";
+import CombatDialog from "./CombatDialog";
 import { useState, useEffect } from 'react';
 
 export default function GameContainer() {
-  const { activeTab, setActiveTab, flags, eventDialog, setEventDialog, buildings } = useGameStore();
+  const { 
+    activeTab, 
+    eventDialog,
+    combatDialog,
+    setEventDialog,
+    setCombatDialog,
+    addLogEntry,
+  } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
 
@@ -141,6 +149,13 @@ export default function GameContainer() {
         isOpen={eventDialog.isOpen}
         onClose={() => setEventDialog(false)}
         event={eventDialog.currentEvent}
+      />
+
+      {/* Combat Dialog */}
+      <CombatDialog
+        isOpen={combatDialog.isOpen}
+        onClose={() => setCombatDialog(false)}
+        combat={combatDialog.currentCombat}
       />
     </div>
   );
