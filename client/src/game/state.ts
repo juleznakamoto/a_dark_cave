@@ -12,6 +12,7 @@ import {
 } from "@/game/stateHelpers";
 import { calculateTotalEffects } from '@/game/rules/effects';
 import { calculateBastionStats } from '@/game/bastionStats';
+import { getMaxPopulation } from '@/game/population';
 import { audioManager } from '@/lib/audio';
 
 // Types
@@ -206,7 +207,7 @@ class StateManager {
       setTimeout(() => {
         const state = store();
         const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-        const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
+        const maxPopulation = getMaxPopulation(state);
 
         if (currentPopulation < maxPopulation) {
           // Update villagers directly through the store
@@ -653,14 +654,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getMaxPopulation: () => {
     const state = get();
-    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
+    return getMaxPopulation(state);
   },
 
   updatePopulation: () => {
     set((state) => {
       const updates = updatePopulationCounts(state);
       const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
+      const maxPopulation = getMaxPopulation(state);
 
       return { 
         ...state, 

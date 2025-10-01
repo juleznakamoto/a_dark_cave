@@ -199,10 +199,13 @@ export const getPopulationProductionText = (jobId: string): string => {
   );
 };
 
-export const calculateMaxPopulation = (gameState: GameState): number => {
+export const getMaxPopulation = (gameState: GameState): number => {
   const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
   const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
   const longhouseCapacity = (gameState.buildings.longhouse || 0) * 8;
 
   return woodenHutCapacity + stoneHutCapacity + longhouseCapacity;
 };
+
+// Alias for backward compatibility
+export const calculateMaxPopulation = getMaxPopulation;

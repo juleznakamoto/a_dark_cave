@@ -2,6 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effects";
+import { getMaxPopulation } from "@/game/population";
 
 export const storyEvents: Record<string, GameEvent> = {
   foodGone: {
@@ -958,8 +959,7 @@ export const storyEvents: Record<string, GameEvent> = {
             (sum, count) => sum + (count || 0),
             0,
           );
-          const maxPop =
-            state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4 + state.buildings.longhouse * 8;
+          const maxPop = getMaxPopulation(state);
           const canAdd = Math.min(4, maxPop - currentPop);
 
           return {

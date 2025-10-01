@@ -1,7 +1,7 @@
 import { useGameStore } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
-import { getPopulationProduction } from "./population";
+import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
 
@@ -367,8 +367,7 @@ function handleStrangerApproach() {
     (sum, count) => sum + (count || 0),
     0,
   );
-  const maxPopulation =
-    state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
+  const maxPopulation = getMaxPopulation(state);
 
   // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) return;
@@ -429,7 +428,7 @@ function handleStrangerApproach() {
       (sum, count) => sum + (count || 0),
       0,
     );
-    const maxPop = state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4 + state.buildings.longhouse * 8;
+    const maxPop = getMaxPopulation(state);
     const actualStrangersToAdd = Math.min(strangersCount, maxPop - currentPop);
 
     if (actualStrangersToAdd <= 0) return; // No room for anyone
