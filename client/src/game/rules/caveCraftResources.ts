@@ -13,7 +13,6 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bones": 50,
     },
     effects: {
-      "resources.bones": -50,
       "resources.bone_totem": 1,
       "story.seen.hasBoneTotem": true,
     },
@@ -32,8 +31,6 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.black_powder": 50,
     },
     effects: {
-      "resources.iron": -100,
-      "resources.black_powder": -50,
       "resources.ember_bomb": 1,
       "story.seen.hasEmberBomb": true,
     },
@@ -55,9 +52,9 @@ export const caveCraftResources: Record<string, Action> = {
     },
     cost: {
       "resources.cinderflame_dust": 10,
+      "resources.black_powder": 50,
     },
     effects: {
-      "resources.cinderflame_dust": -10,
       "resources.cinderflame_bomb": 1,
       "story.seen.hasCinderflameBomb": true,
     },

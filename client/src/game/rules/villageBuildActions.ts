@@ -1068,7 +1068,7 @@ export function handleBuildBottomlessPit(
     bottomlessPitResult.logEntries!.push({
       id: `moonstone-discovered-${Date.now()}`,
       message:
-        "As the workers dig the bottomless pit, their tools strike something extraordinary. Deep in the earth, they uncover veins of moonstone - a pale, luminescent mineral that pulses with otherworldly energy. Its purpose remains a mystery.",
+        "As the workers dig in the depth of the pit, their tools strike something extraordinary. Deep in the earth, they uncover veins of moonstone - a pale, luminescent mineral that seems to contain immense energy.",
       timestamp: Date.now(),
       type: "system",
     });
