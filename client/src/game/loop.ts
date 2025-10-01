@@ -377,9 +377,9 @@ function handleStrangerApproach() {
   // +2.5% for each stone hut
   probability += state.buildings.stoneHut * 0.025;
 
-  // +20% if population is 0
+  // if population is 0
   if (currentPopulation === 0) {
-    probability += 0.2;
+    probability = 0.9;
   }
 
   // Check if stranger approaches based on probability
