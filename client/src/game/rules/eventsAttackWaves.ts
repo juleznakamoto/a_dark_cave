@@ -18,55 +18,50 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    choices: [
-      {
-        id: "startFight",
-        label: "Start Fight",
-        effect: (state: GameState) => {
-          return {
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            firstWave: true,
+          },
+        },
+        _combatData: {
+          enemy: {
+            name: "Pale Creatures",
+            attack: 8,
+            maxHealth: 15,
+            currentHealth: 15,
+          },
+          eventTitle: "The First Wave",
+          eventMessage: "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
+          onVictory: () => ({
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                firstWave: true,
+                firstWaveVictory: true,
               },
             },
-            _combatData: {
-              enemy: {
-                name: "Pale Creatures",
-                attack: 8,
-                maxHealth: 15,
-                currentHealth: 15,
-              },
-              eventTitle: "The First Wave",
-              onVictory: () => ({
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    firstWaveVictory: true,
-                  },
-                },
-                _logMessage: "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours with no casualties!",
-              }),
-              onDefeat: () => {
-                const currentPopulation = Object.values(state.villagers).reduce(
-                  (sum, count) => sum + (count || 0),
-                  0,
-                );
-                const casualties = Math.min(5, currentPopulation);
-                const deathResult = killVillagers(state, casualties);
-                
-                return {
-                  ...deathResult,
-                  _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
-                };
-              },
-            },
-          };
+            _logMessage: "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours with no casualties!",
+          }),
+          onDefeat: () => {
+            const currentPopulation = Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+            const casualties = Math.min(5, currentPopulation);
+            const deathResult = killVillagers(state, casualties);
+            
+            return {
+              ...deathResult,
+              _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
+            };
+          },
         },
-      },
-    ],
+      };
+    },
   },
 
   secondWave: {
@@ -82,65 +77,60 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    choices: [
-      {
-        id: "startFight",
-        label: "Start Fight",
-        effect: (state: GameState) => {
-          return {
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            secondWave: true,
+          },
+        },
+        _combatData: {
+          enemy: {
+            name: "Armored Creatures",
+            attack: 12,
+            maxHealth: 25,
+            currentHealth: 25,
+          },
+          eventTitle: "The Second Wave",
+          eventMessage: "The creatures return with reinforcements - larger, more intelligent beings that coordinate their attacks. These new horrors wear crude armor made from the bones of previous victims and wield weapons that seem to pulse with dark energy. They've learned from the first assault.",
+          onVictory: () => ({
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                secondWave: true,
+                secondWaveVictory: true,
               },
             },
-            _combatData: {
-              enemy: {
-                name: "Armored Creatures",
-                attack: 12,
-                maxHealth: 25,
-                currentHealth: 25,
+            _logMessage: "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Your defensive mastery is complete!",
+          }),
+          onDefeat: () => {
+            const currentPopulation = Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+            const casualties = Math.min(8, currentPopulation);
+            const deathResult = killVillagers(state, casualties);
+            
+            // Damage some fortifications if available
+            let buildingDamage = {};
+            if (state.buildings.woodenPalisades > 0) {
+              buildingDamage = { woodenPalisades: Math.max(0, state.buildings.woodenPalisades - 1) };
+            }
+            
+            return {
+              ...deathResult,
+              buildings: {
+                ...state.buildings,
+                ...buildingDamage,
               },
-              eventTitle: "The Second Wave",
-              onVictory: () => ({
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    secondWaveVictory: true,
-                  },
-                },
-                _logMessage: "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Your defensive mastery is complete!",
-              }),
-              onDefeat: () => {
-                const currentPopulation = Object.values(state.villagers).reduce(
-                  (sum, count) => sum + (count || 0),
-                  0,
-                );
-                const casualties = Math.min(8, currentPopulation);
-                const deathResult = killVillagers(state, casualties);
-                
-                // Damage some fortifications if available
-                let buildingDamage = {};
-                if (state.buildings.woodenPalisades > 0) {
-                  buildingDamage = { woodenPalisades: Math.max(0, state.buildings.woodenPalisades - 1) };
-                }
-                
-                return {
-                  ...deathResult,
-                  buildings: {
-                    ...state.buildings,
-                    ...buildingDamage,
-                  },
-                  _logMessage: `The armored creatures prove more dangerous. ${casualties} villagers fall before the creatures withdraw. ${buildingDamage.woodenPalisades !== undefined ? 'Your fortifications are damaged in the assault.' : 'The attack leaves its mark on your defenses.'}`,
-                };
-              },
-            },
-          };
+              _logMessage: `The armored creatures prove more dangerous. ${casualties} villagers fall before the creatures withdraw. ${buildingDamage.woodenPalisades !== undefined ? 'Your fortifications are damaged in the assault.' : 'The attack leaves its mark on your defenses.'}`,
+            };
+          },
         },
-      },
-    ],
+      };
+    },
   },
 
   finalWave: {
@@ -179,6 +169,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 currentHealth: hasSpecialWeapons ? 40 : 60,
               },
               eventTitle: "The Final Wave",
+              eventMessage: "The ground splits open as something massive emerges from the depths. A towering creature of shadow and bone, easily three times the height of a man, leads an army of the twisted beings. Its presence alone makes reality bend and twist. This is the true enemy that was sealed behind the portal - and you have awakened it.",
               hasSpecialWeapons,
               onVictory: () => ({
                 story: {
@@ -242,6 +233,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               frostglas: 0,
               black_powder: 0,
               ember_bomb: 0,
+              cinderflame_bomb: 0,
             },
             buildings: {
               woodenHut: 0,

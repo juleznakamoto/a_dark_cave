@@ -434,24 +434,82 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const { newLogEntries, stateChanges, triggeredEvents } = EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
+      let logMessage = null;
+      let combatData = null;
+      const updatedChanges = { ...stateChanges };
+
+      if (updatedChanges._logMessage) {
+        logMessage = updatedChanges._logMessage;
+        delete updatedChanges._logMessage;
+      }
+
+      if (updatedChanges._combatData) {
+        combatData = updatedChanges._combatData;
+        delete updatedChanges._combatData;
+      }
+
       set((prevState) => ({
         ...prevState,
-        ...stateChanges,
+        ...updatedChanges,
         log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
-      newLogEntries.forEach(entry => {
-        if (entry.choices && entry.choices.length > 0) {
-          const currentDialog = get().eventDialog;
-          const isMerchantEvent = entry.id.includes('merchant');
-          const hasActiveMerchantDialog = currentDialog.isOpen &&
-            currentDialog.currentEvent?.id.includes('merchant');
+      // Handle combat dialog for attack waves
+      if (combatData) {
+        get().setCombatDialog(true, {
+          enemy: combatData.enemy,
+          eventTitle: combatData.eventTitle,
+          eventMessage: combatData.eventMessage,
+          onVictory: () => {
+            const victoryResult = combatData.onVictory();
+            // Apply victory state changes
+            set((prevState) => ({
+              ...prevState,
+              ...victoryResult,
+              log: victoryResult._logMessage
+                ? [...prevState.log, {
+                    id: `combat-victory-${Date.now()}`,
+                    message: victoryResult._logMessage,
+                    timestamp: Date.now(),
+                    type: 'system'
+                  }].slice(-10)
+                : prevState.log,
+            }));
+            get().setCombatDialog(false);
+          },
+          onDefeat: () => {
+            const defeatResult = combatData.onDefeat();
+            // Apply defeat state changes
+            set((prevState) => ({
+              ...prevState,
+              ...defeatResult,
+              log: defeatResult._logMessage
+                ? [...prevState.log, {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: defeatResult._logMessage,
+                    timestamp: Date.now(),
+                    type: 'system'
+                  }].slice(-10)
+                : prevState.log,
+            }));
+            get().setCombatDialog(false);
+          },
+        });
+      } else {
+        // Handle normal event dialogs
+        newLogEntries.forEach(entry => {
+          if (entry.choices && entry.choices.length > 0) {
+            const currentDialog = get().eventDialog;
+            const isMerchantEvent = entry.id.includes('merchant');
+            const hasActiveMerchantDialog = currentDialog.isOpen &&
+              currentDialog.currentEvent?.id.includes('merchant');
 
-          if (!hasActiveMerchantDialog || !isMerchantEvent) {
-            get().setEventDialog(true, entry);
+            if (!hasActiveMerchantDialog || !isMerchantEvent) {
+              get().setEventDialog(true, entry);
+            }
           }
-        }
-      });
+        });
+      }
 
       StateManager.schedulePopulationUpdate(get);
 
