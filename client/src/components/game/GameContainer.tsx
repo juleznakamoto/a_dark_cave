@@ -14,6 +14,8 @@ import { useState, useEffect } from 'react';
 export default function GameContainer() {
   const { 
     activeTab, 
+    flags,
+    buildings,
     eventDialog,
     combatDialog,
     setEventDialog,
