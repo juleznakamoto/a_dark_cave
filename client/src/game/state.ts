@@ -71,6 +71,7 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
+  updateBastionIntegrity: (newIntegrity: number) => void;
 }
 
 // Helper functions
@@ -717,6 +718,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updateBastionStats: () => {
     set((state) => ({
       bastion_stats: calculateBastionStats(state),
+    }));
+  },
+
+  updateBastionIntegrity: (newIntegrity: number) => {
+    set((state) => ({
+      bastion_stats: {
+        ...state.bastion_stats,
+        integrity: newIntegrity,
+      },
     }));
   },
 }));

@@ -9,6 +9,7 @@ import {
   getTotalMadness,
 } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Progress } from "@/components/ui/progress";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState } from "react";
@@ -417,7 +418,16 @@ export default function SidePanel() {
             <SidePanelSection title="Bastion" items={bastionStatsItems}>
               {bastion_stats && (
                 <div className="text-xs text-gray-400">
-                  Defense: {bastion_stats.defense} | Attack: {bastion_stats.attack}
+                  <div>Defense: {bastion_stats.defense} | Attack: {bastion_stats.attack}</div>
+                  {bastion_stats.maxIntegrity > 0 && (
+                    <div className="mt-1">
+                      Integrity: {bastion_stats.integrity}/{bastion_stats.maxIntegrity}
+                      <Progress 
+                        value={(bastion_stats.integrity / bastion_stats.maxIntegrity) * 100} 
+                        className="h-1 mt-1"
+                      />
+                    </div>
+                  )}
                 </div>
               )}
             </SidePanelSection>

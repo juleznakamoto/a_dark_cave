@@ -49,13 +49,37 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               (sum, count) => sum + (count || 0),
               0,
             );
-            const casualties = Math.min(5, currentPopulation);
-            const deathResult = killVillagers(state, casualties);
             
-            return {
-              ...deathResult,
-              _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
-            };
+            // Check if bastion integrity was completely depleted
+            const bastionStats = calculateBastionStats ? calculateBastionStats(state) : state.bastion_stats;
+            const integrity = bastionStats?.integrity || 0;
+            
+            if (integrity <= 0) {
+              // Catastrophic defeat - bastion fallen
+              const catastrophicCasualties = Math.floor(currentPopulation * 0.5);
+              const deathResult = killVillagers(state, catastrophicCasualties);
+              
+              return {
+                ...deathResult,
+                resources: {
+                  ...state.resources,
+                  wood: Math.floor(state.resources.wood * 0.3),
+                  food: Math.floor(state.resources.food * 0.2),
+                  stone: Math.floor(state.resources.stone * 0.3),
+                  iron: Math.floor(state.resources.iron * 0.5),
+                },
+                _logMessage: `Your bastion has fallen! The pale creatures pour through the breached defenses. ${catastrophicCasualties} villagers perish as your settlement is overrun. Much of your resources are lost in the chaos.`,
+              };
+            } else {
+              // Regular defeat
+              const casualties = Math.min(5, currentPopulation);
+              const deathResult = killVillagers(state, casualties);
+              
+              return {
+                ...deathResult,
+                _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
+              };
+            }
           },
         },
       };

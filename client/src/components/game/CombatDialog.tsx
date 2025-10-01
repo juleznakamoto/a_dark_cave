@@ -55,6 +55,7 @@ export default function CombatDialog({
   const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
   const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
+  const [currentIntegrity, setCurrentIntegrity] = useState(0);
 
   // Reset state when dialog opens
   useEffect(() => {
@@ -68,8 +69,9 @@ export default function CombatDialog({
       setCasualties(0);
       setCombatEnded(false);
       setCombatResult(null);
+      setCurrentIntegrity(bastionStats.integrity);
     }
-  }, [isOpen, enemy]);
+  }, [isOpen, enemy, bastionStats.integrity]);
 
   const bastionStats = calculateBastionStats(gameState);
 
@@ -120,6 +122,9 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
+    // Update bastion integrity in game state
+    gameState.updateBastionIntegrity(currentIntegrity);
+    
     if (combatResult === 'victory') {
       onVictory();
     } else if (combatResult === 'defeat') {
@@ -139,9 +144,22 @@ export default function CombatDialog({
 
       // Enemy attacks first
       if (currentEnemy.attack > bastionStats.defense) {
-        const victims = currentEnemy.attack - bastionStats.defense;
-        newCasualties += victims;
-        newLog.push(`Enemy deals ${victims} casualties! (Attack ${currentEnemy.attack} vs Defense ${bastionStats.defense})`);
+        const integrityDamage = currentEnemy.attack - bastionStats.defense;
+        const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
+        setCurrentIntegrity(newIntegrityValue);
+        newLog.push(`Enemy breaches defenses! Bastion integrity damaged by ${integrityDamage}! (Attack ${currentEnemy.attack} vs Defense ${bastionStats.defense})`);
+        
+        // Check if integrity is depleted
+        if (newIntegrityValue <= 0) {
+          newLog.push("Your bastion has fallen! The enemy overruns your defenses!");
+          setCombatLog(newLog);
+          setTimeout(() => {
+            setCombatEnded(true);
+            setCombatResult('defeat');
+            setIsProcessingRound(false);
+          }, 1000);
+          return;
+        }
       } else {
         newLog.push(`Your defenses hold! (Defense ${bastionStats.defense} vs Attack ${currentEnemy.attack})`);
       }
@@ -240,6 +258,19 @@ export default function CombatDialog({
               {/* Player Stats */}
               <div className="border-t pt-3">
                 <div className="text-sm font-medium mb-2">Your Forces</div>
+                
+                {/* Bastion Integrity */}
+                <div className="mb-3">
+                  <div className="flex justify-between text-sm">
+                    <span className="font-medium">Bastion Integrity</span>
+                    <span>{currentIntegrity}/{bastionStats.maxIntegrity}</span>
+                  </div>
+                  <Progress 
+                    value={(currentIntegrity / bastionStats.maxIntegrity) * 100} 
+                    className="h-3 mt-1"
+                  />
+                </div>
+                
                 <div className="grid grid-cols-2 gap-4 text-xs">
                   <div>
                     <span className="text-muted-foreground">Attack:</span> {bastionStats.attack}
