@@ -40,8 +40,8 @@ export function startGameLoop() {
           lastHunterProduction,
           lastConsumption,
           currentTime: timestamp,
-          interval: GATHERER_PRODUCTION_INTERVAL
-        }
+          interval: GATHERER_PRODUCTION_INTERVAL,
+        },
       });
 
       // Game tick logic
@@ -175,7 +175,10 @@ function handleMinerProduction() {
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
       count > 0 &&
-      (job.endsWith("miner") || job === "steel_forger" || job === "tanner" || job === "powder_maker")
+      (job.endsWith("miner") ||
+        job === "steel_forger" ||
+        job === "tanner" ||
+        job === "powder_maker")
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
@@ -364,7 +367,8 @@ function handleStrangerApproach() {
     (sum, count) => sum + (count || 0),
     0,
   );
-  const maxPopulation = state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
+  const maxPopulation =
+    state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
 
   // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) return;
@@ -388,12 +392,12 @@ function handleStrangerApproach() {
 
   // Check for the new condition: 10 stone houses built and a stranger approaches
   if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
-    // 25% chance for 2 strangers instead of 1
-    if (Math.random() < 0.25) {
+    if (Math.random() < 0.1) {
+      strangersCount = 3;
+    } else if (Math.random() < 0.30) {
       strangersCount = 2;
     }
   }
-
 
   // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {
@@ -408,10 +412,14 @@ function handleStrangerApproach() {
 
     // Adjust message if multiple strangers arrive
     if (strangersCount > 1) {
-        messages.push(`${strangersCount} strangers approach through the woods and join your village.`);
-        messages.push(`${strangersCount} travelers arrive and decide to stay.`);
-        messages.push(`${strangersCount} wanderers appear from the woods and become part of your community.`);
-        messages.push(`Several people approach the village and settle in.`);
+      messages.push(
+        `${strangersCount} strangers approach through the woods and join your village.`,
+      );
+      messages.push(`${strangersCount} travelers arrive and decide to stay.`);
+      messages.push(
+        `${strangersCount} wanderers appear from the woods and become part of your community.`,
+      );
+      messages.push(`Several people approach the village and settle in.`);
     }
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
@@ -431,7 +439,7 @@ function handleStrangerApproach() {
     setTimeout(() => state.updatePopulation(), 0);
 
     // Play new villager sound
-    audioManager.playSound('newVillager', 0.02);
+    audioManager.playSound("newVillager", 0.02);
   }
 }
 
