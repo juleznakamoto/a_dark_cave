@@ -424,13 +424,31 @@ function handleStrangerApproach() {
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    // Add the villager(s)
-    state.updateResource("free" as any, strangersCount);
+    // Calculate how many villagers can actually be added (respect max population)
+    const currentPop = Object.values(state.villagers).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+    const maxPop = state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4 + state.buildings.longhouse * 8;
+    const actualStrangersToAdd = Math.min(strangersCount, maxPop - currentPop);
+
+    if (actualStrangersToAdd <= 0) return; // No room for anyone
+
+    // Add the villager(s) - only the amount that fits
+    state.updateResource("free" as any, actualStrangersToAdd);
+
+    // Update message if we couldn't add all strangers
+    let finalMessage = randomMessage;
+    if (actualStrangersToAdd < strangersCount) {
+      finalMessage = actualStrangersToAdd === 1 
+        ? "A stranger approaches, but your village can only accommodate one more person."
+        : `${actualStrangersToAdd} strangers approach, but your village can only accommodate ${actualStrangersToAdd} more people.`;
+    }
 
     // Add log entry
     state.addLogEntry({
       id: `stranger-approaches-${Date.now()}`,
-      message: randomMessage,
+      message: finalMessage,
       timestamp: Date.now(),
       type: "system",
     });

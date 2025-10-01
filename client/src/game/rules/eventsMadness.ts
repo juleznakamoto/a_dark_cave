@@ -197,7 +197,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "wrongVillagers",
     condition: (state: GameState) => {
       const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
 
       return getTotalMadness(state) >= 30 &&
@@ -212,20 +212,26 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        wrongVillagers: true,
-      },
-      villagers: {
-        ...state.villagers,
-        free: state.villagers.free + 3,
-      },
-      stats: {
-        ...state.stats,
-        madness: (state.stats.madness || 0) + 2,
-      },
-    }),
+    effect: (state: GameState) => {
+      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
+      const villagersToAdd = Math.min(3, maxPopulation - currentPopulation);
+      
+      return {
+        events: {
+          ...state.events,
+          wrongVillagers: true,
+        },
+        villagers: {
+          ...state.villagers,
+          free: state.villagers.free + villagersToAdd,
+        },
+        stats: {
+          ...state.stats,
+          madness: (state.stats.madness || 0) + 2,
+        },
+      };
+    },
   },
 
   skinCrawling: {

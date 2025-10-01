@@ -959,7 +959,7 @@ export const storyEvents: Record<string, GameEvent> = {
             0,
           );
           const maxPop =
-            state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
+            state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4 + state.buildings.longhouse * 8;
           const canAdd = Math.min(4, maxPop - currentPop);
 
           return {
