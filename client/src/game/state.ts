@@ -513,8 +513,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
           enemy: combatData.enemy,
           eventTitle: combatData.eventTitle,
           eventMessage: currentLogEntry?.message || "",
-          onVictory: combatData.onVictory,
-          onDefeat: combatData.onDefeat,
+          onVictory: () => {
+            const victoryResult = combatData.onVictory();
+            // Apply victory state changes
+            set((prevState) => ({
+              ...prevState,
+              ...victoryResult,
+              log: victoryResult._logMessage
+                ? [...prevState.log, {
+                    id: `combat-victory-${Date.now()}`,
+                    message: victoryResult._logMessage,
+                    timestamp: Date.now(),
+                    type: 'system'
+                  }].slice(-10)
+                : prevState.log,
+            }));
+            get().setCombatDialog(false);
+          },
+          onDefeat: () => {
+            const defeatResult = combatData.onDefeat();
+            // Apply defeat state changes
+            set((prevState) => ({
+              ...prevState,
+              ...defeatResult,
+              log: defeatResult._logMessage
+                ? [...prevState.log, {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: defeatResult._logMessage,
+                    timestamp: Date.now(),
+                    type: 'system'
+                  }].slice(-10)
+                : prevState.log,
+            }));
+            get().setCombatDialog(false);
+          },
         });
         return;
       }

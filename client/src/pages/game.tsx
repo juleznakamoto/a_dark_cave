@@ -3,9 +3,13 @@ import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
 import { startGameLoop } from "@/game/loop";
 import { loadGame } from "@/game/save";
+import EventDialog from "@/components/game/EventDialog";
+import CombatDialog from "@/components/game/CombatDialog";
+
 
 export default function Game() {
   const { initialize } = useGameStore();
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
 
   useEffect(() => {
@@ -15,10 +19,10 @@ export default function Game() {
       if (savedState) {
         initialize(savedState);
       }
-      
+
       // Mark as initialized
       setIsInitialized(true);
-      
+
       // Start game loop
       startGameLoop();
     };
@@ -30,5 +34,25 @@ export default function Game() {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
   }
 
-  return <GameContainer />;
+  return (
+    <div>
+      <GameContainer />
+
+      <EventDialog
+        isOpen={eventDialog.isOpen}
+        onClose={() => setEventDialog(false)}
+        event={eventDialog.currentEvent}
+      />
+
+      <CombatDialog
+        isOpen={combatDialog.isOpen}
+        onClose={() => setCombatDialog(false)}
+        enemy={combatDialog.enemy}
+        eventTitle={combatDialog.eventTitle}
+        eventMessage={combatDialog.eventMessage}
+        onVictory={combatDialog.onVictory || (() => {})}
+        onDefeat={combatDialog.onDefeat || (() => {})}
+      />
+    </div>
+  );
 }

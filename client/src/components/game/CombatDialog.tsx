@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { GameState } from "@shared/schema";
@@ -69,7 +68,7 @@ export default function CombatDialog({
   }, [isOpen, enemy]);
 
   const bastionStats = calculateBastionStats(gameState);
-  
+
   // Available combat items
   const combatItems: CombatItem[] = [
     {
@@ -80,7 +79,7 @@ export default function CombatDialog({
     },
     {
       id: "cinderflame_bomb",
-      name: "Cinderflame Bomb", 
+      name: "Cinderflame Bomb",
       damage: 25,
       available: gameState.resources.cinderflame_bomb > 0,
     },
@@ -110,7 +109,10 @@ export default function CombatDialog({
     if (currentEnemy && currentEnemy.currentHealth - item.damage <= 0) {
       setTimeout(() => {
         setCombatLog(prev => [...prev, `${currentEnemy.name} is defeated!`]);
-        setTimeout(onVictory, 1000);
+        setTimeout(() => {
+          onVictory();
+          onClose();
+        }, 1000);
       }, 500);
     }
   };
@@ -119,11 +121,11 @@ export default function CombatDialog({
     if (!currentEnemy || isProcessingRound) return;
 
     setIsProcessingRound(true);
-    
+
     setTimeout(() => {
       let newLog = [...combatLog];
       let newCasualties = casualties;
-      
+
       // Enemy attacks first
       if (currentEnemy.attack > bastionStats.defense) {
         const victims = currentEnemy.attack - bastionStats.defense;
@@ -156,6 +158,7 @@ export default function CombatDialog({
             // Apply casualties to game state here if needed
           }
           onVictory();
+          onClose();
         }, 1000);
       } else {
         // Next round
@@ -173,11 +176,11 @@ export default function CombatDialog({
   const healthPercentage = currentEnemy ? (currentEnemy.currentHealth / currentEnemy.maxHealth) * 100 : 0;
 
   return (
-    <Dialog 
-      open={isOpen} 
+    <Dialog
+      open={isOpen}
       onOpenChange={() => {}}
     >
-      <DialogContent 
+      <DialogContent
         className="sm:max-w-md [&>button]:hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
@@ -193,7 +196,7 @@ export default function CombatDialog({
                 {eventMessage}
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="flex justify-center mt-4">
               <Button onClick={handleStartFight} className="w-full">
                 Start Fight
@@ -265,8 +268,8 @@ export default function CombatDialog({
 
               {/* Fight Button */}
               <div className="border-t pt-3">
-                <Button 
-                  onClick={handleFight} 
+                <Button
+                  onClick={handleFight}
                   disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
                   className="w-full"
                 >

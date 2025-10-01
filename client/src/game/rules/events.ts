@@ -58,13 +58,16 @@ export const gameEvents: Record<string, GameEvent> = {
 };
 
 export class EventManager {
+  // Assuming `allEvents` is intended to be `gameEvents` based on context
+  private static allEvents: Record<string, GameEvent> = gameEvents;
+
   static checkEvents(state: GameState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
   } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
-    const sortedEvents = Object.values(gameEvents).sort(
+    const sortedEvents = Object.values(this.allEvents).sort(
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
 
@@ -121,11 +124,20 @@ export class EventManager {
 
         // Apply effect if it exists and there are no choices
         if (event.effect && !eventChoices?.length) {
-          stateChanges = event.effect(state);
+          // If the effect returns combat data, ensure it's handled correctly
+          const effectResult = event.effect(state);
+          stateChanges = { ...stateChanges, ...effectResult };
         }
 
         // Mark as triggered
         event.triggered = true;
+        // For non-repeatable events, record in state
+        if (!event.repeatable) {
+          stateChanges.triggeredEvents = {
+            ...(state.triggeredEvents || {}),
+            [event.id]: true,
+          };
+        }
         break; // Only trigger one event per tick
       }
     }
@@ -140,18 +152,18 @@ export class EventManager {
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
     console.log(`[EventManager] Applying choice: ${choiceId} for event: ${eventId}`);
-    console.log(`[EventManager] Available game events:`, Object.keys(gameEvents));
+    console.log(`[EventManager] Available game events:`, Object.keys(this.allEvents));
 
-    const event = gameEvents[eventId];
-    if (!event) {
+    const eventDefinition = this.allEvents[eventId];
+    if (!eventDefinition) {
       console.log(`[EventManager] Event not found: ${eventId}`);
       return {};
     }
 
-    console.log(`[EventManager] Found event:`, event.id, `with choices:`, event.choices?.map(c => c.id));
+    console.log(`[EventManager] Found event:`, eventDefinition.id, `with choices:`, eventDefinition.choices?.map(c => c.id));
 
     // For merchant events, use choices from the current log entry if available
-    let choicesSource = event.choices;
+    let choicesSource = eventDefinition.choices;
     if (eventId === 'merchant' && currentLogEntry?.choices) {
       choicesSource = currentLogEntry.choices;
       console.log(`[EventManager] Using merchant choices from log entry:`, choicesSource.map(c => c.id));
@@ -161,8 +173,8 @@ export class EventManager {
     let choice = choicesSource?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
-    if (!choice && event.fallbackChoice && event.fallbackChoice.id === choiceId) {
-      choice = event.fallbackChoice;
+    if (!choice && eventDefinition.fallbackChoice && eventDefinition.fallbackChoice.id === choiceId) {
+      choice = eventDefinition.fallbackChoice;
       console.log(`[EventManager] Using fallback choice: ${choiceId}`);
     }
 
@@ -172,9 +184,30 @@ export class EventManager {
     }
 
     console.log(`[EventManager] Executing choice effect for: ${choiceId}`);
-    const result = choice.effect(state);
-    console.log(`[EventManager] Choice effect result:`, result);
+    const changes = choice.effect(state);
+    console.log(`[EventManager] Choice effect result:`, changes);
 
-    return result;
+    // Handle log message
+    if (changes._logMessage) {
+      const logMessage = changes._logMessage;
+      delete changes._logMessage;
+
+      // Add log entry to the changes
+      const updatedChanges = {
+        ...changes,
+        log: [...(state.log || []), {
+          id: `choice-result-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'system' as const
+        }].slice(-10)
+      };
+
+      return updatedChanges;
+    }
+
+    // Handle combat data - pass it through unchanged for the state manager to handle
+    // This includes _combatData which might be returned by attack wave events
+    return changes;
   }
 }
