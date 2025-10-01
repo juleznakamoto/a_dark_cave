@@ -91,6 +91,18 @@ export default function SidePanel() {
       visible: true,
     }));
 
+  // Dynamically generate blessing items from state
+  const blessingItems = Object.entries(gameState.blessings || {})
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: clothingEffects[key]?.name || capitalizeWords(key),
+      value: 1,
+      testId: `blessing-${key}`,
+      visible: true,
+      tooltip: clothingEffects[key]?.description,
+    }));
+
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
     .filter(([key, value]) => {
@@ -340,7 +352,7 @@ export default function SidePanel() {
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
       case "forest":
-        return ["resources", "relics"].includes(sectionName);
+        return ["resources", "relics", "blessings"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName); // Added bastion to show
 
@@ -394,6 +406,9 @@ export default function SidePanel() {
           )}
           {relicItems.length > 0 && shouldShowSection("relics") && (
             <SidePanelSection title="Relics" items={relicItems} />
+          )}
+          {blessingItems.length > 0 && shouldShowSection("blessings") && (
+            <SidePanelSection title="Blessings" items={blessingItems} />
           )}
           {buildingItems.length > 0 && shouldShowSection("buildings") && (
             <SidePanelSection title="Buildings" items={buildingItems} />

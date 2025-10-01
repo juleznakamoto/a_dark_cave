@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
+import { getTotalKnowledge } from "@/game/rules/effects";
 import {
   Dialog,
   DialogContent,
@@ -104,20 +105,28 @@ export default function CombatDialog({
   const handleUseItem = (item: CombatItem) => {
     if (!currentEnemy || usedItemsInCombat.has(item.id) || !item.available) return;
 
+    // Calculate final damage with knowledge bonus
+    const totalKnowledge = getTotalKnowledge(gameState);
+    const knowledgeBonus = Math.floor(totalKnowledge / 5);
+    const finalDamage = item.damage + knowledgeBonus;
+
     // Use the item
     setUsedItemsInCombat(prev => new Set([...prev, item.id]));
     setCurrentEnemy(prev => prev ? {
       ...prev,
-      currentHealth: Math.max(0, prev.currentHealth - item.damage)
+      currentHealth: Math.max(0, prev.currentHealth - finalDamage)
     } : null);
 
     // Update game state to consume the item
     gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
 
-    setCombatLog(prev => [...prev, `Used ${item.name} for ${item.damage} damage!`]);
+    const damageText = knowledgeBonus > 0 
+      ? `Used ${item.name} for ${finalDamage} damage! (${item.damage} + ${knowledgeBonus} knowledge bonus)`
+      : `Used ${item.name} for ${finalDamage} damage!`;
+    setCombatLog(prev => [...prev, damageText]);
 
     // Check if enemy is defeated
-    if (currentEnemy && currentEnemy.currentHealth - item.damage <= 0) {
+    if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0) {
       setTimeout(() => {
         setCombatLog(prev => [...prev, `${currentEnemy.name} is defeated!`]);
         setCombatEnded(true);
@@ -314,7 +323,11 @@ export default function CombatDialog({
                               </Button>
                             </TooltipTrigger>
                             <TooltipContent>
-                              <p>Damage: {item.damage}</p>
+                              <p>Base Damage: {item.damage}</p>
+                              {getTotalKnowledge(gameState) >= 5 && (
+                                <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
+                              )}
+                              <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>

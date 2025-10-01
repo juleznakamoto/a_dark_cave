@@ -915,3 +915,126 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 };
+
+
+
+  templeDedication: {
+    id: "templeDedication",
+    condition: (state: GameState) =>
+      state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
+    triggerType: "time",
+    timeProbability: 1.0, // 100% chance after 3 minutes
+    timeDelay: 180000, // 3 minutes
+    title: "The Blind Druid",
+    message:
+      "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a religion. Choose wisely, for this choice will shape your community's destiny forever.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "church_of_dagon",
+        label: "Church of Dagon",
+        effect: (state: GameState) => {
+          return {
+            blessings: {
+              ...state.blessings,
+              dagons_gift: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                templeDedicated: true,
+                templeDedicatedTo: "dagon",
+              },
+            },
+            _logMessage:
+              "You dedicate the temple to Dagon, the ancient sea god. The druid nods knowingly: 'The waters will provide for those who honor the deep ones. Human sacrifice will now be permitted in your sacred places, and the hunt shall be blessed.'",
+          };
+        },
+      },
+      {
+        id: "way_of_first_flame",
+        label: "Way of the First Flame",
+        effect: (state: GameState) => {
+          const currentPop = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+          const maxPop = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+          const canAdd = Math.min(4, maxPop - currentPop);
+          
+          return {
+            villagers: {
+              ...state.villagers,
+              free: (state.villagers.free || 0) + canAdd,
+            },
+            blessings: {
+              ...state.blessings,
+              flames_touch: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                templeDedicated: true,
+                templeDedicatedTo: "flame",
+              },
+            },
+            _logMessage:
+              `You dedicate the temple to the Way of the First Flame. The druid smiles: 'The eternal flame burns bright. ${canAdd} Followers of the Way have joined your community and will live in the temple. The forge shall be blessed with their touch.'`,
+          };
+        },
+      },
+      {
+        id: "cult_of_ravenborn",
+        label: "Cult of the Ravenborn",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              ravens_orb: true,
+            },
+            blessings: {
+              ...state.blessings,
+              ravens_mark: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                templeDedicated: true,
+                templeDedicatedTo: "raven",
+              },
+            },
+            _logMessage:
+              "You dedicate the temple to the Cult of the Ravenborn. The druid presents you with a dark orb: 'The ravens have blessed this relic with knowledge beyond mortal understanding. New souls will be drawn to your community more frequently.'",
+          };
+        },
+      },
+      {
+        id: "order_of_ashbringer",
+        label: "Order of the Ashbringer",
+        effect: (state: GameState) => {
+          return {
+            weapons: {
+              ...state.weapons,
+              ashen_dagger: true,
+            },
+            blessings: {
+              ...state.blessings,
+              ashen_embrace: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                templeDedicated: true,
+                templeDedicatedTo: "ash",
+              },
+            },
+            _logMessage:
+              "You dedicate the temple to the Order of the Ashbringer. The druid hands you an ancient dagger wreathed in grey flames: 'This blade carries the strength of the first ash. The earth shall yield its treasures more readily to those who embrace the ash.'",
+          };
+        },
+      },
+    ],
+  },
