@@ -16,7 +16,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
     defense += 5;
-    attackFromFortifications += 2;
+    attackFromFortifications += 3;
   }
 
   // Watchtower contributions (levels provide different bonuses)
@@ -29,19 +29,19 @@ export function calculateBastionStats(state: GameState): BastionStats {
     if (watchtowerLevel >= 2) {
       // Level 2: Guard Tower
       defense += 2;
-      attackFromFortifications += 6;
+      attackFromFortifications += 8;
     }
     
     if (watchtowerLevel >= 3) {
       // Level 3: Fortified Tower
       defense += 3;
-      attackFromFortifications += 8;
+      attackFromFortifications += 12;
     }
     
     if (watchtowerLevel >= 4) {
       // Level 4: Cannon Tower
       defense += 4;
-      attackFromFortifications += 10;
+      attackFromFortifications += 16;
     }
   }
 
