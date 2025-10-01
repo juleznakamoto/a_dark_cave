@@ -48,7 +48,7 @@ export default function CombatDialog({
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
-  const [usedItems, setUsedItems] = useState<Set<string>>(new Set());
+  const [usedItemsInCombat, setUsedItemsInCombat] = useState<Set<string>>(new Set());
   const [combatLog, setCombatLog] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
@@ -65,7 +65,7 @@ export default function CombatDialog({
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
       setRound(1);
-      setUsedItems(new Set());
+      setUsedItemsInCombat(new Set());
       setCombatLog([]);
       setIsProcessingRound(false);
       setCasualties(0);
@@ -100,10 +100,10 @@ export default function CombatDialog({
   };
 
   const handleUseItem = (item: CombatItem) => {
-    if (!currentEnemy || usedItems.has(item.id) || !item.available) return;
+    if (!currentEnemy || usedItemsInCombat.has(item.id) || !item.available) return;
 
     // Use the item
-    setUsedItems(prev => new Set([...prev, item.id]));
+    setUsedItemsInCombat(prev => new Set([...prev, item.id]));
     setCurrentEnemy(prev => prev ? {
       ...prev,
       currentHealth: Math.max(0, prev.currentHealth - item.damage)
@@ -127,7 +127,7 @@ export default function CombatDialog({
   const handleEndFight = () => {
     // Update bastion integrity in game state
     gameState.updateBastionIntegrity(currentIntegrity);
-    
+
     if (combatResult === 'victory') {
       onVictory();
     } else if (combatResult === 'defeat') {
@@ -151,7 +151,7 @@ export default function CombatDialog({
         const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
         setCurrentIntegrity(newIntegrityValue);
         newLog.push(`Enemy breaches defenses! Bastion integrity damaged by ${integrityDamage}! (Attack ${currentEnemy.attack} vs Defense ${bastionStats.defense})`);
-        
+
         // Check if integrity is depleted
         if (newIntegrityValue <= 0) {
           newLog.push("Your bastion has fallen! The enemy overruns your defenses!");
@@ -196,7 +196,7 @@ export default function CombatDialog({
       } else {
         // Next round
         setRound(prev => prev + 1);
-        setUsedItems(new Set()); // Reset item usage for new round
+        setUsedItemsInCombat(new Set()); // Reset item usage for new round
         newLog.push(`Round ${round + 1} begins!`);
         setCombatLog(newLog);
         setIsProcessingRound(false);
@@ -252,7 +252,10 @@ export default function CombatDialog({
                   <span className="font-medium">{currentEnemy?.name} Health</span>
                   <span>{currentEnemy?.currentHealth}/{currentEnemy?.maxHealth} </span>
                 </div>
-                <Progress value={healthPercentage} className="h-3 mt-1" />
+                <Progress 
+                  value={healthPercentage} 
+                  className="h-3 mt-1 [&>div]:bg-red-700" // Dark red for enemy health
+                />
                 <div className="text-xs mt-1">
                   Attack: {currentEnemy?.attack}
                 </div>
@@ -260,8 +263,8 @@ export default function CombatDialog({
 
               {/* Player Stats */}
               <div className="border-t pt-3">
-                
-                
+
+
                 {/* Bastion Integrity */}
                 <div className="mb-3">
                   <div className="flex justify-between text-sm">
@@ -270,15 +273,15 @@ export default function CombatDialog({
                   </div>
                   <Progress 
                     value={(currentIntegrity / maxIntegrityForCombat) * 100} 
-                    className="h-3 mt-1"
+                    className="h-3 mt-1 [&>div]:bg-green-700" // Dark green for bastion integrity
                   />
                 </div>
-                
+
                 <div className="text-xs">
                   <div>
                     Attack: {bastionStats.attack} enemDefense: {bastionStats.defense}
                   </div>
-                  
+
                 </div>
                 {casualties > 0 && (
                   <div className="text-xs text-red-600 mt-1">
@@ -298,12 +301,12 @@ export default function CombatDialog({
                         <Button
                           key={item.id}
                           onClick={() => handleUseItem(item)}
-                          disabled={usedItems.has(item.id) || isProcessingRound}
+                          disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
                           variant="outline"
                           size="sm"
                           className="text-xs"
                         >
-                          {usedItems.has(item.id) ? "Used" : `${item.name} (${item.damage})`}
+                          {usedItemsInCombat.has(item.id) ? "Used" : `${item.name} (${item.damage})`}
                         </Button>
                       ))}
                   </div>
@@ -335,7 +338,7 @@ export default function CombatDialog({
                 <div className="border-t pt-3">
                   <div className="text-sm font-medium mb-2">Combat Log</div>
                   <div className="max-h-32 overflow-y-auto space-y-1">
-                    {combatLog.slice(-5).map((entry, index) => (
+                    {combatLog.map((entry, index) => (
                       <div key={index} className="text-xs text-muted-foreground">
                         {entry}
                       </div>
