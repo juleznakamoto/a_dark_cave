@@ -263,12 +263,8 @@ export default function CombatDialog({
                 <div className="mb-3">
                   <div className="flex justify-between text-sm">
                     <span className="font-medium">Bastion Integrity</span>
-                    <span>{currentIntegrity}/{bastionStats.maxIntegrity}</span>
+                    <span>{currentIntegrity}</span>
                   </div>
-                  <Progress 
-                    value={(currentIntegrity / bastionStats.maxIntegrity) * 100} 
-                    className="h-3 mt-1"
-                  />
                 </div>
                 
                 <div className="grid grid-cols-2 gap-4 text-xs">

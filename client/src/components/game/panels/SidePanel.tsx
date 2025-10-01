@@ -419,13 +419,9 @@ export default function SidePanel() {
               {bastion_stats && (
                 <div className="text-xs text-gray-400">
                   <div>Defense: {bastion_stats.defense} | Attack: {bastion_stats.attack}</div>
-                  {bastion_stats.maxIntegrity > 0 && (
+                  {bastion_stats.integrity > 0 && (
                     <div className="mt-1">
-                      Integrity: {bastion_stats.integrity}/{bastion_stats.maxIntegrity}
-                      <Progress 
-                        value={(bastion_stats.integrity / bastion_stats.maxIntegrity) * 100} 
-                        className="h-1 mt-1"
-                      />
+                      Integrity: {bastion_stats.integrity}
                     </div>
                   )}
                 </div>

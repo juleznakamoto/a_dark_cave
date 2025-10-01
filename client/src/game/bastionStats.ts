@@ -8,19 +8,18 @@ export interface BastionStats {
   attackFromFortifications: number;
   attackFromStrength: number;
   integrity: number;
-  maxIntegrity: number;
 }
 
 export function calculateBastionStats(state: GameState): BastionStats {
   let defense = 0;
   let attackFromFortifications = 0;
-  let maxIntegrity = 0;
+  let baseIntegrity = 0;
 
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
     defense += 5;
     attackFromFortifications += 3;
-    maxIntegrity += 20;
+    baseIntegrity += 20;
   }
 
   // Watchtower contributions (levels provide different bonuses)
@@ -29,27 +28,27 @@ export function calculateBastionStats(state: GameState): BastionStats {
     // Level 1: Watchtower
     defense += 1;
     attackFromFortifications += 4;
-    maxIntegrity += 5;
+    baseIntegrity += 5;
     
     if (watchtowerLevel >= 2) {
       // Level 2: Guard Tower
       defense += 2;
       attackFromFortifications += 8;
-      maxIntegrity += 5;
+      baseIntegrity += 5;
     }
     
     if (watchtowerLevel >= 3) {
       // Level 3: Fortified Tower
       defense += 3;
       attackFromFortifications += 12;
-      maxIntegrity += 10;
+      baseIntegrity += 10;
     }
     
     if (watchtowerLevel >= 4) {
       // Level 4: Cannon Tower
       defense += 4;
       attackFromFortifications += 16;
-      maxIntegrity += 10;
+      baseIntegrity += 10;
     }
   }
 
@@ -58,24 +57,24 @@ export function calculateBastionStats(state: GameState): BastionStats {
   if (palisadesLevel > 0) {
     // Level 1: Wooden Palisades
     defense += 4;
-    maxIntegrity += 10;
+    baseIntegrity += 10;
     
     if (palisadesLevel >= 2) {
       // Level 2: Fortified Palisades
       defense += 6;
-      maxIntegrity += 15;
+      baseIntegrity += 15;
     }
     
     if (palisadesLevel >= 3) {
       // Level 3: Stone Wall
       defense += 8;
-      maxIntegrity += 25;
+      baseIntegrity += 25;
     }
     
     if (palisadesLevel >= 4) {
       // Level 4: Reinforced Wall
       defense += 10;
-      maxIntegrity += 35;
+      baseIntegrity += 35;
     }
   }
 
@@ -83,16 +82,15 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const attackFromStrength = getTotalStrength(state);
   const totalAttack = attackFromFortifications + attackFromStrength;
 
-  // Current integrity from game state (starts at max, can be damaged)
-  const currentIntegrity = state.bastion_stats?.integrity ?? maxIntegrity;
+  // Current integrity from game state (starts at base, can be damaged)
+  const currentIntegrity = state.bastion_stats?.integrity ?? baseIntegrity;
 
   return {
     defense,
     attack: totalAttack,
     attackFromFortifications,
     attackFromStrength,
-    integrity: Math.min(currentIntegrity, maxIntegrity),
-    maxIntegrity,
+    integrity: currentIntegrity,
   };
 }
 
