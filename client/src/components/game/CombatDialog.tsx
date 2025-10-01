@@ -271,7 +271,7 @@ export default function CombatDialog({
                     className="h-3 mt-1 [&>div]:bg-red-900" // Darker red for enemy health
                   />
                   {enemyDamageIndicator.visible && (
-                    <div className="absolute inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none animate-pulse">
+                    <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none animate-pulse">
                       -{enemyDamageIndicator.amount}
                     </div>
                   )}
