@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
-import { GameState } from "@shared/schema";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   Dialog,
