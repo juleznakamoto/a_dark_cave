@@ -282,7 +282,7 @@ export const storyEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: 'Buy the mirror for 500 iron',
+        label: "Buy the mirror for 500 iron",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -920,7 +920,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     triggerType: "time",
-    timeProbability: 1.0, 
+    timeProbability: 1.0,
     title: "The Blind Druid",
     message:
       "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a religion. Choose wisely, for this choice will shape your community's destiny forever.'",
@@ -954,8 +954,12 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "way_of_first_flame",
         label: "Way of the First Flame",
         effect: (state: GameState) => {
-          const currentPop = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-          const maxPop = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+          const currentPop = Object.values(state.villagers).reduce(
+            (sum, count) => sum + (count || 0),
+            0,
+          );
+          const maxPop =
+            state.buildings.woodenHut * 2 + state.buildings.stoneHut * 4;
           const canAdd = Math.min(4, maxPop - currentPop);
 
           return {
@@ -1043,7 +1047,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 25,
     title: "The Viking Builder",
     message:
-      "One day a very sturdy man wearing thick fur stands in front of the gates and demands entry. He says he is from the far north and claims to be a great builder. For a bit of gold, he will teach you how to build great houses that can shelter many more villagers.",
+      "One day, a strong man wearing thick furs stands at the gates and asks to enter. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -1072,7 +1076,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pay the Viking builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter many families under one roof. The knowledge of longhouse construction is now yours.",
+              "You pay the Viking builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter multiple families under one roof.",
           };
         },
       },
@@ -1081,13 +1085,6 @@ export const storyEvents: Record<string, GameEvent> = {
         label: "Send him away",
         effect: (state: GameState) => {
           return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                vikingBuilderEvent: true,
-              },
-            },
             _logMessage:
               "You refuse the Viking's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
           };
@@ -1103,20 +1100,12 @@ export const storyEvents: Record<string, GameEvent> = {
           if (Math.random() < successChance) {
             // Success: get knowledge without paying
             return {
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  vikingBuilderEvent: true,
-                  longhouseUnlocked: true,
-                },
-              },
               _logMessage:
-                "Your men overpower the Viking and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night. You now know how to build these great halls.",
+                "Your men overpower the Viking and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night.",
             };
           } else {
             // Failure: he escapes and villagers are injured
-            const casualties = Math.floor(Math.random() * 3) + 1;
+            const casualties = Math.floor(Math.random() * 5) + 1;
             const deathResult = killVillagers(state, casualties);
 
             return {
