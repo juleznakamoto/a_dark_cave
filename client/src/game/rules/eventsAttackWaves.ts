@@ -8,10 +8,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
     id: "firstWave",
     condition: (state: GameState) =>
-      state.flags.portalBlasted && state.story.seen.hasBastion &&
-      !state.story.seen.firstWave,
+      state.flags.portalBlasted && state.story.seen.hasBastion, 
+      // && !state.story.seen.firstWave,
     triggerType: "resource",
-    timeProbability: 0.5, // Triggers quickly after portal blast
+    timeProbability: 0.05, // Triggers quickly after portal blast
     title: "The First Wave",
     message:
       "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
