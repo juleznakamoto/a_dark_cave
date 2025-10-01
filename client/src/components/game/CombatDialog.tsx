@@ -74,13 +74,13 @@ export default function CombatDialog({
     {
       id: "ember_bomb",
       name: "Ember Bomb",
-      damage: 15,
+      damage: 5,
       available: gameState.resources.ember_bomb > 0,
     },
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
-      damage: 25,
+      damage: 15,
       available: gameState.resources.cinderflame_bomb > 0,
     },
   ];
