@@ -253,10 +253,7 @@ export default function SidePanel() {
         ![
           "bastion",
           "watchtower",
-          "woodenPalisades",
-          "fortifiedPalisades",
-          "stoneWall",
-          "reinforcedWall",
+          "palisades",
         ].includes(key)
       ) {
         return null;
@@ -264,37 +261,35 @@ export default function SidePanel() {
 
       if ((value ?? 0) === 0) return null;
 
-      let label =
-        key === "woodenPalisades"
-          ? "Wooden Palisades"
-          : key === "fortifiedPalisades"
-            ? "Fortified Palisades"
-            : key === "stoneWall"
-              ? "Stone Wall"
-              : key === "reinforcedWall"
-                ? "Reinforced Wall"
-                : capitalizeWords(key);
-
-      // Get bastion stats contribution for this building
+      let label = capitalizeWords(key);
       let tooltip = undefined;
 
       // Map building keys to their contributions (based on bastionStats.ts logic)
       if (key === "watchtower") {
         const level = value ?? 0;
-        const defense = level * 5;
-        const attack = level * 3;
-        const integrity = level * 10;
-        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
-      } else if (key === "bastion") {
-        tooltip = "+20 Defense\n+10 Attack\n+50 Integrity";
-      } else if (["woodenPalisades", "fortifiedPalisades", "stoneWall", "reinforcedWall"].includes(key)) {
-        // For palisades, we need to check the actual palisades level
-        const palisadesLevel = buildings.palisades || 0;
-        if (palisadesLevel > 0) {
-          const defense = palisadesLevel * 3;
-          const integrity = palisadesLevel * 8;
-          tooltip = `+${defense} Defense\n+${integrity} Integrity`;
+        const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+        label = watchtowerLabels[level - 1] || "Watchtower";
+        
+        let defense = 0;
+        let attack = 0;
+        for (let i = 1; i <= level; i++) {
+          defense += 1 + (i - 1);
+          attack += 4 * i;
         }
+        tooltip = `+${defense} Defense\n+${attack} Attack`;
+      } else if (key === "bastion") {
+        tooltip = "+5 Defense\n+3 Attack";
+      } else if (key === "palisades") {
+        const palisadesLevel = value ?? 0;
+        const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+        label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
+        
+        let defense = 0;
+        if (palisadesLevel >= 1) defense += 4;
+        if (palisadesLevel >= 2) defense += 6;
+        if (palisadesLevel >= 3) defense += 8;
+        if (palisadesLevel >= 4) defense += 10;
+        tooltip = `+${defense} Defense`;
       }
 
       return {
@@ -306,18 +301,7 @@ export default function SidePanel() {
         tooltip: tooltip,
       };
     })
-    .filter((item) => item !== null) // Remove nulls from buildings not present
-    .filter((item) => {
-      // Hide basic palisades when fortified are built
-      if (item.id === "woodenPalisades" && buildings.fortifiedPalisades > 0) {
-        return false;
-      }
-      // Hide stone wall when reinforced are built
-      if (item.id === "stoneWall" && buildings.reinforcedWall > 0) {
-        return false;
-      }
-      return true;
-    });
+    .filter((item) => item !== null); // Remove nulls from buildings not present
 
   // Dynamically generate bastion stats items from state
   const bastionStatsItems = Object.entries(bastion_stats || {})
