@@ -893,6 +893,40 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 120,
   },
+
+  buildLonghouse: {
+    id: "buildLonghouse",
+    label: "Longhouse",
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.longhouseUnlocked": true,
+        "buildings.longhouse": 0,
+      },
+      2: {
+        "buildings.longhouse": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 10000,
+        "resources.stone": 5000,
+      },
+      2: {
+        "resources.wood": 15000,
+        "resources.stone": 7500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.longhouse": 1,
+      },
+      2: {
+        "buildings.longhouse": 1,
+      },
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -1448,4 +1482,35 @@ export function handleBuildWizardTower(
   }
 
   return wizardTowerResult;
+}
+
+export function handleBuildLonghouse(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const longhouseResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildLonghouse",
+    "longhouse",
+  );
+
+  // Add longhouse completion message
+  const currentLevel = state.buildings.longhouse || 0;
+  const longhouseLabels = ["First Longhouse", "Second Longhouse"];
+  const longhouseMessages = [
+    "The first longhouse rises - a massive wooden hall with thick timbers and a great hearth. This Nordic design can shelter many families under one sturdy roof.",
+    "A second longhouse is completed, expanding your settlement's capacity to house even more villagers in the traditional Nordic style."
+  ];
+
+  if (currentLevel < longhouseLabels.length) {
+    longhouseResult.logEntries!.push({
+      id: `longhouse-built-level-${currentLevel + 1}-${Date.now()}`,
+      message: longhouseMessages[currentLevel],
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return longhouseResult;
 }

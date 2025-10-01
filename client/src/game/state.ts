@@ -206,7 +206,7 @@ class StateManager {
       setTimeout(() => {
         const state = store();
         const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-        const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+        const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
 
         if (currentPopulation < maxPopulation) {
           // Update villagers directly through the store
@@ -653,14 +653,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   getMaxPopulation: () => {
     const state = get();
-    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+    return (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
   },
 
   updatePopulation: () => {
     set((state) => {
       const updates = updatePopulationCounts(state);
       const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+      const maxPopulation = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4) + (state.buildings.longhouse * 8);
 
       return { 
         ...state, 

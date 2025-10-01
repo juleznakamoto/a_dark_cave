@@ -157,6 +157,7 @@ export const gameStateSchema = z.object({
     bastion: z.number().default(0),
     watchtower: z.number().default(0),
     palisades: z.number().default(0),
+    longhouse: z.number().default(0),
   }).default({}),
   villagers: z.object({
     free: z.number().min(0).default(0),

@@ -1034,4 +1034,105 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  vikingBuilder: {
+    id: "vikingBuilder",
+    condition: (state: GameState) =>
+      state.buildings.palisades >= 2 && !state.story.seen.vikingBuilderEvent,
+    triggerType: "resource",
+    timeProbability: 25,
+    title: "The Viking Builder",
+    message:
+      "One day a very sturdy man wearing thick fur stands in front of the gates and demands entry. He says he is from the far north and claims to be a great builder. For a bit of gold, he will teach you how to build great houses that can shelter many more villagers.",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "acceptDeal",
+        label: "Accept Deal (250 gold)",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 250) {
+            return {
+              _logMessage: "You don't have enough gold for this deal.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 250,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                vikingBuilderEvent: true,
+                longhouseUnlocked: true,
+              },
+            },
+            _logMessage:
+              "You pay the Viking builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter many families under one roof. The knowledge of longhouse construction is now yours.",
+          };
+        },
+      },
+      {
+        id: "sendAway",
+        label: "Send him away",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                vikingBuilderEvent: true,
+              },
+            },
+            _logMessage:
+              "You refuse the Viking's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
+          };
+        },
+      },
+      {
+        id: "forceHim",
+        label: "Force him to teach you",
+        effect: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const successChance = 0.3 + strength * 0.01; // 30% base + 1% per strength point
+
+          if (Math.random() < successChance) {
+            // Success: get knowledge without paying
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  vikingBuilderEvent: true,
+                  longhouseUnlocked: true,
+                },
+              },
+              _logMessage:
+                "Your men overpower the Viking and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night. You now know how to build these great halls.",
+            };
+          } else {
+            // Failure: he escapes and villagers are injured
+            const casualties = Math.floor(Math.random() * 3) + 1;
+            const deathResult = killVillagers(state, casualties);
+
+            return {
+              ...deathResult,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  vikingBuilderEvent: true,
+                },
+              },
+              _logMessage: `The Viking proves stronger than expected! He fights back fiercely, injuring ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
+            };
+          }
+        },
+      },
+    ],
+  },
 };

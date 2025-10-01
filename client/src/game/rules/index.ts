@@ -12,7 +12,10 @@ import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMiningActions } from "./caveMineActions";
-import { villageBuildActions } from "./villageBuildActions";
+import {
+  villageBuildActions,
+  handleBuildLonghouse,
+} from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
@@ -98,6 +101,9 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   }
   if (actionId === "buildWizardTowe") {
     return (state.buildings.wizardTower || 0) + 1;
+  }
+  if (actionId === "buildLonghouse") {
+    return (state.buildings.longhouse || 0) + 1;
   }
   return 1;
 };
@@ -755,4 +761,31 @@ gameActions.craftEmberBomb = {
 gameActions.blastPortal = {
   ...caveExploreActions.blastPortal,
   handle: handleBlastPortal,
+};
+
+gameActions.buildLonghouse = {
+  cost: {
+    1: {
+      resources: {
+        wood: 10000,
+        stone: 5000,
+      },
+    },
+    2: {
+      resources: {
+        wood: 15000,
+        stone: 7500,
+      },
+    },
+  },
+  effects: {
+    resources: {
+      villagers: 8,
+    },
+  },
+  building: true,
+  show_when: {
+    "story.events.viking_builder_event_accepted": true,
+  },
+  handle: handleBuildLonghouse,
 };

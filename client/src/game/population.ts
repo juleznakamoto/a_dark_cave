@@ -145,7 +145,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
-  
+
 };
 
 export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
@@ -161,7 +161,7 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
       Object.entries(state.buildings).forEach(([buildingType, buildingCount]) => {
         if (buildingCount > 0) {
           const buildingAction = villageBuildActions[`build${buildingType.charAt(0).toUpperCase() + buildingType.slice(1)}`];
-          
+
           if (buildingAction && buildingAction.productionEffects && buildingAction.productionEffects[jobId]) {
             const jobEffects = buildingAction.productionEffects[jobId];
             if (jobEffects[prod.resource]) {
@@ -197,4 +197,12 @@ export const getPopulationProductionText = (jobId: string): string => {
       )
       .join(", ") + " per 15s"
   );
+};
+
+export const calculateMaxPopulation = (gameState: GameState): number => {
+  const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
+  const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
+  const longhouseCapacity = (gameState.buildings.longhouse || 0) * 8;
+
+  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity;
 };
