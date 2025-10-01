@@ -67,7 +67,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   secondWave: {
     id: "secondWave",
     condition: (state: GameState) =>
-      state.story.seen.firstWave && !state.story.seen.secondWave,
+      state.story.seen.firstWaveVictory && !state.story.seen.secondWave,
     triggerType: "resource",
     timeProbability: 3, // 3 minutes after first wave
     title: "The Second Wave",
@@ -142,7 +142,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   finalWave: {
     id: "finalWave",
     condition: (state: GameState) =>
-      state.story.seen.secondWave && !state.story.seen.finalWave,
+      state.story.seen.secondWaveVictory && !state.story.seen.finalWave,
     triggerType: "resource",
     timeProbability: 5, // 5 minutes after second wave
     title: "The Final Wave",
