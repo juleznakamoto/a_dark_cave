@@ -53,6 +53,8 @@ export default function CombatDialog({
   const [combatLog, setCombatLog] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
+  const [combatEnded, setCombatEnded] = useState(false);
+  const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
 
   // Reset state when dialog opens
   useEffect(() => {
@@ -64,6 +66,8 @@ export default function CombatDialog({
       setCombatLog([]);
       setIsProcessingRound(false);
       setCasualties(0);
+      setCombatEnded(false);
+      setCombatResult(null);
     }
   }, [isOpen, enemy]);
 
@@ -109,12 +113,19 @@ export default function CombatDialog({
     if (currentEnemy && currentEnemy.currentHealth - item.damage <= 0) {
       setTimeout(() => {
         setCombatLog(prev => [...prev, `${currentEnemy.name} is defeated!`]);
-        setTimeout(() => {
-          onVictory();
-          onClose();
-        }, 1000);
+        setCombatEnded(true);
+        setCombatResult('victory');
       }, 500);
     }
+  };
+
+  const handleEndFight = () => {
+    if (combatResult === 'victory') {
+      onVictory();
+    } else if (combatResult === 'defeat') {
+      onDefeat();
+    }
+    onClose();
   };
 
   const handleFight = () => {
@@ -157,8 +168,9 @@ export default function CombatDialog({
             const actualCasualties = Math.min(newCasualties, currentPopulation);
             // Apply casualties to game state here if needed
           }
-          onVictory();
-          onClose();
+          setCombatEnded(true);
+          setCombatResult('victory');
+          setIsProcessingRound(false);
         }, 1000);
       } else {
         // Next round
@@ -268,13 +280,22 @@ export default function CombatDialog({
 
               {/* Fight Button */}
               <div className="border-t pt-3">
-                <Button
-                  onClick={handleFight}
-                  disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
-                  className="w-full"
-                >
-                  {isProcessingRound ? "Fighting..." : "Fight"}
-                </Button>
+                {combatEnded ? (
+                  <Button
+                    onClick={handleEndFight}
+                    className="w-full"
+                  >
+                    End Fight
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleFight}
+                    disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
+                    className="w-full"
+                  >
+                    {isProcessingRound ? "Fighting..." : "Fight"}
+                  </Button>
+                )}
               </div>
 
               {/* Combat Log */}
