@@ -131,7 +131,14 @@ export default function EventDialog({
       return; // Don't close dialog for trade purchases
     }
 
-    // For all other events (including say_goodbye), don't close yet - wait for result message or auto-close
+    // For merchant "Say Goodbye", close dialog
+    if (choiceId === "say_goodbye" && event?.id.includes("merchant")) {
+      fallbackExecutedRef.current = true;
+      onClose();
+      return;
+    }
+
+    // For other events, don't close yet - wait for result message or auto-close
     fallbackExecutedRef.current = true;
   };
 
