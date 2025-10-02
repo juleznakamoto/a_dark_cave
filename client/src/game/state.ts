@@ -582,18 +582,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Show logMessage in dialog if present
     if (logMessage) {
-      const messageEntry: LogEntry = {
-        id: `log-message-${Date.now()}`,
-        message: logMessage,
-        timestamp: Date.now(),
-        type: 'event',
-        choices: [{
-          id: 'acknowledge',
-          label: 'Continue',
-          effect: () => ({}),
-        }],
-      };
-      get().setEventDialog(true, messageEntry);
+      // Close current dialog first
+      get().setEventDialog(false);
+      
+      // Then show the new message dialog after a brief delay
+      setTimeout(() => {
+        const messageEntry: LogEntry = {
+          id: `log-message-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'event',
+          choices: [{
+            id: 'acknowledge',
+            label: 'Continue',
+            effect: () => ({}),
+          }],
+        };
+        get().setEventDialog(true, messageEntry);
+      }, 100);
       return; // Don't proceed to combat dialog
     }
 
