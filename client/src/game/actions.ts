@@ -87,6 +87,7 @@ import {
   handleHunt,
   handleLayTrap,
   handleCastleRuins,
+  handleHillGrave,
 } from '@/game/rules/forestScoutActions';
 
 import {
