@@ -1,5 +1,6 @@
 import { GameState } from '@shared/schema';
 import { LogEntry } from '@/game/events';
+import { gameActions } from '@/game/rules';
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -323,7 +324,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
 
 // Helper function to get action cooldown from game rules
 function getActionCooldown(actionId: string): number {
-  const { gameActions } = require('@/game/rules');
   const action = gameActions[actionId];
   return action?.cooldown || 0;
 }
