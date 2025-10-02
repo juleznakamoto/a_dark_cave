@@ -474,7 +474,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             skipSound: true, // Don't play sound for log messages
           };
           get().setEventDialog(true, messageEntry);
-        }, 200);
+        }, 500);
       }
 
       // Handle combat dialog for attack waves
