@@ -50,8 +50,7 @@ export default function CombatDialog({
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
-  const [usedItemsInRound, setUsedItemsInRound] = useState<Set<string>>(new Set());
-  const [usedItemsInCombat, setUsedItemsInCombat] = useState<string[]>([]);
+  const [usedItemsInCombat, setUsedItemsInCombat] = useState<Set<string>>(new Set());
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
@@ -70,8 +69,7 @@ export default function CombatDialog({
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
       setRound(1);
-      setUsedItemsInRound(new Set());
-      setUsedItemsInCombat([]);
+      setUsedItemsInCombat(new Set());
       setIsProcessingRound(false);
       setCasualties(0);
       setCombatEnded(false);
@@ -86,29 +84,19 @@ export default function CombatDialog({
     }
   }, [isOpen, enemy, bastionStats.defense, bastionStats.attackFromFortifications]);
 
-  // Available combat items with max limits
-  const MAX_EMBER_BOMBS = 3;
-  const MAX_CINDERFLAME_BOMBS = 2;
-  
-  const emberBombsUsed = usedItemsInCombat.filter(id => id === 'ember_bomb').length;
-  const cinderflameBombsUsed = usedItemsInCombat.filter(id => id === 'cinderflame_bomb').length;
-  
+  // Available combat items
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
       name: "Ember Bomb",
       damage: 5,
-      available: gameState.resources.ember_bomb > 0 && 
-                 emberBombsUsed < MAX_EMBER_BOMBS && 
-                 !usedItemsInRound.has('ember_bomb'),
+      available: gameState.resources.ember_bomb > 0,
     },
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
       damage: 15,
-      available: gameState.resources.cinderflame_bomb > 0 && 
-                 cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
-                 !usedItemsInRound.has('cinderflame_bomb'),
+      available: gameState.resources.cinderflame_bomb > 0,
     },
   ];
 
@@ -117,16 +105,15 @@ export default function CombatDialog({
   };
 
   const handleUseItem = (item: CombatItem) => {
-    if (!currentEnemy || !item.available) return;
+    if (!currentEnemy || usedItemsInCombat.has(item.id) || !item.available) return;
 
     // Calculate final damage with knowledge bonus
     const totalKnowledge = getTotalKnowledge(gameState);
     const knowledgeBonus = Math.floor(totalKnowledge / 5);
     const finalDamage = item.damage + knowledgeBonus;
 
-    // Use the item - track for this round and for entire combat
-    setUsedItemsInRound(prev => new Set([...prev, item.id]));
-    setUsedItemsInCombat(prev => [...prev, item.id]);
+    // Use the item
+    setUsedItemsInCombat(prev => new Set([...prev, item.id]));
     setCurrentEnemy(prev => prev ? {
       ...prev,
       currentHealth: Math.max(0, prev.currentHealth - finalDamage)
@@ -222,9 +209,9 @@ export default function CombatDialog({
           setIsProcessingRound(false);
         }, 1000);
       } else {
-        // Next round - reset items for this round but keep total combat tracking
+        // Next round
         setRound(prev => prev + 1);
-        setUsedItemsInRound(new Set());
+        setUsedItemsInCombat(new Set()); // Reset item usage for new round
         setIsProcessingRound(false);
       }
     }, 1000);
@@ -343,7 +330,7 @@ export default function CombatDialog({
                             <TooltipTrigger asChild>
                               <Button
                                 onClick={() => handleUseItem(item)}
-                                disabled={!item.available || isProcessingRound}
+                                disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
                                 variant="outline"
                                 size="sm"
                                 className="text-xs"
@@ -357,7 +344,6 @@ export default function CombatDialog({
                                 <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
                               )}
                               <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
-                              <p>Available: {item.id === 'ember_bomb' ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}` : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
