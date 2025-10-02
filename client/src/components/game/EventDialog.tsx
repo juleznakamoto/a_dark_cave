@@ -105,11 +105,17 @@ export default function EventDialog({
 
     const eventId = event!.id.split("-")[0];
     
-    // Apply the choice through the store
-    applyEventChoice(choiceId, eventId);
-
     // Mark as executed to prevent further choices
     fallbackExecutedRef.current = true;
+
+    // Apply the choice through the store (it will handle dialog closing/opening)
+    applyEventChoice(choiceId, eventId);
+    
+    // For non-merchant events, close the dialog
+    const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
+    if (!isMerchantTrade) {
+      onClose();
+    }
   };
 
   const progress =
