@@ -133,7 +133,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 0.0035,
+    timeProbability: 35,
     title: "The Pale Figure",
     message: [
       "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
@@ -273,7 +273,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.resources.iron >= 500 &&
       !state.relics.blackened_mirror,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 0.035,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
