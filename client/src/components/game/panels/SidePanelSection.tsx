@@ -21,6 +21,8 @@ interface SidePanelItem {
   testId?: string;
   visible?: boolean;
   tooltip?: string;
+  icon?: string;
+  iconColor?: string;
 }
 
 interface ResourceChange {
@@ -216,7 +218,10 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span className="text-xs text-gray-400">
+        <span className="text-xs text-gray-400 flex items-center gap-1">
+              {item.icon && (
+                <span className={item.iconColor}>{item.icon}</span>
+              )}
               {item.label.includes('↓') ? (
                 <>
                   {item.label.replace(' ↓', '')}
