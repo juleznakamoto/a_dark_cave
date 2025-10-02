@@ -1,3 +1,4 @@
+
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -7,9 +8,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     id: "firstWave",
     condition: (state: GameState) =>
       state.flags.portalBlasted && state.story.seen.hasBastion,
-    // && !state.story.seen.firstWave,
     triggerType: "resource",
-    timeProbability: 0.05, // Triggers quickly after portal blast
+    timeProbability: 0.05,
     title: "The First Wave",
     message:
       "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
@@ -44,7 +44,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours with no casualties!",
+              "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours!",
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -54,9 +54,24 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             const casualties = Math.min(5, currentPopulation);
             const deathResult = killVillagers(state, casualties);
 
+            // Damage watchtower if available
+            let buildingDamage = {};
+            if (state.buildings.watchtower > 0) {
+              buildingDamage = {
+                watchtowerDamaged: true,
+              };
+            }
+
             return {
               ...deathResult,
-              _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.`,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  ...buildingDamage,
+                },
+              },
+              _logMessage: `The pale creatures overwhelm your defenses. ${casualties} villagers fall before the remaining creatures retreat to the depths.${buildingDamage.watchtowerDamaged ? " Your watchtower is damaged in the assault." : ""}`,
             };
           },
         },
@@ -69,7 +84,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.firstWaveVictory && !state.story.seen.secondWave,
     triggerType: "resource",
-    timeProbability: 3, // 3 minutes after first wave
+    timeProbability: 5,
     title: "The Second Wave",
     message:
       "The creatures return with reinforcements - larger, more intelligent beings that coordinate their attacks. These new horrors wear crude armor made from the bones of previous victims and wield weapons that seem to pulse with dark energy. They've learned from the first assault.",
@@ -104,7 +119,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Your defensive mastery is complete!",
+              "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Another victory!",
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -114,24 +129,24 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             const casualties = Math.min(8, currentPopulation);
             const deathResult = killVillagers(state, casualties);
 
-            // Damage some fortifications if available
+            // Damage palisades if available
             let buildingDamage = {};
-            if (state.buildings.woodenPalisades > 0) {
+            if (state.buildings.palisades > 0) {
               buildingDamage = {
-                woodenPalisades: Math.max(
-                  0,
-                  state.buildings.woodenPalisades - 1,
-                ),
+                palisadesDamaged: true,
               };
             }
 
             return {
               ...deathResult,
-              buildings: {
-                ...state.buildings,
-                ...buildingDamage,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  ...buildingDamage,
+                },
               },
-              _logMessage: `The armored creatures prove more dangerous. ${casualties} villagers fall before the creatures withdraw. ${buildingDamage.woodenPalisades !== undefined ? "Your fortifications are damaged in the assault." : "The attack leaves its mark on your defenses."}`,
+              _logMessage: `The armored creatures prove more dangerous. ${casualties} villagers fall before the creatures withdraw.${buildingDamage.palisadesDamaged ? " Your palisades are damaged in the assault." : ""}`,
             };
           },
         },
@@ -139,12 +154,167 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     },
   },
 
-  finalWave: {
-    id: "finalWave",
+  thirdWave: {
+    id: "thirdWave",
     condition: (state: GameState) =>
-      state.story.seen.secondWaveVictory && !state.story.seen.finalWave,
+      state.story.seen.secondWaveVictory && !state.story.seen.thirdWave,
     triggerType: "resource",
-    timeProbability: 5, // 5 minutes after second wave
+    timeProbability: 5,
+    title: "The Third Wave",
+    message:
+      "A deafening roar shakes the very foundations of your village. The creatures emerge in greater numbers than before, led by towering brutes wielding massive weapons of bone and stone. The ground cracks beneath their weight as they march toward your defenses with unstoppable momentum.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            thirdWave: true,
+          },
+        },
+        _combatData: {
+          enemy: {
+            name: "Brute Horde",
+            attack: [18, 22, 25][Math.floor(Math.random() * 3)],
+            maxHealth: 200,
+            currentHealth: 200,
+          },
+          eventTitle: "The Third Wave",
+          eventMessage:
+            "A deafening roar shakes the very foundations of your village. The creatures emerge in greater numbers than before, led by towering brutes wielding massive weapons of bone and stone. The ground cracks beneath their weight as they march toward your defenses with unstoppable momentum.",
+          onVictory: () => ({
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                thirdWaveVictory: true,
+              },
+            },
+            _logMessage:
+              "Against all odds, your defenses hold! The brute horde crashes against your walls but cannot breach them. Your victory inspires the survivors!",
+          }),
+          onDefeat: () => {
+            const currentPopulation = Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+            const casualties = Math.min(12, currentPopulation);
+            const deathResult = killVillagers(state, casualties);
+
+            // Damage bastion if available
+            let buildingDamage = {};
+            if (state.buildings.bastion > 0) {
+              buildingDamage = {
+                bastionDamaged: true,
+              };
+            }
+
+            return {
+              ...deathResult,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  ...buildingDamage,
+                },
+              },
+              _logMessage: `The brute horde breaks through! ${casualties} villagers are lost in the chaos.${buildingDamage.bastionDamaged ? " Your bastion suffers critical damage." : ""}`,
+            };
+          },
+        },
+      };
+    },
+  },
+
+  fourthWave: {
+    id: "fourthWave",
+    condition: (state: GameState) =>
+      state.story.seen.thirdWaveVictory && !state.story.seen.fourthWave,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "The Fourth Wave",
+    message:
+      "The sky darkens as winged terrors join the assault. Shrieking creatures descend from above while armored warriors pour through the portal. This coordinated attack from land and air threatens to overwhelm even your strongest defenses. The enemy has learned too well.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            fourthWave: true,
+          },
+        },
+        _combatData: {
+          enemy: {
+            name: "Sky Terror Legion",
+            attack: [22, 26, 30][Math.floor(Math.random() * 3)],
+            maxHealth: 250,
+            currentHealth: 250,
+          },
+          eventTitle: "The Fourth Wave",
+          eventMessage:
+            "The sky darkens as winged terrors join the assault. Shrieking creatures descend from above while armored warriors pour through the portal. This coordinated attack from land and air threatens to overwhelm even your strongest defenses. The enemy has learned too well.",
+          onVictory: () => ({
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                fourthWaveVictory: true,
+              },
+            },
+            _logMessage:
+              "Your warriors fight with legendary prowess! Despite the aerial assault, your defenses repel the combined attack. One more wave remains...",
+          }),
+          onDefeat: () => {
+            const currentPopulation = Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+            const casualties = Math.min(15, currentPopulation);
+            const deathResult = killVillagers(state, casualties);
+
+            // Damage multiple buildings
+            let buildingDamage = {};
+            const damages = [];
+            
+            if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+              buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
+              damages.push("watchtower");
+            }
+            if (state.buildings.bastion > 0 && !state.story.seen.bastionDamaged) {
+              buildingDamage = { ...buildingDamage, bastionDamaged: true };
+              damages.push("bastion");
+            }
+
+            return {
+              ...deathResult,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  ...buildingDamage,
+                },
+              },
+              _logMessage: `The coordinated assault is devastating. ${casualties} villagers perish in the attack.${damages.length > 0 ? ` Your ${damages.join(" and ")} suffer severe damage.` : ""}`,
+            };
+          },
+        },
+      };
+    },
+  },
+
+  fifthWave: {
+    id: "fifthWave",
+    condition: (state: GameState) =>
+      state.story.seen.fourthWaveVictory && !state.story.seen.fifthWave,
+    triggerType: "resource",
+    timeProbability: 5,
     title: "The Final Wave",
     message:
       "The ground splits open as something massive emerges from the depths. A towering creature of shadow and bone, easily three times the height of a man, leads an army of the twisted beings. Its presence alone makes reality bend and twist. This is the true enemy that was sealed behind the portal - and you have awakened it.",
@@ -164,7 +334,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                finalWave: true,
+                fifthWave: true,
               },
             },
             _combatData: {
@@ -267,16 +437,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               tradePost: 0,
               bastion: 0,
               watchtower: 0,
-              woodenPalisades: 0,
-              fortifiedPalisades: 0,
-              stoneWall: 0,
-              reinforcedWall: 0,
+              palisades: 0,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                finalWave: true,
+                fifthWave: true,
                 totalEvacuation: true,
               },
             },

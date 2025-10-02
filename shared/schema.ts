@@ -185,6 +185,11 @@ export const gameStateSchema = z.object({
   story: z.object({
     seen: z.record(z.string(), z.boolean()).default({}),
   }).default({}),
+  damagedBuildings: z.object({
+    bastion: z.boolean().default(false),
+    watchtower: z.boolean().default(false),
+    palisades: z.boolean().default(false),
+  }).default({}),
   events: z.object({
     available: z.array(z.string()).default([]),
     active: z.array(z.string()).default([]),

@@ -1,4 +1,3 @@
-
 import { GameState } from "@shared/schema";
 import { getTotalStrength } from "./rules/effects";
 
@@ -11,44 +10,56 @@ export interface BastionStats {
 }
 
 export function calculateBastionStats(state: GameState): BastionStats {
+  // Placeholder for future attack wave logic
+  // const numberOfWaves = 5;
+  // const waveIntervalMinutes = 5;
+
   let defense = 0;
   let attackFromFortifications = 0;
   let baseIntegrity = 0;
 
+  // Apply damage multiplier to bastion stats if damaged
+  const bastionDamaged = state.story?.seen?.bastionDamaged || false;
+  const bastionMultiplier = bastionDamaged ? 0.5 : 1;
+
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
-    defense += 5;
-    attackFromFortifications += 3;
-    baseIntegrity += 20;
+    defense += Math.floor(5 * bastionMultiplier);
+    attackFromFortifications += Math.floor(3 * bastionMultiplier);
+    baseIntegrity += Math.floor(20 * bastionMultiplier);
   }
 
   // Watchtower contributions (levels provide different bonuses)
   const watchtowerLevel = state.buildings.watchtower || 0;
+  // Define watchtowerMultiplier, assuming it's defined elsewhere or needs to be added
+  // For now, let's assume it's 1 if not provided
+  const watchtowerMultiplier = state.story?.watchtowerMultiplier || 1; 
+
   if (watchtowerLevel > 0) {
-    // Level 1: Watchtower
-    defense += 1;
-    attackFromFortifications += 4;
-    baseIntegrity += 5;
-    
+    // Level 1: Basic Watchtower
+    defense += Math.floor(1 * watchtowerMultiplier);
+    attackFromFortifications += Math.floor(5 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(5 * watchtowerMultiplier);
+
     if (watchtowerLevel >= 2) {
       // Level 2: Guard Tower
-      defense += 2;
-      attackFromFortifications += 8;
-      baseIntegrity += 5;
+      defense += Math.floor(2 * watchtowerMultiplier);
+      attackFromFortifications += Math.floor(8 * watchtowerMultiplier);
+      baseIntegrity += Math.floor(5 * watchtowerMultiplier);
     }
-    
+
     if (watchtowerLevel >= 3) {
       // Level 3: Fortified Tower
-      defense += 3;
-      attackFromFortifications += 12;
-      baseIntegrity += 10;
+      defense += Math.floor(3 * watchtowerMultiplier);
+      attackFromFortifications += Math.floor(12 * watchtowerMultiplier);
+      baseIntegrity += Math.floor(10 * watchtowerMultiplier);
     }
-    
+
     if (watchtowerLevel >= 4) {
       // Level 4: Cannon Tower
-      defense += 4;
-      attackFromFortifications += 16;
-      baseIntegrity += 10;
+      defense += Math.floor(4 * watchtowerMultiplier);
+      attackFromFortifications += Math.floor(20 * watchtowerMultiplier);
+      baseIntegrity += Math.floor(10 * watchtowerMultiplier);
     }
   }
 
@@ -58,19 +69,19 @@ export function calculateBastionStats(state: GameState): BastionStats {
     // Level 1: Wooden Palisades
     defense += 4;
     baseIntegrity += 10;
-    
+
     if (palisadesLevel >= 2) {
       // Level 2: Fortified Palisades
       defense += 6;
       baseIntegrity += 15;
     }
-    
+
     if (palisadesLevel >= 3) {
       // Level 3: Stone Wall
       defense += 8;
       baseIntegrity += 25;
     }
-    
+
     if (palisadesLevel >= 4) {
       // Level 4: Reinforced Wall
       defense += 10;
@@ -83,7 +94,15 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const totalAttack = attackFromFortifications + attackFromStrength;
 
   // Current integrity from game state (starts at base, can be damaged)
+  // If buildings are damaged, their defense stats are multiplied by 0.5.
+  // This is handled by bastionMultiplier applied above.
   const currentIntegrity = state.bastion_stats?.integrity ?? baseIntegrity;
+
+  // Placeholder for repair system logic in Bastion tab
+  // In the Bastion tab, there should be a Repair area.
+  // If buildings get damaged, their stats (e.g., defense get multiplied by 0.5).
+  // For each damaged building, there will be a button in the Repair area to repair it.
+  // The cost is 50% of the initial building cost.
 
   return {
     defense,
@@ -96,7 +115,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
 
 export function updateBastionStats(state: GameState): Partial<GameState> {
   const bastionStats = calculateBastionStats(state);
-  
+
   return {
     bastion_stats: bastionStats,
   };
