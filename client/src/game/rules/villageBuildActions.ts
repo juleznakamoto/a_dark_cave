@@ -438,6 +438,32 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 30,
   },
 
+  buildScriptorium: {
+    id: "buildScriptorium",
+    label: "Scriptorium",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 5,
+        "buildings.clerksHut": 1,
+        "buildings.scriptorium": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 2500,
+        "resources.wood": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.scriptorium": 1,
+        "story.seen.hasScriptorium": true,
+      },
+    },
+    cooldown: 40,
+  },
+
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",
@@ -1249,6 +1275,31 @@ export function handleBuildClerksHut(
   }
 
   return clerksHutResult;
+}
+
+export function handleBuildScriptorium(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const scriptoriumResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildScriptorium",
+    "scriptorium",
+  );
+
+  // Add scriptorium completion message
+  if (state.buildings.scriptorium === 0) {
+    scriptoriumResult.logEntries!.push({
+      id: `scriptorium-built-${Date.now()}`,
+      message:
+        "The Scriptorium stands complete, its walls lined with shelves of parchment and ink. Scribes labor to document every detail of village life - every resource gathered, every stat tracked with meticulous precision. Nothing escapes their vigilant record-keeping.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return scriptoriumResult;
 }
 
 export function handleBuildTannery(

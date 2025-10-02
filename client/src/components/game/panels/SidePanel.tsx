@@ -223,6 +223,10 @@ export default function SidePanel() {
       if (item.id === "cabin" && buildings.greatCabin > 0) {
         return false;
       }
+      // Hide clerksHut when scriptorium is built
+      if (item.id === "clerksHut" && buildings.scriptorium > 0) {
+        return false;
+      }
       // Only show the highest religious building level
       if (
         item.id === "altar" &&
@@ -261,6 +265,7 @@ export default function SidePanel() {
 
   // Build stats items with total values
   const statsItems = [];
+  const hasScriptorium = buildings.scriptorium > 0;
 
   // Add luck if it's greater than 0
   if (totalLuck > 0) {
@@ -270,8 +275,8 @@ export default function SidePanel() {
       value: totalLuck,
       testId: "stat-luck",
       visible: true,
-      icon: "☆",
-      iconColor: "text-green-300/80",
+      icon: hasScriptorium ? "☆" : undefined,
+      iconColor: hasScriptorium ? "text-green-300/80" : undefined,
     });
   }
 
@@ -283,8 +288,8 @@ export default function SidePanel() {
       value: totalStrength,
       testId: "stat-strength",
       visible: true,
-      icon: "⬡",
-      iconColor: "text-red-300/80",
+      icon: hasScriptorium ? "⬡" : undefined,
+      iconColor: hasScriptorium ? "text-red-300/80" : undefined,
     });
   }
 
@@ -296,8 +301,8 @@ export default function SidePanel() {
       value: totalKnowledge,
       testId: "stat-knowledge",
       visible: true,
-      icon: "✧",
-      iconColor: "text-blue-300/80",
+      icon: hasScriptorium ? "✧" : undefined,
+      iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
     });
   }
 
@@ -309,8 +314,8 @@ export default function SidePanel() {
       value: totalMadness,
       testId: "stat-madness",
       visible: true,
-      icon: "✺",
-      iconColor: "text-violet-300/80",
+      icon: hasScriptorium ? "✺" : undefined,
+      iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
     });
   }
 

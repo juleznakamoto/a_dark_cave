@@ -13,6 +13,7 @@ import {
 import { capitalizeWords } from "@/lib/utils";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
+import cn from "clsx";
 
 interface SidePanelItem {
   id: string;
@@ -217,8 +218,8 @@ export default function SidePanelSection({
         }`}
       >
         <span className="text-xs text-gray-400 flex items-center gap-1">
-              {item.icon && (
-                <span className={item.iconColor}>{item.icon}</span>
+              {item.icon !== undefined && (
+                <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
               )}
               {item.label.includes('↓') ? (
                 <>
