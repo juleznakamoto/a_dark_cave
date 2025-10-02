@@ -287,6 +287,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const result = executeGameAction(actionId, state);
 
+    // Apply dev mode cooldown multiplier (0.1x)
+    if (state.devMode && result.stateUpdates.cooldowns) {
+      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      for (const key in updatedCooldowns) {
+        updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+      }
+      result.stateUpdates.cooldowns = updatedCooldowns;
+    }
+
     if (import.meta.env.DEV) {
       console.log(`[STATE] Action: ${actionId}`, {
         stateUpdates: result.stateUpdates,
