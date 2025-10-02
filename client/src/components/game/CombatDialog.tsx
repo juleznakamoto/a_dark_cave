@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Enemy {
   name: string;
@@ -50,17 +55,30 @@ export default function CombatDialog({
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
-  const [usedItemsInRound, setUsedItemsInRound] = useState<Set<string>>(new Set());
+  const [usedItemsInRound, setUsedItemsInRound] = useState<Set<string>>(
+    new Set(),
+  );
   const [usedItemsInCombat, setUsedItemsInCombat] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
-  const [combatResult, setCombatResult] = useState<'victory' | 'defeat' | null>(null);
+  const [combatResult, setCombatResult] = useState<"victory" | "defeat" | null>(
+    null,
+  );
   const [currentIntegrity, setCurrentIntegrity] = useState(0);
   const [maxIntegrityForCombat, setMaxIntegrityForCombat] = useState(0);
-  const [enemyDamageIndicator, setEnemyDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
-  const [playerDamageIndicator, setPlayerDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
-  const [integrityDamageIndicator, setIntegrityDamageIndicator] = useState<{amount: number, visible: boolean}>({amount: 0, visible: false});
+  const [enemyDamageIndicator, setEnemyDamageIndicator] = useState<{
+    amount: number;
+    visible: boolean;
+  }>({ amount: 0, visible: false });
+  const [playerDamageIndicator, setPlayerDamageIndicator] = useState<{
+    amount: number;
+    visible: boolean;
+  }>({ amount: 0, visible: false });
+  const [integrityDamageIndicator, setIntegrityDamageIndicator] = useState<{
+    amount: number;
+    visible: boolean;
+  }>({ amount: 0, visible: false });
 
   const bastionStats = calculateBastionStats(gameState);
 
@@ -76,39 +94,52 @@ export default function CombatDialog({
       setCasualties(0);
       setCombatEnded(false);
       setCombatResult(null);
-      setEnemyDamageIndicator({amount: 0, visible: false});
-      setPlayerDamageIndicator({amount: 0, visible: false});
-      setIntegrityDamageIndicator({amount: 0, visible: false});
+      setEnemyDamageIndicator({ amount: 0, visible: false });
+      setPlayerDamageIndicator({ amount: 0, visible: false });
+      setIntegrityDamageIndicator({ amount: 0, visible: false });
       // Reset integrity to full calculated amount for this combat
-      const maxIntegrity = bastionStats.defense * 2 + (bastionStats.attackFromFortifications > 0 ? 50 : 0);
+      const maxIntegrity =
+        bastionStats.defense * 2 +
+        (bastionStats.attackFromFortifications > 0 ? 50 : 0);
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
     }
-  }, [isOpen, enemy, bastionStats.defense, bastionStats.attackFromFortifications]);
+  }, [
+    isOpen,
+    enemy,
+    bastionStats.defense,
+    bastionStats.attackFromFortifications,
+  ]);
 
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = 3;
   const MAX_CINDERFLAME_BOMBS = 2;
-  
-  const emberBombsUsed = usedItemsInCombat.filter(id => id === 'ember_bomb').length;
-  const cinderflameBombsUsed = usedItemsInCombat.filter(id => id === 'cinderflame_bomb').length;
-  
+
+  const emberBombsUsed = usedItemsInCombat.filter(
+    (id) => id === "ember_bomb",
+  ).length;
+  const cinderflameBombsUsed = usedItemsInCombat.filter(
+    (id) => id === "cinderflame_bomb",
+  ).length;
+
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
       name: "Ember Bomb",
       damage: 5,
-      available: gameState.resources.ember_bomb > 0 && 
-                 emberBombsUsed < MAX_EMBER_BOMBS && 
-                 !usedItemsInRound.has('ember_bomb'),
+      available:
+        gameState.resources.ember_bomb > 0 &&
+        emberBombsUsed < MAX_EMBER_BOMBS &&
+        !usedItemsInRound.has("ember_bomb"),
     },
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
       damage: 15,
-      available: gameState.resources.cinderflame_bomb > 0 && 
-                 cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
-                 !usedItemsInRound.has('cinderflame_bomb'),
+      available:
+        gameState.resources.cinderflame_bomb > 0 &&
+        cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
+        !usedItemsInRound.has("cinderflame_bomb"),
     },
   ];
 
@@ -125,26 +156,30 @@ export default function CombatDialog({
     const finalDamage = item.damage + knowledgeBonus;
 
     // Use the item - track for this round and for entire combat
-    setUsedItemsInRound(prev => new Set([...prev, item.id]));
-    setUsedItemsInCombat(prev => [...prev, item.id]);
-    setCurrentEnemy(prev => prev ? {
-      ...prev,
-      currentHealth: Math.max(0, prev.currentHealth - finalDamage)
-    } : null);
+    setUsedItemsInRound((prev) => new Set([...prev, item.id]));
+    setUsedItemsInCombat((prev) => [...prev, item.id]);
+    setCurrentEnemy((prev) =>
+      prev
+        ? {
+            ...prev,
+            currentHealth: Math.max(0, prev.currentHealth - finalDamage),
+          }
+        : null,
+    );
 
     // Update game state to consume the item
     gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
 
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({amount: finalDamage, visible: true});
+    setEnemyDamageIndicator({ amount: finalDamage, visible: true });
     setTimeout(() => {
-      setEnemyDamageIndicator({amount: 0, visible: false});
+      setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
 
     // Check if enemy is defeated
     if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0) {
       setCombatEnded(true);
-      setCombatResult('victory');
+      setCombatResult("victory");
     }
   };
 
@@ -152,9 +187,9 @@ export default function CombatDialog({
     // Update bastion integrity in game state
     gameState.updateBastionIntegrity(currentIntegrity);
 
-    if (combatResult === 'victory') {
+    if (combatResult === "victory") {
       onVictory();
-    } else if (combatResult === 'defeat') {
+    } else if (combatResult === "defeat") {
       onDefeat();
     }
     onClose();
@@ -172,32 +207,37 @@ export default function CombatDialog({
       const integrityDamage = currentEnemy.attack - bastionStats.defense;
       const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
       setCurrentIntegrity(newIntegrityValue);
-      
+
       // Show damage indicator on integrity bar
-      setIntegrityDamageIndicator({amount: integrityDamage, visible: true});
+      setIntegrityDamageIndicator({ amount: integrityDamage, visible: true });
       setTimeout(() => {
-        setIntegrityDamageIndicator({amount: 0, visible: false});
+        setIntegrityDamageIndicator({ amount: 0, visible: false });
       }, 3000);
 
       // Check if integrity is depleted
       if (newIntegrityValue <= 0) {
         setCombatEnded(true);
-        setCombatResult('defeat');
+        setCombatResult("defeat");
         setIsProcessingRound(false);
         return;
       }
     }
 
     // Player attacks
-    const newHealth = Math.max(0, currentEnemy.currentHealth - bastionStats.attack);
-    
+    const newHealth = Math.max(
+      0,
+      currentEnemy.currentHealth - bastionStats.attack,
+    );
+
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({amount: bastionStats.attack, visible: true});
+    setEnemyDamageIndicator({ amount: bastionStats.attack, visible: true });
     setTimeout(() => {
-      setEnemyDamageIndicator({amount: 0, visible: false});
+      setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
 
-    setCurrentEnemy(prev => prev ? { ...prev, currentHealth: newHealth } : null);
+    setCurrentEnemy((prev) =>
+      prev ? { ...prev, currentHealth: newHealth } : null,
+    );
     setCasualties(newCasualties);
 
     // Check battle outcome
@@ -212,11 +252,11 @@ export default function CombatDialog({
         // Apply casualties to game state here if needed
       }
       setCombatEnded(true);
-      setCombatResult('victory');
+      setCombatResult("victory");
       setIsProcessingRound(false);
     } else {
       // Next round - reset items for this round but keep total combat tracking
-      setRound(prev => prev + 1);
+      setRound((prev) => prev + 1);
       setUsedItemsInRound(new Set());
       setIsProcessingRound(false);
     }
@@ -224,13 +264,12 @@ export default function CombatDialog({
 
   if (!enemy) return null;
 
-  const healthPercentage = currentEnemy ? (currentEnemy.currentHealth / currentEnemy.maxHealth) * 100 : 0;
+  const healthPercentage = currentEnemy
+    ? (currentEnemy.currentHealth / currentEnemy.maxHealth) * 100
+    : 0;
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={() => {}}
-    >
+    <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent
         className="sm:max-w-md [&>button]:hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
@@ -249,7 +288,11 @@ export default function CombatDialog({
             </DialogHeader>
 
             <div className="flex justify-center mt-4">
-              <Button onClick={handleStartFight} className="w-full" variant="outline">
+              <Button
+                onClick={handleStartFight}
+                className="w-full"
+                variant="outline"
+              >
                 Start Fight
               </Button>
             </div>
@@ -267,13 +310,17 @@ export default function CombatDialog({
             <div className="space-y-3">
               <div className="relative">
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium">{currentEnemy?.name} Health</span>
-                  <span>{currentEnemy?.currentHealth}/{currentEnemy?.maxHealth} </span>
+                  <span className="font-medium">
+                    {currentEnemy?.name} Health
+                  </span>
+                  <span>
+                    {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
+                  </span>
                 </div>
                 <div className="relative">
-                  <Progress 
-                    value={healthPercentage} 
-                    className="h-3 mt-1 [&>div]:bg-red-900" // Darker red for enemy health
+                  <Progress
+                    value={healthPercentage}
+                    className="h-3 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                   />
                   {enemyDamageIndicator.visible && (
                     <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
@@ -281,25 +328,25 @@ export default function CombatDialog({
                     </div>
                   )}
                 </div>
-                <div className="text-xs mt-1">
+                <div className="text-xs mt-2">
                   Attack: {currentEnemy?.attack}
                 </div>
               </div>
 
               {/* Player Stats */}
               <div className="border-t pt-3">
-
-
                 {/* Bastion Integrity */}
-                <div className="mb-3 relative">
+                <div className="relative">
                   <div className="flex justify-between text-sm">
                     <span className="font-medium">Bastion Integrity</span>
-                    <span>{currentIntegrity}/{maxIntegrityForCombat}</span>
+                    <span>
+                      {currentIntegrity}/{maxIntegrityForCombat}
+                    </span>
                   </div>
                   <div className="relative">
-                    <Progress 
-                      value={(currentIntegrity / maxIntegrityForCombat) * 100} 
-                      className="h-3 mt-1 [&>div]:bg-green-900" // Darker green for bastion integrity
+                    <Progress
+                      value={(currentIntegrity / maxIntegrityForCombat) * 100}
+                      className="h-3 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
                     />
                     {integrityDamageIndicator.visible && (
                       <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
@@ -309,11 +356,11 @@ export default function CombatDialog({
                   </div>
                 </div>
 
-                <div className="text-xs">
+                <div className="text-xs mt-2">
                   <div>
-                    Attack: {bastionStats.attack} Defense: {bastionStats.defense}
+                    Attack: {bastionStats.attack} Defense:{" "}
+                    {bastionStats.defense}
                   </div>
-
                 </div>
                 {casualties > 0 && (
                   <div className="text-xs text-red-600 mt-1">
@@ -323,20 +370,32 @@ export default function CombatDialog({
               </div>
 
               {/* Combat Items */}
-              {combatItems.some(item => gameState.resources[item.id as keyof typeof gameState.resources] > 0) && (
+              {combatItems.some(
+                (item) =>
+                  gameState.resources[
+                    item.id as keyof typeof gameState.resources
+                  ] > 0,
+              ) && (
                 <div className="border-t pt-3">
                   <div className="text-sm font-medium mb-2">Items</div>
                   <div className="grid grid-cols-2 gap-2">
                     {combatItems
-                      .filter(item => gameState.resources[item.id as keyof typeof gameState.resources] > 0)
-                      .map(item => (
+                      .filter(
+                        (item) =>
+                          gameState.resources[
+                            item.id as keyof typeof gameState.resources
+                          ] > 0,
+                      )
+                      .map((item) => (
                         <TooltipProvider key={item.id}>
                           <Tooltip>
                             <TooltipTrigger asChild>
                               <div className="w-full">
                                 <Button
                                   onClick={() => handleUseItem(item)}
-                                  disabled={!item.available || isProcessingRound}
+                                  disabled={
+                                    !item.available || isProcessingRound
+                                  }
                                   variant="outline"
                                   size="sm"
                                   className="text-xs w-full"
@@ -348,13 +407,22 @@ export default function CombatDialog({
                             <TooltipContent>
                               <p>Base Damage: {item.damage}</p>
                               {getTotalKnowledge(gameState) >= 5 && (
-                                <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
+                                <p>
+                                  Knowledge Bonus: +
+                                  {Math.floor(getTotalKnowledge(gameState) / 5)}
+                                </p>
                               )}
-                              <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
-                              <p>Available: {item.id === 'ember_bomb' 
-                                ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                              }</p>
+                              <p>
+                                Total Damage:{" "}
+                                {item.damage +
+                                  Math.floor(getTotalKnowledge(gameState) / 5)}
+                              </p>
+                              <p>
+                                Available:{" "}
+                                {item.id === "ember_bomb"
+                                  ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                  : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
+                              </p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
@@ -368,22 +436,25 @@ export default function CombatDialog({
                 {combatEnded ? (
                   <Button
                     onClick={handleEndFight}
-                    className="w-full" variant="outline"
+                    className="w-full"
+                    variant="outline"
                   >
                     End Fight
                   </Button>
                 ) : (
                   <Button
                     onClick={handleFight}
-                    disabled={isProcessingRound || (currentEnemy?.currentHealth || 0) <= 0}
-                    className="w-full" variant="outline"
+                    disabled={
+                      isProcessingRound ||
+                      (currentEnemy?.currentHealth || 0) <= 0
+                    }
+                    className="w-full"
+                    variant="outline"
                   >
                     {isProcessingRound ? "Fighting..." : "Fight"}
                   </Button>
                 )}
               </div>
-
-              
             </div>
           </>
         )}
