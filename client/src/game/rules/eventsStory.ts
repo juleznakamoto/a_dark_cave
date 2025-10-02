@@ -1047,7 +1047,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Hill Grave",
     message:
-      "The wizard summons you to his tower with urgency. 'I have found something in ancient texts,' he says, his eyes gleaming. 'Deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may lie weapons forged of frostglas - the very material we need. But beware - the grave is protected by deadly traps laid by those who buried him.'",
+      "The wizard summons you to his tower with urgency. 'I have found something in ancient texts,' he says, his eyes gleaming. 'Deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may some frostglas - the very material we need. But beware - the grave is protected by deadly traps laid by those who buried him.'",
     triggered: false,
     priority: 5,
     repeatable: false,

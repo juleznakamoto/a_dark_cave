@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
-import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
+import { getTotalLuck } from '@/game/rules/effects';
 import { killVillagers } from '@/game/stateHelpers';
 
 export const forestScoutActions: Record<string, Action> = {
@@ -48,7 +48,6 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 500,
     },
     effects: {
-      "resources.food": -500,
       "story.seen.trapLaid": true,
     },
     cooldown: 20,
@@ -64,7 +63,6 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2000,
     },
     effects: {
-      "resources.food": -2000,
       "story.seen.castleRuinsExplored": true,
     },
     cooldown: 60,
@@ -80,7 +78,6 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {
-      "resources.food": -5000,
       "story.seen.hillGraveExplored": true,
     },
     cooldown: 60,
@@ -256,7 +253,7 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
     
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
-      message: 'Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king\'s treasures, you discover weapons forged of pure frostglas, cold as the void itself. You claim 50 frostglas from the tomb.',
+      message: 'Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king\'s treasures, you discover weapons forged of pure frostglas, cold as the void itself.',
       timestamp: Date.now(),
       type: 'system',
     });

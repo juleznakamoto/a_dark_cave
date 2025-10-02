@@ -1,10 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-} from "@/components/ui/hover-card";
-import {
   clothingEffects,
   weaponEffects,
   toolEffects,
@@ -398,7 +393,7 @@ export default function SidePanelSection({
       <h3 className="text-xs font-medium tracking-wide mb-1">
         {title}
       </h3>
-      <div className="space-y-0.5 text-sm">
+      <div className="space-y-0.5 text-xs">
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
             {renderItemWithTooltip(item)}
