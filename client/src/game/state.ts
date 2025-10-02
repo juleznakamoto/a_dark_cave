@@ -539,7 +539,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
 
     let combatData = null;
-    let logMessage = null;
     const updatedChanges = { ...changes };
 
     // Extract combat data if present
@@ -548,25 +547,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._combatData;
     }
 
-    // Extract log message if present (for both log and dialog)
-    if (updatedChanges._logMessage) {
-      logMessage = updatedChanges._logMessage;
-      delete updatedChanges._logMessage;
-    }
-
-    // Apply state changes and add log entry if there's a message
-    if (Object.keys(updatedChanges).length > 0 || logMessage) {
+    // Apply state changes - EventManager already handles _logMessage in changes.log
+    if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => ({
         ...prevState,
         ...updatedChanges,
-        log: logMessage
-          ? [...prevState.log, {
-              id: `choice-result-${Date.now()}`,
-              message: logMessage,
-              timestamp: Date.now(),
-              type: 'system'
-            }].slice(-10)
-          : prevState.log,
       }));
 
       StateManager.schedulePopulationUpdate(get);
@@ -612,23 +597,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           get().setCombatDialog(false);
         },
       });
-      return;
-    }
-
-    // Show result dialog if there's a log message
-    if (logMessage) {
-      const resultEvent: LogEntry = {
-        id: `result-${Date.now()}`,
-        message: logMessage,
-        timestamp: Date.now(),
-        type: 'system',
-        choices: [{
-          id: 'close',
-          label: 'Close',
-          effect: () => ({})
-        }]
-      };
-      get().setEventDialog(true, resultEvent);
       return;
     }
 
