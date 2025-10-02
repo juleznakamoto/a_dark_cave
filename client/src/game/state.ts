@@ -613,8 +613,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return;
       }
 
-      // Don't auto-close the dialog here - let the EventDialog component handle it
-      // after displaying result messages
+      // If there's a log message, update the current event to trigger result display
+      if (logMessage && currentLogEntry) {
+        set((prevState) => ({
+          ...prevState,
+          eventDialog: {
+            ...prevState.eventDialog,
+            currentEvent: {
+              ...currentLogEntry,
+              resultMessage: logMessage,
+            },
+          },
+        }));
+      } else {
+        // No result message, close dialog for non-merchant events
+        const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
+        if (!isMerchantTrade) {
+          get().setEventDialog(false);
+        }
+      }
+
       StateManager.schedulePopulationUpdate(get);
     } else {
       get().setEventDialog(false);

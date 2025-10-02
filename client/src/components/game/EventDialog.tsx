@@ -50,6 +50,13 @@ export default function EventDialog({
     }
   }, [isOpen, event?.id]);
 
+  // Watch for result message from state
+  useEffect(() => {
+    if (event && (event as any).resultMessage && !resultMessage) {
+      setResultMessage((event as any).resultMessage);
+    }
+  }, [event, resultMessage]);
+
   // Initialize timer for timed choices
   useEffect(() => {
     if (!event || !event.isTimedChoice || !isOpen) {
@@ -115,24 +122,7 @@ export default function EventDialog({
 
     const eventId = event!.id.split("-")[0];
     
-    // Get the choice to check for result message
-    const choice = event?.choices?.find(c => c.id === choiceId);
-    if (choice) {
-      // Execute the choice effect to get the result
-      const result = choice.effect(gameState);
-      
-      // If there's a log message, display it
-      if (result._logMessage) {
-        setResultMessage(result._logMessage as string);
-        fallbackExecutedRef.current = true;
-        
-        // Apply the choice through the store
-        applyEventChoice(choiceId, eventId);
-        return; // Don't close dialog yet, show result message first
-      }
-    }
-
-    // Apply the choice
+    // Apply the choice through the store
     applyEventChoice(choiceId, eventId);
 
     // For merchant trades, mark as purchased but don't close dialog
@@ -141,9 +131,15 @@ export default function EventDialog({
       return; // Don't close dialog for trade purchases
     }
 
-    // Close dialog for non-trade choices (like "Say Goodbye" or other fallback choices)
+    // For merchant "Say Goodbye", close dialog
+    if (choiceId === "say_goodbye" && event?.id.includes("merchant")) {
+      fallbackExecutedRef.current = true;
+      onClose();
+      return;
+    }
+
+    // For other events, don't close yet - wait for result message or auto-close
     fallbackExecutedRef.current = true;
-    onClose();
   };
 
   const progress =
