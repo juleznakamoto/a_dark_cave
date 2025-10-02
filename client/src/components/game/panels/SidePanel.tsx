@@ -485,7 +485,7 @@ export default function SidePanel() {
 
   return (
     <ScrollArea className="h-full max-h-full">
-      <div className="pb-4 flex gap-4">
+      <div className="pb-6 flex gap-4">
         {/* First column - Resources */}
         <div className="flex-1">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
