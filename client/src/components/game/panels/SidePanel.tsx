@@ -297,7 +297,7 @@ export default function SidePanel() {
       testId: "stat-knowledge",
       visible: true,
       icon: "✧",
-      iconColor: "text-blue-700",
+      iconColor: "text-blue-700/90",
     });
   }
 
@@ -310,7 +310,7 @@ export default function SidePanel() {
       testId: "stat-madness",
       visible: true,
       icon: "✺",
-      iconColor: "text-violet-700",
+      iconColor: "text-violet-700/90",
     });
   }
 
