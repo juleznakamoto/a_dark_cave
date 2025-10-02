@@ -184,30 +184,21 @@ export class EventManager {
     }
 
     console.log(`[EventManager] Executing choice effect for: ${choiceId}`);
-    const changes = choice.effect(state);
-    console.log(`[EventManager] Choice effect result:`, changes);
+    const choiceResult = choice.effect(state);
+    console.log('[EventManager] Choice effect result:', choiceResult);
 
-    // Handle log message
-    if (changes._logMessage) {
-      const logMessage = changes._logMessage;
-      delete changes._logMessage;
-
-      // Add log entry to the changes
-      const updatedChanges = {
-        ...changes,
-        log: [...(state.log || []), {
-          id: `choice-result-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: 'system' as const
-        }].slice(-10)
-      };
-
-      return updatedChanges;
+    // Check if result has _logMessage
+    if (choiceResult._logMessage) {
+      console.log('[EventManager] Choice returned _logMessage:', choiceResult._logMessage);
     }
 
-    // Handle combat data - pass it through unchanged for the state manager to handle
-    // This includes _combatData which might be returned by attack wave events
-    return changes;
+    const result = {
+      ...choiceResult,
+      log: currentLogEntry ? state.log.filter((entry) => entry.id !== currentLogEntry.id) : state.log,
+    };
+
+    console.log('[EventManager] Final result being returned:', result);
+
+    return result;
   }
 }
