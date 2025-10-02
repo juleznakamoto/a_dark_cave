@@ -380,7 +380,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
             <TooltipContent>
-              <p>{item.tooltip}</p>
+              <p className="whitespace-pre-line">{item.tooltip}</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
