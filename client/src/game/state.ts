@@ -460,6 +460,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Show logMessage in dialog if present (with 200ms delay)
       if (logMessage) {
+        // Add the log message to the game log immediately
+        const logEntry: LogEntry = {
+          id: `event-result-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'system'
+        };
+        
+        set((prevState) => ({
+          ...prevState,
+          log: [...prevState.log, logEntry].slice(-10),
+        }));
+
         setTimeout(() => {
           const messageEntry: LogEntry = {
             id: `log-message-${Date.now()}`,
@@ -586,6 +599,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Show logMessage in dialog if present (with 200ms delay)
     if (logMessage) {
+      // Add the log message to the game log immediately
+      const logEntry: LogEntry = {
+        id: `choice-result-${Date.now()}`,
+        message: logMessage,
+        timestamp: Date.now(),
+        type: 'system'
+      };
+      
+      set((prevState) => ({
+        ...prevState,
+        log: [...prevState.log, logEntry].slice(-10),
+      }));
+
       setTimeout(() => {
         const messageEntry: LogEntry = {
           id: `log-message-${Date.now()}`,
