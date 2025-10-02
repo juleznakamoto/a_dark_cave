@@ -2,11 +2,10 @@ import { useGameStore } from '@/game/state';
 import { gameActions } from '@/game/rules';
 import { Button } from '@/components/ui/button';
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from '@/components/ui/hover-card';
 
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
@@ -119,13 +118,13 @@ export default function BastionPanel() {
       {/* Repair Section */}
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-foreground">Repair</h3>
-        <TooltipProvider>
-          <div className="flex flex-wrap gap-2">
-            {bastionDamaged && buildings.bastion > 0 && (() => {
-              const repairCost = getRepairCost('buildBastion', 1);
-              return (
-                <Tooltip>
-                  <TooltipTrigger asChild>
+        <div className="flex flex-wrap gap-2">
+          {bastionDamaged && buildings.bastion > 0 && (() => {
+            const repairCost = getRepairCost('buildBastion', 1);
+            return (
+              <HoverCard key="bastion" openDelay={100} closeDelay={100}>
+                <HoverCardTrigger asChild>
+                  <div>
                     <Button
                       onClick={repairBastion}
                       disabled={!canAffordRepair(repairCost)}
@@ -135,19 +134,23 @@ export default function BastionPanel() {
                     >
                       Bastion
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{formatRepairCost(repairCost)}</p>
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })()}
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-auto p-2">
+                  <div className="text-xs whitespace-nowrap">
+                    {formatRepairCost(repairCost)}
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })()}
 
-            {watchtowerDamaged && buildings.watchtower > 0 && (() => {
-              const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
-              return (
-                <Tooltip>
-                  <TooltipTrigger asChild>
+          {watchtowerDamaged && buildings.watchtower > 0 && (() => {
+            const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
+            return (
+              <HoverCard key="watchtower" openDelay={100} closeDelay={100}>
+                <HoverCardTrigger asChild>
+                  <div>
                     <Button
                       onClick={repairWatchtower}
                       disabled={!canAffordRepair(repairCost)}
@@ -157,19 +160,23 @@ export default function BastionPanel() {
                     >
                       Watchtower
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{formatRepairCost(repairCost)}</p>
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })()}
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-auto p-2">
+                  <div className="text-xs whitespace-nowrap">
+                    {formatRepairCost(repairCost)}
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })()}
 
-            {palisadesDamaged && buildings.palisades > 0 && (() => {
-              const repairCost = getRepairCost('buildPalisades', buildings.palisades);
-              return (
-                <Tooltip>
-                  <TooltipTrigger asChild>
+          {palisadesDamaged && buildings.palisades > 0 && (() => {
+            const repairCost = getRepairCost('buildPalisades', buildings.palisades);
+            return (
+              <HoverCard key="palisades" openDelay={100} closeDelay={100}>
+                <HoverCardTrigger asChild>
+                  <div>
                     <Button
                       onClick={repairPalisades}
                       disabled={!canAffordRepair(repairCost)}
@@ -179,15 +186,17 @@ export default function BastionPanel() {
                     >
                       Palisades
                     </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{formatRepairCost(repairCost)}</p>
-                  </TooltipContent>
-                </Tooltip>
-              );
-            })()}
-          </div>
-        </TooltipProvider>
+                  </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-auto p-2">
+                  <div className="text-xs whitespace-nowrap">
+                    {formatRepairCost(repairCost)}
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
+            );
+          })()}
+        </div>
       </div>
     </div>
   );
