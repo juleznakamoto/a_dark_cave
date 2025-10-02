@@ -247,115 +247,117 @@ export default function SidePanelSection({
       </div>
     );
 
-    // If this item has effects or tooltip, wrap it in a hover card
+    // If this item has effects or tooltip, wrap it in a tooltip
     if (
       (hasEffect &&
         (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")) ||
       (hasTooltip && title === "Fortifications")
     ) {
       return (
-        <HoverCard key={item.id} openDelay={100} closeDelay={100}>
-          <HoverCardTrigger asChild>{itemContent}</HoverCardTrigger>
-          <HoverCardContent className="w-auto p-2">
-            <div className="text-xs whitespace-nowrap">
-              {hasTooltip && title === "Fortifications" ? (
-                <div className="whitespace-pre-line">{item.tooltip}</div>
-              ) : (
-                <>
-                  {effect.name && (
-                    <div className="font-bold mb-1">{effect.name}</div>
-                  )}
-                  {effect.description && (
-                    <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
-                  )}
-                  {effect.bonuses.generalBonuses && (
-                <>
-                  {effect.bonuses.generalBonuses.luck && (
-                    <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
-                  )}
-                  {effect.bonuses.generalBonuses.strength && (
-                    <div>
-                      +{effect.bonuses.generalBonuses.strength} Strength
-                    </div>
-                  )}
-                  {effect.bonuses.generalBonuses.gatheringSpeed && (
-                    <div>
-                      +
-                      {Math.round(
-                        (effect.bonuses.generalBonuses.gatheringSpeed - 1) *
-                          100,
-                      )}
-                      % Gathering Speed
-                    </div>
-                  )}
-                  {effect.bonuses.generalBonuses.craftingSpeed && (
-                    <div>
-                      +
-                      {Math.round(
-                        (effect.bonuses.generalBonuses.craftingSpeed - 1) * 100,
-                      )}
-                      % Crafting Speed
-                    </div>
-                  )}
-                  {effect.bonuses.generalBonuses.explorationBonus && (
-                    <div>
-                      +{effect.bonuses.generalBonuses.explorationBonus}{" "}
-                      Exploration Bonus
-                    </div>
-                  )}
-                  {effect.bonuses.generalBonuses.knowledge && (
-                    <div>
-                      +{effect.bonuses.generalBonuses.knowledge} Knowledge
-                    </div>
-                  )}
-                  {effect.bonuses.generalBonuses.madness && (
-                    <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
-                  )}
-                  {effect.bonuses.generalBonuses.craftingCostReduction && (
-                    <div>
-                      {Math.round(
-                        effect.bonuses.generalBonuses.craftingCostReduction *
-                          100,
-                      )}
-                      % Craft Discount
-                    </div>
-                  )}
-
-                </>
-              )}
-              {effect.bonuses.actionBonuses &&
-              (() => {
-                // Special case for seeker pack - show simplified tooltip
-                if (effect.id === 'seeker_pack') {
-                  return <div>+20% Explore Bonus</div>;
-                }
-
-                return Object.entries(effect.bonuses.actionBonuses).map(
-                  ([actionId, bonus]) => (
-                    <div key={actionId}>
-                      {bonus.resourceMultiplier &&
-                        bonus.resourceMultiplier !== 1 && (
-                          <div>
-                            +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}{capitalizeWords(actionId).replace('Mining', 'Mine')}{" "}Bonus
-                          </div>
+        <TooltipProvider key={item.id}>
+          <Tooltip>
+            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipContent>
+              <div className="text-xs whitespace-pre-line">
+                {hasTooltip && title === "Fortifications" ? (
+                  <div>{item.tooltip}</div>
+                ) : (
+                  <>
+                    {effect.name && (
+                      <div className="font-bold mb-1">{effect.name}</div>
+                    )}
+                    {effect.description && (
+                      <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+                    )}
+                    {effect.bonuses.generalBonuses && (
+                  <>
+                    {effect.bonuses.generalBonuses.luck && (
+                      <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
+                    )}
+                    {effect.bonuses.generalBonuses.strength && (
+                      <div>
+                        +{effect.bonuses.generalBonuses.strength} Strength
+                      </div>
+                    )}
+                    {effect.bonuses.generalBonuses.gatheringSpeed && (
+                      <div>
+                        +
+                        {Math.round(
+                          (effect.bonuses.generalBonuses.gatheringSpeed - 1) *
+                            100,
                         )}
-                      {bonus.resourceBonus &&
-                        Object.entries(bonus.resourceBonus).map(
-                          ([resource, amount]) => (
-                            <div key={resource}>
-                              {capitalizeWords(actionId)}: +{amount} {capitalizeWords(resource)}
+                        % Gathering Speed
+                      </div>
+                    )}
+                    {effect.bonuses.generalBonuses.craftingSpeed && (
+                      <div>
+                        +
+                        {Math.round(
+                          (effect.bonuses.generalBonuses.craftingSpeed - 1) * 100,
+                        )}
+                        % Crafting Speed
+                      </div>
+                    )}
+                    {effect.bonuses.generalBonuses.explorationBonus && (
+                      <div>
+                        +{effect.bonuses.generalBonuses.explorationBonus}{" "}
+                        Exploration Bonus
+                      </div>
+                    )}
+                    {effect.bonuses.generalBonuses.knowledge && (
+                      <div>
+                        +{effect.bonuses.generalBonuses.knowledge} Knowledge
+                      </div>
+                    )}
+                    {effect.bonuses.generalBonuses.madness && (
+                      <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
+                    )}
+                    {effect.bonuses.generalBonuses.craftingCostReduction && (
+                      <div>
+                        {Math.round(
+                          effect.bonuses.generalBonuses.craftingCostReduction *
+                            100,
+                        )}
+                        % Craft Discount
+                      </div>
+                    )}
+
+                  </>
+                )}
+                {effect.bonuses.actionBonuses &&
+                (() => {
+                  // Special case for seeker pack - show simplified tooltip
+                  if (effect.id === 'seeker_pack') {
+                    return <div>+20% Explore Bonus</div>;
+                  }
+
+                  return Object.entries(effect.bonuses.actionBonuses).map(
+                    ([actionId, bonus]) => (
+                      <div key={actionId}>
+                        {bonus.resourceMultiplier &&
+                          bonus.resourceMultiplier !== 1 && (
+                            <div>
+                              +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}{capitalizeWords(actionId).replace('Mining', 'Mine')}{" "}Bonus
                             </div>
-                          ),
-                        )}
-                    </div>
-                  ),
-                );
-              })()}
-                </>
-              )}
-            </div>
-          </HoverCardContent>
-        </HoverCard>
+                          )}
+                        {bonus.resourceBonus &&
+                          Object.entries(bonus.resourceBonus).map(
+                            ([resource, amount]) => (
+                              <div key={resource}>
+                                {capitalizeWords(actionId)}: +{amount} {capitalizeWords(resource)}
+                              </div>
+                            ),
+                          )}
+                      </div>
+                    ),
+                  );
+                })()}
+                  </>
+                )}
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       );
     }
 
@@ -366,7 +368,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
             <TooltipContent>
-              <p>+{eventMadness} Madness from Events</p>
+              <p className="whitespace-pre-line">+{eventMadness} Madness from Events</p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
