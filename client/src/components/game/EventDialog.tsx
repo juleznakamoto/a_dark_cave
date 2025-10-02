@@ -113,6 +113,13 @@ export default function EventDialog({
 
     const eventId = event!.id.split("-")[0];
     
+    // For "close" button on result dialogs, just close
+    if (choiceId === 'close') {
+      fallbackExecutedRef.current = true;
+      onClose();
+      return;
+    }
+    
     // Apply the choice through the store
     applyEventChoice(choiceId, eventId);
 
