@@ -1,36 +1,42 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
-const FIRST_WAVE_MESSAGE = 
-  "The earth shudders as pale, jointed figures creep from the cave. Their ember eyes pierce the dark, voices scraping the air as they advance.";
+const FIRST_WAVE_MESSAGE =
+  "The earth shudders as pale figures crawl from the cave, their ember eyes cutting through the dark as they macrch towards the city.";
 
-const SECOND_WAVE_MESSAGE = 
-  "The creatures return in greater number, clad in crude bone and carrying weapons that throb with foul light.";
+const SECOND_WAVE_MESSAGE =
+  "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.";
 
-const THIRD_WAVE_MESSAGE = 
-  "A roar erupts from the cave, shaking the stone itself. From the cave thunder hulking brutes, their massive bone weapons cracking the ground with each step.";
+const THIRD_WAVE_MESSAGE =
+  "A roar shakes the stone. Hulking brutes thunder from the cave, their bone weapons cracking the ground.";
 
-const FOURTH_WAVE_MESSAGE = 
-  "The sky blackens as winged horrors descend. From the cave surge armored fiends, the assault now striking from earth and air alike.";
+const FOURTH_WAVE_MESSAGE =
+  "The sky darkens as winged horrors descend and armored fiends surge from the cave, assaulting from air and earth.";
 
-const FIFTH_WAVE_MESSAGE = 
-  "From the cave emerges a colossal shadow, its form unspeakable, its presence suffocating as he marches towards the city.";
+const FIFTH_WAVE_MESSAGE =
+  "From the cave emerges a colossal shadow, its form unspeakable, its presence suffocating as it advances on the city.";
 
-function createDefeatMessage(casualties: number, damagedBuildings: string[]): string {
+const VICTORY_MESSAGE =
+  "Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours!";
+
+function createDefeatMessage(
+  casualties: number,
+  damagedBuildings: string[],
+): string {
   let msg = "The creatures overwhelm your defenses. ";
-  
+
   if (casualties === 1) {
-    msg += "One villager falls before the remaining creatures retreat to the depths.";
+    msg +=
+      "One villager falls before the remaining creatures retreat to the depths.";
   } else {
     msg += `${casualties} villagers fall before the remaining creatures retreat to the depths.`;
   }
-  
+
   if (damagedBuildings.length > 0) {
-    msg += ` Your ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? 'is' : 'are'} damaged in the assault.`;
+    msg += ` Your ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? "is" : "are"} damaged in the assault.`;
   }
-  
+
   return msg;
 }
 
@@ -73,8 +79,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 firstWaveVictory: true,
               },
             },
-            _logMessage:
-              "Your defenses hold strong! The pale creatures crash against your fortifications but cannot penetrate your defenses. Victory is yours!",
+            _logMessage: VICTORY_MESSAGE,
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -87,12 +92,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             // Damage watchtower or palisades if available
             let buildingDamage = {};
             const damagedBuildings: string[] = [];
-            
-            if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+
+            if (
+              state.buildings.watchtower > 0 &&
+              !state.story.seen.watchtowerDamaged
+            ) {
               buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
               damagedBuildings.push("watchtower");
             }
-            if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+            if (
+              state.buildings.palisades > 0 &&
+              !state.story.seen.palisadesDamaged
+            ) {
               buildingDamage = { ...buildingDamage, palisadesDamaged: true };
               damagedBuildings.push("palisades");
             }
@@ -151,8 +162,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
-            _logMessage:
-              "Your fortifications prove impenetrable! The armored creatures cannot break through your defenses. Another victory!",
+            _logMessage: VICTORY_MESSAGE,
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -165,12 +175,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             // Damage watchtower or palisades if available
             let buildingDamage = {};
             const damagedBuildings: string[] = [];
-            
-            if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+
+            if (
+              state.buildings.watchtower > 0 &&
+              !state.story.seen.watchtowerDamaged
+            ) {
               buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
               damagedBuildings.push("watchtower");
             }
-            if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+            if (
+              state.buildings.palisades > 0 &&
+              !state.story.seen.palisadesDamaged
+            ) {
               buildingDamage = { ...buildingDamage, palisadesDamaged: true };
               damagedBuildings.push("palisades");
             }
@@ -229,8 +245,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
-            _logMessage:
-              "Against all odds, your defenses hold! The brute horde crashes against your walls but cannot breach them. Your victory inspires the survivors!",
+            _logMessage: VICTORY_MESSAGE,
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -243,12 +258,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             // Damage watchtower or palisades if available
             let buildingDamage = {};
             const damagedBuildings: string[] = [];
-            
-            if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+
+            if (
+              state.buildings.watchtower > 0 &&
+              !state.story.seen.watchtowerDamaged
+            ) {
               buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
               damagedBuildings.push("watchtower");
             }
-            if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+            if (
+              state.buildings.palisades > 0 &&
+              !state.story.seen.palisadesDamaged
+            ) {
               buildingDamage = { ...buildingDamage, palisadesDamaged: true };
               damagedBuildings.push("palisades");
             }
@@ -307,8 +328,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
-            _logMessage:
-              "Your warriors fight with legendary prowess! Despite the aerial assault, your defenses repel the combined attack. One more wave remains...",
+            _logMessage: VICTORY_MESSAGE,
           }),
           onDefeat: () => {
             const currentPopulation = Object.values(state.villagers).reduce(
@@ -321,12 +341,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             // Damage watchtower or palisades if available
             let buildingDamage = {};
             const damagedBuildings: string[] = [];
-            
-            if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+
+            if (
+              state.buildings.watchtower > 0 &&
+              !state.story.seen.watchtowerDamaged
+            ) {
               buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
               damagedBuildings.push("watchtower");
             }
-            if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+            if (
+              state.buildings.palisades > 0 &&
+              !state.story.seen.palisadesDamaged
+            ) {
               buildingDamage = { ...buildingDamage, palisadesDamaged: true };
               damagedBuildings.push("palisades");
             }
@@ -427,12 +453,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           // Damage watchtower or palisades if available
           let buildingDamage = {};
           const damagedBuildings: string[] = [];
-          
-          if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+
+          if (
+            state.buildings.watchtower > 0 &&
+            !state.story.seen.watchtowerDamaged
+          ) {
             buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
             damagedBuildings.push("watchtower");
           }
-          if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+          if (
+            state.buildings.palisades > 0 &&
+            !state.story.seen.palisadesDamaged
+          ) {
             buildingDamage = { ...buildingDamage, palisadesDamaged: true };
             damagedBuildings.push("palisades");
           }
