@@ -254,9 +254,9 @@ export default function VillagePanel() {
         if (visibleActions.length === 0) return null;
 
         return (
-          <div key={groupIndex} className="space-y-4">
+          <div key={groupIndex} className="space-y-2">
             {group.title && (
-              <h3 className="text-sm font-semibold text-foreground ">
+              <h3 className="text-xs font-semibold text-foreground ">
                 {group.title}
               </h3>
             )}

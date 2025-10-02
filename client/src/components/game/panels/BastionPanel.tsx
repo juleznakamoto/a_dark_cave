@@ -113,10 +113,6 @@ export default function BastionPanel() {
       {/* Repair Section */}
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-foreground">Repair</h3>
-        <p className="text-xs text-muted-foreground">
-          Damaged buildings provide only 50% of their normal bonuses until repaired.
-        </p>
-
         <div className="flex flex-wrap gap-2">
           {bastionDamaged && buildings.bastion > 0 && (() => {
             const repairCost = getRepairCost('buildBastion', 1);
@@ -128,7 +124,7 @@ export default function BastionPanel() {
                 size="xs"
                 className="hover:bg-transparent hover:text-foreground"
               >
-                Repair Bastion
+                Bastion
               </Button>
             );
           })()}
@@ -143,7 +139,7 @@ export default function BastionPanel() {
                 size="xs"
                 className="hover:bg-transparent hover:text-foreground"
               >
-                Repair Watchtower
+                Watchtower
               </Button>
             );
           })()}
@@ -158,7 +154,7 @@ export default function BastionPanel() {
                 size="xs"
                 className="hover:bg-transparent hover:text-foreground"
               >
-                Repair Palisades
+                Palisades
               </Button>
             );
           })()}
