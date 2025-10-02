@@ -337,16 +337,25 @@ export default function SidePanel() {
         
         let defense = 0;
         let attack = 0;
+        let integrity = 0;
+        
         for (let i = 1; i <= level; i++) {
           defense += 1 + (i - 1);
           attack += 4 * i;
         }
         
+        // Calculate integrity based on level
+        integrity = 5; // Level 1
+        if (level >= 2) integrity += 5; // Level 2
+        if (level >= 3) integrity += 10; // Level 3
+        if (level >= 4) integrity += 10; // Level 4
+        
         // Apply damage multiplier and round down
         defense = Math.floor(defense * multiplier);
         attack = Math.floor(attack * multiplier);
+        integrity = Math.floor(integrity * multiplier);
         
-        tooltip = `+${defense} Defense\n+${attack} Attack`;
+        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
         
         // Add red down arrow if damaged
         if (isDamaged) {
@@ -358,8 +367,9 @@ export default function SidePanel() {
         
         const defense = Math.floor(5 * multiplier);
         const attack = Math.floor(3 * multiplier);
+        const integrity = Math.floor(20 * multiplier);
         
-        tooltip = `+${defense} Defense\n+${attack} Attack`;
+        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
         
         // Add red down arrow if damaged
         if (isDamaged) {
@@ -374,15 +384,30 @@ export default function SidePanel() {
         const multiplier = isDamaged ? 0.5 : 1;
         
         let defense = 0;
-        if (palisadesLevel >= 1) defense += 4;
-        if (palisadesLevel >= 2) defense += 6;
-        if (palisadesLevel >= 3) defense += 8;
-        if (palisadesLevel >= 4) defense += 10;
+        let integrity = 0;
+        
+        if (palisadesLevel >= 1) {
+          defense += 4;
+          integrity += 10;
+        }
+        if (palisadesLevel >= 2) {
+          defense += 6;
+          integrity += 15;
+        }
+        if (palisadesLevel >= 3) {
+          defense += 8;
+          integrity += 25;
+        }
+        if (palisadesLevel >= 4) {
+          defense += 10;
+          integrity += 35;
+        }
         
         // Apply damage multiplier and round down
         defense = Math.floor(defense * multiplier);
+        integrity = Math.floor(integrity * multiplier);
         
-        tooltip = `+${defense} Defense`;
+        tooltip = `+${defense} Defense\n+${integrity} Integrity`;
         
         // Add red down arrow if damaged
         if (isDamaged) {
