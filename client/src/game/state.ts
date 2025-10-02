@@ -458,6 +458,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
+      // Show logMessage in dialog if present
+      if (logMessage) {
+        const messageEntry: LogEntry = {
+          id: `log-message-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'event',
+          choices: [{
+            id: 'acknowledge',
+            label: 'Continue',
+            effect: () => ({}),
+          }],
+        };
+        get().setEventDialog(true, messageEntry);
+      }
+
       // Handle combat dialog for attack waves
       if (combatData) {
         get().setCombatDialog(true, {
@@ -547,6 +563,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._combatData;
     }
 
+    // Extract _logMessage if present
+    let logMessage = null;
+    if (updatedChanges._logMessage) {
+      logMessage = updatedChanges._logMessage;
+      delete updatedChanges._logMessage;
+    }
+
     // Apply state changes - EventManager already handles _logMessage in changes.log
     if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => ({
@@ -555,6 +578,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }));
 
       StateManager.schedulePopulationUpdate(get);
+    }
+
+    // Show logMessage in dialog if present
+    if (logMessage) {
+      const messageEntry: LogEntry = {
+        id: `log-message-${Date.now()}`,
+        message: logMessage,
+        timestamp: Date.now(),
+        type: 'event',
+        choices: [{
+          id: 'acknowledge',
+          label: 'Continue',
+          effect: () => ({}),
+        }],
+      };
+      get().setEventDialog(true, messageEntry);
+      return; // Don't proceed to combat dialog
     }
 
     // Handle combat dialog
