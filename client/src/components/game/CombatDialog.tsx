@@ -332,21 +332,23 @@ export default function CombatDialog({
 
               {/* Combat Items */}
               <div className="border-t pt-3">
-                <div className="text-sm font-medium mb-2">Combat Items</div>
+                <div className="text-sm font-medium mb-2">Items</div>
                 <div className="grid grid-cols-2 gap-2">
                   {combatItems.map(item => (
                     <TooltipProvider key={item.id}>
                       <Tooltip>
                         <TooltipTrigger asChild>
-                          <Button
-                            onClick={() => handleUseItem(item)}
-                            disabled={!item.available || isProcessingRound}
-                            variant="outline"
-                            size="sm"
-                            className="text-xs"
-                          >
-                            {item.name}
-                          </Button>
+                          <div className="w-full">
+                            <Button
+                              onClick={() => handleUseItem(item)}
+                              disabled={!item.available || isProcessingRound}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs w-full"
+                            >
+                              {item.name}
+                            </Button>
+                          </div>
                         </TooltipTrigger>
                         <TooltipContent>
                           <p>Base Damage: {item.damage}</p>
