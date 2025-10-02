@@ -134,13 +134,61 @@ export default function SidePanel() {
       let tooltip = undefined;
       const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
+      
+      // Check if this building is damaged
+      const isDamaged = (key === 'bastion' && story?.seen?.bastionDamaged) ||
+                       (key === 'watchtower' && story?.seen?.watchtowerDamaged) ||
+                       (key === 'palisades' && story?.seen?.palisadesDamaged);
+      
       if (buildAction?.statsEffects) {
         const effects = Object.entries(buildAction.statsEffects)
-          .map(([stat, value]) => `${value > 0 ? "+" : ""}${value} ${stat}`)
+          .map(([stat, value]) => {
+            // Apply 50% reduction and round down if damaged
+            const finalValue = isDamaged ? Math.floor(value * 0.5) : value;
+            return `${finalValue > 0 ? "+" : ""}${finalValue} ${stat}`;
+          })
           .join(", ");
         if (effects) {
           tooltip = effects;
         }
+      }
+      
+      // Special handling for fortification buildings (bastion, watchtower, palisades)
+      // These affect bastion_stats instead of regular stats
+      if (key === 'bastion' && buildings.bastion > 0) {
+        const defense = Math.floor(5 * (isDamaged ? 0.5 : 1));
+        const attack = Math.floor(3 * (isDamaged ? 0.5 : 1));
+        tooltip = `+${defense} defense, +${attack} attack`;
+      } else if (key === 'watchtower' && buildings.watchtower > 0) {
+        const level = buildings.watchtower;
+        const multiplier = isDamaged ? 0.5 : 1;
+        let defense = Math.floor(1 * multiplier);
+        let attack = Math.floor(5 * multiplier);
+        
+        if (level >= 2) {
+          defense += Math.floor(2 * multiplier);
+          attack += Math.floor(8 * multiplier);
+        }
+        if (level >= 3) {
+          defense += Math.floor(3 * multiplier);
+          attack += Math.floor(12 * multiplier);
+        }
+        if (level >= 4) {
+          defense += Math.floor(4 * multiplier);
+          attack += Math.floor(20 * multiplier);
+        }
+        
+        tooltip = `+${defense} defense, +${attack} attack`;
+      } else if (key === 'palisades' && buildings.palisades > 0) {
+        const level = buildings.palisades;
+        const multiplier = isDamaged ? 0.5 : 1;
+        let defense = Math.floor(4 * multiplier);
+        
+        if (level >= 2) defense += Math.floor(6 * multiplier);
+        if (level >= 3) defense += Math.floor(8 * multiplier);
+        if (level >= 4) defense += Math.floor(10 * multiplier);
+        
+        tooltip = `+${defense} defense`;
       }
 
       return {
