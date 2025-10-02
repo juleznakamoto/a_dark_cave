@@ -44,6 +44,7 @@ export interface LogEntry {
   isTimedChoice?: boolean;
   baseDecisionTime?: number;
   fallbackChoice?: EventChoice;
+  skipSound?: boolean; // Skip playing sound for this event
 }
 
 // Merge all events from separate files
@@ -151,22 +152,15 @@ export class EventManager {
     eventId: string,
     currentLogEntry?: LogEntry,
   ): Partial<GameState> {
-    console.log(`[EventManager] Applying choice: ${choiceId} for event: ${eventId}`);
-    console.log(`[EventManager] Available game events:`, Object.keys(this.allEvents));
-
     const eventDefinition = this.allEvents[eventId];
     if (!eventDefinition) {
-      console.log(`[EventManager] Event not found: ${eventId}`);
       return {};
     }
-
-    console.log(`[EventManager] Found event:`, eventDefinition.id, `with choices:`, eventDefinition.choices?.map(c => c.id));
 
     // For merchant events, use choices from the current log entry if available
     let choicesSource = eventDefinition.choices;
     if (eventId === 'merchant' && currentLogEntry?.choices) {
       choicesSource = currentLogEntry.choices;
-      console.log(`[EventManager] Using merchant choices from log entry:`, choicesSource.map(c => c.id));
     }
 
     // First try to find the choice in the choices array
@@ -175,29 +169,18 @@ export class EventManager {
     // If not found and this is a fallback choice, use the fallbackChoice directly
     if (!choice && eventDefinition.fallbackChoice && eventDefinition.fallbackChoice.id === choiceId) {
       choice = eventDefinition.fallbackChoice;
-      console.log(`[EventManager] Using fallback choice: ${choiceId}`);
     }
 
     if (!choice) {
-      console.log(`[EventManager] Choice not found: ${choiceId} in event: ${eventId}`);
       return {};
     }
 
-    console.log(`[EventManager] Executing choice effect for: ${choiceId}`);
     const choiceResult = choice.effect(state);
-    console.log('[EventManager] Choice effect result:', choiceResult);
-
-    // Check if result has _logMessage
-    if (choiceResult._logMessage) {
-      console.log('[EventManager] Choice returned _logMessage:', choiceResult._logMessage);
-    }
 
     const result = {
       ...choiceResult,
       log: currentLogEntry ? state.log.filter((entry) => entry.id !== currentLogEntry.id) : state.log,
     };
-
-    console.log('[EventManager] Final result being returned:', result);
 
     return result;
   }

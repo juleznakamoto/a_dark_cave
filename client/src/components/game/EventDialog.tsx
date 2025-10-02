@@ -99,22 +99,17 @@ export default function EventDialog({
   if (!event || !eventChoices.length) return null;
 
   const handleChoice = (choiceId: string) => {
-    console.log('[EventDialog] handleChoice called:', { choiceId, eventId: event?.id });
-    
     if (fallbackExecutedRef.current) {
-      console.log('[EventDialog] Choice already executed, ignoring');
       return;
     }
 
     const eventId = event!.id.split("-")[0];
     
-    console.log('[EventDialog] Calling applyEventChoice');
     // Apply the choice through the store
     applyEventChoice(choiceId, eventId);
 
     // Mark as executed to prevent further choices
     fallbackExecutedRef.current = true;
-    console.log('[EventDialog] Choice marked as executed');
   };
 
   const progress =
@@ -124,13 +119,10 @@ export default function EventDialog({
 
   const isMerchantEvent = event?.id.includes("merchant");
 
-  console.log('[EventDialog] Rendering with:', { isOpen, eventId: event?.id, hasChoices: eventChoices.length > 0 });
-
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(open) => {
-        console.log('[EventDialog] onOpenChange called:', { open });
         // Empty handler - we don't want automatic closing
         // All closing should be handled explicitly through handleChoice
       }}

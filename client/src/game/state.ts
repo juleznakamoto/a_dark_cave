@@ -458,20 +458,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
-      // Show logMessage in dialog if present
+      // Show logMessage in dialog if present (with 200ms delay)
       if (logMessage) {
-        const messageEntry: LogEntry = {
-          id: `log-message-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: 'event',
-          choices: [{
-            id: 'acknowledge',
-            label: 'Continue',
-            effect: () => ({}),
-          }],
-        };
-        get().setEventDialog(true, messageEntry);
+        setTimeout(() => {
+          const messageEntry: LogEntry = {
+            id: `log-message-${Date.now()}`,
+            message: logMessage,
+            timestamp: Date.now(),
+            type: 'event',
+            choices: [{
+              id: 'acknowledge',
+              label: 'Continue',
+              effect: () => ({}),
+            }],
+            skipSound: true, // Don't play sound for log messages
+          };
+          get().setEventDialog(true, messageEntry);
+        }, 200);
       }
 
       // Handle combat dialog for attack waves
@@ -550,13 +553,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   applyEventChoice: (choiceId: string, eventId: string) => {
-    console.log(`[STATE] applyEventChoice called: choiceId=${choiceId}, eventId=${eventId}`);
-    
     const state = get();
     const currentLogEntry = get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
-
-    console.log('[STATE] applyEventChoice changes received:', changes);
 
     let combatData = null;
     const updatedChanges = { ...changes };
@@ -565,7 +564,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._combatData) {
       combatData = updatedChanges._combatData;
       delete updatedChanges._combatData;
-      console.log('[STATE] Extracted combat data');
     }
 
     // Extract _logMessage if present
@@ -573,12 +571,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
-      console.log('[STATE] Extracted _logMessage:', logMessage);
     }
 
     // Apply state changes - EventManager already handles _logMessage in changes.log
     if (Object.keys(updatedChanges).length > 0) {
-      console.log('[STATE] Applying state changes:', updatedChanges);
       set((prevState) => ({
         ...prevState,
         ...updatedChanges,
@@ -587,22 +583,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
-    // Show logMessage in dialog if present
+    // Show logMessage in dialog if present (with 200ms delay)
     if (logMessage) {
-      console.log('[STATE] Creating dialog for _logMessage:', logMessage);
-      const messageEntry: LogEntry = {
-        id: `log-message-${Date.now()}`,
-        message: logMessage,
-        timestamp: Date.now(),
-        type: 'event',
-        choices: [{
-          id: 'acknowledge',
-          label: 'Continue',
-          effect: () => ({}),
-        }],
-      };
-      console.log('[STATE] Calling setEventDialog with message entry:', messageEntry);
-      get().setEventDialog(true, messageEntry);
+      setTimeout(() => {
+        const messageEntry: LogEntry = {
+          id: `log-message-${Date.now()}`,
+          message: logMessage,
+          timestamp: Date.now(),
+          type: 'event',
+          choices: [{
+            id: 'acknowledge',
+            label: 'Continue',
+            effect: () => ({}),
+          }],
+          skipSound: true, // Don't play sound for log messages
+        };
+        get().setEventDialog(true, messageEntry);
+      }, 200);
       return; // Don't proceed to combat dialog
     }
 
@@ -709,8 +706,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
-    console.log('[STATE] setEventDialog called:', { isOpen, currentEvent });
-    
     set((state) => ({
       ...state,
       eventDialog: {
@@ -719,9 +714,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       },
     }));
 
-    console.log('[STATE] Event dialog state updated:', get().eventDialog);
-
-    if (isOpen && currentEvent) {
+    if (isOpen && currentEvent && !currentEvent.skipSound) {
       const eventId = currentEvent.id.split('-')[0];
       const madnessEventIds = [
         'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
@@ -730,7 +723,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      console.log('[STATE] Playing sound for event:', { eventId, isMadnessEvent });
       audioManager.playSound(isMadnessEvent ? 'eventMadness' : 'event', 0.02);
     }
   },
