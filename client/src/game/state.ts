@@ -257,7 +257,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set((state) => updateResource(state, resource, amount));
-    
+
     // If updating free villagers, update population counts immediately
     if (resource === 'free' as any) {
       setTimeout(() => get().updatePopulation(), 0);
@@ -554,18 +554,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
 
       set((prevState) => {
-        const updatedState = { ...prevState, ...updatedChanges };
-        return {
-          ...updatedState,
-          log: logMessage
-            ? [...prevState.log, { 
-                id: `choice-result-${Date.now()}`, 
-                message: logMessage, 
-                timestamp: Date.now(), 
-                type: 'system' 
-              }].slice(-10)
-            : prevState.log,
+        const newLogEntry = logMessage
+          ? { 
+              id: `choice-result-${Date.now()}`, 
+              message: logMessage, 
+              timestamp: Date.now(), 
+              type: 'system' as const
+            }
+          : null;
+
+        if (newLogEntry) {
+          console.log('[STATE] Adding choice result to log:', newLogEntry);
+        }
+
+        const updatedState = { 
+          ...prevState, 
+          ...updatedChanges,
+          log: newLogEntry ? [...prevState.log, newLogEntry].slice(-10) : prevState.log
         };
+
+        console.log('[STATE] Updated log entries:', updatedState.log.length);
+        return updatedState;
       });
 
       // Handle combat dialog
