@@ -40,11 +40,13 @@ export default function EventDialog({
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
+  const [resultMessage, setResultMessage] = useState<string | null>(null);
 
-  // Reset purchased items when dialog opens
+  // Reset purchased items and result message when dialog opens
   useEffect(() => {
     if (isOpen) {
       setPurchasedItems(new Set());
+      setResultMessage(null);
     }
   }, [isOpen, event?.id]);
 
@@ -112,6 +114,25 @@ export default function EventDialog({
     }
 
     const eventId = event!.id.split("-")[0];
+    
+    // Get the choice to check for result message
+    const choice = event?.choices?.find(c => c.id === choiceId);
+    if (choice) {
+      // Execute the choice effect to get the result
+      const result = choice.effect(gameState);
+      
+      // If there's a log message, display it
+      if (result._logMessage) {
+        setResultMessage(result._logMessage as string);
+        fallbackExecutedRef.current = true;
+        
+        // Apply the choice through the store
+        applyEventChoice(choiceId, eventId);
+        return; // Don't close dialog yet, show result message first
+      }
+    }
+
+    // Apply the choice
     applyEventChoice(choiceId, eventId);
 
     // For merchant trades, mark as purchased but don't close dialog
@@ -131,6 +152,41 @@ export default function EventDialog({
       : 0;
 
   const isMerchantEvent = event?.id.includes("merchant");
+
+  // If there's a result message, show it with a close button
+  if (resultMessage) {
+    return (
+      <Dialog open={isOpen} onOpenChange={() => {}}>
+        <DialogContent
+          className="sm:max-w-md [&>button]:hidden"
+          onPointerDownOutside={(e) => e.preventDefault()}
+          onEscapeKeyDown={(e) => e.preventDefault()}
+        >
+          <DialogHeader>
+            <DialogTitle className="text-lg font-semibold">
+              {event?.title || "Result"}
+            </DialogTitle>
+            <DialogDescription className="text-sm text-muted-foreground mt-2">
+              {resultMessage}
+            </DialogDescription>
+          </DialogHeader>
+
+          <div className="flex justify-center mt-4">
+            <Button
+              onClick={() => {
+                setResultMessage(null);
+                onClose();
+              }}
+              variant="outline"
+              className="w-full"
+            >
+              Close
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
+  }
 
   return (
     <Dialog

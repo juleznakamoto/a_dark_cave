@@ -613,11 +613,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return;
       }
 
-      const isMerchantTradeChoice = choiceId.startsWith('trade_') && choiceId !== 'say_goodbye';
-      if (!isMerchantTradeChoice) {
-        get().setEventDialog(false);
-      }
-
+      // Don't auto-close the dialog here - let the EventDialog component handle it
+      // after displaying result messages
       StateManager.schedulePopulationUpdate(get);
     } else {
       get().setEventDialog(false);
