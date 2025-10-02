@@ -282,7 +282,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (!action || ((state.cooldowns[actionId] || 0) > 0 && !state.devMode)) return;
+    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
     const result = executeGameAction(actionId, state);
@@ -334,8 +334,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   tickCooldowns: () => {
     set((state) => {
-      if (state.devMode) return { cooldowns: {} };
-
       const newCooldowns = { ...state.cooldowns };
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {

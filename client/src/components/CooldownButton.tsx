@@ -30,7 +30,7 @@ export default function CooldownButton({
   "data-testid": testId,
   ...props
 }: CooldownButtonProps) {
-  const { devMode, cooldowns, setCooldown } = useGameStore();
+  const { cooldowns, setCooldown } = useGameStore();
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -51,14 +51,12 @@ export default function CooldownButton({
     // Execute the action immediately
     onClick();
 
-    // Start the cooldown in game state (skip in dev mode)
-    if (!devMode) {
-      setCooldown(actionId, cooldownMs / 1000); // Convert to seconds
-    }
+    // Start the cooldown in game state
+    setCooldown(actionId, cooldownMs / 1000); // Convert to seconds
   };
 
-  const isButtonDisabled = disabled || (isCoolingDown && !devMode);
-  const showCooldownVisual = isCoolingDown && !devMode;
+  const isButtonDisabled = disabled || isCoolingDown;
+  const showCooldownVisual = isCoolingDown;
 
   return (
     <div className="relative inline-block">
