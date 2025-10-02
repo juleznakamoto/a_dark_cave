@@ -548,7 +548,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._combatData;
     }
 
-    // Extract log message if present
+    // Extract log message if present (for both log and dialog)
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
@@ -615,7 +615,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    // Show result message in dialog if present
+    // Show result dialog if there's a log message
     if (logMessage) {
       const resultEvent: LogEntry = {
         id: `result-${Date.now()}`,
