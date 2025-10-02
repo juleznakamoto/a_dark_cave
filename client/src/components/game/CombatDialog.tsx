@@ -50,7 +50,8 @@ export default function CombatDialog({
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
-  const [usedItemsInCombat, setUsedItemsInCombat] = useState<Set<string>>(new Set());
+  const [usedItemsInRound, setUsedItemsInRound] = useState<Set<string>>(new Set());
+  const [usedItemsInCombat, setUsedItemsInCombat] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
   const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
@@ -69,7 +70,8 @@ export default function CombatDialog({
       setCombatStarted(false);
       setCurrentEnemy({ ...enemy });
       setRound(1);
-      setUsedItemsInCombat(new Set());
+      setUsedItemsInRound(new Set());
+      setUsedItemsInCombat([]);
       setIsProcessingRound(false);
       setCasualties(0);
       setCombatEnded(false);
@@ -88,21 +90,25 @@ export default function CombatDialog({
   const MAX_EMBER_BOMBS = 3;
   const MAX_CINDERFLAME_BOMBS = 2;
   
-  const emberBombsUsed = Array.from(usedItemsInCombat).filter(id => id === 'ember_bomb').length;
-  const cinderflameBombsUsed = Array.from(usedItemsInCombat).filter(id => id === 'cinderflame_bomb').length;
+  const emberBombsUsed = usedItemsInCombat.filter(id => id === 'ember_bomb').length;
+  const cinderflameBombsUsed = usedItemsInCombat.filter(id => id === 'cinderflame_bomb').length;
   
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
       name: "Ember Bomb",
       damage: 5,
-      available: gameState.resources.ember_bomb > 0 && emberBombsUsed < MAX_EMBER_BOMBS,
+      available: gameState.resources.ember_bomb > 0 && 
+                 emberBombsUsed < MAX_EMBER_BOMBS && 
+                 !usedItemsInRound.has('ember_bomb'),
     },
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
       damage: 15,
-      available: gameState.resources.cinderflame_bomb > 0 && cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS,
+      available: gameState.resources.cinderflame_bomb > 0 && 
+                 cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
+                 !usedItemsInRound.has('cinderflame_bomb'),
     },
   ];
 
@@ -118,8 +124,9 @@ export default function CombatDialog({
     const knowledgeBonus = Math.floor(totalKnowledge / 5);
     const finalDamage = item.damage + knowledgeBonus;
 
-    // Use the item (allow multiple uses by adding to array instead of set)
-    setUsedItemsInCombat(prev => new Set([...prev, item.id]));
+    // Use the item - track for this round and for entire combat
+    setUsedItemsInRound(prev => new Set([...prev, item.id]));
+    setUsedItemsInCombat(prev => [...prev, item.id]);
     setCurrentEnemy(prev => prev ? {
       ...prev,
       currentHealth: Math.max(0, prev.currentHealth - finalDamage)
@@ -215,8 +222,9 @@ export default function CombatDialog({
           setIsProcessingRound(false);
         }, 1000);
       } else {
-        // Next round - keep used items count across rounds
+        // Next round - reset items for this round but keep total combat tracking
         setRound(prev => prev + 1);
+        setUsedItemsInRound(new Set());
         setIsProcessingRound(false);
       }
     }, 1000);
