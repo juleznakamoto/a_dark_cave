@@ -84,19 +84,25 @@ export default function CombatDialog({
     }
   }, [isOpen, enemy, bastionStats.defense, bastionStats.attackFromFortifications]);
 
-  // Available combat items
+  // Available combat items with max limits
+  const MAX_EMBER_BOMBS = 3;
+  const MAX_CINDERFLAME_BOMBS = 2;
+  
+  const emberBombsUsed = Array.from(usedItemsInCombat).filter(id => id === 'ember_bomb').length;
+  const cinderflameBombsUsed = Array.from(usedItemsInCombat).filter(id => id === 'cinderflame_bomb').length;
+  
   const combatItems: CombatItem[] = [
     {
       id: "ember_bomb",
       name: "Ember Bomb",
       damage: 5,
-      available: gameState.resources.ember_bomb > 0,
+      available: gameState.resources.ember_bomb > 0 && emberBombsUsed < MAX_EMBER_BOMBS,
     },
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
       damage: 15,
-      available: gameState.resources.cinderflame_bomb > 0,
+      available: gameState.resources.cinderflame_bomb > 0 && cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS,
     },
   ];
 
@@ -105,14 +111,14 @@ export default function CombatDialog({
   };
 
   const handleUseItem = (item: CombatItem) => {
-    if (!currentEnemy || usedItemsInCombat.has(item.id) || !item.available) return;
+    if (!currentEnemy || !item.available) return;
 
     // Calculate final damage with knowledge bonus
     const totalKnowledge = getTotalKnowledge(gameState);
     const knowledgeBonus = Math.floor(totalKnowledge / 5);
     const finalDamage = item.damage + knowledgeBonus;
 
-    // Use the item
+    // Use the item (allow multiple uses by adding to array instead of set)
     setUsedItemsInCombat(prev => new Set([...prev, item.id]));
     setCurrentEnemy(prev => prev ? {
       ...prev,
@@ -209,9 +215,8 @@ export default function CombatDialog({
           setIsProcessingRound(false);
         }, 1000);
       } else {
-        // Next round
+        // Next round - keep used items count across rounds
         setRound(prev => prev + 1);
-        setUsedItemsInCombat(new Set()); // Reset item usage for new round
         setIsProcessingRound(false);
       }
     }, 1000);
@@ -330,7 +335,7 @@ export default function CombatDialog({
                             <TooltipTrigger asChild>
                               <Button
                                 onClick={() => handleUseItem(item)}
-                                disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
+                                disabled={!item.available || isProcessingRound}
                                 variant="outline"
                                 size="sm"
                                 className="text-xs"
@@ -344,6 +349,7 @@ export default function CombatDialog({
                                 <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
                               )}
                               <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
+                              <p>Available: {item.id === 'ember_bomb' ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}` : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}</p>
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
