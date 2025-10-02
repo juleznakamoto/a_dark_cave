@@ -287,15 +287,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const result = executeGameAction(actionId, state);
 
-    // Apply cooldown override for dev mode (10% of normal cooldown)
-    if (state.devMode) {
-      const normalCooldown = result.stateUpdates.cooldowns?.[actionId] || 0;
-      result.stateUpdates.cooldowns = {
-        ...result.stateUpdates.cooldowns,
-        [actionId]: normalCooldown * 0.1,
-      };
-    }
-
     if (import.meta.env.DEV) {
       console.log(`[STATE] Action: ${actionId}`, {
         stateUpdates: result.stateUpdates,
