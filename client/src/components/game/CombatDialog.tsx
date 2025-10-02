@@ -331,43 +331,39 @@ export default function CombatDialog({
               </div>
 
               {/* Combat Items */}
-              {combatItems.some(item => item.available) && (
-                <div className="border-t pt-3">
-                  <div className="text-sm font-medium mb-2">Combat Items</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {combatItems
-                      .filter(item => item.available)
-                      .map(item => (
-                        <TooltipProvider key={item.id}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <Button
-                                onClick={() => handleUseItem(item)}
-                                disabled={!item.available || isProcessingRound}
-                                variant="outline"
-                                size="sm"
-                                className="text-xs"
-                              >
-                                {item.name}
-                              </Button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Base Damage: {item.damage}</p>
-                              {getTotalKnowledge(gameState) >= 5 && (
-                                <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
-                              )}
-                              <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
-                              <p>Available: {item.id === 'ember_bomb' 
-                                ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
-                              }</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ))}
-                  </div>
+              <div className="border-t pt-3">
+                <div className="text-sm font-medium mb-2">Combat Items</div>
+                <div className="grid grid-cols-2 gap-2">
+                  {combatItems.map(item => (
+                    <TooltipProvider key={item.id}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            onClick={() => handleUseItem(item)}
+                            disabled={!item.available || isProcessingRound}
+                            variant="outline"
+                            size="sm"
+                            className="text-xs"
+                          >
+                            {item.name}
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <p>Base Damage: {item.damage}</p>
+                          {getTotalKnowledge(gameState) >= 5 && (
+                            <p>Knowledge Bonus: +{Math.floor(getTotalKnowledge(gameState) / 5)}</p>
+                          )}
+                          <p>Total Damage: {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)}</p>
+                          <p>Available: {item.id === 'ember_bomb' 
+                            ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                            : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                          }</p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  ))}
                 </div>
-              )}
+              </div>
 
               {/* Fight Button */}
               <div className="border-t pt-3">
