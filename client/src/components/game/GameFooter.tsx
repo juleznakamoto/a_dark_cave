@@ -20,6 +20,10 @@ export default function GameFooter() {
     }
   };
 
+  const handleOfferTribute = () => {
+    window.open('https://www.buymeacoffee.com/julez.b', '_blank');
+  };
+
   return (
     <footer className="border-t border-border px-6 py-2 text-xs text-muted-foreground">
       <div className="flex justify-between items-center">
@@ -42,6 +46,14 @@ export default function GameFooter() {
             className="px-3 py-1 text-xs no-hover"
           >
             New Game
+          </Button>
+          <Button 
+            variant="outline"
+            size="xs"
+            onClick={handleOfferTribute}
+            className="px-3 py-1 text-xs no-hover"
+          >
+            Offer Tribute
           </Button>
         </div>
         <span data-testid="game-version">v{VERSION}</span>
