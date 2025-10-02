@@ -220,7 +220,7 @@ export default function SidePanelSection({
               {item.label.includes('↓') ? (
                 <>
                   {item.label.replace(' ↓', '')}
-                  <span className="text-red-500 ml-1">↓</span>
+                  <span className="text-red-800 ml-1">↓</span>
                 </>
               ) : (
                 item.label
