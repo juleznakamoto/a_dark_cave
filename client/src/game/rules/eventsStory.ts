@@ -273,7 +273,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.resources.iron >= 500 &&
       !state.relics.blackened_mirror,
     triggerType: "resource",
-    timeProbability: 0.035,
+    timeProbability: 35,
     title: "The Blackened Mirror",
     message:
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
@@ -820,7 +820,7 @@ export const storyEvents: Record<string, GameEvent> = {
   hiddenLake: {
     id: "hiddenLake",
     condition: (state: GameState) =>
-      state.flags.forestUnlocked && !state.relics.cracked_crown,
+      state.flags.forestUnlocked,// && !state.relics.cracked_crown,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Hidden Lake",
