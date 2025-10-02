@@ -42,7 +42,7 @@ export default function GameFooter() {
             New Game
           </Button>
         </div>
-        <span data-testid="game-version">v{version}.0.0</span>
+        <span data-testid="game-version">v{version}</span>
       </div>
     </footer>
   );
