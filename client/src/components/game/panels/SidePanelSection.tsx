@@ -50,8 +50,6 @@ export default function SidePanelSection({
   items,
   className = "",
   resourceChanges = [],
-  showNotifications = false,
-  forceNotifications = false, // Default value for the new prop
   onResourceChange,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
@@ -95,14 +93,14 @@ export default function SidePanelSection({
             onResourceChange(newChange);
           }
 
-          // Remove animation after 2.5 seconds
+          // Remove animation after 3 seconds
           setTimeout(() => {
             setAnimatedItems((prev) => {
               const newSet = new Set(prev);
               newSet.delete(item.id);
               return newSet;
             });
-          }, 2500);
+          }, 3000);
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
 
@@ -117,14 +115,14 @@ export default function SidePanelSection({
             onResourceChange(newChange);
           }
 
-          // Remove animation after 2.5 seconds
+          // Remove animation after 3 seconds
           setTimeout(() => {
             setDecreaseAnimatedItems((prev) => {
               const newSet = new Set(prev);
               newSet.delete(item.id);
               return newSet;
             });
-          }, 2500);
+          }, 3000);
         }
       }
 
@@ -232,11 +230,11 @@ export default function SidePanelSection({
               )}
             </span>
         <span
-          className={`transition-all duration-300 font-mono ${
+          className={`font-mono ${
             isAnimated
-              ? "scale-100 text-green-800 font-bold"
+              ? "text-green-800 font-bold"
               : isDecreaseAnimated
-                ? "scale-100 text-red-800 font-bold"
+                ? "text-red-800 font-bold"
                 : isMadness
                   ? madnessClasses
                   : ""

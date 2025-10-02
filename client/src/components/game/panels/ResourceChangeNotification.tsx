@@ -55,7 +55,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
       timerRef.current = setTimeout(() => {
         setVisibleChange(null);
         timerRef.current = null;
-      }, 2500);
+      }, 3000);
     }
 
     // Cleanup function
@@ -86,11 +86,11 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
     <div className="absolute left-full top-1/2 -translate-y-1/2 ml-1 z-50 pointer-events-none">
       <div
         className={`
-          text-xs font-sans
-          animate-in fade-in-0 slide-in-from-left-2 duration-200
+          text-xs font-mono
+          animate-in fade-in-0 slide-in-from-left-2 duration-300
           ${visibleChange.amount > 0 
-            ? 'text-green-600' 
-            : 'text-red-600'
+            ? 'text-green-800' 
+            : 'text-red-800'
           }
         `}
       >
