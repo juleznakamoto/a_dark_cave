@@ -563,17 +563,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
             }
           : null;
 
-        if (newLogEntry) {
-          console.log('[STATE] Adding choice result to log:', newLogEntry);
-        }
-
         const updatedState = { 
           ...prevState, 
           ...updatedChanges,
           log: newLogEntry ? [...prevState.log, newLogEntry].slice(-10) : prevState.log
         };
 
-        console.log('[STATE] Updated log entries:', updatedState.log.length);
         return updatedState;
       });
 
@@ -586,7 +581,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           eventMessage: currentLogEntry?.message || "",
           onVictory: () => {
             const victoryResult = combatData.onVictory();
-            // Apply victory state changes
             set((prevState) => ({
               ...prevState,
               ...victoryResult,
@@ -603,7 +597,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           },
           onDefeat: () => {
             const defeatResult = combatData.onDefeat();
-            // Apply defeat state changes
             set((prevState) => ({
               ...prevState,
               ...defeatResult,
@@ -622,29 +615,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return;
       }
 
-      // If there's a log message, update the current event to trigger result display
-      if (logMessage && currentLogEntry) {
-        // Force a new object reference to trigger useEffect in EventDialog
-        setTimeout(() => {
-          set((prevState) => ({
-            ...prevState,
-            eventDialog: {
-              ...prevState.eventDialog,
-              currentEvent: {
-                ...currentLogEntry,
-                resultMessage: logMessage,
-                // Add timestamp to force new reference
-                _updateTime: Date.now(),
-              },
-            },
-          }));
-        }, 50);
-      } else {
-        // No result message, close dialog for non-merchant events
-        const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
-        if (!isMerchantTrade) {
-          get().setEventDialog(false);
-        }
+      // Close dialog for non-merchant events
+      const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
+      if (!isMerchantTrade) {
+        get().setEventDialog(false);
       }
 
       StateManager.schedulePopulationUpdate(get);

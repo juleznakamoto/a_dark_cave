@@ -40,22 +40,13 @@ export default function EventDialog({
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
-  const [resultMessage, setResultMessage] = useState<string | null>(null);
 
-  // Reset purchased items and result message when dialog opens
+  // Reset purchased items when dialog opens
   useEffect(() => {
     if (isOpen) {
       setPurchasedItems(new Set());
-      setResultMessage(null);
     }
   }, [isOpen, event?.id]);
-
-  // Watch for result message from state
-  useEffect(() => {
-    if (event && (event as any).resultMessage && (event as any).resultMessage !== resultMessage) {
-      setResultMessage((event as any).resultMessage);
-    }
-  }, [event, event?.id, (event as any)?._updateTime]);
 
   // Initialize timer for timed choices
   useEffect(() => {
@@ -148,41 +139,6 @@ export default function EventDialog({
       : 0;
 
   const isMerchantEvent = event?.id.includes("merchant");
-
-  // If there's a result message, show it with a close button
-  if (resultMessage) {
-    return (
-      <Dialog open={isOpen} onOpenChange={() => {}}>
-        <DialogContent
-          className="sm:max-w-md [&>button]:hidden"
-          onPointerDownOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={(e) => e.preventDefault()}
-        >
-          <DialogHeader>
-            <DialogTitle className="text-lg font-semibold">
-              {event?.title || "Result"}
-            </DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground mt-2">
-              {resultMessage}
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="flex justify-center mt-4">
-            <Button
-              onClick={() => {
-                setResultMessage(null);
-                onClose();
-              }}
-              variant="outline"
-              className="w-full"
-            >
-              Close
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog
