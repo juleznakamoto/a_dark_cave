@@ -101,12 +101,6 @@ export function calculateBastionStats(state: GameState): BastionStats {
   // This is handled by bastionMultiplier applied above.
   const currentIntegrity = state.bastion_stats?.integrity ?? baseIntegrity;
 
-  // Placeholder for repair system logic in Bastion tab
-  // In the Bastion tab, there should be a Repair area.
-  // If buildings get damaged, their stats (e.g., defense get multiplied by 0.5).
-  // For each damaged building, there will be a button in the Repair area to repair it.
-  // The cost is 50% of the initial building cost.
-
   return {
     defense,
     attack: totalAttack,
