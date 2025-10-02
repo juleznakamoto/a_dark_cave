@@ -628,8 +628,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           effect: () => ({})
         }]
       };
-      // Small delay to ensure the previous choice has been processed
-      setTimeout(() => get().setEventDialog(true, resultEvent), 10);
+      get().setEventDialog(true, resultEvent);
       return;
     }
 
