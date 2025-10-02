@@ -448,8 +448,8 @@ function handleStrangerApproach() {
       type: "system",
     });
 
-    // Update population after applying changes
-    setTimeout(() => state.updatePopulation(), 0);
+    // Update population immediately
+    state.updatePopulation();
 
     // Play new villager sound
     audioManager.playSound("newVillager", 0.02);
