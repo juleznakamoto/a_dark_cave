@@ -343,7 +343,7 @@ export default function CombatDialog({
                             <TooltipTrigger asChild>
                               <Button
                                 onClick={() => handleUseItem(item)}
-                                disabled={usedItemsInCombat.has(item.id) || isProcessingRound}
+                                disabled={!item.available || isProcessingRound}
                                 variant="outline"
                                 size="sm"
                                 className="text-xs"
