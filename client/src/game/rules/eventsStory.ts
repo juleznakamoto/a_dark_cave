@@ -17,17 +17,18 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        food:
-          state.resources.food -
-          Math.min(
-            state.resources.food,
-            Math.ceil(Math.random() * 50 * state.buildings.woodenHut),
-          ),
-      },
-    }),
+    effect: (state: GameState) => {
+      const foodLost = Math.min(
+        state.resources.food,
+        Math.ceil(Math.random() * 50 * state.buildings.woodenHut),
+      );
+      return {
+        resources: {
+          ...state.resources,
+          food: state.resources.food - foodLost,
+        },
+      };
+    },
   },
 
   villagerMissing: {
@@ -44,12 +45,14 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 5)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      villagers: {
-        ...state.villagers,
-        free: Math.max(0, state.villagers.free - 1),
-      },
-    }),
+    effect: (state: GameState) => {
+      return {
+        villagers: {
+          ...state.villagers,
+          free: Math.max(0, state.villagers.free - 1),
+        },
+      };
+    },
   },
 
   ironGift: {
@@ -63,12 +66,15 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        iron: state.resources.iron + 25 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const ironGained = 25 * state.buildings.woodenHut;
+      return {
+        resources: {
+          ...state.resources,
+          iron: state.resources.iron + ironGained,
+        },
+      };
+    },
   },
 
   steelGift: {
@@ -82,12 +88,15 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        steel: state.resources.steel + 15 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const steelGained = 15 * state.buildings.woodenHut;
+      return {
+        resources: {
+          ...state.resources,
+          steel: state.resources.steel + steelGained,
+        },
+      };
+    },
   },
 
   obsidianGift: {
@@ -101,12 +110,15 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        obsidian: state.resources.obsidian + 10 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const obsidianGained = 10 * state.buildings.woodenHut;
+      return {
+        resources: {
+          ...state.resources,
+          obsidian: state.resources.obsidian + obsidianGained,
+        },
+      };
+    },
   },
 
   adamantGift: {
@@ -120,12 +132,15 @@ export const storyEvents: Record<string, GameEvent> = {
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        adamant: state.resources.adamant + 8 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const adamantGained = 8 * state.buildings.woodenHut;
+      return {
+        resources: {
+          ...state.resources,
+          adamant: state.resources.adamant + adamantGained,
+        },
+      };
+    },
   },
 
   paleFigure: {
@@ -551,12 +566,14 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_morrowind: true,
-      },
-    }),
+    effect: (state: GameState) => {
+      return {
+        events: {
+          ...state.events,
+          dream_morrowind: true,
+        },
+      };
+    },
   },
 
   dreamOblivion: {
@@ -569,12 +586,14 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_oblivion: true,
-      },
-    }),
+    effect: (state: GameState) => {
+      return {
+        events: {
+          ...state.events,
+          dream_oblivion: true,
+        },
+      };
+    },
   },
 
   dreamSkyrim: {
@@ -587,12 +606,14 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 1,
     repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_skyrim: true,
-      },
-    }),
+    effect: (state: GameState) => {
+      return {
+        events: {
+          ...state.events,
+          dream_skyrim: true,
+        },
+      };
+    },
   },
 
   findElderScroll: {
@@ -609,16 +630,18 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        elder_scroll: true,
-      },
-      events: {
-        ...state.events,
-        elder_scroll_found: true,
-      },
-    }),
+    effect: (state: GameState) => {
+      return {
+        relics: {
+          ...state.relics,
+          elder_scroll: true,
+        },
+        events: {
+          ...state.events,
+          elder_scroll_found: true,
+        },
+      };
+    },
   },
 
   offerToTheForestGods: {
@@ -670,15 +693,17 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardFrostglassSword: true,
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            wizardFrostglassSword: true,
+          },
         },
-      },
-    }),
+      };
+    },
   },
 
                 ...state.relics,
@@ -904,15 +929,17 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardArrives: true,
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            wizardArrives: true,
+          },
         },
-      },
-    }),
+      };
+    },
   },
 
   wizardDecryptsScrolls: {
@@ -928,20 +955,22 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        frostfang: true,
-        blood_scepter: true,
-      },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardDecryptsScrolls: true,
+    effect: (state: GameState) => {
+      return {
+        relics: {
+          ...state.relics,
+          frostfang: true,
+          blood_scepter: true,
         },
-      },
-    }),
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            wizardDecryptsScrolls: true,
+          },
+        },
+      };
+    },
   },
 
   templeDedication: {
@@ -1079,15 +1108,17 @@ export const storyEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardHillGrave: true,
+    effect: (state: GameState) => {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            wizardHillGrave: true,
+          },
         },
-      },
-    }),
+      };
+    },
   },
 
   vikingBuilder: {
