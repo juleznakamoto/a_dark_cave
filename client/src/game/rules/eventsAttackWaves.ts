@@ -3,11 +3,20 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
-const FIRST_WAVE_MESSAGE = "The earth trembles as something ancient stirs below. Through the entry of the cave emerge pale, twisted beings - elongated, jointed, with coal-bright eyes. Their alien voices echo as they march toward your village.";
-const SECOND_WAVE_MESSAGE = "The creatures return with reinforcements - larger, more intelligent beings that coordinate their attacks. These new horrors wear crude armor made from the bones of previous victims and wield weapons that seem to pulse with dark energy. They've learned from the first assault.";
-const THIRD_WAVE_MESSAGE = "A deafening roar shakes the very foundations of your village. The creatures emerge in greater numbers than before, led by towering brutes wielding massive weapons of bone and stone. The ground cracks beneath their weight as they march toward your defenses with unstoppable momentum.";
-const FOURTH_WAVE_MESSAGE = "The sky darkens as winged terrors join the assault. Shrieking creatures descend from above while armored warriors pour through the portal. This coordinated attack from land and air threatens to overwhelm even your strongest defenses. The enemy has learned too well.";
-const FIFTH_WAVE_MESSAGE = "The ground splits open as something massive emerges from the depths. A towering creature of shadow and bone, easily three times the height of a man, leads an army of the twisted beings. Its presence alone makes reality bend and twist. This is the true enemy that was sealed behind the portal - and you have awakened it.";
+const FIRST_WAVE_MESSAGE = 
+  "The earth shudders as pale, jointed figures creep from the cave. Their ember eyes pierce the dark, voices scraping the air as they advance.";
+
+const SECOND_WAVE_MESSAGE = 
+  "The creatures return in greater number, clad in crude bone and carrying weapons that throb with foul light.";
+
+const THIRD_WAVE_MESSAGE = 
+  "A roar erupts from the cave, shaking the stone itself. From the cave thunder hulking brutes, their massive bone weapons cracking the ground with each step.";
+
+const FOURTH_WAVE_MESSAGE = 
+  "The sky blackens as winged horrors descend. From the cave surge armored fiends, the assault now striking from earth and air alike.";
+
+const FIFTH_WAVE_MESSAGE = 
+  "From the cave emerges a colossal shadow, its form unspeakable, its presence suffocating as he marches towards the city.";
 
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
