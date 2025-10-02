@@ -290,8 +290,18 @@ export default function SidePanel() {
           attack += 4 * i;
         }
         tooltip = `+${defense} Defense\n+${attack} Attack`;
+        
+        // Add red down arrow if damaged
+        if (story?.seen?.watchtowerDamaged) {
+          label += " ↓";
+        }
       } else if (key === "bastion") {
         tooltip = "+5 Defense\n+3 Attack";
+        
+        // Add red down arrow if damaged
+        if (story?.seen?.bastionDamaged) {
+          label += " ↓";
+        }
       } else if (key === "palisades") {
         const palisadesLevel = value ?? 0;
         const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
@@ -303,6 +313,11 @@ export default function SidePanel() {
         if (palisadesLevel >= 3) defense += 8;
         if (palisadesLevel >= 4) defense += 10;
         tooltip = `+${defense} Defense`;
+        
+        // Add red down arrow if damaged
+        if (story?.seen?.palisadesDamaged) {
+          label += " ↓";
+        }
       }
 
       return {

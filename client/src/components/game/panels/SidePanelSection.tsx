@@ -184,7 +184,7 @@ export default function SidePanelSection({
       effect?.bonuses?.actionBonuses &&
       Object.keys(effect.bonuses.actionBonuses).length > 0;
     const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses || effect.name || effect.description);
-    
+
     // Check if this item has a tooltip (for buildings with stats)
     const hasTooltip = item.tooltip && item.tooltip.length > 0;
 
@@ -221,7 +221,16 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span className="text-muted-foreground">{item.label}</span>
+        <span className="text-xs text-gray-400">
+              {item.label.includes('↓') ? (
+                <>
+                  {item.label.replace(' ↓', '')}
+                  <span className="text-red-500 ml-1">↓</span>
+                </>
+              ) : (
+                item.label
+              )}
+            </span>
         <span
           className={`transition-all duration-300 font-mono ${
             isAnimated
