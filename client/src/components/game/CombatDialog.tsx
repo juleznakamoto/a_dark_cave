@@ -60,7 +60,6 @@ export default function CombatDialog({
   );
   const [usedItemsInCombat, setUsedItemsInCombat] = useState<string[]>([]);
   const [isProcessingRound, setIsProcessingRound] = useState(false);
-  const [casualties, setCasualties] = useState(0);
   const [combatEnded, setCombatEnded] = useState(false);
   const [combatResult, setCombatResult] = useState<"victory" | "defeat" | null>(
     null,
@@ -91,7 +90,6 @@ export default function CombatDialog({
       setUsedItemsInRound(new Set());
       setUsedItemsInCombat([]);
       setIsProcessingRound(false);
-      setCasualties(0);
       setCombatEnded(false);
       setCombatResult(null);
       setEnemyDamageIndicator({ amount: 0, visible: false });
@@ -200,8 +198,6 @@ export default function CombatDialog({
 
     setIsProcessingRound(true);
 
-    let newCasualties = casualties;
-
     // Enemy attacks first
     if (currentEnemy.attack > bastionStats.defense) {
       const integrityDamage = currentEnemy.attack - bastionStats.defense;
@@ -238,19 +234,9 @@ export default function CombatDialog({
     setCurrentEnemy((prev) =>
       prev ? { ...prev, currentHealth: newHealth } : null,
     );
-    setCasualties(newCasualties);
 
     // Check battle outcome
     if (newHealth <= 0) {
-      // Apply casualties before victory
-      if (newCasualties > 0) {
-        const currentPopulation = Object.values(gameState.villagers).reduce(
-          (sum, count) => sum + (count || 0),
-          0,
-        );
-        const actualCasualties = Math.min(newCasualties, currentPopulation);
-        // Apply casualties to game state here if needed
-      }
       setCombatEnded(true);
       setCombatResult("victory");
       setIsProcessingRound(false);
@@ -362,11 +348,6 @@ export default function CombatDialog({
                     {bastionStats.defense}
                   </div>
                 </div>
-                {casualties > 0 && (
-                  <div className="text-xs text-red-600 mt-1">
-                    Casualties this battle: {casualties}
-                  </div>
-                )}
               </div>
 
               {/* Combat Items */}
