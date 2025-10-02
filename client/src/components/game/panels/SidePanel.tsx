@@ -23,6 +23,7 @@ export default function SidePanel() {
     total_population,
     activeTab,
     bastion_stats, // Added bastion_stats
+    story,
   } = useGameStore();
 
   // Track resource changes for notifications
