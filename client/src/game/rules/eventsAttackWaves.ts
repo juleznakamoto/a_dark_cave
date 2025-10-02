@@ -13,7 +13,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     timeProbability: 0.05,
     title: "The First Wave",
     message:
-      "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
+      "The earth trembles as something ancient stirs below. Through the entry of the cave emerge pale, twisted beings - elongated, jointed, with coal-bright eyes. Their alien voices echo as they march toward your village.",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -35,7 +35,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           },
           eventTitle: "The First Wave",
           eventMessage:
-            "The earth trembles as something ancient stirs in the depths below. Through the shattered portal, twisted creatures begin to emerge - pale, elongated beings with too many joints and eyes like burning coals. They move with unnatural grace toward your village, their alien voices echoing through the caverns.",
+          "The earth trembles as something ancient stirs below. Through the entry of the cave emerge pale, twisted beings - elongated, jointed, with coal-bright eyes. Their alien voices echo as they march toward your village.",
           onVictory: () => ({
             story: {
               ...state.story,
