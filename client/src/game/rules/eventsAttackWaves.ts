@@ -28,7 +28,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pale Creatures",
-            attack: 15,
+            attack: [12, 15, 18][Math.floor(Math.random() * 3)],
             maxHealth: 100,
             currentHealth: 100,
           },
@@ -88,9 +88,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Armored Creatures",
-            attack: 12,
-            maxHealth: 25,
-            currentHealth: 25,
+            attack: [15, 18, 21][Math.floor(Math.random() * 3)],
+            maxHealth: 150,
+            currentHealth: 150,
           },
           eventTitle: "The Second Wave",
           eventMessage:
