@@ -15,6 +15,7 @@ export default function ForestPanel() {
         { id: 'hunt', label: 'Hunt' },
         { id: 'layTrap', label: 'Lay Trap' },
         { id: 'castleRuins', label: 'Castle Ruins' },
+        { id: 'hillGrave', label: 'Hill Grave' },
       ]
     },
     {

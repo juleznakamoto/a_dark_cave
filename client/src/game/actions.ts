@@ -287,6 +287,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleLayTrap(state, result);
     case 'castleRuins':
       return handleCastleRuins(state, result);
+    case 'hillGrave':
+      return handleHillGrave(state, result);
 
     // Forest Sacrifice Actions
     case 'boneTotems':

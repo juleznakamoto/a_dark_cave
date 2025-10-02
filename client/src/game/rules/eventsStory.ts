@@ -1039,6 +1039,29 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  wizardHillGrave: {
+    id: "wizardHillGrave",
+    condition: (state: GameState) =>
+      state.story.seen.wizardDecryptsScrolls && !state.story.seen.wizardHillGrave,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The Hill Grave",
+    message:
+      "The wizard summons you to his tower with urgency. 'I have found something in ancient texts,' he says, his eyes gleaming. 'Deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may lie weapons forged of frostglas - the very material we need. But beware - the grave is protected by deadly traps laid by those who buried him.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardHillGrave: true,
+        },
+      },
+    }),
+  },
+
   vikingBuilder: {
     id: "vikingBuilder",
     condition: (state: GameState) =>

@@ -69,6 +69,22 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  hillGrave: {
+    id: "hillGrave",
+    label: "Hill Grave",
+    show_when: {
+      "story.seen.wizardHillGrave": true,
+    },
+    cost: {
+      "resources.food": 5000,
+    },
+    effects: {
+      "resources.food": -5000,
+      "story.seen.hillGraveExplored": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -216,6 +232,46 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
         type: 'system',
       });
     }
+  }
+
+  return result;
+}
+
+export function handleHillGrave(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('hillGrave', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Calculate success based on strength and knowledge
+  const strength = state.stats.strength || 0;
+  const knowledge = state.stats.knowledge || 0;
+  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01; // 15% base + (strength + knowledge)/2%
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    // Success: Find frostglas
+    result.stateUpdates.resources = {
+      ...state.resources,
+      frostglas: (state.resources.frostglas || 0) + 50,
+    };
+    
+    result.logEntries!.push({
+      id: `hill-grave-success-${Date.now()}`,
+      message: 'Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king\'s treasures, you discover weapons forged of pure frostglas, cold as the void itself. You claim 50 frostglas from the tomb.',
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  } else {
+    // Failure: Villagers die to traps (5-15 deaths)
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5; // 5-15 deaths
+    const deathResult = killVillagers(state, villagerDeaths);
+    Object.assign(result.stateUpdates, deathResult);
+    
+    result.logEntries!.push({
+      id: `hill-grave-failure-${Date.now()}`,
+      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. Poisoned arrows fly from hidden slots, floors collapse into spike pits, and ancient mechanisms crush those who trigger them. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
+      timestamp: Date.now(),
+      type: 'system',
+    });
   }
 
   return result;
