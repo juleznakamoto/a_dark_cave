@@ -1,6 +1,12 @@
 import { useGameStore } from '@/game/state';
 import { gameActions } from '@/game/rules';
 import { Button } from '@/components/ui/button';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
@@ -113,52 +119,75 @@ export default function BastionPanel() {
       {/* Repair Section */}
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-foreground">Repair</h3>
-        <div className="flex flex-wrap gap-2">
-          {bastionDamaged && buildings.bastion > 0 && (() => {
-            const repairCost = getRepairCost('buildBastion', 1);
-            return (
-              <Button
-                onClick={repairBastion}
-                disabled={!canAffordRepair(repairCost)}
-                variant="outline"
-                size="xs"
-                className="hover:bg-transparent hover:text-foreground"
-              >
-                Bastion
-              </Button>
-            );
-          })()}
+        <TooltipProvider>
+          <div className="flex flex-wrap gap-2">
+            {bastionDamaged && buildings.bastion > 0 && (() => {
+              const repairCost = getRepairCost('buildBastion', 1);
+              return (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={repairBastion}
+                      disabled={!canAffordRepair(repairCost)}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
+                    >
+                      Bastion
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{formatRepairCost(repairCost)}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })()}
 
-          {watchtowerDamaged && buildings.watchtower > 0 && (() => {
-            const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
-            return (
-              <Button
-                onClick={repairWatchtower}
-                disabled={!canAffordRepair(repairCost)}
-                variant="outline"
-                size="xs"
-                className="hover:bg-transparent hover:text-foreground"
-              >
-                Watchtower
-              </Button>
-            );
-          })()}
+            {watchtowerDamaged && buildings.watchtower > 0 && (() => {
+              const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
+              return (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={repairWatchtower}
+                      disabled={!canAffordRepair(repairCost)}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
+                    >
+                      Watchtower
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{formatRepairCost(repairCost)}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })()}
 
-          {palisadesDamaged && buildings.palisades > 0 && (() => {
-            const repairCost = getRepairCost('buildPalisades', buildings.palisades);
-            return (
-              <Button
-                onClick={repairPalisades}
-                disabled={!canAffordRepair(repairCost)}
-                variant="outline"
-                size="xs"
-                className="hover:bg-transparent hover:text-foreground"
-              >
-                Palisades
-              </Button>
-            );
-          })()}
-        </div>
+            {palisadesDamaged && buildings.palisades > 0 && (() => {
+              const repairCost = getRepairCost('buildPalisades', buildings.palisades);
+              return (
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      onClick={repairPalisades}
+                      disabled={!canAffordRepair(repairCost)}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
+                    >
+                      Palisades
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>{formatRepairCost(repairCost)}</p>
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })()}
+          </div>
+        </TooltipProvider>
       </div>
     </div>
   );
