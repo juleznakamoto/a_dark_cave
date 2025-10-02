@@ -257,6 +257,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set((state) => updateResource(state, resource, amount));
+    
+    // If updating free villagers, update population counts immediately
+    if (resource === 'free' as any) {
+      setTimeout(() => get().updatePopulation(), 0);
+    }
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {

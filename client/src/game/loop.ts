@@ -432,13 +432,21 @@ function handleStrangerApproach() {
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
 
-    // Calculate how many villagers can actually be added (respect max population)
+    // Add the villager(s) - only the amount that fits
     const actualStrangersToAdd = Math.min(strangersCount, availableRoom);
 
     if (actualStrangersToAdd <= 0) return; // No room for anyone
 
-    // Add the villager(s) - only the amount that fits
-    state.updateResource("free" as any, actualStrangersToAdd);
+    // Set the hasVillagers flag
+    useGameStore.setState({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          hasVillagers: true,
+        },
+      },
+    });
 
     // Add log entry
     state.addLogEntry({
@@ -448,8 +456,8 @@ function handleStrangerApproach() {
       type: "system",
     });
 
-    // Update population after applying changes
-    setTimeout(() => state.updatePopulation(), 0);
+    // Update population immediately
+    state.updatePopulation();
 
     // Play new villager sound
     audioManager.playSound("newVillager", 0.02);
