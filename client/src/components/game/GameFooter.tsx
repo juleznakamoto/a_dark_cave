@@ -4,8 +4,10 @@ import { useGameStore } from '@/game/state';
 import { manualSave } from '@/game/loop';
 import { deleteSave } from '@/game/save';
 
+const VERSION = "0.13.13";
+
 export default function GameFooter() {
-  const { lastSaved, restartGame, version } = useGameStore();
+  const { lastSaved, restartGame } = useGameStore();
 
   const handleSaveGame = async () => {
     await manualSave();
@@ -42,7 +44,7 @@ export default function GameFooter() {
             New Game
           </Button>
         </div>
-        <span data-testid="game-version">v{version}</span>
+        <span data-testid="game-version">v{VERSION}</span>
       </div>
     </footer>
   );
