@@ -437,11 +437,12 @@ function handleStrangerApproach() {
 
     if (actualStrangersToAdd <= 0) return; // No room for anyone
 
-    // Actually add the villagers to the state
-    state.updateResource("free" as any, actualStrangersToAdd);
-
-    // Set the hasVillagers flag
+    // Actually add the villagers to the state by updating villagers.free directly
     useGameStore.setState({
+      villagers: {
+        ...state.villagers,
+        free: state.villagers.free + actualStrangersToAdd,
+      },
       story: {
         ...state.story,
         seen: {
