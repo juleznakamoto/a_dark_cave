@@ -550,9 +550,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   applyEventChoice: (choiceId: string, eventId: string) => {
+    console.log(`[STATE] applyEventChoice called: choiceId=${choiceId}, eventId=${eventId}`);
+    
     const state = get();
     const currentLogEntry = get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
+
+    console.log('[STATE] applyEventChoice changes received:', changes);
 
     let combatData = null;
     const updatedChanges = { ...changes };
@@ -561,6 +565,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._combatData) {
       combatData = updatedChanges._combatData;
       delete updatedChanges._combatData;
+      console.log('[STATE] Extracted combat data');
     }
 
     // Extract _logMessage if present
@@ -568,10 +573,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
+      console.log('[STATE] Extracted _logMessage:', logMessage);
     }
 
     // Apply state changes - EventManager already handles _logMessage in changes.log
     if (Object.keys(updatedChanges).length > 0) {
+      console.log('[STATE] Applying state changes:', updatedChanges);
       set((prevState) => ({
         ...prevState,
         ...updatedChanges,
@@ -582,6 +589,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Show logMessage in dialog if present
     if (logMessage) {
+      console.log('[STATE] Creating dialog for _logMessage:', logMessage);
       const messageEntry: LogEntry = {
         id: `log-message-${Date.now()}`,
         message: logMessage,
@@ -593,6 +601,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           effect: () => ({}),
         }],
       };
+      console.log('[STATE] Calling setEventDialog with message entry:', messageEntry);
       get().setEventDialog(true, messageEntry);
       return; // Don't proceed to combat dialog
     }
@@ -700,6 +709,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
+    console.log('[STATE] setEventDialog called:', { isOpen, currentEvent });
+    
     set((state) => ({
       ...state,
       eventDialog: {
@@ -707,6 +718,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentEvent: currentEvent || null,
       },
     }));
+
+    console.log('[STATE] Event dialog state updated:', get().eventDialog);
 
     if (isOpen && currentEvent) {
       const eventId = currentEvent.id.split('-')[0];
@@ -717,6 +730,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
+      console.log('[STATE] Playing sound for event:', { eventId, isMadnessEvent });
       audioManager.playSound(isMadnessEvent ? 'eventMadness' : 'event', 0.02);
     }
   },
