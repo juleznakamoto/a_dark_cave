@@ -133,7 +133,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 0.0035,
     title: "The Pale Figure",
     message: [
       "At dawn, men glimpse a pale, slender figure at the woods’ edge. It stands watching. What do you do?",
