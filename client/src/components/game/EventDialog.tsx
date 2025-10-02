@@ -105,11 +105,11 @@ export default function EventDialog({
 
     const eventId = event!.id.split("-")[0];
     
+    // Apply the choice through the store
+    applyEventChoice(choiceId, eventId);
+
     // Mark as executed to prevent further choices
     fallbackExecutedRef.current = true;
-
-    // Apply the choice through the store (it will handle closing/opening dialogs)
-    applyEventChoice(choiceId, eventId);
   };
 
   const progress =
