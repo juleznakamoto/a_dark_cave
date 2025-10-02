@@ -1293,7 +1293,7 @@ export function handleBuildScriptorium(
     scriptoriumResult.logEntries!.push({
       id: `scriptorium-built-${Date.now()}`,
       message:
-        "The Scriptorium stands complete, its walls lined with shelves of parchment and ink. Scribes labor to document every detail of village life - every resource gathered, every stat tracked with meticulous precision. Nothing escapes their vigilant record-keeping.",
+        "The Scriptorium stands complete, its walls lined with shelves of parchment and ink. Scribes labor to document every detail of village life tracked with meticulous precision. Nothing escapes their vigilant record-keeping.",
       timestamp: Date.now(),
       type: "system",
     });
