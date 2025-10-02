@@ -52,10 +52,10 @@ export default function EventDialog({
 
   // Watch for result message from state
   useEffect(() => {
-    if (event && (event as any).resultMessage) {
+    if (event && (event as any).resultMessage && (event as any).resultMessage !== resultMessage) {
       setResultMessage((event as any).resultMessage);
     }
-  }, [event]);
+  }, [event, event?.id, (event as any)?._updateTime]);
 
   // Initialize timer for timed choices
   useEffect(() => {

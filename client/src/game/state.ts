@@ -615,16 +615,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // If there's a log message, update the current event to trigger result display
       if (logMessage && currentLogEntry) {
-        set((prevState) => ({
-          ...prevState,
-          eventDialog: {
-            ...prevState.eventDialog,
-            currentEvent: {
-              ...currentLogEntry,
-              resultMessage: logMessage,
+        // Force a new object reference to trigger useEffect in EventDialog
+        setTimeout(() => {
+          set((prevState) => ({
+            ...prevState,
+            eventDialog: {
+              ...prevState.eventDialog,
+              currentEvent: {
+                ...currentLogEntry,
+                resultMessage: logMessage,
+                // Add timestamp to force new reference
+                _updateTime: Date.now(),
+              },
             },
-          },
-        }));
+          }));
+        }, 50);
       } else {
         // No result message, close dialog for non-merchant events
         const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
