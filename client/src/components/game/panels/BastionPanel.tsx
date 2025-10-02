@@ -1,11 +1,9 @@
-
 import { useGameStore } from '@/game/state';
 import { gameActions } from '@/game/rules';
-import CooldownButton from '@/components/CooldownButton';
 import { Button } from '@/components/ui/button';
 
 export default function BastionPanel() {
-  const { executeAction, buildings, story, resources } = useGameStore();
+  const { buildings, story, resources } = useGameStore();
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
@@ -63,7 +61,7 @@ export default function BastionPanel() {
   const repairWatchtower = () => {
     const level = buildings.watchtower || 0;
     const repairCost = getRepairCost('buildWatchtower', level);
-    
+
     if (canAffordRepair(repairCost)) {
       useGameStore.setState((state) => ({
         resources: deductRepairCost(repairCost),
@@ -105,102 +103,67 @@ export default function BastionPanel() {
       .join(', ');
   };
 
+  // If no damaged buildings, show nothing
+  if (!hasDamagedBuildings) {
+    return null;
+  }
+
   return (
-    <div className="space-y-6 p-4">
-      <div>
-        <h2 className="text-2xl font-bold mb-4">Bastion</h2>
-        <p className="text-muted-foreground">
-          Fortify your village against the creatures from beyond the portal.
-        </p>
-      </div>
-
-      {/* Build Actions */}
-      <div className="space-y-2">
-        <h3 className="text-lg font-semibold">Build</h3>
-        {Object.entries(gameActions)
-          .filter(([id]) => 
-            id === 'buildBastion' || 
-            id === 'buildWatchtower' || 
-            id === 'buildPalisades'
-          )
-          .map(([id, action]) => (
-            <CooldownButton
-              key={id}
-              actionId={id}
-              label={action.label}
-            />
-          ))}
-      </div>
-
+    <div className="space-y-6">
       {/* Repair Section */}
-      {hasDamagedBuildings && (
-        <div className="space-y-2 border-t pt-4">
-          <h3 className="text-lg font-semibold text-red-500">Repair Damaged Buildings</h3>
-          <p className="text-sm text-muted-foreground mb-2">
-            Damaged buildings provide only 50% of their normal bonuses until repaired.
-          </p>
+      <div className="space-y-2">
+        <h3 className="text-xs font-bold text-foreground">Repair</h3>
+        <p className="text-xs text-muted-foreground">
+          Damaged buildings provide only 50% of their normal bonuses until repaired.
+        </p>
 
+        <div className="flex flex-wrap gap-2">
           {bastionDamaged && buildings.bastion > 0 && (() => {
             const repairCost = getRepairCost('buildBastion', 1);
             return (
-              <div className="flex justify-between items-center p-2 bg-red-950/20 rounded">
-                <div>
-                  <div className="font-medium text-red-400">Bastion (Damaged)</div>
-                  <div className="text-xs text-muted-foreground">Cost: {formatRepairCost(repairCost)}</div>
-                </div>
-                <Button
-                  onClick={repairBastion}
-                  disabled={!canAffordRepair(repairCost)}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Repair
-                </Button>
-              </div>
+              <Button
+                onClick={repairBastion}
+                disabled={!canAffordRepair(repairCost)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-transparent hover:text-foreground"
+              >
+                Repair Bastion
+              </Button>
             );
           })()}
 
           {watchtowerDamaged && buildings.watchtower > 0 && (() => {
             const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
             return (
-              <div className="flex justify-between items-center p-2 bg-red-950/20 rounded">
-                <div>
-                  <div className="font-medium text-red-400">Watchtower (Damaged)</div>
-                  <div className="text-xs text-muted-foreground">Cost: {formatRepairCost(repairCost)}</div>
-                </div>
-                <Button
-                  onClick={repairWatchtower}
-                  disabled={!canAffordRepair(repairCost)}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Repair
-                </Button>
-              </div>
+              <Button
+                onClick={repairWatchtower}
+                disabled={!canAffordRepair(repairCost)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-transparent hover:text-foreground"
+              >
+                Repair Watchtower
+              </Button>
             );
           })()}
 
           {palisadesDamaged && buildings.palisades > 0 && (() => {
             const repairCost = getRepairCost('buildPalisades', buildings.palisades);
             return (
-              <div className="flex justify-between items-center p-2 bg-red-950/20 rounded">
-                <div>
-                  <div className="font-medium text-red-400">Palisades (Damaged)</div>
-                  <div className="text-xs text-muted-foreground">Cost: {formatRepairCost(repairCost)}</div>
-                </div>
-                <Button
-                  onClick={repairPalisades}
-                  disabled={!canAffordRepair(repairCost)}
-                  variant="destructive"
-                  size="sm"
-                >
-                  Repair
-                </Button>
-              </div>
+              <Button
+                onClick={repairPalisades}
+                disabled={!canAffordRepair(repairCost)}
+                variant="outline"
+                size="xs"
+                className="hover:bg-transparent hover:text-foreground"
+              >
+                Repair Palisades
+              </Button>
             );
           })()}
         </div>
-      )}
+      </div>
     </div>
   );
 }
