@@ -1135,6 +1135,13 @@ export const getTotalStrength = (state: GameState): number => {
     }
   });
 
+  // Apply direct weapon bonuses
+  if (state.weapons.iron_sword) strength += 3;
+  if (state.weapons.steel_sword) strength += 5;
+  if (state.weapons.obsidian_sword) strength += 10;
+  if (state.weapons.adamant_sword) strength += 15;
+  if (state.weapons.frostglass_sword) strength += 25;
+
   return strength;
 };
 

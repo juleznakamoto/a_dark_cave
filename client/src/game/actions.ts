@@ -78,6 +78,7 @@ import {
   handleBuildBastion,
   handleBuildWatchtower,
   handleBuildPalisades,
+  handleBuildGrandBlacksmith,
 } from './rules/villageBuildActions';
 
 import {
@@ -107,6 +108,10 @@ import {
   handleMineObsidian,
   handleMineAdamant,
 } from '@/game/rules/caveMineActions';
+
+import {
+  handleForgeFrostglassSword,
+} from '@/game/rules/caveForgeActions';
 
 export interface ActionResult {
   stateUpdates: Partial<GameState> & {
@@ -230,6 +235,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'mineAdamant':
       return handleMineAdamant(state, result);
 
+    // Cave Forge Actions
+    case 'forgeFrostglassSword':
+      return handleForgeFrostglassSword(state, result);
+
     // Village Build Actions
     case 'buildWoodenHut':
       return handleBuildWoodenHut(state, result);
@@ -279,6 +288,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildWatchtower(state, result);
     case 'buildPalisades':
       return handleBuildPalisades(state, result);
+    case 'buildGrandBlacksmith':
+      return handleBuildGrandBlacksmith(state, result);
 
     // Forest Scout Actions
     case 'hunt':

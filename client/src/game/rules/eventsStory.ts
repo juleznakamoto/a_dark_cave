@@ -653,6 +653,34 @@ export const storyEvents: Record<string, GameEvent> = {
             return {
               ...deathResult,
               relics: {
+
+
+  wizardFrostglassSword: {
+    id: "wizardFrostglassSword",
+    condition: (state: GameState) =>
+      state.story.seen.hillGraveSuccess &&
+      state.resources.frostglas >= 50 &&
+      state.buildings.blacksmith >= 1 &&
+      state.buildings.grandBlacksmith === 0 &&
+      !state.story.seen.wizardFrostglassSword,
+    triggerType: "resource",
+    timeProbability: 1.0,
+    message:
+      "The wizard summons you to his tower, his eyes gleaming with purpose. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the skill and tools to forge it properly. You must build a Grand Blacksmith - a forge capable of working with the strongest materials known. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardFrostglassSword: true,
+        },
+      },
+    }),
+  },
+
                 ...state.relics,
                 ebony_ring: true,
               },

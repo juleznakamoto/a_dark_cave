@@ -927,6 +927,33 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  buildGrandBlacksmith: {
+    id: "buildGrandBlacksmith",
+    label: "Grand Blacksmith",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.blacksmith": 1,
+        "story.seen.wizardFrostglassSword": true,
+        "buildings.grandBlacksmith": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.steel": 5000,
+        "resources.adamant": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.grandBlacksmith": 1,
+        "story.seen.hasGrandBlacksmith": true,
+      },
+    },
+    cooldown: 120,
+  },
 };
 
 // Action handlers
@@ -1513,4 +1540,29 @@ export function handleBuildLonghouse(
   }
 
   return longhouseResult;
+}
+
+export function handleBuildGrandBlacksmith(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const grandBlacksmithResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildGrandBlacksmith",
+    "grandBlacksmith",
+  );
+
+  // Add grand blacksmith completion message
+  if (state.buildings.grandBlacksmith === 0) {
+    grandBlacksmithResult.logEntries!.push({
+      id: `grand-blacksmith-built-${Date.now()}`,
+      message:
+        "The Grand Blacksmith rises, a massive forge capable of working with the strongest materials. Now possible to forge weapons of the strongest materials.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return grandBlacksmithResult;
 }

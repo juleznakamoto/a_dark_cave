@@ -251,6 +251,14 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
       frostglas: (state.resources.frostglas || 0) + 50,
     };
     
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        hillGraveSuccess: true,
+      },
+    };
+    
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
       message: 'Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king\'s treasures, you discover weapons forged of pure frostglas, cold as the void itself.',
