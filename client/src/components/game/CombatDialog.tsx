@@ -143,10 +143,8 @@ export default function CombatDialog({
 
     // Check if enemy is defeated
     if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0) {
-      setTimeout(() => {
-        setCombatEnded(true);
-        setCombatResult('victory');
-      }, 500);
+      setCombatEnded(true);
+      setCombatResult('victory');
     }
   };
 
@@ -167,67 +165,61 @@ export default function CombatDialog({
 
     setIsProcessingRound(true);
 
-    setTimeout(() => {
-      let newCasualties = casualties;
+    let newCasualties = casualties;
 
-      // Enemy attacks first
-      if (currentEnemy.attack > bastionStats.defense) {
-        const integrityDamage = currentEnemy.attack - bastionStats.defense;
-        const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
-        setCurrentIntegrity(newIntegrityValue);
-        
-        // Show damage indicator on integrity bar
-        setIntegrityDamageIndicator({amount: integrityDamage, visible: true});
-        setTimeout(() => {
-          setIntegrityDamageIndicator({amount: 0, visible: false});
-        }, 3000);
-
-        // Check if integrity is depleted
-        if (newIntegrityValue <= 0) {
-          setTimeout(() => {
-            setCombatEnded(true);
-            setCombatResult('defeat');
-            setIsProcessingRound(false);
-          }, 1000);
-          return;
-        }
-      }
-
-      // Player attacks
-      const newHealth = Math.max(0, currentEnemy.currentHealth - bastionStats.attack);
+    // Enemy attacks first
+    if (currentEnemy.attack > bastionStats.defense) {
+      const integrityDamage = currentEnemy.attack - bastionStats.defense;
+      const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
+      setCurrentIntegrity(newIntegrityValue);
       
-      // Show damage indicator on enemy health bar
-      setEnemyDamageIndicator({amount: bastionStats.attack, visible: true});
+      // Show damage indicator on integrity bar
+      setIntegrityDamageIndicator({amount: integrityDamage, visible: true});
       setTimeout(() => {
-        setEnemyDamageIndicator({amount: 0, visible: false});
+        setIntegrityDamageIndicator({amount: 0, visible: false});
       }, 3000);
 
-      setCurrentEnemy(prev => prev ? { ...prev, currentHealth: newHealth } : null);
-      setCasualties(newCasualties);
-
-      // Check battle outcome
-      if (newHealth <= 0) {
-        setTimeout(() => {
-          // Apply casualties before victory
-          if (newCasualties > 0) {
-            const currentPopulation = Object.values(gameState.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-            const actualCasualties = Math.min(newCasualties, currentPopulation);
-            // Apply casualties to game state here if needed
-          }
-          setCombatEnded(true);
-          setCombatResult('victory');
-          setIsProcessingRound(false);
-        }, 1000);
-      } else {
-        // Next round - reset items for this round but keep total combat tracking
-        setRound(prev => prev + 1);
-        setUsedItemsInRound(new Set());
+      // Check if integrity is depleted
+      if (newIntegrityValue <= 0) {
+        setCombatEnded(true);
+        setCombatResult('defeat');
         setIsProcessingRound(false);
+        return;
       }
-    }, 1000);
+    }
+
+    // Player attacks
+    const newHealth = Math.max(0, currentEnemy.currentHealth - bastionStats.attack);
+    
+    // Show damage indicator on enemy health bar
+    setEnemyDamageIndicator({amount: bastionStats.attack, visible: true});
+    setTimeout(() => {
+      setEnemyDamageIndicator({amount: 0, visible: false});
+    }, 3000);
+
+    setCurrentEnemy(prev => prev ? { ...prev, currentHealth: newHealth } : null);
+    setCasualties(newCasualties);
+
+    // Check battle outcome
+    if (newHealth <= 0) {
+      // Apply casualties before victory
+      if (newCasualties > 0) {
+        const currentPopulation = Object.values(gameState.villagers).reduce(
+          (sum, count) => sum + (count || 0),
+          0,
+        );
+        const actualCasualties = Math.min(newCasualties, currentPopulation);
+        // Apply casualties to game state here if needed
+      }
+      setCombatEnded(true);
+      setCombatResult('victory');
+      setIsProcessingRound(false);
+    } else {
+      // Next round - reset items for this round but keep total combat tracking
+      setRound(prev => prev + 1);
+      setUsedItemsInRound(new Set());
+      setIsProcessingRound(false);
+    }
   };
 
   if (!enemy) return null;
