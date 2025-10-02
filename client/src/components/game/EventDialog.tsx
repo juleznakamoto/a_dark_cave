@@ -108,20 +108,7 @@ export default function EventDialog({
     // Apply the choice through the store
     applyEventChoice(choiceId, eventId);
 
-    // For merchant trades, mark as purchased but don't close dialog
-    if (choiceId.startsWith("trade_")) {
-      setPurchasedItems((prev) => new Set([...prev, choiceId]));
-      return; // Don't close dialog for trade purchases
-    }
-
-    // For merchant "Say Goodbye", close dialog
-    if (choiceId === "say_goodbye" && event?.id.includes("merchant")) {
-      fallbackExecutedRef.current = true;
-      onClose();
-      return;
-    }
-
-    // For other events, don't close yet - wait for result message or auto-close
+    // Mark as executed to prevent further choices
     fallbackExecutedRef.current = true;
   };
 
@@ -167,37 +154,20 @@ export default function EventDialog({
           </DialogHeader>
 
           <div className="flex flex-col gap-3 mt-4">
-            {eventChoices.map((choice) => {
-              // Check if choice can be afforded (for merchant trades)
-              let canAfford = true;
-              if (
-                choice.id.startsWith("trade_") &&
-                choice.id !== "say_goodbye"
-              ) {
-                // Check affordability for merchant trades
-                const testResult = choice.effect(gameState);
-                canAfford = Object.keys(testResult).length > 0;
-              }
-
-              const isPurchased = purchasedItems.has(choice.id);
-
-              return (
-                <Button
-                  key={choice.id}
-                  onClick={() => handleChoice(choice.id)}
-                  variant={isPurchased ? "secondary" : "outline"}
-                  className="w-full text-left justify-start"
-                  disabled={
-                    (timeRemaining !== null && timeRemaining <= 0) ||
-                    fallbackExecutedRef.current ||
-                    !canAfford ||
-                    isPurchased
-                  }
-                >
-                  {isPurchased ? `✓ ${choice.label}` : choice.label}
-                </Button>
-              );
-            })}
+            {eventChoices.map((choice) => (
+              <Button
+                key={choice.id}
+                onClick={() => handleChoice(choice.id)}
+                variant="outline"
+                className="w-full text-left justify-start"
+                disabled={
+                  (timeRemaining !== null && timeRemaining <= 0) ||
+                  fallbackExecutedRef.current
+                }
+              >
+                {choice.label}
+              </Button>
+            ))}
           </div>
 
           {/* Timer bar for timed choices */}
