@@ -12,12 +12,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.05,
     title: "The First Wave",
-    message:
+    get message() {
+      return this.waveMessage;
+    },
+    waveMessage:
       "The earth trembles as something ancient stirs below. Through the entry of the cave emerge pale, twisted beings - elongated, jointed, with coal-bright eyes. Their alien voices echo as they march toward your village.",
     triggered: false,
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => {
+      const event = attackWaveEvents.firstWave;
       return {
         story: {
           ...state.story,
@@ -34,8 +38,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             currentHealth: 100,
           },
           eventTitle: "The First Wave",
-          eventMessage:
-          "The earth trembles as something ancient stirs below. Through the entry of the cave emerge pale, twisted beings - elongated, jointed, with coal-bright eyes. Their alien voices echo as they march toward your village.",
+          eventMessage: event.waveMessage,
           onVictory: () => ({
             story: {
               ...state.story,
@@ -87,12 +90,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 5,
     title: "The Second Wave",
-    message:
+    get message() {
+      return this.waveMessage;
+    },
+    waveMessage:
       "The creatures return with reinforcements - larger, more intelligent beings that coordinate their attacks. These new horrors wear crude armor made from the bones of previous victims and wield weapons that seem to pulse with dark energy. They've learned from the first assault.",
     triggered: false,
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => {
+      const event = attackWaveEvents.secondWave;
       return {
         story: {
           ...state.story,
@@ -109,8 +116,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             currentHealth: 150,
           },
           eventTitle: "The Second Wave",
-          eventMessage:
-            "The creatures return with reinforcements - larger, more intelligent beings that coordinate their attacks. These new horrors wear crude armor made from the bones of previous victims and wield weapons that seem to pulse with dark energy. They've learned from the first assault.",
+          eventMessage: event.waveMessage,
           onVictory: () => ({
             story: {
               ...state.story,
@@ -162,12 +168,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 5,
     title: "The Third Wave",
-    message:
+    get message() {
+      return this.waveMessage;
+    },
+    waveMessage:
       "A deafening roar shakes the very foundations of your village. The creatures emerge in greater numbers than before, led by towering brutes wielding massive weapons of bone and stone. The ground cracks beneath their weight as they march toward your defenses with unstoppable momentum.",
     triggered: false,
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => {
+      const event = attackWaveEvents.thirdWave;
       return {
         story: {
           ...state.story,
@@ -184,8 +194,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             currentHealth: 200,
           },
           eventTitle: "The Third Wave",
-          eventMessage:
-            "A deafening roar shakes the very foundations of your village. The creatures emerge in greater numbers than before, led by towering brutes wielding massive weapons of bone and stone. The ground cracks beneath their weight as they march toward your defenses with unstoppable momentum.",
+          eventMessage: event.waveMessage,
           onVictory: () => ({
             story: {
               ...state.story,
@@ -237,12 +246,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 5,
     title: "The Fourth Wave",
-    message:
+    get message() {
+      return this.waveMessage;
+    },
+    waveMessage:
       "The sky darkens as winged terrors join the assault. Shrieking creatures descend from above while armored warriors pour through the portal. This coordinated attack from land and air threatens to overwhelm even your strongest defenses. The enemy has learned too well.",
     triggered: false,
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => {
+      const event = attackWaveEvents.fourthWave;
       return {
         story: {
           ...state.story,
@@ -259,8 +272,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             currentHealth: 250,
           },
           eventTitle: "The Fourth Wave",
-          eventMessage:
-            "The sky darkens as winged terrors join the assault. Shrieking creatures descend from above while armored warriors pour through the portal. This coordinated attack from land and air threatens to overwhelm even your strongest defenses. The enemy has learned too well.",
+          eventMessage: event.waveMessage,
           onVictory: () => ({
             story: {
               ...state.story,
@@ -317,7 +329,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 5,
     title: "The Final Wave",
-    message:
+    get message() {
+      return this.waveMessage;
+    },
+    waveMessage:
       "The ground splits open as something massive emerges from the depths. A towering creature of shadow and bone, easily three times the height of a man, leads an army of the twisted beings. Its presence alone makes reality bend and twist. This is the true enemy that was sealed behind the portal - and you have awakened it.",
     triggered: false,
     priority: 5,
@@ -329,6 +344,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const hasSpecialWeapons =
             state.relics.frostfang && state.relics.blood_scepter;
+          const event = attackWaveEvents.fifthWave;
 
           return {
             story: {
@@ -346,8 +362,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 currentHealth: hasSpecialWeapons ? 40 : 60,
               },
               eventTitle: "The Final Wave",
-              eventMessage:
-                "The ground splits open as something massive emerges from the depths. A towering creature of shadow and bone, easily three times the height of a man, leads an army of the twisted beings. Its presence alone makes reality bend and twist. This is the true enemy that was sealed behind the portal - and you have awakened it.",
+              eventMessage: event.waveMessage,
               hasSpecialWeapons,
               onVictory: () => ({
                 story: {
