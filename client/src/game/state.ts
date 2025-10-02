@@ -538,21 +538,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentLogEntry = get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
 
-    if (Object.keys(changes).length > 0) {
-      let logMessage = null;
-      let combatData = null;
-      const updatedChanges = { ...changes };
+    let logMessage = null;
+    let combatData = null;
+    const updatedChanges = { ...changes };
 
-      if (updatedChanges._logMessage) {
-        logMessage = updatedChanges._logMessage;
-        delete updatedChanges._logMessage;
-      }
+    if (updatedChanges._logMessage) {
+      logMessage = updatedChanges._logMessage;
+      delete updatedChanges._logMessage;
+    }
 
-      if (updatedChanges._combatData) {
-        combatData = updatedChanges._combatData;
-        delete updatedChanges._combatData;
-      }
+    if (updatedChanges._combatData) {
+      combatData = updatedChanges._combatData;
+      delete updatedChanges._combatData;
+    }
 
+    // Apply state changes if any
+    if (Object.keys(updatedChanges).length > 0 || logMessage) {
       set((prevState) => {
         const newLogEntry = logMessage
           ? { 
@@ -572,57 +573,55 @@ export const useGameStore = create<GameStore>((set, get) => ({
         return updatedState;
       });
 
-      // Handle combat dialog
-      if (combatData) {
-        get().setEventDialog(false);
-        get().setCombatDialog(true, {
-          enemy: combatData.enemy,
-          eventTitle: combatData.eventTitle,
-          eventMessage: currentLogEntry?.message || "",
-          onVictory: () => {
-            const victoryResult = combatData.onVictory();
-            set((prevState) => ({
-              ...prevState,
-              ...victoryResult,
-              log: victoryResult._logMessage
-                ? [...prevState.log, {
-                    id: `combat-victory-${Date.now()}`,
-                    message: victoryResult._logMessage,
-                    timestamp: Date.now(),
-                    type: 'system'
-                  }].slice(-10)
-                : prevState.log,
-            }));
-            get().setCombatDialog(false);
-          },
-          onDefeat: () => {
-            const defeatResult = combatData.onDefeat();
-            set((prevState) => ({
-              ...prevState,
-              ...defeatResult,
-              log: defeatResult._logMessage
-                ? [...prevState.log, {
-                    id: `combat-defeat-${Date.now()}`,
-                    message: defeatResult._logMessage,
-                    timestamp: Date.now(),
-                    type: 'system'
-                  }].slice(-10)
-                : prevState.log,
-            }));
-            get().setCombatDialog(false);
-          },
-        });
-        return;
-      }
-
-      // Close dialog for non-merchant events
-      const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
-      if (!isMerchantTrade) {
-        get().setEventDialog(false);
-      }
-
       StateManager.schedulePopulationUpdate(get);
-    } else {
+    }
+
+    // Handle combat dialog
+    if (combatData) {
+      get().setEventDialog(false);
+      get().setCombatDialog(true, {
+        enemy: combatData.enemy,
+        eventTitle: combatData.eventTitle,
+        eventMessage: currentLogEntry?.message || "",
+        onVictory: () => {
+          const victoryResult = combatData.onVictory();
+          set((prevState) => ({
+            ...prevState,
+            ...victoryResult,
+            log: victoryResult._logMessage
+              ? [...prevState.log, {
+                  id: `combat-victory-${Date.now()}`,
+                  message: victoryResult._logMessage,
+                  timestamp: Date.now(),
+                  type: 'system'
+                }].slice(-10)
+              : prevState.log,
+          }));
+          get().setCombatDialog(false);
+        },
+        onDefeat: () => {
+          const defeatResult = combatData.onDefeat();
+          set((prevState) => ({
+            ...prevState,
+            ...defeatResult,
+            log: defeatResult._logMessage
+              ? [...prevState.log, {
+                  id: `combat-defeat-${Date.now()}`,
+                  message: defeatResult._logMessage,
+                  timestamp: Date.now(),
+                  type: 'system'
+                }].slice(-10)
+              : prevState.log,
+          }));
+          get().setCombatDialog(false);
+        },
+      });
+      return;
+    }
+
+    // Close dialog for non-merchant events
+    const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
+    if (!isMerchantTrade) {
       get().setEventDialog(false);
     }
   },
