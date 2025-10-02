@@ -466,6 +466,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             message: logMessage,
             timestamp: Date.now(),
             type: 'event',
+            title: newLogEntries[0]?.title, // Use the original event's title
             choices: [{
               id: 'acknowledge',
               label: 'Continue',
@@ -591,6 +592,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           message: logMessage,
           timestamp: Date.now(),
           type: 'event',
+          title: currentLogEntry?.title, // Use the original event's title
           choices: [{
             id: 'acknowledge',
             label: 'Continue',
