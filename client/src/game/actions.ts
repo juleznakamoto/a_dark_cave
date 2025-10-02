@@ -51,6 +51,7 @@ import {
   handleCraftLongBow,
   handleCraftWarBow,
   handleCraftMasterBow,
+  handleCraftFrostglassSword,
 } from '@/game/rules/caveCraftWeapons';
 
 import {
@@ -108,10 +109,6 @@ import {
   handleMineObsidian,
   handleMineAdamant,
 } from '@/game/rules/caveMineActions';
-
-import {
-  handleForgeFrostglassSword,
-} from '@/game/rules/caveForgeActions';
 
 export interface ActionResult {
   stateUpdates: Partial<GameState> & {
@@ -222,6 +219,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftWarBow(state, result);
     case 'craftMasterBow':
       return handleCraftMasterBow(state, result);
+    case 'craftFrostglassSword':
+      return handleCraftFrostglassSword(state, result);
 
     // Cave Mine Actions
     case 'mineIron':
@@ -234,10 +233,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleMineObsidian(state, result);
     case 'mineAdamant':
       return handleMineAdamant(state, result);
-
-    // Cave Forge Actions
-    case 'forgeFrostglassSword':
-      return handleForgeFrostglassSword(state, result);
 
     // Village Build Actions
     case 'buildWoodenHut':

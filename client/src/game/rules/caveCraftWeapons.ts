@@ -174,6 +174,23 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  craftFrostglassSword: {
+    id: "craftFrostglassSword",
+    label: "Frostglass Sword",
+    show_when: {
+      "buildings.grandBlacksmith": 1,
+      "weapons.frostglass_sword": false,
+    },
+    cost: {
+      "resources.frostglas": 50,
+    },
+    effects: {
+      "weapons.frostglass_sword": true,
+      "story.seen.hasFrostglassSword": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -239,5 +256,19 @@ export function handleCraftWarBow(state: GameState, result: ActionResult): Actio
 export function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftMasterBow', state);
   Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftFrostglassSword(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftFrostglassSword', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `frostglass-sword-forged-${Date.now()}`,
+    message: "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglas is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating power.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
   return result;
 }

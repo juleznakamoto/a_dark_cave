@@ -7,7 +7,6 @@ import {
   getTotalBuildingCostReduction,
 } from "./effects";
 import { caveExploreActions, handleBlastPortal } from "./caveExploreActions";
-import { caveForgingActions } from "./caveForgeActions";
 import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -30,9 +29,8 @@ import { forestTradeActions } from "./forestTradeActions";
 export const gameActions: Record<string, Action> = {
   ...villageBuildActions,
   ...caveExploreActions,
-  ...caveForgingActions,
-  ...caveCraftResources,
   ...caveCraftTools,
+  ...caveCraftResources,
   ...caveCraftWeapons,
   ...caveMiningActions,
   ...forestScoutActions,
@@ -765,4 +763,9 @@ gameActions.craftEmberBomb = {
 gameActions.blastPortal = {
   ...caveExploreActions.blastPortal,
   handle: handleBlastPortal,
+};
+
+// Add Frostglass Sword from caveCraftWeapons
+gameActions.craftFrostglassSword = {
+  ...caveCraftWeapons.craftFrostglassSword,
 };
