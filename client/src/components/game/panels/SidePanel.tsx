@@ -270,7 +270,7 @@ export default function SidePanel() {
       value: totalLuck,
       testId: "stat-luck",
       visible: true,
-      icon: "🍀",
+      icon: "☆",
       iconColor: "text-green-400",
     });
   }
@@ -283,8 +283,8 @@ export default function SidePanel() {
       value: totalStrength,
       testId: "stat-strength",
       visible: true,
-      icon: "💪",
-      iconColor: "text-orange-400",
+      icon: "⬡",
+      iconColor: "text-red-400",
     });
   }
 
@@ -296,7 +296,7 @@ export default function SidePanel() {
       value: totalKnowledge,
       testId: "stat-knowledge",
       visible: true,
-      icon: "📖",
+      icon: "✧",
       iconColor: "text-blue-400",
     });
   }
@@ -309,8 +309,8 @@ export default function SidePanel() {
       value: totalMadness,
       testId: "stat-madness",
       visible: true,
-      icon: "🌀",
-      iconColor: "text-purple-400",
+      icon: "✺",
+      iconColor: "text-violet-400",
     });
   }
 
