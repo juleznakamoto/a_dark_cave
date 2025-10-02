@@ -321,9 +321,9 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
   }
 }
 
-// Helper function to get action cooldown (you may need to import this from the rules)
+// Helper function to get action cooldown from game rules
 function getActionCooldown(actionId: string): number {
-  // This would need to be imported from your game rules or calculated
-  // For now, returning a default value
-  return 1;
+  const { gameActions } = require('@/game/rules');
+  const action = gameActions[actionId];
+  return action?.cooldown || 0;
 }
