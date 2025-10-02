@@ -1076,7 +1076,7 @@ export const storyEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pay the Viking builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter multiple families under one roof.",
+              "You pay the builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter multiple families under one roof.",
           };
         },
       },
@@ -1086,7 +1086,7 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You refuse the Viking's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
+              "You refuse the builder's offer and send him away. He shrugs and disappears into the wilderness, taking his knowledge with him.",
           };
         },
       },
@@ -1101,7 +1101,7 @@ export const storyEvents: Record<string, GameEvent> = {
             // Success: get knowledge without paying
             return {
               _logMessage:
-                "Your men overpower the Viking and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night.",
+                "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night.",
             };
           } else {
             // Failure: he escapes and villagers are injured
@@ -1117,7 +1117,7 @@ export const storyEvents: Record<string, GameEvent> = {
                   vikingBuilderEvent: true,
                 },
               },
-              _logMessage: `The Viking proves stronger than expected! He fights back fiercely, injuring ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
+              _logMessage: `The builder proves stronger than expected! He fights back fiercely, injuring ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
             };
           }
         },

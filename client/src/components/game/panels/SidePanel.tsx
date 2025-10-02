@@ -9,7 +9,6 @@ import {
   getTotalMadness,
 } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Progress } from "@/components/ui/progress";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState } from "react";
