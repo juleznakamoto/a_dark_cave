@@ -359,7 +359,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Wolf Attack",
     message:
-      "In the dead of night, wolves emerge from the darkness, their eyes glowing with an unnatural hunger. Their howls echo with otherworldly malice as they circle your village.",
+      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo with filled with malice as they circle your village.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -394,7 +394,7 @@ export const storyEvents: Record<string, GameEvent> = {
                 alphas_hide: true,
               },
               _logMessage:
-                "Against all odds, your village manages to defeat the wolf pack! In a fierce battle, you slay the alpha wolf and claim its hide as a trophy. The Alpha's Hide radiates with primal power, granting you both fortune and strength.",
+                "Your village manages to defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
             };
           }
 
@@ -431,7 +431,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
           // Construct result message
           let message =
-            "The village fights desperately against the possessed wolves. ";
+            "The village fights desperately against the wolves. ";
 
           if (villagerDeaths === 0) {
             message +=
@@ -448,7 +448,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
           if (hutDestroyed) {
             message +=
-              " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood and claw marks.";
+              " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood.";
           }
 
           return {
@@ -605,7 +605,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "time",
     timeProbability: 1,
     message:
-      "Night drapes the village in an uneasy silence. As you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
+      "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -631,7 +631,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Offer to the Forest Gods",
     message:
-      "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to restore peace.",
+      "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to stay safe.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -666,7 +666,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 1.0,
     message:
-      "The wizard summons you to his tower, his eyes gleaming with purpose. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the skill and tools to forge it properly. You must build a Grand Blacksmith - a forge capable of working with the strongest materials known. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
+      "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -924,7 +924,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 2,
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls,' he declares gravely. 'The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, cold as the void between stars, and a staff crowned with a bloodstone, pulsing with dark energy. Without these, we will not stand a chance against the ancient evil below.'",
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below.'",
     triggered: false,
     priority: 5,
     repeatable: false,
