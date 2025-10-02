@@ -129,7 +129,7 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildBastion', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                  {getCostText('buildBastion', useGameStore.getState()).replace(/\d+/g, (match) => '-' + Math.floor(parseInt(match) * 0.5).toString())}
                 </div>
               </HoverCardContent>
             </HoverCard>
@@ -152,7 +152,7 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildWatchtower', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                  {getCostText('buildWatchtower', useGameStore.getState()).replace(/\d+/g, (match) => '-' + Math.floor(parseInt(match) * 0.5).toString())}
                 </div>
               </HoverCardContent>
             </HoverCard>
@@ -175,7 +175,7 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildPalisades', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                  {getCostText('buildPalisades', useGameStore.getState()).replace(/\d+/g, (match) => '-' + Math.floor(parseInt(match) * 0.5).toString())}
                 </div>
               </HoverCardContent>
             </HoverCard>
