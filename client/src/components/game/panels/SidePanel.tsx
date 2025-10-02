@@ -332,23 +332,37 @@ export default function SidePanel() {
         const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
         label = watchtowerLabels[level - 1] || "Watchtower";
         
+        const isDamaged = story?.seen?.watchtowerDamaged;
+        const multiplier = isDamaged ? 0.5 : 1;
+        
         let defense = 0;
         let attack = 0;
         for (let i = 1; i <= level; i++) {
           defense += 1 + (i - 1);
           attack += 4 * i;
         }
+        
+        // Apply damage multiplier and round down
+        defense = Math.floor(defense * multiplier);
+        attack = Math.floor(attack * multiplier);
+        
         tooltip = `+${defense} Defense\n+${attack} Attack`;
         
         // Add red down arrow if damaged
-        if (story?.seen?.watchtowerDamaged) {
+        if (isDamaged) {
           label += " ↓";
         }
       } else if (key === "bastion") {
-        tooltip = "+5 Defense\n+3 Attack";
+        const isDamaged = story?.seen?.bastionDamaged;
+        const multiplier = isDamaged ? 0.5 : 1;
+        
+        const defense = Math.floor(5 * multiplier);
+        const attack = Math.floor(3 * multiplier);
+        
+        tooltip = `+${defense} Defense\n+${attack} Attack`;
         
         // Add red down arrow if damaged
-        if (story?.seen?.bastionDamaged) {
+        if (isDamaged) {
           label += " ↓";
         }
       } else if (key === "palisades") {
@@ -356,15 +370,22 @@ export default function SidePanel() {
         const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
         label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
         
+        const isDamaged = story?.seen?.palisadesDamaged;
+        const multiplier = isDamaged ? 0.5 : 1;
+        
         let defense = 0;
         if (palisadesLevel >= 1) defense += 4;
         if (palisadesLevel >= 2) defense += 6;
         if (palisadesLevel >= 3) defense += 8;
         if (palisadesLevel >= 4) defense += 10;
+        
+        // Apply damage multiplier and round down
+        defense = Math.floor(defense * multiplier);
+        
         tooltip = `+${defense} Defense`;
         
         // Add red down arrow if damaged
-        if (story?.seen?.palisadesDamaged) {
+        if (isDamaged) {
           label += " ↓";
         }
       }
