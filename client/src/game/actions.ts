@@ -1,5 +1,5 @@
 import { GameState } from '@shared/schema';
-import { LogEntry } from '@/game/events';
+import { LogEntry } from '@/game/rules/events';
 import { gameActions } from '@/game/rules';
 // Import all handlers from the modular action files
 import {
