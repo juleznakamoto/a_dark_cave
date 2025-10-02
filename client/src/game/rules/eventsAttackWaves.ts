@@ -18,6 +18,12 @@ const FOURTH_WAVE_MESSAGE =
 const FIFTH_WAVE_MESSAGE = 
   "From the cave emerges a colossal shadow, its form unspeakable, its presence suffocating as he marches towards the city.";
 
+function create_defeat_message(dead_villagers: int, watchtower_destroyed: bool, ): string =>
+  
+  "The creatures overwhelm your defenses. Villagers fall before the remaining creatures retreat to the depths."
+
+return msg
+
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
     id: "firstWave",
