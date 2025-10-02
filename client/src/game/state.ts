@@ -322,7 +322,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
 
     // Schedule updates
-    if (result.stateUpdates.tools || result.stateUpdates.weapons ||
+    if (result.stateUpdates.tools || result.stateUpdates.weapons || 
         result.stateUpdates.clothing || result.stateUpdates.relics) {
       StateManager.scheduleEffectsUpdate(get);
     }
@@ -499,22 +499,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
             get().setCombatDialog(false);
           },
         });
-        return;
-      }
+      } else {
+        // Handle normal event dialogs
+        newLogEntries.forEach(entry => {
+          if (entry.choices && entry.choices.length > 0) {
+            const currentDialog = get().eventDialog;
+            const isMerchantEvent = entry.id.includes('merchant');
+            const hasActiveMerchantDialog = currentDialog.isOpen &&
+              currentDialog.currentEvent?.id.includes('merchant');
 
-      // Handle normal event dialogs
-      newLogEntries.forEach(entry => {
-        if (entry.choices && entry.choices.length > 0) {
-          const currentDialog = get().eventDialog;
-          const isMerchantEvent = entry.id.includes('merchant');
-          const hasActiveMerchantDialog = currentDialog.isOpen &&
-            currentDialog.currentEvent?.id.includes('merchant');
-
-          if (!hasActiveMerchantDialog || !isMerchantEvent) {
-            get().setEventDialog(true, entry);
+            if (!hasActiveMerchantDialog || !isMerchantEvent) {
+              get().setEventDialog(true, entry);
+            }
           }
-        }
-      });
+        });
+      }
 
       StateManager.schedulePopulationUpdate(get);
 
@@ -525,7 +524,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           'wrongReflections', 'villagersStareAtSky'
         ];
 
-        const hasMadnessEvent = triggeredEvents.some(event =>
+        const hasMadnessEvent = triggeredEvents.some(event => 
           madnessEventIds.includes(event.id.split('-')[0])
         );
 
@@ -557,16 +556,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (Object.keys(updatedChanges).length > 0 || logMessage) {
       set((prevState) => {
         const newLogEntry = logMessage
-          ? {
-              id: `choice-result-${Date.now()}`,
-              message: logMessage,
-              timestamp: Date.now(),
+          ? { 
+              id: `choice-result-${Date.now()}`, 
+              message: logMessage, 
+              timestamp: Date.now(), 
               type: 'system' as const
             }
           : null;
 
-        const updatedState = {
-          ...prevState,
+        const updatedState = { 
+          ...prevState, 
           ...updatedChanges,
           log: newLogEntry ? [...prevState.log, newLogEntry].slice(-10) : prevState.log
         };
@@ -620,7 +619,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    // Don't auto-close dialog - let EventDialog handle it
+    // Close dialog for non-merchant events
+    const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
+    if (!isMerchantTrade) {
+      get().setEventDialog(false);
+    }
   },
 
   toggleDevMode: () => {
@@ -666,8 +669,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
       const maxPopulation = getMaxPopulation(state);
 
-      return {
-        ...state,
+      return { 
+        ...state, 
         ...updates,
         current_population: currentPopulation,
         total_population: maxPopulation

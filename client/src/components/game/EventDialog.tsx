@@ -40,15 +40,11 @@ export default function EventDialog({
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
-  const [showResultDialog, setShowResultDialog] = useState(false);
-  const [resultMessage, setResultMessage] = useState<string>("");
 
-  // Reset purchased items and result dialog when dialog opens
+  // Reset purchased items when dialog opens
   useEffect(() => {
     if (isOpen) {
       setPurchasedItems(new Set());
-      setShowResultDialog(false);
-      setResultMessage("");
     }
   }, [isOpen, event?.id]);
 
@@ -117,22 +113,8 @@ export default function EventDialog({
 
     const eventId = event!.id.split("-")[0];
     
-    // Get the log before applying choice
-    const logBefore = useGameStore.getState().log.length;
-    
     // Apply the choice through the store
     applyEventChoice(choiceId, eventId);
-    
-    // Get the log after applying choice
-    const logAfter = useGameStore.getState().log;
-    
-    // Find the result message that was added
-    if (logAfter.length > logBefore) {
-      const newLogEntry = logAfter[logAfter.length - 1];
-      if (newLogEntry.type === 'system' && newLogEntry.message) {
-        setResultMessage(newLogEntry.message);
-      }
-    }
 
     // For merchant trades, mark as purchased but don't close dialog
     if (choiceId.startsWith("trade_")) {
@@ -147,9 +129,8 @@ export default function EventDialog({
       return;
     }
 
-    // For other events, show result dialog
+    // For other events, don't close yet - wait for result message or auto-close
     fallbackExecutedRef.current = true;
-    setShowResultDialog(true);
   };
 
   const progress =
@@ -158,39 +139,6 @@ export default function EventDialog({
       : 0;
 
   const isMerchantEvent = event?.id.includes("merchant");
-
-  // Show result dialog if we have a result message
-  if (showResultDialog && resultMessage) {
-    return (
-      <Dialog open={true} onOpenChange={() => {}}>
-        <DialogContent
-          className="sm:max-w-md [&>button]:hidden"
-          onPointerDownOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={(e) => e.preventDefault()}
-        >
-          <DialogHeader>
-            <DialogTitle className="text-lg font-semibold">Result</DialogTitle>
-            <DialogDescription className="text-sm text-muted-foreground mt-2">
-              {resultMessage}
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex justify-center mt-4">
-            <Button
-              onClick={() => {
-                setShowResultDialog(false);
-                setResultMessage("");
-                onClose();
-              }}
-              variant="outline"
-              className="w-full"
-            >
-              Close
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
 
   return (
     <Dialog
