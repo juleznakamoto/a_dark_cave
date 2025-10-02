@@ -1,5 +1,5 @@
 import { useGameStore } from '@/game/state';
-import { gameActions } from '@/game/rules';
+import { gameActions, getCostText } from '@/game/rules';
 import { Button } from '@/components/ui/button';
 import {
   HoverCard,
@@ -101,13 +101,6 @@ export default function BastionPanel() {
     }
   };
 
-  // Helper to format repair cost display
-  const formatRepairCost = (repairCost: Record<string, number>) => {
-    return Object.entries(repairCost)
-      .map(([resource, cost]) => `${cost.toLocaleString()} ${resource.charAt(0).toUpperCase() + resource.slice(1)}`)
-      .join(', ');
-  };
-
   // If no damaged buildings, show nothing
   if (!hasDamagedBuildings) {
     return null;
@@ -119,83 +112,74 @@ export default function BastionPanel() {
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-foreground">Repair</h3>
         <div className="flex flex-wrap gap-2">
-          {bastionDamaged && buildings.bastion > 0 && (() => {
-            const repairCost = getRepairCost('buildBastion', 1);
-            return (
-              <HoverCard key="bastion" openDelay={100} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <Button
-                      onClick={repairBastion}
-                      disabled={!canAffordRepair(repairCost)}
-                      variant="outline"
-                      size="xs"
-                      className="hover:bg-transparent hover:text-foreground"
-                    >
-                      Bastion
-                    </Button>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-auto p-2">
-                  <div className="text-xs whitespace-nowrap">
-                    {formatRepairCost(repairCost)}
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            );
-          })()}
+          {bastionDamaged && buildings.bastion > 0 && (
+            <HoverCard key="bastion" openDelay={100} closeDelay={100}>
+              <HoverCardTrigger asChild>
+                <div>
+                  <Button
+                    onClick={repairBastion}
+                    disabled={!canAffordRepair(getRepairCost('buildBastion', 1))}
+                    variant="outline"
+                    size="xs"
+                    className="hover:bg-transparent hover:text-foreground"
+                  >
+                    Bastion
+                  </Button>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-auto p-2">
+                <div className="text-xs whitespace-nowrap">
+                  {getCostText('buildBastion', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          )}
 
-          {watchtowerDamaged && buildings.watchtower > 0 && (() => {
-            const repairCost = getRepairCost('buildWatchtower', buildings.watchtower);
-            return (
-              <HoverCard key="watchtower" openDelay={100} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <Button
-                      onClick={repairWatchtower}
-                      disabled={!canAffordRepair(repairCost)}
-                      variant="outline"
-                      size="xs"
-                      className="hover:bg-transparent hover:text-foreground"
-                    >
-                      Watchtower
-                    </Button>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-auto p-2">
-                  <div className="text-xs whitespace-nowrap">
-                    {formatRepairCost(repairCost)}
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            );
-          })()}
+          {watchtowerDamaged && buildings.watchtower > 0 && (
+            <HoverCard key="watchtower" openDelay={100} closeDelay={100}>
+              <HoverCardTrigger asChild>
+                <div>
+                  <Button
+                    onClick={repairWatchtower}
+                    disabled={!canAffordRepair(getRepairCost('buildWatchtower', buildings.watchtower))}
+                    variant="outline"
+                    size="xs"
+                    className="hover:bg-transparent hover:text-foreground"
+                  >
+                    Watchtower
+                  </Button>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-auto p-2">
+                <div className="text-xs whitespace-nowrap">
+                  {getCostText('buildWatchtower', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          )}
 
-          {palisadesDamaged && buildings.palisades > 0 && (() => {
-            const repairCost = getRepairCost('buildPalisades', buildings.palisades);
-            return (
-              <HoverCard key="palisades" openDelay={100} closeDelay={100}>
-                <HoverCardTrigger asChild>
-                  <div>
-                    <Button
-                      onClick={repairPalisades}
-                      disabled={!canAffordRepair(repairCost)}
-                      variant="outline"
-                      size="xs"
-                      className="hover:bg-transparent hover:text-foreground"
-                    >
-                      Palisades
-                    </Button>
-                  </div>
-                </HoverCardTrigger>
-                <HoverCardContent className="w-auto p-2">
-                  <div className="text-xs whitespace-nowrap">
-                    {formatRepairCost(repairCost)}
-                  </div>
-                </HoverCardContent>
-              </HoverCard>
-            );
-          })()}
+          {palisadesDamaged && buildings.palisades > 0 && (
+            <HoverCard key="palisades" openDelay={100} closeDelay={100}>
+              <HoverCardTrigger asChild>
+                <div>
+                  <Button
+                    onClick={repairPalisades}
+                    disabled={!canAffordRepair(getRepairCost('buildPalisades', buildings.palisades))}
+                    variant="outline"
+                    size="xs"
+                    className="hover:bg-transparent hover:text-foreground"
+                  >
+                    Palisades
+                  </Button>
+                </div>
+              </HoverCardTrigger>
+              <HoverCardContent className="w-auto p-2">
+                <div className="text-xs whitespace-nowrap">
+                  {getCostText('buildPalisades', useGameStore.getState()).replace(/^-/, '').replace(/\d+/g, (match) => Math.floor(parseInt(match) * 0.5).toString())}
+                </div>
+              </HoverCardContent>
+            </HoverCard>
+          )}
         </div>
       </div>
     </div>
