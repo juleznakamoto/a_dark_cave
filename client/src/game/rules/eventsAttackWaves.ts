@@ -378,77 +378,44 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       },
       {
         id: "flee",
-        label: "Flee and abandon everything",
+        label: "Flee and abandon the fight",
         effect: (state: GameState) => {
           const currentPopulation = Object.values(state.villagers).reduce(
             (sum, count) => sum + (count || 0),
             0,
           );
 
-          const casualties =
-            Math.floor(currentPopulation * 0.2) + Math.floor(Math.random() * 3);
+          const casualties = Math.min(20, currentPopulation);
           const deathResult = killVillagers(state, casualties);
+
+          // Damage multiple buildings
+          let buildingDamage = {};
+          const damages = [];
+          
+          if (state.buildings.bastion > 0 && !state.story.seen.bastionDamaged) {
+            buildingDamage = { ...buildingDamage, bastionDamaged: true };
+            damages.push("bastion");
+          }
+          if (state.buildings.watchtower > 0 && !state.story.seen.watchtowerDamaged) {
+            buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
+            damages.push("watchtower");
+          }
+          if (state.buildings.palisades > 0 && !state.story.seen.palisadesDamaged) {
+            buildingDamage = { ...buildingDamage, palisadesDamaged: true };
+            damages.push("palisades");
+          }
 
           return {
             ...deathResult,
-            resources: {
-              wood: 0,
-              food: Math.floor(state.resources.food * 0.1),
-              stone: 0,
-              iron: 0,
-              coal: 0,
-              steel: 0,
-              sulfur: 0,
-              bones: 0,
-              bone_totem: 0,
-              fur: 0,
-              leather: 0,
-              torch: 0,
-              silver: 0,
-              gold: 0,
-              obsidian: 0,
-              adamant: 0,
-              moonstone: 0,
-              bloodstone: 0,
-              frostglas: 0,
-              black_powder: 0,
-              ember_bomb: 0,
-              cinderflame_bomb: 0,
-            },
-            buildings: {
-              woodenHut: 0,
-              stoneHut: 0,
-              cabin: 0,
-              greatCabin: 0,
-              timberMill: 0,
-              quarry: 0,
-              blacksmith: 0,
-              foundry: 0,
-              tannery: 0,
-              clerksHut: 0,
-              shallowPit: 0,
-              deepeningPit: 0,
-              deepPit: 0,
-              bottomlessPit: 0,
-              altar: 0,
-              shrine: 0,
-              temple: 0,
-              sanctum: 0,
-              alchemistHall: 0,
-              tradePost: 0,
-              bastion: 0,
-              watchtower: 0,
-              palisades: 0,
-            },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
                 fifthWave: true,
-                totalEvacuation: true,
+                ...buildingDamage,
               },
             },
-            _logMessage: `You order a complete evacuation as the shadow lord approaches. ${casualties} villagers are lost during the chaotic retreat, but the survivors flee deep into the wilderness. Your village, your life's work, everything is abandoned to the ancient horror. Perhaps one day, when the creature slumbers again, someone might return to reclaim the land.`,
+            _logMessage: `You order a retreat as the shadow lord approaches. ${casualties} villagers fall during the chaotic withdrawal. The creature rampages through your defenses unchallenged.${damages.length > 0 ? ` Your ${damages.join(", ")} are destroyed in the rampage.` : ""} The shadow lord returns to the depths, sated for now.`,
           };
         },
       },
