@@ -8,6 +8,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     id: "firstWave",
     condition: (state: GameState) =>
       state.flags.portalBlasted && state.story.seen.hasBastion,
+    // &!!state.story.seen.firstWave,
     triggerType: "resource",
     timeProbability: 0.05,
     title: "The First Wave",
