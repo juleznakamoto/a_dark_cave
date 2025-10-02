@@ -29,7 +29,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pale Creatures",
-            attack: [12, 15, 18][Math.floor(Math.random() * 3)],
+            attack: [120, 150, 180][Math.floor(Math.random() * 3)],
             maxHealth: 100,
             currentHealth: 100,
           },
