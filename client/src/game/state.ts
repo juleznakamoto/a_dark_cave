@@ -580,26 +580,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
-    // Handle logMessage dialog
+    // Show logMessage in dialog if present
     if (logMessage) {
-      // Close current dialog first
-      get().setEventDialog(false);
-      
-      // Show the new message dialog after a brief delay to ensure clean transition
-      setTimeout(() => {
-        const messageEntry: LogEntry = {
-          id: `log-message-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: 'event',
-          choices: [{
-            id: 'acknowledge',
-            label: 'Continue',
-            effect: () => ({}),
-          }],
-        };
-        get().setEventDialog(true, messageEntry);
-      }, 150);
+      const messageEntry: LogEntry = {
+        id: `log-message-${Date.now()}`,
+        message: logMessage,
+        timestamp: Date.now(),
+        type: 'event',
+        choices: [{
+          id: 'acknowledge',
+          label: 'Continue',
+          effect: () => ({}),
+        }],
+      };
+      get().setEventDialog(true, messageEntry);
       return; // Don't proceed to combat dialog
     }
 
