@@ -116,7 +116,8 @@ export default function EventDialog({
     // For "close" button on result dialogs, just close
     if (choiceId === 'close') {
       fallbackExecutedRef.current = true;
-      onClose();
+      // Use setTimeout to ensure any pending state updates complete
+      setTimeout(() => onClose(), 0);
       return;
     }
     
