@@ -271,7 +271,7 @@ export default function SidePanel() {
       testId: "stat-luck",
       visible: true,
       icon: "☆",
-      iconColor: "text-green-700",
+      iconColor: "text-green-400/70",
     });
   }
 
@@ -284,7 +284,7 @@ export default function SidePanel() {
       testId: "stat-strength",
       visible: true,
       icon: "⬡",
-      iconColor: "text-red-700",
+      iconColor: "text-red-400/70",
     });
   }
 
@@ -297,7 +297,7 @@ export default function SidePanel() {
       testId: "stat-knowledge",
       visible: true,
       icon: "✧",
-      iconColor: "text-blue-700/90",
+      iconColor: "text-blue-400/70",
     });
   }
 
@@ -310,7 +310,7 @@ export default function SidePanel() {
       testId: "stat-madness",
       visible: true,
       icon: "✺",
-      iconColor: "text-violet-700/90",
+      iconColor: "text-violet-400/70",
     });
   }
 
