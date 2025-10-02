@@ -317,7 +317,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 0.0045,
     title: "A Strange Wooden Figure",
     message:
       "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
