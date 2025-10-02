@@ -538,40 +538,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentLogEntry = get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
 
-    let logMessage = null;
     let combatData = null;
     const updatedChanges = { ...changes };
 
-    if (updatedChanges._logMessage) {
-      logMessage = updatedChanges._logMessage;
-      delete updatedChanges._logMessage;
-    }
-
+    // Extract combat data if present
     if (updatedChanges._combatData) {
       combatData = updatedChanges._combatData;
       delete updatedChanges._combatData;
     }
 
-    // Apply state changes if any
-    if (Object.keys(updatedChanges).length > 0 || logMessage) {
-      set((prevState) => {
-        const newLogEntry = logMessage
-          ? { 
-              id: `choice-result-${Date.now()}`, 
-              message: logMessage, 
-              timestamp: Date.now(), 
-              type: 'system' as const
-            }
-          : null;
-
-        const updatedState = { 
-          ...prevState, 
-          ...updatedChanges,
-          log: newLogEntry ? [...prevState.log, newLogEntry].slice(-10) : prevState.log
-        };
-
-        return updatedState;
-      });
+    // Apply state changes - EventManager already handles _logMessage in changes.log
+    if (Object.keys(updatedChanges).length > 0) {
+      set((prevState) => ({
+        ...prevState,
+        ...updatedChanges,
+      }));
 
       StateManager.schedulePopulationUpdate(get);
     }
