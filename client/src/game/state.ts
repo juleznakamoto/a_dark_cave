@@ -252,10 +252,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    if (import.meta.env.DEV) {
-      console.log(`[STATE] Update Resource: ${resource} by ${amount}`);
-    }
-
     set((state) => updateResource(state, resource, amount));
 
     // If updating free villagers, update population counts immediately
