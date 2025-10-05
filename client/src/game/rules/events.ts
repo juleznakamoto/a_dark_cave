@@ -1,5 +1,4 @@
 import { GameState } from "@shared/schema";
-import { baseEvents } from "./eventsBase";
 import { storyEvents } from "./eventsStory";
 import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
@@ -51,7 +50,6 @@ export interface LogEntry {
 
 // Merge all events from separate files
 export const gameEvents: Record<string, GameEvent> = {
-  ...baseEvents,
   ...storyEvents,
   ...merchantEvents,
   ...madnessEvents,
