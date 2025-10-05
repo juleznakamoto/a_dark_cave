@@ -210,7 +210,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    relevant_stats: ["strength"],
+    relevant_stats: ["strength", "luck", "knowledge"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: 0.003,

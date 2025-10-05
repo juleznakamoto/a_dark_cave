@@ -157,17 +157,15 @@ export default function EventDialog({
               <DialogTitle className="text-lg font-semibold flex-1">
                 {event.title || "Strange Encounter"}
               </DialogTitle>
-              <span>ewfwf event.relevant_stats</span>
               {event.relevant_stats && event.relevant_stats.length > 0 && (
                 <div className="flex gap-1 ml-2">
-                  <span>ewfwf</span>
                   {event.relevant_stats.map((stat) => {
                     const statInfo = statIcons[stat.toLowerCase()];
                     if (!statInfo) return null;
                     return (
                       <span
                         key={stat}
-                        className={`text-lg ${statInfo.color}`}
+                        className={`text-xs ${statInfo.color}`}
                         title={stat}
                       >
                         {statInfo.icon}
