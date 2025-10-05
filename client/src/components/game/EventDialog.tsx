@@ -128,7 +128,7 @@ export default function EventDialog({
       const choice = eventChoices.find((c) => c.id === choiceId);
       if (choice) {
         const result = choice.effect(gameState);
-        
+
         // Apply state changes directly to avoid triggering new dialogs
         if (result.resources) {
           Object.entries(result.resources).forEach(([resource, value]) => {
@@ -149,7 +149,7 @@ export default function EventDialog({
             }
           });
         }
-        
+
         // Add log message if present
         if (result._logMessage) {
           const logEntry = {
@@ -160,7 +160,7 @@ export default function EventDialog({
           };
           gameState.addLogEntry(logEntry);
         }
-        
+
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -200,11 +200,7 @@ export default function EventDialog({
           hasScriptorium={hasScriptorium}
         />
       ) : (
-        <DialogContent
-          className="sm:max-w-md [&>button]:hidden"
-          onPointerDownOutside={(e) => e.preventDefault()}
-          onEscapeKeyDown={(e) => e.preventDefault()}
-        >
+        <DialogContent className="sm:max-w-md [&>button]:hidden" tabIndex={-1} style={{ pointerEvents: 'auto' }}>
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
