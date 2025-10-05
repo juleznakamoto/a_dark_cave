@@ -354,7 +354,6 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    relevant_stats: ["strength"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: 30,
@@ -367,6 +366,7 @@ export const storyEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "defendVillage",
+        relevant_stats: ["strength"],
         label: "Defend the village",
         effect: (state: GameState) => {
           const currentPopulation =
