@@ -210,10 +210,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    relevant_stats: ["strength", "luck", "knowledge"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
-    timeProbability: 0.003,
+    timeProbability: 35,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo with filled with malice as they circle your village.",
