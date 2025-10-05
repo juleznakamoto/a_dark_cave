@@ -472,3 +472,28 @@ function handleStrangerApproach() {
 export async function manualSave() {
   await handleAutoSave();
 }
+
+function logGameState() {
+  const state = useGameStore.getState();
+
+  console.log('=== GAME STATE (15s interval) ===', {
+    resources: state.resources,
+    stats: state.stats,
+    flags: state.flags,
+    tools: state.tools,
+    weapons: state.weapons,
+    clothing: state.clothing,
+    relics: state.relics,
+    buildings: state.buildings,
+    villagers: state.villagers,
+    world: state.world,
+    story: state.story,
+    events: state.events,
+    effects: state.effects,
+    bastion_stats: state.bastion_stats,
+    population: {
+      current: state.current_population,
+      max: state.total_population
+    }
+  });
+}
