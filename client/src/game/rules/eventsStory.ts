@@ -819,7 +819,6 @@ export const storyEvents: Record<string, GameEvent> = {
 
   hiddenLake: {
     id: "hiddenLake",
-    relevant_stats: ["strength"],
     condition: (state: GameState) => state.flags.forestUnlocked, // && !state.relics.cracked_crown,
     triggerType: "resource",
     timeProbability: 35,
@@ -833,6 +832,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         label: "Investigate the lake",
+        relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = state.stats.strength || 0;
           const successChance = 0.25 + strength * 0.01; // 25% + 1% per strength point
@@ -1145,6 +1145,7 @@ export const storyEvents: Record<string, GameEvent> = {
       {
         id: "forceHim",
         label: "Force him to teach you",
+        relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const successChance = 0.3 + strength * 0.01; // 30% base + 1% per strength point

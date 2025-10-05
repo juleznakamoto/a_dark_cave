@@ -28,6 +28,7 @@ export interface GameEvent {
 export interface EventChoice {
   id: string;
   label: string;
+  relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   cost?: string; // Optional cost information for hover display
   effect: (state: GameState) => Partial<GameState>;
   cooldown?: number; // Cooldown in seconds for choice buttons
