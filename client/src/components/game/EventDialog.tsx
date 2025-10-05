@@ -118,8 +118,44 @@ export default function EventDialog({
 
     // For merchant trades (not goodbye), mark item as purchased but don't close dialog
     if (isMerchantEvent && !isSayGoodbye) {
-      setPurchasedItems(prev => new Set(prev).add(choiceId));
-      applyEventChoice(choiceId, eventId);
+      const choice = eventChoices.find((c) => c.id === choiceId);
+      if (choice) {
+        const result = choice.effect(gameState);
+        
+        // Apply state changes directly to avoid triggering new dialogs
+        if (result.resources) {
+          Object.entries(result.resources).forEach(([resource, value]) => {
+            gameState.updateResource(resource as keyof typeof gameState.resources, value - (gameState.resources[resource as keyof typeof gameState.resources] || 0));
+          });
+        }
+        if (result.tools) {
+          Object.entries(result.tools).forEach(([tool, value]) => {
+            if (value) {
+              gameState.tools[tool as keyof typeof gameState.tools] = true;
+            }
+          });
+        }
+        if (result.relics) {
+          Object.entries(result.relics).forEach(([relic, value]) => {
+            if (value) {
+              gameState.relics[relic as keyof typeof gameState.relics] = true;
+            }
+          });
+        }
+        
+        // Add log message if present
+        if (result._logMessage) {
+          const logEntry = {
+            id: `merchant-trade-${Date.now()}`,
+            message: result._logMessage,
+            timestamp: Date.now(),
+            type: 'system' as const
+          };
+          gameState.addLogEntry(logEntry);
+        }
+        
+        setPurchasedItems(prev => new Set(prev).add(choiceId));
+      }
       return;
     }
 
