@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -132,8 +131,10 @@ export const caveEvents: Record<string, GameEvent> = {
     fallbackChoice: {
       id: "leaveFlute",
       label: "Leave it behind",
-      effect: (state: GameState) => {
-        const devoured = Math.floor(Math.random() * 3) + 2; // 2-4 villagers
+      relevant_stats: ["luck"],
+       effect: (state: GameState) => {
+        const luck = state.stats.luck || 0;
+        const devoured = Math.floor((1 - luck) * Math.random() * 9) + 1;
         const deathResult = killVillagers(state, devoured);
         return {
           ...deathResult,
@@ -207,7 +208,8 @@ export const caveEvents: Record<string, GameEvent> = {
       id: "leaveScepter",
       label: "Leave the throne undisturbed",
       effect: (state: GameState) => {
-        const deaths = Math.floor(Math.random() * 5) + 4; // 4-8 villagers
+        const luck = state.stats.luck || 0;
+        const deaths = Math.floor((1-luck)*Math.random() * 6) + 3;
         const deathResult = killVillagers(state, deaths);
         return {
           ...deathResult,
@@ -218,8 +220,7 @@ export const caveEvents: Record<string, GameEvent> = {
               hollowKingScepterChoice: true,
             },
           },
-          _logMessage:
-            `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
+          _logMessage: `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
         };
       },
     },
@@ -292,8 +293,7 @@ export const caveEvents: Record<string, GameEvent> = {
               dragonBoneDiceChoice: true,
             },
           },
-          _logMessage:
-            `Your hesitation angers the ancient magic within the dice. They begin rolling on their own, each result bringing misfortune. ${cursed} of your men suddenly collapse, victims of the dice's terrible curse. The bones finally stop rolling, their revenge complete.`,
+          _logMessage: `Your hesitation angers the ancient magic within the dice. They begin rolling on their own, each result bringing misfortune. ${cursed} of your men suddenly collapse, victims of the dice's terrible curse. The bones finally stop rolling, their revenge complete.`,
         };
       },
     },

@@ -2,7 +2,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effects";
+import { getTotalStrength, getTotalLuck } from "./effects";
 import { getMaxPopulation } from "@/game/population";
 
 export const choiceEvents: Record<string, GameEvent> = {
@@ -26,6 +26,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "investigate",
         label: "Investigate",
+        relevant_stats: ["luck", "strength"],
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
@@ -222,8 +223,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "defendVillage",
-        relevant_stats: ["strength"],
         label: "Defend the village",
+        relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const currentPopulation =
             state.current_population ||
@@ -326,6 +327,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "hideAndWait",
         label: "Hide and wait it out",
+        relevant_stats: ["luck"],
         effect: (state: GameState) => {
           const currentPopulation =
             state.current_population ||
@@ -339,10 +341,9 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The wolves find an empty village and move on, their supernatural hunger unsated.",
             };
           }
-
-          // Hiding is more effective, lower casualty rate (50%)
-          const strength = getTotalStrength(state);
-          const casualtyChance = Math.max(0.1, 0.5 - strength * 0.02);
+          
+          const luck = getTotalLuck(state);
+          const casualtyChance = Math.max(0.1, 0.5 - luck * 0.02);
 
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
@@ -399,7 +400,6 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
-    relevant_stats: ["knowledge"],
     condition: (state: GameState) =>
       state.current_population > 10 &&
       !state.relics.ebony_ring &&
@@ -418,6 +418,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "sacrifice",
         label: "Sacrifice 4 villagers",
+        relevant_stats: ["knowledge"],
         effect: (state: GameState) => {
           const knowledge = state.stats.knowledge || 0;
           const successChance = 0.3 + knowledge;
@@ -617,8 +618,9 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "avoidLake",
         label: "Avoid the lake",
+        relevant_stats: ["luck"],
         effect: (state: GameState) => {
-          const successChance = 0.4;
+          const successChance = 0.2;
           const luck = state.stats.luck || 0;
           const rand = Math.random();
 
@@ -767,7 +769,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   vikingBuilder: {
     id: "vikingBuilder",
     condition: (state: GameState) =>
-      state.buildings.palisades >= 2 && !state.story.seen.vikingBuilderEvent,
+      state.buildings.palisades >= 1 && !state.story.seen.vikingBuilderEvent,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Viking Builder",

@@ -1,8 +1,5 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck } from "./effects";
-import { getMaxPopulation } from "@/game/population";
 
 export const storyEvents: Record<string, GameEvent> = {
   foodGone: {
@@ -77,7 +74,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message: [
-      "At dawn, refined steel bars lie stacked at the village gates. Nobody knows where they come from.",
+      "At dawn, refined steel bars lie stacked at the village's edge. Nobody knows where they come from.",
       "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
