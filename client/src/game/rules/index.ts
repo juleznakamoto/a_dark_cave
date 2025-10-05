@@ -609,27 +609,16 @@ export const applyActionEffects = (
 
   // Apply action bonuses and multipliers from tools, weapons, and relics
   if (updates.resources) {
-    console.log(`🎯 BONUS SYSTEM - Action: ${actionId}`);
-    console.log(`📊 Resources before bonuses:`, updates.resources);
-    console.log(`🔧 Action bonuses:`, actionBonuses);
-
     // Apply fixed resource bonuses
     if (
       actionBonuses.resourceBonus &&
       Object.keys(actionBonuses.resourceBonus).length > 0
     ) {
-      console.log(
-        `➕ Applying fixed resource bonuses:`,
-        actionBonuses.resourceBonus,
-      );
       Object.entries(actionBonuses.resourceBonus).forEach(
         ([resource, bonus]) => {
           if (typeof bonus === "number") {
             const before = updates.resources![resource] || 0;
             updates.resources![resource] = before + bonus;
-            console.log(
-              `  ${resource}: ${before} → ${updates.resources![resource]} (+${bonus})`,
-            );
           }
         },
       );
@@ -640,29 +629,18 @@ export const applyActionEffects = (
       actionBonuses.resourceMultiplier &&
       actionBonuses.resourceMultiplier !== 1
     ) {
-      console.log(
-        `✨ Applying resource multiplier: ${actionBonuses.resourceMultiplier}x (${Math.round((actionBonuses.resourceMultiplier - 1) * 100)}% bonus)`,
-      );
       Object.keys(updates.resources).forEach((resource) => {
         const currentAmount = updates.resources![resource] || 0;
         const originalAmount =
           state.resources[resource as keyof typeof state.resources] || 0;
-        const baseGain = currentAmount - originalAmount; // This is the amount gained from the action itself, before bonuses
-
-        console.log(
-          `  ${resource}: current=${currentAmount}, original=${originalAmount}, base_gain=${baseGain}`,
-        );
+        const baseGain = currentAmount - originalAmount;
 
         if (baseGain > 0) {
-          // Only apply multiplier to positive gains
           const bonusAmount = Math.floor(
             baseGain * (actionBonuses.resourceMultiplier - 1),
           );
           const finalAmount = currentAmount + bonusAmount;
           updates.resources![resource] = finalAmount;
-          console.log(
-            `  ${resource}: ${currentAmount} + ${bonusAmount} = ${finalAmount}`,
-          );
         }
       });
     }
