@@ -1135,13 +1135,6 @@ export const getTotalStrength = (state: GameState): number => {
     }
   });
 
-  // Apply direct weapon bonuses
-  if (state.weapons.iron_sword) strength += 3;
-  if (state.weapons.steel_sword) strength += 5;
-  if (state.weapons.obsidian_sword) strength += 10;
-  if (state.weapons.adamant_sword) strength += 15;
-  if (state.weapons.frostglass_sword) strength += 25;
-
   return strength;
 };
 
@@ -1317,13 +1310,6 @@ export const calculateTotalEffects = (state: GameState) => {
       }
     }
   });
-
-  // Add weapon effects directly to statBonuses
-  if (state.weapons.iron_sword) effects.statBonuses.strength += 2;
-  if (state.weapons.steel_sword) effects.statBonuses.strength += 4;
-  if (state.weapons.obsidian_sword) effects.statBonuses.strength += 6;
-  if (state.weapons.adamant_sword) effects.statBonuses.strength += 8;
-  if (state.weapons.ashen_dagger) effects.statBonuses.strength += 6;
 
   // Add relic effects directly to statBonuses
   if (state.relics.ravens_orb) effects.statBonuses.knowledge += 6;
