@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -211,10 +210,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    relevant_stats: ["strength", "knowledge","luck"],
+    relevant_stats: ["strength"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
-    timeProbability: 0.0030,
+    timeProbability: 0.003,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo with filled with malice as they circle your village.",
@@ -342,7 +341,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The wolves find an empty village and move on, their supernatural hunger unsated.",
             };
           }
-          
+
           const luck = getTotalLuck(state);
           const casualtyChance = Math.max(0.1, 0.5 - luck * 0.02);
 
