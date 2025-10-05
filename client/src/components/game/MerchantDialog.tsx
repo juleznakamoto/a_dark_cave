@@ -26,6 +26,7 @@ interface MerchantDialogProps {
   purchasedItems: Set<string>;
   fallbackExecutedRef: React.MutableRefObject<boolean>;
   onChoice: (choiceId: string) => void;
+  hasScriptorium: boolean;
 }
 
 const statIcons: Record<string, { icon: string; color: string }> = {
@@ -44,11 +45,12 @@ export default function MerchantDialog({
   purchasedItems,
   fallbackExecutedRef,
   onChoice,
+  hasScriptorium,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
 
   const renderStatIcons = (stats: string[] | undefined) => {
-    if (!stats || stats.length === 0) return null;
+    if (!hasScriptorium || !stats || stats.length === 0) return null;
     return (
       <div className="flex gap-1 ml-2">
         {stats.map((stat) => {

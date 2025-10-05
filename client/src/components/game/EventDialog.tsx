@@ -34,6 +34,7 @@ export default function EventDialog({
 }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
+  const hasScriptorium = gameState.buildings.scriptorium > 0;
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -145,6 +146,7 @@ export default function EventDialog({
           purchasedItems={purchasedItems}
           fallbackExecutedRef={fallbackExecutedRef}
           onChoice={handleChoice}
+          hasScriptorium={hasScriptorium}
         />
       ) : (
         <DialogContent
@@ -157,7 +159,7 @@ export default function EventDialog({
               <DialogTitle className="text-lg font-semibold flex-1">
                 {event.title || "Strange Encounter"}
               </DialogTitle>
-              {event.relevant_stats && event.relevant_stats.length > 0 && (
+              {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
                 <div className="flex gap-1 ml-2">
                   {event.relevant_stats.map((stat) => {
                     const statInfo = statIcons[stat.toLowerCase()];
@@ -193,7 +195,7 @@ export default function EventDialog({
                 }
               >
                 <span>{choice.label}</span>
-                {choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
                   <div className="flex gap-1 ml-2">
                     {choice.relevant_stats.map((stat) => {
                       const statInfo = statIcons[stat.toLowerCase()];
