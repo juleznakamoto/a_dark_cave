@@ -1,4 +1,3 @@
-
 import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
@@ -29,6 +28,13 @@ interface MerchantDialogProps {
   onChoice: (choiceId: string) => void;
 }
 
+const statIcons: Record<string, { icon: string; color: string }> = {
+  luck: { icon: "☆", color: "text-green-500" },
+  strength: { icon: "⬡", color: "text-red-500" },
+  knowledge: { icon: "✧", color: "text-blue-500" },
+  madness: { icon: "✺", color: "text-violet-500" },
+};
+
 export default function MerchantDialog({
   event,
   gameState,
@@ -40,6 +46,27 @@ export default function MerchantDialog({
   onChoice,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
+
+  const renderStatIcons = (stats: string[] | undefined) => {
+    if (!stats || stats.length === 0) return null;
+    return (
+      <div className="flex gap-1 ml-2">
+        {stats.map((stat) => {
+          const statInfo = statIcons[stat.toLowerCase()];
+          if (!statInfo) return null;
+          return (
+            <span
+              key={stat}
+              className={`text-base ${statInfo.color}`}
+              title={stat}
+            >
+              {statInfo.icon}
+            </span>
+          );
+        })}
+      </div>
+    );
+  };
 
   return (
     <DialogPortal>
@@ -57,8 +84,9 @@ export default function MerchantDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">
+          <DialogTitle className="text-lg font-semibold flex items-center">
             {event.title || "Strange Encounter"}
+            {renderStatIcons(event.relevant_stats)}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
             {event.message}

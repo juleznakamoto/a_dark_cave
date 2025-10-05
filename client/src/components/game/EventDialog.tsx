@@ -19,6 +19,14 @@ interface EventDialogProps {
   event: LogEntry | null;
 }
 
+// Stat icon mapping
+const statIcons: Record<string, { icon: string; color: string }> = {
+  luck: { icon: '☆', color: 'text-green-500' },
+  strength: { icon: '⬡', color: 'text-red-500' },
+  knowledge: { icon: '✧', color: 'text-blue-500' },
+  madness: { icon: '✺', color: 'text-violet-500' },
+};
+
 export default function EventDialog({
   isOpen,
   onClose,
@@ -145,9 +153,28 @@ export default function EventDialog({
           onEscapeKeyDown={(e) => e.preventDefault()}
         >
           <DialogHeader>
-            <DialogTitle className="text-lg font-semibold">
-              {event.title || "Strange Encounter"}
-            </DialogTitle>
+            <div className="flex items-start justify-between">
+              <DialogTitle className="text-lg font-semibold flex-1">
+                {event.title || "Strange Encounter"}
+              </DialogTitle>
+              {event.relevant_stats && event.relevant_stats.length > 0 && (
+                <div className="flex gap-1 ml-2">
+                  {event.relevant_stats.map((stat) => {
+                    const statInfo = statIcons[stat.toLowerCase()];
+                    if (!statInfo) return null;
+                    return (
+                      <span
+                        key={stat}
+                        className={`text-lg ${statInfo.color}`}
+                        title={stat}
+                      >
+                        {statInfo.icon}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
             <DialogDescription className="text-sm text-muted-foreground mt-2">
               {event.message}
             </DialogDescription>
@@ -159,13 +186,30 @@ export default function EventDialog({
                 key={choice.id}
                 onClick={() => handleChoice(choice.id)}
                 variant="outline"
-                className="w-full text-left justify-start"
+                className="w-full text-left justify-between"
                 disabled={
                   (timeRemaining !== null && timeRemaining <= 0) ||
                   fallbackExecutedRef.current
                 }
               >
-                {choice.label}
+                <span>{choice.label}</span>
+                {choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                  <div className="flex gap-1 ml-2">
+                    {choice.relevant_stats.map((stat) => {
+                      const statInfo = statIcons[stat.toLowerCase()];
+                      if (!statInfo) return null;
+                      return (
+                        <span
+                          key={stat}
+                          className={`text-base ${statInfo.color}`}
+                          title={stat}
+                        >
+                          {statInfo.icon}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
               </Button>
             ))}
           </div>
