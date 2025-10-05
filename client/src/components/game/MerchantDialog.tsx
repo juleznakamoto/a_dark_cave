@@ -84,9 +84,8 @@ export default function MerchantDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold flex items-center">
+          <DialogTitle className="text-lg font-semibold">
             {event.title || "Strange Encounter"}
-            {renderStatIcons(event.relevant_stats)}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
             {event.message}
