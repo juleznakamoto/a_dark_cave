@@ -116,6 +116,13 @@ export default function EventDialog({
     const isMerchantEvent = event?.id.includes("merchant");
     const isSayGoodbye = choiceId === "say_goodbye";
 
+    // For merchant "say goodbye", just close the dialog without processing
+    if (isMerchantEvent && isSayGoodbye) {
+      fallbackExecutedRef.current = true;
+      onClose();
+      return;
+    }
+
     // For merchant trades (not goodbye), mark item as purchased but don't close dialog
     if (isMerchantEvent && !isSayGoodbye) {
       const choice = eventChoices.find((c) => c.id === choiceId);
@@ -159,7 +166,7 @@ export default function EventDialog({
       return;
     }
 
-    // For goodbye or non-merchant events, close the dialog
+    // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
     applyEventChoice(choiceId, eventId);
     onClose();
