@@ -29,46 +29,16 @@ interface MerchantDialogProps {
   hasScriptorium: boolean;
 }
 
-const statIcons: Record<string, { icon: string; color: string }> = {
-  luck: { icon: "☆", color: "text-green-500" },
-  strength: { icon: "⬡", color: "text-red-500" },
-  knowledge: { icon: "✧", color: "text-blue-500" },
-  madness: { icon: "✺", color: "text-violet-500" },
-};
-
 export default function MerchantDialog({
   event,
   gameState,
   timeRemaining,
-  totalTime,
   progress,
   purchasedItems,
   fallbackExecutedRef,
   onChoice,
-  hasScriptorium,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
-
-  const renderStatIcons = (stats: string[] | undefined) => {
-    if (!hasScriptorium || !stats || stats.length === 0) return null;
-    return (
-      <div className="flex gap-1 ml-2">
-        {stats.map((stat) => {
-          const statInfo = statIcons[stat.toLowerCase()];
-          if (!statInfo) return null;
-          return (
-            <span
-              key={stat}
-              className={`text-base ${statInfo.color}`}
-              title={stat}
-            >
-              {statInfo.icon}
-            </span>
-          );
-        })}
-      </div>
-    );
-  };
 
   return (
     <DialogPortal>
