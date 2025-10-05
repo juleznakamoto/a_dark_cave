@@ -122,6 +122,7 @@ export class EventManager {
           isTimedChoice: event.isTimedChoice,
           baseDecisionTime: event.baseDecisionTime,
           fallbackChoice: event.fallbackChoice,
+          relevant_stats: event.relevant_stats,
         };
 
         newLogEntries.push(logEntry);
