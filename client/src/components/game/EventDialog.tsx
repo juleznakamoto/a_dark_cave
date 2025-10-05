@@ -21,10 +21,10 @@ interface EventDialogProps {
 
 // Stat icon mapping
 const statIcons: Record<string, { icon: string; color: string }> = {
-  luck: { icon: '☆', color: 'text-green-500' },
-  strength: { icon: '⬡', color: 'text-red-500' },
-  knowledge: { icon: '✧', color: 'text-blue-500' },
-  madness: { icon: '✺', color: 'text-violet-500' },
+  luck: { icon: '☆', color: 'text-green-300/80' },
+  strength: { icon: '⬡', color: 'text-red-300/80' },
+  knowledge: { icon: '✧', color: 'text-blue-300/80' },
+  madness: { icon: '✺', color: 'text-violet-300/80' },
 };
 
 export default function EventDialog({
@@ -201,7 +201,7 @@ export default function EventDialog({
                       return (
                         <span
                           key={stat}
-                          className={`text-base ${statInfo.color}`}
+                          className={`text-xs ${statInfo.color}`}
                           title={stat}
                         >
                           {statInfo.icon}

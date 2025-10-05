@@ -174,7 +174,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
       "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
@@ -211,9 +211,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
+    relevant_stats: ["strength", "knowledge","luck"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 0.0030,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo with filled with malice as they circle your village.",
