@@ -130,6 +130,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   paleFigure: {
     id: "paleFigure",
+    relevant_stats: ["strength", "luck"],
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
     triggerType: "resource",
@@ -150,12 +151,11 @@ export const storyEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
-          // Base 20% chance + 0.5% per strength/luck point
-          const mantleChance = 0.2 + (strength + luck) * 0.005;
+          // Base 20% chance + 1 % per strength 0.5 % per luck
+          const mantleChance = 0.2 + strength + luck * 0.005;
 
           const rand = Math.random();
           if (rand < mantleChance) {
-            // Find the Ravenfeather Mantle (50% base + strength bonus)
             return {
               relics: {
                 ...state.relics,
@@ -354,6 +354,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
+    relevant_stats: ["strength"],
     condition: (state: GameState) => state.buildings.woodenHut >= 3,
     triggerType: "resource",
     timeProbability: 30,
@@ -430,8 +431,7 @@ export const storyEvents: Record<string, GameEvent> = {
           const deathResult = killVillagers(state, villagerDeaths);
 
           // Construct result message
-          let message =
-            "The village fights desperately against the wolves. ";
+          let message = "The village fights desperately against the wolves. ";
 
           if (villagerDeaths === 0) {
             message +=
@@ -623,6 +623,7 @@ export const storyEvents: Record<string, GameEvent> = {
 
   offerToTheForestGods: {
     id: "offerToTheForestGods",
+    relevant_stats: ["knowledge"],
     condition: (state: GameState) =>
       state.current_population > 10 &&
       !state.relics.ebony_ring &&
@@ -642,7 +643,8 @@ export const storyEvents: Record<string, GameEvent> = {
         id: "sacrifice",
         label: "Sacrifice 4 villagers",
         effect: (state: GameState) => {
-          const successChance = 0.35;
+          const knowledge = state.stats.knowledge || 0;
+          const successChance = 0.3 + knowledge;
           const rand = Math.random();
 
           // Kill 4 villagers first
@@ -653,34 +655,6 @@ export const storyEvents: Record<string, GameEvent> = {
             return {
               ...deathResult,
               relics: {
-
-
-  wizardFrostglassSword: {
-    id: "wizardFrostglassSword",
-    condition: (state: GameState) =>
-      state.story.seen.hillGraveSuccess &&
-      state.resources.frostglas >= 50 &&
-      state.buildings.blacksmith >= 1 &&
-      state.buildings.grandBlacksmith === 0 &&
-      !state.story.seen.wizardFrostglassSword,
-    triggerType: "resource",
-    timeProbability: 1.0,
-    message:
-      "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
-    triggered: false,
-    priority: 5,
-    repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          wizardFrostglassSword: true,
-        },
-      },
-    }),
-  },
-
                 ...state.relics,
                 ebony_ring: true,
               },
@@ -761,6 +735,32 @@ export const storyEvents: Record<string, GameEvent> = {
     },
   },
 
+  wizardFrostglassSword: {
+    id: "wizardFrostglassSword",
+    condition: (state: GameState) =>
+      state.story.seen.hillGraveSuccess &&
+      state.resources.frostglas >= 50 &&
+      state.buildings.blacksmith >= 1 &&
+      state.buildings.grandBlacksmith === 0 &&
+      !state.story.seen.wizardFrostglassSword,
+    triggerType: "resource",
+    timeProbability: 1.0,
+    message:
+      "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardFrostglassSword: true,
+        },
+      },
+    }),
+  },
+
   madBeduine: {
     id: "madBeduine",
     condition: (state: GameState) =>
@@ -819,8 +819,8 @@ export const storyEvents: Record<string, GameEvent> = {
 
   hiddenLake: {
     id: "hiddenLake",
-    condition: (state: GameState) =>
-      state.flags.forestUnlocked,// && !state.relics.cracked_crown,
+    relevant_stats: ["strength"],
+    condition: (state: GameState) => state.flags.forestUnlocked, // && !state.relics.cracked_crown,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Hidden Lake",
@@ -1070,7 +1070,8 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardHillGrave: {
     id: "wizardHillGrave",
     condition: (state: GameState) =>
-      state.story.seen.wizardDecryptsScrolls && !state.story.seen.wizardHillGrave,
+      state.story.seen.wizardDecryptsScrolls &&
+      !state.story.seen.wizardHillGrave,
     triggerType: "resource",
     timeProbability: 2,
     title: "The Hill Grave",

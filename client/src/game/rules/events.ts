@@ -4,8 +4,8 @@ import { storyEvents } from "./eventsStory";
 import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
 import { caveEvents } from "./eventsCave";
-import { huntEvents } from './eventsHunt';
-import { attackWaveEvents } from './eventsAttackWaves';
+import { huntEvents } from "./eventsHunt";
+import { attackWaveEvents } from "./eventsAttackWaves";
 
 export interface GameEvent {
   id: string;
@@ -23,6 +23,7 @@ export interface GameEvent {
   isTimedChoice?: boolean;
   baseDecisionTime?: number; // Base decision time in seconds
   fallbackChoice?: EventChoice; // Choice to execute if time runs out
+  relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
 }
 
 export interface EventChoice {
@@ -45,6 +46,7 @@ export interface LogEntry {
   baseDecisionTime?: number;
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
+  relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
 }
 
 // Merge all events from separate files
@@ -159,7 +161,7 @@ export class EventManager {
 
     // For merchant events, use choices from the current log entry if available
     let choicesSource = eventDefinition.choices;
-    if (eventId === 'merchant' && currentLogEntry?.choices) {
+    if (eventId === "merchant" && currentLogEntry?.choices) {
       choicesSource = currentLogEntry.choices;
     }
 
@@ -167,7 +169,11 @@ export class EventManager {
     let choice = choicesSource?.find((c) => c.id === choiceId);
 
     // If not found and this is a fallback choice, use the fallbackChoice directly
-    if (!choice && eventDefinition.fallbackChoice && eventDefinition.fallbackChoice.id === choiceId) {
+    if (
+      !choice &&
+      eventDefinition.fallbackChoice &&
+      eventDefinition.fallbackChoice.id === choiceId
+    ) {
       choice = eventDefinition.fallbackChoice;
     }
 
@@ -179,7 +185,9 @@ export class EventManager {
 
     const result = {
       ...choiceResult,
-      log: currentLogEntry ? state.log.filter((entry) => entry.id !== currentLogEntry.id) : state.log,
+      log: currentLogEntry
+        ? state.log.filter((entry) => entry.id !== currentLogEntry.id)
+        : state.log,
     };
 
     return result;
