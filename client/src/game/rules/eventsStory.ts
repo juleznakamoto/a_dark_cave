@@ -8,7 +8,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 20,
     message: [
-      "Strange whispers were heard at night. At dawn, food stores are lighter.",
+      "At dawn, food stores are lighter. Strange whispers were heard at night.",
       "Villagers wake to find food missing. Some heard ancient tongues in the night.",
       "By morning, food stores are thinned. Some murmur of inhuman voices heard in the dark.",
     ][Math.floor(Math.random() * 3)],
@@ -74,7 +74,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message: [
-      "At dawn, refined steel bars lie stacked at the village's edge. Nobody knows where they come from.",
+      "At dawn, steel bars lie stacked at the village's edge. Nobody knows where they come from.",
       "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
@@ -93,8 +93,8 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message: [
-      "By dawn, obsidian shards have been placed in the earth around your village, like a silent message left behind.",
-      "In the morning light, you notice obsidian laid carefully into the soil, surrounding your village.",
+      "By dawn, obsidian shards have been placed around the village.",
+      "In the morning light, villagers notice obsidian shards nearby the village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -113,7 +113,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     message: [
       "By morning, raw adamant lies behind one of the huts of the village.",
-      "When dawn breaks, fragments of adamant protrude from the earth around your settlement.",
+      "When dawn breaks, a pile of adamant is found close to the village.",
     ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
@@ -131,7 +131,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "Ring of Clarity",
     message:
-      "As the ritual concludes, something glints among the ashes of the altar. A crystal-clear ring catches the light - its surface perfectly smooth and radiating a sense of peace and mental clarity.",
+      "As the ritual concludes, a crystal-clear ring glints among the ashes of the altar, its surface perfectly smooth and radiating a sense of peace.",
     triggered: false,
     priority: 5,
     repeatable: false,
