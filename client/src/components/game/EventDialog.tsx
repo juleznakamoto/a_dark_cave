@@ -113,12 +113,20 @@ export default function EventDialog({
     }
 
     const eventId = event!.id.split("-")[0];
-    
-    // Apply the choice through the store
-    applyEventChoice(choiceId, eventId);
+    const isMerchantEvent = event?.id.includes("merchant");
+    const isSayGoodbye = choiceId === "say_goodbye";
 
-    // Mark as executed to prevent further choices
+    // For merchant trades (not goodbye), mark item as purchased but don't close dialog
+    if (isMerchantEvent && !isSayGoodbye) {
+      setPurchasedItems(prev => new Set(prev).add(choiceId));
+      applyEventChoice(choiceId, eventId);
+      return;
+    }
+
+    // For goodbye or non-merchant events, close the dialog
     fallbackExecutedRef.current = true;
+    applyEventChoice(choiceId, eventId);
+    onClose();
   };
 
   const progress =

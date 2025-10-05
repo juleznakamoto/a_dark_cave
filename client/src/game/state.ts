@@ -674,11 +674,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
     }
 
-    // Close dialog for non-merchant events
-    const isMerchantTrade = choiceId.startsWith("trade_") || choiceId === "say_goodbye";
-    if (!isMerchantTrade) {
-      get().setEventDialog(false);
-    }
+    // Dialog closing is now handled in EventDialog component
   },
 
   toggleDevMode: () => {
