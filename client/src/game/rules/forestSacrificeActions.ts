@@ -77,12 +77,18 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
 
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // 2.5% chance to find Ring of Clarity if not already owned
-  if (!state.relics.ring_of_clarity && Math.random() < 0.025) {
-    const ringEvent = gameEvents.ringOfClarityFound;
-    if (ringEvent && ringEvent.effect) {
-      const ringEffects = ringEvent.effect(state);
-      Object.assign(result.stateUpdates, ringEffects);
+  // 1% base chance + 0.25% per usage to find Ring of Clarity if not already owned
+  if (!state.relics.ring_of_clarity) {
+    const baseProbability = 0.01; // 1%
+    const bonusPerUse = 0.0025; // 0.25%
+    const totalProbability = baseProbability + (usageCount * bonusPerUse);
+    
+    if (Math.random() < totalProbability) {
+      const ringEvent = gameEvents.ringOfClarityFound;
+      if (ringEvent && ringEvent.effect) {
+        const ringEffects = ringEvent.effect(state);
+        Object.assign(result.stateUpdates, ringEffects);
+      }
     }
   }
 
