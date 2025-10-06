@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -45,7 +44,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-                cube01: true,
+              cube01: true,
             },
           };
         },
@@ -56,7 +55,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube02: {
     id: "cube02",
     condition: (state: GameState) =>
-      state.story.seen.descendedFurther && state.events.cube01 && !state.events.cube02,
+      state.story.seen.descendedFurther &&
+      state.events.cube01 &&
+      !state.events.cube02,
     triggerType: "resource",
     timeProbability: 2,
     title: "The warrior tribe",
@@ -84,7 +85,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube03: {
     id: "cube03",
     condition: (state: GameState) =>
-      state.story.seen.exploredRuins && state.events.cube02 && !state.events.cube03,
+      state.story.seen.exploredRuins &&
+      state.events.cube02 &&
+      !state.events.cube03,
     triggerType: "resource",
     timeProbability: 2,
     title: "The underground city",
@@ -112,7 +115,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube04: {
     id: "cube04",
     condition: (state: GameState) =>
-      state.story.seen.exploredTemple && state.events.cube03 && !state.events.cube04,
+      state.story.seen.exploredTemple &&
+      state.events.cube03 &&
+      !state.events.cube04,
     triggerType: "resource",
     timeProbability: 2,
     title: "The sacred oath",
@@ -140,7 +145,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube05: {
     id: "cube05",
     condition: (state: GameState) =>
-      state.story.seen.exploredCitadel && state.events.cube04 && !state.events.cube05,
+      state.story.seen.exploredCitadel &&
+      state.events.cube04 &&
+      !state.events.cube05,
     triggerType: "resource",
     timeProbability: 2,
     title: "The sealed portal",
@@ -168,7 +175,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube06: {
     id: "cube06",
     condition: (state: GameState) =>
-      state.story.seen.portalBlasted && state.events.cube05 && !state.events.cube06,
+      state.story.seen.portalBlasted &&
+      state.events.cube05 &&
+      !state.events.cube06,
     triggerType: "resource",
     timeProbability: 1,
     title: "The portal opens",
@@ -196,7 +205,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube07: {
     id: "cube07",
     condition: (state: GameState) =>
-      state.story.seen.firstWaveVictory && state.events.cube06 && !state.events.cube07,
+      state.story.seen.firstWaveVictory &&
+      state.events.cube06 &&
+      !state.events.cube07,
     triggerType: "resource",
     timeProbability: 2,
     title: "Ancient technology",
@@ -224,7 +235,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube08: {
     id: "cube08",
     condition: (state: GameState) =>
-      state.story.seen.secondWaveVictory && state.events.cube07 && !state.events.cube08,
+      state.story.seen.secondWaveVictory &&
+      state.events.cube07 &&
+      !state.events.cube08,
     triggerType: "resource",
     timeProbability: 2,
     title: "The golden age",
@@ -252,7 +265,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube09: {
     id: "cube09",
     condition: (state: GameState) =>
-      state.story.seen.thirdWaveVictory && state.events.cube08 && !state.events.cube09,
+      state.story.seen.thirdWaveVictory &&
+      state.events.cube08 &&
+      !state.events.cube09,
     triggerType: "resource",
     timeProbability: 2,
     title: "The golden age",
@@ -280,7 +295,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube10: {
     id: "cube10",
     condition: (state: GameState) =>
-      state.story.seen.fourthWaveVictory && state.events.cube09 && !state.events.cube10,
+      state.story.seen.fourthWaveVictory &&
+      state.events.cube09 &&
+      !state.events.cube10,
     triggerType: "resource",
     timeProbability: 2,
     title: "The great collapse",
@@ -308,7 +325,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube11: {
     id: "cube11",
     condition: (state: GameState) =>
-      state.story.seen.fifthWaveVictory && state.events.cube10 && !state.events.cube11,
+      state.story.seen.fifthWaveVictory &&
+      state.events.cube10 &&
+      !state.events.cube11,
     triggerType: "resource",
     timeProbability: 2,
     title: "End of civilization",
@@ -336,7 +355,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube13: {
     id: "cube13",
     condition: (state: GameState) =>
-      state.story.seen.slaughteredDwellers && state.events.cube11 && !state.events.cube13,
+      state.story.seen.slaughteredCreatures &&
+      state.events.cube11 &&
+      !state.events.cube13,
     triggerType: "resource",
     timeProbability: 2,
     title: "Recovered data",
@@ -364,14 +385,14 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube14a: {
     id: "cube14a",
     condition: (state: GameState) =>
-      (state.events.cube13 || state.story.seen.communedWithDwellers) && 
-      state.events.cube11 && 
+      (state.events.cube13 || state.story.seen.communicatedWithCreatures) &&
+      state.events.cube11 &&
       !state.events.cube14a,
     triggerType: "resource",
-    timeProbability: 2,
+    timeProbability: 1,
     title: "The resistance",
     message:
-      "'When the leaders of the ancient civilization enforced the skull devices, a resistance emerged. They were banished into the depths of the cave, unable to leave. Over time they dug deeper into the mountain, as it was their only possible path. Slowly they degenerated and lost their sanity.'",
+      "'When the leaders of the ancient civilization imposed the skull devices, a resistance arose. They were cast into the mountain’s depths, forbidden to leave. With no path back, they tunneled ever deeper. Over generations, isolation and darkness eroded their minds, and slowly they descended into madness and degeneration.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -396,10 +417,10 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.events.cube14a && !state.events.cube14b,
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.001,
     title: "The unknown ore",
     message:
-      "'One day, far beneath the earth, they discovered a monolith of unknown ore. After desperate experiments, they found they could use it to build a bomb to destroy the portal. The bomb failed to breach the portal, but released an immense electro-magnetic pulse. Shortly after the explosion, one man who stood too close began to dematerialize — partially see-through for mere seconds. Moments later, driven mad by what he had experienced, he took his own life.'",
+      "'One day, far beneath the earth, they discovered a monolith of unknown ore. After desperate experimentation, they fashioned it into a device meant to destroy the portal. The bomb failed to breach the gate, but unleashed an immense electro-magnetic pulse.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -424,10 +445,38 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.events.cube14b && !state.events.cube14c,
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.001,
+    title: "The unknown ore",
+    message:
+      "'Shortly after the explosion, one man who stood too close began to dematerialize — his form flickering, partially see-through for fleeting moments. Moments later, scared and driven mad by what he had witnessed, he took his own life.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "continue",
+        label: "Continue",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube14b: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube14d: {
+    id: "cube14d",
+    condition: (state: GameState) =>
+      state.events.cube14c && !state.events.cube14d,
+    triggerType: "resource",
+    timeProbability: 0.001,
     title: "Through the portal",
     message:
-      "'In their desperation, the survivors theorized they might pass through solid metal, like the portal itself, with help from the ore. With the last fragments remaining, they built a smaller bomb and positioned their healthiest, sanest man before the portal. For a split second after the detonation, they saw him like a ghost — then he vanished into the portal, leaving no trace behind.'",
+      "'In their despair, the survivors theorized that, with the ore’s aid, they might pass through solid metal, maybe even the portal itself. Using the last fragments of the material, they crafted a smaller device and positioned their healthiest, sanest man before the gate. For a fleeting instant after the detonation, he appeared ghostly, translucent, and then vanished entirely into the portal, leaving no trace behind.'",
     triggered: false,
     priority: 3,
     repeatable: false,
