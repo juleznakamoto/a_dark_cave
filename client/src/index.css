@@ -292,7 +292,7 @@
 /* Cube dialog glow animation */
 @keyframes cube-glow-pulse {
   0%, 100% {
-    box-shadow: 0 0 20px 5px rgba(192, 192, 192, 0.5);
+    box-shadow: 10 10 20px 5px white;
   }
   50% {
     box-shadow: 0 0 40px 15px rgba(192, 192, 192, 0.8);
