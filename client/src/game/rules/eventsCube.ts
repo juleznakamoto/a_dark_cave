@@ -28,7 +28,7 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube01: {
     id: "cube01",
     condition: (state: GameState) =>
-      state.story.seen.caveExplored && !state.events.cube01,
+      state.story.seen.venturedDeeper && !state.events.cube01,
     triggerType: "resource",
     timeProbability: 2,
     title: "The Cube awakens",
@@ -54,9 +54,9 @@ export const cubeEvents: Record<string, GameEvent> = {
   },
 
   cube02: {
-    id: "cube02add",
+    id: "cube02",
     condition: (state: GameState) =>
-      state.story.seen.venturedDeeper && state.events.cube01 && !state.events.cube02,
+      state.story.seen.descendedFurther && state.events.cube01 && !state.events.cube02,
     triggerType: "resource",
     timeProbability: 2,
     title: "The warrior tribe",
@@ -84,7 +84,7 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube03: {
     id: "cube03",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 5 && state.events.cube02 && !state.events.cube03,
+      state.story.seen.exploredRuins && state.events.cube02 && !state.events.cube03,
     triggerType: "resource",
     timeProbability: 2,
     title: "The underground city",
@@ -112,12 +112,12 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube04: {
     id: "cube04",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8 && state.events.cube03 && !state.events.cube04,
+      state.story.seen.exploredTemple && state.events.cube03 && !state.events.cube04,
     triggerType: "resource",
     timeProbability: 2,
     title: "The sealed gate",
     message:
-      "'Their memory of what they protected faded with time, but the duty endured. For centuries they watched over a sealed impenetrable gate at the city's lowest point.'",
+      "'Though the memory of what they protected has faded into legend, their vigilance endures. For countless generations they have kept their sacred oath, watching over what lies at the city’s deepest point.'",
     triggered: false,
     priority: 3,
     repeatable: false,
