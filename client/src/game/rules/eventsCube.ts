@@ -164,4 +164,32 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube06: {
+    id: "cube06",
+    condition: (state: GameState) =>
+      state.story.seen.exploredAbyss && state.events.cube05 && !state.events.cube06,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The portal awakens",
+    message:
+      "As the portal is blasted open, the cube trembles violently in your hands, growing warm to the touch. A soft, urgent murmur escapes it: 'I have gained new insights…'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube06: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
