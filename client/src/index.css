@@ -292,10 +292,10 @@
 /* Cube dialog glow animation */
 @keyframes cube-glow-pulse {
   0%, 100% {
-    filter: drop-shadow(0 0 8px rgba(156, 163, 175, 0.5));
+    box-shadow: 0 0 15px 3px rgba(156, 163, 175, 0.4);
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(156, 163, 175, 0.9));
+    box-shadow: 0 0 30px 8px rgba(156, 163, 175, 0.8);
   }
 }
 
