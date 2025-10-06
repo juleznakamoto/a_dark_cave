@@ -161,6 +161,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleoccultistChamber(state, result);
     case 'blastPortal':
       return handleBlastPortal(state, result);
+    case 'encounterBeyondPortal':
+      return handleEncounterBeyondPortal(state, result);
 
     // Cave Craft Actions
     case 'buildTorch':

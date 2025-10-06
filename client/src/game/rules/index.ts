@@ -6,7 +6,7 @@ import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effects";
-import { caveExploreActions, handleBlastPortal } from "./caveExploreActions";
+import { caveExploreActions, handleBlastPortal, handleEncounterBeyondPortal } from "./caveExploreActions";
 import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
@@ -746,4 +746,21 @@ gameActions.blastPortal = {
 // Add Frostglass Sword from caveCraftWeapons
 gameActions.craftFrostglassSword = {
   ...caveCraftWeapons.craftFrostglassSword,
+};
+
+// Add Encounter Beyond Portal action
+gameActions.encounterBeyondPortal = {
+  id: "encounterBeyondPortal",
+  title: "Encounter Beyond Portal",
+  description: "Explore the depths beyond the portal.",
+  cost: {
+    resources: {
+      food: -2500,
+    },
+  },
+  show_when: {
+    "story.seen.fifthWave": true,
+  },
+  can_be_executed_once: true,
+  handle: handleEncounterBeyondPortal,
 };
