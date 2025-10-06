@@ -201,7 +201,7 @@ export default function EventDialog({
           hasScriptorium={hasScriptorium}
         />
       ) : (
-        <DialogContent className={`sm:max-w-md [&>button]:hidden ${isCubeEvent ? 'border-4 border-gray-400 rounded-none shadow-2xl aspect-square max-h-[28rem] sm:max-w-[28rem]' : ''}`}>
+        <DialogContent className={`sm:max-w-md [&>button]:hidden ${isCubeEvent ? 'border-4 border-gray-400 rounded-none shadow-2xl w-[28rem] h-[28rem] max-w-[28rem] max-h-[28rem]' : ''}`}>
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
