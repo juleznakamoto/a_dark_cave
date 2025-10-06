@@ -97,7 +97,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube02 &&
       !state.events.cube03,
     triggerType: "resource",
-    timeProbability: 0.02,
+    timeProbability: 2,
     title: "The underground city",
     message:
       "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect many lifetimes ago.'",
