@@ -115,7 +115,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.story.seen.exploredTemple && state.events.cube03 && !state.events.cube04,
     triggerType: "resource",
     timeProbability: 2,
-    title: "The sealed gate",
+    title: "The sacred oath",
     message:
       "'Though the memory of what they protected has faded into legend, their vigilance endures. For countless generations they have kept their sacred oath, watching over what lies at the city’s deepest point.'",
     triggered: false,
@@ -140,12 +140,12 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube05: {
     id: "cube05",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 12 && state.events.cube04 && !state.events.cube05,
+      state.story.seen.exploredCitadel && state.events.cube04 && !state.events.cube05,
     triggerType: "resource",
     timeProbability: 2,
-    title: "The sealed gate",
+    title: "The sealed portal",
     message:
-      "'For centuries they watched over a sealed impenetrable gate at the city's lowest point. No one remembers what lies beyond it, or why it must never be opened.'",
+      "'Long after the warriors perished, the object of their devotion remained: a colossal, impenetrable portal, crafted with long-forgotten, advanced technology, hidden deep within the city’s lowest chambers'",
     triggered: false,
     priority: 3,
     repeatable: false,

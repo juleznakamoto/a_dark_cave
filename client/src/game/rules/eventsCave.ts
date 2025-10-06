@@ -302,13 +302,13 @@ export const caveEvents: Record<string, GameEvent> = {
   portalDiscovered: {
     id: "portalDiscovered",
     condition: (state: GameState) =>
-      state.buildings.alchemistHall >= 1 &&
+      state.buildings.alchemistHall >= 2 &&
       state.flags.exploredCitadel &&
       !state.story.seen.portalDiscovered,
     triggerType: "resource",
     timeProbability: 1, // Triggers immediately when conditions are met
     message:
-      "In the citadel’s lowest depths stands a colossal portal forged from an unknown, unyielding metal. Its sheer sturdiness suggests it was built to keep something trapped within. Perhaps only the fury of fire can shatter its seal.",
+      "In the citadel’s lowest depths you find the colossal portal forged from an unknown, unyielding metal. Perhaps only the fury of fire can shatter its seal.",
     triggered: false,
     priority: 5,
     repeatable: false,
