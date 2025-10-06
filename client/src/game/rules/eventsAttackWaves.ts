@@ -40,6 +40,45 @@ function createDefeatMessage(
   return msg;
 }
 
+function handleDefeat(state: GameState, maxCasualties: number) {
+  const currentPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+  const casualties = Math.min(maxCasualties, currentPopulation);
+  const deathResult = killVillagers(state, casualties);
+
+  let buildingDamage = {};
+  const damagedBuildings: string[] = [];
+
+  if (
+    state.buildings.watchtower > 0 &&
+    !state.story.seen.watchtowerDamaged
+  ) {
+    buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
+    damagedBuildings.push("watchtower");
+  }
+  if (
+    state.buildings.palisades > 0 &&
+    !state.story.seen.palisadesDamaged
+  ) {
+    buildingDamage = { ...buildingDamage, palisadesDamaged: true };
+    damagedBuildings.push("palisades");
+  }
+
+  return {
+    ...deathResult,
+    story: {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        ...buildingDamage,
+      },
+    },
+    _logMessage: createDefeatMessage(casualties, damagedBuildings),
+  };
+}
+
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
     id: "firstWave",
@@ -81,45 +120,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => {
-            const currentPopulation = Object.values(state.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-            const casualties = Math.min(5, currentPopulation);
-            const deathResult = killVillagers(state, casualties);
-
-            // Damage watchtower or palisades if available
-            let buildingDamage = {};
-            const damagedBuildings: string[] = [];
-
-            if (
-              state.buildings.watchtower > 0 &&
-              !state.story.seen.watchtowerDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-              damagedBuildings.push("watchtower");
-            }
-            if (
-              state.buildings.palisades > 0 &&
-              !state.story.seen.palisadesDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-              damagedBuildings.push("palisades");
-            }
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  ...buildingDamage,
-                },
-              },
-              _logMessage: createDefeatMessage(casualties, damagedBuildings),
-            };
-          },
+          onDefeat: () => handleDefeat(state, 5),
         },
       };
     },
@@ -164,45 +165,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => {
-            const currentPopulation = Object.values(state.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-            const casualties = Math.min(8, currentPopulation);
-            const deathResult = killVillagers(state, casualties);
-
-            // Damage watchtower or palisades if available
-            let buildingDamage = {};
-            const damagedBuildings: string[] = [];
-
-            if (
-              state.buildings.watchtower > 0 &&
-              !state.story.seen.watchtowerDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-              damagedBuildings.push("watchtower");
-            }
-            if (
-              state.buildings.palisades > 0 &&
-              !state.story.seen.palisadesDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-              damagedBuildings.push("palisades");
-            }
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  ...buildingDamage,
-                },
-              },
-              _logMessage: createDefeatMessage(casualties, damagedBuildings),
-            };
-          },
+          onDefeat: () => handleDefeat(state, 8),
         },
       };
     },
@@ -247,45 +210,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => {
-            const currentPopulation = Object.values(state.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-            const casualties = Math.min(12, currentPopulation);
-            const deathResult = killVillagers(state, casualties);
-
-            // Damage watchtower or palisades if available
-            let buildingDamage = {};
-            const damagedBuildings: string[] = [];
-
-            if (
-              state.buildings.watchtower > 0 &&
-              !state.story.seen.watchtowerDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-              damagedBuildings.push("watchtower");
-            }
-            if (
-              state.buildings.palisades > 0 &&
-              !state.story.seen.palisadesDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-              damagedBuildings.push("palisades");
-            }
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  ...buildingDamage,
-                },
-              },
-              _logMessage: createDefeatMessage(casualties, damagedBuildings),
-            };
-          },
+          onDefeat: () => handleDefeat(state, 12),
         },
       };
     },
@@ -330,45 +255,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => {
-            const currentPopulation = Object.values(state.villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-            const casualties = Math.min(15, currentPopulation);
-            const deathResult = killVillagers(state, casualties);
-
-            // Damage watchtower or palisades if available
-            let buildingDamage = {};
-            const damagedBuildings: string[] = [];
-
-            if (
-              state.buildings.watchtower > 0 &&
-              !state.story.seen.watchtowerDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-              damagedBuildings.push("watchtower");
-            }
-            if (
-              state.buildings.palisades > 0 &&
-              !state.story.seen.palisadesDamaged
-            ) {
-              buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-              damagedBuildings.push("palisades");
-            }
-
-            return {
-              ...deathResult,
-              story: {
-                ...state.story,
-                seen: {
-                  ...state.story.seen,
-                  ...buildingDamage,
-                },
-              },
-              _logMessage: createDefeatMessage(casualties, damagedBuildings),
-            };
-          },
+          onDefeat: () => handleDefeat(state, 15),
         },
       };
     },
@@ -442,44 +329,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         id: "flee",
         label: "Flee and abandon the fight",
         effect: (state: GameState) => {
-          const currentPopulation = Object.values(state.villagers).reduce(
-            (sum, count) => sum + (count || 0),
-            0,
-          );
-
-          const casualties = Math.min(20, currentPopulation);
-          const deathResult = killVillagers(state, casualties);
-
-          // Damage watchtower or palisades if available
-          let buildingDamage = {};
-          const damagedBuildings: string[] = [];
-
-          if (
-            state.buildings.watchtower > 0 &&
-            !state.story.seen.watchtowerDamaged
-          ) {
-            buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
-            damagedBuildings.push("watchtower");
-          }
-          if (
-            state.buildings.palisades > 0 &&
-            !state.story.seen.palisadesDamaged
-          ) {
-            buildingDamage = { ...buildingDamage, palisadesDamaged: true };
-            damagedBuildings.push("palisades");
-          }
-
+          const defeatResult = handleDefeat(state, 20);
+          
           return {
-            ...deathResult,
+            ...defeatResult,
             story: {
-              ...state.story,
+              ...defeatResult.story,
               seen: {
-                ...state.story.seen,
+                ...defeatResult.story.seen,
                 fifthWave: true,
-                ...buildingDamage,
               },
             },
-            _logMessage: `You order a retreat as the shadow lord approaches. ${createDefeatMessage(casualties, damagedBuildings)} The shadow lord returns to the depths, sated for now.`,
+            _logMessage: `You order a retreat as the shadow lord approaches. ${defeatResult._logMessage} The shadow lord returns to the depths, sated for now.`,
           };
         },
       },
