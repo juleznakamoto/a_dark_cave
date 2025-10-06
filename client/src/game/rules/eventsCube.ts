@@ -476,7 +476,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.001,
     title: "Through the portal",
     message:
-      "'In their despair, the survivors theorized that, with the ore’s aid, they might pass through solid metal, maybe even the portal itself. Using the last fragments of the material, they crafted a smaller device and positioned their healthiest, sanest man before the gate. For a fleeting instant after the detonation, he appeared ghostly, translucent, and then vanished entirely into the portal, leaving no trace behind.'",
+      "'In their despair, the survivors theorized that, with the ore's aid, they might pass through solid metal, maybe even the portal itself. Using the last fragments of the material, they crafted a smaller device and positioned their healthiest, sanest man before the gate. For a fleeting instant after the detonation, he appeared ghostly, translucent, and then vanished entirely into the portal, leaving no trace behind.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -488,7 +488,67 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-              cube14c: true,
+              cube14d: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube15a: {
+    id: "cube15a",
+    condition: (state: GameState) =>
+      state.events.cube14d &&
+      state.story.seen.slaughteredCreatures &&
+      !state.events.cube15a,
+    triggerType: "resource",
+    timeProbability: 1,
+    title: "Recognition",
+    message:
+      "That was when you recognize that the creatures did not attack as they recognized you as the man who vanished through the portal.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube15a: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube15b: {
+    id: "cube15b",
+    condition: (state: GameState) =>
+      state.events.cube14d &&
+      state.story.seen.communicatedWithCreatures &&
+      !state.events.cube15b,
+    triggerType: "resource",
+    timeProbability: 1,
+    title: "Recognition",
+    message:
+      "They recognize you as the man who vanished through the portal.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube15b: true,
             },
           };
         },
