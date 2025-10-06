@@ -70,7 +70,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The warrior tribe",
     message:
-      "'Long ago, a tribe of fierce warriors was chosen to dwell deep within the caves. Their purpose was to guard something of great importance.'",
+      "'In the distant past, a tribe of fierce warriors was chosen to live deep within the caves. Their purpose was to guard something of great importance.'",
     triggered: false,
     priority: 3,
     repeatable: false,
