@@ -805,6 +805,15 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  murmuring_cube: {
+    id: "murmuring_cube",
+    name: "Murmuring Cube",
+    description:
+      "Perfectly polished metal cube of unknown origin",
+    bonuses: {
+    },
+  },
+
   flames_touch: {
     id: "flames_touch",
     name: "Flame's Touch",
