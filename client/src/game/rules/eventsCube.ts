@@ -313,7 +313,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The fall of civilization",
     message:
-      "'The survivors could not endure without the technology. Many died. Civilization regressed, its knowledge and inventions slipping into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness had stood.'",
+      "'The survivors could not endure without the technology. Many died. Civilization regressed, its knowledge and inventions slipping into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
     triggered: false,
     priority: 3,
     repeatable: false,
