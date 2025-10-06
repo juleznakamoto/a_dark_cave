@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
-import { getActionBonuses, getTotalLuck } from '@/game/rules/effects';
+import { getActionBonuses } from '@/game/rules/effects';
 import { gameEvents } from './events';
 
 // Helper function to get dynamic cost for bone totems
@@ -77,10 +77,10 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
 
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // 1% base chance + 0.25% per usage to find Ring of Clarity if not already owned
+  // 1% base chance + 1% per usage to find Ring of Clarity if not already owned
   if (!state.relics.ring_of_clarity) {
-    const baseProbability = 0.01; // 1%
-    const bonusPerUse = 0.0025; // 0.25%
+    const baseProbability = 0.02; // 2%
+    const bonusPerUse = 0.01; // 1%
     const totalProbability = baseProbability + (usageCount * bonusPerUse);
     
     if (Math.random() < totalProbability) {
