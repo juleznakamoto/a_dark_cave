@@ -126,6 +126,7 @@ export const gameStateSchema = z.object({
     frostfang: z.boolean().default(false),
     blood_scepter: z.boolean().default(false),
     ravens_orb: z.boolean().default(false),
+    murmuring_cube: z.boolean().default(false),
   }).default({}),
 
   blessings: z.object({
