@@ -67,7 +67,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube01 &&
       !state.events.cube02,
     triggerType: "resource",
-    timeProbability: 2,
+    timeProbability: 0.02,
     title: "The warrior tribe",
     message:
       "'In the distant past, a tribe of fierce warriors was chosen to live deep within the caves. Their purpose was to guard something of great importance.'",
