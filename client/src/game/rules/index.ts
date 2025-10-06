@@ -671,7 +671,7 @@ export function getActionCostDisplay(
   // Handle dynamic cost for bone totems
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
-    return `${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
+    return `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
   const action = gameActions[actionId];
