@@ -272,78 +272,43 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 5,
     repeatable: false,
-    choices: [
-      {
-        id: "lastStand",
-        label: "Make your last stand",
-        effect: (state: GameState) => {
-          const hasSpecialWeapons =
-            state.relics.frostfang && state.relics.blood_scepter;
+    effect: (state: GameState) => {
+      const hasSpecialWeapons =
+        state.relics.frostfang && state.relics.blood_scepter;
 
-          return {
+      return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            fifthWave: true,
+          },
+        },
+        _combatData: {
+          enemy: {
+            name: "Shadow Lord",
+            attack: 20,
+            maxHealth: hasSpecialWeapons ? 40 : 60,
+            currentHealth: hasSpecialWeapons ? 40 : 60,
+          },
+          eventTitle: "The Final Wave",
+          eventMessage: FIFTH_WAVE_MESSAGE,
+          hasSpecialWeapons,
+          onVictory: () => ({
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                fifthWave: true,
+                gameCompleted: true,
               },
             },
-            _combatData: {
-              enemy: {
-                name: "Shadow Lord",
-                attack: 20,
-                maxHealth: hasSpecialWeapons ? 40 : 60,
-                currentHealth: hasSpecialWeapons ? 40 : 60,
-              },
-              eventTitle: "The Final Wave",
-              eventMessage: FIFTH_WAVE_MESSAGE,
-              hasSpecialWeapons,
-              onVictory: () => ({
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    gameCompleted: true,
-                  },
-                },
-                _logMessage: hasSpecialWeapons
-                  ? "Armed with the frostfang sword and blood scepter, your champions achieve victory! The shadow lord is destroyed and the portal seals itself. Peace returns to the land!"
-                  : "Through incredible courage, your villagers achieve the impossible! The shadow lord is destroyed and the portal seals forever.",
-              }),
-              onDefeat: () => ({
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    heroicDefeat: true,
-                  },
-                },
-                _logMessage:
-                  "Despite valiant efforts, the shadow lord proves too powerful. Your brave villagers' sacrifice weakens it enough to force a retreat, partially sealing the portal.",
-              }),
-            },
-          };
+            _logMessage: hasSpecialWeapons
+              ? "Armed with the frostfang sword and blood scepter, your champions achieve victory! The shadow lord is destroyed and the portal seals itself. Peace returns to the land!"
+              : "Through incredible courage, your villagers achieve the impossible! The shadow lord is destroyed and the portal seals forever.",
+          }),
+          onDefeat: () => handleDefeat(state, 20),
         },
-      },
-      {
-        id: "flee",
-        label: "Flee and abandon the fight",
-        effect: (state: GameState) => {
-          const defeatResult = handleDefeat(state, 20);
-          
-          return {
-            ...defeatResult,
-            story: {
-              ...defeatResult.story,
-              seen: {
-                ...defeatResult.story.seen,
-                fifthWave: true,
-              },
-            },
-            _logMessage: `You order a retreat as the shadow lord approaches. ${defeatResult._logMessage} The shadow lord returns to the depths, sated for now.`,
-          };
-        },
-      },
-    ],
+      };
+    },
   },
 };
