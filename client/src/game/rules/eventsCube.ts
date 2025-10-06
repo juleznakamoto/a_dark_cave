@@ -168,10 +168,10 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube06: {
     id: "cube06",
     condition: (state: GameState) =>
-      state.story.seen.exploredAbyss && state.events.cube05 && !state.events.cube06,
+      state.story.seen.portalBlasted && state.events.cube05 && !state.events.cube06,
     triggerType: "resource",
-    timeProbability: 2,
-    title: "The portal awakens",
+    timeProbability: 1,
+    title: "The portal opens",
     message:
       "As the portal is blasted open, the cube trembles violently in your hands, growing warm to the touch. A soft, urgent murmur escapes it: 'I have gained new insights…'",
     triggered: false,
