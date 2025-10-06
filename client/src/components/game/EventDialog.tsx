@@ -12,6 +12,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import MerchantDialog from "./MerchantDialog";
+import CubeDialog from "./CubeDialog";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -181,27 +182,36 @@ export default function EventDialog({
   const isCubeEvent = event?.id.includes("cube");
 
   return (
-    <Dialog
-      open={isOpen}
-      onOpenChange={(open) => {
-        // Empty handler - we don't want automatic closing
-        // All closing should be handled explicitly through handleChoice
-      }}
-    >
-      {isMerchantEvent ? (
-        <MerchantDialog
+    <>
+      {isCubeEvent ? (
+        <CubeDialog
+          isOpen={isOpen}
           event={event}
-          gameState={gameState}
-          timeRemaining={timeRemaining}
-          totalTime={totalTime}
-          progress={progress}
-          purchasedItems={purchasedItems}
-          fallbackExecutedRef={fallbackExecutedRef}
           onChoice={handleChoice}
-          hasScriptorium={hasScriptorium}
+          fallbackExecutedRef={fallbackExecutedRef}
         />
       ) : (
-        <DialogContent className={`sm:max-w-md [&>button]:hidden ${isCubeEvent ? 'border-4 border-gray-400 rounded-none shadow-2xl !w-[28rem] !h-[28rem] !max-w-[28rem] !max-h-[28rem] !min-w-[28rem] !min-h-[28rem]' : ''}`}>
+        <Dialog
+          open={isOpen}
+          onOpenChange={(open) => {
+            // Empty handler - we don't want automatic closing
+            // All closing should be handled explicitly through handleChoice
+          }}
+        >
+          {isMerchantEvent ? (
+            <MerchantDialog
+              event={event}
+              gameState={gameState}
+              timeRemaining={timeRemaining}
+              totalTime={totalTime}
+              progress={progress}
+              purchasedItems={purchasedItems}
+              fallbackExecutedRef={fallbackExecutedRef}
+              onChoice={handleChoice}
+              hasScriptorium={hasScriptorium}
+            />
+          ) : (
+            <DialogContent className="sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
@@ -272,8 +282,10 @@ export default function EventDialog({
               <Progress value={progress} className="h-2 timer-progress" />
             </div>
           )}
-        </DialogContent>
+            </DialogContent>
+          )}
+        </Dialog>
       )}
-    </Dialog>
+    </>
   );
 }
