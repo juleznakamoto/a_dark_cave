@@ -288,21 +288,3 @@
 .madness-extreme {
   text-shadow: 0 0 7px oklch(50.5% 0.213 27.518), 0 0 7px oklch(50.5% 0.213 27.518);
 }
-
-/* Cube dialog glow animation */
-@keyframes cube-glow-pulse {
-  0%, 100% {
-    box-shadow: 
-      0 0 0 2px rgba(156, 163, 175, 1),
-      0 0 20px 5px rgba(156, 163, 175, 0.3);
-  }
-  50% {
-    box-shadow: 
-      0 0 0 2px rgba(156, 163, 175, 1),
-      0 0 40px 15px rgba(156, 163, 175, 0.6);
-  }
-}
-
-.cube-dialog-glow {
-  animation: cube-glow-pulse 2s ease-in-out infinite;
-}
