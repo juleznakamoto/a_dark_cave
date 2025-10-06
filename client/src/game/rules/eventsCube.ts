@@ -311,7 +311,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.story.seen.fifthWaveVictory && state.events.cube10 && !state.events.cube11,
     triggerType: "resource",
     timeProbability: 2,
-    title: "The fall of civilization",
+    title: "End of civilization",
     message:
       "'The survivors could not endure without the technology. Many died. Civilization regressed, its knowledge and inventions slipping into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
     triggered: false,
@@ -341,7 +341,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "Recovered data",
     message:
-      "The cube pulses with a strange energy as you approach the bodies of the slain dwellers. It seems to extract information from the ancient devices still embedded in their skulls, fragments of data preserved through the centuries. The cube grows warm, processing the recovered knowledge from the depths of the cave.",
+      "The cube pulses with a strange energy as you approach the bodies of the slain creatures. It seems to extract information from somewhere, fragments of data preserved through the centuries. The cube grows warm, processing the recovered knowledge from the depths of the cave.",
     triggered: false,
     priority: 3,
     repeatable: false,
