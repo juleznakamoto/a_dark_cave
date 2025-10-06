@@ -408,7 +408,7 @@ export const caveExploreActions: Record<string, Action> = {
 
   encounterBeyondPortal: {
     id: "encounterBeyondPortal",
-    label: "Venture Beyond",
+    label: "Venture beyond Portal",
     show_when: {
       "story.seen.fifthWaveVictory": true,
       "story.seen.encounteredBeyondPortal": false,
@@ -794,7 +794,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released... You feel that the true trial has only just begun. Ready yourself.",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released...",
     timestamp: Date.now(),
     type: "system",
   });
@@ -812,7 +812,7 @@ export function handleEncounterBeyondPortal(
   result.logEntries!.push({
     id: `encounter-beyond-portal-${Date.now()}`,
     message:
-      "In the depths beyond the shattered portal, you find creatures that don't attack. Their forms are vaguely human, twisted by ages in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
+      "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
     timestamp: Date.now(),
     type: "event",
     title: "The Dwellers Below",
@@ -822,11 +822,6 @@ export function handleEncounterBeyondPortal(
         label: "Slaughter them",
         effect: (state: GameState) => {
           return {
-            stats: {
-              ...state.stats,
-              madness: state.stats.madness + 5,
-              strength: state.stats.strength + 3,
-            },
             resources: {
               ...state.resources,
               bones: state.resources.bones + 50,
@@ -835,11 +830,11 @@ export function handleEncounterBeyondPortal(
               ...state.story,
               seen: {
                 ...state.story.seen,
-                slaughteredDwellers: true,
+                slaughteredCreatures: true,
               },
             },
             _logMessage:
-              "You cut them down without mercy. Their cries echo through the caverns as they fall. Among their remains, you find bones unlike any you've seen before. The act weighs heavy on your mind.",
+              "You cut them down without mercy. Their cries echo through the caverns as they fall.",
           };
         },
       },
@@ -848,19 +843,15 @@ export function handleEncounterBeyondPortal(
         label: "Try to communicate",
         effect: (state: GameState) => {
           return {
-            stats: {
-              ...state.stats,
-              knowledge: state.stats.knowledge + 5,
-            },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                communedWithDwellers: true,
+                communicateWithCreatures: true,
               },
             },
             _logMessage:
-              "You lower your weapon and attempt to understand them. Through gestures and broken words, they share fragments of their history - a people who fled here long ago, changed by the darkness but not wholly lost. They speak of deeper places, of things that should not be disturbed. Perhaps you are not so different after all.",
+              "You lower your weapons and attempt to understand them. Through gestures and broken words, they share fragments of their history leaving you speechless.",
           };
         },
       },
