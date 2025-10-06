@@ -42,7 +42,7 @@ export default function CubeDialog({
             onClick={() => onChoice(eventChoices[0]?.id)}
             variant="outline"
             size="sm"
-            className="px-8"
+            className="px-8 border-2 border-gray-400 rounded-none"
             disabled={fallbackExecutedRef.current}
           >
             {eventChoices[0]?.label || "Close"}
