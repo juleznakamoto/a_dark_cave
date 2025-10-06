@@ -220,4 +220,32 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube08: {
+    id: "cube08",
+    condition: (state: GameState) =>
+      state.story.seen.secondWaveVictory && state.events.cube07 && !state.events.cube08,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The golden age",
+    message:
+      "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube08: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
