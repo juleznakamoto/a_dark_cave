@@ -332,4 +332,62 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube13: {
+    id: "cube13",
+    condition: (state: GameState) =>
+      state.story.seen.slaughteredDwellers && state.events.cube11 && !state.events.cube13,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "Recovered data",
+    message:
+      "The cube pulses with a strange energy as you approach the bodies of the slain dwellers. It seems to extract information from the ancient devices still embedded in their skulls, fragments of data preserved through the centuries. The cube grows warm, processing the recovered knowledge from the depths of the cave.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube13: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube14: {
+    id: "cube14",
+    condition: (state: GameState) =>
+      (state.events.cube13 || state.story.seen.communedWithDwellers) && 
+      state.events.cube11 && 
+      !state.events.cube14,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The resistance",
+    message:
+      "'When the leaders of the ancient civilization enforced the skull devices, a resistance emerged. They were banished into the depths of the cave, unable to leave. Over time they dug deeper into the mountain, as it was their only possible path. Slowly they degenerated and lost their sanity. One day, far beneath the earth, they discovered a monolith of unknown ore. After desperate experiments, they found they could use it to build a bomb to destroy the portal. The bomb failed to breach the portal, but released an immense electro-magnetic pulse. Shortly after the explosion, one man who stood too close began to dematerialize — partially see-through for mere seconds. Moments later, driven mad by what he had experienced, he took his own life. In their desperation, the survivors theorized they might pass through solid metal, like the portal itself, with help from the ore. With the last fragments remaining, they built a smaller bomb and positioned their healthiest, sanest man before the portal. For a split second after the detonation, they saw him like a ghost — then he vanished into the portal, leaving no trace behind.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube14: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
