@@ -1,4 +1,3 @@
-
 import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import {
@@ -27,7 +26,7 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="[&>button]:hidden border-4 border-gray-400 rounded-none shadow-2xl p-6 !w-[24rem] !h-[24rem] max-w-[24rem] max-h-[24rem] flex flex-col">
+      <DialogContent className="[&>button]:hidden border-2 border-gray-400 rounded-none shadow-2xl p-6 !w-[24rem] !h-[24rem] max-w-[24rem] max-h-[24rem] flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
             {event.title || "Strange Encounter"}
