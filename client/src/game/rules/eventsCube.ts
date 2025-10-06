@@ -304,4 +304,32 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube11: {
+    id: "cube11",
+    condition: (state: GameState) =>
+      state.story.seen.fifthWaveVictory && state.events.cube10 && !state.events.cube11,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The fall of civilization",
+    message:
+      "'The survivors could not endure without the technology. Many died. Civilization regressed, its knowledge and inventions slipping into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness had stood.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube11: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
