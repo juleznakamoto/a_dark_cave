@@ -28,12 +28,40 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube01: {
     id: "cube01",
     condition: (state: GameState) =>
-      state.buildings.woodenHut,// >= 2 && !state.events.cube01,
+      state.buildings.woodenHut >= 2 && !state.events.cube01,
     triggerType: "resource",
-    timeProbability: 0.02,
-    title: "Whispers from the Cube",
+    timeProbability: 2,
+    title: "The Cube awakens",
     message:
-      "",
+      "You wake up in the middle of the night. The cube hums softly beside you. A gentle, melodic voice emerges from within, whispering: 'Once there was a great civilization, but something caused it to fall apart. Ancient knowledge has long since been lost.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+                cube01: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube02: {
+    id: "cube02",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 3 && state.events.cube01 && !state.events.cube02,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The warrior tribe",
+    message:
+      "The cube continues its tale: 'Long ago, a tribe of fierce warriors was chosen to dwell deep within the caves. Their purpose was to guard something of great importance.'",
     triggered: false,
     priority: 3,
     repeatable: false,

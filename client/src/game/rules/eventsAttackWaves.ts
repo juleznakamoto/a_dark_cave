@@ -3,7 +3,7 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 const FIRST_WAVE_MESSAGE =
-  "The earth shudders as pale figures crawl from the cave, their ember eyes cutting through the dark as they macrch towards the city.";
+  "The earth shudders as pale figures crawl from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
 
 const SECOND_WAVE_MESSAGE =
   "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.";

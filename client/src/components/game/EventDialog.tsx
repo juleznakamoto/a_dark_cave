@@ -207,7 +207,7 @@ export default function EventDialog({
                 {event.title || "Strange Encounter"}
               </DialogTitle>
               {hasScriptorium && event.relevant_stats && event.relevant_stats.length > 0 && (
-                <div className="flex w-full gap-1 ml-2">
+                <div className="flex gap-1 ml-2">
                   {event.relevant_stats.map((stat) => {
                     const statInfo = statIcons[stat.toLowerCase()];
                     if (!statInfo) return null;
@@ -229,7 +229,7 @@ export default function EventDialog({
             </DialogDescription>
           </DialogHeader>
 
-          <div className="flex flex-col gap-3 mt-4">
+          <div className="grid grid-cols-2 gap-3 mt-4">
             {eventChoices.map((choice) => (
               <Button
                 key={choice.id}
