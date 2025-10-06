@@ -233,17 +233,6 @@ const toolTrades = [
     message: "You buy the occultists's map. The merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave, sealed by a door that looks like stone. This map will guide you.'"
   },
   {
-    id: "trade_murmuring_cube",
-    label: "Murmuring Cube",
-    give: "relic",
-    giveItem: "murmuring_cube",
-    costs: [
-      { resource: "silver", amounts: [150] },
-      { resource: "gold", amounts: [75] }
-    ],
-    message: "You purchase a cube made of an unknown polished metal. The strange geometric object hums with an otherworldly energy, its purpose mysterious but its power unmistakable."
-  },
-  {
     id: "trade_giant_trap",
     label: "Giant Trap",
     give: "tool",
