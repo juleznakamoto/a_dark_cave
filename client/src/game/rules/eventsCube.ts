@@ -276,4 +276,32 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube10: {
+    id: "cube10",
+    condition: (state: GameState) =>
+      state.story.seen.fourthWaveVictory && state.events.cube09 && !state.events.cube10,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The great collapse",
+    message:
+      "'One day, without warning, an unimaginable magneto-electric wave swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated in an instant.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube10: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
