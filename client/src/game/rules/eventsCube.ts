@@ -5,40 +5,48 @@ export const cubeEvents: Record<string, GameEvent> = {
   cubeDiscovery: {
     id: "cubeDiscovery",
     condition: (state: GameState) =>
-      state.flags.hasVillagers && !state.relics.murmuring_cube,
+      state.buildings.woodenHut >= 2 && !state.relics.murmuring_cube,
     triggerType: "resource",
     timeProbability: 2,
     title: "The Murmuring Cube",
     message:
-      "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration beneath your fingers — a slow, rhythmic pulse, almost like a heartbeat.",
-    triggered: false,
-    priority: 3,
-    repeatable: false,
-    effect: (state: GameState) => {
-      return {
-        relics: {
-          ...state.relics,
-          murmuring_cube: true,
-        },
-      };
-    },
-  },
-
-  cube01: {
-    id: "cube01",
-    condition: (state: GameState) =>
-      state.story.seen.venturedDeeper && !state.events.cube01,
-    triggerType: "resource",
-    timeProbability: 2,
-    title: "The Cube awakens",
-    message:
-      "You wake up in the middle of the night. The cube hums softly beside you. A gentle, melodic voice emerges from within, whispering: 'Once there was a great civilization, but something caused it to fall apart. Ancient knowledge has long since been lost.",
+      "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              murmuring_cube: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube01: {
+    id: "cube01",
+    condition: (state: GameState) =>
+      state.relics.murmuring_cube &&
+      state.story.seen.venturedDeeper &&
+      !state.events.cube01,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The Cube awakens",
+    message:
+      "You wake in the night. The cube hums softly beside you. Suddenly a gentle, melodic voice emerges from within: 'Once there was a great civilization, but it fell apart. Ancient knowledge has long since been lost.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -68,7 +76,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -98,7 +106,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -122,13 +130,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The sacred oath",
     message:
-      "'Though the memory of what they protected has faded into legend, their vigilance endures. For countless generations they have kept their sacred oath, watching over what lies at the city’s deepest point.'",
+      "'Though memory of what they protected has faded into legend, their vigilance endured. For countless generations they have kept their sacred oath, watching over what lies at the city’s deepest point.'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -158,7 +166,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -182,13 +190,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The portal opens",
     message:
-      "As the portal is blasted open, the cube trembles violently in your hands, growing warm to the touch. A soft, urgent murmur escapes it: 'I have gained new insights…'",
+      "As the portal is blasted open, the cube trembles violently in your hands, growing warm to the touch. A soft, but urgent murmur escapes it: 'I have gained new insights…'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -212,13 +220,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "Ancient technology",
     message:
-      "'The ancient civilization that forged the portal possessed knowledge far beyond the current age. They crafted devices designed to be implanted within the skull, enhancing both mind and body'",
+      "'The ancient civilization that forged the portal possessed knowledge and technology far beyond the current age. They crafted devices designed to be implanted within the skull, enhancing both mind and body'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -242,13 +250,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The golden age",
     message:
-      "'The leaders decreed that every citizen must bear a device. Yet a small faction began to voice their concerns, forming a secret resistance as they recognized the dangers hidden within the technology.'",
+      "'The leaders ruled that every citizen must bear a device. Yet a small faction began to voice their concerns, forming a secret resistance as they recognized the dangers hidden within the technology.'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -278,7 +286,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -308,7 +316,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -332,13 +340,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "End of civilization",
     message:
-      "'The survivors could not endure without the technology. Many died. Civilization regressed, its knowledge and inventions slipping into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
+      "'The survivors could not endure without the technology. Many died. Civilization regressed, knowledge and inventions slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -362,13 +370,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "Recovered data",
     message:
-      "The cube pulses with a strange energy as you approach the bodies of the slain creatures. It seems to extract information from somewhere, fragments of data preserved through the centuries. The cube grows warm, processing the recovered knowledge from the depths of the cave.",
+      "The cube pulses with energy as you approach the bodies of the slain creatures. It seems to extract information from somewhere, fragments of data preserved through the centuries. The cube grows warm, processing the recovered knowledge from the depths of the cave.",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -392,7 +400,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The resistance",
     message:
-      "'When the leaders of the ancient civilization imposed the skull devices, a resistance arose. They were cast into the mountain’s depths, forbidden to leave. With no path back, they tunneled ever deeper. Over generations, isolation and darkness eroded their minds, and slowly they descended into madness and degeneration.'",
+      "'When the leaders of the ancient civilization imposed the skull devices, a resistance arose. They were cast into the mountain’s depths, sealed away behind the portal. With no path back, they dug ever deeper. Over time, isolation and darkness eroded their minds, and slowly they descended into madness and degeneration.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -420,7 +428,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.001,
     title: "The unknown ore",
     message:
-      "'One day, far beneath the earth, they discovered a monolith of unknown ore. After desperate experimentation, they fashioned it into a device meant to destroy the portal. The bomb failed to breach the gate, but unleashed an immense electro-magnetic pulse.'",
+      "'One day, in a chamber far beneath the earth, they discovered a monolith of unknown ore. After desperate experimentation, they managed to use the ore to create a kind of explosive meant to destroy the portal. The bomb failed to breach the gate, but unleashed an immense electro-magnetic pulse spanning the whole planet.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -448,7 +456,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.001,
     title: "The unknown ore",
     message:
-      "'Shortly after the explosion, one man who stood too close began to dematerialize — his form flickering, partially see-through for fleeting moments. Moments later, scared and driven mad by what he had witnessed, he took his own life.'",
+      "'Shortly after the explosion, a man standing nearby began to dematerialize — his form flickering, half-transparent for mere seconds. Terrified and driven mad by what had happened, he took his own life moments later.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -482,7 +490,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -506,13 +514,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "Recognition",
     message:
-      "That was when you recognize that the creatures did not attack as they recognized you as the man who vanished through the portal.",
+      "That was when you recognize that the creatures did not attack as they recognized you. You are the man who vanished through the portal.",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {
@@ -536,13 +544,13 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "Recognition",
     message:
-      "They recognize you as the man who vanished through the portal.",
+      "One of the man steps forward: 'You are the man who vanished through the portal.",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
-        id: "acknowledge_vision",
+        id: "close",
         label: "Close",
         effect: (state: GameState) => {
           return {

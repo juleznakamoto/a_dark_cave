@@ -3,19 +3,19 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 const FIRST_WAVE_MESSAGE =
-  "The earth shudders as pale figures crawl from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
+  "The earth shudders as pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
 
 const SECOND_WAVE_MESSAGE =
   "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.";
 
 const THIRD_WAVE_MESSAGE =
-  "A roar shakes the stone. Hulking brutes thunder from the cave, their bone weapons cracking the ground.";
+  "Terrifying roars shake the stone. Hoards of pale creatures come from the cave, their bone weapons cracking the ground.";
 
 const FOURTH_WAVE_MESSAGE =
-  "The sky darkens as winged horrors descend and armored fiends surge from the cave, assaulting from air and earth.";
+  "The sky seems to darken as an uncountable mass of pale creatures surge from the cave, pressing towards the city.";
 
 const FIFTH_WAVE_MESSAGE =
-  "From the cave emerges a colossal shadow, its form unspeakable, its presence suffocating as it advances on the city.";
+  "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.";
 
 const VICTORY_MESSAGE =
   "Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours!";

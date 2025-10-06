@@ -14,9 +14,9 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Pale Figure",
     message: [
-      "At dawn, men glimpse a pale, slender figure at the woods' edge. It stands watching. What do you do?",
-      "In the grey morning, a pale and slender shape lingers at the treeline, unmoving. What do you do?",
-      "Villagers report of a pale, slender figure in the mist, silent at the forest's edge. What do you do?",
+      "At dawn, men glimpse a pale, tall and slender figure at the woods' edge. It stands watching. What do you do?",
+      "In the grey morning, a tall, pale and slender shape lingers at the treeline, unmoving. What do you do?",
+      "Villagers report of a tall, pale, slender figure in the mist, silent at the forest's edge. What do you do?",
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
@@ -40,13 +40,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ravenfeather_mantle: true,
               },
               _logMessage:
-                "As your men near, the pale figure beckons and vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
+                "As your men near, the pale figure vanishes. In its place lies a raven-feather mantle, shimmering with otherworldly power.",
             };
           } else if (rand < 0.6) {
             return {
               ...killVillagers(state, 1),
               _logMessage:
-                "The investigation goes horribly wrong. One man screams in the mist and is never seen again. The others flee in terror.",
+                "The investigation goes wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
             const deaths =
