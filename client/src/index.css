@@ -292,13 +292,13 @@
 /* Cube dialog glow animation */
 @keyframes cube-glow-pulse {
   0%, 100% {
-    box-shadow: 0 0 20px 5px rgba(192, 192, 192, 0.5);
+    box-shadow: 0 0 10px 5px green;
   }
   50% {
-    box-shadow: 0 0 40px 15px rgba(192, 192, 192, 0.8);
+    box-shadow: 0 0 10px 5px blue;
   }
 }
 
 .cube-dialog-glow {
-  animation: cube-glow-pulse 2s ease-in-out infinite;
+  animation: cube-glow-pulse 10s ease-in-out infinite;
 }
