@@ -6,7 +6,7 @@ import { gameEvents } from './events';
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
-  const usageCount = (state.story?.seen?.boneTotemsUsageCount || 0);
+  const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
   return 10 + usageCount;
 }
 
