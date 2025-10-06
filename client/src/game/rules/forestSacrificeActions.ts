@@ -33,7 +33,7 @@ export const forestSacrificeActions: Record<string, Action> = {
 // Action handlers
 export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
   // Track how many times this action has been used
-  const usageCount = (state.story?.seen?.boneTotemsUsageCount || 0);
+  const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
   const currentCost = 10 + usageCount;
 
   // Check if player has enough bone totems for the current price
