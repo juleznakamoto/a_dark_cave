@@ -35,12 +35,29 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
   const lastChangeTimestampRef = useRef<number>(0);
 
   useEffect(() => {
+    // Find the latest change overall (not just for this resource)
+    const latestChangeOverall = changes
+      .sort((a, b) => b.timestamp - a.timestamp)[0];
+    
     // Find the latest change for this specific resource
     const latestChangeForResource = changes
       .filter(change => change.resource === resource)
       .sort((a, b) => b.timestamp - a.timestamp)[0];
 
-    // Only update if we have a new change (different timestamp)
+    // If there's ANY new change (different timestamp than our last one), clear the current notification
+    if (latestChangeOverall && visibleChange && latestChangeOverall.timestamp !== lastChangeTimestampRef.current) {
+      // Clear any existing timer
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+      
+      // Immediately clear the old change
+      setVisibleChange(null);
+      lastChangeTimestampRef.current = 0; // Reset to allow new change to show
+    }
+
+    // Only update if we have a new change for THIS resource (different timestamp)
     if (latestChangeForResource && latestChangeForResource.timestamp !== lastChangeTimestampRef.current) {
       // Clear any existing timer
       if (timerRef.current) {
@@ -71,7 +88,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
         timerRef.current = null;
       }
     };
-  }, [changes, resource]);
+  }, [changes, resource, visibleChange]);
 
   // Also clear notification if changes array becomes empty
   useEffect(() => {
