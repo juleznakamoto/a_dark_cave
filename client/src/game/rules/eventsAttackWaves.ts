@@ -103,8 +103,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         },
         _combatData: {
           enemy: {
-            name: "Pale Creatures",
-            attack: [120, 150, 180][Math.floor(Math.random() * 3)],
+            name: "Group of pale creatures",
+            attack: [12, 15, 18][Math.floor(Math.random() * 3)],
             maxHealth: 100,
             currentHealth: 100,
           },
@@ -148,7 +148,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         },
         _combatData: {
           enemy: {
-            name: "Armored Creatures",
+            name: "Pack of pale creatures",
             attack: [15, 18, 21][Math.floor(Math.random() * 3)],
             maxHealth: 150,
             currentHealth: 150,
@@ -193,7 +193,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         },
         _combatData: {
           enemy: {
-            name: "Brute Horde",
+            name: "Horde of pale creatures",
             attack: [18, 22, 25][Math.floor(Math.random() * 3)],
             maxHealth: 200,
             currentHealth: 200,
@@ -238,7 +238,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         },
         _combatData: {
           enemy: {
-            name: "Sky Terror Legion",
+            name: "Legion of pale creatures",
             attack: [22, 26, 30][Math.floor(Math.random() * 3)],
             maxHealth: 250,
             currentHealth: 250,
