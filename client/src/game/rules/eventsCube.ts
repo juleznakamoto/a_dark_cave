@@ -11,7 +11,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Murmuring Cube",
     message:
-      "Near the entrance of the cave you find a perfectly polished cube out of metal. From time to time it seems to very subtly vibrate. You pick it up—it's warm to the touch and the vibrations pulse rhythmically, almost like a heartbeat.",
+      "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration beneath your fingers — a slow, rhythmic pulse, almost like a heartbeat.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -25,15 +25,15 @@ export const cubeEvents: Record<string, GameEvent> = {
     },
   },
 
-  cubeWhispers: {
-    id: "cubeWhispers",
+  cube01: {
+    id: "cube01",
     condition: (state: GameState) =>
-      state.relics.murmuring_cube && !state.events.cubeWhispers,
+      state.buildings.woodenHut,// >= 2 && !state.events.cube01,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.02,
     title: "Whispers from the Cube",
     message:
-      "The cube begins to hum louder than usual. As you hold it, visions flood your mind: You see the cave as it once was—not a dark refuge, but a threshold. Beyond it lay a vast city of towering spires and impossible geometry, built by beings who shaped reality itself. They didn't fear the darkness; they revered it, drawing power from the void between worlds. But their ambition grew too great. They opened a gateway to something ancient and hungry, something that should have remained sealed. The city fell in a single night, consumed by the very darkness they sought to control. The cube grows cold in your hands as the vision fades, leaving only the echo of a warning: 'The seal weakens. The hungry ones stir.'",
+      "",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -45,12 +45,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-              cubeWhispers: true,
-            },
-            stats: {
-              ...state.stats,
-              knowledge: (state.stats.knowledge || 0) + 2,
-              madness: (state.stats.madness || 0) + 1,
+                cube01: true,
             },
           };
         },

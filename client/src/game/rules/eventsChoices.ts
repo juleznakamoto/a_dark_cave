@@ -277,7 +277,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           // If 2+ villagers die and there's a hut, 50% chance to destroy it
-          if (villagerDeaths >= 2 && state.buildings.hut > 0) {
+          if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
             if (Math.random() < 0.5) {
               hutDestroyed = true;
             }
