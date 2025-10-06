@@ -48,14 +48,20 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
         timerRef.current = null;
       }
 
-      setVisibleChange(latestChangeForResource);
-      lastChangeTimestampRef.current = latestChangeForResource.timestamp;
+      // Immediately clear the old change before showing the new one
+      setVisibleChange(null);
+      
+      // Use a micro-delay to ensure the DOM updates and the animation can restart
+      setTimeout(() => {
+        setVisibleChange(latestChangeForResource);
+        lastChangeTimestampRef.current = latestChangeForResource.timestamp;
 
-      // Set new timer
-      timerRef.current = setTimeout(() => {
-        setVisibleChange(null);
-        timerRef.current = null;
-      }, 3000);
+        // Set new timer
+        timerRef.current = setTimeout(() => {
+          setVisibleChange(null);
+          timerRef.current = null;
+        }, 3000);
+      }, 10);
     }
 
     // Cleanup function
