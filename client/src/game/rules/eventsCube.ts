@@ -40,7 +40,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Cube awakens",
     message:
-      "You wake in the night. The cube hums softly beside you. Suddenly a gentle, melodic voice emerges from within: 'Once there was a great civilization, but it fell apart. Ancient knowledge has long since been lost.",
+      "You wake in the night. The cube hums softly beside you. Suddenly a gentle, melodic voice emerges from within: 'Long ago, a great civilization thrived upon this world, but it crumbled. Its ancient knowledge has been lost to the ages.'",
     triggered: false,
     priority: 3,
     repeatable: false,
