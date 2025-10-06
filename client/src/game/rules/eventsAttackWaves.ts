@@ -40,27 +40,45 @@ function createDefeatMessage(
   return msg;
 }
 
-function handleDefeat(state: GameState, maxCasualties: number) {
+function handleDefeat(
+  state: GameState,
+  DamageBuildingMultiplier: number,
+  maxCasualties: number,
+) {
   const currentPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
   );
-  const casualties = Math.min(maxCasualties, currentPopulation);
+  const minCasualities = Math.floor(
+    Math.random() * 0.75 * maxCasualties + 0.25 * maxCasualties,
+  );
+  const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);
 
   let buildingDamage = {};
   const damagedBuildings: string[] = [];
 
+  // Probability increases with multiplier (from 20% to 90%)
+  const baseChance = Math.min(DamageBuildingMultiplier * 0.2, 0.9);
+
+  // helper function for random check
+  const chance = (prob: number) => Math.random() < prob;
+
+  // Watchtower damage
   if (
     state.buildings.watchtower > 0 &&
-    !state.story.seen.watchtowerDamaged
+    !state.story.seen.watchtowerDamaged &&
+    chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, watchtowerDamaged: true };
     damagedBuildings.push("watchtower");
   }
+
+  // Palisades damage
   if (
     state.buildings.palisades > 0 &&
-    !state.story.seen.palisadesDamaged
+    !state.story.seen.palisadesDamaged &&
+    chance(baseChance * 1.1) // palisades are more exposed
   ) {
     buildingDamage = { ...buildingDamage, palisadesDamaged: true };
     damagedBuildings.push("palisades");
@@ -120,7 +138,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => handleDefeat(state, 5),
+          onDefeat: () => handleDefeat(state, 1, 5),
         },
       };
     },
@@ -165,7 +183,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => handleDefeat(state, 8),
+          onDefeat: () => handleDefeat(state, 2, 10),
         },
       };
     },
@@ -194,7 +212,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
-            attack: [18, 22, 25][Math.floor(Math.random() * 3)],
+            attack: [18, 21, 24][Math.floor(Math.random() * 3)],
             maxHealth: 200,
             currentHealth: 200,
           },
@@ -210,7 +228,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => handleDefeat(state, 12),
+          onDefeat: () => handleDefeat(state, 3, 15),
         },
       };
     },
@@ -239,7 +257,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
-            attack: [22, 26, 30][Math.floor(Math.random() * 3)],
+            attack: [30, 35][Math.floor(Math.random() * 2)],
             maxHealth: 250,
             currentHealth: 250,
           },
@@ -255,7 +273,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
             },
             _logMessage: VICTORY_MESSAGE,
           }),
-          onDefeat: () => handleDefeat(state, 15),
+          onDefeat: () => handleDefeat(state, 4, 20),
         },
       };
     },
@@ -273,9 +291,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: false,
     effect: (state: GameState) => {
-      const hasSpecialWeapons =
-        state.relics.frostfang && state.relics.blood_scepter;
-
       return {
         story: {
           ...state.story,
@@ -286,14 +301,11 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         },
         _combatData: {
           enemy: {
-            name: "Shadow Lord",
-            attack: 20,
-            maxHealth: hasSpecialWeapons ? 40 : 60,
-            currentHealth: hasSpecialWeapons ? 40 : 60,
+            name: "Swarm of pale creatures",
+            attack: [50, 52, 54, 55, 56, 58, 60][Math.floor(Math.random() * 7)],
           },
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,
-          hasSpecialWeapons,
           onVictory: () => ({
             story: {
               ...state.story,
@@ -302,11 +314,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 gameCompleted: true,
               },
             },
-            _logMessage: hasSpecialWeapons
-              ? "Armed with the frostfang sword and blood scepter, your champions achieve victory! The shadow lord is destroyed and the portal seals itself. Peace returns to the land!"
-              : "Through incredible courage, your villagers achieve the impossible! The shadow lord is destroyed and the portal seals forever.",
           }),
-          onDefeat: () => handleDefeat(state, 20),
+          onDefeat: () => handleDefeat(state, 5, 30),
         },
       };
     },

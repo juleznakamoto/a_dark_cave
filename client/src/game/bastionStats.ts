@@ -10,10 +10,6 @@ export interface BastionStats {
 }
 
 export function calculateBastionStats(state: GameState): BastionStats {
-  // Placeholder for future attack wave logic
-  // const numberOfWaves = 5;
-  // const waveIntervalMinutes = 5;
-
   let defense = 0;
   let attackFromFortifications = 0;
   let baseIntegrity = 0;

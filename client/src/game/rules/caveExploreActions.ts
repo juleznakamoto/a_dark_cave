@@ -794,7 +794,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released...",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
   });
@@ -822,10 +822,6 @@ export function handleEncounterBeyondPortal(
         label: "Slaughter them",
         effect: (state: GameState) => {
           return {
-            resources: {
-              ...state.resources,
-              bones: state.resources.bones + 50,
-            },
             story: {
               ...state.story,
               seen: {
