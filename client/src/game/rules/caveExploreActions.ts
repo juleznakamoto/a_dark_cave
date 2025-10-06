@@ -209,6 +209,7 @@ export const caveExploreActions: Record<string, Action> = {
       ...getInheritedRelics("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
+      "story.seen.caveExplored": true
     },
     cooldown: 10,
   },

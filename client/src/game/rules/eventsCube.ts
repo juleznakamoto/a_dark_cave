@@ -28,7 +28,7 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube01: {
     id: "cube01",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && !state.events.cube01,
+      state.story.seen.caveExplored && !state.events.cube01,
     triggerType: "resource",
     timeProbability: 2,
     title: "The Cube awakens",
@@ -54,14 +54,14 @@ export const cubeEvents: Record<string, GameEvent> = {
   },
 
   cube02: {
-    id: "cube02",
+    id: "cube02add",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && state.events.cube01 && !state.events.cube02,
+      state.story.seen.venturedDeeper && state.events.cube01 && !state.events.cube02,
     triggerType: "resource",
     timeProbability: 2,
     title: "The warrior tribe",
     message:
-      "The cube continues its tale: 'Long ago, a tribe of fierce warriors was chosen to dwell deep within the caves. Their purpose was to guard something of great importance.'",
+      "'Long ago, a tribe of fierce warriors was chosen to dwell deep within the caves. Their purpose was to guard something of great importance.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -84,12 +84,12 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube03: {
     id: "cube03",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && state.events.cube02 && !state.events.cube03,
+      state.buildings.woodenHut >= 5 && state.events.cube02 && !state.events.cube03,
     triggerType: "resource",
     timeProbability: 2,
     title: "The underground city",
     message:
-      "The cube's voice grows stronger: 'The tribe grew into a flourishing underground city, safe from the outworld, still protecting what they were sent to protect many centuries ago.'",
+      "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect many lifetimes ago.'",
     triggered: false,
     priority: 3,
     repeatable: false,
