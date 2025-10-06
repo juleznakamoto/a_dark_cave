@@ -11,36 +11,18 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Murmuring Cube",
     message:
-      "Near the entrance of the cave you find a perfectly polished cube out of metal. From time to time it seems to very subtly vibrate.",
+      "Near the entrance of the cave you find a perfectly polished cube out of metal. From time to time it seems to very subtly vibrate. You pick it up—it's warm to the touch and the vibrations pulse rhythmically, almost like a heartbeat.",
     triggered: false,
     priority: 3,
     repeatable: false,
-    choices: [
-      {
-        id: "take_cube",
-        label: "Take the cube",
-        effect: (state: GameState) => {
-          return {
-            relics: {
-              ...state.relics,
-              murmuring_cube: true,
-            },
-            _logMessage:
-              "You pick up the metallic cube. It's warm to the touch and the vibrations pulse rhythmically, almost like a heartbeat.",
-          };
+    effect: (state: GameState) => {
+      return {
+        relics: {
+          ...state.relics,
+          murmuring_cube: true,
         },
-      },
-      {
-        id: "leave_cube",
-        label: "Leave it be",
-        effect: (state: GameState) => {
-          return {
-            _logMessage:
-              "You decide to leave the strange cube where it lies. As you walk away, you could swear the vibrations grew stronger for a moment.",
-          };
-        },
-      },
-    ],
+      };
+    },
   },
 
   cubeWhispers: {
