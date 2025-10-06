@@ -27,7 +27,7 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-none [&>button]:hidden border-4 border-gray-400 rounded-none shadow-2xl p-6 aspect-square w-[28rem] h-[28rem] flex flex-col">
+      <DialogContent className="[&>button]:hidden border-4 border-gray-400 rounded-none shadow-2xl p-6 !w-[28rem] !h-[28rem] max-w-[28rem] max-h-[28rem] flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
             {event.title || "Strange Encounter"}
