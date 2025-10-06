@@ -266,7 +266,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const knowledge = getTotalKnowledge(state);
       const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
       const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
-      
+
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
         label: `Buy ${trade.label}`,
@@ -304,7 +304,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const knowledge = getTotalKnowledge(state);
       const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
       const cost = Math.ceil(costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01));
-      
+
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
         label: `Buy ${trade.label}`,
