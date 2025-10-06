@@ -136,4 +136,32 @@ export const cubeEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  cube05: {
+    id: "cube05",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 12 && state.events.cube04 && !state.events.cube05,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The sealed gate",
+    message:
+      "'For centuries they watched over a sealed impenetrable gate at the city's lowest point. No one remembers what lies beyond it, or why it must never be opened.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube05: true,
+            },
+          };
+        },
+      },
+    ],
+  },
 };
