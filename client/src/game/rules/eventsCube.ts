@@ -73,7 +73,35 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-                cube01: true,
+              cube02: true,
+            },
+          };
+        },
+      },
+    ],
+  },
+
+  cube03: {
+    id: "cube03",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 4 && state.events.cube02 && !state.events.cube03,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The underground city",
+    message:
+      "The cube's voice grows stronger: 'The tribe grew into a flourishing underground city, safe from the outworld, still protecting what they were sent to protect many centuries ago.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acknowledge_vision",
+        label: "Close",
+        effect: (state: GameState) => {
+          return {
+            events: {
+              ...state.events,
+              cube03: true,
             },
           };
         },
