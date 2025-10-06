@@ -27,7 +27,7 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-none [&>button]:hidden border-4 border-gray-400 rounded-none shadow-2xl w-[28rem] h-[28rem] max-w-[28rem] max-h-[28rem] min-w-[28rem] min-h-[28rem] flex flex-col">
+      <DialogContent className="sm:max-w-none [&>button]:hidden border-4 border-gray-400 rounded-none shadow-2xl w-[28rem] h-[28rem] max-w-[28rem] max-h-[28rem] min-w-[28rem] min-h-[28rem] flex flex-col p-6">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
             {event.title || "Strange Encounter"}
@@ -37,11 +37,12 @@ export default function CubeDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 flex items-end pb-4">
+        <div className="flex-1 flex items-end justify-center pb-2">
           <Button
             onClick={() => onChoice(eventChoices[0]?.id)}
             variant="outline"
-            className="w-full"
+            size="sm"
+            className="px-8"
             disabled={fallbackExecutedRef.current}
           >
             {eventChoices[0]?.label || "Close"}
