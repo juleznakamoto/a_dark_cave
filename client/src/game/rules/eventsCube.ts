@@ -196,12 +196,12 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube07: {
     id: "cube07",
     condition: (state: GameState) =>
-      state.story.seen.portalBlasted && state.events.cube06 && !state.events.cube07,
+      state.story.seen.firstWaveVictory && state.events.cube06 && !state.events.cube07,
     triggerType: "resource",
     timeProbability: 2,
     title: "Ancient technology",
     message:
-      "'The ancient civilization that built the portal had very advanced technology. They developed devices that would be implemented in the skull, that would enhance cognitive and physical function.'",
+      "'The ancient civilization that forged the portal possessed knowledge far beyond the current age. They crafted devices designed to be implanted within the skull, enhancing both mind and body'",
     triggered: false,
     priority: 3,
     repeatable: false,
