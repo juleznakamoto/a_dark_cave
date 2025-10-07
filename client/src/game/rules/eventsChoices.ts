@@ -860,7 +860,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.templeDedicated &&
       !state.story.seen.sanctumDedicated,
     triggerType: "resource",
-    timeProbability: 3,
+    timeProbability: 0.003,
     title: "The Druid Returns",
     message:
       "The blind druid emerges from the forest once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
