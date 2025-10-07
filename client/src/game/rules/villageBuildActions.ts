@@ -1339,7 +1339,7 @@ export function handleBuildStoneHut(
     stoneHutResult.logEntries!.push({
       id: `village-becomes-city-${Date.now()}`,
       message:
-        "The village has become a city. Stone houses line the streets, their walls strong and their roofs tall. What began as a humble settlement now stands as a beacon of civilization in the wilderness.",
+        "The village has grown into a city. Stone houses rise along the streets, sturdy and proud. What began as a small settlement now stands as a thriving center of life in the wilderness.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1447,7 +1447,7 @@ export function handleBuildAlchemistHall(
     alchemistHallResult.logEntries!.push({
       id: `alchemist-hall-built-${Date.now()}`,
       message:
-       "The Alchemist’s Halls rise in twisting ascent, their chambers alive with bubbling crucibles and gleaming instruments of forgotten design. Within, the veils of transmutation whisper their secrets to those who dare to listen.",
+       "The Alchemist’s Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft. Within, the whispers of transmutation lure those who seek forbidden knowledge.",
       timestamp: Date.now(),
       type: "system",
     });
