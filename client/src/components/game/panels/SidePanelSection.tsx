@@ -230,19 +230,21 @@ export default function SidePanelSection({
                 item.label
               )}
             </span>
-        <span
-          className={`font-mono ${
-            isAnimated
-              ? "text-green-800 font-bold"
-              : isDecreaseAnimated
-                ? "text-red-800 font-bold"
-                : isMadness
-                  ? madnessClasses
-                  : ""
-          }`}
-        >
-          {displayValue}
-        </span>
+        {title !== "Relics" && (
+          <span
+            className={`font-mono ${
+              isAnimated
+                ? "text-green-800 font-bold"
+                : isDecreaseAnimated
+                  ? "text-red-800 font-bold"
+                  : isMadness
+                    ? madnessClasses
+                    : ""
+            }`}
+          >
+            {displayValue}
+          </span>
+        )}
       </div>
     );
 
