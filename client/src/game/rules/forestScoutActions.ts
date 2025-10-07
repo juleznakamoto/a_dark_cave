@@ -192,6 +192,9 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
   const strength = state.stats.strength || 0;
   const knowledge = state.stats.knowledge || 0;
   const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
+  //log
+  console.log(`Castle Ruins success chance: ${successChance} ${state.stats.strength}`);
+  
   const rand = Math.random();
 
   if (rand < successChance) {
