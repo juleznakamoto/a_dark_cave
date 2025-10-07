@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
@@ -67,7 +67,11 @@ export default function ForestPanel() {
           </HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {getCostText(actionId, state)}
+              {Object.entries(getActionCostBreakdown(actionId, state)).map(([resource, { amount, satisfied }]) => (
+                <span key={resource} className={!satisfied ? 'text-muted-foreground line-through' : ''}>
+                  {amount} {resource.charAt(0).toUpperCase() + resource.slice(1)}
+                </span>
+              ))}
             </div>
           </HoverCardContent>
         </HoverCard>
@@ -93,7 +97,7 @@ export default function ForestPanel() {
   return (
     <div className="space-y-6">
       {actionGroups.map((group, groupIndex) => {
-        const visibleActions = group.actions.filter(action => 
+        const visibleActions = group.actions.filter(action =>
           shouldShowAction(action.id, state)
         );
 

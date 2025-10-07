@@ -724,6 +724,64 @@ export function getActionCostDisplay(
   return costText;
 }
 
+// Helper function to get cost breakdown with satisfaction status
+export function getActionCostBreakdown(
+  actionId: string,
+  state: GameState,
+): Array<{ text: string; satisfied: boolean }> {
+  // Handle dynamic cost for bone totems
+  if (actionId === "boneTotems") {
+    const dynamicCost = getBoneTotemsCost(state);
+    const currentAmount = state.resources.bone_totem || 0;
+    return [{
+      text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
+      satisfied: currentAmount >= dynamicCost
+    }];
+  }
+
+  const action = gameActions[actionId];
+  if (!action?.cost) return [];
+
+  let costs = action.cost;
+
+  // For building actions, get the cost for the next level
+  if (action.building) {
+    const level = getNextBuildingLevel(actionId, state);
+    costs = action.cost[level];
+  }
+
+  if (!costs || Object.keys(costs).length === 0) return [];
+
+  return Object.entries(costs).map(([resource, amount]) => {
+    // Apply cost reductions using single source of truth
+    const adjustedAmount = getAdjustedCost(actionId, amount, resource.startsWith("resources."), state);
+
+    // Extract the clean resource name from paths like "resources.wood"
+    const resourceName = resource.includes(".")
+      ? resource.split(".").pop()
+      : resource;
+    
+    // Replace underscores with spaces and capitalize each word
+    const formattedName = resourceName
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+
+    // Check if we can afford this cost
+    const pathParts = resource.split(".");
+    let currentAmount: any = state;
+    for (const part of pathParts) {
+      currentAmount = currentAmount?.[part];
+    }
+    const satisfied = (currentAmount || 0) >= adjustedAmount;
+
+    return {
+      text: `-${adjustedAmount} ${formattedName}`,
+      satisfied
+    };
+  });
+}
+
 // Action handlers are now handled through the villageBuildActions module
 // No need for a separate actionHandlers object here
 

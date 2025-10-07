@@ -4,6 +4,7 @@ import {
   shouldShowAction,
   canExecuteAction,
   getCostText,
+  getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
@@ -140,6 +141,7 @@ export default function VillagePanel() {
     if (!action) return null;
 
     const canExecute = canExecuteAction(actionId, state);
+    const costBreakdown = getActionCostBreakdown(actionId, state);
 
     // Dynamic label for watchtower based on current level
     let displayLabel = label;
@@ -185,7 +187,16 @@ export default function VillagePanel() {
         </HoverCardTrigger>
         <HoverCardContent className="w-auto p-2">
           <div className="text-xs whitespace-nowrap">
-            {getCostText(actionId, state)}
+            {costBreakdown.map((cost, index) => (
+              <div
+                key={index}
+                className={`${
+                  cost.satisfied ? "text-foreground" : "text-muted-foreground"
+                }`}
+              >
+                {cost.amount} {capitalizeWords(cost.resource)}
+              </div>
+            ))}
           </div>
         </HoverCardContent>
       </HoverCard>

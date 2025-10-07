@@ -4,6 +4,7 @@ import {
   shouldShowAction,
   canExecuteAction,
   getCostText,
+  getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
 import {
@@ -110,6 +111,8 @@ export default function CavePanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
     if (showCost) {
+      const costBreakdown = getActionCostBreakdown(actionId, state);
+
       return (
         <HoverCard key={actionId} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
@@ -129,7 +132,11 @@ export default function CavePanel() {
           </HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {getCostText(actionId, state)}
+              {costBreakdown.map((costItem, index) => (
+                <span key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                  {costItem.text}
+                </span>
+              ))}
             </div>
           </HoverCardContent>
         </HoverCard>
