@@ -669,9 +669,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 templeDedicated: true,
-                templeDedicatedTo: "dagon",
               },
             },
+            templeDedicatedTo: "dagon",
             _logMessage:
               "You dedicate the temple to Dagon, the ancient and mysterious god of the deep.",
           };
@@ -702,9 +702,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 templeDedicated: true,
-                templeDedicatedTo: "flame",
               },
             },
+            templeDedicatedTo: "flame",
             _logMessage:
               "You dedicate the temple to the Way of the First Flame, an ancient path of fire and rebirth.",
           };
@@ -728,9 +728,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 templeDedicated: true,
-                templeDedicatedTo: "raven",
               },
             },
+            templeDedicatedTo: "raven",
             _logMessage:
               "You dedicate the temple to the Cult of the Ravenborn, an enigmatic and shadowed order.",
           };
@@ -754,9 +754,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 templeDedicated: true,
-                templeDedicatedTo: "ash",
               },
             },
+            templeDedicatedTo: "ash",
             _logMessage:
               "You dedicate the temple to the Order of the Ashbringer, a solemn and fire-bound brotherhood.",
           };
@@ -872,7 +872,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "deepenDevotion",
         label: "Deepen Devotion to Chosen Path",
         effect: (state: GameState) => {
-          const templeDedicatedTo = state.story?.seen?.templeDedicatedTo || "";
+          const templeDedicatedTo = state.templeDedicatedTo || "";
           let updatedBlessings = { ...state.blessings };
           let message = "";
 
@@ -897,9 +897,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 sanctumDedicated: true,
-                sanctumDedicatedTo: templeDedicatedTo,
               },
             },
+            templeDedicatedTo: templeDedicatedTo,
             _logMessage: message,
           };
         },
@@ -929,9 +929,9 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 sanctumDedicated: true,
-                sanctumDedicatedTo: "all",
               },
             },
+            templeDedicatedTo: "all",
             _logMessage:
               "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts flowing freely through the sacred halls. The Raven's Orb and Ashen Dagger manifest within, while blessings from every path converge upon your settlement.",
           };
