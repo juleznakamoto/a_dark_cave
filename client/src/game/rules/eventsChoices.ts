@@ -29,8 +29,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
-          // Base 20% chance + 1 % per strength 0.5 % per luck
-          const mantleChance = 0.2 + strength + luck * 0.005;
+          // Base 10% chance + 1 % per strength 0.5 % per luck
+          const mantleChance = 0.1 + strength + luck * 0.005;
 
           const rand = Math.random();
           if (rand < mantleChance) {
@@ -176,7 +176,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
-      "Near the edge of the village, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it or discard it?",
+      "Near the edge of the forest, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -291,7 +291,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (villagerDeaths === 0) {
             message +=
-              "Miraculously, all villagers survive the attack, though shaken by the encounter.";
+              "The villagers survive the attack, though shaken by the encounter.";
           } else if (villagerDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
@@ -304,7 +304,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (hutDestroyed) {
             message +=
-              " In their rampage, the possessed wolves destroy one of your huts, leaving only splintered wood.";
+              " In their rampage, the wolves destroy one of your huts, leaving only splintered wood.";
           }
 
           return {
@@ -407,7 +407,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Offer to the Forest Gods",
     message:
-      "While hunting, the villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice to stay safe.",
+      "While hunting, villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -505,7 +505,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
         return {
           ...deathResult,
-          _logMessage: `Your indecision angers the villagers. ${departures} villagers, frustrated with your lack of leadership during this crisis, pack their belongings and leave the village in disgust.`,
+          _logMessage: `Your indecision angers the villagers. ${departures} villagers, frustrated with your lack of leadership, pack their belongings and leave the village in disgust.`,
         };
       },
     },
@@ -574,7 +574,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Hidden Lake",
     message:
-      "While gathering wood deep in the forest, your villagers discover a pristine lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+      "While gathering wood deep in the forest, your villagers discover a lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: false,

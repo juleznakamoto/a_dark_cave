@@ -313,7 +313,7 @@ export default function SidePanelSection({
                     )}
                     {effect.bonuses.generalBonuses.craftingCostReduction && (
                       <div>
-                        {Math.round(
+                        {Math.floor(
                           effect.bonuses.generalBonuses.craftingCostReduction *
                             100,
                         )}
