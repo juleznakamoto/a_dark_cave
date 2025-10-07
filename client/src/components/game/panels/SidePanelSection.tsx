@@ -179,11 +179,11 @@ export default function SidePanelSection({
         title === "Blessings") &&
       !effect
     ) {
-      console.log(`Missing effect for item: ${item.id} in section: ${title}`, {
+      console.error(`Missing effect definition for item: ${item.id} in section: ${title}`, {
         item,
-        hasRelicEffect: !!relicEffect,
-        hasWeaponEffect: !!weaponEffect,
-        hasToolEffect: !!toolEffect,
+        availableInClothingEffects: item.id in clothingEffects,
+        availableInWeaponEffects: item.id in weaponEffects,
+        availableInToolEffects: item.id in toolEffects,
       });
     }
 
