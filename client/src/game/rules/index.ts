@@ -374,11 +374,11 @@ export const applyActionEffects = (
           const finalKey = pathParts[pathParts.length - 1];
           // Apply crafting cost reduction to resource costs for crafting actions
           let adjustedCost = cost;
-          if (isCraftingAction && path.startsWith("resources.")) {
+          if (isCraftingAction && path.startsWith("resources.") && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - craftingCostReduction));
           }
           // Apply building cost reduction to resource costs for building actions
-          if (isBuildingAction && path.startsWith("resources.")) {
+          if (isBuildingAction && path.startsWith("resources.") && cost < 0) {
             adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
           }
 
