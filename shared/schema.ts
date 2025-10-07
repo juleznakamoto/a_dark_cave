@@ -240,6 +240,7 @@ export const gameStateSchema = z.object({
     attack: z.number().min(0).default(0),
     attackFromFortifications: z.number().min(0).default(0),
     attackFromStrength: z.number().min(0).default(0),
+    integrity: z.number().min(0).default(0),
   }).default({}),
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
