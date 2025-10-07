@@ -306,7 +306,7 @@ export const caveEvents: Record<string, GameEvent> = {
       state.flags.exploredCitadel &&
       !state.story.seen.portalDiscovered,
     triggerType: "resource",
-    timeProbability: 1, // Triggers immediately when conditions are met
+    timeProbability: 0.5,
     message:
       "In the citadel’s lowest depths you find the colossal portal forged from an unknown, unyielding metal. Perhaps only the fury of fire can shatter its seal.",
     triggered: false,
