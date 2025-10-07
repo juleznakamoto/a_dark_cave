@@ -329,28 +329,4 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     }),
   },
-
-  villageGrowth: {
-    id: "villageGrowth",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 10 &&
-      state.buildings.stoneHut === 0 &&
-      !state.story.seen.villageGrowthSuggestion,
-    triggerType: "resource",
-    timeProbability: 1.0,
-    message:
-      "The village is growing fast. The wooden huts crowd together, their timbers creaking under the weight of your expanding settlement. Perhaps larger houses of stone could shelter even more villagers, providing stronger foundations for the community.",
-    triggered: false,
-    priority: 4,
-    repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          villageGrowthSuggestion: true,
-        },
-      },
-    }),
-  },
 };

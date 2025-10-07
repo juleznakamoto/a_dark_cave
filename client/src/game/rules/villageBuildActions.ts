@@ -1073,6 +1073,25 @@ export function handleBuildWoodenHut(
     });
   }
 
+  // Add village growth message when 10th wooden hut is built
+  if (state.buildings.woodenHut === 9 && state.buildings.stoneHut === 0) {
+    result.logEntries!.push({
+      id: `village-growth-${Date.now()}`,
+      message:
+        "The village is growing fast. The wooden huts crowd together, their timbers creaking under the weight of your expanding settlement. Perhaps larger houses of stone could shelter even more villagers, providing stronger foundations for the community.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    result.stateUpdates.story = {
+      ...result.stateUpdates.story,
+      seen: {
+        ...result.stateUpdates.story?.seen,
+        villageGrowthSuggestion: true,
+      },
+    };
+  }
+
   return result;
 }
 
