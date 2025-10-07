@@ -262,7 +262,7 @@
 
 .madness-pulse-medium {
   animation: madness-pulse-medium 1.5s ease-in-out infinite;
-
+}
 
 /* Button glow animation */
 @keyframes button-glow {
@@ -276,8 +276,6 @@
 
 .button-glow-animation {
   animation: button-glow 0.3s ease-out;
-}
-
 }
 
 .madness-pulse-fast-intense {
