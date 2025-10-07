@@ -328,4 +328,28 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  wizardNecromancerCastle: {
+    id: "wizardNecromancerCastle",
+    condition: (state: GameState) =>
+      state.buildings.wizardTower >= 1 &&
+      !state.story.seen.wizardNecromancerCastle,
+    triggerType: "resource",
+    timeProbability: 2,
+    title: "The Necromancer's Castle",
+    message:
+      "The wizard calls you to his tower, his expression grave. 'I have learned of a castle deep in the wilderness - the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of what dwells in the depths below. These texts may hold the key to understanding and defeating the darkness that threatens us all. The journey will be perilous, but the knowledge is essential.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardNecromancerCastle: true,
+        },
+      },
+    }),
+  },
 };
