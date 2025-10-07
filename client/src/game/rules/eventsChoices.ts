@@ -1,7 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck } from "./effects";
+import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effects";
 import { getMaxPopulation } from "@/game/population";
 
 export const choiceEvents: Record<string, GameEvent> = {
@@ -419,7 +419,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Sacrifice 4 villagers",
         relevant_stats: ["knowledge"],
         effect: (state: GameState) => {
-          const knowledge = state.stats.knowledge || 0;
+          const knowledge = getTotalKnowledge(state);
           const successChance = 0.3 + knowledge;
           const rand = Math.random();
 

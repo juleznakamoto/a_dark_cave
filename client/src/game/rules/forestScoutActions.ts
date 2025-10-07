@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
-import { getTotalLuck } from '@/game/rules/effects';
+import { getTotalLuck, getTotalStrength, getTotalKnowledge } from '@/game/rules/effects';
 import { killVillagers } from '@/game/stateHelpers';
 
 export const forestScoutActions: Record<string, Action> = {
@@ -189,11 +189,9 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = state.stats.strength || 0;
-  const knowledge = state.stats.knowledge || 0;
+  const strength = getTotalStrength(state);
+  const knowledge = getTotalKnowledge(state);
   const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
-  //log
-  console.log(`Castle Ruins success chance: ${successChance} ${state.stats.strength}`);
   
   const rand = Math.random();
 
@@ -249,8 +247,8 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = state.stats.strength || 0;
-  const knowledge = state.stats.knowledge || 0;
+  const strength = getTotalStrength(state);
+  const knowledge = getTotalKnowledge(state);
   const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01; // 15% base + (strength + knowledge)/2%
   const rand = Math.random();
 
