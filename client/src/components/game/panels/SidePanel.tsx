@@ -181,6 +181,17 @@ export default function SidePanel() {
         }
       }
       
+      // Special handling for buildings with madness reduction
+      if (key === 'sanctum' && buildings.sanctum > 0) {
+        tooltip = `-15 Madness`;
+      } else if (key === 'temple' && buildings.temple > 0) {
+        tooltip = `-10 Madness`;
+      } else if (key === 'shrine' && buildings.shrine > 0) {
+        tooltip = `-5 Madness`;
+      } else if (key === 'altar' && buildings.altar > 0) {
+        tooltip = `-1 Madness`;
+      }
+      
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
       if (key === 'bastion' && buildings.bastion > 0) {
