@@ -216,8 +216,7 @@ const toolTrades = [
     give: "tool",
     giveItem: "reinforced_rope",
     costs: [
-      { resource: "silver", amounts: [50] },
-      { resource: "gold", amounts: [25] }
+      { resource: "gold", amounts: [50] }
     ],
     message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers."
   },
@@ -227,7 +226,6 @@ const toolTrades = [
     give: "tool",
     giveItem: "occultist_map",
     costs: [
-      { resource: "silver", amounts: [100] },
       { resource: "gold", amounts: [50] }
     ],
     message: "You buy the occultists's map. The merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave, sealed by a door that looks like stone. This map will guide you.'"
@@ -238,8 +236,7 @@ const toolTrades = [
     give: "tool",
     giveItem: "giant_trap",
     costs: [
-      { resource: "silver", amounts: [20] },
-      { resource: "gold", amounts: [10] }
+      { resource: "gold", amounts: [25] }
     ],
     message: "You purchase the giant trap. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'"
   }
