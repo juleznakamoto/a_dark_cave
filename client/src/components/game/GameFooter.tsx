@@ -11,14 +11,10 @@ export default function GameFooter() {
   const { lastSaved, restartGame } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
 
-  const handleButtonClick = (buttonId: string, action: () => void) => {
-    setGlowingButton(buttonId);
-    action();
-    setTimeout(() => setGlowingButton(null), 300);
-  };
-
   const handleSaveGame = async () => {
+    setGlowingButton('save');
     await manualSave();
+    setTimeout(() => setGlowingButton(null), 300);
   };
 
   const handleRestartGame = async () => {
@@ -40,7 +36,7 @@ export default function GameFooter() {
           <Button 
             variant="outline"
             size="xs"
-            onClick={() => handleButtonClick('save', handleSaveGame)}
+            onClick={handleSaveGame}
             data-testid="button-save-game"
             className="px-3 py-1 text-xs no-hover transition-shadow duration-300"
             style={{
@@ -54,27 +50,17 @@ export default function GameFooter() {
           <Button 
             variant="outline"
             size="xs"
-            onClick={() => handleButtonClick('restart', handleRestartGame)}
+            onClick={handleRestartGame}
             data-testid="button-restart-game"
-            className="px-3 py-1 text-xs no-hover transition-shadow duration-300"
-            style={{
-              boxShadow: glowingButton === 'restart' 
-                ? '0 0 20px rgba(255, 99, 71, 0.6), 0 0 30px rgba(255, 69, 0, 0.4)' 
-                : 'none'
-            }}
+            className="px-3 py-1 text-xs no-hover"
           >
             New Game
           </Button>
           <Button 
             variant="outline"
             size="xs"
-            onClick={() => handleButtonClick('tribute', handleOfferTribute)}
-            className="px-3 py-1 text-xs no-hover transition-shadow duration-300"
-            style={{
-              boxShadow: glowingButton === 'tribute' 
-                ? '0 0 20px rgba(255, 99, 71, 0.6), 0 0 30px rgba(255, 69, 0, 0.4)' 
-                : 'none'
-            }}
+            onClick={handleOfferTribute}
+            className="px-3 py-1 text-xs no-hover"
           >
             Offer Tribute
           </Button>
