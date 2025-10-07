@@ -293,7 +293,7 @@ export default function SidePanelSection({
             <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-pre-line">
-                {hasTooltip && title === "Fortifications" ? (
+                {hasTooltip && (title === "Fortifications" || title === "Buildings") ? (
                   <div>{item.tooltip}</div>
                 ) : effect ? (
                   <>
