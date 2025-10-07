@@ -185,13 +185,7 @@ function getAdjustedCost(
 
   if (isCraftingAction) {
     const reduction = getTotalCraftingCostReduction(state);
-    const adjusted = Math.floor(cost * (1 - reduction));
-    
-    if (actionId === "craftTorch") {
-      console.log(`⚙️ getAdjustedCost [${actionId}]: cost=${cost}, reduction=${reduction}, adjusted=${adjusted}`);
-    }
-    
-    return adjusted;
+    return Math.floor(cost * (1 - reduction));
   }
 
   if (isBuildingAction) {
@@ -398,23 +392,13 @@ export const applyActionEffects = (
           // Apply cost reductions using single source of truth
           const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
 
-          if (actionId === "craftTorch") {
-            console.log(`🔨 COST DEDUCTION [${actionId}]: path=${path}, finalKey=${finalKey}, original=${cost}, adjusted=${adjustedCost}, isResource=${path.startsWith("resources.")}`);
-            console.log(`🔨 Current value in state: ${state.resources[finalKey as keyof typeof state.resources] || 0}`);
-          }
-
           // Handle bone totem cost specifically
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
             current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
           } else {
             current[finalKey] =
-              (state.resources[finalKey as keyof typeof state.resources] || 0) -
-              adjustedCost;
-            
-            if (actionId === "craftTorch") {
-              console.log(`🔨 New value after deduction: ${current[finalKey]}`);
-            }
+              (current[finalKey] || 0) - adjustedCost;
           }
         }
       });
@@ -718,10 +702,6 @@ export function getActionCostDisplay(
       const adjustedAmount = state
         ? getAdjustedCost(actionId, amount, resource.startsWith("resources."), state)
         : amount;
-
-      if (actionId === "craftTorch") {
-        console.log(`💰 COST DISPLAY [${actionId}]: resource=${resource}, original=${amount}, adjusted=${adjustedAmount}, isResource=${resource.startsWith("resources.")}`);
-      }
 
       // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
