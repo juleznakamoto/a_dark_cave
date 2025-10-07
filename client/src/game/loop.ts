@@ -24,6 +24,37 @@ let lastStarvationCheck = 0;
 let lastFreezingCheck = 0;
 let lastStrangerCheck = 0;
 
+// Helper function to build the GameState object
+function buildGameState(state: ReturnType<typeof useGameStore>) {
+  return {
+    resources: state.resources,
+    stats: state.stats,
+    flags: state.flags,
+    tools: state.tools,
+    weapons: state.weapons,
+    clothing: state.clothing,
+    relics: state.relics,
+    blessings: state.blessings,
+    buildings: state.buildings,
+    villagers: state.villagers,
+    world: state.world,
+    story: state.story,
+    damagedBuildings: state.damagedBuildings,
+    events: state.events,
+    effects: state.effects,
+    bastion_stats: state.bastion_stats,
+    log: state.log,
+    current_population: state.current_population,
+    total_population: state.total_population,
+    version: state.version,
+    hasWizardTower: state.hasWizardTower,
+    wizardArrives: state.wizardArrives,
+    wizardDecryptsScrolls: state.wizardDecryptsScrolls,
+    templeDedicated: state.templeDedicated,
+    templeDedicatedTo: state.templeDedicatedTo,
+  };
+}
+
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
@@ -393,24 +424,7 @@ function handleFreezingCheck() {
 async function handleAutoSave() {
   console.log("[SAVE] Automatic save triggered");
   const state = useGameStore.getState();
-  const gameState: GameState = {
-    resources: state.resources,
-    stats: state.stats,
-    flags: state.flags,
-    tools: state.tools,
-    weapons: state.weapons,
-    clothing: state.clothing,
-    relics: state.relics,
-    buildings: state.buildings,
-    villagers: state.villagers,
-    world: state.world,
-    story: state.story,
-    events: state.events,
-    log: state.log,
-    current_population: state.current_population,
-    total_population: state.total_population,
-    version: state.version,
-  };
+  const gameState: GameState = buildGameState(state);
 
   await saveGame(gameState);
 
@@ -559,6 +573,10 @@ function handleStrangerApproach() {
 export async function manualSave() {
   console.log("[SAVE] Manual save triggered");
   const state = useGameStore.getState();
+  const gameState = buildGameState(state);
+
   await saveGame(gameState);
-  useGameStore.setState({ lastSaved: formatLastSaved(Date.now()) });
+
+  const now = new Date().toLocaleTimeString();
+  useGameStore.setState({ lastSaved: now });
 }
