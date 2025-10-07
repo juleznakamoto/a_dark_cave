@@ -93,7 +93,21 @@ export default function SidePanel() {
 
   // Dynamically generate schematic items from state
   const schematicItems = Object.entries(gameState.schematics || {})
-    .filter(([key, value]) => value === true)
+    .filter(([key, value]) => {
+      if (!value) return false;
+      
+      // Hide arbalest schematic if weapon is crafted
+      if (key === 'arbalest_schematic' && gameState.weapons.arbalest) {
+        return false;
+      }
+      
+      // Hide nightshade bow schematic if weapon is crafted
+      if (key === 'nightshade_bow_schematic' && gameState.weapons.nightshade_bow) {
+        return false;
+      }
+      
+      return true;
+    })
     .map(([key, value]) => ({
       id: key,
       label: clothingEffects[key]?.name || capitalizeWords(key),
