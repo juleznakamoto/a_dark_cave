@@ -139,7 +139,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "buyMirror",
-        label: "Buy the mirror for 500 iron",
+        label: "Buy for 500 iron",
         effect: (state: GameState) => {
           return {
             resources: {
@@ -151,7 +151,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               blackened_mirror: true,
             },
             _logMessage:
-              "You purchase the mirror. Its dark surface shimmers with hidden truths, and glimpses of your own future are revealed, nudging your sanity toward the edge.",
+              "You purchase the mirror. Its dark surface shimmers with hidden truths, and glimpses of your own future, nudging your sanity toward the edge.",
           };
         },
       },
