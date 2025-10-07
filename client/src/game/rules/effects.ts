@@ -418,7 +418,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   frostglass_sword: {
     id: "frostglass_sword",
     name: "Frostglass Sword",
-    description: "A legendary blade forged from frostglas, radiating an otherworldly cold power",
+    description:
+      "A legendary blade forged from frostglas, radiating an otherworldly cold power",
     bonuses: {
       generalBonuses: {
         strength: 30,
@@ -432,7 +433,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   frostfang: {
     id: "frostfang",
     name: "Frostfang",
-    description: "A sword forged from frostglas, cold as the void between stars.",
+    description:
+      "A sword forged from frostglas, cold as the void between stars.",
     bonuses: {
       generalBonuses: {
         strength: 8,
@@ -804,6 +806,21 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  murmuring_cube: {
+    id: "murmuring_cube",
+    name: "Murmuring Cube",
+    description: "Perfectly polished metal cube of unknown origin",
+    bonuses: {},
+  },
+
+  ancient_scrolls: {
+    id: "ancient_scrolls",
+    name: "Ancient Scrolls",
+    description:
+      "Mysterious scrolls written in an unknown language, waiting to be decrypted",
+    bonuses: {},
+  },
+
   // Blessings
   dagons_gift: {
     id: "dagons_gift",
@@ -815,23 +832,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 2.0,
         },
       },
-    },
-  },
-
-  murmuring_cube: {
-    id: "murmuring_cube",
-    name: "Murmuring Cube",
-    description:
-      "Perfectly polished metal cube of unknown origin",
-    bonuses: {
-    },
-  },
-
-  ancient_scrolls: {
-    id: "ancient_scrolls",
-    name: "Ancient Scrolls",
-    description: "Mysterious scrolls written in an unknown language, waiting to be decrypted",
-    bonuses: {
     },
   },
 
@@ -853,12 +853,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark: {
     id: "ravens_mark",
     name: "Raven's Mark",
-    description: "Strangers approach more frequently (+20% chance, +20% for groups)",
-    bonuses: {
-      generalBonuses: {
-        luck: 2,
-      },
-    },
+    description: "More Strangers approach",
+    bonuses: {},
   },
 
   ashen_embrace: {
@@ -906,22 +902,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark_enhanced: {
     id: "ravens_mark_enhanced",
     name: "Raven's Mark (Enhanced)",
-    description: "Strangers approach much more frequently (+40% chance, +40% for groups)",
-    bonuses: {
-      generalBonuses: {
-        luck: 4, // Doubled from 2
-      },
-    },
+    description: "Much more Strangers approach",
+    bonuses: {},
   },
 
   ashen_embrace_enhanced: {
     id: "ashen_embrace_enhanced",
     name: "Ashen Embrace (Enhanced)",
-    description: "+200% resources when mining",
+    description: "+300% resources when mining",
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 3.0, // 200% bonus = 3x total
+          resourceMultiplier: 4.0, // 300% bonus
         },
       },
     },
@@ -1399,16 +1391,19 @@ export const calculateTotalEffects = (state: GameState) => {
 
   // Blessing effects
   if (state.blessings?.dagons_gift) {
-    effects.resource_multiplier.hunt = (effects.resource_multiplier.hunt || 1) * 2; // +100% hunting resources
+    effects.resource_multiplier.hunt =
+      (effects.resource_multiplier.hunt || 1) * 2; // +100% hunting resources
   }
   if (state.blessings?.flames_touch) {
     effects.resource_bonus.steel = (effects.resource_bonus.steel || 0) + 1; // +1 steel from forging
   }
   if (state.blessings?.ravens_mark) {
-    effects.probability_bonus.newVillager = (effects.probability_bonus.newVillager || 0) + 0.2; // +20% new villager chance
+    effects.probability_bonus.newVillager =
+      (effects.probability_bonus.newVillager || 0) + 0.2; // +20% new villager chance
   }
   if (state.blessings?.ashen_embrace) {
-    effects.resource_multiplier.mining = (effects.resource_multiplier.mining || 1) * 2; // +100% mining resources
+    effects.resource_multiplier.mining =
+      (effects.resource_multiplier.mining || 1) * 2; // +100% mining resources
   }
 
   return effects;

@@ -878,16 +878,16 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (templeDedicatedTo === "dagon") {
             updatedBlessings.dagons_gift_enhanced = true;
-            message = "The waters surge with renewed power. Dagon's blessing flows twice as strong through your settlement.";
+            message = "Dagon's Blessing flows strong than before.";
           } else if (templeDedicatedTo === "flame") {
             updatedBlessings.flames_touch_enhanced = true;
-            message = "The First Flame burns brighter, its sacred fire doubling in strength and purpose.";
+            message = "The First Flame burns brighter than before.";
           } else if (templeDedicatedTo === "raven") {
             updatedBlessings.ravens_mark_enhanced = true;
-            message = "The ravens gather in greater numbers, their otherworldly knowledge deepening as the Ravenborn's power intensifies.";
+            message = "The Raven's Mark grows stronger than before.";
           } else if (templeDedicatedTo === "ash") {
             updatedBlessings.ashen_embrace_enhanced = true;
-            message = "The ashes swirl with doubled intensity, the Ashbringer's power growing ever stronger.";
+            message = "The Ashen Embrace is stronger than before.";
           }
 
           return {
@@ -933,7 +933,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             templeDedicatedTo: "all",
             _logMessage:
-              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts flowing freely through the sacred halls. The Raven's Orb and Ashen Dagger manifest within, while blessings from every path converge upon your settlement.",
+              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts flowing freely through the sacred halls.",
           };
         },
       },
