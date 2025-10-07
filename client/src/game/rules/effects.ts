@@ -838,7 +838,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch: {
     id: "flames_touch",
     name: "Flame's Touch",
-    description: "+1 steel from Steel Forger",
+    description: "+1 Steel from Steel Forger",
     bonuses: {
       actionBonuses: {
         forge: {
@@ -856,7 +856,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "New Villagers join more frequently (+20%)",
     bonuses: {
       generalBonuses: {
-        luck: 2, // Represents improved villager recruitment
+        luck: 2,
       },
     },
   },
@@ -874,15 +874,15 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  // Enhanced blessings (doubled effects)
+  // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
     name: "Dagon's Gift (Enhanced)",
-    description: "+200% resources when hunting",
+    description: "+300% resources when hunting",
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 3.0, // 200% bonus = 3x total
+          resourceMultiplier: 4.0, // 300% bonus
         },
       },
     },
@@ -891,12 +891,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch_enhanced: {
     id: "flames_touch_enhanced",
     name: "Flame's Touch (Enhanced)",
-    description: "+2 steel from Steel Forger",
+    description: "+3 Steel from Steel Forger",
     bonuses: {
       actionBonuses: {
         forge: {
           resourceBonus: {
-            steel: 2,
+            steel: 3,
           },
         },
       },

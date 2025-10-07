@@ -158,7 +158,6 @@ const defaultGameState: GameState = {
 
 // State management utilities
 class StateManager {
-  private static queuedEffectUpdates = new Set<string>();
   private static updateTimer: NodeJS.Timeout | null = null;
 
   static scheduleEffectsUpdate(store: () => GameStore) {

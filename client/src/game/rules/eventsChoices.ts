@@ -870,7 +870,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "deepenDevotion",
-        label: "Deepen Devotion to Chosen Path",
+        label: "Deepen Devotion",
         effect: (state: GameState) => {
           const templeDedicatedTo = state.templeDedicatedTo || "";
           let updatedBlessings = { ...state.blessings };
@@ -906,7 +906,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "dedicateToAll",
-        label: "Dedicate to All Gods",
+        label: "Dedicate to all",
         effect: (state: GameState) => {
           return {
             blessings: {

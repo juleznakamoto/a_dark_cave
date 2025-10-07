@@ -148,13 +148,13 @@ function handleGathererProduction() {
 
     if (Object.keys(updates).length > 0) {
       const newState = useGameStore.getState();
-      console.log('state_update', {
+      console.log("state_update", {
         updates,
         new_state: {
           resources: newState.resources,
           villagers: newState.villagers,
           buildings: newState.buildings,
-        }
+        },
       });
     }
   }
@@ -181,13 +181,13 @@ function handleHunterProduction() {
 
     if (Object.keys(updates).length > 0) {
       const newState = useGameStore.getState();
-      console.log('state_update', {
+      console.log("state_update", {
         updates,
         new_state: {
           resources: newState.resources,
           villagers: newState.villagers,
           buildings: newState.buildings,
-        }
+        },
       });
     }
   }
@@ -212,7 +212,8 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
-        updates[prod.resource] = (updates[prod.resource] || 0) + prod.totalAmount;
+        updates[prod.resource] =
+          (updates[prod.resource] || 0) + prod.totalAmount;
         state.updateResource(
           prod.resource as keyof typeof state.resources,
           prod.totalAmount,
@@ -223,13 +224,13 @@ function handleMinerProduction() {
 
   if (Object.keys(updates).length > 0) {
     const newState = useGameStore.getState();
-    console.log('state_update', {
+    console.log("state_update", {
       updates,
       new_state: {
         resources: newState.resources,
         villagers: newState.villagers,
         buildings: newState.buildings,
-      }
+      },
     });
   }
 }
@@ -274,13 +275,13 @@ function handlePopulationSurvival() {
 
   if (Object.keys(updates).length > 0) {
     const newState = useGameStore.getState();
-    console.log('state_update', {
+    console.log("state_update", {
       updates,
       new_state: {
         resources: newState.resources,
         villagers: newState.villagers,
         buildings: newState.buildings,
-      }
+      },
     });
   }
 }
@@ -390,7 +391,7 @@ function handleFreezingCheck() {
 }
 
 async function handleAutoSave() {
-  console.log('[SAVE] Automatic save triggered');
+  console.log("[SAVE] Automatic save triggered");
   const state = useGameStore.getState();
   const gameState: GameState = {
     resources: state.resources,
@@ -435,12 +436,14 @@ function handleStrangerApproach() {
   // Calculate probability based on your specifications
   let probability = 0.1; // 10% base probability
 
-  // +2.5% for each wooden hut
-  probability += state.buildings.woodenHut * 0.025;
-  // +2.5% for each stone hut
+  // +2.0% for each wooden hut -> 20 %
+  probability += state.buildings.woodenHut * 0.02;
+  // +2.5% for each stone hut -> 25%
   probability += state.buildings.stoneHut * 0.025;
-  // +5% for each longhouse
-  probability += state.buildings.longhouse * 0.05;
+  // +5% for each longhouse -> 6%
+  probability += state.buildings.longhouse * 0.03;
+
+  //max probability of 61%
 
   // if population is 0
   if (currentPopulation === 0) {
@@ -456,14 +459,19 @@ function handleStrangerApproach() {
   const availableRoom = maxPop - currentPop;
 
   let strangersCount = 1; // Default to 1 stranger
+  let maxStrangersCount = 3;
 
   // Check for the new condition: 10 stone houses built and a stranger approaches
   // But only if there's room for multiple strangers
-  if (state.buildings.stoneHut >= 10 && Math.random() < probability && availableRoom >= 2) {
-    if (availableRoom >= 3 && Math.random() < 0.1) {
-      strangersCount = 3;
-    } else if (Math.random() < 0.30) {
-      strangersCount = 2;
+  if (
+    state.buildings.stoneHut >= 10 &&
+    Math.random() < probability &&
+    availableRoom >= 2
+  ) {
+    if (availableRoom >= maxStrangersCount && Math.random() < 0.1) {
+      strangersCount = maxStrangersCount;
+    } else if (Math.random() < 0.3) {
+      strangersCount = maxStrangersCount - 1;
     }
   }
 
@@ -530,7 +538,7 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  console.log('[SAVE] Manual save triggered');
+  console.log("[SAVE] Manual save triggered");
   const state = useGameStore.getState();
   await saveGame(gameState);
   useGameStore.setState({ lastSaved: formatLastSaved(Date.now()) });
