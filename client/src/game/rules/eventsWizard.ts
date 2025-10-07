@@ -66,6 +66,7 @@ export const wizardEvents: Record<string, GameEvent> = {
     effect: (state: GameState) => ({
       relics: {
         ...state.relics,
+        ancient_scrolls: false,
         frostfang: true,
         blood_scepter: true,
       },
