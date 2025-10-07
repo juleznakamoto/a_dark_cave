@@ -862,6 +862,21 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  // Schematics
+  arbalest_schematic: {
+    id: "arbalest_schematic",
+    name: "Arbalest Schematic",
+    description: "Blueprint for crafting a powerful arbalest",
+    bonuses: {},
+  },
+
+  nightshade_bow_schematic: {
+    id: "nightshade_bow_schematic",
+    name: "Nightshade Bow Schematic",
+    description: "Blueprint for crafting a poisonous nightshade bow",
+    bonuses: {},
+  },
+
   // Blessings
   dagons_gift: {
     id: "dagons_gift",
