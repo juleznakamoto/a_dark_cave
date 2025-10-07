@@ -863,7 +863,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 3,
     title: "The Druid Returns",
     message:
-      "The blind druid emerges from the forest once more, his milky eyes seeming to pierce through to your very soul. 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
+      "The blind druid emerges from the forest once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
     triggered: false,
     priority: 5,
     repeatable: false,
