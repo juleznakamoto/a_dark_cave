@@ -44,6 +44,7 @@ export default function ForestPanel() {
 
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
+    const isTradeButton = actionId.startsWith('trade');
 
     if (showCost) {
       return (
@@ -57,7 +58,7 @@ export default function ForestPanel() {
                 size="xs"
                 disabled={!canExecute}
                 variant="outline"
-                className="hover:bg-transparent hover:text-foreground"
+                className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
               >
                 {label}
               </CooldownButton>
@@ -81,7 +82,7 @@ export default function ForestPanel() {
         size="xs"
         disabled={!canExecute}
         variant="outline"
-        className="hover:bg-transparent hover:text-foreground"
+        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
       >
         {label}
       </CooldownButton>
@@ -102,7 +103,7 @@ export default function ForestPanel() {
             {group.title && (
               <h3 className="text-xs font-bold text-foreground">{group.title}</h3>
             )}
-            <div className={group.title === 'Trade' ? 'grid grid-cols-4 gap-2 justify-items-start' : 'flex flex-wrap gap-2'}>
+            <div className="flex flex-wrap gap-2">
               {visibleActions.map(action => renderButton(action.id, action.label))}
             </div>
           </div>
