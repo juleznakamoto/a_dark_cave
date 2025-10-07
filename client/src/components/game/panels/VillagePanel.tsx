@@ -108,11 +108,6 @@ export default function VillagePanel() {
       showWhen: () => buildings.deepeningPit >= 1,
     },
     {
-      id: "gold_miner",
-      label: "Gold Miner",
-      showWhen: () => buildings.deepPit >= 1,
-    },
-    {
       id: "obsidian_miner",
       label: "Obsidian Miner",
       showWhen: () => buildings.deepPit >= 1,
@@ -150,14 +145,24 @@ export default function VillagePanel() {
     let displayLabel = label;
     if (actionId === "buildWatchtower") {
       const watchtowerLevel = buildings.watchtower || 0;
-      const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+      const watchtowerLabels = [
+        "Watchtower",
+        "Guard Tower",
+        "Fortified Tower",
+        "Cannon Tower",
+      ];
       displayLabel = watchtowerLabels[watchtowerLevel] || "Watchtower";
     }
-    
+
     // Dynamic label for palisades based on current level
     if (actionId === "buildPalisades") {
       const palisadesLevel = buildings.palisades || 0;
-      const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+      const palisadesLabels = [
+        "Wooden Palisades",
+        "Fortified Palisades",
+        "Stone Wall",
+        "Reinforced Wall",
+      ];
       displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
@@ -208,7 +213,10 @@ export default function VillagePanel() {
     return (
       <div key={jobId} className="flex items-center justify-between">
         <span className="text-sm">
-          {label} <span className="text-muted-foreground">{getTotalProductionText(jobId, currentCount)}</span>
+          {label}{" "}
+          <span className="text-muted-foreground">
+            {getTotalProductionText(jobId, currentCount)}
+          </span>
         </span>
         <div className="flex items-center gap-1">
           <Button
