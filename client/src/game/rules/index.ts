@@ -448,10 +448,6 @@ export const applyActionEffects = (
           const max = parseInt(match[2]);
           let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
-          console.log(
-            `🎲 RANDOM GENERATION - ${finalKey}: rolled ${baseAmount} from range [${min}, ${max}]`,
-          );
-
           // Apply action bonuses from the centralized effects system
           const actionBonuses = getActionBonuses(actionId, state);
           if (
@@ -464,17 +460,11 @@ export const applyActionEffects = (
                 finalKey as keyof typeof actionBonuses.resourceBonus
               ];
             baseAmount += bonus;
-            console.log(
-              `🎲 Added fixed bonus: ${baseAmount - bonus} + ${bonus} = ${baseAmount}`,
-            );
           }
 
           const originalAmount =
             state.resources[finalKey as keyof typeof state.resources] || 0;
           current[finalKey] = originalAmount + baseAmount;
-          console.log(
-            `🎲 Final amount: ${originalAmount} + ${baseAmount} = ${current[finalKey]}`,
-          );
         }
       } else if (
         typeof effect === "object" &&
@@ -760,7 +750,7 @@ export function getActionCostBreakdown(
     const resourceName = resource.includes(".")
       ? resource.split(".").pop()
       : resource;
-    
+
     // Replace underscores with spaces and capitalize each word
     const formattedName = resourceName
       .split("_")
