@@ -163,7 +163,7 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
 
-    // Check if this is a relic, weapon, tool, or schematic that has effect information
+    // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
@@ -175,7 +175,8 @@ export default function SidePanelSection({
         title === "Tools" ||
         title === "Weapons" ||
         title === "Clothing" ||
-        title === "Schematics") &&
+        title === "Schematics" ||
+        title === "Blessings") &&
       !effect
     ) {
       console.log(`Missing effect for item: ${item.id} in section: ${title}`, {
@@ -282,7 +283,8 @@ export default function SidePanelSection({
           title === "Tools" ||
           title === "Weapons" ||
           title === "Clothing" ||
-          title === "Schematics")) ||
+          title === "Schematics" ||
+          title === "Blessings")) ||
       (hasTooltip && (title === "Fortifications" || title === "Buildings"))
     ) {
       return (
