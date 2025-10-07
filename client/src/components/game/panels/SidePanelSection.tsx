@@ -43,9 +43,6 @@ interface SidePanelSectionProps {
   onResourceChange?: (change: ResourceChange) => void;
 }
 
-
-
-
 export default function SidePanelSection({
   title,
   items,
@@ -89,7 +86,7 @@ export default function SidePanelSection({
             const newChange = {
               resource: item.id,
               amount: changeAmount,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             };
             onResourceChange(newChange);
           }
@@ -111,7 +108,7 @@ export default function SidePanelSection({
             const newChange = {
               resource: item.id,
               amount: changeAmount,
-              timestamp: Date.now()
+              timestamp: Date.now(),
             };
             onResourceChange(newChange);
           }
@@ -173,12 +170,19 @@ export default function SidePanelSection({
     const effect = relicEffect || weaponEffect || toolEffect;
 
     // Debug logging to identify missing effects
-    if ((title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing" || title === "Schematics") && !effect) {
+    if (
+      (title === "Relics" ||
+        title === "Tools" ||
+        title === "Weapons" ||
+        title === "Clothing" ||
+        title === "Schematics") &&
+      !effect
+    ) {
       console.log(`Missing effect for item: ${item.id} in section: ${title}`, {
         item,
         hasRelicEffect: !!relicEffect,
         hasWeaponEffect: !!weaponEffect,
-        hasToolEffect: !!toolEffect
+        hasToolEffect: !!toolEffect,
       });
     }
 
@@ -189,7 +193,12 @@ export default function SidePanelSection({
     const hasActionBonuses =
       effect?.bonuses?.actionBonuses &&
       Object.keys(effect.bonuses.actionBonuses).length > 0;
-    const hasEffect = effect && (hasGeneralBonuses || hasActionBonuses || effect.name || effect.description);
+    const hasEffect =
+      effect &&
+      (hasGeneralBonuses ||
+        hasActionBonuses ||
+        effect.name ||
+        effect.description);
 
     // Check if this item has a tooltip (for buildings with stats)
     const hasTooltip = item.tooltip && item.tooltip.length > 0;
@@ -210,10 +219,11 @@ export default function SidePanelSection({
 
     // Check if the item is 'madness' and if there's any madness from events to display
     const gameState = useGameStore.getState();
-    const eventMadness = item.id === 'madness' ? (gameState.stats.madnessFromEvents || 0) : 0;
-    const isMadnessTooltip = item.id === 'madness' && eventMadness > 0;
+    const eventMadness =
+      item.id === "madness" ? gameState.stats.madnessFromEvents || 0 : 0;
+    const isMadnessTooltip = item.id === "madness" && eventMadness > 0;
 
-    const isMadness = item.id === 'madness';
+    const isMadness = item.id === "madness";
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
 
     const itemContent = (
@@ -228,19 +238,26 @@ export default function SidePanelSection({
         }`}
       >
         <span className="text-xs text-gray-400 flex items-center gap-1">
-              {item.icon !== undefined && (
-                <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
-              )}
-              {item.label.includes('↓') ? (
-                <>
-                  {item.label.replace(' ↓', '')}
-                  <span className="text-red-800 ml-1">↓</span>
-                </>
-              ) : (
-                item.label
-              )}
-            </span>
-        {!["Relics", "Tools", "Weapons", "Clothing", "Buildings", "Fortifications"].includes(title) && (
+          {item.icon !== undefined && (
+            <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
+          )}
+          {item.label.includes("↓") ? (
+            <>
+              {item.label.replace(" ↓", "")}
+              <span className="text-red-800 ml-1">↓</span>
+            </>
+          ) : (
+            item.label
+          )}
+        </span>
+        {![
+          "Relics",
+          "Tools",
+          "Weapons",
+          "Clothing",
+          "Buildings",
+          "Fortifications",
+        ].includes(title) && (
           <span
             className={`font-mono ${
               isAnimated
@@ -261,7 +278,11 @@ export default function SidePanelSection({
     // If this item has effects or tooltip, wrap it in a tooltip
     if (
       (hasEffect &&
-        (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing" || title === "Schematics")) ||
+        (title === "Relics" ||
+          title === "Tools" ||
+          title === "Weapons" ||
+          title === "Clothing" ||
+          title === "Schematics")) ||
       (hasTooltip && (title === "Fortifications" || title === "Buildings"))
     ) {
       return (
@@ -272,100 +293,116 @@ export default function SidePanelSection({
               <div className="text-xs whitespace-pre-line">
                 {hasTooltip && title === "Fortifications" ? (
                   <div>{item.tooltip}</div>
-                ) : effect ? (
+                ) : (
                   <>
-                    
                     {effect.name && (
                       <div className="font-bold mb-1">{effect.name}</div>
                     )}
                     {effect.description && (
-                      <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+                      <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">
+                        {effect.description}
+                      </div>
                     )}
                     {effect.bonuses?.generalBonuses && (
-                  <>
-                    {effect.bonuses.generalBonuses.luck && (
-                      <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
-                    )}
-                    {effect.bonuses.generalBonuses.strength && (
-                      <div>
-                        +{effect.bonuses.generalBonuses.strength} Strength
-                      </div>
-                    )}
-                    {effect.bonuses.generalBonuses.gatheringSpeed && (
-                      <div>
-                        +
-                        {Math.round(
-                          (effect.bonuses.generalBonuses.gatheringSpeed - 1) *
-                            100,
+                      <>
+                        {effect.bonuses.generalBonuses.luck && (
+                          <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
                         )}
-                        % Gathering Speed
-                      </div>
-                    )}
-                    {effect.bonuses.generalBonuses.craftingSpeed && (
-                      <div>
-                        +
-                        {Math.round(
-                          (effect.bonuses.generalBonuses.craftingSpeed - 1) * 100,
+                        {effect.bonuses.generalBonuses.strength && (
+                          <div>
+                            +{effect.bonuses.generalBonuses.strength} Strength
+                          </div>
                         )}
-                        % Crafting Speed
-                      </div>
-                    )}
-                    {effect.bonuses.generalBonuses.explorationBonus && (
-                      <div>
-                        +{effect.bonuses.generalBonuses.explorationBonus}{" "}
-                        Exploration Bonus
-                      </div>
-                    )}
-                    {effect.bonuses.generalBonuses.knowledge && (
-                      <div>
-                        +{effect.bonuses.generalBonuses.knowledge} Knowledge
-                      </div>
-                    )}
-                    {effect.bonuses.generalBonuses.madness && (
-                      <div>+{effect.bonuses.generalBonuses.madness} Madness</div>
-                    )}
-                    {effect.bonuses.generalBonuses.craftingCostReduction && (
-                      <div>
-                        {Math.floor(
-                          effect.bonuses.generalBonuses.craftingCostReduction *
-                            100,
+                        {effect.bonuses.generalBonuses.gatheringSpeed && (
+                          <div>
+                            +
+                            {Math.round(
+                              (effect.bonuses.generalBonuses.gatheringSpeed -
+                                1) *
+                                100,
+                            )}
+                            % Gathering Speed
+                          </div>
                         )}
-                        % Craft Discount
-                      </div>
+                        {effect.bonuses.generalBonuses.craftingSpeed && (
+                          <div>
+                            +
+                            {Math.round(
+                              (effect.bonuses.generalBonuses.craftingSpeed -
+                                1) *
+                                100,
+                            )}
+                            % Crafting Speed
+                          </div>
+                        )}
+                        {effect.bonuses.generalBonuses.explorationBonus && (
+                          <div>
+                            +{effect.bonuses.generalBonuses.explorationBonus}{" "}
+                            Exploration Bonus
+                          </div>
+                        )}
+                        {effect.bonuses.generalBonuses.knowledge && (
+                          <div>
+                            +{effect.bonuses.generalBonuses.knowledge} Knowledge
+                          </div>
+                        )}
+                        {effect.bonuses.generalBonuses.madness && (
+                          <div>
+                            +{effect.bonuses.generalBonuses.madness} Madness
+                          </div>
+                        )}
+                        {effect.bonuses.generalBonuses
+                          .craftingCostReduction && (
+                          <div>
+                            {Math.floor(
+                              effect.bonuses.generalBonuses
+                                .craftingCostReduction * 100,
+                            )}
+                            % Craft Discount
+                          </div>
+                        )}
+                      </>
                     )}
+                    {effect.bonuses.actionBonuses &&
+                      (() => {
+                        // Special case for seeker pack - show simplified tooltip
+                        if (effect.id === "seeker_pack") {
+                          return <div>+20% Explore Bonus</div>;
+                        }
 
+                        return Object.entries(effect.bonuses.actionBonuses).map(
+                          ([actionId, bonus]) => (
+                            <div key={actionId}>
+                              {bonus.resourceMultiplier &&
+                                bonus.resourceMultiplier !== 1 && (
+                                  <div>
+                                    +
+                                    {Math.round(
+                                      (bonus.resourceMultiplier - 1) * 100,
+                                    )}
+                                    %{" "}
+                                    {capitalizeWords(actionId).replace(
+                                      "Mining",
+                                      "Mine",
+                                    )}{" "}
+                                    Bonus
+                                  </div>
+                                )}
+                              {bonus.resourceBonus &&
+                                Object.entries(bonus.resourceBonus).map(
+                                  ([resource, amount]) => (
+                                    <div key={resource}>
+                                      {capitalizeWords(actionId)}: +{amount}{" "}
+                                      {capitalizeWords(resource)}
+                                    </div>
+                                  ),
+                                )}
+                            </div>
+                          ),
+                        );
+                      })()}
                   </>
                 )}
-                {effect.bonuses.actionBonuses &&
-                (() => {
-                  // Special case for seeker pack - show simplified tooltip
-                  if (effect.id === 'seeker_pack') {
-                    return <div>+20% Explore Bonus</div>;
-                  }
-
-                  return Object.entries(effect.bonuses.actionBonuses).map(
-                    ([actionId, bonus]) => (
-                      <div key={actionId}>
-                        {bonus.resourceMultiplier &&
-                          bonus.resourceMultiplier !== 1 && (
-                            <div>
-                              +{Math.round((bonus.resourceMultiplier - 1) * 100)}%{" "}{capitalizeWords(actionId).replace('Mining', 'Mine')}{" "}Bonus
-                            </div>
-                          )}
-                        {bonus.resourceBonus &&
-                          Object.entries(bonus.resourceBonus).map(
-                            ([resource, amount]) => (
-                              <div key={resource}>
-                                {capitalizeWords(actionId)}: +{amount} {capitalizeWords(resource)}
-                              </div>
-                            ),
-                          )}
-                      </div>
-                    ),
-                  );
-                })()}
-                  </>
-                ) : null}
               </div>
             </TooltipContent>
           </Tooltip>
@@ -380,7 +417,9 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
             <TooltipContent>
-              <p className="whitespace-pre-line">+{eventMadness} Madness from Events</p>
+              <p className="whitespace-pre-line">
+                +{eventMadness} Madness from Events
+              </p>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -407,9 +446,7 @@ export default function SidePanelSection({
 
   return (
     <div className={`px-3 py-3 border-border ${className}`}>
-      <h3 className="text-xs font-medium tracking-wide mb-1">
-        {title}
-      </h3>
+      <h3 className="text-xs font-medium tracking-wide mb-1">{title}</h3>
       <div className="space-y-0.5 text-xs">
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
