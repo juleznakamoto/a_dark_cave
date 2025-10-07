@@ -172,6 +172,16 @@ export default function SidePanelSection({
     const toolEffect = toolEffects[item.id];
     const effect = relicEffect || weaponEffect || toolEffect;
 
+    // Debug logging to identify missing effects
+    if ((title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing" || title === "Schematics") && !effect) {
+      console.log(`Missing effect for item: ${item.id} in section: ${title}`, {
+        item,
+        hasRelicEffect: !!relicEffect,
+        hasWeaponEffect: !!weaponEffect,
+        hasToolEffect: !!toolEffect
+      });
+    }
+
     // Check if the effect has actual content to display
     const hasGeneralBonuses =
       effect?.bonuses?.generalBonuses &&
