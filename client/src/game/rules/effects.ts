@@ -827,6 +827,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  ancient_scrolls: {
+    id: "ancient_scrolls",
+    name: "Ancient Scrolls",
+    description: "Mysterious scrolls written in an unknown language, waiting to be decrypted by someone with knowledge of the ancient arts",
+    bonuses: {
+    },
+  },
+
   flames_touch: {
     id: "flames_touch",
     name: "Flame's Touch",
