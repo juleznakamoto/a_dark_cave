@@ -179,8 +179,8 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
-    // Update bastion integrity in game state
-    gameState.updateBastionIntegrity(currentIntegrity);
+    // Don't update bastion integrity - it's calculated from buildings and damage flags
+    // Integrity is only for display during combat, not persisted to state
 
     if (combatResult === "victory") {
       onVictory();

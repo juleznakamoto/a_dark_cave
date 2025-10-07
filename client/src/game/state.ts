@@ -473,7 +473,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           timestamp: Date.now(),
           type: 'system'
         };
-        
+
         set((prevState) => ({
           ...prevState,
           log: [...prevState.log, logEntry].slice(-10),
@@ -612,7 +612,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: 'system'
       };
-      
+
       set((prevState) => ({
         ...prevState,
         log: [...prevState.log, logEntry].slice(-10),
@@ -782,13 +782,4 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: calculateBastionStats(state),
     }));
   },
-
-  updateBastionIntegrity: (newIntegrity: number) => {
-    set((state) => ({
-      bastion_stats: {
-        ...state.bastion_stats,
-        integrity: newIntegrity,
-      },
-    }));
-  },
-}));
+});

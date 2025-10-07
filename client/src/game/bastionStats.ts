@@ -92,17 +92,14 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const attackFromStrength = getTotalStrength(state);
   const totalAttack = attackFromFortifications + attackFromStrength;
 
-  // Current integrity from game state (starts at base, can be damaged)
-  // If buildings are damaged, their defense stats are multiplied by 0.5.
-  // This is handled by bastionMultiplier applied above.
-  const currentIntegrity = state.bastion_stats?.integrity ?? baseIntegrity;
-
+  // Integrity is always calculated from buildings and damage flags
+  // It is not a mutable state value - only buildings can be damaged (via damage flags)
   return {
     defense,
     attack: totalAttack,
     attackFromFortifications,
     attackFromStrength,
-    integrity: currentIntegrity,
+    integrity: baseIntegrity,
   };
 }
 
