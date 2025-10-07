@@ -224,7 +224,7 @@ function handleMinerProduction() {
 
   // Steel Forger production
   if (state.villagers.steel_forger && state.villagers.steel_forger > 0) {
-    const steelForgerJob = villagerJobs.steel_forger;
+    const steelForgerJob = populationJobs.steel_forger;
     const steelForgers = state.villagers.steel_forger;
 
     steelForgerJob.production.forEach((prod) => {
