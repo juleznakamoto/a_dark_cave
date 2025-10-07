@@ -38,12 +38,7 @@ export default function GameFooter() {
             size="xs"
             onClick={handleSaveGame}
             data-testid="button-save-game"
-            className="px-3 py-1 text-xs no-hover transition-shadow duration-300"
-            style={{
-              boxShadow: glowingButton === 'save' 
-                ? '0 0 20px rgba(255, 99, 71, 0.6), 0 0 30px rgba(255, 69, 0, 0.4)' 
-                : 'none'
-            }}
+            className={`px-3 py-1 text-xs no-hover ${glowingButton === 'save' ? 'button-glow-animation' : ''}`}
           >
             Save Game
           </Button>
