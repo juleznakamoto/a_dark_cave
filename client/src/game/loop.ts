@@ -443,7 +443,17 @@ function handleStrangerApproach() {
   // +5% for each longhouse -> 6%
   probability += state.buildings.longhouse * 0.03;
 
-  //max probability of 61%
+  // Raven's Mark blessing: +20% stranger approach probability
+  if (state.blessings?.ravens_mark) {
+    probability += 0.2;
+  }
+
+  // Raven's Mark Enhanced blessing: +40% stranger approach probability
+  if (state.blessings?.ravens_mark_enhanced) {
+    probability += 0.4;
+  }
+
+  //max probability of 61% (81% with Raven's Mark, 101% with enhanced)
 
   // if population is 0
   if (currentPopulation === 0) {
@@ -461,16 +471,25 @@ function handleStrangerApproach() {
   let strangersCount = 1; // Default to 1 stranger
   let moreStrangersProbability = Math.random();
 
+  // Raven's Mark blessing: 20% more likely to get multiple strangers
+  let multiStrangerMultiplier = 1.0;
+  if (state.blessings?.ravens_mark) {
+    multiStrangerMultiplier = 1.2;
+  }
+  if (state.blessings?.ravens_mark_enhanced) {
+    multiStrangerMultiplier = 1.4;
+  }
+
   // Check for the new condition: 10 stone houses built and a stranger approaches
   // But only if there's room for multiple strangers
   if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
-    if (availableRoom >= 5 && moreStrangersProbability < 0.1) {
+    if (availableRoom >= 5 && moreStrangersProbability < 0.1 * multiStrangerMultiplier) {
       strangersCount = 5;
-    } else if (availableRoom >= 4 && moreStrangersProbability < 0.2) {
+    } else if (availableRoom >= 4 && moreStrangersProbability < 0.2 * multiStrangerMultiplier) {
       strangersCount = 4;
-    } else if (availableRoom >= 3 && moreStrangersProbability < 0.3) {
+    } else if (availableRoom >= 3 && moreStrangersProbability < 0.3 * multiStrangerMultiplier) {
       strangersCount = 3;
-    } else if (availableRoom >= 2 && moreStrangersProbability < 0.4) {
+    } else if (availableRoom >= 2 && moreStrangersProbability < 0.4 * multiStrangerMultiplier) {
       strangersCount = 2;
     }
   }

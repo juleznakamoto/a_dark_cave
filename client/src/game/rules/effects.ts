@@ -853,7 +853,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark: {
     id: "ravens_mark",
     name: "Raven's Mark",
-    description: "New Villagers join more frequently (+20%)",
+    description: "Strangers approach more frequently (+20% chance, +20% for groups)",
     bonuses: {
       generalBonuses: {
         luck: 2,
@@ -906,7 +906,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark_enhanced: {
     id: "ravens_mark_enhanced",
     name: "Raven's Mark (Enhanced)",
-    description: "New Villagers join more frequently (+40%)",
+    description: "Strangers approach much more frequently (+40% chance, +40% for groups)",
     bonuses: {
       generalBonuses: {
         luck: 4, // Doubled from 2
