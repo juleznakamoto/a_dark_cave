@@ -358,6 +358,24 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 25,
   },
+
+  craftGrenadierBag: {
+    id: "craftGrenadierBag",
+    label: "Grenadier's Bag",
+    show_when: {
+      "buildings.bastion": 1,
+      "clothing.grenadier_bag": false,
+    },
+    cost: {
+      "resources.leather": 1000,
+    },
+    effects: {
+      "clothing.grenadier_bag": true,
+      "story.seen.hasGrenadierBag": true,
+      "story.seen.actionCraftGrenadierBag": true,
+    },
+    cooldown: 30,
+  },
 };
 
 // Action handlers

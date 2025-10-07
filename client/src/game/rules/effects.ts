@@ -495,6 +495,18 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  grenadier_bag: {
+    id: "grenadier_bag",
+    name: "Grenadier's Bag",
+    description: "Reinforced leather bag for carrying explosives",
+    bonuses: {
+      generalBonuses: {
+        MAX_EMBER_BOMBS: 1,
+        MAX_CINDERFLAME_BOMBS: 1,
+      },
+    },
+  },
+
   bloodstained_belt: {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
