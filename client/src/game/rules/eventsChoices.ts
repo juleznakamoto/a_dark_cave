@@ -872,7 +872,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "deepenDevotion",
         label: "Deepen Devotion to Chosen Path",
         effect: (state: GameState) => {
-          const templeDedicatedTo = state.story.seen.templeDedicatedTo;
+          const templeDedicatedTo = state.story?.seen?.templeDedicatedTo || "";
           let updatedBlessings = { ...state.blessings };
           let message = "";
 
