@@ -995,6 +995,15 @@ function handleBuildingConstruction(
   const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
 
+  // Log everything for watchtower and palisades
+  if (actionId === 'buildWatchtower' || actionId === 'buildPalisades') {
+    console.log(`[${actionId}] Current count:`, currentCount);
+    console.log(`[${actionId}] Level to build:`, level);
+    console.log(`[${actionId}] Action:`, action);
+    console.log(`[${actionId}] Action costs for level ${level}:`, actionCosts);
+    console.log(`[${actionId}] Action effects for level ${level}:`, actionEffects);
+  }
+
   if (!actionEffects) {
     console.warn(`No effects found for action ${actionId} at level ${level}`);
     return result;
@@ -1010,6 +1019,10 @@ function handleBuildingConstruction(
       }
     }
     result.stateUpdates.resources = newResources;
+    
+    if (actionId === 'buildWatchtower' || actionId === 'buildPalisades') {
+      console.log(`[${actionId}] Resources after cost deduction:`, newResources);
+    }
   }
 
   // Apply building effects
@@ -1020,7 +1033,15 @@ function handleBuildingConstruction(
         ...result.stateUpdates.buildings,
         [building]: (state.buildings[building] || 0) + effect,
       };
+      
+      if (actionId === 'buildWatchtower' || actionId === 'buildPalisades') {
+        console.log(`[${actionId}] Building update - ${building}: ${(state.buildings[building] || 0)} + ${effect} = ${(state.buildings[building] || 0) + effect}`);
+      }
     }
+  }
+
+  if (actionId === 'buildWatchtower' || actionId === 'buildPalisades') {
+    console.log(`[${actionId}] Final result.stateUpdates.buildings:`, result.stateUpdates.buildings);
   }
 
   return result;
