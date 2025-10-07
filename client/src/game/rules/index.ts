@@ -170,6 +170,32 @@ export const shouldShowAction = (
   return checkRequirements(action.show_when, state, action, actionId);
 };
 
+// Helper function to calculate adjusted cost with discounts (single source of truth)
+function getAdjustedCost(
+  actionId: string,
+  cost: number,
+  isResourceCost: boolean,
+  state: GameState,
+): number {
+  if (!isResourceCost) return cost;
+
+  const action = gameActions[actionId];
+  const isCraftingAction = actionId.startsWith("craft") || actionId.startsWith("forge");
+  const isBuildingAction = action?.building || false;
+
+  if (isCraftingAction) {
+    const reduction = getTotalCraftingCostReduction(state);
+    return Math.floor(cost * (1 - reduction));
+  }
+
+  if (isBuildingAction) {
+    const reduction = getTotalBuildingCostReduction(state);
+    return Math.floor(cost * (1 - reduction));
+  }
+
+  return cost;
+}
+
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];
@@ -196,13 +222,6 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
   if (!costs || typeof costs !== "object") return true;
 
-  // Get crafting cost reduction for crafting actions
-  const isCraftingAction =
-    actionId.startsWith("craft") || actionId.startsWith("forge");
-  const craftingCostReduction = isCraftingAction
-    ? getTotalCraftingCostReduction(state)
-    : 0;
-
   // Check if we can afford all costs
   for (const [path, requiredAmount] of Object.entries(costs)) {
     if (typeof requiredAmount !== "number") continue;
@@ -216,10 +235,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
     // For resource costs, check if we have enough (>=)
     if (path.startsWith("resources.")) {
-      // Apply crafting cost reduction to resource costs for crafting actions
-      const adjustedCost = isCraftingAction
-        ? Math.floor(requiredAmount * (1 - craftingCostReduction))
-        : requiredAmount;
+      const adjustedCost = getAdjustedCost(actionId, requiredAmount, true, state);
       if ((current || 0) < adjustedCost) {
         return false;
       }
@@ -372,15 +388,9 @@ export const applyActionEffects = (
           }
 
           const finalKey = pathParts[pathParts.length - 1];
-          // Apply crafting cost reduction to resource costs for crafting actions
-          let adjustedCost = cost;
-          if (isCraftingAction && path.startsWith("resources.") && cost < 0) {
-            adjustedCost = Math.ceil(cost * (1 - craftingCostReduction));
-          }
-          // Apply building cost reduction to resource costs for building actions
-          if (isBuildingAction && path.startsWith("resources.") && cost < 0) {
-            adjustedCost = Math.floor(cost * (1 - buildingCostReduction));
-          }
+          
+          // Apply cost reductions using single source of truth
+          const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
 
           // Handle bone totem cost specifically
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
@@ -687,28 +697,12 @@ export function getActionCostDisplay(
 
   if (!costs || Object.keys(costs).length === 0) return "";
 
-  // Get crafting cost reduction for crafting actions
-  const isCraftingAction =
-    actionId.startsWith("craft") || actionId.startsWith("forge");
-  const craftingCostReduction =
-    isCraftingAction && state ? getTotalCraftingCostReduction(state) : 0;
-
-  // Get building cost reduction for building actions
-  const isBuildingAction = action.building;
-  const buildingCostReduction =
-    isBuildingAction && state ? getTotalBuildingCostReduction(state) : 0;
-
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
-      // Apply crafting cost reduction to resource costs for crafting actions
-      let adjustedAmount = amount;
-      if (isCraftingAction && resource.startsWith("resources.")) {
-        adjustedAmount = Math.floor(amount * (1 - craftingCostReduction));
-      }
-      // Apply building cost reduction to resource costs for building actions
-      if (isBuildingAction && resource.startsWith("resources.")) {
-        adjustedAmount = Math.floor(amount * (1 - buildingCostReduction));
-      }
+      // Apply cost reductions using single source of truth
+      const adjustedAmount = state 
+        ? getAdjustedCost(actionId, amount, resource.startsWith("resources."), state)
+        : amount;
 
       // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
