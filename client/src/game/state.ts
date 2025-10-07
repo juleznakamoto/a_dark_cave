@@ -323,6 +323,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.scheduleEffectsUpdate(get);
     }
 
+    // Update bastion stats when fortification buildings change
+    if (result.stateUpdates.buildings) {
+      const buildingChanges = result.stateUpdates.buildings;
+      if (buildingChanges.bastion !== undefined || 
+          buildingChanges.watchtower !== undefined || 
+          buildingChanges.palisades !== undefined) {
+        setTimeout(() => get().updateBastionStats(), 0);
+      }
+    }
+
     // Handle event dialogs
     if (result.logEntries) {
       result.logEntries.forEach(entry => {

@@ -458,11 +458,10 @@ export default function SidePanel() {
         label: capitalizeWords(key),
         value: value ?? 0,
         testId: `bastion-stat-${key}`,
-        visible: (value ?? 0) > 0,
+        visible: true, // Always show bastion stats when bastion exists
         tooltip,
       };
-    })
-    .filter((item) => item.visible);
+    });
 
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
