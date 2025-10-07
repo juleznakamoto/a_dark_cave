@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
@@ -103,8 +104,15 @@ export default function ForestPanel() {
             {group.title && (
               <h3 className="text-xs font-bold text-foreground">{group.title}</h3>
             )}
-            <div className={group.title === 'Trade' ? 'grid grid-cols-[repeat(4,auto)] gap-2 justify-start' : 'flex flex-wrap gap-2'}>
-              {visibleActions.map(action => renderButton(action.id, action.label))}
+            <div className="flex flex-wrap gap-2">
+              {visibleActions.map((action, index) => (
+                <React.Fragment key={action.id}>
+                  {renderButton(action.id, action.label)}
+                  {group.title === 'Trade' && (index + 1) % 4 === 0 && index !== visibleActions.length - 1 && (
+                    <div className="basis-full h-0" />
+                  )}
+                </React.Fragment>
+              ))}
             </div>
           </div>
         );
