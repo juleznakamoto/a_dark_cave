@@ -106,12 +106,12 @@ export default function ForestPanel() {
             )}
             <div className="flex flex-wrap gap-x-2 gap-y-1">
               {visibleActions.map((action, index) => (
-                <React.Fragment key={action.id}>
+                <div key={action.id} className="contents">
                   {renderButton(action.id, action.label)}
                   {group.title === 'Trade' && (index + 1) % 4 === 0 && index !== visibleActions.length - 1 && (
                     <div className="basis-full h-0" />
                   )}
-                </React.Fragment>
+                </div>
               ))}
             </div>
           </div>
