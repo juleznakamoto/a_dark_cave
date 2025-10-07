@@ -388,7 +388,7 @@ export const applyActionEffects = (
           }
 
           const finalKey = pathParts[pathParts.length - 1];
-          
+
           // Apply cost reductions using single source of truth
           const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
 
@@ -700,9 +700,13 @@ export function getActionCostDisplay(
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
       // Apply cost reductions using single source of truth
-      const adjustedAmount = state 
+      const adjustedAmount = state
         ? getAdjustedCost(actionId, amount, resource.startsWith("resources."), state)
         : amount;
+
+      if (actionId === "craftTorch") {
+        console.log(`💰 COST DISPLAY [${actionId}]: resource=${resource}, original=${amount}, adjusted=${adjustedAmount}, isResource=${resource.startsWith("resources.")}`);
+      }
 
       // Extract the clean resource name from paths like "resources.wood"
       const resourceName = resource.includes(".")
