@@ -110,7 +110,7 @@ export default function MerchantDialog({
                       </HoverCardTrigger>
                       <HoverCardContent className="w-auto p-2">
                         <div className="text-xs whitespace-nowrap">
-                          {choice.cost}
+                          -{choice.cost}
                         </div>
                       </HoverCardContent>
                     </HoverCard>
