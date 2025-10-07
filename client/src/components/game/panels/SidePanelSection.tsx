@@ -170,8 +170,7 @@ export default function SidePanelSection({
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
-    const schematicEffect = schematicEffects[item.id];
-    const effect = relicEffect || weaponEffect || toolEffect || schematicEffect;
+    const effect = relicEffect || weaponEffect || toolEffect;
 
     // Check if the effect has actual content to display
     const hasGeneralBonuses =
