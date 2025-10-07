@@ -217,10 +217,10 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube06 &&
       !state.events.cube07,
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.01,
     title: "Ancient technology",
     message:
-      "'The ancient civilization that forged the portal possessed knowledge and technology far beyond the current age. They crafted devices designed to be implanted within the skull, enhancing both mind and body'",
+      "'The ancient civilization that forged the portal possessed knowledge and technology far beyond the current age. They crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
     triggered: false,
     priority: 3,
     repeatable: false,

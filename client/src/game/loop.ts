@@ -37,7 +37,6 @@ function buildGameState(state: ReturnType<typeof useGameStore>) {
     blessings: state.blessings,
     buildings: state.buildings,
     villagers: state.villagers,
-    world: state.world,
     story: state.story,
     damagedBuildings: state.damagedBuildings,
     events: state.events,

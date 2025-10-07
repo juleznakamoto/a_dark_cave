@@ -36,7 +36,6 @@ export async function saveGame(gameState: GameState): Promise<void> {
       relics: { ...gameState.relics },
       buildings: { ...gameState.buildings },
       villagers: { ...gameState.villagers },
-      world: { ...gameState.world },
       story: {
         seen: { ...gameState.story.seen }
       },

@@ -186,13 +186,6 @@ export const gameStateSchema = z.object({
     steel_forger: z.number().min(0).default(0),
     powder_maker: z.number().min(0).default(0),
   }).default({}),
-  world: z.object({
-    discovered: z.boolean().default(false),
-    position: z.object({
-      x: z.number().default(0),
-      y: z.number().default(0),
-    }).default({}),
-  }).default({}),
   story: z.object({
     seen: z.record(z.string(), z.boolean()).default({}),
   }).default({}),

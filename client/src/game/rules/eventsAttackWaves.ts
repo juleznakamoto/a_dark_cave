@@ -122,7 +122,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
-            attack: [12, 15, 18][Math.floor(Math.random() * 3)],
+            attack: Math.floor(Math.random() * 6) + 15,
             maxHealth: 100,
             currentHealth: 100,
           },
@@ -167,7 +167,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
-            attack: [15, 18, 21][Math.floor(Math.random() * 3)],
+            attack: Math.floor(Math.random() * 6) + 25,
             maxHealth: 150,
             currentHealth: 150,
           },
@@ -212,7 +212,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
-            attack: [18, 21, 24][Math.floor(Math.random() * 3)],
+            attack: Math.floor(Math.random() * 6) + 35,
             maxHealth: 200,
             currentHealth: 200,
           },
@@ -257,7 +257,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
-            attack: [30, 35][Math.floor(Math.random() * 2)],
+            attack: Math.floor(Math.random() * 6) + 45,
             maxHealth: 250,
             currentHealth: 250,
           },
@@ -302,7 +302,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",
-            attack: [50, 52, 54, 55, 56, 58, 60][Math.floor(Math.random() * 7)],
+            attack: [55, 60, 65][Math.floor(Math.random() * 3)],
           },
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,
