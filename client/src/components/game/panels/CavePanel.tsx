@@ -98,6 +98,8 @@ export default function CavePanel() {
             { id: "craftLongBow", label: "Long Bow" },
             { id: "craftWarBow", label: "War Bow" },
             { id: "craftMasterBow", label: "Master Bow" },
+            { id: "craftArbalest", label: "Arbalest" },
+            { id: "craftNightshadeBow", label: "Nightshade Bow" },
           ],
         },
       ],

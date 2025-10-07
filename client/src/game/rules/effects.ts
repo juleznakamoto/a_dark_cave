@@ -418,12 +418,41 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   frostglass_sword: {
     id: "frostglass_sword",
     name: "Frostglass Sword",
-    description:
-      "A legendary blade forged from frostglas, radiating an otherworldly cold power",
+    description: "A blade forged from frostglas, radiating cold power",
     bonuses: {
       generalBonuses: {
-        strength: 30,
+        strength: 15,
       },
+      actionBonuses: {},
+    },
+  },
+  arbalest: {
+    id: 'arbalest',
+    name: 'Arbalest',
+    description: 'A meticulously decorated arbalest designed by a great engineer',
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+      },
+      actionBonuses: {
+        layTrap: {
+          resourceMultiplier: 1.25,
+        },
+        hunt: {
+          resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
+  nightshade_bow: {
+    id: 'nightshade_bow',
+    name: 'Nightshade Bow',
+    description: 'A bow made of very dark wood, poisoning the enemy',
+    bonuses: {
+      generalBonuses: {
+        strength: 7,
+      },
+      actionBonuses: {},
     },
   },
 };

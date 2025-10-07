@@ -191,6 +191,43 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  craftArbalest: {
+    id: "craftArbalest",
+    label: "Arbalest",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "schematics.arbalest_schematic": true,
+      "weapons.arbalest": false,
+    },
+    cost: {
+      "resources.wood": 2500,
+      "resources.steel": 500,
+      "resources.silver": 100,
+    },
+    effects: {
+      "weapons.arbalest": true,
+    },
+    cooldown: 40,
+  },
+
+  craftNightshadeBow: {
+    id: "craftNightshadeBow",
+    label: "Nightshade Bow",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "schematics.nightshade_bow_schematic": true,
+      "weapons.nightshade_bow": false,
+    },
+    cost: {
+      "resources.wood": 5000,
+      "resources.silver": 500,
+    },
+    effects: {
+      "weapons.nightshade_bow": true,
+    },
+    cooldown: 45,
+  },
 };
 
 // Action handlers
@@ -266,6 +303,34 @@ export function handleCraftFrostglassSword(state: GameState, result: ActionResul
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
     message: "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglas is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
+  return result;
+}
+
+export function handleCraftArbalest(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftArbalest', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `arbalest-crafted-${Date.now()}`,
+    message: "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
+  return result;
+}
+
+export function handleCraftNightshadeBow(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftNightshadeBow', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `nightshade-bow-crafted-${Date.now()}`,
+    message: "You craft a bow from dark wood. Its arrows will carry poison into your enemies, dealing damage over time.",
     timestamp: Date.now(),
     type: 'system',
   });

@@ -3,6 +3,7 @@ import {
   clothingEffects,
   weaponEffects,
   toolEffects,
+  schematicEffects,
 } from "@/game/rules/effects";
 import {
   Tooltip,
@@ -166,11 +167,12 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
 
-    // Check if this is a relic, weapon, or tool that has effect information
+    // Check if this is a relic, weapon, tool, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
-    const effect = relicEffect || weaponEffect || toolEffect;
+    const schematicEffect = schematicEffects[item.id];
+    const effect = relicEffect || weaponEffect || toolEffect || schematicEffect;
 
     // Check if the effect has actual content to display
     const hasGeneralBonuses =
@@ -251,7 +253,7 @@ export default function SidePanelSection({
     // If this item has effects or tooltip, wrap it in a tooltip
     if (
       (hasEffect &&
-        (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing")) ||
+        (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing" || title === "Schematics")) ||
       (hasTooltip && title === "Fortifications")
     ) {
       return (

@@ -239,6 +239,26 @@ const toolTrades = [
       { resource: "gold", amounts: [25] }
     ],
     message: "You purchase the giant trap. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'"
+  },
+  {
+    id: "trade_arbalest_schematic",
+    label: "Arbalest Schematic",
+    give: "schematic",
+    giveItem: "arbalest_schematic",
+    costs: [
+      { resource: "gold", amounts: [500] }
+    ],
+    message: "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'"
+  },
+  {
+    id: "trade_nightshade_bow_schematic",
+    label: "Nightshade Bow Schematic",
+    give: "schematic",
+    giveItem: "nightshade_bow_schematic",
+    costs: [
+      { resource: "gold", amounts: [1000] }
+    ],
+    message: "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is ancient. Its arrows will poison your enemies, dealing damage over time.'"
   }
 ];
 
@@ -274,11 +294,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
   const availableToolTrades = toolTrades
     .filter(trade => {
-      // Don't offer tools/relics that the player already owns
+      // Don't offer tools/relics/schematics that the player already owns
       if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) {
         return false;
       }
       if (trade.give === "relic" && state.relics[trade.giveItem as keyof typeof state.relics]) {
+        return false;
+      }
+      if (trade.give === "schematic" && state.schematics[trade.giveItem as keyof typeof state.schematics]) {
         return false;
       }
       return true;
@@ -310,6 +333,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             }
             if (trade.give === "relic") {
               result.relics = { ...state.relics, [trade.giveItem]: true };
+            }
+            if (trade.give === "schematic") {
+              result.schematics = { ...state.schematics, [trade.giveItem]: true };
             }
 
             return result;

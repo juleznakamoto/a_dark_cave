@@ -91,6 +91,17 @@ export default function SidePanel() {
       visible: true,
     }));
 
+  // Dynamically generate schematic items from state
+  const schematicItems = Object.entries(gameState.schematics || {})
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: clothingEffects[key]?.name || capitalizeWords(key),
+      value: 1,
+      testId: `schematic-${key}`,
+      visible: true,
+    }));
+
   // Dynamically generate blessing items from state
   const blessingItems = Object.entries(gameState.blessings || {})
     .filter(([key, value]) => value === true)
@@ -471,7 +482,7 @@ export default function SidePanel() {
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
       case "cave":
-        return ["resources", "tools", "weapons", "clothing", "stats"].includes(
+        return ["resources", "tools", "weapons", "clothing", "stats", "schematics"].includes(
           sectionName,
         );
       case "village":
@@ -531,6 +542,9 @@ export default function SidePanel() {
           )}
           {relicItems.length > 0 && shouldShowSection("relics") && (
             <SidePanelSection title="Relics" items={relicItems} />
+          )}
+          {schematicItems.length > 0 && shouldShowSection("schematics") && (
+            <SidePanelSection title="Schematics" items={schematicItems} />
           )}
           {blessingItems.length > 0 && shouldShowSection("blessings") && (
             <SidePanelSection title="Blessings" items={blessingItems} />

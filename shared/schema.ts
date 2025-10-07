@@ -90,12 +90,14 @@ export const gameStateSchema = z.object({
     steel_sword: z.boolean().default(false),
     obsidian_sword: z.boolean().default(false),
     adamant_sword: z.boolean().default(false),
-    frostglass_sword: z.boolean().default(false),
     crude_bow: z.boolean().default(false),
     huntsman_bow: z.boolean().default(false),
     long_bow: z.boolean().default(false),
     war_bow: z.boolean().default(false),
     master_bow: z.boolean().default(false),
+    frostglass_sword: z.boolean().default(false),
+    arbalest: z.boolean().default(false),
+    nightshade_bow: z.boolean().default(false),
   }).default({}),
   clothing: z.object({
     iron_armor: z.boolean().default(false),
@@ -130,7 +132,10 @@ export const gameStateSchema = z.object({
     murmuring_cube: z.boolean().default(false),
     black_bear_fur: z.boolean().default(false),
   }).default({}),
-
+  schematics: z.object({
+    arbalest_schematic: z.boolean().default(false),
+    nightshade_bow_schematic: z.boolean().default(false),
+  }).default({}),
   blessings: z.object({
     dagons_gift: z.boolean().default(false),
     flames_touch: z.boolean().default(false),
