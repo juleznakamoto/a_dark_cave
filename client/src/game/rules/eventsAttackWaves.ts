@@ -149,7 +149,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.firstWaveVictory && !state.story.seen.secondWave,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,

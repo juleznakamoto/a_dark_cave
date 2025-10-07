@@ -95,10 +95,7 @@ export default function CombatDialog({
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       setIntegrityDamageIndicator({ amount: 0, visible: false });
-      // Reset integrity to full calculated amount for this combat
-      const maxIntegrity =
-        bastionStats.defense * 2 +
-        (bastionStats.attackFromFortifications > 0 ? 50 : 0);
+      const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
     }
@@ -297,7 +294,7 @@ export default function CombatDialog({
               <div className="relative">
                 <div className="flex justify-between text-sm">
                   <span className="font-medium">
-                    {currentEnemy?.name} Health
+                    {currentEnemy?.name}
                   </span>
                   <span>
                     {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
