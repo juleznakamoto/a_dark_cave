@@ -127,6 +127,7 @@ export const gameStateSchema = z.object({
     blood_scepter: z.boolean().default(false),
     ravens_orb: z.boolean().default(false),
     murmuring_cube: z.boolean().default(false),
+    black_bear_fur: z.boolean().default(false),
   }).default({}),
 
   blessings: z.object({
