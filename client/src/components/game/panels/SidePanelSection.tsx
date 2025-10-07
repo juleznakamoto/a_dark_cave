@@ -252,7 +252,7 @@ export default function SidePanelSection({
     if (
       (hasEffect &&
         (title === "Relics" || title === "Tools" || title === "Weapons" || title === "Clothing" || title === "Schematics")) ||
-      (hasTooltip && title === "Fortifications")
+      (hasTooltip && (title === "Fortifications" || title === "Buildings"))
     ) {
       return (
         <TooltipProvider key={item.id}>

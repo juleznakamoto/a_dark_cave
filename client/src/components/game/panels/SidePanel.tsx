@@ -74,7 +74,7 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: capitalizeWords(key),
+      label: clothingEffects[key]?.name || capitalizeWords(key),
       value: 1,
       testId: `clothing-${key}`,
       visible: true,
