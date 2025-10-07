@@ -97,7 +97,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildTradePost") {
     return (state.buildings.tradePost || 0) + 1;
   }
-  if (actionId === "buildWizardTowe") {
+  if (actionId === "buildWizardTower") {
     return (state.buildings.wizardTower || 0) + 1;
   }
   if (actionId === "buildLonghouse") {
