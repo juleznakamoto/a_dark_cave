@@ -873,6 +873,59 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  // Enhanced blessings (doubled effects)
+  dagons_gift_enhanced: {
+    id: "dagons_gift_enhanced",
+    name: "Dagon's Gift (Enhanced)",
+    description: "+200% resources when hunting",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 3.0, // 200% bonus = 3x total
+        },
+      },
+    },
+  },
+
+  flames_touch_enhanced: {
+    id: "flames_touch_enhanced",
+    name: "Flame's Touch (Enhanced)",
+    description: "+2 steel from Steel Forger",
+    bonuses: {
+      actionBonuses: {
+        forge: {
+          resourceBonus: {
+            steel: 2,
+          },
+        },
+      },
+    },
+  },
+
+  ravens_mark_enhanced: {
+    id: "ravens_mark_enhanced",
+    name: "Raven's Mark (Enhanced)",
+    description: "New Villagers join more frequently (+40%)",
+    bonuses: {
+      generalBonuses: {
+        luck: 4, // Doubled from 2
+      },
+    },
+  },
+
+  ashen_embrace_enhanced: {
+    id: "ashen_embrace_enhanced",
+    name: "Ashen Embrace (Enhanced)",
+    description: "+200% resources when mining",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 3.0, // 200% bonus = 3x total
+        },
+      },
+    },
+  },
 };
 
 // Tool hierarchy definitions
