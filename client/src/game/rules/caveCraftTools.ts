@@ -13,7 +13,6 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 10,
     },
     effects: {
-      "resources.wood": -10,
       "resources.torch": 1,
       "story.seen.actionBuildTorch": true,
     },
