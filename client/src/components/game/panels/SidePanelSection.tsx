@@ -270,7 +270,7 @@ export default function SidePanelSection({
                     {effect.description && (
                       <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
                     )}
-                    {effect.bonuses.generalBonuses && (
+                    {effect.bonuses?.generalBonuses && (
                   <>
                     {effect.bonuses.generalBonuses.luck && (
                       <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
