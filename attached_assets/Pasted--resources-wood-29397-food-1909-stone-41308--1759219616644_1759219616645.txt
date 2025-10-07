@@ -167,7 +167,7 @@
         "seen": {
             "fireLit": true,
             "hasWood": true,
-            "actionBuildTorch": true,
+            "actionCraftTorch": true,
             "hasStone": true,
             "hasStoneAxe": true,
             "actionCraftStoneAxe": true,

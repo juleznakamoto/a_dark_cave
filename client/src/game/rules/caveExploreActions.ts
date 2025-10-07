@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects, getActionBonuses } from "@/game/rules";
+import { applyActionEffects } from "@/game/rules";
 import { getTotalLuck } from "@/game/rules/effects";
 
 // Helper function to apply luck bonuses to cave exploration probability effects

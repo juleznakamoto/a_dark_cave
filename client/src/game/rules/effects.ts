@@ -56,7 +56,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.25,
           cooldownReduction: 0.25,
         },
-        buildTorch: {
+        craftTorch: {
           cooldownReduction: 0.25,
         },
       },
@@ -96,7 +96,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.5,
           cooldownReduction: 0.5,
         },
-        buildTorch: {
+        craftTorch: {
           cooldownReduction: 0.5,
         },
       },

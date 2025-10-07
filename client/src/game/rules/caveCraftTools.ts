@@ -3,18 +3,18 @@ import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
 
 export const caveCraftTools: Record<string, Action> = {
-  buildTorch: {
-    id: "buildTorch",
+  craftTorch: {
+    id: "craftTorch",
     label: "Torch",
     show_when: {
       "story.seen.hasWood": true,
     },
     cost: {
-      "resources.wood": 100,
+      "resources.wood": 10,
     },
     effects: {
       "resources.torch": 1,
-      "story.seen.actionBuildTorch": true,
+      "story.seen.actionCraftTorch": true,
     },
     unlocks: ["exploreDeeper"],
     cooldown: 2.5,
@@ -361,8 +361,8 @@ export const caveCraftTools: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleBuildTorch(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('buildTorch', state);
+export function handleCraftTorch(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorch', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

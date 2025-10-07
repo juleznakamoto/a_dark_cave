@@ -17,7 +17,7 @@ import {
 } from '@/game/rules/caveExploreActions';
 
 import {
-  handleBuildTorch,
+  handleCraftTorch,
   handleCraftStoneAxe,
   handleCraftStonePickaxe,
   handleCraftIronAxe,
@@ -165,8 +165,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleEncounterBeyondPortal(state, result);
 
     // Cave Craft Actions
-    case 'buildTorch':
-      return handleBuildTorch(state, result);
+    case 'craftTorch':
+      return handleCraftTorch(state, result);
     case 'craftStoneAxe':
       return handleCraftStoneAxe(state, result);
     case 'craftStonePickaxe':

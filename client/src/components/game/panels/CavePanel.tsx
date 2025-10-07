@@ -56,7 +56,7 @@ export default function CavePanel() {
       subGroups: [
         {
           actions: [
-            { id: "buildTorch", label: "Torch" },
+            { id: "craftTorch", label: "Torch" },
             { id: "craftBoneTotem", label: "Bone Totem" },
             { id: "craftEmberBomb", label: "Ember Bomb" },
         { id: "craftCinderflameBomb", label: "Cinderflame Bomb" },

@@ -26,7 +26,7 @@ export default function CubeDialog({
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
-      <DialogContent className="[&>button]:hidden border-2 border-gray-400 rounded-none shadow-2xl p-6 !w-[18rem] !h-[18rem] max-w-[18rem] max-h-[20rem] flex flex-col overflow-visible z-[100]">
+      <DialogContent className="[&>button]:hidden border-2 border-gray-400 rounded-none shadow-2xl p-6 !w-[18rem] !h-[17rem] max-w-[18rem] max-h-[17rem] flex flex-col overflow-visible z-[100]">
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none rounded-none"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
@@ -37,7 +37,7 @@ export default function CubeDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex-1 flex items-end justify-center pb-2">
+        <div className="flex-1 flex items-end justify-center">
           <Button
             onClick={() => onChoice(eventChoices[0]?.id)}
             variant="outline"
