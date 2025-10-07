@@ -179,26 +179,11 @@ export default function SidePanelSection({
         title === "Blessings") &&
       !effect
     ) {
-      console.error(`⚠️ MISSING EFFECT DEFINITION:`, {
-        itemId: item.id,
-        itemLabel: item.label,
-        section: title,
+      console.log(`Missing effect for item: ${item.id} in section: ${title}`, {
+        item,
         hasRelicEffect: !!relicEffect,
         hasWeaponEffect: !!weaponEffect,
         hasToolEffect: !!toolEffect,
-        allClothingEffectKeys: Object.keys(clothingEffects),
-        allWeaponEffectKeys: Object.keys(weaponEffects),
-        allToolEffectKeys: Object.keys(toolEffects),
-      });
-    }
-    
-    // Additional debug for all items in these sections
-    if (title === "Blessings" || title === "Clothing") {
-      console.log(`📋 Item in ${title}:`, {
-        id: item.id,
-        label: item.label,
-        hasEffect: !!effect,
-        effectType: relicEffect ? 'relic/clothing' : weaponEffect ? 'weapon' : toolEffect ? 'tool' : 'none'
       });
     }
 
