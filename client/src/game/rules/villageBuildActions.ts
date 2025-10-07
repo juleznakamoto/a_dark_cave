@@ -672,15 +672,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.watchtower": 0,
       },
       2: {
-        "buildings.bastion": 1,
         "buildings.watchtower": 1,
       },
       3: {
-        "buildings.bastion": 1,
         "buildings.watchtower": 2,
       },
       4: {
-        "buildings.bastion": 1,
         "buildings.watchtower": 3,
       },
     },
@@ -742,18 +739,12 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.palisades": 0,
       },
       2: {
-        "flags.portalBlasted": true,
-        "buildings.bastion": 1,
         "buildings.palisades": 1,
       },
       3: {
-        "flags.portalBlasted": true,
-        "buildings.bastion": 1,
         "buildings.palisades": 2,
       },
       4: {
-        "flags.portalBlasted": true,
-        "buildings.bastion": 1,
         "buildings.palisades": 3,
       },
     },
