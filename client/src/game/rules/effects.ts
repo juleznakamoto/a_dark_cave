@@ -877,6 +877,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  ashen_dagger: {
+    id: "ashen_dagger",
+    name: "Ashen Dagger",
+    description: "A dagger forged in volcanic ash, granting strength in battle",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+      },
+    },
+  },
+
   // Blessings
   dagons_gift: {
     id: "dagons_gift",
