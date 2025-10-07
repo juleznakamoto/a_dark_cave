@@ -107,6 +107,12 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildGrandBlacksmith") {
     return (state.buildings.grandBlacksmith || 0) + 1;
   }
+  if (actionId === "buildWatchtower") {
+    return (state.buildings.watchtower || 0) + 1;
+  }
+  if (actionId === "buildPalisades") {
+    return (state.buildings.palisades || 0) + 1;
+  }
   return 1;
 };
 
