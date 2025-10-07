@@ -795,7 +795,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_orb: {
     id: "ravens_orb",
     name: "Raven's Orb",
-    description: "A dark orb blessed by ravens with ancient knowledge",
+    description: "Dark orb blessed by ravens with ancient knowledge",
     bonuses: {
       generalBonuses: {
         knowledge: 6,
@@ -830,7 +830,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ancient_scrolls: {
     id: "ancient_scrolls",
     name: "Ancient Scrolls",
-    description: "Mysterious scrolls written in an unknown language, waiting to be decrypted by someone with knowledge of the ancient arts",
+    description: "Mysterious scrolls written in an unknown language, waiting to be decrypted",
     bonuses: {
     },
   },

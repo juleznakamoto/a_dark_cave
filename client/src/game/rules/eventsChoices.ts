@@ -545,7 +545,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Turn him away",
         effect: (state: GameState) => {
           const villagerDeaths = Math.floor(
-            Math.random() * state.buildings.woodenHut,
+            Math.random() * state.buildings.woodenHut + 1,
           );
           const hutDestruction = Math.floor(Math.random() * 2) + 1;
 
