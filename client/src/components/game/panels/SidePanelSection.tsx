@@ -297,10 +297,10 @@ export default function SidePanelSection({
                   <div>{item.tooltip}</div>
                 ) : effect ? (
                   <>
-                    {effect?.name && (
+                    {effect.name && (
                       <div className="font-bold mb-1">{effect.name}</div>
                     )}
-                    {effect?.description && (
+                    {effect.description && (
                       <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">
                         {effect.description}
                       </div>
@@ -404,7 +404,7 @@ export default function SidePanelSection({
                         );
                       })()}
                   </>
-                )}
+                ) : null}
               </div>
             </TooltipContent>
           </Tooltip>
