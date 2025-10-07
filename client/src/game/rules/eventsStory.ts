@@ -256,7 +256,6 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardArrives: {
     id: "wizardArrives",
     condition: (state: GameState) =>
-      state.buildings.sanctum >= 1 &&
       state.buildings.bastion >= 1 &&
       !state.story.seen.wizardArrives,
     triggerType: "resource",

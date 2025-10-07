@@ -103,7 +103,6 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   if (actionId === "buildLonghouse") {
     return (state.buildings.longhouse || 0) + 1;
   }
-  // Add Grand Blacksmith here
   if (actionId === "buildGrandBlacksmith") {
     return (state.buildings.grandBlacksmith || 0) + 1;
   }
