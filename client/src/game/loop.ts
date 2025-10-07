@@ -459,19 +459,19 @@ function handleStrangerApproach() {
   const availableRoom = maxPop - currentPop;
 
   let strangersCount = 1; // Default to 1 stranger
-  let maxStrangersCount = 3;
+  let moreStrangersProbability = Math.random();
 
   // Check for the new condition: 10 stone houses built and a stranger approaches
   // But only if there's room for multiple strangers
-  if (
-    state.buildings.stoneHut >= 10 &&
-    Math.random() < probability &&
-    availableRoom >= 2
-  ) {
-    if (availableRoom >= maxStrangersCount && Math.random() < 0.1) {
-      strangersCount = maxStrangersCount;
-    } else if (Math.random() < 0.3) {
-      strangersCount = maxStrangersCount - 1;
+  if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
+    if (availableRoom >= 5 && moreStrangersProbability < 0.1) {
+      strangersCount = 5;
+    } else if (availableRoom >= 4 && moreStrangersProbability < 0.2) {
+      strangersCount = 4;
+    } else if (availableRoom >= 3 && moreStrangersProbability < 0.3) {
+      strangersCount = 3;
+    } else if (availableRoom >= 2 && moreStrangersProbability < 0.4) {
+      strangersCount = 2;
     }
   }
 
