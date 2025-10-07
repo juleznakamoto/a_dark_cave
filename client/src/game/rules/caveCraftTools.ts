@@ -10,7 +10,7 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasWood": true,
     },
     cost: {
-      "resources.wood": 10,
+      "resources.wood": 100,
     },
     effects: {
       "resources.torch": 1,
