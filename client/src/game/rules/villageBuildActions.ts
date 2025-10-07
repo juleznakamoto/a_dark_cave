@@ -1078,7 +1078,7 @@ export function handleBuildWoodenHut(
     result.logEntries!.push({
       id: `village-growth-${Date.now()}`,
       message:
-        "The village is growing fast. The wooden huts crowd together, their timbers creaking under the weight of your expanding settlement. Perhaps larger houses of stone could shelter even more villagers, providing stronger foundations for the community.",
+        "The village grows quickly. Wooden huts crowd together, their timbers creaking under the strain. Perhaps sturdy stone houses could shelter more villagers and strengthen the community.",
       timestamp: Date.now(),
       type: "system",
     });
