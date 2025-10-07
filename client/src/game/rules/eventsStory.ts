@@ -237,7 +237,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Alchemist's Discovery",
     message:
-      "The alchemist emerges from his hall, eyes gleaming with fervor. 'I have been conducting experiments day and night,' he declares, holding up a vial of shimmering dust that glows with an otherworldly fire. 'Through countless trials, I've created something extraordinary - cinderflame dust. With this, we can craft bombs of devastating power, far beyond anything we've made before. I can teach workers to produce this dust, and with it, we shall forge weapons that burn with colors not of this realm.'",
+      "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I’ve created something extraordinary... and terribly dangerous.'",
     triggered: false,
     priority: 5,
     repeatable: false,
