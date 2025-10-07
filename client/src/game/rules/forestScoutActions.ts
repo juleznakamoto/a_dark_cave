@@ -142,6 +142,13 @@ export function handleLayTrap(state: GameState, result: ActionResult): ActionRes
       black_bear_fur: true,
     };
 
+    // Remove the trap after successful use
+    result.stateUpdates.tools = {
+      ...state.tools,
+      giant_trap: false,
+    };
+
+
     if (villagerDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
@@ -193,7 +200,7 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
       ...state.relics,
       ancient_scrolls: true,
     };
-    
+
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
       message: 'Your expedition to the necromancer\'s castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it.',
@@ -203,13 +210,13 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
   } else {
     // Failure: Undead attack scenarios
     const failureRand = Math.random();
-    
+
     if (failureRand < 0.5) {
       // Scenario 1: Minor undead attack (1-4 deaths)
       const villagerDeaths = Math.floor(Math.random() * 4) + 1; // 1-4 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
-      
+
       result.logEntries!.push({
         id: `castle-ruins-minor-attack-${Date.now()}`,
         message: `Your expedition reaches the ruined castle but is ambushed by shambling undead - grotesque experiments left behind by the necromancer. Skeletal hands claw at your villagers as rotting corpses attack with unnatural hunger. Despite fighting bravely, ${villagerDeaths} villager${villagerDeaths > 1 ? 's' : ''} fall${villagerDeaths === 1 ? 's' : ''} to the undead horde before the survivors manage to retreat to safety.`,
@@ -221,7 +228,7 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
       const villagerDeaths = Math.floor(Math.random() * 6) + 5; // 5-10 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
-      
+
       result.logEntries!.push({
         id: `castle-ruins-major-attack-${Date.now()}`,
         message: `Shortly after your expedition enters the cursed castle ruins the very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
@@ -250,7 +257,7 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
       ...state.resources,
       frostglas: (state.resources.frostglas || 0) + 50,
     };
-    
+
     result.stateUpdates.story = {
       ...state.story,
       seen: {
@@ -258,7 +265,7 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
         hillGraveSuccess: true,
       },
     };
-    
+
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
       message: 'Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king\'s treasures, you discover weapons forged of pure frostglas, cold as the void itself.',
@@ -270,7 +277,7 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
     const villagerDeaths = Math.floor(Math.random() * 11) + 5; // 5-15 deaths
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
-    
+
     result.logEntries!.push({
       id: `hill-grave-failure-${Date.now()}`,
       message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. Poisoned arrows fly from hidden slots, floors collapse into spike pits, and ancient mechanisms crush those who trigger them. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,

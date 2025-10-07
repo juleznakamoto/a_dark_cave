@@ -718,32 +718,20 @@ export function handleLowChamber(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("lowChamber", state);
-  applyCaveExplorationLuckBonus(state, "lowChamber", effectUpdates);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
-    delete effectUpdates.logMessages;
-  }
 
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
     message:
-      "Using the reinforced rope, you descend into a previously inaccessible chamber deep within the cave. Ancient treasures glimmer in the torchlight, hidden for centuries in this forgotten place. Among the relics, you discover the legendary Grandmaster Chisel, its blade still sharp after all these years.",
+      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures: gold coins scattered across the floor, bloodstones pulsing with dark energy, and shards of frostglas that seem to freeze the very air around them. Most remarkable of all, you discover the mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
   });
+
+  // Remove the reinforced rope after use
+  result.stateUpdates.tools = {
+    ...state.tools,
+    reinforced_rope: false,
+  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
@@ -754,24 +742,6 @@ export function handleoccultistChamber(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("occultistChamber", state);
-  applyCaveExplorationLuckBonus(state, "occultistChamber", effectUpdates);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
-    delete effectUpdates.logMessages;
-  }
 
   result.logEntries!.push({
     id: `occultist-chamber-explored-${Date.now()}`,
@@ -780,6 +750,12 @@ export function handleoccultistChamber(
     timestamp: Date.now(),
     type: "system",
   });
+
+  // Remove the occultist map after use
+  result.stateUpdates.tools = {
+    ...state.tools,
+    occultist_map: false,
+  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
