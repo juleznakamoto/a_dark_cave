@@ -782,4 +782,4 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: calculateBastionStats(state),
     }));
   },
-});
+}));
