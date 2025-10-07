@@ -67,12 +67,15 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
   const effectUpdates = applyActionEffects('craftEmberBomb', state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `ember-bomb-crafted-${Date.now()}`,
-    message: "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
-    timestamp: Date.now(),
-    type: 'system',
-  });
+  // Only show message on first craft
+  if (!state.story.seen.hasEmberBomb) {
+    result.logEntries!.push({
+      id: `ember-bomb-crafted-${Date.now()}`,
+      message: "The alchemist's knowledge proves invaluable. You craft a powerful ember bomb, its core glowing with intense heat and destructive potential.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
 
   return result;
 }
