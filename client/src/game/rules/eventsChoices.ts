@@ -851,4 +851,92 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  sanctumDedication: {
+    id: "sanctumDedication",
+    condition: (state: GameState) =>
+      state.buildings.sanctum >= 1 &&
+      state.buildings.bastion >= 1 &&
+      state.story.seen.templeDedicated &&
+      !state.story.seen.sanctumDedicated,
+    triggerType: "resource",
+    timeProbability: 3,
+    title: "The Druid Returns",
+    message:
+      "The blind druid emerges from the forest once more, his milky eyes seeming to pierce through to your very soul. 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "deepenDevotion",
+        label: "Deepen Devotion to Chosen Path",
+        effect: (state: GameState) => {
+          const templeDedicatedTo = state.story.seen.templeDedicatedTo;
+          let updatedBlessings = { ...state.blessings };
+          let message = "";
+
+          if (templeDedicatedTo === "dagon") {
+            updatedBlessings.dagons_gift_enhanced = true;
+            message = "The waters surge with renewed power. Dagon's blessing flows twice as strong through your settlement.";
+          } else if (templeDedicatedTo === "flame") {
+            updatedBlessings.flames_touch_enhanced = true;
+            message = "The First Flame burns brighter, its sacred fire doubling in strength and purpose.";
+          } else if (templeDedicatedTo === "raven") {
+            updatedBlessings.ravens_mark_enhanced = true;
+            message = "The ravens gather in greater numbers, their otherworldly knowledge deepening as the Ravenborn's power intensifies.";
+          } else if (templeDedicatedTo === "ash") {
+            updatedBlessings.ashen_embrace_enhanced = true;
+            message = "The ashes swirl with doubled intensity, the Ashbringer's power growing ever stronger.";
+          }
+
+          return {
+            blessings: updatedBlessings,
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                sanctumDedicated: true,
+                sanctumDedicatedTo: templeDedicatedTo,
+              },
+            },
+            _logMessage: message,
+          };
+        },
+      },
+      {
+        id: "dedicateToAll",
+        label: "Dedicate to All Gods",
+        effect: (state: GameState) => {
+          return {
+            blessings: {
+              ...state.blessings,
+              dagons_gift: true,
+              flames_touch: true,
+              ravens_mark: true,
+              ashen_embrace: true,
+            },
+            relics: {
+              ...state.relics,
+              ravens_orb: true,
+            },
+            weapons: {
+              ...state.weapons,
+              ashen_dagger: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                sanctumDedicated: true,
+                sanctumDedicatedTo: "all",
+              },
+            },
+            _logMessage:
+              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts flowing freely through the sacred halls. The Raven's Orb and Ashen Dagger manifest within, while blessings from every path converge upon your settlement.",
+          };
+        },
+      },
+    ],
+  },
 };

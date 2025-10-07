@@ -145,7 +145,7 @@ function handleGathererProduction() {
         prod.totalAmount,
       );
     });
-    
+
     if (Object.keys(updates).length > 0) {
       const newState = useGameStore.getState();
       console.log('state_update', {
@@ -178,7 +178,7 @@ function handleHunterProduction() {
         prod.totalAmount,
       );
     });
-    
+
     if (Object.keys(updates).length > 0) {
       const newState = useGameStore.getState();
       console.log('state_update', {
@@ -200,7 +200,7 @@ function handleMinerProduction() {
   if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const updates: Record<string, number> = {};
-  
+
   // Process each miner type, steel forger, tanner, and powder maker
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
@@ -220,7 +220,7 @@ function handleMinerProduction() {
       });
     }
   });
-  
+
   if (Object.keys(updates).length > 0) {
     const newState = useGameStore.getState();
     console.log('state_update', {
@@ -261,7 +261,7 @@ function handlePopulationSurvival() {
   const availableFood = state.resources.food;
 
   const updates: Record<string, number> = {};
-  
+
   if (availableFood >= foodNeeded) {
     // Everyone can eat, consume food normally
     updates.food = -foodNeeded;
@@ -271,7 +271,7 @@ function handlePopulationSurvival() {
     updates.food = -availableFood;
     state.updateResource("food", -availableFood);
   }
-  
+
   if (Object.keys(updates).length > 0) {
     const newState = useGameStore.getState();
     console.log('state_update', {
@@ -390,6 +390,7 @@ function handleFreezingCheck() {
 }
 
 async function handleAutoSave() {
+  console.log('[SAVE] Automatic save triggered');
   const state = useGameStore.getState();
   const gameState: GameState = {
     resources: state.resources,
@@ -529,30 +530,8 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  await handleAutoSave();
-}
-
-function logGameState() {
+  console.log('[SAVE] Manual save triggered');
   const state = useGameStore.getState();
-
-  console.log('=== GAME STATE (15s interval) ===', {
-    resources: state.resources,
-    stats: state.stats,
-    flags: state.flags,
-    tools: state.tools,
-    weapons: state.weapons,
-    clothing: state.clothing,
-    relics: state.relics,
-    buildings: state.buildings,
-    villagers: state.villagers,
-    world: state.world,
-    story: state.story,
-    events: state.events,
-    effects: state.effects,
-    bastion_stats: state.bastion_stats,
-    population: {
-      current: state.current_population,
-      max: state.total_population
-    }
-  });
+  await saveGame(gameState);
+  useGameStore.setState({ lastSaved: formatLastSaved(Date.now()) });
 }
