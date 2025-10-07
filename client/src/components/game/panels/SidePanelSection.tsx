@@ -3,7 +3,6 @@ import {
   clothingEffects,
   weaponEffects,
   toolEffects,
-  schematicEffects,
 } from "@/game/rules/effects";
 import {
   Tooltip,
