@@ -272,7 +272,7 @@ export default function SidePanelSection({
               <div className="text-xs whitespace-pre-line">
                 {hasTooltip && title === "Fortifications" ? (
                   <div>{item.tooltip}</div>
-                ) : (
+                ) : effect ? (
                   <>
                     
                     {effect.name && (
@@ -365,7 +365,7 @@ export default function SidePanelSection({
                   );
                 })()}
                   </>
-                )}
+                ) : null}
               </div>
             </TooltipContent>
           </Tooltip>
