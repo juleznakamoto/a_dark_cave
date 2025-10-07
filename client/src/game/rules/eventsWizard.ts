@@ -59,7 +59,7 @@ export const wizardEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 1.0,
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below.'",
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -67,8 +67,6 @@ export const wizardEvents: Record<string, GameEvent> = {
       relics: {
         ...state.relics,
         ancient_scrolls: false,
-        frostfang: true,
-        blood_scepter: true,
       },
       story: {
         ...state.story,

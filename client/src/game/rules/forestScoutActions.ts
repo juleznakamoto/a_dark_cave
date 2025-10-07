@@ -60,7 +60,7 @@ export const forestScoutActions: Record<string, Action> = {
       "story.seen.wizardNecromancerCastle": true,
     },
     cost: {
-      "resources.food": 2000,
+      "resources.food": 2500,
     },
     effects: {
       "story.seen.castleRuinsExplored": true,
