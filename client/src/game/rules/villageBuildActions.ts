@@ -1523,19 +1523,22 @@ export function handleBuildWatchtower(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const watchtowerResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildWatchtower",
-    "watchtower",
-  );
+  const watchtowerResult = handleBuildingConstruction(state, result, "buildWatchtower", "watchtower");
 
-  // Add watchtower completion message
-  if (state.buildings.watchtower === 0) {
+  // Add watchtower completion message based on level
+  const currentLevel = state.buildings.watchtower || 0;
+  const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+  const watchtowerMessages = [
+    "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
+    "The guard tower rises higher, with reinforced walls and better sight lines for vigilant defenders.",
+    "The fortified tower stands as an imposing defensive structure, its thick walls capable of withstanding heavy assault.",
+    "The cannon tower is complete, equipped with powerful artillery to rain destruction upon approaching enemies."
+  ];
+
+  if (currentLevel < watchtowerLabels.length) {
     watchtowerResult.logEntries!.push({
-      id: `watchtower-built-${Date.now()}`,
-      message:
-        "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
+      id: `watchtower-built-level-${currentLevel + 1}-${Date.now()}`,
+      message: watchtowerMessages[currentLevel],
       timestamp: Date.now(),
       type: "system",
     });
