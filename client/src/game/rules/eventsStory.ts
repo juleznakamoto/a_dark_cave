@@ -227,4 +227,30 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
+  alchemistArrives: {
+    id: "alchemistArrives",
+    condition: (state: GameState) =>
+      state.events.firstWaveDefeated &&
+      state.buildings.alchemistHall >= 1 &&
+      !state.story.seen.alchemistArrives,
+    triggerType: "time",
+    timeProbability: 2,
+    title: "The Alchemist's Discovery",
+    message:
+      "The alchemist emerges from his hall, eyes gleaming with fervor. 'I have been conducting experiments day and night,' he declares, holding up a vial of shimmering dust that glows with an otherworldly fire. 'Through countless trials, I've created something extraordinary - cinderflame dust. With this, we can craft bombs of devastating power, far beyond anything we've made before. I can teach workers to produce this dust, and with it, we shall forge weapons that burn with colors not of this realm.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          alchemistArrives: true,
+          canMakeCinderflameDust: true,
+        },
+      },
+    }),
+  },
+
   };

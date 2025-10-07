@@ -42,13 +42,7 @@ export const caveCraftResources: Record<string, Action> = {
     label: "Cinderflame Bomb",
     show_when: {
       "buildings.alchemistHall": 1,
-      "story.seen.portalDiscovered": true,
-      // TODO
-      // TODO
-      // TODO
-      // TODO
-      // TODO
-
+      "story.seen.alchemistArrives": true,
     },
     cost: {
       "resources.cinderflame_dust": 10,
