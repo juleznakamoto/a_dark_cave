@@ -185,7 +185,13 @@ function getAdjustedCost(
 
   if (isCraftingAction) {
     const reduction = getTotalCraftingCostReduction(state);
-    return Math.floor(cost * (1 - reduction));
+    const adjusted = Math.floor(cost * (1 - reduction));
+    
+    if (actionId === "craftTorch") {
+      console.log(`⚙️ getAdjustedCost [${actionId}]: cost=${cost}, reduction=${reduction}, adjusted=${adjusted}`);
+    }
+    
+    return adjusted;
   }
 
   if (isBuildingAction) {
@@ -392,6 +398,11 @@ export const applyActionEffects = (
           // Apply cost reductions using single source of truth
           const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
 
+          if (actionId === "craftTorch") {
+            console.log(`🔨 COST DEDUCTION [${actionId}]: path=${path}, finalKey=${finalKey}, original=${cost}, adjusted=${adjustedCost}, isResource=${path.startsWith("resources.")}`);
+            console.log(`🔨 Current value in state: ${state.resources[finalKey as keyof typeof state.resources] || 0}`);
+          }
+
           // Handle bone totem cost specifically
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
@@ -400,6 +411,10 @@ export const applyActionEffects = (
             current[finalKey] =
               (state.resources[finalKey as keyof typeof state.resources] || 0) -
               adjustedCost;
+            
+            if (actionId === "craftTorch") {
+              console.log(`🔨 New value after deduction: ${current[finalKey]}`);
+            }
           }
         }
       });
