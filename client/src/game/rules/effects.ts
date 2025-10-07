@@ -38,6 +38,7 @@ export interface EffectDefinition {
       strength?: number; // Strength bonus
       knowledge?: number; // Knowledge bonus
       madness?: number; // Madness bonus
+      madnessReduction?: number; // Reduction in madness
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
     };
@@ -515,11 +516,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ring_of_clarity: {
     id: "ring_of_clarity",
     name: "Ring of Clarity",
-    description: "Ring out of clear crystal sharpening the mind",
+    description: "A ring that clears the mind and protects against madness.",
     bonuses: {
       generalBonuses: {
-        knowledge: 2,
-        madness: -5,
+        madnessReduction: 5,
       },
     },
   },
@@ -1296,19 +1296,24 @@ export const getTotalKnowledge = (state: GameState): number => {
 
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
-  const baseMadness = state.stats.madness || 0;
-  let totalMadness = baseMadness;
+  const activeEffects = getActiveEffects(state);
+  let totalMadness = state.stats.madness || 0;
 
-  // Apply modifiers from clothing and relics
-  Object.entries(clothingEffects).forEach(([key, effect]) => {
-    if (state.clothing?.[key] || state.relics?.[key]) {
-      if (effect.bonuses.generalBonuses?.madness) {
-        totalMadness += effect.bonuses.generalBonuses.madness;
-      }
+  // Add madness from events
+  totalMadness += state.stats.madnessFromEvents || 0;
+
+  // Add madness from active effects
+  activeEffects.forEach((effect) => {
+    if (effect.bonuses.generalBonuses?.madness) {
+      totalMadness += effect.bonuses.generalBonuses.madness;
+    }
+    // Subtract madness reduction
+    if (effect.bonuses.generalBonuses?.madnessReduction) {
+      totalMadness -= effect.bonuses.generalBonuses.madnessReduction;
     }
   });
 
-  // Apply madness reductions from buildings (only highest tier building applies)
+  // Reduce madness from buildings (only highest tier applies)
   const buildingMadnessReductions = [
     { key: "sanctum", reduction: -15 },
     { key: "temple", reduction: -10 },

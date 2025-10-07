@@ -88,6 +88,9 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
       if (ringEvent && ringEvent.effect) {
         const ringEffects = ringEvent.effect(state);
         Object.assign(result.stateUpdates, ringEffects);
+        
+        // Add log message
+        result.stateUpdates._logMessage = "Among the offerings, you discover a Ring of Clarity - its surface seems to absorb the madness around it. You feel your mind clearing as you slip it on.";
       }
     }
   }

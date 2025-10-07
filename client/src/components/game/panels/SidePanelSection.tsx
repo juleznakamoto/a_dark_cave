@@ -353,6 +353,11 @@ export default function SidePanelSection({
                             +{effect.bonuses.generalBonuses.madness} Madness
                           </div>
                         )}
+                        {effect.bonuses.generalBonuses.madnessReduction && (
+                          <div>
+                            -{effect.bonuses.generalBonuses.madnessReduction} Madness
+                          </div>
+                        )}
                         {effect.bonuses.generalBonuses
                           .craftingCostReduction && (
                           <div>
