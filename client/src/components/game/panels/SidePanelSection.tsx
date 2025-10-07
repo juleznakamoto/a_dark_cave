@@ -230,7 +230,7 @@ export default function SidePanelSection({
                 item.label
               )}
             </span>
-        {title !== "Relics" && (
+        {!["Relics", "Tools", "Weapons", "Clothing"].includes(title) && (
           <span
             className={`font-mono ${
               isAnimated

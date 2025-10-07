@@ -127,7 +127,11 @@ export default function SidePanel() {
             ? "Alchemist's Hall"
             : key === "tradePost"
               ? "Trade Post"
-              : capitalizeWords(key);
+              : key === "woodenHut"
+                ? `Wooden Hut (${value})`
+                : key === "stoneHut"
+                  ? `Stone Hut (${value})`
+                  : capitalizeWords(key);
 
       // Get stats effects for this specific building from villageBuildActions
       let tooltip = undefined;
