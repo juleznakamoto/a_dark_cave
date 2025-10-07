@@ -104,7 +104,7 @@ export default function ForestPanel() {
             {group.title && (
               <h3 className="text-xs font-bold text-foreground">{group.title}</h3>
             )}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-x-2 gap-y-1">
               {visibleActions.map((action, index) => (
                 <React.Fragment key={action.id}>
                   {renderButton(action.id, action.label)}

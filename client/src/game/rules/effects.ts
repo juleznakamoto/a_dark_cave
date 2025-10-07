@@ -528,7 +528,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Mysterious amulet that whispers ancient secrets",
     bonuses: {
       generalBonuses: {
-        knowledge: 5,
+        luck: 2,
+        knowledge: 4,
         madness: 2,
       },
     },
@@ -540,8 +541,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Ancient trinket that grants both strength and luck",
     bonuses: {
       generalBonuses: {
-        strength: 3,
         luck: 2,
+        strength: 3,
       },
     },
   },
@@ -669,7 +670,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 3,
         knowledge: 2,
-        madness: 2,
+        madness: 3,
       },
     },
   },
@@ -787,6 +788,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 6,
+        madness: 2,
       },
     },
   },
