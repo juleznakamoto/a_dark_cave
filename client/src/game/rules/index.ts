@@ -388,7 +388,7 @@ export const applyActionEffects = (
           }
 
           const finalKey = pathParts[pathParts.length - 1];
-          
+
           // Apply cost reductions using single source of truth
           const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
 
@@ -398,8 +398,7 @@ export const applyActionEffects = (
             current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
           } else {
             current[finalKey] =
-              (state.resources[finalKey as keyof typeof state.resources] || 0) -
-              adjustedCost;
+              (current[finalKey] || 0) - adjustedCost;
           }
         }
       });
@@ -700,7 +699,7 @@ export function getActionCostDisplay(
   const costText = Object.entries(costs)
     .map(([resource, amount]) => {
       // Apply cost reductions using single source of truth
-      const adjustedAmount = state 
+      const adjustedAmount = state
         ? getAdjustedCost(actionId, amount, resource.startsWith("resources."), state)
         : amount;
 
