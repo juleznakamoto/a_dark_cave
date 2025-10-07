@@ -222,6 +222,29 @@ function handleMinerProduction() {
     }
   });
 
+  // Steel Forger production
+  if (state.villagers.steel_forger && state.villagers.steel_forger > 0) {
+    const steelForgerJob = villagerJobs.steel_forger;
+    const steelForgers = state.villagers.steel_forger;
+
+    steelForgerJob.production.forEach((prod) => {
+      let totalAmount = prod.amount * steelForgers;
+
+      // Apply Flame's Touch blessing bonus to steel production
+      if (prod.resource === 'steel' && prod.amount > 0 && state.blessings?.flames_touch) {
+        totalAmount += steelForgers; // +1 steel per forger
+      }
+
+      // Apply Flame's Touch (Enhanced) blessing bonus to steel production
+      if (prod.resource === 'steel' && prod.amount > 0 && state.blessings?.flames_touch_enhanced) {
+        totalAmount += (steelForgers * 3); // +3 steel per forger
+      }
+
+      useGameStore.getState().updateResource(prod.resource as keyof GameState["resources"], totalAmount);
+    });
+  }
+
+
   if (Object.keys(updates).length > 0) {
     const newState = useGameStore.getState();
     console.log("state_update", {
@@ -251,7 +274,7 @@ function handlePopulationSurvival() {
   // Only start starvation checks once the player has accumulated at least 5 food
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
-    // Activate starvation system permanently once food reaches 5
+    // Activate starvation system permanently once food reaches at least 5
     useGameStore.setState({
       flags: { ...state.flags, starvationActive: true },
     });
@@ -295,7 +318,7 @@ function handleStarvationCheck() {
   // Check if starvation conditions are met
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
-    // Activate starvation system permanently once food reaches 5
+    // Activate starvation system permanently once food reaches at least 5
     useGameStore.setState({
       flags: { ...state.flags, starvationActive: true },
     });
