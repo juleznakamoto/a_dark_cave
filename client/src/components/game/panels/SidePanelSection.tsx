@@ -258,6 +258,8 @@ export default function SidePanelSection({
           "Clothing",
           "Buildings",
           "Fortifications",
+          "Blessings",
+          "Schematics",
         ].includes(title) && (
           <span
             className={`font-mono ${
