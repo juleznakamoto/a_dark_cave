@@ -421,7 +421,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "A blade forged from frostglas, radiating cold power",
     bonuses: {
       generalBonuses: {
-        strength: 15,
+        strength: 30,
       },
       actionBonuses: {},
     },
