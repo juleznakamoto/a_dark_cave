@@ -194,7 +194,7 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
   const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
-  
+
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -202,6 +202,14 @@ export function handleCastleRuins(state: GameState, result: ActionResult): Actio
     result.stateUpdates.relics = {
       ...state.relics,
       ancient_scrolls: true,
+    };
+    // Set flag only on success
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        castleRuinsExplored: true,
+      },
     };
 
     result.logEntries!.push({
@@ -266,6 +274,14 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
       seen: {
         ...state.story.seen,
         hillGraveSuccess: true,
+      },
+    };
+    // Set flag only on success
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        hillGraveExplored: true,
       },
     };
 
