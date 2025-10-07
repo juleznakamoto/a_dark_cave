@@ -1332,7 +1332,28 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+
+  // Add city message when 5th stone hut is built
+  if (state.buildings.stoneHut === 4 && !state.story.seen.villageBecomesCity) {
+    stoneHutResult.logEntries!.push({
+      id: `village-becomes-city-${Date.now()}`,
+      message:
+        "The village has become a city. Stone houses line the streets, their walls strong and their roofs tall. What began as a humble settlement now stands as a beacon of civilization in the wilderness.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    stoneHutResult.stateUpdates.story = {
+      ...stoneHutResult.stateUpdates.story,
+      seen: {
+        ...stoneHutResult.stateUpdates.story?.seen,
+        villageBecomesCity: true,
+      },
+    };
+  }
+
+  return stoneHutResult;
 }
 
 export function handleBuildShrine(
