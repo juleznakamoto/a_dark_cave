@@ -270,12 +270,12 @@
     box-shadow: none;
   }
   50% {
-    box-shadow: 0 0 20px rgba(255, 99, 71, 0.6), 0 0 30px rgba(255, 69, 0, 0.4);
+    box-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
   }
 }
 
 .button-glow-animation {
-  animation: button-glow 0.3s ease-out;
+  animation: button-glow 0.2s ease-out;
 }
 
 .madness-pulse-fast-intense {
