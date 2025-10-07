@@ -354,7 +354,6 @@ export default function SidePanelSection({
                   );
                 })()}
                   </>
-                )}
               </div>
             </TooltipContent>
           </Tooltip>
