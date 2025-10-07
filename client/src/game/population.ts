@@ -164,6 +164,16 @@ export const getPopulationProduction = (jobId: string, count: number, state?: an
       });
     }
 
+    // Apply Flame's Touch blessing bonus to steel production
+    if (state && jobId === 'steel_forger' && prod.resource === 'steel' && prod.amount > 0) {
+      if (state.blessings?.flames_touch) {
+        amount += 1; // +1 steel per forger
+      }
+      if (state.blessings?.flames_touch_enhanced) {
+        amount += 3; // +3 steel per forger (replaces the +1 from basic)
+      }
+    }
+
     // Apply 100x multiplier in dev mode
     if (state && state.devMode) {
       amount *= 100;
