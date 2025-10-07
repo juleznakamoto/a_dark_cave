@@ -135,6 +135,10 @@ export const gameStateSchema = z.object({
     flames_touch: z.boolean().default(false),
     ravens_mark: z.boolean().default(false),
     ashen_embrace: z.boolean().default(false),
+    dagons_gift_enhanced: z.boolean().default(false),
+    flames_touch_enhanced: z.boolean().default(false),
+    ravens_mark_enhanced: z.boolean().default(false),
+    ashen_embrace_enhanced: z.boolean().default(false),
   }).default({}),
   buildings: z.object({
     woodenHut: z.number().default(0),
