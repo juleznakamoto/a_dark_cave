@@ -274,6 +274,7 @@ export default function SidePanelSection({
                   <div>{item.tooltip}</div>
                 ) : (
                   <>
+                    
                     {effect.name && (
                       <div className="font-bold mb-1">{effect.name}</div>
                     )}
