@@ -194,7 +194,7 @@ export default function VillagePanel() {
                   cost.satisfied ? "text-foreground" : "text-muted-foreground"
                 }`}
               >
-                {cost.amount} {capitalizeWords(cost.resource)}
+                {cost.text}
               </div>
             ))}
           </div>

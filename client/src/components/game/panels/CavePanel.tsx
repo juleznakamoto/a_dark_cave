@@ -133,9 +133,9 @@ export default function CavePanel() {
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
               {costBreakdown.map((costItem, index) => (
-                <span key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
                   {costItem.text}
-                </span>
+                </div>
               ))}
             </div>
           </HoverCardContent>

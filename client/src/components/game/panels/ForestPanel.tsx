@@ -67,10 +67,13 @@ export default function ForestPanel() {
           </HoverCardTrigger>
           <HoverCardContent className="w-auto p-2">
             <div className="text-xs whitespace-nowrap">
-              {Object.entries(getActionCostBreakdown(actionId, state)).map(([resource, { amount, satisfied }]) => (
-                <span key={resource} className={!satisfied ? 'text-muted-foreground line-through' : ''}>
-                  {amount} {resource.charAt(0).toUpperCase() + resource.slice(1)}
-                </span>
+              {getActionCostBreakdown(actionId, state).map((cost, index) => (
+                <div
+                  key={index}
+                  className={cost.satisfied ? '' : 'text-muted-foreground'}
+                >
+                  {cost.text}
+                </div>
               ))}
             </div>
           </HoverCardContent>
