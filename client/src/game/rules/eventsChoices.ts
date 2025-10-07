@@ -650,7 +650,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1.0,
     title: "The Blind Druid",
     message:
-      "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a religion. Choose wisely, for this choice will shape your community's destiny forever.'",
+      "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to someone. Choose wisely, for this choice will shape your community's destiny forever.'",
     triggered: false,
     priority: 5,
     repeatable: false,
