@@ -130,7 +130,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The sacred oath",
     message:
-      "'Though memory of what they protected has faded into legend, their vigilance endured. For countless generations they have kept their sacred oath, watching over what lies at the city’s deepest point.'",
+      "'Though memory of what they protected has faded into legend, their vigilance endured. For countless generations the warriors have kept their sacred oath, watching over what lies at the city’s deepest point.'",
     triggered: false,
     priority: 3,
     repeatable: false,
