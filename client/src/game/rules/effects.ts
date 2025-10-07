@@ -414,6 +414,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  frostglass_sword: {
+    id: "frostglass_sword",
+    name: "Frostglass Sword",
+    description: "A legendary blade forged from frostglas, radiating an otherworldly cold power",
+    bonuses: {
+      generalBonuses: {
+        strength: 30,
+      },
+    },
+  },
 };
 
 // Relic effects

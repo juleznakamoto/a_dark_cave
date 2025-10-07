@@ -90,6 +90,7 @@ export default function CavePanel() {
             { id: "craftSteelSword", label: "Steel Sword" },
             { id: "craftObsidianSword", label: "Obsidian Sword" },
             { id: "craftAdamantSword", label: "Adamant Sword" },
+            { id: "craftFrostglassSword", label: "Frostglass Sword" },
             { id: "craftCrudeBow", label: "Crude Bow" },
             { id: "craftHuntsmanBow", label: "Huntsman Bow" },
             { id: "craftLongBow", label: "Long Bow" },
