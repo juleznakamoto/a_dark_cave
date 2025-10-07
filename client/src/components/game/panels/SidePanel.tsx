@@ -95,17 +95,17 @@ export default function SidePanel() {
   const schematicItems = Object.entries(gameState.schematics || {})
     .filter(([key, value]) => {
       if (!value) return false;
-      
+
       // Hide arbalest schematic if weapon is crafted
       if (key === 'arbalest_schematic' && gameState.weapons.arbalest) {
         return false;
       }
-      
+
       // Hide nightshade bow schematic if weapon is crafted
       if (key === 'nightshade_bow_schematic' && gameState.weapons.nightshade_bow) {
         return false;
       }
-      
+
       return true;
     })
     .map(([key, value]) => ({
@@ -119,14 +119,19 @@ export default function SidePanel() {
   // Dynamically generate blessing items from state
   const blessingItems = Object.entries(gameState.blessings || {})
     .filter(([key, value]) => value === true)
-    .map(([key, value]) => ({
-      id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
-      value: 1,
-      testId: `blessing-${key}`,
-      visible: true,
-      tooltip: clothingEffects[key]?.description,
-    }));
+    .map(([key, value]) => {
+      const item = {
+        id: key,
+        label: clothingEffects[key]?.name || capitalizeWords(key),
+        value: 1,
+        testId: `blessing-${key}`,
+        visible: true,
+        tooltip: clothingEffects[key]?.description,
+      };
+      console.log('🔮 Blessing item created for side panel:', item);
+      return item;
+    });
+
 
   // Dynamically generate building items from state
   const buildingItems = Object.entries(buildings)
@@ -162,12 +167,12 @@ export default function SidePanel() {
       let tooltip = undefined;
       const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
-      
+
       // Check if this building is damaged
       const isDamaged = (key === 'bastion' && story?.seen?.bastionDamaged) ||
                        (key === 'watchtower' && story?.seen?.watchtowerDamaged) ||
                        (key === 'palisades' && story?.seen?.palisadesDamaged);
-      
+
       if (buildAction?.statsEffects) {
         const effects = Object.entries(buildAction.statsEffects)
           .map(([stat, value]) => {
@@ -180,7 +185,7 @@ export default function SidePanel() {
           tooltip = effects;
         }
       }
-      
+
       // Special handling for buildings with madness reduction
       if (key === 'sanctum' && buildings.sanctum > 0) {
         tooltip = `-15 Madness`;
@@ -191,7 +196,7 @@ export default function SidePanel() {
       } else if (key === 'altar' && buildings.altar > 0) {
         tooltip = `-1 Madness`;
       }
-      
+
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
       if (key === 'bastion' && buildings.bastion > 0) {
@@ -203,7 +208,7 @@ export default function SidePanel() {
         const multiplier = isDamaged ? 0.5 : 1;
         let defense = Math.floor(1 * multiplier);
         let attack = Math.floor(5 * multiplier);
-        
+
         if (level >= 2) {
           defense += Math.floor(2 * multiplier);
           attack += Math.floor(8 * multiplier);
@@ -216,17 +221,17 @@ export default function SidePanel() {
           defense += Math.floor(4 * multiplier);
           attack += Math.floor(20 * multiplier);
         }
-        
+
         tooltip = `+${defense} defense, +${attack} attack`;
       } else if (key === 'palisades' && buildings.palisades > 0) {
         const level = buildings.palisades;
         const multiplier = isDamaged ? 0.5 : 1;
         let defense = Math.floor(4 * multiplier);
-        
+
         if (level >= 2) defense += Math.floor(6 * multiplier);
         if (level >= 3) defense += Math.floor(8 * multiplier);
         if (level >= 4) defense += Math.floor(10 * multiplier);
-        
+
         tooltip = `+${defense} defense`;
       }
 
@@ -383,32 +388,32 @@ export default function SidePanel() {
         const level = value ?? 0;
         const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
         label = watchtowerLabels[level - 1] || "Watchtower";
-        
+
         const isDamaged = story?.seen?.watchtowerDamaged;
         const multiplier = isDamaged ? 0.5 : 1;
-        
+
         let defense = 0;
         let attack = 0;
         let integrity = 0;
-        
+
         for (let i = 1; i <= level; i++) {
           defense += 1 + (i - 1);
           attack += 4 * i;
         }
-        
+
         // Calculate integrity based on level
         integrity = 5; // Level 1
         if (level >= 2) integrity += 5; // Level 2
         if (level >= 3) integrity += 10; // Level 3
         if (level >= 4) integrity += 10; // Level 4
-        
+
         // Apply damage multiplier and round down
         defense = Math.floor(defense * multiplier);
         attack = Math.floor(attack * multiplier);
         integrity = Math.floor(integrity * multiplier);
-        
+
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
@@ -416,13 +421,13 @@ export default function SidePanel() {
       } else if (key === "bastion") {
         const isDamaged = story?.seen?.bastionDamaged;
         const multiplier = isDamaged ? 0.5 : 1;
-        
+
         const defense = Math.floor(5 * multiplier);
         const attack = Math.floor(3 * multiplier);
         const integrity = Math.floor(20 * multiplier);
-        
+
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
@@ -431,13 +436,13 @@ export default function SidePanel() {
         const palisadesLevel = value ?? 0;
         const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
         label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
-        
+
         const isDamaged = story?.seen?.palisadesDamaged;
         const multiplier = isDamaged ? 0.5 : 1;
-        
+
         let defense = 0;
         let integrity = 0;
-        
+
         if (palisadesLevel >= 1) {
           defense += 4;
           integrity += 10;
@@ -454,13 +459,13 @@ export default function SidePanel() {
           defense += 10;
           integrity += 35;
         }
-        
+
         // Apply damage multiplier and round down
         defense = Math.floor(defense * multiplier);
         integrity = Math.floor(integrity * multiplier);
-        
+
         tooltip = `+${defense} Defense\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
@@ -483,7 +488,7 @@ export default function SidePanel() {
     .filter(([key]) => !["attackFromFortifications", "attackFromStrength"].includes(key)) // Exclude breakdown fields from display
     .map(([key, value]) => {
       let tooltip = undefined;
-      
+
       // Add detailed tooltip for attack showing breakdown
       if (key === "attack" && bastion_stats) {
         const fortAttack = bastion_stats.attackFromFortifications || 0;
@@ -492,7 +497,7 @@ export default function SidePanel() {
           tooltip = `${fortAttack} from Fortifications\n${strengthAttack} from Strength`;
         }
       }
-      
+
       return {
         id: key,
         label: capitalizeWords(key),

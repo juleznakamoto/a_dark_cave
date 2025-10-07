@@ -13,11 +13,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
-    message: [
+    message:
       "At dawn, men glimpse a pale, tall and slender figure at the woods' edge. It stands watching. What do you do?",
-      "In the grey morning, a tall, pale and slender shape lingers at the treeline, unmoving. What do you do?",
-      "Villagers report of a tall, pale, slender figure in the mist, silent at the forest's edge. What do you do?",
-    ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -660,10 +657,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Church of Dagon",
         effect: (state: GameState) => {
           return {
-            blessings: {
-              ...state.blessings,
-              dagons_gift: true,
-            },
+            blessings: { ...state.blessings, dagons_gift: true },
             story: {
               ...state.story,
               seen: {
@@ -693,10 +687,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.villagers,
               free: (state.villagers.free || 0) + canAdd,
             },
-            blessings: {
-              ...state.blessings,
-              flames_touch: true,
-            },
+            blessings: { ...state.blessings, flames_touch: true },
             story: {
               ...state.story,
               seen: {
@@ -719,10 +710,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.relics,
               ravens_orb: true,
             },
-            blessings: {
-              ...state.blessings,
-              ravens_mark: true,
-            },
+            blessings: { ...state.blessings, ravens_mark: true },
             story: {
               ...state.story,
               seen: {
@@ -745,10 +733,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.weapons,
               ashen_dagger: true,
             },
-            blessings: {
-              ...state.blessings,
-              ashen_embrace: true,
-            },
+            blessings: { ...state.blessings, ashen_embrace: true },
             story: {
               ...state.story,
               seen: {
@@ -873,35 +858,63 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Deepen Devotion",
         effect: (state: GameState) => {
           const templeDedicatedTo = state.templeDedicatedTo || "";
-          let updatedBlessings = { ...state.blessings };
-          let message = "";
+          let result: any = {}; // Use 'any' for flexibility, or define a more specific type if possible
 
           if (templeDedicatedTo === "dagon") {
-            updatedBlessings.dagons_gift_enhanced = true;
-            message = "Dagon's Blessing flows strong than before.";
+            result.blessings = {
+              ...state.blessings,
+              dagons_gift_enhanced: true,
+            };
+            result._logMessage = "Dagon's Blessing flows strong than before.";
           } else if (templeDedicatedTo === "flame") {
-            updatedBlessings.flames_touch_enhanced = true;
-            message = "The First Flame burns brighter than before.";
+            result.blessings = {
+              ...state.blessings,
+              flames_touch_enhanced: true,
+            };
+            result._logMessage = "The First Flame burns brighter than before.";
           } else if (templeDedicatedTo === "raven") {
-            updatedBlessings.ravens_mark_enhanced = true;
-            message = "The Raven's Mark grows stronger than before.";
+            result.blessings = {
+              ...state.blessings,
+              ravens_mark_enhanced: true,
+            };
+            result._logMessage = "The Raven's Mark grows stronger than before.";
           } else if (templeDedicatedTo === "ash") {
-            updatedBlessings.ashen_embrace_enhanced = true;
-            message = "The Ashen Embrace is stronger than before.";
+            result.blessings = {
+              ...state.blessings,
+              ashen_embrace_enhanced: true,
+            };
+            result._logMessage = "The Ashen Embrace is stronger than before.";
           }
 
-          return {
-            blessings: updatedBlessings,
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                sanctumDedicated: true,
-              },
+          // Grant enhanced blessing
+          const blessingKey = Object.keys(state.blessings || {}).find(key =>
+            key === 'dagons_gift' || key === 'flames_touch' || key === 'ravens_mark' || key === 'ashen_embrace'
+          );
+
+          if (blessingKey) {
+            const enhancedKey = `${blessingKey}_enhanced`;
+            console.log('🔮 Granting enhanced blessing:', {
+              original: blessingKey,
+              enhanced: enhancedKey,
+              currentBlessings: state.blessings
+            });
+            result.blessings = {
+              ...state.blessings,
+              [blessingKey]: false,
+              [enhancedKey]: true
+            };
+          }
+
+          result.story = {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              sanctumDedicated: true,
             },
-            templeDedicatedTo: templeDedicatedTo,
-            _logMessage: message,
           };
+          result.templeDedicatedTo = templeDedicatedTo;
+
+          return result;
         },
       },
       {
