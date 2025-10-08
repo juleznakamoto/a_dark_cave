@@ -1034,18 +1034,18 @@ function handleBuildingConstruction(
       const newCount = (state.buildings[building] || 0) + effect;
       console.log(`[handleBuildingConstruction] Updating building ${building}: ${state.buildings[building]} + ${effect} = ${newCount}`);
 
-      // Ensure result.stateUpdates and buildings exist
+      // Ensure result.stateUpdates exists
       if (!result.stateUpdates) {
         result.stateUpdates = {};
       }
       if (!result.stateUpdates.buildings) {
-        result.stateUpdates.buildings = {};
+        result.stateUpdates.buildings = {} as Partial<GameState["buildings"]>;
       }
 
       result.stateUpdates.buildings = {
         ...result.stateUpdates.buildings,
         [building]: newCount,
-      };
+      } as Partial<GameState["buildings"]>;
     }
   }
 
