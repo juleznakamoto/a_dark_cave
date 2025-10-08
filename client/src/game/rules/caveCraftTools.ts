@@ -32,7 +32,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 20,
     },
     effects: {
-      "resources.torch": 2,
+      "resources.torch": 2000,
       "story.seen.actionCraftTorches": true,
     },
     cooldown: 2.5,
