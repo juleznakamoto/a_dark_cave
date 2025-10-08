@@ -82,6 +82,7 @@ import {
   handleBuildWatchtower,
   handleBuildPalisades,
   handleBuildGrandBlacksmith,
+  handleBuildScriptorium, // Added this import
 } from './rules/villageBuildActions';
 
 import {
@@ -268,14 +269,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildQuarry(state, result);
     case 'buildClerksHut':
       return handleBuildClerksHut(state, result);
-    case 'buildStoneHut':
-      return handleBuildStoneHut(state, result);
-    case 'buildShrine':
-      return handleBuildShrine(state, result);
-    case 'buildTemple':
-      return handleBuildTemple(state, result);
-    case 'buildSanctum':
-      return handleBuildSanctum(state, result);
+    case 'buildScriptorium':
+      return handleBuildScriptorium(state, result);
     case 'buildTannery':
       return handleBuildTannery(state, result);
     case 'buildAlchemistHall':
