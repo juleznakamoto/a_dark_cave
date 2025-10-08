@@ -294,7 +294,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'buildPalisades':
       return handleBuildPalisades(state, result);
     case 'buildStoneHut':
-      console.log('[executeGameAction] ROUTING TO handleBuildStoneHut', { state, result });
       return handleBuildStoneHut(state, result);
     case 'buildGrandBlacksmith':
       return handleBuildGrandBlacksmith(state, result);
