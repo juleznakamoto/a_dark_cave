@@ -727,12 +727,6 @@ export function handleLowChamber(
     type: "system",
   });
 
-  // Remove the reinforced rope after use
-  result.stateUpdates.tools = {
-    ...state.tools,
-    reinforced_rope: false,
-  };
-
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
@@ -750,12 +744,6 @@ export function handleoccultistChamber(
     timestamp: Date.now(),
     type: "system",
   });
-
-  // Remove the occultist map after use
-  result.stateUpdates.tools = {
-    ...state.tools,
-    occultist_map: false,
-  };
 
   Object.assign(result.stateUpdates, effectUpdates);
   return result;

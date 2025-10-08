@@ -155,12 +155,6 @@ export function handleLayTrap(
       black_bear_fur: true,
     };
 
-    // Remove the trap after successful use
-    result.stateUpdates.tools = {
-      ...state.tools,
-      giant_trap: false,
-    };
-
     if (villagerDeaths === 0) {
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
