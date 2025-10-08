@@ -282,6 +282,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
+    if (actionId === 'buildStoneHut') {
+      console.log('[executeAction] buildStoneHut clicked:', {
+        currentStoneHuts: state.buildings.stoneHut,
+        currentStone: state.resources.stone,
+        cooldown: state.cooldowns[actionId] || 0
+      });
+    }
+
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
 
@@ -307,13 +315,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state updates
     set((prevState) => {
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-      return {
+      const newState = {
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
           ? [...prevState.log, ...result.logEntries].slice(-10)
           : prevState.log,
       };
+      
+      if (actionId === 'buildStoneHut') {
+        console.log('[executeAction] State after merge:', {
+          stoneHuts: newState.buildings.stoneHut,
+          stone: newState.resources.stone,
+          mergedUpdates
+        });
+      }
+      
+      return newState;
     });
 
     // Schedule updates
