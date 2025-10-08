@@ -266,6 +266,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.iron_axe": true,
       "tools.iron_pickaxe": true,
       "tools.steel_lantern": false,
+      "flags.descendedFurther": true,
     },
     cost: {
       "resources.wood": 400,
@@ -288,6 +289,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.steel_axe": true,
       "tools.steel_pickaxe": true,
       "tools.obsidian_lantern": false,
+      "flags.exploredRuins": true,
     },
     cost: {
       "resources.wood": 800,
@@ -310,6 +312,7 @@ export const caveCraftTools: Record<string, Action> = {
       "tools.obsidian_axe": true,
       "tools.obsidian_pickaxe": true,
       "tools.adamant_lantern": false,
+      "flags.exploredTemple": true,
     },
     cost: {
       "resources.wood": 1600,
