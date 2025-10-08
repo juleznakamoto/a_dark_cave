@@ -119,7 +119,29 @@ export default function SidePanel() {
 
   // Dynamically generate blessing items from state
   const blessingItems = Object.entries(gameState.blessings || {})
-    .filter(([key, value]) => value === true)
+    .filter(([key, value]) => {
+      // Show blessing if it's true OR if its enhanced version is true
+      if (value === true) return true;
+      
+      // Check if this is a base blessing with an enhanced version
+      const enhancedKey = `${key}_enhanced`;
+      if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
+        return true;
+      }
+      
+      return false;
+    })
+    .filter(([key]) => {
+      // Don't show base blessing if enhanced version exists and is active
+      if (key.endsWith('_enhanced')) return true;
+      
+      const enhancedKey = `${key}_enhanced`;
+      if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
+        return false; // Hide base version, show enhanced instead
+      }
+      
+      return true;
+    })
     .map(([key, value]) => ({
       id: key,
       label: clothingEffects[key]?.name || capitalizeWords(key),
