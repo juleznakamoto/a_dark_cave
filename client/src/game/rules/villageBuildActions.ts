@@ -1009,6 +1009,12 @@ function handleBuildingConstruction(
     return result;
   }
 
+  // Ensure result.stateUpdates exists
+  if (!result.stateUpdates) {
+    console.log('[handleBuildingConstruction] Creating stateUpdates object');
+    result.stateUpdates = {};
+  }
+
   // Apply resource costs (negative changes)
   if (actionCosts) {
     const newResources = { ...state.resources };
