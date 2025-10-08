@@ -1032,7 +1032,13 @@ function handleBuildingConstruction(
     }
 
     console.log('[handleBuildingConstruction] Setting result.stateUpdates.resources to:', newResources);
-    result.stateUpdates.resources = newResources;
+    if (!result.stateUpdates) {
+      result.stateUpdates = {};
+    }
+    result.stateUpdates = {
+      ...result.stateUpdates,
+      resources: newResources
+    };
 
     console.log('[handleBuildingConstruction] After costs applied:', {
       newResources,
@@ -1056,10 +1062,6 @@ function handleBuildingConstruction(
         console.log('[handleBuildingConstruction] Creating stateUpdates object');
         result.stateUpdates = {};
       }
-      if (!result.stateUpdates.buildings) {
-        console.log('[handleBuildingConstruction] Creating buildings object');
-        result.stateUpdates.buildings = {} as Partial<GameState["buildings"]>;
-      }
 
       console.log('[handleBuildingConstruction] Before setting building:', {
         currentBuildings: result.stateUpdates.buildings,
@@ -1067,11 +1069,16 @@ function handleBuildingConstruction(
         newCount
       });
 
-      // Ensure we spread the current state buildings first, then our updates
-      result.stateUpdates.buildings = {
+      // Create new buildings object with all current buildings plus the update
+      const newBuildings = {
         ...state.buildings,
-        ...result.stateUpdates.buildings,
+        ...(result.stateUpdates.buildings || {}),
         [building]: newCount,
+      };
+
+      result.stateUpdates = {
+        ...result.stateUpdates,
+        buildings: newBuildings
       };
 
       console.log('[handleBuildingConstruction] After setting building:', {
