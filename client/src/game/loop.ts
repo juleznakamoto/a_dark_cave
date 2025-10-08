@@ -180,11 +180,7 @@ function handleGathererProduction() {
       const newState = useGameStore.getState();
       console.log("state_update", {
         updates,
-        new_state: {
-          resources: newState.resources,
-          villagers: newState.villagers,
-          buildings: newState.buildings,
-        },
+        new_state: buildGameState(newState),
       });
     }
   }
@@ -213,11 +209,7 @@ function handleHunterProduction() {
       const newState = useGameStore.getState();
       console.log("state_update", {
         updates,
-        new_state: {
-          resources: newState.resources,
-          villagers: newState.villagers,
-          buildings: newState.buildings,
-        },
+        new_state: buildGameState(newState),
       });
     }
   }
@@ -256,11 +248,7 @@ function handleMinerProduction() {
     const newState = useGameStore.getState();
     console.log("state_update", {
       updates,
-      new_state: {
-        resources: newState.resources,
-        villagers: newState.villagers,
-        buildings: newState.buildings,
-      },
+      new_state: buildGameState(newState),
     });
   }
 }
@@ -307,11 +295,7 @@ function handlePopulationSurvival() {
     const newState = useGameStore.getState();
     console.log("state_update", {
       updates,
-      new_state: {
-        resources: newState.resources,
-        villagers: newState.villagers,
-        buildings: newState.buildings,
-      },
+      new_state: buildGameState(newState),
     });
   }
 }
