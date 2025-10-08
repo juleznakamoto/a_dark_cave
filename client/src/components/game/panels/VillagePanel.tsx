@@ -73,6 +73,7 @@ export default function VillagePanel() {
         { id: "buildAlchemistHall", label: "Alchemist's Hall" },
         { id: "buildTradePost", label: "Trade Post" },
         { id: "buildWizardTower", label: "Wizard Tower" },
+        { id: "buildGrandBlacksmith", label: "Grand Blacksmith" },
         { id: "buildBastion", label: "Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
         { id: "buildPalisades", label: "Palisades" },
