@@ -223,6 +223,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (action.building) {
     const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
+    
+    // Debug logging for Stone Hut
+    if (actionId === "buildStoneHut") {
+      console.log(`[canExecuteAction] buildStoneHut - level: ${level}, costs:`, costs);
+    }
   }
 
   if (!costs || typeof costs !== "object") return true;
@@ -242,11 +247,17 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
     if (path.startsWith("resources.")) {
       const adjustedCost = getAdjustedCost(actionId, requiredAmount, true, state);
       if ((current || 0) < adjustedCost) {
+        if (actionId === "buildStoneHut") {
+          console.log(`[canExecuteAction] buildStoneHut blocked - ${path}: has ${current || 0}, needs ${adjustedCost}`);
+        }
         return false;
       }
     } else {
       // For other requirements, use exact equality check
       if (current !== requiredAmount) {
+        if (actionId === "buildStoneHut") {
+          console.log(`[canExecuteAction] buildStoneHut blocked - ${path}: has ${current}, needs ${requiredAmount} (exact match required)`);
+        }
         return false;
       }
     }
