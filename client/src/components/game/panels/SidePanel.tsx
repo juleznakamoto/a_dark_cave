@@ -196,37 +196,47 @@ export default function SidePanel() {
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
       if (key === 'bastion' && buildings.bastion > 0) {
-        const defense = Math.floor(5 * (isDamaged ? 0.5 : 1));
-        const attack = Math.floor(3 * (isDamaged ? 0.5 : 1));
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
+        
+        const statsWithoutBastion = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, bastion: 0 }
+        });
+        
+        const defense = currentStats.defense - statsWithoutBastion.defense;
+        const attack = currentStats.attackFromFortifications - statsWithoutBastion.attackFromFortifications;
+        
         tooltip = `+${defense} defense, +${attack} attack`;
       } else if (key === 'watchtower' && buildings.watchtower > 0) {
-        const level = buildings.watchtower;
-        const multiplier = isDamaged ? 0.5 : 1;
-        let defense = Math.floor(1 * multiplier);
-        let attack = Math.floor(5 * multiplier);
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
         
-        if (level >= 2) {
-          defense += Math.floor(2 * multiplier);
-          attack += Math.floor(8 * multiplier);
-        }
-        if (level >= 3) {
-          defense += Math.floor(3 * multiplier);
-          attack += Math.floor(12 * multiplier);
-        }
-        if (level >= 4) {
-          defense += Math.floor(4 * multiplier);
-          attack += Math.floor(20 * multiplier);
-        }
+        const statsWithoutWatchtower = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, watchtower: 0 }
+        });
+        
+        const defense = currentStats.defense - statsWithoutWatchtower.defense;
+        const attack = currentStats.attackFromFortifications - statsWithoutWatchtower.attackFromFortifications;
         
         tooltip = `+${defense} defense, +${attack} attack`;
       } else if (key === 'palisades' && buildings.palisades > 0) {
-        const level = buildings.palisades;
-        const multiplier = isDamaged ? 0.5 : 1;
-        let defense = Math.floor(4 * multiplier);
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
         
-        if (level >= 2) defense += Math.floor(6 * multiplier);
-        if (level >= 3) defense += Math.floor(8 * multiplier);
-        if (level >= 4) defense += Math.floor(10 * multiplier);
+        const statsWithoutPalisades = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, palisades: 0 }
+        });
+        
+        const defense = currentStats.defense - statsWithoutPalisades.defense;
         
         tooltip = `+${defense} defense`;
       }
