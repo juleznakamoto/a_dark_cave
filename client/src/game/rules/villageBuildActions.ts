@@ -898,7 +898,6 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.sanctum": 1,
         "buildings.bastion": 1,
         "buildings.wizardTower": 0,
         "story.seen.wizardArrives": true,

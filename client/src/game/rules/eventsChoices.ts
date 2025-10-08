@@ -97,7 +97,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigateHut",
-        label: "Investigate the whispers",
+        label: "Investigate whispers",
         effect: (state: GameState) => {
           return {
             relics: {
