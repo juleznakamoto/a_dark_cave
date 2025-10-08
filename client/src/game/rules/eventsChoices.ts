@@ -644,10 +644,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   templeDedication: {
     id: "templeDedication",
-    condition: (state: GameState) =>
-      state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
+    condition: (state: GameState) => state.buildings.temple >= 1, // && !state.story.seen.templeDedicated,
     triggerType: "time",
-    timeProbability: 1.0,
+    timeProbability: 0.1,
     title: "The Blind Druid",
     message:
       "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to someone. Choose wisely, for this choice will shape your community's destiny forever.'",
@@ -818,7 +817,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "forceHim",
-        label: "Force him to teach you",
+        label: "Force him",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
@@ -844,7 +843,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   vikingBuilderEvent: true,
                 },
               },
-              _logMessage: `The builder proves stronger than expected! He fights back fiercely, injuring ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
+              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
             };
           }
         },
@@ -855,12 +854,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   sanctumDedication: {
     id: "sanctumDedication",
     condition: (state: GameState) =>
-      state.buildings.sanctum >= 1 &&
-      state.buildings.bastion >= 1 &&
-      state.story.seen.templeDedicated &&
-      !state.story.seen.sanctumDedicated,
+      state.buildings.sanctum >= 1 && state.buildings.bastion >= 1, //&&
+    // state.story.seen.templeDedicated &&
+    // !state.story.seen.sanctumDedicated,
     triggerType: "resource",
-    timeProbability: 0.003,
+    timeProbability: 3,
     title: "The Druid Returns",
     message:
       "The blind druid emerges from the forest once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
