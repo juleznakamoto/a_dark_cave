@@ -193,12 +193,12 @@ function ParticleButton({
                 }
             }, Math.random() * 101 + 100);
 
-            // gradually increase glow intensity over 1.5 seconds
+            // gradually increase glow intensity over 0.5 seconds
             glowRampRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
-                    if (elapsed < 800) {
-                        const progress = elapsed / 800;
+                    if (elapsed < 500) {
+                        const progress = elapsed / 500;
                         setGlowIntensity(0.1 + progress * 0.9); // from 0.1 to 1.0
                     } else {
                         setGlowIntensity(1.0); // max intensity
