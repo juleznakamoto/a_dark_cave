@@ -644,9 +644,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   templeDedication: {
     id: "templeDedication",
-    condition: (state: GameState) => state.buildings.temple >= 1, // && !state.story.seen.templeDedicated,
+    condition: (state: GameState) => state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     triggerType: "time",
-    timeProbability: 0.1,
+    timeProbability: 1,
     title: "The Blind Druid",
     message:
       "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to someone. Choose wisely, for this choice will shape your community's destiny forever.'",
@@ -870,6 +870,14 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "deepenDevotion",
         label: "Deepen Devotion",
         effect: (state: GameState) => {
+          // get the blessing currently true
+          const blessings = state.blessings
+          for (const blessing in blessings)
+            if (blessing === true) {
+              const active
+            }
+              return
+          
           const templeDedicatedTo = state.templeDedicatedTo || "";
           let updatedBlessings = { ...state.blessings };
           let message = "";
