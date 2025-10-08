@@ -870,28 +870,37 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "deepenDevotion",
         label: "Deepen Devotion",
         effect: (state: GameState) => {
-          // get the blessing currently true
-          const blessings = state.blessings
-          for (const blessing in blessings)
-            if (blessing === true) {
-              const active
-            }
-              return
+          // Find the currently active blessing
+          let activeBlessing = "";
+          const blessings = state.blessings;
           
-          const templeDedicatedTo = state.templeDedicatedTo || "";
+          if (blessings.dagons_gift) {
+            activeBlessing = "dagon";
+          } else if (blessings.flames_touch) {
+            activeBlessing = "flame";
+          } else if (blessings.ravens_mark) {
+            activeBlessing = "raven";
+          } else if (blessings.ashen_embrace) {
+            activeBlessing = "ash";
+          }
+
           let updatedBlessings = { ...state.blessings };
           let message = "";
 
-          if (templeDedicatedTo === "dagon") {
+          if (activeBlessing === "dagon") {
+            updatedBlessings.dagons_gift = true;
             updatedBlessings.dagons_gift_enhanced = true;
-            message = "Dagon's Blessing flows strong than before.";
-          } else if (templeDedicatedTo === "flame") {
+            message = "Dagon's Blessing flows stronger than before.";
+          } else if (activeBlessing === "flame") {
+            updatedBlessings.flames_touch = true;
             updatedBlessings.flames_touch_enhanced = true;
             message = "The First Flame burns brighter than before.";
-          } else if (templeDedicatedTo === "raven") {
+          } else if (activeBlessing === "raven") {
+            updatedBlessings.ravens_mark = true;
             updatedBlessings.ravens_mark_enhanced = true;
             message = "The Raven's Mark grows stronger than before.";
-          } else if (templeDedicatedTo === "ash") {
+          } else if (activeBlessing === "ash") {
+            updatedBlessings.ashen_embrace = true;
             updatedBlessings.ashen_embrace_enhanced = true;
             message = "The Ashen Embrace is stronger than before.";
           }
@@ -905,7 +914,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 sanctumDedicated: true,
               },
             },
-            templeDedicatedTo: templeDedicatedTo,
+            templeDedicatedTo: activeBlessing || state.templeDedicatedTo,
             _logMessage: message,
           };
         },
