@@ -195,6 +195,7 @@ export const gameStateSchema = z.object({
     seen: z.record(z.string(), z.boolean()).default({}),
     castleRuinsExplored: z.boolean().default(false),
     hillGraveExplored: z.boolean().default(false),
+    wizardFrostglassSword: z.boolean().default(false)
   }).default({}),
   damagedBuildings: z.object({
     bastion: z.boolean().default(false),
