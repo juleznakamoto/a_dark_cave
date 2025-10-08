@@ -79,6 +79,13 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>
 ): Partial<GameState> => {
+  console.log('[mergeStateUpdates] Input:', {
+    prevStateResources: prevState.resources,
+    prevStateBuildings: prevState.buildings,
+    stateUpdatesResources: stateUpdates.resources,
+    stateUpdatesBuildings: stateUpdates.buildings
+  });
+
   const merged = {
     resources: { ...prevState.resources, ...stateUpdates.resources },
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
@@ -95,6 +102,11 @@ const mergeStateUpdates = (
     } : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
   };
+
+  console.log('[mergeStateUpdates] Merged result:', {
+    mergedResources: merged.resources,
+    mergedBuildings: merged.buildings
+  });
 
   // Calculate and update effects when items change
   if (stateUpdates.tools || stateUpdates.weapons || stateUpdates.clothing || stateUpdates.relics) {

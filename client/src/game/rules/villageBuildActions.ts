@@ -1024,10 +1024,14 @@ function handleBuildingConstruction(
         newResources[resource] -= cost; // Subtract the cost
       }
     }
+    
+    console.log('[handleBuildingConstruction] Setting result.stateUpdates.resources to:', newResources);
     result.stateUpdates.resources = newResources;
+    
     console.log('[handleBuildingConstruction] After costs applied:', { 
       newResources,
-      resultStateUpdatesResources: result.stateUpdates.resources
+      resultStateUpdatesResources: result.stateUpdates.resources,
+      areTheyEqual: result.stateUpdates.resources === newResources
     });
   }
 
@@ -1403,15 +1407,20 @@ export function handleBuildStoneHut(
     currentStoneHuts: state.buildings.stoneHut,
     level,
     currentStone: state.resources.stone,
-    inputResult: result
+    inputResult: result,
+    inputResultStateUpdates: result.stateUpdates
   });
 
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
 
   console.log('[handleBuildStoneHut] After handleBuildingConstruction:', {
     stateUpdates: stoneHutResult.stateUpdates,
-    resourcesUpdate: stoneHutResult.stateUpdates.resources,
-    buildingsUpdate: stoneHutResult.stateUpdates.buildings,
+    resourcesUpdate: stoneHutResult.stateUpdates?.resources,
+    buildingsUpdate: stoneHutResult.stateUpdates?.buildings,
+    hasResources: !!stoneHutResult.stateUpdates?.resources,
+    hasBuildings: !!stoneHutResult.stateUpdates?.buildings,
+    stone: stoneHutResult.stateUpdates?.resources?.stone,
+    stoneHut: stoneHutResult.stateUpdates?.buildings?.stoneHut,
     fullResult: stoneHutResult
   });
 
