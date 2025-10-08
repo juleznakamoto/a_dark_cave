@@ -1444,13 +1444,19 @@ export function handleBuildStoneHut(
       type: "system",
     });
 
-    if (!stoneHutResult.stateUpdates.story) {
-      stoneHutResult.stateUpdates.story = { ...state.story };
-    }
-    if (!stoneHutResult.stateUpdates.story.seen) {
-      stoneHutResult.stateUpdates.story.seen = { ...state.story.seen };
-    }
-    stoneHutResult.stateUpdates.story.seen.villageBecomesCity = true;
+    // Preserve existing stateUpdates while adding story update
+    stoneHutResult.stateUpdates = {
+      ...stoneHutResult.stateUpdates,
+      story: {
+        ...state.story,
+        ...(stoneHutResult.stateUpdates.story || {}),
+        seen: {
+          ...state.story.seen,
+          ...(stoneHutResult.stateUpdates.story?.seen || {}),
+          villageBecomesCity: true,
+        },
+      },
+    };
   }
 
   console.log('[handleBuildStoneHut] Final result:', {
