@@ -83,6 +83,7 @@ import {
   handleBuildTemple,
   handleBuildSanctum,
   handleBuildGrandBlacksmith,
+  handleBuildLonghouse,
 } from './rules/villageBuildActions';
 
 import {
@@ -297,6 +298,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildStoneHut(state, result);
     case 'buildGrandBlacksmith':
       return handleBuildGrandBlacksmith(state, result);
+    case 'buildLonghouse':
+      return handleBuildLonghouse(state, result);
 
     // Forest Scout Actions
     case 'hunt':
