@@ -1108,6 +1108,18 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
         !PICKAXE_HIERARCHY.includes(toolId) &&
         !LANTERN_HIERARCHY.includes(toolId)
       ) {
+        // Hide reinforced rope after descending further
+        if (toolId === 'reinforced_rope' && state.story.seen?.actionDescendFurther) {
+          return;
+        }
+        // Hide giant trap after laying trap
+        if (toolId === 'giant_trap' && state.story.seen?.actionLayTrap) {
+          return;
+        }
+        // Hide occultist map after exploring occultist chamber
+        if (toolId === 'occultist_map' && state.story.seen?.actionOccultistChamber) {
+          return;
+        }
         displayTools[toolId] = true;
       }
     });
