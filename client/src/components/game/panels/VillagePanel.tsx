@@ -171,6 +171,14 @@ export default function VillagePanel() {
       displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
+    // Dynamic label for longhouse based on current count
+    if (actionId === "buildLonghouse") {
+      const longhouseCount = buildings.longhouse || 0;
+      if (longhouseCount > 0) {
+        displayLabel = `${label} (${longhouseCount})`;
+      }
+    }
+
     return (
       <HoverCard key={actionId} openDelay={100} closeDelay={100}>
         <HoverCardTrigger asChild>
