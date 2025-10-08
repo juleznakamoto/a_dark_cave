@@ -223,11 +223,6 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (action.building) {
     const level = getNextBuildingLevel(actionId, state);
     costs = action.cost[level];
-    
-    // Debug logging for Stone Hut
-    if (actionId === "buildStoneHut") {
-      console.log(`[canExecuteAction] buildStoneHut - level: ${level}, costs:`, costs);
-    }
   }
 
   if (!costs || typeof costs !== "object") return true;
