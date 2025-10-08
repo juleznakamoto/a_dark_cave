@@ -1015,7 +1015,7 @@ function handleBuildingConstruction(
       beforeResources: { ...newResources },
       costs: actionCosts
     });
-    
+
     for (const [path, cost] of Object.entries(actionCosts)) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
@@ -1028,12 +1028,20 @@ function handleBuildingConstruction(
   }
 
   // Apply building effects
-  for (const [path, effect] of Object.entries(actionEffects)) {
+  for (const [path, effect] of Object.entries(actionEffects) as [string, number][]) {
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
       const newCount = (state.buildings[building] || 0) + effect;
       console.log(`[handleBuildingConstruction] Updating building ${building}: ${state.buildings[building]} + ${effect} = ${newCount}`);
-      
+
+      // Ensure result.stateUpdates and buildings exist
+      if (!result.stateUpdates) {
+        result.stateUpdates = {};
+      }
+      if (!result.stateUpdates.buildings) {
+        result.stateUpdates.buildings = {};
+      }
+
       result.stateUpdates.buildings = {
         ...result.stateUpdates.buildings,
         [building]: newCount,
