@@ -1,0 +1,7 @@
+
+# Robots.txt for A Dark Cave
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://a-dark-cave.com/sitemap.xml
