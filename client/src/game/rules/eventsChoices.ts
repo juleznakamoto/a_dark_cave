@@ -670,7 +670,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            templeDedicatedTo: "dagon",
             _logMessage:
               "You dedicate the temple to Dagon, the ancient and mysterious god of the deep.",
           };
@@ -703,7 +702,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            templeDedicatedTo: "flame",
             _logMessage:
               "You dedicate the temple to the Way of the First Flame, an ancient path of fire and rebirth.",
           };
@@ -729,7 +727,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            templeDedicatedTo: "raven",
             _logMessage:
               "You dedicate the temple to the Cult of the Ravenborn, an enigmatic and shadowed order.",
           };
@@ -755,7 +752,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 templeDedicated: true,
               },
             },
-            templeDedicatedTo: "ash",
             _logMessage:
               "You dedicate the temple to the Order of the Ashbringer, a solemn and fire-bound brotherhood.",
           };
