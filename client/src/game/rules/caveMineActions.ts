@@ -14,7 +14,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 1,
     },
     effects: {
-      "resources.iron": "random(2,5)",
+      "resources.iron": "random(4,8)",
       "story.seen.hasIron": true,
     },
     cooldown: 15,
@@ -31,7 +31,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 1,
     },
     effects: {
-      "resources.coal": "random(2,5)",
+      "resources.coal": "random(4,8)",
       "story.seen.hasCoal": true,
     },
     cooldown: 15,
@@ -49,7 +49,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 2,
     },
     effects: {
-      "resources.sulfur": "random(2,5)",
+      "resources.sulfur": "random(4,8)",
       "story.seen.hasSulfur": true,
     },
     cooldown: 15,
@@ -66,7 +66,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 3,
     },
     effects: {
-      "resources.obsidian": "random(2,5)",
+      "resources.obsidian": "random(4,8)",
       "story.seen.hasObsidian": true,
     },
     cooldown: 20,
@@ -83,7 +83,7 @@ export const caveMiningActions: Record<string, Action> = {
       "resources.torch": 10,
     },
     effects: {
-      "resources.adamant": "random(2,5)",
+      "resources.adamant": "random(4,8)",
       "story.seen.hasAdamant": true,
     },
     cooldown: 25,

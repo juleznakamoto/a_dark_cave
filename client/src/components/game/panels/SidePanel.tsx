@@ -37,8 +37,8 @@ export default function SidePanel() {
     
     const cleanupTimer = setTimeout(() => {
       const now = Date.now();
-      setResourceChanges(prev => prev.filter(change => now - change.timestamp < 3000));
-    }, 3000);
+      setResourceChanges(prev => prev.filter(change => now - change.timestamp < 2000));
+    }, 2000);
 
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);

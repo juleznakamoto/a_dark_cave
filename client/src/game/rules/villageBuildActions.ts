@@ -120,7 +120,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 200,
-        "resources.stone": 25,
+        "resources.stone": 50,
       },
     },
     effects: {
@@ -137,7 +137,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 2,
+        "buildings.woodenHut": 1,
         "tools.stone_axe": true,
         "tools.stone_pickaxe": true,
         "buildings.blacksmith": 0,
@@ -175,7 +175,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 500,
-        "resources.stone": 250,
+        "resources.stone": 500,
       },
     },
     effects: {
@@ -200,7 +200,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 1000,
-        "resources.stone": 250,
+        "resources.stone": 1000,
         "resources.iron": 50,
       },
     },
@@ -226,7 +226,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 2500,
-        "resources.stone": 500,
+        "resources.stone": 2500,
         "resources.steel": 500,
       },
     },
@@ -252,7 +252,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 5000,
-        "resources.stone": 1000,
+        "resources.stone": 5000,
         "resources.steel": 1000,
       },
     },
@@ -287,37 +287,6 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     cooldown: 20,
-  },
-
-  buildAltar: {
-    id: "buildAltar",
-    label: "Altar",
-    building: true,
-    show_when: {
-      1: {
-        "flags.forestUnlocked": true,
-        "buildings.altar": 0,
-        "tools.steel_axe": true,
-      },
-    },
-    cost: {
-      1: {
-        "resources.wood": 500,
-        "resources.stone": 500,
-        "resources.bones": 500,
-        "resources.silver": 25,
-      },
-    },
-    effects: {
-      1: {
-        "buildings.altar": 1,
-        "story.seen.hasAltar": true,
-      },
-    },
-    statsEffects: {
-      madness: -2,
-    },
-    cooldown: 5,
   },
 
   buildGreatCabin: {
@@ -488,7 +457,38 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 20,
   },
-
+  
+  buildAltar: {
+    id: "buildAltar",
+    label: "Altar",
+    building: true,
+    show_when: {
+      1: {
+        "flags.forestUnlocked": true,
+        "buildings.altar": 0,
+        "tools.steel_axe": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 1000,
+        "resources.stone": 500,
+        "resources.bones": 500,
+        "resources.silver": 25,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.altar": 1,
+        "story.seen.hasAltar": true,
+      },
+    },
+    statsEffects: {
+      madness: -2,
+    },
+    cooldown: 5,
+  },
+  
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",

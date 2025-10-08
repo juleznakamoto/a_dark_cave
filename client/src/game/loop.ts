@@ -413,7 +413,7 @@ async function handleAutoSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
   } catch (error) {
-    console.error('Auto save failed:', error);
+    console.error("Auto save failed:", error);
   }
 }
 
@@ -452,11 +452,10 @@ function handleStrangerApproach() {
     probability += 0.4;
   }
 
-  //max probability of 61% (81% with Raven's Mark, 101% with enhanced)
-
-  // if population is 0
   if (currentPopulation === 0) {
-    probability = 0.9;
+    probability = 0.8;
+  } else if (currentPopulation <= 4) {
+    probability = 0.6;
   }
 
   // Calculate available room first
@@ -482,13 +481,25 @@ function handleStrangerApproach() {
   // Check for the new condition: 10 stone houses built and a stranger approaches
   // But only if there's room for multiple strangers
   if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
-    if (availableRoom >= 5 && moreStrangersProbability < 0.1 * multiStrangerMultiplier) {
+    if (
+      availableRoom >= 5 &&
+      moreStrangersProbability < 0.1 * multiStrangerMultiplier
+    ) {
       strangersCount = 5;
-    } else if (availableRoom >= 4 && moreStrangersProbability < 0.2 * multiStrangerMultiplier) {
+    } else if (
+      availableRoom >= 4 &&
+      moreStrangersProbability < 0.2 * multiStrangerMultiplier
+    ) {
       strangersCount = 4;
-    } else if (availableRoom >= 3 && moreStrangersProbability < 0.3 * multiStrangerMultiplier) {
+    } else if (
+      availableRoom >= 3 &&
+      moreStrangersProbability < 0.3 * multiStrangerMultiplier
+    ) {
       strangersCount = 3;
-    } else if (availableRoom >= 2 && moreStrangersProbability < 0.4 * multiStrangerMultiplier) {
+    } else if (
+      availableRoom >= 2 &&
+      moreStrangersProbability < 0.4 * multiStrangerMultiplier
+    ) {
       strangersCount = 2;
     }
   }
@@ -556,7 +567,7 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  console.log('[SAVE] Manual save initiated.');
+  console.log("[SAVE] Manual save initiated.");
 
   const state = useGameStore.getState();
 
@@ -567,7 +578,7 @@ export async function manualSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
   } catch (error) {
-    console.error('[SAVE] Manual save failed:', error);
+    console.error("[SAVE] Manual save failed:", error);
     throw error;
   }
 }

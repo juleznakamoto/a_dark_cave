@@ -91,14 +91,14 @@ export default function SidePanelSection({
             onResourceChange(newChange);
           }
 
-          // Remove animation after 3 seconds
+          // Remove animation after 2 seconds
           setTimeout(() => {
             setAnimatedItems((prev) => {
               const newSet = new Set(prev);
               newSet.delete(item.id);
               return newSet;
             });
-          }, 3000);
+          }, 2000);
         } else if (currentValue < prevValue) {
           newDecreaseAnimatedItems.add(item.id);
 
@@ -113,14 +113,14 @@ export default function SidePanelSection({
             onResourceChange(newChange);
           }
 
-          // Remove animation after 3 seconds
+          // Remove animation after 2 seconds
           setTimeout(() => {
             setDecreaseAnimatedItems((prev) => {
               const newSet = new Set(prev);
               newSet.delete(item.id);
               return newSet;
             });
-          }, 3000);
+          }, 2000);
         }
       }
 

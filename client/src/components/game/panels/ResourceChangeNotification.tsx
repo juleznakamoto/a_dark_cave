@@ -86,7 +86,7 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
         timerRef.current = setTimeout(() => {
           setVisibleChange(null);
           timerRef.current = null;
-        }, 3000);
+        }, 2000);
         
         microDelayTimerRef.current = null;
       }, 10);

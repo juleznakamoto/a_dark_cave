@@ -263,7 +263,7 @@ export function handleCraftCrudeBow(state: GameState, result: ActionResult): Act
   if (effectUpdates.flags && effectUpdates.flags.forestUnlocked && !state.flags.forestUnlocked) {
     result.logEntries!.push({
       id: `forest-unlocked-${Date.now()}`,
-      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a place to hunt.',
+      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to hunt.',
       timestamp: Date.now(),
       type: 'system',
     });
