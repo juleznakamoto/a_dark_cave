@@ -1035,10 +1035,7 @@ function handleBuildingConstruction(
     if (!result.stateUpdates) {
       result.stateUpdates = {};
     }
-    result.stateUpdates = {
-      ...result.stateUpdates,
-      resources: newResources
-    };
+    result.stateUpdates.resources = newResources;
 
     console.log('[handleBuildingConstruction] After costs applied:', {
       newResources,
@@ -1076,10 +1073,7 @@ function handleBuildingConstruction(
         [building]: newCount,
       };
 
-      result.stateUpdates = {
-        ...result.stateUpdates,
-        buildings: newBuildings
-      };
+      result.stateUpdates.buildings = newBuildings;
 
       console.log('[handleBuildingConstruction] After setting building:', {
         updatedBuildings: result.stateUpdates.buildings
