@@ -110,12 +110,6 @@ export default function CavePanel() {
     const action = gameActions[actionId];
     if (!action) return null;
 
-    // Special handling for Torch label
-    let displayLabel = label;
-    if (actionId === 'craftTorch' && state.tools.stone_axe) {
-      displayLabel = 'Torches';
-    }
-
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
@@ -135,7 +129,7 @@ export default function CavePanel() {
                 variant="outline"
                 className="hover:bg-transparent hover:text-foreground"
               >
-                {displayLabel}
+                {label}
               </CooldownButton>
             </div>
           </HoverCardTrigger>
@@ -163,7 +157,7 @@ export default function CavePanel() {
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
       >
-        {displayLabel}
+        {label}
       </CooldownButton>
     );
   };
