@@ -1024,11 +1024,11 @@ function handleBuildingConstruction(
         newResources[resource] -= cost; // Subtract the cost
       }
     }
-    
+
     console.log('[handleBuildingConstruction] Setting result.stateUpdates.resources to:', newResources);
     result.stateUpdates.resources = newResources;
-    
-    console.log('[handleBuildingConstruction] After costs applied:', { 
+
+    console.log('[handleBuildingConstruction] After costs applied:', {
       newResources,
       resultStateUpdatesResources: result.stateUpdates.resources,
       areTheyEqual: result.stateUpdates.resources === newResources
@@ -1039,7 +1039,7 @@ function handleBuildingConstruction(
   console.log('[handleBuildingConstruction] Processing building effects:', actionEffects);
   for (const [path, effect] of Object.entries(actionEffects) as [string, number][]) {
     console.log('[handleBuildingConstruction] Processing effect path:', { path, effect });
-    
+
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
       const newCount = (state.buildings[building] || 0) + effect;
@@ -1061,10 +1061,12 @@ function handleBuildingConstruction(
         newCount
       });
 
+      // Ensure we spread the current state buildings first, then our updates
       result.stateUpdates.buildings = {
+        ...state.buildings,
         ...result.stateUpdates.buildings,
         [building]: newCount,
-      } as Partial<GameState["buildings"]>;
+      };
 
       console.log('[handleBuildingConstruction] After setting building:', {
         updatedBuildings: result.stateUpdates.buildings
