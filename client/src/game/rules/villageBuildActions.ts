@@ -1452,6 +1452,9 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
+  console.log('[handleBuildStoneHut] ===== FUNCTION ENTERED =====');
+  console.log('[handleBuildStoneHut] Stack trace:', new Error().stack);
+  
   const level = state.buildings.stoneHut + 1;
   console.log('[handleBuildStoneHut] ===== STARTING =====');
   console.log('[handleBuildStoneHut] Initial state:', {
@@ -1463,8 +1466,17 @@ export function handleBuildStoneHut(
     inputResultKeys: Object.keys(result)
   });
 
-  console.log('[handleBuildStoneHut] Calling handleBuildingConstruction...');
+  console.log('[handleBuildStoneHut] About to call handleBuildingConstruction...');
+  console.log('[handleBuildStoneHut] Arguments:', {
+    stateBuildings: state.buildings,
+    resultObject: result,
+    actionId: "buildStoneHut",
+    buildingType: "stoneHut"
+  });
+  
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  
+  console.log('[handleBuildStoneHut] handleBuildingConstruction COMPLETED');
   console.log('[handleBuildStoneHut] handleBuildingConstruction returned - IMMEDIATE CHECK:', {
     'stoneHutResult === result': stoneHutResult === result,
     'stoneHutResult.stateUpdates': stoneHutResult.stateUpdates,
