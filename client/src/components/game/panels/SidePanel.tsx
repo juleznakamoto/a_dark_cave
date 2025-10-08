@@ -378,34 +378,32 @@ export default function SidePanel() {
       let label = capitalizeWords(key);
       let tooltip = undefined;
 
-      // Map building keys to their contributions (based on bastionStats.ts logic)
+      // Map building keys to their contributions using bastion_stats
       if (key === "watchtower") {
         const level = value ?? 0;
         const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
         label = watchtowerLabels[level - 1] || "Watchtower";
         
         const isDamaged = story?.seen?.watchtowerDamaged;
-        const multiplier = isDamaged ? 0.5 : 1;
         
-        let defense = 0;
-        let attack = 0;
-        let integrity = 0;
+        // Calculate individual contributions from this building
+        // We need to recalculate to show just this building's contribution
+        import { calculateBastionStats } from '@/game/bastionStats';
         
-        for (let i = 1; i <= level; i++) {
-          defense += 1 + (i - 1);
-          attack += 4 * i;
-        }
+        // Calculate stats with and without this building to get its contribution
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
         
-        // Calculate integrity based on level
-        integrity = 5; // Level 1
-        if (level >= 2) integrity += 5; // Level 2
-        if (level >= 3) integrity += 10; // Level 3
-        if (level >= 4) integrity += 10; // Level 4
+        const statsWithoutWatchtower = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, watchtower: 0 }
+        });
         
-        // Apply damage multiplier and round down
-        defense = Math.floor(defense * multiplier);
-        attack = Math.floor(attack * multiplier);
-        integrity = Math.floor(integrity * multiplier);
+        const defense = currentStats.defense - statsWithoutWatchtower.defense;
+        const attack = currentStats.attack - statsWithoutWatchtower.attack;
+        const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
         
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
         
@@ -415,11 +413,23 @@ export default function SidePanel() {
         }
       } else if (key === "bastion") {
         const isDamaged = story?.seen?.bastionDamaged;
-        const multiplier = isDamaged ? 0.5 : 1;
         
-        const defense = Math.floor(5 * multiplier);
-        const attack = Math.floor(3 * multiplier);
-        const integrity = Math.floor(20 * multiplier);
+        // Calculate individual contributions from this building
+        import { calculateBastionStats } from '@/game/bastionStats';
+        
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
+        
+        const statsWithoutBastion = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, bastion: 0 }
+        });
+        
+        const defense = currentStats.defense - statsWithoutBastion.defense;
+        const attack = currentStats.attack - statsWithoutBastion.attack;
+        const integrity = currentStats.integrity - statsWithoutBastion.integrity;
         
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
         
@@ -433,31 +443,22 @@ export default function SidePanel() {
         label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
         
         const isDamaged = story?.seen?.palisadesDamaged;
-        const multiplier = isDamaged ? 0.5 : 1;
         
-        let defense = 0;
-        let integrity = 0;
+        // Calculate individual contributions from this building
+        import { calculateBastionStats } from '@/game/bastionStats';
         
-        if (palisadesLevel >= 1) {
-          defense += 4;
-          integrity += 10;
-        }
-        if (palisadesLevel >= 2) {
-          defense += 6;
-          integrity += 15;
-        }
-        if (palisadesLevel >= 3) {
-          defense += 8;
-          integrity += 25;
-        }
-        if (palisadesLevel >= 4) {
-          defense += 10;
-          integrity += 35;
-        }
+        const currentStats = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings }
+        });
         
-        // Apply damage multiplier and round down
-        defense = Math.floor(defense * multiplier);
-        integrity = Math.floor(integrity * multiplier);
+        const statsWithoutPalisades = calculateBastionStats({
+          ...useGameStore.getState(),
+          buildings: { ...buildings, palisades: 0 }
+        });
+        
+        const defense = currentStats.defense - statsWithoutPalisades.defense;
+        const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
         
         tooltip = `+${defense} Defense\n+${integrity} Integrity`;
         
