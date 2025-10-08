@@ -32,6 +32,7 @@ interface ResourceChangeNotificationProps {
 export default function ResourceChangeNotification({ resource, changes }: ResourceChangeNotificationProps) {
   const [visibleChange, setVisibleChange] = useState<ResourceChange | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const microDelayTimerRef = useRef<NodeJS.Timeout | null>(null);
   const lastChangeTimestampRef = useRef<number>(0);
 
   useEffect(() => {
@@ -46,10 +47,14 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
 
     // If there's ANY new change (different timestamp than our last one), clear the current notification
     if (latestChangeOverall && visibleChange && latestChangeOverall.timestamp !== lastChangeTimestampRef.current) {
-      // Clear any existing timer
+      // Clear any existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
+      }
+      if (microDelayTimerRef.current) {
+        clearTimeout(microDelayTimerRef.current);
+        microDelayTimerRef.current = null;
       }
       
       // Immediately clear the old change
@@ -59,17 +64,21 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
 
     // Only update if we have a new change for THIS resource (different timestamp)
     if (latestChangeForResource && latestChangeForResource.timestamp !== lastChangeTimestampRef.current) {
-      // Clear any existing timer
+      // Clear any existing timers
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
+      }
+      if (microDelayTimerRef.current) {
+        clearTimeout(microDelayTimerRef.current);
+        microDelayTimerRef.current = null;
       }
 
       // Immediately clear the old change before showing the new one
       setVisibleChange(null);
       
       // Use a micro-delay to ensure the DOM updates and the animation can restart
-      setTimeout(() => {
+      microDelayTimerRef.current = setTimeout(() => {
         setVisibleChange(latestChangeForResource);
         lastChangeTimestampRef.current = latestChangeForResource.timestamp;
 
@@ -78,6 +87,8 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
           setVisibleChange(null);
           timerRef.current = null;
         }, 3000);
+        
+        microDelayTimerRef.current = null;
       }, 10);
     }
 
@@ -86,6 +97,10 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
+      }
+      if (microDelayTimerRef.current) {
+        clearTimeout(microDelayTimerRef.current);
+        microDelayTimerRef.current = null;
       }
     };
   }, [changes, resource, visibleChange]);
@@ -97,6 +112,10 @@ export default function ResourceChangeNotification({ resource, changes }: Resour
       if (timerRef.current) {
         clearTimeout(timerRef.current);
         timerRef.current = null;
+      }
+      if (microDelayTimerRef.current) {
+        clearTimeout(microDelayTimerRef.current);
+        microDelayTimerRef.current = null;
       }
     }
   }, [changes.length, visibleChange]);

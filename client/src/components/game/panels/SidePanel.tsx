@@ -11,7 +11,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { calculateBastionStats } from '@/game/bastionStats';
 
 export default function SidePanel() {
@@ -26,10 +26,22 @@ export default function SidePanel() {
     story,
   } = useGameStore();
 
-  // Track resource changes for notifications
+  // Track resource changes for notifications with a max size limit
   const [resourceChanges, setResourceChanges] = useState<
     Array<{ resource: string; amount: number; timestamp: number }>
   >([]);
+
+  // Clean up old resource changes periodically
+  useEffect(() => {
+    if (resourceChanges.length === 0) return;
+    
+    const cleanupTimer = setTimeout(() => {
+      const now = Date.now();
+      setResourceChanges(prev => prev.filter(change => now - change.timestamp < 3000));
+    }, 3000);
+
+    return () => clearTimeout(cleanupTimer);
+  }, [resourceChanges]);
 
   // Dynamically generate resource items from state
   const resourceItems = Object.entries(resources)
@@ -558,13 +570,11 @@ export default function SidePanel() {
               showNotifications={buildings.clerksHut > 0}
               onResourceChange={(change) => {
                 if (buildings.clerksHut > 0) {
-                  setResourceChanges((prev) => [...prev, change]);
-                  // Clean up old changes after 3 seconds
-                  setTimeout(() => {
-                    setResourceChanges((prev) =>
-                      prev.filter((c) => c.timestamp !== change.timestamp),
-                    );
-                  }, 3000);
+                  setResourceChanges((prev) => {
+                    // Keep only the last 50 changes to prevent unbounded growth
+                    const updated = [...prev, change];
+                    return updated.slice(-50);
+                  });
                 }
               }}
               forceNotifications={buildings.clerksHut > 0}
