@@ -387,7 +387,6 @@ export default function SidePanel() {
         
         const isDamaged = story?.seen?.watchtowerDamaged;
         
-        // Calculate individual contributions from this building
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
@@ -411,7 +410,6 @@ export default function SidePanel() {
       } else if (key === "bastion") {
         const isDamaged = story?.seen?.bastionDamaged;
         
-        // Calculate individual contributions from this building
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
@@ -439,7 +437,6 @@ export default function SidePanel() {
         
         const isDamaged = story?.seen?.palisadesDamaged;
         
-        // Calculate individual contributions from this building
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
