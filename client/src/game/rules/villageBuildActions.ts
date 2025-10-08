@@ -1016,7 +1016,7 @@ function handleBuildingConstruction(
       costs: actionCosts
     });
 
-    for (const [path, cost] of Object.entries(actionCosts)) {
+    for (const [path, cost] of Object.entries(actionCosts) as [string, number][]) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
         console.log(`[handleBuildingConstruction] Subtracting ${cost} from ${resource}: ${newResources[resource]} -> ${newResources[resource] - cost}`);
