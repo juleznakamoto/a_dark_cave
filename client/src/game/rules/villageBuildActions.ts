@@ -1130,7 +1130,17 @@ function handleBuildingConstruction(
     'result.stateUpdates': result.stateUpdates,
     'result.stateUpdates.buildings': result.stateUpdates.buildings,
     'result.stateUpdates.resources': result.stateUpdates.resources,
-    'full result object': result
+    'full result object': result,
+    'typeof result': typeof result,
+    'result keys': Object.keys(result),
+    'stateUpdates keys': result.stateUpdates ? Object.keys(result.stateUpdates) : 'null'
+  });
+  
+  console.log('[handleBuildingConstruction] Verifying return value buildings:', {
+    hasBuildingsProperty: 'buildings' in (result.stateUpdates || {}),
+    buildingsValue: result.stateUpdates?.buildings,
+    hasResourcesProperty: 'resources' in (result.stateUpdates || {}),
+    resourcesValue: result.stateUpdates?.resources
   });
   
   return result;
@@ -1455,7 +1465,15 @@ export function handleBuildStoneHut(
 
   console.log('[handleBuildStoneHut] Calling handleBuildingConstruction...');
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
-  console.log('[handleBuildStoneHut] handleBuildingConstruction returned');
+  console.log('[handleBuildStoneHut] handleBuildingConstruction returned - IMMEDIATE CHECK:', {
+    'stoneHutResult === result': stoneHutResult === result,
+    'stoneHutResult.stateUpdates': stoneHutResult.stateUpdates,
+    'stoneHutResult.stateUpdates.buildings': stoneHutResult.stateUpdates?.buildings,
+    'stoneHutResult.stateUpdates.resources': stoneHutResult.stateUpdates?.resources,
+    'typeof stoneHutResult.stateUpdates': typeof stoneHutResult.stateUpdates,
+    'stateUpdates is null': stoneHutResult.stateUpdates === null,
+    'stateUpdates is undefined': stoneHutResult.stateUpdates === undefined
+  });
 
   console.log('[handleBuildStoneHut] ===== AFTER handleBuildingConstruction =====');
   console.log('[handleBuildStoneHut] Full result object:', stoneHutResult);
