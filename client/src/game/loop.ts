@@ -424,10 +424,13 @@ async function handleAutoSave() {
   const state = useGameStore.getState();
   const gameState: GameState = buildGameState(state);
 
-  await saveGame(gameState);
-
-  const now = new Date().toLocaleTimeString();
-  useGameStore.setState({ lastSaved: now });
+  try {
+    await saveGame(gameState);
+    const now = new Date().toLocaleTimeString();
+    useGameStore.setState({ lastSaved: now });
+  } catch (error) {
+    console.error('Auto save failed:', error);
+  }
 }
 
 function handleStrangerApproach() {
@@ -569,29 +572,18 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  console.log('[SAVE] Manual save triggered - starting save process');
+  console.log('[SAVE] Manual save initiated.');
 
   const state = useGameStore.getState();
-  console.log('[SAVE] Got game state from store');
 
   const gameState: GameState = buildGameState(state);
-  console.log('[SAVE] Built game state object:', {
-    resourcesCount: Object.keys(gameState.resources).length,
-    buildingsCount: Object.keys(gameState.buildings).length,
-    hasLog: !!gameState.log,
-    logLength: gameState.log?.length || 0
-  });
 
   try {
-    console.log('[SAVE] Calling saveGame...');
     await saveGame(gameState);
-    console.log('[SAVE] saveGame completed successfully');
-
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
-    console.log('[SAVE] Updated lastSaved timestamp:', now);
   } catch (error) {
-    console.error('[SAVE] Error during save:', error);
+    console.error('[SAVE] Manual save failed:', error);
     throw error;
   }
 }
