@@ -39,12 +39,17 @@ export async function saveGame(gameState: GameState): Promise<void> {
       weapons: { ...gameState.weapons },
       clothing: { ...gameState.clothing },
       relics: { ...gameState.relics },
+      blessings: { ...gameState.blessings },
+      schematics: { ...gameState.schematics },
       buildings: { ...gameState.buildings },
       villagers: { ...gameState.villagers },
       story: {
         seen: { ...gameState.story.seen }
       },
+      damagedBuildings: { ...gameState.damagedBuildings },
       events: { ...gameState.events },
+      effects: { ...gameState.effects },
+      bastion_stats: { ...gameState.bastion_stats },
       log: gameState.log.map(entry => ({
         id: entry.id,
         message: entry.message,
@@ -56,6 +61,11 @@ export async function saveGame(gameState: GameState): Promise<void> {
       current_population: gameState.current_population,
       total_population: gameState.total_population,
       version: gameState.version,
+      hasWizardTower: gameState.hasWizardTower,
+      wizardArrives: gameState.wizardArrives,
+      wizardDecryptsScrolls: gameState.wizardDecryptsScrolls,
+      templeDedicated: gameState.templeDedicated,
+      templeDedicatedTo: gameState.templeDedicatedTo,
     };
     
     const saveData: SaveData = {
