@@ -183,14 +183,14 @@ export default function SidePanel() {
       }
       
       // Special handling for buildings with madness reduction
-      if (key === 'sanctum' && buildings.sanctum > 0) {
-        tooltip = `-15 Madness`;
-      } else if (key === 'temple' && buildings.temple > 0) {
-        tooltip = `-10 Madness`;
-      } else if (key === 'shrine' && buildings.shrine > 0) {
-        tooltip = `-5 Madness`;
-      } else if (key === 'altar' && buildings.altar > 0) {
-        tooltip = `-1 Madness`;
+      if (['sanctum', 'temple', 'shrine', 'altar'].includes(key) && (value ?? 0) > 0) {
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+        
+        if (buildAction?.statsEffects?.madness) {
+          const madnessValue = buildAction.statsEffects.madness;
+          tooltip = `${madnessValue} Madness`;
+        }
       }
       
       // Special handling for fortification buildings (bastion, watchtower, palisades)
