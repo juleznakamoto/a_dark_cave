@@ -74,7 +74,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Hill Grave",
     show_when: {
       "story.seen.wizardHillGrave": true,
-      "!story.seen.hillGraveExplored": true
+      // "!story.seen.hillGraveExplored": true
     },
     cost: {
       "resources.food": 5000,

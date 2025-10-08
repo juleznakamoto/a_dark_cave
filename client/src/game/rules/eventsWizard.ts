@@ -111,7 +111,7 @@ export const wizardEvents: Record<string, GameEvent> = {
       state.buildings.grandBlacksmith === 0 &&
       !state.story.seen.wizardFrostglassSword,
     triggerType: "resource",
-    timeProbability: 1.0,
+    timeProbability: 0.5,
     message:
       "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
     triggered: false,
