@@ -1,0 +1,148 @@
+state_update 
+{updates: {…}, new_state: {…}}
+loop.ts:257 state_update 
+{updates: {…}, new_state: {…}}
+save.ts:25 [SAVE] Database opened successfully
+save.ts:39 [SAVE] IndexedDB opened successfully
+save.ts:42 [SAVE] Creating clean game state copy...
+save.ts:69 [SAVE] Clean game state created
+save.ts:76 [SAVE] Save data object created, timestamp: 1759909076191
+save.ts:78 [SAVE] Writing to IndexedDB...
+save.ts:80 [SAVE] Successfully wrote to IndexedDB with key: mainSave
+state.ts:298 [executeAction] buildStoneHut clicked: 
+{currentStoneHuts: 0, currentStone: 71764, cooldown: 0}
+state.ts:320 [STATE] Action: buildStoneHut 
+{stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+delayedEffects
+: 
+[]
+logEntries
+: 
+[]
+stateUpdates
+: 
+{cooldowns: {…}, story: {…}}
+[[Prototype]]
+: 
+Object
+state.ts:330 [executeAction] Before merge: 
+{prevStateStoneHuts: 0, prevStateStone: 71764, resultStateUpdates: {…}, resultStateUpdatesBuildings: undefined, resultStateUpdatesResources: undefined}
+prevStateStone
+: 
+71764
+prevStateStoneHuts
+: 
+0
+resultStateUpdates
+: 
+{cooldowns: {…}, story: {…}}
+resultStateUpdatesBuildings
+: 
+undefined
+resultStateUpdatesResources
+: 
+undefined
+[[Prototype]]
+: 
+Object
+constructor
+: 
+ƒ Object()
+hasOwnProperty
+: 
+ƒ hasOwnProperty()
+isPrototypeOf
+: 
+ƒ isPrototypeOf()
+propertyIsEnumerable
+: 
+ƒ propertyIsEnumerable()
+toLocaleString
+: 
+ƒ toLocaleString()
+toString
+: 
+ƒ toString()
+valueOf
+: 
+ƒ valueOf()
+__defineGetter__
+: 
+ƒ __defineGetter__()
+__defineSetter__
+: 
+ƒ __defineSetter__()
+__lookupGetter__
+: 
+ƒ __lookupGetter__()
+__lookupSetter__
+: 
+ƒ __lookupSetter__()
+__proto__
+: 
+(...)
+get __proto__
+: 
+ƒ __proto__()
+set __proto__
+: 
+ƒ __proto__()
+state.ts:82 [mergeStateUpdates] Input: 
+{prevStateResources: {…}, prevStateBuildings: {…}, stateUpdatesResources: undefined, stateUpdatesBuildings: undefined}
+prevStateBuildings
+: 
+{woodenHut: 10, stoneHut: 0, cabin: 1, greatCabin: 1, timberMill: 1, …}
+prevStateResources
+: 
+{wood: 81880, food: 40470, stone: 71764, iron: 0, coal: 0, …}
+stateUpdatesBuildings
+: 
+undefined
+stateUpdatesResources
+: 
+undefined
+[[Prototype]]
+: 
+Object
+state.ts:106 [mergeStateUpdates] Merged result: 
+{mergedResources: {…}, mergedBuildings: {…}}
+mergedBuildings
+: 
+{woodenHut: 10, stoneHut: 0, cabin: 1, greatCabin: 1, timberMill: 1, …}
+mergedResources
+: 
+{wood: 81880, food: 40470, stone: 71764, iron: 0, coal: 0, …}
+[[Prototype]]
+: 
+Object
+state.ts:342 [executeAction] After mergeStateUpdates: 
+{mergedUpdates: {…}, mergedBuildings: {…}, mergedResources: {…}}
+mergedBuildings
+: 
+{woodenHut: 10, stoneHut: 0, cabin: 1, greatCabin: 1, timberMill: 1, …}
+mergedResources
+: 
+{wood: 81880, food: 40470, stone: 71764, iron: 0, coal: 0, …}
+mergedUpdates
+: 
+{resources: {…}, weapons: {…}, tools: {…}, buildings: {…}, flags: {…}, …}
+[[Prototype]]
+: 
+Object
+state.ts:358 [executeAction] Final newState: 
+{stoneHuts: 0, stone: 71764, buildings: {…}, mergedUpdates: {…}}
+buildings
+: 
+{woodenHut: 10, stoneHut: 0, cabin: 1, greatCabin: 1, timberMill: 1, …}
+mergedUpdates
+: 
+{resources: {…}, weapons: {…}, tools: {…}, buildings: {…}, flags: {…}, …}
+stone
+: 
+71764
+stoneHuts
+: 
+0
+[[Prototype]]
+: 
+Object
