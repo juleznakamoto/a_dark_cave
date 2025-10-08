@@ -1444,13 +1444,13 @@ export function handleBuildStoneHut(
       type: "system",
     });
 
-    stoneHutResult.stateUpdates.story = {
-      ...stoneHutResult.stateUpdates.story,
-      seen: {
-        ...stoneHutResult.stateUpdates.story?.seen,
-        villageBecomesCity: true,
-      },
-    };
+    if (!stoneHutResult.stateUpdates.story) {
+      stoneHutResult.stateUpdates.story = { ...state.story };
+    }
+    if (!stoneHutResult.stateUpdates.story.seen) {
+      stoneHutResult.stateUpdates.story.seen = { ...state.story.seen };
+    }
+    stoneHutResult.stateUpdates.story.seen.villageBecomesCity = true;
   }
 
   console.log('[handleBuildStoneHut] Final result:', {
@@ -1482,6 +1482,12 @@ export function handleBuildShrine(
       type: "system",
     });
   }
+
+  console.log('[handleBuildShrine] Final result:', {
+    stateUpdates: shrineResult.stateUpdates,
+    buildings: shrineResult.stateUpdates.buildings,
+    resources: shrineResult.stateUpdates.resources
+  });
 
   return shrineResult;
 }
