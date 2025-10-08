@@ -32,7 +32,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 20,
     },
     effects: {
-      "resources.torch": 2000,
+      "resources.torch": 2,
       "story.seen.actionCraftTorches": true,
     },
     cooldown: 2.5,
@@ -472,6 +472,36 @@ export const caveCraftTools: Record<string, Action> = {
 // Action handlers
 export function handleCraftTorch(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftTorch', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftTorches(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorches', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftTorches3(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorches3', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftTorches4(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorches4', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftTorches5(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorches5', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftTorches10(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftTorches10', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

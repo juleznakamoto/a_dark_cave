@@ -18,6 +18,11 @@ import {
 
 import {
   handleCraftTorch,
+  handleCraftTorches,
+  handleCraftTorches3,
+  handleCraftTorches4,
+  handleCraftTorches5,
+  handleCraftTorches10,
   handleCraftStoneAxe,
   handleCraftStonePickaxe,
   handleCraftIronAxe,
@@ -171,15 +176,15 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'craftTorch':
       return handleCraftTorch(state, result);
     case 'craftTorches':
-      return handleCraftTorch(state, result);
+      return handleCraftTorches(state, result);
     case 'craftTorches3':
-      return handleCraftTorch(state, result);
+      return handleCraftTorches3(state, result);
     case 'craftTorches4':
-      return handleCraftTorch(state, result);
+      return handleCraftTorches4(state, result);
     case 'craftTorches5':
-      return handleCraftTorch(state, result);
+      return handleCraftTorches5(state, result);
     case 'craftTorches10':
-      return handleCraftTorch(state, result);
+      return handleCraftTorches10(state, result);
     case 'craftStoneAxe':
       return handleCraftStoneAxe(state, result);
     case 'craftStonePickaxe':
