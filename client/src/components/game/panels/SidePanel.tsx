@@ -146,23 +146,18 @@ export default function SidePanel() {
       return (value ?? 0) > 0;
     })
     .map(([key, value]) => {
-      let label =
-        key === "clerksHut"
-          ? "Clerk's Hut"
-          : key === "alchemistHall"
-            ? "Alchemist's Hall"
-            : key === "tradePost"
-              ? "Trade Post"
-              : key === "woodenHut"
-                ? `Wooden Hut (${value})`
-                : key === "stoneHut"
-                  ? `Stone Hut (${value})`
-                  : capitalizeWords(key);
+      // Get the action definition to access the label
+      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+      
+      // Use the label from villageBuildActions, with special handling for multiple huts
+      let label = buildAction?.label || capitalizeWords(key);
+      if (key === "woodenHut" || key === "stoneHut") {
+        label = `${label} (${value})`;
+      }
 
       // Get stats effects for this specific building from villageBuildActions
       let tooltip = undefined;
-      const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
-      const buildAction = villageBuildActions[actionId];
       
       // Check if this building is damaged
       const isDamaged = (key === 'bastion' && story?.seen?.bastionDamaged) ||
