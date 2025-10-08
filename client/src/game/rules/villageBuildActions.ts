@@ -994,13 +994,14 @@ function handleBuildingConstruction(
   const actionCosts = action?.cost?.[level];
   const actionEffects = action?.effects?.[level];
 
-  console.log('[handleBuildingConstruction]', {
+  console.log('[handleBuildingConstruction] Starting:', {
     actionId,
     buildingType,
     currentCount,
     level,
     actionCosts,
-    actionEffects
+    actionEffects,
+    inputResultStateUpdates: result.stateUpdates
   });
 
   if (!actionEffects) {
@@ -1024,11 +1025,17 @@ function handleBuildingConstruction(
       }
     }
     result.stateUpdates.resources = newResources;
-    console.log('[handleBuildingConstruction] After costs:', { newResources });
+    console.log('[handleBuildingConstruction] After costs applied:', { 
+      newResources,
+      resultStateUpdatesResources: result.stateUpdates.resources
+    });
   }
 
   // Apply building effects
+  console.log('[handleBuildingConstruction] Processing building effects:', actionEffects);
   for (const [path, effect] of Object.entries(actionEffects) as [string, number][]) {
+    console.log('[handleBuildingConstruction] Processing effect path:', { path, effect });
+    
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
       const newCount = (state.buildings[building] || 0) + effect;
@@ -1036,20 +1043,52 @@ function handleBuildingConstruction(
 
       // Ensure result.stateUpdates exists
       if (!result.stateUpdates) {
+        console.log('[handleBuildingConstruction] Creating stateUpdates object');
         result.stateUpdates = {};
       }
       if (!result.stateUpdates.buildings) {
+        console.log('[handleBuildingConstruction] Creating buildings object');
         result.stateUpdates.buildings = {} as Partial<GameState["buildings"]>;
       }
+
+      console.log('[handleBuildingConstruction] Before setting building:', {
+        currentBuildings: result.stateUpdates.buildings,
+        building,
+        newCount
+      });
 
       result.stateUpdates.buildings = {
         ...result.stateUpdates.buildings,
         [building]: newCount,
       } as Partial<GameState["buildings"]>;
+
+      console.log('[handleBuildingConstruction] After setting building:', {
+        updatedBuildings: result.stateUpdates.buildings
+      });
+    } else if (path.startsWith("story.seen.")) {
+      const storyKey = path.split(".").slice(2).join(".");
+      if (!result.stateUpdates.story) {
+        result.stateUpdates.story = {
+          ...state.story,
+          seen: { ...state.story.seen }
+        };
+      }
+      if (!result.stateUpdates.story.seen) {
+        result.stateUpdates.story.seen = { ...state.story.seen };
+      }
+      result.stateUpdates.story.seen = {
+        ...result.stateUpdates.story.seen,
+        [storyKey]: effect as boolean,
+      };
+      console.log('[handleBuildingConstruction] Set story flag:', { storyKey, effect });
     }
   }
 
-  console.log('[handleBuildingConstruction] Final stateUpdates:', result.stateUpdates);
+  console.log('[handleBuildingConstruction] Final stateUpdates:', {
+    fullStateUpdates: result.stateUpdates,
+    buildings: result.stateUpdates.buildings,
+    resources: result.stateUpdates.resources
+  });
   return result;
 }
 
@@ -1363,7 +1402,8 @@ export function handleBuildStoneHut(
   console.log('[handleBuildStoneHut] Starting:', {
     currentStoneHuts: state.buildings.stoneHut,
     level,
-    currentStone: state.resources.stone
+    currentStone: state.resources.stone,
+    inputResult: result
   });
 
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
@@ -1371,11 +1411,13 @@ export function handleBuildStoneHut(
   console.log('[handleBuildStoneHut] After handleBuildingConstruction:', {
     stateUpdates: stoneHutResult.stateUpdates,
     resourcesUpdate: stoneHutResult.stateUpdates.resources,
-    buildingsUpdate: stoneHutResult.stateUpdates.buildings
+    buildingsUpdate: stoneHutResult.stateUpdates.buildings,
+    fullResult: stoneHutResult
   });
 
   // Add city message when 5th stone hut is built
   if (state.buildings.stoneHut === 4 && !state.story.seen.villageBecomesCity) {
+    console.log('[handleBuildStoneHut] Adding city message');
     stoneHutResult.logEntries!.push({
       id: `village-becomes-city-${Date.now()}`,
       message:
@@ -1393,7 +1435,11 @@ export function handleBuildStoneHut(
     };
   }
 
-  console.log('[handleBuildStoneHut] Final result:', stoneHutResult);
+  console.log('[handleBuildStoneHut] Final result:', {
+    stateUpdates: stoneHutResult.stateUpdates,
+    buildings: stoneHutResult.stateUpdates.buildings,
+    resources: stoneHutResult.stateUpdates.resources
+  });
   return stoneHutResult;
 }
 

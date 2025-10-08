@@ -314,7 +314,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply state updates
     set((prevState) => {
+      if (actionId === 'buildStoneHut') {
+        console.log('[executeAction] Before merge:', {
+          prevStateStoneHuts: prevState.buildings.stoneHut,
+          prevStateStone: prevState.resources.stone,
+          resultStateUpdates: result.stateUpdates,
+          resultStateUpdatesBuildings: result.stateUpdates.buildings,
+          resultStateUpdatesResources: result.stateUpdates.resources
+        });
+      }
+      
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
+      
+      if (actionId === 'buildStoneHut') {
+        console.log('[executeAction] After mergeStateUpdates:', {
+          mergedUpdates,
+          mergedBuildings: mergedUpdates.buildings,
+          mergedResources: mergedUpdates.resources
+        });
+      }
+      
       const newState = {
         ...prevState,
         ...mergedUpdates,
@@ -324,9 +343,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       
       if (actionId === 'buildStoneHut') {
-        console.log('[executeAction] State after merge:', {
+        console.log('[executeAction] Final newState:', {
           stoneHuts: newState.buildings.stoneHut,
           stone: newState.resources.stone,
+          buildings: newState.buildings,
           mergedUpdates
         });
       }
