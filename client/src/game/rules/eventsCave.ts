@@ -18,7 +18,7 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepCoin",
-        label: "Keep the ring",
+        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -39,7 +39,7 @@ export const caveEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveCoin",
-        label: "Leave it behind",
+        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -57,7 +57,7 @@ export const caveEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "leaveCoin",
-      label: "Leave it behind",
+      label: "Leave it",
       effect: (state: GameState) => {
         const deathResult = killVillagers(state, 1);
         return {
@@ -91,7 +91,7 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepFlute",
-        label: "Keep the flute",
+        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -112,7 +112,7 @@ export const caveEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveFlute",
-        label: "Leave it behind",
+        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -130,7 +130,7 @@ export const caveEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "leaveFlute",
-      label: "Leave it behind",
+      label: "Leave it",
       relevant_stats: ["luck"],
        effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
@@ -167,7 +167,7 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepScepter",
-        label: "Claim the scepter",
+        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -188,7 +188,7 @@ export const caveEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveScepter",
-        label: "Leave the throne undisturbed",
+        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -206,7 +206,7 @@ export const caveEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "leaveScepter",
-      label: "Leave the throne undisturbed",
+      label: "Leave it",
       effect: (state: GameState) => {
         const luck = state.stats.luck || 0;
         const deaths = Math.floor((1-luck)*Math.random() * 6) + 3;
@@ -241,7 +241,7 @@ export const caveEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepDice",
-        label: "Keep the dice",
+        label: "Keep them",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -262,7 +262,7 @@ export const caveEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveDice",
-        label: "Leave them behind",
+        label: "Leave them",
         effect: (state: GameState) => {
           return {
             story: {
@@ -280,7 +280,7 @@ export const caveEvents: Record<string, GameEvent> = {
     ],
     fallbackChoice: {
       id: "leaveDice",
-      label: "Leave them behind",
+      label: "Leave them",
       effect: (state: GameState) => {
         const cursed = Math.floor(Math.random() * 2) + 1; // 1-2 villagers
         const deathResult = killVillagers(state, cursed);

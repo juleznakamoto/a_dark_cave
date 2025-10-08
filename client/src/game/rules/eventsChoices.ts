@@ -97,7 +97,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigateHut",
-        label: "Investigate whispers",
+        label: "Investigate",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -111,7 +111,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "ignoreHut",
-        label: "Leave it be",
+        label: "Ignore",
         effect: (state: GameState) => {
           return {
             _logMessage:
@@ -157,7 +157,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "refuseMirror",
-        label: "Refuse the offer",
+        label: "Refuse",
         effect: (state: GameState) => {
           return {
             _logMessage:
@@ -183,7 +183,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "keepFigure",
-        label: "Keep the figure",
+        label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -222,7 +222,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "defendVillage",
-        label: "Defend the village",
+        label: "Defend village",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const currentPopulation =
@@ -325,7 +325,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "hideAndWait",
-        label: "Hide and wait it out",
+        label: "Hide",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
           const currentPopulation =
@@ -461,7 +461,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "refuse",
-        label: "Do not make sacrifices",
+        label: "Make no sacrifices",
         effect: (state: GameState) => {
           const successChance = 0.1;
           const nothingChance = 0.4;
@@ -528,7 +528,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "allowStay",
-        label: "Allow him to stay",
+        label: "Allow to stay",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -542,7 +542,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "turnAway",
-        label: "Turn him away",
+        label: "Turn away",
         effect: (state: GameState) => {
           const villagerDeaths = Math.floor(
             Math.random() * state.buildings.woodenHut + 1,
@@ -581,7 +581,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        label: "Investigate the lake",
+        label: "Investigate lake",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = state.stats.strength || 0;
@@ -616,7 +616,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "avoidLake",
-        label: "Avoid the lake",
+        label: "Avoid lake",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
           const successChance = 0.2;
@@ -644,7 +644,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   templeDedication: {
     id: "templeDedication",
-    condition: (state: GameState) => state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
+    condition: (state: GameState) =>
+      state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     triggerType: "time",
     timeProbability: 1,
     title: "The Blind Druid",
@@ -671,7 +672,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You dedicate the temple to Dagon, the ancient and mysterious god of the deep.",
+              "You dedicate the temple to Dagon, an ancient and mysterious god of the deep.",
           };
         },
       },
@@ -763,7 +764,9 @@ export const choiceEvents: Record<string, GameEvent> = {
   vikingBuilder: {
     id: "vikingBuilder",
     condition: (state: GameState) =>
-      state.buildings.palisades >= 1 && !state.story.seen.vikingBuilderEvent,
+      state.buildings.palisades >= 1 &&
+      !state.story.seen.vikingBuilderEvent &&
+      state.resources.gold >= 250,
     triggerType: "resource",
     timeProbability: 25,
     title: "The Viking Builder",
@@ -775,7 +778,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptDeal",
-        label: "Accept Deal (250 gold)",
+        label: "Pay him 250 Gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
@@ -803,7 +806,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "sendAway",
-        label: "Send him away",
+        label: "Send away",
         effect: (state: GameState) => {
           return {
             _logMessage:
@@ -850,9 +853,10 @@ export const choiceEvents: Record<string, GameEvent> = {
   sanctumDedication: {
     id: "sanctumDedication",
     condition: (state: GameState) =>
-      state.buildings.sanctum >= 1 && state.buildings.bastion >= 1, //&&
-    // state.story.seen.templeDedicated &&
-    // !state.story.seen.sanctumDedicated,
+      state.buildings.sanctum >= 1 &&
+      state.buildings.bastion >= 1 &&
+      state.story.seen.templeDedicated &&
+      !state.story.seen.sanctumDedicated,
     triggerType: "resource",
     timeProbability: 3,
     title: "The Druid Returns",
@@ -867,15 +871,39 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Deepen Devotion",
         effect: (state: GameState) => {
           const b = state.blessings;
-          const active = b.dagons_gift ? "dagon" : b.flames_touch ? "flame" : b.ravens_mark ? "raven" : b.ashen_embrace ? "ash" : "";
-          
+          const active = b.dagons_gift
+            ? "dagon"
+            : b.flames_touch
+              ? "flame"
+              : b.ravens_mark
+                ? "raven"
+                : b.ashen_embrace
+                  ? "ash"
+                  : "";
+
           const updates: Record<string, any> = {
-            dagon: { dagons_gift: true, dagons_gift_enhanced: true, msg: "Dagon's Blessing flows stronger than before." },
-            flame: { flames_touch: true, flames_touch_enhanced: true, msg: "The First Flame burns brighter than before." },
-            raven: { ravens_mark: true, ravens_mark_enhanced: true, msg: "The Raven's Mark grows stronger than before." },
-            ash: { ashen_embrace: true, ashen_embrace_enhanced: true, msg: "The Ashen Embrace is stronger than before." }
+            dagon: {
+              dagons_gift: true,
+              dagons_gift_enhanced: true,
+              msg: "Dagon's Blessing flows stronger than before.",
+            },
+            flame: {
+              flames_touch: true,
+              flames_touch_enhanced: true,
+              msg: "The First Flame burns brighter than before.",
+            },
+            raven: {
+              ravens_mark: true,
+              ravens_mark_enhanced: true,
+              msg: "The Raven's Mark grows stronger than before.",
+            },
+            ash: {
+              ashen_embrace: true,
+              ashen_embrace_enhanced: true,
+              msg: "The Ashen Embrace is stronger than before.",
+            },
           };
-          
+
           const { msg, ...blessings } = updates[active] || { msg: "" };
 
           return {

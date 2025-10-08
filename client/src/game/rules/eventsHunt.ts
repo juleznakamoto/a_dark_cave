@@ -15,7 +15,7 @@ export const huntEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "takeHammer",
-        label: "Take the hammer",
+        label: "Take hammer",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -36,7 +36,7 @@ export const huntEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveHammer",
-        label: "Leave it undisturbed",
+        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {
@@ -67,7 +67,7 @@ export const huntEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "takeMask",
-        label: "Take the red mask",
+        label: "Take red mask",
         effect: (state: GameState) => {
           return {
             relics: {
@@ -88,7 +88,7 @@ export const huntEvents: Record<string, GameEvent> = {
       },
       {
         id: "leaveMask",
-        label: "Leave it behind",
+        label: "Leave it",
         effect: (state: GameState) => {
           return {
             story: {

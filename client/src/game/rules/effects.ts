@@ -940,7 +940,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
-    name: "Dagon's Gift (Enhanced)",
+    name: "Dagon's Great Gift)",
     description: "+300% resources when hunting",
     bonuses: {
       actionBonuses: {
@@ -953,7 +953,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   flames_touch_enhanced: {
     id: "flames_touch_enhanced",
-    name: "Flame's Touch (Enhanced)",
+    name: "Strong Flame's Touch",
     description: "+3 Steel from Steel Forger",
     bonuses: {
       actionBonuses: {
@@ -968,14 +968,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   ravens_mark_enhanced: {
     id: "ravens_mark_enhanced",
-    name: "Raven's Mark (Enhanced)",
+    name: "Raven's Great Mark",
     description: "Much more Strangers approach",
     bonuses: {},
   },
 
   ashen_embrace_enhanced: {
     id: "ashen_embrace_enhanced",
-    name: "Ashen Embrace (Enhanced)",
+    name: "Deep Ashen Embrace",
     description: "+300% resources when mining",
     bonuses: {
       actionBonuses: {

@@ -68,7 +68,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "confront",
-        label: "Confront the villager",
+        label: "Confront villager",
         effect: (state: GameState) => {
           const rand = Math.random();
           if (rand < 0.3) {
@@ -100,7 +100,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "avoid",
-        label: "Avoid them",
+        label: "Avoid villager",
         effect: (state: GameState) => {
           const deathResult = killVillagers(state, 1);
           return {
@@ -159,7 +159,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "examine",
-        label: "Examine the faces closely",
+        label: "Examine faces",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
@@ -176,7 +176,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "ignore",
-        label: "Try to ignore them",
+        label: "Ignore them",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
@@ -320,7 +320,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "do_nothing",
-        label: "Do nothing and look away",
+        label: "Do nothing",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
@@ -337,7 +337,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "burn_hut",
-        label: "Burn the hut",
+        label: "Burn hut",
         effect: (state: GameState) => {
           const deathResult = killVillagers(state, 2);
           return {
@@ -374,7 +374,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "investigate",
-        label: "Look deeper into the well",
+        label: "Look deeper into well",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
@@ -391,7 +391,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "cover_well",
-        label: "Cover the well with planks",
+        label: "Cover well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
           const thirstDeaths = Math.floor(Math.random() * 5) + 6; // 6-10 deaths
@@ -427,7 +427,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "shake_them",
-        label: "Try to shake them out of it",
+        label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
           if (rand < 0.6) {
@@ -463,7 +463,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       {
         id: "look_up_too",
-        label: "Stare at the sky too",
+        label: "Stare at sky",
         effect: (state: GameState) => ({
           events: {
             ...state.events,
