@@ -6,11 +6,10 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { ButtonProps } from "@/components/ui/button";
-import { randomBytes } from "crypto";
 
 interface ParticleButtonProps extends ButtonProps {
-    spawnInterval?: number; // how often sparks spawn
-    hoverDelay?: number; // delay before sparks start spawning on hover
+    spawnInterval?: number;
+    hoverDelay?: number;
 }
 
 interface Spark {
@@ -85,7 +84,7 @@ function ParticleButton({
     children,
     onClick,
     spawnInterval = 300,
-    hoverDelay = 1000,
+    hoverDelay = 100,
     className,
     ...props
 }: ParticleButtonProps) {
@@ -198,8 +197,8 @@ function ParticleButton({
             glowRampRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
-                    if (elapsed < 1500) {
-                        const progress = elapsed / 1500;
+                    if (elapsed < 800) {
+                        const progress = elapsed / 800;
                         setGlowIntensity(0.1 + progress * 0.9); // from 0.1 to 1.0
                     } else {
                         setGlowIntensity(1.0); // max intensity
@@ -209,7 +208,7 @@ function ParticleButton({
                             () => {
                                 setGlowIntensity(1.0);
                             },
-                            Math.random() * 350 + 150,
+                            Math.random() * 50 + 150,
                         );
                     }
                 }
@@ -217,9 +216,9 @@ function ParticleButton({
 
             // add flickering effect that continues throughout
             flickerRef.current = setInterval(() => {
-                const flicker = 0.75 + Math.random() * 0.35;
-                setGlowIntensity((prev) => Math.min(1.75, prev * flicker));
-            }, Math.random() * 51 + 100);
+                const flicker = 0.45 + Math.random() * 0.55;
+                setGlowIntensity((prev) => Math.min(2, prev * flicker));
+            }, Math.random() * 150 + 50);
         }, hoverDelay);
     };
 
