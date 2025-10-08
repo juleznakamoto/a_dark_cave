@@ -10,11 +10,20 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.hasWood": true,
     },
     cost: {
-      "resources.wood": 10,
+      1: { "resources.wood": 10 },
+      2: { "resources.wood": 20 },
+      3: { "resources.wood": 30 },
+      4: { "resources.wood": 40 },
+      5: { "resources.wood": 50 },
+      6: { "resources.wood": 100 },
     },
     effects: {
-      "resources.torch": 1,
-      "story.seen.actionCraftTorch": true,
+      1: { "resources.torch": 1, "story.seen.actionCraftTorch": true },
+      2: { "resources.torch": 2, "story.seen.actionCraftTorch": true },
+      3: { "resources.torch": 3, "story.seen.actionCraftTorch": true },
+      4: { "resources.torch": 4, "story.seen.actionCraftTorch": true },
+      5: { "resources.torch": 5, "story.seen.actionCraftTorch": true },
+      6: { "resources.torch": 10, "story.seen.actionCraftTorch": true },
     },
     unlocks: ["exploreDeeper"],
     cooldown: 2.5,
@@ -386,7 +395,15 @@ export const caveCraftTools: Record<string, Action> = {
 
 // Action handlers
 export function handleCraftTorch(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftTorch', state);
+  // Determine tier based on best axe
+  let tier = 1;
+  if (state.tools.adamant_axe) tier = 6;
+  else if (state.tools.obsidian_axe) tier = 5;
+  else if (state.tools.steel_axe) tier = 4;
+  else if (state.tools.iron_axe) tier = 3;
+  else if (state.tools.stone_axe) tier = 2;
+  
+  const effectUpdates = applyActionEffects('craftTorch', state, tier);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
