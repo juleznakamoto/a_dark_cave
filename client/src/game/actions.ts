@@ -170,6 +170,16 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     // Cave Craft Actions
     case 'craftTorch':
       return handleCraftTorch(state, result);
+    case 'craftTorches':
+      return handleCraftTorch(state, result);
+    case 'craftTorches3':
+      return handleCraftTorch(state, result);
+    case 'craftTorches4':
+      return handleCraftTorch(state, result);
+    case 'craftTorches5':
+      return handleCraftTorch(state, result);
+    case 'craftTorches10':
+      return handleCraftTorch(state, result);
     case 'craftStoneAxe':
       return handleCraftStoneAxe(state, result);
     case 'craftStonePickaxe':

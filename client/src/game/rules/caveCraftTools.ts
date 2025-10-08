@@ -8,6 +8,7 @@ export const caveCraftTools: Record<string, Action> = {
     label: "Torch",
     show_when: {
       "story.seen.hasWood": true,
+      "tools.stone_axe": false,
     },
     cost: {
       "resources.wood": 10,
@@ -17,6 +18,90 @@ export const caveCraftTools: Record<string, Action> = {
       "story.seen.actionCraftTorch": true,
     },
     unlocks: ["exploreDeeper"],
+    cooldown: 2.5,
+  },
+
+  craftTorches: {
+    id: "craftTorches",
+    label: "Torches",
+    show_when: {
+      "tools.stone_axe": true,
+      "tools.iron_axe": false,
+    },
+    cost: {
+      "resources.wood": 20,
+    },
+    effects: {
+      "resources.torch": 2,
+      "story.seen.actionCraftTorches": true,
+    },
+    cooldown: 2.5,
+  },
+
+  craftTorches3: {
+    id: "craftTorches3",
+    label: "Torches",
+    show_when: {
+      "tools.iron_axe": true,
+      "tools.steel_axe": false,
+    },
+    cost: {
+      "resources.wood": 30,
+    },
+    effects: {
+      "resources.torch": 3,
+      "story.seen.actionCraftTorches3": true,
+    },
+    cooldown: 2.5,
+  },
+
+  craftTorches4: {
+    id: "craftTorches4",
+    label: "Torches",
+    show_when: {
+      "tools.steel_axe": true,
+      "tools.obsidian_axe": false,
+    },
+    cost: {
+      "resources.wood": 40,
+    },
+    effects: {
+      "resources.torch": 4,
+      "story.seen.actionCraftTorches4": true,
+    },
+    cooldown: 2.5,
+  },
+
+  craftTorches5: {
+    id: "craftTorches5",
+    label: "Torches",
+    show_when: {
+      "tools.obsidian_axe": true,
+      "tools.adamant_axe": false,
+    },
+    cost: {
+      "resources.wood": 50,
+    },
+    effects: {
+      "resources.torch": 5,
+      "story.seen.actionCraftTorches5": true,
+    },
+    cooldown: 2.5,
+  },
+
+  craftTorches10: {
+    id: "craftTorches10",
+    label: "Torches",
+    show_when: {
+      "tools.adamant_axe": true,
+    },
+    cost: {
+      "resources.wood": 100,
+    },
+    effects: {
+      "resources.torch": 10,
+      "story.seen.actionCraftTorches10": true,
+    },
     cooldown: 2.5,
   },
 
