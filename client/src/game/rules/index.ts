@@ -116,6 +116,49 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
 };
 
 // Helper function to check requirements for both building and non-building actions
+export function canExecuteAction(actionId: string, state: GameState): boolean {
+  const action = gameActions[actionId];
+  if (!action) return false;
+
+  // Check if action is on cooldown
+  if ((state.cooldowns[actionId] || 0) > 0) return false;
+
+  // Get the appropriate level for this action
+  let level = 1;
+  if (action.building) {
+    // For building actions, determine which building type this is
+    const buildingType = actionId.replace('build', '').charAt(0).toLowerCase() + actionId.replace('build', '').slice(1);
+    const currentCount = state.buildings[buildingType as keyof typeof state.buildings] || 0;
+    level = currentCount + 1;
+  }
+
+  const requirements = action.cost?.[level];
+  if (!requirements) {
+    console.warn(`No cost requirements found for ${actionId} at level ${level}`);
+    return false;
+  }
+
+  // Check all resource/building requirements
+  for (const [path, requiredAmount] of Object.entries(requirements)) {
+    const parts = path.split('.');
+    const category = parts[0] as keyof GameState;
+    const key = parts[1];
+
+    if (category === 'resources' || category === 'buildings') {
+      const currentAmount = state[category][key as keyof typeof state[typeof category]] || 0;
+      if (currentAmount < requiredAmount) {
+        if (import.meta.env.DEV) {
+          console.log(`[canExecuteAction] ${actionId} blocked: ${path} has ${currentAmount}, needs ${requiredAmount}`);
+        }
+        return false;
+      }
+    }
+  }
+
+  return true;
+}
+
+// Helper function to check requirements for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
   state: GameState,
