@@ -940,7 +940,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
-    name: "Dagon's Great Gift)",
+    name: "Dagon's Great Gift",
     description: "+300% resources when hunting",
     bonuses: {
       actionBonuses: {

@@ -57,7 +57,7 @@ export const wizardEvents: Record<string, GameEvent> = {
       state.buildings.wizardTower >= 1 &&
       !state.story.seen.wizardDecryptsScrolls,
     triggerType: "resource",
-    timeProbability: 1.0,
+    timeProbability: 0.5,
     message:
       "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
     triggered: false,
