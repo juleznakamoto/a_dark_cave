@@ -47,7 +47,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Lay Trap",
     show_when: {
       "tools.giant_trap": true,
-      "!relics.black_bear_fur": true,
+      "relics.black_bear_fur": false,
     },
     cost: {
       "resources.food": 500,
