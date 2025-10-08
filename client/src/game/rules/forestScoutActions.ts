@@ -58,7 +58,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Castle Ruins",
     show_when: {
       "story.seen.wizardNecromancerCastle": true,
-      "!story.seen.castleRuinsExplored": true
+      // "!story.seen.castleRuinsExplored": true
     },
     cost: {
       "resources.food": 2500,
