@@ -264,9 +264,9 @@ export default function SidePanelSection({
           <span
             className={`font-mono ${
               isAnimated
-                ? "text-green-800 font-bold"
+                ? "text-green-100 font-bold"
                 : isDecreaseAnimated
-                  ? "text-red-800 font-bold"
+                  ? "text-red-100 font-bold"
                   : isMadness
                     ? madnessClasses
                     : ""
