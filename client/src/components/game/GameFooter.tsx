@@ -29,9 +29,8 @@ export default function GameFooter() {
   };
 
   return (
-    <footer className="border-t border-border px-6 py-2 text-xs text-muted-foreground relative group">
-      <div className="absolute inset-0 bg-black bg-opacity-50 pointer-events-none group-hover:bg-opacity-0 transition-opacity duration-300" />
-      <div className="flex justify-between items-center relative z-10">
+    <footer className="border-t border-border px-6 py-2 text-xs text-muted-foreground">
+      <div className="flex justify-between items-center">
         <div className="flex items-center space-x-4">
           <span className="inline-block w-36">Last saved: {lastSaved}</span>
           <Button 
