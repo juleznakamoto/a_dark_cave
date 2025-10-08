@@ -186,7 +186,7 @@ export default function SidePanel() {
       
       // Use the label from villageBuildActions, with special handling for multiple huts
       let label = buildAction?.label || capitalizeWords(key);
-      if (key === "woodenHut" || key === "stoneHut") {
+      if (key === "woodenHut" || key === "stoneHut" || key === "longhouse") {
         label = `${label} (${value})`;
       }
 
