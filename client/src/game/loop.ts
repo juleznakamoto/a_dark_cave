@@ -421,7 +421,6 @@ function handleFreezingCheck() {
 }
 
 async function handleAutoSave() {
-  console.log("[SAVE] Automatic save triggered");
   const state = useGameStore.getState();
   const gameState: GameState = buildGameState(state);
 

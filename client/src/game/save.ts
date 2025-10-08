@@ -22,7 +22,6 @@ async function getDB() {
 
 export async function saveGame(gameState: GameState): Promise<void> {
   try {
-    console.log('[SAVE] Starting game save...');
     const db = await getDB();
     
     // Create a clean serializable copy of the game state
@@ -60,7 +59,6 @@ export async function saveGame(gameState: GameState): Promise<void> {
     };
     
     await db.put('saves', saveData, SAVE_KEY);
-    console.log('[SAVE] Game saved successfully');
   } catch (error) {
     console.error('[SAVE] Failed to save game:', error);
   }
