@@ -1001,11 +1001,14 @@ function handleBuildingConstruction(
     level,
     actionCosts,
     actionEffects,
-    inputResultStateUpdates: result.stateUpdates
+    inputResultStateUpdates: result.stateUpdates,
+    hasAction: !!action,
+    hasCosts: !!actionCosts,
+    hasEffects: !!actionEffects
   });
 
   if (!actionEffects) {
-    console.warn(`No effects found for action ${actionId} at level ${level}`);
+    console.warn(`[handleBuildingConstruction] No effects found for action ${actionId} at level ${level}`);
     return result;
   }
 
@@ -1014,6 +1017,12 @@ function handleBuildingConstruction(
     console.log('[handleBuildingConstruction] Creating stateUpdates object');
     result.stateUpdates = {};
   }
+
+  console.log('[handleBuildingConstruction] result.stateUpdates exists:', {
+    exists: !!result.stateUpdates,
+    keys: Object.keys(result.stateUpdates),
+    value: result.stateUpdates
+  });
 
   // Apply resource costs (negative changes)
   if (actionCosts) {
@@ -1026,44 +1035,57 @@ function handleBuildingConstruction(
     for (const [path, cost] of Object.entries(actionCosts) as [string, number][]) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
-        console.log(`[handleBuildingConstruction] Subtracting ${cost} from ${resource}: ${newResources[resource]} -> ${newResources[resource] - cost}`);
+        const before = newResources[resource];
         newResources[resource] -= cost; // Subtract the cost
+        const after = newResources[resource];
+        console.log(`[handleBuildingConstruction] Resource ${resource}: ${before} - ${cost} = ${after}`);
       }
     }
 
-    console.log('[handleBuildingConstruction] Setting result.stateUpdates.resources to:', newResources);
-    if (!result.stateUpdates) {
-      result.stateUpdates = {};
-    }
+    console.log('[handleBuildingConstruction] About to set result.stateUpdates.resources');
+    console.log('[handleBuildingConstruction] result object:', result);
+    console.log('[handleBuildingConstruction] result.stateUpdates before assignment:', result.stateUpdates);
+    
     result.stateUpdates.resources = newResources;
-
-    console.log('[handleBuildingConstruction] After costs applied:', {
-      newResources,
-      resultStateUpdatesResources: result.stateUpdates.resources,
-      areTheyEqual: result.stateUpdates.resources === newResources
-    });
+    
+    console.log('[handleBuildingConstruction] result.stateUpdates after assignment:', result.stateUpdates);
+    console.log('[handleBuildingConstruction] result.stateUpdates.resources:', result.stateUpdates.resources);
+    console.log('[handleBuildingConstruction] Are they the same reference?', result.stateUpdates.resources === newResources);
   }
 
   // Apply building effects
-  console.log('[handleBuildingConstruction] Processing building effects:', actionEffects);
+  console.log('[handleBuildingConstruction] Processing building effects:', {
+    actionEffects,
+    effectsEntries: Object.entries(actionEffects)
+  });
+  
   for (const [path, effect] of Object.entries(actionEffects) as [string, number][]) {
-    console.log('[handleBuildingConstruction] Processing effect path:', { path, effect });
+    console.log('[handleBuildingConstruction] Processing effect path:', { path, effect, pathType: typeof path, effectType: typeof effect });
 
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
-      const newCount = (state.buildings[building] || 0) + effect;
-      console.log(`[handleBuildingConstruction] Updating building ${building}: ${state.buildings[building]} + ${effect} = ${newCount}`);
+      const currentBuildingCount = state.buildings[building] || 0;
+      const newCount = currentBuildingCount + effect;
+      
+      console.log(`[handleBuildingConstruction] Building calculation:`, {
+        building,
+        currentBuildingCount,
+        effect,
+        newCount,
+        calculation: `${currentBuildingCount} + ${effect} = ${newCount}`
+      });
 
       // Ensure result.stateUpdates exists
       if (!result.stateUpdates) {
-        console.log('[handleBuildingConstruction] Creating stateUpdates object');
+        console.log('[handleBuildingConstruction] ERROR: result.stateUpdates is null, creating new object');
         result.stateUpdates = {};
       }
 
       console.log('[handleBuildingConstruction] Before setting building:', {
         currentBuildings: result.stateUpdates.buildings,
         building,
-        newCount
+        newCount,
+        resultStateUpdatesExists: !!result.stateUpdates
       });
 
       // Create new buildings object with all current buildings plus the update
@@ -1073,13 +1095,20 @@ function handleBuildingConstruction(
         [building]: newCount,
       };
 
+      console.log('[handleBuildingConstruction] New buildings object created:', newBuildings);
+      console.log('[handleBuildingConstruction] About to assign to result.stateUpdates.buildings');
+      
       result.stateUpdates.buildings = newBuildings;
-
-      console.log('[handleBuildingConstruction] After setting building:', {
-        updatedBuildings: result.stateUpdates.buildings
+      
+      console.log('[handleBuildingConstruction] After assignment:', {
+        'result.stateUpdates.buildings': result.stateUpdates.buildings,
+        'Are they same reference?': result.stateUpdates.buildings === newBuildings,
+        'Building count in result': result.stateUpdates.buildings?.[building]
       });
     } else if (path.startsWith("story.seen.")) {
       const storyKey = path.split(".").slice(2).join(".");
+      console.log('[handleBuildingConstruction] Processing story flag:', storyKey);
+      
       if (!result.stateUpdates.story) {
         result.stateUpdates.story = {
           ...state.story,
@@ -1093,15 +1122,17 @@ function handleBuildingConstruction(
         ...result.stateUpdates.story.seen,
         [storyKey]: effect as boolean,
       };
-      console.log('[handleBuildingConstruction] Set story flag:', { storyKey, effect });
+      console.log('[handleBuildingConstruction] Story flag set:', { storyKey, effect, updatedStory: result.stateUpdates.story });
     }
   }
 
-  console.log('[handleBuildingConstruction] Final stateUpdates:', {
-    fullStateUpdates: result.stateUpdates,
-    buildings: result.stateUpdates.buildings,
-    resources: result.stateUpdates.resources
+  console.log('[handleBuildingConstruction] FINAL CHECK - About to return result with stateUpdates:', {
+    'result.stateUpdates': result.stateUpdates,
+    'result.stateUpdates.buildings': result.stateUpdates.buildings,
+    'result.stateUpdates.resources': result.stateUpdates.resources,
+    'full result object': result
   });
+  
   return result;
 }
 
@@ -1412,25 +1443,32 @@ export function handleBuildStoneHut(
   result: ActionResult,
 ): ActionResult {
   const level = state.buildings.stoneHut + 1;
-  console.log('[handleBuildStoneHut] Starting:', {
+  console.log('[handleBuildStoneHut] ===== STARTING =====');
+  console.log('[handleBuildStoneHut] Initial state:', {
     currentStoneHuts: state.buildings.stoneHut,
     level,
     currentStone: state.resources.stone,
     inputResult: result,
-    inputResultStateUpdates: result.stateUpdates
+    inputResultStateUpdates: result.stateUpdates,
+    inputResultKeys: Object.keys(result)
   });
 
+  console.log('[handleBuildStoneHut] Calling handleBuildingConstruction...');
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  console.log('[handleBuildStoneHut] handleBuildingConstruction returned');
 
-  console.log('[handleBuildStoneHut] After handleBuildingConstruction:', {
-    stateUpdates: stoneHutResult.stateUpdates,
-    resourcesUpdate: stoneHutResult.stateUpdates?.resources,
-    buildingsUpdate: stoneHutResult.stateUpdates?.buildings,
+  console.log('[handleBuildStoneHut] ===== AFTER handleBuildingConstruction =====');
+  console.log('[handleBuildStoneHut] Full result object:', stoneHutResult);
+  console.log('[handleBuildStoneHut] stateUpdates:', stoneHutResult.stateUpdates);
+  console.log('[handleBuildStoneHut] stateUpdates keys:', stoneHutResult.stateUpdates ? Object.keys(stoneHutResult.stateUpdates) : 'null');
+  console.log('[handleBuildStoneHut] Detailed check:', {
+    hasStateUpdates: !!stoneHutResult.stateUpdates,
     hasResources: !!stoneHutResult.stateUpdates?.resources,
     hasBuildings: !!stoneHutResult.stateUpdates?.buildings,
-    stone: stoneHutResult.stateUpdates?.resources?.stone,
-    stoneHut: stoneHutResult.stateUpdates?.buildings?.stoneHut,
-    fullResult: stoneHutResult
+    resourcesValue: stoneHutResult.stateUpdates?.resources,
+    buildingsValue: stoneHutResult.stateUpdates?.buildings,
+    stoneValue: stoneHutResult.stateUpdates?.resources?.stone,
+    stoneHutValue: stoneHutResult.stateUpdates?.buildings?.stoneHut
   });
 
   // Add city message when 5th stone hut is built
@@ -1459,10 +1497,13 @@ export function handleBuildStoneHut(
     };
   }
 
-  console.log('[handleBuildStoneHut] Final result:', {
+  console.log('[handleBuildStoneHut] ===== FINAL RETURN =====');
+  console.log('[handleBuildStoneHut] Returning result:', {
+    fullResult: stoneHutResult,
     stateUpdates: stoneHutResult.stateUpdates,
-    buildings: stoneHutResult.stateUpdates.buildings,
-    resources: stoneHutResult.stateUpdates.resources
+    buildings: stoneHutResult.stateUpdates?.buildings,
+    resources: stoneHutResult.stateUpdates?.resources,
+    resultIsResult: stoneHutResult === result
   });
   return stoneHutResult;
 }
