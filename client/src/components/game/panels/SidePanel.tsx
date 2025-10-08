@@ -12,6 +12,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState } from "react";
+import { calculateBastionStats } from '@/game/bastionStats';
 
 export default function SidePanel() {
   const {
@@ -387,10 +388,6 @@ export default function SidePanel() {
         const isDamaged = story?.seen?.watchtowerDamaged;
         
         // Calculate individual contributions from this building
-        // We need to recalculate to show just this building's contribution
-        import { calculateBastionStats } from '@/game/bastionStats';
-        
-        // Calculate stats with and without this building to get its contribution
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
@@ -415,8 +412,6 @@ export default function SidePanel() {
         const isDamaged = story?.seen?.bastionDamaged;
         
         // Calculate individual contributions from this building
-        import { calculateBastionStats } from '@/game/bastionStats';
-        
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
@@ -445,8 +440,6 @@ export default function SidePanel() {
         const isDamaged = story?.seen?.palisadesDamaged;
         
         // Calculate individual contributions from this building
-        import { calculateBastionStats } from '@/game/bastionStats';
-        
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
