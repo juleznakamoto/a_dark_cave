@@ -307,7 +307,7 @@ export default function SidePanelSection({
                         {effect.description}
                       </div>
                     )}
-                    {effect.bonuses?.generalBonuses && (
+                    {title !== "Blessings" && effect.bonuses?.generalBonuses && (
                       <>
                         {effect.bonuses.generalBonuses.luck && (
                           <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
@@ -372,7 +372,7 @@ export default function SidePanelSection({
                         )}
                       </>
                     )}
-                    {effect.bonuses.actionBonuses &&
+                    {title !== "Blessings" && effect.bonuses.actionBonuses &&
                       (() => {
                         // Special case for seeker pack - show simplified tooltip
                         if (effect.id === "seeker_pack") {
