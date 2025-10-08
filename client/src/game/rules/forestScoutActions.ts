@@ -269,18 +269,12 @@ export function handleHillGrave(state: GameState, result: ActionResult): ActionR
       frostglas: (state.resources.frostglas || 0) + 50,
     };
 
+    // Set both flags in a single assignment to avoid overwriting
     result.stateUpdates.story = {
       ...state.story,
       seen: {
         ...state.story.seen,
         hillGraveSuccess: true,
-      },
-    };
-    // Set flag only on success
-    result.stateUpdates.story = {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
         hillGraveExplored: true,
       },
     };
