@@ -870,43 +870,20 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "deepenDevotion",
         label: "Deepen Devotion",
         effect: (state: GameState) => {
-          // Find the currently active blessing
-          let activeBlessing = "";
-          const blessings = state.blessings;
+          const b = state.blessings;
+          const active = b.dagons_gift ? "dagon" : b.flames_touch ? "flame" : b.ravens_mark ? "raven" : b.ashen_embrace ? "ash" : "";
           
-          if (blessings.dagons_gift) {
-            activeBlessing = "dagon";
-          } else if (blessings.flames_touch) {
-            activeBlessing = "flame";
-          } else if (blessings.ravens_mark) {
-            activeBlessing = "raven";
-          } else if (blessings.ashen_embrace) {
-            activeBlessing = "ash";
-          }
-
-          let updatedBlessings = { ...state.blessings };
-          let message = "";
-
-          if (activeBlessing === "dagon") {
-            updatedBlessings.dagons_gift = true;
-            updatedBlessings.dagons_gift_enhanced = true;
-            message = "Dagon's Blessing flows stronger than before.";
-          } else if (activeBlessing === "flame") {
-            updatedBlessings.flames_touch = true;
-            updatedBlessings.flames_touch_enhanced = true;
-            message = "The First Flame burns brighter than before.";
-          } else if (activeBlessing === "raven") {
-            updatedBlessings.ravens_mark = true;
-            updatedBlessings.ravens_mark_enhanced = true;
-            message = "The Raven's Mark grows stronger than before.";
-          } else if (activeBlessing === "ash") {
-            updatedBlessings.ashen_embrace = true;
-            updatedBlessings.ashen_embrace_enhanced = true;
-            message = "The Ashen Embrace is stronger than before.";
-          }
+          const updates: Record<string, any> = {
+            dagon: { dagons_gift: true, dagons_gift_enhanced: true, msg: "Dagon's Blessing flows stronger than before." },
+            flame: { flames_touch: true, flames_touch_enhanced: true, msg: "The First Flame burns brighter than before." },
+            raven: { ravens_mark: true, ravens_mark_enhanced: true, msg: "The Raven's Mark grows stronger than before." },
+            ash: { ashen_embrace: true, ashen_embrace_enhanced: true, msg: "The Ashen Embrace is stronger than before." }
+          };
+          
+          const { msg, ...blessings } = updates[active] || { msg: "" };
 
           return {
-            blessings: updatedBlessings,
+            blessings: { ...state.blessings, ...blessings },
             story: {
               ...state.story,
               seen: {
@@ -914,8 +891,8 @@ export const choiceEvents: Record<string, GameEvent> = {
                 sanctumDedicated: true,
               },
             },
-            templeDedicatedTo: activeBlessing || state.templeDedicatedTo,
-            _logMessage: message,
+            templeDedicatedTo: active || state.templeDedicatedTo,
+            _logMessage: msg,
           };
         },
       },
