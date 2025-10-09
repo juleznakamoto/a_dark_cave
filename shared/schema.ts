@@ -171,6 +171,7 @@ export const gameStateSchema = z.object({
     sanctum: z.number().default(0),
     alchemistHall: z.number().default(0),
     tradePost: z.number().default(0),
+    merchantsGuild: z.number().default(0),
     bastion: z.number().default(0),
     watchtower: z.number().default(0),
     palisades: z.number().default(0),

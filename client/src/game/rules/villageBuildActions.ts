@@ -457,7 +457,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 20,
   },
-  
+
   buildAltar: {
     id: "buildAltar",
     label: "Altar",
@@ -488,7 +488,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 5,
   },
-  
+
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
@@ -632,6 +632,32 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.tradePost": 1,
         "story.seen.hasTradePost": true,
+      },
+    },
+    cooldown: 40,
+  },
+
+  buildMerchantsGuild: {
+    id: "buildMerchantsGuild",
+    label: "Merchants Guild",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 5,
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 5000,
+        "resources.stone": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.merchantsGuild": 1,
+        "story.seen.hasMerchantsGuild": true,
       },
     },
     cooldown: 40,
@@ -1036,7 +1062,7 @@ function handleBuildingConstruction(
       result.stateUpdates.buildings = newBuildings;
     } else if (path.startsWith("story.seen.")) {
       const storyKey = path.split(".").slice(2).join(".");
-      
+
       if (!result.stateUpdates.story) {
         result.stateUpdates.story = {
           ...state.story,
@@ -1514,6 +1540,31 @@ export function handleBuildTradePost(
   }
 
   return tradePostResult;
+}
+
+export function handleBuildMerchantsGuild(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const merchantsGuildResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildMerchantsGuild",
+    "merchantsGuild",
+  );
+
+  // Add merchants guild completion message
+  if (state.buildings.merchantsGuild === 0) {
+    merchantsGuildResult.logEntries!.push({
+      id: `merchants-guild-built-${Date.now()}`,
+      message:
+        "The Merchants Guild is established, a hub for lucrative trade and the exchange of exotic goods. The village prospers.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return merchantsGuildResult;
 }
 
 export function handleBuildBastion(

@@ -314,6 +314,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildAlchemistHall(state, result);
     case 'buildTradePost':
       return handleBuildTradePost(state, result);
+    case 'buildMerchantsGuild':
+      return handleBuildMerchantsGuild(state, result);
     case 'buildWizardTower':
       return handleBuildWizardTower(state, result);
     case 'buildBastion':

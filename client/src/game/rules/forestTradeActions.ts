@@ -7,112 +7,231 @@ import { applyActionEffects } from './index';
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForWood: {
     id: "tradeGoldForWood",
-    label: "Buy 500 Wood",
+    label: "Buy Wood",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 5,
+      1: {
+        "resources.gold": 5,
+      },
+      2: {
+        "resources.gold": 10,
+      },
     },
     effects: {
-      "resources.gold": -5,
-      "resources.wood": 500,
+      1: {
+        "resources.gold": -5,
+        "resources.wood": 500,
+      },
+      2: {
+        "resources.gold": -10,
+        "resources.wood": 1000,
+      },
     },
     cooldown: 30,
   },
 
   tradeGoldForStone: {
     id: "tradeGoldForStone",
-    label: "Buy 500 Stone",
+    label: "Buy Stone",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 10,
+      1: {
+        "resources.gold": 10,
+      },
+      2: {
+        "resources.gold": 20,
+      },
     },
     effects: {
-      "resources.gold": -10,
-      "resources.stone": 500,
+      1: {
+        "resources.gold": -10,
+        "resources.stone": 500,
+      },
+      2: {
+        "resources.gold": -20,
+        "resources.stone": 1000,
+      },
     },
     cooldown: 30,
   },
 
   tradeGoldForSteel: {
     id: "tradeGoldForSteel",
-    label: "Buy 100 Steel",
+    label: "Buy Steel",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 15,
+      1: {
+        "resources.gold": 15,
+      },
+      2: {
+        "resources.gold": 30,
+      },
     },
     effects: {
-      "resources.gold": -15,
-      "resources.steel": 100,
+      1: {
+        "resources.gold": -15,
+        "resources.steel": 100,
+      },
+      2: {
+        "resources.gold": -30,
+        "resources.steel": 200,
+      },
     },
     cooldown: 30,
   },
 
   tradeGoldForObsidian: {
     id: "tradeGoldForObsidian",
-    label: "Buy 50 Obsidian",
+    label: "Buy Obsidian",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 25,
+      1: {
+        "resources.gold": 25,
+      },
+      2: {
+        "resources.gold": 50,
+      },
     },
     effects: {
-      "resources.gold": -25,
-      "resources.obsidian": 50,
+      1: {
+        "resources.gold": -25,
+        "resources.obsidian": 50,
+      },
+      2: {
+        "resources.gold": -50,
+        "resources.obsidian": 100,
+      },
     },
     cooldown: 30,
   },
 
   tradeGoldForAdamant: {
     id: "tradeGoldForAdamant",
-    label: "Buy 50 Adamant",
+    label: "Buy Adamant",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 50,
+      1: {
+        "resources.gold": 50,
+      },
+      2: {
+        "resources.gold": 100,
+      },
     },
     effects: {
-      "resources.gold": -50,
-      "resources.adamant": 50,
+      1: {
+        "resources.gold": -50,
+        "resources.adamant": 50,
+      },
+      2: {
+        "resources.gold": -100,
+        "resources.adamant": 100,
+      },
     },
     cooldown: 30,
   },
 
   tradeGoldForTorch: {
     id: "tradeGoldForTorch",
-    label: "Buy 50 Torch",
+    label: "Buy Torch",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.gold": 10,
+      1: {
+        "resources.gold": 10,
+      },
+      2: {
+        "resources.gold": 20,
+      },
     },
     effects: {
-      "resources.gold": -10,
-      "resources.torch": 50,
+      1: {
+        "resources.gold": -10,
+        "resources.torch": 50,
+      },
+      2: {
+        "resources.gold": -20,
+        "resources.torch": 100,
+      },
     },
     cooldown: 30,
   },
 
   tradeSilverForGold: {
     id: "tradeSilverForGold",
-    label: "Buy 50 Gold",
+    label: "Buy Gold",
     show_when: {
-      "buildings.tradePost": 1,
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
     },
     cost: {
-      "resources.silver": 100,
+      1: {
+        "resources.silver": 100,
+      },
+      2: {
+        "resources.silver": 200,
+      },
     },
     effects: {
-      "resources.silver": -100,
-      "resources.gold": 50,
+      1: {
+        "resources.silver": -100,
+        "resources.gold": 50,
+      },
+      2: {
+        "resources.silver": -200,
+        "resources.gold": 100,
+      },
     },
     cooldown: 30,
   },
