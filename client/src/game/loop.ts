@@ -1,6 +1,6 @@
 import { useGameStore } from "./state";
 import { saveGame } from "./save";
-import { GameState } from "@shared/schema";
+import { GameState, gameStateSchema } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
