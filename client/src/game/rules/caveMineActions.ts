@@ -25,7 +25,6 @@ export const caveMiningActions: Record<string, Action> = {
     label: "Mine Iron",
     show_when: {
       "tools.stone_pickaxe": true,
-      "state.buildings.blacksmith": 1
     },
     cost: {
       "resources.food": 5,
