@@ -200,6 +200,10 @@
 }
 
 /* Stone axe pulse animation */
+:root {
+  --stone-axe-pulse-speed: 0.8s;
+}
+
 @keyframes stone-axe-pulse {
   0%, 100% {
     opacity: 1;

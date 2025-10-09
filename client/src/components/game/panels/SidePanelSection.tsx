@@ -175,7 +175,7 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
-    
+
     // Check if this is the stone axe and tooltip hasn't been shown
     const isStoneAxePulsing = item.id === 'stone_axe' && !gameState.flags.stoneAxeTooltipShown;
 
@@ -309,7 +309,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(isStoneAxePulsing && "animate-[stone-axe-pulse_1s_infinite]")}
+                className={cn(isStoneAxePulsing && "animate-[stone-axe-pulse_var(--stone-axe-pulse-speed)_ease-in-out_infinite]")}
                 onMouseEnter={item.id === 'stone_axe' ? handleStoneAxeHover : undefined}
               >
                 {itemContent}
