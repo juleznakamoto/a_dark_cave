@@ -264,6 +264,9 @@ const toolTrades = [
 
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
+  // Check if we have 5+ stone huts for the 2x multiplier
+  const stoneHutMultiplier = state.buildings.stoneHut >= 5 ? 2 : 1;
+  
   const availableResourceTrades = resourceTrades
     .sort(() => Math.random() - 0.5) // Shuffle
     .slice(0, 4) // Take first 4
@@ -271,11 +274,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       // Create a fresh choice with new random costs each time
       const knowledge = getTotalKnowledge(state);
       const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)] * Math.max(0.01, 1 - knowledge * 0.01));
+      const baseCost = costOption.amounts[Math.floor(Math.random() * costOption.amounts.length)];
+      const cost = Math.ceil(baseCost * Math.max(0.01, 1 - knowledge * 0.01) * stoneHutMultiplier);
+      const giveAmount = trade.giveAmount * stoneHutMultiplier;
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}`,
+        label: `Buy ${trade.label}${stoneHutMultiplier > 1 ? ` (x${stoneHutMultiplier})` : ''}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -283,7 +288,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
               resources: {
                 ...state.resources,
                 [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-                [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
+                [trade.give]: (state.resources[trade.give] || 0) + giveAmount,
               },
             };
           }
