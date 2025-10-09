@@ -200,19 +200,17 @@
 }
 
 /* Stone axe pulse animation */
-:root {
-  --stone-axe-pulse-speed: 5s;
-}
-
 @keyframes stone-axe-pulse {
   0%, 100% {
-    opacity: 1;
-    text-shadow: 0 0 0 rgba(255, 255, 255, 0.7);
+    text-shadow: 0 0 3px rgba(255, 255, 255, 0.4);
   }
   50% {
-    opacity: 0.8;
     text-shadow: 0 0 10px rgba(255, 255, 255, 0.9);
   }
+}
+
+.stone-axe-pulse {
+  animation: stone-axe-pulse 1.2s linear infinite;
 }
 
 /* Custom madness pulse animations - 4 levels */
