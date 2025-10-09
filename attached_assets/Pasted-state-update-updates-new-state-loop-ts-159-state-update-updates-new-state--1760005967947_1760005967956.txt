@@ -1,0 +1,88 @@
+state_update {updates: {…}, new_state: {…}}
+loop.ts:159 state_update {updates: {…}, new_state: {…}}
+loop.ts:30 Uncaught ReferenceError: gameStateSchema is not defined
+    at buildGameState (loop.ts:30:34)
+    at handleHunterProduction (loop.ts:199:20)
+    at tick (loop.ts:82:9)
+buildGameState @ loop.ts:30
+handleHunterProduction @ loop.ts:199
+tick @ loop.ts:82
+requestAnimationFrame
+startGameLoop @ loop.ts:119
+initializeGame @ game.tsx:27
+await in initializeGame
+(anonymous) @ game.tsx:30
+commitHookEffectListMount @ chunk-WERSD76P.js?v=2edd2420:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=2edd2420:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=2edd2420:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=2edd2420:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=2edd2420:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=2edd2420:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=2edd2420:19447
+commitRootImpl @ chunk-WERSD76P.js?v=2edd2420:19416
+commitRoot @ chunk-WERSD76P.js?v=2edd2420:19277
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=2edd2420:18895
+flushSyncCallbacks @ chunk-WERSD76P.js?v=2edd2420:9119
+flushSync @ chunk-WERSD76P.js?v=2edd2420:18959
+scheduleRefresh @ chunk-WERSD76P.js?v=2edd2420:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ GameFooter.tsx:9
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this error
+loop.ts:30 Uncaught (in promise) ReferenceError: gameStateSchema is not defined
+    at buildGameState (loop.ts:30:34)
+    at handleAutoSave (loop.ts:396:32)
+    at tick (loop.ts:70:9)
+buildGameState @ loop.ts:30
+handleAutoSave @ loop.ts:396
+tick @ loop.ts:70
+requestAnimationFrame
+startGameLoop @ loop.ts:119
+initializeGame @ game.tsx:27
+await in initializeGame
+(anonymous) @ game.tsx:30
+commitHookEffectListMount @ chunk-WERSD76P.js?v=2edd2420:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=2edd2420:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=2edd2420:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=2edd2420:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=2edd2420:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=2edd2420:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=2edd2420:19447
+commitRootImpl @ chunk-WERSD76P.js?v=2edd2420:19416
+commitRoot @ chunk-WERSD76P.js?v=2edd2420:19277
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=2edd2420:18895
+flushSyncCallbacks @ chunk-WERSD76P.js?v=2edd2420:9119
+flushSync @ chunk-WERSD76P.js?v=2edd2420:18959
+scheduleRefresh @ chunk-WERSD76P.js?v=2edd2420:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ GameFooter.tsx:9
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this error
+loop.ts:159 state_update {updates: {…}, new_state: {…}}
+loop.ts:557 [SAVE] Manual save initiated.
+loop.ts:30 Uncaught (in promise) ReferenceError: gameStateSchema is not defined
+    at buildGameState (loop.ts:30:34)
+    at manualSave (loop.ts:561:32)
+    at handleSaveGame (GameFooter.tsx:15:11)
