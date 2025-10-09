@@ -110,7 +110,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border select-none;
   }
 
   html {
@@ -118,7 +118,7 @@
   }
 
   body {
-    @apply font-sans antialiased bg-background text-foreground;
+    @apply font-sans antialiased bg-background text-foreground select-none;
     background-color: hsl(0, 0%, 0%) !important;
     color: hsl(200, 6.6667%, 91.1765%) !important;
   }
@@ -215,6 +215,7 @@
 
 /* Custom madness pulse animations - 4 levels */
 @keyframes madness-pulse-light {
+
   0%,
   100% {
     opacity: 1;
@@ -228,6 +229,7 @@
 }
 
 @keyframes madness-pulse-medium {
+
   0%,
   100% {
     opacity: 1;
@@ -241,6 +243,7 @@
 }
 
 @keyframes madness-pulse-intense {
+
   0%,
   100% {
     opacity: 1;
@@ -254,6 +257,7 @@
 }
 
 @keyframes madness-pulse-extreme {
+
   0%,
   100% {
     opacity: 1;
@@ -267,11 +271,11 @@
 }
 
 .madness-pulse-light {
-  animation: madness-pulse-light 1.5s ease-in-out infinite;
+  animation: madness-pulse-light 2.0s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  animation: madness-pulse-medium 1.2s ease-in-out infinite;
+  animation: madness-pulse-medium 1.5s ease-in-out infinite;
 }
 
 /* Button glow animation */
