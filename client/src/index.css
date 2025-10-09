@@ -202,15 +202,15 @@
 /* Stone axe pulse animation */
 @keyframes stone-axe-pulse {
   0%, 100% {
-    text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
   }
   50% {
-    text-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
   }
 }
 
 .stone-axe-pulse {
-  animation: stone-axe-pulse 2000.0s ease-in-out infinite;
+  animation: stone-axe-pulse 1.5s ease-in-out infinite;
 }
 
 /* Custom madness pulse animations - 4 levels */
