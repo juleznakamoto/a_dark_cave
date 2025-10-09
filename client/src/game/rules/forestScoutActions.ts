@@ -89,9 +89,28 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  sunkenTemple: {
+    id: "sunkenTemple",
+    label: "Sunken Temple",
+    show_when: {
+      "story.seen.wizardBloodstone": true,
+      "!story.seen.sunkenTempleExplored": true,
+    },
+    cost: {
+      "resources.food": 5000,
+    },
+    effects: {
+      "story.seen.sunkenTempleExplored": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
+// Export the handler
+export { handleSunkenTemple } from './forestScoutActions';
+
 export function handleHunt(
   state: GameState,
   result: ActionResult,
@@ -308,6 +327,60 @@ export function handleHillGrave(
     result.logEntries!.push({
       id: `hill-grave-failure-${Date.now()}`,
       message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. Poisoned arrows fly from hidden slots, floors collapse into spike pits, and ancient mechanisms crush those who trigger them. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return result;
+}
+
+export function handleSunkenTemple(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("sunkenTemple", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Calculate success based on strength and knowledge
+  const strength = getTotalStrength(state);
+  const knowledge = getTotalKnowledge(state);
+  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01; // 15% base + (strength + knowledge)/2%
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    // Success: Find bloodstone
+    result.stateUpdates.resources = {
+      ...state.resources,
+      bloodstone: (state.resources.bloodstone || 0) + 50,
+    };
+
+    // Set both flags in a single assignment to avoid overwriting
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        sunkenTempleSuccess: true,
+        sunkenTempleExplored: true,
+      },
+    };
+
+    result.logEntries!.push({
+      id: `sunken-temple-success-${Date.now()}`,
+      message:
+        "Your expedition wades through the fetid swamp waters to reach the ancient temple, half-sunken in the murky depths. Despite the dangers lurking in the dark waters, your villagers navigate carefully through the submerged halls. In the temple's inner sanctum, you discover a cache of bloodstone gems, pulsing with a deep crimson glow.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  } else {
+    // Failure: Villagers die to swamp creatures (5-15 deaths)
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5; // 5-15 deaths
+    const deathResult = killVillagers(state, villagerDeaths);
+    Object.assign(result.stateUpdates, deathResult);
+
+    result.logEntries!.push({
+      id: `sunken-temple-failure-${Date.now()}`,
+      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors - twisted creatures born of ancient magic and decay rise from the depths. ${villagerDeaths} villagers are dragged beneath the surface by grasping tendrils and fanged maws before the survivors flee in terror, their screams echoing across the swamp.`,
       timestamp: Date.now(),
       type: "system",
     });
