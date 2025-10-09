@@ -171,7 +171,9 @@ export const choiceEvents: Record<string, GameEvent> = {
   cthulhuFigure: {
     id: "cthulhuFigure",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && !state.relics.wooden_figure,
+      state.buildings.woodenHut >= 4 && 
+      !state.relics.wooden_figure &&
+      !state.story.seen.cthulhuFigureChoice,
     triggerType: "resource",
     timeProbability: 45,
     title: "A Strange Wooden Figure",
@@ -179,7 +181,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "Near the edge of the forest, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it?",
     triggered: false,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "keepFigure",
@@ -189,6 +191,13 @@ export const choiceEvents: Record<string, GameEvent> = {
             relics: {
               ...state.relics,
               wooden_figure: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                cthulhuFigureChoice: true,
+              },
             },
             _logMessage:
               "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
@@ -200,6 +209,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Discard it",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                cthulhuFigureChoice: true,
+              },
+            },
             _logMessage:
               "You discard the figure. The forest seems to watch silently as it disappears.",
           };
