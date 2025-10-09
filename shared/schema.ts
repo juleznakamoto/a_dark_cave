@@ -64,6 +64,10 @@ export const gameStateSchema = z.object({
     portalBlasted: z.boolean().default(false),
     stoneAxeTooltipShown: z.boolean().default(false),
   }).default({}),
+  schematics: z.object({
+    arbalest_schematic: z.boolean().default(false),
+    nightshade_bow_schematic: z.boolean().default(false),
+  }).default({}),
   tools: z.object({
     stone_axe: z.boolean().default(false),
     stone_pickaxe: z.boolean().default(false),
