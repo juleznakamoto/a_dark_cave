@@ -330,11 +330,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
             if (trade.give === "tool") {
               result.tools = { ...state.tools, [trade.giveItem]: true };
-            }
-            if (trade.give === "relic") {
+            } else if (trade.give === "relic") {
               result.relics = { ...state.relics, [trade.giveItem]: true };
-            }
-            if (trade.give === "schematic") {
+            } else if (trade.give === "schematic") {
               result.schematics = { ...state.schematics, [trade.giveItem]: true };
             }
 

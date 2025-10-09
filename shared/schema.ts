@@ -112,6 +112,10 @@ export const gameStateSchema = z.object({
     hunter_cloak: z.boolean().default(false),
     grenadier_bag: z.boolean().default(false),
   }).default({}),
+  schematics: z.object({
+    arbalest_schematic: z.boolean().default(false),
+    nightshade_bow_schematic: z.boolean().default(false),
+  }).default({}),
   relics: z.object({
     strange_bones: z.boolean().default(false),
     compass: z.boolean().default(false),
@@ -136,10 +140,6 @@ export const gameStateSchema = z.object({
     ravens_orb: z.boolean().default(false),
     murmuring_cube: z.boolean().default(false),
     black_bear_fur: z.boolean().default(false),
-  }).default({}),
-  schematics: z.object({
-    arbalest_schematic: z.boolean().default(false),
-    nightshade_bow_schematic: z.boolean().default(false),
   }).default({}),
   blessings: z.object({
     dagons_gift: z.boolean().default(false),
