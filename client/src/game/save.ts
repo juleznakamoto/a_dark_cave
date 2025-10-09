@@ -30,8 +30,11 @@ export async function saveGame(gameState: GameState): Promise<void> {
   try {
     const db = await getDB();
     
+    // Deep clone to remove any non-serializable data like functions
+    const cleanGameState = JSON.parse(JSON.stringify(gameState));
+    
     const saveData: SaveData = {
-      gameState: gameState,
+      gameState: cleanGameState,
       timestamp: Date.now(),
     };
     
