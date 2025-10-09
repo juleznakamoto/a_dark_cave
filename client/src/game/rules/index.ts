@@ -38,79 +38,36 @@ export const gameActions: Record<string, Action> = {
 
 // Utility function to get the next building level
 const getNextBuildingLevel = (actionId: string, state: GameState): number => {
-  if (actionId === "buildWoodenHut") {
-    return (state.buildings.woodenHut || 0) + 1;
-  }
-  if (actionId === "buildShallowPit") {
-    return (state.buildings.shallowPit || 0) + 1;
-  }
-  if (actionId === "buildDeepeningPit") {
-    return (state.buildings.deepeningPit || 0) + 1;
-  }
-  if (actionId === "buildDeepPit") {
-    return (state.buildings.deepPit || 0) + 1;
-  }
-  if (actionId === "buildBottomlessPit") {
-    return (state.buildings.bottomlessPit || 0) + 1;
-  }
-  if (actionId === "buildCabin") {
-    return (state.buildings.cabin || 0) + 1;
-  }
-  if (actionId === "buildBlacksmith") {
-    return (state.buildings.blacksmith || 0) + 1;
-  }
-  if (actionId === "buildFoundry") {
-    return (state.buildings.foundry || 0) + 1;
-  }
-  if (actionId === "buildAltar") {
-    return (state.buildings.altar || 0) + 1;
-  }
-  if (actionId === "buildGreatCabin") {
-    return (state.buildings.greatCabin || 0) + 1;
-  }
-  if (actionId === "buildTimberMill") {
-    return (state.buildings.timberMill || 0) + 1;
-  }
-  if (actionId === "buildQuarry") {
-    return (state.buildings.quarry || 0) + 1;
-  }
-  if (actionId === "buildTannery") {
-    return (state.buildings.tannery || 0) + 1;
-  }
-  if (actionId === "buildShrine") {
-    return (state.buildings.shrine || 0) + 1;
-  }
-  if (actionId === "buildTemple") {
-    return (state.buildings.temple || 0) + 1;
-  }
-  if (actionId === "buildSanctum") {
-    return (state.buildings.sanctum || 0) + 1;
-  }
-  if (actionId === "buildStoneHut") {
-    return (state.buildings.stoneHut || 0) + 1;
-  }
-  if (actionId === "buildAlchemistTower") {
-    return (state.buildings.alchemistHall || 0) + 1;
-  }
-  if (actionId === "buildTradePost") {
-    return (state.buildings.tradePost || 0) + 1;
-  }
-  if (actionId === "buildWizardTower") {
-    return (state.buildings.wizardTower || 0) + 1;
-  }
-  if (actionId === "buildLonghouse") {
-    return (state.buildings.longhouse || 0) + 1;
-  }
-  if (actionId === "buildGrandBlacksmith") {
-    return (state.buildings.grandBlacksmith || 0) + 1;
-  }
-  if (actionId === "buildWatchtower") {
-    return (state.buildings.watchtower || 0) + 1;
-  }
-  if (actionId === "buildPalisades") {
-    return (state.buildings.palisades || 0) + 1;
-  }
-  return 1;
+  const buildingMap: Record<string, keyof GameState["buildings"]> = {
+      buildWoodenHut: "woodenHut",
+      buildShallowPit: "shallowPit",
+      buildDeepeningPit: "deepeningPit",
+      buildDeepPit: "deepPit",
+      buildBottomlessPit: "bottomlessPit",
+      buildCabin: "cabin",
+      buildBlacksmith: "blacksmith",
+      buildFoundry: "foundry",
+      buildAltar: "altar",
+      buildGreatCabin: "greatCabin",
+      buildTimberMill: "timberMill",
+      buildQuarry: "quarry",
+      buildTannery: "tannery",
+      buildShrine: "shrine",
+      buildTemple: "temple",
+      buildSanctum: "sanctum",
+      buildStoneHut: "stoneHut",
+      buildAlchemistTower: "alchemistHall",
+      buildTradePost: "tradePost",
+      buildWizardTower: "wizardTower",
+      buildLonghouse: "longhouse",
+      buildGrandBlacksmith: "grandBlacksmith",
+      buildWatchtower: "watchtower",
+      buildPalisades: "palisades",
+    };
+
+    const buildingKey = buildingMap[actionId];
+    return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
+  };
 };
 
 // Helper function to check requirements for both building and non-building actions
@@ -257,77 +214,6 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   }
 
   return true;
-}
-
-// Helper function to evaluate complex conditions
-function evaluateCondition(condition: string, state: GameState): boolean {
-  // Handle AND conditions
-  if (condition.includes(" && ")) {
-    const parts = condition.split(" && ");
-    return parts.every((part) => evaluateCondition(part.trim(), state));
-  }
-
-  // Handle OR conditions
-  if (condition.includes(" || ")) {
-    const parts = condition.split(" || ");
-    return parts.some((part) => evaluateCondition(part.trim(), state));
-  }
-
-  // Handle single condition
-  return evaluateSingleCondition(condition.trim(), state);
-}
-
-// Helper function to evaluate a single condition
-function evaluateSingleCondition(condition: string, state: GameState): boolean {
-  // Handle negation (e.g., "!events.trinket_found")
-  if (condition.startsWith("!")) {
-    const checkPath = condition.slice(1);
-    return !getValueFromPath(checkPath, state);
-  }
-
-  // Handle comparison operators (e.g., "buildings.cabin >= 1")
-  const comparisonMatch = condition.match(/^(.+?)\s*(>=|<=|>|<|==|!=)\s*(.+)$/);
-  if (comparisonMatch) {
-    const [, leftPath, operator, rightValue] = comparisonMatch;
-    const leftVal = getValueFromPath(leftPath.trim(), state);
-    const rightVal = isNaN(Number(rightValue))
-      ? rightValue.trim()
-      : Number(rightValue);
-
-    switch (operator) {
-      case ">=":
-        return Number(leftVal) >= Number(rightVal);
-      case "<=":
-        return Number(leftVal) <= Number(rightVal);
-      case ">":
-        return Number(leftVal) > Number(rightVal);
-      case "<":
-        return Number(leftVal) < Number(rightVal);
-      case "==":
-        return leftVal == rightVal;
-      case "!=":
-        return leftVal != rightVal;
-      default:
-        return false;
-    }
-  }
-
-  // Handle simple boolean check (e.g., "flags.fireLit")
-  return !!getValueFromPath(condition, state);
-}
-
-// Helper function to get value from dot notation path
-function getValueFromPath(path: string, state: GameState): unknown {
-  const pathParts = path.split(".");
-  let current: unknown = state;
-  for (const part of pathParts) {
-    if (current && typeof current === "object" && part in current) {
-      current = (current as Record<string, unknown>)[part];
-    } else {
-      return undefined;
-    }
-  }
-  return current;
 }
 
 // Utility function to apply action effects
