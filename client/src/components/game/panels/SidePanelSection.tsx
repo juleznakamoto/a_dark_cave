@@ -309,7 +309,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(isStoneAxePulsing && "animate-[stone-axe-pulse_3.5s_ease-in-out_infinite]")}
+                className={cn(isStoneAxePulsing && "animate-[stone-axe-pulse_1s_infinite]")}
                 onMouseEnter={item.id === 'stone_axe' ? handleStoneAxeHover : undefined}
               >
                 {itemContent}
