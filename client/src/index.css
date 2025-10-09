@@ -209,7 +209,7 @@
   }
 }
 
-.stone-axe-pulse {
+div.stone-axe-pulse {
   animation: stone-axe-pulse 0.8s ease-in-out infinite !important;
 }
 
