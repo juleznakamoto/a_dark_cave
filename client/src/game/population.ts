@@ -129,7 +129,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   cinderflame_dust_maker: {
     id: "cinderflame_dust_maker",
     label: "cinderflame_dust_maker",
-    show_when: (state: any) => state.story?.seen?.alchemistArrives === true,
     production: [
       { resource: "cinderflame_dust", amount: 1, interval: 15000 },
       { resource: "moonstone", amount: -10, interval: 15000 },

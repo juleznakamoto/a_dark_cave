@@ -122,6 +122,11 @@ export default function VillagePanel() {
       label: "Powder Maker",
       showWhen: () => buildings.alchemistHall >= 1,
     },
+    {
+      id: "cinderflame_dust_maker",
+      label: "Cinderflame Dust Maker",
+      showWhen: () => state.story?.seen?.alchemistArrives === true,
+    },
   ];
 
   const renderButton = (actionId: string, label: string) => {
