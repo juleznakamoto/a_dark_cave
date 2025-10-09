@@ -210,7 +210,7 @@
 }
 
 .stone-axe-pulse {
-  animation: stone-axe-pulse 0.5s ease-in-out infinite;
+  animation: stone-axe-pulse 2000.0s ease-in-out infinite;
 }
 
 /* Custom madness pulse animations - 4 levels */
