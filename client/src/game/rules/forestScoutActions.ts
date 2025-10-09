@@ -108,8 +108,6 @@ export const forestScoutActions: Record<string, Action> = {
 };
 
 // Action handlers
-// Export the handler
-export { handleSunkenTemple } from './forestScoutActions';
 
 export function handleHunt(
   state: GameState,
@@ -298,6 +296,8 @@ export function handleHillGrave(
     // Success: Find frostglas
     result.stateUpdates.resources = {
       ...state.resources,
+      silver: (state.resources.silver || 0) + 200,
+      gold: (state.resources.gold || 0) + 100,
       frostglas: (state.resources.frostglas || 0) + 50,
     };
 
@@ -345,13 +345,14 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01; // 15% base + (strength + knowledge)/2%
+  const successChance = 0.10 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
     // Success: Find bloodstone
     result.stateUpdates.resources = {
       ...state.resources,
+      gold: (state.resources.gold || 0) + 250,
       bloodstone: (state.resources.bloodstone || 0) + 50,
     };
 
