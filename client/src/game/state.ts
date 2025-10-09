@@ -196,38 +196,8 @@ class StateManager {
     if (!delayedEffects) return;
 
     delayedEffects.forEach((effect) => {
-      if (actionId === "buildWoodenHut" && state.buildings.woodenHut === 0) {
-        this.handleStrangerEvent(store);
-      } else {
-        effect();
-      }
+      effect();
     });
-  }
-
-  private static handleStrangerEvent(store: () => GameStore) {
-    setTimeout(() => {
-      const strangerLogEntry: LogEntry = {
-        id: `stranger-approaches-${Date.now()}`,
-        message: "A stranger approaches through the woods.",
-        timestamp: Date.now(),
-        type: "system",
-      };
-
-      store().addLogEntry(strangerLogEntry);
-
-      setTimeout(() => {
-        const state = store();
-        const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
-        const maxPopulation = getMaxPopulation(state);
-
-        if (currentPopulation < maxPopulation) {
-          // Update villagers directly through the store
-          state.updateResource('free' as any, 1);
-          state.setFlag('hasVillagers' as any, true);
-          StateManager.schedulePopulationUpdate(store);
-        }
-      }, 100);
-    }, 2000);
   }
 }
 
@@ -335,9 +305,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           resultStateUpdatesResources: result.stateUpdates.resources
         });
       }
-      
+
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
-      
+
       if (actionId === 'buildStoneHut') {
         console.log('[executeAction] After mergeStateUpdates:', {
           mergedUpdates,
@@ -345,7 +315,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           mergedResources: mergedUpdates.resources
         });
       }
-      
+
       const newState = {
         ...prevState,
         ...mergedUpdates,
@@ -353,7 +323,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ? [...prevState.log, ...result.logEntries].slice(-10)
           : prevState.log,
       };
-      
+
       if (actionId === 'buildStoneHut') {
         console.log('[executeAction] Final newState:', {
           stoneHuts: newState.buildings.stoneHut,
@@ -362,7 +332,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           mergedUpdates
         });
       }
-      
+
       return newState;
     });
 
