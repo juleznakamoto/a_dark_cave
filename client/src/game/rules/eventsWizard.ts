@@ -175,4 +175,29 @@ export const wizardEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  wizardReadyForBattle: {
+    id: "wizardReadyForBattle",
+    condition: (state: GameState) =>
+      state.weapons.bloodstone_staff &&
+      state.weapons.frostglass_sword &&
+      !state.story.seen.wizardReadyForBattle,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    title: "The Final Preparation",
+    message:
+      "The wizard stands at the entrance to his tower, both the Frostglass Sword and Bloodstone Staff radiating power in the dim light. His eyes burn with determination as he addresses you. 'The weapons are forged. The ancient knowledge has been uncovered. We now possess what we need to stand against the creatures that emerge from the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardReadyForBattle: true,
+        },
+      },
+    }),
+  },
 };
