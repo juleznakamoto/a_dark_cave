@@ -113,6 +113,7 @@ import {
 } from '@/game/rules/forestTradeActions';
 
 import {
+  handleMineStone,
   handleMineIron,
   handleMineCoal,
   handleMineSulfur,
@@ -247,6 +248,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftFrostglassSword(state, result);
 
     // Cave Mine Actions
+    case 'mineStone':
+      return handleMineStone(state, result);
     case 'mineIron':
       return handleMineIron(state, result);
     case 'mineCoal':

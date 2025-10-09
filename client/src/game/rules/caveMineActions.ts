@@ -3,6 +3,23 @@ import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from '@/game/rules';
 
 export const caveMiningActions: Record<string, Action> = {
+  mineStone: {
+    id: "mineStone",
+    label: "Mine Stone",
+    show_when: {
+      "tools.stone_pickaxe": true,
+    },
+    cost: {
+      "resources.food": 5,
+      "resources.torch": 1,
+    },
+    effects: {
+      "resources.stone": "random(4,8)",
+      "story.seen.hasMinedStone": true,
+    },
+    cooldown: 15,
+  },
+
   mineIron: {
     id: "mineIron",
     label: "Mine Iron",
@@ -91,6 +108,27 @@ export const caveMiningActions: Record<string, Action> = {
 };
 
 // Action handlers
+export function handleMineStone(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineStone', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
 export function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
 
