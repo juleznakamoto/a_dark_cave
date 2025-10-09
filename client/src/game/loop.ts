@@ -9,20 +9,10 @@ let gameLoopId: number | null = null;
 let lastTick = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
-const GATHERER_PRODUCTION_INTERVAL = 15000; // gatherer produce wood every 15 seconds
-const HUNTER_PRODUCTION_INTERVAL = 15000; // hunter produce food every 15 seconds
-const CONSUMPTION_INTERVAL = 15000; // Population consumes food and checks wood every 15 seconds
-const STARVATION_CHECK_INTERVAL = 15000; // Check starvation every 15 seconds
-const FREEZING_CHECK_INTERVAL = 15000; // Check freezing every 15 seconds
-const STRANGER_CHECK_INTERVAL = 15000; // Check for stranger approach every 15 seconds
+const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 
 let lastAutoSave = 0;
-let lastGathererProduction = 0;
-let lastHunterProduction = 0;
-let lastConsumption = 0;
-let lastStarvationCheck = 0;
-let lastFreezingCheck = 0;
-let lastStrangerCheck = 0;
+let lastProduction = 0;
 
 // Helper function to build the GameState object
 function buildGameState(state: ReturnType<typeof useGameStore>): GameState {
@@ -59,45 +49,15 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      // Gatherer production logic
-      if (timestamp - lastGathererProduction >= GATHERER_PRODUCTION_INTERVAL) {
-        lastGathererProduction = timestamp;
+      // All production and game logic checks (every 15 seconds)
+      if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
+        lastProduction = timestamp;
         handleGathererProduction();
-      }
-
-      // Hunter production logic
-      if (timestamp - lastHunterProduction >= HUNTER_PRODUCTION_INTERVAL) {
-        lastHunterProduction = timestamp;
         handleHunterProduction();
-      }
-
-      // Miner production logic
-      if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
-        lastConsumption = timestamp;
         handleMinerProduction();
-      }
-
-      // Population food consumption
-      if (timestamp - lastConsumption >= CONSUMPTION_INTERVAL) {
-        lastConsumption = timestamp;
         handlePopulationSurvival();
-      }
-
-      // Starvation checks
-      if (timestamp - lastStarvationCheck >= STARVATION_CHECK_INTERVAL) {
-        lastStarvationCheck = timestamp;
         handleStarvationCheck();
-      }
-
-      // Freezing checks
-      if (timestamp - lastFreezingCheck >= FREEZING_CHECK_INTERVAL) {
-        lastFreezingCheck = timestamp;
         handleFreezingCheck();
-      }
-
-      // Stranger approach checks
-      if (timestamp - lastStrangerCheck >= STRANGER_CHECK_INTERVAL) {
-        lastStrangerCheck = timestamp;
         handleStrangerApproach();
       }
     }
