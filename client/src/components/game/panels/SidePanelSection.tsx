@@ -58,16 +58,11 @@ export default function SidePanelSection({
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
-  const updateGameState = useGameStore((state) => state.updateGameState);
+  const setFlag = useGameStore((state) => state.setFlag);
 
   const handleStoneAxeHover = () => {
     if (!gameState.flags.stoneAxeTooltipShown) {
-      updateGameState({
-        flags: {
-          ...gameState.flags,
-          stoneAxeTooltipShown: true,
-        },
-      });
+      setFlag('stoneAxeTooltipShown', true);
     }
   };
 
