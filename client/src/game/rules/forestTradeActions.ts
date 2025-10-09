@@ -22,17 +22,15 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 5,
       },
       2: {
-        "resources.gold": 10,
+        "resources.gold": 25,
       },
     },
     effects: {
       1: {
-        "resources.gold": -5,
         "resources.wood": 500,
       },
       2: {
-        "resources.gold": -10,
-        "resources.wood": 1000,
+        "resources.wood": 2500,
       },
     },
     cooldown: 30,
@@ -55,17 +53,15 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 10,
       },
       2: {
-        "resources.gold": 20,
+        "resources.gold": 50,
       },
     },
     effects: {
       1: {
-        "resources.gold": -10,
         "resources.stone": 500,
       },
       2: {
-        "resources.gold": -20,
-        "resources.stone": 1000,
+        "resources.stone": 2500,
       },
     },
     cooldown: 30,
@@ -88,17 +84,15 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 15,
       },
       2: {
-        "resources.gold": 30,
+        "resources.gold": 75,
       },
     },
     effects: {
       1: {
-        "resources.gold": -15,
         "resources.steel": 100,
       },
       2: {
-        "resources.gold": -30,
-        "resources.steel": 200,
+        "resources.steel": 500,
       },
     },
     cooldown: 30,
@@ -126,11 +120,9 @@ export const forestTradeActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.gold": -25,
         "resources.obsidian": 50,
       },
       2: {
-        "resources.gold": -50,
         "resources.obsidian": 100,
       },
     },
@@ -159,11 +151,9 @@ export const forestTradeActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.gold": -50,
         "resources.adamant": 50,
       },
       2: {
-        "resources.gold": -100,
         "resources.adamant": 100,
       },
     },
@@ -192,11 +182,9 @@ export const forestTradeActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.gold": -10,
         "resources.torch": 50,
       },
       2: {
-        "resources.gold": -20,
         "resources.torch": 100,
       },
     },
@@ -225,11 +213,9 @@ export const forestTradeActions: Record<string, Action> = {
     },
     effects: {
       1: {
-        "resources.silver": -100,
         "resources.gold": 50,
       },
       2: {
-        "resources.silver": -200,
         "resources.gold": 100,
       },
     },
