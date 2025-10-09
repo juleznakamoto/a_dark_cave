@@ -9,7 +9,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "paleFigure",
     relevant_stats: ["strength", "luck"],
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle,
+      state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle && state.current_population >= 4,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
@@ -50,7 +50,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           } else {
             const deaths =
-              2 + Math.floor(Math.random() * state.buildings.woodenHut);
+              Math.min(4, 2 + Math.floor(Math.random() * state.buildings.woodenHut));
             return {
               ...killVillagers(state, deaths),
               _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
