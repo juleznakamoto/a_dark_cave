@@ -103,6 +103,7 @@ export const gameStateSchema = z.object({
     frostglass_sword: z.boolean().default(false),
     arbalest: z.boolean().default(false),
     nightshade_bow: z.boolean().default(false),
+    frostfang: z.boolean().default(false),
     bloodstone_staff: z.boolean().default(false),
   }).default({}),
   clothing: z.object({
@@ -132,8 +133,6 @@ export const gameStateSchema = z.object({
     cracked_crown: z.boolean().default(false),
     ancient_scrolls: z.boolean().default(false),
     elder_scroll: z.boolean().default(false),
-    frostfang: z.boolean().default(false),
-    blood_scepter: z.boolean().default(false),
     ravens_orb: z.boolean().default(false),
     murmuring_cube: z.boolean().default(false),
     black_bear_fur: z.boolean().default(false),

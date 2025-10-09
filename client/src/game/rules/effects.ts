@@ -419,7 +419,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   frostglass_sword: {
     id: "frostglass_sword",
     name: "Frostglass Sword",
-    description: "A blade forged from frostglas, radiating cold power",
+    description: "Blade forged from frostglas, radiating cold power",
     bonuses: {
       generalBonuses: {
         strength: 30,
@@ -427,10 +427,25 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
+
+  bloodstone_staff: {
+    id: "bloodstone_staff",
+    name: "Bloodstone Staff",
+    description: "Staff crowned with bloodstone, pulsing with dark energy",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+        knowledge: 25,
+      },
+      actionBonuses: {},
+    },
+  },
+  
   arbalest: {
-    id: 'arbalest',
-    name: 'Arbalest',
-    description: 'A meticulously decorated arbalest designed by a great engineer',
+    id: "arbalest",
+    name: "Arbalest",
+    description:
+      "Meticulously decorated arbalest designed by a great engineer",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -442,10 +457,11 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+  
   nightshade_bow: {
-    id: 'nightshade_bow',
-    name: 'Nightshade Bow',
-    description: 'A bow made of very dark wood, poisoning the enemy',
+    id: "nightshade_bow",
+    name: "Nightshade Bow",
+    description: "Bow made of very dark wood, poisoning the enemy",
     bonuses: {
       generalBonuses: {
         strength: 7,
@@ -453,20 +469,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
-  // New weapon: Bloodstone Staff
-  bloodstone_staff: {
-    id: "bloodstone_staff",
-    name: "Bloodstone Staff",
-    description: "A staff crowned with bloodstone, pulsing with dark energy.",
-    bonuses: {
-      generalBonuses: {
-        strength: 5,
-        knowledge: 10,
-        madness: 3,
-      },
-      actionBonuses: {},
-    },
-  },
+
+
 };
 
 // Relic effects
@@ -475,25 +479,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "frostfang",
     name: "Frostfang",
     description:
-      "A sword forged from frostglas, cold as the void between stars.",
+      "Sword forged from frostglas, cold as the void between stars.",
     bonuses: {
       generalBonuses: {
         strength: 8,
         knowledge: 2,
-      },
-      actionBonuses: {},
-    },
-  },
-
-  blood_scepter: {
-    id: "blood_scepter",
-    name: "Blood Scepter",
-    description: "A staff crowned with bloodstone, pulsing with dark energy.",
-    bonuses: {
-      generalBonuses: {
-        strength: 5,
-        knowledge: 7,
-        madness: 3,
       },
       actionBonuses: {},
     },
@@ -1120,15 +1110,21 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
         !LANTERN_HIERARCHY.includes(toolId)
       ) {
         // Hide reinforced rope after descending further
-        if (toolId === 'reinforced_rope' && state.story.seen?.actionDescendFurther) {
+        if (
+          toolId === "reinforced_rope" &&
+          state.story.seen?.actionDescendFurther
+        ) {
           return;
         }
         // Hide giant trap after laying trap
-        if (toolId === 'giant_trap' && state.story.seen?.actionLayTrap) {
+        if (toolId === "giant_trap" && state.story.seen?.actionLayTrap) {
           return;
         }
         // Hide occultist map after exploring occultist chamber
-        if (toolId === 'occultist_map' && state.story.seen?.actionOccultistChamber) {
+        if (
+          toolId === "occultist_map" &&
+          state.story.seen?.actionOccultistChamber
+        ) {
           return;
         }
         displayTools[toolId] = true;
@@ -1313,7 +1309,6 @@ export const getTotalStrength = (state: GameState): number => {
   if (state.weapons.frostglass_sword) strength += 8;
   if (state.weapons.bloodstone_staff) strength += 5;
 
-
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.strength) {
       strength += effect.bonuses.generalBonuses.strength;
@@ -1334,7 +1329,6 @@ export const getTotalKnowledge = (state: GameState): number => {
 
   // Weapons
   if (state.weapons.bloodstone_staff) knowledge += 10;
-
 
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.knowledge) {
