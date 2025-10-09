@@ -913,7 +913,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.wizardTower": 1,
-        "story.seen.hasWizardTower": true,
       },
     },
     cooldown: 120,

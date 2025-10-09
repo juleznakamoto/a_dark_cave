@@ -33,7 +33,6 @@ export async function saveGame(gameState: GameState): Promise<void> {
     const saveData: SaveData = {
       gameState: gameState,
       timestamp: Date.now(),
-      playTime: 0, // Could be tracked in the future
     };
     
     await db.put('saves', saveData, SAVE_KEY);
