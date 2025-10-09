@@ -150,6 +150,13 @@ export default function EventDialog({
             }
           });
         }
+        if (result.schematics) {
+          Object.entries(result.schematics).forEach(([schematic, value]) => {
+            if (value) {
+              gameState.schematics[schematic as keyof typeof gameState.schematics] = true;
+            }
+          });
+        }
 
         // Add log message if present
         if (result._logMessage) {
