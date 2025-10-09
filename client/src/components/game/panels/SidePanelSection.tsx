@@ -55,8 +55,10 @@ export default function SidePanelSection({
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
     Set<string>
   >(new Set());
+  const [tooltipPulseItems, setTooltipPulseItems] = useState<Set<string>>(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
+  const gameState = useGameStore((state) => state);
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
@@ -89,6 +91,11 @@ export default function SidePanelSection({
               timestamp: Date.now(),
             };
             onResourceChange(newChange);
+          }
+
+          // For stone axe specifically, add tooltip pulse until user hovers
+          if (item.id === 'stone_axe' && prevValue === 0 && currentValue > 0 && !gameState.flags.tooltipShownStoneAxe) {
+            setTooltipPulseItems((prev) => new Set([...prev, item.id]));
           }
 
           // Remove animation after 2 seconds
@@ -141,7 +148,7 @@ export default function SidePanelSection({
         (prev) => new Set([...prev, ...newDecreaseAnimatedItems]),
       );
     }
-  }, [visibleItems, onResourceChange]); // Simplified dependencies
+  }, [visibleItems, onResourceChange, gameState.flags.tooltipShownStoneAxe]); // Simplified dependencies
 
   if (visibleItems.length === 0) {
     return null;
@@ -161,6 +168,7 @@ export default function SidePanelSection({
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
+    const isPulsingTooltip = tooltipPulseItems.has(item.id);
     const displayValue = formatValue(item.value);
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
@@ -219,7 +227,6 @@ export default function SidePanelSection({
     };
 
     // Check if the item is 'madness' and if there's any madness from events to display
-    const gameState = useGameStore.getState();
     const eventMadness =
       item.id === "madness" ? gameState.stats.madnessFromEvents || 0 : 0;
     const isMadnessTooltip = item.id === "madness" && eventMadness > 0;
@@ -237,6 +244,20 @@ export default function SidePanelSection({
               ? "text-red-400"
               : ""
         }`}
+        onMouseEnter={() => {
+          // If it's the stone axe and it's pulsing, stop pulsing and mark tooltip as shown
+          if (item.id === 'stone_axe' && isPulsingTooltip) {
+            setTooltipPulseItems((prev) => {
+              const newSet = new Set(prev);
+              newSet.delete(item.id);
+              return newSet;
+            });
+            // Update game state to indicate tooltip has been shown
+            useGameStore.setState((state) => ({
+              flags: { ...state.flags, tooltipShownStoneAxe: true },
+            }));
+          }
+        }}
       >
         <span className="text-xs text-gray-400 flex items-center gap-1">
           {item.icon !== undefined && (
@@ -292,7 +313,11 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div className={cn(isPulsingTooltip && "animate-pulse")}>
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-pre-line">
                 {hasTooltip && (title === "Fortifications" || title === "Buildings") ? (
@@ -424,7 +449,11 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div className={cn(isPulsingTooltip && "animate-pulse")}>
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">
                 +{eventMadness} Madness from Events
@@ -440,7 +469,11 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div className={cn(isPulsingTooltip && "animate-pulse")}>
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">{item.tooltip}</p>
             </TooltipContent>
@@ -450,7 +483,11 @@ export default function SidePanelSection({
     }
 
     // For non-relic items without tooltips, return the content directly
-    return <div key={item.id}>{itemContent}</div>;
+    return (
+      <div key={item.id} className={cn(isPulsingTooltip && "animate-pulse")}>
+        {itemContent}
+      </div>
+    );
   };
 
   return (
