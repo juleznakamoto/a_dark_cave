@@ -235,7 +235,6 @@ export default function SidePanelSection({
     };
 
     // Check if the item is 'madness' and if there's any madness from events to display
-    const gameState = useGameStore.getState();
     const eventMadness =
       item.id === "madness" ? gameState.stats.madnessFromEvents || 0 : 0;
     const isMadnessTooltip = item.id === "madness" && eventMadness > 0;
