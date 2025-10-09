@@ -6,14 +6,16 @@ import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "./effects";
-import { caveExploreActions, handleBlastPortal, handleEncounterBeyondPortal } from "./caveExploreActions";
+import {
+  caveExploreActions,
+  handleBlastPortal,
+  handleEncounterBeyondPortal,
+} from "./caveExploreActions";
 import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMiningActions } from "./caveMineActions";
-import {
-  villageBuildActions,
-} from "./villageBuildActions";
+import { villageBuildActions } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
@@ -39,35 +41,34 @@ export const gameActions: Record<string, Action> = {
 // Utility function to get the next building level
 const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   const buildingMap: Record<string, keyof GameState["buildings"]> = {
-      buildWoodenHut: "woodenHut",
-      buildShallowPit: "shallowPit",
-      buildDeepeningPit: "deepeningPit",
-      buildDeepPit: "deepPit",
-      buildBottomlessPit: "bottomlessPit",
-      buildCabin: "cabin",
-      buildBlacksmith: "blacksmith",
-      buildFoundry: "foundry",
-      buildAltar: "altar",
-      buildGreatCabin: "greatCabin",
-      buildTimberMill: "timberMill",
-      buildQuarry: "quarry",
-      buildTannery: "tannery",
-      buildShrine: "shrine",
-      buildTemple: "temple",
-      buildSanctum: "sanctum",
-      buildStoneHut: "stoneHut",
-      buildAlchemistTower: "alchemistHall",
-      buildTradePost: "tradePost",
-      buildWizardTower: "wizardTower",
-      buildLonghouse: "longhouse",
-      buildGrandBlacksmith: "grandBlacksmith",
-      buildWatchtower: "watchtower",
-      buildPalisades: "palisades",
-    };
-
-    const buildingKey = buildingMap[actionId];
-    return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
+    buildWoodenHut: "woodenHut",
+    buildShallowPit: "shallowPit",
+    buildDeepeningPit: "deepeningPit",
+    buildDeepPit: "deepPit",
+    buildBottomlessPit: "bottomlessPit",
+    buildCabin: "cabin",
+    buildBlacksmith: "blacksmith",
+    buildFoundry: "foundry",
+    buildAltar: "altar",
+    buildGreatCabin: "greatCabin",
+    buildTimberMill: "timberMill",
+    buildQuarry: "quarry",
+    buildTannery: "tannery",
+    buildShrine: "shrine",
+    buildTemple: "temple",
+    buildSanctum: "sanctum",
+    buildStoneHut: "stoneHut",
+    buildAlchemistTower: "alchemistHall",
+    buildTradePost: "tradePost",
+    buildWizardTower: "wizardTower",
+    buildLonghouse: "longhouse",
+    buildGrandBlacksmith: "grandBlacksmith",
+    buildWatchtower: "watchtower",
+    buildPalisades: "palisades",
   };
+
+  const buildingKey = buildingMap[actionId];
+  return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
 };
 
 // Helper function to check requirements for both building and non-building actions
@@ -140,7 +141,8 @@ function getAdjustedCost(
   if (!isResourceCost) return cost;
 
   const action = gameActions[actionId];
-  const isCraftingAction = actionId.startsWith("craft") || actionId.startsWith("forge");
+  const isCraftingAction =
+    actionId.startsWith("craft") || actionId.startsWith("forge");
   const isBuildingAction = action?.building || false;
 
   if (isCraftingAction) {
@@ -195,10 +197,17 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
 
     // For resource costs, check if we have enough (>=)
     if (path.startsWith("resources.")) {
-      const adjustedCost = getAdjustedCost(actionId, requiredAmount, true, state);
+      const adjustedCost = getAdjustedCost(
+        actionId,
+        requiredAmount,
+        true,
+        state,
+      );
       if ((current || 0) < adjustedCost) {
         if (actionId === "buildStoneHut") {
-          console.log(`[canExecuteAction] buildStoneHut blocked - ${path}: has ${current || 0}, needs ${adjustedCost}`);
+          console.log(
+            `[canExecuteAction] buildStoneHut blocked - ${path}: has ${current || 0}, needs ${adjustedCost}`,
+          );
         }
         return false;
       }
@@ -206,7 +215,9 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
       // For other requirements, use exact equality check
       if (current !== requiredAmount) {
         if (actionId === "buildStoneHut") {
-          console.log(`[canExecuteAction] buildStoneHut blocked - ${path}: has ${current}, needs ${requiredAmount} (exact match required)`);
+          console.log(
+            `[canExecuteAction] buildStoneHut blocked - ${path}: has ${current}, needs ${requiredAmount} (exact match required)`,
+          );
         }
         return false;
       }
@@ -285,15 +296,19 @@ export const applyActionEffects = (
           const finalKey = pathParts[pathParts.length - 1];
 
           // Apply cost reductions using single source of truth
-          const adjustedCost = getAdjustedCost(actionId, cost, path.startsWith("resources."), state);
+          const adjustedCost = getAdjustedCost(
+            actionId,
+            cost,
+            path.startsWith("resources."),
+            state,
+          );
 
           // Handle bone totem cost specifically
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
             current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
           } else {
-            current[finalKey] =
-              (current[finalKey] || 0) - adjustedCost;
+            current[finalKey] = (current[finalKey] || 0) - adjustedCost;
           }
         }
       });
@@ -585,7 +600,12 @@ export function getActionCostDisplay(
     .map(([resource, amount]) => {
       // Apply cost reductions using single source of truth
       const adjustedAmount = state
-        ? getAdjustedCost(actionId, amount, resource.startsWith("resources."), state)
+        ? getAdjustedCost(
+            actionId,
+            amount,
+            resource.startsWith("resources."),
+            state,
+          )
         : amount;
 
       // Extract the clean resource name from paths like "resources.wood"
@@ -613,10 +633,12 @@ export function getActionCostBreakdown(
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
     const currentAmount = state.resources.bone_totem || 0;
-    return [{
-      text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
-      satisfied: currentAmount >= dynamicCost
-    }];
+    return [
+      {
+        text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
+        satisfied: currentAmount >= dynamicCost,
+      },
+    ];
   }
 
   const action = gameActions[actionId];
@@ -634,7 +656,12 @@ export function getActionCostBreakdown(
 
   return Object.entries(costs).map(([resource, amount]) => {
     // Apply cost reductions using single source of truth
-    const adjustedAmount = getAdjustedCost(actionId, amount, resource.startsWith("resources."), state);
+    const adjustedAmount = getAdjustedCost(
+      actionId,
+      amount,
+      resource.startsWith("resources."),
+      state,
+    );
 
     // Extract the clean resource name from paths like "resources.wood"
     const resourceName = resource.includes(".")
@@ -657,7 +684,7 @@ export function getActionCostBreakdown(
 
     return {
       text: `-${adjustedAmount} ${formattedName}`,
-      satisfied
+      satisfied,
     };
   });
 }
