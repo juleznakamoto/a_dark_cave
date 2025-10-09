@@ -10,10 +10,10 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import { calculateTotalEffects } from '@/game/rules/effects';
-import { calculateBastionStats } from '@/game/bastionStats';
-import { getMaxPopulation } from '@/game/population';
-import { audioManager } from '@/lib/audio';
+import { calculateTotalEffects } from "@/game/rules/effects";
+import { calculateBastionStats } from "@/game/bastionStats";
+import { getMaxPopulation } from "@/game/population";
+import { audioManager } from "@/lib/audio";
 
 // Types
 interface GameStore extends GameState {
@@ -52,7 +52,10 @@ interface GameStore extends GameState {
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
-  updateResource: (resource: keyof GameState["resources"], amount: number) => void;
+  updateResource: (
+    resource: keyof GameState["resources"],
+    amount: number,
+  ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
@@ -65,8 +68,8 @@ interface GameStore extends GameState {
   addLogEntry: (entry: LogEntry) => void;
   checkEvents: () => void;
   applyEventChoice: (choiceId: string, eventId: string) => void;
-  assignVillager: (job: keyof GameState['villagers']) => void;
-  unassignVillager: (job: keyof GameState['villagers']) => void;
+  assignVillager: (job: keyof GameState["villagers"]) => void;
+  unassignVillager: (job: keyof GameState["villagers"]) => void;
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   updateEffects: () => void;
@@ -77,13 +80,13 @@ interface GameStore extends GameState {
 // Helper functions
 const mergeStateUpdates = (
   prevState: GameState,
-  stateUpdates: Partial<GameState>
+  stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  console.log('[mergeStateUpdates] Input:', {
+  console.log("[mergeStateUpdates] Input:", {
     prevStateResources: prevState.resources,
     prevStateBuildings: prevState.buildings,
     stateUpdatesResources: stateUpdates.resources,
-    stateUpdatesBuildings: stateUpdates.buildings
+    stateUpdatesBuildings: stateUpdates.buildings,
   });
 
   const merged = {
@@ -96,20 +99,27 @@ const mergeStateUpdates = (
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
-    story: stateUpdates.story ? {
-      ...prevState.story,
-      seen: { ...prevState.story.seen, ...stateUpdates.story.seen }
-    } : prevState.story,
+    story: stateUpdates.story
+      ? {
+          ...prevState.story,
+          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+        }
+      : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
   };
 
-  console.log('[mergeStateUpdates] Merged result:', {
+  console.log("[mergeStateUpdates] Merged result:", {
     mergedResources: merged.resources,
-    mergedBuildings: merged.buildings
+    mergedBuildings: merged.buildings,
   });
 
   // Calculate and update effects when items change
-  if (stateUpdates.tools || stateUpdates.weapons || stateUpdates.clothing || stateUpdates.relics) {
+  if (
+    stateUpdates.tools ||
+    stateUpdates.weapons ||
+    stateUpdates.clothing ||
+    stateUpdates.relics
+  ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
   }
@@ -118,7 +128,7 @@ const mergeStateUpdates = (
 };
 
 const extractDefaultsFromSchema = (schema: any): any => {
-  if (schema._def?.typeName === 'ZodObject') {
+  if (schema._def?.typeName === "ZodObject") {
     const result: any = {};
     const shape = schema._def.shape();
 
@@ -128,23 +138,26 @@ const extractDefaultsFromSchema = (schema: any): any => {
     return result;
   }
 
-  if (schema._def?.typeName === 'ZodDefault') {
+  if (schema._def?.typeName === "ZodDefault") {
     const defaultValue = schema._def.defaultValue();
     const innerSchema = schema._def.innerType;
 
-    if (typeof defaultValue === 'object' && defaultValue !== null &&
-        Object.keys(defaultValue).length === 0 &&
-        innerSchema._def?.typeName === 'ZodObject') {
+    if (
+      typeof defaultValue === "object" &&
+      defaultValue !== null &&
+      Object.keys(defaultValue).length === 0 &&
+      innerSchema._def?.typeName === "ZodObject"
+    ) {
       return extractDefaultsFromSchema(innerSchema);
     }
     return defaultValue;
   }
 
-  if (schema._def?.typeName === 'ZodNumber') return 0;
-  if (schema._def?.typeName === 'ZodBoolean') return false;
-  if (schema._def?.typeName === 'ZodString') return '';
-  if (schema._def?.typeName === 'ZodArray') return [];
-  if (schema._def?.typeName === 'ZodRecord') return {};
+  if (schema._def?.typeName === "ZodNumber") return 0;
+  if (schema._def?.typeName === "ZodBoolean") return false;
+  if (schema._def?.typeName === "ZodString") return "";
+  if (schema._def?.typeName === "ZodArray") return [];
+  if (schema._def?.typeName === "ZodRecord") return {};
 
   return undefined;
 };
@@ -165,7 +178,7 @@ const defaultGameState: GameState = {
     defense: 0,
     attack: 0,
     integrity: 0,
-  }
+  },
 };
 
 // State management utilities
@@ -187,12 +200,7 @@ class StateManager {
     setTimeout(() => store().updatePopulation(), 0);
   }
 
-  static handleDelayedEffects(
-    delayedEffects: Array<() => void> | undefined,
-    actionId: string,
-    state: GameState,
-    store: () => GameStore
-  ) {
+  static handleDelayedEffects(delayedEffects: Array<() => void> | undefined) {
     if (!delayedEffects) return;
 
     delayedEffects.forEach((effect) => {
@@ -215,7 +223,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     lastHunterProduction: 0,
     lastConsumption: 0,
     currentTime: 0,
-    interval: 15000
+    interval: 15000,
   },
   eventDialog: {
     isOpen: false,
@@ -236,7 +244,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => updateResource(state, resource, amount));
 
     // If updating free villagers, update population counts immediately
-    if (resource === 'free' as any) {
+    if (resource === ("free" as any)) {
       setTimeout(() => get().updatePopulation(), 0);
     }
   },
@@ -264,16 +272,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const state = get();
     const action = gameActions[actionId];
 
-    if (actionId === 'buildStoneHut') {
-      console.log('[executeAction] buildStoneHut clicked:', {
+    if (actionId === "buildStoneHut") {
+      console.log("[executeAction] buildStoneHut clicked:", {
         currentStoneHuts: state.buildings.stoneHut,
         currentStone: state.resources.stone,
-        cooldown: state.cooldowns[actionId] || 0
+        cooldown: state.cooldowns[actionId] || 0,
       });
     }
 
     if (!action || (state.cooldowns[actionId] || 0) > 0) return;
-    if (!shouldShowAction(actionId, state) || !canExecuteAction(actionId, state)) return;
+    if (
+      !shouldShowAction(actionId, state) ||
+      !canExecuteAction(actionId, state)
+    )
+      return;
 
     const result = executeGameAction(actionId, state);
 
@@ -290,29 +302,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
       console.log(`[STATE] Action: ${actionId}`, {
         stateUpdates: result.stateUpdates,
         logEntries: result.logEntries,
-        delayedEffects: result.delayedEffects
+        delayedEffects: result.delayedEffects,
       });
     }
 
     // Apply state updates
     set((prevState) => {
-      if (actionId === 'buildStoneHut') {
-        console.log('[executeAction] Before merge:', {
+      if (actionId === "buildStoneHut") {
+        console.log("[executeAction] Before merge:", {
           prevStateStoneHuts: prevState.buildings.stoneHut,
           prevStateStone: prevState.resources.stone,
           resultStateUpdates: result.stateUpdates,
           resultStateUpdatesBuildings: result.stateUpdates.buildings,
-          resultStateUpdatesResources: result.stateUpdates.resources
+          resultStateUpdatesResources: result.stateUpdates.resources,
         });
       }
 
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
 
-      if (actionId === 'buildStoneHut') {
-        console.log('[executeAction] After mergeStateUpdates:', {
+      if (actionId === "buildStoneHut") {
+        console.log("[executeAction] After mergeStateUpdates:", {
           mergedUpdates,
           mergedBuildings: mergedUpdates.buildings,
-          mergedResources: mergedUpdates.resources
+          mergedResources: mergedUpdates.resources,
         });
       }
 
@@ -324,12 +336,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
           : prevState.log,
       };
 
-      if (actionId === 'buildStoneHut') {
-        console.log('[executeAction] Final newState:', {
+      if (actionId === "buildStoneHut") {
+        console.log("[executeAction] Final newState:", {
           stoneHuts: newState.buildings.stoneHut,
           stone: newState.resources.stone,
           buildings: newState.buildings,
-          mergedUpdates
+          mergedUpdates,
         });
       }
 
@@ -337,24 +349,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
 
     // Schedule updates
-    if (result.stateUpdates.tools || result.stateUpdates.weapons || 
-        result.stateUpdates.clothing || result.stateUpdates.relics) {
+    if (
+      result.stateUpdates.tools ||
+      result.stateUpdates.weapons ||
+      result.stateUpdates.clothing ||
+      result.stateUpdates.relics
+    ) {
       StateManager.scheduleEffectsUpdate(get);
     }
 
     // Update bastion stats when fortification buildings change
     if (result.stateUpdates.buildings) {
       const buildingChanges = result.stateUpdates.buildings;
-      if (buildingChanges.bastion !== undefined || 
-          buildingChanges.watchtower !== undefined || 
-          buildingChanges.palisades !== undefined) {
+      if (
+        buildingChanges.bastion !== undefined ||
+        buildingChanges.watchtower !== undefined ||
+        buildingChanges.palisades !== undefined
+      ) {
         setTimeout(() => get().updateBastionStats(), 0);
       }
     }
 
     // Handle event dialogs
     if (result.logEntries) {
-      result.logEntries.forEach(entry => {
+      result.logEntries.forEach((entry) => {
         if (entry.choices && entry.choices.length > 0) {
           setTimeout(() => get().setEventDialog(true, entry), 100);
         }
@@ -362,7 +380,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Handle delayed effects
-    StateManager.handleDelayedEffects(result.delayedEffects, actionId, state, get);
+    StateManager.handleDelayedEffects(result.delayedEffects);
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -398,7 +416,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      message:
+        "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
@@ -438,7 +457,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+        message:
+          "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };
@@ -449,8 +469,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   addLogEntry: (entry: LogEntry) => {
-    if (entry.type === 'event') {
-      audioManager.playSound('event', 0.02);
+    if (entry.type === "event") {
+      audioManager.playSound("event", 0.02);
     }
 
     set((state) => ({
@@ -460,7 +480,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   checkEvents: () => {
     const state = get();
-    const { newLogEntries, stateChanges, triggeredEvents } = EventManager.checkEvents(state);
+    const { newLogEntries, stateChanges, triggeredEvents } =
+      EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
       let logMessage = null;
@@ -490,7 +511,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           id: `event-result-${Date.now()}`,
           message: logMessage,
           timestamp: Date.now(),
-          type: 'system'
+          type: "system",
         };
 
         set((prevState) => ({
@@ -503,13 +524,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             id: `log-message-${Date.now()}`,
             message: logMessage,
             timestamp: Date.now(),
-            type: 'event',
+            type: "event",
             title: newLogEntries[0]?.title, // Use the original event's title
-            choices: [{
-              id: 'acknowledge',
-              label: 'Continue',
-              effect: () => ({}),
-            }],
+            choices: [
+              {
+                id: "acknowledge",
+                label: "Continue",
+                effect: () => ({}),
+              },
+            ],
             skipSound: true, // Don't play sound for log messages
           };
           get().setEventDialog(true, messageEntry);
@@ -529,12 +552,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...prevState,
               ...victoryResult,
               log: victoryResult._logMessage
-                ? [...prevState.log, {
-                    id: `combat-victory-${Date.now()}`,
-                    message: victoryResult._logMessage,
-                    timestamp: Date.now(),
-                    type: 'system'
-                  }].slice(-10)
+                ? [
+                    ...prevState.log,
+                    {
+                      id: `combat-victory-${Date.now()}`,
+                      message: victoryResult._logMessage,
+                      timestamp: Date.now(),
+                      type: "system",
+                    },
+                  ].slice(-10)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -546,12 +572,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
               ...prevState,
               ...defeatResult,
               log: defeatResult._logMessage
-                ? [...prevState.log, {
-                    id: `combat-defeat-${Date.now()}`,
-                    message: defeatResult._logMessage,
-                    timestamp: Date.now(),
-                    type: 'system'
-                  }].slice(-10)
+                ? [
+                    ...prevState.log,
+                    {
+                      id: `combat-defeat-${Date.now()}`,
+                      message: defeatResult._logMessage,
+                      timestamp: Date.now(),
+                      type: "system",
+                    },
+                  ].slice(-10)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -559,12 +588,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       } else {
         // Handle normal event dialogs
-        newLogEntries.forEach(entry => {
+        newLogEntries.forEach((entry) => {
           if (entry.choices && entry.choices.length > 0) {
             const currentDialog = get().eventDialog;
-            const isMerchantEvent = entry.id.includes('merchant');
-            const hasActiveMerchantDialog = currentDialog.isOpen &&
-              currentDialog.currentEvent?.id.includes('merchant');
+            const isMerchantEvent = entry.id.includes("merchant");
+            const hasActiveMerchantDialog =
+              currentDialog.isOpen &&
+              currentDialog.currentEvent?.id.includes("merchant");
 
             if (!hasActiveMerchantDialog || !isMerchantEvent) {
               get().setEventDialog(true, entry);
@@ -577,16 +607,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       if (triggeredEvents && triggeredEvents.length > 0) {
         const madnessEventIds = [
-          'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
-          'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
-          'wrongReflections', 'villagersStareAtSky'
+          "whisperingVoices",
+          "shadowsMove",
+          "villagerStares",
+          "bloodInWater",
+          "facesInWalls",
+          "wrongVillagers",
+          "skinCrawling",
+          "creatureInHut",
+          "wrongReflections",
+          "villagersStareAtSky",
         ];
 
-        const hasMadnessEvent = triggeredEvents.some(event => 
-          madnessEventIds.includes(event.id.split('-')[0])
+        const hasMadnessEvent = triggeredEvents.some((event) =>
+          madnessEventIds.includes(event.id.split("-")[0]),
         );
 
-        audioManager.playSound(hasMadnessEvent ? 'eventMadness' : 'event', 0.02);
+        audioManager.playSound(
+          hasMadnessEvent ? "eventMadness" : "event",
+          0.02,
+        );
       }
     }
   },
@@ -594,7 +634,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
     const currentLogEntry = get().eventDialog.currentEvent;
-    const changes = EventManager.applyEventChoice(state, choiceId, eventId, currentLogEntry || undefined);
+    const changes = EventManager.applyEventChoice(
+      state,
+      choiceId,
+      eventId,
+      currentLogEntry || undefined,
+    );
 
     let combatData = null;
     const updatedChanges = { ...changes };
@@ -629,7 +674,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         id: `choice-result-${Date.now()}`,
         message: logMessage,
         timestamp: Date.now(),
-        type: 'system'
+        type: "system",
       };
 
       set((prevState) => ({
@@ -642,13 +687,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
           id: `log-message-${Date.now()}`,
           message: logMessage,
           timestamp: Date.now(),
-          type: 'event',
+          type: "event",
           title: currentLogEntry?.title, // Use the original event's title
-          choices: [{
-            id: 'acknowledge',
-            label: 'Continue',
-            effect: () => ({}),
-          }],
+          choices: [
+            {
+              id: "acknowledge",
+              label: "Continue",
+              effect: () => ({}),
+            },
+          ],
           skipSound: true, // Don't play sound for log messages
         };
         get().setEventDialog(true, messageEntry);
@@ -669,12 +716,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...prevState,
             ...victoryResult,
             log: victoryResult._logMessage
-              ? [...prevState.log, {
-                  id: `combat-victory-${Date.now()}`,
-                  message: victoryResult._logMessage,
-                  timestamp: Date.now(),
-                  type: 'system'
-                }].slice(-10)
+              ? [
+                  ...prevState.log,
+                  {
+                    id: `combat-victory-${Date.now()}`,
+                    message: victoryResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-10)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -685,12 +735,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...prevState,
             ...defeatResult,
             log: defeatResult._logMessage
-              ? [...prevState.log, {
-                  id: `combat-defeat-${Date.now()}`,
-                  message: defeatResult._logMessage,
-                  timestamp: Date.now(),
-                  type: 'system'
-                }].slice(-10)
+              ? [
+                  ...prevState.log,
+                  {
+                    id: `combat-defeat-${Date.now()}`,
+                    message: defeatResult._logMessage,
+                    timestamp: Date.now(),
+                    type: "system",
+                  },
+                ].slice(-10)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -706,7 +759,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Dev mode is controlled by NODE_ENV - no-op in production
   },
 
-  assignVillager: (job: keyof GameState['villagers']) => {
+  assignVillager: (job: keyof GameState["villagers"]) => {
     if (import.meta.env.DEV) {
       console.log(`[STATE] Assign Villager to: ${job}`);
     }
@@ -720,7 +773,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  unassignVillager: (job: keyof GameState['villagers']) => {
+  unassignVillager: (job: keyof GameState["villagers"]) => {
     if (import.meta.env.DEV) {
       console.log(`[STATE] Unassign Villager from: ${job}`);
     }
@@ -742,14 +795,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updatePopulation: () => {
     set((state) => {
       const updates = updatePopulationCounts(state);
-      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+      const currentPopulation = Object.values(state.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
       const maxPopulation = getMaxPopulation(state);
 
-      return { 
-        ...state, 
+      return {
+        ...state,
         ...updates,
         current_population: currentPopulation,
-        total_population: maxPopulation
+        total_population: maxPopulation,
       };
     });
   },
@@ -764,15 +820,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
 
     if (isOpen && currentEvent && !currentEvent.skipSound) {
-      const eventId = currentEvent.id.split('-')[0];
+      const eventId = currentEvent.id.split("-")[0];
       const madnessEventIds = [
-        'whisperingVoices', 'shadowsMove', 'villagerStares', 'bloodInWater',
-        'facesInWalls', 'wrongVillagers', 'skinCrawling', 'creatureInHut',
-        'wrongReflections', 'villagersStareAtSky'
+        "whisperingVoices",
+        "shadowsMove",
+        "villagerStares",
+        "bloodInWater",
+        "facesInWalls",
+        "wrongVillagers",
+        "skinCrawling",
+        "creatureInHut",
+        "wrongReflections",
+        "villagersStareAtSky",
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? 'eventMadness' : 'event', 0.02);
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
     }
   },
 
