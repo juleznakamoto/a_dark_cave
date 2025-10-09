@@ -1,0 +1,663 @@
+
+JB
+
+julianbauer063
+Assistant
+just now
+
+Scroll to latest
+Assistant mode
+
+advanced
+Claude 4.5 Sonnet
+
+Ask Assistant, use @ to include specific files...
+/
+
+164m
+ • 
+3 hours ago
+Gather
+Gather
+e.g. **.js, src/**, app/
+97 results in 21 files
+182
+gatherGatherer: z.number().min(0).default(0),
+11
+f an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and unc
+52
+f an ancient cave and build your way to survival. Gather resources, craft tools, manage villagers, and unc
+82
+ilding game set in the depths of an ancient cave. Gather resources, craft tools, manage villagers, and unc
+146
+"gatherGatherer": 0,
+301
+    "gatherGatherWood": 3.5999999999999996,
+315
+    "gatherGatherWood": 1.5,
+392
+"gatherGatherWood": 0
+395
+"lastGathererProduction": 15054.7,
+4
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWoGatherod
+3
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWoGatherod
+8
+state.ts:243 [STATE] Action: gatherGatherWood {stateUpdates: {…}, logEntries: Array(0), del
+9
+state.ts:261 [STATE] New state after gatherGatherWood: {resources: {…}, stats: {…}, flags: {…}, too
+25
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWoGatherod
+30
+state.ts:243 [STATE] Action: gatherGatherWood {stateUpdates: {…}, logEntries: Array(0), del
+31
+state.ts:261 [STATE] New state after gatherGatherWood: {resources: {…}, stats: {…}, flags: {…}, too
+34
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWoGatherod
+3
+index.ts:516 🎯 BONUS SYSTEM - Action: gatherWoGatherod
+7
+handleGatherWood,
+153
+  case 'gatherGatherWood':
+154
+    return handleGatherWood(state, result);
+12
+const GATHERGatherER_PRODUCTION_INTERVAL = 15000; // gatherGatherer produce wood every 15 seconds
+20
+let lastGathererProduction = 0;
+69
+          lastGathererProduction,
+73
+          interval: GATHERGatherER_PRODUCTION_INTERVAL,
+86
+      // Gatherer production logic
+87
+      if (timestamp - lastGathererProduction >= GATHERGatherER_PRODUCTION_INTERVAL) {
+88
+        lastGathererProduction = timestamp;
+89
+        handleGathererProduction();
+160
+function handleGathererProduction() {
+163
+  // Pause gatherGatherer production when event dialog or combat dialog i
+166
+  const gatherGatherer = state.villagers.gatherGatherer;
+168
+  if (gatherGatherer > 0) {
+170
+    const production = getPopulationProduction("gatherGatherer", gatherGatherer, state);
+22
+lastGathererProduction: number;
+244
+lastGathererProduction: 0,
+Production
+Status
+Julian published about 3 hours ago
+Visibility
+Public
+Domain
+https://a-dark-cave.replit.app
+https://a-dark-cave.com
+Type
+Autoscale
+(1 vCPU / 1 GiB RAM / 2 Max)
+See all usage
+6c04d75e
+JB
+
+julianbauer063
+Julian
+published about 3 hours ago
+0e83a0cd
+JB
+
+julianbauer063
+Julian
+published about 3 hours ago
+c04b3041
+JB
+
+julianbauer063
+Julian
+published about 18 hours ago
+acf5c9cf
+JB
+
+julianbauer063
+Julian
+published about 18 hours ago
+174f4fd0
+JB
+
+julianbauer063
+Julian
+published about 18 hours ago
+9bf74f09
+JB
+
+julianbauer063
+Julian
+published about 18 hours ago
+8fcb60cf
+JB
+
+julianbauer063
+Julian
+published about 18 hours ago
+defb50b5
+JB
+
+julianbauer063
+Julian
+published about 19 hours ago
+b4024195
+JB
+
+julianbauer063
+Julian
+published about 22 hours ago
+7d7e5aa2
+JB
+
+julianbauer063
+Julian
+published 1 day ago
+344b10d5
+JB
+
+julianbauer063
+Julian
+published 7 days ago
+            const deaths =
+              2 + Math.floor(Math.random() * state.buildings.woodenHut);
+            return {
+              ...killVillagers(state, deaths),
+              _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
+            };
+          }
+        },
+      },
+      {
+        id: "ignore",
+        label: "Ignore it",
+        effect: (state: GameState) => {
+          const rand = Math.random();
+          if (rand < 0.6) {
+            // Nothing happens
+            return {
+              _logMessage:
+                "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
+            };
+          } else {
+            // 1 man found dead
+            return {
+              ...killVillagers(state, 1),
+              _logMessage:
+                "At dawn, one of the men who claimed to have seen the figure is found dead in his bed, his face frozen in terror.",
+            };
+          }
+        },
+      },
+    ],
+  },
+
+  whispersBeneathHut: {
+    id: "whispersBeneathHut",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 4 && !state.relics.whispering_amulet,
+    triggerType: "resource",
+    timeProbability: 25,
+    title: "Whispers Beneath the Hut",
+    message:
+      "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "investigateHut",
+        label: "Investigate",
+        effect: (state: GameState) => {
+          return {
+            relics: {
+              ...state.relics,
+              whispering_amulet: true,
+            },
+            _logMessage:
+              "You lift the floorboards and find a strange amulet, faintly whispering. Its purpose is unclear...",
+          };
+        },
+      },
+      {
+        id: "ignoreHut",
+        label: "Ignore",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You choose to leave the hut alone. The whispers fade by morning, but a chill remains in the air.",
+          };
+        },
+      },
+    ],
+  },
+
+  blackenedMirror: {
+    id: "blackenedMirror",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 5 &&
+      state.resources.iron >= 500 &&
+      !state.relics.blackened_mirror,
+    triggerType: "resource",
+    timeProbability: 35,
+    title: "The Blackened Mirror",
+    message:
+  cthulhuFigure: {
+import { Action, GameState } from "@shared/schema";
+import { ActionResult } from '@/game/actions';
+import { applyActionEffects } from '@/game/rules';
+
+export const caveMiningActions: Record<string, Action> = {
+  mineStone: {
+    id: "mineStone",
+    label: "Mine Stone",
+    show_when: {
+      "tools.stone_pickaxe": true,
+    },
+    cost: {
+      "resources.food": 5,
+      "resources.torch": 1,
+    },
+    effects: {
+      "resources.stone": "random(4,8)",
+      "story.seen.hasMinedStone": true,
+    },
+    cooldown: 15,
+  },
+
+  mineIron: {
+    id: "mineIron",
+    label: "Mine Iron",
+    show_when: {
+      "tools.stone_pickaxe": true,
+      "state.buildings.blacksmith": 1
+    },
+    cost: {
+      "resources.food": 5,
+      "resources.torch": 1,
+    },
+    effects: {
+      "resources.iron": "random(4,8)",
+      "story.seen.hasIron": true,
+    },
+    cooldown: 15,
+  },
+
+  mineCoal: {
+    id: "mineCoal",
+    label: "Mine Coal",
+    show_when: {
+      "tools.iron_pickaxe": true,
+    },
+    cost: {
+      "resources.food": 5,
+      "resources.torch": 1,
+    },
+    effects: {
+      "resources.coal": "random(4,8)",
+      "story.seen.hasCoal": true,
+    },
+    cooldown: 15,
+  },
+
+  mineSulfur: {
+    id: "mineSulfur",
+    label: "Mine Sulfur",
+    show_when: {
+      "tools.steel_pickaxe": true,
+      "buildings.foundry": 1,
+    },
+    cost: {
+      "resources.food": 15,
+      "resources.torch": 2,
+    },
+    effects: {
+      "resources.sulfur": "random(4,8)",
+      "story.seen.hasSulfur": true,
+    },
+    cooldown: 15,
+  },
+
+  mineObsidian: {
+    id: "mineObsidian",
+    label: "Mine Obsidian",
+    show_when: {
+      "tools.steel_pickaxe": true,
+    },
+    cost: {
+      "resources.food": 30,
+      "resources.torch": 3,
+    },
+    effects: {
+      "resources.obsidian": "random(4,8)",
+      "story.seen.hasObsidian": true,
+    },
+    cooldown: 20,
+  },
+
+  mineAdamant: {
+    id: "mineAdamant",
+    label: "Mine Adamant",
+    show_when: {
+      "tools.obsidian_pickaxe": true,
+    },
+    cost: {
+      "resources.food": 50,
+      "resources.torch": 10,
+    },
+    effects: {
+      "resources.adamant": "random(4,8)",
+      "story.seen.hasAdamant": true,
+    },
+    cooldown: 25,
+  },
+};
+
+// Action handlers
+export function handleMineStone(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('mineStone', state);
+
+  // Handle any log messages from probability effects
+  if (effectUpdates.logMessages) {
+    effectUpdates.logMessages.forEach((message: string) => {
+      result.logEntries!.push({
+        id: `probability-effect-${Date.now()}-${Math.random()}`,
+        message: message,
+        timestamp: Date.now(),
+        type: 'system',
+      });
+    });
+    // Remove logMessages from state updates as it's not part of the game state
+    delete effectUpdates.logMessages;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+import { Action, GameState } from "@shared/schema";
+import { ActionResult } from '@/game/actions';
+import { gameActions, applyActionEffects } from '@/game/rules';
+
+export const caveCraftWeapons: Record<string, Action> = {
+  craftIronSword: {
+    id: "craftIronSword",
+    label: "Iron Sword",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "weapons.iron_sword": false,
+    },
+    cost: {
+      "resources.iron": 100,
+    },
+    effects: {
+      "weapons.iron_sword": true,
+    },
+    cooldown: 15,
+  },
+
+  craftSteelSword: {
+    id: "craftSteelSword",
+    label: "Steel Sword",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "weapons.iron_sword": true,
+      "weapons.crude_bow": true,
+      "weapons.huntsman_bow": true,
+      "weapons.steel_sword": false,
+      "story.seen.hasSteel": true,
+    },
+    cost: {
+      "resources.steel": 150,
+    },
+    effects: {
+      "weapons.steel_sword": true,
+    },
+    cooldown: 20,
+  },
+
+  craftObsidianSword: {
+    id: "craftObsidianSword",
+    label: "Obsidian Sword",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "weapons.steel_sword": true,
+      "weapons.long_bow": true,
+      "weapons.obsidian_sword": false,
+    },
+    cost: {
+      "resources.obsidian": 200,
+    },
+    effects: {
+      "weapons.obsidian_sword": true,
+    },
+    cooldown: 25,
+  },
+
+  craftAdamantSword: {
+    id: "craftAdamantSword",
+    label: "Adamant Sword",
+    show_when: {
+      "buildings.blacksmith": 1,
+      "weapons.obsidian_sword": true,
+      "weapons.war_bow": true,
+      "weapons.adamant_sword": false,
+    },
+    cost: {
+      "buildings.cabin": 1,
+Selection deleted
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateY(0);
+  }
+}
+
+.tab-fade-in {
+  animation: tab-fade-in 1s ease-out forwards;
+}
+
+@keyframes flame-text {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.fire-hover:hover {
+  background: linear-gradient(50deg,
+      
+#ff6347,
+      
+#ff8c00,
+      
+#ffa500,
+      
+#ff4500,
+      
+#dc143c,
+      
+#ff4500);
+  background-size: 250% 250%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: flame-text 5s ease-in-out infinite;
+}
+
+.no-hover:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  opacity: inherit !important;
+  transform: none !important;
+}
+
+.timer-progress .bg-primary {
+  background-color: 
+#8b0000 !important;
+  /* Dark red */
+}
+
+/* Stone axe pulse animation */
+@keyframes stone-axe-pulse {
+  0%, 100% {
+    text-shadow: 0 0 1px 
+rgba(255, 255, 255, 0.9);
+  }
+  50% {
+    text-shadow: 0 0 5px 
+rgba(255, 255, 255, 0.9);
+  }
+}
+
+div.stone-axe-pulse {
+  animation: stone-axe-pulse 1.0s ease-in-out infinite;
+}
+
+/* Custom madness pulse animations - 4 levels */
+@keyframes madness-pulse-light {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes madness-pulse-medium {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+Selection deleted
+    return null;
+  }
+
+  const formatValue = (value: number) => {
+    if (value < 0) {
+      return `${value}`;
+    } else if (value === -1) {
+      return "done";
+    } else if (value > 0 && value < 1) {
+      return `${Math.round(value * 100)}%`;
+    }
+    return value.toString();
+  };
+
+  const renderItemWithTooltip = (item: SidePanelItem) => {
+    const isAnimated = animatedItems.has(item.id);
+    const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
+    const displayValue = formatValue(item.value);
+
+    // Check if this is the stone axe and tooltip hasn't been shown
+    const isStoneAxePulsing = item.id === 'stone_axe' && !gameState.flags.stoneAxeTooltipShown;
+
+    // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
+    const relicEffect = clothingEffects[item.id];
+    const weaponEffect = weaponEffects[item.id];
+    const toolEffect = toolEffects[item.id];
+    const effect = relicEffect || weaponEffect || toolEffect;
+
+    // Debug logging to identify missing effects
+    if (
+      (title === "Relics" ||
+        title === "Tools" ||
+        title === "Weapons" ||
+        title === "Clothing" ||
+        title === "Schematics" ||
+        title === "Blessings") &&
+      !effect
+    ) {
+      console.error(`Missing effect definition for item: ${item.id} in section: ${title}`, {
+        item,
+        availableInClothingEffects: item.id in clothingEffects,
+        availableInWeaponEffects: item.id in weaponEffects,
+        availableInToolEffects: item.id in toolEffects,
+      });
+    }
+
+    // Check if the effect has actual content to display
+    const hasGeneralBonuses =
+      effect?.bonuses?.generalBonuses &&
+      Object.keys(effect.bonuses.generalBonuses).length > 0;
+    const hasActionBonuses =
+      effect?.bonuses?.actionBonuses &&
+      Object.keys(effect.bonuses.actionBonuses).length > 0;
+    const hasEffect =
+      effect &&
+      (hasGeneralBonuses ||
+        hasActionBonuses ||
+        effect.name ||
+        effect.description);
+
+    // Check if this item has a tooltip (for buildings with stats)
+    const hasTooltip = item.tooltip && item.tooltip.length > 0;
+
+    // Determine madness intensity classes
+    const getMadnessClasses = (value: number) => {
+      if (value >= 40) {
+        return "madness-extreme madness-pulse-fast-extreme text-red-800";
+      } else if (value >= 30) {
+        return "madness-intense madness-pulse-intense text-red-600";
+      } else if (value >= 20) {
+        return "madness-medium madness-pulse-medium text-red-400";
+      } else if (value >= 10) {
+        return "madness-light madness-pulse-light text-red-300";
+      }
+      return "";
+    };
+
+    // Check if the item is 'madness' and if there's any madness from events to display
+    const eventMadness =
+      item.id === "madness" ? gameState.stats.madnessFromEvents || 0 : 0;
+    const isMadnessTooltip = item.id === "madness" && eventMadness > 0;
+
+    const isMadness = item.id === "madness";
+    const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
+
+      return (
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Scroll to latest
+
+Make, test, iterate…
+
+Build
