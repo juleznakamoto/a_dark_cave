@@ -25,33 +25,20 @@ let lastFreezingCheck = 0;
 let lastStrangerCheck = 0;
 
 // Helper function to build the GameState object
-function buildGameState(state: ReturnType<typeof useGameStore>) {
-  return {
-    resources: state.resources,
-    stats: state.stats,
-    flags: state.flags,
-    tools: state.tools,
-    weapons: state.weapons,
-    clothing: state.clothing,
-    relics: state.relics,
-    blessings: state.blessings,
-    schematics: state.schematics,
-    buildings: state.buildings,
-    villagers: state.villagers,
-    story: state.story,
-    damagedBuildings: state.damagedBuildings,
-    events: state.events,
-    effects: state.effects,
-    bastion_stats: state.bastion_stats,
-    log: state.log,
-    current_population: state.current_population,
-    total_population: state.total_population,
-    version: state.version,
-    wizardArrives: state.wizardArrives,
-    wizardDecryptsScrolls: state.wizardDecryptsScrolls,
-    templeDedicated: state.templeDedicated,
-    templeDedicatedTo: state.templeDedicatedTo,
-  };
+function buildGameState(state: ReturnType<typeof useGameStore>): GameState {
+  // Get all keys from the schema
+  const schemaKeys = Object.keys(gameStateSchema.shape);
+  
+  // Build the state object dynamically
+  const gameState: Partial<GameState> = {};
+  
+  for (const key of schemaKeys) {
+    if (key in state) {
+      gameState[key as keyof GameState] = state[key as keyof typeof state];
+    }
+  }
+  
+  return gameState as GameState;
 }
 
 export function startGameLoop() {
