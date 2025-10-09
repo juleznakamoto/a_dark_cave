@@ -31,7 +31,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "villagerMissing",
     condition: (state: GameState) => state.villagers.free > 0,
     triggerType: "resource",
-    timeProbability: 10,
+    timeProbability: 20,
     message: [
       "One hut lies empty. Its occupant is gone.",
       "A villager is gone. Claw-like marks remain.",
