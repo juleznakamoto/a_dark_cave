@@ -151,4 +151,28 @@ export const wizardEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  wizardBloodstoneStaff: {
+    id: "wizardBloodstoneStaff",
+    condition: (state: GameState) =>
+      state.story.seen.sunkenTempleSuccess &&
+      !state.story.seen.wizardBloodstoneStaff,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    title: "The Bloodstone Staff",
+    message:
+      "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple, his eyes gleaming with satisfaction. 'Excellent work,' he declares. 'With these bloodstones, we now have everything we need. I can craft the Bloodstone Staff - a weapon of immense arcane power that will channel knowledge and strength. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardBloodstoneStaff: true,
+        },
+      },
+    }),
+  },
 };

@@ -102,6 +102,7 @@ export const forestScoutActions: Record<string, Action> = {
     },
     effects: {
       "story.seen.sunkenTempleExplored": true,
+      "events.wizardSaysBloodstoneStaff": true,
     },
     cooldown: 60,
   },
@@ -389,3 +390,55 @@ export function handleSunkenTemple(
 
   return result;
 }
+
+// Add the new wizard event and weapon craft action
+export const additionalActions: Record<string, Action> = {
+  "wizardSaysBloodstoneStaff": {
+    id: "wizardSaysBloodstoneStaff",
+    label: "Wizard says: 'No, we can craft the Bloodstone Staff!'",
+    show_when: {
+      "story.seen.sunkenTempleExplored": true,
+      "!story.seen.wizardSaidBloodstoneStaff": true,
+    },
+    cost: {},
+    effects: {
+      "story.seen.wizardSaidBloodstoneStaff": true,
+    },
+    cooldown: 0,
+  },
+  "craftBloodstoneStaff": {
+    id: "craftBloodstoneStaff",
+    label: "Craft Bloodstone Staff",
+    show_when: {
+      "story.seen.wizardSaidBloodstoneStaff": true,
+      "resources.bloodstone": ">= 50",
+      "resources.wood": ">= 1000",
+    },
+    cost: {
+      "resources.bloodstone": 50,
+      "resources.wood": 1000,
+    },
+    effects: {
+      "story.seen.bloodstoneStaffCrafted": true,
+      "weapons.bloodstone_staff": {
+        value: {
+          strength: 5,
+          knowledge: 10,
+        },
+      },
+    },
+    cooldown: 60,
+  },
+};
+
+// Add the new weapon definition
+export const weaponDefinitions = {
+  bloodstone_staff: {
+    name: "Bloodstone Staff",
+    description: "+ 5 Strength, + 10 Knowledge",
+    stats: {
+      strength: 5,
+      knowledge: 10,
+    },
+  },
+};

@@ -61,6 +61,7 @@ import {
   handleCraftFrostglassSword,
   handleCraftArbalest,
   handleCraftNightshadeBow,
+  handleCraftBloodstoneStaff,
 } from '@/game/rules/caveCraftWeapons';
 
 import {
@@ -253,6 +254,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftArbalest(state, result);
     case 'craftNightshadeBow':
       return handleCraftNightshadeBow(state, result);
+    case 'craftBloodstoneStaff':
+      return handleCraftBloodstoneStaff(state, result);
 
     // Cave Mine Actions
     case 'mineStone':

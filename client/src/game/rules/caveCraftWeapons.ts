@@ -228,6 +228,25 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 45,
   },
+
+  craftBloodstoneStaff: {
+    id: "craftBloodstoneStaff",
+    label: "Bloodstone Staff",
+    show_when: {
+      "buildings.wizardTower": 1,
+      "story.seen.wizardBloodstoneStaff": true,
+      "weapons.bloodstone_staff": false,
+    },
+    cost: {
+      "resources.bloodstone": 50,
+      "resources.wood": 1000,
+    },
+    effects: {
+      "weapons.bloodstone_staff": true,
+      "story.seen.hasBloodstoneStaff": true,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -331,6 +350,20 @@ export function handleCraftNightshadeBow(state: GameState, result: ActionResult)
   result.logEntries!.push({
     id: `nightshade-bow-crafted-${Date.now()}`,
     message: "You craft a bow from dark wood. Its arrows will carry poison into your enemies, dealing damage over time.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+
+  return result;
+}
+
+export function handleCraftBloodstoneStaff(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBloodstoneStaff', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  result.logEntries!.push({
+    id: `bloodstone-staff-crafted-${Date.now()}`,
+    message: "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge. You have forged a weapon of immense power.",
     timestamp: Date.now(),
     type: 'system',
   });

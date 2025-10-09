@@ -453,6 +453,20 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
+  // New weapon: Bloodstone Staff
+  bloodstone_staff: {
+    id: "bloodstone_staff",
+    name: "Bloodstone Staff",
+    description: "A staff crowned with bloodstone, pulsing with dark energy.",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+        knowledge: 10,
+        madness: 3,
+      },
+      actionBonuses: {},
+    },
+  },
 };
 
 // Relic effects
@@ -1180,7 +1194,7 @@ export function getActionBonuses(
     resourceBonus: {},
     resourceMultiplier: 1,
     cooldownReduction: 0,
-    probabilityBonus: 0,
+    probabilityBonus: {}, // Initialize as empty object
   };
 
   // Define mining actions
@@ -1222,7 +1236,13 @@ export function getActionBonuses(
 
         // Apply probability bonus (additive)
         if (actionBonus.probabilityBonus) {
-          bonuses.probabilityBonus += actionBonus.probabilityBonus;
+          // Assuming probabilityBonus is also a Record<string, number>
+          Object.entries(actionBonus.probabilityBonus).forEach(
+            ([resource, bonus]) => {
+              bonuses.probabilityBonus[resource] =
+                (bonuses.probabilityBonus[resource] || 0) + bonus;
+            },
+          );
         }
       }
 
@@ -1252,7 +1272,12 @@ export function getActionBonuses(
 
         // Apply probability bonus (additive)
         if (miningBonus.probabilityBonus) {
-          bonuses.probabilityBonus += miningBonus.probabilityBonus;
+          Object.entries(miningBonus.probabilityBonus).forEach(
+            ([resource, bonus]) => {
+              bonuses.probabilityBonus[resource] =
+                (bonuses.probabilityBonus[resource] || 0) + bonus;
+            },
+          );
         }
       }
     });
@@ -1280,6 +1305,15 @@ export const getTotalStrength = (state: GameState): number => {
   const activeEffects = getActiveEffects(state);
   let strength = state.stats.strength || 0;
 
+  // Weapons
+  if (state.weapons.iron_sword) strength += 1;
+  if (state.weapons.steel_sword) strength += 2;
+  if (state.weapons.obsidian_sword) strength += 3;
+  if (state.weapons.adamant_sword) strength += 4;
+  if (state.weapons.frostglass_sword) strength += 8;
+  if (state.weapons.bloodstone_staff) strength += 5;
+
+
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.strength) {
       strength += effect.bonuses.generalBonuses.strength;
@@ -1293,6 +1327,14 @@ export const getTotalStrength = (state: GameState): number => {
 export const getTotalKnowledge = (state: GameState): number => {
   const activeEffects = getActiveEffects(state);
   let knowledge = state.stats.knowledge || 0;
+
+  // Base knowledge from buildings
+  if (state.buildings.clerksHut > 0) knowledge += 2;
+  if (state.buildings.scriptorium > 0) knowledge += 5;
+
+  // Weapons
+  if (state.weapons.bloodstone_staff) knowledge += 10;
+
 
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.knowledge) {
