@@ -239,6 +239,12 @@ export function handleCastleRuins(
       },
     };
 
+    result.stateUpdates.resources = {
+      ...state.resources,
+      silver: (state.resources.silver || 0) + 100,
+      gold: (state.resources.gold || 0) + 50,
+    };
+
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
       message:
