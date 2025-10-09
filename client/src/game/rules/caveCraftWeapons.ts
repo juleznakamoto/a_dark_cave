@@ -312,6 +312,15 @@ export function handleCraftFrostglassSword(state: GameState, result: ActionResul
 
 export function handleCraftArbalest(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftArbalest', state);
+  
+  // Ensure weapons object exists in stateUpdates
+  if (!result.stateUpdates.weapons) {
+    result.stateUpdates.weapons = {};
+  }
+  
+  // Add arbalest to weapons
+  result.stateUpdates.weapons.arbalest = true;
+  
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
@@ -326,6 +335,15 @@ export function handleCraftArbalest(state: GameState, result: ActionResult): Act
 
 export function handleCraftNightshadeBow(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftNightshadeBow', state);
+  
+  // Ensure weapons object exists in stateUpdates
+  if (!result.stateUpdates.weapons) {
+    result.stateUpdates.weapons = {};
+  }
+  
+  // Add nightshade_bow to weapons
+  result.stateUpdates.weapons.nightshade_bow = true;
+  
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({

@@ -888,6 +888,28 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  arbalest: {
+    id: "arbalest",
+    name: "Arbalest",
+    description: "Powerful mechanical crossbow with devastating accuracy",
+    bonuses: {
+      generalBonuses: {
+        strength: 12,
+      },
+    },
+  },
+
+  nightshade_bow: {
+    id: "nightshade_bow",
+    name: "Nightshade Bow",
+    description: "Poisonous bow that deals damage over time to enemies",
+    bonuses: {
+      generalBonuses: {
+        strength: 10,
+      },
+    },
+  },
+
   // Blessings
   dagons_gift: {
     id: "dagons_gift",
