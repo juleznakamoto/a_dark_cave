@@ -112,14 +112,7 @@ function handleGathererProduction() {
       );
     });
 
-    if (Object.keys(updates).length > 0) {
-      const newState = useGameStore.getState();
-      console.log("state_update", {
-        updates,
-        new_state: buildGameState(newState),
-      });
     }
-  }
 }
 
 function handleHunterProduction() {
@@ -131,23 +124,13 @@ function handleHunterProduction() {
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
-    const updates: Record<string, number> = {};
     const production = getPopulationProduction("hunter", hunter, state);
     production.forEach((prod) => {
-      updates[prod.resource] = prod.totalAmount;
       state.updateResource(
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
       );
     });
-
-    if (Object.keys(updates).length > 0) {
-      const newState = useGameStore.getState();
-      console.log("state_update", {
-        updates,
-        new_state: buildGameState(newState),
-      });
-    }
   }
 }
 
@@ -156,8 +139,6 @@ function handleMinerProduction() {
 
   // Pause miner production when event dialog or combat dialog is open
   if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
-
-  const updates: Record<string, number> = {};
 
   // Process each miner type, steel forger, tanner, and powder maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -170,8 +151,6 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
-        updates[prod.resource] =
-          (updates[prod.resource] || 0) + prod.totalAmount;
         state.updateResource(
           prod.resource as keyof typeof state.resources,
           prod.totalAmount,
@@ -179,14 +158,6 @@ function handleMinerProduction() {
       });
     }
   });
-
-  if (Object.keys(updates).length > 0) {
-    const newState = useGameStore.getState();
-    console.log("state_update", {
-      updates,
-      new_state: buildGameState(newState),
-    });
-  }
 }
 
 function handlePopulationSurvival() {
@@ -215,24 +186,12 @@ function handlePopulationSurvival() {
   const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
 
-  const updates: Record<string, number> = {};
-
   if (availableFood >= foodNeeded) {
     // Everyone can eat, consume food normally
-    updates.food = -foodNeeded;
     state.updateResource("food", -foodNeeded);
   } else {
     // Not enough food, consume all available food (starvation event will trigger separately)
-    updates.food = -availableFood;
     state.updateResource("food", -availableFood);
-  }
-
-  if (Object.keys(updates).length > 0) {
-    const newState = useGameStore.getState();
-    console.log("state_update", {
-      updates,
-      new_state: buildGameState(newState),
-    });
   }
 }
 
@@ -242,14 +201,8 @@ function handleStarvationCheck() {
   // Pause starvation checks when event dialog or combat dialog is open
   if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
-  // Check if starvation conditions are met
-  if (!state.flags.starvationActive) {
-    if (state.resources.food < 5) return;
-    // Activate starvation system permanently once food reaches at least 5
-    useGameStore.setState({
-      flags: { ...state.flags, starvationActive: true },
-    });
-  }
+  // Only proceed if starvation is already active (activated in handlePopulationSurvival)
+  if (!state.flags.starvationActive) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
