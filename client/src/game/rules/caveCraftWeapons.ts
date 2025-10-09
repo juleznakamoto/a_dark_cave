@@ -79,7 +79,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     id: "craftCrudeBow",
     label: "Crude Bow",
     show_when: {
-      "buildings.blacksmith": 1,
+      "buildings.cabin": 1,
       "weapons.crude_bow": false,
     },
     cost: {
