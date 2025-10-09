@@ -13,12 +13,10 @@ import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMiningActions } from "./caveMineActions";
 import {
   villageBuildActions,
-  handleBuildLonghouse,
 } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
-  handleBoneTotems,
   getBoneTotemsCost,
 } from "./forestSacrificeActions";
 import { caveEvents } from "./eventsCave";

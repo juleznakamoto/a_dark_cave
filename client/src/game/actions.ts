@@ -324,8 +324,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildWatchtower(state, result);
     case 'buildPalisades':
       return handleBuildPalisades(state, result);
-    case 'buildStoneHut':
-      return handleBuildStoneHut(state, result);
     case 'buildGrandBlacksmith':
       return handleBuildGrandBlacksmith(state, result);
     case 'buildLonghouse':
