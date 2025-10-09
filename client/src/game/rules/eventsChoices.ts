@@ -971,4 +971,142 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  slaveTrader: {
+    id: "slaveTrader",
+    condition: (state: GameState) => {
+      const currentPopulation = Object.values(state.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
+      const maxPopulation = getMaxPopulation(state);
+      const hasRoomForTwo = maxPopulation - currentPopulation >= 2;
+
+      return (
+        state.buildings.woodenHut >= 2 &&
+        currentPopulation > 2 &&
+        hasRoomForTwo &&
+        !state.story.seen.slaveTraderEvent
+      );
+    },
+    triggerType: "resource",
+    timeProbability: 10,
+    title: "The Slave Trader",
+    message:
+      "A man on a cart drawn by two horses approaches your village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. Good workers, they'll be. What say you?'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "sellVillagers",
+        label: "Sell 2 villagers",
+        effect: (state: GameState) => {
+          const currentPopulation = Object.values(state.villagers).reduce(
+            (sum, count) => sum + (count || 0),
+            0,
+          );
+          
+          // Kill 2 villagers for the trade
+          const tradeResult = killVillagers(state, 2);
+          
+          // All remaining villagers leave in disgust
+          const remainingPopulation = currentPopulation - 2;
+          const leaveResult = killVillagers(
+            { ...state, villagers: tradeResult.villagers || state.villagers },
+            remainingPopulation
+          );
+
+          return {
+            ...leaveResult,
+            resources: {
+              ...state.resources,
+              steel: state.resources.steel + 100,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                slaveTraderEvent: true,
+              },
+            },
+            _logMessage:
+              "You hand over two of your villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done, they pack their belongings in disgust and abandon the village. You are left alone with your blood money.",
+          };
+        },
+      },
+      {
+        id: "freeSlaves",
+        label: "Free the captives",
+        relevant_stats: ["strength"],
+        effect: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const successChance = 0.5 + strength * 0.01;
+
+          if (Math.random() < successChance) {
+            // Success: free the captives and take the steel
+            const currentPopulation = Object.values(state.villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+            const maxPopulation = getMaxPopulation(state);
+            const villagersToAdd = Math.min(2, maxPopulation - currentPopulation);
+
+            return {
+              villagers: {
+                ...state.villagers,
+                free: state.villagers.free + villagersToAdd,
+              },
+              resources: {
+                ...state.resources,
+                steel: state.resources.steel + 100,
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  slaveTraderEvent: true,
+                },
+              },
+              _logMessage:
+                "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village, grateful for their liberation.",
+            };
+          } else {
+            // Failure: 1-2 villagers die
+            const deaths = Math.floor(Math.random() * 2) + 1;
+            const deathResult = killVillagers(state, deaths);
+
+            return {
+              ...deathResult,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  slaveTraderEvent: true,
+                },
+              },
+              _logMessage: `Your men attack the slaver, but he's prepared! The trader and his guards fight back viciously. ${deaths} of your villagers ${deaths === 1 ? 'falls' : 'fall'} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+            };
+          }
+        },
+      },
+      {
+        id: "refuseTrader",
+        label: "Refuse the offer",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                slaveTraderEvent: true,
+              },
+            },
+            _logMessage:
+              "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives. Your villagers look relieved that you didn't betray your own people.",
+          };
+        },
+      },
+    ],
+  },
 };
