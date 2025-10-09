@@ -240,8 +240,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           const strength = getTotalStrength(state);
 
-          // Check for victory: 10% base chance + 1% per strength point
-          const victoryChance = 0.1 + strength * 0.01;
+          // Check for victory: 15% base chance + 1% per strength point
+          const victoryChance = 0.15 + strength * 0.01;
 
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide
