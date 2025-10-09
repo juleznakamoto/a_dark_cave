@@ -45,6 +45,7 @@ export default function CavePanel() {
     {
       title: "Mine",
       actions: [
+        { id: "mineStone", label: "Stone" },
         { id: "mineIron", label: "Iron" },
         { id: "mineCoal", label: "Coal" },
         { id: "mineSulfur", label: "Sulfur" },
