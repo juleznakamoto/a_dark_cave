@@ -30,8 +30,18 @@ export async function saveGame(gameState: GameState): Promise<void> {
   try {
     const db = await getDB();
     
-    // Deep clone to remove any non-serializable data like functions
-    const cleanGameState = JSON.parse(JSON.stringify(gameState));
+    // Custom serializer that excludes functions and non-serializable data
+    const cleanGameState = JSON.parse(JSON.stringify(gameState, (key, value) => {
+      // Filter out functions
+      if (typeof value === 'function') {
+        return undefined;
+      }
+      // Filter out any Zustand-specific properties
+      if (key.startsWith('_') || key === 'subscribe' || key === 'getState' || key === 'setState') {
+        return undefined;
+      }
+      return value;
+    }));
     
     const saveData: SaveData = {
       gameState: cleanGameState,
