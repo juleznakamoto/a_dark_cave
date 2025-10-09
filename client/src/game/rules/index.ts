@@ -71,6 +71,23 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
   return buildingKey ? (state.buildings[buildingKey] || 0) + 1 : 1;
 };
 
+// Helper function to evaluate conditions for probability effects
+const evaluateCondition = (condition: string, state: GameState): boolean => {
+  // Handle negation (e.g., "!clothing.tarnished_amulet")
+  const isNegated = condition.startsWith("!");
+  const path = isNegated ? condition.slice(1) : condition;
+
+  const pathParts = path.split(".");
+  let current: any = state;
+
+  for (const part of pathParts) {
+    current = current?.[part];
+  }
+
+  // Return negated result if condition started with !
+  return isNegated ? !current : !!current;
+};
+
 // Helper function to check requirements for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
