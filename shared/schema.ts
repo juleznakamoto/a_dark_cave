@@ -62,7 +62,6 @@ export const gameStateSchema = z.object({
     altarBuilt: z.boolean().default(false),
     needsNewWell: z.boolean().default(false),
     portalBlasted: z.boolean().default(false),
-    tooltipShownStoneAxe: z.boolean().default(false),
   }).default({}),
   tools: z.object({
     stone_axe: z.boolean().default(false),
