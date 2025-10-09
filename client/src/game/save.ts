@@ -30,45 +30,8 @@ export async function saveGame(gameState: GameState): Promise<void> {
   try {
     const db = await getDB();
     
-    // Create a clean serializable copy of the game state
-    const cleanGameState: GameState = {
-      resources: { ...gameState.resources },
-      stats: { ...gameState.stats },
-      flags: { ...gameState.flags },
-      tools: { ...gameState.tools },
-      weapons: { ...gameState.weapons },
-      clothing: { ...gameState.clothing },
-      relics: { ...gameState.relics },
-      blessings: { ...gameState.blessings },
-      schematics: { ...gameState.schematics },
-      buildings: { ...gameState.buildings },
-      villagers: { ...gameState.villagers },
-      story: {
-        seen: { ...gameState.story.seen }
-      },
-      damagedBuildings: { ...gameState.damagedBuildings },
-      events: { ...gameState.events },
-      effects: { ...gameState.effects },
-      bastion_stats: { ...gameState.bastion_stats },
-      log: gameState.log.map(entry => ({
-        id: entry.id,
-        message: entry.message,
-        timestamp: entry.timestamp,
-        type: entry.type,
-        title: entry.title,
-        // Don't save choices or other function references
-      })),
-      current_population: gameState.current_population,
-      total_population: gameState.total_population,
-      version: gameState.version,
-      wizardArrives: gameState.wizardArrives,
-      wizardDecryptsScrolls: gameState.wizardDecryptsScrolls,
-      templeDedicated: gameState.templeDedicated,
-      templeDedicatedTo: gameState.templeDedicatedTo,
-    };
-    
     const saveData: SaveData = {
-      gameState: cleanGameState,
+      gameState: gameState,
       timestamp: Date.now(),
       playTime: 0, // Could be tracked in the future
     };
