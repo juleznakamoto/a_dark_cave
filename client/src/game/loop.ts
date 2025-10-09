@@ -46,7 +46,6 @@ function buildGameState(state: ReturnType<typeof useGameStore>) {
     current_population: state.current_population,
     total_population: state.total_population,
     version: state.version,
-    hasWizardTower: state.hasWizardTower,
     wizardArrives: state.wizardArrives,
     wizardDecryptsScrolls: state.wizardDecryptsScrolls,
     templeDedicated: state.templeDedicated,

@@ -112,10 +112,6 @@ export const gameStateSchema = z.object({
     hunter_cloak: z.boolean().default(false),
     grenadier_bag: z.boolean().default(false),
   }).default({}),
-  schematics: z.object({
-    arbalest_schematic: z.boolean().default(false),
-    nightshade_bow_schematic: z.boolean().default(false),
-  }).default({}),
   relics: z.object({
     strange_bones: z.boolean().default(false),
     compass: z.boolean().default(false),
@@ -256,8 +252,6 @@ export const gameStateSchema = z.object({
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
-  version: z.number().default(1),
-  hasWizardTower: z.boolean().default(false),
   wizardArrives: z.boolean().default(false),
   wizardDecryptsScrolls: z.boolean().default(false),
   templeDedicated: z.boolean().default(false),

@@ -61,7 +61,6 @@ export async function saveGame(gameState: GameState): Promise<void> {
       current_population: gameState.current_population,
       total_population: gameState.total_population,
       version: gameState.version,
-      hasWizardTower: gameState.hasWizardTower,
       wizardArrives: gameState.wizardArrives,
       wizardDecryptsScrolls: gameState.wizardDecryptsScrolls,
       templeDedicated: gameState.templeDedicated,
