@@ -25,26 +25,11 @@ export default function VillagePanel() {
     executeAction,
     assignVillager,
     unassignVillager,
-    productionTiming,
   } = useGameStore();
   const state = useGameStore.getState();
 
-  // Calculate production progress based on actual game loop timing
-  const getProductionProgress = () => {
-    if (
-      !productionTiming.currentTime ||
-      !productionTiming.lastGathererProduction
-    ) {
-      return 0;
-    }
-
-    const elapsed =
-      productionTiming.currentTime - productionTiming.lastGathererProduction;
-    const progress = (elapsed / productionTiming.interval) * 100;
-    return Math.min(progress, 100);
-  };
-
-  const productionProgress = getProductionProgress();
+  // Production progress is not needed for display - removed unused calculation
+  const productionProgress = 0;
 
   // Define action groups with their actions
   const actionGroups = [

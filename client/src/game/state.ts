@@ -17,15 +17,6 @@ import { audioManager } from "@/lib/audio";
 
 // Types
 interface GameStore extends GameState {
-  // Production timing
-  productionTiming: {
-    lastGathererProduction: number;
-    lastHunterProduction: number;
-    lastConsumption: number;
-    currentTime: number;
-    interval: number;
-  };
-
   // UI state
   activeTab: string;
   devMode: boolean;
@@ -216,15 +207,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   devMode: import.meta.env.DEV,
   cooldowns: {},
   log: [],
-  current_population: 0,
-  total_population: 0,
-  productionTiming: {
-    lastGathererProduction: 0,
-    lastHunterProduction: 0,
-    lastConsumption: 0,
-    currentTime: 0,
-    interval: 15000,
-  },
   eventDialog: {
     isOpen: false,
     currentEvent: null,
@@ -795,19 +777,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updatePopulation: () => {
     set((state) => {
       const updates = updatePopulationCounts(state);
-      const currentPopulation = Object.values(state.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
-      const maxPopulation = getMaxPopulation(state);
-
       return {
         ...state,
         ...updates,
-        current_population: currentPopulation,
-        total_population: maxPopulation,
       };
     });
+  },
+
+  // Computed getters for population
+  get current_population() {
+    const state = get();
+    return Object.values(state.villagers).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+  },
+
+  get total_population() {
+    return getMaxPopulation(get());
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {

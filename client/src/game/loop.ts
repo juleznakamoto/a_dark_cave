@@ -50,17 +50,6 @@ export function startGameLoop() {
     if (timestamp - lastTick >= TICK_INTERVAL) {
       lastTick = timestamp;
 
-      // Update production timing in game state
-      useGameStore.setState({
-        productionTiming: {
-          lastGathererProduction,
-          lastHunterProduction,
-          lastConsumption,
-          currentTime: timestamp,
-          interval: GATHERER_PRODUCTION_INTERVAL,
-        },
-      });
-
       // Game tick logic
       processTick();
 
