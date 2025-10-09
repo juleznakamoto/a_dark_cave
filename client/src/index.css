@@ -201,7 +201,7 @@
 
 /* Stone axe pulse animation */
 :root {
-  --stone-axe-pulse-speed: 0.8s;
+  --stone-axe-pulse-speed: 5s;
 }
 
 @keyframes stone-axe-pulse {
