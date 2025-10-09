@@ -203,11 +203,11 @@
 @keyframes stone-axe-pulse {
   0%, 100% {
     opacity: 1;
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+    text-shadow: 0 0 0 0 rgb(255, 255, 255, 0.7);
   }
   50% {
     opacity: 0.9;
-    box-shadow: 0 0 15px 5px rgba(59, 130, 246, 0.4);
+    text-shadow: 0 0 15px 5px rgb(255, 255, 255, 0.4);
   }
 }
 
