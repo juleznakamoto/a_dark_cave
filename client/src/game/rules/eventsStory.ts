@@ -70,9 +70,9 @@ export const storyEvents: Record<string, GameEvent> = {
 
   steelGift: {
     id: "steelGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 2,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 25,
     message: [
       "At dawn, steel bars lie stacked at the village's edge. Nobody knows where they come from.",
       "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
@@ -82,7 +82,7 @@ export const storyEvents: Record<string, GameEvent> = {
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
-        steel: state.resources.steel + 15 * state.buildings.woodenHut,
+        steel: state.resources.steel + 10 * state.buildings.woodenHut,
       },
     }),
   },

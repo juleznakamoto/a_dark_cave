@@ -256,7 +256,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
-          const casualtyChance = Math.max(0.2, 0.7 - strength * 0.02);
+          const casualtyChance = Math.max(0.2, 0.6 - strength * 0.02);
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
