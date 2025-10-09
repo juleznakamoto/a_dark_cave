@@ -1085,7 +1085,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! The trader and his guards fight back viciously. ${deaths} of your villagers ${deaths === 1 ? 'falls' : 'fall'} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? 'falls' : 'fall'} in the struggle. The trader escapes with his captives, leaving only death behind.`,
             };
           }
         },

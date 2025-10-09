@@ -258,7 +258,7 @@ const toolTrades = [
     costs: [
       { resource: "gold", amounts: [1000] }
     ],
-    message: "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is ancient. Its arrows will poison your enemies, dealing damage over time.'"
+    message: "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'"
   }
 ];
 

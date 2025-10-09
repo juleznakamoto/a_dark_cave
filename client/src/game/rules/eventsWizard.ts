@@ -11,7 +11,7 @@ export const wizardEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 2.0,
     message:
-      "An old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
+      "A small old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -59,7 +59,7 @@ export const wizardEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creature in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creatures in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
     triggered: false,
     priority: 5,
     repeatable: false,

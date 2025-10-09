@@ -436,9 +436,6 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         strength: 10,
       },
       actionBonuses: {
-        layTrap: {
-          resourceMultiplier: 1.25,
-        },
         hunt: {
           resourceMultiplier: 1.25,
         },
@@ -884,28 +881,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 5,
-      },
-    },
-  },
-
-  arbalest: {
-    id: "arbalest",
-    name: "Arbalest",
-    description: "Powerful mechanical crossbow with devastating accuracy",
-    bonuses: {
-      generalBonuses: {
-        strength: 12,
-      },
-    },
-  },
-
-  nightshade_bow: {
-    id: "nightshade_bow",
-    name: "Nightshade Bow",
-    description: "Poisonous bow that deals damage over time to enemies",
-    bonuses: {
-      generalBonuses: {
-        strength: 10,
       },
     },
   },
