@@ -57,6 +57,8 @@ export default function SidePanelSection({
   >(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
+  const gameState = useGameStore((state) => state);
+  const updateGameState = useGameStore((state) => state.updateGameState);
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
@@ -158,10 +160,24 @@ export default function SidePanelSection({
     return value.toString();
   };
 
+  const handleStoneAxeHover = () => {
+    if (!gameState.flags.stoneAxeTooltipShown) {
+      updateGameState({
+        flags: {
+          ...gameState.flags,
+          stoneAxeTooltipShown: true,
+        },
+      });
+    }
+  };
+
   const renderItemWithTooltip = (item: SidePanelItem) => {
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
+    
+    // Check if this is the stone axe and tooltip hasn't been shown
+    const isStoneAxePulsing = item.id === 'stone_axe' && !gameState.flags.stoneAxeTooltipShown;
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
@@ -292,7 +308,14 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div 
+                className={cn(isStoneAxePulsing && "animate-[stone-axe-pulse_1.5s_ease-in-out_infinite]")}
+                onMouseEnter={item.id === 'stone_axe' ? handleStoneAxeHover : undefined}
+              >
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-pre-line">
                 {hasTooltip && (title === "Fortifications" || title === "Buildings") ? (
