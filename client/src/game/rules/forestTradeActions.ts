@@ -223,8 +223,13 @@ export const forestTradeActions: Record<string, Action> = {
   },
 };
 
-export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForWood', state);
+// Helper function to handle all trade actions with knowledge-based cooldown reduction
+function handleTradeAction(
+  actionId: string,
+  state: GameState,
+  result: ActionResult
+): ActionResult {
+  const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   const knowledge = getTotalKnowledge(state);
@@ -233,104 +238,36 @@ export function handleTradeGoldForWood(state: GameState, result: ActionResult): 
   
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    tradeGoldForWood: actualCooldown,
+    [actionId]: actualCooldown,
   };
 
   return result;
+}
+
+export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {
+  return handleTradeAction('tradeGoldForWood', state, result);
 }
 
 export function handleTradeGoldForStone(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForStone', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeGoldForStone: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeGoldForStone', state, result);
 }
 
 export function handleTradeGoldForSteel(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForSteel', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeGoldForSteel: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeGoldForSteel', state, result);
 }
 
 export function handleTradeGoldForObsidian(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForObsidian', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeGoldForObsidian: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeGoldForObsidian', state, result);
 }
 
 export function handleTradeGoldForAdamant(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForAdamant', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeGoldForAdamant: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeGoldForAdamant', state, result);
 }
 
 export function handleTradeGoldForTorch(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForTorch', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeGoldForTorch: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeGoldForTorch', state, result);
 }
 
 export function handleTradeSilverForGold(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeSilverForGold', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  const knowledge = getTotalKnowledge(state);
-  const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
-  
-  result.stateUpdates.cooldowns = {
-    ...result.stateUpdates.cooldowns,
-    tradeSilverForGold: actualCooldown,
-  };
-
-  return result;
+  return handleTradeAction('tradeSilverForGold', state, result);
 }
