@@ -404,6 +404,9 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasClerksHut": true,
       },
     },
+    statsEffects: {
+      knowledge: 2,
+    },
     cooldown: 30,
   },
 
@@ -429,6 +432,9 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.scriptorium": 1,
         "story.seen.hasScriptorium": true,
       },
+    },
+    statsEffects: {
+      knowledge: 5,
     },
     cooldown: 40,
   },

@@ -222,6 +222,17 @@ export default function SidePanel() {
         }
       }
       
+      // Special handling for buildings with knowledge bonuses
+      if (['clerksHut', 'scriptorium'].includes(key) && (value ?? 0) > 0) {
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+        
+        if (buildAction?.statsEffects?.knowledge) {
+          const knowledgeValue = buildAction.statsEffects.knowledge;
+          tooltip = `+${knowledgeValue} Knowledge`;
+        }
+      }
+      
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
       if (key === 'bastion' && buildings.bastion > 0) {

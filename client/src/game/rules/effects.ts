@@ -1303,10 +1303,6 @@ export const getTotalKnowledge = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
   let knowledge = state.stats.knowledge || 0;
 
-  // Base knowledge from buildings
-  if (state.buildings.clerksHut > 0) knowledge += 2;
-  if (state.buildings.scriptorium > 0) knowledge += 5;
-
   return knowledge + (effects.statBonuses?.knowledge || 0);
 };
 
@@ -1395,6 +1391,22 @@ export const calculateTotalEffects = (state: GameState) => {
         effects.madness_reduction[effectKey] = buildAction.statsEffects.madness;
       }
       break; // Only apply the highest tier building's effect
+    }
+  }
+
+  // Process building statsEffects for knowledge bonuses
+  const buildingKnowledgeBonuses = [
+    { key: "clerksHut", actionId: "buildClerksHut" },
+    { key: "scriptorium", actionId: "buildScriptorium" },
+  ];
+
+  for (const building of buildingKnowledgeBonuses) {
+    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
+    if (buildingCount > 0) {
+      const buildAction = villageBuildActions[building.actionId];
+      if (buildAction?.statsEffects?.knowledge) {
+        effects.statBonuses.knowledge += buildAction.statsEffects.knowledge;
+      }
     }
   }
 
