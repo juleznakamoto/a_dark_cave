@@ -27,7 +27,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   // Base stats from bastion itself
   if (state.buildings.bastion > 0) {
     defense += Math.floor(5 * bastionMultiplier);
-    attackFromFortifications += Math.floor(3 * bastionMultiplier);
+    attackFromFortifications += Math.floor(5 * bastionMultiplier);
     baseIntegrity += Math.floor(20 * bastionMultiplier);
   }
 
@@ -66,12 +66,12 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesLevel = state.buildings.palisades || 0;
   if (palisadesLevel > 0) {
     // Level 1: Wooden Palisades
-    defense += Math.floor(4 * palisadesMultiplier);
+    defense += Math.floor(3 * palisadesMultiplier);
     baseIntegrity += Math.floor(10 * palisadesMultiplier);
 
     if (palisadesLevel >= 2) {
       // Level 2: Fortified Palisades
-      defense += Math.floor(6 * palisadesMultiplier);
+      defense += Math.floor(5 * palisadesMultiplier);
       baseIntegrity += Math.floor(15 * palisadesMultiplier);
     }
 
