@@ -420,7 +420,7 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.10 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -475,7 +475,7 @@ export function handleSunkenTemple(
 
 // Add the new wizard event and weapon craft action
 export const additionalActions: Record<string, Action> = {
-  "wizardSaysBloodstoneStaff": {
+  wizardSaysBloodstoneStaff: {
     id: "wizardSaysBloodstoneStaff",
     label: "Wizard says: 'No, we can craft the Bloodstone Staff!'",
     show_when: {
@@ -488,7 +488,7 @@ export const additionalActions: Record<string, Action> = {
     },
     cooldown: 0,
   },
-  "craftBloodstoneStaff": {
+  craftBloodstoneStaff: {
     id: "craftBloodstoneStaff",
     label: "Craft Bloodstone Staff",
     show_when: {
@@ -502,25 +502,8 @@ export const additionalActions: Record<string, Action> = {
     },
     effects: {
       "story.seen.bloodstoneStaffCrafted": true,
-      "weapons.bloodstone_staff": {
-        value: {
-          strength: 5,
-          knowledge: 10,
-        },
-      },
+      "weapons.bloodstone_staff": true,
     },
     cooldown: 60,
-  },
-};
-
-// Add the new weapon definition
-export const weaponDefinitions = {
-  bloodstone_staff: {
-    name: "Bloodstone Staff",
-    description: "+ 5 Strength, + 10 Knowledge",
-    stats: {
-      strength: 5,
-      knowledge: 10,
-    },
   },
 };
