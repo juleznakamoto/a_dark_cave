@@ -1,3 +1,12 @@
+import { GameState } from "@shared/schema";
+import {
+  toolEffects,
+  weaponEffects,
+  clothingEffects,
+  EffectDefinition,
+  ActionBonuses,
+} from "./effects";
+import { villageBuildActions } from "./villageBuildActions";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -379,9 +388,6 @@ export const calculateTotalEffects = (state: GameState) => {
     },
   };
 
-  // Import villageBuildActions to access statsEffects
-  const { villageBuildActions } = await import('./villageBuildActions');
-
   // Dynamically process all building statsEffects
   // Convert building key to action ID format (e.g., "clerksHut" -> "buildClerksHut")
   const getBuildActionId = (buildingKey: string): string => {
@@ -391,24 +397,24 @@ export const calculateTotalEffects = (state: GameState) => {
   // Track buildings with stat effects in priority order
   const madnessReductionBuildings: string[] = [];
   const knowledgeBonusBuildings: string[] = [];
-  
+
   // Iterate through all buildings and collect their statsEffects
   Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
     if (buildingCount > 0) {
       const actionId = getBuildActionId(buildingKey);
       const buildAction = villageBuildActions[actionId];
-      
+
       if (buildAction?.statsEffects) {
         // Handle madness effects (track for priority-based application)
         if (buildAction.statsEffects.madness !== undefined) {
           madnessReductionBuildings.push(buildingKey);
         }
-        
+
         // Handle knowledge effects (track for priority-based application)
         if (buildAction.statsEffects.knowledge !== undefined) {
           knowledgeBonusBuildings.push(buildingKey);
         }
-        
+
         // Sum up all other stat bonuses
         if (buildAction.statsEffects.strength !== undefined) {
           effects.statBonuses.strength += buildAction.statsEffects.strength;
@@ -461,7 +467,7 @@ export const calculateTotalEffects = (state: GameState) => {
       // Update statBonuses for madness
       effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
     }
-    
+
     // Process madness reduction from general bonuses
     if (effect.bonuses.generalBonuses?.madnessReduction) {
       const effectKey = `${effect.id}_madness_reduction`;
