@@ -107,6 +107,10 @@ export function handleBoneTotems(
         message: "Among the offerings, you discover a crystal-clear ring, its surface perfectly smooth and radiating a sense of peace.",
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     }
   }
