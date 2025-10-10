@@ -1373,39 +1373,53 @@ export const calculateTotalEffects = (state: GameState) => {
   // Import villageBuildActions to access statsEffects
   const { villageBuildActions } = require('./villageBuildActions');
 
-  // Process building statsEffects for madness reduction (only highest tier applies)
-  const buildingMadnessReductions = [
-    { key: "sanctum", actionId: "buildSanctum" },
-    { key: "temple", actionId: "buildTemple" },
-    { key: "shrine", actionId: "buildShrine" },
-    { key: "altar", actionId: "buildAltar" },
-  ];
+  // Dynamically process all building statsEffects
+  // Convert building key to action ID format (e.g., "clerksHut" -> "buildClerksHut")
+  const getBuildActionId = (buildingKey: string): string => {
+    return `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+  };
 
-  for (const building of buildingMadnessReductions) {
-    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
+  // Track madness reduction buildings in priority order (highest tier first)
+  const madnessReductionBuildings: string[] = [];
+  
+  // Iterate through all buildings and collect their statsEffects
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
     if (buildingCount > 0) {
-      const buildAction = villageBuildActions[building.actionId];
+      const actionId = getBuildActionId(buildingKey);
+      const buildAction = villageBuildActions[actionId];
+      
+      if (buildAction?.statsEffects) {
+        // Handle madness effects (track for priority-based application)
+        if (buildAction.statsEffects.madness !== undefined) {
+          madnessReductionBuildings.push(buildingKey);
+        }
+        
+        // Sum up all other stat bonuses
+        if (buildAction.statsEffects.strength !== undefined) {
+          effects.statBonuses.strength += buildAction.statsEffects.strength;
+        }
+        if (buildAction.statsEffects.luck !== undefined) {
+          effects.statBonuses.luck += buildAction.statsEffects.luck;
+        }
+        if (buildAction.statsEffects.knowledge !== undefined) {
+          effects.statBonuses.knowledge += buildAction.statsEffects.knowledge;
+        }
+      }
+    }
+  });
+
+  // Apply madness reduction from highest tier building only
+  // Order by priority: sanctum > temple > shrine > altar
+  const madnessPriority = ["sanctum", "temple", "shrine", "altar"];
+  for (const buildingKey of madnessPriority) {
+    if (madnessReductionBuildings.includes(buildingKey)) {
+      const actionId = getBuildActionId(buildingKey);
+      const buildAction = villageBuildActions[actionId];
       if (buildAction?.statsEffects?.madness) {
-        const effectKey = `${building.key}_madness`;
+        const effectKey = `${buildingKey}_madness`;
         effects.madness_reduction[effectKey] = buildAction.statsEffects.madness;
       }
       break; // Only apply the highest tier building's effect
-    }
-  }
-
-  // Process building statsEffects for knowledge bonuses
-  const buildingKnowledgeBonuses = [
-    { key: "clerksHut", actionId: "buildClerksHut" },
-    { key: "scriptorium", actionId: "buildScriptorium" },
-  ];
-
-  for (const building of buildingKnowledgeBonuses) {
-    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
-    if (buildingCount > 0) {
-      const buildAction = villageBuildActions[building.actionId];
-      if (buildAction?.statsEffects?.knowledge) {
-        effects.statBonuses.knowledge += buildAction.statsEffects.knowledge;
-      }
     }
   }
 
