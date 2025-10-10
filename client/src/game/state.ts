@@ -351,15 +351,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ) {
         setTimeout(() => get().updateBastionStats(), 0);
       }
-      
-      // Update population when buildings that affect max population change
-      if (
-        buildingChanges.woodenHut !== undefined ||
-        buildingChanges.stoneHut !== undefined ||
-        buildingChanges.longhouse !== undefined
-      ) {
-        StateManager.schedulePopulationUpdate(get);
-      }
     }
 
     // Handle event dialogs
@@ -797,8 +788,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   get total_population() {
-    const state = get();
-    return getMaxPopulation(state);
+    return getMaxPopulation(get());
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {

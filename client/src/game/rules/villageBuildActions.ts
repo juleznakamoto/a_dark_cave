@@ -1726,12 +1726,6 @@ export function handleBuildLonghouse(
     });
   }
 
-  // Schedule population update
-  longhouseResult.delayedEffects = longhouseResult.delayedEffects || [];
-  longhouseResult.delayedEffects.push(() => {
-    // Population will be updated by the executeAction handler
-  });
-
   return longhouseResult;
 }
 
