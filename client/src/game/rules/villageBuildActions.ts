@@ -1424,6 +1424,37 @@ export function handleBuildStoneHut(
   return stoneHutResult;
 }
 
+export function handleBuildLonghouse(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const longhouseResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildLonghouse",
+    "longhouse",
+  );
+
+  // Add longhouse completion message
+  const currentLevel = state.buildings.longhouse || 0;
+  const longhouseLabels = ["First Longhouse", "Second Longhouse"];
+  const longhouseMessages = [
+    "The first longhouse rises - a massive wooden hall with thick timbers and a great hearth. This Nordic design can shelter many families under one sturdy roof.",
+    "A second longhouse is completed, expanding your settlement's capacity to house even more villagers in the traditional Nordic style."
+  ];
+
+  if (currentLevel < longhouseLabels.length) {
+    longhouseResult.logEntries!.push({
+      id: `longhouse-built-level-${currentLevel + 1}-${Date.now()}`,
+      message: longhouseMessages[currentLevel],
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return longhouseResult;
+}
+
 export function handleBuildShrine(
   state: GameState,
   result: ActionResult,
@@ -1696,37 +1727,6 @@ export function handleBuildWizardTower(
   }
 
   return wizardTowerResult;
-}
-
-export function handleBuildLonghouse(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const longhouseResult = handleBuildingConstruction(
-    state,
-    result,
-    "buildLonghouse",
-    "longhouse",
-  );
-
-  // Add longhouse completion message
-  const currentLevel = state.buildings.longhouse || 0;
-  const longhouseLabels = ["First Longhouse", "Second Longhouse"];
-  const longhouseMessages = [
-    "The first longhouse rises - a massive wooden hall with thick timbers and a great hearth. This Nordic design can shelter many families under one sturdy roof.",
-    "A second longhouse is completed, expanding your settlement's capacity to house even more villagers in the traditional Nordic style."
-  ];
-
-  if (currentLevel < longhouseLabels.length) {
-    longhouseResult.logEntries!.push({
-      id: `longhouse-built-level-${currentLevel + 1}-${Date.now()}`,
-      message: longhouseMessages[currentLevel],
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
-  return longhouseResult;
 }
 
 export function handleBuildGrandBlacksmith(
