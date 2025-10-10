@@ -3,7 +3,7 @@ import {
   clothingEffects,
   weaponEffects,
   toolEffects,
-} from "@/game/rules/effectsCalculation";
+} from "@/game/rules/effects";
 import { getDisplayTools } from "@/game/rules/effectsCalculation";
 import {
   Tooltip,
