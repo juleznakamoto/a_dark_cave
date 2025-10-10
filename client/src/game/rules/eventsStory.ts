@@ -57,98 +57,6 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-  ironGift: {
-    id: "ironGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 1,
-    triggerType: "resource",
-    timeProbability: 30,
-    message: [
-      "By dawn, a heap of iron lies at the village edge. No tracks remain.",
-      "A gift of iron gleams at dawn. No one knows its source.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        iron: state.resources.iron + 25 * state.buildings.woodenHut,
-      },
-    }),
-  },
-
-  steelGift: {
-    id: "steelGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 2,
-    triggerType: "resource",
-    timeProbability: 25,
-    message: [
-      "At dawn, steel bars lie stacked at the village's edge. Nobody knows where they come from.",
-      "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        steel: state.resources.steel + 10 * state.buildings.woodenHut,
-      },
-    }),
-  },
-
-  obsidianGift: {
-    id: "obsidianGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 8,
-    triggerType: "resource",
-    timeProbability: 30,
-    message: [
-      "By dawn, obsidian shards have been placed around the village.",
-      "In the morning light, villagers notice obsidian shards nearby the village.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        obsidian: state.resources.obsidian + 10 * state.buildings.woodenHut,
-      },
-    }),
-  },
-
-  adamantGift: {
-    id: "adamantGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 10,
-    triggerType: "resource",
-    timeProbability: 30,
-    message: [
-      "By morning, raw adamant lies behind one of the huts of the village.",
-      "When dawn breaks, a pile of adamant is found close to the village.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        adamant: state.resources.adamant + 8 * state.buildings.woodenHut,
-      },
-    }),
-  },
-
   ringOfClarityFound: {
     id: "ringOfClarityFound",
     condition: (state: GameState) => false, // Only triggered by sacrifice actions
@@ -173,102 +81,6 @@ export const storyEvents: Record<string, GameEvent> = {
     },
   },
 
-  dreamMorrowind: {
-    id: "dreamMorrowind",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
-    triggerType: "time",
-    timeProbability: 80,
-    message:
-      "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
-    triggered: false,
-    priority: 1,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_morrowind: true,
-      },
-    }),
-  },
-
-  dreamOblivion: {
-    id: "dreamOblivion",
-    condition: (state: GameState) => state.buildings.woodenHut >= 5,
-    triggerType: "time",
-    timeProbability: 70,
-    message:
-      "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
-    triggered: false,
-    priority: 1,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_oblivion: true,
-      },
-    }),
-  },
-
-  dreamSkyrim: {
-    id: "dreamSkyrim",
-    condition: (state: GameState) => state.buildings.woodenHut >= 7,
-    triggerType: "time",
-    timeProbability: 60,
-    message:
-      "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead, scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
-    triggered: false,
-    priority: 1,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => ({
-      events: {
-        ...state.events,
-        dream_skyrim: true,
-      },
-    }),
-  },
-
-  findElderScroll: {
-    id: "findElderScroll",
-    condition: (state: GameState) =>
-      state.events.dream_morrowind &&
-      state.events.dream_oblivion &&
-      state.events.dream_skyrim &&
-      !state.relics.elder_scroll,
-    triggerType: "time",
-    timeProbability: 1,
-    message:
-      "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
-    triggered: false,
-    priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        elder_scroll: true,
-      },
-      events: {
-        ...state.events,
-        elder_scroll_found: true,
-      },
-    }),
-  },
-
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>
@@ -279,7 +91,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Alchemist's Discovery",
     message:
-      "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I’ve created something extraordinary... and terribly dangerous.'",
+      "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I've created something extraordinary... and terribly dangerous.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -294,6 +106,204 @@ export const storyEvents: Record<string, GameEvent> = {
           ...state.story.seen,
           alchemistArrives: true,
           canMakeCinderflameDust: true,
+        },
+      },
+    }),
+  },
+
+  wizardArrives: {
+    id: "wizardArrives",
+    condition: (state: GameState) =>
+      state.buildings.bastion >= 1 &&
+      !state.story.seen.wizardArrives,
+    triggerType: "resource",
+    timeProbability: 2.0,
+    message:
+      "A small old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardArrives: true,
+        },
+      },
+    }),
+  },
+
+  wizardNecromancerCastle: {
+    id: "wizardNecromancerCastle",
+    condition: (state: GameState) =>
+      state.buildings.wizardTower >= 1 &&
+      !state.story.seen.wizardNecromancerCastle,
+    triggerType: "resource",
+    timeProbability: 1.0,
+    title: "The Necromancer's Castle",
+    message:
+      "The wizard calls you to his tower, his expression grave. 'I have learned of a castle deep in the wilderness - the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of what dwells in the depths below. These texts may hold the key to understanding and defeating the darkness that threatens us all. The journey will be perilous, but the knowledge is essential.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardNecromancerCastle: true,
+        },
+      },
+    }),
+  },
+
+  wizardDecryptsScrolls: {
+    id: "wizardDecryptsScrolls",
+    condition: (state: GameState) =>
+      state.relics.ancient_scrolls &&
+      state.buildings.wizardTower >= 1 &&
+      !state.story.seen.wizardDecryptsScrolls,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    message:
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creatures in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      relics: {
+        ...state.relics,
+        ancient_scrolls: false,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardDecryptsScrolls: true,
+        },
+      },
+    }),
+  },
+
+  wizardHillGrave: {
+    id: "wizardHillGrave",
+    condition: (state: GameState) =>
+      state.story.seen.wizardDecryptsScrolls &&
+      !state.story.seen.wizardHillGrave,
+    triggerType: "resource",
+    timeProbability: 1.0,
+    title: "The Hill Grave",
+    message:
+      "The wizard summons you to his tower with urgency. 'I have found something in ancient texts,' he says, his eyes gleaming. 'Deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may some frostglas - the very material we need. But beware - the grave is protected by deadly traps laid by those who buried him.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardHillGrave: true,
+        },
+      },
+    }),
+  },
+
+  wizardFrostglassSword: {
+    id: "wizardFrostglassSword",
+    condition: (state: GameState) =>
+      state.story.seen.hillGraveSuccess &&
+      state.resources.frostglas >= 50 &&
+      state.buildings.blacksmith >= 1 &&
+      state.buildings.grandBlacksmith === 0 &&
+      !state.story.seen.wizardFrostglassSword,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    message:
+      "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardFrostglassSword: true,
+        },
+      },
+    }),
+  },
+
+  wizardBloodstone: {
+    id: "wizardBloodstone",
+    condition: (state: GameState) =>
+      state.weapons.frostglass_sword &&
+      !state.story.seen.wizardBloodstone,
+    triggerType: "resource",
+    timeProbability: 1.0,
+    title: "The Sunken Temple",
+    message:
+      "The wizard returns from a journey into the forest, his robes muddy and worn. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need - it lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest. The journey will be treacherous, but the bloodstone is essential for crafting the staff we need.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardBloodstone: true,
+        },
+      },
+    }),
+  },
+
+  wizardBloodstoneStaff: {
+    id: "wizardBloodstoneStaff",
+    condition: (state: GameState) =>
+      state.story.seen.sunkenTempleSuccess &&
+      !state.story.seen.wizardBloodstoneStaff,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    title: "The Bloodstone Staff",
+    message:
+      "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple, his eyes gleaming with satisfaction. 'Excellent work,' he declares. 'With these bloodstones, we now have everything we need. I can craft the Bloodstone Staff - a weapon of immense arcane power that will channel knowledge and strength. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardBloodstoneStaff: true,
+        },
+      },
+    }),
+  },
+
+  wizardReadyForBattle: {
+    id: "wizardReadyForBattle",
+    condition: (state: GameState) =>
+      state.weapons.bloodstone_staff &&
+      state.weapons.frostglass_sword &&
+      !state.story.seen.wizardReadyForBattle,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    title: "The Final Preparation",
+    message:
+      "The wizard stands at the entrance to his tower, both the Frostglass Sword and Bloodstone Staff radiating power in the dim light. His eyes burn with determination as he addresses you. 'The weapons are forged. The ancient knowledge has been uncovered. We now possess what we need to stand against the creatures that emerge from the depths of the cave. The darkness below will soon learn that this village will not fall without a fight. We are ready.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          wizardReadyForBattle: true,
         },
       },
     }),
