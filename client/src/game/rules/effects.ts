@@ -41,6 +41,8 @@ export interface EffectDefinition {
       madnessReduction?: number; // Reduction in madness
       craftingCostReduction?: number; // Percentage reduction in crafting costs (0.1 = 10% reduction)
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
+      MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity
+      MAX_CINDERFLAME_BOMBS?: number; // Bonus to max cinderflame bombs capacity
     };
   };
 }
