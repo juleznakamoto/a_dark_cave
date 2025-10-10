@@ -629,6 +629,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     );
 
     let combatData = null;
+    let logMessage = null;
     const updatedChanges = { ...changes };
 
     // Extract combat data if present
@@ -638,13 +639,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Extract _logMessage if present
-    let logMessage = null;
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
     }
 
-    // Apply state changes - EventManager already handles _logMessage in changes.log
+    // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
       set((prevState) => ({
         ...prevState,
@@ -656,7 +656,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Only create a log message dialog if there's a _logMessage but no combat
     // Note: _logMessage is for dialog feedback only, not for the main log
-    if (updatedChanges._logMessage && !combatData) {
+    if (logMessage && !combatData) {
       get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
