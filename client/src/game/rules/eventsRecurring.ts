@@ -130,7 +130,7 @@ export const recurringEvents: Record<string, GameEvent> = {
       return {
         resources: {
           ...state.resources,
-          steel:
+            obsidian:
             state.resources.obsidian + multiplier * state.buildings.woodenHut,
         },
       };
