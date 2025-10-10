@@ -3,7 +3,6 @@ import {
   gameActions,
   shouldShowAction,
   canExecuteAction,
-  getCostText,
   getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
