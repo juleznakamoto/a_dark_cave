@@ -14,10 +14,6 @@ export const recurringEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -38,23 +34,41 @@ export const recurringEvents: Record<string, GameEvent> = {
     timeProbability: 20,
     message: [
       "One hut lies empty. Its occupant is gone.",
-      "A villager is gone. Claw-like marks remain.",
-      "A hut stands silent. Meals lie untouched. They are gone.",
       "The wind moves through an empty hut. The villager is gone.",
       "A door of a hut stands ajar. Its occupant is gone.",
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => ({
       villagers: {
         ...state.villagers,
         free: Math.max(0, state.villagers.free - 1),
       },
     }),
+  },
+
+  findWood: {
+    id: "woodGift",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 5,
+    triggerType: "resource",
+    timeProbability: 12,
+    repeatable: true,
+    message: [
+      "A pile of wood has been found near the village.",
+      "A pile of wood has been left near a hut.",
+    ],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      return {
+        resources: {
+          ...state.resources,
+          wood: state.resources.wood + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
   },
 
   ironGift: {
@@ -69,10 +83,6 @@ export const recurringEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => {
       const multiplier = Math.random() < 0.5 ? 50 : 100;
       return {
@@ -95,10 +105,6 @@ export const recurringEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => {
       const multiplier = Math.random() < 0.5 ? 25 : 50;
       return {
@@ -114,23 +120,19 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "obsidianGift",
     condition: (state: GameState) => state.buildings.woodenHut >= 6,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 35,
     message: [
-      "By dawn, obsidian shards have been placed around the village.",
+      "By dawn, obsidian shards have been found around the village.",
       "In the morning, villagers find obsidian shards nearby the village.",
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => {
       const multiplier = Math.random() < 0.5 ? 25 : 50;
       return {
         resources: {
           ...state.resources,
-            obsidian:
+          obsidian:
             state.resources.obsidian + multiplier * state.buildings.woodenHut,
         },
       };
@@ -141,17 +143,13 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "adamantGift",
     condition: (state: GameState) => state.buildings.woodenHut >= 8,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 35,
     message: [
       "By morning, raw adamant lies behind one of the huts of the village.",
       "When dawn breaks, a pile of adamant is found close to the village.",
     ],
     triggered: false,
     priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
     effect: (state: GameState) => {
       const multiplier = Math.random() < 0.5 ? 25 : 50;
       return {
@@ -159,34 +157,6 @@ export const recurringEvents: Record<string, GameEvent> = {
           ...state.resources,
           adamant:
             state.resources.adamant + multiplier * state.buildings.woodenHut,
-        },
-      };
-    },
-  },
-
-  findWood: {
-    id: "findWood",
-    condition: (state: GameState) => state.flags.fireLit,
-    triggerType: "resource",
-    timeProbability: 15,
-    repeatable: true,
-    message: [
-      "You discover fallen branches scattered near the cave entrance.",
-      "Dry wood lies among the rocks, ready to be gathered.",
-      "A pile of wood has been left near the entrance. You gather it quickly.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => {
-      const woodAmount = Math.floor(Math.random() * 20) + 10; // 10-30 wood
-      return {
-        resources: {
-          ...state.resources,
-          wood: state.resources.wood + woodAmount,
         },
       };
     },
