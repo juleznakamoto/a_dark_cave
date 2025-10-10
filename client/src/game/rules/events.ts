@@ -91,12 +91,31 @@ export class EventManager {
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
 
+    // Initialize event cooldowns if not present
+    const eventCooldowns = state.eventCooldowns || {};
+    const currentTime = Date.now();
+
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
 
       // Skip if event was already triggered this session (for non-repeatable events)
       if (state.triggeredEvents?.[event.id] && !event.repeatable) continue;
+
+      // Check if event is on cooldown (25% of its time probability must pass)
+      if (event.timeProbability && eventCooldowns[event.id]) {
+        const timeProbability =
+          typeof event.timeProbability === "function"
+            ? event.timeProbability(state)
+            : event.timeProbability;
+        
+        const cooldownPeriod = timeProbability * 0.25 * 60 * 1000; // 25% in milliseconds
+        const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
+        
+        if (timeSinceLastTrigger < cooldownPeriod) {
+          continue; // Skip this event, it's still on cooldown
+        }
+      }
 
       // Check condition with probability if specified
       let shouldTrigger = event.condition(state);
@@ -165,6 +184,13 @@ export class EventManager {
             [event.id]: true,
           };
         }
+        
+        // Record trigger time for cooldown tracking
+        stateChanges.eventCooldowns = {
+          ...(state.eventCooldowns || {}),
+          [event.id]: currentTime,
+        };
+        
         break; // Only trigger one event per tick
       }
     }

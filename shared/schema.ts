@@ -262,6 +262,8 @@ export const gameStateSchema = z.object({
   wizardDecryptsScrolls: z.boolean().default(false),
   templeDedicated: z.boolean().default(false),
   templeDedicatedTo: z.string().default(""),
+  triggeredEvents: z.record(z.boolean()).default({}),
+  eventCooldowns: z.record(z.number()).default({}), // Tracks last trigger time (timestamp) for each event
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
