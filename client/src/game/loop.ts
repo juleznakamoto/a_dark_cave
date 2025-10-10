@@ -189,10 +189,10 @@ function handleStarvationCheck() {
   const availableFood = state.resources.food;
 
   if (availableFood === 0) {
-    // 10% chance for each villager to die from starvation when food is 0
+    // 15% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.1) {
+      if (Math.random() < 0.15) {
         starvationDeaths++;
       }
     }
@@ -382,7 +382,6 @@ function handleStrangerApproach() {
       messages.push(
         `${strangersCount} wanderers appear from the woods and become part of your community.`,
       );
-      messages.push(`Several people approach the village and settle in.`);
     }
 
     const randomMessage = messages[Math.floor(Math.random() * messages.length)];
