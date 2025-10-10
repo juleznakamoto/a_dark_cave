@@ -82,6 +82,7 @@ import {
   handleBuildTannery,
   handleBuildAlchemistHall,
   handleBuildTradePost,
+  handleBuildMerchantsGuild,
   handleBuildWizardTower,
   handleBuildBastion,
   handleBuildWatchtower,
