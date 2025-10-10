@@ -317,54 +317,53 @@ function handleStrangerApproach() {
     probability = 0.6;
   }
 
-  // Calculate available room first
-  const currentPop = Object.values(state.villagers).reduce(
-    (sum, count) => sum + (count || 0),
-    0,
-  );
-  const maxPop = getMaxPopulation(state);
-  const availableRoom = maxPop - currentPop;
-
-  let strangersCount = 1; // Default to 1 stranger
-  let moreStrangersProbability = Math.random();
-
-  // Raven's Mark blessing: 20% more likely to get multiple strangers
-  let multiStrangerMultiplier = 1.0;
-  if (state.blessings?.ravens_mark) {
-    multiStrangerMultiplier = 1.2;
-  }
-  if (state.blessings?.ravens_mark_enhanced) {
-    multiStrangerMultiplier = 1.4;
-  }
-
-  // Check for the new condition: 10 stone houses built and a stranger approaches
-  // But only if there's room for multiple strangers
-  if (state.buildings.stoneHut >= 10 && Math.random() < probability) {
-    if (
-      availableRoom >= 5 &&
-      moreStrangersProbability < 0.1 * multiStrangerMultiplier
-    ) {
-      strangersCount = 5;
-    } else if (
-      availableRoom >= 4 &&
-      moreStrangersProbability < 0.2 * multiStrangerMultiplier
-    ) {
-      strangersCount = 4;
-    } else if (
-      availableRoom >= 3 &&
-      moreStrangersProbability < 0.3 * multiStrangerMultiplier
-    ) {
-      strangersCount = 3;
-    } else if (
-      availableRoom >= 2 &&
-      moreStrangersProbability < 0.4 * multiStrangerMultiplier
-    ) {
-      strangersCount = 2;
-    }
-  }
-
   // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {
+    // Calculate available room
+    const currentPop = Object.values(state.villagers).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+    const maxPop = getMaxPopulation(state);
+    const availableRoom = maxPop - currentPop;
+
+    let strangersCount = 1; // Default to 1 stranger
+    let moreStrangersProbability = Math.random();
+
+    // Raven's Mark blessing: 20% more likely to get multiple strangers
+    let multiStrangerMultiplier = 1.0;
+    if (state.blessings?.ravens_mark) {
+      multiStrangerMultiplier = 1.2;
+    }
+    if (state.blessings?.ravens_mark_enhanced) {
+      multiStrangerMultiplier = 1.4;
+    }
+
+    // Check for the new condition: 10 stone houses built
+    // But only if there's room for multiple strangers
+    if (state.buildings.stoneHut >= 10) {
+      if (
+        availableRoom >= 5 &&
+        moreStrangersProbability < 0.1 * multiStrangerMultiplier
+      ) {
+        strangersCount = 5;
+      } else if (
+        availableRoom >= 4 &&
+        moreStrangersProbability < 0.2 * multiStrangerMultiplier
+      ) {
+        strangersCount = 4;
+      } else if (
+        availableRoom >= 3 &&
+        moreStrangersProbability < 0.3 * multiStrangerMultiplier
+      ) {
+        strangersCount = 3;
+      } else if (
+        availableRoom >= 2 &&
+        moreStrangersProbability < 0.4 * multiStrangerMultiplier
+      ) {
+        strangersCount = 2;
+      }
+    }
     const messages = [
       "A stranger approaches through the woods and joins your village.",
       "A traveler arrives and decides to stay.",
