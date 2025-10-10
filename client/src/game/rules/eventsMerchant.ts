@@ -218,7 +218,7 @@ const toolTrades = [
     costs: [
       { resource: "gold", amounts: [50] }
     ],
-    message: "You purchase the reinforced rope. The merchant explains that this rope can withstand tremendous strain and reach places in the deepest cave chambers."
+    message: "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers."
   },
   {
     id: "trade_occultist_map",
@@ -228,7 +228,7 @@ const toolTrades = [
     costs: [
       { resource: "gold", amounts: [50] }
     ],
-    message: "You buy the occultists's map. The merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave, sealed by a door that looks like stone. This map will guide you.'"
+    message: "As you buy the occultists's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'"
   },
   {
     id: "trade_giant_trap",
@@ -238,7 +238,7 @@ const toolTrades = [
     costs: [
       { resource: "gold", amounts: [25] }
     ],
-    message: "You purchase the giant trap. The merchant grins: 'This can trap something gigantic in the woods. Use it wisely - there are creatures out there that dwarf ordinary beasts.'"
+    message: "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'"
   },
   {
     id: "trade_arbalest_schematic",
@@ -280,7 +280,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}${stoneHutMultiplier > 1 ? ` (x${stoneHutMultiplier})` : ''}`,
+        label: `Buy ${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
