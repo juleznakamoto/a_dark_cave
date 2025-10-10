@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/hover-card";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
+import { useState, useEffect } from "react";
 
 export default function VillagePanel() {
   const {
@@ -27,8 +28,23 @@ export default function VillagePanel() {
   } = useGameStore();
   const state = useGameStore.getState();
 
-  // Production progress is not needed for display - removed unused calculation
-  const productionProgress = 0;
+  // Calculate production progress (0-100) based on production interval
+  const [productionProgress, setProductionProgress] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const now = Date.now();
+      const productionInterval = 15000; // 15 seconds in milliseconds
+      const elapsed = now % productionInterval;
+      const progress = (elapsed / productionInterval) * 100;
+      setProductionProgress(progress);
+    };
+
+    updateProgress();
+    const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
+
+    return () => clearInterval(interval);
+  }, []);
 
   // Define action groups with their actions
   const actionGroups = [
