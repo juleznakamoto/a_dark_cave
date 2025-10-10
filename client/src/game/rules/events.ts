@@ -3,7 +3,7 @@ import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
 import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
 import { madnessEvents } from "./eventsMadness";
-import { caveEvents } from "./eventsCave";
+import { caveEvents } from "../eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { attackWaveEvents } from "./eventsAttackWaves";
 import { cubeEvents } from "./eventsCube";
