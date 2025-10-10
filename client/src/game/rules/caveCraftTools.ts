@@ -35,7 +35,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": 2,
       "story.seen.actionCraftTorches": true,
     },
-    cooldown: 2.5,
+    cooldown: 3.0,
   },
 
   craftTorches3: {
@@ -52,7 +52,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": 3,
       "story.seen.actionCraftTorches3": true,
     },
-    cooldown: 2.5,
+    cooldown: 3.5,
   },
 
   craftTorches4: {
@@ -69,7 +69,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": 4,
       "story.seen.actionCraftTorches4": true,
     },
-    cooldown: 2.5,
+    cooldown: 4,
   },
 
   craftTorches5: {
@@ -86,7 +86,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": 5,
       "story.seen.actionCraftTorches5": true,
     },
-    cooldown: 2.5,
+    cooldown: 4.5,
   },
 
   craftTorches10: {
@@ -102,7 +102,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.torch": 10,
       "story.seen.actionCraftTorches10": true,
     },
-    cooldown: 2.5,
+    cooldown: 5.0,
   },
 
   craftStoneAxe: {
