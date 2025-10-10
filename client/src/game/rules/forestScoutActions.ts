@@ -8,12 +8,6 @@ import {
 } from "@/game/rules/effects";
 import { killVillagers } from "@/game/stateHelpers";
 
-const gameEvents: any = {
-  blacksmithHammerChoice: { id: "blacksmithHammerChoice", title: "Blacksmith Hammer Choice", message: "A choice related to the blacksmith hammer.", choices: [] },
-  redMaskChoice: { id: "redMaskChoice", title: "Red Mask Choice", message: "A choice related to the red mask.", choices: [] },
-};
-
-
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
     id: "hunt",

@@ -1,8 +1,8 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from '@/game/rules';
-import { getActionBonuses } from '@/game/rules/effects';
-import { gameEvents } from './events';
+import { ActionResult } from "@/game/actions";
+import { applyActionEffects } from "@/game/rules";
+import { getActionBonuses } from "@/game/rules/effects";
+import { gameEvents } from "./events";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -21,8 +21,8 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.bone_totem": 5,
     },
     effects: {
-      "resources.gold": "random(1,10)",
-      "resources.silver": "random(1,20)",
+      "resources.gold": "random(5,10)",
+      "resources.silver": "random(10,20)",
       "story.seen.actionBoneTotems": true,
     },
     cooldown: 60,
@@ -31,7 +31,10 @@ export const forestSacrificeActions: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleBoneTotems(state: GameState, result: ActionResult): ActionResult {
+export function handleBoneTotems(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
   const currentCost = 10 + usageCount;
@@ -42,14 +45,15 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
   }
 
   // Apply the dynamic cost
-  const effectUpdates = applyActionEffects('boneTotems', state);
-  
+  const effectUpdates = applyActionEffects("boneTotems", state);
+
   if (!effectUpdates.resources) {
     effectUpdates.resources = { ...state.resources };
   }
 
   // Override the cost with dynamic pricing
-  effectUpdates.resources.bone_totem = (state.resources.bone_totem || 0) - currentCost;
+  effectUpdates.resources.bone_totem =
+    (state.resources.bone_totem || 0) - currentCost;
 
   // Track usage count for next time
   if (!effectUpdates.story) {
@@ -61,15 +65,22 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
   effectUpdates.story.seen.boneTotemsUsageCount = usageCount + 1;
 
   // Apply sacrifice bonuses and multipliers from relics/items
-  const actionBonuses = getActionBonuses('boneTotems', state);
+  const actionBonuses = getActionBonuses("boneTotems", state);
 
   // Apply resource multipliers (like 20% bonus from ebony ring)
-  if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
-    ['gold', 'silver'].forEach((resource) => {
-      const currentAmount = effectUpdates.resources[resource] || state.resources[resource] || 0;
+  if (
+    actionBonuses.resourceMultiplier &&
+    actionBonuses.resourceMultiplier !== 1
+  ) {
+    ["gold", "silver"].forEach((resource) => {
+      const currentAmount =
+        effectUpdates.resources[resource] || state.resources[resource] || 0;
       const baseAmount = currentAmount - (state.resources[resource] || 0);
-      if (baseAmount > 0) { // Only apply multiplier to positive gains
-        const bonusAmount = Math.ceil(baseAmount * (actionBonuses.resourceMultiplier - 1));
+      if (baseAmount > 0) {
+        // Only apply multiplier to positive gains
+        const bonusAmount = Math.ceil(
+          baseAmount * (actionBonuses.resourceMultiplier - 1),
+        );
         effectUpdates.resources[resource] = currentAmount + bonusAmount;
       }
     });
@@ -81,16 +92,17 @@ export function handleBoneTotems(state: GameState, result: ActionResult): Action
   if (!state.relics.ring_of_clarity) {
     const baseProbability = 0.02; // 2%
     const bonusPerUse = 0.01; // 1%
-    const totalProbability = baseProbability + (usageCount * bonusPerUse);
-    
+    const totalProbability = baseProbability + usageCount * bonusPerUse;
+
     if (Math.random() < totalProbability) {
       const ringEvent = gameEvents.ringOfClarityFound;
       if (ringEvent && ringEvent.effect) {
         const ringEffects = ringEvent.effect(state);
         Object.assign(result.stateUpdates, ringEffects);
-        
+
         // Add log message
-        result.stateUpdates._logMessage = "Among the offerings, you discover a Ring of Clarity - its surface seems to absorb the madness around it. You feel your mind clearing as you slip it on.";
+        result.stateUpdates._logMessage =
+          "Among the offerings, you discover a crystal-clear ring, its surface perfectly smooth and radiating a sense of peace.";
       }
     }
   }

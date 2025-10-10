@@ -57,30 +57,6 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-  ringOfClarityFound: {
-    id: "ringOfClarityFound",
-    condition: (state: GameState) => false, // Only triggered by sacrifice actions
-    triggerType: "action",
-    title: "Ring of Clarity",
-    message:
-      "As the ritual concludes, a crystal-clear ring glints among the ashes of the altar, its surface perfectly smooth and radiating a sense of peace.",
-    triggered: false,
-    priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => {
-      return {
-        relics: {
-          ...state.relics,
-          ring_of_clarity: true,
-        },
-      };
-    },
-  },
-
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>
