@@ -212,6 +212,10 @@ export function handleLayTrap(
           "The giant trap works perfectly! A massive black bear with glowing red eyes is caught, its otherworldly roar echoing through the forest. Your villagers fight with incredible strength and coordination, managing to slay the supernatural beast without casualties. You claim its cursed black fur as a trophy.",
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     } else if (villagerDeaths <= 2) {
       result.logEntries!.push({
@@ -219,6 +223,10 @@ export function handleLayTrap(
         message: `The giant trap snares a colossal black bear with burning red eyes! Its otherworldly roar chills the soul, but your villagers' strength prevails. ${villagerDeaths} brave villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     } else {
       result.logEntries!.push({
@@ -226,6 +234,10 @@ export function handleLayTrap(
         message: `The giant trap snares a nightmare - a colossal black bear with eyes like burning coals. Its roar seems to come from another realm entirely. Despite their courage, ${villagerDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed by sheer numbers. You claim its cursed black fur, still warm with otherworldly power.`,
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     }
   } else {
@@ -236,6 +248,10 @@ export function handleLayTrap(
         "You set the giant trap with care, but when you return to check it, you find only disturbed earth and massive claw marks. In the silence, you swear you hear a distant, otherworldly roar echoing from deep within the woods. Whatever prowls these forests is too cunning for your trap... this time.",
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   }
 
@@ -283,6 +299,10 @@ export function handleCastleRuins(
         "Your expedition to the necromancer's castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it.",
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   } else {
     // Failure: Undead attack scenarios
@@ -299,6 +319,10 @@ export function handleCastleRuins(
         message: `Your expedition reaches the ruined castle but is ambushed by shambling undead - grotesque experiments left behind by the necromancer. Skeletal hands claw at your villagers as rotting corpses attack with unnatural hunger. Despite fighting bravely, ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead horde before the survivors manage to retreat to safety.`,
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     } else {
       // Scenario 2: Major undead attack (5-10 deaths)
@@ -311,6 +335,10 @@ export function handleCastleRuins(
         message: `Shortly after your expedition enters the cursed castle ruins the very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
         timestamp: Date.now(),
         type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
       });
     }
   }
@@ -356,6 +384,10 @@ export function handleHillGrave(
         "Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover weapons forged of pure frostglas, cold as the void itself.",
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   } else {
     // Failure: Villagers die to traps (5-15 deaths)
@@ -368,6 +400,10 @@ export function handleHillGrave(
       message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. Poisoned arrows fly from hidden slots, floors collapse into spike pits, and ancient mechanisms crush those who trigger them. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   }
 
@@ -411,6 +447,10 @@ export function handleSunkenTemple(
         "Your expedition wades through the fetid swamp waters to reach the ancient temple, half-sunken in the murky depths. Despite the dangers lurking in the dark waters, your villagers navigate carefully through the submerged halls. In the temple's inner sanctum, you discover a cache of bloodstone gems, pulsing with a deep crimson glow.",
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   } else {
     // Failure: Villagers die to swamp creatures (5-15 deaths)
@@ -423,6 +463,10 @@ export function handleSunkenTemple(
       message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors - twisted creatures born of ancient magic and decay rise from the depths. ${villagerDeaths} villagers are dragged beneath the surface by grasping tendrils and fanged maws before the survivors flee in terror, their screams echoing across the swamp.`,
       timestamp: Date.now(),
       type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
     });
   }
 
