@@ -26,6 +26,11 @@ export interface GameEvent {
   baseDecisionTime?: number; // Base decision time in seconds
   fallbackChoice?: EventChoice; // Choice to execute if time runs out
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
+  // Visual effect properties
+  visualEffect?: {
+    type: 'glow' | 'pulse';
+    duration: number; // in seconds
+  };
 }
 
 export interface EventChoice {
@@ -50,6 +55,11 @@ export interface LogEntry {
   fallbackChoice?: EventChoice;
   skipSound?: boolean; // Skip playing sound for this event
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]; // Stats relevant to event odds
+  // Visual effect properties
+  visualEffect?: {
+    type: 'glow' | 'pulse';
+    duration: number; // in seconds
+  };
 }
 
 // Merge all events from separate files
@@ -127,6 +137,7 @@ export class EventManager {
           baseDecisionTime: event.baseDecisionTime,
           fallbackChoice: event.fallbackChoice,
           relevant_stats: event.relevant_stats,
+          visualEffect: event.visualEffect,
         };
 
         newLogEntries.push(logEntry);
