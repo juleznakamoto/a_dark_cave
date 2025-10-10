@@ -337,7 +337,7 @@ div.stone-axe-pulse {
     text-shadow: 0 0 2px rgb(255, 255, 255, 0.6), 0 0 4px rgb(254, 57, 57, 0.4);
   }
   50% {
-    text-shadow: 0 0 8px rgb(255, 255, 255, 0.8), 0 0 12px rgba(254, 57, 57, 0.6);
+    text-shadow: 0 0 10px rgb(255, 255, 255, 0.8), 0 0 12px rgba(254, 57, 57, 0.6);
   }
 }
 

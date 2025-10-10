@@ -7,6 +7,7 @@ export const storyEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => state.resources.food > 50,
     triggerType: "resource",
     timeProbability: 0.02,
+    repeatable: true,
     message: [
       "Food is missing. Villagers speak of voices in the dark.",
       "By morning, the stores are lighter. Something was here.",
