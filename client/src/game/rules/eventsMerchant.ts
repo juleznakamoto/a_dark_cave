@@ -33,9 +33,6 @@ type GameState = {
   clothing?: { [key: string]: boolean };
   current_population?: number;
 };
-function getTotalKnowledge(state: GameState): number {
-  return (state.stats.knowledge || 0);
-}
 
 // Define trade configurations
 const resourceTrades = [
