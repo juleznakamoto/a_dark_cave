@@ -6,7 +6,7 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "foodGone",
     condition: (state: GameState) => state.resources.food > 50,
     triggerType: "resource",
-    timeProbability: 0.02,
+    timeProbability: 20,
     repeatable: true,
     message: [
       "Food is missing. Villagers speak of voices in the dark.",
@@ -45,6 +45,10 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       villagers: {
         ...state.villagers,
@@ -59,11 +63,15 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message: [
-      "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
-      "A gift of iron gleams in the morning mist. None know who or what brought it.",
+      "By dawn, a heap of iron lies at the village edge. No tracks remain.",
+      "A gift of iron gleams at dawn. No one knows its source.",
     ],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -83,6 +91,10 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -102,6 +114,10 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -121,6 +137,10 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -138,6 +158,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "As the ritual concludes, a crystal-clear ring glints among the ashes of the altar, its surface perfectly smooth and radiating a sense of peace.",
     triggered: false,
     priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => {
       return {
@@ -145,8 +169,6 @@ export const storyEvents: Record<string, GameEvent> = {
           ...state.relics,
           ring_of_clarity: true,
         },
-        _logMessage:
-          "You slip the Ring of Clarity onto your finger. Immediately, your thoughts become clearer and the dark whispers in your mind quiet to a whisper.",
       };
     },
   },
@@ -160,6 +182,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "Sleep drags you into a wasteland of ash and jagged stone. A red sky bleeds across the horizon, and enormous, insect-like shapes crawl in the distance. A low, ancient vibration hums through the ground. You wake with dust in your mouth and a lingering sense of unease.",
     triggered: false,
     priority: 1,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => ({
       events: {
@@ -178,6 +204,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "You dream of a towering gate of brass and bone, weeping molten fire. Behind it, spiked towers and rivers of blood stretch into darkness. A voice calls from beyond the flames, hungry and silent. You wake in cold sweat, the echo of screaming still in your ears.",
     triggered: false,
     priority: 1,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => ({
       events: {
@@ -196,6 +226,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "In sleep, cold winds lash your face. You stand atop a jagged cliff, snow and ash swirling around you. A colossal shadow passes overhead, scales glinting like iron in moonlight. A deep, ancient hum reverberates through your bones. You wake shivering, the chill lingering long after.",
     triggered: false,
     priority: 1,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => ({
       events: {
@@ -218,6 +252,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "During the night as you pass a narrow path, something moves at the edge of your vision, like a shadow fleeing the firelight. You follow it, and there, upon the cold stones, lies an ancient scroll...",
     triggered: false,
     priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => ({
       relics: {
@@ -244,6 +282,10 @@ export const storyEvents: Record<string, GameEvent> = {
       "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I’ve created something extraordinary... and terribly dangerous.'",
     triggered: false,
     priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: false,
     effect: (state: GameState) => ({
       story: {
