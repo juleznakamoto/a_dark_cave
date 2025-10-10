@@ -20,6 +20,7 @@ interface GameStore extends GameState {
   // UI state
   activeTab: string;
   devMode: boolean;
+  lastSaved: string;
   eventDialog: {
     isOpen: boolean;
     currentEvent: LogEntry | null;
@@ -205,6 +206,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
+  lastSaved: "Never",
   cooldowns: {},
   log: [],
   eventDialog: {
