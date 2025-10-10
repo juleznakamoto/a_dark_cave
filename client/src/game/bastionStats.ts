@@ -31,61 +31,49 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += Math.floor(20 * bastionMultiplier);
   }
 
-  // Watchtower contributions (levels provide different bonuses)
+  // Watchtower contributions - only count the highest level
   const watchtowerLevel = state.buildings.watchtower || 0; 
 
-  if (watchtowerLevel > 0) {
+  if (watchtowerLevel === 1) {
     // Level 1: Basic Watchtower
     defense += Math.floor(1 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(5 * watchtowerMultiplier);
     baseIntegrity += Math.floor(5 * watchtowerMultiplier);
-
-    if (watchtowerLevel >= 2) {
-      // Level 2: Guard Tower
-      defense += Math.floor(2 * watchtowerMultiplier);
-      attackFromFortifications += Math.floor(8 * watchtowerMultiplier);
-      baseIntegrity += Math.floor(5 * watchtowerMultiplier);
-    }
-
-    if (watchtowerLevel >= 3) {
-      // Level 3: Fortified Tower
-      defense += Math.floor(3 * watchtowerMultiplier);
-      attackFromFortifications += Math.floor(12 * watchtowerMultiplier);
-      baseIntegrity += Math.floor(10 * watchtowerMultiplier);
-    }
-
-    if (watchtowerLevel >= 4) {
-      // Level 4: Cannon Tower
-      defense += Math.floor(4 * watchtowerMultiplier);
-      attackFromFortifications += Math.floor(20 * watchtowerMultiplier);
-      baseIntegrity += Math.floor(10 * watchtowerMultiplier);
-    }
+  } else if (watchtowerLevel === 2) {
+    // Level 2: Guard Tower
+    defense += Math.floor(2 * watchtowerMultiplier);
+    attackFromFortifications += Math.floor(8 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(5 * watchtowerMultiplier);
+  } else if (watchtowerLevel === 3) {
+    // Level 3: Fortified Tower
+    defense += Math.floor(3 * watchtowerMultiplier);
+    attackFromFortifications += Math.floor(12 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(10 * watchtowerMultiplier);
+  } else if (watchtowerLevel === 4) {
+    // Level 4: Cannon Tower
+    defense += Math.floor(4 * watchtowerMultiplier);
+    attackFromFortifications += Math.floor(20 * watchtowerMultiplier);
+    baseIntegrity += Math.floor(10 * watchtowerMultiplier);
   }
 
-  // Palisades contributions (levels provide different bonuses)
+  // Palisades contributions - only count the highest level
   const palisadesLevel = state.buildings.palisades || 0;
-  if (palisadesLevel > 0) {
+  if (palisadesLevel === 1) {
     // Level 1: Wooden Palisades
     defense += Math.floor(3 * palisadesMultiplier);
     baseIntegrity += Math.floor(10 * palisadesMultiplier);
-
-    if (palisadesLevel >= 2) {
-      // Level 2: Fortified Palisades
-      defense += Math.floor(5 * palisadesMultiplier);
-      baseIntegrity += Math.floor(15 * palisadesMultiplier);
-    }
-
-    if (palisadesLevel >= 3) {
-      // Level 3: Stone Wall
-      defense += Math.floor(8 * palisadesMultiplier);
-      baseIntegrity += Math.floor(25 * palisadesMultiplier);
-    }
-
-    if (palisadesLevel >= 4) {
-      // Level 4: Reinforced Wall
-      defense += Math.floor(10 * palisadesMultiplier);
-      baseIntegrity += Math.floor(35 * palisadesMultiplier);
-    }
+  } else if (palisadesLevel === 2) {
+    // Level 2: Fortified Palisades
+    defense += Math.floor(5 * palisadesMultiplier);
+    baseIntegrity += Math.floor(15 * palisadesMultiplier);
+  } else if (palisadesLevel === 3) {
+    // Level 3: Stone Wall
+    defense += Math.floor(8 * palisadesMultiplier);
+    baseIntegrity += Math.floor(25 * palisadesMultiplier);
+  } else if (palisadesLevel === 4) {
+    // Level 4: Reinforced Wall
+    defense += Math.floor(10 * palisadesMultiplier);
+    baseIntegrity += Math.floor(35 * palisadesMultiplier);
   }
 
   // Add strength from stats to attack
