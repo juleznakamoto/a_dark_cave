@@ -492,7 +492,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
-    description: "An ancient golden crown radiating with mysterious power.",
+    description: "Ancient golden crown radiating with mysterious power.",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -517,7 +517,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ring_of_clarity: {
     id: "ring_of_clarity",
     name: "Ring of Clarity",
-    description: "A ring that clears the mind and protects against madness.",
+    description: "Ring carved out of very clear crytal",
     bonuses: {
       generalBonuses: {
         madnessReduction: 5,
