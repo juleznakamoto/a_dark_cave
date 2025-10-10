@@ -590,7 +590,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Hidden Lake",
     message:
-      "While gathering wood deep in the forest, your villagers discover a lake hidden among ancient trees. The water is eerily clear and still. One swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+      "While gathering wood in the forest, your villagers discover a lake hidden among trees. The water is eerily clear and still. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -612,7 +612,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 cracked_crown: true,
               },
               _logMessage:
-                "Your men approach cautiously. The creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown. The Cracked Crown radiates ancient power.",
+                "Your men approach cautiously. A creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown.",
             };
           } else if (rand < successChance + fleeChance) {
             return {
@@ -666,7 +666,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Blind Druid",
     message:
-      "A few days after the temple is built, a blind druid who lives in the forest appears at your gates. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to someone. Choose wisely, for this choice will shape your community's destiny forever.'",
+      "Shortly after the temple is built, a blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely, for this choice will shape your community's destiny forever.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -877,7 +877,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 3,
     title: "The Druid Returns",
     message:
-      "The blind druid emerges from the forest once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely, for this decision cannot be undone.'",
+      "The blind druid emerges once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -1031,7 +1031,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You hand over two of your villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done, they pack their belongings in disgust and abandon the village. You are left alone with your blood money.",
+              "You hand over two of your villagers. The trader tosses you a bag of steel and rides off with his new captives. When the remaining villagers see what you've done,  they abandon the village in disgust.",
           };
         },
       },
@@ -1069,7 +1069,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village, grateful for their liberation.",
+                "Your men attack the slaver! The fight is brutal but victorious. You free the captives and claim the trader's steel. The freed souls join your village.",
             };
           } else {
             // Failure: 1-2 villagers die
@@ -1103,7 +1103,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives. Your villagers look relieved that you didn't betray your own people.",
+              "You refuse the slaver's vile offer. He spits on the ground in disgust and rides away with his captives.",
           };
         },
       },
