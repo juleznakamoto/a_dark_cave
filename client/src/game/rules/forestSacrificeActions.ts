@@ -26,7 +26,6 @@ export const forestSacrificeActions: Record<string, Action> = {
       "story.seen.actionBoneTotems": true,
     },
     cooldown: 60,
-    dynamicCost: true, // Flag to indicate this action has dynamic pricing
   },
 };
 
