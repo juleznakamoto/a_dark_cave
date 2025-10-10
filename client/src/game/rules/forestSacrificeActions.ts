@@ -85,26 +85,33 @@ export function handleBoneTotems(
     });
   }
 
-  Object.assign(result.stateUpdates, effectUpdates);
-
-  // 1% base chance + 1% per usage to find Ring of Clarity if not already owned
+  // Check for Ring of Clarity discovery BEFORE assigning to result
   if (!state.relics.ring_of_clarity) {
     const baseProbability = 0.02; // 2%
     const bonusPerUse = 0.01; // 1%
     const totalProbability = baseProbability + usageCount * bonusPerUse;
+    const roll = Math.random();
 
-    if (Math.random() < totalProbability) {
-      const ringEvent = gameEvents.ringOfClarityFound;
-      if (ringEvent && ringEvent.effect) {
-        const ringEffects = ringEvent.effect(state);
-        Object.assign(result.stateUpdates, ringEffects);
+    console.log(`[Ring of Clarity] Usage count: ${usageCount}, Probability: ${(totalProbability * 100).toFixed(1)}%, Roll: ${(roll * 100).toFixed(1)}%`);
 
-        // Add log message
-        result.stateUpdates._logMessage =
-          "Among the offerings, you discover a crystal-clear ring, its surface perfectly smooth and radiating a sense of peace.";
+    if (roll < totalProbability) {
+      // Add ring directly to relics
+      if (!effectUpdates.relics) {
+        effectUpdates.relics = { ...state.relics };
       }
+      effectUpdates.relics.ring_of_clarity = true;
+
+      // Add log entry for the ring discovery
+      result.logEntries!.push({
+        id: `ring-of-clarity-${Date.now()}`,
+        message: "Among the offerings, you discover a crystal-clear ring, its surface perfectly smooth and radiating a sense of peace.",
+        timestamp: Date.now(),
+        type: "system",
+      });
     }
   }
+
+  Object.assign(result.stateUpdates, effectUpdates);
 
   return result;
 }
