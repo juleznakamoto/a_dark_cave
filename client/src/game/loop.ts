@@ -6,11 +6,12 @@ import { killVillagers } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
 
 let gameLoopId: number | null = null;
-let lastTick = 0;
+let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 
+let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
 
@@ -35,13 +36,26 @@ export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
   useGameStore.setState({ isGameLoopActive: true });
+  lastFrameTime = performance.now();
+  tickAccumulator = 0;
 
   function tick(timestamp: number) {
-    if (timestamp - lastTick >= TICK_INTERVAL) {
-      lastTick = timestamp;
+    const deltaTime = timestamp - lastFrameTime;
+    lastFrameTime = timestamp;
 
-      // Game tick logic
-      processTick();
+    // Check if game is paused
+    const state = useGameStore.getState();
+    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen;
+
+    if (!isPaused) {
+      // Accumulate time for fixed timestep
+      tickAccumulator += deltaTime;
+
+      // Process ticks in fixed intervals
+      while (tickAccumulator >= TICK_INTERVAL) {
+        tickAccumulator -= TICK_INTERVAL;
+        processTick();
+      }
 
       // Auto-save logic
       if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
@@ -60,6 +74,9 @@ export function startGameLoop() {
         handleFreezingCheck();
         handleStrangerApproach();
       }
+    } else {
+      // Only tick down cooldowns when paused
+      state.tickCooldowns();
     }
 
     gameLoopId = requestAnimationFrame(tick);
@@ -79,13 +96,6 @@ export function stopGameLoop() {
 function processTick() {
   const state = useGameStore.getState();
 
-  // If event dialog or combat dialog is open, pause game logic but keep cooldowns ticking
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) {
-    // Only tick down cooldowns, but don't process events or other game logic
-    state.tickCooldowns();
-    return;
-  }
-
   // Tick down cooldowns
   state.tickCooldowns();
 
@@ -95,10 +105,6 @@ function processTick() {
 
 function handleGathererProduction() {
   const state = useGameStore.getState();
-
-  // Pause gatherer production when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
-
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
@@ -117,10 +123,6 @@ function handleGathererProduction() {
 
 function handleHunterProduction() {
   const state = useGameStore.getState();
-
-  // Pause hunter production when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
-
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
@@ -136,9 +138,6 @@ function handleHunterProduction() {
 
 function handleMinerProduction() {
   const state = useGameStore.getState();
-
-  // Pause miner production when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   // Process each miner type, steel forger, tanner, and powder maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -162,9 +161,6 @@ function handleMinerProduction() {
 
 function handlePopulationSurvival() {
   const state = useGameStore.getState();
-
-  // Pause survival checks when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
@@ -197,9 +193,6 @@ function handlePopulationSurvival() {
 
 function handleStarvationCheck() {
   const state = useGameStore.getState();
-
-  // Pause starvation checks when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   // Only proceed if starvation is already active (activated in handlePopulationSurvival)
   if (!state.flags.starvationActive) return;
@@ -249,9 +242,6 @@ function handleStarvationCheck() {
 
 function handleFreezingCheck() {
   const state = useGameStore.getState();
-
-  // Pause freezing checks when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
@@ -308,9 +298,6 @@ async function handleAutoSave() {
 
 function handleStrangerApproach() {
   const state = useGameStore.getState();
-
-  // Pause stranger checks when event dialog or combat dialog is open
-  if (state.eventDialog.isOpen || state.combatDialog.isOpen) return;
 
   const currentPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
