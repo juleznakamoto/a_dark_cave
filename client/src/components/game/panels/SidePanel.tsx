@@ -2,17 +2,19 @@ import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
 import {
   clothingEffects,
-  getDisplayTools,
-  getTotalLuck,
-  getTotalStrength,
-  getTotalKnowledge,
-  getTotalMadness,
 } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { calculateBastionStats } from '@/game/bastionStats';
+import {
+  getDisplayTools,
+  getTotalLuck,
+  getTotalStrength,
+  getTotalKnowledge,
+  getTotalMadness,
+} from "@/game/rules/effectsCalculation";
 
 export default function SidePanel() {
   const {
@@ -34,7 +36,7 @@ export default function SidePanel() {
   // Clean up old resource changes periodically
   useEffect(() => {
     if (resourceChanges.length === 0) return;
-    
+
     const cleanupTimer = setTimeout(() => {
       const now = Date.now();
       setResourceChanges(prev => prev.filter(change => now - change.timestamp < 2000));
@@ -108,17 +110,17 @@ export default function SidePanel() {
   const schematicItems = Object.entries(gameState.schematics || {})
     .filter(([key, value]) => {
       if (!value) return false;
-      
+
       // Hide arbalest schematic if weapon is crafted
       if (key === 'arbalest_schematic' && gameState.weapons.arbalest) {
         return false;
       }
-      
+
       // Hide nightshade bow schematic if weapon is crafted
       if (key === 'nightshade_bow_schematic' && gameState.weapons.nightshade_bow) {
         return false;
       }
-      
+
       return true;
     })
     .map(([key, value]) => ({
@@ -134,24 +136,24 @@ export default function SidePanel() {
     .filter(([key, value]) => {
       // Show blessing if it's true OR if its enhanced version is true
       if (value === true) return true;
-      
+
       // Check if this is a base blessing with an enhanced version
       const enhancedKey = `${key}_enhanced`;
       if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
         return true;
       }
-      
+
       return false;
     })
     .filter(([key]) => {
       // Don't show base blessing if enhanced version exists and is active
       if (key.endsWith('_enhanced')) return true;
-      
+
       const enhancedKey = `${key}_enhanced`;
       if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
         return false; // Hide base version, show enhanced instead
       }
-      
+
       return true;
     })
     .map(([key, value]) => ({
@@ -183,7 +185,7 @@ export default function SidePanel() {
       // Get the action definition to access the label
       const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
-      
+
       // Use the label from villageBuildActions, with special handling for multiple huts
       let label = buildAction?.label || capitalizeWords(key);
       if (key === "woodenHut" || key === "stoneHut" || key === "longhouse") {
@@ -192,12 +194,12 @@ export default function SidePanel() {
 
       // Get stats effects for this specific building from villageBuildActions
       let tooltip = undefined;
-      
+
       // Check if this building is damaged
       const isDamaged = (key === 'bastion' && story?.seen?.bastionDamaged) ||
                        (key === 'watchtower' && story?.seen?.watchtowerDamaged) ||
                        (key === 'palisades' && story?.seen?.palisadesDamaged);
-      
+
       if (buildAction?.statsEffects) {
         const effects = Object.entries(buildAction.statsEffects)
           .map(([stat, value]) => {
@@ -210,29 +212,29 @@ export default function SidePanel() {
           tooltip = effects;
         }
       }
-      
+
       // Special handling for buildings with madness reduction
       if (['sanctum', 'temple', 'shrine', 'altar'].includes(key) && (value ?? 0) > 0) {
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
-        
+
         if (buildAction?.statsEffects?.madness) {
           const madnessValue = buildAction.statsEffects.madness;
           tooltip = `${madnessValue} Madness`;
         }
       }
-      
+
       // Special handling for buildings with knowledge bonuses
       if (['clerksHut', 'scriptorium'].includes(key) && (value ?? 0) > 0) {
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
-        
+
         if (buildAction?.statsEffects?.knowledge) {
           const knowledgeValue = buildAction.statsEffects.knowledge;
           tooltip = `+${knowledgeValue} Knowledge`;
         }
       }
-      
+
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
       if (key === 'bastion' && buildings.bastion > 0) {
@@ -240,44 +242,44 @@ export default function SidePanel() {
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutBastion = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, bastion: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutBastion.defense;
         const attack = currentStats.attackFromFortifications - statsWithoutBastion.attackFromFortifications;
-        
+
         tooltip = `+${defense} defense, +${attack} attack`;
       } else if (key === 'watchtower' && buildings.watchtower > 0) {
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutWatchtower = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, watchtower: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutWatchtower.defense;
         const attack = currentStats.attackFromFortifications - statsWithoutWatchtower.attackFromFortifications;
-        
+
         tooltip = `+${defense} defense, +${attack} attack`;
       } else if (key === 'palisades' && buildings.palisades > 0) {
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutPalisades = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, palisades: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutPalisades.defense;
-        
+
         tooltip = `+${defense} defense`;
       }
 
@@ -434,48 +436,48 @@ export default function SidePanel() {
         const level = value ?? 0;
         const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
         label = watchtowerLabels[level - 1] || "Watchtower";
-        
+
         const isDamaged = story?.seen?.watchtowerDamaged;
-        
+
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutWatchtower = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, watchtower: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutWatchtower.defense;
         const attack = currentStats.attack - statsWithoutWatchtower.attack;
         const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
-        
+
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
         }
       } else if (key === "bastion") {
         const isDamaged = story?.seen?.bastionDamaged;
-        
+
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutBastion = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, bastion: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutBastion.defense;
         const attack = currentStats.attack - statsWithoutBastion.attack;
         const integrity = currentStats.integrity - statsWithoutBastion.integrity;
-        
+
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
@@ -484,24 +486,24 @@ export default function SidePanel() {
         const palisadesLevel = value ?? 0;
         const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
         label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
-        
+
         const isDamaged = story?.seen?.palisadesDamaged;
-        
+
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings }
         });
-        
+
         const statsWithoutPalisades = calculateBastionStats({
           ...useGameStore.getState(),
           buildings: { ...buildings, palisades: 0 }
         });
-        
+
         const defense = currentStats.defense - statsWithoutPalisades.defense;
         const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
-        
+
         tooltip = `+${defense} Defense\n+${integrity} Integrity`;
-        
+
         // Add red down arrow if damaged
         if (isDamaged) {
           label += " ↓";
@@ -524,7 +526,7 @@ export default function SidePanel() {
     .filter(([key]) => !["attackFromFortifications", "attackFromStrength"].includes(key)) // Exclude breakdown fields from display
     .map(([key, value]) => {
       let tooltip = undefined;
-      
+
       // Add detailed tooltip for attack showing breakdown
       if (key === "attack" && bastion_stats) {
         const fortAttack = bastion_stats.attackFromFortifications || 0;
@@ -533,7 +535,7 @@ export default function SidePanel() {
           tooltip = `${fortAttack} from Fortifications\n${strengthAttack} from Strength`;
         }
       }
-      
+
       return {
         id: key,
         label: capitalizeWords(key),

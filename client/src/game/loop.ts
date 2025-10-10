@@ -4,6 +4,8 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
+import { getTotalMadness } from "./rules/effectsCalculation";
+import { clothingEffects } from "./rules/effects";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;

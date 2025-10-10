@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects } from "@/game/rules";
+import { applyActionEffects } from "@/game/rules/effectsCalculation";
 import {
   getTotalLuck,
   getTotalStrength,

@@ -24,6 +24,12 @@ import {
 import { caveEvents } from "../eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { forestTradeActions } from "./forestTradeActions";
+import {
+  getTotalLuck as getTotalLuckCalc,
+  getActionBonuses as getActionBonusesCalc,
+  getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
+  getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
+} from "./effectsCalculation";
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -163,12 +169,12 @@ function getAdjustedCost(
   const isBuildingAction = action?.building || false;
 
   if (isCraftingAction) {
-    const reduction = getTotalCraftingCostReduction(state);
+    const reduction = getTotalCraftingCostReductionCalc(state);
     return Math.floor(cost * (1 - reduction));
   }
 
   if (isBuildingAction) {
-    const reduction = getTotalBuildingCostReduction(state);
+    const reduction = getTotalBuildingCostReductionCalc(state);
     return Math.floor(cost * (1 - reduction));
   }
 
@@ -261,17 +267,17 @@ export const applyActionEffects = (
   const isCraftingAction =
     actionId.startsWith("craft") || actionId.startsWith("forge");
   const craftingCostReduction = isCraftingAction
-    ? getTotalCraftingCostReduction(state)
+    ? getTotalCraftingCostReductionCalc(state)
     : 0;
 
   // Get building cost reduction for building actions
   const isBuildingAction = action.building;
   const buildingCostReduction = isBuildingAction
-    ? getTotalBuildingCostReduction(state)
+    ? getTotalBuildingCostReductionCalc(state)
     : 0;
 
   // Get action bonuses from tools, weapons, and relics
-  const actionBonuses = getActionBonuses(actionId, state);
+  const actionBonuses = getActionBonusesCalc(actionId, state);
 
   // First apply costs (as negative effects)
   if (action.cost) {
@@ -371,7 +377,7 @@ export const applyActionEffects = (
           let baseAmount = Math.floor(Math.random() * (max - min + 1)) + min;
 
           // Apply action bonuses from the centralized effects system
-          const actionBonuses = getActionBonuses(actionId, state);
+          const actionBonuses = getActionBonusesCalc(actionId, state);
           if (
             actionBonuses?.resourceBonus?.[
               finalKey as keyof typeof actionBonuses.resourceBonus
@@ -420,7 +426,7 @@ export const applyActionEffects = (
           conditionMet = evaluateCondition(probabilityEffect.condition, state);
         }
 
-        const totalLuck = getTotalLuck(state);
+        const totalLuck = getTotalLuckCalc(state);
         const luckBonus = totalLuck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
         const adjustedProbability = Math.min(
           probabilityEffect.probability +

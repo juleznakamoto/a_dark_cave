@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from '@/game/rules';
+import { ActionResult } from "../actions";
+import { applyActionEffects } from "./effectsCalculation";
 
 export const caveMiningActions: Record<string, Action> = {
   mineStone: {

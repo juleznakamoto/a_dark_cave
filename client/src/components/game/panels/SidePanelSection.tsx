@@ -4,6 +4,7 @@ import {
   weaponEffects,
   toolEffects,
 } from "@/game/rules/effects";
+import { getDisplayTools } from "@/game/rules/effectsCalculation";
 import {
   Tooltip,
   TooltipContent,

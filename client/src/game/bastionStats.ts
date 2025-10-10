@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { getTotalStrength } from "./rules/effects";
+import { getTotalStrength } from "./rules/effectsCalculation";
 
 export interface BastionStats {
   defense: number;
