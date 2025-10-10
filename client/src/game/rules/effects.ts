@@ -1321,28 +1321,10 @@ export const getTotalMadness = (state: GameState): number => {
   // Add madness from effects
   totalMadness += effects.statBonuses?.madness || 0;
 
-  // Apply madness reduction from effects
+  // Apply madness reduction from effects (includes building madness reductions)
   Object.values(effects.madness_reduction).forEach((reduction) => {
     totalMadness += reduction; // Already negative values
   });
-
-  // Reduce madness from buildings (only highest tier applies)
-  const buildingMadnessReductions = [
-    { key: "sanctum", reduction: -15 },
-    { key: "temple", reduction: -10 },
-    { key: "shrine", reduction: -5 },
-    { key: "altar", reduction: -1 },
-  ];
-
-  // Find the highest tier building that exists and apply only its effect
-  for (const building of buildingMadnessReductions) {
-    const buildingCount =
-      state.buildings[building.key as keyof typeof state.buildings] || 0;
-    if (buildingCount > 0) {
-      totalMadness += building.reduction;
-      break; // Only apply the highest tier building's effect
-    }
-  }
 
   return Math.max(0, totalMadness);
 };
@@ -1392,6 +1374,29 @@ export const calculateTotalEffects = (state: GameState) => {
       madness: 0,
     },
   };
+
+  // Import villageBuildActions to access statsEffects
+  const { villageBuildActions } = require('./villageBuildActions');
+
+  // Process building statsEffects for madness reduction (only highest tier applies)
+  const buildingMadnessReductions = [
+    { key: "sanctum", actionId: "buildSanctum" },
+    { key: "temple", actionId: "buildTemple" },
+    { key: "shrine", actionId: "buildShrine" },
+    { key: "altar", actionId: "buildAltar" },
+  ];
+
+  for (const building of buildingMadnessReductions) {
+    const buildingCount = state.buildings[building.key as keyof typeof state.buildings] || 0;
+    if (buildingCount > 0) {
+      const buildAction = villageBuildActions[building.actionId];
+      if (buildAction?.statsEffects?.madness) {
+        const effectKey = `${building.key}_madness`;
+        effects.madness_reduction[effectKey] = buildAction.statsEffects.madness;
+      }
+      break; // Only apply the highest tier building's effect
+    }
+  }
 
   const activeEffects = getActiveEffects(state);
 
