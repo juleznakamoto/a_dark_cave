@@ -1302,7 +1302,6 @@ export const getTotalStrength = (state: GameState): number => {
 export const getTotalKnowledge = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
   let knowledge = state.stats.knowledge || 0;
-
   return knowledge + (effects.statBonuses?.knowledge || 0);
 };
 
