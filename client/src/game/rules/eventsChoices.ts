@@ -1,7 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effects";
+import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effectsCalculation";
 import { getMaxPopulation } from "@/game/population";
 
 export const choiceEvents: Record<string, GameEvent> = {

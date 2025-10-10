@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
-import { getTotalKnowledge } from "@/game/rules/effects";
+import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import {
   Dialog,
   DialogContent,

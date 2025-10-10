@@ -10,7 +10,7 @@ import {
   assignVillagerToJob,
   unassignVillagerFromJob,
 } from "@/game/stateHelpers";
-import { calculateTotalEffects } from "@/game/rules/effects";
+import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";

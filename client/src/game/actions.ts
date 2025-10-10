@@ -127,13 +127,6 @@ import {
   handleMineAdamant,
 } from '@/game/rules/caveMineActions';
 
-import {
-  getCooldownReduction,
-  getActionBonuses,
-  getTotalCraftingCostReduction,
-  getTotalBuildingCostReduction,
-} from "./rules/effectsCalculation";
-
 export interface ActionResult {
   stateUpdates: Partial<GameState> & {
     _logMessage?: string;

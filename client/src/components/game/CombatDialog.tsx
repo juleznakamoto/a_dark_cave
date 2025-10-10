@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
-import { getTotalKnowledge } from "@/game/rules/effects";
+import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import {
   Dialog,
   DialogContent,
