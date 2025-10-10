@@ -1371,7 +1371,7 @@ export const calculateTotalEffects = (state: GameState) => {
   };
 
   // Import villageBuildActions to access statsEffects
-  const { villageBuildActions } = require('./villageBuildActions');
+  const { villageBuildActions } = await import('./villageBuildActions');
 
   // Dynamically process all building statsEffects
   // Convert building key to action ID format (e.g., "clerksHut" -> "buildClerksHut")
@@ -1379,8 +1379,9 @@ export const calculateTotalEffects = (state: GameState) => {
     return `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
   };
 
-  // Track madness reduction buildings in priority order (highest tier first)
+  // Track buildings with stat effects in priority order
   const madnessReductionBuildings: string[] = [];
+  const knowledgeBonusBuildings: string[] = [];
   
   // Iterate through all buildings and collect their statsEffects
   Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
@@ -1394,15 +1395,17 @@ export const calculateTotalEffects = (state: GameState) => {
           madnessReductionBuildings.push(buildingKey);
         }
         
+        // Handle knowledge effects (track for priority-based application)
+        if (buildAction.statsEffects.knowledge !== undefined) {
+          knowledgeBonusBuildings.push(buildingKey);
+        }
+        
         // Sum up all other stat bonuses
         if (buildAction.statsEffects.strength !== undefined) {
           effects.statBonuses.strength += buildAction.statsEffects.strength;
         }
         if (buildAction.statsEffects.luck !== undefined) {
           effects.statBonuses.luck += buildAction.statsEffects.luck;
-        }
-        if (buildAction.statsEffects.knowledge !== undefined) {
-          effects.statBonuses.knowledge += buildAction.statsEffects.knowledge;
         }
       }
     }
@@ -1418,6 +1421,20 @@ export const calculateTotalEffects = (state: GameState) => {
       if (buildAction?.statsEffects?.madness) {
         const effectKey = `${buildingKey}_madness`;
         effects.madness_reduction[effectKey] = buildAction.statsEffects.madness;
+      }
+      break; // Only apply the highest tier building's effect
+    }
+  }
+
+  // Apply knowledge bonus from highest tier building only
+  // Order by priority: scriptorium > clerksHut
+  const knowledgePriority = ["scriptorium", "clerksHut"];
+  for (const buildingKey of knowledgePriority) {
+    if (knowledgeBonusBuildings.includes(buildingKey)) {
+      const actionId = getBuildActionId(buildingKey);
+      const buildAction = villageBuildActions[actionId];
+      if (buildAction?.statsEffects?.knowledge) {
+        effects.statBonuses.knowledge += buildAction.statsEffects.knowledge;
       }
       break; // Only apply the highest tier building's effect
     }
