@@ -2,7 +2,7 @@ import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
 import {
   clothingEffects,
-} from "@/game/rules/effectsCalculations";
+} from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
