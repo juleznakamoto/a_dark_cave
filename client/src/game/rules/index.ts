@@ -21,7 +21,7 @@ import {
   forestSacrificeActions,
   getBoneTotemsCost,
 } from "./forestSacrificeActions";
-import { caveEvents } from "./eventsCave";
+import { caveEvents } from "../eventsCave";
 import { huntEvents } from "./eventsHunt";
 import { forestTradeActions } from "./forestTradeActions";
 
