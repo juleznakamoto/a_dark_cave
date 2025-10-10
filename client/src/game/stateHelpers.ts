@@ -1,4 +1,4 @@
-import { GameState } from '@shared/schema';
+import { GameState, gameStateSchema } from '@shared/schema';
 
 export function updateResource(
   state: GameState,
@@ -136,4 +136,24 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   return {
     villagers: updatedVillagers
   };
+}
+
+/**
+ * Builds a clean GameState object from the Zustand store state
+ * Filters out functions and Zustand-specific properties
+ */
+export function buildGameState(state: any): GameState {
+  // Get all keys from the schema
+  const schemaKeys = Object.keys(gameStateSchema.shape);
+  
+  // Build the state object dynamically
+  const gameState: Partial<GameState> = {};
+  
+  for (const key of schemaKeys) {
+    if (key in state) {
+      gameState[key as keyof GameState] = state[key as keyof typeof state];
+    }
+  }
+  
+  return gameState as GameState;
 }

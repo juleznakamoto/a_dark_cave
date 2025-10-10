@@ -1,8 +1,8 @@
 import { useGameStore } from "./state";
 import { saveGame } from "./save";
-import { GameState, gameStateSchema } from "@shared/schema";
+import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
-import { killVillagers } from "@/game/stateHelpers";
+import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
 
 let gameLoopId: number | null = null;
@@ -14,23 +14,6 @@ const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
-
-// Helper function to build the GameState object
-function buildGameState(state: ReturnType<typeof useGameStore>): GameState {
-  // Get all keys from the schema
-  const schemaKeys = Object.keys(gameStateSchema.shape);
-  
-  // Build the state object dynamically
-  const gameState: Partial<GameState> = {};
-  
-  for (const key of schemaKeys) {
-    if (key in state) {
-      gameState[key as keyof GameState] = state[key as keyof typeof state];
-    }
-  }
-  
-  return gameState as GameState;
-}
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
