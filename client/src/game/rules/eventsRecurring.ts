@@ -163,4 +163,32 @@ export const recurringEvents: Record<string, GameEvent> = {
       };
     },
   },
+
+  findWood: {
+    id: "findWood",
+    condition: (state: GameState) => state.flags.fireLit,
+    triggerType: "resource",
+    timeProbability: 15,
+    repeatable: true,
+    message: [
+      "You discover fallen branches scattered near the cave entrance.",
+      "Dry wood lies among the rocks, ready to be gathered.",
+      "A pile of wood has been left near the entrance. You gather it quickly.",
+    ],
+    triggered: false,
+    priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
+    effect: (state: GameState) => {
+      const woodAmount = Math.floor(Math.random() * 20) + 10; // 10-30 wood
+      return {
+        resources: {
+          ...state.resources,
+          wood: state.resources.wood + woodAmount,
+        },
+      };
+    },
+  },
 };
