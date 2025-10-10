@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -60,7 +59,8 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   ironGift: {
     id: "ironGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 1,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 8,
     triggerType: "resource",
     timeProbability: 30,
     message: [
@@ -90,8 +90,8 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 25,
     message: [
-      "At dawn, steel bars lie stacked at the village's edge. Nobody knows where they come from.",
-      "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
+      "Villagers find steel bars at the village's edge.",
+      "Someone has left gleaming steel ingots at the edge of the village.",
     ],
     triggered: false,
     priority: 2,
@@ -99,22 +99,25 @@ export const recurringEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        steel: state.resources.steel + 10 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      return {
+        resources: {
+          ...state.resources,
+          steel: state.resources.steel + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
   },
 
   obsidianGift: {
     id: "obsidianGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 8,
+    condition: (state: GameState) => state.buildings.woodenHut >= 6,
     triggerType: "resource",
     timeProbability: 30,
     message: [
       "By dawn, obsidian shards have been placed around the village.",
-      "In the morning light, villagers notice obsidian shards nearby the village.",
+      "In the morning, villagers find obsidian shards nearby the village.",
     ],
     triggered: false,
     priority: 2,
@@ -122,17 +125,21 @@ export const recurringEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        obsidian: state.resources.obsidian + 10 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      return {
+        resources: {
+          ...state.resources,
+          steel:
+            state.resources.obsidian + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
   },
 
   adamantGift: {
     id: "adamantGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 10,
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
     triggerType: "resource",
     timeProbability: 30,
     message: [
@@ -146,11 +153,12 @@ export const recurringEvents: Record<string, GameEvent> = {
       duration: 2,
     },
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 4 : 8;
+      const multiplier = Math.random() < 0.5 ? 25 : 50;
       return {
         resources: {
           ...state.resources,
-          adamant: state.resources.adamant + multiplier * state.buildings.woodenHut,
+          adamant:
+            state.resources.adamant + multiplier * state.buildings.woodenHut,
         },
       };
     },
