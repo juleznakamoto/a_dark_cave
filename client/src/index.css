@@ -289,7 +289,7 @@ div.stone-axe-pulse {
 }
 
 .button-glow-animation {
-  animation: button-glow 0.3s ease-out;
+  animation: button-glow 0.5s ease-in-out;
 }
 
 .madness-pulse-fast-intense {

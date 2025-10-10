@@ -13,7 +13,7 @@ export default function GameFooter() {
   const handleSaveGame = async () => {
     setGlowingButton("save");
     await manualSave();
-    setTimeout(() => setGlowingButton(null), 300);
+    setTimeout(() => setGlowingButton(null), 500);
   };
 
   const handleRestartGame = async () => {
