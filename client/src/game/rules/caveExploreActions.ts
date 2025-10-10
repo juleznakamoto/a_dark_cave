@@ -735,6 +735,10 @@ export function handleLowChamber(
       "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures: gold coins scattered across the floor, bloodstones pulsing with dark energy, and shards of frostglas that seem to freeze the very air around them. Most remarkable of all, you discover the mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -753,6 +757,10 @@ export function handleoccultistChamber(
       "Following the occultist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the occultist's greatest treasures and experiments await, preserved in death. Most precious of all is his grimoire, filled with forbidden knowledge and arcane secrets.",
     timestamp: Date.now(),
     type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -771,6 +779,10 @@ export function handleBlastPortal(
       "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
+    visualEffect: {
+      type: "glow",
+      duration: 3,
+    },
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
