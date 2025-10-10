@@ -323,7 +323,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'buildWatchtower':
       return handleBuildWatchtower(state, result);
     case 'buildPalisades':
-      return handleBuildPalisades(state, result);
+      return handleBuildPalisades(state, result);Fix
     case 'buildGrandBlacksmith':
       return handleBuildGrandBlacksmith(state, result);
     case 'buildLonghouse':
