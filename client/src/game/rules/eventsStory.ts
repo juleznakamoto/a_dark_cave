@@ -6,14 +6,17 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "foodGone",
     condition: (state: GameState) => state.resources.food > 50,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 0.02,
     message: [
-      "At dawn, food stores are lighter. Strange whispers were heard at night.",
-      "Villagers wake to find food missing. Some heard ancient tongues in the night.",
-      "By morning, food stores are thinned. Some murmur of inhuman voices heard in the dark.",
-    ][Math.floor(Math.random() * 3)],
+      "Food is missing. Villagers speak of voices in the dark.",
+      "By morning, the stores are lighter. Something was here.",
+    ][Math.floor(Math.random() * 2)],
     triggered: false,
     priority: 2,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     effect: (state: GameState) => ({
       resources: {
         ...state.resources,
@@ -252,5 +255,4 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     }),
   },
-
-  };
+};
