@@ -38,6 +38,22 @@ export default function BastionPanel() {
     });
   };
 
+  // Helper to format repair cost for tooltip
+  const getRepairCostText = (repairCost: Record<string, number>) => {
+    return Object.entries(repairCost).map(([resource, cost]) => {
+      const resourceName = resource
+        .split('_')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+      const currentAmount = resources[resource as keyof typeof resources] || 0;
+      const satisfied = currentAmount >= cost;
+      return {
+        text: `-${cost} ${resourceName}`,
+        satisfied
+      };
+    });
+  };
+
   const deductRepairCost = (repairCost: Record<string, number>) => {
     const newResources = { ...resources };
     for (const [resource, cost] of Object.entries(repairCost)) {
@@ -129,7 +145,14 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildBastion', useGameStore.getState()).replace(/-(\d+)/g, (_, num) => '-' + Math.floor(parseInt(num) * 0.5).toString())}
+                  {getRepairCostText(getRepairCost('buildBastion', 1)).map((cost, index) => (
+                    <div
+                      key={index}
+                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+                    >
+                      {cost.text}
+                    </div>
+                  ))}
                 </div>
               </HoverCardContent>
             </HoverCard>
@@ -152,7 +175,14 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildWatchtower', useGameStore.getState()).replace(/-(\d+)/g, (_, num) => '-' + Math.floor(parseInt(num) * 0.5).toString())}
+                  {getRepairCostText(getRepairCost('buildWatchtower', buildings.watchtower)).map((cost, index) => (
+                    <div
+                      key={index}
+                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+                    >
+                      {cost.text}
+                    </div>
+                  ))}
                 </div>
               </HoverCardContent>
             </HoverCard>
@@ -175,7 +205,14 @@ export default function BastionPanel() {
               </HoverCardTrigger>
               <HoverCardContent className="w-auto p-2">
                 <div className="text-xs whitespace-nowrap">
-                  {getCostText('buildPalisades', useGameStore.getState()).replace(/-(\d+)/g, (_, num) => '-' + Math.floor(parseInt(num) * 0.5).toString())}
+                  {getRepairCostText(getRepairCost('buildPalisades', buildings.palisades)).map((cost, index) => (
+                    <div
+                      key={index}
+                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+                    >
+                      {cost.text}
+                    </div>
+                  ))}
                 </div>
               </HoverCardContent>
             </HoverCard>
