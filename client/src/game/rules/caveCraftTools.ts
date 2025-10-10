@@ -454,9 +454,6 @@ export const caveCraftTools: Record<string, Action> = {
       "buildings.bastion": 1,
       "clothing.grenadier_bag": false,
     },
-    hide_when: {
-      "clothing.grenadier_bag": true,
-    },
     cost: {
       "resources.leather": 1000,
     },

@@ -641,7 +641,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   coin_of_drowned: {
     id: "coin_of_drowned",
     name: "Coin of Drowned",
-    description: "A ring that is always wet and cold",
+    description: "Tarnished ring that is always wet and cold",
     bonuses: {
       generalBonuses: {
         luck: 4,
