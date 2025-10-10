@@ -7,33 +7,10 @@ import {
   getTotalKnowledge,
 } from "@/game/rules/effects";
 import { killVillagers } from "@/game/stateHelpers";
-// Assuming gameEvents is imported from a shared location or defined elsewhere
-// For the purpose of this diff, we'll assume it's available in scope.
-// Example: import { gameEvents } from '@/game/events';
 
-// Placeholder for gameEvents if not provided in original context
-// In a real scenario, this would be imported.
 const gameEvents: any = {
   blacksmithHammerChoice: { id: "blacksmithHammerChoice", title: "Blacksmith Hammer Choice", message: "A choice related to the blacksmith hammer.", choices: [] },
   redMaskChoice: { id: "redMaskChoice", title: "Red Mask Choice", message: "A choice related to the red mask.", choices: [] },
-  ringOfClarityFound: {
-    id: "ringOfClarityFound",
-    title: "Ring of Clarity Found",
-    message: "While hunting, you discover a Ring of Clarity lying on a moss-covered stone. Its crystal surface seems to absorb the chaos of the forest around it. You feel your mind clearing as you slip it on.",
-    effect: (state: GameState) => ({
-      relics: {
-        ...state.relics,
-        ring_of_clarity: true,
-      },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          ringOfClarityFound: true,
-        },
-      },
-    }),
-  },
 };
 
 
@@ -195,24 +172,6 @@ export function handleHunt(
       });
     }
   }
-
-  // Check for Ring of Clarity discovery (0.5% probability if not yet found and altar is built)
-  if (!state.relics.ring_of_clarity && state.buildings?.altar >= 1 && Math.random() < 0.005) {
-    const ringEvent = gameEvents.ringOfClarityFound;
-    if (ringEvent && ringEvent.effect) {
-      const ringEffects = ringEvent.effect(state);
-      Object.assign(result.stateUpdates, ringEffects);
-
-      // Add log message
-      result.logEntries!.push({
-        id: `ring-of-clarity-found-${Date.now()}`,
-        message: "While hunting, you discover a Ring of Clarity lying on a moss-covered stone. Its crystal surface seems to absorb the chaos of the forest around it. You feel your mind clearing as you slip it on.",
-        timestamp: Date.now(),
-        type: "system",
-      });
-    }
-  }
-
 
   return result;
 }
