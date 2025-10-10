@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from '@/game/actions';
 import { getTotalKnowledge } from './effects';
-import { applyActionEffects } from "./effectsCalculation";
+import { applyActionEffects } from "./index";
 
 export const forestTradeActions: Record<string, Action> = {
   tradeGoldForWood: {
