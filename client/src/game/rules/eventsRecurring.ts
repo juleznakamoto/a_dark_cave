@@ -73,12 +73,15 @@ export const recurringEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        iron: state.resources.iron + 25 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 50 : 100;
+      return {
+        resources: {
+          ...state.resources,
+          iron: state.resources.iron + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
   },
 
   steelGift: {
@@ -142,11 +145,14 @@ export const recurringEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        adamant: state.resources.adamant + 8 * state.buildings.woodenHut,
-      },
-    }),
+    effect: (state: GameState) => {
+      const multiplier = Math.random() < 0.5 ? 4 : 8;
+      return {
+        resources: {
+          ...state.resources,
+          adamant: state.resources.adamant + multiplier * state.buildings.woodenHut,
+        },
+      };
+    },
   },
 };
