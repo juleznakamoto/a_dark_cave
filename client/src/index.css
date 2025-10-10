@@ -330,3 +330,32 @@ div.stone-axe-pulse {
 .cube-dialog-glow {
   animation: cube-glow-pulse 5s ease-in-out infinite;
 }
+
+/* Log entry visual effects */
+@keyframes log-glow {
+  0%, 100% {
+    text-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
+  }
+  50% {
+    text-shadow: 0 0 8px rgba(255, 99, 71, 0.8), 0 0 12px rgba(255, 69, 0, 0.6);
+  }
+}
+
+@keyframes log-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+.log-glow {
+  animation: log-glow var(--effect-duration, 2s) ease-in-out;
+}
+
+.log-pulse {
+  animation: log-pulse var(--effect-duration, 2s) ease-in-out;
+}

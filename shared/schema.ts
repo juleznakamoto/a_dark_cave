@@ -6,6 +6,10 @@ export const logEntrySchema = z.object({
   message: z.string(),
   timestamp: z.number(),
   type: z.enum(['system', 'action', 'event', 'production']).default('system'),
+  visualEffect: z.object({
+    type: z.enum(['glow', 'pulse']),
+    duration: z.number(), // in seconds
+  }).optional(),
 });
 
 // Game state schema for A Dark Cave
