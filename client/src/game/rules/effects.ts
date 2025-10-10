@@ -1303,14 +1303,6 @@ export const getTotalStrength = (state: GameState): number => {
   const activeEffects = getActiveEffects(state);
   let strength = state.stats.strength || 0;
 
-  // Weapons
-  if (state.weapons.iron_sword) strength += 1;
-  if (state.weapons.steel_sword) strength += 2;
-  if (state.weapons.obsidian_sword) strength += 3;
-  if (state.weapons.adamant_sword) strength += 4;
-  if (state.weapons.frostglass_sword) strength += 8;
-  if (state.weapons.bloodstone_staff) strength += 5;
-
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.strength) {
       strength += effect.bonuses.generalBonuses.strength;
