@@ -1286,70 +1286,44 @@ export function getActionBonuses(
 
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let luck = state.stats.luck || 0;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.luck) {
-      luck += effect.bonuses.generalBonuses.luck;
-    }
-  });
-
-  return luck;
+  const effects = calculateTotalEffects(state);
+  const baseLuck = state.stats.luck || 0;
+  return baseLuck + (effects.statBonuses?.luck || 0);
 };
 
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
-  let strength = state.stats.strength || 0;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.strength) {
-      strength += effect.bonuses.generalBonuses.strength;
-    }
-  });
-
-  return strength;
+  const effects = calculateTotalEffects(state);
+  const baseStrength = state.stats.strength || 0;
+  return baseStrength + (effects.statBonuses?.strength || 0);
 };
 
 // Helper function to calculate total knowledge
 export const getTotalKnowledge = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
+  const effects = calculateTotalEffects(state);
   let knowledge = state.stats.knowledge || 0;
 
   // Base knowledge from buildings
   if (state.buildings.clerksHut > 0) knowledge += 2;
   if (state.buildings.scriptorium > 0) knowledge += 5;
 
-  // Weapons
-  if (state.weapons.bloodstone_staff) knowledge += 10;
-
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.knowledge) {
-      knowledge += effect.bonuses.generalBonuses.knowledge;
-    }
-  });
-
-  return knowledge;
+  return knowledge + (effects.statBonuses?.knowledge || 0);
 };
 
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
-  const activeEffects = getActiveEffects(state);
+  const effects = calculateTotalEffects(state);
   let totalMadness = state.stats.madness || 0;
 
   // Add madness from events
   totalMadness += state.stats.madnessFromEvents || 0;
 
-  // Add madness from active effects
-  activeEffects.forEach((effect) => {
-    if (effect.bonuses.generalBonuses?.madness) {
-      totalMadness += effect.bonuses.generalBonuses.madness;
-    }
-    // Subtract madness reduction
-    if (effect.bonuses.generalBonuses?.madnessReduction) {
-      totalMadness -= effect.bonuses.generalBonuses.madnessReduction;
-    }
+  // Add madness from effects
+  totalMadness += effects.statBonuses?.madness || 0;
+
+  // Apply madness reduction from effects
+  Object.values(effects.madness_reduction).forEach((reduction) => {
+    totalMadness += reduction; // Already negative values
   });
 
   // Reduce madness from buildings (only highest tier applies)
@@ -1430,6 +1404,12 @@ export const calculateTotalEffects = (state: GameState) => {
         -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
       // Update statBonuses for madness
       effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
+    }
+    
+    // Process madness reduction from general bonuses
+    if (effect.bonuses.generalBonuses?.madnessReduction) {
+      const effectKey = `${effect.id}_madness_reduction`;
+      effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madnessReduction;
     }
 
     // Populate actionBonuses directly from effects
