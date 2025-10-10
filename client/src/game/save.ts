@@ -1,5 +1,6 @@
 import { openDB, DBSchema } from 'idb';
 import { GameState, SaveData } from '@shared/schema';
+import { buildGameState } from './stateHelpers';
 
 interface GameDB extends DBSchema {
   saves: {
@@ -30,21 +31,8 @@ export async function saveGame(gameState: GameState): Promise<void> {
   try {
     const db = await getDB();
     
-    // Custom serializer that excludes functions and non-serializable data
-    const cleanGameState = JSON.parse(JSON.stringify(gameState, (key, value) => {
-      // Filter out functions
-      if (typeof value === 'function') {
-        return undefined;
-      }
-      // Filter out any Zustand-specific properties
-      if (key.startsWith('_') || key === 'subscribe' || key === 'getState' || key === 'setState') {
-        return undefined;
-      }
-      return value;
-    }));
-    
     const saveData: SaveData = {
-      gameState: cleanGameState,
+      gameState,
       timestamp: Date.now(),
     };
     
