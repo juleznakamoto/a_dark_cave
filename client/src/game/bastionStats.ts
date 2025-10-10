@@ -36,22 +36,22 @@ export function calculateBastionStats(state: GameState): BastionStats {
 
   if (watchtowerLevel === 1) {
     // Level 1: Basic Watchtower
-    defense += Math.floor(1 * watchtowerMultiplier);
+    defense += Math.floor(2 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(5 * watchtowerMultiplier);
     baseIntegrity += Math.floor(5 * watchtowerMultiplier);
   } else if (watchtowerLevel === 2) {
     // Level 2: Guard Tower
-    defense += Math.floor(2 * watchtowerMultiplier);
+    defense += Math.floor(3 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(8 * watchtowerMultiplier);
     baseIntegrity += Math.floor(5 * watchtowerMultiplier);
   } else if (watchtowerLevel === 3) {
     // Level 3: Fortified Tower
-    defense += Math.floor(3 * watchtowerMultiplier);
+    defense += Math.floor(4 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(12 * watchtowerMultiplier);
     baseIntegrity += Math.floor(10 * watchtowerMultiplier);
   } else if (watchtowerLevel === 4) {
     // Level 4: Cannon Tower
-    defense += Math.floor(4 * watchtowerMultiplier);
+    defense += Math.floor(5 * watchtowerMultiplier);
     attackFromFortifications += Math.floor(20 * watchtowerMultiplier);
     baseIntegrity += Math.floor(10 * watchtowerMultiplier);
   }
@@ -73,7 +73,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
   } else if (palisadesLevel === 4) {
     // Level 4: Reinforced Wall
     defense += Math.floor(10 * palisadesMultiplier);
-    baseIntegrity += Math.floor(35 * palisadesMultiplier);
+    baseIntegrity += Math.floor(40 * palisadesMultiplier);
   }
 
   // Add strength from stats to attack

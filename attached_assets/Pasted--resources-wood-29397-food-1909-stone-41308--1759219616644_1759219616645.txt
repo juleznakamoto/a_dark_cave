@@ -105,7 +105,7 @@
         "blacksmith_hammer": true,
         "elder_scroll": false,
         "dragon_bone_dice": true,
-        "coin_of_drowned": true,
+        "ring_of_drowned": true,
         "shadow_flute": true,
         "hollow_kings_scepter": true,
         "red_mask": false,
@@ -275,7 +275,7 @@
             "actionBuildReinforcedWall": true,
             "shadowFluteChoice": true,
             "hollowKingScepterChoice": true,
-            "coinOfDrownedChoice": true
+            "ringOfDrownedChoice": true
         }
     },
     "events": {
@@ -321,7 +321,7 @@
             "ebony_ring_madness": -2,
             "unnamed_book_madness": -5,
             "dragon_bone_dice_madness": -2,
-            "coin_of_drowned_madness": -3,
+            "ring_of_drowned_madness": -3,
             "shadow_flute_madness": -4,
             "hollow_king_scepter_madness": -6
         },

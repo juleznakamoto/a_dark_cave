@@ -79,13 +79,13 @@ const caveRelics = {
   ],
   exploreRuins: [
     {
-      key: "coin_of_drowned",
+      key: "ring_of_drowned",
       probability: 0.025,
       logMessage: "",
       luck: 4,
       madness: 2,
       isChoice: true,
-      eventId: "coinOfDrownedChoice",
+      eventId: "ringOfDrownedChoice",
     },
   ],
   exploreTemple: [
@@ -732,7 +732,7 @@ export function handleLowChamber(
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
     message:
-      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures: gold coins scattered across the floor, bloodstones pulsing with dark energy, and shards of frostglas that seem to freeze the very air around them. Most remarkable of all, you discover the mastermason's chisel, a tool of legendary craftsmanship.",
+      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures: gold rings scattered across the floor, bloodstones pulsing with dark energy, and shards of frostglas that seem to freeze the very air around them. Most remarkable of all, you discover the mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

@@ -10,7 +10,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     repeatable: true,
     message: [
       "Food is missing. Villagers speak of voices in the dark.",
-      "By morning, the stores are lighter. Something was here.",
+      "By morning, the food stores are lighter. Something was here.",
     ],
     triggered: false,
     priority: 2,

@@ -30,13 +30,13 @@ const caveRelics = {
   ],
   exploreRuins: [
     {
-      key: "coin_of_drowned",
+      key: "ring_of_drowned",
       probability: 0.025,
       logMessage: "",
       luck: 4,
       madness: 2,
       isChoice: true,
-      eventId: "coinOfDrownedChoice",
+      eventId: "ringOfDrownedChoice",
     },
   ],
   exploreTemple: [

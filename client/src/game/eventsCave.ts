@@ -3,11 +3,11 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 export const caveEvents: Record<string, GameEvent> = {
-  coinOfDrownedChoice: {
-    id: "coinOfDrownedChoice",
+  ringOfDrownedChoice: {
+    id: "ringOfDrownedChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
     triggerType: "action",
-    title: "The Coin of Drowned",
+    title: "Ring of Drowned",
     message:
       "Among the rubble of the fogotten city, you find a peculiar ring that drips constantly with water, despite there being no source. Do you dare to keep it?",
     triggered: false,
@@ -17,19 +17,19 @@ export const caveEvents: Record<string, GameEvent> = {
     baseDecisionTime: 15,
     choices: [
       {
-        id: "keepCoin",
+        id: "keepRing",
         label: "Keep it",
         effect: (state: GameState) => {
           return {
             relics: {
               ...state.relics,
-              coin_of_drowned: true,
+              ring_of_drowned: true,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                coinOfDrownedChoice: true,
+                ringOfDrownedChoice: true,
               },
             },
             _logMessage:
@@ -38,7 +38,7 @@ export const caveEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "leaveCoin",
+        id: "leaveRing",
         label: "Leave it",
         effect: (state: GameState) => {
           return {
@@ -46,7 +46,7 @@ export const caveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                coinOfDrownedChoice: true,
+                ringOfDrownedChoice: true,
               },
             },
             _logMessage:
@@ -56,7 +56,7 @@ export const caveEvents: Record<string, GameEvent> = {
       },
     ],
     fallbackChoice: {
-      id: "leaveCoin",
+      id: "leaveRing",
       label: "Leave it",
       effect: (state: GameState) => {
         const deathResult = killVillagers(state, 1);
@@ -66,7 +66,7 @@ export const caveEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-              coinOfDrownedChoice: true,
+              ringOfDrownedChoice: true,
             },
           },
           _logMessage:
