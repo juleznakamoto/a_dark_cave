@@ -485,7 +485,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       set((prevState) => ({
         ...prevState,
         ...updatedChanges,
-        log: [...prevState.log, ...newLogEntries].slice(-10),
       }));
 
       // Show logMessage in dialog if present (with 200ms delay)
@@ -583,6 +582,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
             if (!hasActiveMerchantDialog || !isMerchantEvent) {
               get().setEventDialog(true, entry);
             }
+          } else {
+            // Only add to log if it's not a choice event
+            set((prevState) => ({
+              log: [...prevState.log, entry].slice(-10),
+            }));
           }
         });
       }
