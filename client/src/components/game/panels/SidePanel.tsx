@@ -2,7 +2,7 @@ import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
 import {
   clothingEffects,
-} from "@/game/rules/effects";
+} from "@/game/rules/effectsCalculations";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
@@ -172,7 +172,6 @@ export default function SidePanel() {
       if (
         [
           "bastion",
-          "wizardTower",
           "watchtower",
           "palisades",
         ].includes(key)
