@@ -471,6 +471,16 @@ export function handleGatherWood(
     delete effectUpdates.logMessages;
   }
 
+  // Add message for first time gathering wood
+  if (state.resources.wood === 0) {
+    result.logEntries!.push({
+      id: `first-wood-gather-${Date.now()}`,
+      message: "Some wood lies scattered near the cave's entrance. It might prove useful.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
