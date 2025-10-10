@@ -409,12 +409,21 @@ function handleStrangerApproach() {
     });
 
     // Add log entry
-    state.addLogEntry({
-      id: `stranger-approaches-${Date.now()}`,
-      message: randomMessage,
-      timestamp: Date.now(),
-      type: "system",
-    });
+    const updates: Record<string, any> = {};
+    updates.log = [
+      ...state.log,
+      {
+        id: `stranger-${Date.now()}`,
+        message: randomMessage,
+        timestamp: Date.now(),
+        type: "system" as const,
+        visualEffect: {
+          type: "glow",
+          duration: 2,
+        },
+      },
+    ];
+    useGameStore.setState({ log: updates.log });
 
     // Update population immediately
     state.updatePopulation();
