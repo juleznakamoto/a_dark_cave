@@ -71,6 +71,7 @@ export const gameStateSchema = z.object({
   schematics: z.object({
     arbalest_schematic: z.boolean().default(false),
     nightshade_bow_schematic: z.boolean().default(false),
+    bloodstone_staff_schematic: z.boolean().default(false),
   }).default({}),
   tools: z.object({
     stone_axe: z.boolean().default(false),
