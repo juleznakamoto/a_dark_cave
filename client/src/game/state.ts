@@ -66,7 +66,6 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
-  updateBastionIntegrity: (newIntegrity: number) => void;
 }
 
 // Helper functions
@@ -655,21 +654,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       StateManager.schedulePopulationUpdate(get);
     }
 
-    // Show logMessage in dialog if present (with 200ms delay)
-    if (logMessage) {
-      // Add the log message to the game log immediately
-      const logEntry: LogEntry = {
-        id: `choice-result-${Date.now()}`,
-        message: logMessage,
-        timestamp: Date.now(),
-        type: "system",
-      };
-
-      set((prevState) => ({
-        ...prevState,
-        log: [...prevState.log, logEntry].slice(-10),
-      }));
-
+    // Only create a log message dialog if there's a _logMessage but no combat
+    // Note: _logMessage is for dialog feedback only, not for the main log
+    if (updatedChanges._logMessage && !combatData) {
+      get().setEventDialog(false);
       setTimeout(() => {
         const messageEntry: LogEntry = {
           id: `log-message-${Date.now()}`,

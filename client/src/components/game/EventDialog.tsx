@@ -158,17 +158,9 @@ export default function EventDialog({
           });
         }
 
-        // Add log message if present
-        if (result._logMessage) {
-          const logEntry = {
-            id: `merchant-trade-${Date.now()}`,
-            message: result._logMessage,
-            timestamp: Date.now(),
-            type: 'system' as const
-          };
-          gameState.addLogEntry(logEntry);
-        }
-
+        // Don't add _logMessage to the log - it's only for dialog feedback
+        // The message will be shown in the dialog UI instead
+        
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
