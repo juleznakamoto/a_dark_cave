@@ -49,6 +49,28 @@ export function startGameLoop() {
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
         lastProduction = timestamp;
+        
+        // Log full state every 15 seconds
+        const currentState = useGameStore.getState();
+        console.log('=== GAME STATE (15s interval) ===');
+        console.log('Resources:', currentState.resources);
+        console.log('Stats:', currentState.stats);
+        console.log('Flags:', currentState.flags);
+        console.log('Villagers:', currentState.villagers);
+        console.log('Buildings:', currentState.buildings);
+        console.log('Tools:', currentState.tools);
+        console.log('Weapons:', currentState.weapons);
+        console.log('Clothing:', currentState.clothing);
+        console.log('Relics:', currentState.relics);
+        console.log('Blessings:', currentState.blessings);
+        console.log('Effects:', currentState.effects);
+        console.log('Bastion Stats:', currentState.bastion_stats);
+        console.log('Population:', {
+          current: currentState.current_population,
+          max: currentState.total_population
+        });
+        console.log('===================================');
+        
         handleGathererProduction();
         handleHunterProduction();
         handleMinerProduction();
