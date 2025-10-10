@@ -14,6 +14,7 @@ import {
   handleLowChamber,
   handleoccultistChamber,
   handleBlastPortal,
+  handleEncounterBeyondPortal,
 } from '@/game/rules/caveExploreActions';
 
 import {
