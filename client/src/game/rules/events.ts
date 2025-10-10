@@ -14,7 +14,7 @@ export interface GameEvent {
   condition: (state: GameState) => boolean;
   triggerType: "time" | "resource" | "random" | "action";
   title?: string;
-  message: string;
+  message: string | string[]; // Support array of messages for random selection
   choices?: EventChoice[];
   triggered: boolean;
   repeatable?: boolean;
@@ -126,9 +126,14 @@ export class EventManager {
           eventChoices = generateMerchantChoices(state);
         }
 
+        // Select random message if message is an array
+        const message = Array.isArray(event.message)
+          ? event.message[Math.floor(Math.random() * event.message.length)]
+          : event.message;
+
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
-          message: event.message,
+          message: message,
           timestamp: Date.now(),
           type: "event",
           title: event.title,

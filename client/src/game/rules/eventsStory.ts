@@ -11,7 +11,7 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "Food is missing. Villagers speak of voices in the dark.",
       "By morning, the stores are lighter. Something was here.",
-    ][Math.floor(Math.random() * 2)],
+    ],
     triggered: false,
     priority: 2,
     visualEffect: {
@@ -42,7 +42,7 @@ export const storyEvents: Record<string, GameEvent> = {
       "A hut stands silent. Meals lie untouched. They are gone.",
       "The wind moves through an empty hut. The villager is gone.",
       "A door of a hut stands ajar. Its occupant is gone.",
-    ][Math.floor(Math.random() * 5)],
+    ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
@@ -61,7 +61,7 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "In the night, something left a heap of iron at the village's edge. No tracks lead away.",
       "A gift of iron gleams in the morning mist. None know who or what brought it.",
-    ][Math.floor(Math.random() * 2)],
+    ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
@@ -80,7 +80,7 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "At dawn, steel bars lie stacked at the village's edge. Nobody knows where they come from.",
       "A mysterious benefactor has left gleaming steel ingots at the edge of the village.",
-    ][Math.floor(Math.random() * 2)],
+    ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
@@ -99,7 +99,7 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "By dawn, obsidian shards have been placed around the village.",
       "In the morning light, villagers notice obsidian shards nearby the village.",
-    ][Math.floor(Math.random() * 2)],
+    ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
@@ -118,7 +118,7 @@ export const storyEvents: Record<string, GameEvent> = {
     message: [
       "By morning, raw adamant lies behind one of the huts of the village.",
       "When dawn breaks, a pile of adamant is found close to the village.",
-    ][Math.floor(Math.random() * 2)],
+    ],
     triggered: false,
     priority: 2,
     effect: (state: GameState) => ({
