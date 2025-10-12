@@ -65,10 +65,9 @@ export default function BuildingProgressChart() {
     { name: "Longhouses Unbuilt", value: 7, fill: "#6b7280" },
   ];
 
-  // For demonstration, I'll create 6 rings with the same logic
+  // For demonstration, I'll create 5 rings with the same logic
   // In a real scenario, you'd define different building sets for each ring
   const rings = [
-    { data: innerRingData00, innerRadius: 60, outerRadius: 65 },
     { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
     { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
     { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
