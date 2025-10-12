@@ -16,7 +16,6 @@ import {
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import BuildingProgressChart from "./BuildingProgressChart";
 
 export default function VillagePanel() {
   const {
@@ -274,14 +273,6 @@ export default function VillagePanel() {
 
   return (
     <div className="space-y-6">
-      {/* Building Progress Chart */}
-      {(buildings.woodenHut > 0 || buildings.stoneHut > 0 || buildings.longhouse > 0) && (
-        <div className="space-y-2">
-          <h3 className="text-xs font-semibold text-foreground">Building Progress</h3>
-          <BuildingProgressChart />
-        </div>
-      )}
-
       {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter((action) =>
           shouldShowAction(action.id, state),
