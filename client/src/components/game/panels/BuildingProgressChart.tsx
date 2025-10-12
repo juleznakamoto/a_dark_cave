@@ -52,7 +52,7 @@ export default function BuildingProgressChart() {
       fill: "#6b7280",
     },
   ];
-  
+
   const innerRingData1 = [
     // Wooden Huts
     { name: "Wooden Huts Built", value: 5, fill: "#3b82f6" },
@@ -68,11 +68,13 @@ export default function BuildingProgressChart() {
   // For demonstration, I'll create 5 rings with the same logic
   // In a real scenario, you'd define different building sets for each ring
   const rings = [
-    { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
-    { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
-    { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
-    { data: innerRingData1, innerRadius: 20, outerRadius: 25 },
-    { data: innerRingData00, innerRadius: 10, outerRadius: 15 },
+    { data: innerRingData0, innerRadius: 50, outerRadius: 55, zIndex: 1 },
+    { data: innerRingData1, innerRadius: 40, outerRadius: 45, zIndex: 2 },
+    { data: innerRingData0, innerRadius: 30, outerRadius: 35, zIndex: 3 },
+    { data: innerRingData1, innerRadius: 20, outerRadius: 25, zIndex: 4 },
+    { data: innerRingData00, innerRadius: 10, outerRadius: 15, zIndex: 5 },
+    // Add a new ring on top with the same values as the innermost ring
+    { data: innerRingData00, innerRadius: 0, outerRadius: 5, zIndex: 6 },
   ];
 
   return (
@@ -94,13 +96,13 @@ export default function BuildingProgressChart() {
               cy="50%"
               innerRadius={ring.innerRadius}
               outerRadius={ring.outerRadius}
-              paddingAngle={5}
+              paddingAngle={2}
               dataKey="value"
               startAngle={90}
               endAngle={-270}
               cornerRadius={5}
               strokeWidth={0.5}
-              
+              style={{ zIndex: ring.zIndex }}
             >
               <Cell fill="url(#sliceGradient)" />
               {ring.data.map((entry, entryIndex) => (
