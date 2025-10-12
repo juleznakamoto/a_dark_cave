@@ -58,7 +58,7 @@ export default function BuildingProgressChart() {
               cy="50%"
               innerRadius={ring.innerRadius}
               outerRadius={ring.outerRadius}
-              paddingAngle={0}
+              paddingAngle={2}
               dataKey="value"
               startAngle={90}
               endAngle={450}
