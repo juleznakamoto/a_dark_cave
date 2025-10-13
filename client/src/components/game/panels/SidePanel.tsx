@@ -1,13 +1,11 @@
 import { useGameStore } from "@/game/state";
 import SidePanelSection from "./SidePanelSection";
-import {
-  clothingEffects,
-} from "@/game/rules/effects";
+import { clothingEffects } from "@/game/rules/effects";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
-import { calculateBastionStats } from '@/game/bastionStats';
+import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getDisplayTools,
   getTotalLuck,
@@ -40,7 +38,9 @@ export default function SidePanel() {
 
     const cleanupTimer = setTimeout(() => {
       const now = Date.now();
-      setResourceChanges(prev => prev.filter(change => now - change.timestamp < 2000));
+      setResourceChanges((prev) =>
+        prev.filter((change) => now - change.timestamp < 2000),
+      );
     }, 2000);
 
     return () => clearTimeout(cleanupTimer);
@@ -113,12 +113,15 @@ export default function SidePanel() {
       if (!value) return false;
 
       // Hide arbalest schematic if weapon is crafted
-      if (key === 'arbalest_schematic' && gameState.weapons.arbalest) {
+      if (key === "arbalest_schematic" && gameState.weapons.arbalest) {
         return false;
       }
 
       // Hide nightshade bow schematic if weapon is crafted
-      if (key === 'nightshade_bow_schematic' && gameState.weapons.nightshade_bow) {
+      if (
+        key === "nightshade_bow_schematic" &&
+        gameState.weapons.nightshade_bow
+      ) {
         return false;
       }
 
@@ -140,7 +143,9 @@ export default function SidePanel() {
 
       // Check if this is a base blessing with an enhanced version
       const enhancedKey = `${key}_enhanced`;
-      if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
+      if (
+        gameState.blessings[enhancedKey as keyof typeof gameState.blessings]
+      ) {
         return true;
       }
 
@@ -148,10 +153,12 @@ export default function SidePanel() {
     })
     .filter(([key]) => {
       // Don't show base blessing if enhanced version exists and is active
-      if (key.endsWith('_enhanced')) return true;
+      if (key.endsWith("_enhanced")) return true;
 
       const enhancedKey = `${key}_enhanced`;
-      if (gameState.blessings[enhancedKey as keyof typeof gameState.blessings]) {
+      if (
+        gameState.blessings[enhancedKey as keyof typeof gameState.blessings]
+      ) {
         return false; // Hide base version, show enhanced instead
       }
 
@@ -170,13 +177,7 @@ export default function SidePanel() {
   const buildingItems = Object.entries(buildings)
     .filter(([key, value]) => {
       // Filter out fortification buildings from the buildings section
-      if (
-        [
-          "bastion",
-          "watchtower",
-          "palisades",
-        ].includes(key)
-      ) {
+      if (["bastion", "watchtower", "palisades"].includes(key)) {
         return false;
       }
       return (value ?? 0) > 0;
@@ -196,9 +197,10 @@ export default function SidePanel() {
       let tooltip = undefined;
 
       // Check if this building is damaged
-      const isDamaged = (key === 'bastion' && story?.seen?.bastionDamaged) ||
-                       (key === 'watchtower' && story?.seen?.watchtowerDamaged) ||
-                       (key === 'palisades' && story?.seen?.palisadesDamaged);
+      const isDamaged =
+        (key === "bastion" && story?.seen?.bastionDamaged) ||
+        (key === "watchtower" && story?.seen?.watchtowerDamaged) ||
+        (key === "palisades" && story?.seen?.palisadesDamaged);
 
       if (buildAction?.statsEffects) {
         const effects = Object.entries(buildAction.statsEffects)
@@ -214,7 +216,10 @@ export default function SidePanel() {
       }
 
       // Special handling for buildings with madness reduction
-      if (['sanctum', 'temple', 'shrine', 'altar'].includes(key) && (value ?? 0) > 0) {
+      if (
+        ["sanctum", "temple", "shrine", "altar"].includes(key) &&
+        (value ?? 0) > 0
+      ) {
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
 
@@ -225,7 +230,7 @@ export default function SidePanel() {
       }
 
       // Special handling for buildings with knowledge bonuses
-      if (['clerksHut', 'scriptorium'].includes(key) && (value ?? 0) > 0) {
+      if (["clerksHut", "scriptorium"].includes(key) && (value ?? 0) > 0) {
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
 
@@ -237,45 +242,49 @@ export default function SidePanel() {
 
       // Special handling for fortification buildings (bastion, watchtower, palisades)
       // These affect bastion_stats instead of regular stats
-      if (key === 'bastion' && buildings.bastion > 0) {
+      if (key === "bastion" && buildings.bastion > 0) {
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutBastion = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, bastion: 0 }
+          buildings: { ...buildings, bastion: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutBastion.defense;
-        const attack = currentStats.attackFromFortifications - statsWithoutBastion.attackFromFortifications;
+        const attack =
+          currentStats.attackFromFortifications -
+          statsWithoutBastion.attackFromFortifications;
 
         tooltip = `+${defense} defense, +${attack} attack`;
-      } else if (key === 'watchtower' && buildings.watchtower > 0) {
+      } else if (key === "watchtower" && buildings.watchtower > 0) {
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutWatchtower = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, watchtower: 0 }
+          buildings: { ...buildings, watchtower: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutWatchtower.defense;
-        const attack = currentStats.attackFromFortifications - statsWithoutWatchtower.attackFromFortifications;
+        const attack =
+          currentStats.attackFromFortifications -
+          statsWithoutWatchtower.attackFromFortifications;
 
         tooltip = `+${defense} defense, +${attack} attack`;
-      } else if (key === 'palisades' && buildings.palisades > 0) {
+      } else if (key === "palisades" && buildings.palisades > 0) {
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutPalisades = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, palisades: 0 }
+          buildings: { ...buildings, palisades: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutPalisades.defense;
@@ -416,13 +425,7 @@ export default function SidePanel() {
   const fortificationItems = Object.entries(buildings)
     .map(([key, value]) => {
       // Only include fortification buildings
-      if (
-        ![
-          "bastion",
-          "watchtower",
-          "palisades",
-        ].includes(key)
-      ) {
+      if (!["bastion", "watchtower", "palisades"].includes(key)) {
         return null;
       }
 
@@ -434,24 +437,30 @@ export default function SidePanel() {
       // Map building keys to their contributions using bastion_stats
       if (key === "watchtower") {
         const level = value ?? 0;
-        const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+        const watchtowerLabels = [
+          "Watchtower",
+          "Guard Tower",
+          "Fortified Tower",
+          "Cannon Tower",
+        ];
         label = watchtowerLabels[level - 1] || "Watchtower";
 
         const isDamaged = story?.seen?.watchtowerDamaged;
 
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutWatchtower = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, watchtower: 0 }
+          buildings: { ...buildings, watchtower: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutWatchtower.defense;
         const attack = currentStats.attack - statsWithoutWatchtower.attack;
-        const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
+        const integrity =
+          currentStats.integrity - statsWithoutWatchtower.integrity;
 
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
 
@@ -464,17 +473,18 @@ export default function SidePanel() {
 
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutBastion = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, bastion: 0 }
+          buildings: { ...buildings, bastion: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutBastion.defense;
         const attack = currentStats.attack - statsWithoutBastion.attack;
-        const integrity = currentStats.integrity - statsWithoutBastion.integrity;
+        const integrity =
+          currentStats.integrity - statsWithoutBastion.integrity;
 
         tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
 
@@ -484,23 +494,29 @@ export default function SidePanel() {
         }
       } else if (key === "palisades") {
         const palisadesLevel = value ?? 0;
-        const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+        const palisadesLabels = [
+          "Wooden Palisades",
+          "Fortified Palisades",
+          "Stone Wall",
+          "Reinforced Wall",
+        ];
         label = palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
 
         const isDamaged = story?.seen?.palisadesDamaged;
 
         const currentStats = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings }
+          buildings: { ...buildings },
         });
 
         const statsWithoutPalisades = calculateBastionStats({
           ...useGameStore.getState(),
-          buildings: { ...buildings, palisades: 0 }
+          buildings: { ...buildings, palisades: 0 },
         });
 
         const defense = currentStats.defense - statsWithoutPalisades.defense;
-        const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
+        const integrity =
+          currentStats.integrity - statsWithoutPalisades.integrity;
 
         tooltip = `+${defense} Defense\n+${integrity} Integrity`;
 
@@ -523,7 +539,10 @@ export default function SidePanel() {
 
   // Dynamically generate bastion stats items from state
   const bastionStatsItems = Object.entries(bastion_stats || {})
-    .filter(([key]) => !["attackFromFortifications", "attackFromStrength"].includes(key)) // Exclude breakdown fields from display
+    .filter(
+      ([key]) =>
+        !["attackFromFortifications", "attackFromStrength"].includes(key),
+    ) // Exclude breakdown fields from display
     .map(([key, value]) => {
       let tooltip = undefined;
 
@@ -550,9 +569,14 @@ export default function SidePanel() {
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
       case "cave":
-        return ["resources", "tools", "weapons", "clothing", "stats", "schematics"].includes(
-          sectionName,
-        );
+        return [
+          "resources",
+          "tools",
+          "weapons",
+          "clothing",
+          "stats",
+          "schematics",
+        ].includes(sectionName);
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
       case "forest":
@@ -593,12 +617,12 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
-          {/* Building Progress Chart - shown in village tab below resources */}
-          {activeTab === "village" && (
+          {/* Building Progress Chart */}
+          {
             <div className="mt-6">
               <BuildingProgressChart />
             </div>
-          )}
+          }
         </div>
 
         {/* Second column - Everything else */}
@@ -644,7 +668,10 @@ export default function SidePanel() {
             <SidePanelSection title="Bastion" items={bastionStatsItems}>
               {bastion_stats && (
                 <div className="text-xs text-gray-400">
-                  <div>Defense: {bastion_stats.defense} | Attack: {bastion_stats.attack}</div>
+                  <div>
+                    Defense: {bastion_stats.defense} | Attack:{" "}
+                    {bastion_stats.attack}
+                  </div>
                   {bastion_stats.integrity > 0 && (
                     <div className="mt-1">
                       Integrity: {bastion_stats.integrity}
