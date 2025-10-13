@@ -15,9 +15,9 @@ export default function BuildingProgressChart() {
 
   // Calculate current counts
   const counts = {
-    woodenHut: buildings.woodenHut || 0,
-    stoneHut: buildings.stoneHut || 0,
-    longhouse: buildings.longhouse || 0,
+    woodenHut: buildings.woodenHut || 3,
+    stoneHut: buildings.stoneHut || 5,
+    longhouse: buildings.longhouse || 2,
   };
 
   // Create data for the inner ring (split into built/unbuilt segments)
@@ -30,38 +30,46 @@ export default function BuildingProgressChart() {
   const totalMaxCount =
     maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
 
+  const startSeg0 = 90;
+  const endSeg0 = startSeg0 - (345 * maxCounts.woodenHut) / totalMaxCount;
+  const lengthSeg0 = endSeg0 - startSeg0;
+  const progressSeg0 =
+    startSeg0 + lengthSeg0 * (counts.woodenHut / maxCounts.woodenHut);
+
+  const startSeg1 = endSeg0 - paddingAngle;
+  const endSeg1 = startSeg1 - (345 * maxCounts.stoneHut) / totalMaxCount;
+  const lengthSeg1 = endSeg1 - startSeg1;
+  const progressSeg1 =
+    startSeg1 + lengthSeg1 * (counts.stoneHut / maxCounts.stoneHut);
+
+  const startSeg2 = endSeg1 - paddingAngle;
+  const endSeg2 = startSeg2 - (345 * maxCounts.longhouse) / totalMaxCount;
+  const lengthSeg2 = endSeg2 - startSeg2;
+  const progressSeg2 =
+    startSeg2 + lengthSeg2 * (counts.longhouse / maxCounts.longhouse);
+
   const ProgressRing0 = [
     {
       name: "Wooden Huts Built",
-      value: 1,
       fill: "#3b82f6",
       strokeWidth: 0,
-      startAngle: 90,
-      endAngle:
-        90 -
-        ((360) * maxCounts.woodenHut) / totalMaxCount,
+      startAngle: startSeg0,
+      endAngle: progressSeg0,
     },
-    // {
-    //   name: "Stone Huts Built",
-    //   value: 1,
-    //   fill: "#10b981",
-    //   strokeWidth: 0,
-    //   startAngle:
-    //     180,
-    //   endAngle:
-    //     90,
-    // },
-    // {
-    //   name: "Longhouses Built",
-    //   value: 1,
-    //   fill: "#f59e0b",
-    //   strokeWidth: 0,
-    //   startAngle:
-    //     90 -
-    //     (360 * (maxCounts.woodenHut + maxCounts.stoneHut)) / totalMaxCount -
-    //     paddingAngle * 0,
-    //   endAngle: 90 - 360,
-    // },
+    {
+      name: "Stone Huts Built",
+      fill: "#10b981",
+      strokeWidth: 0,
+      startAngle: startSeg1,
+      endAngle: progressSeg1,
+    },
+    {
+      name: "Longhouses Built",
+      fill: "#f59e0b",
+      strokeWidth: 0,
+      startAngle: startSeg2,
+      endAngle: progressSeg2,
+    },
   ];
 
   const innerRingData0 = [
@@ -95,12 +103,12 @@ export default function BuildingProgressChart() {
   ];
 
   const rings = [
-    { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
-    { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
-    { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
-    { data: innerRingData1, innerRadius: 20, outerRadius: 25 },
-    { data: BackgroundRing0, innerRadius: 10, outerRadius: 15 },
-    { data: ProgressRing0, innerRadius: 10, outerRadius: 15 },
+    // { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
+    // { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
+    // { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
+    // { data: innerRingData1, innerRadius: 20, outerRadius: 25 },
+    { data: BackgroundRing0, innerRadius: 14, outerRadius: 18 },
+    { data: ProgressRing0, innerRadius: 14, outerRadius: 18 },
   ];
 
   return (
@@ -128,6 +136,7 @@ export default function BuildingProgressChart() {
               endAngle={-270}
               cornerRadius={5}
               strokeWidth={0.5}
+              isAnimationActive={false}
             >
               {ring.data.map((entry, entryIndex) => (
                 <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} />
@@ -138,18 +147,18 @@ export default function BuildingProgressChart() {
           {ProgressRing0.map((segment, index) => (
             <Pie
               key={`progress-${index}`}
-              data={[segment]}
+              data={[{ value: 1 }]}
               cx="50%"
               cy="50%"
-              innerRadius={10}
-              outerRadius={15}
-              paddingAngle={0}
+              innerRadius={14}
+              outerRadius={18}
               dataKey="value"
               startAngle={segment.startAngle}
               endAngle={segment.endAngle}
               cornerRadius={5}
               strokeWidth={0}
               style={{ zIndex: 10 }}
+              isAnimationActive={false}
             >
               <Cell fill={segment.fill} />
             </Pie>
