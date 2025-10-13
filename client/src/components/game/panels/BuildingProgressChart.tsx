@@ -21,7 +21,7 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 8;
-  const backgroundColor = tailwindToHex("gray-800");
+  const backgroundColor = tailwindToHex("gray-900");
   const startAngle = 90 - paddingAngle / 2;
 
   // Define ring configurations
@@ -32,19 +32,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "woodenHut",
           maxCount: 10,
-          color: tailwindToHex("amber-950"),
+          color: tailwindToHex("yellow-950"),
           label: "Wooden Huts",
         },
         {
           buildingType: "stoneHut",
           maxCount: 10,
-          color: tailwindToHex("gray-100"),
+          color: tailwindToHex("stone-700"),
           label: "Stone Huts",
         },
         {
           buildingType: "longhouse",
           maxCount: 2,
-          color: tailwindToHex("amber-500"),
+          color: tailwindToHex("amber-950"),
           label: "Longhouses",
         },
       ],
@@ -57,21 +57,21 @@ export default function BuildingProgressChart() {
         {
           buildingType: "cabin",
           maxCount: 2,
-          color: tailwindToHex("amber-800"),
+          color: tailwindToHex("amber-800/70"),
           label: "Cabin",
           relatedBuildings: ["greatCabin"],
         },
         {
           buildingType: "blacksmith",
           maxCount: 2,
-          color: tailwindToHex("red-600"),
+          color: tailwindToHex("slate-700"),
           label: "Blacksmith",
           relatedBuildings: ["grandBlacksmith"],
         },
         {
           buildingType: "foundry",
           maxCount: 1,
-          color: tailwindToHex("red-500"),
+          color: tailwindToHex("rose-900"),
           label: "Foundry",
         },
         {
@@ -83,14 +83,14 @@ export default function BuildingProgressChart() {
         {
           buildingType: "tradePost",
           maxCount: 2,
-          color: tailwindToHex("yellow-500"),
+          color: tailwindToHex("yellow-600"),
           label: "Trade",
           relatedBuildings: ["merchantsGuild"],
         },
         {
           buildingType: "clerksHut",
           maxCount: 2,
-          color: tailwindToHex("cyan-500"),
+          color: tailwindToHex("cyan-800"),
           label: "Knowledge",
           relatedBuildings: ["scriptorium"],
         },
@@ -104,19 +104,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "timberMill",
           maxCount: 1,
-          color: tailwindToHex("lime-600"),
+          color: tailwindToHex("orange-800"),
           label: "Timber Mill",
         },
         {
           buildingType: "quarry",
           maxCount: 1,
-          color: tailwindToHex("slate-400"),
+          color: tailwindToHex("slate-500"),
           label: "Quarry",
         },
         {
           buildingType: "shallowPit",
           maxCount: 4,
-          color: tailwindToHex("slate-800"),
+          color: tailwindToHex("amber-950"),
           label: "Pits",
           relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
         },
@@ -130,20 +130,20 @@ export default function BuildingProgressChart() {
         {
           buildingType: "altar",
           maxCount: 4,
-          color: tailwindToHex("violet-500"),
+          color: tailwindToHex("violet-800"),
           label: "Religious",
           relatedBuildings: ["shrine", "temple", "sanctum"],
         },
         {
           buildingType: "alchemistHall",
           maxCount: 1,
-          color: tailwindToHex("purple-500"),
+          color: tailwindToHex("purple-700"),
           label: "Alchemist's Hall",
         },
         {
           buildingType: "wizardTower",
           maxCount: 1,
-          color: tailwindToHex("indigo-500"),
+          color: tailwindToHex("indigo-700"),
           label: "Wizard Tower",
         },
       ],
@@ -156,19 +156,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "bastion",
           maxCount: 1,
-          color: tailwindToHex("slate-600"),
+          color: tailwindToHex("slate-400"),
           label: "Bastion",
         },
         {
           buildingType: "palisades",
           maxCount: 4,
-          color: tailwindToHex("slate-700"),
+          color: tailwindToHex("slate-500"),
           label: "Palisades",
         },
         {
           buildingType: "watchtower",
           maxCount: 3,
-          color: tailwindToHex("slate-500"),
+          color: tailwindToHex("slate-600"),
           label: "Watchtower",
         },
       ],

@@ -93,7 +93,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.buildings.bastion >= 1 &&
       !state.story.seen.wizardArrives,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 0.5,
     message:
       "A small old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
     triggered: false,
