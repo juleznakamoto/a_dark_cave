@@ -4,8 +4,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 export default function BuildingProgressChart() {
   const { buildings } = useGameStore();
 
-  const paddingAngle = 5
-  
+  const paddingAngle = 5;
+
   // Define max counts for each building type
   const maxCounts = {
     woodenHut: 10,
@@ -27,61 +27,56 @@ export default function BuildingProgressChart() {
     { name: "Longhouses Built", value: maxCounts.longhouse, fill: "#cccdc6" },
   ];
 
-  const totalMaxCount = maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
-  const segmentCount = 3;
-  
+  const totalMaxCount =
+    maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
+
   const ProgressRing0 = [
     {
       name: "Wooden Huts Built",
-      value: 5,
+      value: 1,
       fill: "#3b82f6",
       strokeWidth: 0,
       startAngle: 90,
-      endAngle: 90 - (360 * maxCounts.woodenHut / totalMaxCount) - paddingAngle,
+      endAngle:
+        90 -
+        ((360) * maxCounts.woodenHut) / totalMaxCount,
     },
-    {
-      name: "Stone Huts Built",
-      value: 2,
-      fill: "#10b981",
-      strokeWidth: 0,
-      startAngle: 90 - (360 * maxCounts.woodenHut / totalMaxCount) - paddingAngle,
-      endAngle: 90 - (360 * (maxCounts.woodenHut + maxCounts.stoneHut) / totalMaxCount) - (paddingAngle * 2),
-    },
-    {
-      name: "Longhouses Built",
-      value: 3,
-      fill: "#f59e0b",
-      strokeWidth: 0,
-      startAngle: 90 - (360 * (maxCounts.woodenHut + maxCounts.stoneHut) / totalMaxCount) - (paddingAngle * 2),
-      endAngle: 90 - 360,
-    },
-  ];
-
-  const innerRingData00 = [
-    // Wooden Huts
-    { name: "Wooden Huts Built", value: 5, fill: "#3b82f6" },
-    // Stone Huts
-    { name: "Stone Huts Built", value: 2, fill: "#10b981" },
-    // Longhouses
-    { name: "Longhouses Built", value: 3, fill: "#f59e0b" },
+    // {
+    //   name: "Stone Huts Built",
+    //   value: 1,
+    //   fill: "#10b981",
+    //   strokeWidth: 0,
+    //   startAngle:
+    //     180,
+    //   endAngle:
+    //     90,
+    // },
+    // {
+    //   name: "Longhouses Built",
+    //   value: 1,
+    //   fill: "#f59e0b",
+    //   strokeWidth: 0,
+    //   startAngle:
+    //     90 -
+    //     (360 * (maxCounts.woodenHut + maxCounts.stoneHut)) / totalMaxCount -
+    //     paddingAngle * 0,
+    //   endAngle: 90 - 360,
+    // },
   ];
 
   const innerRingData0 = [
-    // Wooden Huts
     { name: "Wooden Huts Built", value: counts.woodenHut, fill: "#3b82f6" },
     {
       name: "Wooden Huts Unbuilt",
       value: maxCounts.woodenHut - counts.woodenHut,
       fill: "#6b7280",
     },
-    // Stone Huts
     { name: "Stone Huts Built", value: counts.stoneHut, fill: "#10b981" },
     {
       name: "Stone Huts Unbuilt",
       value: maxCounts.stoneHut - counts.stoneHut,
       fill: "#6b7280",
     },
-    // Longhouses
     { name: "Longhouses Built", value: counts.longhouse, fill: "#f59e0b" },
     {
       name: "Longhouses Unbuilt",
