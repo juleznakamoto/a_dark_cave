@@ -69,7 +69,6 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {
-      "story.seen.castleRuinsExplored": true,
     },
     cooldown: 60,
   },
@@ -79,13 +78,12 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Hill Grave",
     show_when: {
       "story.seen.wizardHillGrave": true,
-      "!story.seen.hillGraveSuccess": true,
+      // "!story.seen.hillGraveExplored": true,
     },
     cost: {
       "resources.food": 5000,
     },
     effects: {
-      "story.seen.hillGraveSuccess": true,
     },
     cooldown: 60,
   },
@@ -101,7 +99,6 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {
-      "story.seen.sunkenTempleExplored": true,
       "events.wizardSaysBloodstoneStaff": true,
     },
     cooldown: 60,
@@ -373,7 +370,7 @@ export function handleHillGrave(
       ...state.story,
       seen: {
         ...state.story.seen,
-        hillGraveSuccess: true,
+        hillGraveExplored: true,
       },
     };
 
