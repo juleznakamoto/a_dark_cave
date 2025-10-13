@@ -103,7 +103,11 @@ const checkRequirements = (
   }
 
   return Object.entries(requirements).every(([path, expectedValue]) => {
-    const pathParts = path.split(".");
+    // Handle negation (e.g., "!story.seen.castleRuinsExplored")
+    const isNegated = path.startsWith("!");
+    const actualPath = isNegated ? path.slice(1) : path;
+    
+    const pathParts = actualPath.split(".");
     let current: any = state;
 
     for (const part of pathParts) {
@@ -111,11 +115,15 @@ const checkRequirements = (
     }
 
     // For story.seen properties, treat undefined/missing as false
-    if (path.startsWith('story.seen.')) {
+    if (actualPath.startsWith('story.seen.')) {
       current = current ?? false;
     }
 
     if (typeof expectedValue === "boolean") {
+      // If negated, flip the comparison
+      if (isNegated) {
+        return !current === expectedValue;
+      }
       return current === expectedValue;
     }
 
