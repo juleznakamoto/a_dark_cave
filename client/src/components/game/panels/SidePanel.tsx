@@ -617,12 +617,6 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
-          {/* Building Progress Chart */}
-          {
-            <div className="mt-6">
-              <BuildingProgressChart />
-            </div>
-          }
         </div>
 
         {/* Second column - Everything else */}
@@ -681,6 +675,10 @@ export default function SidePanel() {
               )}
             </SidePanelSection>
           )}
+          {/* Building Progress Chart - At bottom of second column */}
+          <div className="mt-6">
+            <BuildingProgressChart />
+          </div>
         </div>
       </div>
       <ScrollBar orientation="vertical" />
