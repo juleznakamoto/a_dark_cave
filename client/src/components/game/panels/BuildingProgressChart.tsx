@@ -116,13 +116,13 @@ export default function BuildingProgressChart() {
 
     // Create progress segments with calculated angles
     let currentEndAngle = startAngle;
-    const progressSegments = segments.map((seg) => {
+    const progressSegments = segments.map((seg, index) => {
       // Combine counts from main building and related buildings
       let currentCount = buildings[seg.buildingType] || 0;
       if (seg.relatedBuildings) {
         currentCount += seg.relatedBuildings.reduce(
           (sum, relatedType) => sum + (buildings[relatedType] || 0),
-          0,
+          0
         );
       }
 
@@ -135,11 +135,15 @@ export default function BuildingProgressChart() {
       );
       currentEndAngle = segmentAngles.endAngle;
 
+      // For all segments after the first, subtract paddingAngle from both angles
+      const adjustedStartAngle = index === 0 ? segmentAngles.startAngle : segmentAngles.startAngle - paddingAngle;
+      const adjustedProgressAngle = index === 0 ? segmentAngles.progressAngle : segmentAngles.progressAngle - paddingAngle;
+
       return {
         name: seg.label,
         fill: seg.color,
-        startAngle: segmentAngles.startAngle,
-        endAngle: segmentAngles.progressAngle,
+        startAngle: adjustedStartAngle,
+        endAngle: adjustedProgressAngle,
       };
     });
 
