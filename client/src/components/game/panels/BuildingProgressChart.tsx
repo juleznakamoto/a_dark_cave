@@ -1,141 +1,157 @@
+
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+
+interface BuildingSegment {
+  buildingType: keyof typeof buildings;
+  maxCount: number;
+  color: string;
+  label: string;
+}
+
+interface RingConfig {
+  segments: BuildingSegment[];
+  innerRadius: number;
+  outerRadius: number;
+}
 
 export default function BuildingProgressChart() {
   const { buildings } = useGameStore();
 
   const paddingAngle = 5;
   const backgroundColor = "#cccdc6";
-
-  // Define max counts for each building type
-  const maxCounts = {
-    woodenHut: 10,
-    stoneHut: 10,
-    longhouse: 2,
-  };
-
-  // Calculate current counts
-  const counts = {
-    woodenHut: buildings.woodenHut || 4,
-    stoneHut: buildings.stoneHut || 2,
-    longhouse: buildings.longhouse || 1,
-  };
-
-  // Create data for the inner ring (split into built/unbuilt segments)
-  const BackgroundRing0 = [
-    { name: "Wooden Huts Built", value: maxCounts.woodenHut, fill: backgroundColor },
-    { name: "Stone Huts Built", value: maxCounts.stoneHut, fill: backgroundColor },
-    { name: "Longhouses Built", value: maxCounts.longhouse, fill: backgroundColor },
-  ];
-
-  const totalMaxCount =
-    maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
-  
   const totalDegrees = 345; // Total degrees to use (360 - 15 for gap)
   const startAngle = 90;
 
+  // Define ring configurations
+  const ringConfigs: RingConfig[] = [
+    {
+      segments: [
+        { buildingType: 'woodenHut', maxCount: 10, color: '#3b82f6', label: 'Wooden Huts' },
+        { buildingType: 'stoneHut', maxCount: 10, color: '#10b981', label: 'Stone Huts' },
+        { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
+      ],
+      innerRadius: 14,
+      outerRadius: 18,
+    },
+    // Add more rings here as needed
+    // Example:
+    // {
+    //   segments: [
+    //     { buildingType: 'altar', maxCount: 1, color: '#8b5cf6', label: 'Altar' },
+    //     { buildingType: 'shrine', maxCount: 1, color: '#ec4899', label: 'Shrine' },
+    //   ],
+    //   innerRadius: 20,
+    //   outerRadius: 24,
+    // },
+  ];
+
   // Helper function to calculate segment angles
   const calculateSegment = (
-    buildingType: keyof typeof maxCounts,
-    previousEndAngle: number
+    currentCount: number,
+    maxCount: number,
+    previousEndAngle: number,
+    segmentDegrees: number
   ) => {
-    const maxCount = maxCounts[buildingType];
-    const currentCount = counts[buildingType];
-    
     const startAngle = previousEndAngle - paddingAngle;
-    const segmentDegrees = (totalDegrees * maxCount) / totalMaxCount;
     const endAngle = startAngle - segmentDegrees;
     const segmentLength = endAngle - startAngle;
-    const progress = currentCount / maxCount;
+    const progress = maxCount > 0 ? currentCount / maxCount : 0;
     const progressAngle = startAngle + segmentLength * progress;
 
     return { startAngle, endAngle, progressAngle };
   };
 
-  // Calculate segments
-  const seg0 = calculateSegment('woodenHut', startAngle);
-  const seg1 = calculateSegment('stoneHut', seg0.endAngle);
-  const seg2 = calculateSegment('longhouse', seg1.endAngle);
+  // Process each ring
+  const processedRings = ringConfigs.map((ringConfig) => {
+    const { segments, innerRadius, outerRadius } = ringConfig;
+    
+    // Calculate total max count for this ring
+    const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
 
-  const ProgressRing0 = [
-    {
-      name: "Wooden Huts Built",
-      fill: "#3b82f6",
-      strokeWidth: 0,
-      startAngle: seg0.startAngle,
-      endAngle: seg0.progressAngle,
-    },
-    {
-      name: "Stone Huts Built",
-      fill: "#10b981",
-      strokeWidth: 0,
-      startAngle: seg1.startAngle,
-      endAngle: seg1.progressAngle,
-    },
-    {
-      name: "Longhouses Built",
-      fill: "#f59e0b",
-      strokeWidth: 0,
-      startAngle: seg2.startAngle,
-      endAngle: seg2.progressAngle,
-    },
-  ];
+    // Create background segments
+    const backgroundSegments = segments.map(seg => ({
+      name: seg.label,
+      value: seg.maxCount,
+      fill: backgroundColor,
+    }));
 
-  const rings = [
-    { data: BackgroundRing0, innerRadius: 14, outerRadius: 18 },
-    { data: ProgressRing0, innerRadius: 14, outerRadius: 18 },
-  ];
+    // Create progress segments with calculated angles
+    let currentEndAngle = startAngle;
+    const progressSegments = segments.map((seg) => {
+      const currentCount = buildings[seg.buildingType] || 0;
+      const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
+      const segmentAngles = calculateSegment(
+        currentCount,
+        seg.maxCount,
+        currentEndAngle,
+        segmentDegrees
+      );
+      currentEndAngle = segmentAngles.endAngle;
+
+      return {
+        name: seg.label,
+        fill: seg.color,
+        startAngle: segmentAngles.startAngle,
+        endAngle: segmentAngles.progressAngle,
+      };
+    });
+
+    return {
+      backgroundSegments,
+      progressSegments,
+      innerRadius,
+      outerRadius,
+    };
+  });
 
   return (
-    <div className="w-full h-10 flex flex-col items-center justify-center">
+    <div className="w-full h-48 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
-          <defs>
-            <linearGradient id="sliceGradient" x1="0" y1="0" x2="1" y2="1">
-              <stop offset="0%" stopColor="#8884d8" />
-              <stop offset="100%" stopColor="#82ca9d" />
-            </linearGradient>
-          </defs>
-          {rings.map((ring, index) => (
-            <Pie
-              key={index}
-              data={ring.data}
-              cx="50%"
-              cy="50%"
-              innerRadius={ring.innerRadius}
-              outerRadius={ring.outerRadius}
-              paddingAngle={paddingAngle}
-              dataKey="value"
-              startAngle={90}
-              endAngle={-270}
-              cornerRadius={5}
-              strokeWidth={0.5}
-              isAnimationActive={false}
-            >
-              {ring.data.map((entry, entryIndex) => (
-                <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} />
+          {processedRings.map((ring, ringIndex) => (
+            <>
+              {/* Background ring */}
+              <Pie
+                key={`background-${ringIndex}`}
+                data={ring.backgroundSegments}
+                cx="50%"
+                cy="50%"
+                innerRadius={ring.innerRadius}
+                outerRadius={ring.outerRadius}
+                paddingAngle={paddingAngle}
+                dataKey="value"
+                startAngle={startAngle}
+                endAngle={-270}
+                cornerRadius={5}
+                strokeWidth={0.5}
+                isAnimationActive={false}
+              >
+                {ring.backgroundSegments.map((entry, entryIndex) => (
+                  <Cell key={`bg-cell-${ringIndex}-${entryIndex}`} fill={entry.fill} />
+                ))}
+              </Pie>
+              
+              {/* Progress segments */}
+              {ring.progressSegments.map((segment, segIndex) => (
+                <Pie
+                  key={`progress-${ringIndex}-${segIndex}`}
+                  data={[{ value: 1 }]}
+                  cx="50%"
+                  cy="50%"
+                  innerRadius={ring.innerRadius}
+                  outerRadius={ring.outerRadius}
+                  dataKey="value"
+                  startAngle={segment.startAngle}
+                  endAngle={segment.endAngle}
+                  cornerRadius={5}
+                  strokeWidth={0}
+                  isAnimationActive={false}
+                >
+                  <Cell fill={segment.fill} />
+                </Pie>
               ))}
-            </Pie>
-          ))}
-          {/* Render ProgressRing0 segments individually with custom angles */}
-          {ProgressRing0.map((segment, index) => (
-            <Pie
-              key={`progress-${index}`}
-              data={[{ value: 1 }]}
-              cx="50%"
-              cy="50%"
-              innerRadius={14}
-              outerRadius={18}
-              dataKey="value"
-              startAngle={segment.startAngle}
-              endAngle={segment.endAngle}
-              cornerRadius={5}
-              strokeWidth={0}
-              style={{ zIndex: 10 }}
-              isAnimationActive={false}
-            >
-              <Cell fill={segment.fill} />
-            </Pie>
+            </>
           ))}
         </PieChart>
       </ResponsiveContainer>
