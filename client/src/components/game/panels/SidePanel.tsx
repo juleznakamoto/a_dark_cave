@@ -617,7 +617,7 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
-          {/* Building Progress Chart */}
+          {/* Building Progress Chart is now at the bottom of this column */}
           {
             <div className="mt-6">
               <BuildingProgressChart />
