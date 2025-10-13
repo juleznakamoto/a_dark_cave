@@ -1,9 +1,10 @@
 
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { GameState } from "@shared/schema";
 
 interface BuildingSegment {
-  buildingType: keyof typeof buildings;
+  buildingType: keyof GameState["buildings"];
   maxCount: number;
   color: string;
   label: string;
