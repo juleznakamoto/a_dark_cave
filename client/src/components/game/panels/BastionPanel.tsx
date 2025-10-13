@@ -218,6 +218,7 @@ export default function BastionPanel() {
             </HoverCard>
           )}
         </div>
+        </div>
       )}
     </div>
   );
