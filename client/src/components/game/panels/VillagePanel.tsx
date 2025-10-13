@@ -355,7 +355,7 @@ export default function VillagePanel() {
       </div>
 
       {/* Right Column - Building Progress Chart */}
-      <div className="flex items-start justify-center w-48">
+      <div className="flex items-start justify-center w-20">
         <BuildingProgressChart />
       </div>
     </div>

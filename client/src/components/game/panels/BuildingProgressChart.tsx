@@ -5,6 +5,7 @@ export default function BuildingProgressChart() {
   const { buildings } = useGameStore();
 
   const paddingAngle = 5;
+  const backgroundColor = "#cccdc6";
 
   // Define max counts for each building type
   const maxCounts = {
@@ -22,9 +23,9 @@ export default function BuildingProgressChart() {
 
   // Create data for the inner ring (split into built/unbuilt segments)
   const BackgroundRing0 = [
-    { name: "Wooden Huts Built", value: maxCounts.woodenHut, fill: "#cccdc6" },
-    { name: "Stone Huts Built", value: maxCounts.stoneHut, fill: "#cccdc6" },
-    { name: "Longhouses Built", value: maxCounts.longhouse, fill: "#cccdc6" },
+    { name: "Wooden Huts Built", value: maxCounts.woodenHut, fill: backgroundColor },
+    { name: "Stone Huts Built", value: maxCounts.stoneHut, fill: backgroundColor },
+    { name: "Longhouses Built", value: maxCounts.longhouse, fill: backgroundColor },
   ];
 
   const totalMaxCount =
@@ -72,47 +73,13 @@ export default function BuildingProgressChart() {
     },
   ];
 
-  const innerRingData0 = [
-    { name: "Wooden Huts Built", value: counts.woodenHut, fill: "#3b82f6" },
-    {
-      name: "Wooden Huts Unbuilt",
-      value: maxCounts.woodenHut - counts.woodenHut,
-      fill: "#6b7280",
-    },
-    { name: "Stone Huts Built", value: counts.stoneHut, fill: "#10b981" },
-    {
-      name: "Stone Huts Unbuilt",
-      value: maxCounts.stoneHut - counts.stoneHut,
-      fill: "#6b7280",
-    },
-    { name: "Longhouses Built", value: counts.longhouse, fill: "#f59e0b" },
-    {
-      name: "Longhouses Unbuilt",
-      value: maxCounts.longhouse - counts.longhouse,
-      fill: "#6b7280",
-    },
-  ];
-
-  const innerRingData1 = [
-    { name: "Wooden Huts Built", value: 5, fill: "#3b82f6" },
-    { name: "Wooden Huts Unbuilt", value: 2, fill: "#6b7280" },
-    { name: "Stone Huts Built", value: 3, fill: "#10b981" },
-    { name: "Stone Huts Unbuilt", value: 1, fill: "#6b7280" },
-    { name: "Longhouses Built", value: 4, fill: "#f59e0b" },
-    { name: "Longhouses Unbuilt", value: 7, fill: "#6b7280" },
-  ];
-
   const rings = [
-    // { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
-    // { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
-    // { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
-    // { data: innerRingData1, innerRadius: 20, outerRadius: 25 },
     { data: BackgroundRing0, innerRadius: 14, outerRadius: 18 },
     { data: ProgressRing0, innerRadius: 14, outerRadius: 18 },
   ];
 
   return (
-    <div className="w-full h-64 flex flex-col items-center justify-center">
+    <div className="w-full h-10 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <defs>
