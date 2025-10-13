@@ -40,8 +40,8 @@ export default function BuildingProgressChart() {
         { buildingType: 'stoneHut', maxCount: 10, color: '#cccdc6', label: 'Stone Huts' },
         { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
       ],
-      innerRadius: 22,
-      outerRadius: 16,
+      innerRadius: 20,
+      outerRadius: 24,
     },
     
     // Add more rings here as needed
