@@ -230,6 +230,13 @@ export default function BuildingProgressChart() {
         value: seg.maxCount,
         fill: backgroundColor,
       }));
+
+      // Create foreground segments (borders only, no fill)
+      const foregroundSegments = segments.map((seg) => ({
+        name: seg.label,
+        value: seg.maxCount,
+        fill: "transparent",
+      }));
       
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
@@ -276,6 +283,7 @@ export default function BuildingProgressChart() {
       return {
         backgroundSegments,
         progressSegments,
+        foregroundSegments,
         innerRadius,
         outerRadius,
       };
