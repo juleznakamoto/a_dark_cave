@@ -107,8 +107,8 @@ export default function CombatDialog({
   ]);
 
   // Available combat items with max limits
-  const MAX_EMBER_BOMBS = 3;
-  const MAX_CINDERFLAME_BOMBS = 2;
+  const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
+  const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
 
   const emberBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ember_bomb",
