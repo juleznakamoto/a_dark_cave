@@ -82,7 +82,7 @@ export default function BuildingProgressChart() {
   };
 
   return (
-    <div className="w-full h-10 flex flex-col items-center justify-center">
+    <div className="w-full h-48 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {rings.map((ring, ringIndex) => {
