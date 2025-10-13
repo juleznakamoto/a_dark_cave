@@ -21,12 +21,12 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   // Ring sizing parameters
-  const startRadius = 14; // Inner radius of the first ring
+  const startRadius = 16; // Inner radius of the first ring
   const ringSize = 4; // Thickness of each ring
-  const spaceBetweenRings = 4; // Gap between rings
+  const spaceBetweenRings = 5; // Gap between rings
   
   const paddingAngle = 8;
-  const backgroundColor = tailwindToHex("neutral-600/80");
+  const backgroundColor = tailwindToHex("neutral-300");
   const startAngle = 90 - paddingAngle / 2;
 
   // Define ring segment configurations (without radius values)
@@ -155,7 +155,7 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "watchtower",
-        maxCount: 3,
+        maxCount: 4,
         color: tailwindToHex("slate-900"),
         label: "Watchtower",
       },
@@ -287,7 +287,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-28 flex flex-col items-center justify-center">
+    <div className="w-full h-36 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
@@ -329,8 +329,8 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 0.25 : 0}
-                  stroke={segment.isFull ? tailwindToHex("neutral-200") : undefined}
+                  strokeWidth={segment.isFull ? 0.5 : 0}
+                  stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
                   isAnimationActive={false}
                 >
                   <Cell fill={segment.fill} />
@@ -350,7 +350,7 @@ export default function BuildingProgressChart() {
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
                 strokeWidth={0.25}
-                stroke={tailwindToHex("neutral-500")}
+                stroke={tailwindToHex("neutral-300")}
                 isAnimationActive={false}
               >
               </Pie>
