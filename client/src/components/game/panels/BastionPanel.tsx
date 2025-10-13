@@ -118,19 +118,15 @@ export default function BastionPanel() {
     }
   };
 
-  // If no damaged buildings, show nothing
-  if (!hasDamagedBuildings) {
-    return null;
-  }
-
   return (
     <div className="space-y-6">
       {/* Attack Waves Chart */}
       <AttackWavesChart />
 
-      {/* Repair Section */}
-      <div className="space-y-2">
-        <h3 className="text-xs font-bold text-foreground">Repair</h3>
+      {/* Repair Section - only show if there are damaged buildings */}
+      {hasDamagedBuildings && (
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold text-foreground">Repair</h3>
         <div className="flex flex-wrap gap-2">
           {bastionDamaged && buildings.bastion > 0 && (
             <HoverCard key="bastion" openDelay={100} closeDelay={100}>
@@ -222,7 +218,7 @@ export default function BastionPanel() {
             </HoverCard>
           )}
         </div>
-      </div>
+      )}
     </div>
   );
 }
