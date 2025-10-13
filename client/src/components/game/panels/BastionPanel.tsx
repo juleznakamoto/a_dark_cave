@@ -6,6 +6,7 @@ import {
   HoverCardContent,
   HoverCardTrigger,
 } from '@/components/ui/hover-card';
+import AttackWavesChart from './AttackWavesChart';
 
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
@@ -124,6 +125,9 @@ export default function BastionPanel() {
 
   return (
     <div className="space-y-6">
+      {/* Attack Waves Chart */}
+      <AttackWavesChart />
+
       {/* Repair Section */}
       <div className="space-y-2">
         <h3 className="text-xs font-bold text-foreground">Repair</h3>
