@@ -174,34 +174,34 @@ export const gameStateSchema = z.object({
     .default({}),
   buildings: z
     .object({
-      woodenHut: z.number().default(0), //
-      stoneHut: z.number().default(0), //
-      longhouse: z.number().default(0), //
-      cabin: z.number().default(0), //
-      greatCabin: z.number().default(0), //
-      timberMill: z.number().default(0),//
-      quarry: z.number().default(0),//
-      blacksmith: z.number().default(0), //
-      grandBlacksmith: z.number().default(0), //
-      foundry: z.number().default(0), //
-      tannery: z.number().default(0), //
-      clerksHut: z.number().default(0), //
-      scriptorium: z.number().default(0), //
-      shallowPit: z.number().default(0), //
-      deepeningPit: z.number().default(0),//
-      deepPit: z.number().default(0),//
-      bottomlessPit: z.number().default(0),//
-      altar: z.number().default(0), //
-      shrine: z.number().default(0), //
-      temple: z.number().default(0),//
-      sanctum: z.number().default(0), //
-      alchemistHall: z.number().default(0), //
+      woodenHut: z.number().default(0), 
+      stoneHut: z.number().default(0), 
+      longhouse: z.number().default(0), 
+      cabin: z.number().default(0), 
+      greatCabin: z.number().default(0), 
+      timberMill: z.number().default(0),
+      quarry: z.number().default(0),
+      blacksmith: z.number().default(0), 
+      grandBlacksmith: z.number().default(0), 
+      foundry: z.number().default(0), 
+      tannery: z.number().default(0), 
+      clerksHut: z.number().default(0), 
+      scriptorium: z.number().default(0), 
+      shallowPit: z.number().default(0), 
+      deepeningPit: z.number().default(0),
+      deepPit: z.number().default(0),
+      bottomlessPit: z.number().default(0),
+      altar: z.number().default(0), 
+      shrine: z.number().default(0), 
+      temple: z.number().default(0),
+      sanctum: z.number().default(0), 
+      alchemistHall: z.number().default(0), 
       tradePost: z.number().default(0),
       merchantsGuild: z.number().default(0),
       bastion: z.number().default(0),
       watchtower: z.number().default(0),
       palisades: z.number().default(0),
-      wizardTower: z.number().default(0), //
+      wizardTower: z.number().default(0), 
     })
     .default({}),
   villagers: z

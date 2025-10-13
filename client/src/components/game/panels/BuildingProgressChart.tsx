@@ -135,10 +135,10 @@ export default function BuildingProgressChart() {
           relatedBuildings: ["shrine", "temple", "sanctum"],
         },
         {
-          buildingType: "alchemist",
+          buildingType: "alchemistHall",
           maxCount: 1,
           color: "#a855f7",
-          label: "Alchemist",
+          label: "Alchemist's Hall",
         },
         {
           buildingType: "wizardTower",
