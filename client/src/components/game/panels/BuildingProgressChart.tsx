@@ -16,7 +16,7 @@ interface RingConfig {
 }
 
 export default function BuildingProgressChart() {
-  const { buildings } = useGameStore();
+  const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 5;
   const backgroundColor = "#cccdc6";
