@@ -150,8 +150,9 @@ export const storyEvents: Record<string, GameEvent> = {
       !state.story.seen.wizardDecryptsScrolls,
     triggerType: "resource",
     timeProbability: 0.5,
+    title: "Ancient Knowledge",
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creatures in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below. I have to figure out how to find those items.'",
+      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creatures in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below.' He pauses, then continues with urgency: 'I have found something in these texts - deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may be frostglas, the very material we need for the sword. But beware - the grave is protected by deadly traps laid by those who buried him.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -169,33 +170,6 @@ export const storyEvents: Record<string, GameEvent> = {
         seen: {
           ...state.story.seen,
           wizardDecryptsScrolls: true,
-        },
-      },
-    }),
-  },
-
-  wizardHillGrave: {
-    id: "wizardHillGrave",
-    condition: (state: GameState) =>
-      state.story.seen.wizardDecryptsScrolls &&
-      !state.story.seen.wizardHillGrave,
-    triggerType: "resource",
-    timeProbability: 1.0,
-    title: "The Hill Grave",
-    message:
-      "The wizard summons you to his tower with urgency. 'I have found something in ancient texts,' he says, his eyes gleaming. 'Deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may some frostglas - the very material we need. But beware - the grave is protected by deadly traps laid by those who buried him.'",
-    triggered: false,
-    priority: 5,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    repeatable: false,
-    effect: (state: GameState) => ({
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
           wizardHillGrave: true,
         },
       },
