@@ -1,4 +1,3 @@
-
 import { useGameStore } from '@/game/state';
 import { Progress } from '@/components/ui/progress';
 
@@ -15,9 +14,12 @@ export default function AttackWavesChart() {
 
   // Find current wave (first incomplete wave)
   const currentWaveIndex = waves.findIndex(wave => !wave.completed);
-  const hasStarted = story?.seen?.firstWave || false;
-  
-  if (!hasStarted) {
+
+  // The chart should show as soon as a bastion is built, which is before the first wave starts.
+  // We check if the bastion has been built by looking for `story?.seen?.hasBastion`.
+  const shouldShowChart = story?.seen?.hasBastion || false;
+
+  if (!shouldShowChart) {
     return null;
   }
 
@@ -28,7 +30,7 @@ export default function AttackWavesChart() {
         {waves.map((wave, index) => {
           const isCurrent = index === currentWaveIndex;
           const isPast = index < currentWaveIndex;
-          
+
           return (
             <div key={wave.id} className="space-y-1">
               <div className="flex justify-between items-center text-xs">
