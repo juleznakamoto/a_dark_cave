@@ -20,9 +20,9 @@ interface RingConfig {
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
-  const paddingAngle = 5;
+  const paddingAngle = 8;
   const backgroundColor = "#43443c";
-  const startAngle = 90;
+  const startAngle = 90 - paddingAngle / 2;
 
   // Define ring configurations
   const ringConfigs: RingConfig[] = [
@@ -95,8 +95,8 @@ export default function BuildingProgressChart() {
           relatedBuildings: ["scriptorium"],
         },
       ],
-      innerRadius: 20,
-      outerRadius: 24,
+      innerRadius: 22,
+      outerRadius: 26,
     },
     // Third ring: Resource buildings and pits
     {
@@ -121,8 +121,8 @@ export default function BuildingProgressChart() {
           relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
         },
       ],
-      innerRadius: 26,
-      outerRadius: 30,
+      innerRadius: 30,
+      outerRadius: 34,
     },
     // Fourth ring: Advanced buildings
     {
@@ -147,8 +147,8 @@ export default function BuildingProgressChart() {
           label: "Wizard Tower",
         },
       ],
-      innerRadius: 32,
-      outerRadius: 36,
+      innerRadius: 38,
+      outerRadius: 42,
     },
     // Fifth ring: Fortifications
     {
@@ -172,8 +172,8 @@ export default function BuildingProgressChart() {
           label: "Palisades",
         },
       ],
-      innerRadius: 38,
-      outerRadius: 42,
+      innerRadius: 46,
+      outerRadius: 50,
     },
   ];
 
@@ -204,7 +204,7 @@ export default function BuildingProgressChart() {
         if (seg.relatedBuildings) {
           currentCount += seg.relatedBuildings.reduce(
             (sum, relatedType) => sum + (buildings[relatedType] || 0),
-            0
+            0,
           );
         }
         return currentCount > 0;
@@ -219,7 +219,10 @@ export default function BuildingProgressChart() {
       const totalDegrees = 360 - segments.length * paddingAngle;
 
       // Calculate total max count for this ring
-      const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
+      const totalMaxCount = segments.reduce(
+        (sum, seg) => sum + seg.maxCount,
+        0,
+      );
 
       // Create background segments
       const backgroundSegments = segments.map((seg) => ({
@@ -236,7 +239,7 @@ export default function BuildingProgressChart() {
         if (seg.relatedBuildings) {
           currentCount += seg.relatedBuildings.reduce(
             (sum, relatedType) => sum + (buildings[relatedType] || 0),
-            0
+            0,
           );
         }
 
@@ -250,8 +253,14 @@ export default function BuildingProgressChart() {
         currentEndAngle = segmentAngles.endAngle;
 
         // For all segments after the first, subtract cumulative padding angle
-        const adjustedStartAngle = index === 0 ? segmentAngles.startAngle : segmentAngles.startAngle - (paddingAngle * index);
-        const adjustedProgressAngle = index === 0 ? segmentAngles.progressAngle : segmentAngles.progressAngle - (paddingAngle * index);
+        const adjustedStartAngle =
+          index === 0
+            ? segmentAngles.startAngle
+            : segmentAngles.startAngle - paddingAngle * index;
+        const adjustedProgressAngle =
+          index === 0
+            ? segmentAngles.progressAngle
+            : segmentAngles.progressAngle - paddingAngle * index;
 
         return {
           name: seg.label,
@@ -271,7 +280,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-20 flex flex-col items-center justify-center">
+    <div className="w-full h-28 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
@@ -287,7 +296,7 @@ export default function BuildingProgressChart() {
                 paddingAngle={paddingAngle}
                 dataKey="value"
                 startAngle={startAngle}
-                endAngle={-270}
+                endAngle={-360 + startAngle}
                 cornerRadius={5}
                 strokeWidth={0}
                 isAnimationActive={false}
