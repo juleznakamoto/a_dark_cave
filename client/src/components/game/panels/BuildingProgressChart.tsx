@@ -333,7 +333,7 @@ export default function BuildingProgressChart() {
                   stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
                   isAnimationActive={true}
                   animationBegin={0}
-                  animationDuration={400}
+                  animationDuration={1000}
                   animationEasing="ease-out"
                 >
                   <Cell fill={segment.fill} />

@@ -179,7 +179,7 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardFrostglassSword: {
     id: "wizardFrostglassSword",
     condition: (state: GameState) =>
-      state.story.seen.hillGraveSuccess &&
+      state.story.seen.hillGraveExplored &&
       state.resources.frostglas >= 50 &&
       state.buildings.blacksmith >= 1 &&
       state.buildings.grandBlacksmith === 0 &&

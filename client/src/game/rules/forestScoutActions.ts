@@ -68,8 +68,7 @@ export const forestScoutActions: Record<string, Action> = {
     cost: {
       "resources.food": 2500,
     },
-    effects: {
-    },
+    effects: {},
     cooldown: 60,
   },
 
@@ -78,13 +77,12 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Hill Grave",
     show_when: {
       "story.seen.wizardHillGrave": true,
-      // "!story.seen.hillGraveExplored": true,
+      "!story.seen.hillGraveExplored": true,
     },
     cost: {
       "resources.food": 5000,
     },
-    effects: {
-    },
+    effects: {},
     cooldown: 60,
   },
 
