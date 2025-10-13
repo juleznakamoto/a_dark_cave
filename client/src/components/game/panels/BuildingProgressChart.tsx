@@ -20,10 +20,10 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 8;
-  const backgroundColor = "#1a1b17";
+  const backgroundColor = "hsl(var(--muted))";
   const startAngle = 90 - paddingAngle / 2;
 
-  // Define ring configurations
+  // Define ring configurations with Tailwind CSS variables
   const ringConfigs: RingConfig[] = [
     // First ring: Huts
     {
@@ -31,19 +31,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "woodenHut",
           maxCount: 10,
-          color: "#48240a",
+          color: "hsl(var(--chart-1))",
           label: "Wooden Huts",
         },
         {
           buildingType: "stoneHut",
           maxCount: 10,
-          color: "#cccdc6",
+          color: "hsl(var(--muted-foreground))",
           label: "Stone Huts",
         },
         {
           buildingType: "longhouse",
           maxCount: 2,
-          color: "#f59e0b",
+          color: "hsl(var(--chart-3))",
           label: "Longhouses",
         },
       ],
@@ -56,40 +56,40 @@ export default function BuildingProgressChart() {
         {
           buildingType: "cabin",
           maxCount: 2,
-          color: "#92400e",
+          color: "hsl(var(--chart-1))",
           label: "Cabin",
           relatedBuildings: ["greatCabin"],
         },
         {
           buildingType: "blacksmith",
           maxCount: 2,
-          color: "#dc2626",
+          color: "hsl(var(--destructive))",
           label: "Blacksmith",
           relatedBuildings: ["grandBlacksmith"],
         },
         {
           buildingType: "foundry",
           maxCount: 1,
-          color: "#ef4444",
+          color: "hsl(var(--primary))",
           label: "Foundry",
         },
         {
           buildingType: "tannery",
           maxCount: 1,
-          color: "#78350f",
+          color: "hsl(var(--chart-1))",
           label: "Tannery",
         },
         {
           buildingType: "tradePost",
           maxCount: 2,
-          color: "#eab308",
+          color: "hsl(var(--chart-3))",
           label: "Trade",
           relatedBuildings: ["merchantsGuild"],
         },
         {
           buildingType: "clerksHut",
           maxCount: 2,
-          color: "#06b6d4",
+          color: "hsl(var(--chart-2))",
           label: "Knowledge",
           relatedBuildings: ["scriptorium"],
         },
@@ -103,19 +103,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "timberMill",
           maxCount: 1,
-          color: "#65a30d",
+          color: "hsl(var(--chart-4))",
           label: "Timber Mill",
         },
         {
           buildingType: "quarry",
           maxCount: 1,
-          color: "#94a3b8",
+          color: "hsl(var(--muted-foreground))",
           label: "Quarry",
         },
         {
           buildingType: "shallowPit",
           maxCount: 4,
-          color: "#1e293b",
+          color: "hsl(var(--accent))",
           label: "Pits",
           relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
         },
@@ -129,20 +129,20 @@ export default function BuildingProgressChart() {
         {
           buildingType: "altar",
           maxCount: 4,
-          color: "#8b5cf6",
+          color: "hsl(var(--chart-5))",
           label: "Religious",
           relatedBuildings: ["shrine", "temple", "sanctum"],
         },
         {
           buildingType: "alchemistHall",
           maxCount: 1,
-          color: "#a855f7",
+          color: "hsl(var(--chart-5))",
           label: "Alchemist's Hall",
         },
         {
           buildingType: "wizardTower",
           maxCount: 1,
-          color: "#6366f1",
+          color: "hsl(var(--chart-2))",
           label: "Wizard Tower",
         },
       ],
@@ -155,19 +155,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "bastion",
           maxCount: 1,
-          color: "#475569",
+          color: "hsl(var(--border))",
           label: "Bastion",
         },
         {
           buildingType: "palisades",
           maxCount: 4,
-          color: "#334155",
+          color: "hsl(var(--accent))",
           label: "Palisades",
         },
         {
           buildingType: "watchtower",
           maxCount: 3,
-          color: "#64748b",
+          color: "hsl(var(--muted-foreground))",
           label: "Watchtower",
         },
       ],
