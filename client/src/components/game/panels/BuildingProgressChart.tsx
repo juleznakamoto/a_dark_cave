@@ -23,7 +23,7 @@ export default function BuildingProgressChart() {
   const backgroundColor = "#1a1b17";
   const startAngle = 90 - paddingAngle / 2;
 
-  // Define ring configurations
+  // Define ring configurations with Tailwind colors
   const ringConfigs: RingConfig[] = [
     // First ring: Huts
     {
@@ -31,19 +31,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "woodenHut",
           maxCount: 10,
-          color: "#48240a",
+          color: "hsl(var(--chart-1))", // Brown for wooden huts
           label: "Wooden Huts",
         },
         {
           buildingType: "stoneHut",
           maxCount: 10,
-          color: "#cccdc6",
+          color: "hsl(var(--muted-foreground))", // Gray for stone huts
           label: "Stone Huts",
         },
         {
           buildingType: "longhouse",
           maxCount: 2,
-          color: "#f59e0b",
+          color: "hsl(var(--chart-3))", // Amber for longhouses
           label: "Longhouses",
         },
       ],
@@ -56,40 +56,40 @@ export default function BuildingProgressChart() {
         {
           buildingType: "cabin",
           maxCount: 2,
-          color: "#92400e",
+          color: "rgb(146 64 14)", // amber-800
           label: "Cabin",
           relatedBuildings: ["greatCabin"],
         },
         {
           buildingType: "blacksmith",
           maxCount: 2,
-          color: "#dc2626",
+          color: "rgb(220 38 38)", // red-600
           label: "Blacksmith",
           relatedBuildings: ["grandBlacksmith"],
         },
         {
           buildingType: "foundry",
           maxCount: 1,
-          color: "#ef4444",
+          color: "rgb(239 68 68)", // red-500
           label: "Foundry",
         },
         {
           buildingType: "tannery",
           maxCount: 1,
-          color: "#78350f",
+          color: "rgb(120 53 15)", // amber-900
           label: "Tannery",
         },
         {
           buildingType: "tradePost",
           maxCount: 2,
-          color: "#eab308",
+          color: "rgb(234 179 8)", // yellow-500
           label: "Trade",
           relatedBuildings: ["merchantsGuild"],
         },
         {
           buildingType: "clerksHut",
           maxCount: 2,
-          color: "#06b6d4",
+          color: "rgb(6 182 212)", // cyan-500
           label: "Knowledge",
           relatedBuildings: ["scriptorium"],
         },
@@ -103,19 +103,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "timberMill",
           maxCount: 1,
-          color: "#65a30d",
+          color: "rgb(101 163 13)", // lime-600
           label: "Timber Mill",
         },
         {
           buildingType: "quarry",
           maxCount: 1,
-          color: "#94a3b8",
+          color: "rgb(148 163 184)", // slate-400
           label: "Quarry",
         },
         {
           buildingType: "shallowPit",
           maxCount: 4,
-          color: "#1e293b",
+          color: "rgb(30 41 59)", // slate-800
           label: "Pits",
           relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
         },
@@ -129,20 +129,20 @@ export default function BuildingProgressChart() {
         {
           buildingType: "altar",
           maxCount: 4,
-          color: "#8b5cf6",
+          color: "rgb(139 92 246)", // violet-500
           label: "Religious",
           relatedBuildings: ["shrine", "temple", "sanctum"],
         },
         {
           buildingType: "alchemistHall",
           maxCount: 1,
-          color: "#a855f7",
+          color: "rgb(168 85 247)", // purple-500
           label: "Alchemist's Hall",
         },
         {
           buildingType: "wizardTower",
           maxCount: 1,
-          color: "#6366f1",
+          color: "rgb(99 102 241)", // indigo-500
           label: "Wizard Tower",
         },
       ],
@@ -155,19 +155,19 @@ export default function BuildingProgressChart() {
         {
           buildingType: "bastion",
           maxCount: 1,
-          color: "#475569",
+          color: "rgb(71 85 105)", // slate-600
           label: "Bastion",
         },
         {
           buildingType: "palisades",
           maxCount: 4,
-          color: "#334155",
+          color: "rgb(51 65 85)", // slate-700
           label: "Palisades",
         },
         {
           buildingType: "watchtower",
           maxCount: 3,
-          color: "#64748b",
+          color: "rgb(100 116 139)", // slate-500
           label: "Watchtower",
         },
       ],
