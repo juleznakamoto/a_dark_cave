@@ -27,6 +27,9 @@ export default function BuildingProgressChart() {
     { name: "Longhouses Built", value: maxCounts.longhouse, fill: "#cccdc6" },
   ];
 
+  const totalMaxCount = maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
+  const segmentCount = 3;
+  
   const ProgressRing0 = [
     {
       name: "Wooden Huts Built",
@@ -34,22 +37,23 @@ export default function BuildingProgressChart() {
       fill: "#3b82f6",
       strokeWidth: 0,
       startAngle: 90,
-      endAngle: 360 - (len(counts) -1) * paddingAngle) - (sum(maxCounts) - maxCounts.woodenHut)/360  },
+      endAngle: 90 - (360 * maxCounts.woodenHut / totalMaxCount) - paddingAngle,
+    },
     {
       name: "Stone Huts Built",
       value: 2,
       fill: "#10b981",
       strokeWidth: 0,
-      startAngle: 0,
-      endAngle: 0,
+      startAngle: 90 - (360 * maxCounts.woodenHut / totalMaxCount) - paddingAngle,
+      endAngle: 90 - (360 * (maxCounts.woodenHut + maxCounts.stoneHut) / totalMaxCount) - (paddingAngle * 2),
     },
     {
       name: "Longhouses Built",
       value: 3,
       fill: "#f59e0b",
       strokeWidth: 0,
-      startAngle: 0,
-      endAngle: 0,
+      startAngle: 90 - (360 * (maxCounts.woodenHut + maxCounts.stoneHut) / totalMaxCount) - (paddingAngle * 2),
+      endAngle: 90 - 360,
     },
   ];
 
