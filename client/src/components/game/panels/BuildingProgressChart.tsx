@@ -1,4 +1,3 @@
-
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -29,41 +28,56 @@ export default function BuildingProgressChart() {
   const ringConfigs: RingConfig[] = [
     {
       segments: [
-        { buildingType: 'woodenHut', maxCount: 10, color: '#48240a', label: 'Wooden Huts' },
-        { buildingType: 'stoneHut', maxCount: 10, color: '#cccdc6', label: 'Stone Huts' },
-        { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
+        {
+          buildingType: "woodenHut",
+          maxCount: 10,
+          color: "#48240a",
+          label: "Wooden Huts",
+        },
+        {
+          buildingType: "stoneHut",
+          maxCount: 10,
+          color: "#cccdc6",
+          label: "Stone Huts",
+        },
+        {
+          buildingType: "longhouse",
+          maxCount: 2,
+          color: "#f59e0b",
+          label: "Longhouses",
+        },
       ],
       innerRadius: 14,
       outerRadius: 18,
     },
     {
       segments: [
-        { 
-          buildingType: 'blacksmith', 
-          maxCount: 2, 
-          color: '#dc2626', 
-          label: 'Blacksmith',
-          relatedBuildings: ['grandBlacksmith'] // Combine blacksmith + grand blacksmith
+        {
+          buildingType: "blacksmith",
+          maxCount: 2,
+          color: "#dc2626",
+          label: "Blacksmith",
+          relatedBuildings: ["grandBlacksmith"], // Combine blacksmith + grand blacksmith
         },
-        { 
-          buildingType: 'cabin', 
-          maxCount: 1, 
-          color: '#92400e', 
-          label: 'Cabin',
-          relatedBuildings: ['greatCabin'] // Combine cabin + great cabin
+        {
+          buildingType: "cabin",
+          maxCount: 2,
+          color: "#92400e",
+          label: "Cabin",
+          relatedBuildings: ["greatCabin"], // Combine cabin + great cabin
         },
-        { 
-          buildingType: 'altar', 
-          maxCount: 1, 
-          color: '#8b5cf6', 
-          label: 'Religious',
-          relatedBuildings: ['shrine', 'temple', 'sanctum'] // Combine all religious buildings
+        {
+          buildingType: "altar",
+          maxCount: 1,
+          color: "#8b5cf6",
+          label: "Religious",
+          relatedBuildings: ["shrine", "temple", "sanctum"], // Combine all religious buildings
         },
       ],
       innerRadius: 20,
       outerRadius: 24,
     },
-    
+
     // Add more rings here as needed
   ];
 
@@ -72,7 +86,7 @@ export default function BuildingProgressChart() {
     currentCount: number,
     maxCount: number,
     previousEndAngle: number,
-    segmentDegrees: number
+    segmentDegrees: number,
   ) => {
     const startAngle = previousEndAngle;
     const endAngle = startAngle - segmentDegrees;
@@ -86,15 +100,15 @@ export default function BuildingProgressChart() {
   // Process each ring
   const processedRings = ringConfigs.map((ringConfig) => {
     const { segments, innerRadius, outerRadius } = ringConfig;
-    
+
     // Calculate total degrees for this ring based on segment count
     const totalDegrees = 360 - segments.length * paddingAngle;
-    
+
     // Calculate total max count for this ring
     const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
 
     // Create background segments
-    const backgroundSegments = segments.map(seg => ({
+    const backgroundSegments = segments.map((seg) => ({
       name: seg.label,
       value: seg.maxCount,
       fill: backgroundColor,
@@ -108,16 +122,16 @@ export default function BuildingProgressChart() {
       if (seg.relatedBuildings) {
         currentCount += seg.relatedBuildings.reduce(
           (sum, relatedType) => sum + (buildings[relatedType] || 0),
-          0
+          0,
         );
       }
-      
+
       const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
       const segmentAngles = calculateSegment(
         currentCount,
         seg.maxCount,
         currentEndAngle,
-        segmentDegrees
+        segmentDegrees,
       );
       currentEndAngle = segmentAngles.endAngle;
 
@@ -160,10 +174,13 @@ export default function BuildingProgressChart() {
                 isAnimationActive={false}
               >
                 {ring.backgroundSegments.map((entry, entryIndex) => (
-                  <Cell key={`bg-cell-${ringIndex}-${entryIndex}`} fill={entry.fill} />
+                  <Cell
+                    key={`bg-cell-${ringIndex}-${entryIndex}`}
+                    fill={entry.fill}
+                  />
                 ))}
               </Pie>
-              
+
               {/* Progress segments */}
               {ring.progressSegments.map((segment, segIndex) => (
                 <Pie
