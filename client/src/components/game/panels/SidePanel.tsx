@@ -619,7 +619,7 @@ export default function SidePanel() {
           )}
           {/* Building Progress Chart */}
           {
-            <div className="mt-6">
+            <div className="">
               <BuildingProgressChart />
             </div>
           }

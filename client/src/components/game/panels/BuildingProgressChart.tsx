@@ -7,7 +7,6 @@ interface BuildingSegment {
   maxCount: number;
   color: string;
   label: string;
-  // Optional: combine with related buildings (e.g., blacksmith + grand blacksmith)
   relatedBuildings?: (keyof GameState["buildings"])[];
 }
 
@@ -21,7 +20,7 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 8;
-  const backgroundColor = "#43443c";
+  const backgroundColor = "#1a1b17";
   const startAngle = 90 - paddingAngle / 2;
 
   // Define ring configurations
@@ -160,16 +159,16 @@ export default function BuildingProgressChart() {
           label: "Bastion",
         },
         {
-          buildingType: "watchtower",
-          maxCount: 3,
-          color: "#64748b",
-          label: "Watchtower",
-        },
-        {
           buildingType: "palisades",
           maxCount: 4,
           color: "#334155",
           label: "Palisades",
+        },
+        {
+          buildingType: "watchtower",
+          maxCount: 3,
+          color: "#64748b",
+          label: "Watchtower",
         },
       ],
       innerRadius: 46,
