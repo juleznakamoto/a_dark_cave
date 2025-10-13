@@ -65,9 +65,29 @@ export default function SidePanel() {
 
   
 
-  // Filter out weapons from tools display
+  // Filter out weapons from tools display and used special items
   const toolItems = Object.entries(displayTools)
-    .filter(([key, value]) => !Object.keys(gameState.weapons).includes(key))
+    .filter(([key, value]) => {
+      // Filter out weapons
+      if (Object.keys(gameState.weapons).includes(key)) return false;
+      
+      // Filter out reinforced_rope after low chamber is explored
+      if (key === 'reinforced_rope' && gameState.story.seen?.lowChamberExplored) {
+        return false;
+      }
+      
+      // Filter out giant_trap after laying trap
+      if (key === 'giant_trap' && gameState.story.seen?.actionLayTrap) {
+        return false;
+      }
+      
+      // Filter out occultist_map after exploring occultist chamber
+      if (key === 'occultist_map' && gameState.story.seen?.occultistChamberExplored) {
+        return false;
+      }
+      
+      return true;
+    })
     .map(([key, value]) => ({
       id: key,
       label: capitalizeWords(key),
