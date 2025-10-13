@@ -15,6 +15,7 @@ import {
   getTotalKnowledge,
   getTotalMadness,
 } from "@/game/rules/effectsCalculation";
+import BuildingProgressChart from "./BuildingProgressChart";
 
 export default function SidePanel() {
   const {
@@ -591,6 +592,12 @@ export default function SidePanel() {
               }}
               forceNotifications={buildings.clerksHut > 0}
             />
+          )}
+          {/* Building Progress Chart - shown in village tab below resources */}
+          {activeTab === "village" && (
+            <div className="mt-6">
+              <BuildingProgressChart />
+            </div>
           )}
         </div>
 
