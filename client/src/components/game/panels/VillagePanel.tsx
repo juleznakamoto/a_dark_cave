@@ -274,7 +274,7 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6">
       {/* Left Column - Existing Content */}
       <div className="space-y-6">
         {actionGroups.map((group, groupIndex) => {
@@ -355,7 +355,7 @@ export default function VillagePanel() {
       </div>
 
       {/* Right Column - Building Progress Chart */}
-      <div className="flex items-start justify-center">
+      <div className="flex items-start justify-center w-64">
         <BuildingProgressChart />
       </div>
     </div>
