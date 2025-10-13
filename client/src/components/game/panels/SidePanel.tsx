@@ -63,6 +63,8 @@ export default function SidePanel() {
   // Dynamically generate tool items from state (only show best tools, no weapons)
   const displayTools = getDisplayTools(gameState);
 
+  
+
   // Filter out weapons from tools display
   const toolItems = Object.entries(displayTools)
     .filter(([key, value]) => !Object.keys(gameState.weapons).includes(key))
