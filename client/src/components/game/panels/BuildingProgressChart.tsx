@@ -331,10 +331,7 @@ export default function BuildingProgressChart() {
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 0.5 : 0}
                   stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
-                  isAnimationActive={true}
-                  animationBegin={0}
-                  animationDuration={1000}
-                  animationEasing="ease-out"
+                  isAnimationActive={false}
                 >
                   <Cell fill={segment.fill} />
                 </Pie>
