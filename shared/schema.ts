@@ -5,256 +5,290 @@ export const logEntrySchema = z.object({
   id: z.string(),
   message: z.string(),
   timestamp: z.number(),
-  type: z.enum(['system', 'action', 'event', 'production']).default('system'),
-  visualEffect: z.object({
-    type: z.enum(['glow', 'pulse']),
-    duration: z.number(), // in seconds
-  }).optional(),
+  type: z.enum(["system", "action", "event", "production"]).default("system"),
+  visualEffect: z
+    .object({
+      type: z.enum(["glow", "pulse"]),
+      duration: z.number(), // in seconds
+    })
+    .optional(),
 });
 
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
-  resources: z.object({
-    wood: z.number().min(0).default(0),
-    food: z.number().min(0).default(0),
-    stone: z.number().min(0).default(0),
-    iron: z.number().min(0).default(0),
-    coal: z.number().min(0).default(0),
-    steel: z.number().min(0).default(0),
-    sulfur: z.number().min(0).default(0),
-    bones: z.number().min(0).default(0),
-    bone_totem: z.number().min(0).default(0),
-    fur: z.number().min(0).default(0),
-    leather: z.number().min(0).default(0),
-    torch: z.number().min(0).default(0),
-    silver: z.number().min(0).default(0),
-    gold: z.number().min(0).default(0),
-    obsidian: z.number().min(0).default(0),
-    adamant: z.number().min(0).default(0),
-    moonstone: z.number().min(0).default(0),
-    bloodstone: z.number().min(0).default(0),
-    frostglas: z.number().min(0).default(0),
-    black_powder: z.number().min(0).default(0),
-    ember_bomb: z.number().min(0).default(0),
-    cinderflame_dust: z.number().min(0).default(0),
-    cinderflame_bomb: z.number().min(0).default(0),
-  }).default({}),
-  stats: z.object({
-    strength: z.number().min(0).default(0),
-    knowledge: z.number().min(0).default(0),
-    luck: z.number().min(0).default(0),
-    madness: z.number().min(0).default(0),
-    madnessFromEvents: z.number().min(0).default(0),
-  }).default({}),
-  flags: z.object({
-    villageUnlocked: z.boolean().default(false),
-    bastionUnlocked: z.boolean().default(false),
-    torchBuilt: z.boolean().default(false),
-    caveExplored: z.boolean().default(false),
-    venturedDeeper: z.boolean().default(false),
-    gameStarted: z.boolean().default(false),
-    trinketDrunk: z.boolean().default(false),
-    sleeping: z.boolean().default(false),
-    descendedFurther: z.boolean().default(false),
-    exploredRuins: z.boolean().default(false),
-    exploredTemple: z.boolean().default(false),
-    exploredCitadel: z.boolean().default(false),
-    lowChamberExplored: z.boolean().default(false),
-    occultistChamberExplored: z.boolean().default(false),
-    starvationActive: z.boolean().default(false),
-    forestUnlocked: z.boolean().default(false),
-    altarBuilt: z.boolean().default(false),
-    needsNewWell: z.boolean().default(false),
-    portalBlasted: z.boolean().default(false),
-    stoneAxeTooltipShown: z.boolean().default(false),
-  }).default({}),
-  schematics: z.object({
-    arbalest_schematic: z.boolean().default(false),
-    nightshade_bow_schematic: z.boolean().default(false),
-    bloodstone_staff_schematic: z.boolean().default(false),
-  }).default({}),
-  tools: z.object({
-    stone_axe: z.boolean().default(false),
-    stone_pickaxe: z.boolean().default(false),
-    iron_axe: z.boolean().default(false),
-    iron_pickaxe: z.boolean().default(false),
-    steel_axe: z.boolean().default(false),
-    steel_pickaxe: z.boolean().default(false),
-    obsidian_axe: z.boolean().default(false),
-    obsidian_pickaxe: z.boolean().default(false),
-    adamant_axe: z.boolean().default(false),
-    adamant_pickaxe: z.boolean().default(false),
-    lantern: z.boolean().default(false),
-    iron_lantern: z.boolean().default(false),
-    steel_lantern: z.boolean().default(false),
-    obsidian_lantern: z.boolean().default(false),
-    adamant_lantern: z.boolean().default(false),
-    blacksmith_hammer: z.boolean().default(false),
-    reinforced_rope: z.boolean().default(false),
-    giant_trap: z.boolean().default(false),
-    seeker_pack: z.boolean().default(false),
-    occultist_map: z.boolean().default(false),
-  }).default({}),
-  weapons: z.object({
-    iron_sword: z.boolean().default(false),
-    steel_sword: z.boolean().default(false),
-    obsidian_sword: z.boolean().default(false),
-    adamant_sword: z.boolean().default(false),
-    crude_bow: z.boolean().default(false),
-    huntsman_bow: z.boolean().default(false),
-    long_bow: z.boolean().default(false),
-    war_bow: z.boolean().default(false),
-    master_bow: z.boolean().default(false),
-    frostglass_sword: z.boolean().default(false),
-    arbalest: z.boolean().default(false),
-    nightshade_bow: z.boolean().default(false),
-    frostfang: z.boolean().default(false),
-    bloodstone_staff: z.boolean().default(false),
-  }).default({}),
-  clothing: z.object({
-    iron_armor: z.boolean().default(false),
-    steel_armor: z.boolean().default(false),
-    obsidian_armor: z.boolean().default(false),
-    seeker_pack: z.boolean().default(false),
-    hunter_cloak: z.boolean().default(false),
-    grenadier_bag: z.boolean().default(false),
-  }).default({}),
-  relics: z.object({
-    strange_bones: z.boolean().default(false),
-    compass: z.boolean().default(false),
-    old_textbook: z.boolean().default(false),
-    steel_codex: z.boolean().default(false),
-    tarnished_amulet: z.boolean().default(false),
-    bloodstained_belt: z.boolean().default(false),
-    wooden_figure: z.boolean().default(false),
-    dragon_bone_dice: z.boolean().default(false),
-    ravenfeather_mantle: z.boolean().default(false),
-    whispering_amulet: z.boolean().default(false),
-    ring_of_clarity: z.boolean().default(false),
-    blackened_mirror: z.boolean().default(false),
-    alphas_hide: z.boolean().default(false),
-    ebony_ring: z.boolean().default(false),
-    unnamed_book: z.boolean().default(false),
-    cracked_crown: z.boolean().default(false),
-    ancient_scrolls: z.boolean().default(false),
-    elder_scroll: z.boolean().default(false),
-    ravens_orb: z.boolean().default(false),
-    murmuring_cube: z.boolean().default(false),
-    black_bear_fur: z.boolean().default(false),
-  }).default({}),
-  blessings: z.object({
-    dagons_gift: z.boolean().default(false),
-    flames_touch: z.boolean().default(false),
-    ravens_mark: z.boolean().default(false),
-    ashen_embrace: z.boolean().default(false),
-    dagons_gift_enhanced: z.boolean().default(false),
-    flames_touch_enhanced: z.boolean().default(false),
-    ravens_mark_enhanced: z.boolean().default(false),
-    ashen_embrace_enhanced: z.boolean().default(false),
-  }).default({}),
-  buildings: z.object({
-    woodenHut: z.number().default(0),
-    stoneHut: z.number().default(0),
-    longhouse: z.number().default(0),
-    cabin: z.number().default(0),
-    greatCabin: z.number().default(0),
-    timberMill: z.number().default(0),
-    quarry: z.number().default(0),
-    blacksmith: z.number().default(0),
-    grandBlacksmith: z.number().default(0),
-    foundry: z.number().default(0),
-    tannery: z.number().default(0),
-    clerksHut: z.number().default(0),
-    scriptorium: z.number().default(0),
-    shallowPit: z.number().default(0),
-    deepeningPit: z.number().default(0),
-    deepPit: z.number().default(0),
-    bottomlessPit: z.number().default(0),
-    altar: z.number().default(0),
-    shrine: z.number().default(0),
-    temple: z.number().default(0),
-    sanctum: z.number().default(0),
-    alchemistHall: z.number().default(0),
-    tradePost: z.number().default(0),
-    merchantsGuild: z.number().default(0),
-    bastion: z.number().default(0),
-    watchtower: z.number().default(0),
-    palisades: z.number().default(0),
-    wizardTower: z.number().default(0),
-  }).default({}),
-  villagers: z.object({
-    free: z.number().min(0).default(0),
-    hunter: z.number().min(0).default(0),
-    gatherer: z.number().min(0).default(0),
-    tanner: z.number().min(0).default(0),
-    iron_miner: z.number().min(0).default(0),
-    coal_miner: z.number().min(0).default(0),
-    sulfur_miner: z.number().min(0).default(0),
-    silver_miner: z.number().min(0).default(0),
-    gold_miner: z.number().min(0).default(0),
-    obsidian_miner: z.number().min(0).default(0),
-    adamant_miner: z.number().min(0).default(0),
-    moonstone_miner: z.number().min(0).default(0),
-    steel_forger: z.number().min(0).default(0),
-    powder_maker: z.number().min(0).default(0),
-  }).default({}),
-  story: z.object({
-    seen: z.record(z.string(), z.boolean()).default({}),
-    castleRuinsExplored: z.boolean().default(false),
-    hillGraveExplored: z.boolean().default(false),
-    wizardFrostglassSword: z.boolean().default(false)
-  }).default({}),
-  damagedBuildings: z.object({
-    bastion: z.boolean().default(false),
-    watchtower: z.boolean().default(false),
-    palisades: z.boolean().default(false),
-  }).default({}),
-  events: z.object({
-    available: z.array(z.string()).default([]),
-    active: z.array(z.string()).default([]),
-    log: z.array(z.string()).default([]),
-    whisperingVoices: z.boolean().default(false),
-    shadowsMove: z.boolean().default(false),
-    villagerStares: z.boolean().default(false),
-    bloodInWater: z.boolean().default(false),
-    facesInWalls: z.boolean().default(false),
-    wrongVillagers: z.boolean().default(false),
-    skinCrawling: z.boolean().default(false),
-    creatureInHut: z.boolean().default(false),
-    wrongReflections: z.boolean().default(false),
-    villagersStareAtSky: z.boolean().default(false),
-    cube01: z.boolean().default(false),
-    cube02: z.boolean().default(false),
-    cube03: z.boolean().default(false),
-    cube04: z.boolean().default(false),
-    cube05: z.boolean().default(false),
-    cube06: z.boolean().default(false),
-    cube07: z.boolean().default(false),
-    cube08: z.boolean().default(false),
-    cube09: z.boolean().default(false),
-    cube10: z.boolean().default(false),
-    cube11: z.boolean().default(false),
-    cube13: z.boolean().default(false),
-    cube14a: z.boolean().default(false),
-    cube14b: z.boolean().default(false),
-    cube14c: z.boolean().default(false),
-    cube14d: z.boolean().default(false),
-    cube15a: z.boolean().default(false),
-    cube15b: z.boolean().default(false),
-  }).default({}),
-  effects: z.object({
-    resource_bonus: z.record(z.string(), z.number()).default({}),
-    resource_multiplier: z.record(z.string(), z.number()).default({}),
-    probability_bonus: z.record(z.string(), z.number()).default({}),
-    cooldown_reduction: z.record(z.string(), z.number()).default({}),
-  }).default({}),
-  bastion_stats: z.object({
-    defense: z.number().min(0).default(0),
-    attack: z.number().min(0).default(0),
-    attackFromFortifications: z.number().min(0).default(0),
-    attackFromStrength: z.number().min(0).default(0),
-    integrity: z.number().min(0).default(0),
-  }).default({}),
+  resources: z
+    .object({
+      wood: z.number().min(0).default(0),
+      food: z.number().min(0).default(0),
+      stone: z.number().min(0).default(0),
+      iron: z.number().min(0).default(0),
+      coal: z.number().min(0).default(0),
+      steel: z.number().min(0).default(0),
+      sulfur: z.number().min(0).default(0),
+      bones: z.number().min(0).default(0),
+      bone_totem: z.number().min(0).default(0),
+      fur: z.number().min(0).default(0),
+      leather: z.number().min(0).default(0),
+      torch: z.number().min(0).default(0),
+      silver: z.number().min(0).default(0),
+      gold: z.number().min(0).default(0),
+      obsidian: z.number().min(0).default(0),
+      adamant: z.number().min(0).default(0),
+      moonstone: z.number().min(0).default(0),
+      bloodstone: z.number().min(0).default(0),
+      frostglas: z.number().min(0).default(0),
+      black_powder: z.number().min(0).default(0),
+      ember_bomb: z.number().min(0).default(0),
+      cinderflame_dust: z.number().min(0).default(0),
+      cinderflame_bomb: z.number().min(0).default(0),
+    })
+    .default({}),
+  stats: z
+    .object({
+      strength: z.number().min(0).default(0),
+      knowledge: z.number().min(0).default(0),
+      luck: z.number().min(0).default(0),
+      madness: z.number().min(0).default(0),
+      madnessFromEvents: z.number().min(0).default(0),
+    })
+    .default({}),
+  flags: z
+    .object({
+      villageUnlocked: z.boolean().default(false),
+      bastionUnlocked: z.boolean().default(false),
+      torchBuilt: z.boolean().default(false),
+      caveExplored: z.boolean().default(false),
+      venturedDeeper: z.boolean().default(false),
+      gameStarted: z.boolean().default(false),
+      trinketDrunk: z.boolean().default(false),
+      sleeping: z.boolean().default(false),
+      descendedFurther: z.boolean().default(false),
+      exploredRuins: z.boolean().default(false),
+      exploredTemple: z.boolean().default(false),
+      exploredCitadel: z.boolean().default(false),
+      lowChamberExplored: z.boolean().default(false),
+      occultistChamberExplored: z.boolean().default(false),
+      starvationActive: z.boolean().default(false),
+      forestUnlocked: z.boolean().default(false),
+      altarBuilt: z.boolean().default(false),
+      needsNewWell: z.boolean().default(false),
+      portalBlasted: z.boolean().default(false),
+      stoneAxeTooltipShown: z.boolean().default(false),
+    })
+    .default({}),
+  schematics: z
+    .object({
+      arbalest_schematic: z.boolean().default(false),
+      nightshade_bow_schematic: z.boolean().default(false),
+      bloodstone_staff_schematic: z.boolean().default(false),
+    })
+    .default({}),
+  tools: z
+    .object({
+      stone_axe: z.boolean().default(false),
+      stone_pickaxe: z.boolean().default(false),
+      iron_axe: z.boolean().default(false),
+      iron_pickaxe: z.boolean().default(false),
+      steel_axe: z.boolean().default(false),
+      steel_pickaxe: z.boolean().default(false),
+      obsidian_axe: z.boolean().default(false),
+      obsidian_pickaxe: z.boolean().default(false),
+      adamant_axe: z.boolean().default(false),
+      adamant_pickaxe: z.boolean().default(false),
+      lantern: z.boolean().default(false),
+      iron_lantern: z.boolean().default(false),
+      steel_lantern: z.boolean().default(false),
+      obsidian_lantern: z.boolean().default(false),
+      adamant_lantern: z.boolean().default(false),
+      blacksmith_hammer: z.boolean().default(false),
+      reinforced_rope: z.boolean().default(false),
+      giant_trap: z.boolean().default(false),
+      seeker_pack: z.boolean().default(false),
+      occultist_map: z.boolean().default(false),
+    })
+    .default({}),
+  weapons: z
+    .object({
+      iron_sword: z.boolean().default(false),
+      steel_sword: z.boolean().default(false),
+      obsidian_sword: z.boolean().default(false),
+      adamant_sword: z.boolean().default(false),
+      crude_bow: z.boolean().default(false),
+      huntsman_bow: z.boolean().default(false),
+      long_bow: z.boolean().default(false),
+      war_bow: z.boolean().default(false),
+      master_bow: z.boolean().default(false),
+      frostglass_sword: z.boolean().default(false),
+      arbalest: z.boolean().default(false),
+      nightshade_bow: z.boolean().default(false),
+      frostfang: z.boolean().default(false),
+      bloodstone_staff: z.boolean().default(false),
+    })
+    .default({}),
+  clothing: z
+    .object({
+      iron_armor: z.boolean().default(false),
+      steel_armor: z.boolean().default(false),
+      obsidian_armor: z.boolean().default(false),
+      seeker_pack: z.boolean().default(false),
+      hunter_cloak: z.boolean().default(false),
+      grenadier_bag: z.boolean().default(false),
+    })
+    .default({}),
+  relics: z
+    .object({
+      strange_bones: z.boolean().default(false),
+      compass: z.boolean().default(false),
+      old_textbook: z.boolean().default(false),
+      steel_codex: z.boolean().default(false),
+      tarnished_amulet: z.boolean().default(false),
+      bloodstained_belt: z.boolean().default(false),
+      wooden_figure: z.boolean().default(false),
+      dragon_bone_dice: z.boolean().default(false),
+      ravenfeather_mantle: z.boolean().default(false),
+      whispering_amulet: z.boolean().default(false),
+      ring_of_clarity: z.boolean().default(false),
+      blackened_mirror: z.boolean().default(false),
+      alphas_hide: z.boolean().default(false),
+      ebony_ring: z.boolean().default(false),
+      unnamed_book: z.boolean().default(false),
+      cracked_crown: z.boolean().default(false),
+      ancient_scrolls: z.boolean().default(false),
+      elder_scroll: z.boolean().default(false),
+      ravens_orb: z.boolean().default(false),
+      murmuring_cube: z.boolean().default(false),
+      black_bear_fur: z.boolean().default(false),
+    })
+    .default({}),
+  blessings: z
+    .object({
+      dagons_gift: z.boolean().default(false),
+      flames_touch: z.boolean().default(false),
+      ravens_mark: z.boolean().default(false),
+      ashen_embrace: z.boolean().default(false),
+      dagons_gift_enhanced: z.boolean().default(false),
+      flames_touch_enhanced: z.boolean().default(false),
+      ravens_mark_enhanced: z.boolean().default(false),
+      ashen_embrace_enhanced: z.boolean().default(false),
+    })
+    .default({}),
+  buildings: z
+    .object({
+      woodenHut: z.number().default(0), //
+      stoneHut: z.number().default(0), //
+      longhouse: z.number().default(0), //
+      cabin: z.number().default(0), //
+      greatCabin: z.number().default(0), //
+      timberMill: z.number().default(0),//
+      quarry: z.number().default(0),//
+      blacksmith: z.number().default(0), //
+      grandBlacksmith: z.number().default(0), //
+      foundry: z.number().default(0), //
+      tannery: z.number().default(0), //
+      clerksHut: z.number().default(0), //
+      scriptorium: z.number().default(0), //
+      shallowPit: z.number().default(0), //
+      deepeningPit: z.number().default(0),//
+      deepPit: z.number().default(0),//
+      bottomlessPit: z.number().default(0),//
+      altar: z.number().default(0), //
+      shrine: z.number().default(0), //
+      temple: z.number().default(0),//
+      sanctum: z.number().default(0), //
+      alchemistHall: z.number().default(0), //
+      tradePost: z.number().default(0),
+      merchantsGuild: z.number().default(0),
+      bastion: z.number().default(0),
+      watchtower: z.number().default(0),
+      palisades: z.number().default(0),
+      wizardTower: z.number().default(0), //
+    })
+    .default({}),
+  villagers: z
+    .object({
+      free: z.number().min(0).default(0),
+      hunter: z.number().min(0).default(0),
+      gatherer: z.number().min(0).default(0),
+      tanner: z.number().min(0).default(0),
+      iron_miner: z.number().min(0).default(0),
+      coal_miner: z.number().min(0).default(0),
+      sulfur_miner: z.number().min(0).default(0),
+      silver_miner: z.number().min(0).default(0),
+      gold_miner: z.number().min(0).default(0),
+      obsidian_miner: z.number().min(0).default(0),
+      adamant_miner: z.number().min(0).default(0),
+      moonstone_miner: z.number().min(0).default(0),
+      steel_forger: z.number().min(0).default(0),
+      powder_maker: z.number().min(0).default(0),
+    })
+    .default({}),
+  story: z
+    .object({
+      seen: z.record(z.string(), z.boolean()).default({}),
+      castleRuinsExplored: z.boolean().default(false),
+      hillGraveExplored: z.boolean().default(false),
+      wizardFrostglassSword: z.boolean().default(false),
+    })
+    .default({}),
+  damagedBuildings: z
+    .object({
+      bastion: z.boolean().default(false),
+      watchtower: z.boolean().default(false),
+      palisades: z.boolean().default(false),
+    })
+    .default({}),
+  events: z
+    .object({
+      available: z.array(z.string()).default([]),
+      active: z.array(z.string()).default([]),
+      log: z.array(z.string()).default([]),
+      whisperingVoices: z.boolean().default(false),
+      shadowsMove: z.boolean().default(false),
+      villagerStares: z.boolean().default(false),
+      bloodInWater: z.boolean().default(false),
+      facesInWalls: z.boolean().default(false),
+      wrongVillagers: z.boolean().default(false),
+      skinCrawling: z.boolean().default(false),
+      creatureInHut: z.boolean().default(false),
+      wrongReflections: z.boolean().default(false),
+      villagersStareAtSky: z.boolean().default(false),
+      cube01: z.boolean().default(false),
+      cube02: z.boolean().default(false),
+      cube03: z.boolean().default(false),
+      cube04: z.boolean().default(false),
+      cube05: z.boolean().default(false),
+      cube06: z.boolean().default(false),
+      cube07: z.boolean().default(false),
+      cube08: z.boolean().default(false),
+      cube09: z.boolean().default(false),
+      cube10: z.boolean().default(false),
+      cube11: z.boolean().default(false),
+      cube13: z.boolean().default(false),
+      cube14a: z.boolean().default(false),
+      cube14b: z.boolean().default(false),
+      cube14c: z.boolean().default(false),
+      cube14d: z.boolean().default(false),
+      cube15a: z.boolean().default(false),
+      cube15b: z.boolean().default(false),
+    })
+    .default({}),
+  effects: z
+    .object({
+      resource_bonus: z.record(z.string(), z.number()).default({}),
+      resource_multiplier: z.record(z.string(), z.number()).default({}),
+      probability_bonus: z.record(z.string(), z.number()).default({}),
+      cooldown_reduction: z.record(z.string(), z.number()).default({}),
+    })
+    .default({}),
+  bastion_stats: z
+    .object({
+      defense: z.number().min(0).default(0),
+      attack: z.number().min(0).default(0),
+      attackFromFortifications: z.number().min(0).default(0),
+      attackFromStrength: z.number().min(0).default(0),
+      integrity: z.number().min(0).default(0),
+    })
+    .default({}),
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
@@ -273,19 +307,25 @@ export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
   building: z.boolean().optional(),
-  show_when: z.union([
-    z.record(z.string(), z.any()),
-    z.record(z.number(), z.record(z.string(), z.any()))
-  ]).optional(),
-  cost: z.union([
-    z.record(z.string(), z.any()),
-    z.record(z.number(), z.record(z.string(), z.any()))
-  ]).optional(),
+  show_when: z
+    .union([
+      z.record(z.string(), z.any()),
+      z.record(z.number(), z.record(z.string(), z.any())),
+    ])
+    .optional(),
+  cost: z
+    .union([
+      z.record(z.string(), z.any()),
+      z.record(z.number(), z.record(z.string(), z.any())),
+    ])
+    .optional(),
   effects: z.union([
     z.record(z.string(), z.any()),
-    z.record(z.number(), z.record(z.string(), z.any()))
+    z.record(z.number(), z.record(z.string(), z.any())),
   ]),
-  productionEffects: z.record(z.string(), z.record(z.string(), z.number())).optional(),
+  productionEffects: z
+    .record(z.string(), z.record(z.string(), z.number()))
+    .optional(),
   statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
   cooldown: z.number().optional(),
