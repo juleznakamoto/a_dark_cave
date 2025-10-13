@@ -16,9 +16,9 @@ export default function BuildingProgressChart() {
 
   // Calculate current counts
   const counts = {
-    woodenHut: buildings.woodenHut || 0,
-    stoneHut: buildings.stoneHut || 0,
-    longhouse: buildings.longhouse || 0,
+    woodenHut: buildings.woodenHut || 4,
+    stoneHut: buildings.stoneHut || 2,
+    longhouse: buildings.longhouse || 1,
   };
 
   // Create data for the inner ring (split into built/unbuilt segments)
