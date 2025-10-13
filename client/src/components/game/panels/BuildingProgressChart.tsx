@@ -249,9 +249,9 @@ export default function BuildingProgressChart() {
         );
         currentEndAngle = segmentAngles.endAngle;
 
-        // For all segments after the first, subtract paddingAngle from both angles
-        const adjustedStartAngle = index === 0 ? segmentAngles.startAngle : segmentAngles.startAngle - paddingAngle;
-        const adjustedProgressAngle = index === 0 ? segmentAngles.progressAngle : segmentAngles.progressAngle - paddingAngle;
+        // For all segments after the first, subtract cumulative padding angle
+        const adjustedStartAngle = index === 0 ? segmentAngles.startAngle : segmentAngles.startAngle - (paddingAngle * index);
+        const adjustedProgressAngle = index === 0 ? segmentAngles.progressAngle : segmentAngles.progressAngle - (paddingAngle * index);
 
         return {
           name: seg.label,
