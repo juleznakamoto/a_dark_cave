@@ -20,162 +20,158 @@ interface RingConfig {
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
+  // Ring sizing parameters
+  const startRadius = 14; // Inner radius of the first ring
+  const ringSize = 4; // Thickness of each ring
+  const spaceBetweenRings = 4; // Gap between rings
+  
   const paddingAngle = 8;
   const backgroundColor = tailwindToHex("neutral-600/80");
   const startAngle = 90 - paddingAngle / 2;
 
-  // Define ring configurations
-  const ringConfigs: RingConfig[] = [
+  // Define ring segment configurations (without radius values)
+  const ringSegments: BuildingSegment[][] = [
     // First ring: Huts
-    {
-      segments: [
-        {
-          buildingType: "woodenHut",
-          maxCount: 10,
-          color: tailwindToHex("slate-500"),
-          label: "Wooden Huts",
-        },
-        {
-          buildingType: "stoneHut",
-          maxCount: 10,
-          color: tailwindToHex("slate-500"),
-          label: "Stone Huts",
-        },
-        {
-          buildingType: "longhouse",
-          maxCount: 2,
-          color: tailwindToHex("slate-500"),
-          label: "Longhouses",
-        },
-      ],
-      innerRadius: 14,
-      outerRadius: 18,
-    },
+    [
+      {
+        buildingType: "woodenHut",
+        maxCount: 10,
+        color: tailwindToHex("slate-500"),
+        label: "Wooden Huts",
+      },
+      {
+        buildingType: "stoneHut",
+        maxCount: 10,
+        color: tailwindToHex("slate-500"),
+        label: "Stone Huts",
+      },
+      {
+        buildingType: "longhouse",
+        maxCount: 2,
+        color: tailwindToHex("slate-500"),
+        label: "Longhouses",
+      },
+    ],
     // Second ring: Basic crafting and trade buildings
-    {
-      segments: [
-        {
-          buildingType: "cabin",
-          maxCount: 2,
-          color: tailwindToHex("slate-600"),
-          label: "Cabin",
-          relatedBuildings: ["greatCabin"],
-        },
-        {
-          buildingType: "blacksmith",
-          maxCount: 2,
-          color: tailwindToHex("slate-700"),
-          label: "Blacksmith",
-          relatedBuildings: ["grandBlacksmith"],
-        },
-        {
-          buildingType: "foundry",
-          maxCount: 1,
-          color: tailwindToHex("slate-600"),
-          label: "Foundry",
-        },
-        {
-          buildingType: "tannery",
-          maxCount: 1,
-          color: tailwindToHex("slate-600"),
-          label: "Tannery",
-        },
-        {
-          buildingType: "tradePost",
-          maxCount: 2,
-          color: tailwindToHex("slate-600"),
-          label: "Trade",
-          relatedBuildings: ["merchantsGuild"],
-        },
-        {
-          buildingType: "clerksHut",
-          maxCount: 2,
-          color: tailwindToHex("slate-600"),
-          label: "Knowledge",
-          relatedBuildings: ["scriptorium"],
-        },
-      ],
-      innerRadius: 22,
-      outerRadius: 26,
-    },
+    [
+      {
+        buildingType: "cabin",
+        maxCount: 2,
+        color: tailwindToHex("slate-600"),
+        label: "Cabin",
+        relatedBuildings: ["greatCabin"],
+      },
+      {
+        buildingType: "blacksmith",
+        maxCount: 2,
+        color: tailwindToHex("slate-700"),
+        label: "Blacksmith",
+        relatedBuildings: ["grandBlacksmith"],
+      },
+      {
+        buildingType: "foundry",
+        maxCount: 1,
+        color: tailwindToHex("slate-600"),
+        label: "Foundry",
+      },
+      {
+        buildingType: "tannery",
+        maxCount: 1,
+        color: tailwindToHex("slate-600"),
+        label: "Tannery",
+      },
+      {
+        buildingType: "tradePost",
+        maxCount: 2,
+        color: tailwindToHex("slate-600"),
+        label: "Trade",
+        relatedBuildings: ["merchantsGuild"],
+      },
+      {
+        buildingType: "clerksHut",
+        maxCount: 2,
+        color: tailwindToHex("slate-600"),
+        label: "Knowledge",
+        relatedBuildings: ["scriptorium"],
+      },
+    ],
     // Third ring: Resource buildings and pits
-    {
-      segments: [
-        {
-          buildingType: "timberMill",
-          maxCount: 1,
-          color: tailwindToHex("slate-700"),
-          label: "Timber Mill",
-        },
-        {
-          buildingType: "quarry",
-          maxCount: 1,
-          color: tailwindToHex("slate-700"),
-          label: "Quarry",
-        },
-        {
-          buildingType: "shallowPit",
-          maxCount: 4,
-          color: tailwindToHex("slate-700"),
-          label: "Pits",
-          relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
-        },
-      ],
-      innerRadius: 30,
-      outerRadius: 34,
-    },
+    [
+      {
+        buildingType: "timberMill",
+        maxCount: 1,
+        color: tailwindToHex("slate-700"),
+        label: "Timber Mill",
+      },
+      {
+        buildingType: "quarry",
+        maxCount: 1,
+        color: tailwindToHex("slate-700"),
+        label: "Quarry",
+      },
+      {
+        buildingType: "shallowPit",
+        maxCount: 4,
+        color: tailwindToHex("slate-700"),
+        label: "Pits",
+        relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
+      },
+    ],
     // Fourth ring: Advanced buildings
-    {
-      segments: [
-        {
-          buildingType: "altar",
-          maxCount: 4,
-          color: tailwindToHex("slate-800"),
-          label: "Religious",
-          relatedBuildings: ["shrine", "temple", "sanctum"],
-        },
-        {
-          buildingType: "alchemistHall",
-          maxCount: 1,
-          color: tailwindToHex("slate-800"),
-          label: "Alchemist's Hall",
-        },
-        {
-          buildingType: "wizardTower",
-          maxCount: 1,
-          color: tailwindToHex("slate-800"),
-          label: "Wizard Tower",
-        },
-      ],
-      innerRadius: 38,
-      outerRadius: 42,
-    },
+    [
+      {
+        buildingType: "altar",
+        maxCount: 4,
+        color: tailwindToHex("slate-800"),
+        label: "Religious",
+        relatedBuildings: ["shrine", "temple", "sanctum"],
+      },
+      {
+        buildingType: "alchemistHall",
+        maxCount: 1,
+        color: tailwindToHex("slate-800"),
+        label: "Alchemist's Hall",
+      },
+      {
+        buildingType: "wizardTower",
+        maxCount: 1,
+        color: tailwindToHex("slate-800"),
+        label: "Wizard Tower",
+      },
+    ],
     // Fifth ring: Fortifications
-    {
-      segments: [
-        {
-          buildingType: "bastion",
-          maxCount: 1,
-          color: tailwindToHex("slate-900"),
-          label: "Bastion",
-        },
-        {
-          buildingType: "palisades",
-          maxCount: 4,
-          color: tailwindToHex("slate-900"),
-          label: "Palisades",
-        },
-        {
-          buildingType: "watchtower",
-          maxCount: 3,
-          color: tailwindToHex("slate-900"),
-          label: "Watchtower",
-        },
-      ],
-      innerRadius: 46,
-      outerRadius: 50,
-    },
+    [
+      {
+        buildingType: "bastion",
+        maxCount: 1,
+        color: tailwindToHex("slate-900"),
+        label: "Bastion",
+      },
+      {
+        buildingType: "palisades",
+        maxCount: 4,
+        color: tailwindToHex("slate-900"),
+        label: "Palisades",
+      },
+      {
+        buildingType: "watchtower",
+        maxCount: 3,
+        color: tailwindToHex("slate-900"),
+        label: "Watchtower",
+      },
+    ],
   ];
+
+  // Calculate ring configurations with radius values
+  const ringConfigs: RingConfig[] = ringSegments.map((segments, index) => {
+    const innerRadius = startRadius + index * (ringSize + spaceBetweenRings);
+    const outerRadius = innerRadius + ringSize;
+    return {
+      segments,
+      innerRadius,
+      outerRadius,
+    };
+  });
 
   // Helper function to calculate segment angles
   const calculateSegment = (
