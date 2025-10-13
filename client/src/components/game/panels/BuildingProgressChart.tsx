@@ -230,7 +230,7 @@ export default function BuildingProgressChart() {
         value: seg.maxCount,
         fill: backgroundColor,
       }));
-
+      
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -301,7 +301,7 @@ export default function BuildingProgressChart() {
                 startAngle={startAngle}
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
-                strokeWidth={0.5}
+                strokeWidth={0.25}
                 stroke={tailwindToHex("neutral-500")}
                 isAnimationActive={false}
               >
@@ -326,13 +326,31 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1 : 0}
-                  stroke={segment.isFull ? tailwindToHex("neutral-500") : undefined}
+                  strokeWidth={segment.isFull ? 0.5 : 0}
+                  stroke={segment.isFull ? tailwindToHex("neutral-300") : undefined}
                   isAnimationActive={false}
                 >
                   <Cell fill={segment.fill} />
                 </Pie>
               ))}
+              {/* Foreground ring */}
+              <Pie
+                key={`foreground-${ringIndex}`}
+                data={ring.foregroundSegments}
+                cx="50%"
+                cy="50%"
+                innerRadius={ring.innerRadius}
+                outerRadius={ring.outerRadius}
+                paddingAngle={paddingAngle}
+                dataKey="value"
+                startAngle={startAngle}
+                endAngle={-360 + startAngle}
+                cornerRadius={5}
+                strokeWidth={0.25}
+                stroke={tailwindToHex("neutral-500")}
+                isAnimationActive={false}
+              >
+              </Pie>
             </>
           ))}
         </PieChart>
