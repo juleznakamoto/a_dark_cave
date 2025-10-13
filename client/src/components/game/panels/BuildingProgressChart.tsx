@@ -262,11 +262,14 @@ export default function BuildingProgressChart() {
             ? segmentAngles.progressAngle
             : segmentAngles.progressAngle - paddingAngle * index;
 
+        const isFull = currentCount >= seg.maxCount;
+
         return {
           name: seg.label,
           fill: seg.color,
           startAngle: adjustedStartAngle,
           endAngle: adjustedProgressAngle,
+          isFull: isFull,
         };
       });
 
@@ -323,7 +326,8 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={0}
+                  strokeWidth={segment.isFull ? 1 : 0}
+                  stroke={segment.isFull ? tailwindToHex("neutral-500") : undefined}
                   isAnimationActive={false}
                 >
                   <Cell fill={segment.fill} />
