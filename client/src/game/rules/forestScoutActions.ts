@@ -79,13 +79,13 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Hill Grave",
     show_when: {
       "story.seen.wizardHillGrave": true,
-      "!story.seen.hillGraveExplored": true,
+      "!story.seen.hillGraveSuccess": true,
     },
     cost: {
       "resources.food": 5000,
     },
     effects: {
-      "story.seen.hillGraveExplored": true,
+      "story.seen.hillGraveSuccess": true,
     },
     cooldown: 60,
   },
@@ -374,7 +374,6 @@ export function handleHillGrave(
       seen: {
         ...state.story.seen,
         hillGraveSuccess: true,
-        hillGraveExplored: true,
       },
     };
 
