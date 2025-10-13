@@ -21,7 +21,7 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 8;
-  const backgroundColor = tailwindToHex("neutral-700/80");
+  const backgroundColor = tailwindToHex("neutral-600/80");
   const startAngle = 90 - paddingAngle / 2;
 
   // Define ring configurations
@@ -309,8 +309,7 @@ export default function BuildingProgressChart() {
                 startAngle={startAngle}
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
-                strokeWidth={0.25}
-                stroke={tailwindToHex("neutral-500")}
+                strokeWidth={0}
                 isAnimationActive={false}
               >
                 {ring.backgroundSegments.map((entry, entryIndex) => (
@@ -334,8 +333,8 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 0.5 : 0}
-                  stroke={segment.isFull ? tailwindToHex("neutral-300") : undefined}
+                  strokeWidth={segment.isFull ? 0.25 : 0}
+                  stroke={segment.isFull ? tailwindToHex("neutral-200") : undefined}
                   isAnimationActive={false}
                 >
                   <Cell fill={segment.fill} />
