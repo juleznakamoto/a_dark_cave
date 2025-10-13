@@ -145,7 +145,55 @@ export const shouldShowAction = (
   const action = gameActions[actionId];
   if (!action?.show_when) return false;
 
-  return checkRequirements(action.show_when, state, action, actionId);
+  // Handle show_when requirements
+  let requirements = action.show_when;
+  
+  // For building actions, get requirements for the next level
+  if (action.building) {
+    const level = getNextBuildingLevel(actionId, state);
+    const levelRequirements = requirements[level];
+    if (!levelRequirements) return false;
+    requirements = levelRequirements;
+  }
+
+  return Object.entries(requirements).every(([path, expectedValue]) => {
+    const pathParts = path.split(".");
+    let current: any = state;
+
+    for (const part of pathParts) {
+      current = current?.[part];
+    }
+
+    // For story.seen properties, treat undefined/missing as false (same as event conditions)
+    if (path.startsWith('story.seen.')) {
+      return (current ?? false) === expectedValue;
+    }
+
+    if (typeof expectedValue === "boolean") {
+      return current === expectedValue;
+    }
+
+    if (typeof expectedValue === "number") {
+      // For buildings: 0 means exactly 0 (===), any number >=1 means >= comparison
+      if (path.startsWith("buildings.")) {
+        if (expectedValue === 0) {
+          return (current || 0) === 0;
+        } else {
+          return (current || 0) >= expectedValue;
+        }
+      }
+      // For all other numeric comparisons, use exact equality
+      return (current || 0) === expectedValue;
+    }
+
+    // Handle string values that might indicate >= comparison
+    if (typeof expectedValue === "string" && expectedValue.startsWith(">=")) {
+      const numValue = parseFloat(expectedValue.slice(2));
+      return (current || 0) >= numValue;
+    }
+
+    return current === expectedValue;
+  });
 };
 
 // Helper function to calculate adjusted cost with discounts (single source of truth)
