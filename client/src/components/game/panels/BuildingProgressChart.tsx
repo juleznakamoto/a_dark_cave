@@ -20,20 +20,30 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 5;
-  const backgroundColor = "#cccdc6";
+  const backgroundColor = "#43443c";
   const startAngle = 90;
 
   // Define ring configurations
   const ringConfigs: RingConfig[] = [
     {
       segments: [
-        { buildingType: 'woodenHut', maxCount: 10, color: '#3b82f6', label: 'Wooden Huts' },
-        { buildingType: 'stoneHut', maxCount: 10, color: '#10b981', label: 'Stone Huts' },
+        { buildingType: 'woodenHut', maxCount: 10, color: '#48240a', label: 'Wooden Huts' },
+        { buildingType: 'stoneHut', maxCount: 10, color: '#cccdc6', label: 'Stone Huts' },
         { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
       ],
       innerRadius: 14,
       outerRadius: 18,
     },
+    {
+      segments: [
+        { buildingType: 'blacksmith', maxCount: 2, color: '#48240a', label: 'Wooden Huts' },
+        { buildingType: 'stoneHut', maxCount: 10, color: '#cccdc6', label: 'Stone Huts' },
+        { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
+      ],
+      innerRadius: 22,
+      outerRadius: 16,
+    },
+    
     // Add more rings here as needed
     // Example:
     // {
@@ -53,7 +63,7 @@ export default function BuildingProgressChart() {
     previousEndAngle: number,
     segmentDegrees: number
   ) => {
-    const startAngle = previousEndAngle - paddingAngle;
+    const startAngle = previousEndAngle;
     const endAngle = startAngle - segmentDegrees;
     const segmentLength = endAngle - startAngle;
     const progress = maxCount > 0 ? currentCount / maxCount : 0;
@@ -109,7 +119,7 @@ export default function BuildingProgressChart() {
   });
 
   return (
-    <div className="w-full h-48 flex flex-col items-center justify-center">
+    <div className="w-full h-20 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
@@ -127,7 +137,7 @@ export default function BuildingProgressChart() {
                 startAngle={startAngle}
                 endAngle={-270}
                 cornerRadius={5}
-                strokeWidth={0.5}
+                strokeWidth={0}
                 isAnimationActive={false}
               >
                 {ring.backgroundSegments.map((entry, entryIndex) => (
