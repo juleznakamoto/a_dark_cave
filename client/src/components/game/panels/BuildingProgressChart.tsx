@@ -20,7 +20,6 @@ export default function BuildingProgressChart() {
 
   const paddingAngle = 5;
   const backgroundColor = "#cccdc6";
-  const totalDegrees = 345; // Total degrees to use (360 - 15 for gap)
   const startAngle = 90;
 
   // Define ring configurations
@@ -65,6 +64,9 @@ export default function BuildingProgressChart() {
   // Process each ring
   const processedRings = ringConfigs.map((ringConfig) => {
     const { segments, innerRadius, outerRadius } = ringConfig;
+    
+    // Calculate total degrees for this ring based on segment count
+    const totalDegrees = 360 - segments.length * paddingAngle;
     
     // Calculate total max count for this ring
     const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
