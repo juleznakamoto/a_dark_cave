@@ -30,46 +30,54 @@ export default function BuildingProgressChart() {
 
   const totalMaxCount =
     maxCounts.woodenHut + maxCounts.stoneHut + maxCounts.longhouse;
+  
+  const totalDegrees = 345; // Total degrees to use (360 - 15 for gap)
+  const startAngle = 90;
 
-  const startSeg0 = 90;
-  const endSeg0 = startSeg0 - (345 * maxCounts.woodenHut) / totalMaxCount;
-  const lengthSeg0 = endSeg0 - startSeg0;
-  const progressSeg0 =
-    startSeg0 + lengthSeg0 * (counts.woodenHut / maxCounts.woodenHut);
+  // Helper function to calculate segment angles
+  const calculateSegment = (
+    buildingType: keyof typeof maxCounts,
+    previousEndAngle: number
+  ) => {
+    const maxCount = maxCounts[buildingType];
+    const currentCount = counts[buildingType];
+    
+    const startAngle = previousEndAngle - paddingAngle;
+    const segmentDegrees = (totalDegrees * maxCount) / totalMaxCount;
+    const endAngle = startAngle - segmentDegrees;
+    const segmentLength = endAngle - startAngle;
+    const progress = currentCount / maxCount;
+    const progressAngle = startAngle + segmentLength * progress;
 
-  const startSeg1 = endSeg0 - paddingAngle;
-  const endSeg1 = startSeg1 - (345 * maxCounts.stoneHut) / totalMaxCount;
-  const lengthSeg1 = endSeg1 - startSeg1;
-  const progressSeg1 =
-    startSeg1 + lengthSeg1 * (counts.stoneHut / maxCounts.stoneHut);
+    return { startAngle, endAngle, progressAngle };
+  };
 
-  const startSeg2 = endSeg1 - paddingAngle;
-  const endSeg2 = startSeg2 - (345 * maxCounts.longhouse) / totalMaxCount;
-  const lengthSeg2 = endSeg2 - startSeg2;
-  const progressSeg2 =
-    startSeg2 + lengthSeg2 * (counts.longhouse / maxCounts.longhouse);
+  // Calculate segments
+  const seg0 = calculateSegment('woodenHut', startAngle);
+  const seg1 = calculateSegment('stoneHut', seg0.endAngle);
+  const seg2 = calculateSegment('longhouse', seg1.endAngle);
 
   const ProgressRing0 = [
     {
       name: "Wooden Huts Built",
       fill: "#3b82f6",
       strokeWidth: 0,
-      startAngle: startSeg0,
-      endAngle: progressSeg0,
+      startAngle: seg0.startAngle,
+      endAngle: seg0.progressAngle,
     },
     {
       name: "Stone Huts Built",
       fill: "#10b981",
       strokeWidth: 0,
-      startAngle: startSeg1,
-      endAngle: progressSeg1,
+      startAngle: seg1.startAngle,
+      endAngle: seg1.progressAngle,
     },
     {
       name: "Longhouses Built",
       fill: "#f59e0b",
       strokeWidth: 0,
-      startAngle: startSeg2,
-      endAngle: progressSeg2,
+      startAngle: seg2.startAngle,
+      endAngle: seg2.progressAngle,
     },
   ];
 
