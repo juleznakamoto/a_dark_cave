@@ -88,17 +88,6 @@ const evaluateCondition = (condition: string, state: GameState): boolean => {
   return isNegated ? !current : !!current;
 };
 
-// Helper function to get a nested value from the state
-const getNestedValue = (state: GameState, path: string): any => {
-  const pathParts = path.split('.');
-  let current: any = state;
-  for (const part of pathParts) {
-    current = current?.[part];
-    if (current === undefined) break;
-  }
-  return current;
-};
-
 // Helper function to check requirements for both building and non-building actions
 const checkRequirements = (
   requirements: Record<string, any>,
@@ -114,51 +103,50 @@ const checkRequirements = (
   }
 
   return Object.entries(requirements).every(([path, expectedValue]) => {
-    const actualValue = getNestedValue(state, path);
+    const pathParts = path.split(".");
+    let current: any = state;
+
+    for (const part of pathParts) {
+      current = current?.[part];
+    }
 
     if (typeof expectedValue === "boolean") {
-      return actualValue === expectedValue;
+      return current === expectedValue;
     }
 
     if (typeof expectedValue === "number") {
       // For buildings: 0 means exactly 0 (===), any number >=1 means >= comparison
       if (path.startsWith("buildings.")) {
         if (expectedValue === 0) {
-          return (actualValue || 0) === 0;
+          return (current || 0) === 0;
         } else {
-          return (actualValue || 0) >= expectedValue;
+          return (current || 0) >= expectedValue;
         }
       }
       // For all other numeric comparisons, use exact equality
-      return (actualValue || 0) === expectedValue;
+      return (current || 0) === expectedValue;
     }
 
     // Handle string values that might indicate >= comparison
     if (typeof expectedValue === "string" && expectedValue.startsWith(">=")) {
       const numValue = parseFloat(expectedValue.slice(2));
-      return (actualValue || 0) >= numValue;
+      return (current || 0) >= numValue;
     }
 
-    return actualValue === expectedValue;
+    return current === expectedValue;
   });
 };
 
 // Utility function to check if an action should be shown
-export function shouldShowAction(actionId: string, state: GameState): boolean {
+export const shouldShowAction = (
+  actionId: string,
+  state: GameState,
+): boolean => {
   const action = gameActions[actionId];
-  if (!action || !action.show_when) return true;
+  if (!action?.show_when) return false;
 
-  return Object.entries(action.show_when).every(([path, expectedValue]) => {
-    const actualValue = getNestedValue(state, path);
-
-    // For story.seen properties, treat undefined/missing as false
-    if (path.startsWith('story.seen.')) {
-      return (actualValue ?? false) === expectedValue;
-    }
-
-    return actualValue === expectedValue;
-  });
-}
+  return checkRequirements(action.show_when, state, action, actionId);
+};
 
 // Helper function to calculate adjusted cost with discounts (single source of truth)
 function getAdjustedCost(
