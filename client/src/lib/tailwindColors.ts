@@ -290,12 +290,14 @@ const tailwindColors = {
 };
 
 /**
- * Converts a Tailwind color class name to its hex value
- * @param colorClass - Tailwind color class like "gray-950", "red-500", etc.
- * @returns Hex color value or the original string if not found
+ * Converts a Tailwind color class name to its hex value with optional opacity
+ * @param colorClass - Tailwind color class like "gray-950", "red-500/75", etc.
+ * @returns Hex color value with opacity or the original string if not found
  */
 export function tailwindToHex(colorClass: string): string {
-  const parts = colorClass.split('-');
+  // Check for opacity modifier (e.g., "gray-950/75")
+  const [colorPart, opacityPart] = colorClass.split('/');
+  const parts = colorPart.split('-');
   
   if (parts.length !== 2) {
     return colorClass; // Return original if not in expected format
@@ -313,5 +315,18 @@ export function tailwindToHex(colorClass: string): string {
   // @ts-ignore - we know the structure is correct
   const hexValue = colorFamily[shade as keyof typeof colorFamily];
   
-  return hexValue || colorClass; // Return hex or original if shade not found
+  if (!hexValue) {
+    return colorClass; // Return original if shade not found
+  }
+  
+  // If opacity is specified, convert hex to rgba
+  if (opacityPart) {
+    const opacity = parseInt(opacityPart) / 100;
+    const r = parseInt(hexValue.slice(1, 3), 16);
+    const g = parseInt(hexValue.slice(3, 5), 16);
+    const b = parseInt(hexValue.slice(5, 7), 16);
+    return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+  }
+  
+  return hexValue;
 }
