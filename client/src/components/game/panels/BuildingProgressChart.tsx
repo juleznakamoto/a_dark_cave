@@ -19,10 +19,21 @@ export default function BuildingProgressChart() {
   };
 
   // Create data for the inner ring (split into built/unbuilt segments)
+  const BackgroundRing0 = [
+    { name: "Wooden Huts Built", value: 5, fill: "#cccdc6" },
+    { name: "Stone Huts Built", value: 2, fill: "#cccdc6" },
+    { name: "Longhouses Built", value: 3, fill: "#cccdc6" },
+  ];
+
+  const ProgressRing0 = [
+    { name: "Wooden Huts Built", value: 5, fill: "#3b82f6", strokeWidth: 0, },
+    { name: "Stone Huts Built", value: 2, fill: "#10b981", strokeWidth: 0 },
+    { name: "Longhouses Built", value: 3, fill: "#f59e0b", strokeWidth: 0 },
+  ];
+
   const innerRingData00 = [
     // Wooden Huts
-    { name: "Wooden Huts Built", value:5, fill: "#3b82f6" },
-
+    { name: "Wooden Huts Built", value: 5, fill: "#3b82f6" },
     // Stone Huts
     { name: "Stone Huts Built", value: 2, fill: "#10b981" },
     // Longhouses
@@ -52,28 +63,23 @@ export default function BuildingProgressChart() {
       fill: "#6b7280",
     },
   ];
-  
+
   const innerRingData1 = [
-    // Wooden Huts
     { name: "Wooden Huts Built", value: 5, fill: "#3b82f6" },
     { name: "Wooden Huts Unbuilt", value: 2, fill: "#6b7280" },
-    // Stone Huts
     { name: "Stone Huts Built", value: 3, fill: "#10b981" },
     { name: "Stone Huts Unbuilt", value: 1, fill: "#6b7280" },
-    // Longhouses
     { name: "Longhouses Built", value: 4, fill: "#f59e0b" },
     { name: "Longhouses Unbuilt", value: 7, fill: "#6b7280" },
   ];
 
-  // For demonstration, I'll create 6 rings with the same logic
-  // In a real scenario, you'd define different building sets for each ring
   const rings = [
-    { data: innerRingData0, innerRadius: 50, outerRadius: 55, zIndex: 1 },
-    { data: innerRingData1, innerRadius: 40, outerRadius: 45, zIndex: 2 },
-    { data: innerRingData0, innerRadius: 30, outerRadius: 35, zIndex: 3 },
-    { data: innerRingData1, innerRadius: 20, outerRadius: 25, zIndex: 4 },
-    { data: innerRingData00, innerRadius: 10, outerRadius: 15, zIndex: 5 },
-    { data: innerRingData00, innerRadius: 10, outerRadius: 15, zIndex: 6 },
+    { data: innerRingData0, innerRadius: 50, outerRadius: 55 },
+    { data: innerRingData1, innerRadius: 40, outerRadius: 45 },
+    { data: innerRingData0, innerRadius: 30, outerRadius: 35 },
+    { data: innerRingData1, innerRadius: 20, outerRadius: 25 },
+    { data: BackgroundRing0, innerRadius: 10, outerRadius: 15 },
+    { data: ProgressRing0, innerRadius: 10, outerRadius: 15 },
   ];
 
   return (
@@ -101,11 +107,11 @@ export default function BuildingProgressChart() {
               endAngle={-270}
               cornerRadius={5}
               strokeWidth={0.5}
-              style={{ zIndex: ring.zIndex }}
             >
               <Cell fill="url(#sliceGradient)" />
               {ring.data.map((entry, entryIndex) => (
-                <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} />
+                <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} 
+                  />
               ))}
             </Pie>
           ))}
