@@ -4,6 +4,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 export default function BuildingProgressChart() {
   const { buildings } = useGameStore();
 
+  const paddingAngle = 5
+  
   // Define max counts for each building type
   const maxCounts = {
     woodenHut: 10,
@@ -13,22 +15,42 @@ export default function BuildingProgressChart() {
 
   // Calculate current counts
   const counts = {
-    woodenHut: buildings.woodenHut || 3,
-    stoneHut: buildings.stoneHut || 2,
-    longhouse: buildings.longhouse || 1,
+    woodenHut: buildings.woodenHut || 0,
+    stoneHut: buildings.stoneHut || 0,
+    longhouse: buildings.longhouse || 0,
   };
 
   // Create data for the inner ring (split into built/unbuilt segments)
   const BackgroundRing0 = [
-    { name: "Wooden Huts Built", value: 5, fill: "#cccdc6" },
-    { name: "Stone Huts Built", value: 2, fill: "#cccdc6" },
-    { name: "Longhouses Built", value: 3, fill: "#cccdc6" },
+    { name: "Wooden Huts Built", value: maxCounts.woodenHut, fill: "#cccdc6" },
+    { name: "Stone Huts Built", value: maxCounts.stoneHut, fill: "#cccdc6" },
+    { name: "Longhouses Built", value: maxCounts.longhouse, fill: "#cccdc6" },
   ];
 
   const ProgressRing0 = [
-    { name: "Wooden Huts Built", value: 5, fill: "#3b82f6", strokeWidth: 0, },
-    { name: "Stone Huts Built", value: 2, fill: "#10b981", strokeWidth: 0 },
-    { name: "Longhouses Built", value: 3, fill: "#f59e0b", strokeWidth: 0 },
+    {
+      name: "Wooden Huts Built",
+      value: 5,
+      fill: "#3b82f6",
+      strokeWidth: 0,
+      startAngle: 90,
+      endAngle: 360 - (len(counts) -1) * paddingAngle) - (sum(maxCounts) - maxCounts.woodenHut)/360  },
+    {
+      name: "Stone Huts Built",
+      value: 2,
+      fill: "#10b981",
+      strokeWidth: 0,
+      startAngle: 0,
+      endAngle: 0,
+    },
+    {
+      name: "Longhouses Built",
+      value: 3,
+      fill: "#f59e0b",
+      strokeWidth: 0,
+      startAngle: 0,
+      endAngle: 0,
+    },
   ];
 
   const innerRingData00 = [
@@ -101,18 +123,36 @@ export default function BuildingProgressChart() {
               cy="50%"
               innerRadius={ring.innerRadius}
               outerRadius={ring.outerRadius}
-              paddingAngle={5}
+              paddingAngle={paddingAngle}
               dataKey="value"
               startAngle={90}
               endAngle={-270}
               cornerRadius={5}
               strokeWidth={0.5}
             >
-              <Cell fill="url(#sliceGradient)" />
               {ring.data.map((entry, entryIndex) => (
-                <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} 
-                  />
+                <Cell key={`cell-${index}-${entryIndex}`} fill={entry.fill} />
               ))}
+            </Pie>
+          ))}
+          {/* Render ProgressRing0 segments individually with custom angles */}
+          {ProgressRing0.map((segment, index) => (
+            <Pie
+              key={`progress-${index}`}
+              data={[segment]}
+              cx="50%"
+              cy="50%"
+              innerRadius={10}
+              outerRadius={15}
+              paddingAngle={0}
+              dataKey="value"
+              startAngle={segment.startAngle}
+              endAngle={segment.endAngle}
+              cornerRadius={5}
+              strokeWidth={0}
+              style={{ zIndex: 10 }}
+            >
+              <Cell fill={segment.fill} />
             </Pie>
           ))}
         </PieChart>
