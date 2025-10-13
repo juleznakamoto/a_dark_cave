@@ -26,6 +26,7 @@ export default function BuildingProgressChart() {
 
   // Define ring configurations
   const ringConfigs: RingConfig[] = [
+    // First ring: Huts
     {
       segments: [
         {
@@ -50,35 +51,130 @@ export default function BuildingProgressChart() {
       innerRadius: 14,
       outerRadius: 18,
     },
+    // Second ring: Basic crafting and trade buildings
     {
       segments: [
-        {
-          buildingType: "blacksmith",
-          maxCount: 2,
-          color: "#dc2626",
-          label: "Blacksmith",
-          relatedBuildings: ["grandBlacksmith"], // Combine blacksmith + grand blacksmith
-        },
         {
           buildingType: "cabin",
           maxCount: 2,
           color: "#92400e",
           label: "Cabin",
-          relatedBuildings: ["greatCabin"], // Combine cabin + great cabin
+          relatedBuildings: ["greatCabin"],
         },
         {
-          buildingType: "altar",
+          buildingType: "blacksmith",
+          maxCount: 2,
+          color: "#dc2626",
+          label: "Blacksmith",
+          relatedBuildings: ["grandBlacksmith"],
+        },
+        {
+          buildingType: "foundry",
           maxCount: 1,
-          color: "#8b5cf6",
-          label: "Religious",
-          relatedBuildings: ["shrine", "temple", "sanctum"], // Combine all religious buildings
+          color: "#ef4444",
+          label: "Foundry",
+        },
+        {
+          buildingType: "tannery",
+          maxCount: 1,
+          color: "#78350f",
+          label: "Tannery",
+        },
+        {
+          buildingType: "tradePost",
+          maxCount: 2,
+          color: "#eab308",
+          label: "Trade",
+          relatedBuildings: ["merchantsGuild"],
+        },
+        {
+          buildingType: "clerksHut",
+          maxCount: 2,
+          color: "#06b6d4",
+          label: "Knowledge",
+          relatedBuildings: ["scriptorium"],
         },
       ],
       innerRadius: 20,
       outerRadius: 24,
     },
-
-    // Add more rings here as needed
+    // Third ring: Resource buildings and pits
+    {
+      segments: [
+        {
+          buildingType: "timberMill",
+          maxCount: 1,
+          color: "#65a30d",
+          label: "Timber Mill",
+        },
+        {
+          buildingType: "quarry",
+          maxCount: 1,
+          color: "#94a3b8",
+          label: "Quarry",
+        },
+        {
+          buildingType: "shallowPit",
+          maxCount: 4,
+          color: "#1e293b",
+          label: "Pits",
+          relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
+        },
+      ],
+      innerRadius: 26,
+      outerRadius: 30,
+    },
+    // Fourth ring: Advanced buildings
+    {
+      segments: [
+        {
+          buildingType: "altar",
+          maxCount: 4,
+          color: "#8b5cf6",
+          label: "Religious",
+          relatedBuildings: ["shrine", "temple", "sanctum"],
+        },
+        {
+          buildingType: "alchemist",
+          maxCount: 1,
+          color: "#a855f7",
+          label: "Alchemist",
+        },
+        {
+          buildingType: "wizardTower",
+          maxCount: 1,
+          color: "#6366f1",
+          label: "Wizard Tower",
+        },
+      ],
+      innerRadius: 32,
+      outerRadius: 36,
+    },
+    // Fifth ring: Fortifications
+    {
+      segments: [
+        {
+          buildingType: "bastion",
+          maxCount: 1,
+          color: "#475569",
+          label: "Bastion",
+        },
+        {
+          buildingType: "watchtower",
+          maxCount: 3,
+          color: "#64748b",
+          label: "Watchtower",
+        },
+        {
+          buildingType: "palisades",
+          maxCount: 4,
+          color: "#334155",
+          label: "Palisades",
+        },
+      ],
+      innerRadius: 38,
+      outerRadius: 42,
+    },
   ];
 
   // Helper function to calculate segment angles
