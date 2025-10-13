@@ -8,6 +8,8 @@ interface BuildingSegment {
   maxCount: number;
   color: string;
   label: string;
+  // Optional: combine with related buildings (e.g., blacksmith + grand blacksmith)
+  relatedBuildings?: (keyof GameState["buildings"])[];
 }
 
 interface RingConfig {
@@ -36,24 +38,33 @@ export default function BuildingProgressChart() {
     },
     {
       segments: [
-        { buildingType: 'blacksmith', maxCount: 2, color: '#48240a', label: 'Wooden Huts' },
-        { buildingType: 'stoneHut', maxCount: 10, color: '#cccdc6', label: 'Stone Huts' },
-        { buildingType: 'longhouse', maxCount: 2, color: '#f59e0b', label: 'Longhouses' },
+        { 
+          buildingType: 'blacksmith', 
+          maxCount: 2, 
+          color: '#dc2626', 
+          label: 'Blacksmith',
+          relatedBuildings: ['grandBlacksmith'] // Combine blacksmith + grand blacksmith
+        },
+        { 
+          buildingType: 'cabin', 
+          maxCount: 1, 
+          color: '#92400e', 
+          label: 'Cabin',
+          relatedBuildings: ['greatCabin'] // Combine cabin + great cabin
+        },
+        { 
+          buildingType: 'altar', 
+          maxCount: 1, 
+          color: '#8b5cf6', 
+          label: 'Religious',
+          relatedBuildings: ['shrine', 'temple', 'sanctum'] // Combine all religious buildings
+        },
       ],
       innerRadius: 20,
       outerRadius: 24,
     },
     
     // Add more rings here as needed
-    // Example:
-    // {
-    //   segments: [
-    //     { buildingType: 'altar', maxCount: 1, color: '#8b5cf6', label: 'Altar' },
-    //     { buildingType: 'shrine', maxCount: 1, color: '#ec4899', label: 'Shrine' },
-    //   ],
-    //   innerRadius: 20,
-    //   outerRadius: 24,
-    // },
   ];
 
   // Helper function to calculate segment angles
@@ -92,7 +103,15 @@ export default function BuildingProgressChart() {
     // Create progress segments with calculated angles
     let currentEndAngle = startAngle;
     const progressSegments = segments.map((seg) => {
-      const currentCount = buildings[seg.buildingType] || 0;
+      // Combine counts from main building and related buildings
+      let currentCount = buildings[seg.buildingType] || 0;
+      if (seg.relatedBuildings) {
+        currentCount += seg.relatedBuildings.reduce(
+          (sum, relatedType) => sum + (buildings[relatedType] || 0),
+          0
+        );
+      }
+      
       const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
       const segmentAngles = calculateSegment(
         currentCount,
