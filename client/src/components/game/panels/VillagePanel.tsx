@@ -17,6 +17,8 @@ import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
+import BuildingProgressChart from "./BuildingProgressChart";
+
 export default function VillagePanel() {
   const {
     villagers,
@@ -272,82 +274,90 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="space-y-6">
-      {actionGroups.map((group, groupIndex) => {
-        const visibleActions = group.actions.filter((action) =>
-          shouldShowAction(action.id, state),
-        );
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {/* Left Column - Existing Content */}
+      <div className="space-y-6">
+        {actionGroups.map((group, groupIndex) => {
+          const visibleActions = group.actions.filter((action) =>
+            shouldShowAction(action.id, state),
+          );
 
-        if (visibleActions.length === 0) return null;
+          if (visibleActions.length === 0) return null;
 
-        return (
-          <div key={groupIndex} className="space-y-2">
-            {group.title && (
-              <h3 className="text-xs font-semibold text-foreground ">
-                {group.title}
-              </h3>
-            )}
-            <div className="flex flex-wrap gap-2">
-              {visibleActions.map((action) =>
-                renderButton(action.id, action.label),
+          return (
+            <div key={groupIndex} className="space-y-2">
+              {group.title && (
+                <h3 className="text-xs font-semibold text-foreground ">
+                  {group.title}
+                </h3>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {visibleActions.map((action) =>
+                  renderButton(action.id, action.label),
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Rule Section */}
+        {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-foreground">Rule</h3>
+            <div className="space-y-1 leading-tight">
+              {visiblePopulationJobs.map((job) =>
+                renderPopulationControl(job.id, job.label),
               )}
             </div>
+            {/* Population Effects Summary */}
+            {(() => {
+              const totalEffects: Record<string, number> = {};
+
+              visiblePopulationJobs.forEach((job) => {
+                const currentCount =
+                  villagers[job.id as keyof typeof villagers] || 0;
+                if (currentCount > 0) {
+                  const production = getPopulationProduction(
+                    job.id,
+                    currentCount,
+                    state,
+                  );
+                  production.forEach((prod) => {
+                    totalEffects[prod.resource] =
+                      (totalEffects[prod.resource] || 0) + prod.totalAmount;
+                  });
+                }
+              });
+
+              const effectsText = Object.entries(totalEffects)
+                .filter(([resource, amount]) => amount !== 0)
+                .sort(([, a], [, b]) => b - a) // Sort from positive to negative
+                .map(
+                  ([resource, amount]) =>
+                    `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
+                )
+                .join(", ");
+
+              return effectsText && buildings.clerksHut > 0 ? (
+                <div className="text-xs text-muted-foreground flex items-center gap-2">
+                  <CircularProgress
+                    value={productionProgress}
+                    size={14}
+                    strokeWidth={2}
+                    className="text-primary"
+                  />
+                  <span>{effectsText}</span>
+                </div>
+              ) : null;
+            })()}
           </div>
-        );
-      })}
+        )}
+      </div>
 
-      {/* Rule Section */}
-      {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-xs font-bold text-foreground">Rule</h3>
-          <div className="space-y-1 leading-tight">
-            {visiblePopulationJobs.map((job) =>
-              renderPopulationControl(job.id, job.label),
-            )}
-          </div>
-          {/* Population Effects Summary */}
-          {(() => {
-            const totalEffects: Record<string, number> = {};
-
-            visiblePopulationJobs.forEach((job) => {
-              const currentCount =
-                villagers[job.id as keyof typeof villagers] || 0;
-              if (currentCount > 0) {
-                const production = getPopulationProduction(
-                  job.id,
-                  currentCount,
-                  state,
-                );
-                production.forEach((prod) => {
-                  totalEffects[prod.resource] =
-                    (totalEffects[prod.resource] || 0) + prod.totalAmount;
-                });
-              }
-            });
-
-            const effectsText = Object.entries(totalEffects)
-              .filter(([resource, amount]) => amount !== 0)
-              .sort(([, a], [, b]) => b - a) // Sort from positive to negative
-              .map(
-                ([resource, amount]) =>
-                  `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
-              )
-              .join(", ");
-
-            return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground flex items-center gap-2">
-                <CircularProgress
-                  value={productionProgress}
-                  size={14}
-                  strokeWidth={2}
-                  className="text-primary"
-                />
-                <span>{effectsText}</span>
-              </div>
-            ) : null;
-          })()}
-        </div>
-      )}
+      {/* Right Column - Building Progress Chart */}
+      <div className="flex items-start justify-center">
+        <BuildingProgressChart />
+      </div>
     </div>
   );
 }
