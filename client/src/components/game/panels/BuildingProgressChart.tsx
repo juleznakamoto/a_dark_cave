@@ -21,7 +21,7 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   const paddingAngle = 8;
-  const backgroundColor = tailwindToHex("gray-950");
+  const backgroundColor = tailwindToHex("gray-800");
   const startAngle = 90 - paddingAngle / 2;
 
   // Define ring configurations
@@ -32,13 +32,13 @@ export default function BuildingProgressChart() {
         {
           buildingType: "woodenHut",
           maxCount: 10,
-          color: tailwindToHex("amber-900"),
+          color: tailwindToHex("amber-950"),
           label: "Wooden Huts",
         },
         {
           buildingType: "stoneHut",
           maxCount: 10,
-          color: tailwindToHex("gray-300"),
+          color: tailwindToHex("gray-100"),
           label: "Stone Huts",
         },
         {
