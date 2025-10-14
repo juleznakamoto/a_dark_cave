@@ -158,34 +158,6 @@ export const shouldShowAction = (
   const action = gameActions[actionId];
   if (!action?.show_when) return false;
 
-  // Check if show_when has tiered conditions (numeric keys)
-  const showWhenKeys = Object.keys(action.show_when);
-  const hasTieredShowWhen = showWhenKeys.length > 0 && showWhenKeys.every(key => !isNaN(Number(key)));
-
-  if (hasTieredShowWhen) {
-    // For tiered show_when, check if ANY tier's conditions are satisfied
-    return showWhenKeys.some(tierKey => {
-      const tierConditions = action.show_when[tierKey as any];
-      return Object.entries(tierConditions).every(([key, value]) => {
-        const pathParts = key.split('.');
-        let current: any = state;
-        for (const part of pathParts) {
-          current = current?.[part];
-        }
-        
-        if (key.startsWith("buildings.")) {
-          if (value === 0) {
-            return (current || 0) === 0;
-          } else {
-            return (current || 0) >= value;
-          }
-        }
-        
-        return (current || 0) >= value;
-      });
-    });
-  }
-
   return checkRequirements(action.show_when, state, action, actionId);
 };
 
