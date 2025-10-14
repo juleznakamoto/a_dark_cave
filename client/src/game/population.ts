@@ -208,10 +208,12 @@ export const getMaxPopulation = (gameState: GameState): number => {
 
   // Temple dedication bonuses
   let templeBonus = 0;
-  if (gameState.story?.seen?.templeDedicatedTo === "flame") {
-    templeBonus = 4; // Way of the First Flame adds +4 max population
+  if (gameState.blessings.flames_touch) {
+    templeBonus = 4;
+  } else if (gameState.blessings.flames_touch_enhanced) {
+    templeBonus = 8;
   }
-
+  
   return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
 };
 
