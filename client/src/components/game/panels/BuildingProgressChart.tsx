@@ -1,3 +1,4 @@
+import React from "react";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -19,6 +20,7 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
+  const [hoveredSegment, setHoveredSegment] = React.useState<string | null>(null);
 
   // Ring sizing parameters
   const startRadius = 16; // Inner radius of the first ring
@@ -317,25 +319,32 @@ export default function BuildingProgressChart() {
               </Pie>
 
               {/* Progress segments */}
-              {ring.progressSegments.map((segment, segIndex) => (
-                <Pie
-                  key={`progress-${ringIndex}-${segIndex}`}
-                  data={[{ value: 1 }]}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={ring.innerRadius}
-                  outerRadius={ring.outerRadius}
-                  dataKey="value"
-                  startAngle={segment.startAngle}
-                  endAngle={segment.endAngle}
-                  cornerRadius={5}
-                  strokeWidth={segment.isFull ? 0.75 : 0}
-                  stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
-                  isAnimationActive={false}
-                >
-                  <Cell fill={segment.fill} />
-                </Pie>
-              ))}
+              {ring.progressSegments.map((segment, segIndex) => {
+                const segmentKey = `${ringIndex}-${segIndex}`;
+                const isHovered = hoveredSegment === segmentKey;
+                
+                return (
+                  <Pie
+                    key={`progress-${segmentKey}`}
+                    data={[{ value: 1 }]}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius={ring.innerRadius}
+                    outerRadius={ring.outerRadius}
+                    dataKey="value"
+                    startAngle={segment.startAngle}
+                    endAngle={segment.endAngle}
+                    cornerRadius={5}
+                    strokeWidth={isHovered ? 1.5 : (segment.isFull ? 0.75 : 0)}
+                    stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
+                    isAnimationActive={false}
+                    onMouseEnter={() => setHoveredSegment(segmentKey)}
+                    onMouseLeave={() => setHoveredSegment(null)}
+                  >
+                    <Cell fill={segment.fill} />
+                  </Pie>
+                );
+              })}
               {/* Foreground ring */}
               <Pie
                 key={`foreground-${ringIndex}`}
