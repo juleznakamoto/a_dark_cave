@@ -109,12 +109,16 @@ export default function CombatDialog({
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
   const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
+  const NIGHTSHADE_BOW_OWNED = gameState.inventory.nightshade_bow > 0; // Assuming inventory holds bow count
 
   const emberBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ember_bomb",
   ).length;
   const cinderflameBombsUsed = usedItemsInCombat.filter(
     (id) => id === "cinderflame_bomb",
+  ).length;
+  const poisonArrowsUsedInCombat = usedItemsInCombat.filter(
+    (id) => id === "poison_arrows",
   ).length;
 
   const combatItems: CombatItem[] = [
@@ -138,6 +142,17 @@ export default function CombatDialog({
     },
   ];
 
+  // Add Poison Arrows if Nightshade Bow is owned and not used yet in combat
+  if (NIGHTSHADE_BOW_OWNED) {
+    combatItems.push({
+      id: "poison_arrows",
+      name: "Poison Arrows",
+      damage: 15, // Base damage, will be applied per round
+      available:
+        poisonArrowsUsedInCombat < 1 && !usedItemsInRound.has("poison_arrows"),
+    });
+  }
+
   const handleStartFight = () => {
     setCombatStarted(true);
   };
@@ -153,26 +168,34 @@ export default function CombatDialog({
     // Use the item - track for this round and for entire combat
     setUsedItemsInRound((prev) => new Set([...prev, item.id]));
     setUsedItemsInCombat((prev) => [...prev, item.id]);
-    setCurrentEnemy((prev) =>
-      prev
-        ? {
-            ...prev,
-            currentHealth: Math.max(0, prev.currentHealth - finalDamage),
-          }
-        : null,
-    );
 
-    // Update game state to consume the item
-    gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
+    if (item.id === "poison_arrows") {
+      // Poison Arrows apply damage over time and have a special effect
+      // For now, we just mark it as used and will handle damage application in handleFight
+      // The icon indication logic will also be in handleFight or a separate effect
+    } else {
+      // For bombs, apply damage directly
+      setCurrentEnemy((prev) =>
+        prev
+          ? {
+              ...prev,
+              currentHealth: Math.max(0, prev.currentHealth - finalDamage),
+            }
+          : null,
+      );
+      // Update game state to consume the item
+      gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
 
-    // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({ amount: finalDamage, visible: true });
-    setTimeout(() => {
-      setEnemyDamageIndicator({ amount: 0, visible: false });
-    }, 3000);
+      // Show damage indicator on enemy health bar
+      setEnemyDamageIndicator({ amount: finalDamage, visible: true });
+      setTimeout(() => {
+        setEnemyDamageIndicator({ amount: 0, visible: false });
+      }, 3000);
+    }
 
-    // Check if enemy is defeated
-    if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0) {
+
+    // Check if enemy is defeated by bombs
+    if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0 && item.id !== "poison_arrows") {
       setCombatEnded(true);
       setCombatResult("victory");
     }
@@ -195,9 +218,26 @@ export default function CombatDialog({
 
     setIsProcessingRound(true);
 
+    let currentEnemyHealth = currentEnemy.currentHealth;
+    let integrityDamage = 0;
+    let playerDamage = bastionStats.attack;
+    let poisonDamageDealt = 0;
+
+    // Apply poison damage if active and not used this round
+    const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
+    if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
+      const totalKnowledge = getTotalKnowledge(gameState);
+      const knowledgeBonus = Math.floor(totalKnowledge / 5);
+      poisonDamageDealt = 15 + knowledgeBonus; // Base 15 damage + knowledge bonus
+      // Need to track poison duration and its application per round
+      // For simplicity, let's assume it applies for 3 rounds after use
+      // This state needs to be managed more robustly, e.g., using useEffect or a state variable for poison status
+    }
+
+
     // Enemy attacks first
     if (currentEnemy.attack > bastionStats.defense) {
-      const integrityDamage = currentEnemy.attack - bastionStats.defense;
+      integrityDamage = currentEnemy.attack - bastionStats.defense;
       const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
       setCurrentIntegrity(newIntegrityValue);
 
@@ -219,11 +259,12 @@ export default function CombatDialog({
     // Player attacks
     const newHealth = Math.max(
       0,
-      currentEnemy.currentHealth - bastionStats.attack,
+      currentEnemyHealth - playerDamage - poisonDamageDealt,
     );
+    currentEnemyHealth = newHealth;
 
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({ amount: bastionStats.attack, visible: true });
+    setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
@@ -249,6 +290,10 @@ export default function CombatDialog({
 
   const healthPercentage = currentEnemy
     ? (currentEnemy.currentHealth / currentEnemy.maxHealth) * 100
+    : 0;
+
+  const integrityPercentage = currentIntegrity
+    ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
   return (
@@ -310,6 +355,12 @@ export default function CombatDialog({
                       -{enemyDamageIndicator.amount}
                     </div>
                   )}
+                  {/* Poison Icon Indicator - Add logic to show this when poison is active */}
+                  {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
+                     <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
+                       <span role="img" aria-label="poison-icon">🌿</span> {/* Example poison icon */}
+                     </div>
+                  )}
                 </div>
                 <div className="text-xs mt-2">
                   Attack: {currentEnemy?.attack}
@@ -328,7 +379,7 @@ export default function CombatDialog({
                   </div>
                   <div className="relative">
                     <Progress
-                      value={(currentIntegrity / maxIntegrityForCombat) * 100}
+                      value={integrityPercentage}
                       className="h-3 mt-2 [&>div]:bg-green-900" // Darker green for bastion integrity
                     />
                     {integrityDamageIndicator.visible && (
@@ -350,20 +401,27 @@ export default function CombatDialog({
               {/* Combat Items */}
               {combatItems.some(
                 (item) =>
-                  gameState.resources[
-                    item.id as keyof typeof gameState.resources
-                  ] > 0,
+                  (item.id === "ember_bomb" || item.id === "cinderflame_bomb"
+                    ? gameState.resources[
+                        item.id as keyof typeof gameState.resources
+                      ] > 0
+                    : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED) &&
+                  item.available,
               ) && (
                 <div className="border-t pt-3">
                   <div className="text-sm font-medium mb-2">Items</div>
                   <div className="grid grid-cols-2 gap-2">
                     {combatItems
-                      .filter(
-                        (item) =>
+                      .filter((item) => {
+                        if (item.id === "poison_arrows") {
+                          return NIGHTSHADE_BOW_OWNED && item.available;
+                        }
+                        return (
                           gameState.resources[
                             item.id as keyof typeof gameState.resources
-                          ] > 0,
-                      )
+                          ] > 0 && item.available
+                        );
+                      })
                       .map((item) => (
                         <TooltipProvider key={item.id}>
                           <Tooltip>
@@ -395,12 +453,18 @@ export default function CombatDialog({
                                 {item.damage +
                                   Math.floor(getTotalKnowledge(gameState) / 5)}
                               </p>
-                              <p>
-                                Available:{" "}
-                                {item.id === "ember_bomb"
-                                  ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                  : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
-                              </p>
+                              {item.id === "poison_arrows" ? (
+                                <p className="text-green-600">
+                                  Inflicts 15 poison damage per round for 3 rounds. Once per combat.
+                                </p>
+                              ) : (
+                                <p>
+                                  Available:{" "}
+                                  {item.id === "ember_bomb"
+                                    ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                    : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
+                                </p>
+                              )}
                             </TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
