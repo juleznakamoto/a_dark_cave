@@ -453,14 +453,13 @@ export default function CombatDialog({
                                 {item.damage +
                                   Math.floor(getTotalKnowledge(gameState) / 5)} per round for 3 rounds
                               </p>
-                              <p>
-                                {item.id === "poison_arrows" 
-                                  ? `Inflicts ${item.damage + Math.floor(getTotalKnowledge(gameState) / 5)} poison damage per round for 3 rounds.`
-                                  : `Available: ${item.id === "ember_bomb"
-                                      ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                      : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}`
-                                }
-                              </p>
+                              {item.id !== "poison_arrows" && (
+                                <p>
+                                  Available: {item.id === "ember_bomb"
+                                    ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                                    : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
+                                </p>
+                              )}
                               {item.id === "poison_arrows" && (
                                 <p>
                                   Available: {poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}
