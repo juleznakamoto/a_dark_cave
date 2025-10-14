@@ -204,7 +204,7 @@ export const getPopulationProductionText = (jobId: string): string => {
 import { GameState } from "@shared/schema";
 
 export const getMaxPopulation = (gameState: GameState): number => {
-  const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 1;
+  const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
   const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
   const longhouseCapacity = (gameState.buildings.longhouse || 0) * 8;
 
@@ -216,8 +216,7 @@ export const getMaxPopulation = (gameState: GameState): number => {
     templeBonus = 8;
   }
   
-  return 22
-    //woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
+  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
 };
 
 // Alias for backward compatibility
