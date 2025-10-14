@@ -224,6 +224,7 @@ export const gameStateSchema = z.object({
       moonstone_miner: z.number().min(0).default(0),
       steel_forger: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
+      cinderflame_dust_maker: z.number().min(0).default(0)
     })
     .default({}),
   story: z
