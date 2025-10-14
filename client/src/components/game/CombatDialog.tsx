@@ -454,8 +454,8 @@ export default function CombatDialog({
                                   Math.floor(getTotalKnowledge(gameState) / 5)}
                               </p>
                               {item.id === "poison_arrows" ? (
-                                <p className="text-green-600">
-                                  Inflicts {poisonDamageDealt} poison damage per round for 3 rounds.
+                                <p>
+                                  Inflicts {item.damage + Math.floor(getTotalKnowledge(gameState) / 5)} poison damage per round for 3 rounds.
                                 </p>
                               ) : (
                                 <p>
