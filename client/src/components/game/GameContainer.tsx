@@ -18,6 +18,7 @@ export default function GameContainer() {
     activeTab, 
     flags,
     buildings,
+    resources,
     eventDialog,
     combatDialog,
     setActiveTab,
@@ -86,7 +87,7 @@ export default function GameContainer() {
           <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs - Switch design based on wooden huts */}
             <nav className="border-t border-border pl-6 mb-4 pt-4">
-              {buildings.woodenHut >= 5 ? (
+              {resources.wood >= 4466250 ? (
                 // New LimelightNav design (5+ wooden huts)
                 <LimelightNav
                   items={useMemo(() => {
