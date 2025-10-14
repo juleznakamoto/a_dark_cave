@@ -39,18 +39,6 @@ export default function ForestPanel() {
     },
   ];
 
-  // Debug: Check trade action visibility
-  if (import.meta.env.DEV) {
-    const tradePostCount = buildings.tradePost || 0;
-    const merchantsGuildCount = buildings.merchantsGuild || 0;
-    const firstTradeActionVisible = shouldShowAction('tradeGoldForWood', state);
-    console.log('[ForestPanel] Trade visibility:', {
-      tradePost: tradePostCount,
-      merchantsGuild: merchantsGuildCount,
-      tradeGoldForWoodVisible: firstTradeActionVisible
-    });
-  }
-
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
     if (!action) return null;
