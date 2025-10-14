@@ -207,6 +207,10 @@ export default function SidePanel() {
       if (key === "blacksmith" && buildings.grandBlacksmith > 0) {
         return false;
       }
+      // Hide Trade Post when Merchants Guild is built
+      if (key === "tradePost" && buildings.merchantsGuild > 0) {
+        return false;
+      }
       return (value ?? 0) > 0;
     })
     .map(([key, value]) => {
