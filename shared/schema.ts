@@ -280,6 +280,9 @@ export const gameStateSchema = z.object({
       resource_multiplier: z.record(z.string(), z.number()).default({}),
       probability_bonus: z.record(z.string(), z.number()).default({}),
       cooldown_reduction: z.record(z.string(), z.number()).default({}),
+
+      odd_bracelet: z.boolean().default(false),
+
     })
     .default({}),
   bastion_stats: z
