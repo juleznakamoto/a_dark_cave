@@ -58,21 +58,19 @@ const caveRelics = {
       key: "tarnished_amulet",
       probability: 0.02,
       logMessage:
-        "In the cave’s shadows, something glints. You pick up a tarnished amulet and place it around your neck. Despite its worn surface, a strange sense of protection and fortune washes over you.",
+        "In the cave’s shadows, something glints. You find up a tarnished amulet.",
     },
     {
       key: "bloodstained_belt",
-      probability: 0.015,
+      probability: 0.02,
       logMessage:
-        "Among the bones, you find a leather belt stained with ancient blood. You fasten it, and a surge of strength courses through you, though the blood never seems to dry.",
+        "In the cave you find a leather belt stained with ancient blood.",
     },
   ],
   descendFurther: [
     {
       key: "dragon_bone_dice",
       probability: 0.02,
-      logMessage: "",
-      luck: 3,
       isChoice: true,
       eventId: "dragonBoneDiceChoice",
     },
@@ -80,10 +78,7 @@ const caveRelics = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.025,
-      logMessage: "",
-      luck: 4,
-      madness: 2,
+      probability: 0.03,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
     },
@@ -91,11 +86,7 @@ const caveRelics = {
   exploreTemple: [
     {
       key: "shadow_flute",
-      probability: 0.03,
-      logMessage: "",
-      luck: 3,
-      knowledge: 2,
-      madness: 3,
+      probability: 0.04,
       isChoice: true,
       eventId: "shadowFluteChoice",
     },
@@ -103,11 +94,7 @@ const caveRelics = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.035,
-      logMessage: "",
-      strength: 3,
-      knowledge: 7,
-      madness: 5,
+      probability: 0.05,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
     },
@@ -145,13 +132,8 @@ function getInheritedRelics(actionId: string) {
         condition:
           `!relics.${relic.key}` +
           (relic.eventId ? ` && !story.seen.${relic.eventId}` : ""),
-        logMessage: relic.logMessage,
         ...(relic.isChoice && { isChoice: relic.isChoice }),
         ...(relic.eventId && { eventId: relic.eventId }),
-        ...(relic.luck && { luck: relic.luck }),
-        ...(relic.madness && { madness: relic.madness }),
-        ...(relic.knowledge && { knowledge: relic.knowledge }),
-        ...(relic.strength && { strength: relic.strength }),
       };
     });
   }
@@ -356,9 +338,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": { probability: 1, value: "random(15,45)" },
-      "resources.bloodstone": { probability: 1, value: "random(2,8)" },
-      "resources.frostglas": { probability: 1, value: "random(2,8" },
+      "resources.silver": { probability: 1, value: 100 },              
+      "resources.gold": { probability: 1, value: 50 },
+      "resources.obsidian": { probability: 1, value: "random(2,8)" },
+      "resources.adamant": { probability: 1, value: "random(2,8" },
       "tools.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
@@ -377,10 +360,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": { probability: 1, value: "random(20,40)" },
-      "resources.bloodstone": { probability: 1, value: "random(3,6)" },
-      "resources.frostglas": { probability: 1, value: "random(3,6)" },
-      "resources.adamant": { probability: 1, value: "random(15,25)" },
+      "resources.gold": { probability: 1, value: 75 },
+      "resources.obsidian": { probability: 1, value: 75 },
+      "resources.adamant": { probability: 1, value: 50 },
+      "resources.moonstone": { probability: 1, value: 30 },
       "relics.occultist_grimoire": true,
       "flags.occultistChamberExplored": true,
       "story.seen.occultistChamberExplored": true,
@@ -509,19 +492,6 @@ export function handleExploreCave(
       }
     });
     delete effectUpdates.logMessages;
-  }
-
-  // Remove forge section from cave panel
-  if (state.panels?.cave?.actions) {
-    result.stateUpdates.panels = {
-      ...state.panels,
-      cave: {
-        ...state.panels.cave,
-        actions: state.panels.cave.actions.filter(
-          (action) => action.id !== "forgeSteel",
-        ),
-      },
-    };
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
@@ -732,7 +702,7 @@ export function handleLowChamber(
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
     message:
-      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures: gold rings scattered across the floor, bloodstones pulsing with dark energy, and shards of frostglas that seem to freeze the very air around them. Most remarkable of all, you discover the mastermason's chisel, a tool of legendary craftsmanship.",
+      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures, amongst them a mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
@@ -754,7 +724,7 @@ export function handleoccultistChamber(
   result.logEntries!.push({
     id: `occultist-chamber-explored-${Date.now()}`,
     message:
-      "Following the occultist's map, you find the hidden chamber sealed behind rock that moves like a door. Inside, the occultist's greatest treasures and experiments await, preserved in death. Most precious of all is his grimoire, filled with forbidden knowledge and arcane secrets.",
+      "Following the occultist's map, you find the hidden chamber containing the occultist's treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

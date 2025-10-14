@@ -9,7 +9,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "Ring of Drowned",
     message:
-      "Among the rubble of the fogotten city, you find a peculiar ring that drips constantly with water, despite there being no source. Do you dare to keep it?",
+      "In the fogotten city, you find a peculiar ring that drips constantly with water, despite there being no source. Do you dare to keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,

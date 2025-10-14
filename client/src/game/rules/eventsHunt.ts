@@ -8,7 +8,7 @@ export const huntEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Giant's Forge",
     message:
-      "Deep in the forest, you discover the ruin of an old stone building dominated by a massive stone furnace. Skeletal remains lie scattered about - the bones of what must have been a giant. Among the debris, a magnificent blacksmith hammer catches the light, its head still bearing traces of ancient forge-fire. Do you take it?",
+      "Deep in the forest, you discover the ruin of a stone building with a massive furnace. Skeletal remains of what must have been a giant lie near the furnace, next to it a magnificent blacksmith hammer, its head bearing traces of ancient forge-fire. Do you take it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -30,7 +30,7 @@ export const huntEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You grasp the ancient hammer, feeling its weight and balance. Despite the ages that have passed, it remains a masterwork of smithing. The giant's spirit seems to approve of your choice.",
+              "You grasp the ancient hammer, feeling its weight and balance. Despite the ages that have passed, it remains a masterwork of smithing.",
           };
         },
       },
@@ -47,7 +47,7 @@ export const huntEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide to leave the hammer where it lies, respecting the giant's final resting place. As you turn away, you feel a sense of peace settling over the ancient forge.",
+              "You decide to leave the hammer where it lies, respecting the giant's final resting place.",
           };
         },
       },

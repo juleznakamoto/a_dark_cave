@@ -212,8 +212,8 @@ function handleStarvationCheck() {
 
       const message =
         starvationDeaths === 1
-          ? "One villager succumbs to starvation. Remaining villagers grow desperate."
-          : `${starvationDeaths} villagers starve to death. Survivors look gaunt and hollow-eyed.`;
+          ? "One villager succumbs to starvation."
+          : `${starvationDeaths} villagers starve to death.`;
 
       state.addLogEntry({
         id: `starvation-${Date.now()}`,
@@ -255,8 +255,8 @@ function handleFreezingCheck() {
 
       const message =
         freezingDeaths === 1
-          ? "One villager freezes to death in the cold. The others huddle together for warmth."
-          : `${freezingDeaths} villagers freeze to death in the harsh cold. Survivors seek shelter desperately.`;
+          ? "One villager freezes to death in the cold."
+          : `${freezingDeaths} villagers freeze to death in the cold.`;
 
       state.addLogEntry({
         id: `freezing-${Date.now()}`,
@@ -370,9 +370,9 @@ function handleStrangerApproach() {
       }
     }
     const messages = [
-      "A stranger approaches through the woods and joins your village.",
+      "A stranger approaches and joins your village.",
       "A traveler arrives and decides to stay.",
-      "A wanderer appears from the woods and becomes part of your community.",
+      "A wanderer appears and becomes part of your community.",
       "Someone approaches the village and settles in.",
       "A stranger joins your community, bringing skills and hope.",
       "A newcomer arrives and makes themselves at home.",
@@ -381,11 +381,11 @@ function handleStrangerApproach() {
     // Adjust message if multiple strangers arrive
     if (strangersCount > 1) {
       messages.push(
-        `${strangersCount} strangers approach through the woods and join your village.`,
+        `${strangersCount} strangers approach and join your village.`,
       );
       messages.push(`${strangersCount} travelers arrive and decide to stay.`);
       messages.push(
-        `${strangersCount} wanderers appear from the woods and become part of your community.`,
+        `${strangersCount} wanderers appear and become part of your community.`,
       );
     }
 

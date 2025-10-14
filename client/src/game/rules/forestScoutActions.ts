@@ -212,7 +212,7 @@ export function handleLayTrap(
       result.logEntries!.push({
         id: `giant-bear-trapped-success-${Date.now()}`,
         message:
-          "The giant trap works perfectly! A massive black bear with glowing red eyes is caught, its otherworldly roar echoing through the forest. Your villagers fight with incredible strength and coordination, managing to slay the supernatural beast without casualties. You claim its cursed black fur as a trophy.",
+          "The giant trap works perfectly! A massive black bear with glowing red eyes is caught. Your villagers slay the supernatural beast and claim its cursed black fur as a trophy.",
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -223,7 +223,7 @@ export function handleLayTrap(
     } else if (villagerDeaths <= 2) {
       result.logEntries!.push({
         id: `giant-bear-trapped-victory-${Date.now()}`,
-        message: `The giant trap snares a colossal black bear with burning red eyes! Its otherworldly roar chills the soul, but your villagers' strength prevails. ${villagerDeaths} brave villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
+        message: `The giant trap snares a colossal black bear with burning red eyes! ${villagerDeaths} brave villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to its supernatural claws before the beast is finally slain. You claim its cursed black fur as a hard-won trophy.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -234,7 +234,7 @@ export function handleLayTrap(
     } else {
       result.logEntries!.push({
         id: `giant-bear-trapped-defeat-${Date.now()}`,
-        message: `The giant trap snares a nightmare - a colossal black bear with eyes like burning coals. Its roar seems to come from another realm entirely. Despite their courage, ${villagerDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed by sheer numbers. You claim its cursed black fur, still warm with otherworldly power.`,
+        message: `The giant trap snares a colossal black bear with eyes like burning coals. ${villagerDeaths} villagers fall to its supernatural fury before the beast is finally overwhelmed. You claim its cursed black fur.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -248,7 +248,7 @@ export function handleLayTrap(
     result.logEntries!.push({
       id: `giant-trap-failed-${Date.now()}`,
       message:
-        "You set the giant trap with care, but when you return to check it, you find only disturbed earth and massive claw marks. In the silence, you swear you hear a distant, otherworldly roar echoing from deep within the woods. Whatever prowls these forests is too cunning for your trap... this time.",
+        "The giant trap is set, but when checked only giant claw marks are found next to it. Whatever prowls these forests is too cunning for your trap... this time.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -299,7 +299,7 @@ export function handleCastleRuins(
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
       message:
-        "Your expedition to the necromancer's castle ruins proves successful! Deep within the crumbling towers, you discover a hidden chamber containing ancient scrolls wrapped in dark silk. The scrolls reveal cryptic knowledge about the creature locked in the lowest chamber of the caves and hint at methods to defeat it.",
+        "The expedition to the necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -319,7 +319,7 @@ export function handleCastleRuins(
 
       result.logEntries!.push({
         id: `castle-ruins-minor-attack-${Date.now()}`,
-        message: `Your expedition reaches the ruined castle but is ambushed by shambling undead - grotesque experiments left behind by the necromancer. Skeletal hands claw at your villagers as rotting corpses attack with unnatural hunger. Despite fighting bravely, ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead horde before the survivors manage to retreat to safety.`,
+        message: `Your expedition is ambushed by shambling undead grotesque experiments left behind by the necromancer. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead horde before the survivors manage to retreat to safety.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
