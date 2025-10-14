@@ -1,4 +1,5 @@
-import { GameState, gameStateSchema } from '@shared/schema';
+import { GameState } from "@shared/schema";
+import { getMaxPopulation } from "./population";
 
 export function updateResource(
   state: GameState,
@@ -34,18 +35,19 @@ export function updateFlag(
   };
 }
 
-export const updatePopulationCounts = (state: GameState) => {
-  const current_population = Object.values(state.villagers).reduce(
+export const updatePopulationCounts = (
+  state: GameState,
+): Partial<GameState> => {
+  const current = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
   );
 
-  // Calculate max population based on buildings
-  const total_population = (state.buildings.woodenHut * 2) + (state.buildings.stoneHut * 4);
+  const total = getMaxPopulation(state);
 
   return {
-    current_population,
-    total_population,
+    current_population: current,
+    total_population: total,
   };
 };
 
@@ -120,14 +122,14 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 
   // If we have fewer villagers than deaths requested, kill all available
   const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
-  
+
   // Randomly select villagers to kill
   for (let i = 0; i < actualDeaths; i++) {
     if (villagerPool.length === 0) break;
-    
+
     const randomIndex = Math.floor(Math.random() * villagerPool.length);
     const selectedType = villagerPool[randomIndex];
-    
+
     // Remove the selected villager from the pool and from the state
     villagerPool.splice(randomIndex, 1);
     updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
@@ -145,15 +147,15 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 export function buildGameState(state: any): GameState {
   // Get all keys from the schema
   const schemaKeys = Object.keys(gameStateSchema.shape);
-  
+
   // Build the state object dynamically
   const gameState: Partial<GameState> = {};
-  
+
   for (const key of schemaKeys) {
     if (key in state) {
       gameState[key as keyof GameState] = state[key as keyof typeof state];
     }
   }
-  
+
   return gameState as GameState;
 }

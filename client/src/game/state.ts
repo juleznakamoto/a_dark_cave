@@ -351,6 +351,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ) {
         setTimeout(() => get().updateBastionStats(), 0);
       }
+      
+      // Update population when housing buildings change
+      if (
+        buildingChanges.woodenHut !== undefined ||
+        buildingChanges.stoneHut !== undefined ||
+        buildingChanges.longhouse !== undefined
+      ) {
+        setTimeout(() => get().updatePopulation(), 0);
+      }
     }
 
     // Handle event dialogs
@@ -778,17 +787,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  // Computed getters for population
+  // Computed getter for current population
   get current_population() {
     const state = get();
     return Object.values(state.villagers).reduce(
       (sum, count) => sum + (count || 0),
       0,
     );
-  },
-
-  get total_population() {
-    return getMaxPopulation(get());
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
