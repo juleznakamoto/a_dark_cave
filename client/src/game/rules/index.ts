@@ -106,7 +106,7 @@ const checkRequirements = (
     // Handle negation (e.g., "!story.seen.castleRuinsExplored")
     const isNegated = path.startsWith("!");
     const actualPath = isNegated ? path.slice(1) : path;
-
+    
     const pathParts = actualPath.split(".");
     let current: any = state;
 
@@ -151,44 +151,15 @@ const checkRequirements = (
 };
 
 // Utility function to check if an action should be shown
-export function shouldShowAction(
+export const shouldShowAction = (
   actionId: string,
   state: GameState,
-): boolean {
+): boolean => {
   const action = gameActions[actionId];
-  if (!action || !action.show_when) return false;
+  if (!action?.show_when) return false;
 
-  // Check if show_when has tiered conditions (numeric keys like 1, 2, 3)
-  const showWhenKeys = Object.keys(action.show_when);
-  const hasTiers = showWhenKeys.every(key => !isNaN(Number(key)));
-
-  if (hasTiers) {
-    // For tiered conditions, check if ANY tier is satisfied
-    return showWhenKeys.some(tierKey => {
-      const tierConditions = action.show_when[tierKey as any];
-      return Object.entries(tierConditions).every(([key, value]) => {
-        const [category, prop] = key.split('.');
-        const stateValue = state[category as keyof typeof state]?.[prop as any];
-
-        if (typeof value === 'boolean') {
-          return stateValue === value;
-        }
-        return (stateValue || 0) >= value;
-      });
-    });
-  }
-
-  // For non-tiered conditions, all must be satisfied
-  return Object.entries(action.show_when).every(([key, value]) => {
-    const [category, prop] = key.split('.');
-    const stateValue = state[category as keyof typeof state]?.[prop as any];
-
-    if (typeof value === 'boolean') {
-      return stateValue === value;
-    }
-    return (stateValue || 0) >= value;
-  });
-}
+  return checkRequirements(action.show_when, state, action, actionId);
+};
 
 // Helper function to calculate adjusted cost with discounts (single source of truth)
 function getAdjustedCost(
