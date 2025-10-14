@@ -22,7 +22,7 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.bones": "random(1,4)",
       "story.seen.hasHunted": true,
       "relics.blacksmith_hammer": {
-        probability: 0.0075,
+        probability: 0.0075 + state.buildings.stoneHut || 0,
         value: true,
         condition:
           "!relics.blacksmith_hammer && !story.seen.blacksmithHammerChoice",
