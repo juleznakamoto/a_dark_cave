@@ -331,10 +331,48 @@ export const applyActionEffects = (
   // First apply costs (as negative effects)
   if (action.cost) {
     let costs = action.cost;
+    
     // For building actions, get the cost for the next level
     if (action.building) {
       const level = getNextBuildingLevel(actionId, state);
       costs = action.cost[level];
+    }
+    
+    // For tiered costs (like trade actions), determine the active tier
+    const costKeys = Object.keys(costs);
+    const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
+    
+    if (hasTieredCost) {
+      // Find the active tier based on show_when conditions
+      const showWhenKeys = Object.keys(action.show_when || {});
+      let activeTier = 1;
+      
+      for (const tierKey of showWhenKeys) {
+        const tierConditions = action.show_when[tierKey as any];
+        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
+          const pathParts = key.split('.');
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+          
+          if (key.startsWith("buildings.")) {
+            if (value === 0) {
+              return (current || 0) === 0;
+            } else {
+              return (current || 0) >= value;
+            }
+          }
+          
+          return (current || 0) >= value;
+        });
+        
+        if (tierSatisfied) {
+          activeTier = Number(tierKey);
+        }
+      }
+      
+      costs = costs[activeTier];
     }
 
     if (costs) {
