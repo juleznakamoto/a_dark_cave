@@ -1,4 +1,3 @@
-import React from "react";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -20,7 +19,6 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
-  const [hoveredSegment, setHoveredSegment] = React.useState<string | null>(null);
 
   // Ring sizing parameters
   const startRadius = 16; // Inner radius of the first ring
@@ -355,20 +353,6 @@ export default function BuildingProgressChart() {
                 stroke={tailwindToHex("neutral-100/50")}
                 isAnimationActive={false}
               >
-                {ring.foregroundSegments.map((entry, entryIndex) => (
-                  <Cell
-                    key={`fg-cell-${ringIndex}-${entryIndex}`}
-                    fill={entry.fill}
-                    stroke={
-                      hoveredSegment === `${ringIndex}-${entryIndex}`
-                        ? tailwindToHex("neutral-100")
-                        : undefined
-                    }
-                    strokeWidth={hoveredSegment === `${ringIndex}-${entryIndex}` ? 1 : 0.5}
-                    onMouseEnter={() => setHoveredSegment(`${ringIndex}-${entryIndex}`)}
-                    onMouseLeave={() => setHoveredSegment(null)}
-                  />
-                ))}
               </Pie>
             </>
           ))}
