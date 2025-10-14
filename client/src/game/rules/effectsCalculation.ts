@@ -195,9 +195,6 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
     if (weaponEffects[toolKey]) {
       activeEffects.push(weaponEffects[toolKey]);
     }
-    if (clothingEffects[toolKey]) {
-      activeEffects.push(clothingEffects[toolKey]);
-    }
   });
 
   return activeEffects;
