@@ -57,6 +57,50 @@ export default function GameContainer() {
     setPreviousFlags(flags);
   }, [flags, previousFlags]);
 
+  // Determine whether to use LimelightNav (always call this hook)
+  const useLimelightNav = resources.wood >= 4466250;
+
+  // Build nav items (always call this hook)
+  const limelightNavItems = useMemo(() => {
+    const tabs: NavItem[] = [
+      {
+        id: 'cave',
+        icon: <Mountain />,
+        label: 'The Cave',
+        onClick: () => setActiveTab('cave')
+      }
+    ];
+
+    if (flags.villageUnlocked) {
+      tabs.push({
+        id: 'village',
+        icon: <Home />,
+        label: buildings.stoneHut >= 5 ? "The City" : "The Village",
+        onClick: () => setActiveTab('village')
+      });
+    }
+
+    if (flags.forestUnlocked) {
+      tabs.push({
+        id: 'forest',
+        icon: <Trees />,
+        label: 'The Forest',
+        onClick: () => setActiveTab('forest')
+      });
+    }
+
+    if (flags.bastionUnlocked) {
+      tabs.push({
+        id: 'bastion',
+        icon: <Shield />,
+        label: 'The Bastion',
+        onClick: () => setActiveTab('bastion')
+      });
+    }
+
+    return tabs;
+  }, [flags.villageUnlocked, flags.forestUnlocked, flags.bastionUnlocked, buildings.stoneHut]);
+
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
     return (
@@ -87,48 +131,10 @@ export default function GameContainer() {
           <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs - Switch design based on wooden huts */}
             <nav className="border-t border-border pl-6 mb-4 pt-4">
-              {resources.wood >= 4466250 ? (
+              {useLimelightNav ? (
                 // New LimelightNav design (5+ wooden huts)
                 <LimelightNav
-                  items={useMemo(() => {
-                    const tabs: NavItem[] = [
-                      {
-                        id: 'cave',
-                        icon: <Mountain />,
-                        label: 'The Cave',
-                        onClick: () => setActiveTab('cave')
-                      }
-                    ];
-
-                    if (flags.villageUnlocked) {
-                      tabs.push({
-                        id: 'village',
-                        icon: <Home />,
-                        label: buildings.stoneHut >= 5 ? "The City" : "The Village",
-                        onClick: () => setActiveTab('village')
-                      });
-                    }
-
-                    if (flags.forestUnlocked) {
-                      tabs.push({
-                        id: 'forest',
-                        icon: <Trees />,
-                        label: 'The Forest',
-                        onClick: () => setActiveTab('forest')
-                      });
-                    }
-
-                    if (flags.bastionUnlocked) {
-                      tabs.push({
-                        id: 'bastion',
-                        icon: <Shield />,
-                        label: 'The Bastion',
-                        onClick: () => setActiveTab('bastion')
-                      });
-                    }
-
-                    return tabs;
-                  }, [flags.villageUnlocked, flags.forestUnlocked, flags.bastionUnlocked, buildings.stoneHut])}
+                  items={limelightNavItems}
                   defaultActiveIndex={0}
                   onTabChange={(index) => {
                     const tabIds = ['cave'];
