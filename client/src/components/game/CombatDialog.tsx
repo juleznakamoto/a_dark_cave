@@ -399,14 +399,12 @@ export default function CombatDialog({
               </div>
 
               {/* Combat Items */}
-              {combatItems.some(
-                (item) =>
-                  (item.id === "ember_bomb" || item.id === "cinderflame_bomb"
-                    ? gameState.resources[
-                        item.id as keyof typeof gameState.resources
-                      ] > 0
-                    : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED) &&
-                  item.available,
+              {combatItems.some((item) =>
+                item.id === "ember_bomb" || item.id === "cinderflame_bomb"
+                  ? gameState.resources[
+                      item.id as keyof typeof gameState.resources
+                    ] > 0
+                  : item.id === "poison_arrows" && NIGHTSHADE_BOW_OWNED
               ) && (
                 <div className="border-t pt-3">
                   <div className="text-sm font-medium mb-2">Items</div>
@@ -414,12 +412,12 @@ export default function CombatDialog({
                     {combatItems
                       .filter((item) => {
                         if (item.id === "poison_arrows") {
-                          return NIGHTSHADE_BOW_OWNED && item.available;
+                          return NIGHTSHADE_BOW_OWNED;
                         }
                         return (
                           gameState.resources[
                             item.id as keyof typeof gameState.resources
-                          ] > 0 && item.available
+                          ] > 0
                         );
                       })
                       .map((item) => (
