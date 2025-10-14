@@ -201,6 +201,8 @@ export const getPopulationProductionText = (jobId: string): string => {
   );
 };
 
+import { GameState } from "@shared/schema";
+
 export const getMaxPopulation = (gameState: GameState): number => {
   const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
   const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
