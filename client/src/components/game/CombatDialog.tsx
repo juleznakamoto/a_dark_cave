@@ -451,7 +451,7 @@ export default function CombatDialog({
                               <p>
                                 Total Damage:{" "}
                                 {item.damage +
-                                  Math.floor(getTotalKnowledge(gameState) / 5)}
+                                  Math.floor(getTotalKnowledge(gameState) / 5)} per round for 3 rounds
                               </p>
                               <p>
                                 {item.id === "poison_arrows" 
