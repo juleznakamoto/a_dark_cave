@@ -389,7 +389,46 @@ export const applyActionEffects = (
 
   // Then apply effects
   if (action.effects) {
-    for (const [path, effect] of Object.entries(action.effects)) {
+    let effects = action.effects;
+    
+    // For tiered effects (like trade actions), determine the active tier
+    const effectKeys = Object.keys(effects);
+    const hasTieredEffects = effectKeys.length > 0 && effectKeys.every(key => !isNaN(Number(key)));
+    
+    if (hasTieredEffects) {
+      // Find the active tier based on show_when conditions
+      const showWhenKeys = Object.keys(action.show_when || {});
+      let activeTier = 1;
+      
+      for (const tierKey of showWhenKeys) {
+        const tierConditions = action.show_when[tierKey as any];
+        const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
+          const pathParts = key.split('.');
+          let current: any = state;
+          for (const part of pathParts) {
+            current = current?.[part];
+          }
+          
+          if (key.startsWith("buildings.")) {
+            if (value === 0) {
+              return (current || 0) === 0;
+            } else {
+              return (current || 0) >= value;
+            }
+          }
+          
+          return (current || 0) >= value;
+        });
+        
+        if (tierSatisfied) {
+          activeTier = Number(tierKey);
+        }
+      }
+      
+      effects = effects[activeTier];
+    }
+    
+    for (const [path, effect] of Object.entries(effects)) {
       const pathParts = path.split(".");
       let current: any = updates;
 
