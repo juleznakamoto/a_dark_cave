@@ -234,8 +234,6 @@ export default function BuildingProgressChart() {
         name: seg.label,
         value: seg.maxCount,
         fill: "transparent",
-        // Add key for hover effect
-        key: `${ringIndex}-${index}`,
       }));
 
       // Create progress segments with calculated angles
@@ -356,19 +354,19 @@ export default function BuildingProgressChart() {
                 strokeWidth={0.5}
                 stroke={tailwindToHex("neutral-100/50")}
                 isAnimationActive={false}
-                onMouseEnter={() => setHoveredSegment(ring.foregroundSegments[0].key)}
-                onMouseLeave={() => setHoveredSegment(null)}
               >
                 {ring.foregroundSegments.map((entry, entryIndex) => (
                   <Cell
                     key={`fg-cell-${ringIndex}-${entryIndex}`}
                     fill={entry.fill}
                     stroke={
-                      hoveredSegment === entry.key
+                      hoveredSegment === `${ringIndex}-${entryIndex}`
                         ? tailwindToHex("yellow-500")
                         : undefined
                     }
-                    strokeWidth={hoveredSegment === entry.key ? 1.5 : 0.5}
+                    strokeWidth={hoveredSegment === `${ringIndex}-${entryIndex}` ? 1.5 : 0.5}
+                    onMouseEnter={() => setHoveredSegment(`${ringIndex}-${entryIndex}`)}
+                    onMouseLeave={() => setHoveredSegment(null)}
                   />
                 ))}
               </Pie>
