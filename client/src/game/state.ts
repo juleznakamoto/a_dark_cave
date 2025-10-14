@@ -172,10 +172,6 @@ const defaultGameState: GameState = {
   },
 };
 
-// Initialize population counts
-defaultGameState.current_population = 0;
-defaultGameState.total_population = 0;
-
 // State management utilities
 class StateManager {
   private static updateTimer: NodeJS.Timeout | null = null;
@@ -354,15 +350,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         buildingChanges.palisades !== undefined
       ) {
         setTimeout(() => get().updateBastionStats(), 0);
-      }
-      
-      // Update population when housing buildings change
-      if (
-        buildingChanges.woodenHut !== undefined ||
-        buildingChanges.stoneHut !== undefined ||
-        buildingChanges.longhouse !== undefined
-      ) {
-        setTimeout(() => get().updatePopulation(), 0);
       }
     }
 
@@ -791,13 +778,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
   },
 
-  // Computed getter for current population
+  // Computed getters for population
   get current_population() {
     const state = get();
     return Object.values(state.villagers).reduce(
       (sum, count) => sum + (count || 0),
       0,
     );
+  },
+
+  get total_population() {
+    return getMaxPopulation(get());
   },
 
   setEventDialog: (isOpen: boolean, currentEvent?: LogEntry) => {
