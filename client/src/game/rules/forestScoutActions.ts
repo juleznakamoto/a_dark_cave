@@ -24,7 +24,7 @@ export const forestScoutActions: Record<string, Action> = {
       "relics.blacksmith_hammer": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + (stoneHuts * 0.01); // Base 0.75% + 1% per stone hut
+          let prob = 0.0075 + stoneHuts * 0.01;
           return prob;
         },
         value: true,
@@ -37,7 +37,7 @@ export const forestScoutActions: Record<string, Action> = {
       "relics.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + (stoneHuts * 0.01); // Base 0.5% + 1% per stone hut
+          let prob = 0.005 + stoneHuts * 0.01;
           return prob;
         },
         value: true,
