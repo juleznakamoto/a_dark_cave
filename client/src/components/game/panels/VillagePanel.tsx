@@ -240,7 +240,7 @@ export default function VillagePanel() {
         </span>
         <div className="flex items-center gap-1">
           <Button
-            onClick={() => unassignVillager(jobId as keyof typeof villagers)}
+            onClick={() => unassignVillager(jobId)}
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
@@ -252,7 +252,7 @@ export default function VillagePanel() {
             {currentCount}
           </span>
           <Button
-            onClick={() => assignVillager(jobId as keyof typeof villagers)}
+            onClick={() => assignVillager(jobId)}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
