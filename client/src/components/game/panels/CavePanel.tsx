@@ -106,6 +106,7 @@ export default function CavePanel() {
             { id: "craftMasterBow", label: "Master Bow" },
             { id: "craftArbalest", label: "Arbalest" },
             { id: "craftNightshadeBow", label: "Nightshade Bow" },
+            { id: "craftBloodstoneStaff", label: "Bloodstone Staff" },
           ],
         },
       ],
