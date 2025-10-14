@@ -101,23 +101,18 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
     id: "firstWave",
     condition: (state: GameState) =>
-      state.flags.portalBlasted && state.story.seen.hasBastion && !state.story.seen.firstWave,
+      state.flags.portalBlasted &&
+      state.story.seen.hasBastion &&
+      !state.story.seen.firstWaveVictory,
     triggerType: "resource",
     timeProbability: 4,
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            firstWave: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
@@ -146,23 +141,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   secondWave: {
     id: "secondWave",
     condition: (state: GameState) =>
-      state.story.seen.firstWaveVictory && !state.story.seen.secondWave,
+      state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            secondWave: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
@@ -191,23 +179,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   thirdWave: {
     id: "thirdWave",
     condition: (state: GameState) =>
-      state.story.seen.secondWaveVictory && !state.story.seen.thirdWave,
+      state.story.seen.secondWaveVictory && !state.story.seen.thirdWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            thirdWave: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
@@ -236,23 +217,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fourthWave: {
     id: "fourthWave",
     condition: (state: GameState) =>
-      state.story.seen.thirdWaveVictory && !state.story.seen.fourthWave,
+      state.story.seen.thirdWaveVictory && !state.story.seen.fourthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            fourthWave: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
@@ -281,23 +255,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
-      state.story.seen.fourthWaveVictory && !state.story.seen.fifthWave,
+      state.story.seen.fourthWaveVictory && !state.story.seen.gameCompleted,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            fifthWave: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",

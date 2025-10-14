@@ -294,8 +294,6 @@ export const gameStateSchema = z.object({
   log: z.array(logEntrySchema).default([]),
   current_population: z.number().min(0).default(0),
   total_population: z.number().min(0).default(0),
-  wizardArrives: z.boolean().default(false),
-  wizardDecryptsScrolls: z.boolean().default(false),
   templeDedicated: z.boolean().default(false),
   templeDedicatedTo: z.string().default(""),
   triggeredEvents: z.record(z.boolean()).default({}),

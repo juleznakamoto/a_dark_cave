@@ -67,7 +67,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.02,
     title: "The Alchemist's Discovery",
     message:
-      "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I've created something extraordinary... and terribly dangerous.'",
+      "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust. 'I've created something extraordinary... and terribly dangerous.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -94,7 +94,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "A small old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice that echoes with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
+      "A small old man with a long grey beard, draped in a weathered grey coat, approaches your settlement. His eyes gleam with ancient wisdom and power. 'I am a wizard,' he declares in a voice echoing with arcane authority. 'Build me a tower, and I shall aid you with powers beyond mortal ken.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -122,7 +122,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 1.0,
     title: "The Necromancer's Castle",
     message:
-      "The wizard calls you to his tower, his expression grave. 'I have learned of a castle deep in the wilderness - the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of what dwells in the depths below. These texts may hold the key to understanding and defeating the darkness that threatens us all. The journey will be perilous, but the knowledge is essential.'",
+      "The wizard calls you to his tower: 'I have learned of a castle deep in the wilderness, the former domain of a long-dead necromancer. Within its walls lie ancient scrolls that speak of how we can defeat what dwells in the depths of the cave.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -151,7 +151,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     title: "Ancient Knowledge",
     message:
-      "The wizard emerges from his tower, his eyes blazing with newfound knowledge. 'I have decrypted the ancient scrolls. The creatures in the depths can only be defeated with weapons of extraordinary power - a sword forged from frostglas, and a staff crowned with a bloodstone. Without these, we will not stand a chance against the ancient evil below.' He pauses, then continues with urgency: 'I have found something in these texts - deep in the forest lies a hill grave, burial site of an old king from forgotten times. Among his treasures may be frostglas, the very material we need for the sword. But beware - the grave is protected by deadly traps laid by those who buried him.'",
+    "The wizard steps from his tower, eyes blazing with revelation. 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglas and a staff crowned with bloodstone. Without them, we are doomed.'He lowers his voice. 'Deep in the forest lies the grave of an ancient king. His treasures may hold the frostglas we need. But beware, deadly traps guard his rest.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -186,7 +186,7 @@ export const storyEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "The wizard summons you to his tower. 'You have found the frostglas we need,' he declares, 'but your current blacksmith lacks the tools to forge it properly. We need build a better blacksmith. Only then can we create the Frostglass Sword needed to defeat the darkness below.'",
+      "The wizard spots the frostglas found at the hill grave: 'You have found it,' he says. 'But our blacksmith lacks the tools to shape such a material. We must build a better one, only then can the Frostglas Sword be crafted.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -213,7 +213,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.01,
     title: "The Sunken Temple",
     message:
-      "The wizard returns from a journey into the forest, his robes muddy and worn. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need - it lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest. The journey will be treacherous, but the bloodstone is essential for crafting the staff we need.'",
+      "The wizard returns from a journey into the forest. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need. it lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest. The journey will be treacherous but necessary.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -241,7 +241,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     title: "The Bloodstone Staff",
     message:
-      "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple, his eyes gleaming with satisfaction. 'Excellent work,' he declares. 'With these bloodstones, we now have everything we need. I can craft the Bloodstone Staff - a weapon of immense arcane power that will channel knowledge and strength. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
+      "The wizard examines the bloodstone gems you've retrieved from the Sunken Temple. 'Excellent work,' he declares. 'With these bloodstones, we now have everything we need. Now I can craft the Bloodstone Staff. Together with the Frostglass Sword, we will have the means to face the darkness that lurks below.'",
     triggered: false,
     priority: 5,
     visualEffect: {
