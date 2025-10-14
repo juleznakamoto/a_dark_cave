@@ -109,7 +109,7 @@ export default function CombatDialog({
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
   const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
-  const NIGHTSHADE_BOW_OWNED = gameState.inventory.nightshade_bow > 0; // Assuming inventory holds bow count
+  const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow; // Assuming inventory holds bow count
 
   const emberBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ember_bomb",
@@ -455,7 +455,7 @@ export default function CombatDialog({
                               </p>
                               {item.id === "poison_arrows" ? (
                                 <p className="text-green-600">
-                                  Inflicts 15 poison damage per round for 3 rounds. Once per combat.
+                                  Inflicts {poisonDamageDealt} poison damage per round for 3 rounds.
                                 </p>
                               ) : (
                                 <p>
