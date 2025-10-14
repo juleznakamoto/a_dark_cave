@@ -24,7 +24,7 @@ export default function BuildingProgressChart() {
   const startRadius = 16; // Inner radius of the first ring
   const ringSize = 4; // Thickness of each ring
   const spaceBetweenRings = 5; // Gap between rings
-
+  
   const paddingAngle = 8;
   const backgroundColor = tailwindToHex("neutral-800");
   const startAngle = 90 - paddingAngle / 2;
@@ -228,12 +228,12 @@ export default function BuildingProgressChart() {
       }));
 
       // Create foreground segments (borders only, no fill)
-      const foregroundSegments = segments.map((seg, index) => ({
+      const foregroundSegments = segments.map((seg) => ({
         name: seg.label,
         value: seg.maxCount,
         fill: "transparent",
       }));
-
+      
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -329,7 +329,7 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 0.75 : 0}
+                  strokeWidth={segment.isFull ? 0.5 : 0}
                   stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
                   isAnimationActive={false}
                 >
@@ -349,8 +349,8 @@ export default function BuildingProgressChart() {
                 startAngle={startAngle}
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
-                strokeWidth={0.5}
-                stroke={tailwindToHex("neutral-100/50")}
+                strokeWidth={0.0}
+                stroke={tailwindToHex("neutral-200")}
                 isAnimationActive={false}
               >
               </Pie>

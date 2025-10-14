@@ -209,10 +209,10 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardBloodstone: {
     id: "wizardBloodstone",
     condition: (state: GameState) =>
-      state.weapons.frostglass_sword &&
-      !state.story.seen.wizardBloodstone,
+      state.weapons.frostglass_sword ,
+      // && !state.story.seen.wizardBloodstone,
     triggerType: "resource",
-    timeProbability: 1.0,
+    timeProbability: 0.01,
     title: "The Sunken Temple",
     message:
       "The wizard returns from a journey into the forest, his robes muddy and worn. 'I have consulted with an old friend, a hermit wizard who dwells deep in the woods,' he says gravely. 'He spoke of the bloodstone we need - it lies within the Sunken Temple, an ancient shrine now half-drowned in the swamps of the forest. The journey will be treacherous, but the bloodstone is essential for crafting the staff we need.'",
