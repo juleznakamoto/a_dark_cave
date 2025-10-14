@@ -1,4 +1,4 @@
-import { GameState } from "@shared/schema";
+import { GameState, gameStateSchema } from "@shared/schema";
 import { getMaxPopulation } from "./population";
 
 export function updateResource(
