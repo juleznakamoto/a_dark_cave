@@ -61,26 +61,6 @@
   --spacing: 0.25rem;
 } */
 
-@layer components {
-  .rainbow-button {
-    background: linear-gradient(90deg, hsl(var(--color-1)) 0%, hsl(var(--color-2)) 25%, hsl(var(--color-4)) 50%, hsl(var(--color-5)) 75%, hsl(var(--color-3)) 100%);
-    background-size: 200% 200%;
-    animation: rainbow-animation 5s ease infinite;
-  }
-
-  @keyframes rainbow-animation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-}
-
 .dark {
   --background: hsl(0, 0%, 5%);
   --foreground: hsl(0, 6.6667%, 91.1765%);
@@ -126,12 +106,6 @@
   --shadow-lg: 0px 2px 0px 0px hsl(0, 89.1213%, 53.1373%, 0.00), 0px 4px 6px -1px hsl(0, 89.1213%, 53.1373%, 0.00);
   --shadow-xl: 0px 2px 0px 0px hsl(0, 89.1213%, 53.1373%, 0.00), 0px 8px 10px -1px hsl(0, 89.1213%, 53.1373%, 0.00);
   --shadow-2xl: 0px 2px 0px 0px hsl(0, 89.1213%, 53.1373%, 0.00);
-  /* Rainbow color variables */
-  --color-1: 0 100% 63%;
-  --color-2: 270 100% 63%;
-  --color-3: 210 100% 63%;
-  --color-4: 195 100% 63%;
-  --color-5: 90 100% 63%;
 }
 
 @layer base {
@@ -360,7 +334,7 @@ div.stone-axe-pulse {
 /* Log entry visual effects */
 @keyframes log-glow {
   0%, 100% {
-    text-shadow: 0 0 2px rgb(255, 255, 255, 0.6), 0 0 4px rgba(254, 57, 57, 0.4);
+    text-shadow: 0 0 2px rgb(255, 255, 255, 0.6), 0 0 4px rgb(254, 57, 57, 0.4);
   }
   50% {
     text-shadow: 0 0 10px rgb(255, 255, 255, 0.8), 0 0 12px rgba(254, 57, 57, 0.6);
