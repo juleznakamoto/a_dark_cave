@@ -175,23 +175,6 @@ export const caveCraftWeapons: Record<string, Action> = {
     cooldown: 30,
   },
 
-  craftFrostglassSword: {
-    id: "craftFrostglassSword",
-    label: "Frostglass Sword",
-    show_when: {
-      "buildings.grandBlacksmith": 1,
-      "weapons.frostglass_sword": false,
-    },
-    cost: {
-      "resources.frostglas": 50,
-    },
-    effects: {
-      "weapons.frostglass_sword": true,
-      "story.seen.hasFrostglassSword": true,
-    },
-    cooldown: 60,
-  },
-
   craftArbalest: {
     id: "craftArbalest",
     label: "Arbalest",
@@ -229,11 +212,27 @@ export const caveCraftWeapons: Record<string, Action> = {
     cooldown: 45,
   },
 
+  craftFrostglassSword: {
+    id: "craftFrostglassSword",
+    label: "Frostglass Sword",
+    show_when: {
+      "buildings.grandBlacksmith": 1,
+      "weapons.frostglass_sword": false,
+    },
+    cost: {
+      "resources.frostglas": 50,
+    },
+    effects: {
+      "weapons.frostglass_sword": true,
+      "story.seen.hasFrostglassSword": true,
+    },
+    cooldown: 60,
+  },
+  
   craftBloodstoneStaff: {
     id: "craftBloodstoneStaff",
     label: "Bloodstone Staff",
     show_when: {
-      "buildings.wizardTower": 1,
       "story.seen.wizardBloodstoneStaff": true,
       "weapons.bloodstone_staff": false,
     },

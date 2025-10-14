@@ -481,7 +481,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "frostfang",
     name: "Frostfang",
     description:
-      "Sword forged from frostglas, cold as the void between stars.",
+      "Sword forged from frostglas, cold as the void between stars",
     bonuses: {
       generalBonuses: {
         strength: 8,
@@ -494,12 +494,12 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
-    description: "Ancient golden crown radiating with mysterious power.",
+    description: "Ancient golden crown radiating with mysterious power",
     bonuses: {
       generalBonuses: {
         luck: 5,
         knowledge: 3,
-        madness: 2,
+        madness: 3,
       },
       actionBonuses: {},
     },
@@ -587,7 +587,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 2,
         knowledge: 4,
-        madness: 2,
+        madness: 3,
       },
     },
   },
@@ -687,7 +687,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 5,
-        madness: 3,
+        madness: 4,
       },
     },
   },
@@ -807,7 +807,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 8,
-        madness: 5,
+        madness: 6,
       },
     },
   },
@@ -820,7 +820,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 7,
-        madness: 3,
+        madness: 4,
       },
     },
   },
