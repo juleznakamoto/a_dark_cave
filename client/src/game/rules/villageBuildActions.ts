@@ -1,6 +1,5 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
-import { applyActionEffects } from "./index";
 
 export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
