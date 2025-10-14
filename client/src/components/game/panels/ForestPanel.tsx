@@ -47,6 +47,36 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith('trade');
 
+    // Get dynamic label for trade buttons based on the amount
+    let displayLabel = label;
+    if (isTradeButton && action.effects) {
+      // Determine which tier is active
+      const tier1ShowConditions = action.show_when?.[1];
+      const tier2ShowConditions = action.show_when?.[2];
+      
+      let activeTier = 1;
+      if (tier2ShowConditions) {
+        const tier2Keys = Object.keys(tier2ShowConditions);
+        const tier2Satisfied = tier2Keys.every(key => {
+          const [category, prop] = key.split('.');
+          const value = tier2ShowConditions[key];
+          return state[category as keyof typeof state]?.[prop as any] >= value;
+        });
+        if (tier2Satisfied) {
+          activeTier = 2;
+        }
+      }
+
+      // Get the effect amount for the active tier
+      const effects = action.effects[activeTier];
+      if (effects) {
+        const resourceKey = Object.keys(effects)[0];
+        const amount = effects[resourceKey];
+        const resourceName = resourceKey.split('.')[1];
+        displayLabel = `Buy ${amount} ${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)}`;
+      }
+    }
+
     if (showCost) {
       return (
         <HoverCard key={actionId}>
@@ -61,7 +91,7 @@ export default function ForestPanel() {
                 variant="outline"
                 className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
               >
-                {label}
+                {displayLabel}
               </CooldownButton>
             </div>
           </HoverCardTrigger>
@@ -92,7 +122,7 @@ export default function ForestPanel() {
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
       >
-        {label}
+        {displayLabel}
       </CooldownButton>
     );
   };
