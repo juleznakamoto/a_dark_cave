@@ -361,10 +361,10 @@ export default function BuildingProgressChart() {
                     fill={entry.fill}
                     stroke={
                       hoveredSegment === `${ringIndex}-${entryIndex}`
-                        ? tailwindToHex("yellow-500")
+                        ? tailwindToHex("neutral-100")
                         : undefined
                     }
-                    strokeWidth={hoveredSegment === `${ringIndex}-${entryIndex}` ? 1.5 : 0.5}
+                    strokeWidth={hoveredSegment === `${ringIndex}-${entryIndex}` ? 1 : 0.5}
                     onMouseEnter={() => setHoveredSegment(`${ringIndex}-${entryIndex}`)}
                     onMouseLeave={() => setHoveredSegment(null)}
                   />
