@@ -203,6 +203,10 @@ export default function SidePanel() {
       if (["bastion", "watchtower", "palisades"].includes(key)) {
         return false;
       }
+      // Hide blacksmith when Grand Blacksmith is built
+      if (key === "blacksmith" && buildings.grandBlacksmith > 0) {
+        return false;
+      }
       return (value ?? 0) > 0;
     })
     .map(([key, value]) => {
