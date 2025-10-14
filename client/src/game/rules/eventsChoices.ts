@@ -784,7 +784,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story.seen.vikingBuilderEvent &&
       state.resources.gold >= 250,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 15,
     title: "The Viking Builder",
     message:
       "One day, a strong man wearing thick furs stands at the gates and asks to enter. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",

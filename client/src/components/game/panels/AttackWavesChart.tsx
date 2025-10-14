@@ -18,7 +18,7 @@ export default function AttackWavesChart() {
   const totalWaves = 5;
 
   // Calculate progress percentage
-  const progressPercentage = ((currentWave - 1) / totalWaves) * 100;
+  const progressPercentage = ((currentWave ) / totalWaves) * 100;
 
   // Only show if bastion exists
   const shouldShowChart = story?.seen?.hasBastion || false;
@@ -32,7 +32,7 @@ export default function AttackWavesChart() {
       <div className="flex justify-between items-center">
         <h3 className="text-xs font-bold text-foreground">Attack Waves</h3>
         <span className="text-xs text-muted-foreground">
-          Wave {currentWave} / {totalWaves}
+          Current Wave: {currentWave} / {totalWaves}
         </span>
       </div>
       <Progress 

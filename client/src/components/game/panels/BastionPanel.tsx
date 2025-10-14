@@ -1,5 +1,5 @@
 import { useGameStore } from '@/game/state';
-import { gameActions, getCostText } from '@/game/rules';
+import { gameActions } from '@/game/rules';
 import { Button } from '@/components/ui/button';
 import {
   HoverCard,

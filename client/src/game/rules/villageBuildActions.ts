@@ -1130,10 +1130,6 @@ export function handleBuildWoodenHut(
       timestamp: Date.now(),
       type: "system",
     });
-
-    result.delayedEffects!.push(() => {
-      // Stranger approaches logic will be handled by the caller
-    });
   }
 
   // Add village growth message when 10th wooden hut is built
