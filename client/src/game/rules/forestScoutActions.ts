@@ -69,7 +69,7 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    cooldown: 60,
+    cooldown: 45,
   },
 
   hillGrave: {
@@ -83,7 +83,7 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {},
-    cooldown: 60,
+    cooldown: 45,
   },
 
   sunkenTemple: {
@@ -99,7 +99,7 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "events.wizardSaysBloodstoneStaff": true,
     },
-    cooldown: 60,
+    cooldown: 45,
   },
 };
 
