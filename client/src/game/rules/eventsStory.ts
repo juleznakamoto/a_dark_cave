@@ -64,7 +64,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.buildings.alchemistHall >= 1 &&
       !state.story.seen.alchemistArrives,
     triggerType: "time",
-    timeProbability: 2,
+    timeProbability: 0.2,
     title: "The Alchemist's Discovery",
     message:
       "The alchemist emerges from his hall: 'I have been conducting experiments day and night,' he mutters, holding a vial of shimmering dust that pulses like a dying star. 'I've created something extraordinary... and terribly dangerous.'",
