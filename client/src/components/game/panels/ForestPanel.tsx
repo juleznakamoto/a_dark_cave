@@ -28,16 +28,28 @@ export default function ForestPanel() {
     {
       title: 'Trade',
       actions: [
-        { id: 'tradeGoldForWood', label: 'Buy 500 Wood' },
-        { id: 'tradeGoldForStone', label: 'Buy 500 Stone' },
-        { id: 'tradeGoldForSteel', label: 'Buy 100 Steel' },
-        { id: 'tradeGoldForObsidian', label: 'Buy 50 Obsidian' },
-        { id: 'tradeGoldForAdamant', label: 'Buy 50 Adamant' },
-        { id: 'tradeGoldForTorch', label: 'Buy 50 Torch' },
-        { id: 'tradeSilverForGold', label: 'Buy 50 Gold' },
+        { id: 'tradeGoldForWood', label: 'Buy Wood' },
+        { id: 'tradeGoldForStone', label: 'Buy Stone' },
+        { id: 'tradeGoldForSteel', label: 'Buy Steel' },
+        { id: 'tradeGoldForObsidian', label: 'Buy Obsidian' },
+        { id: 'tradeGoldForAdamant', label: 'Buy Adamant' },
+        { id: 'tradeGoldForTorch', label: 'Buy Torch' },
+        { id: 'tradeSilverForGold', label: 'Buy Gold' },
       ]
     },
   ];
+
+  // Debug: Check trade action visibility
+  if (import.meta.env.DEV) {
+    const tradePostCount = buildings.tradePost || 0;
+    const merchantsGuildCount = buildings.merchantsGuild || 0;
+    const firstTradeActionVisible = shouldShowAction('tradeGoldForWood', state);
+    console.log('[ForestPanel] Trade visibility:', {
+      tradePost: tradePostCount,
+      merchantsGuild: merchantsGuildCount,
+      tradeGoldForWoodVisible: firstTradeActionVisible
+    });
+  }
 
   const renderButton = (actionId: string, label: string) => {
     const action = gameActions[actionId];
@@ -50,17 +62,15 @@ export default function ForestPanel() {
     // Get dynamic label for trade buttons based on the amount
     let displayLabel = label;
     if (isTradeButton && action.effects) {
-      // Determine which tier is active
-      const tier1ShowConditions = action.show_when?.[1];
-      const tier2ShowConditions = action.show_when?.[2];
-      
+      // Determine which tier is active based on show_when conditions
       let activeTier = 1;
-      if (tier2ShowConditions) {
-        const tier2Keys = Object.keys(tier2ShowConditions);
-        const tier2Satisfied = tier2Keys.every(key => {
+      
+      // Check tier 2 first (Merchants Guild)
+      if (action.show_when?.[2]) {
+        const tier2Conditions = action.show_when[2];
+        const tier2Satisfied = Object.entries(tier2Conditions).every(([key, value]) => {
           const [category, prop] = key.split('.');
-          const value = tier2ShowConditions[key];
-          return state[category as keyof typeof state]?.[prop as any] >= value;
+          return (state[category as keyof typeof state]?.[prop as any] || 0) >= value;
         });
         if (tier2Satisfied) {
           activeTier = 2;
