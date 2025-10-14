@@ -60,7 +60,7 @@ export const storyEvents: Record<string, GameEvent> = {
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>
-      state.events.firstWaveDefeated &&
+      state.story.seen.firstWaveVictory &&
       state.buildings.alchemistHall >= 1 &&
       !state.story.seen.alchemistArrives,
     triggerType: "time",
