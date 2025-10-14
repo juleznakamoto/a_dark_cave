@@ -1,3 +1,4 @@
+import React from "react";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -19,12 +20,13 @@ interface RingConfig {
 
 export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
+  const [hoveredSegment, setHoveredSegment] = React.useState<string | null>(null);
 
   // Ring sizing parameters
   const startRadius = 16; // Inner radius of the first ring
   const ringSize = 4; // Thickness of each ring
   const spaceBetweenRings = 5; // Gap between rings
-  
+
   const paddingAngle = 8;
   const backgroundColor = tailwindToHex("neutral-800");
   const startAngle = 90 - paddingAngle / 2;
@@ -228,12 +230,14 @@ export default function BuildingProgressChart() {
       }));
 
       // Create foreground segments (borders only, no fill)
-      const foregroundSegments = segments.map((seg) => ({
+      const foregroundSegments = segments.map((seg, index) => ({
         name: seg.label,
         value: seg.maxCount,
         fill: "transparent",
+        // Add key for hover effect
+        key: `${ringIndex}-${index}`,
       }));
-      
+
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -352,7 +356,21 @@ export default function BuildingProgressChart() {
                 strokeWidth={0.5}
                 stroke={tailwindToHex("neutral-100/50")}
                 isAnimationActive={false}
+                onMouseEnter={() => setHoveredSegment(ring.foregroundSegments[0].key)}
+                onMouseLeave={() => setHoveredSegment(null)}
               >
+                {ring.foregroundSegments.map((entry, entryIndex) => (
+                  <Cell
+                    key={`fg-cell-${ringIndex}-${entryIndex}`}
+                    fill={entry.fill}
+                    stroke={
+                      hoveredSegment === entry.key
+                        ? tailwindToHex("yellow-500")
+                        : undefined
+                    }
+                    strokeWidth={hoveredSegment === entry.key ? 1.5 : 0.5}
+                  />
+                ))}
               </Pie>
             </>
           ))}
