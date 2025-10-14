@@ -1,24 +1,24 @@
-import GameTabs from './GameTabs';
-import GameFooter from './GameFooter';
-import CavePanel from './panels/CavePanel';
-import VillagePanel from './panels/VillagePanel';
-import ForestPanel from './panels/ForestPanel';
-import BastionPanel from './panels/BastionPanel'; // Import BastionPanel
-import LogPanel from './panels/LogPanel';
-import StartScreen from './StartScreen';
-import { useGameStore } from '@/game/state';
+import GameTabs from "./GameTabs";
+import GameFooter from "./GameFooter";
+import CavePanel from "./panels/CavePanel";
+import VillagePanel from "./panels/VillagePanel";
+import ForestPanel from "./panels/ForestPanel";
+import BastionPanel from "./panels/BastionPanel"; // Import BastionPanel
+import LogPanel from "./panels/LogPanel";
+import StartScreen from "./StartScreen";
+import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
-import { useState, useEffect, useMemo } from 'react';
-import { LimelightNav, NavItem } from '@/components/ui/limelight-nav';
-import { Mountain, Home, Trees, Shield } from 'lucide-react';
+import { useState, useEffect, useMemo } from "react";
+import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
+import { Mountain, Trees, Castle, Landmark  } from "lucide-react";
 
 export default function GameContainer() {
-  const { 
-    activeTab, 
+  const {
+    activeTab,
     flags,
     buildings,
-    resources,
+    relics,
     eventDialog,
     combatDialog,
     setActiveTab,
@@ -34,16 +34,15 @@ export default function GameContainer() {
     const newlyUnlocked: string[] = [];
 
     if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
-      newlyUnlocked.push('village');
+      newlyUnlocked.push("village");
     }
     if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
-      newlyUnlocked.push('forest');
+      newlyUnlocked.push("forest");
     }
     // Check for Bastion unlock condition
     if (flags.bastionUnlocked && !previousFlags.bastionUnlocked) {
-      newlyUnlocked.push('bastion');
+      newlyUnlocked.push("bastion");
     }
-
 
     if (newlyUnlocked.length > 0) {
       setAnimatingTabs(new Set(newlyUnlocked));
@@ -58,48 +57,53 @@ export default function GameContainer() {
   }, [flags, previousFlags]);
 
   // Determine whether to use LimelightNav (always call this hook)
-  const useLimelightNav = resources.wood >= 4466250;
+  const useLimelightNav = relics.odd_bracelet;
 
   // Build nav items (always call this hook)
   const limelightNavItems = useMemo(() => {
     const tabs: NavItem[] = [
       {
-        id: 'cave',
+        id: "cave",
         icon: <Mountain />,
-        label: 'The Cave',
-        onClick: () => setActiveTab('cave')
-      }
+        label: "The Cave",
+        onClick: () => setActiveTab("cave"),
+      },
     ];
 
     if (flags.villageUnlocked) {
       tabs.push({
-        id: 'village',
-        icon: <Home />,
+        id: "village",
+        icon: <Landmark  />,
         label: buildings.stoneHut >= 5 ? "The City" : "The Village",
-        onClick: () => setActiveTab('village')
+        onClick: () => setActiveTab("village"),
       });
     }
 
     if (flags.forestUnlocked) {
       tabs.push({
-        id: 'forest',
+        id: "forest",
         icon: <Trees />,
-        label: 'The Forest',
-        onClick: () => setActiveTab('forest')
+        label: "The Forest",
+        onClick: () => setActiveTab("forest"),
       });
     }
 
     if (flags.bastionUnlocked) {
       tabs.push({
-        id: 'bastion',
-        icon: <Shield />,
-        label: 'The Bastion',
-        onClick: () => setActiveTab('bastion')
+        id: "bastion",
+        icon: <Castle />,
+        label: "The Bastion",
+        onClick: () => setActiveTab("bastion"),
       });
     }
 
     return tabs;
-  }, [flags.villageUnlocked, flags.forestUnlocked, flags.bastionUnlocked, buildings.stoneHut]);
+  }, [
+    flags.villageUnlocked,
+    flags.forestUnlocked,
+    flags.bastionUnlocked,
+    buildings.stoneHut,
+  ]);
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
@@ -113,7 +117,6 @@ export default function GameContainer() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-
       <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
         <div className="w-full mb-6">
@@ -132,21 +135,21 @@ export default function GameContainer() {
             {/* Horizontal Game Tabs - Switch design based on wooden huts */}
             <nav className="border-t border-border pl-6 mb-4 pt-4">
               {useLimelightNav ? (
-                // New LimelightNav design (5+ wooden huts)
+                // New LimelightNav design
                 <LimelightNav
                   items={limelightNavItems}
                   defaultActiveIndex={0}
                   onTabChange={(index) => {
-                    const tabIds = ['cave'];
-                    if (flags.villageUnlocked) tabIds.push('village');
-                    if (flags.forestUnlocked) tabIds.push('forest');
-                    if (flags.bastionUnlocked) tabIds.push('bastion');
+                    const tabIds = ["cave"];
+                    if (flags.villageUnlocked) tabIds.push("village");
+                    if (flags.forestUnlocked) tabIds.push("forest");
+                    if (flags.bastionUnlocked) tabIds.push("bastion");
                     setActiveTab(tabIds[index] as any);
                   }}
                   className="bg-transparent border-0"
                 />
               ) : (
-                // Old simple button design (less than 5 wooden huts)
+                // Old simple button design
                 <div className="flex space-x-4">
                   <button
                     className={`py-2 text-sm bg-transparent ${
@@ -162,7 +165,7 @@ export default function GameContainer() {
                     <button
                       className={`py-2 text-sm bg-transparent ${
                         activeTab === "village" ? "font-bold " : ""
-                      } ${animatingTabs.has('village') ? 'tab-fade-in' : ''}`}
+                      } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("village")}
                       data-testid="tab-village"
                     >
@@ -174,7 +177,7 @@ export default function GameContainer() {
                     <button
                       className={`py-2 text-sm bg-transparent ${
                         activeTab === "forest" ? "font-bold " : ""
-                      } ${animatingTabs.has('forest') ? 'tab-fade-in' : ''}`}
+                      } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("forest")}
                       data-testid="tab-forest"
                     >
@@ -186,7 +189,7 @@ export default function GameContainer() {
                     <button
                       className={` py-2 text-sm bg-transparent ${
                         activeTab === "bastion" ? "font-bold " : ""
-                      } ${animatingTabs.has('bastion') ? 'tab-fade-in' : ''}`}
+                      } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("bastion")}
                       data-testid="tab-bastion"
                     >
@@ -199,10 +202,11 @@ export default function GameContainer() {
 
             {/* Action Panels */}
             <div className="flex-1 overflow-y-auto pl-6">
-              {activeTab === 'cave' && <CavePanel />}
-              {activeTab === 'village' && <VillagePanel />}
-              {activeTab === 'forest' && <ForestPanel />}
-              {activeTab === 'bastion' && <BastionPanel />} {/* Render BastionPanel */}
+              {activeTab === "cave" && <CavePanel />}
+              {activeTab === "village" && <VillagePanel />}
+              {activeTab === "forest" && <ForestPanel />}
+              {activeTab === "bastion" && <BastionPanel />}{" "}
+              {/* Render BastionPanel */}
             </div>
           </section>
         </div>

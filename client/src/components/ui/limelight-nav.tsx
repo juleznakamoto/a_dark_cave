@@ -119,7 +119,7 @@ export const LimelightNav = ({
 
   return (
     <nav
-      className={`relative inline-flex items-center h-16 rounded-lg bg-card text-foreground border px-2 ${className}`}
+      className={`relative inline-flex items-center h-12Z rounded-lg bg-card text-foreground border px-2 ${className}`}
     >
       {items.map(({ id, icon, label, onClick }, index) => (
         <a
@@ -130,7 +130,7 @@ export const LimelightNav = ({
           aria-label={label}
         >
           {cloneElement(icon, {
-            className: `w-6 h-6 transition-opacity duration-100 ease-in-out ${
+            className: `w-5 h-5 transition-opacity duration-100 ease-in-out ${
               activeIndex === index ? "opacity-100" : "opacity-40"
             } ${icon.props.className || ""} ${iconClassName || ""}`,
           })}
@@ -139,12 +139,12 @@ export const LimelightNav = ({
 
       <div
         ref={limelightRef}
-        className={`absolute top-0 z-10 w-11 h-[5px] rounded-full bg-primary shadow-[0_50px_15px_var(--primary)] ${
+        className={`absolute top-0 z-10 w-12 h-[2px] rounded-full bg-gray-200 shadow-[0_42px_20px_#f59e0b] ${
           isReady ? "transition-[left] duration-400 ease-in-out" : ""
         } ${limelightClassName}`}
         style={{ left: "-999px" }}
       >
-        <div className="absolute left-[-30%] top-[5px] w-[160%] h-14 [clip-path:polygon(5%_100%,25%_0,75%_0,95%_100%)] bg-gradient-to-b from-primary/30 to-transparent pointer-events-none" />
+        <div className="absolute left-[-30%] top-[2px] w-[160%] h-14 [clip-path:polygon(5%_100%,25%_0,75%_0,95%_100%)] bg-gradient-to-b from-gray-800/75 to-transparent pointer-events-none" />
       </div>
     </nav>
   );
