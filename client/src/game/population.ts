@@ -216,7 +216,8 @@ export const getMaxPopulation = (gameState: GameState): number => {
     templeBonus = 8;
   }
   
-  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
+  return 22
+    //woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
 };
 
 // Alias for backward compatibility
