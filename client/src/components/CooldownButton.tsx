@@ -1,61 +1,66 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { useCooldown } from "@/hooks/useCooldown";
-import { type VariantProps } from "class-variance-authority";
-import { buttonVariants } from "@/components/ui/button";
-import { useGameState } from "@/game/state";
+import { useGameStore } from "@/game/state";
 
-type ButtonVariant = VariantProps<typeof buttonVariants>["variant"];
-type ButtonSize = VariantProps<typeof buttonVariants>["size"];
-
-interface CooldownButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  actionId: string;
-  cooldownDuration: number;
-  variant?: ButtonVariant;
-  size?: ButtonSize;
-  showVisualCooldown?: boolean;
-  testId?: string;
+interface CooldownButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
+  cooldownMs: number;
+  disabled?: boolean;
+  className?: string;
+  variant?:
+    | "default"
+    | "destructive"
+    | "outline"
+    | "secondary"
+    | "ghost"
+    | "link";
+  size?: "default" | "sm" | "xs" | "lg" | "icon";
+  "data-testid"?: string;
 }
 
-export function CooldownButton({
-  actionId,
-  cooldownDuration,
+export default function CooldownButton({
+  children,
+  onClick,
+  cooldownMs,
+  disabled = false,
+  className = "",
   variant = "default",
   size = "default",
-  showVisualCooldown = true,
-  className = "",
-  children,
-  disabled,
-  onClick,
-  testId,
+  "data-testid": testId,
   ...props
 }: CooldownButtonProps) {
-  const { state } = useGameState();
-  const { isOnCooldown, progress, startCooldown } = useCooldown(
-    actionId,
-    cooldownDuration
-  );
+  const { cooldowns } = useGameStore();
 
-  const isButtonDisabled = disabled || isOnCooldown;
-  const showCooldownVisual = showVisualCooldown && isOnCooldown;
+  // Get the action ID from the test ID or generate one
+  const actionId =
+    testId
+      ?.replace("button-", "")
+      .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
-  // Use rainbow variant if odd_bracelet relic is owned, otherwise use provided variant
-  const effectiveVariant = state.relics.odd_bracelet ? "rainbow" : variant;
+  // Get current cooldown from game state
+  const currentCooldown = cooldowns[actionId] || 0;
+  const isCoolingDown = currentCooldown > 0;
+  const progress = isCoolingDown
+    ? 1 - currentCooldown / (cooldownMs / 1000)
+    : 1;
 
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (!isButtonDisabled && onClick) {
-      startCooldown();
-      onClick(e);
-    }
+  const handleClick = () => {
+    if (isCoolingDown || disabled) return;
+
+    // Execute the action - action handler will set cooldown with dev mode adjustments
+    onClick();
   };
+
+  const isButtonDisabled = disabled || isCoolingDown;
+  const showCooldownVisual = isCoolingDown;
 
   return (
     <div className="relative inline-block">
       <Button
         onClick={handleClick}
         disabled={isButtonDisabled}
-        variant={effectiveVariant}
+        variant={variant}
         size={size}
         className={`relative overflow-hidden transition-all duration-200 select-none ${
           showCooldownVisual ? "opacity-60 cursor-not-allowed" : ""
