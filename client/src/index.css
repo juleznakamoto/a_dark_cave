@@ -61,14 +61,6 @@
   --spacing: 0.25rem;
 } */
 
-:root {
-  --color-1: 0 100% 63%;
-  --color-2: 270 100% 63%;
-  --color-3: 210 100% 63%;
-  --color-4: 195 100% 63%;
-  --color-5: 90 100% 63%;
-}
-
 .dark {
   --background: hsl(0, 0%, 5%);
   --foreground: hsl(0, 6.6667%, 91.1765%);

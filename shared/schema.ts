@@ -162,7 +162,6 @@ export const gameStateSchema = z.object({
       occultist_grimoire: z.boolean().default(false),
       ring_of_drowned: z.boolean().default(false),
       shadow_flute: z.boolean().default(false),
-      odd_bracelet: z.boolean().default(false),
     })
     .default({}),
   blessings: z
