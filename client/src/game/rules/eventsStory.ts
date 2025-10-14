@@ -90,8 +90,7 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardArrives: {
     id: "wizardArrives",
     condition: (state: GameState) =>
-      state.buildings.bastion >= 1 &&
-      !state.story.seen.wizardArrives,
+      state.buildings.bastion >= 1 && !state.story.seen.wizardArrives,
     triggerType: "resource",
     timeProbability: 0.5,
     message:
@@ -209,8 +208,7 @@ export const storyEvents: Record<string, GameEvent> = {
   wizardBloodstone: {
     id: "wizardBloodstone",
     condition: (state: GameState) =>
-      state.weapons.frostglass_sword ,
-      // && !state.story.seen.wizardBloodstone,
+      state.weapons.frostglass_sword && !state.story.seen.wizardBloodstone,
     triggerType: "resource",
     timeProbability: 0.01,
     title: "The Sunken Temple",

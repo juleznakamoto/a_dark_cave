@@ -91,7 +91,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Sunken Temple",
     show_when: {
       "story.seen.wizardBloodstone": true,
-      "!story.seen.sunkenTempleExplored": true,
+      // "!story.seen.sunkenTempleExplored": true,
     },
     cost: {
       "resources.food": 5000,
