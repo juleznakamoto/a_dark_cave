@@ -36,19 +36,19 @@ export default function BuildingProgressChart() {
       {
         buildingType: "woodenHut",
         maxCount: 10,
-        color: tailwindToHex("slate-500"),
+        color: tailwindToHex("zinc-500"),
         label: "Wooden Huts",
       },
       {
         buildingType: "stoneHut",
         maxCount: 10,
-        color: tailwindToHex("slate-500"),
+        color: tailwindToHex("zinc-500"),
         label: "Stone Huts",
       },
       {
         buildingType: "longhouse",
         maxCount: 2,
-        color: tailwindToHex("slate-500"),
+        color: tailwindToHex("zinc-500"),
         label: "Longhouses",
       },
     ],
@@ -57,40 +57,40 @@ export default function BuildingProgressChart() {
       {
         buildingType: "cabin",
         maxCount: 2,
-        color: tailwindToHex("slate-600"),
+        color: tailwindToHex("zinc-600"),
         label: "Cabin",
         relatedBuildings: ["greatCabin"],
       },
       {
         buildingType: "blacksmith",
         maxCount: 2,
-        color: tailwindToHex("slate-700"),
+        color: tailwindToHex("zinc-600"),
         label: "Blacksmith",
         relatedBuildings: ["grandBlacksmith"],
       },
       {
         buildingType: "foundry",
         maxCount: 1,
-        color: tailwindToHex("slate-600"),
+        color: tailwindToHex("zinc-600"),
         label: "Foundry",
       },
       {
         buildingType: "tannery",
         maxCount: 1,
-        color: tailwindToHex("slate-600"),
+        color: tailwindToHex("zinc-600"),
         label: "Tannery",
       },
       {
         buildingType: "tradePost",
         maxCount: 2,
-        color: tailwindToHex("slate-600"),
+        color: tailwindToHex("zinc-600"),
         label: "Trade",
         relatedBuildings: ["merchantsGuild"],
       },
       {
         buildingType: "clerksHut",
         maxCount: 2,
-        color: tailwindToHex("slate-600"),
+        color: tailwindToHex("zinc-600"),
         label: "Knowledge",
         relatedBuildings: ["scriptorium"],
       },
@@ -100,19 +100,19 @@ export default function BuildingProgressChart() {
       {
         buildingType: "timberMill",
         maxCount: 1,
-        color: tailwindToHex("slate-700"),
+        color: tailwindToHex("zinc-700"),
         label: "Timber Mill",
       },
       {
         buildingType: "quarry",
         maxCount: 1,
-        color: tailwindToHex("slate-700"),
+        color: tailwindToHex("zinc-700"),
         label: "Quarry",
       },
       {
         buildingType: "shallowPit",
         maxCount: 4,
-        color: tailwindToHex("slate-700"),
+        color: tailwindToHex("zinc-700"),
         label: "Pits",
         relatedBuildings: ["deepeningPit", "deepPit", "bottomlessPit"],
       },
@@ -122,20 +122,20 @@ export default function BuildingProgressChart() {
       {
         buildingType: "altar",
         maxCount: 4,
-        color: tailwindToHex("slate-800"),
+        color: tailwindToHex("zinc-800"),
         label: "Religious",
         relatedBuildings: ["shrine", "temple", "sanctum"],
       },
       {
         buildingType: "alchemistHall",
         maxCount: 1,
-        color: tailwindToHex("slate-800"),
+        color: tailwindToHex("zinc-800"),
         label: "Alchemist's Hall",
       },
       {
         buildingType: "wizardTower",
         maxCount: 1,
-        color: tailwindToHex("slate-800"),
+        color: tailwindToHex("zinc-800"),
         label: "Wizard Tower",
       },
     ],
@@ -144,19 +144,19 @@ export default function BuildingProgressChart() {
       {
         buildingType: "bastion",
         maxCount: 1,
-        color: tailwindToHex("slate-900"),
+        color: tailwindToHex("zinc-900"),
         label: "Bastion",
       },
       {
         buildingType: "palisades",
         maxCount: 4,
-        color: tailwindToHex("slate-900"),
+        color: tailwindToHex("zinc-900"),
         label: "Palisades",
       },
       {
         buildingType: "watchtower",
         maxCount: 4,
-        color: tailwindToHex("slate-900"),
+        color: tailwindToHex("zinc-900"),
         label: "Watchtower",
       },
     ],
@@ -350,7 +350,7 @@ export default function BuildingProgressChart() {
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
                 strokeWidth={0.25}
-                stroke={tailwindToHex("neutral-300")}
+                stroke={tailwindToHex("neutral-100/50")}
                 isAnimationActive={false}
               >
               </Pie>

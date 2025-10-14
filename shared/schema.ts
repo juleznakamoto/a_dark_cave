@@ -105,6 +105,7 @@ export const gameStateSchema = z.object({
       giant_trap: z.boolean().default(false),
       seeker_pack: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
+      mastermason_chisel: z.boolean().default(false)
     })
     .default({}),
   weapons: z
@@ -158,6 +159,9 @@ export const gameStateSchema = z.object({
       ravens_orb: z.boolean().default(false),
       murmuring_cube: z.boolean().default(false),
       black_bear_fur: z.boolean().default(false),
+      occultist_grimoire: z.boolean().default(false),
+      ring_of_drowned: z.boolean().default(false),
+      shadow_flute: z.boolean().default(false),
     })
     .default({}),
   blessings: z

@@ -68,22 +68,25 @@ export default function SidePanel() {
     .filter(([key, value]) => {
       // Filter out weapons
       if (Object.keys(gameState.weapons).includes(key)) return false;
-      
+
       // Filter out reinforced_rope after low chamber is explored
-      if (key === 'reinforced_rope' && gameState.story.seen?.lowChamberExplored) {
+      if (key === "reinforced_rope" && gameState.tools.mastermason_chisel) {
         return false;
       }
-      
+
       // Filter out giant_trap after laying trap
-      if (key === 'giant_trap' && gameState.story.seen?.actionLayTrap) {
+      if (key === "giant_trap" && gameState.relics.black_bear_fur) {
         return false;
       }
-      
+
       // Filter out occultist_map after exploring occultist chamber
-      if (key === 'occultist_map' && gameState.story.seen?.occultistChamberExplored) {
+      if (
+        key === "occultist_map" &&
+        gameState.relics.occultist_grimoire
+      ) {
         return false;
       }
-      
+
       return true;
     })
     .map(([key, value]) => ({

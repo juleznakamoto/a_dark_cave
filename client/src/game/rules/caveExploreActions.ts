@@ -359,7 +359,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.gold": { probability: 1, value: "random(15,45)" },
       "resources.bloodstone": { probability: 1, value: "random(2,8)" },
       "resources.frostglas": { probability: 1, value: "random(2,8" },
-      "relics.mastermason_chisel": true,
+      "tools.mastermason_chisel": true,
       "flags.lowChamberExplored": true,
       "story.seen.lowChamberExplored": true,
     },
