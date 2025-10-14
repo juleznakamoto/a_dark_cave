@@ -17,6 +17,7 @@ export default function ForestPanel() {
         { id: 'layTrap', label: 'Lay Trap' },
         { id: 'castleRuins', label: 'Castle Ruins' },
         { id: 'hillGrave', label: 'Hill Grave' },
+        { id: "sunkenTemple", label: "Sunken Temple" },
       ]
     },
     {
@@ -52,7 +53,7 @@ export default function ForestPanel() {
     if (isTradeButton && action.effects) {
       // Determine which tier is active based on show_when conditions
       let activeTier = 1;
-      
+
       // Check tier 2 first (Merchants Guild)
       if (action.show_when?.[2]) {
         const tier2Conditions = action.show_when[2];
