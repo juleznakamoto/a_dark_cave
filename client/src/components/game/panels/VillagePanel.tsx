@@ -232,12 +232,6 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <span className="text-sm">
-          {label}{" "}
-          <span className="text-muted-foreground">
-            {getTotalProductionText(jobId, currentCount)}
-          </span>
-        </span>
         <div className="flex items-center gap-1">
           <Button
             onClick={() => unassignVillager(jobId)}
@@ -261,6 +255,12 @@ export default function VillagePanel() {
             +
           </Button>
         </div>
+        <span className="text-sm">
+          {label}{" "}
+          <span className="text-muted-foreground">
+            {getTotalProductionText(jobId, currentCount)}
+          </span>
+        </span>
       </div>
     );
   };
