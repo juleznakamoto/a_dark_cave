@@ -477,20 +477,6 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
 // Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
-  frostfang: {
-    id: "frostfang",
-    name: "Frostfang",
-    description:
-      "Sword forged from frostglas, cold as the void between stars",
-    bonuses: {
-      generalBonuses: {
-        strength: 8,
-        knowledge: 2,
-      },
-      actionBonuses: {},
-    },
-  },
-
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",

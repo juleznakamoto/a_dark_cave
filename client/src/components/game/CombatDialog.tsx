@@ -228,6 +228,10 @@ export default function CombatDialog({
         });
       }
     }
+    
+    // Update bastion stats after combat to reflect any building damage
+    gameState.updateBastionStats();
+    
     onClose();
   };
 
