@@ -1,5 +1,6 @@
-import { useGameStore } from '@/game/state';
-import { gameActions } from '@/game/rules';
+import { useGameStore } from "@/game/state";
+import { gameActions } from "@/game/rules";
+import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
 import { Button } from '@/components/ui/button';
 import {
   HoverCard,
@@ -35,11 +36,15 @@ export default function BastionPanel() {
     const actionCost = action?.cost?.[level];
     if (!actionCost) return {};
 
+    const buildingCostReduction = getTotalBuildingCostReduction();
+
     const repairCost: Record<string, number> = {};
     for (const [path, cost] of Object.entries(actionCost)) {
       if (path.startsWith('resources.')) {
         const resource = path.split('.')[1];
-        repairCost[resource] = Math.floor(cost * 0.5);
+        // Apply building cost reduction to repair cost
+        const reducedCost = Math.floor(cost * 0.5 * (1 - buildingCostReduction));
+        repairCost[resource] = reducedCost;
       }
     }
     return repairCost;
