@@ -265,7 +265,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
-      state.story.seen.fourthWaveVictory && !state.story.seen.gameCompleted,
+      state.story.seen.fourthWaveVictory && !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Final Wave",
@@ -289,7 +289,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                gameCompleted: true,
+                fifthWaveVictory: true,
               },
             },
           }),

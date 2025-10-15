@@ -640,7 +640,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         luck: 2,
         knowledge: 4,
-        madness: 4,
+        madness: 3,
       },
     },
   },
@@ -657,7 +657,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         strength: 3,
         knowledge: 7,
-        madness: 6,
+        madness: 5,
       },
     },
   },
@@ -683,7 +683,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 7,
-        madness: 4,
+        madness: 3,
       },
     },
   },
@@ -727,7 +727,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
       generalBonuses: {
         strength: 5,
-        madness: 4,
+        madness: 3,
       },
     },
   },
@@ -790,7 +790,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 8,
-        madness: 6,
+        madness: 5,
       },
     },
   },
@@ -803,7 +803,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 7,
-        madness: 5,
+        madness: 3,
       },
     },
   },
@@ -828,7 +828,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 6,
-        madness: 3,
+        madness: 2,
       },
     },
   },
