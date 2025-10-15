@@ -402,7 +402,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Razor-sharp blade forged from volcanic glass",
     bonuses: {
       generalBonuses: {
-        strength: 10,
+        strength: 8,
       },
     },
   },
@@ -413,7 +413,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Ultimate weapon forged from the hardest metal",
     bonuses: {
       generalBonuses: {
-        strength: 15,
+        strength: 12,
       },
     },
   },
@@ -424,7 +424,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Blade forged from frostglas, radiating cold power",
     bonuses: {
       generalBonuses: {
-        strength: 30,
+        strength: 35,
       },
       actionBonuses: {},
     },
@@ -437,7 +437,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         strength: 5,
-        knowledge: 25,
+        knowledge: 30,
       },
       actionBonuses: {},
     },
@@ -446,8 +446,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   arbalest: {
     id: "arbalest",
     name: "Arbalest",
-    description:
-      "Meticulously decorated arbalest designed by a great engineer",
+    description: "Meticulously decorated arbalest designed by a great engineer",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -466,13 +465,11 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Bow made of very dark wood, poisoning the enemy",
     bonuses: {
       generalBonuses: {
-        strength: 7,
+        strength: 5,
       },
       actionBonuses: {},
     },
   },
-
-
 };
 
 // Relic effects
@@ -542,7 +539,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Mystical mantle woven from shimmering raven feathers",
     bonuses: {
       generalBonuses: {
-        luck: 3,
+        luck: 5,
         strength: 3,
       },
     },
@@ -571,7 +568,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Mysterious amulet that whispers ancient secrets",
     bonuses: {
       generalBonuses: {
-        luck: 2,
+        luck: 3,
         knowledge: 4,
         madness: 3,
       },
@@ -682,7 +679,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "blackened_mirror",
     name: "Blackened Mirror",
     description:
-      "Tall, cracked mirror framed in black iron that radiates cold, unnatural aura",
+      "Tall cracked mirror framed in black iron that radiates cold aura",
     bonuses: {
       generalBonuses: {
         knowledge: 7,
@@ -708,7 +705,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   red_mask: {
     id: "red_mask",
     name: "Red Mask",
-    description: "Mask crafted from deep crimson leather",
+    description: "Repulsive mask crafted from deep crimson leather",
     bonuses: {
       generalBonuses: {
         luck: 3,
@@ -721,7 +718,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   black_bear_fur: {
     id: "black_bear_fur",
     name: "Black Bear Fur",
-    description: "Cursed fur from a otherworldy giant bear",
+    description: "Cursed black fur from an otherworldy giant bear",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -739,7 +736,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     id: "seeker_pack",
     name: "Seeker Pack",
     description:
-      "Well-crafted leather backpack easing the weight upon your shoulders",
+      "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
       actionBonuses: {
         gatherWood: {
@@ -806,7 +803,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 7,
-        madness: 4,
+        madness: 50,
       },
     },
   },
@@ -831,7 +828,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 6,
-        madness: 2,
+        madness: 3,
       },
     },
   },
