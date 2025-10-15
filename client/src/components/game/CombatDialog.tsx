@@ -206,9 +206,27 @@ export default function CombatDialog({
     // Integrity is only for display during combat, not persisted to state
 
     if (combatResult === "victory") {
-      onVictory();
+      const victoryResult = onVictory();
+      // Add victory message to log if present
+      if (victoryResult && victoryResult._logMessage) {
+        gameState.addLogEntry({
+          id: `combat-victory-${Date.now()}`,
+          message: victoryResult._logMessage,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      }
     } else if (combatResult === "defeat") {
-      onDefeat();
+      const defeatResult = onDefeat();
+      // Add defeat message to log if present
+      if (defeatResult && defeatResult._logMessage) {
+        gameState.addLogEntry({
+          id: `combat-defeat-${Date.now()}`,
+          message: defeatResult._logMessage,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      }
     }
     onClose();
   };
