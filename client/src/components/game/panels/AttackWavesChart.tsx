@@ -1,3 +1,4 @@
+
 import { useGameStore } from '@/game/state';
 import { Progress } from '@/components/ui/progress';
 
@@ -17,8 +18,12 @@ export default function AttackWavesChart() {
   const currentWave = currentWaveIndex === -1 ? 5 : currentWaveIndex + 1;
   const totalWaves = 5;
 
-  // Calculate progress percentage
-  const progressPercentage = ((currentWave ) / totalWaves) * 100;
+  // Calculate completed waves percentage (dark red)
+  const completedWaves = currentWaveIndex === -1 ? 5 : currentWaveIndex;
+  const completedPercentage = (completedWaves / totalWaves) * 100;
+  
+  // Calculate current wave percentage (normal red) - only if not all complete
+  const currentWavePercentage = currentWaveIndex === -1 ? 0 : ((completedWaves + 1) / totalWaves) * 100;
 
   // Only show if bastion exists
   const shouldShowChart = story?.seen?.hasBastion || false;
@@ -35,10 +40,23 @@ export default function AttackWavesChart() {
           Current Wave: {currentWave} / {totalWaves}
         </span>
       </div>
-      <Progress 
-        value={progressPercentage} 
-        className="h-3 [&>div]:bg-red-900"
-      />
+      <div className="relative h-3 w-full overflow-hidden rounded-full bg-secondary">
+        {/* Completed waves - dark red */}
+        <div 
+          className="absolute h-full bg-red-950 transition-all duration-300"
+          style={{ width: `${completedPercentage}%` }}
+        />
+        {/* Current wave - normal red */}
+        {currentWaveIndex !== -1 && (
+          <div 
+            className="absolute h-full bg-red-900 transition-all duration-300"
+            style={{ 
+              left: `${completedPercentage}%`,
+              width: `${currentWavePercentage - completedPercentage}%` 
+            }}
+          />
+        )}
+      </div>
     </div>
   );
 }
