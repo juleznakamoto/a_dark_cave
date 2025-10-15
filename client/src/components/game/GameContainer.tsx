@@ -116,15 +116,15 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col overflow-hidden">
-      <main className="flex-1 min-h-0 p-6 overflow-hidden flex flex-col">
+    <div className="h-screen bg-background text-foreground flex flex-col">
+      <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
-        <div className="w-full mb-6 flex-shrink-0">
+        <div className="w-full mb-6">
           <LogPanel />
         </div>
 
         {/* Main Content Area - Sidebar and Panel */}
-        <div className="flex flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-1 min-h-0">
           
           {/* Left Sidebar for Resources */}
           <div className="w-96 border-t border-r">
