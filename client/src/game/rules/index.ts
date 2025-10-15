@@ -896,20 +896,3 @@ gameActions.blastPortal = {
 gameActions.craftFrostglassSword = {
   ...caveCraftWeapons.craftFrostglassSword,
 };
-
-// Add Encounter Beyond Portal action
-gameActions.encounterBeyondPortal = {
-  id: "encounterBeyondPortal",
-  title: "Encounter Beyond Portal",
-  description: "Explore the depths beyond the portal.",
-  cost: {
-    resources: {
-      food: -2500,
-    },
-  },
-  show_when: {
-    "story.seen.fifthWave": true,
-  },
-  can_be_executed_once: true,
-  handle: handleEncounterBeyondPortal,
-};
