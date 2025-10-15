@@ -477,6 +477,14 @@ uniform float time;
 #define T time
 #define R resolution
 #define MN min(R.x,R.y)
+
+// COLOR CUSTOMIZATION - Modify these values to change the color scheme
+// Each vec3 represents RGB values (0.0 to 1.0)
+#define PRIMARY_COLOR vec3(1.0, 0.4, 0.2)      // Orange-red (default)
+#define SECONDARY_COLOR vec3(1.0, 0.8, 0.3)    // Yellow-orange
+#define TERTIARY_COLOR vec3(1.0, 0.5, 0.0)     // Bright orange
+#define BACKGROUND_TINT vec3(0.25, 0.137, 0.05) // Dark orange-brown
+
 // Returns a pseudo random number for a given point (white noise)
 float rnd(vec2 p) {
   p=fract(p*vec2(12.9898,78.233));
@@ -522,10 +530,11 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		col+=.00125/d*(cos(sin(i)*vec3(1,2,3))+1.);
+		// Use customizable colors instead of hardcoded values
+		col+=.00125/d*(cos(sin(i)*PRIMARY_COLOR)+1.);
 		float b=noise(i+p+bg*1.731);
 		col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
-		col=mix(col,vec3(bg*.25,bg*.137,bg*.05),d);
+		col=mix(col,vec3(bg)*BACKGROUND_TINT,d);
 	}
 	O=vec4(col,1);
 }`;
