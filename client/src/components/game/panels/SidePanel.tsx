@@ -621,36 +621,36 @@ export default function SidePanel() {
     <ScrollArea className="h-full max-h-full">
       <div className="pb-6 flex gap-8">
         {/* First column - Resources */}
-        <div className="flex-[0.9]">
-          {resourceItems.length > 0 && shouldShowSection("resources") && (
-            <SidePanelSection
-              title="Resources"
-              items={resourceItems}
-              onValueChange={(itemId, oldValue, newValue) => {
-                console.log(
-                  `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
-                );
-              }}
-              resourceChanges={resourceChanges}
-              showNotifications={buildings.clerksHut > 0}
-              onResourceChange={(change) => {
-                if (buildings.clerksHut > 0) {
-                  setResourceChanges((prev) => {
-                    // Keep only the last 50 changes to prevent unbounded growth
-                    const updated = [...prev, change];
-                    return updated.slice(-50);
-                  });
-                }
-              }}
-              forceNotifications={buildings.clerksHut > 0}
-            />
-          )}
+        <div className="flex-[0.9] flex flex-col">
+          <div className="flex-1">
+            {resourceItems.length > 0 && shouldShowSection("resources") && (
+              <SidePanelSection
+                title="Resources"
+                items={resourceItems}
+                onValueChange={(itemId, oldValue, newValue) => {
+                  console.log(
+                    `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
+                  );
+                }}
+                resourceChanges={resourceChanges}
+                showNotifications={buildings.clerksHut > 0}
+                onResourceChange={(change) => {
+                  if (buildings.clerksHut > 0) {
+                    setResourceChanges((prev) => {
+                      // Keep only the last 50 changes to prevent unbounded growth
+                      const updated = [...prev, change];
+                      return updated.slice(-50);
+                    });
+                  }
+                }}
+                forceNotifications={buildings.clerksHut > 0}
+              />
+            )}
+          </div>
           {/* Building Progress Chart */}
-          {
-            <div className="shrink-0 border-">
-              <BuildingProgressChart />
-            </div>
-          }
+          <div className="mt-auto">
+            <BuildingProgressChart />
+          </div>
         </div>
 
         {/* Second column - Everything else */}
