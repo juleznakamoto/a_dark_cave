@@ -233,71 +233,20 @@ div.stone-axe-pulse {
   animation: button-glow 0.5s ease-in-out;
 }
 
-/* Custom madness pulse animations - 4 levels */
-@keyframes madness-pulse-light {
-
-  0%,
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.85;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes madness-pulse-medium {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.07);
-  }
-}
-
-@keyframes madness-pulse-intense {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.10);
-  }
-}
-
-@keyframes madness-pulse-extreme {
-
-  0%,
-  100% {
-    transform: scale(1);
-  }
-
-  50% {
-    transform: scale(1.15);
-  }
-}
-
 .madness-pulse-light {
-  animation: madness-pulse-light 2.5s ease-in-out infinite;
+  animation: 2.5s madness-light ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  animation: madness-pulse-medium 2.0s ease-in-out infinite;
+  animation:  2.0s ease-in-out infinite;
 }
 
 .madness-pulse-intense {
-  animation: madness-pulse-intense 1.5s ease-in-out infinite;
+  animation:  1.5s madness-intense ease-in-out infinite;
 }
 
 .madness-pulse-extreme {
-  animation: madness-pulse-intense 1.0s ease-in-out infinite;
+  animation:  1.0s ease-in-out infinite;
 }
 
 /* Madness intensity effects using Tailwind colors */
@@ -310,11 +259,11 @@ div.stone-axe-pulse {
 }
 
 .madness-intense {
-  text-shadow: 0 0 4px rgb(255 120 120), 0 0 6px rgb(255 80 80);
+  text-shadow: 0 0 4px rgb(255 120 120), 0 0 60px rgb(255 80 80);
 }
 
 .madness-extreme {
-  text-shadow: 0 0 4px rgb(255 120 120), 0 0 6px rgb(255 70 70);
+  text-shadow: 0 0 4px rgb(255 120 120), 0 0 8px rgb(255 70 70);
 }
 
 /* Cube dialog glow animation */

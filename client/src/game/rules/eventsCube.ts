@@ -248,7 +248,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       !state.events.cube08,
     triggerType: "resource",
     timeProbability: 1,
-    title: "The golden age",
+    title: "The resistance",
     message:
       "'The leaders ruled that every citizen must bear a device. Yet a small faction began to voice their concerns, forming a secret resistance as they recognized the dangers hidden within the technology.'",
     triggered: false,
@@ -277,7 +277,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube08 &&
       !state.events.cube09,
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.1,
     title: "The golden age",
     message:
       "'With the aid of the devices, the civilization thrived. An era of unprecedented peace and progress began, their knowledge and skill reaching heights that would never be seen again.'",
@@ -292,7 +292,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-              cube08: true,
+              cube09: true,
             },
           };
         },
