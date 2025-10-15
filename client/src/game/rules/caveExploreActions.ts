@@ -763,68 +763,53 @@ export function handleEncounterBeyondPortal(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  result.stateUpdates = {
-    ...result.stateUpdates,
-    story: {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
-        encounteredBeyondPortal: true,
-      },
-    },
-    _logMessage: "You venture beyond the shattered portal into the unknown depths...",
-  };
+  const effectUpdates = applyActionEffects("encounterBeyondPortal", state);
 
-  // Add a delayed effect to show the choice dialog after the initial message
-  result.delayedEffects!.push(() => {
-    setTimeout(() => {
-      const { addLogEntry } = useGameStore.getState();
-      addLogEntry({
-        id: `encounter-beyond-portal-choice-${Date.now()}`,
-        message:
-          "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
-        timestamp: Date.now(),
-        type: "event",
-        title: "The Dwellers Below",
-        choices: [
-          {
-            id: "slaughter_creatures",
-            label: "Slaughter them",
-            effect: (state: GameState) => {
-              return {
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    slaughteredCreatures: true,
-                  },
-                },
-                _logMessage:
-                  "You cut them down without mercy. Their cries echo through the caverns as they fall.",
-              };
+  result.logEntries!.push({
+    id: `encounter-beyond-portal-${Date.now()}`,
+    message:
+      "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
+    timestamp: Date.now(),
+    type: "event",
+    title: "The Dwellers Below",
+    choices: [
+      {
+        id: "slaughter_creatures",
+        label: "Slaughter them",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                slaughteredCreatures: true,
+              },
             },
-          },
-          {
-            id: "attempt_communication",
-            label: "Try to communicate",
-            effect: (state: GameState) => {
-              return {
-                story: {
-                  ...state.story,
-                  seen: {
-                    ...state.story.seen,
-                    communicateWithCreatures: true,
-                  },
-                },
-                _logMessage:
-                  "You lower your weapons and attempt to understand them. Through gestures and broken words, they share fragments of their history leaving you speechless.",
-              };
+            _logMessage:
+              "You cut them down without mercy. Their cries echo through the caverns as they fall.",
+          };
+        },
+      },
+      {
+        id: "attempt_communication",
+        label: "Try to communicate",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                communicateWithCreatures: true,
+              },
             },
-          },
-        ],
-      });
-    }, 500);
+            _logMessage:
+              "You lower your weapons and attempt to understand them. Through gestures and broken words, they share fragments of their history leaving you speechless.",
+          };
+        },
+      },
+    ],
   });
 
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
