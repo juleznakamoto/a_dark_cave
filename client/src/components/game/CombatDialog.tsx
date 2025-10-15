@@ -338,9 +338,14 @@ export default function CombatDialog({
             <div className="space-y-3">
               <div className="relative">
                 <div className="flex justify-between text-sm">
-                  <span className="font-medium">
-                    {currentEnemy?.name}
-                  </span><span className="text-green-600"  role="img" aria-label="poison-icon">◈</span>
+                  <div className="flex items-center gap-1">
+                    <span className="font-medium">
+                      {currentEnemy?.name}
+                    </span>
+                    {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
+                      <span className="text-green-600" role="img" aria-label="poison-icon">◈</span>
+                    )}
+                  </div>
                   <span>
                     {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
                   </span>
@@ -354,12 +359,6 @@ export default function CombatDialog({
                     <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-red-900 font-bold text-sm pointer-events-none">
                       -{enemyDamageIndicator.amount}
                     </div>
-                  )}
-                  {/* Poison Icon Indicator - Add logic to show this when poison is active */}
-                  {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
-                     <div className="absolute -translate-y-5 inset-0 flex items-center justify-center text-green-900 font-bold text-sm pointer-events-none">
-                       <span className="text-green-600"  role="img" aria-label="poison-icon">◈</span>
-                     </div>
                   )}
                 </div>
                 <div className="text-xs mt-2">
