@@ -232,7 +232,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div className="flex items-center gap-1">
+        <div className="flex items-center">
           <Button
             onClick={() => unassignVillager(jobId)}
             disabled={currentCount === 0}
@@ -255,7 +255,7 @@ export default function VillagePanel() {
             +
           </Button>
         </div>
-        <span className="text-sm text-left flex-1">
+        <span className="text-sm ml-2 text-left flex-1">
           {label}{" "}
           <span className="text-muted-foreground">
             {getTotalProductionText(jobId, currentCount)}
@@ -348,10 +348,10 @@ export default function VillagePanel() {
               .join(", ");
 
             return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground flex items-center gap-2">
+              <div className="text-xs text-muted-foreground flex items-center gap-3">
                 <CircularProgress
                   value={productionProgress}
-                  size={14}
+                  size={16}
                   strokeWidth={2}
                   className="text-primary"
                 />

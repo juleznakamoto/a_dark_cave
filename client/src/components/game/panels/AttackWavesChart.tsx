@@ -1,5 +1,4 @@
 import { useGameStore } from "@/game/state";
-import { Progress } from "@/components/ui/progress";
 
 export default function AttackWavesChart() {
   const { story } = useGameStore();
@@ -40,7 +39,7 @@ export default function AttackWavesChart() {
           {currentWaveIndex === -1 ? "All Waves defeated" : `Current Wave: ${currentWave} / ${totalWaves}`}
         </span>
       </div>
-      <div className="relative h-3 w-full overflow-hidden rounded-full bg-secondary">
+      <div className="relative h-3 overflow-hidden rounded-full bg-secondary">
         {/* Completed waves - normal red */}
         <div
           className="absolute h-full bg-red-900 transition-all duration-300"
