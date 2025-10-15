@@ -201,9 +201,12 @@
 
 /* Stone axe pulse animation */
 @keyframes stone-axe-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow: 0 0 1px rgba(255, 255, 255, 0.9);
   }
+
   50% {
     text-shadow: 0 0 5px rgba(255, 255, 255, 0.9);
   }
@@ -215,9 +218,12 @@ div.stone-axe-pulse {
 
 /* Button glow animation */
 @keyframes button-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: none;
   }
+
   50% {
     box-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
   }
@@ -246,12 +252,10 @@ div.stone-axe-pulse {
 
   0%,
   100% {
-    opacity: 1;
     transform: scale(1);
   }
 
   50% {
-    opacity: 0.75;
     transform: scale(1.07);
   }
 }
@@ -260,12 +264,10 @@ div.stone-axe-pulse {
 
   0%,
   100% {
-    opacity: 1;
     transform: scale(1);
   }
 
   50% {
-    opacity: 0.65;
     transform: scale(1.10);
   }
 }
@@ -274,12 +276,10 @@ div.stone-axe-pulse {
 
   0%,
   100% {
-    opacity: 1;
     transform: scale(1);
   }
 
   50% {
-    opacity: 0.55;
     transform: scale(1.15);
   }
 }
@@ -292,36 +292,39 @@ div.stone-axe-pulse {
   animation: madness-pulse-medium 2.0s ease-in-out infinite;
 }
 
-.madness-pulse-fast-intense {
+.madness-pulse-intense {
   animation: madness-pulse-intense 1.5s ease-in-out infinite;
 }
 
-.madness-pulse-fast-extreme {
+.madness-pulse-extreme {
   animation: madness-pulse-intense 1.0s ease-in-out infinite;
 }
 
 /* Madness intensity effects using Tailwind colors */
 .madness-light {
-  text-shadow: 0 0 4px rgb(248 113 113), 0 0 4px rgb(248 113 113); /* red-400 */
+  text-shadow: 0 0 4px rgb(255, 120, 120), 0 0 6px rgb(255 100 100);
 }
 
 .madness-medium {
-  text-shadow: 0 0 5px rgb(239 68 68), 0 0 5px rgb(239 68 68); /* red-500 */
+  text-shadow: 0 0 4px rgb(255 120 120), 0 0 6px rgb(255 90 90);
 }
 
 .madness-intense {
-  text-shadow: 0 0 6px rgb(220 38 38), 0 0 6px rgb(220 38 38); /* red-600 */
+  text-shadow: 0 0 4px rgb(255 120 120), 0 0 6px rgb(255 80 80);
 }
 
 .madness-extreme {
-  text-shadow: 0 0 7px rgb(185 28 28), 0 0 7px rgb(185 28 28); /* red-700 */
+  text-shadow: 0 0 4px rgb(255 120 120), 0 0 6px rgb(255 70 70);
 }
 
 /* Cube dialog glow animation */
 @keyframes cube-glow-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     box-shadow: 0 0 15px 1px rgba(192, 192, 192, 0.25);
   }
+
   50% {
     box-shadow: 0 0 5px 1px rgba(192, 192, 192, 0.5);
   }
@@ -333,19 +336,25 @@ div.stone-axe-pulse {
 
 /* Log entry visual effects */
 @keyframes log-glow {
-  0%, 100% {
+
+  0%,
+  100% {
     text-shadow: 0 0 2px rgb(255, 255, 255, 0.6), 0 0 4px rgb(254, 57, 57, 0.4);
   }
+
   50% {
     text-shadow: 0 0 10px rgb(255, 255, 255, 0.8), 0 0 12px rgba(254, 57, 57, 0.6);
   }
 }
 
 @keyframes log-pulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.8;
     transform: scale(1.02);
