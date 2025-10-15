@@ -36,7 +36,9 @@ export default function AttackWavesChart() {
       <div className="flex justify-between items-center">
         <h3 className="text-xs font-bold text-foreground">Attack Waves</h3>
         <span className="text-xs text-muted-foreground">
-          {currentWaveIndex === -1 ? "All Waves defeated" : `Current Wave: ${currentWave} / ${totalWaves}`}
+          {currentWaveIndex === -1
+            ? "All Waves defeated"
+            : `Current Wave: ${currentWave} / ${totalWaves}`}
         </span>
       </div>
       <div className="relative h-3 overflow-hidden rounded-full bg-secondary">
