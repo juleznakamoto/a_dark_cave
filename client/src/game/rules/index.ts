@@ -875,24 +875,5 @@ export function getActionCostBreakdown(
   });
 }
 
-// Action handlers are now handled through the villageBuildActions module
-// No need for a separate actionHandlers object here
-
 // Export getCostText as an alias for getActionCostDisplay for backward compatibility
 export const getCostText = getActionCostDisplay;
-
-// Register new action handlers
-gameActions.craftEmberBomb = {
-  ...caveCraftResources.craftEmberBomb,
-  handle: handleCraftEmberBomb,
-};
-
-gameActions.blastPortal = {
-  ...caveExploreActions.blastPortal,
-  handle: handleBlastPortal,
-};
-
-// Add Frostglass Sword from caveCraftWeapons
-gameActions.craftFrostglassSword = {
-  ...caveCraftWeapons.craftFrostglassSword,
-};
