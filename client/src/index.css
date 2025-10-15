@@ -300,21 +300,21 @@ div.stone-axe-pulse {
   animation: madness-pulse-intense 1.0s ease-in-out infinite;
 }
 
-/* Madness intensity effects */
+/* Madness intensity effects using Tailwind colors */
 .madness-light {
-  text-shadow: 0 0 4x oklch(70.4% 0.191 22.216), 0 0 4px oklch(70.4% 0.191 22.216);
+  text-shadow: 0 0 4px rgb(248 113 113), 0 0 4px rgb(248 113 113); /* red-400 */
 }
 
 .madness-medium {
-  text-shadow: 0 0 5px oklch(63.7% 0.237 25.331), 0 0 5px oklch(63.7% 0.237 25.331);
+  text-shadow: 0 0 5px rgb(239 68 68), 0 0 5px rgb(239 68 68); /* red-500 */
 }
 
 .madness-intense {
-  text-shadow: 0 0 6px oklch(57.7% 0.245 27.325), 0 0 6px oklch(57.7% 0.245 27.325);
+  text-shadow: 0 0 6px rgb(220 38 38), 0 0 6px rgb(220 38 38); /* red-600 */
 }
 
 .madness-extreme {
-  text-shadow: 0 0 7px oklch(50.5% 0.213 27.518), 0 0 7px oklch(50.5% 0.213 27.518);
+  text-shadow: 0 0 7px rgb(185 28 28), 0 0 7px rgb(185 28 28); /* red-700 */
 }
 
 /* Cube dialog glow animation */
