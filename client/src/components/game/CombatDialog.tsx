@@ -343,7 +343,7 @@ export default function CombatDialog({
                       {currentEnemy?.name}
                     </span>
                     {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
-                      <span className="text-green-600" role="img" aria-label="poison-icon">◈</span>
+                      <span className="text-green-600" role="img" aria-label="poison-icon">▲</span>
                     )}
                   </div>
                   <span>
