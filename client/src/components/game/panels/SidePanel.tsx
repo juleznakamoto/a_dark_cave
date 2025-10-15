@@ -436,18 +436,16 @@ export default function SidePanel() {
     });
   }
 
-  // Add madness if it's greater than 0
-  if (totalMadness > 0) {
-    statsItems.push({
-      id: "madness",
-      label: "Madness",
-      value: totalMadness,
-      testId: "stat-madness",
-      visible: true,
-      icon: hasScriptorium ? "✺" : undefined,
-      iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-    });
-  }
+  // Always show madness (even if 0 or negative due to building reductions)
+  statsItems.push({
+    id: "madness",
+    label: "Madness",
+    value: totalMadness,
+    testId: "stat-madness",
+    visible: true,
+    icon: hasScriptorium ? "✺" : undefined,
+    iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
+  });
 
   // Dynamically generate fortification items from state
   const fortificationItems = Object.entries(buildings)
