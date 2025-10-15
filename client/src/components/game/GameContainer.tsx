@@ -125,6 +125,7 @@ export default function GameContainer() {
 
         {/* Main Content Area - Sidebar and Panel */}
         <div className="flex flex-1 min-h-0">
+          
           {/* Left Sidebar for Resources */}
           <div className="w-96 border-t border-r">
             <GameTabs />
@@ -132,7 +133,7 @@ export default function GameContainer() {
 
           {/* Right Content Area with Horizontal Tabs and Actions */}
           <section className="flex-1 pl-0 flex flex-col">
-            {/* Horizontal Game Tabs - Switch design based on wooden huts */}
+            {/* Horizontal Game Tabs */}
             <nav className="border-t border-border pl-6 mb-4 pt-4">
               {useLimelightNav ? (
                 // New LimelightNav design

@@ -80,10 +80,7 @@ export default function SidePanel() {
       }
 
       // Filter out occultist_map after exploring occultist chamber
-      if (
-        key === "occultist_map" &&
-        gameState.relics.occultist_grimoire
-      ) {
+      if (key === "occultist_map" && gameState.relics.occultist_grimoire) {
         return false;
       }
 
@@ -648,6 +645,12 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
+          {/* Building Progress Chart */}
+          {
+            <div className="shrink-0 border-">
+              <BuildingProgressChart />
+            </div>
+          }
         </div>
 
         {/* Second column - Everything else */}
@@ -706,16 +709,11 @@ export default function SidePanel() {
               )}
             </SidePanelSection>
           )}
+          
         </div>
+        
       </div>
       <ScrollBar orientation="vertical" />
-      {/* Building Progress Chart */}
-      {
-        <div className="relaitve bottom-0 left-0">
-          <BuildingProgressChart />
-        </div>
-      }
     </ScrollArea>
-    
   );
 }
