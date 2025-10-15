@@ -213,6 +213,20 @@ div.stone-axe-pulse {
   animation: stone-axe-pulse 1.0s ease-in-out infinite;
 }
 
+/* Button glow animation */
+@keyframes button-glow {
+  0%, 100% {
+    box-shadow: none;
+  }
+  50% {
+    box-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
+  }
+}
+
+.button-glow-animation {
+  animation: button-glow 0.5s ease-in-out;
+}
+
 /* Custom madness pulse animations - 4 levels */
 @keyframes madness-pulse-light {
 
@@ -271,33 +285,19 @@ div.stone-axe-pulse {
 }
 
 .madness-pulse-light {
-  animation: madness-pulse-light 2.0s ease-in-out infinite;
+  animation: madness-pulse-light 2.5s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  animation: madness-pulse-medium 1.5s ease-in-out infinite;
-}
-
-/* Button glow animation */
-@keyframes button-glow {
-  0%, 100% {
-    box-shadow: none;
-  }
-  50% {
-    box-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
-  }
-}
-
-.button-glow-animation {
-  animation: button-glow 0.5s ease-in-out;
+  animation: madness-pulse-medium 2.0s ease-in-out infinite;
 }
 
 .madness-pulse-fast-intense {
-  animation: madness-pulse-intense 1.0s ease-in-out infinite;
+  animation: madness-pulse-intense 1.5s ease-in-out infinite;
 }
 
 .madness-pulse-fast-extreme {
-  animation: madness-pulse-intense 0.7s ease-in-out infinite;
+  animation: madness-pulse-intense 1.0s ease-in-out infinite;
 }
 
 /* Madness intensity effects */
