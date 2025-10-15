@@ -169,7 +169,16 @@ export default function BastionPanel() {
                     size="xs"
                     className="hover:bg-transparent hover:text-foreground"
                   >
-                    Watchtower
+                    {(() => {
+                      const watchtowerLevel = buildings.watchtower || 0;
+                      const watchtowerLabels = [
+                        "Watchtower",
+                        "Guard Tower",
+                        "Fortified Tower",
+                        "Cannon Tower",
+                      ];
+                      return watchtowerLabels[watchtowerLevel - 1] || "Watchtower";
+                    })()}
                   </Button>
                 </div>
               </HoverCardTrigger>
@@ -199,7 +208,16 @@ export default function BastionPanel() {
                     size="xs"
                     className="hover:bg-transparent hover:text-foreground"
                   >
-                    Palisades
+                    {(() => {
+                      const palisadesLevel = buildings.palisades || 0;
+                      const palisadesLabels = [
+                        "Wooden Palisades",
+                        "Fortified Palisades",
+                        "Stone Wall",
+                        "Reinforced Wall",
+                      ];
+                      return palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
+                    })()}
                   </Button>
                 </div>
               </HoverCardTrigger>
