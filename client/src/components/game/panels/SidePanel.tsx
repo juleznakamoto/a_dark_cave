@@ -618,10 +618,10 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-full">
-      <div className="pb-6 flex gap-8">
+    <ScrollArea className="h-full max-h-full w-full">
+      <div className="pb-6 flex gap-8 max-w-full">
         {/* First column - Resources */}
-        <div className="flex-[0.9]">
+        <div className="flex-[0.9] min-w-0">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
             <SidePanelSection
               title="Resources"
@@ -647,14 +647,14 @@ export default function SidePanel() {
           )}
           {/* Building Progress Chart */}
           {
-            <div className="shrink-0 border-">
+            <div className="shrink-0">
               <BuildingProgressChart />
             </div>
           }
         </div>
 
         {/* Second column - Everything else */}
-        <div className="flex-1">
+        <div className="flex-1 min-w-0">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection title="Tools" items={toolItems} />
           )}
