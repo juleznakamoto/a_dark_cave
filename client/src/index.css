@@ -233,23 +233,60 @@ div.stone-axe-pulse {
   animation: button-glow 0.5s ease-in-out;
 }
 
+/* Keyframe animations for madness shadow pulsing */
+@keyframes madness-pulse-light {
+  0%, 100% {
+    text-shadow: 0 0 2px rgb(255, 120, 120), 0 0 4px rgb(255 100 100);
+  }
+  50% {
+    text-shadow: 0 0 6px rgb(255, 120, 120), 0 0 10px rgb(255 100 100);
+  }
+}
+
+@keyframes madness-pulse-medium {
+  0%, 100% {
+    text-shadow: 0 0 3px rgb(255 120 120), 0 0 5px rgb(255 90 90);
+  }
+  50% {
+    text-shadow: 0 0 8px rgb(255 120 120), 0 0 12px rgb(255 90 90);
+  }
+}
+
+@keyframes madness-pulse-intense {
+  0%, 100% {
+    text-shadow: 0 0 3px rgb(255 120 120), 0 0 50px rgb(255 80 80);
+  }
+  50% {
+    text-shadow: 0 0 8px rgb(255 120 120), 0 0 80px rgb(255 80 80);
+  }
+}
+
+@keyframes madness-pulse-extreme {
+  0%, 100% {
+    text-shadow: 0 0 3px rgb(255 120 120), 0 0 6px rgb(255 70 70);
+  }
+  50% {
+    text-shadow: 0 0 10px rgb(255 120 120), 0 0 15px rgb(255 70 70);
+  }
+}
+
 .madness-pulse-light {
-  animation: 2.5s madness-light ease-in-out infinite;
+  animation: madness-pulse-light 2.5s ease-in-out infinite;
 }
 
 .madness-pulse-medium {
-  animation:  2.0s ease-in-out infinite;
+  animation: madness-pulse-medium 2.0s ease-in-out infinite;
 }
 
 .madness-pulse-intense {
-  animation:  1.5s madness-intense ease-in-out infinite;
+  animation: madness-pulse-intense 1.5s ease-in-out infinite;
 }
 
 .madness-pulse-extreme {
-  animation:  1.0s ease-in-out infinite;
+  animation: madness-pulse-extreme 1.0s ease-in-out infinite;
 }
 
-/* Madness intensity effects using Tailwind colors */
+/* Static madness intensity effects (no animation) */
 .madness-light {
   text-shadow: 0 0 4px rgb(255, 120, 120), 0 0 6px rgb(255 100 100);
 }
