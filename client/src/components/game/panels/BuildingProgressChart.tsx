@@ -24,7 +24,6 @@ export default function BuildingProgressChart() {
   const startRadius = 16; // Inner radius of the first ring
   const ringSize = 4; // Thickness of each ring
   const spaceBetweenRings = 5; // Gap between rings
-  
   const paddingAngle = 8;
   const backgroundColor = tailwindToHex("neutral-800");
   const startAngle = 90 - paddingAngle / 2;
@@ -332,7 +331,7 @@ export default function BuildingProgressChart() {
                   strokeWidth={segment.isFull ? 0.5 : 0}
                   stroke={segment.isFull ? tailwindToHex("blue-500") : undefined}
                   isAnimationActive={false}
-                >
+                  >
                   <Cell fill={segment.fill} />
                 </Pie>
               ))}
@@ -351,8 +350,8 @@ export default function BuildingProgressChart() {
                 cornerRadius={5}
                 strokeWidth={0.0}
                 stroke={tailwindToHex("neutral-200")}
-                isAnimationActive={false}
-              >
+                isAnimationActive={false} 
+                >
               </Pie>
             </>
           ))}
