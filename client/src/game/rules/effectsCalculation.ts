@@ -462,16 +462,12 @@ export const calculateTotalEffects = (state: GameState) => {
 
   // Process all active effects
   activeEffects.forEach((effect) => {
-    // Process madness bonuses from general bonuses
+    // Process madness bonuses from general bonuses (items that ADD madness)
     if (effect.bonuses.generalBonuses?.madness) {
-      const effectKey = `${effect.id}_madness`;
-      effects.madness_reduction[effectKey] =
-        -effect.bonuses.generalBonuses.madness; // Negative because it increases madness
-      // Update statBonuses for madness
       effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
     }
 
-    // Process madness reduction from general bonuses
+    // Process madness reduction from general bonuses (items that REDUCE madness)
     if (effect.bonuses.generalBonuses?.madnessReduction) {
       const effectKey = `${effect.id}_madness_reduction`;
       effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madnessReduction;
