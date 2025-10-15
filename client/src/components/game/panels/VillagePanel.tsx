@@ -310,6 +310,17 @@ export default function VillagePanel() {
           {(() => {
             const totalEffects: Record<string, number> = {};
 
+            // Calculate total population for base consumption
+            const totalPopulation = Object.values(villagers).reduce(
+              (sum, count) => sum + (count || 0),
+              0,
+            );
+
+            // Add base consumption for all villagers (1 wood per villager)
+            if (totalPopulation > 0) {
+              totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+            }
+
             visiblePopulationJobs.forEach((job) => {
               const currentCount =
                 villagers[job.id as keyof typeof villagers] || 0;

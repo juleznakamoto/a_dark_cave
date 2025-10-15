@@ -177,6 +177,18 @@ function handlePopulationSurvival() {
     // Not enough food, consume all available food (starvation event will trigger separately)
     state.updateResource("food", -availableFood);
   }
+
+  // Handle wood consumption (1 wood per villager for heating/shelter)
+  const woodNeeded = totalPopulation;
+  const availableWood = state.resources.wood;
+
+  if (availableWood >= woodNeeded) {
+    // Consume wood normally
+    state.updateResource("wood", -woodNeeded);
+  } else {
+    // Not enough wood, consume all available wood (freezing check will handle deaths)
+    state.updateResource("wood", -availableWood);
+  }
 }
 
 function handleStarvationCheck() {
