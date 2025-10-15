@@ -25,11 +25,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
         amount: 5,
         interval: 15000,
       },
-      {
-        resource: "food",
-        amount: -1,
-        interval: 15000,
-      },
     ],
   },
   hunter: {

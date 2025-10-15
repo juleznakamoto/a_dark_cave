@@ -234,7 +234,7 @@ export default function EventDialog({
                 </div>
               )}
             </div>
-            <DialogDescription className="text-sm text-muted-foreground mt-2">
+            <DialogDescription className="text-sm text-gray-400 mt-2">
               {event.message}
             </DialogDescription>
           </DialogHeader>

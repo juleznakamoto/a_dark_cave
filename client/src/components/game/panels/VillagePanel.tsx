@@ -316,9 +316,10 @@ export default function VillagePanel() {
               0,
             );
 
-            // Add base consumption for all villagers (1 wood per villager)
+            // Add base consumption for all villagers (1 wood and 1 food per villager)
             if (totalPopulation > 0) {
               totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+              totalEffects.food = (totalEffects.food || 0) - totalPopulation;
             }
 
             visiblePopulationJobs.forEach((job) => {
