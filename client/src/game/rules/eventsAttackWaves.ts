@@ -3,16 +3,16 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 
 const FIRST_WAVE_MESSAGE =
-  "The earth shudders as pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
+  "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
 
 const SECOND_WAVE_MESSAGE =
   "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.";
 
 const THIRD_WAVE_MESSAGE =
-  "Terrifying roars shake the stone. Hoards of pale creatures come from the cave, their bone weapons cracking the ground.";
+  "Hoards of pale creatures come from the cave, screams shake even the stones, their bone weapons cracking the ground.";
 
 const FOURTH_WAVE_MESSAGE =
-  "The sky seems to darken as an uncountable mass of pale creatures surge from the cave, pressing towards the city.";
+  "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.";
 
 const FIFTH_WAVE_MESSAGE =
   "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.";
@@ -58,8 +58,8 @@ function handleDefeat(
   let buildingDamage = {};
   const damagedBuildings: string[] = [];
 
-  // Probability increases with multiplier (from 20% to 90%)
-  const baseChance = Math.min(DamageBuildingMultiplier * 0.2, 0.9);
+  // Probability increases with multiplier (from 15% to 90%)
+  const baseChance = Math.min(DamageBuildingMultiplier * 0.15, 0.9);
 
   // helper function for random check
   const chance = (prob: number) => Math.random() < prob;
@@ -293,7 +293,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
           }),
-          onDefeat: () => handleDefeat(state, 5, 30),
+          onDefeat: () => handleDefeat(state, 5, 25),
         },
       };
     },
