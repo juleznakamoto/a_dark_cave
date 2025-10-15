@@ -8,6 +8,18 @@ import {
 } from '@/components/ui/hover-card';
 import AttackWavesChart from './AttackWavesChart';
 
+// Helper to get building label based on level
+const getBuildingLabel = (buildingType: 'watchtower' | 'palisades', level: number): string => {
+  if (buildingType === 'watchtower') {
+    const labels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
+    return labels[level - 1] || "Watchtower";
+  } else if (buildingType === 'palisades') {
+    const labels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
+    return labels[level - 1] || "Wooden Palisades";
+  }
+  return "";
+};
+
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
 
@@ -169,16 +181,7 @@ export default function BastionPanel() {
                     size="xs"
                     className="hover:bg-transparent hover:text-foreground"
                   >
-                    {(() => {
-                      const watchtowerLevel = buildings.watchtower || 0;
-                      const watchtowerLabels = [
-                        "Watchtower",
-                        "Guard Tower",
-                        "Fortified Tower",
-                        "Cannon Tower",
-                      ];
-                      return watchtowerLabels[watchtowerLevel - 1] || "Watchtower";
-                    })()}
+                    {getBuildingLabel('watchtower', buildings.watchtower || 0)}
                   </Button>
                 </div>
               </HoverCardTrigger>
@@ -208,16 +211,7 @@ export default function BastionPanel() {
                     size="xs"
                     className="hover:bg-transparent hover:text-foreground"
                   >
-                    {(() => {
-                      const palisadesLevel = buildings.palisades || 0;
-                      const palisadesLabels = [
-                        "Wooden Palisades",
-                        "Fortified Palisades",
-                        "Stone Wall",
-                        "Reinforced Wall",
-                      ];
-                      return palisadesLabels[palisadesLevel - 1] || "Wooden Palisades";
-                    })()}
+                    {getBuildingLabel('palisades', buildings.palisades || 0)}
                   </Button>
                 </div>
               </HoverCardTrigger>
