@@ -64,6 +64,16 @@ function handleDefeat(
   // helper function for random check
   const chance = (prob: number) => Math.random() < prob;
 
+  // Bastion damage
+  if (
+    state.buildings.bastion > 0 &&
+    !state.story.seen.bastionDamaged &&
+    chance(baseChance * 0.8) // bastion is more resilient
+  ) {
+    buildingDamage = { ...buildingDamage, bastionDamaged: true };
+    damagedBuildings.push("bastion");
+  }
+
   // Watchtower damage
   if (
     state.buildings.watchtower > 0 &&
