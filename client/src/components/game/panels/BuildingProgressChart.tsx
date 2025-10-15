@@ -232,7 +232,7 @@ export default function BuildingProgressChart() {
         value: seg.maxCount,
         fill: "transparent",
       }));
-      
+
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -348,11 +348,10 @@ export default function BuildingProgressChart() {
                 startAngle={startAngle}
                 endAngle={-360 + startAngle}
                 cornerRadius={5}
-                strokeWidth={0.0}
-                stroke={tailwindToHex("neutral-200")}
-                isAnimationActive={false} 
-                >
-              </Pie>
+                strokeWidth={0}
+                isAnimationActive={false}
+                style={{ outline: 'none' }}
+              />
             </>
           ))}
         </PieChart>
