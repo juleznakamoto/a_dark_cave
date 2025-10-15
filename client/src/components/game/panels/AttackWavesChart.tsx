@@ -41,15 +41,15 @@ export default function AttackWavesChart() {
         </span>
       </div>
       <div className="relative h-3 w-full overflow-hidden rounded-full bg-secondary">
-        {/* Completed waves - dark red */}
+        {/* Completed waves - normal red */}
         <div 
-          className="absolute h-full bg-red-950 transition-all duration-300"
+          className="absolute h-full bg-red-900 transition-all duration-300"
           style={{ width: `${completedPercentage}%` }}
         />
-        {/* Current wave - normal red */}
+        {/* Current wave - dark red */}
         {currentWaveIndex !== -1 && (
           <div 
-            className="absolute h-full bg-red-900 transition-all duration-300"
+            className="absolute h-full bg-red-950 transition-all duration-300"
             style={{ 
               left: `${completedPercentage}%`,
               width: `${currentWavePercentage - completedPercentage}%` 
