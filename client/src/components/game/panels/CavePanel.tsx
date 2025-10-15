@@ -38,6 +38,7 @@ export default function CavePanel() {
             { id: "lowChamber", label: "Low Chamber" },
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "blastPortal", label: "Blast Portal" },
+            { id: "encounterBeyondPortal", label: "Venture Beyond Portal" }
           ],
         },
       ],
