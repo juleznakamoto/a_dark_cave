@@ -481,7 +481,7 @@ uniform float time;
 // COLOR CUSTOMIZATION - Modify these values to change the color scheme
 // Each vec3 represents RGB values (0.0 to 1.0)
 #define PRIMARY_COLOR vec3(1.0, 0.4, 0.2)      // Orange-red (default)
-#define SECONDARY_COLOR vec3(1.0, 0.8, 0.3)    // Yellow-orange
+#define SECONDARY_COLOR  vec3(0.8, 0.2, 1.0)      // Purple
 #define TERTIARY_COLOR vec3(1.0, 0.5, 0.0)     // Bright orange
 #define BACKGROUND_TINT vec3(0.25, 0.137, 0.05) // Dark orange-brown
 
