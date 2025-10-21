@@ -45,6 +45,9 @@ import {
 
 import {
   handleCraftBoneTotem,
+  handleCraftBoneTotems2,
+  handleCraftBoneTotems3,
+  handleCraftBoneTotems5,
   handleCraftEmberBomb,
   handleCraftCinderflameBomb,
 } from '@/game/rules/caveCraftResources';
