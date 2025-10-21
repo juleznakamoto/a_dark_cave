@@ -55,16 +55,35 @@ export default function SidePanelSection({
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
     Set<string>
   >(new Set());
+  const [hoveredTooltips, setHoveredTooltips] = useState<Set<string>>(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
   const setFlag = useGameStore((state) => state.setFlag);
+  const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
-  const handleStoneAxeHover = () => {
-    if (!gameState.flags.stoneAxeTooltipShown) {
-      setFlag('stoneAxeTooltipShown', true);
+  const handleTooltipHover = (itemId: string) => {
+    // Clear any existing timer for this item
+    const existingTimer = hoverTimersRef.current.get(itemId);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
     }
+
+    // Set a timer to mark this tooltip as hovered after 250ms
+    const timer = setTimeout(() => {
+      setHoveredTooltips((prev) => new Set([...prev, itemId]));
+      hoverTimersRef.current.delete(itemId);
+    }, 250);
+
+    hoverTimersRef.current.set(itemId, timer);
   };
+
+  // Cleanup timers on unmount
+  useEffect(() => {
+    return () => {
+      hoverTimersRef.current.forEach((timer) => clearTimeout(timer));
+    };
+  }, []);
 
   useEffect(() => {
     const newAnimatedItems = new Set<string>();
@@ -170,9 +189,6 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
-
-    // Check if this is the stone axe and tooltip hasn't been shown
-    const isStoneAxePulsing = item.id === 'stone_axe' && !gameState.flags.stoneAxeTooltipShown;
 
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
@@ -288,6 +304,9 @@ export default function SidePanelSection({
       </div>
     );
 
+    // Check if this item should pulse (has tooltip and hasn't been hovered yet)
+    const shouldPulse = !hoveredTooltips.has(item.id);
+
     // If this item has effects or tooltip, wrap it in a tooltip
     if (
       (hasEffect &&
@@ -304,8 +323,8 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(isStoneAxePulsing && "stone-axe-pulse")}
-                onMouseEnter={item.id === 'stone_axe' ? handleStoneAxeHover : undefined}
+                className={cn(shouldPulse && "stone-axe-pulse")}
+                onMouseEnter={() => handleTooltipHover(item.id)}
               >
                 {itemContent}
               </div>
@@ -438,10 +457,18 @@ export default function SidePanelSection({
 
     // If this is madness with events, show tooltip
     if (isMadnessTooltip) {
+      const shouldPulse = !hoveredTooltips.has(item.id);
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div 
+                className={cn(shouldPulse && "stone-axe-pulse")}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+              >
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">
                 +{eventMadness} Madness from Events
@@ -454,10 +481,18 @@ export default function SidePanelSection({
 
     // If this item has a tooltip, wrap it in a tooltip
     if (item.tooltip) {
+      const shouldPulse = !hoveredTooltips.has(item.id);
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger asChild>{itemContent}</TooltipTrigger>
+            <TooltipTrigger asChild>
+              <div 
+                className={cn(shouldPulse && "stone-axe-pulse")}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+              >
+                {itemContent}
+              </div>
+            </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">{item.tooltip}</p>
             </TooltipContent>
