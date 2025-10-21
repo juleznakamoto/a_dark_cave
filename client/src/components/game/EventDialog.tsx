@@ -291,21 +291,21 @@ export default function EventDialog({
               const testResult = choice.effect(gameState);
               const canAfford = Object.keys(testResult).length > 0;
               
+              const isDisabled = !canAfford ||
+                (timeRemaining !== null && timeRemaining <= 0) ||
+                fallbackExecutedRef.current;
+              
               return (
                 <div key={choice.id}>
                   {cost ? (
                     <HoverCard openDelay={100} closeDelay={100}>
                       <HoverCardTrigger asChild>
-                        <div>
+                        <span className="inline-block w-full">
                           <Button
                             onClick={() => handleChoice(choice.id)}
                             variant="outline"
                             className="w-full text-left justify-between"
-                            disabled={
-                              !canAfford ||
-                              (timeRemaining !== null && timeRemaining <= 0) ||
-                              fallbackExecutedRef.current
-                            }
+                            disabled={isDisabled}
                           >
                             <span>{choice.label}</span>
                             {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
@@ -326,7 +326,7 @@ export default function EventDialog({
                               </div>
                             )}
                           </Button>
-                        </div>
+                        </span>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-auto p-2">
                         <div className="text-xs whitespace-nowrap">
