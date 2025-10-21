@@ -13,7 +13,52 @@ export const caveCraftResources: Record<string, Action> = {
       "resources.bones": 50,
     },
     effects: {
-      "resources.bone_totem": 1,
+      "resources.bone_totem": 2,
+      "story.seen.hasBoneTotem": true,
+    },
+    cooldown: 20,
+  },
+  craftBoneTotems2: {
+    id: "craftBoneTotems2",
+    label: "Bone Totems",
+    show_when: {
+      "buildings.shrine": 1,
+    },
+    cost: {
+      "resources.bones": 100,
+    },
+    effects: {
+      "resources.bone_totem": 2,
+      "story.seen.hasBoneTotem": true,
+    },
+    cooldown: 20,
+  },
+  craftBoneTotems3: {
+    id: "craftBoneTotems3",
+    label: "Bone Totems",
+    show_when: {
+      "buildings.temple": 1,
+    },
+    cost: {
+      "resources.bones": 150,
+    },
+    effects: {
+      "resources.bone_totem": 3,
+      "story.seen.hasBoneTotem": true,
+    },
+    cooldown: 20,
+  },
+  craftBoneTotems5: {
+    id: "craftBoneTotems5",
+    label: "Bone Totems",
+    show_when: {
+      "buildings.sanctum": 1,
+    },
+    cost: {
+      "resources.bones": 500,
+    },
+    effects: {
+      "resources.bone_totem": 5,
       "story.seen.hasBoneTotem": true,
     },
     cooldown: 20,
@@ -59,6 +104,24 @@ export const caveCraftResources: Record<string, Action> = {
 // Action handlers
 export function handleCraftBoneTotem(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftBoneTotem', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBoneTotems2(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBoneTotems2', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBoneTotems3(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBoneTotems3', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftBoneTotems5(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftBoneTotems5', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

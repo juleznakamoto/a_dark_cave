@@ -425,6 +425,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 5000,
         "resources.stone": 2500,
+      },
     },
     effects: {
       1: {

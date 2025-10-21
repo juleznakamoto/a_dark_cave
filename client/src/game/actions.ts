@@ -228,6 +228,12 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftGrenadierBag(state, result);
     case 'craftBoneTotem':
       return handleCraftBoneTotem(state, result);
+    case 'craftBoneTotems2':
+      return handleCraftBoneTotems2(state, result);
+    case 'craftBoneTotems3':
+      return handleCraftBoneTotems3(state, result);
+    case 'craftBoneTotems5':
+      return handleCraftBoneTotems5(state, result);
     case 'craftEmberBomb':
       return handleCraftEmberBomb(state, result);
     case 'craftCinderflameBomb':
