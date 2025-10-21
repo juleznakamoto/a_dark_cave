@@ -342,7 +342,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                ref={createPulseRef(item.id, shouldPulse)}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -483,7 +483,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                ref={createPulseRef(item.id, shouldPulse)}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -508,7 +508,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                ref={createPulseRef(item.id, shouldPulse)}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >

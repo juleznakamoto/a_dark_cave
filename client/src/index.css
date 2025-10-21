@@ -200,12 +200,16 @@
 }
 
 @keyframes new-item-pulse {
-  0%, 100% { text-shadow: 0 0 0 rgba(255,255,255,0.5); }
-  50% { text-shadow: 0 0 6px rgba(255,255,255,1); }
+  0%, 100% { 
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.4), 0 0 4px rgba(255, 255, 255, 0.2);
+  }
+  50% { 
+    text-shadow: 0 0 6px rgba(255, 255, 255, 0.8), 0 0 10px rgba(255, 255, 255, 0.4);
+  }
 }
 
 .new-item-pulse {
-  animation: new-item-pulse 1.5s ease-in-out infinite;
+  animation: new-item-pulse 2.0s ease-in-out infinite;
 }
 
 /* Button glow animation */
