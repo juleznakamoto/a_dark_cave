@@ -36,7 +36,7 @@ export function handleBoneTotems(
 ): ActionResult {
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-  const currentCost = 10 + usageCount;
+  const currentCost = 5 + usageCount;
 
   // Check if player has enough bone totems for the current price
   if ((state.resources.bone_totem || 0) < currentCost) {

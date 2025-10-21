@@ -206,10 +206,10 @@ function handleStarvationCheck() {
   const availableFood = state.resources.food;
 
   if (availableFood === 0) {
-    // 15% chance for each villager to die from starvation when food is 0
+    // 5% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.15) {
+      if (Math.random() < 0.05) {
         starvationDeaths++;
       }
     }
@@ -249,10 +249,10 @@ function handleFreezingCheck() {
   );
 
   if (totalPopulation > 0 && state.resources.wood === 0) {
-    // 10% chance for each villager to die from cold
+    // 5% chance for each villager to die from cold
     let freezingDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.1) {
+      if (Math.random() < 0.05) {
         freezingDeaths++;
       }
     }

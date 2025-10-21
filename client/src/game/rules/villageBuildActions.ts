@@ -451,7 +451,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 500,
-        "resources.stone": 250,
+        "resources.stone": 500,
       },
     },
     effects: {
@@ -477,7 +477,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 1000,
-        "resources.stone": 500,
+        "resources.stone": 750,
         "resources.bones": 500,
         "resources.silver": 25,
       },
@@ -540,10 +540,8 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 5000,
-        "resources.gold": 100,
-        "resources.silver": 200,
+        "resources.gold": 150,
         "resources.obsidian": 500,
-        "resources.adamant": 250,
       },
     },
     effects: {
@@ -573,8 +571,6 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.stone": 10000,
         "resources.gold": 250,
-        "resources.silver": 500,
-        "resources.obsidian": 1000,
         "resources.adamant": 500,
         "resources.moonstone": 50,
       },
@@ -629,7 +625,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2000,
+        "resources.wood": 2500,
         "resources.stone": 1000,
       },
     },
@@ -681,7 +677,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 5000,
-        "resources.steel": 500,
+        "resources.steel": 1000,
       },
     },
     effects: {
