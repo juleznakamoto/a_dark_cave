@@ -329,12 +329,14 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger 
-              asChild
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-            >
-              {itemContent}
+            <TooltipTrigger asChild>
+              <div 
+                className={pulseClass}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
+              >
+                {itemContent}
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-pre-line">
@@ -468,12 +470,14 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger 
-              asChild
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-            >
-              {itemContent}
+            <TooltipTrigger asChild>
+              <div 
+                className={pulseClass}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
+              >
+                {itemContent}
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">
@@ -491,12 +495,14 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
-            <TooltipTrigger 
-              asChild
-              onMouseEnter={() => handleTooltipHover(item.id)}
-              onMouseLeave={() => handleTooltipLeave(item.id)}
-            >
-              {itemContent}
+            <TooltipTrigger asChild>
+              <div 
+                className={pulseClass}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
+              >
+                {itemContent}
+              </div>
             </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">{item.tooltip}</p>
