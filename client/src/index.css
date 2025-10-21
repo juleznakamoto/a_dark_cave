@@ -209,7 +209,7 @@
 }
 
 .new-item-pulse {
-  animation: new-item-pulse 2.0s ease-in-out infinite;
+  animation: new-item-pulse 1.0s ease-in-out infinite;
 }
 
 /* Button glow animation */
