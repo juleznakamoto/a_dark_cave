@@ -205,7 +205,7 @@
 }
 
 .new-item-pulse {
-  animation: new-item-pulse 1.5s ease-in-out infinite alternate;
+  animation: new-item-pulse 10.0s infinite;
 }
 
 /* Button glow animation */
