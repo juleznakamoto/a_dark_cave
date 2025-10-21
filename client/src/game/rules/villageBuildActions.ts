@@ -104,7 +104,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
     },
-    cooldown: 10,
+    cooldown: 60,
   },
 
   buildCabin: {
@@ -120,7 +120,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 200,
-        "resources.stone": 50,
+        "resources.stone": 100,
       },
     },
     effects: {
@@ -277,7 +277,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 500,
-        "resources.stone": 250,
+        "resources.stone": 500,
         "resources.iron": 100,
       },
     },
@@ -302,8 +302,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2000,
-        "resources.stone": 2000,
+        "resources.wood": 2500,
+        "resources.stone": 2500,
       },
     },
     effects: {
@@ -334,8 +334,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 4000,
-        "resources.stone": 2000,
+        "resources.wood": 5000,
+        "resources.stone": 2500,
       },
     },
     effects: {
@@ -364,8 +364,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 3000,
-        "resources.stone": 3000,
+        "resources.wood": 5000,
+        "resources.stone": 2500,
       },
     },
     effects: {
@@ -394,8 +394,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 500,
-        "resources.stone": 500,
+        "resources.wood": 750,
+        "resources.stone": 750,
       },
     },
     effects: {
@@ -423,9 +423,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.stone": 2500,
         "resources.wood": 5000,
-      },
+        "resources.stone": 2500,
     },
     effects: {
       1: {
@@ -921,7 +920,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
       },
     },
-    cooldown: 15,
+    cooldown: 60,
   },
 
   buildWizardTower: {
