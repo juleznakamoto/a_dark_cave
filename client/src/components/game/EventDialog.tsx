@@ -289,42 +289,42 @@ export default function EventDialog({
               return (
                 <div key={choice.id}>
                   {cost ? (
-                    <HoverCard openDelay={200}>
+                    <HoverCard openDelay={100} closeDelay={100}>
                       <HoverCardTrigger asChild>
-                        <Button
-                          onClick={() => handleChoice(choice.id)}
-                          variant="outline"
-                          className="w-full text-left justify-between"
-                          disabled={
-                            (timeRemaining !== null && timeRemaining <= 0) ||
-                            fallbackExecutedRef.current
-                          }
-                        >
-                          <span>{choice.label}</span>
-                          {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                            <div className="flex gap-1 ml-2">
-                              {choice.relevant_stats.map((stat) => {
-                                const statInfo = statIcons[stat.toLowerCase()];
-                                if (!statInfo) return null;
-                                return (
-                                  <span
-                                    key={stat}
-                                    className={`text-xs ${statInfo.color}`}
-                                    title={stat}
-                                  >
-                                    {statInfo.icon}
-                                  </span>
-                                );
-                              })}
-                            </div>
-                          )}
-                        </Button>
+                        <div>
+                          <Button
+                            onClick={() => handleChoice(choice.id)}
+                            variant="outline"
+                            className="w-full text-left justify-between"
+                            disabled={
+                              (timeRemaining !== null && timeRemaining <= 0) ||
+                              fallbackExecutedRef.current
+                            }
+                          >
+                            <span>{choice.label}</span>
+                            {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                              <div className="flex gap-1 ml-2">
+                                {choice.relevant_stats.map((stat) => {
+                                  const statInfo = statIcons[stat.toLowerCase()];
+                                  if (!statInfo) return null;
+                                  return (
+                                    <span
+                                      key={stat}
+                                      className={`text-xs ${statInfo.color}`}
+                                      title={stat}
+                                    >
+                                      {statInfo.icon}
+                                    </span>
+                                  );
+                                })}
+                              </div>
+                            )}
+                          </Button>
+                        </div>
                       </HoverCardTrigger>
-                      <HoverCardContent side="bottom" className="w-auto p-2">
-                        <div className="flex items-center space-x-1">
-                          <div className="space-y-1">
-                            <p className="text-sm font-normal leading-none">Cost: {cost}</p>
-                          </div>
+                      <HoverCardContent className="w-auto p-2">
+                        <div className="text-xs whitespace-nowrap">
+                          -{cost}
                         </div>
                       </HoverCardContent>
                     </HoverCard>
