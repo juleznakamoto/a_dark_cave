@@ -291,16 +291,16 @@ export default function EventDialog({
               const testResult = choice.effect(gameState);
               const canAfford = Object.keys(testResult).length > 0;
               
+              const isDisabled = !canAfford ||
+                (timeRemaining !== null && timeRemaining <= 0) ||
+                fallbackExecutedRef.current;
+              
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
                   variant="outline"
-                  className="w-full text-left justify-between"
-                  disabled={
-                    !canAfford ||
-                    (timeRemaining !== null && timeRemaining <= 0) ||
-                    fallbackExecutedRef.current
-                  }
+                  className={`w-full text-left justify-between ${cost && isDisabled ? 'pointer-events-auto' : ''}`}
+                  disabled={isDisabled}
                 >
                   <span>{choice.label}</span>
                   {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
