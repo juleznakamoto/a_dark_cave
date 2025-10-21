@@ -19,11 +19,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
-    message: [
+    message:
       "At dawn, men glimpse a pale, tall and slender figure at the woods' edge. It stands watching. What do you do?",
-      "In the grey morning, a tall, pale and slender shape lingers at the treeline, unmoving. What do you do?",
-      "Villagers report of a tall, pale, slender figure in the mist, silent at the forest's edge. What do you do?",
-    ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
     repeatable: true,
