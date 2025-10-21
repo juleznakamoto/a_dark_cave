@@ -21,13 +21,37 @@ import {
 
 // Helper function to extract cost from choice effect
 function extractCostFromChoice(choice: any, gameState: any): string | null {
-  // Try to execute the effect with current state to see if it returns a cost message
-  const testResult = choice.effect(gameState);
+  // For woodcutter events, check if the choice has a cost property
+  if (choice.cost) {
+    return choice.cost;
+  }
 
-  // Check for food costs in common woodcutter events
-  if (choice.id === "acceptServices") {
-    // Check the event message or effect logic for costs
-    return null; // Will be determined from event context
+  // Try to extract cost from the effect function by testing it
+  try {
+    const testResult = choice.effect(gameState);
+    
+    // Check if the result contains a _cost property (some events use this)
+    if (testResult._cost) {
+      return testResult._cost;
+    }
+    
+    // Check for resource costs in the test result
+    const costs: string[] = [];
+    if (testResult.resources) {
+      Object.entries(testResult.resources).forEach(([resource, value]) => {
+        const currentValue = gameState.resources[resource as keyof typeof gameState.resources] || 0;
+        const cost = currentValue - (value as number);
+        if (cost > 0) {
+          costs.push(`${cost} ${resource}`);
+        }
+      });
+    }
+    
+    if (costs.length > 0) {
+      return costs.join(", ");
+    }
+  } catch (e) {
+    // If effect execution fails, ignore
   }
 
   return null;
