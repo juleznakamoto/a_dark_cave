@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import {
   clothingEffects,
   weaponEffects,
@@ -326,17 +326,22 @@ export default function SidePanelSection({
           title === "Blessings")) ||
       (hasTooltip && (title === "Fortifications" || title === "Buildings"))
     ) {
+      // Memoize the wrapper to prevent re-renders from restarting the animation
+      const tooltipWrapper = useMemo(() => (
+        <div 
+          className={cn(shouldPulse && "new-item-pulse")}
+          onMouseEnter={() => handleTooltipHover(item.id)}
+          onMouseLeave={() => handleTooltipLeave(item.id)}
+        >
+          {itemContent}
+        </div>
+      ), [shouldPulse, item.id, itemContent]);
+
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div 
-                className={cn(shouldPulse && "new-item-pulse")}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-              >
-                {itemContent}
-              </div>
+              {tooltipWrapper}
             </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-pre-line">
@@ -467,17 +472,21 @@ export default function SidePanelSection({
     // If this is madness with events, show tooltip
     if (isMadnessTooltip) {
       const shouldPulse = !hoveredTooltips.has(item.id);
+      const tooltipWrapper = useMemo(() => (
+        <div 
+          className={cn(shouldPulse && "new-item-pulse")}
+          onMouseEnter={() => handleTooltipHover(item.id)}
+          onMouseLeave={() => handleTooltipLeave(item.id)}
+        >
+          {itemContent}
+        </div>
+      ), [shouldPulse, item.id, itemContent]);
+
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div 
-                className={cn(shouldPulse && "new-item-pulse")}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-              >
-                {itemContent}
-              </div>
+              {tooltipWrapper}
             </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">
@@ -492,17 +501,21 @@ export default function SidePanelSection({
     // If this item has a tooltip, wrap it in a tooltip
     if (item.tooltip) {
       const shouldPulse = !hoveredTooltips.has(item.id);
+      const tooltipWrapper = useMemo(() => (
+        <div 
+          className={cn(shouldPulse && "new-item-pulse")}
+          onMouseEnter={() => handleTooltipHover(item.id)}
+          onMouseLeave={() => handleTooltipLeave(item.id)}
+        >
+          {itemContent}
+        </div>
+      ), [shouldPulse, item.id, itemContent]);
+
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>
-              <div 
-                className={cn(shouldPulse && "new-item-pulse")}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-              >
-                {itemContent}
-              </div>
+              {tooltipWrapper}
             </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">{item.tooltip}</p>
