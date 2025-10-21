@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import {
   clothingEffects,
   weaponEffects,
@@ -85,6 +85,17 @@ export default function SidePanelSection({
       hoverTimersRef.current.delete(itemId);
     }
   };
+
+  // Create a ref callback that applies the pulse class directly to the DOM
+  const createPulseRef = useCallback((itemId: string, shouldPulse: boolean) => {
+    return (element: HTMLDivElement | null) => {
+      if (element && shouldPulse && !element.classList.contains('new-item-pulse')) {
+        element.classList.add('new-item-pulse');
+      } else if (element && !shouldPulse && element.classList.contains('new-item-pulse')) {
+        element.classList.remove('new-item-pulse');
+      }
+    };
+  }, []);
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -331,8 +342,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                key={`tooltip-${item.id}`}
-                className={cn(shouldPulse && "new-item-pulse")}
+                ref={createPulseRef(item.id, shouldPulse)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -473,8 +483,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                key={`madness-${item.id}`}
-                className={cn(shouldPulse && "new-item-pulse")}
+                ref={createPulseRef(item.id, shouldPulse)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -499,8 +508,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                key={`regular-${item.id}`}
-                className={cn(shouldPulse && "new-item-pulse")}
+                ref={createPulseRef(item.id, shouldPulse)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
