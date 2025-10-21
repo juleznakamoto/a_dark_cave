@@ -814,7 +814,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Exquisitely crafted tool of a long-forgotten master builder",
     bonuses: {
       generalBonuses: {
-        craftingCostReduction: 0.1,
         buildingCostReduction: 0.1,
       },
     },
