@@ -261,8 +261,15 @@ export default function SidePanelSection({
     const isMadness = item.id === "madness";
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
 
-    // Calculate pulse class once like madness pulse
-    const newItemPulseClass = !hoveredTooltips.has(item.id) ? "new-item-pulse" : "";
+    // Only apply pulse to items that have tooltips (effects or item.tooltip)
+    const shouldPulse = (hasEffect && 
+      (title === "Relics" || title === "Tools" || title === "Weapons" || 
+       title === "Clothing" || title === "Schematics" || title === "Blessings")) ||
+      (hasTooltip && (title === "Fortifications" || title === "Buildings")) ||
+      isMadnessTooltip ||
+      item.tooltip;
+    
+    const newItemPulseClass = (shouldPulse && !hoveredTooltips.has(item.id)) ? "new-item-pulse" : "";
 
     const itemContent = (
       <div
