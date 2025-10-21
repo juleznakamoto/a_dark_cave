@@ -6,7 +6,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "foodGone",
     condition: (state: GameState) => state.resources.food > 50,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 30,
     repeatable: true,
     message: [
       "Food is missing. Villagers speak of voices in the dark.",
@@ -31,7 +31,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     id: "villagerMissing",
     condition: (state: GameState) => state.villagers.free > 0,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 30,
     message: [
       "One hut lies empty. Its occupant is gone.",
       "The wind moves through an empty hut. The villager is gone.",
