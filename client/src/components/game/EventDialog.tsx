@@ -299,7 +299,7 @@ export default function EventDialog({
                 <Button
                   onClick={() => handleChoice(choice.id)}
                   variant="outline"
-                  className={`w-full text-left justify-between ${cost && isDisabled ? 'pointer-events-auto' : ''}`}
+                  className="w-full text-left justify-between"
                   disabled={isDisabled}
                 >
                   <span>{choice.label}</span>
@@ -323,23 +323,19 @@ export default function EventDialog({
                 </Button>
               );
               
-              return (
-                <div key={choice.id}>
-                  {cost ? (
-                    <HoverCard openDelay={100} closeDelay={100}>
-                      <HoverCardTrigger asChild>
-                        <div>{buttonContent}</div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-auto p-2">
-                        <div className="text-xs whitespace-nowrap">
-                          -{cost}
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
-                  ) : (
-                    buttonContent
-                  )}
-                </div>
+              return cost ? (
+                <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
+                  <HoverCardTrigger asChild>
+                    {buttonContent}
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-auto p-2">
+                    <div className="text-xs whitespace-nowrap">
+                      -{cost}
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              ) : (
+                <div key={choice.id}>{buttonContent}</div>
               );
             })}
           </div>
