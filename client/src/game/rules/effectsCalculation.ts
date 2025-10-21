@@ -218,6 +218,7 @@ export function getActionBonuses(
 
   // Define mining actions
   const miningActions = [
+    "mineStone",
     "mineIron",
     "mineCoal",
     "mineSulfur",
