@@ -291,42 +291,44 @@ export default function EventDialog({
               const testResult = choice.effect(gameState);
               const canAfford = Object.keys(testResult).length > 0;
               
-              const isDisabled = !canAfford ||
-                (timeRemaining !== null && timeRemaining <= 0) ||
-                fallbackExecutedRef.current;
+              const buttonContent = (
+                <Button
+                  onClick={() => handleChoice(choice.id)}
+                  variant="outline"
+                  className="w-full text-left justify-between"
+                  disabled={
+                    !canAfford ||
+                    (timeRemaining !== null && timeRemaining <= 0) ||
+                    fallbackExecutedRef.current
+                  }
+                >
+                  <span>{choice.label}</span>
+                  {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                    <div className="flex gap-1 ml-2">
+                      {choice.relevant_stats.map((stat) => {
+                        const statInfo = statIcons[stat.toLowerCase()];
+                        if (!statInfo) return null;
+                        return (
+                          <span
+                            key={stat}
+                            className={`text-xs ${statInfo.color}`}
+                            title={stat}
+                          >
+                            {statInfo.icon}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Button>
+              );
               
               return (
                 <div key={choice.id}>
                   {cost ? (
                     <HoverCard openDelay={100} closeDelay={100}>
                       <HoverCardTrigger asChild>
-                        <span className="inline-block w-full">
-                          <Button
-                            onClick={() => handleChoice(choice.id)}
-                            variant="outline"
-                            className="w-full text-left justify-between"
-                            disabled={isDisabled}
-                          >
-                            <span>{choice.label}</span>
-                            {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                              <div className="flex gap-1 ml-2">
-                                {choice.relevant_stats.map((stat) => {
-                                  const statInfo = statIcons[stat.toLowerCase()];
-                                  if (!statInfo) return null;
-                                  return (
-                                    <span
-                                      key={stat}
-                                      className={`text-xs ${statInfo.color}`}
-                                      title={stat}
-                                    >
-                                      {statInfo.icon}
-                                    </span>
-                                  );
-                                })}
-                              </div>
-                            )}
-                          </Button>
-                        </span>
+                        <div>{buttonContent}</div>
                       </HoverCardTrigger>
                       <HoverCardContent className="w-auto p-2">
                         <div className="text-xs whitespace-nowrap">
@@ -335,34 +337,7 @@ export default function EventDialog({
                       </HoverCardContent>
                     </HoverCard>
                   ) : (
-                    <Button
-                      onClick={() => handleChoice(choice.id)}
-                      variant="outline"
-                      className="w-full text-left justify-between"
-                      disabled={
-                        (timeRemaining !== null && timeRemaining <= 0) ||
-                        fallbackExecutedRef.current
-                      }
-                    >
-                      <span>{choice.label}</span>
-                      {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                        <div className="flex gap-1 ml-2">
-                          {choice.relevant_stats.map((stat) => {
-                            const statInfo = statIcons[stat.toLowerCase()];
-                            if (!statInfo) return null;
-                            return (
-                              <span
-                                key={stat}
-                                className={`text-xs ${statInfo.color}`}
-                                title={stat}
-                              >
-                                {statInfo.icon}
-                              </span>
-                            );
-                          })}
-                        </div>
-                      )}
-                    </Button>
+                    buttonContent
                   )}
                 </div>
               );
