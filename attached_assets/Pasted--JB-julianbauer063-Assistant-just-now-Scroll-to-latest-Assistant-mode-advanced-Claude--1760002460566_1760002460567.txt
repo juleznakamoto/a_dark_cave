@@ -517,7 +517,7 @@ Selection deleted
 }
 
 /* Stone axe pulse animation */
-@keyframes stone-axe-pulse {
+@keyframes new-item-pulse {
   0%, 100% {
     text-shadow: 0 0 1px 
 rgba(255, 255, 255, 0.9);
@@ -528,8 +528,8 @@ rgba(255, 255, 255, 0.9);
   }
 }
 
-div.stone-axe-pulse {
-  animation: stone-axe-pulse 1.0s ease-in-out infinite;
+div.new-item-pulse {
+  animation: new-item-pulse 1.0s ease-in-out infinite;
 }
 
 /* Custom madness pulse animations - 4 levels */

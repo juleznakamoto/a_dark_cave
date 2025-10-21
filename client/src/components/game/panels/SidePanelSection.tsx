@@ -69,11 +69,11 @@ export default function SidePanelSection({
       clearTimeout(existingTimer);
     }
 
-    // Set a timer to mark this tooltip as hovered after 250ms
+    // Set a timer to mark this tooltip as hovered after 500ms
     const timer = setTimeout(() => {
       setHoveredTooltips((prev) => new Set([...prev, itemId]));
       hoverTimersRef.current.delete(itemId);
-    }, 250);
+    }, 500);
 
     hoverTimersRef.current.set(itemId, timer);
   };
@@ -331,7 +331,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(shouldPulse && "stone-axe-pulse")}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -472,7 +472,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(shouldPulse && "stone-axe-pulse")}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -497,7 +497,7 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={cn(shouldPulse && "stone-axe-pulse")}
+                className={cn(shouldPulse && "new-item-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
