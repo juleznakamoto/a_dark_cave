@@ -286,6 +286,14 @@ export default function EventDialog({
           <div className="grid grid-cols-2 gap-3 mt-4">
             {eventChoices.map((choice) => {
               const cost = isWoodcutterEvent ? extractCostFromChoice(choice, gameState) : null;
+              
+              // Check if player can afford this choice
+              let canAfford = true;
+              if (cost && choice.id === 'acceptServices') {
+                const costAmount = parseInt(cost.split(' ')[0]);
+                canAfford = gameState.resources.food >= costAmount;
+              }
+              
               return (
                 <div key={choice.id}>
                   {cost ? (
@@ -297,6 +305,7 @@ export default function EventDialog({
                             variant="outline"
                             className="w-full text-left justify-between"
                             disabled={
+                              !canAfford ||
                               (timeRemaining !== null && timeRemaining <= 0) ||
                               fallbackExecutedRef.current
                             }
