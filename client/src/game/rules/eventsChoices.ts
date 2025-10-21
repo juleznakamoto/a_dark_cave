@@ -1037,7 +1037,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "freeSlaves",
-        label: "Free the captives",
+        label: "Try Freeing the captives",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);

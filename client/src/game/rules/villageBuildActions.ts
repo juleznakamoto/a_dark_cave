@@ -1176,7 +1176,7 @@ export function handleBuildBlacksmith(
     blacksmithResult.logEntries!.push({
       id: `blacksmith-built-${Date.now()}`,
       message:
-        "The blacksmith's forge comes alive, its anvil ringing with the promise of stronger tools and weapons. The heart of industry beats in your village.",
+        "The blacksmith's forge comes alive, with it the promise of stronger tools and weapons. The heart of industry now beats in the village.",
       timestamp: Date.now(),
       type: "system",
     });

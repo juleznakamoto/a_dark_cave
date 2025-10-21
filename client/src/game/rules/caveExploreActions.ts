@@ -536,7 +536,7 @@ export function handleVentureDeeper(
     result.logEntries!.push({
       id: `venture-deeper-${Date.now()}`,
       message:
-        "The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend, but the promise of greater treasures draws you forward.",
+        "The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend.",
       timestamp: Date.now(),
       type: "system",
     });
