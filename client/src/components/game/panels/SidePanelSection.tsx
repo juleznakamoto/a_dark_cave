@@ -78,6 +78,14 @@ export default function SidePanelSection({
     hoverTimersRef.current.set(itemId, timer);
   };
 
+  const handleTooltipLeave = (itemId: string) => {
+    const timer = hoverTimersRef.current.get(itemId);
+    if (timer) {
+      clearTimeout(timer);
+      hoverTimersRef.current.delete(itemId);
+    }
+  };
+
   // Cleanup timers on unmount
   useEffect(() => {
     return () => {
@@ -325,6 +333,7 @@ export default function SidePanelSection({
               <div 
                 className={cn(shouldPulse && "stone-axe-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
               >
                 {itemContent}
               </div>
@@ -465,6 +474,7 @@ export default function SidePanelSection({
               <div 
                 className={cn(shouldPulse && "stone-axe-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
               >
                 {itemContent}
               </div>
@@ -489,6 +499,7 @@ export default function SidePanelSection({
               <div 
                 className={cn(shouldPulse && "stone-axe-pulse")}
                 onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
               >
                 {itemContent}
               </div>
