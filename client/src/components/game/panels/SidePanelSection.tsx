@@ -421,6 +421,16 @@ export default function SidePanelSection({
                             % Craft Discount
                           </div>
                         )}
+                        {effect.bonuses.generalBonuses
+                          .buildingCostReduction && (
+                          <div>
+                            {Math.floor(
+                              effect.bonuses.generalBonuses
+                                .buildingCostReduction * 100,
+                            )}
+                            % Build Discount
+                          </div>
+                        )}
                       </>
                     )}
                     {title !== "Blessings" && effect.bonuses.actionBonuses &&
