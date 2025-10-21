@@ -1140,16 +1140,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acceptServices",
         label: "Accept services",
         effect: (state: GameState) => {
-          if (state.resources.food < 2500000) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+          if (state.resources.food < 25) {
+            return {};
           }
 
           return {
             resources: {
               ...state.resources,
               food: state.resources.food - 25,
+              wood: state.resources.wood + 100,
             },
             story: {
               ...state.story,
@@ -1197,9 +1196,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 50) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+            return {};
           }
 
           return {
@@ -1254,9 +1251,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 100) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+            return {};
           }
 
           return {
@@ -1311,9 +1306,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 150) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+            return {};
           }
 
           const betrayalChance = 0.3333; // 33.33%
@@ -1389,9 +1382,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 200) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+            return {};
           }
 
           const betrayalChance = 0.5; // 50%
@@ -1467,9 +1458,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 250) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+            return {};
           }
 
           // 100% betrayal
