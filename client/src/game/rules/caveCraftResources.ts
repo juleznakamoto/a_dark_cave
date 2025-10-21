@@ -8,6 +8,7 @@ export const caveCraftResources: Record<string, Action> = {
     label: "Bone Totem",
     show_when: {
       "buildings.altar": 1,
+      "buildings.shrine": 0,
     },
     cost: {
       "resources.bones": 50,
@@ -23,6 +24,7 @@ export const caveCraftResources: Record<string, Action> = {
     label: "Bone Totems",
     show_when: {
       "buildings.shrine": 1,
+      "buildings.temple": 0,
     },
     cost: {
       "resources.bones": 100,
@@ -38,6 +40,7 @@ export const caveCraftResources: Record<string, Action> = {
     label: "Bone Totems",
     show_when: {
       "buildings.temple": 1,
+      "buildings.sanctum": 0,
     },
     cost: {
       "resources.bones": 150,
