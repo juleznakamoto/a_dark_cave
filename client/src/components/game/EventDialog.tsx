@@ -287,12 +287,9 @@ export default function EventDialog({
             {eventChoices.map((choice) => {
               const cost = isWoodcutterEvent ? extractCostFromChoice(choice, gameState) : null;
               
-              // Check if player can afford this choice
-              let canAfford = true;
-              if (cost && choice.id === 'acceptServices') {
-                const costAmount = parseInt(cost.split(' ')[0]);
-                canAfford = gameState.resources.food >= costAmount;
-              }
+              // Check if choice can be afforded (same logic as merchant events)
+              const testResult = choice.effect(gameState);
+              const canAfford = Object.keys(testResult).length > 0;
               
               return (
                 <div key={choice.id}>
