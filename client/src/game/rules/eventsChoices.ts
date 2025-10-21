@@ -1140,7 +1140,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acceptServices",
         label: "Accept services",
         effect: (state: GameState) => {
-          if (state.resources.food < 25000000) {
+          if (state.resources.food < 2500000) {
             return {};
           }
 
