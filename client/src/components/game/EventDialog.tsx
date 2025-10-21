@@ -13,6 +13,25 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+// Helper function to extract cost from choice effect
+function extractCostFromChoice(choice: any, gameState: any): string | null {
+  // Try to execute the effect with current state to see if it returns a cost message
+  const testResult = choice.effect(gameState);
+
+  // Check for food costs in common woodcutter events
+  if (choice.id === "acceptServices") {
+    // Check the event message or effect logic for costs
+    return null; // Will be determined from event context
+  }
+
+  return null;
+}
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -160,7 +179,7 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
-        
+
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -179,6 +198,7 @@ export default function EventDialog({
 
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
+  const isWoodcutterEvent = event?.id.includes("woodcutter");
 
   return (
     <>
@@ -240,37 +260,83 @@ export default function EventDialog({
           </DialogHeader>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
-            {eventChoices.map((choice) => (
-              <Button
-                key={choice.id}
-                onClick={() => handleChoice(choice.id)}
-                variant="outline"
-                className="w-full text-left justify-between"
-                disabled={
-                  (timeRemaining !== null && timeRemaining <= 0) ||
-                  fallbackExecutedRef.current
-                }
-              >
-                <span>{choice.label}</span>
-                {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                  <div className="flex gap-1 ml-2">
-                    {choice.relevant_stats.map((stat) => {
-                      const statInfo = statIcons[stat.toLowerCase()];
-                      if (!statInfo) return null;
-                      return (
-                        <span
-                          key={stat}
-                          className={`text-xs ${statInfo.color}`}
-                          title={stat}
+            {eventChoices.map((choice) => {
+              const cost = isWoodcutterEvent ? extractCostFromChoice(choice, gameState) : null;
+              return (
+                <div key={choice.id}>
+                  {cost ? (
+                    <HoverCard openDelay={200}>
+                      <HoverCardTrigger asChild>
+                        <Button
+                          onClick={() => handleChoice(choice.id)}
+                          variant="outline"
+                          className="w-full text-left justify-between"
+                          disabled={
+                            (timeRemaining !== null && timeRemaining <= 0) ||
+                            fallbackExecutedRef.current
+                          }
                         >
-                          {statInfo.icon}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </Button>
-            ))}
+                          <span>{choice.label}</span>
+                          {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                            <div className="flex gap-1 ml-2">
+                              {choice.relevant_stats.map((stat) => {
+                                const statInfo = statIcons[stat.toLowerCase()];
+                                if (!statInfo) return null;
+                                return (
+                                  <span
+                                    key={stat}
+                                    className={`text-xs ${statInfo.color}`}
+                                    title={stat}
+                                  >
+                                    {statInfo.icon}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </Button>
+                      </HoverCardTrigger>
+                      <HoverCardContent side="bottom" className="w-auto p-2">
+                        <div className="flex items-center space-x-1">
+                          <div className="space-y-1">
+                            <p className="text-sm font-normal leading-none">Cost: {cost}</p>
+                          </div>
+                        </div>
+                      </HoverCardContent>
+                    </HoverCard>
+                  ) : (
+                    <Button
+                      onClick={() => handleChoice(choice.id)}
+                      variant="outline"
+                      className="w-full text-left justify-between"
+                      disabled={
+                        (timeRemaining !== null && timeRemaining <= 0) ||
+                        fallbackExecutedRef.current
+                      }
+                    >
+                      <span>{choice.label}</span>
+                      {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                        <div className="flex gap-1 ml-2">
+                          {choice.relevant_stats.map((stat) => {
+                            const statInfo = statIcons[stat.toLowerCase()];
+                            if (!statInfo) return null;
+                            return (
+                              <span
+                                key={stat}
+                                className={`text-xs ${statInfo.color}`}
+                                title={stat}
+                              >
+                                {statInfo.icon}
+                              </span>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </Button>
+                  )}
+                </div>
+              );
+            })}
           </div>
 
           {/* Timer bar for timed choices */}
