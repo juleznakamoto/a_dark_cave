@@ -50,6 +50,21 @@ export function handleBoneTotems(
     effectUpdates.resources = { ...state.resources };
   }
 
+  // Apply 5% bonus per usage to gold and silver rewards
+  const bonusMultiplier = 1 + (usageCount * 0.05);
+  if (effectUpdates.resources.gold !== undefined) {
+    const baseGold = effectUpdates.resources.gold - (state.resources.gold || 0);
+    if (baseGold > 0) {
+      effectUpdates.resources.gold = (state.resources.gold || 0) + Math.floor(baseGold * bonusMultiplier);
+    }
+  }
+  if (effectUpdates.resources.silver !== undefined) {
+    const baseSilver = effectUpdates.resources.silver - (state.resources.silver || 0);
+    if (baseSilver > 0) {
+      effectUpdates.resources.silver = (state.resources.silver || 0) + Math.floor(baseSilver * bonusMultiplier);
+    }
+  }
+
   // Override the cost with dynamic pricing
   effectUpdates.resources.bone_totem =
     (state.resources.bone_totem || 0) - currentCost;
