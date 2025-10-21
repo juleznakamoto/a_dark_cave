@@ -261,6 +261,9 @@ export default function SidePanelSection({
     const isMadness = item.id === "madness";
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
 
+    // Calculate pulse class once like madness pulse
+    const newItemPulseClass = !hoveredTooltips.has(item.id) ? "new-item-pulse" : "";
+
     const itemContent = (
       <div
         data-testid={item.testId}
@@ -272,7 +275,7 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span className="text-xs text-gray-400 flex items-center gap-1">
+        <span className={`text-xs text-gray-400 flex items-center gap-1 ${newItemPulseClass}`}>
           {item.icon !== undefined && (
             <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
           )}
@@ -312,9 +315,6 @@ export default function SidePanelSection({
       </div>
     );
 
-    // Calculate pulse class once like madness pulse - only changes when hoveredTooltips changes
-    const pulseClass = !hoveredTooltips.has(item.id) ? "new-item-pulse" : "";
-
     // If this item has effects or tooltip, wrap it in a tooltip
     if (
       (hasEffect &&
@@ -331,7 +331,6 @@ export default function SidePanelSection({
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={pulseClass}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -466,13 +465,11 @@ export default function SidePanelSection({
 
     // If this is madness with events, show tooltip
     if (isMadnessTooltip) {
-      const pulseClass = !hoveredTooltips.has(item.id) ? "new-item-pulse" : "";
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={pulseClass}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
@@ -491,13 +488,11 @@ export default function SidePanelSection({
 
     // If this item has a tooltip, wrap it in a tooltip
     if (item.tooltip) {
-      const pulseClass = !hoveredTooltips.has(item.id) ? "new-item-pulse" : "";
       return (
         <TooltipProvider key={item.id}>
           <Tooltip>
             <TooltipTrigger asChild>
               <div 
-                className={pulseClass}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
               >
