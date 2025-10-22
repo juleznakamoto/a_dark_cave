@@ -1145,6 +1145,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutterMet: true,
+                woodcutter1Met: true,
               },
             },
             _logMessage:
@@ -1168,7 +1169,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter2: {
     id: "woodcutter2",
     condition: (state: GameState) =>
-      state.story.seen.woodcutterMet &&
+      state.story.seen.woodcutter1Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10,
@@ -1226,7 +1227,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter3: {
     id: "woodcutter3",
     condition: (state: GameState) =>
-      state.story.seen.woodcutterMet &&
+      state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10,
@@ -1284,7 +1285,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter4: {
     id: "woodcutter4",
     condition: (state: GameState) =>
-      state.story.seen.woodcutterMet &&
+      state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10,
@@ -1363,7 +1364,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter5: {
     id: "woodcutter5",
     condition: (state: GameState) =>
-      state.story.seen.woodcutterMet &&
+      state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10,
@@ -1442,7 +1443,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter6: {
     id: "woodcutter6",
     condition: (state: GameState) =>
-      state.story.seen.woodcutterMet &&
+      state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10,
