@@ -1,4 +1,4 @@
-(9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+(9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
 effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
 effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
 effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
@@ -13,7 +13,7 @@ effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2
 effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
 effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
 effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
-effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
 effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
 effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
 effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
@@ -78,7 +78,7 @@ effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2
 effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
 effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
 effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
-effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
 effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
 effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
 effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
@@ -93,7 +93,7 @@ effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2
 effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
 effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
 effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
-effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
 effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {…}, steel_lantern: {…}, long_bow: {…}}
 effects.ts:950 🔧 Checking item: steel_axe, bonuses: {gatherWood: {…}}
 effects.ts:955 ✅ Found gatherWood bonus from steel_axe: {resourceMultiplier: 1.75, cooldownReduction: 0.75}
@@ -158,5 +158,5 @@ effects.ts:936 📋 Available tools: (8) [Array(2), Array(2), Array(2), Array(2
 effects.ts:937 📋 Available weapons: (5) [Array(2), Array(2), Array(2), Array(2), Array(2)]
 effects.ts:938 📋 Available relics: (4) [Array(2), Array(2), Array(2), Array(2)]
 effects.ts:939 📋 Display tools from getDisplayTools: (5) ['steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
-effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'dragon_bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
+effects.ts:940 📋 Active effects: (9) ['tarnished_amulet', 'bloodstained_belt', 'wooden_figure', 'bone_dice', 'steel_axe', 'steel_pickaxe', 'steel_lantern', 'long_bow', 'steel_sword']
 effects.ts:941 📋 Total effects actionBonuses: {steel_axe: {…}, steel_pickaxe: {

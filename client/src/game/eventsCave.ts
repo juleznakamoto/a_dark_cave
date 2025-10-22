@@ -226,13 +226,13 @@ export const caveEvents: Record<string, GameEvent> = {
     },
   },
 
-  dragonBoneDiceChoice: {
-    id: "dragonBoneDiceChoice",
+  boneDiceChoice: {
+    id: "boneDiceChoice",
     condition: (state: GameState) => false, // Only triggered by cave exploration
     triggerType: "action",
-    title: "The Dragon Bone Dice",
+    title: "The Bone Dice",
     message:
-      "As you descend further, you find a set of dragon bone dice carved with ancient runes. Rolling them in your palm, you feel a surge of luck, but a subtle unease lingers. These dice have seen much fortune... and much tragedy. Do you keep them?",
+      "As you descend further, you find a set of bone dice carved with ancient runes. Rolling them in your palm, you feel a surge of luck, but a subtle unease lingers. These dice have seen much fortune... and much tragedy. Do you keep them?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -246,17 +246,17 @@ export const caveEvents: Record<string, GameEvent> = {
           return {
             relics: {
               ...state.relics,
-              dragon_bone_dice: true,
+              bone_dice: true,
             },
             story: {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                dragonBoneDiceChoice: true,
+                boneDiceChoice: true,
               },
             },
             _logMessage:
-              "You pocket the dragon bone dice. They feel warm in your hand, and you sense that fortune will favor you more often, though at what cost remains to be seen.",
+              "You pocket the bone dice. They feel warm in your hand, and you sense that fortune will favor you more often, though at what cost remains to be seen.",
           };
         },
       },
@@ -269,7 +269,7 @@ export const caveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                dragonBoneDiceChoice: true,
+                boneDiceChoice: true,
               },
             },
             _logMessage:
@@ -290,7 +290,7 @@ export const caveEvents: Record<string, GameEvent> = {
             ...state.story,
             seen: {
               ...state.story.seen,
-              dragonBoneDiceChoice: true,
+              boneDiceChoice: true,
             },
           },
           _logMessage: `Your hesitation angers the ancient magic within the dice. They begin rolling on their own, each result bringing misfortune. ${cursed} of your men suddenly collapse, victims of the dice's terrible curse. The bones finally stop rolling, their revenge complete.`,

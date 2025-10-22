@@ -1138,7 +1138,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               food: state.resources.food - 25,
-              wood: state.resources.wood + 125,
+              wood: state.resources.wood + 100,
             },
             story: {
               ...state.story,

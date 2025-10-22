@@ -69,10 +69,10 @@ const caveRelics = {
   ],
   descendFurther: [
     {
-      key: "dragon_bone_dice",
+      key: "bone_dice",
       probability: 0.02,
       isChoice: true,
-      eventId: "dragonBoneDiceChoice",
+      eventId: "boneDiceChoice",
     },
   ],
   exploreRuins: [

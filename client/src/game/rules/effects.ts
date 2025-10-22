@@ -610,10 +610,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
-  dragon_bone_dice: {
-    id: "dragon_bone_dice",
-    name: "Dragon Bone Dice",
-    description: "Six-sided dice carved from ancient dragon bone",
+  bone_dice: {
+    id: "bone_dice",
+    name: "Bone Dice",
+    description: "Six-sided dice carved from ancient bone",
     bonuses: {
       generalBonuses: {
         luck: 3,

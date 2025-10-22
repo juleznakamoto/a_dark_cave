@@ -144,7 +144,7 @@ export const gameStateSchema = z.object({
       tarnished_amulet: z.boolean().default(false),
       bloodstained_belt: z.boolean().default(false),
       wooden_figure: z.boolean().default(false),
-      dragon_bone_dice: z.boolean().default(false),
+      bone_dice: z.boolean().default(false),
       ravenfeather_mantle: z.boolean().default(false),
       whispering_amulet: z.boolean().default(false),
       ring_of_clarity: z.boolean().default(false),
