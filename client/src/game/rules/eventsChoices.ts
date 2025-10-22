@@ -1115,7 +1115,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10 &&
-      !state.story.seen.woodcutterBetrayed,
+      !state.story.seen.woodcutterBetrayed &&
+      state.resources.food >= 25,
     triggerType: "resource",
     timeProbability: 0.005,
     title: "The Woodcutter",
@@ -1171,7 +1172,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutterMet &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 3 &&
-      state.buildings.woodenHut <= 7,
+      state.buildings.woodenHut <= 7 &&
+      state.resources.food >= 50,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter Returns",
@@ -1229,7 +1231,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 4 &&
-      state.buildings.woodenHut <= 8,
+      state.buildings.woodenHut <= 8 &&
+      state.resources.food >= 100,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter's Offer",
@@ -1287,7 +1290,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 5 &&
-      state.buildings.woodenHut <= 9,
+      state.buildings.woodenHut <= 9 &&
+      state.resources.food >= 150,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter's Ambitious Plan",
@@ -1366,7 +1370,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 6 &&
-      state.buildings.woodenHut <= 10,
+      state.buildings.woodenHut <= 10 &&
+      state.resources.food >= 200,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter's Grand Proposal",
@@ -1445,7 +1450,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 6 &&
-      state.buildings.woodenHut <= 10,
+      state.buildings.woodenHut <= 10 &&
+      state.resources.food >= 250,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter's Final Offer",
