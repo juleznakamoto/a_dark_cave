@@ -188,6 +188,8 @@ export const gameStateSchema = z.object({
       grandBlacksmith: z.number().default(0),
       foundry: z.number().default(0),
       tannery: z.number().default(0),
+      masterTannery: z.number().default(0),
+      altar: z.number().default(0),
       clerksHut: z.number().default(0),
       scriptorium: z.number().default(0),
       shallowPit: z.number().default(0),

@@ -464,6 +464,33 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 20,
   },
 
+  buildMasterTannery: {
+    id: "buildMasterTannery",
+    label: "Master Tannery",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 10,
+        "buildings.tannery": 1,
+        "buildings.masterTannery": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.stone": 1500,
+        "resources.steel": 1000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.masterTannery": 1,
+        "story.seen.hasMasterTannery": true,
+      },
+    },
+    cooldown: 40,
+  },
+
   buildAltar: {
     id: "buildAltar",
     label: "Altar",
@@ -1380,6 +1407,31 @@ export function handleBuildTannery(
   result: ActionResult,
 ): ActionResult {
   return handleBuildingConstruction(state, result, "buildTannery", "tannery");
+}
+
+export function handleBuildMasterTannery(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const masterTanneryResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildMasterTannery",
+    "masterTannery",
+  );
+
+  // Add master tannery completion message
+  if (state.buildings.masterTannery === 0) {
+    masterTanneryResult.logEntries!.push({
+      id: `master-tannery-built-${Date.now()}`,
+      message:
+        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques. Skilled artisans stand ready to craft superior leather goods.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return masterTanneryResult;
 }
 
 export function handleBuildStoneHut(

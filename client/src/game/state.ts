@@ -351,7 +351,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ) {
         setTimeout(() => get().updateBastionStats(), 0);
       }
-      
+
       // Update population when housing buildings change
       if (
         buildingChanges.woodenHut !== undefined ||

@@ -208,6 +208,10 @@ export default function SidePanel() {
       if (key === "tradePost" && buildings.merchantsGuild > 0) {
         return false;
       }
+      // Hide tannery when Master Tannery is built
+      if (key === "tannery" && buildings.masterTannery > 0) {
+        return false;
+      }
       return (value ?? 0) > 0;
     })
     .map(([key, value]) => {

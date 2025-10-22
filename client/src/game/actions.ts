@@ -313,6 +313,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildScriptorium(state, result);
     case 'buildTannery':
       return handleBuildTannery(state, result);
+    case 'buildMasterTannery':
+      return handleBuildMasterTannery(state, result);
     case 'buildStoneHut':
       return handleBuildStoneHut(state, result);
     case 'buildShrine':
