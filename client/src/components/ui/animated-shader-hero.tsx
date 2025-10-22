@@ -515,6 +515,11 @@ float fbm(vec2 p) {
 // Higher values = faster clouds (default: 0.5)
 #define CLOUD_SPEED 0.075
 
+// COLOR DEVIATION - Controls how much colors can deviate from PRIMARY_COLOR
+// Lower values = colors stay closer to defined colors (default: 1.0)
+// 0.5 = subtle variation, 1.0 = moderate variation, 2.0 = high variation
+#define MAX_COLOR_DEVIATION 1.0
+
 float clouds(vec2 p) {
 	float d=1., t=.0;
 	for (float i=.0; i<3.; i++) {
@@ -534,10 +539,11 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		// Use customizable colors instead of hardcoded values
-		col+=.00125/d*(cos(sin(i)*PRIMARY_COLOR)+1.);
+		// Use customizable colors with controlled deviation
+		vec3 colorVariation = cos(sin(i)*PRIMARY_COLOR) * MAX_COLOR_DEVIATION;
+		col+=.00125/d*(colorVariation+1.);
 		float b=noise(i+p+bg*1.731);
-		col+=.002*b/length(max(p,vec2(b*p.x*.02,p.y)));
+		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
 		col=mix(col,vec3(bg)*BACKGROUND_TINT,d);
 	}
 	O=vec4(col,1);
