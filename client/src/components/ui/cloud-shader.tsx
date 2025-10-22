@@ -157,20 +157,9 @@ float clouds(vec2 p) {
 
 void main(void) {
 	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-	vec3 col=vec3(0);
 	float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
-	uv*=1.-.3*(sin(T*.2)*.5+.5);
-	for (float i=1.; i<12.; i++) {
-		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
-		vec2 p=uv;
-		float d=length(p);
-		col+=.00125/d*(cos(sin(i)*PRIMARY_COLOR)+1.);
-		float b=noise(i+p+bg*1.731);
-		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
-		vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
-		col=mix(col,cloudColor,d);
-	}
-	O=vec4(col,1);
+	vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
+	O=vec4(cloudColor,1);
 }`;
 
 interface CloudShaderProps {
