@@ -472,7 +472,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.woodenHut": 10,
         "buildings.tannery": 1,
-        "buildings.masterTannery": 0,
+        // "buildings.masterTannery": 0,
       },
     },
     cost: {
