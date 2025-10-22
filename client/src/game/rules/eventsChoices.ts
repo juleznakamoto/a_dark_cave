@@ -1127,7 +1127,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 25 food",
+        cost: "25 food",
         effect: (state: GameState) => {
           if (state.resources.food < 25) {
             return {
@@ -1183,7 +1184,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 50 food",
+        cost: "50 food",
         effect: (state: GameState) => {
           if (state.resources.food < 50) {
             return {
@@ -1240,7 +1242,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 100 food",
+        cost: "100 food",
         effect: (state: GameState) => {
           if (state.resources.food < 100) {
             return {
@@ -1297,7 +1300,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 150 food",
+        cost: "150 food",
         effect: (state: GameState) => {
           if (state.resources.food < 150) {
             return {
@@ -1375,7 +1379,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 200 food",
+        cost: "200 food",
         effect: (state: GameState) => {
           if (state.resources.food < 200) {
             return {
@@ -1453,7 +1458,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acceptServices",
-        label: "Accept services",
+        label: "Pay 250 food",
+        cost: "250 food",
         effect: (state: GameState) => {
           if (state.resources.food < 250) {
             return {

@@ -240,37 +240,61 @@ export default function EventDialog({
           </DialogHeader>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
-            {eventChoices.map((choice) => (
-              <Button
-                key={choice.id}
-                onClick={() => handleChoice(choice.id)}
-                variant="outline"
-                className="w-full text-left justify-between"
-                disabled={
-                  (timeRemaining !== null && timeRemaining <= 0) ||
-                  fallbackExecutedRef.current
+            {eventChoices.map((choice) => {
+              const cost = choice.cost;
+              let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
+              
+              // Check if player can afford the cost for woodcutter events
+              if (cost && cost.includes('food')) {
+                const foodCost = parseInt(cost.match(/\d+/)?.[0] || '0');
+                if (gameState.resources.food < foodCost) {
+                  isDisabled = true;
                 }
-              >
-                <span>{choice.label}</span>
-                {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                  <div className="flex gap-1 ml-2">
-                    {choice.relevant_stats.map((stat) => {
-                      const statInfo = statIcons[stat.toLowerCase()];
-                      if (!statInfo) return null;
-                      return (
-                        <span
-                          key={stat}
-                          className={`text-xs ${statInfo.color}`}
-                          title={stat}
-                        >
-                          {statInfo.icon}
-                        </span>
-                      );
-                    })}
-                  </div>
-                )}
-              </Button>
-            ))}
+              }
+              
+              const buttonContent = (
+                <Button
+                  onClick={() => handleChoice(choice.id)}
+                  variant="outline"
+                  className="w-full text-left justify-between"
+                  disabled={isDisabled}
+                >
+                  <span>{choice.label}</span>
+                  {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                    <div className="flex gap-1 ml-2">
+                      {choice.relevant_stats.map((stat) => {
+                        const statInfo = statIcons[stat.toLowerCase()];
+                        if (!statInfo) return null;
+                        return (
+                          <span
+                            key={stat}
+                            className={`text-xs ${statInfo.color}`}
+                            title={stat}
+                          >
+                            {statInfo.icon}
+                          </span>
+                        );
+                      })}
+                    </div>
+                  )}
+                </Button>
+              );
+              
+              return cost ? (
+                <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
+                  <HoverCardTrigger asChild>
+                    <div className="cursor-default">{buttonContent}</div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className="w-auto p-2">
+                    <div className="text-xs whitespace-nowrap">
+                      -{cost}
+                    </div>
+                  </HoverCardContent>
+                </HoverCard>
+              ) : (
+                <div key={choice.id}>{buttonContent}</div>
+              );
+            })}
           </div>
 
           {/* Timer bar for timed choices */}
