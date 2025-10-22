@@ -115,8 +115,8 @@ uniform float time;
 #define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)
 #define BACKGROUND_TINT vec3(0.025, 0.025, 0.025)
 #define MAX_COLOR_DEVIATION 1.0
-#define CLOUD_COLOR_DEVIATION 0.6
-#define CLOUD_SPEED 0.04
+#define CLOUD_COLOR_DEVIATION 0.75
+#define CLOUD_SPEED 0.075
 
 float rnd(vec2 p) {
   p=fract(p*vec2(12.9898,78.233));

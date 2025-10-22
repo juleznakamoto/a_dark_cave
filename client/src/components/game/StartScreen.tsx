@@ -12,22 +12,6 @@ export default function StartScreen() {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <style>{`
-        @keyframes fade-in-button {
-          from {
-            opacity: 0;
-            pointer-events: none;
-          }
-          to {
-            opacity: 1;
-            pointer-events: auto;
-          }
-        }
-
-        .animate-fade-in-button {
-          animation: fade-in-button 1s ease-in 3s forwards;
-        }
-      `}</style>
       <CloudShader />
       <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
@@ -37,7 +21,7 @@ export default function StartScreen() {
         </div>
         <ParticleButton
           onClick={handleLightFire}
-          className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] animate-fade-in-button"
+          className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999]"
           data-testid="button-light-fire"
         >
           Light Fire
