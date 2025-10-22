@@ -106,7 +106,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      const multiplier = Math.random() < 0.5 ? 10 : 20;
       return {
         resources: {
           ...state.resources,
@@ -128,7 +128,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      const multiplier = Math.random() < 0.5 ? 10 : 20;
       return {
         resources: {
           ...state.resources,
@@ -151,7 +151,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const multiplier = Math.random() < 0.5 ? 25 : 50;
+      const multiplier = Math.random() < 0.5 ? 10 : 20;
       return {
         resources: {
           ...state.resources,
