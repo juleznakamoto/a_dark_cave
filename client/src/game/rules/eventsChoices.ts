@@ -1113,11 +1113,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter1: {
     id: "woodcutter1",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 &&
-      state.buildings.woodenHut <= 6 &&
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10 &&
       !state.story.seen.woodcutterBetrayed,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.005,
     title: "The Woodcutter",
     message:
       "A muscular man with a large axe approaches your village. He flexes his arms, showing impressive strength. 'I can cut trees like no other,' he boasts. 'Give me 25 food, and I'll bring you 100 wood.'",
