@@ -107,12 +107,7 @@ export default function GameContainer() {
 
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
-    return (
-      <>
-        <StartScreen />
-        <GameFooter />
-      </>
-    );
+    return <StartScreen />;
   }
 
   return (
