@@ -1171,11 +1171,11 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutterMet &&
       !state.story.seen.woodcutterBetrayed &&
-      state.buildings.woodenHut >= 3 &&
-      state.buildings.woodenHut <= 7 &&
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10 &&
       state.resources.food >= 50,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.5,
     title: "The Woodcutter Returns",
     message:
       "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. What do you say?'",
