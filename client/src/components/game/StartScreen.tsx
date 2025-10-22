@@ -1,6 +1,7 @@
 
 import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
+import CloudShader from '@/components/ui/cloud-shader';
 
 export default function StartScreen() {
   const { executeAction } = useGameStore();
@@ -10,8 +11,9 @@ export default function StartScreen() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex flex-col">
-      <main className="flex-1 flex flex-col items-center justify-center">
+    <div className="relative min-h-screen bg-black text-white overflow-hidden">
+      <CloudShader />
+      <main className="relative z-10 flex-1 flex flex-col items-center justify-center min-h-screen">
         <div className="text-center mb-4">
           <p className="text-lg text-gray-300 leading-relaxed">
             A dark cave.<br></br>The air is cold and damp.<br></br>You barely see the shapes around you.
