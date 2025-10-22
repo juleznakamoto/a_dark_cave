@@ -25,9 +25,14 @@ export default function BuildingProgressChart() {
   const ringSize = 4; // Thickness of each ring
   const spaceBetweenRings = 5; // Gap between rings
   
-  const paddingAngle = 8;
+  // Function to calculate padding angle based on ring index
+  const getPaddingAngle = (ringIndex: number) => {
+    // Inner rings have larger padding, outer rings have smaller
+    return Math.max(2, 8 - ringIndex * 1.5);
+  };
+  
   const backgroundColor = tailwindToHex("neutral-800");
-  const startAngle = 90 - paddingAngle / 2;
+  const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // Define ring segment configurations (without radius values)
   const ringSegments: BuildingSegment[][] = [
@@ -192,7 +197,7 @@ export default function BuildingProgressChart() {
 
   // Process each ring and filter out rings with no buildings built
   const processedRings = ringConfigs
-    .map((ringConfig) => {
+    .map((ringConfig, ringIndex) => {
       const { segments, innerRadius, outerRadius } = ringConfig;
 
       // Check if this ring has any buildings built
@@ -211,6 +216,10 @@ export default function BuildingProgressChart() {
       if (!hasAnyBuilding) {
         return null;
       }
+
+      // Get padding angle for this specific ring
+      const paddingAngle = getPaddingAngle(ringIndex);
+      const startAngle = getStartAngle(paddingAngle);
 
       // Calculate total degrees for this ring based on segment count
       const totalDegrees = 360 - segments.length * paddingAngle;
@@ -283,6 +292,8 @@ export default function BuildingProgressChart() {
         foregroundSegments,
         innerRadius,
         outerRadius,
+        paddingAngle,
+        startAngle,
       };
     })
     .filter((ring) => ring !== null);
@@ -301,10 +312,10 @@ export default function BuildingProgressChart() {
                 cy="50%"
                 innerRadius={ring.innerRadius}
                 outerRadius={ring.outerRadius}
-                paddingAngle={paddingAngle}
+                paddingAngle={ring.paddingAngle}
                 dataKey="value"
-                startAngle={startAngle}
-                endAngle={-360 + startAngle}
+                startAngle={ring.startAngle}
+                endAngle={-360 + ring.startAngle}
                 cornerRadius={5}
                 strokeWidth={0}
                 isAnimationActive={false}
@@ -347,10 +358,10 @@ export default function BuildingProgressChart() {
                 cy="50%"
                 innerRadius={ring.innerRadius}
                 outerRadius={ring.outerRadius}
-                paddingAngle={paddingAngle}
+                paddingAngle={ring.paddingAngle}
                 dataKey="value"
-                startAngle={startAngle}
-                endAngle={-360 + startAngle}
+                startAngle={ring.startAngle}
+                endAngle={-360 + ring.startAngle}
                 cornerRadius={5}
                 strokeWidth={0.25}
                 stroke={tailwindToHex("neutral-200")}
