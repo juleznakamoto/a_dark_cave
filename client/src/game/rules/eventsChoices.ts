@@ -1115,8 +1115,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 10 &&
       state.buildings.woodenHut <= 10 &&
-      !state.story.seen.woodcutterBetrayed &&
-      state.resources.food >= 25,
+      !state.story.seen.woodcutterBetrayed,
     triggerType: "resource",
     timeProbability: 0.005,
     title: "The Woodcutter",
@@ -1172,10 +1171,9 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.woodcutterMet &&
       !state.story.seen.woodcutterBetrayed &&
       state.buildings.woodenHut >= 10 &&
-      state.buildings.woodenHut <= 10 &&
-      state.resources.food >= 50,
+      state.buildings.woodenHut <= 10,
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.005,
     title: "The Woodcutter Returns",
     message:
       "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. What do you say?'",
@@ -1230,11 +1228,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
-      state.buildings.woodenHut >= 4 &&
-      state.buildings.woodenHut <= 8 &&
-      state.resources.food >= 100,
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.005,
     title: "The Woodcutter's Offer",
     message:
       "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
@@ -1289,11 +1286,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
-      state.buildings.woodenHut >= 5 &&
-      state.buildings.woodenHut <= 9 &&
-      state.resources.food >= 150,
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.005,
     title: "The Woodcutter's Ambitious Plan",
     message:
       "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
@@ -1369,11 +1365,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
-      state.buildings.woodenHut >= 6 &&
-      state.buildings.woodenHut <= 10 &&
-      state.resources.food >= 200,
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.005,
     title: "The Woodcutter's Grand Proposal",
     message:
       "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
@@ -1449,11 +1444,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
-      state.buildings.woodenHut >= 6 &&
-      state.buildings.woodenHut <= 10 &&
-      state.resources.food >= 250,
+      state.buildings.woodenHut >= 10 &&
+      state.buildings.woodenHut <= 10,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.005,
     title: "The Woodcutter's Final Offer",
     message:
       "The woodcutter returns to the village, 'Do you want to trade food for wood once more?' he asks.",
