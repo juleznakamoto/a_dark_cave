@@ -1120,7 +1120,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 0.005,
     title: "The Woodcutter",
     message:
-      "A muscular man with a large axe approaches your village. He flexes his arms, showing impressive strength. 'I can cut trees like no other,' he boasts. 'Give me 25 food, and I'll bring you 100 wood.'",
+      "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring you  wood.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1130,7 +1130,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Pay 25 food",
         cost: "25 food",
         effect: (state: GameState) => {
-          if (state.resources.food < 25) {
+          if (state.resources.food < 2500000) {
             return {
               _logMessage: "You don't have enough food for this deal.",
             };
@@ -1177,7 +1177,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter Returns",
     message:
-      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. 50 food for 250 wood. What do you say?'",
+      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. What do you say?'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1235,7 +1235,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Offer",
     message:
-      "The woodcutter approaches again, this time carrying an even larger axe. 'I see your village continues to thrive,' he says with a grin. '100 food, and I'll bring you 750 wood. A generous offer, I think.'",
+      "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1293,7 +1293,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Ambitious Plan",
     message:
-      "The woodcutter arrives once more, his eyes gleaming with ambition. 'Your trust has been rewarded thus far,' he says. '150 food for 1500 wood. This will be my finest work yet.'",
+      "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1326,7 +1326,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You hand over the food, but days pass with no sign of the woodcutter. A week later, villagers report seeing him in a distant settlement, living well off your supplies. It seems you got betrayed.",
+                "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
             };
           }
 
@@ -1344,7 +1344,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and spends several days in the forest. He returns with an enormous pile of high-quality timber.",
+              "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of timber.",
           };
         },
       },
@@ -1372,7 +1372,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Grand Proposal",
     message:
-      "The woodcutter appears with a confident smile. 'You've been a good patron,' he says. 'One more deal: 200 food for 2500 wood. Enough to build half a village!'",
+      "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1405,7 +1405,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You hand over the food. The woodcutter promises to return within a week. But he never does. Travelers report seeing him with merchants far to the south, your food traded for gold. It seems you got betrayed.",
+                "You hand over the food. The woodcutter promises to return within a week. But he never does. It seems you got betrayed.",
             };
           }
 
@@ -1423,7 +1423,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and assembles a small crew. After a week of hard work, they deliver a massive stockpile of wood to your village.",
+              "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to your village.",
           };
         },
       },
@@ -1451,7 +1451,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Final Offer",
     message:
-      "The woodcutter returns one last time. His smile seems different now - greedier. '250 food,' he says simply. 'Trust me one more time.'",
+      "The woodcutter returns to the village, 'Do you want to trade food for wood once more?' he asks.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -1481,7 +1481,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You hand over the food. The woodcutter grins, grabs it, and runs into the forest. You wait, but he never returns. Days later, a traveling merchant mentions seeing a man matching his description in a tavern, boasting about fooling some naive villagers. It seems you got betrayed.",
+              "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
           };
         },
       },
