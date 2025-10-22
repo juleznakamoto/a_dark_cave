@@ -1130,16 +1130,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Pay 25 food",
         cost: "25 food",
         effect: (state: GameState) => {
-          if (state.resources.food < 2500000) {
-            return {
-              _logMessage: "You don't have enough food for this deal.",
-            };
+          if (state.resources.food < 25) {
+            return {};
           }
 
           return {
             resources: {
               ...state.resources,
               food: state.resources.food - 25,
+              wood: state.resources.wood + 125,
             },
             story: {
               ...state.story,
