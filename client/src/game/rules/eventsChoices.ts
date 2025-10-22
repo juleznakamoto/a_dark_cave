@@ -226,7 +226,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3 && !state.relics.alphas_hide,
     triggerType: "resource",
     timeProbability: 35,
     title: "Wolf Attack",
