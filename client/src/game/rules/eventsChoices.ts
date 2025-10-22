@@ -1,11 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import {
-  getTotalStrength,
-  getTotalLuck,
-  getTotalKnowledge,
-} from "./effectsCalculation";
+import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effectsCalculation";
 import { getMaxPopulation } from "@/game/population";
 
 export const choiceEvents: Record<string, GameEvent> = {
@@ -13,9 +9,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "paleFigure",
     relevant_stats: ["strength", "luck"],
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 &&
-      !state.relics.ravenfeather_mantle &&
-      state.current_population >= 4,
+      state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle && state.current_population >= 4,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
@@ -55,10 +49,8 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The investigation goes wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
-            const deaths = Math.min(
-              4,
-              2 + Math.floor(Math.random() * state.buildings.woodenHut),
-            );
+            const deaths =
+              Math.min(4, 2 + Math.floor(Math.random() * state.buildings.woodenHut));
             return {
               ...killVillagers(state, deaths),
               _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
@@ -179,7 +171,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   cthulhuFigure: {
     id: "cthulhuFigure",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 &&
+      state.buildings.woodenHut >= 4 && 
       !state.relics.wooden_figure &&
       !state.story.seen.cthulhuFigureChoice,
     triggerType: "resource",
@@ -1014,15 +1006,15 @@ export const choiceEvents: Record<string, GameEvent> = {
             (sum, count) => sum + (count || 0),
             0,
           );
-
+          
           // Kill 2 villagers for the trade
           const tradeResult = killVillagers(state, 2);
-
+          
           // All remaining villagers leave in disgust
           const remainingPopulation = currentPopulation - 2;
           const leaveResult = killVillagers(
             { ...state, villagers: tradeResult.villagers || state.villagers },
-            remainingPopulation,
+            remainingPopulation
           );
 
           return {
@@ -1058,10 +1050,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               0,
             );
             const maxPopulation = getMaxPopulation(state);
-            const villagersToAdd = Math.min(
-              2,
-              maxPopulation - currentPopulation,
-            );
+            const villagersToAdd = Math.min(2, maxPopulation - currentPopulation);
 
             return {
               villagers: {
@@ -1096,7 +1085,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? 'falls' : 'fall'} in the struggle. The trader escapes with his captives, leaving only death behind.`,
             };
           }
         },
@@ -1124,14 +1113,14 @@ export const choiceEvents: Record<string, GameEvent> = {
   woodcutter1: {
     id: "woodcutter1",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 10 &&
-      state.buildings.woodenHut <= 10 &&
+      state.buildings.woodenHut >= 2 &&
+      state.buildings.woodenHut <= 6 &&
       !state.story.seen.woodcutterBetrayed,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 5,
     title: "The Woodcutter",
     message:
-      "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring you  wood.'",
+      "A muscular man with a large axe approaches your village. He flexes his arms, showing impressive strength. 'I can cut trees like no other,' he boasts. 'Give me 25 food, and I'll bring you 100 wood.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1140,15 +1129,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acceptServices",
         label: "Accept services",
         effect: (state: GameState) => {
-          if (state.resources.food < 2500000) {
-            return {};
+          if (state.resources.food < 25) {
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           return {
             resources: {
               ...state.resources,
               food: state.resources.food - 25,
-              wood: state.resources.wood + 100,
             },
             story: {
               ...state.story,
@@ -1186,7 +1176,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter Returns",
     message:
-      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. What do you say?'",
+      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. 50 food for 250 wood. What do you say?'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1196,7 +1186,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 50) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           return {
@@ -1241,7 +1233,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Offer",
     message:
-      "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
+      "The woodcutter approaches again, this time carrying an even larger axe. 'I see your village continues to thrive,' he says with a grin. '100 food, and I'll bring you 750 wood. A generous offer, I think.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1251,7 +1243,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 100) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           return {
@@ -1296,7 +1290,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Ambitious Plan",
     message:
-      "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
+      "The woodcutter arrives once more, his eyes gleaming with ambition. 'Your trust has been rewarded thus far,' he says. '150 food for 1500 wood. This will be my finest work yet.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1306,7 +1300,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 150) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           const betrayalChance = 0.3333; // 33.33%
@@ -1326,7 +1322,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You hand over the food, but days pass with no sign of the woodcutter. It seems you got betrayed.",
+                "You hand over the food, but days pass with no sign of the woodcutter. A week later, villagers report seeing him in a distant settlement, living well off your supplies. It seems you got betrayed.",
             };
           }
 
@@ -1372,7 +1368,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Grand Proposal",
     message:
-      "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
+      "The woodcutter appears with a confident smile. 'You've been a good patron,' he says. 'One more deal: 200 food for 2500 wood. Enough to build half a village!'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1382,7 +1378,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 200) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           const betrayalChance = 0.5; // 50%
@@ -1402,7 +1400,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You hand over the food. The woodcutter promises to return within a week. But he never does. It seems you got betrayed.",
+                "You hand over the food. The woodcutter promises to return within a week. But he never does. Travelers report seeing him with merchants far to the south, your food traded for gold. It seems you got betrayed.",
             };
           }
 
@@ -1446,9 +1444,9 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut <= 10,
     triggerType: "resource",
     timeProbability: 5,
-    title: "The Woodcutter's Great Offer",
+    title: "The Woodcutter's Final Offer",
     message:
-      "The woodcutter returns to the village, 'Do you want to trade food for wood once more?' he asks.",
+      "The woodcutter returns one last time. His smile seems different now - greedier. '250 food,' he says simply. 'Trust me one more time.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -1458,7 +1456,9 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Accept services",
         effect: (state: GameState) => {
           if (state.resources.food < 250) {
-            return {};
+            return {
+              _logMessage: "You don't have enough food for this deal.",
+            };
           }
 
           // 100% betrayal
@@ -1475,7 +1475,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You hand over the food. The woodcutter grins as he leaves towards the forest. You wait, but he never returns. It seems you got betrayed.",
+              "You hand over the food. The woodcutter grins, grabs it, and runs into the forest. You wait, but he never returns. Days later, a traveling merchant mentions seeing a man matching his description in a tavern, boasting about fooling some naive villagers. It seems you got betrayed.",
           };
         },
       },

@@ -13,49 +13,6 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
-
-// Helper function to extract cost from choice effect
-function extractCostFromChoice(choice: any, gameState: any): string | null {
-  // For woodcutter events, check if the choice has a cost property
-  if (choice.cost) {
-    return choice.cost;
-  }
-
-  // Try to extract cost from the effect function by testing it
-  try {
-    const testResult = choice.effect(gameState);
-    
-    // Check if the result contains a _cost property (some events use this)
-    if (testResult._cost) {
-      return testResult._cost;
-    }
-    
-    // Check for resource costs in the test result
-    const costs: string[] = [];
-    if (testResult.resources) {
-      Object.entries(testResult.resources).forEach(([resource, value]) => {
-        const currentValue = gameState.resources[resource as keyof typeof gameState.resources] || 0;
-        const cost = currentValue - (value as number);
-        if (cost > 0) {
-          costs.push(`${cost} ${resource}`);
-        }
-      });
-    }
-    
-    if (costs.length > 0) {
-      return costs.join(", ");
-    }
-  } catch (e) {
-    // If effect execution fails, ignore
-  }
-
-  return null;
-}
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -203,7 +160,7 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
-
+        
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -222,7 +179,6 @@ export default function EventDialog({
 
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
-  const isWoodcutterEvent = event?.id.includes("woodcutter");
 
   return (
     <>
@@ -284,60 +240,37 @@ export default function EventDialog({
           </DialogHeader>
 
           <div className="grid grid-cols-2 gap-3 mt-4">
-            {eventChoices.map((choice) => {
-              const cost = isWoodcutterEvent ? extractCostFromChoice(choice, gameState) : null;
-              
-              // Check if choice can be afforded (same logic as merchant events)
-              const testResult = choice.effect(gameState);
-              const canAfford = Object.keys(testResult).length > 0;
-              
-              const isDisabled = !canAfford ||
-                (timeRemaining !== null && timeRemaining <= 0) ||
-                fallbackExecutedRef.current;
-              
-              const buttonContent = (
-                <Button
-                  onClick={() => handleChoice(choice.id)}
-                  variant="outline"
-                  className="w-full text-left justify-between"
-                  disabled={isDisabled}
-                >
-                  <span>{choice.label}</span>
-                  {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                    <div className="flex gap-1 ml-2">
-                      {choice.relevant_stats.map((stat) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`text-xs ${statInfo.color}`}
-                            title={stat}
-                          >
-                            {statInfo.icon}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
-                </Button>
-              );
-              
-              return cost ? (
-                <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <div className="cursor-default">{buttonContent}</div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-2">
-                    <div className="text-xs whitespace-nowrap">
-                      -{cost}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
-              ) : (
-                <div key={choice.id}>{buttonContent}</div>
-              );
-            })}
+            {eventChoices.map((choice) => (
+              <Button
+                key={choice.id}
+                onClick={() => handleChoice(choice.id)}
+                variant="outline"
+                className="w-full text-left justify-between"
+                disabled={
+                  (timeRemaining !== null && timeRemaining <= 0) ||
+                  fallbackExecutedRef.current
+                }
+              >
+                <span>{choice.label}</span>
+                {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                  <div className="flex gap-1 ml-2">
+                    {choice.relevant_stats.map((stat) => {
+                      const statInfo = statIcons[stat.toLowerCase()];
+                      if (!statInfo) return null;
+                      return (
+                        <span
+                          key={stat}
+                          className={`text-xs ${statInfo.color}`}
+                          title={stat}
+                        >
+                          {statInfo.icon}
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+              </Button>
+            ))}
           </div>
 
           {/* Timer bar for timed choices */}
