@@ -480,10 +480,10 @@ uniform float time;
 
 // COLOR CUSTOMIZATION - Modify these values to change the color scheme
 // Each vec3 represents RGB values (0.0 to 1.0)
-#define PRIMARY_COLOR vec3(1.0, 0.4, 0.2)      // Orange-red (default)
+#define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)      // Orange-red (default)
 #define SECONDARY_COLOR  vec3(0.8, 0.2, 1.0)      // Purple
 #define TERTIARY_COLOR vec3(1.0, 0.5, 0.0)     // Bright orange
-#define BACKGROUND_TINT vec3(0.25, 0.137, 0.05) // Dark orange-brown
+#define BACKGROUND_TINT vec3(0.025, 0.025, 0.025) // Dark orange-brown
 
 // Returns a pseudo random number for a given point (white noise)
 float rnd(vec2 p) {
@@ -513,7 +513,7 @@ float fbm(vec2 p) {
 }
 // CLOUD SPEED - Adjust this value to change cloud movement speed
 // Higher values = faster clouds (default: 0.5)
-#define CLOUD_SPEED 0.5
+#define CLOUD_SPEED 0.075
 
 float clouds(vec2 p) {
 	float d=1., t=.0;
