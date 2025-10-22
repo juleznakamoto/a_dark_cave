@@ -461,13 +461,6 @@ const Hero: React.FC<HeroProps> = ({
 };
 
 const defaultShaderSource = `#version 300 es
-/*********
-* made by Matthias Hurrle (@atzedent)
-*
-*	To explore strange new worlds, to seek out new life
-*	and new civilizations, to boldly go where no man has
-*	gone before.
-*/
 precision highp float;
 out vec4 O;
 uniform vec2 resolution;
@@ -492,7 +485,7 @@ uniform float time;
 // CLOUD COLOR DEVIATION - Controls how much the cloud color varies from BACKGROUND_TINT
 // Lower values = clouds stay closer to BACKGROUND_TINT color (default: 1.0)
 // 0.0 = no variation (pure BACKGROUND_TINT), 1.0 = normal variation, 2.0 = high variation
-#define CLOUD_COLOR_DEVIATION 1.0
+#define CLOUD_COLOR_DEVIATION 0.75
 
 // Returns a pseudo random number for a given point (white noise)
 float rnd(vec2 p) {
