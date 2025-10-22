@@ -477,7 +477,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   highpriest_robe: {
     id: "highpriest_robe",
     name: "Highpriest Robe",
-    description: "Sacred robe adorned with gold thread, bringing peace and clarity",
+    description: "Sacred robe adorned with gold thread",
     bonuses: {
       generalBonuses: {
         knowledge: 5,
