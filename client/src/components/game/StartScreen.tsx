@@ -1,9 +1,19 @@
+import { useState, useEffect } from 'react';
 import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
 
 export default function StartScreen() {
   const { executeAction } = useGameStore();
+  const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsAnimationComplete(true);
+    }, 4000); // 3s delay + 1s animation
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleLightFire = () => {
     executeAction('lightFire');
@@ -27,7 +37,7 @@ export default function StartScreen() {
           pointer-events: none;
         }
 
-        .animate-fade-in-button.animation-complete {
+        .button-interactive {
           opacity: 1;
           pointer-events: auto;
         }
@@ -41,7 +51,7 @@ export default function StartScreen() {
         </div>
         <ParticleButton
           onClick={handleLightFire}
-          className="bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] animate-fade-in-button"
+          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
           data-testid="button-light-fire"
         >
           Light Fire
