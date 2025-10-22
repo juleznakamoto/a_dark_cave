@@ -14,15 +14,11 @@ export default function StartScreen() {
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
       <style>{`
         @keyframes fade-in-button {
-          0% {
+          from {
             opacity: 0;
             pointer-events: none;
           }
-          99% {
-            opacity: 1;
-            pointer-events: none;
-          }
-          100% {
+          to {
             opacity: 1;
             pointer-events: auto;
           }
@@ -30,8 +26,6 @@ export default function StartScreen() {
 
         .animate-fade-in-button {
           animation: fade-in-button 1s ease-in 3s forwards;
-          opacity: 0;
-          pointer-events: none;
         }
       `}</style>
       <CloudShader />
