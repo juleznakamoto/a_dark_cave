@@ -1,4 +1,3 @@
-
 import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
@@ -12,23 +11,22 @@ export default function StartScreen() {
 
   return (
     <div className="relative min-h-screen bg-black text-white overflow-hidden">
-      <style jsx>{`
+      <style>{`
         @keyframes fade-in-button {
-          0% {
+          from {
             opacity: 0;
+            pointer-events: none;
           }
-          100% {
+          to {
             opacity: 1;
+            pointer-events: auto;
           }
         }
 
         .animate-fade-in-button {
           animation: fade-in-button 1s ease-in 3s forwards;
           opacity: 0;
-        }
-        
-        .animate-fade-in-button:hover {
-          opacity: 1 !important;
+          pointer-events: none;
         }
       `}</style>
       <CloudShader />
