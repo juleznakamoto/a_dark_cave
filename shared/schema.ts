@@ -133,6 +133,7 @@ export const gameStateSchema = z.object({
       seeker_pack: z.boolean().default(false),
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
+      highpriest_robe: z.boolean().default(false),
     })
     .default({}),
   relics: z

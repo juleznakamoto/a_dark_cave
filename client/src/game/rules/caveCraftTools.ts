@@ -464,6 +464,25 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  craftHighpriestRobe: {
+    id: "craftHighpriestRobe",
+    label: "Highpriest Robe",
+    show_when: {
+      "buildings.masterTannery": 1,
+      "clothing.highpriest_robe": false,
+    },
+    cost: {
+      "resources.leather": 500,
+      "resources.gold": 50,
+    },
+    effects: {
+      "clothing.highpriest_robe": true,
+      "story.seen.hasHighpriestRobe": true,
+      "story.seen.actionCraftHighpriestRobe": true,
+    },
+    cooldown: 40,
+  },
 };
 
 // Action handlers
@@ -613,5 +632,19 @@ export function handleCraftHunterCloak(state: GameState, result: ActionResult): 
 export function handleCraftGrenadierBag(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftGrenadierBag', state);
   Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftHighpriestRobe(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftHighpriestRobe', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  
+  result.logEntries!.push({
+    id: `highpriest-robe-crafted-${Date.now()}`,
+    message: "The Master Tannery completes a magnificent robe adorned with gold thread. This sacred garment brings peace to the mind and clarity to thoughts.",
+    timestamp: Date.now(),
+    type: 'system',
+  });
+  
   return result;
 }

@@ -474,6 +474,19 @@ export const weaponEffects: Record<string, EffectDefinition> = {
 
 // Relic effects
 export const clothingEffects: Record<string, EffectDefinition> = {
+  highpriest_robe: {
+    id: "highpriest_robe",
+    name: "Highpriest Robe",
+    description: "Sacred robe adorned with gold thread, bringing peace and clarity",
+    bonuses: {
+      generalBonuses: {
+        knowledge: 5,
+        madness: -5,
+      },
+      actionBonuses: {},
+    },
+  },
+
   cracked_crown: {
     id: "cracked_crown",
     name: "Cracked Crown",
