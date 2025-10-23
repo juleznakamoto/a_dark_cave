@@ -218,15 +218,17 @@
   0%,
   100% {
     box-shadow: none;
+    border-color: hsl(var(--input));
   }
 
   50% {
-    box-shadow: 0 0 2px rgba(255, 99, 71, 0.6), 0 0 4px rgba(255, 69, 0, 0.4);
+    box-shadow: 0 0 8px rgba(255, 99, 71, 0.8), 0 0 16px rgba(255, 69, 0, 0.6);
+    border-color: rgba(255, 99, 71, 0.8);
   }
 }
 
 .button-glow-animation {
-  animation: button-glow 2.5s ease-in-out;
+  animation: button-glow 0.5s ease-in-out;
 }
 
 /* Keyframe animations for madness shadow pulsing */
