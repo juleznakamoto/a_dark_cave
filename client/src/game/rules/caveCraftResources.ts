@@ -150,12 +150,15 @@ export function handleCraftCinderflameBomb(state: GameState, result: ActionResul
   const effectUpdates = applyActionEffects('craftCinderflameBomb', state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  result.logEntries!.push({
-    id: `cinderflame-bomb-crafted-${Date.now()}`,
-    message: "Using the mystical cinderflame dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
-    timestamp: Date.now(),
-    type: 'system',
-  });
+  // Only show message on first craft
+  if (!state.story.seen.hasCinderflameBomb) {
+    result.logEntries!.push({
+      id: `cinderflame-bomb-crafted-${Date.now()}`,
+      message: "Using the mystical cinderflame dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
 
   return result;
 }
