@@ -197,7 +197,6 @@ export const gameStateSchema = z.object({
       deepeningPit: z.number().default(0),
       deepPit: z.number().default(0),
       bottomlessPit: z.number().default(0),
-      altar: z.number().default(0),
       shrine: z.number().default(0),
       temple: z.number().default(0),
       sanctum: z.number().default(0),
