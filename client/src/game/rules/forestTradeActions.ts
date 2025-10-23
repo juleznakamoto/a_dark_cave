@@ -63,7 +63,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.stone": 1000,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeGoldForSteel: {
@@ -94,7 +94,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.steel": 200,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeGoldForObsidian: {
@@ -125,7 +125,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.obsidian": 100,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeGoldForAdamant: {
@@ -156,7 +156,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.adamant": 100,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeGoldForTorch: {
@@ -187,7 +187,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.torch": 100,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeSilverForGold: {
@@ -218,7 +218,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 100,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 };
 
