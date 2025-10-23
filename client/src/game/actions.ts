@@ -43,6 +43,7 @@ import {
   handleCraftGrenadierBag,
   handleCraftHighpriestRobe,
   handleCraftLoggersGloves,
+  handleCraftExplorerPack,
 } from '@/game/rules/caveCraftTools';
 
 import {
@@ -227,7 +228,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'craftAdamantLantern':
       return handleCraftAdamantLantern(state, result);
     case 'craftExplorerPack':
-      return handleCraftexplorerPack(state, result);
+      return handleCraftExplorerPack(state, result);
     case 'craftHunterCloak':
       return handleCraftHunterCloak(state, result);
     case 'craftGrenadierBag':
