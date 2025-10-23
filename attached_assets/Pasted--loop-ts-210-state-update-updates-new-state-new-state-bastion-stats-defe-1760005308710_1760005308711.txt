@@ -14,7 +14,7 @@ buildings
 {woodenHut: 4, stoneHut: 0, longhouse: 0, cabin: 1, greatCabin: 0, …}
 clothing
 : 
-{iron_armor: false, steel_armor: false, obsidian_armor: false, seeker_pack: false, hunter_cloak: false, …}
+{iron_armor: false, steel_armor: false, obsidian_armor: false, explorer_pack: false, hunter_cloak: false, …}
 current_population
 : 
 1

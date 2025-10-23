@@ -38,7 +38,7 @@ import {
   handleCraftSteelLantern,
   handleCraftObsidianLantern,
   handleCraftAdamantLantern,
-  handleCraftSeekerPack,
+  handleCraftexplorerPack,
   handleCraftHunterCloak,
   handleCraftGrenadierBag,
   handleCraftHighpriestRobe,
@@ -225,8 +225,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftObsidianLantern(state, result);
     case 'craftAdamantLantern':
       return handleCraftAdamantLantern(state, result);
-    case 'craftSeekerPack':
-      return handleCraftSeekerPack(state, result);
+    case 'craftexplorerPack':
+      return handleCraftexplorerPack(state, result);
     case 'craftHunterCloak':
       return handleCraftHunterCloak(state, result);
     case 'craftGrenadierBag':

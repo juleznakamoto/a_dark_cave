@@ -435,9 +435,9 @@ export default function SidePanelSection({
                     )}
                     {title !== "Blessings" && effect.bonuses.actionBonuses &&
                       (() => {
-                        // Special case for seeker pack - show simplified tooltip
-                        if (effect.id === "seeker_pack") {
-                          return <div>+20% Explore Bonus</div>;
+                        // Special case for explorer pack - show simplified tooltip
+                        if (effect.id === "explorer_pack") {
+                          return <div>+20% Cave Explore Bonus</div>;
                         }
 
                         return Object.entries(effect.bonuses.actionBonuses).map(

@@ -745,16 +745,13 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  seeker_pack: {
-    id: "seeker_pack",
-    name: "Seeker Pack",
+  explorer_pack: {
+    id: "explorer_pack",
+    name: "explorer Pack",
     description:
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
-          resourceMultiplier: 1.2,
-        },
         exploreCave: {
           resourceMultiplier: 1.2,
         },
@@ -771,12 +768,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.2,
         },
         exploreCitadel: {
-          resourceMultiplier: 1.2,
-        },
-        lowChamber: {
-          resourceMultiplier: 1.2,
-        },
-        alchemistChamber: {
           resourceMultiplier: 1.2,
         },
       },

@@ -68,7 +68,7 @@
         "blacksmith_hammer": false,
         "reinforced_rope": true,
         "giant_trap": true,
-        "seeker_pack": false,
+        "explorer_pack": false,
         "alchemist_map": false,
         "occultist_map": true
     },
@@ -87,7 +87,7 @@
         "iron_armor": false,
         "steel_armor": false,
         "obsidian_armor": false,
-        "seeker_pack": true,
+        "explorer_pack": true,
         "hunter_cloak": true
     },
     "relics": {
@@ -211,8 +211,8 @@
             "hasSteelLantern": true,
             "actionCraftSteelLantern": true,
             "exploredRuins": true,
-            "hasSeekerPack": true,
-            "actionCraftSeekerPack": true,
+            "hasexplorerPack": true,
+            "actionCraftexplorerPack": true,
             "hasSteelAxe": true,
             "actionCraftSteelAxe": true,
             "hasObsidianAxe": true,

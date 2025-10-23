@@ -103,7 +103,7 @@ export const gameStateSchema = z.object({
       blacksmith_hammer: z.boolean().default(false),
       reinforced_rope: z.boolean().default(false),
       giant_trap: z.boolean().default(false),
-      seeker_pack: z.boolean().default(false),
+      explorer_pack: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false)
     })
@@ -130,7 +130,7 @@ export const gameStateSchema = z.object({
       iron_armor: z.boolean().default(false),
       steel_armor: z.boolean().default(false),
       obsidian_armor: z.boolean().default(false),
-      seeker_pack: z.boolean().default(false),
+      explorer_pack: z.boolean().default(false),
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
       highpriest_robe: z.boolean().default(false),
