@@ -134,6 +134,7 @@ export const gameStateSchema = z.object({
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
       highpriest_robe: z.boolean().default(false),
+      loggers_gloves: z.boolean().default(false),
     })
     .default({}),
   relics: z

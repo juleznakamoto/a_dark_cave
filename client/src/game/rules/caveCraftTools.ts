@@ -483,6 +483,25 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cooldown: 40,
   },
+
+  craftLoggersGloves: {
+    id: "craftLoggersGloves",
+    label: "Logger's Gloves",
+    show_when: {
+      "buildings.tannery": 1,
+      "clothing.loggers_gloves": false,
+    },
+    cost: {
+      "resources.leather": 150,
+    },
+    effects: {
+      "clothing.loggers_gloves": true,
+      "story.seen.hasLoggersGloves": true,
+      "story.seen.actionCraftLoggersGloves": true,
+      "bonuses.wood_gathering": 0.20,
+    },
+    cooldown: 15,
+  },
 };
 
 // Action handlers
@@ -638,13 +657,19 @@ export function handleCraftGrenadierBag(state: GameState, result: ActionResult):
 export function handleCraftHighpriestRobe(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftHighpriestRobe', state);
   Object.assign(result.stateUpdates, effectUpdates);
-  
+
   result.logEntries!.push({
     id: `highpriest-robe-crafted-${Date.now()}`,
     message: "The Master Tannery completes a magnificent robe adorned with gold thread. This sacred garment brings peace to the mind and clarity to thoughts.",
     timestamp: Date.now(),
     type: 'system',
   });
-  
+
+  return result;
+}
+
+export function handleCraftLoggersGloves(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftLoggersGloves', state);
+  Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }

@@ -774,6 +774,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  loggers_gloves: {
+    id: "loggers_gloves",
+    name: "Logger's Gloves",
+    description: "Sturdy leather gloves that improve wood gathering efficiency",
+    bonuses: {
+      actionBonuses: {
+        gatherWood: {
+          resourceMultiplier: 1.2,
+        },
+      },
+    },
+  },
+
   hunter_cloak: {
     id: "hunter_cloak",
     name: "Hunter Cloak",
