@@ -673,3 +673,9 @@ export function handleCraftLoggersGloves(state: GameState, result: ActionResult)
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
+
+export function handleCraftExplorerPack(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftExplorerPack', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}

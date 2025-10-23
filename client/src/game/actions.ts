@@ -42,6 +42,7 @@ import {
   handleCraftHunterCloak,
   handleCraftGrenadierBag,
   handleCraftHighpriestRobe,
+  handleCraftLoggersGloves,
 } from '@/game/rules/caveCraftTools';
 
 import {
@@ -148,7 +149,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
         ...state.story,
         seen: {
           ...state.story.seen,
-          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`]: true
+          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`: true]
         }
       }
     },
@@ -225,7 +226,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftObsidianLantern(state, result);
     case 'craftAdamantLantern':
       return handleCraftAdamantLantern(state, result);
-    case 'craftexplorerPack':
+    case 'craftExplorerPack':
       return handleCraftexplorerPack(state, result);
     case 'craftHunterCloak':
       return handleCraftHunterCloak(state, result);
