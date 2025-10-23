@@ -1,4 +1,5 @@
-import React from "react";
+
+import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 
@@ -31,8 +32,8 @@ export default function CooldownButton({
   ...props
 }: CooldownButtonProps) {
   const { cooldowns } = useGameStore();
-  const [initialCooldown, setInitialCooldown] = React.useState<number>(0);
-  const [isFirstRender, setIsFirstRender] = React.useState<boolean>(true);
+  const initialCooldownRef = useRef<number>(0);
+  const isFirstRenderRef = useRef<boolean>(true);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -45,32 +46,35 @@ export default function CooldownButton({
   const isCoolingDown = currentCooldown > 0;
 
   // Track the initial cooldown value when cooldown starts
-  React.useEffect(() => {
-    if (isCoolingDown && initialCooldown === 0) {
-      setInitialCooldown(currentCooldown);
-      setIsFirstRender(true);
-      // Allow transition after initial render
-      setTimeout(() => setIsFirstRender(false), 50);
+  useEffect(() => {
+    if (isCoolingDown && initialCooldownRef.current === 0) {
+      // New cooldown started
+      initialCooldownRef.current = currentCooldown;
+      isFirstRenderRef.current = true;
+      
+      // Allow transition after initial render (next frame)
+      requestAnimationFrame(() => {
+        isFirstRenderRef.current = false;
+      });
     } else if (!isCoolingDown) {
-      setInitialCooldown(0);
-      setIsFirstRender(true);
+      // Cooldown finished, reset
+      initialCooldownRef.current = 0;
+      isFirstRenderRef.current = true;
     }
-  }, [isCoolingDown, currentCooldown, initialCooldown]);
+  }, [isCoolingDown, currentCooldown]);
 
-  // Calculate progress based on the actual initial cooldown, not the prop
-  const progress = isCoolingDown && initialCooldown > 0
-    ? 1 - currentCooldown / initialCooldown
-    : 1;
+  // Calculate progress (0 = start, 1 = complete)
+  const progress =
+    isCoolingDown && initialCooldownRef.current > 0
+      ? Math.min(1, 1 - currentCooldown / initialCooldownRef.current)
+      : 1;
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
-
-    // Execute the action - action handler will set cooldown with dev mode adjustments
     onClick();
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
-  const showCooldownVisual = isCoolingDown;
 
   return (
     <div className="relative inline-block">
@@ -80,7 +84,7 @@ export default function CooldownButton({
         variant={variant}
         size={size}
         className={`relative overflow-hidden transition-all duration-200 select-none ${
-          showCooldownVisual ? "opacity-60 cursor-not-allowed" : ""
+          isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
         } ${className}`}
         data-testid={testId}
         {...props}
@@ -89,14 +93,13 @@ export default function CooldownButton({
         <span className="relative z-10">{children}</span>
 
         {/* Cooldown progress overlay */}
-        {showCooldownVisual && (
+        {isCoolingDown && (
           <div
-            className="absolute inset-0 bg-white/15 ease-linear"
+            className="absolute inset-0 bg-white/15"
             style={{
               width: `${(1 - progress) * 100}%`,
               left: 0,
-              right: "auto",
-              transition: isFirstRender ? 'none' : 'width 0.1s linear',
+              transition: isFirstRenderRef.current ? "none" : "width 0.1s linear",
             }}
           />
         )}
