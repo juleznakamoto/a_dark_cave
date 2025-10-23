@@ -350,15 +350,18 @@ function handleStrangerApproach() {
     // Raven's Mark blessing: 20% more likely to get multiple strangers
     let multiStrangerMultiplier = 1.0;
     if (state.blessings?.ravens_mark) {
-      multiStrangerMultiplier = 1.2;
+      multiStrangerMultiplier = 1.25;
     }
     if (state.blessings?.ravens_mark_enhanced) {
-      multiStrangerMultiplier = 1.4;
+      multiStrangerMultiplier = 1.5;
     }
 
-    // Check for the new condition: 10 stone houses built
-    // But only if there's room for multiple strangers
     if (state.buildings.stoneHut >= 10) {
+      moreStrangersProbability *= 0.75;
+    }
+
+    // multiple strangers approach at once
+    if (state.buildings.stoneHut >= 1) {
       if (
         availableRoom >= 5 &&
         moreStrangersProbability < 0.1 * multiStrangerMultiplier
