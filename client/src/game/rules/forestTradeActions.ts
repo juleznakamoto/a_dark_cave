@@ -32,7 +32,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.wood": 2500,
       },
     },
-    cooldown: 30,
+    cooldown: 60,
   },
 
   tradeGoldForStone: {
