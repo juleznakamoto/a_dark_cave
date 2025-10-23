@@ -59,7 +59,7 @@ export default function CooldownButton({
 
   // Calculate progress based on the actual initial cooldown, not the prop
   const progress = isCoolingDown && initialCooldown > 0
-    ? 1 - currentCooldown / initialCooldown
+    ? Math.min(1, 1 - currentCooldown / initialCooldown)
     : 1;
 
   const handleClick = () => {
@@ -70,7 +70,8 @@ export default function CooldownButton({
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
-  const showCooldownVisual = isCoolingDown;
+  // Hide overlay when progress is essentially complete (>99.5%)
+  const showCooldownVisual = isCoolingDown && progress < 0.995;
 
   return (
     <div className="relative inline-block">
