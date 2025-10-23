@@ -575,8 +575,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  whispering_amulet: {
-    id: "whispering_amulet",
+  muttering_amulet: {
+    id: "muttering_amulet",
     name: "Whispering Amulet",
     description: "Mysterious amulet that whispers ancient secrets",
     bonuses: {
@@ -845,9 +845,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  murmuring_cube: {
-    id: "murmuring_cube",
-    name: "Murmuring Cube",
+  whispering_cube: {
+    id: "whispering_cube",
+    name: "whispering Cube",
     description: "Perfectly polished metal cube of unknown origin",
     bonuses: {},
   },

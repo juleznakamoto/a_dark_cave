@@ -95,7 +95,7 @@
         "bloodstained_belt": true,
         "ravenfeather_mantle": false,
         "blackened_mirror": true,
-        "whispering_amulet": true,
+        "muttering_amulet": true,
         "wooden_figure": false,
         "old_trinket": false,
         "ebony_ring": true,
@@ -109,7 +109,7 @@
         "shadow_flute": true,
         "hollow_kings_scepter": true,
         "red_mask": false,
-        "murmuring_cube": true,
+        "whispering_cube": true,
         "hollow_king_scepter": true
     },
     "buildings": {
@@ -317,7 +317,7 @@
         },
         "madness_reduction": {
             "blackened_mirror_madness": -4,
-            "whispering_amulet_madness": -2,
+            "muttering_amulet_madness": -2,
             "ebony_ring_madness": -2,
             "unnamed_book_madness": -5,
             "bone_dice_madness": -2,

@@ -21,7 +21,7 @@ random choice of:
 2 relic/tool trading options:
 - reinforced rope for random(50 silver, 25 gold)
 - alchemist's map for random(100 silver, 50 gold)
-- murmuring cube for random (150 silver, 75 gold)
+- whispering cube for random (150 silver, 75 gold)
 - giant trap for random(20 silver, 10 gold)
 
 create the tools:
@@ -30,7 +30,7 @@ create the tools:
 -giant trap: add text to event log when bought that it can be used to trap something gigantic in the woods, add action to wood area called "lay trap", it cost 500 food, a gigantic black bear will be in the trap, the villagers fight it with all their strength (random(0-3) get killed) and kill it, player receives black bear fur
 
 create the relics:
-- murmuring cube, it's effects will be defined later
+- whispering cube, it's effects will be defined later
 - black bear fur: + 10 strength
 
 For each knowledge, the cost is 1 % lower (always round up to next int)

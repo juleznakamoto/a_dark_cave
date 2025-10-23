@@ -5,10 +5,10 @@ export const cubeEvents: Record<string, GameEvent> = {
   cubeDiscovery: {
     id: "cubeDiscovery",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && !state.relics.murmuring_cube,
+      state.buildings.woodenHut >= 2 && !state.relics.whispering_cube,
     triggerType: "resource",
     timeProbability: 1,
-    title: "The Murmuring Cube",
+    title: "The whispering Cube",
     message:
       "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
     triggered: false,
@@ -22,7 +22,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             relics: {
               ...state.relics,
-              murmuring_cube: true,
+              whispering_cube: true,
             },
           };
         },
@@ -33,7 +33,7 @@ export const cubeEvents: Record<string, GameEvent> = {
   cube01: {
     id: "cube01",
     condition: (state: GameState) =>
-      state.relics.murmuring_cube &&
+      state.relics.whispering_cube &&
       state.story.seen.venturedDeeper &&
       !state.events.cube01,
     triggerType: "resource",
