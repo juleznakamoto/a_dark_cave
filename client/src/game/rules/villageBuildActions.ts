@@ -1613,7 +1613,7 @@ export function handleBuildTradePost(
     tradePostResult.logEntries!.push({
       id: `trade-post-built-${Date.now()}`,
       message:
-        "A trade post is built near the forest attracting tradesman who look to sell their goods for precious metals.",
+        "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
       timestamp: Date.now(),
       type: "system",
     });
