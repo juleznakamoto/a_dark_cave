@@ -31,6 +31,7 @@ export default function CooldownButton({
   ...props
 }: CooldownButtonProps) {
   const { cooldowns } = useGameStore();
+  const [initialCooldown, setInitialCooldown] = React.useState<number>(0);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -41,8 +42,19 @@ export default function CooldownButton({
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
-  const progress = isCoolingDown
-    ? 1 - currentCooldown / (cooldownMs / 1000)
+
+  // Track the initial cooldown value when cooldown starts
+  React.useEffect(() => {
+    if (isCoolingDown && initialCooldown === 0) {
+      setInitialCooldown(currentCooldown);
+    } else if (!isCoolingDown) {
+      setInitialCooldown(0);
+    }
+  }, [isCoolingDown, currentCooldown, initialCooldown]);
+
+  // Calculate progress based on the actual initial cooldown, not the prop
+  const progress = isCoolingDown && initialCooldown > 0
+    ? 1 - currentCooldown / initialCooldown
     : 1;
 
   const handleClick = () => {
