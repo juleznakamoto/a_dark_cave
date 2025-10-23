@@ -99,7 +99,7 @@ export default function CooldownButton({
             style={{
               width: `${overlayWidth}%`,
               left: 0,
-              transition: isFirstRenderRef.current ? "none" : "width 0.1s linear",
+              transition: isFirstRenderRef.current ? "none" : "width 0.15s ease-out",
             }}
           />
         )}
