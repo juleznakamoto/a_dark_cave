@@ -149,7 +149,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
         ...state.story,
         seen: {
           ...state.story.seen,
-          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`: true]
+          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`]: true
         }
       }
     },
