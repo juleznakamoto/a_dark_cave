@@ -86,11 +86,12 @@ export default function CooldownButton({
         {/* Cooldown progress overlay */}
         {showCooldownVisual && (
           <div
-            className="absolute inset-0 bg-white/15 transition-all duration-200 ease-linear"
+            className="absolute inset-0 bg-white/15"
             style={{
               width: `${(1 - progress) * 100}%`,
               left: 0,
               right: "auto",
+              transition: 'width 0.1s linear',
             }}
           />
         )}
