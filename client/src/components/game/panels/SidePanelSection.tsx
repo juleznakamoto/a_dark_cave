@@ -403,7 +403,7 @@ export default function SidePanelSection({
                         )}
                         {effect.bonuses.generalBonuses.madness && (
                           <div>
-                            +{effect.bonuses.generalBonuses.madness} Madness
+                            {effect.bonuses.generalBonuses.madness > 0 ? '+' : ''}{effect.bonuses.generalBonuses.madness} Madness
                           </div>
                         )}
                         {effect.bonuses.generalBonuses.madnessReduction && (

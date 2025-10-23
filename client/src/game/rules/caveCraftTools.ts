@@ -411,20 +411,20 @@ export const caveCraftTools: Record<string, Action> = {
     cooldown: 30,
   },
 
-  craftexplorerPack: {
-    id: "craftexplorerPack",
-    label: "explorer's Pack",
+  craftSeekerPack: {
+    id: "craftSeekerPack",
+    label: "Seeker's Pack",
     show_when: {
       "buildings.tannery": 1,
-      "clothing.explorer_pack": false,
+      "clothing.seeker_pack": false,
     },
     cost: {
       "resources.leather": 250,
     },
     effects: {
-      "clothing.explorer_pack": true,
-      "story.seen.hasexplorerPack": true,
-      "story.seen.actionCraftexplorerPack": true,
+      "clothing.seeker_pack": true,
+      "story.seen.hasSeekerPack": true,
+      "story.seen.actionCraftSeekerPack": true,
     },
     cooldown: 20,
   },
@@ -437,7 +437,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.hunter_cloak": false,
     },
     cost: {
-      "resources.leather": 250,
+      "resources.leather": 200,
     },
     effects: {
       "clothing.hunter_cloak": true,
@@ -617,8 +617,8 @@ export function handleCraftAdamantLantern(state: GameState, result: ActionResult
   return result;
 }
 
-export function handleCraftexplorerPack(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftexplorerPack', state);
+export function handleCraftSeekerPack(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftSeekerPack', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
