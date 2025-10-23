@@ -32,6 +32,7 @@ export default function CooldownButton({
 }: CooldownButtonProps) {
   const { cooldowns } = useGameStore();
   const [initialCooldown, setInitialCooldown] = React.useState<number>(0);
+  const [isFirstRender, setIsFirstRender] = React.useState<boolean>(true);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -47,8 +48,12 @@ export default function CooldownButton({
   React.useEffect(() => {
     if (isCoolingDown && initialCooldown === 0) {
       setInitialCooldown(currentCooldown);
+      setIsFirstRender(true);
+      // Allow transition after initial render
+      setTimeout(() => setIsFirstRender(false), 50);
     } else if (!isCoolingDown) {
       setInitialCooldown(0);
+      setIsFirstRender(true);
     }
   }, [isCoolingDown, currentCooldown, initialCooldown]);
 
@@ -86,11 +91,12 @@ export default function CooldownButton({
         {/* Cooldown progress overlay */}
         {showCooldownVisual && (
           <div
-            className="absolute inset-0 bg-white/15 transition-all duration-200 ease-linear"
+            className="absolute inset-0 bg-white/15 ease-linear"
             style={{
               width: `${(1 - progress) * 100}%`,
               left: 0,
               right: "auto",
+              transition: isFirstRender ? 'none' : 'width 0.1s linear',
             }}
           />
         )}
