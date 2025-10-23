@@ -96,7 +96,7 @@ export default function CooldownButton({
               width: `${(1 - progress) * 100}%`,
               left: 0,
               right: "auto",
-              transition: isFirstRender ? 'none' : 'width 0.05s linear',
+              transition: isFirstRender ? 'none' : 'width 0.25s linear',
             }}
           />
         )}
