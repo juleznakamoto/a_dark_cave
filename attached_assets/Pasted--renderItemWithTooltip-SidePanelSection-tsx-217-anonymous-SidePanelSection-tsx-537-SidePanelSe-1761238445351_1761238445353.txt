@@ -1,0 +1,2575 @@
+
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
+renderItemWithTooltip @ SidePanelSection.tsx:217
+(anonymous) @ SidePanelSection.tsx:537
+SidePanelSection @ SidePanelSection.tsx:535
+renderWithHooks @ chunk-WERSD76P.js?v=b9c2bbea:11548
+updateFunctionComponent @ chunk-WERSD76P.js?v=b9c2bbea:14582
+beginWork @ chunk-WERSD76P.js?v=b9c2bbea:15924
+beginWork$1 @ chunk-WERSD76P.js?v=b9c2bbea:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=b9c2bbea:19198
+workLoopSync @ chunk-WERSD76P.js?v=b9c2bbea:19137
+renderRootSync @ chunk-WERSD76P.js?v=b9c2bbea:19116
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=b9c2bbea:18874
+flushSyncCallbacks @ chunk-WERSD76P.js?v=b9c2bbea:9119
+(anonymous) @ chunk-WERSD76P.js?v=b9c2bbea:18627
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70
+requestAnimationFrame
+tick @ loop.ts:70Understand this error
+SidePanelSection.tsx:217 Missing effect definition for item: seeker_pack in section: Clothing {item: {…}, availableInClothingEffects: false, availableInWeaponEffects: false, availableInToolEffects: false}
