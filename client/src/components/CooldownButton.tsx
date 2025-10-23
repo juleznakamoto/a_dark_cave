@@ -64,9 +64,10 @@ export default function CooldownButton({
   }, [isCoolingDown, currentCooldown]);
 
   // Calculate progress (0 = start, 1 = complete)
+  // Clamp to slightly less than 100% to prevent premature completion
   const progress =
     isCoolingDown && initialCooldownRef.current > 0
-      ? Math.min(1, 1 - currentCooldown / initialCooldownRef.current)
+      ? Math.min(0.99, 1 - currentCooldown / initialCooldownRef.current)
       : 1;
 
   const handleClick = () => {
