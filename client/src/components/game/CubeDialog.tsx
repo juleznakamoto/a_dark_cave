@@ -26,14 +26,21 @@ export default function CubeDialog({
   const eventChoices = event?.choices || [];
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
     if (isOpen) {
-      audioManager.playLoopingSound('whisperingCube', 0.4);
+      timeoutId = setTimeout(() => {
+        audioManager.playLoopingSound('whisperingCube', 0.4);
+      }, 500);
     } else {
       audioManager.stopLoopingSound('whisperingCube');
     }
 
     // Cleanup on unmount
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       audioManager.stopLoopingSound('whisperingCube');
     };
   }, [isOpen]);
