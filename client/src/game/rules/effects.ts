@@ -747,7 +747,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   explorer_pack: {
     id: "explorer_pack",
-    name: "explorer Pack",
+    name: "Explorer Pack",
     description:
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {

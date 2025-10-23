@@ -358,7 +358,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           const luck = getTotalLuck(state);
-          const casualtyChance = Math.max(0.1, 0.5 - luck * 0.02);
+          const casualtyChance = Math.max(0.1, 0.4 - luck * 0.02);
 
           let villagerDeaths = 0;
           let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
@@ -666,7 +666,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Blind Druid",
     message:
-      "Shortly after the temple is built, a blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely, for this choice will shape your community's destiny forever.'",
+      "Shortly after the temple is built, the blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely, for this choice will shape your community's destiny forever.'",
     triggered: false,
     priority: 5,
     repeatable: false,

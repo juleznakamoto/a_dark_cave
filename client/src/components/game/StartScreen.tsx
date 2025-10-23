@@ -10,7 +10,7 @@ export default function StartScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
-    }, 4500); // 3s delay + 1.5s animation
+    }, 6000); // 3.5s delay + 2.5s animation
 
     return () => clearTimeout(timer);
   }, []);
@@ -32,7 +32,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-button {
-          animation: fade-in-button 1.5s ease-in 3s forwards;
+          animation: fade-in-button 2.5s ease-in 3.5s forwards;
           opacity: 0;
           pointer-events: none;
         }

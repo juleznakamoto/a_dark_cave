@@ -535,10 +535,9 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2000,
+        "resources.wood": 2500,
         "resources.stone": 1000,
-        "resources.silver": 50,
-        "resources.gold": 25,
+        "resources.gold": 50,
         "resources.obsidian": 50,
       },
     },
@@ -560,7 +559,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.stoneHut": 4,
+        "buildings.stoneHut": 3,
         "buildings.shrine": 1,
         "buildings.temple": 0,
       },
@@ -568,7 +567,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 5000,
-        "resources.gold": 150,
+        "resources.gold": 250,
         "resources.obsidian": 500,
       },
     },
@@ -590,7 +589,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.stoneHut": 8,
+        "buildings.stoneHut": 6,
         "buildings.temple": 1,
         "buildings.sanctum": 0,
       },
