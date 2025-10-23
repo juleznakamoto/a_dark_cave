@@ -5,6 +5,7 @@ export class AudioManager {
   private sounds: Map<string, AudioBuffer> = new Map();
   private soundUrls: Map<string, string> = new Map();
   private initialized: boolean = false;
+  private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
 
   private constructor() {}
 
@@ -113,12 +114,63 @@ export class AudioManager {
     }
   }
 
+  async playLoopingSound(name: string, volume: number = 1): Promise<void> {
+    try {
+      // Stop any existing loop for this sound
+      this.stopLoopingSound(name);
+
+      // Initialize audio on first play attempt
+      if (!this.initialized) {
+        this.initialized = true;
+        await this.loadAllSounds();
+      }
+
+      await this.initAudioContext();
+      if (!this.audioContext) return;
+
+      const audioBuffer = this.sounds.get(name);
+      if (!audioBuffer) {
+        console.warn(`Sound ${name} not found`);
+        return;
+      }
+
+      const source = this.audioContext.createBufferSource();
+      const gainNode = this.audioContext.createGain();
+      
+      source.buffer = audioBuffer;
+      source.loop = true;
+      gainNode.gain.value = Math.max(0, Math.min(1, volume));
+      
+      source.connect(gainNode);
+      gainNode.connect(this.audioContext.destination);
+      
+      source.start();
+      this.loopingSources.set(name, source);
+    } catch (error) {
+      console.warn(`Failed to play looping sound ${name}:`, error);
+    }
+  }
+
+  stopLoopingSound(name: string): void {
+    const source = this.loopingSources.get(name);
+    if (source) {
+      try {
+        source.stop();
+        source.disconnect();
+      } catch (error) {
+        // Ignore errors if already stopped
+      }
+      this.loopingSources.delete(name);
+    }
+  }
+
   async preloadSounds(): Promise<void> {
     console.log('Registering sounds for lazy loading...');
     // Just register the sound URLs, don't load yet
     this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
     this.soundUrls.set('event', '/sounds/event.wav');
     this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
+    this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
     console.log('Sound URLs registered for lazy loading');
   }
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { LogEntry } from "@/game/rules/events";
 import {
   Dialog,
@@ -8,6 +8,7 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { audioManager } from "@/lib/audio";
 
 interface CubeDialogProps {
   isOpen: boolean;
@@ -23,6 +24,19 @@ export default function CubeDialog({
   fallbackExecutedRef,
 }: CubeDialogProps) {
   const eventChoices = event?.choices || [];
+
+  useEffect(() => {
+    if (isOpen) {
+      audioManager.playLoopingSound('whisperingCube', 0.4);
+    } else {
+      audioManager.stopLoopingSound('whisperingCube');
+    }
+
+    // Cleanup on unmount
+    return () => {
+      audioManager.stopLoopingSound('whisperingCube');
+    };
+  }, [isOpen]);
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
