@@ -26,17 +26,29 @@ export default function CubeDialog({
   const eventChoices = event?.choices || [];
 
   useEffect(() => {
+    let timeoutId: NodeJS.Timeout | null = null;
+
     if (isOpen) {
-      audioManager.playLoopingSound('whisperingCube', 0.4);
+      timeoutId = setTimeout(() => {
+        audioManager.playLoopingSound('whisperingCube', 0.4);
+      }, 500);
     } else {
       audioManager.stopLoopingSound('whisperingCube');
     }
 
     // Cleanup on unmount
     return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
       audioManager.stopLoopingSound('whisperingCube');
     };
   }, [isOpen]);
+
+  const handleClose = () => {
+    audioManager.stopLoopingSound('whisperingCube');
+    onChoice(eventChoices[0]?.id);
+  };
 
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
@@ -53,7 +65,7 @@ export default function CubeDialog({
 
         <div className="flex-1 flex items-end justify-center">
           <Button
-            onClick={() => onChoice(eventChoices[0]?.id)}
+            onClick={handleClose}
             variant="outline"
             size="sm"
             className="px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
