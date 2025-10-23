@@ -63,11 +63,11 @@ export default function CooldownButton({
     }
   }, [isCoolingDown, currentCooldown]);
 
-  // Calculate progress (0 = start, 1 = complete)
-  const progress =
+  // Calculate width percentage directly from remaining cooldown
+  const overlayWidth =
     isCoolingDown && initialCooldownRef.current > 0
-      ? 1 - currentCooldown / initialCooldownRef.current
-      : 1;
+      ? (currentCooldown / initialCooldownRef.current) * 100
+      : 0;
 
   const handleClick = () => {
     if (isCoolingDown || disabled) return;
@@ -97,9 +97,9 @@ export default function CooldownButton({
           <div
             className="absolute inset-0 bg-white/15"
             style={{
-              width: `${(1 - progress) * 100}%`,
+              width: `${overlayWidth}%`,
               left: 0,
-              transition: isFirstRenderRef.current ? "none" : "width 0.3s ease-out",
+              transition: isFirstRenderRef.current ? "none" : "width 0.1s linear",
             }}
           />
         )}
