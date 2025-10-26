@@ -49,6 +49,7 @@ interface GameStore extends GameState {
     amount: number,
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
+  setHoveredTooltip: (tooltipId: string, value: boolean) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
@@ -170,6 +171,7 @@ const defaultGameState: GameState = {
     attack: 0,
     integrity: 0,
   },
+  hoveredTooltips: {},
 };
 
 // State management utilities
@@ -238,6 +240,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set((state) => updateFlag(state, flag, value));
+  },
+
+  setHoveredTooltip: (tooltipId: string, value: boolean) => {
+    set((state) => ({
+      hoveredTooltips: {
+        ...state.hoveredTooltips,
+        [tooltipId]: value,
+      },
+    }));
   },
 
   initialize: (newState: GameState) => {

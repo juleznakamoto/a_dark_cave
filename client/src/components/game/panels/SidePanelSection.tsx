@@ -55,11 +55,11 @@ export default function SidePanelSection({
   const [decreaseAnimatedItems, setDecreaseAnimatedItems] = useState<
     Set<string>
   >(new Set());
-  const [hoveredTooltips, setHoveredTooltips] = useState<Set<string>>(new Set());
   const prevValuesRef = useRef<Map<string, number>>(new Map());
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
-  const setFlag = useGameStore((state) => state.setFlag);
+  const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
+  const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   const handleTooltipHover = (itemId: string) => {
@@ -71,7 +71,7 @@ export default function SidePanelSection({
 
     // Set a timer to mark this tooltip as hovered after 500ms
     const timer = setTimeout(() => {
-      setHoveredTooltips((prev) => new Set([...prev, itemId]));
+      setHoveredTooltip(itemId, true);
       hoverTimersRef.current.delete(itemId);
     }, 500);
 
@@ -269,7 +269,7 @@ export default function SidePanelSection({
       isMadnessTooltip ||
       item.tooltip;
     
-    const newItemPulseClass = (shouldPulse && !hoveredTooltips.has(item.id)) ? "new-item-pulse" : "";
+    const newItemPulseClass = (shouldPulse && !hoveredTooltips[item.id]) ? "new-item-pulse" : "";
 
     const itemContent = (
       <div
