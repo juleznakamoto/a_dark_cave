@@ -36,7 +36,6 @@ interface GameStore extends GameState {
 
   // Cooldown management
   cooldowns: Record<string, number>;
-  initialCooldowns: Record<string, number>;
 
   // Population helpers
   current_population: number;
@@ -210,7 +209,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   devMode: import.meta.env.DEV,
   lastSaved: "Never",
   cooldowns: {},
-  initialCooldowns: {},
   log: [],
   eventDialog: {
     isOpen: false,
@@ -391,24 +389,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setCooldown: (action: string, duration: number) => {
     set((state) => ({
       cooldowns: { ...state.cooldowns, [action]: duration },
-      initialCooldowns: { ...state.initialCooldowns, [action]: duration },
     }));
   },
 
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
-      const newInitialCooldowns = { ...state.initialCooldowns };
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
           newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
-          // Clear initial cooldown when done
-          if (newCooldowns[key] === 0) {
-            delete newInitialCooldowns[key];
-          }
         }
       }
-      return { cooldowns: newCooldowns, initialCooldowns: newInitialCooldowns };
+      return { cooldowns: newCooldowns };
     });
   },
 
@@ -417,7 +409,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ...defaultGameState,
       activeTab: "cave",
       cooldowns: {},
-      initialCooldowns: {},
       log: [],
       devMode: import.meta.env.DEV,
       effects: calculateTotalEffects(defaultGameState),
@@ -449,7 +440,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...savedState,
         activeTab: "cave",
         cooldowns: {},
-        initialCooldowns: {},
         log: savedState.log || [],
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(savedState),
@@ -461,7 +451,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
-        initialCooldowns: {},
         log: [],
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(defaultGameState),
