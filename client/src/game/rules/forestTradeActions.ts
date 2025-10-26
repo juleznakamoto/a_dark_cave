@@ -4,6 +4,37 @@ import { getTotalKnowledge } from './effectsCalculation';
 import { applyActionEffects } from "./index";
 
 export const forestTradeActions: Record<string, Action> = {
+  tradeGoldForFood: {
+    id: "tradeGoldForFood",
+    label: "Buy Food",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 5,
+      },
+      2: {
+        "resources.gold": 25,
+      },
+    },
+    effects: {
+      1: {
+        "resources.food": 500,
+      },
+      2: {
+        "resources.food": 2500,
+      },
+    },
+    cooldown: 60,
+  },
+
   tradeGoldForWood: {
     id: "tradeGoldForWood",
     label: "Buy Wood",
@@ -241,6 +272,10 @@ function handleTradeAction(
   };
 
   return result;
+}
+
+export function handleTradeGoldForFood(state: GameState, result: ActionResult): ActionResult {
+  return handleTradeAction('tradeGoldForFood', state, result);
 }
 
 export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {

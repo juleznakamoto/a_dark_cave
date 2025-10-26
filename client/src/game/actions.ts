@@ -115,6 +115,7 @@ import {
 } from '@/game/rules/forestSacrificeActions';
 
 import {
+  handleTradeGoldForFood,
   handleTradeGoldForWood,
   handleTradeGoldForStone,
   handleTradeGoldForSteel,
@@ -366,6 +367,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBoneTotems(state, result);
 
     // Forest Trade Actions
+    case 'tradeGoldForFood':
+      return handleTradeGoldForFood(state, result);
     case 'tradeGoldForWood':
       return handleTradeGoldForWood(state, result);
     case 'tradeGoldForStone':
