@@ -31,7 +31,8 @@ export default function CooldownButton({
   "data-testid": testId,
   ...props
 }: CooldownButtonProps) {
-  const { cooldowns, initialCooldowns } = useGameStore();
+  const { cooldowns } = useGameStore();
+  const initialCooldownRef = useRef<number>(0);
   const isFirstRenderRef = useRef<boolean>(true);
 
   // Get the action ID from the test ID or generate one
@@ -42,25 +43,30 @@ export default function CooldownButton({
 
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
-  const initialCooldown = initialCooldowns[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
-  // Track first render for transition
+  // Track the initial cooldown value when cooldown starts
   useEffect(() => {
-    if (isCoolingDown) {
+    if (isCoolingDown && initialCooldownRef.current === 0) {
+      // New cooldown started
+      initialCooldownRef.current = currentCooldown;
       isFirstRenderRef.current = true;
       
       // Allow transition after initial render (next frame)
       requestAnimationFrame(() => {
         isFirstRenderRef.current = false;
       });
+    } else if (!isCoolingDown) {
+      // Cooldown finished, reset
+      initialCooldownRef.current = 0;
+      isFirstRenderRef.current = true;
     }
-  }, [isCoolingDown]);
+  }, [isCoolingDown, currentCooldown]);
 
   // Calculate width percentage directly from remaining cooldown
   const overlayWidth =
-    isCoolingDown && initialCooldown > 0
-      ? (currentCooldown / initialCooldown) * 100
+    isCoolingDown && initialCooldownRef.current > 0
+      ? (currentCooldown / initialCooldownRef.current) * 100
       : 0;
 
   const handleClick = () => {
