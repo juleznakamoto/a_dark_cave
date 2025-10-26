@@ -4,7 +4,7 @@ import { manualSave } from "@/game/loop";
 import { deleteSave } from "@/game/save";
 import { useState } from "react";
 
-const VERSION = "0.13.16";
+const VERSION = "0.13.17";
 
 export default function GameFooter() {
   const { lastSaved, restartGame } = useGameStore();

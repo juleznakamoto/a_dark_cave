@@ -61,6 +61,7 @@ export default function VillagePanel() {
         { id: "buildDeepPit", label: "Deep Pit" },
         { id: "buildBottomlessPit", label: "Bottomless Pit" },
         { id: "buildFoundry", label: "Foundry" },
+        { id: "buildPrimeFoundry", label: "Prime Foundry" },
         { id: "buildAltar", label: "Altar" },
         { id: "buildShrine", label: "Shrine" },
         { id: "buildTemple", label: "Temple" },

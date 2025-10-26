@@ -289,6 +289,38 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 20,
   },
 
+  buildPrimeFoundry: {
+    id: "buildPrimeFoundry",
+    label: "Prime Foundry",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.foundry": 1,
+        "buildings.deepeningPit": 1,
+        "buildings.primeFoundry": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.stone": 2500,
+        "resources.iron": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.primeFoundry": 1,
+        "story.seen.hasPrimeFoundry": true,
+      },
+    },
+    productionEffects: {
+      steel_forger: {
+        steel: 1,
+      },
+    },
+    cooldown: 40,
+  },
+
   buildGreatCabin: {
     id: "buildGreatCabin",
     label: "Great Cabin",
@@ -486,6 +518,11 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "buildings.masterTannery": 1,
         "story.seen.hasMasterTannery": true,
+      },
+    },
+    productionEffects: {
+      tanner: {
+        leather: 1,
       },
     },
     cooldown: 40,
@@ -1295,6 +1332,31 @@ export function handleBuildFoundry(
   return resultWithBuilding;
 }
 
+export function handleBuildPrimeFoundry(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const primeFoundryResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildPrimeFoundry",
+    "primeFoundry",
+  );
+
+  // Add prime foundry completion message
+  if (state.buildings.primeFoundry === 0) {
+    primeFoundryResult.logEntries!.push({
+      id: `prime-foundry-built-${Date.now()}`,
+      message:
+        "The Prime Foundry rises with advanced smelting chambers and improved bellows. Steel forgers can now work with unprecedented efficiency, doubling their output.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return primeFoundryResult;
+}
+
 export function handleBuildAltar(
   state: GameState,
   result: ActionResult,
@@ -1424,7 +1486,7 @@ export function handleBuildMasterTannery(
     masterTanneryResult.logEntries!.push({
       id: `master-tannery-built-${Date.now()}`,
       message:
-        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques. Skilled artisans stand ready to craft superior leather goods.",
+        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques. Skilled artisans can now produce twice as much leather with their refined methods.",
       timestamp: Date.now(),
       type: "system",
     });
