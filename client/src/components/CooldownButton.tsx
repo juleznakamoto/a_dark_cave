@@ -47,18 +47,15 @@ export default function CooldownButton({
 
   // Track the initial cooldown value when cooldown starts
   useEffect(() => {
-    if (isCoolingDown) {
-      // Only set initial cooldown if we don't have one OR if this is a new cooldown (current > initial)
-      if (initialCooldownRef.current === 0 || currentCooldown > initialCooldownRef.current) {
-        // New cooldown started
-        initialCooldownRef.current = currentCooldown;
-        isFirstRenderRef.current = true;
-        
-        // Allow transition after initial render (next frame)
-        requestAnimationFrame(() => {
-          isFirstRenderRef.current = false;
-        });
-      }
+    if (isCoolingDown && initialCooldownRef.current === 0) {
+      // New cooldown started
+      initialCooldownRef.current = currentCooldown;
+      isFirstRenderRef.current = true;
+      
+      // Allow transition after initial render (next frame)
+      requestAnimationFrame(() => {
+        isFirstRenderRef.current = false;
+      });
     } else if (!isCoolingDown) {
       // Cooldown finished, reset
       initialCooldownRef.current = 0;
