@@ -288,9 +288,11 @@ export default function EventDialog({
               return cost ? (
                 <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
                   <HoverCardTrigger asChild>
-                    <div className="cursor-default">{buttonContent}</div>
+                    <div className="cursor-default" onFocus={(e) => e.preventDefault()}>
+                      {buttonContent}
+                    </div>
                   </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-2">
+                  <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
                     <div className="text-xs whitespace-nowrap">
                       -{cost}
                     </div>

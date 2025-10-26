@@ -106,9 +106,9 @@ export default function MerchantDialog({
                   return (
                     <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
                       <HoverCardTrigger asChild>
-                        <div>{buttonContent}</div>
+                        <div onFocus={(e) => e.preventDefault()}>{buttonContent}</div>
                       </HoverCardTrigger>
-                      <HoverCardContent className="w-auto p-2">
+                      <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
                         <div className="text-xs whitespace-nowrap">
                           -{choice.cost}
                         </div>

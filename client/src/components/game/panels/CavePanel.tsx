@@ -134,7 +134,7 @@ export default function CavePanel() {
       return (
         <HoverCard key={actionId} openDelay={100} closeDelay={100}>
           <HoverCardTrigger asChild>
-            <div>
+            <div onFocus={(e) => e.preventDefault()}>
               <CooldownButton
                 onClick={() => executeAction(actionId)}
                 cooldownMs={action.cooldown * 1000}
@@ -148,7 +148,7 @@ export default function CavePanel() {
               </CooldownButton>
             </div>
           </HoverCardTrigger>
-          <HoverCardContent className="w-auto p-2">
+          <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
             <div className="text-xs whitespace-nowrap">
               {costBreakdown.map((costItem, index) => (
                 <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
