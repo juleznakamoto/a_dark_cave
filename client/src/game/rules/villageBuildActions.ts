@@ -1348,7 +1348,7 @@ export function handleBuildPrimeFoundry(
     primeFoundryResult.logEntries!.push({
       id: `prime-foundry-built-${Date.now()}`,
       message:
-        "The Prime Foundry rises with advanced smelting chambers and improved bellows. Steel forgers can now work with unprecedented efficiency, doubling their output.",
+        "The Prime Foundry rises with advanced smelting chambers and improved bellows.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1486,7 +1486,7 @@ export function handleBuildMasterTannery(
     masterTanneryResult.logEntries!.push({
       id: `master-tannery-built-${Date.now()}`,
       message:
-        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques. Skilled artisans can now produce twice as much leather with their refined methods.",
+        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques.",
       timestamp: Date.now(),
       type: "system",
     });
