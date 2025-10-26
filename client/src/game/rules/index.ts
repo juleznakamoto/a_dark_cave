@@ -102,6 +102,24 @@ const checkRequirements = (
     requirements = levelRequirements;
   }
 
+  // For trade actions with tiers, determine which tier is active
+  if (action.show_when && Object.keys(action.show_when).length > 1) {
+    // Check tier 2 first (higher tier)
+    if (action.show_when[2]) {
+      const tier2Satisfied = Object.entries(action.show_when[2]).every(([key, value]) => {
+        const [category, prop] = key.split('.');
+        return (state[category as keyof typeof state]?.[prop as any] || 0) >= value;
+      });
+      if (tier2Satisfied && requirements[2]) {
+        requirements = requirements[2];
+      } else if (requirements[1]) {
+        requirements = requirements[1];
+      }
+    } else if (requirements[1]) {
+      requirements = requirements[1];
+    }
+  }
+
   return Object.entries(requirements).every(([path, expectedValue]) => {
     // Handle negation (e.g., "!story.seen.castleRuinsExplored")
     const isNegated = path.startsWith("!");
