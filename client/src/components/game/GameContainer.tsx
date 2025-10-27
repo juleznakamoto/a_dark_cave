@@ -103,6 +103,7 @@ export default function GameContainer() {
     flags.forestUnlocked,
     flags.bastionUnlocked,
     buildings.stoneHut,
+    setActiveTab,
   ]);
 
   // Show start screen if game hasn't started yet
@@ -134,13 +135,12 @@ export default function GameContainer() {
                 // New LimelightNav design
                 <LimelightNav
                   items={limelightNavItems}
-                  defaultActiveIndex={0}
+                  defaultActiveIndex={limelightNavItems.findIndex(item => item.id === activeTab)}
                   onTabChange={(index) => {
-                    const tabIds = ["cave"];
-                    if (flags.villageUnlocked) tabIds.push("village");
-                    if (flags.forestUnlocked) tabIds.push("forest");
-                    if (flags.bastionUnlocked) tabIds.push("bastion");
-                    setActiveTab(tabIds[index] as any);
+                    const selectedTab = limelightNavItems[index];
+                    if (selectedTab && selectedTab.onClick) {
+                      selectedTab.onClick();
+                    }
                   }}
                   className="bg-transparent border-0"
                 />

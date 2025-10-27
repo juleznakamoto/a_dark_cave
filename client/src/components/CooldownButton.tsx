@@ -100,17 +100,17 @@ export default function CooldownButton({
       : 0;
 
   const handleClick = (e: React.MouseEvent) => {
-    if (isCoolingDown) return;
-    
+    if (isCoolingDown || disabled) return;
+    onClick();
+  };
+
+  const handleWrapperClick = (e: React.MouseEvent) => {
     // On mobile with tooltip, handle inactive buttons specially
-    if (isMobile && tooltip && disabled) {
+    if (isMobile && tooltip && disabled && !isCoolingDown) {
       e.stopPropagation();
       setMobileOpenTooltip(!mobileOpenTooltip);
       return;
     }
-    
-    if (disabled) return;
-    onClick();
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
@@ -236,7 +236,7 @@ export default function CooldownButton({
   }
 
   return (
-    <div className="relative inline-block">
+    <div className="relative inline-block" onClick={handleWrapperClick}>
       <TooltipProvider>
         <Tooltip open={isMobile ? mobileOpenTooltip : undefined}>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
