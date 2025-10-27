@@ -100,12 +100,24 @@ export default function CooldownButton({
       : 0;
 
   const handleClick = (e: React.MouseEvent) => {
-    if (isCoolingDown || disabled) return;
+    if (isCoolingDown) return;
+    
+    // On mobile with tooltip, handle inactive buttons specially
+    if (isMobile && tooltip && disabled) {
+      e.stopPropagation();
+      setMobileOpenTooltip(!mobileOpenTooltip);
+      return;
+    }
+    
+    if (disabled) return;
     onClick();
   };
 
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (!isMobile || !tooltip || disabled) return;
+    if (!isMobile || !tooltip || isCoolingDown) return;
+    
+    // Don't use press-and-hold for inactive buttons
+    if (disabled) return;
     
     e.preventDefault();
     setIsPressing(true);
@@ -119,6 +131,9 @@ export default function CooldownButton({
 
   const handleMouseUp = (e: React.MouseEvent) => {
     if (!isMobile || !tooltip) return;
+    
+    // Don't use press-and-hold for inactive buttons
+    if (disabled) return;
     
     // Clear the timer
     if (pressTimerRef.current) {
@@ -136,7 +151,10 @@ export default function CooldownButton({
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    if (!isMobile || !tooltip || disabled) return;
+    if (!isMobile || !tooltip || isCoolingDown) return;
+    
+    // Don't use press-and-hold for inactive buttons
+    if (disabled) return;
     
     setIsPressing(true);
     
@@ -149,6 +167,9 @@ export default function CooldownButton({
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     if (!isMobile || !tooltip) return;
+    
+    // Don't use press-and-hold for inactive buttons
+    if (disabled) return;
     
     // Clear the timer
     if (pressTimerRef.current) {
@@ -178,7 +199,7 @@ export default function CooldownButton({
 
   const button = (
     <Button
-      onClick={!isMobile || !tooltip ? handleClick : undefined}
+      onClick={handleClick}
       onMouseDown={isMobile && tooltip ? handleMouseDown : undefined}
       onMouseUp={isMobile && tooltip ? handleMouseUp : undefined}
       onTouchStart={isMobile && tooltip ? handleTouchStart : undefined}
@@ -209,32 +230,9 @@ export default function CooldownButton({
     </Button>
   );
 
-  // If no tooltip or disabled button, return button without tooltip
-  if (!tooltip || (disabled && !isCoolingDown)) {
+  // If no tooltip, return button without tooltip
+  if (!tooltip) {
     return <div className="relative inline-block">{button}</div>;
-  }
-
-  // When inactive (disabled but not cooling down), show tooltip on click
-  if (disabled && !isCoolingDown && isMobile) {
-    return (
-      <div className="relative inline-block">
-        <TooltipProvider>
-          <Tooltip open={mobileOpenTooltip}>
-            <TooltipTrigger asChild>
-              <div
-                onClick={(e) => {
-                  e.stopPropagation();
-                  setMobileOpenTooltip(!mobileOpenTooltip);
-                }}
-              >
-                {button}
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>{tooltip}</TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      </div>
-    );
   }
 
   return (

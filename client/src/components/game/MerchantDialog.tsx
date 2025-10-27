@@ -40,6 +40,16 @@ export default function MerchantDialog({
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
 
+  // Handle click outside to close any open tooltips
+  React.useEffect(() => {
+    const handleClickOutside = () => {
+      // Tooltip closing is handled by radix-ui automatically
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, []);
+
   return (
     <DialogPortal>
       <DialogPrimitive.Overlay
