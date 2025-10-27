@@ -126,7 +126,7 @@ export default function GameContainer() {
         </div>
 
         {/* Right Content Area with Horizontal Tabs and Actions */}
-        <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden">
+        <section className="flex-1 pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
           <nav className="border-t border-border pl-4 mb-2 flex-shrink-0">
               {useLimelightNav ? (
@@ -195,7 +195,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-          <div className="flex-1 overflow-y-auto pl-4 min-h-0">
+          <div className="flex-1 overflow-auto pl-4 min-h-0">
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
