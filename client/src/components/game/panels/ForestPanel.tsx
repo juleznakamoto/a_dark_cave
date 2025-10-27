@@ -2,6 +2,7 @@ import React from 'react';
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function ForestPanel() {
   const { executeAction, buildings } = useGameStore();
@@ -121,8 +122,9 @@ export default function ForestPanel() {
   };
 
   return (
-    <div className="space-y-4">
-      {actionGroups.map((group, groupIndex) => {
+    <ScrollArea className="h-full w-full">
+      <div className="space-y-4">
+        {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter(action =>
           shouldShowAction(action.id, state)
         );
@@ -149,6 +151,8 @@ export default function ForestPanel() {
       })}
 
 
-    </div>
+      </div>
+      <ScrollBar orientation="vertical" />
+    </ScrollArea>
   );
 }

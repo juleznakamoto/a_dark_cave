@@ -6,6 +6,7 @@ import {
   getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -168,8 +169,9 @@ export default function CavePanel() {
   };
 
   return (
-    <div className="space-y-4">
-      {actionGroups.map((group, groupIndex) => {
+    <ScrollArea className="h-full w-full">
+      <div className="space-y-4">
+        {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
         if (group.subGroups) {
           const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
@@ -239,6 +241,8 @@ export default function CavePanel() {
           </div>
         );
       })}
-    </div>
+      </div>
+      <ScrollBar orientation="vertical" />
+    </ScrollArea>
   );
 }

@@ -11,6 +11,7 @@ import { getPopulationProduction } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function VillagePanel() {
   const {
@@ -267,8 +268,9 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="space-y-4">
-      {actionGroups.map((group, groupIndex) => {
+    <ScrollArea className="h-full w-full">
+      <div className="space-y-4">
+        {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter((action) =>
           shouldShowAction(action.id, state),
         );
@@ -356,6 +358,8 @@ export default function VillagePanel() {
           })()}
         </div>
       )}
-    </div>
+      </div>
+      <ScrollBar orientation="vertical" />
+    </ScrollArea>
   );
 }
