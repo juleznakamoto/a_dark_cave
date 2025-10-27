@@ -112,9 +112,9 @@ export default function GameContainer() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-      <main className="flex-1 p-6 overflow-hidden flex flex-col">
+      <main className="flex-1 p-4 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
-        <div className="w-full mb-6">
+        <div className="w-full">
           <LogPanel />
         </div>
 
@@ -129,7 +129,7 @@ export default function GameContainer() {
           {/* Right Content Area with Horizontal Tabs and Actions */}
           <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs */}
-            <nav className="border-t border-border pl-6 mb-4 pt-2">
+            <nav className="border-t border-border pl-6 mb-2 pt-2">
               {useLimelightNav ? (
                 // New LimelightNav design
                 <LimelightNav
