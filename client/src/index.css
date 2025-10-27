@@ -14,14 +14,6 @@ html, body {
   overflow: hidden;
 }
 
-/* Landscape mode margins on mobile */
-@media (max-width: 768px) and (orientation: landscape) {
-  body {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-}
-
 
 @tailwind base;
 @tailwind components;
