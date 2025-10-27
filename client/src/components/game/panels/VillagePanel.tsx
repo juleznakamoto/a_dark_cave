@@ -249,7 +249,7 @@ export default function VillagePanel() {
             +
           </Button>
         </div>
-        <span className="text-sm ml-2 text-left flex-1">
+        <span className="text-xs ml-2 text-left flex-1">
           {label}{" "}
           <span className="text-xs text-muted-foreground">
             {getTotalProductionText(jobId, currentCount)}
