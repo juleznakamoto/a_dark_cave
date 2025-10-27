@@ -1790,7 +1790,7 @@ export function handleBuildWizardTower(
     wizardTowerResult.logEntries!.push({
       id: `wizard-tower-built-${Date.now()}`,
       message:
-        "The Wizard Tower spirals into the sky, its crystalline spire crackling with arcane energy. The old wizard moves in with his collection of ancient tomes and mysterious artifacts, ready to aid your settlement with his powerful magic.",
+        "The Wizard Tower spirals into the sky, crackling with arcane energy. The old wizard moves in with his collection of ancient tomes and mysterious artifacts.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1809,17 +1809,6 @@ export function handleBuildGrandBlacksmith(
     "buildGrandBlacksmith",
     "grandBlacksmith",
   );
-
-  // Add grand blacksmith completion message
-  if (state.buildings.grandBlacksmith === 0) {
-    grandBlacksmithResult.logEntries!.push({
-      id: `grand-blacksmith-built-${Date.now()}`,
-      message:
-        "The Grand Blacksmith rises, a massive forge capable of working with the strongest materials. Now possible to forge weapons of the strongest materials.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   return grandBlacksmithResult;
 }

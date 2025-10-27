@@ -80,15 +80,6 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  spear: {
-    id: "spear",
-    name: "Spear",
-    description: "Improves hunting efficiency",
-    bonuses: {
-      actionBonuses: {},
-    },
-  },
-
   iron_axe: {
     id: "iron_axe",
     name: "Iron Axe",
@@ -224,7 +215,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
   steel_lantern: {
     id: "steel_lantern",
     name: "Steel Lantern",
-    description: "Bright and sturdy, illuminating the darkest places.",
+    description: "Bright lantern illuminating the darkest places",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -276,7 +267,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     id: "occultist_map",
     name: "Occultist Map",
     description:
-      "Time-worn map revealing the hidden chamber of an accultist in the cave",
+      "Time-worn map revealing the chamber of an accultist in the cave",
     bonuses: {
       actionBonuses: {},
     },
@@ -377,7 +368,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   iron_sword: {
     id: "iron_sword",
     name: "Iron Sword",
-    description: "Sturdy iron blade that enhances your combat prowess",
+    description: "Sturdy iron blade enhancing combat prowess",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -446,7 +437,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   arbalest: {
     id: "arbalest",
     name: "Arbalest",
-    description: "Meticulously decorated arbalest designed by a great engineer",
+    description: "Meticulously crafted arbalest designed by a briliant engineer",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -504,7 +495,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",
-    description: "Timeworn amulet that brings good fortune",
+    description: "Timeworn amulet bringing good fortune",
     bonuses: {
       generalBonuses: {
         luck: 5,
@@ -538,7 +529,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bloodstained_belt: {
     id: "bloodstained_belt",
     name: "Bloodstained Belt",
-    description: "Leather belt stained with old blood that grants raw power",
+    description: "Leather belt stained with old blood",
     bonuses: {
       generalBonuses: {
         strength: 3,
@@ -626,7 +617,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   bone_dice: {
     id: "bone_dice",
     name: "Bone Dice",
-    description: "Six-sided dice carved from ancient bone",
+    description: "Six-sided dice carved from ancient bones",
     bonuses: {
       generalBonuses: {
         luck: 3,
@@ -777,7 +768,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   loggers_gloves: {
     id: "loggers_gloves",
     name: "Logger's Gloves",
-    description: "Sturdy leather gloves that improve wood gathering efficiency",
+    description: "Sturdy leather gloves that help with wood gathering",
     bonuses: {
       actionBonuses: {
         gatherWood: {
