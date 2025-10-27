@@ -30,7 +30,8 @@ export default function LogPanel() {
   }, [recentEntries]);
 
   return (
-    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
+    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden relative">
+      <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-white/20 to-transparent z-10"></div>
       <ScrollArea className="h-full w-full">
         <div className="px-3">
           <div className="space-y-1 text-xs">
