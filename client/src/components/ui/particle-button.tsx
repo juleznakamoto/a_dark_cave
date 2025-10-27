@@ -80,14 +80,14 @@ function SuccessParticles({
     );
 }
 
-function ParticleButton({
+const ParticleButton = React.forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     children,
     onClick,
     spawnInterval = 300,
     hoverDelay = 100,
     className,
     ...props
-}: ParticleButtonProps) {
+}, ref) => {
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const [glowIntensity, setGlowIntensity] = useState(0);
@@ -238,11 +238,21 @@ function ParticleButton({
         };
     }, []);
 
+    // Combine refs
+    const combinedRef = React.useCallback((node: HTMLButtonElement) => {
+        buttonRef.current = node;
+        if (typeof ref === 'function') {
+            ref(node);
+        } else if (ref) {
+            ref.current = node;
+        }
+    }, [ref]);
+
     return (
         <>
             <SuccessParticles buttonRef={buttonRef} sparks={sparks} />
             <Button
-                ref={buttonRef}
+                ref={combinedRef}
                 onClick={handleClick}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -262,6 +272,8 @@ function ParticleButton({
             </Button>
         </>
     );
-}
+});
+
+ParticleButton.displayName = "ParticleButton";
 
 export { ParticleButton };
