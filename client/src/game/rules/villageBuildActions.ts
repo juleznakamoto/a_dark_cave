@@ -1497,11 +1497,11 @@ export function handleBuildStoneHut(
   const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
 
   // Add city message when 5th stone hut is built
-  if (state.buildings.stoneHut === 4 && !state.story.seen.villageBecomesCity) {
+  if (state.buildings.stoneHut === 5 && !state.story.seen.villageBecomesCity) {
     stoneHutResult.logEntries!.push({
       id: `village-becomes-city-${Date.now()}`,
       message:
-        "The village has grown into a city. Stone houses rise along the streets, sturdy and proud. What began as a small settlement now stands as a thriving center of life in the wilderness.",
+        "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1538,8 +1538,8 @@ export function handleBuildLonghouse(
   const currentLevel = state.buildings.longhouse || 0;
   const longhouseLabels = ["First Longhouse", "Second Longhouse"];
   const longhouseMessages = [
-    "The first longhouse rises - a massive wooden hall with thick timbers and a great hearth. This Nordic design can shelter many families under one sturdy roof.",
-    "A second longhouse is completed, expanding your settlement's capacity to house even more villagers in the traditional Nordic style."
+    "The first longhouse rises - a massive wooden hall with thick timbers and lots of space.",
+    "A second longhouse is completed, expanding your settlement's capacity to house villagers."
   ];
 
   if (currentLevel < longhouseLabels.length) {
@@ -1645,7 +1645,7 @@ export function handleBuildAlchemistHall(
     alchemistHallResult.logEntries!.push({
       id: `alchemist-hall-built-${Date.now()}`,
       message:
-       "The Alchemist’s Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft. Within, the whispers of transmutation lure those who seek forbidden knowledge.",
+       "The Alchemist’s Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1690,17 +1690,6 @@ export function handleBuildMerchantsGuild(
     "merchantsGuild",
   );
 
-  // Add merchants guild completion message
-  if (state.buildings.merchantsGuild === 0) {
-    merchantsGuildResult.logEntries!.push({
-      id: `merchants-guild-built-${Date.now()}`,
-      message:
-        "The Merchants Guild is established, a hub for lucrative trade and the exchange of exotic goods. The village prospers.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
   return merchantsGuildResult;
 }
 
@@ -1720,7 +1709,7 @@ export function handleBuildBastion(
     bastionResult.logEntries!.push({
       id: `bastion-built-${Date.now()}`,
       message:
-        "The bastion rises like a stone mountain, its walls thick and imposing. You feel you need to prepare for something bad that will come from the depths of the cave.",
+        "The bastion rises like a mountain of stone, its walls thick and unyielding.  A promise of protection against whatever stirs in the depths below.",
       timestamp: Date.now(),
       type: "system",
     });
