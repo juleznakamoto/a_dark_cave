@@ -11,11 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -39,16 +41,7 @@ export default function MerchantDialog({
   onChoice,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
-
-  // Handle click outside to close any open tooltips
-  React.useEffect(() => {
-    const handleClickOutside = () => {
-      // Tooltip closing is handled by radix-ui automatically
-    };
-
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, []);
+  const mobileTooltip = useMobileTooltip();
 
   return (
     <DialogPortal>
@@ -111,19 +104,23 @@ export default function MerchantDialog({
                   </Button>
                 );
 
-                // If there's cost info, wrap in HoverCard
+                // If there's cost info, wrap in Tooltip
                 if (choice.cost && !isPurchased) {
                   return (
-                    <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
-                      <HoverCardTrigger asChild>
-                        <div onFocus={(e) => e.preventDefault()}>{buttonContent}</div>
-                      </HoverCardTrigger>
-                      <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
-                        <div className="text-xs whitespace-nowrap">
-                          -{choice.cost}
-                        </div>
-                      </HoverCardContent>
-                    </HoverCard>
+                    <TooltipProvider key={choice.id}>
+                      <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
+                        <TooltipTrigger asChild>
+                          <div onClick={(e) => mobileTooltip.handleTooltipClick(choice.id, e)}>
+                            {buttonContent}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs whitespace-nowrap">
+                            -{choice.cost}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   );
                 }
 

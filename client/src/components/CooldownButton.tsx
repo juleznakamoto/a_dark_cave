@@ -1,8 +1,8 @@
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import {
   Tooltip,
   TooltipContent,
@@ -43,10 +43,7 @@ export default function CooldownButton({
   const { cooldowns } = useGameStore();
   const initialCooldownRef = useRef<number>(0);
   const isFirstRenderRef = useRef<boolean>(true);
-  const isMobile = useIsMobile();
-  const [mobileOpenTooltip, setMobileOpenTooltip] = useState(false);
-  const pressTimerRef = useRef<NodeJS.Timeout | null>(null);
-  const [isPressing, setIsPressing] = useState(false);
+  const mobileTooltip = useMobileButtonTooltip();
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -76,23 +73,6 @@ export default function CooldownButton({
     }
   }, [isCoolingDown, currentCooldown]);
 
-  // Effect to handle click outside of tooltip on mobile
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (mobileOpenTooltip && !event.target?.closest('[role="tooltip"]')) {
-        setMobileOpenTooltip(false);
-      }
-    };
-
-    if (isMobile && mobileOpenTooltip) {
-      document.addEventListener("click", handleClickOutside, true);
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [mobileOpenTooltip, isMobile]);
-
   // Calculate width percentage directly from remaining cooldown
   const overlayWidth =
     isCoolingDown && initialCooldownRef.current > 0
@@ -104,106 +84,17 @@ export default function CooldownButton({
     onClick();
   };
 
-  const handleWrapperClick = (e: React.MouseEvent) => {
-    // On mobile with tooltip, handle inactive buttons specially
-    if (isMobile && tooltip && disabled && !isCoolingDown) {
-      e.stopPropagation();
-      setMobileOpenTooltip(!mobileOpenTooltip);
-      return;
-    }
-  };
-
-  const handleMouseDown = (e: React.MouseEvent) => {
-    if (!isMobile || !tooltip || isCoolingDown) return;
-    
-    // Don't use press-and-hold for inactive buttons
-    if (disabled) return;
-    
-    e.preventDefault();
-    setIsPressing(true);
-    
-    // Start timer to show tooltip after 300ms
-    pressTimerRef.current = setTimeout(() => {
-      setMobileOpenTooltip(true);
-      setIsPressing(false);
-    }, 300);
-  };
-
-  const handleMouseUp = (e: React.MouseEvent) => {
-    if (!isMobile || !tooltip) return;
-    
-    // Don't use press-and-hold for inactive buttons
-    if (disabled) return;
-    
-    // Clear the timer
-    if (pressTimerRef.current) {
-      clearTimeout(pressTimerRef.current);
-      pressTimerRef.current = null;
-    }
-    
-    // If we were pressing and didn't show tooltip yet, execute the action
-    if (isPressing && !mobileOpenTooltip) {
-      setIsPressing(false);
-      handleClick(e);
-    } else {
-      setIsPressing(false);
-    }
-  };
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    if (!isMobile || !tooltip || isCoolingDown) return;
-    
-    // Don't use press-and-hold for inactive buttons
-    if (disabled) return;
-    
-    setIsPressing(true);
-    
-    // Start timer to show tooltip after 300ms
-    pressTimerRef.current = setTimeout(() => {
-      setMobileOpenTooltip(true);
-      setIsPressing(false);
-    }, 300);
-  };
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    if (!isMobile || !tooltip) return;
-    
-    // Don't use press-and-hold for inactive buttons
-    if (disabled) return;
-    
-    // Clear the timer
-    if (pressTimerRef.current) {
-      clearTimeout(pressTimerRef.current);
-      pressTimerRef.current = null;
-    }
-    
-    // If we were pressing and didn't show tooltip yet, execute the action
-    if (isPressing && !mobileOpenTooltip) {
-      setIsPressing(false);
-      handleClick(e as any);
-    } else {
-      setIsPressing(false);
-    }
-  };
-
-  // Cleanup timer on unmount
-  useEffect(() => {
-    return () => {
-      if (pressTimerRef.current) {
-        clearTimeout(pressTimerRef.current);
-      }
-    };
-  }, []);
-
   const isButtonDisabled = disabled || isCoolingDown;
+
+  const buttonId = testId || `button-${Math.random()}`;
 
   const button = (
     <Button
       onClick={handleClick}
-      onMouseDown={isMobile && tooltip ? handleMouseDown : undefined}
-      onMouseUp={isMobile && tooltip ? handleMouseUp : undefined}
-      onTouchStart={isMobile && tooltip ? handleTouchStart : undefined}
-      onTouchEnd={isMobile && tooltip ? handleTouchEnd : undefined}
+      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseDown(buttonId, disabled, isCoolingDown, e) : undefined}
+      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseUp(buttonId, disabled, onClick, e) : undefined}
+      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchStart(buttonId, disabled, isCoolingDown, e) : undefined}
+      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchEnd(buttonId, disabled, onClick, e) : undefined}
       disabled={isButtonDisabled}
       variant={variant}
       size={size}
@@ -236,9 +127,12 @@ export default function CooldownButton({
   }
 
   return (
-    <div className="relative inline-block" onClick={handleWrapperClick}>
+    <div 
+      className="relative inline-block" 
+      onClick={(e) => mobileTooltip.handleWrapperClick(buttonId, disabled, isCoolingDown, e)}
+    >
       <TooltipProvider>
-        <Tooltip open={isMobile ? mobileOpenTooltip : undefined}>
+        <Tooltip open={mobileTooltip.isTooltipOpen(buttonId)}>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>

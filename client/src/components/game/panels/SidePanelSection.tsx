@@ -13,7 +13,7 @@ import {
 import { capitalizeWords } from "@/lib/utils";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import cn from "clsx";
 
 interface SidePanelItem {
@@ -62,19 +62,19 @@ export default function SidePanelSection({
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const isMobile = useIsMobile();
-  const [mobileOpenTooltip, setMobileOpenTooltip] = useState<string | null>(null);
+  const mobileTooltip = useMobileTooltip();
 
   const handleTooltipHover = (itemId: string) => {
-    if (isMobile) return; // Don't use hover on mobile
+    // No longer directly managing mobileOpenTooltip here.
+    // The useMobileTooltip hook handles its own state and logic.
+    // This function is primarily for non-mobile hover effects.
+    if (mobileTooltip.isMobile) return;
 
-    // Clear any existing timer for this item
     const existingTimer = hoverTimersRef.current.get(itemId);
     if (existingTimer) {
       clearTimeout(existingTimer);
     }
 
-    // Set a timer to mark this tooltip as hovered after 500ms
     const timer = setTimeout(() => {
       setHoveredTooltip(itemId, true);
       hoverTimersRef.current.delete(itemId);
@@ -84,7 +84,7 @@ export default function SidePanelSection({
   };
 
   const handleTooltipLeave = (itemId: string) => {
-    if (isMobile) return; // Don't use hover on mobile
+    if (mobileTooltip.isMobile) return;
 
     const timer = hoverTimersRef.current.get(itemId);
     if (timer) {
@@ -92,44 +92,6 @@ export default function SidePanelSection({
       hoverTimersRef.current.delete(itemId);
     }
   };
-
-  const handleMobileTooltipClick = (itemId: string, e?: React.MouseEvent) => {
-    if (!isMobile) return;
-
-    // Prevent the click event from propagating to the document
-    if (e) {
-      e.stopPropagation();
-    }
-
-    // Toggle tooltip - close if already open, open if closed
-    if (mobileOpenTooltip === itemId) {
-      setMobileOpenTooltip(null);
-    } else {
-      setMobileOpenTooltip(itemId);
-      setHoveredTooltip(itemId, true);
-    }
-  };
-
-  // Effect to handle click outside of tooltip on mobile
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      // Check if a tooltip is open and if the click was outside of it
-      if (mobileOpenTooltip && !event.target?.closest('[role="tooltip"]')) {
-        setMobileOpenTooltip(null);
-        // Optionally, you might want to clear hovered tooltips here as well if they are tied to mobile clicks
-        // setHoveredTooltip(mobileOpenTooltip, false); // This line might be needed depending on desired behavior
-      }
-    };
-
-    if (isMobile && mobileOpenTooltip) {
-      document.addEventListener("click", handleClickOutside, true); // Use capturing phase
-    }
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside, true);
-    };
-  }, [mobileOpenTooltip, isMobile, setHoveredTooltip]); // Depend on mobileOpenTooltip to re-register listener when it changes
-
 
   // Cleanup timers on unmount
   useEffect(() => {
@@ -380,13 +342,11 @@ export default function SidePanelSection({
     ) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={isMobile ? mobileOpenTooltip === item.id : undefined}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                className={isMobile ? "cursor-pointer" : ""}
+                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>
@@ -531,13 +491,11 @@ export default function SidePanelSection({
     if (isMadnessTooltip) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={isMobile ? mobileOpenTooltip === item.id : undefined}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                className={isMobile ? "cursor-pointer" : ""}
+                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>
@@ -556,13 +514,11 @@ export default function SidePanelSection({
     if (item.tooltip) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={isMobile ? mobileOpenTooltip === item.id : undefined}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                className={isMobile ? "cursor-pointer" : ""}
+                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>
