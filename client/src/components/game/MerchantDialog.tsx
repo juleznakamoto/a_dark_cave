@@ -17,7 +17,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -41,7 +41,7 @@ export default function MerchantDialog({
   onChoice,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
-  const mobileTooltip = useMobileTooltip();
+  const mobileTooltip = useMobileButtonTooltip();
 
   return (
     <DialogPortal>
