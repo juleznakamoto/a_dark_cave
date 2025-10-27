@@ -215,7 +215,7 @@ export default function EventDialog({
               hasScriptorium={hasScriptorium}
             />
           ) : (
-            <DialogContent className="sm:max-w-md [&>button]:hidden">
+            <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">

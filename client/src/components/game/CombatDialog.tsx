@@ -321,7 +321,7 @@ export default function CombatDialog({
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent
-        className="sm:max-w-md [&>button]:hidden"
+        className="w-[95vw] sm:max-w-md [&>button]:hidden"
         onPointerDownOutside={(e) => e.preventDefault()}
         onEscapeKeyDown={(e) => e.preventDefault()}
       >
