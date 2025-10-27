@@ -1455,7 +1455,25 @@ export function handleBuildTannery(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(state, result, "buildTannery", "tannery");
+  const tanneryResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildTannery",
+    "tannery",
+  );
+
+  // Add tannery completion message
+  if (state.buildings.tannery === 0) {
+    tanneryResult.logEntries!.push({
+      id: `tannery-built-${Date.now()}`,
+      message:
+        "The tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return tanneryResult;
 }
 
 export function handleBuildMasterTannery(
