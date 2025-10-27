@@ -112,23 +112,23 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen w-screen bg-background text-foreground flex flex-col overflow-hidden">
+    <div className="h-screen bg-background text-foreground flex flex-col">
       {/* Event Log - Fixed Height at Top */}
-      <div className="h-[18vh] min-h-[6rem] flex-shrink-0 overflow-hidden">
+      <div className="h-[18vh] min-h-[6rem] flex-shrink-0">
         <LogPanel />
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-2 flex min-h-0 overflow-hidden max-h-full">
+      <main className="flex-1 p-2 flex min-h-0 overflow-hidden">
         {/* Left Sidebar for Resources */}
         <div className="w-96 border-t border-r flex-shrink-0 overflow-hidden">
           <GameTabs />
         </div>
 
         {/* Right Content Area with Horizontal Tabs and Actions */}
-        <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden max-w-full">
+        <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-4 mb-2 flex-shrink-0 overflow-hidden">
+          <nav className="border-t border-border pl-4 mb-2 flex-shrink-0">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
