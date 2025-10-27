@@ -7,11 +7,6 @@ import {
   getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -130,34 +125,30 @@ export default function CavePanel() {
 
     if (showCost) {
       const costBreakdown = getActionCostBreakdown(actionId, state);
+      const tooltipContent = (
+        <div className="text-xs whitespace-nowrap">
+          {costBreakdown.map((costItem, index) => (
+            <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+              {costItem.text}
+            </div>
+          ))}
+        </div>
+      );
 
       return (
-        <HoverCard key={actionId} openDelay={100} closeDelay={100}>
-          <HoverCardTrigger asChild>
-            <div onFocus={(e) => e.preventDefault()}>
-              <CooldownButton
-                onClick={() => executeAction(actionId)}
-                cooldownMs={action.cooldown * 1000}
-                data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-                size="xs"
-                disabled={!canExecute}
-                variant="outline"
-                className="hover:bg-transparent hover:text-foreground"
-              >
-                {label}
-              </CooldownButton>
-            </div>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
-            <div className="text-xs whitespace-nowrap">
-              {costBreakdown.map((costItem, index) => (
-                <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-                  {costItem.text}
-                </div>
-              ))}
-            </div>
-          </HoverCardContent>
-        </HoverCard>
+        <CooldownButton
+          key={actionId}
+          onClick={() => executeAction(actionId)}
+          cooldownMs={action.cooldown * 1000}
+          data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
+          size="xs"
+          disabled={!canExecute}
+          variant="outline"
+          className="hover:bg-transparent hover:text-foreground"
+          tooltip={tooltipContent}
+        >
+          {label}
+        </CooldownButton>
       );
     }
 
