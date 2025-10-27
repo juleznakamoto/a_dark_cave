@@ -14,6 +14,14 @@ html, body {
   overflow: hidden;
 }
 
+/* Add horizontal margins on mobile */
+@media (max-width: 768px) {
+  #root {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+}
+
 
 @tailwind base;
 @tailwind components;
