@@ -129,7 +129,7 @@ export default function GameContainer() {
           {/* Right Content Area with Horizontal Tabs and Actions */}
           <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs */}
-            <nav className="border-t border-border pl-6 mb-4 pt-4">
+            <nav className="border-t border-border pl-6 mb-4 pt-2">
               {useLimelightNav ? (
                 // New LimelightNav design
                 <LimelightNav
