@@ -30,8 +30,8 @@ export default function LogPanel() {
   }, [recentEntries]);
 
   return (
-    <div className="flex-1 p-2 pt-2 overflow-hidden flex flex-col">
-      <ScrollArea className="">
+    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
+      <ScrollArea className="h-full w-full">
         <div className="px-3">
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
