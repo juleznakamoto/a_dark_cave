@@ -3,7 +3,7 @@ import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
-import BastionPanel from "./panels/BastionPanel"; // Import BastionPanel
+import BastionPanel from "./panels/BastionPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
 import { useGameStore } from "@/game/state";
@@ -183,7 +183,7 @@ export default function GameContainer() {
 
                   {flags.bastionUnlocked && (
                     <button
-                      className={` py-2 text-sm bg-transparent ${
+                      className={`py-2 text-sm bg-transparent ${
                         activeTab === "bastion" ? "font-bold " : ""
                       } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("bastion")}
