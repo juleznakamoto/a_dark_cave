@@ -112,23 +112,23 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen w-screen bg-background text-foreground flex flex-col overflow-hidden">
-      <main className="flex-1 p-2 flex flex-col min-h-0 overflow-hidden">
+    <div className="h-screen bg-background text-foreground flex flex-col">
+      <main className="flex-1 p-2 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
-        <div className="w-full flex-shrink-0 overflow-hidden">
+        <div className="w-full">
           <LogPanel />
         </div>
 
         {/* Main Content Area - Sidebar and Panel */}
-        <div className="flex flex-1 min-h-0 overflow-hidden">
+        <div className="flex flex-1 min-h-0">
           
           {/* Left Sidebar for Resources */}
-          <div className="w-96 border-t border-r flex-shrink-0 overflow-hidden">
+          <div className="w-96 border-t border-r">
             <GameTabs />
           </div>
 
           {/* Right Content Area with Horizontal Tabs and Actions */}
-          <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden">
+          <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs */}
             <nav className="border-t border-border pl-4 mb-2">
               {useLimelightNav ? (
@@ -208,9 +208,7 @@ export default function GameContainer() {
         </div>
       </main>
 
-      <div className="flex-shrink-0">
-        <GameFooter />
-      </div>
+      <GameFooter />
 
       {/* Event Dialog */}
       <EventDialog
