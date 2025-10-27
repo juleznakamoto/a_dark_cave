@@ -113,22 +113,19 @@ export default function GameContainer() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-      {/* Event Log - Fixed Height at Top */}
-      <div className="h-[18vh] min-h-[6rem] flex-shrink-0">
-        <LogPanel />
-      </div>
-
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-2 flex min-h-0 overflow-hidden">
+      <main className="flex-1 p-6 overflow-hidden flex flex-col">
         {/* Left Sidebar for Resources */}
-        <div className="w-96 border-t border-r flex-shrink-0 overflow-hidden">
+        <div className="w-96 border-t border-r mb-6">
           <GameTabs />
         </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions */}
-        <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden">
-          {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-4 mb-2 flex-shrink-0">
+        {/* Container for right content */}
+        <div className="flex flex-1 min-h-0">
+          {/* Right Content Area with Horizontal Tabs and Actions */}
+          <section className="flex-1 pl-0 flex flex-col min-w-0 overflow-hidden">
+            {/* Horizontal Game Tabs */}
+            <nav className="border-t border-border pl-6 mb-4 pt-4">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
@@ -195,19 +192,25 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-          <div className="flex-1 overflow-y-auto pl-4 min-h-0">
-            {activeTab === "cave" && <CavePanel />}
-            {activeTab === "village" && <VillagePanel />}
-            {activeTab === "forest" && <ForestPanel />}
-            {activeTab === "bastion" && <BastionPanel />}
-          </div>
-        </section>
+            <div className="flex-1 overflow-y-auto pl-6">
+              {activeTab === "cave" && <CavePanel />}
+              {activeTab === "village" && <VillagePanel />}
+              {activeTab === "forest" && <ForestPanel />}
+              {activeTab === "bastion" && <BastionPanel />}
+            </div>
+          </section>
+        </div>
+
+        {/* Event Log at bottom of main container */}
+        <div className="flex-1 overflow-y-auto pl-6">
+          <LogPanel />
+        </div>
       </main>
 
       {/* Footer - Fixed at Bottom */}
-      <div className="flex-shrink-0">
+      <footer className="border-t border-border px-6 py-2 text-xs text-muted-foreground">
         <GameFooter />
-      </div>
+      </footer>
 
       {/* Event Dialog */}
       <EventDialog
