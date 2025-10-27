@@ -30,9 +30,9 @@ export default function LogPanel() {
   }, [recentEntries]);
 
   return (
-    <div className="h-[18vh] min-h-[6rem] pt-2">
-      <ScrollArea className="h-full max-h-full">
-        <div>
+    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
+      <ScrollArea className="h-full w-full">
+        <div className="px-3">
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
 
@@ -56,7 +56,7 @@ export default function LogPanel() {
                 : '';
 
               return (
-                <div key={entry.id} className="pl-3">
+                <div key={entry.id}>
                   <p 
                     className={`text-foreground leading-relaxed ${opacity} ${effectClass}`}
                     style={hasActiveEffect && entry.visualEffect ? {
