@@ -1737,20 +1737,11 @@ export function handleBuildWatchtower(
 ): ActionResult {
   const watchtowerResult = handleBuildingConstruction(state, result, "buildWatchtower", "watchtower");
 
-  // Add watchtower completion message based on level
-  const currentLevel = state.buildings.watchtower || 0;
-  const watchtowerLabels = ["Watchtower", "Guard Tower", "Fortified Tower", "Cannon Tower"];
-  const watchtowerMessages = [
-    "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
-    "The guard tower rises higher, with reinforced walls and better sight lines for vigilant defenders.",
-    "The fortified tower stands as an imposing defensive structure, its thick walls capable of withstanding heavy assault.",
-    "The cannon tower is complete, equipped with powerful artillery to rain destruction upon approaching enemies."
-  ];
-
-  if (currentLevel < watchtowerLabels.length) {
+  // Add watchtower completion message only for first watchtower
+  if (state.buildings.watchtower === 0) {
     watchtowerResult.logEntries!.push({
-      id: `watchtower-built-level-${currentLevel + 1}-${Date.now()}`,
-      message: watchtowerMessages[currentLevel],
+      id: `watchtower-built-${Date.now()}`,
+      message: "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1770,20 +1761,11 @@ export function handleBuildPalisades(
     "palisades",
   );
 
-  // Add palisades completion message based on level
-  const currentLevel = state.buildings.palisades || 0;
-  const palisadesLabels = ["Wooden Palisades", "Fortified Palisades", "Stone Wall", "Reinforced Wall"];
-  const palisadesMessages = [
-    "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
-    "Iron reinforcements strengthen the wooden walls, creating formidable fortified palisades.",
-    "Stone walls replace the wooden defenses, forming an imposing barrier that speaks of permanence and strength.",
-    "Steel reinforcements are added to the stone walls, creating an nearly impenetrable defensive barrier."
-  ];
-
-  if (currentLevel < palisadesLabels.length) {
+  // Add palisades completion message only for first palisades
+  if (state.buildings.palisades === 0) {
     palisadesResult.logEntries!.push({
-      id: `palisades-built-level-${currentLevel + 1}-${Date.now()}`,
-      message: palisadesMessages[currentLevel],
+      id: `palisades-built-${Date.now()}`,
+      message: "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
       timestamp: Date.now(),
       type: "system",
     });
