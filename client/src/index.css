@@ -1,3 +1,20 @@
+
+/* Mobile fullscreen support */
+@supports (-webkit-touch-callout: none) {
+  body {
+    /* Prevent pull-to-refresh on iOS */
+    overscroll-behavior-y: contain;
+  }
+}
+
+html, body {
+  /* Ensure full viewport height on mobile */
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+  overflow: hidden;
+}
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
