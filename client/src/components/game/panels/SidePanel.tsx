@@ -713,9 +713,9 @@ export default function SidePanel() {
               )}
             </SidePanelSection>
           )}
-          
+
         </div>
-        
+
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
