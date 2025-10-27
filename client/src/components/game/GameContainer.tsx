@@ -112,9 +112,9 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen bg-background text-foreground flex flex-col">
+    <div className="h-screen h-[100dvh] bg-background text-foreground flex flex-col">
       {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden p-0">
+      <div className="w-full overflow-hidden p-0 flex-shrink-0">
         <LogPanel />
       </div>
 
