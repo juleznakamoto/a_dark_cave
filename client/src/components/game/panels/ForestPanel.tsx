@@ -2,7 +2,6 @@ import React from 'react';
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
-import { HoverCard, HoverCardContent, HoverCardTrigger } from '@/components/ui/hover-card';
 
 export default function ForestPanel() {
   const { executeAction, buildings } = useGameStore();
@@ -77,36 +76,31 @@ export default function ForestPanel() {
     }
 
     if (showCost) {
+      const costBreakdown = getActionCostBreakdown(actionId, state);
+      const tooltipContent = (
+        <div className="text-xs whitespace-nowrap">
+          {costBreakdown.map((costItem, index) => (
+            <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+              {costItem.text}
+            </div>
+          ))}
+        </div>
+      );
+
       return (
-        <HoverCard key={actionId}>
-          <HoverCardTrigger asChild>
-            <div>
-              <CooldownButton
-                onClick={() => executeAction(actionId)}
-                cooldownMs={action.cooldown * 1000}
-                data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-                size="xs"
-                disabled={!canExecute}
-                variant="outline"
-                className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
-              >
-                {displayLabel}
-              </CooldownButton>
-            </div>
-          </HoverCardTrigger>
-          <HoverCardContent className="w-auto p-2">
-            <div className="text-xs whitespace-nowrap">
-              {getActionCostBreakdown(actionId, state).map((cost, index) => (
-                <div
-                  key={index}
-                  className={cost.satisfied ? '' : 'text-muted-foreground'}
-                >
-                  {cost.text}
-                </div>
-              ))}
-            </div>
-          </HoverCardContent>
-        </HoverCard>
+        <CooldownButton
+          key={actionId}
+          onClick={() => executeAction(actionId)}
+          cooldownMs={action.cooldown * 1000}
+          data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+          size="xs"
+          disabled={!canExecute}
+          variant="outline"
+          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
+          tooltip={tooltipContent}
+        >
+          {displayLabel}
+        </CooldownButton>
       );
     }
 

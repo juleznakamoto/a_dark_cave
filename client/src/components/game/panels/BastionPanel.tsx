@@ -3,10 +3,12 @@ import { gameActions } from "@/game/rules";
 import { getTotalBuildingCostReduction } from "@/game/rules/effectsCalculation";
 import { Button } from '@/components/ui/button';
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from '@/components/ui/hover-card';
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import AttackWavesChart from './AttackWavesChart';
 
 // Helper to get building label based on level
@@ -23,6 +25,7 @@ const getBuildingLabel = (buildingType: 'watchtower' | 'palisades', level: numbe
 
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
+  const mobileTooltip = useMobileTooltip();
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
@@ -146,93 +149,99 @@ export default function BastionPanel() {
           <h3 className="text-xs font-bold text-foreground">Repair</h3>
         <div className="flex flex-wrap gap-2">
           {bastionDamaged && buildings.bastion > 0 && (
-            <HoverCard key="bastion" openDelay={100} closeDelay={100}>
-              <HoverCardTrigger asChild>
-                <div>
-                  <Button
-                    onClick={repairBastion}
-                    disabled={!canAffordRepair(getRepairCost('buildBastion', 1))}
-                    variant="outline"
-                    size="xs"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    Bastion
-                  </Button>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-auto p-2">
-                <div className="text-xs whitespace-nowrap">
-                  {getRepairCostText(getRepairCost('buildBastion', 1)).map((cost, index) => (
-                    <div
-                      key={index}
-                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+            <TooltipProvider key="bastion">
+              <Tooltip open={mobileTooltip.isTooltipOpen('repair-bastion')}>
+                <TooltipTrigger asChild>
+                  <div onClick={(e) => mobileTooltip.handleTooltipClick('repair-bastion', e)}>
+                    <Button
+                      onClick={repairBastion}
+                      disabled={!canAffordRepair(getRepairCost('buildBastion', 1))}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
                     >
-                      {cost.text}
-                    </div>
-                  ))}
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+                      Bastion
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(getRepairCost('buildBastion', 1)).map((cost, index) => (
+                      <div
+                        key={index}
+                        className={cost.satisfied ? '' : 'text-muted-foreground'}
+                      >
+                        {cost.text}
+                      </div>
+                    ))}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
 
           {watchtowerDamaged && buildings.watchtower > 0 && (
-            <HoverCard key="watchtower" openDelay={100} closeDelay={100}>
-              <HoverCardTrigger asChild>
-                <div>
-                  <Button
-                    onClick={repairWatchtower}
-                    disabled={!canAffordRepair(getRepairCost('buildWatchtower', buildings.watchtower))}
-                    variant="outline"
-                    size="xs"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    {getBuildingLabel('watchtower', buildings.watchtower || 0)}
-                  </Button>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-auto p-2">
-                <div className="text-xs whitespace-nowrap">
-                  {getRepairCostText(getRepairCost('buildWatchtower', buildings.watchtower)).map((cost, index) => (
-                    <div
-                      key={index}
-                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+            <TooltipProvider key="watchtower">
+              <Tooltip open={mobileTooltip.isTooltipOpen('repair-watchtower')}>
+                <TooltipTrigger asChild>
+                  <div onClick={(e) => mobileTooltip.handleTooltipClick('repair-watchtower', e)}>
+                    <Button
+                      onClick={repairWatchtower}
+                      disabled={!canAffordRepair(getRepairCost('buildWatchtower', buildings.watchtower))}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
                     >
-                      {cost.text}
-                    </div>
-                  ))}
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+                      {getBuildingLabel('watchtower', buildings.watchtower || 0)}
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(getRepairCost('buildWatchtower', buildings.watchtower)).map((cost, index) => (
+                      <div
+                        key={index}
+                        className={cost.satisfied ? '' : 'text-muted-foreground'}
+                      >
+                        {cost.text}
+                      </div>
+                    ))}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
 
           {palisadesDamaged && buildings.palisades > 0 && (
-            <HoverCard key="palisades" openDelay={100} closeDelay={100}>
-              <HoverCardTrigger asChild>
-                <div>
-                  <Button
-                    onClick={repairPalisades}
-                    disabled={!canAffordRepair(getRepairCost('buildPalisades', buildings.palisades))}
-                    variant="outline"
-                    size="xs"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    {getBuildingLabel('palisades', buildings.palisades || 0)}
-                  </Button>
-                </div>
-              </HoverCardTrigger>
-              <HoverCardContent className="w-auto p-2">
-                <div className="text-xs whitespace-nowrap">
-                  {getRepairCostText(getRepairCost('buildPalisades', buildings.palisades)).map((cost, index) => (
-                    <div
-                      key={index}
-                      className={cost.satisfied ? '' : 'text-muted-foreground'}
+            <TooltipProvider key="palisades">
+              <Tooltip open={mobileTooltip.isTooltipOpen('repair-palisades')}>
+                <TooltipTrigger asChild>
+                  <div onClick={(e) => mobileTooltip.handleTooltipClick('repair-palisades', e)}>
+                    <Button
+                      onClick={repairPalisades}
+                      disabled={!canAffordRepair(getRepairCost('buildPalisades', buildings.palisades))}
+                      variant="outline"
+                      size="xs"
+                      className="hover:bg-transparent hover:text-foreground"
                     >
-                      {cost.text}
-                    </div>
-                  ))}
-                </div>
-              </HoverCardContent>
-            </HoverCard>
+                      {getBuildingLabel('palisades', buildings.palisades || 0)}
+                    </Button>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
+                    {getRepairCostText(getRepairCost('buildPalisades', buildings.palisades)).map((cost, index) => (
+                      <div
+                        key={index}
+                        className={cost.satisfied ? '' : 'text-muted-foreground'}
+                      >
+                        {cost.text}
+                      </div>
+                    ))}
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           )}
         </div>
         </div>

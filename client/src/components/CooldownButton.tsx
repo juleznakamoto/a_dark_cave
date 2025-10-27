@@ -1,4 +1,3 @@
-
 import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
@@ -61,7 +60,7 @@ export default function CooldownButton({
       // New cooldown started
       initialCooldownRef.current = currentCooldown;
       isFirstRenderRef.current = true;
-      
+
       // Allow transition after initial render (next frame)
       requestAnimationFrame(() => {
         isFirstRenderRef.current = false;
@@ -80,6 +79,13 @@ export default function CooldownButton({
       : 0;
 
   const handleClick = (e: React.MouseEvent) => {
+    // Prevent default click behavior on mobile - we handle it in mouseup/touchend
+    if (mobileTooltip.isMobile && tooltip) {
+      e.preventDefault();
+      e.stopPropagation();
+      return;
+    }
+
     if (isCoolingDown || disabled) return;
     onClick();
   };
@@ -127,8 +133,8 @@ export default function CooldownButton({
   }
 
   return (
-    <div 
-      className="relative inline-block" 
+    <div
+      className="relative inline-block"
       onClick={(e) => mobileTooltip.handleWrapperClick(buttonId, disabled, isCoolingDown, e)}
     >
       <TooltipProvider>

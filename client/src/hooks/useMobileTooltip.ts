@@ -85,7 +85,7 @@ export function useMobileButtonTooltip() {
   };
 
   const handleMouseDown = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!isMobile || isCoolingDown || disabled) return;
+    if (!isMobile || isCoolingDown) return;
     
     e.preventDefault();
     setPressingId(id);
@@ -98,7 +98,10 @@ export function useMobileButtonTooltip() {
   };
 
   const handleMouseUp = (id: string, disabled: boolean, onClick: () => void, e: React.MouseEvent) => {
-    if (!isMobile || disabled) return;
+    if (!isMobile) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
     
     // Clear the timer
     if (pressTimerRef.current) {
@@ -106,8 +109,14 @@ export function useMobileButtonTooltip() {
       pressTimerRef.current = null;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action
-    if (pressingId === id && openTooltipId !== id) {
+    // If tooltip is already open, close it
+    if (openTooltipId === id) {
+      setPressingId(null);
+      return;
+    }
+    
+    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    if (pressingId === id && !disabled) {
       setPressingId(null);
       onClick();
     } else {
@@ -116,7 +125,7 @@ export function useMobileButtonTooltip() {
   };
 
   const handleTouchStart = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
-    if (!isMobile || isCoolingDown || disabled) return;
+    if (!isMobile || isCoolingDown) return;
     
     setPressingId(id);
     
@@ -128,7 +137,10 @@ export function useMobileButtonTooltip() {
   };
 
   const handleTouchEnd = (id: string, disabled: boolean, onClick: () => void, e: React.TouchEvent) => {
-    if (!isMobile || disabled) return;
+    if (!isMobile) return;
+    
+    e.preventDefault();
+    e.stopPropagation();
     
     // Clear the timer
     if (pressTimerRef.current) {
@@ -136,8 +148,14 @@ export function useMobileButtonTooltip() {
       pressTimerRef.current = null;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action
-    if (pressingId === id && openTooltipId !== id) {
+    // If tooltip is already open, close it
+    if (openTooltipId === id) {
+      setPressingId(null);
+      return;
+    }
+    
+    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    if (pressingId === id && !disabled) {
       setPressingId(null);
       onClick();
     } else {
