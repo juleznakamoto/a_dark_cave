@@ -121,6 +121,8 @@
     @apply font-sans antialiased bg-background text-foreground select-none;
     background-color: hsl(0, 0%, 0%) !important;
     color: hsl(200, 6.6667%, 91.1765%) !important;
+    margin: 0;
+    padding: 0;
   }
 }
 
