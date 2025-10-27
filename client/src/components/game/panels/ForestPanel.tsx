@@ -10,7 +10,7 @@ export default function ForestPanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
-      title: 'Scout',
+      title: '',
       actions: [
         { id: 'hunt', label: 'Hunt' },
         { id: 'layTrap', label: 'Lay Trap' },
@@ -121,7 +121,7 @@ export default function ForestPanel() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter(action =>
           shouldShowAction(action.id, state)

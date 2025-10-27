@@ -32,10 +32,9 @@ export default function GameFooter() {
   };
 
   return (
-    <footer className="border-t border-border px-6 py-2 text-xs text-muted-foreground">
+    <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
       <div className="flex justify-between items-center">
-        <div className="flex items-center space-x-4">
-          <span className="inline-block w-36">Last saved: {lastSaved}</span>
+        <div className="flex items-center space-x-2">
           <Button
             variant="outline"
             size="xs"

@@ -3,7 +3,6 @@ import {
   gameActions,
   shouldShowAction,
   canExecuteAction,
-  getCostText,
   getActionCostBreakdown,
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
@@ -15,7 +14,7 @@ export default function CavePanel() {
   // Define action groups with their actions
   const actionGroups = [
     {
-      title: "Explore",
+      title: "",
       subGroups: [
         {
           actions: [
@@ -169,7 +168,7 @@ export default function CavePanel() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
         if (group.subGroups) {

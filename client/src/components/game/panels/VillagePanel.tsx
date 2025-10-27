@@ -251,7 +251,7 @@ export default function VillagePanel() {
         </div>
         <span className="text-sm ml-2 text-left flex-1">
           {label}{" "}
-          <span className="text-muted-foreground">
+          <span className="text-xs text-muted-foreground">
             {getTotalProductionText(jobId, currentCount)}
           </span>
         </span>
@@ -267,7 +267,7 @@ export default function VillagePanel() {
   });
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4">
       {actionGroups.map((group, groupIndex) => {
         const visibleActions = group.actions.filter((action) =>
           shouldShowAction(action.id, state),
@@ -300,6 +300,7 @@ export default function VillagePanel() {
               renderPopulationControl(job.id, job.label),
             )}
           </div>
+          
           {/* Population Effects Summary */}
           {(() => {
             const totalEffects: Record<string, number> = {};

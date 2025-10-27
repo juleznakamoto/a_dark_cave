@@ -113,7 +113,7 @@ export default function GameContainer() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-      <main className="flex-1 p-4 overflow-hidden flex flex-col">
+      <main className="flex-1 p-2 overflow-hidden flex flex-col">
         {/* Event Log - Full Width at Top */}
         <div className="w-full">
           <LogPanel />
@@ -130,9 +130,9 @@ export default function GameContainer() {
           {/* Right Content Area with Horizontal Tabs and Actions */}
           <section className="flex-1 pl-0 flex flex-col">
             {/* Horizontal Game Tabs */}
-            <nav className="border-t border-border pl-6 mb-2 pt-2">
+            <nav className="border-t border-border pl-4 mb-2">
               {useLimelightNav ? (
-                // New LimelightNav design
+                // Alternative LimelightNav design
                 <LimelightNav
                   items={limelightNavItems}
                   defaultActiveIndex={limelightNavItems.findIndex(item => item.id === activeTab)}
@@ -145,7 +145,7 @@ export default function GameContainer() {
                   className="bg-transparent border-0"
                 />
               ) : (
-                // Old simple button design
+                // Standard button design
                 <div className="flex space-x-4">
                   <button
                     className={`py-2 text-sm bg-transparent ${
@@ -154,7 +154,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"
                   >
-                    The Cave
+                    Cave
                   </button>
 
                   {flags.villageUnlocked && (
@@ -165,7 +165,7 @@ export default function GameContainer() {
                       onClick={() => setActiveTab("village")}
                       data-testid="tab-village"
                     >
-                      {buildings.stoneHut >= 5 ? "The City" : "The Village"}
+                      {buildings.stoneHut >= 5 ? "City" : "Village"}
                     </button>
                   )}
 
@@ -177,7 +177,7 @@ export default function GameContainer() {
                       onClick={() => setActiveTab("forest")}
                       data-testid="tab-forest"
                     >
-                      The Forest
+                      Forest
                     </button>
                   )}
 
@@ -189,7 +189,7 @@ export default function GameContainer() {
                       onClick={() => setActiveTab("bastion")}
                       data-testid="tab-bastion"
                     >
-                      The Bastion
+                      Bastion
                     </button>
                   )}
                 </div>
@@ -197,7 +197,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-            <div className="flex-1 overflow-y-auto pl-6">
+            <div className="flex-1 overflow-y-auto pl-4">
               {activeTab === "cave" && <CavePanel />}
               {activeTab === "village" && <VillagePanel />}
               {activeTab === "forest" && <ForestPanel />}
