@@ -112,21 +112,21 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen h-[100dvh] bg-background text-foreground flex flex-col">
+    <div className="h-screen h-[100dvh] bg-background text-foreground flex flex-col overflow-hidden">
       {/* Event Log - Fixed Height at Top */}
       <div className="w-full overflow-hidden p-0 flex-shrink-0">
         <LogPanel />
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-0 pt-0 flex min-h-0 overflow-hidden">
+      <main className="flex-1 p-0 pt-0 flex min-h-0 overflow-hidden max-h-full">
         {/* Left Sidebar for Resources */}
         <div className="w-60 md:w-96 border-t border-r flex-shrink-0 overflow-hidden">
           <GameTabs />
         </div>
 
         {/* Right Content Area with Horizontal Tabs and Actions */}
-        <section className="flex-1 pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+        <section className="flex-1 pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden max-h-full">
           {/* Horizontal Game Tabs */}
           <nav className="border-t border-border pl-4 mb-2 flex-shrink-0">
               {useLimelightNav ? (
@@ -195,7 +195,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-          <div className="flex-1 overflow-auto pl-4 min-h-0">
+          <div className="flex-1 overflow-auto pl-4 min-h-0 max-h-full">
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
@@ -205,9 +205,9 @@ export default function GameContainer() {
       </main>
 
       {/* Footer - Fixed at Bottom */}
-      <div className="flex-shrink-0">
+      <footer className="flex-shrink-0 w-full">
         <GameFooter />
-      </div>
+      </footer>
 
       {/* Event Dialog */}
       <EventDialog
