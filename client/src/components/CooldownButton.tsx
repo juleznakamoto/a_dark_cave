@@ -104,7 +104,7 @@ export default function CooldownButton({
       {...props}
     >
       {/* Button content */}
-      <span className="relative z-10">{children}</span>
+      <span className="relative">{children}</span>
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
