@@ -79,13 +79,6 @@ export default function CooldownButton({
       : 0;
 
   const handleClick = (e: React.MouseEvent) => {
-    // Prevent default click behavior on mobile - we handle it in mouseup/touchend
-    if (mobileTooltip.isMobile && tooltip) {
-      e.preventDefault();
-      e.stopPropagation();
-      return;
-    }
-
     if (isCoolingDown || disabled) return;
     onClick();
   };
