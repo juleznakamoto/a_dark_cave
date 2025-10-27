@@ -79,7 +79,7 @@ export default function LogPanel() {
         <ScrollBar orientation="vertical" />
       </ScrollArea>
       {/* Gradient overlay fixed at bottom of viewport */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-black/90 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
     </div>
   );
 }
