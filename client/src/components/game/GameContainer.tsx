@@ -113,7 +113,7 @@ export default function GameContainer() {
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col">
-      <main className="flex-1 p-2 overflow-hidden flex flex-col">
+      <main className="flex-1 p-2 overflow-hidden flex flex-col min-h-0">
         {/* Event Log - Full Width at Top */}
         <div className="w-full">
           <LogPanel />
