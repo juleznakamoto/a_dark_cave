@@ -1184,7 +1184,7 @@ export function handleBuildWoodenHut(
     result.logEntries!.push({
       id: `first-hut-built-${Date.now()}`,
       message:
-        "Your first wooden hut stands complete, a modest shelter against the darkness. The village begins to take shape.",
+        "The first wooden hut stands complete, the village begins to take shape.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1195,7 +1195,7 @@ export function handleBuildWoodenHut(
     result.logEntries!.push({
       id: `village-growth-${Date.now()}`,
       message:
-        "The village grows quickly. Wooden huts crowd together, their timbers creaking under the strain. Perhaps sturdy stone houses could shelter more villagers and strengthen the community.",
+        "The village grows quickly. Perhaps stone houses could shelter more villagers.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1235,7 +1235,7 @@ export function handleBuildBlacksmith(
     blacksmithResult.logEntries!.push({
       id: `blacksmith-built-${Date.now()}`,
       message:
-        "The blacksmith's forge comes alive, with it the promise of stronger tools and weapons. The heart of industry now beats in the village.",
+        "The blacksmith's forge comes alive. The heart of industry now beats in the village.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1291,7 +1291,7 @@ export function handleBuildBottomlessPit(
     bottomlessPitResult.logEntries!.push({
       id: `moonstone-discovered-${Date.now()}`,
       message:
-        "As the workers dig in the depth of the pit, their tools strike something extraordinary. Deep in the earth, they uncover veins of moonstone - a pale, luminescent mineral that seems to contain immense energy.",
+        "In the depth of the pit, the worker's tools strike something extraordinary. They uncover veins of moonstone - luminescent mineral containing immense energy.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1317,7 +1317,7 @@ export function handleBuildFoundry(
     resultWithBuilding.logEntries!.push({
       id: `foundry-complete-${Date.now()}`,
       message:
-        "The foundry roars to life as fire and heat fuse the raw materials. The result is new matter of great strength and resilience.",
+        "The foundry roars to life as fire and heat fuse raw materials.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1342,18 +1342,6 @@ export function handleBuildPrimeFoundry(
     "buildPrimeFoundry",
     "primeFoundry",
   );
-
-  // Add prime foundry completion message
-  if (state.buildings.primeFoundry === 0) {
-    primeFoundryResult.logEntries!.push({
-      id: `prime-foundry-built-${Date.now()}`,
-      message:
-        "The Prime Foundry rises with advanced smelting chambers and improved bellows.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
   return primeFoundryResult;
 }
 
@@ -1429,7 +1417,7 @@ export function handleBuildClerksHut(
     clerksHutResult.logEntries!.push({
       id: `clerks-hut-built-${Date.now()}`,
       message:
-        "A modest clerks hut is erected, its occupant ready to track the flow of village resources with meticulous care.",
+        "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1454,7 +1442,7 @@ export function handleBuildScriptorium(
     scriptoriumResult.logEntries!.push({
       id: `scriptorium-built-${Date.now()}`,
       message:
-        "The Scriptorium stands complete, its walls lined with shelves of parchment and ink. Scribes labor to document every detail of village life tracked with meticulous precision. Nothing escapes their vigilant record-keeping.",
+        "The Scriptorium stands complete. Every detail of village life now gets tracked with meticulous precision.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1480,17 +1468,6 @@ export function handleBuildMasterTannery(
     "buildMasterTannery",
     "masterTannery",
   );
-
-  // Add master tannery completion message
-  if (state.buildings.masterTannery === 0) {
-    masterTanneryResult.logEntries!.push({
-      id: `master-tannery-built-${Date.now()}`,
-      message:
-        "The Master Tannery rises, a sprawling workshop equipped with advanced tools and techniques.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
 
   return masterTanneryResult;
 }
