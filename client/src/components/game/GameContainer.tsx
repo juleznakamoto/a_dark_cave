@@ -112,14 +112,14 @@ export default function GameContainer() {
   }
 
   return (
-    <div className="h-screen h-[100dvh] bg-background text-foreground flex flex-col overflow-hidden">
+    <div className="h-screen h-[100dvh] bg-background text-foreground flex flex-col">
       {/* Event Log - Fixed Height at Top */}
       <div className="w-full overflow-hidden p-0 flex-shrink-0">
         <LogPanel />
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-0 pt-0 flex min-h-0 overflow-hidden max-h-full">
+      <main className="flex-1 p-0 pt-0 flex min-h-0 overflow-hidden">
         {/* Left Sidebar for Resources */}
         <div className="w-60 md:w-96 border-t border-r flex-shrink-0 overflow-hidden">
           <GameTabs />
@@ -195,7 +195,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-          <div className="flex-1 overflow-auto pl-4 min-h-0 max-h-full">
+          <div className="flex-1 overflow-auto pl-4 min-h-0">
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
@@ -205,9 +205,9 @@ export default function GameContainer() {
       </main>
 
       {/* Footer - Fixed at Bottom */}
-      <footer className="flex-shrink-0 border-t border-border">
+      <div className="flex-shrink-0">
         <GameFooter />
-      </footer>
+      </div>
 
       {/* Event Dialog */}
       <EventDialog
