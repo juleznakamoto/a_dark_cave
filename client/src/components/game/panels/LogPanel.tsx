@@ -30,7 +30,7 @@ export default function LogPanel() {
   }, [recentEntries]);
 
   return (
-    <div className="h-[20vh] min-h-[6rem] pt-2">
+    <div className="h-[18vh] min-h-[6rem] pt-2">
       <ScrollArea className="h-full max-h-full">
         <div>
           <div className="space-y-1 text-xs">
