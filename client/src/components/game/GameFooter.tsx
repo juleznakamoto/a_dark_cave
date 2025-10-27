@@ -19,7 +19,7 @@ export default function GameFooter() {
   const handleRestartGame = async () => {
     if (
       confirm(
-        "Are you sure you want to restart the game? This will delete your current progress.",
+        "Restarting the game will delete your current progress. Are you sure to restart?",
       )
     ) {
       await deleteSave();
