@@ -33,7 +33,7 @@ export default function LogPanel() {
     <div className="h-[20vh] min-h-[6rem] pt-2">
       <ScrollArea className="h-full max-h-full">
         <div>
-          <div className="space-y-1 text-sm">
+          <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
 
               let opacity = "";
