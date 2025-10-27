@@ -205,6 +205,14 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
 
+    // Handle mobile tooltip click - also mark as hovered to stop pulse
+    const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
+      mobileTooltip.handleTooltipClick(id, e);
+      if (!hoveredTooltips[id]) {
+        setHoveredTooltip(id, true);
+      }
+    };
+
     // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
@@ -345,7 +353,9 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
                 className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
@@ -494,7 +504,9 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
                 className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
@@ -517,7 +529,9 @@ export default function SidePanelSection({
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onClick={(e) => mobileTooltip.handleTooltipClick(item.id, e)}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                onMouseEnter={() => handleTooltipHover(item.id)}
+                onMouseLeave={() => handleTooltipLeave(item.id)}
                 className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
