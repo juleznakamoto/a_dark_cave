@@ -12,10 +12,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 
@@ -286,18 +287,20 @@ export default function EventDialog({
               );
               
               return cost ? (
-                <HoverCard key={choice.id} openDelay={100} closeDelay={100}>
-                  <HoverCardTrigger asChild>
-                    <div className="cursor-default" onFocus={(e) => e.preventDefault()}>
-                      {buttonContent}
-                    </div>
-                  </HoverCardTrigger>
-                  <HoverCardContent className="w-auto p-2" onOpenAutoFocus={(e) => e.preventDefault()}>
-                    <div className="text-xs whitespace-nowrap">
-                      -{cost}
-                    </div>
-                  </HoverCardContent>
-                </HoverCard>
+                <TooltipProvider key={choice.id}>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div>
+                        {buttonContent}
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        -{cost}
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               ) : (
                 <div key={choice.id}>{buttonContent}</div>
               );
