@@ -851,6 +851,14 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (Math.random() < successChance) {
             // Success: get knowledge without paying
             return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  vikingBuilderEvent: true,
+                  longhouseUnlocked: true,
+                },
+              },
               _logMessage:
                 "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night.",
             };
