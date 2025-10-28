@@ -82,6 +82,8 @@ export default function ItemProgressChart() {
         label: "Lanterns",
         category: "tools",
         maxCount: 5,
+
+        
       },
     ],
 
