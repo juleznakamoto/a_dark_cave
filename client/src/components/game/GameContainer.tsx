@@ -114,12 +114,12 @@ export default function GameContainer() {
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Event Log - Fixed Height at Top */}
-      <div className="w-full overflow-hidden p-0 flex-shrink-0">
+      <div className="w-full overflow-hidden p-2 flex-shrink-0">
         <LogPanel />
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-0 pt-0 flex min-h-0 overflow-hidden">
+      <main className="flex-1 p-2 pt-0 flex min-h-0 overflow-hidden">
         {/* Left Sidebar for Resources */}
         <div className="w-60 md:w-96 border-t border-r flex-shrink-0 overflow-hidden">
           <GameTabs />
