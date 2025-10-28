@@ -103,7 +103,6 @@ export const gameStateSchema = z.object({
       blacksmith_hammer: z.boolean().default(false),
       reinforced_rope: z.boolean().default(false),
       giant_trap: z.boolean().default(false),
-      explorer_pack: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
       mastermason_chisel: z.boolean().default(false),
     })

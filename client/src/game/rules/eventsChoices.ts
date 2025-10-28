@@ -270,8 +270,8 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide
             return {
-              relics: {
-                ...state.relics,
+              clothing: {
+                ...state.clothing,
                 alphas_hide: true,
               },
               _logMessage:
@@ -456,8 +456,8 @@ export const choiceEvents: Record<string, GameEvent> = {
             // Success: event resolved, get ebony ring
             return {
               ...deathResult,
-              relics: {
-                ...state.relics,
+              clothing: {
+                ...state.clothing,
                 ebony_ring: true,
               },
               _logMessage:
@@ -476,8 +476,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               villagers: totalDeathResult.villagers,
-              relics: {
-                ...state.relics,
+              clothing: {
+                ...state.clothing,
                 ebony_ring: true,
               },
               _logMessage: `The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives.`,
@@ -496,8 +496,8 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (rand < successChance) {
             // Best outcome: event resolved, get ebony ring
             return {
-              relics: {
-                ...state.relics,
+              clothing: {
+                ...state.clothing,
                 ebony_ring: true,
               },
               _logMessage:

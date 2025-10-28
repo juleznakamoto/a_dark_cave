@@ -396,7 +396,7 @@ export const caveExploreActions: Record<string, Action> = {
     label: "Venture beyond Portal",
     show_when: {
       "story.seen.fifthWaveVictory": true,
-      // "story.seen.encounteredBeyondPortal": false,
+      "story.seen.encounteredBeyondPortal": false,
     },
     cost: {
       "resources.food": 2500,

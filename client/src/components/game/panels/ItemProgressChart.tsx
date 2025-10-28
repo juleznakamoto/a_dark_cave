@@ -72,7 +72,6 @@ export default function ItemProgressChart() {
       {
         itemType: "lanterns",
         itemKeys: [
-          "lantern",
           "iron_lantern",
           "steel_lantern",
           "obsidian_lantern",
@@ -81,7 +80,7 @@ export default function ItemProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Lanterns",
         category: "tools",
-        maxCount: 5,
+        maxCount: 4,
       },
     ],
 
@@ -541,7 +540,7 @@ export default function ItemProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1.5 : 0}
-                  stroke={segment.isFull ? tailwindToHex("red-600") : undefined}
+                  stroke={segment.isFull ? tailwindToHex("red-800") : undefined}
                   isAnimationActive={false}
                   style={{ outline: "none" }}
                 >
@@ -563,7 +562,7 @@ export default function ItemProgressChart() {
                 endAngle={-360 + ring.startAngle}
                 cornerRadius={5}
                 strokeWidth={0.25}
-                stroke={tailwindToHex("neutral-200")}
+                stroke={tailwindToHex("neutral-400")}
                 isAnimationActive={false}
                 style={{ outline: "none" }}
               ></Pie>

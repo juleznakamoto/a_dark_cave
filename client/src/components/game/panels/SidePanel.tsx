@@ -76,7 +76,7 @@ export default function SidePanel() {
       }
 
       // Filter out giant_trap after laying trap
-      if (key === "giant_trap" && gameState.relics.black_bear_fur) {
+      if (key === "giant_trap" && gameState.clothing.black_bear_fur) {
         return false;
       }
 

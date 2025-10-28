@@ -229,7 +229,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.thirdWaveVictory && !state.story.seen.fourthWaveVictory,
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 5,
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
@@ -267,7 +267,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.fourthWaveVictory && !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 5,
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
     triggered: false,

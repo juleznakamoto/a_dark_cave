@@ -295,13 +295,13 @@ export const storyEvents: Record<string, GameEvent> = {
       state.story.seen.encounteredBeyondPortal &&
       !state.story.seen.encounteredCreaturesChoice,
     triggerType: "resource",
-    timeProbability: 0.1,
+    timeProbability: 0.01,
     title: "The Dwellers Below",
     message:
       "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "slaughter_creatures",

@@ -335,11 +335,11 @@ html, body {
 
   0%,
   100% {
-    text-shadow: 0 0 2px rgb(255, 255, 255, 0.6), 0 0 4px rgb(254, 57, 57, 0.4);
+    text-shadow: 0 0 4px rgb(255, 255, 255, 0.6), 0 0 6px rgb(254, 57, 57, 0.5);
   }
 
   50% {
-    text-shadow: 0 0 10px rgb(255, 255, 255, 0.8), 0 0 12px rgba(254, 57, 57, 0.6);
+    text-shadow: 0 0 12px rgb(255, 255, 255, 0.8), 0 0 14px rgba(254, 57, 57, 0.7);
   }
 }
 
@@ -353,7 +353,7 @@ html, body {
 
   50% {
     opacity: 0.8;
-    transform: scale(1.02);
+    transform: scale(1.05);
   }
 }
 

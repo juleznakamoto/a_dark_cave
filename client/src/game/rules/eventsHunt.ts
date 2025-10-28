@@ -18,8 +18,8 @@ export const huntEvents: Record<string, GameEvent> = {
         label: "Take hammer",
         effect: (state: GameState) => {
           return {
-            relics: {
-              ...state.relics,
+            tools: {
+              ...state.tools,
               blacksmith_hammer: true,
             },
             story: {
