@@ -7,7 +7,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 && !state.relics.whispering_cube,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The whispering Cube",
     message:
       "Near the cave’s entrance, you discover a perfectly polished metal cube. At first it seems still, but then you feel a faint vibration like a slow, rhythmic pulse, almost like a heartbeat.",
@@ -37,7 +37,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.story.seen.venturedDeeper &&
       !state.events.cube01,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The Cube awakens",
     message:
       "You wake in the night. The cube hums softly. Suddenly a gentle, melodic voice emerges from within: 'Long ago, a great civilization thrived upon this world, but it crumbled, its ancient knowledge lost to the ages.'",
@@ -67,7 +67,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube01 &&
       !state.events.cube02,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The warrior tribe",
     message:
       "'In the distant past, a tribe of fierce warriors was chosen to live deep within the caves. Their purpose was to guard something of great importance.'",
@@ -97,7 +97,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube02 &&
       !state.events.cube03,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The underground city",
     message:
       "'The warrior tribe grew into a vast underground city, safe from the world above, still protecting what they were sent to protect many lifetimes ago.'",
@@ -127,7 +127,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube03 &&
       !state.events.cube04,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The sacred oath",
     message:
       "'Though memory of what they protected has faded into legend, their vigilance endured. For countless generations the warriors have kept their sacred oath, watching over what lies at the city’s deepest point.'",
@@ -157,7 +157,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube04 &&
       !state.events.cube05,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The sealed portal",
     message:
       "'Long after the warriors perished, the object of their devotion remained: a colossal, impenetrable portal, crafted with long-forgotten, advanced technology, hidden deep within the city’s lowest chambers'",
@@ -187,7 +187,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube05 &&
       !state.events.cube06,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The portal opens",
     message:
       "As the portal is blasted open, the cube trembles violently in your hands, growing warm to the touch. A soft, but urgent murmur escapes it: 'I have gained new insights…'",
@@ -217,7 +217,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube06 &&
       !state.events.cube07,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "Ancient technology",
     message:
       "'The ancient civilization that forged the portal possessed knowledge and technology far beyond the current age. They crafted devices designed to be implanted within their skulls, enhancing both mind and body'",
@@ -247,7 +247,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube07 &&
       !state.events.cube08,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The resistance",
     message:
       "'The leaders ruled that every citizen must bear a device. Yet a small faction began to voice their concerns, forming a secret resistance as they recognized the dangers hidden within the technology.'",
@@ -307,7 +307,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube09 &&
       !state.events.cube10,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "The great collapse",
     message:
       "'One day, without warning, an unimaginable magneto-electric wave swept across the globe. Every device of the civilization, including those embedded within the skulls, was obliterated in an instant.'",
@@ -337,7 +337,7 @@ export const cubeEvents: Record<string, GameEvent> = {
       state.events.cube10 &&
       !state.events.cube11,
     triggerType: "resource",
-    timeProbability: 0.01,
+    timeProbability: 1,
     title: "End of civilization",
     message:
       "'The survivors could not endure without the technology. Many died. Civilization regressed, knowledge and inventions slipped into oblivion. Nature reclaimed the lands, leaving only buried ruins where greatness once stood.'",
