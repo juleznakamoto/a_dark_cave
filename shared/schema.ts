@@ -136,10 +136,6 @@ export const gameStateSchema = z.object({
     .default({}),
   relics: z
     .object({
-      strange_bones: z.boolean().default(false),
-      compass: z.boolean().default(false),
-      old_textbook: z.boolean().default(false),
-      steel_codex: z.boolean().default(false),
       tarnished_amulet: z.boolean().default(false),
       bloodstained_belt: z.boolean().default(false),
       wooden_figure: z.boolean().default(false),
