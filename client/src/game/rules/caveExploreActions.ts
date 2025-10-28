@@ -808,7 +808,7 @@ export function handleEncounterBeyondPortal(
               ...state.story,
               seen: {
                 ...state.story.seen,
-                communicateWithCreatures: true,
+                communicatedWithCreatures: true,
               },
             },
             _logMessage:
