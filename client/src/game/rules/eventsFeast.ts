@@ -48,7 +48,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return false;
     },
     triggerType: "resource",
-    timeProbability: 8,
+    timeProbability: 0.08,
     title: "Village Feast",
     message: `The villagers propose organizing a grand feast to celebrate recent prosperity and boost morale. They believe it will heighten productivity for days to come. The feast will require ${foodCost} food.`,
     triggered: false,
