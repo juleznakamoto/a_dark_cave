@@ -119,16 +119,16 @@ export default function GameContainer() {
       </div>
 
       {/* Main Content Area - Fills remaining space */}
-      <main className="flex-1 p-2 pt-0 flex min-h-0 overflow-hidden">
-        {/* Left Sidebar for Resources */}
-        <div className="w-60 md:w-96 border-t border-r flex-shrink-0 overflow-hidden">
+      <main className="flex-1 p-2 pt-0 flex flex-col md:flex-row min-h-0 overflow-hidden">
+        {/* Left Sidebar for Resources - On top for mobile, left for desktop */}
+        <div className="w-full md:w-60 md:md:w-96 border-t md:border-r flex-shrink-0 overflow-hidden">
           <GameTabs />
         </div>
 
-        {/* Right Content Area with Horizontal Tabs and Actions */}
-        <section className="flex-1 pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
+        {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
+        <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-4 mb-2 flex-shrink-0">
+          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
@@ -195,7 +195,7 @@ export default function GameContainer() {
             </nav>
 
             {/* Action Panels */}
-          <div className="flex-1 overflow-auto pl-4 min-h-0">
+          <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
