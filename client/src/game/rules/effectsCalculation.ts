@@ -173,22 +173,18 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
   // Check clothing effects (legacy)
-  if (state.clothing) {
-    Object.entries(state.clothing).forEach(([key, value]) => {
-      if (value && clothingEffects[key]) {
-        activeEffects.push(clothingEffects[key]);
-      }
-    });
-  }
+  Object.entries(state.clothing || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
+    }
+  });
 
   // Check relic effects
-  if (state.relics) {
-    Object.entries(state.relics).forEach(([key, value]) => {
-      if (value && clothingEffects[key]) {
-        activeEffects.push(clothingEffects[key]);
-      }
-    });
-  }
+  Object.entries(state.relics || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
+    }
+  });
 
   // Check tool effects
   const displayTools = getDisplayTools(state);
