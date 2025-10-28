@@ -82,8 +82,46 @@ export default function ItemProgressChart() {
         label: "Lanterns",
         category: "tools",
         maxCount: 5,
-
-        
+      },
+      {
+        itemType: "blacksmith_hammer",
+        itemKeys: ["blacksmith_hammer"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Blacksmith Hammer",
+        category: "tools",
+        maxCount: 1,
+      },
+      {
+        itemType: "reinforced_rope",
+        itemKeys: ["reinforced_rope"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Reinforced Rope",
+        category: "tools",
+        maxCount: 1,
+      },
+      {
+        itemType: "giant_trap",
+        itemKeys: ["giant_trap"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Giant Trap",
+        category: "tools",
+        maxCount: 1,
+      },
+      {
+        itemType: "occultist_map",
+        itemKeys: ["occultist_map"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Occultist Map",
+        category: "tools",
+        maxCount: 1,
+      },
+      {
+        itemType: "mastermason_chisel",
+        itemKeys: ["mastermason_chisel"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Mastermason Chisel",
+        category: "tools",
+        maxCount: 1,
       },
     ],
 
@@ -312,7 +350,7 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
     ],
-    // Fourth ring: Clothing and other tools
+    // Fourth ring: Clothing
     [
       {
         itemType: "explorer_pack",
@@ -353,20 +391,6 @@ export default function ItemProgressChart() {
         label: "Logger's Gloves",
         category: "clothing",
         maxCount: 1,
-      },
-      {
-        itemType: "special_tools",
-        itemKeys: [
-          "blacksmith_hammer",
-          "reinforced_rope",
-          "giant_trap",
-          "occultist_map",
-          "mastermason_chisel",
-        ],
-        color: tailwindToHex("gray-400/80"),
-        label: "Special Tools",
-        category: "tools",
-        maxCount: 5,
       },
     ],
   ];
