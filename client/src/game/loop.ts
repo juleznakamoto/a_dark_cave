@@ -87,8 +87,19 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
 
-  // Check and trigger events
+  // Check for random events
+  const prevEvents = { ...state.events };
   state.checkEvents();
+
+  // Trigger save if events changed (for cube events persistence)
+  const eventsChanged = Object.keys(state.events).some(
+    key => state.events[key] !== prevEvents[key]
+  );
+  if (eventsChanged && import.meta.env.DEV) {
+    console.log('[LOOP] Events changed, triggering autosave');
+    // Manually call autosave to persist events changes
+    handleAutoSave();
+  }
 }
 
 function handleGathererProduction() {
@@ -288,6 +299,10 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
+    // Autosave every 30 seconds
+    if (import.meta.env.DEV) {
+      console.log('[AUTOSAVE] Saving game state, events:', state.events);
+    }
     await saveGame(gameState);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
