@@ -56,7 +56,7 @@ export default function StartScreen() {
           ref={buttonRef}
           onClick={handleLightFire}
           autoStart={isAnimationComplete}
-          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
+          className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive fire-hover'}`}
           data-testid="button-light-fire"
         >
           Light Fire
