@@ -127,9 +127,6 @@ export const gameStateSchema = z.object({
     .default({}),
   clothing: z
     .object({
-      iron_armor: z.boolean().default(false),
-      steel_armor: z.boolean().default(false),
-      obsidian_armor: z.boolean().default(false),
       explorer_pack: z.boolean().default(false),
       hunter_cloak: z.boolean().default(false),
       grenadier_bag: z.boolean().default(false),
