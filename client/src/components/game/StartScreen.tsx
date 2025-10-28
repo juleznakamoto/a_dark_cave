@@ -13,21 +13,22 @@ export default function StartScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
-      
-      // Auto-trigger hover effect on mobile after animation completes
-      if (isMobile && buttonRef.current) {
-        // Dispatch a mouseenter event to trigger the hover effect
-        const mouseEnterEvent = new MouseEvent('mouseenter', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        buttonRef.current.dispatchEvent(mouseEnterEvent);
-      }
     }, 6000); // 3.5s delay + 2.5s animation
 
     return () => clearTimeout(timer);
-  }, [isMobile]);
+  }, []);
+
+  useEffect(() => {
+    // Auto-trigger hover effect on mobile after animation completes
+    if (isAnimationComplete && isMobile && buttonRef.current) {
+      const mouseEnterEvent = new MouseEvent('mouseenter', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      buttonRef.current.dispatchEvent(mouseEnterEvent);
+    }
+  }, [isAnimationComplete, isMobile]);
 
   const handleLightFire = () => {
     executeAction('lightFire');
