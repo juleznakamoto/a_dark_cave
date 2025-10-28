@@ -14,7 +14,7 @@ export function AnimatedCounter({ value }: { value: number }) {
       style={{ fontSize }}
       className="flex overflow-hidden leading-none tabular-nums"
     >
-      <Digit place={100} value={value} />
+      {/* <Digit place={100} value={value} /> */}
       <Digit place={10} value={value} />
       <Digit place={1} value={value} />
     </div>
