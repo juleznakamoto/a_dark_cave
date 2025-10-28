@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
@@ -6,6 +6,7 @@ import CloudShader from '@/components/ui/cloud-shader';
 export default function StartScreen() {
   const { executeAction } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
+  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -14,6 +15,18 @@ export default function StartScreen() {
 
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    // Auto-trigger hover effect after animation completes
+    if (isAnimationComplete && buttonRef.current) {
+      const mouseEnterEvent = new MouseEvent('mouseenter', {
+        bubbles: true,
+        cancelable: true,
+        view: window
+      });
+      buttonRef.current.dispatchEvent(mouseEnterEvent);
+    }
+  }, [isAnimationComplete]);
 
   const handleLightFire = () => {
     executeAction('lightFire');
@@ -50,6 +63,7 @@ export default function StartScreen() {
           </p>
         </div>
         <ParticleButton
+          ref={buttonRef}
           onClick={handleLightFire}
           className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
           data-testid="button-light-fire"
