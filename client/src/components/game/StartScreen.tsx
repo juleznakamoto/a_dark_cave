@@ -1,33 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 export default function StartScreen() {
   const { executeAction } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
-  const isMobile = useIsMobile();
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
-      
-      // Auto-trigger hover effect on mobile after animation completes
-      if (isMobile && buttonRef.current) {
-        // Dispatch a mouseenter event to trigger the hover effect
-        const mouseEnterEvent = new MouseEvent('mouseenter', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        buttonRef.current.dispatchEvent(mouseEnterEvent);
-      }
     }, 6000); // 3.5s delay + 2.5s animation
 
     return () => clearTimeout(timer);
-  }, [isMobile]);
+  }, []);
 
   const handleLightFire = () => {
     executeAction('lightFire');
@@ -64,7 +50,6 @@ export default function StartScreen() {
           </p>
         </div>
         <ParticleButton
-          ref={buttonRef}
           onClick={handleLightFire}
           className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
           data-testid="button-light-fire"

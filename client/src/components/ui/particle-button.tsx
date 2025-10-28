@@ -86,7 +86,6 @@ function ParticleButton({
     spawnInterval = 300,
     hoverDelay = 100,
     className,
-    ref,
     ...props
 }: ParticleButtonProps) {
     const [sparks, setSparks] = useState<Spark[]>([]);
@@ -243,14 +242,7 @@ function ParticleButton({
         <>
             <SuccessParticles buttonRef={buttonRef} sparks={sparks} />
             <Button
-                ref={(node) => {
-                    buttonRef.current = node;
-                    if (typeof ref === 'function') {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-                }}
+                ref={buttonRef}
                 onClick={handleClick}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
