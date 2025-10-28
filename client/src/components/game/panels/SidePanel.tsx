@@ -662,7 +662,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className="flex-1">
+        <div className="flex-1 ">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection title="Tools" items={toolItems} />
           )}
