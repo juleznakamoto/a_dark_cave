@@ -7,6 +7,7 @@ import {
   getTotalKnowledge,
 } from "@/game/rules/effectsCalculation";
 import { killVillagers } from "@/game/stateHelpers";
+import { GameEvent, gameEvents } from "./events";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
