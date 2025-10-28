@@ -10,6 +10,7 @@ import type { ButtonProps } from "@/components/ui/button";
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
+    autoStart?: boolean;
 }
 
 interface Spark {
@@ -85,6 +86,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     onClick,
     spawnInterval = 300,
     hoverDelay = 100,
+    autoStart = false,
     className,
     ...props
 }, ref) => {
@@ -231,6 +233,15 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         if (onClick) onClick(e);
     };
+
+    useEffect(() => {
+        if (autoStart) {
+            handleMouseEnter();
+        }
+        return () => {
+            clearAllTimers();
+        };
+    }, [autoStart]);
 
     useEffect(() => {
         return () => {
