@@ -84,18 +84,23 @@ export default function BastionPanel() {
   };
 
   const repairBastion = () => {
+    console.log('[repairBastion] Starting repair');
     const repairCost = getRepairCost('buildBastion', 1);
     if (canAffordRepair(repairCost)) {
-      useGameStore.setState((state) => ({
-        resources: deductRepairCost(repairCost),
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            bastionDamaged: false,
+      useGameStore.setState((state) => {
+        console.log('[repairBastion] state before update:', state.clothing, state.relics);
+        return {
+          resources: deductRepairCost(repairCost),
+          story: {
+            ...state.story,
+            seen: {
+              ...state.story.seen,
+              bastionDamaged: false,
+            },
           },
-        },
-      }));
+        };
+      });
+      console.log('[repairBastion] Calling updateBastionStats');
       useGameStore.getState().updateBastionStats();
     }
   };

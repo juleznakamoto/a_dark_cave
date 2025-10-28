@@ -172,19 +172,30 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
+  console.log('[getActiveEffects] state.clothing:', state.clothing);
+  console.log('[getActiveEffects] state.relics:', state.relics);
+
   // Check clothing effects (legacy)
-  Object.entries(state.clothing || {}).forEach(([key, value]) => {
-    if (value && clothingEffects[key]) {
-      activeEffects.push(clothingEffects[key]);
-    }
-  });
+  try {
+    Object.entries(state.clothing || {}).forEach(([key, value]) => {
+      if (value && clothingEffects[key]) {
+        activeEffects.push(clothingEffects[key]);
+      }
+    });
+  } catch (error) {
+    console.error('[getActiveEffects] Error processing clothing:', error);
+  }
 
   // Check relic effects
-  Object.entries(state.relics || {}).forEach(([key, value]) => {
-    if (value && clothingEffects[key]) {
-      activeEffects.push(clothingEffects[key]);
-    }
-  });
+  try {
+    Object.entries(state.relics || {}).forEach(([key, value]) => {
+      if (value && clothingEffects[key]) {
+        activeEffects.push(clothingEffects[key]);
+      }
+    });
+  } catch (error) {
+    console.error('[getActiveEffects] Error processing relics:', error);
+  }
 
   // Check tool effects
   const displayTools = getDisplayTools(state);

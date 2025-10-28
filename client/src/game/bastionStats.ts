@@ -10,6 +10,10 @@ export interface BastionStats {
 }
 
 export function calculateBastionStats(state: GameState): BastionStats {
+  console.log('[calculateBastionStats] Starting calculation');
+  console.log('[calculateBastionStats] state.clothing:', state.clothing);
+  console.log('[calculateBastionStats] state.relics:', state.relics);
+  
   let defense = 0;
   let attackFromFortifications = 0;
   let baseIntegrity = 0;
