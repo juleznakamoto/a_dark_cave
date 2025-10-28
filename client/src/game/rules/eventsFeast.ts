@@ -62,7 +62,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     choices: [
       {
         id: "makeFeast",
-        label: `Make feast (${foodCost} food)`,
+        label: `Make feast`,
         effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
             return {
@@ -87,7 +87,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
               ...(state.triggeredEvents || {}),
               [eventId]: true,
             },
-            _logMessage: `The village erupts in celebration! A magnificent feast is held, bringing joy and renewed vigor to all. For the next 10 minutes, all production from villagers is doubled.`,
+            _logMessage: `The village erupts in celebration! A magnificent feast is held, bringing joy and renewed vigor to all.`,
           };
         },
       },
