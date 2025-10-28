@@ -1,0 +1,214 @@
+tate: 
+{resources: {…}, stats: {…}, flags: {…}, schematics: {…}, tools: {…}, …}
+state.ts:669 [STATE] Cube event state update: 
+{available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+active
+: 
+[]
+available
+: 
+[]
+bloodInWater
+: 
+false
+creatureInHut
+: 
+false
+cube01
+: 
+true
+cube02
+: 
+true
+cube03
+: 
+false
+cube04
+: 
+false
+cube05
+: 
+false
+cube06
+: 
+false
+cube07
+: 
+false
+cube08
+: 
+false
+cube09
+: 
+false
+cube10
+: 
+false
+cube11
+: 
+false
+cube13
+: 
+false
+cube14a
+: 
+false
+cube14b
+: 
+false
+cube14c
+: 
+false
+cube14d
+: 
+false
+cube15a
+: 
+false
+cube15b
+: 
+false
+dream_morrowind
+: 
+true
+dream_oblivion
+: 
+true
+dream_skyrim
+: 
+true
+elder_scroll_found
+: 
+true
+facesInWalls
+: 
+false
+log
+: 
+[]
+shadowsMove
+: 
+false
+skinCrawling
+: 
+false
+villagerStares
+: 
+false
+villagersStareAtSky
+: 
+false
+whisperingVoices
+: 
+false
+wrongReflections
+: 
+false
+wrongVillagers
+: 
+false
+[[Prototype]]
+: 
+Object
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <button.inline-flex items-center justify-center gap-2 whitespace-nowrap text-xs font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-background h-9 px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400>
+Ancestor with aria-hidden: <div.fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] gap-4 bg-background duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] sm:rounded-lg [&>button]:hidden border-2 border-gray-400 shadow-2xl p-6 w-[90vw] h-[19rem] max-w-[20rem] max-h-[19rem] flex flex-col overflow-visible z-[100]#radix-:r1m7:> 
+loop.ts:55 State: 
+{resources: {…}, stats: {…}, flags: {…}, schematics: {…}, tools: {…}, …}
+loop.ts:55 State: 
+{resources: {…}, stats: {…}, flags: {…}, schematics: {…}, tools: {…}, …}
+activeTab
+: 
+"cave"
+addLogEntry
+: 
+(entry) => {…}
+applyEventChoice
+: 
+(choiceId, eventId) => {…}
+assignVillager
+: 
+(job) => {…}
+bastion_stats
+: 
+{defense: 30, attack: 105, attackFromFortifications: 25, attackFromStrength: 80, integrity: 100}
+blessings
+: 
+{dagons_gift: false, flames_touch: true, ravens_mark: false, ashen_embrace: false, dagons_gift_enhanced: false, …}
+buildings
+: 
+{woodenHut: 10, stoneHut: 10, longhouse: 2, cabin: 1, greatCabin: 1, …}
+checkEvents
+: 
+() => {…}
+clothing
+: 
+{iron_armor: false, steel_armor: false, obsidian_armor: false, explorer_pack: true, hunter_cloak: true, …}
+combatDialog
+: 
+{isOpen: false, enemy: null, eventTitle: '', eventMessage: '', onVictory: null, …}
+cooldowns
+: 
+{}
+current_population
+: 
+80
+damagedBuildings
+: 
+{bastion: false, watchtower: false, palisades: false}
+devMode
+: 
+true
+effects
+: 
+{resource_bonus: {…}, resource_multiplier: {…}, probability_bonus: {…}, cooldown_reduction: {…}, madness_reduction: {…}, …}
+eventCooldowns
+: 
+{cubeDiscovery: 1761562930171, steelGift: 1761563100255, ironGift: 1761563277255, woodcutter1: 1761563484486, cube01: 1761563535339, …}
+eventDialog
+: 
+{isOpen: false, currentEvent: null}
+events
+: 
+active
+: 
+[]
+available
+: 
+[]
+bloodInWater
+: 
+false
+creatureInHut
+: 
+false
+cube01
+: 
+true
+cube02
+: 
+false
+cube03
+: 
+false
+cube04
+: 
+false
+cube05
+: 
+false
+cube06
+: 
+false
+cube07
+: 
+false
+cube08
+: 
+false
+cube09
+: 
+false
+cube10
+: 
+false
