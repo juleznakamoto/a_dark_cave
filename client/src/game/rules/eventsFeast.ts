@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -63,6 +62,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       {
         id: "makeFeast",
         label: `Make feast`,
+        cost: `${foodCost} food`,
         effect: (state: GameState) => {
           if (state.resources.food < foodCost) {
             return {
