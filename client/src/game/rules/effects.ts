@@ -492,6 +492,8 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  
+
   tarnished_amulet: {
     id: "tarnished_amulet",
     name: "Tarnished Amulet",

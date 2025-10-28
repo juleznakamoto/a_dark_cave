@@ -21,8 +21,8 @@ export const caveEvents: Record<string, GameEvent> = {
         label: "Keep it",
         effect: (state: GameState) => {
           return {
-            relics: {
-              ...state.relics,
+            clothing: {
+              ...state.clothing,
               ring_of_drowned: true,
             },
             story: {

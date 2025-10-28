@@ -58,13 +58,15 @@ const caveRelics = {
       key: "tarnished_amulet",
       probability: 0.02,
       logMessage:
-        "In the cave’s shadows, something glints. You find up a tarnished amulet.",
+        "In the cave's shadows, something glints. You find up a tarnished amulet.",
+      category: "clothing",
     },
     {
       key: "bloodstained_belt",
       probability: 0.02,
       logMessage:
         "In the cave you find a leather belt stained with ancient blood.",
+      category: "clothing",
     },
   ],
   descendFurther: [
@@ -462,7 +464,7 @@ export function handleGatherWood(
       timestamp: Date.now(),
       type: "system",
     });
-    
+
     // Mark as seen so it only triggers once
     result.stateUpdates.story = {
       ...state.story,
