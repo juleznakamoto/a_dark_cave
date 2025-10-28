@@ -13,7 +13,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "paleFigure",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 &&
-      !state.relics.ravenfeather_mantle &&
+      !state.clothing.ravenfeather_mantle &&
       state.current_population >= 4,
     triggerType: "resource",
     timeProbability: 35,
@@ -618,7 +618,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (rand < successChance) {
             return {
               relics: {
-                ...state.relics,
+                ...state.clothing,
                 cracked_crown: true,
               },
               _logMessage:

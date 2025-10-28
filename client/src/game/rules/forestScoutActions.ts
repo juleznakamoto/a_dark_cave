@@ -56,7 +56,7 @@ export const forestScoutActions: Record<string, Action> = {
     label: "Lay Trap",
     show_when: {
       "tools.giant_trap": true,
-      "relics.black_bear_fur": false,
+      "clothing.black_bear_fur": false,
     },
     cost: {
       "resources.food": 500,
@@ -204,8 +204,8 @@ export function handleLayTrap(
 
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
-    result.stateUpdates.relics = {
-      ...state.relics,
+    result.stateUpdates.clothing = {
+      ...state.clothing,
       black_bear_fur: true,
     };
 
