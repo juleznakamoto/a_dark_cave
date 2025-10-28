@@ -12,6 +12,7 @@ import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { AnimatedCounter } from "@/components/ui/animated-counter";
 
 export default function VillagePanel() {
   const {
@@ -227,7 +228,7 @@ export default function VillagePanel() {
 
     return (
       <div key={jobId} className="flex items-center justify-between">
-        <div className="flex items-center">
+        <div className="flex items-center gap-1">
           <Button
             onClick={() => unassignVillager(jobId)}
             disabled={currentCount === 0}
@@ -237,9 +238,9 @@ export default function VillagePanel() {
           >
             -
           </Button>
-          <span className="font-mono text-sm h-4 w-5 flex items-center justify-center text-center">
-            {currentCount}
-          </span>
+          <div className="w-8 flex items-center justify-center">
+            <AnimatedCounter value={currentCount} />
+          </div>
           <Button
             onClick={() => assignVillager(jobId)}
             disabled={villagers.free === 0}
