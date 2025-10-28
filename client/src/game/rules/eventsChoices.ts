@@ -1,22 +1,27 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import { getTotalStrength, getTotalLuck, getTotalKnowledge } from "./effectsCalculation";
+import {
+  getTotalStrength,
+  getTotalLuck,
+  getTotalKnowledge,
+} from "./effectsCalculation";
 import { getMaxPopulation } from "@/game/population";
 
 export const choiceEvents: Record<string, GameEvent> = {
   paleFigure: {
     id: "paleFigure",
-    relevant_stats: ["strength", "luck"],
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 2 && !state.relics.ravenfeather_mantle && state.current_population >= 4,
+      state.buildings.woodenHut >= 2 &&
+      !state.relics.ravenfeather_mantle &&
+      state.current_population >= 4,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
     message: [
-      "At dawn, men glimpse a pale, tall and slender figure at the woods' edge. It stands watching. What do you do?",
-      "In the grey morning, a tall, pale and slender shape lingers at the treeline, unmoving. What do you do?",
-      "Villagers report of a tall, pale, slender figure in the mist, silent at the forest's edge. What do you do?",
+      "At dawn, men glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
+      "In the grey morning, a tall, pale, slender figure stands at the treeline. What do you do?",
+      "Villagers report of a tall, pale, slender figure in the mist near the forest's edge. What do you do?",
     ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
@@ -49,8 +54,10 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The investigation goes wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
-            const deaths =
-              Math.min(4, 2 + Math.floor(Math.random() * state.buildings.woodenHut));
+            const deaths = Math.min(
+              4,
+              2 + Math.floor(Math.random() * state.buildings.woodenHut),
+            );
             return {
               ...killVillagers(state, deaths),
               _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
@@ -67,7 +74,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             // Nothing happens
             return {
               _logMessage:
-                "The men stay close to the village. By evening, the figure is gone, and nothing more comes of it.",
+                "The men stay close to the village. By evening, the figure is gone.",
             };
           } else {
             // 1 man found dead
@@ -105,7 +112,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               muttering_amulet: true,
             },
             _logMessage:
-              "You lift the floorboards and find a strange amulet, faintly whispering. Its purpose is unclear...",
+              "You lift the floorboards and find a strange amulet, faintly whispering.",
           };
         },
       },
@@ -151,7 +158,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               blackened_mirror: true,
             },
             _logMessage:
-              "You purchase the mirror. Its dark surface shimmers with hidden truths, and glimpses of your own future, nudging your sanity toward the edge.",
+              "You purchase the mirror. Its dark surface gives glimpses of your own future, nudging your sanity toward the edge.",
           };
         },
       },
@@ -171,14 +178,14 @@ export const choiceEvents: Record<string, GameEvent> = {
   cthulhuFigure: {
     id: "cthulhuFigure",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && 
+      state.buildings.woodenHut >= 4 &&
       !state.relics.wooden_figure &&
       !state.story.seen.cthulhuFigureChoice,
     triggerType: "resource",
     timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
-      "Near the edge of the forest, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it?",
+      "At the edge of the forest, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -200,7 +207,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide to keep the figure. Its strange aura makes the villagers uneasy...",
+              "You decide to keep the figure. Its strange aura makes the villagers uneasy.",
           };
         },
       },
@@ -226,12 +233,13 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   wolfAttack: {
     id: "wolfAttack",
-    condition: (state: GameState) => state.buildings.woodenHut >= 3 && !state.relics.alphas_hide,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 3 && !state.relics.alphas_hide,
     triggerType: "resource",
     timeProbability: 35,
     title: "Wolf Attack",
     message:
-      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo with filled with malice as they circle your village.",
+      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle your village.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -277,7 +285,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            state.buildings.woodenHut * 25 + Math.floor(Math.random() * 251),
+            (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25,
           );
           let hutDestroyed = false;
 
@@ -306,8 +314,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           let message = "The village fights desperately against the wolves. ";
 
           if (villagerDeaths === 0) {
-            message +=
-              "The villagers survive the attack, though shaken by the encounter.";
+            message += "The villagers survive the attack.";
           } else if (villagerDeaths === 1) {
             message += "One villager falls to the wolves' supernatural fury.";
           } else {
@@ -361,7 +368,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           const casualtyChance = Math.max(0.1, 0.4 - luck * 0.02);
 
           let villagerDeaths = 0;
-          let foodLoss = Math.floor(Math.random() * 501) + 50; // 50-500 food loss (more than defending)
+          let foodLoss = Math.min(
+            state.resources.food,
+            (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25,
+          );
           let hutDestroyed = false;
 
           // Determine villager casualties (1-4 potential deaths)
@@ -380,7 +390,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // Construct result message
           let message =
-            "The villagers huddle in their huts as the wolves prowl outside, their claws scraping against doors and walls. ";
+            "The villagers huddle in their huts as the wolves prowl outside. ";
 
           if (villagerDeaths === 0) {
             message +=
@@ -389,7 +399,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             message +=
               "One villager who ventured out is found torn apart at sunrise.";
           } else {
-            message += `${villagerDeaths} villagers are dragged from their hiding places, their screams echoing through the night.`;
+            message += `${villagerDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
           }
 
           message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
@@ -470,7 +480,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.relics,
                 ebony_ring: true,
               },
-              _logMessage: `The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives in despair.`,
+              _logMessage: `The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. But the horror of the sacrifice drives ${additionalDeaths} villagers to take their own lives.`,
             };
           }
         },
@@ -497,7 +507,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             // Nothing happens, event remains active
             return {
               _logMessage:
-                "You refuse the sacrifice. The forest remains silent for now. The threat lingers...",
+                "You refuse the sacrifice. The forest remains silent for now. The threat lingers.",
             };
           } else {
             // Villagers disappear
@@ -1006,15 +1016,15 @@ export const choiceEvents: Record<string, GameEvent> = {
             (sum, count) => sum + (count || 0),
             0,
           );
-          
+
           // Kill 2 villagers for the trade
           const tradeResult = killVillagers(state, 2);
-          
+
           // All remaining villagers leave in disgust
           const remainingPopulation = currentPopulation - 2;
           const leaveResult = killVillagers(
             { ...state, villagers: tradeResult.villagers || state.villagers },
-            remainingPopulation
+            remainingPopulation,
           );
 
           return {
@@ -1050,7 +1060,10 @@ export const choiceEvents: Record<string, GameEvent> = {
               0,
             );
             const maxPopulation = getMaxPopulation(state);
-            const villagersToAdd = Math.min(2, maxPopulation - currentPopulation);
+            const villagersToAdd = Math.min(
+              2,
+              maxPopulation - currentPopulation,
+            );
 
             return {
               villagers: {
@@ -1085,7 +1098,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   slaveTraderEvent: true,
                 },
               },
-              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? 'falls' : 'fall'} in the struggle. The trader escapes with his captives, leaving only death behind.`,
+              _logMessage: `Your men attack the slaver, but he's prepared! He fights back viciously. ${deaths} of your villagers ${deaths === 1 ? "falls" : "fall"} in the struggle. The trader escapes with his captives, leaving only death behind.`,
             };
           }
         },

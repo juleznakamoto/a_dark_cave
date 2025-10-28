@@ -233,26 +233,29 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 no-hover"
+            className="flex h-5 w-5 items-center justify-center no-hover text-md text-center"
           >
             -
           </Button>
-          <span className="font-mono text-sm w-5 text-center">
+
+          <span className="font-mono text-sm w-5 flex items-center justify-center text-center leading-none">
             {currentCount}
           </span>
+
           <Button
             onClick={() => assignVillager(jobId)}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
-            className="h-5 w-5 no-hover"
+            className="flex h-5 w-5 items-center justify-center no-hover text-md text-center"
           >
             +
           </Button>
         </div>
-        <span className="text-xs ml-2 text-left flex-1">
+
+        <span className="flex items-center text-xs ml-1 text-left flex-1 leading-none">
           {label}{" "}
-          <span className="text-xs text-muted-foreground">
+          <span className="text-xs text-muted-foreground ml-1">
             {getTotalProductionText(jobId, currentCount)}
           </span>
         </span>
@@ -271,93 +274,93 @@ export default function VillagePanel() {
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
-        const visibleActions = group.actions.filter((action) =>
-          shouldShowAction(action.id, state),
-        );
+          const visibleActions = group.actions.filter((action) =>
+            shouldShowAction(action.id, state),
+          );
 
-        if (visibleActions.length === 0) return null;
+          if (visibleActions.length === 0) return null;
 
-        return (
-          <div key={groupIndex} className="space-y-2">
-            {group.title && (
-              <h3 className="text-xs font-semibold text-foreground ">
-                {group.title}
-              </h3>
-            )}
-            <div className="flex flex-wrap gap-2">
-              {visibleActions.map((action) =>
-                renderButton(action.id, action.label),
+          return (
+            <div key={groupIndex} className="space-y-2">
+              {group.title && (
+                <h3 className="text-xs font-semibold text-foreground ">
+                  {group.title}
+                </h3>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {visibleActions.map((action) =>
+                  renderButton(action.id, action.label),
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Rule Section */}
+        {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-foreground">Rule</h3>
+            <div className="space-y-1 leading-tight">
+              {visiblePopulationJobs.map((job) =>
+                renderPopulationControl(job.id, job.label),
               )}
             </div>
-          </div>
-        );
-      })}
 
-      {/* Rule Section */}
-      {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
-        <div className="space-y-2">
-          <h3 className="text-xs font-bold text-foreground">Rule</h3>
-          <div className="space-y-1 leading-tight">
-            {visiblePopulationJobs.map((job) =>
-              renderPopulationControl(job.id, job.label),
-            )}
-          </div>
-          
-          {/* Population Effects Summary */}
-          {(() => {
-            const totalEffects: Record<string, number> = {};
+            {/* Population Effects Summary */}
+            {(() => {
+              const totalEffects: Record<string, number> = {};
 
-            // Calculate total population for base consumption
-            const totalPopulation = Object.values(villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
+              // Calculate total population for base consumption
+              const totalPopulation = Object.values(villagers).reduce(
+                (sum, count) => sum + (count || 0),
+                0,
+              );
 
-            // Add base consumption for all villagers (1 wood and 1 food per villager)
-            if (totalPopulation > 0) {
-              totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
-              totalEffects.food = (totalEffects.food || 0) - totalPopulation;
-            }
-
-            visiblePopulationJobs.forEach((job) => {
-              const currentCount =
-                villagers[job.id as keyof typeof villagers] || 0;
-              if (currentCount > 0) {
-                const production = getPopulationProduction(
-                  job.id,
-                  currentCount,
-                  state,
-                );
-                production.forEach((prod) => {
-                  totalEffects[prod.resource] =
-                    (totalEffects[prod.resource] || 0) + prod.totalAmount;
-                });
+              // Add base consumption for all villagers (1 wood and 1 food per villager)
+              if (totalPopulation > 0) {
+                totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+                totalEffects.food = (totalEffects.food || 0) - totalPopulation;
               }
-            });
 
-            const effectsText = Object.entries(totalEffects)
-              .filter(([resource, amount]) => amount !== 0)
-              .sort(([, a], [, b]) => b - a) // Sort from positive to negative
-              .map(
-                ([resource, amount]) =>
-                  `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
-              )
-              .join(", ");
+              visiblePopulationJobs.forEach((job) => {
+                const currentCount =
+                  villagers[job.id as keyof typeof villagers] || 0;
+                if (currentCount > 0) {
+                  const production = getPopulationProduction(
+                    job.id,
+                    currentCount,
+                    state,
+                  );
+                  production.forEach((prod) => {
+                    totalEffects[prod.resource] =
+                      (totalEffects[prod.resource] || 0) + prod.totalAmount;
+                  });
+                }
+              });
 
-            return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground flex items-center gap-3">
-                <CircularProgress
-                  value={productionProgress}
-                  size={16}
-                  strokeWidth={2}
-                  className="text-primary"
-                />
-                <span>{effectsText}</span>
-              </div>
-            ) : null;
-          })()}
-        </div>
-      )}
+              const effectsText = Object.entries(totalEffects)
+                .filter(([resource, amount]) => amount !== 0)
+                .sort(([, a], [, b]) => b - a) // Sort from positive to negative
+                .map(
+                  ([resource, amount]) =>
+                    `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
+                )
+                .join(", ");
+
+              return effectsText && buildings.clerksHut > 0 ? (
+                <div className="text-xs text-muted-foreground flex items-center gap-3">
+                  <CircularProgress
+                    value={productionProgress}
+                    size={16}
+                    strokeWidth={2}
+                    className="text-primary"
+                  />
+                  <span>{effectsText}</span>
+                </div>
+              ) : null;
+            })()}
+          </div>
+        )}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
