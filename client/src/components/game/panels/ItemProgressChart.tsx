@@ -76,6 +76,7 @@ export default function ItemProgressChart() {
       {
         itemType: "lanterns",
         itemKeys: [
+          "lantern",
           "iron_lantern",
           "steel_lantern",
           "obsidian_lantern",
@@ -84,7 +85,7 @@ export default function ItemProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Lanterns",
         category: "tools",
-        maxCount: 4,
+        maxCount: 5,
       },
     ],
 
@@ -145,7 +146,62 @@ export default function ItemProgressChart() {
     ],
     // Third ring: Relics
     [
-      
+      {
+        itemType: "relics_tier1",
+        itemKeys: [
+          "tarnished_amulet",
+          "bloodstained_belt",
+          "wooden_figure",
+          "bone_dice",
+          "ravenfeather_mantle",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Tier 1 Relics",
+        category: "relics",
+        maxCount: 5,
+      },
+      {
+        itemType: "relics_tier2",
+        itemKeys: [
+          "muttering_amulet",
+          "ring_of_clarity",
+          "blackened_mirror",
+          "alphas_hide",
+          "ebony_ring",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Tier 2 Relics",
+        category: "relics",
+        maxCount: 5,
+      },
+      {
+        itemType: "relics_tier3",
+        itemKeys: [
+          "unnamed_book",
+          "cracked_crown",
+          "ancient_scrolls",
+          "elder_scroll",
+          "ravens_orb",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Tier 3 Relics",
+        category: "relics",
+        maxCount: 5,
+      },
+      {
+        itemType: "relics_tier4",
+        itemKeys: [
+          "whispering_cube",
+          "black_bear_fur",
+          "occultist_grimoire",
+          "ring_of_drowned",
+          "shadow_flute",
+        ],
+        color: tailwindToHex("gray-400/80"),
+        label: "Tier 4 Relics",
+        category: "relics",
+        maxCount: 5,
+      },
     ],
     // Fourth ring: Clothing and other tools
     [
