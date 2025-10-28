@@ -14,6 +14,7 @@ import {
   getTotalMadness,
 } from "@/game/rules/effectsCalculation";
 import BuildingProgressChart from "./BuildingProgressChart";
+import ItemProgressChart from "./ItemProgressChart";
 
 export default function SidePanel() {
   const {
@@ -657,6 +658,12 @@ export default function SidePanel() {
           {
             <div className="shrink-0 border-">
               <BuildingProgressChart />
+            </div>
+          }
+          {/* Item Progress Chart */}
+          {
+            <div className="shrink-0 border-">
+              <ItemProgressChart />
             </div>
           }
         </div>

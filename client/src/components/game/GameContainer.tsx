@@ -202,7 +202,7 @@ export default function GameContainer() {
             {/* Progress Charts */}
             <div className="mb-4 space-y-4">
               <BuildingProgressChart />
-              <ItemProgressChart />
+              {/* ItemProgressChart has been removed */}
             </div>
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
