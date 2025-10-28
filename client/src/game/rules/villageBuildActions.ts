@@ -1342,6 +1342,18 @@ export function handleBuildPrimeFoundry(
     "buildPrimeFoundry",
     "primeFoundry",
   );
+
+  // Add prime foundry completion message
+  if (state.buildings.primeFoundry === 0) {
+    primeFoundryResult.logEntries!.push({
+      id: `prime-foundry-built-${Date.now()}`,
+      message:
+        "The Prime Foundry rises, its advanced forges capable of producing superior steel with greater efficiency.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   return primeFoundryResult;
 }
 

@@ -307,6 +307,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildBottomlessPit(state, result);
     case 'buildFoundry':
       return handleBuildFoundry(state, result);
+    case 'buildPrimeFoundry':
+      return handleBuildPrimeFoundry(state, result);
     case 'buildAltar':
       return handleBuildAltar(state, result);
     case 'buildGreatCabin':
