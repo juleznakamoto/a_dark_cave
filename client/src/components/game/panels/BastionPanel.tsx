@@ -25,6 +25,7 @@ const getBuildingLabel = (buildingType: 'watchtower' | 'palisades', level: numbe
 
 export default function BastionPanel() {
   const { buildings, story, resources } = useGameStore();
+  const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
@@ -39,7 +40,7 @@ export default function BastionPanel() {
     const actionCost = action?.cost?.[level];
     if (!actionCost) return {};
 
-    const buildingCostReduction = getTotalBuildingCostReduction();
+    const buildingCostReduction = getTotalBuildingCostReduction(state);
 
     const repairCost: Record<string, number> = {};
     for (const [path, cost] of Object.entries(actionCost)) {
