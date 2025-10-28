@@ -233,7 +233,7 @@ export default function VillagePanel() {
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
-            className="h-4 w-4 flex items-center justify-center no-hover text-md text-center"
+            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
           >
             -
           </Button>
@@ -245,7 +245,7 @@ export default function VillagePanel() {
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
-            className="h-4 w-4 flex items-center justify-center no-hover text-md text-center"
+            className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
           >
             +
           </Button>

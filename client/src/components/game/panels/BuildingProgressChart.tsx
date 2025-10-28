@@ -23,7 +23,7 @@ export default function BuildingProgressChart() {
   // Ring sizing parameters
   const startRadius = 16; // Inner radius of the first ring
   const ringSize = 4; // Thickness of each ring
-  const spaceBetweenRings = 6; // Gap between rings
+  const spaceBetweenRings = 5; // Gap between rings
   
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
