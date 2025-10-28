@@ -1,4 +1,3 @@
-
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -6,7 +5,12 @@ import { tailwindToHex } from "@/lib/tailwindColors";
 
 interface ItemSegment {
   itemType: string;
-  itemKeys: (keyof GameState["tools"] | keyof GameState["weapons"] | keyof GameState["clothing"] | keyof GameState["relics"])[];
+  itemKeys: (
+    | keyof GameState["tools"]
+    | keyof GameState["weapons"]
+    | keyof GameState["clothing"]
+    | keyof GameState["relics"]
+  )[];
   color: string;
   label: string;
   category: "tools" | "weapons" | "clothing" | "relics";
@@ -29,21 +33,27 @@ export default function ItemProgressChart() {
   const startRadius = 16;
   const ringSize = 4;
   const spaceBetweenRings = 5;
-  
+
   const getPaddingAngle = (ringIndex: number) => {
     return Math.max(2, 14 - ringIndex * 2);
   };
-  
+
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
-    // First ring: Axes and Pickaxes progression
+    // First ring: Tools
     [
       {
         itemType: "axes",
-        itemKeys: ["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"],
+        itemKeys: [
+          "stone_axe",
+          "iron_axe",
+          "steel_axe",
+          "obsidian_axe",
+          "adamant_axe",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Axes",
         category: "tools",
@@ -51,37 +61,58 @@ export default function ItemProgressChart() {
       },
       {
         itemType: "pickaxes",
-        itemKeys: ["stone_pickaxe", "iron_pickaxe", "steel_pickaxe", "obsidian_pickaxe", "adamant_pickaxe"],
+        itemKeys: [
+          "stone_pickaxe",
+          "iron_pickaxe",
+          "steel_pickaxe",
+          "obsidian_pickaxe",
+          "adamant_pickaxe",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Pickaxes",
         category: "tools",
         maxCount: 5,
       },
-    ],
-    // Second ring: Lanterns and Swords
-    [
       {
         itemType: "lanterns",
-        itemKeys: ["iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"],
+        itemKeys: [
+          "iron_lantern",
+          "steel_lantern",
+          "obsidian_lantern",
+          "adamant_lantern",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Lanterns",
         category: "tools",
         maxCount: 4,
       },
+    ],
+
+    // Second ring: Weapons
+    [
       {
         itemType: "swords",
-        itemKeys: ["iron_sword", "steel_sword", "obsidian_sword", "adamant_sword", "frostglass_sword"],
+        itemKeys: [
+          "iron_sword",
+          "steel_sword",
+          "obsidian_sword",
+          "adamant_sword",
+          "frostglass_sword",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Swords",
         category: "weapons",
         maxCount: 5,
       },
-    ],
-    // Third ring: Bows progression
-    [
       {
         itemType: "bows",
-        itemKeys: ["crude_bow", "huntsman_bow", "long_bow", "war_bow", "master_bow"],
+        itemKeys: [
+          "crude_bow",
+          "huntsman_bow",
+          "long_bow",
+          "war_bow",
+          "master_bow",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Bows",
         category: "weapons",
@@ -96,11 +127,21 @@ export default function ItemProgressChart() {
         maxCount: 3,
       },
     ],
+    // Third ring: Relics
+    [
+      
+    ],
     // Fourth ring: Clothing and other tools
     [
       {
         itemType: "clothing",
-        itemKeys: ["explorer_pack", "hunter_cloak", "grenadier_bag", "highpriest_robe", "loggers_gloves"],
+        itemKeys: [
+          "explorer_pack",
+          "hunter_cloak",
+          "grenadier_bag",
+          "highpriest_robe",
+          "loggers_gloves",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Clothing",
         category: "clothing",
@@ -108,7 +149,13 @@ export default function ItemProgressChart() {
       },
       {
         itemType: "special_tools",
-        itemKeys: ["blacksmith_hammer", "reinforced_rope", "giant_trap", "occultist_map", "mastermason_chisel"],
+        itemKeys: [
+          "blacksmith_hammer",
+          "reinforced_rope",
+          "giant_trap",
+          "occultist_map",
+          "mastermason_chisel",
+        ],
         color: tailwindToHex("gray-400/80"),
         label: "Special Tools",
         category: "tools",
@@ -132,7 +179,7 @@ export default function ItemProgressChart() {
   const getItemCount = (segment: ItemSegment): number => {
     const state = useGameStore.getState();
     let count = 0;
-    
+
     for (const itemKey of segment.itemKeys) {
       if (segment.category === "tools") {
         if (state.tools[itemKey as keyof typeof state.tools]) count++;
@@ -144,7 +191,7 @@ export default function ItemProgressChart() {
         if (state.relics[itemKey as keyof typeof state.relics]) count++;
       }
     }
-    
+
     return count;
   };
 
@@ -166,7 +213,10 @@ export default function ItemProgressChart() {
       const totalDegrees = 360 - segments.length * paddingAngle;
 
       // Calculate total max count for this ring
-      const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
+      const totalMaxCount = segments.reduce(
+        (sum, seg) => sum + seg.maxCount,
+        0,
+      );
 
       // Create background segments
       const backgroundSegments = segments.map((seg) => ({
@@ -181,13 +231,13 @@ export default function ItemProgressChart() {
         value: seg.maxCount,
         fill: "transparent",
       }));
-      
+
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
         const currentCount = getItemCount(seg);
         const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
-        
+
         const segmentStartAngle = currentEndAngle;
         const segmentEndAngle = segmentStartAngle - segmentDegrees;
         currentEndAngle = segmentEndAngle;
@@ -196,12 +246,14 @@ export default function ItemProgressChart() {
         const progress = seg.maxCount > 0 ? currentCount / seg.maxCount : 0;
         const progressDegrees = segmentDegrees * progress;
 
-        const adjustedStartAngle = index === 0
-          ? segmentStartAngle
-          : segmentStartAngle - paddingAngle * index;
-        const adjustedProgressAngle = index === 0
-          ? segmentStartAngle - progressDegrees
-          : segmentStartAngle - progressDegrees - paddingAngle * index;
+        const adjustedStartAngle =
+          index === 0
+            ? segmentStartAngle
+            : segmentStartAngle - paddingAngle * index;
+        const adjustedProgressAngle =
+          index === 0
+            ? segmentStartAngle - progressDegrees
+            : segmentStartAngle - progressDegrees - paddingAngle * index;
 
         const isFull = currentCount >= seg.maxCount;
 
@@ -247,7 +299,7 @@ export default function ItemProgressChart() {
                 cornerRadius={5}
                 strokeWidth={0}
                 isAnimationActive={false}
-                style={{ outline: 'none' }}
+                style={{ outline: "none" }}
               >
                 {ring.backgroundSegments.map((entry, entryIndex) => (
                   <Cell
@@ -273,12 +325,12 @@ export default function ItemProgressChart() {
                   strokeWidth={segment.isFull ? 1.5 : 0}
                   stroke={segment.isFull ? tailwindToHex("red-600") : undefined}
                   isAnimationActive={false}
-                  style={{ outline: 'none' }}
+                  style={{ outline: "none" }}
                 >
                   <Cell fill={segment.fill} />
                 </Pie>
               ))}
-              
+
               {/* Foreground ring */}
               <Pie
                 key={`foreground-${ringIndex}`}
@@ -295,9 +347,8 @@ export default function ItemProgressChart() {
                 strokeWidth={0.25}
                 stroke={tailwindToHex("neutral-200")}
                 isAnimationActive={false}
-                style={{ outline: 'none' }}
-              >
-              </Pie>
+                style={{ outline: "none" }}
+              ></Pie>
             </>
           ))}
         </PieChart>

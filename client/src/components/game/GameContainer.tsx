@@ -6,10 +6,7 @@ import ForestPanel from "./panels/ForestPanel";
 import BastionPanel from "./panels/BastionPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
-import BuildingProgressChart from "./panels/BuildingProgressChart";
-import ItemProgressChart from "./panels/ItemProgressChart";
 import { useGameStore } from "@/game/state";
-import { audioManager } from "@/lib/audio";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import { useState, useEffect, useMemo } from "react";
@@ -199,11 +196,7 @@ export default function GameContainer() {
 
             {/* Action Panels */}
           <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
-            {/* Progress Charts */}
-            <div className="mb-4 space-y-4">
-              <BuildingProgressChart />
-              {/* ItemProgressChart has been removed */}
-            </div>
+
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
