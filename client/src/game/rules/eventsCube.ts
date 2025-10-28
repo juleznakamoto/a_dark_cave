@@ -468,7 +468,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-              cube14c: true,
+              cube14b: true,
             },
           };
         },
