@@ -13,10 +13,15 @@ export default function StartScreen() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
-      
-      // Auto-trigger hover effect on mobile after animation completes
-      if (isMobile && buttonRef.current) {
-        // Dispatch a mouseenter event to trigger the hover effect
+    }, 6000); // 3.5s delay + 2.5s animation
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleLightFire = () => {
+    if (isMobile) {
+      // On mobile, trigger hover effect first
+      if (buttonRef.current) {
         const mouseEnterEvent = new MouseEvent('mouseenter', {
           bubbles: true,
           cancelable: true,
@@ -24,13 +29,15 @@ export default function StartScreen() {
         });
         buttonRef.current.dispatchEvent(mouseEnterEvent);
       }
-    }, 6000); // 3.5s delay + 2.5s animation
-
-    return () => clearTimeout(timer);
-  }, [isMobile]);
-
-  const handleLightFire = () => {
-    executeAction('lightFire');
+      
+      // Wait 3 seconds, then start the game
+      setTimeout(() => {
+        executeAction('lightFire');
+      }, 3000);
+    } else {
+      // On desktop, start immediately
+      executeAction('lightFire');
+    }
   };
 
   return (
