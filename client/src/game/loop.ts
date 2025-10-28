@@ -360,6 +360,10 @@ function handleStrangerApproach() {
       moreStrangersProbability *= 0.75;
     }
 
+    if (state.buildings.longhouse >= 2) {
+      moreStrangersProbability *= 0.75;
+    }
+
     // multiple strangers approach at once
     if (state.buildings.stoneHut >= 1) {
       if (

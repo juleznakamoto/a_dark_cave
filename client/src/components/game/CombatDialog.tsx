@@ -125,7 +125,7 @@ export default function CombatDialog({
     {
       id: "ember_bomb",
       name: "Ember Bomb",
-      damage: 5,
+      damage: 10,
       available:
         gameState.resources.ember_bomb > 0 &&
         emberBombsUsed < MAX_EMBER_BOMBS &&
@@ -134,7 +134,7 @@ export default function CombatDialog({
     {
       id: "cinderflame_bomb",
       name: "Cinderflame Bomb",
-      damage: 15,
+      damage: 25,
       available:
         gameState.resources.cinderflame_bomb > 0 &&
         cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
@@ -202,8 +202,6 @@ export default function CombatDialog({
   };
 
   const handleEndFight = () => {
-    // Don't update bastion integrity - it's calculated from buildings and damage flags
-    // Integrity is only for display during combat, not persisted to state
 
     if (combatResult === "victory") {
       const victoryResult = onVictory();
