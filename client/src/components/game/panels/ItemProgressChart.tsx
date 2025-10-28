@@ -6,10 +6,11 @@ import { tailwindToHex } from "@/lib/tailwindColors";
 
 interface ItemSegment {
   itemType: string;
-  itemKey: keyof GameState["tools"] | keyof GameState["weapons"] | keyof GameState["clothing"] | keyof GameState["relics"];
+  itemKeys: (keyof GameState["tools"] | keyof GameState["weapons"] | keyof GameState["clothing"] | keyof GameState["relics"])[];
   color: string;
   label: string;
   category: "tools" | "weapons" | "clothing" | "relics";
+  maxCount: number;
 }
 
 interface RingConfig {
@@ -36,248 +37,82 @@ export default function ItemProgressChart() {
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
-  // Define ring segment configurations
+  // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
-    // First ring: Basic tools
+    // First ring: Axes and Pickaxes progression
     [
       {
-        itemType: "stone_axe",
-        itemKey: "stone_axe",
+        itemType: "axes",
+        itemKeys: ["stone_axe", "iron_axe", "steel_axe", "obsidian_axe", "adamant_axe"],
         color: tailwindToHex("gray-400/80"),
-        label: "Stone Axe",
+        label: "Axes",
         category: "tools",
+        maxCount: 5,
       },
       {
-        itemType: "stone_pickaxe",
-        itemKey: "stone_pickaxe",
+        itemType: "pickaxes",
+        itemKeys: ["stone_pickaxe", "iron_pickaxe", "steel_pickaxe", "obsidian_pickaxe", "adamant_pickaxe"],
         color: tailwindToHex("gray-400/80"),
-        label: "Stone Pickaxe",
+        label: "Pickaxes",
         category: "tools",
-      },
-      {
-        itemType: "iron_axe",
-        itemKey: "iron_axe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Iron Axe",
-        category: "tools",
-      },
-      {
-        itemType: "iron_pickaxe",
-        itemKey: "iron_pickaxe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Iron Pickaxe",
-        category: "tools",
+        maxCount: 5,
       },
     ],
-    // Second ring: Advanced tools
+    // Second ring: Lanterns and Swords
     [
       {
-        itemType: "steel_axe",
-        itemKey: "steel_axe",
+        itemType: "lanterns",
+        itemKeys: ["iron_lantern", "steel_lantern", "obsidian_lantern", "adamant_lantern"],
         color: tailwindToHex("gray-400/80"),
-        label: "Steel Axe",
+        label: "Lanterns",
         category: "tools",
+        maxCount: 4,
       },
       {
-        itemType: "steel_pickaxe",
-        itemKey: "steel_pickaxe",
+        itemType: "swords",
+        itemKeys: ["iron_sword", "steel_sword", "obsidian_sword", "adamant_sword", "frostglass_sword"],
         color: tailwindToHex("gray-400/80"),
-        label: "Steel Pickaxe",
-        category: "tools",
-      },
-      {
-        itemType: "obsidian_axe",
-        itemKey: "obsidian_axe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Obsidian Axe",
-        category: "tools",
-      },
-      {
-        itemType: "obsidian_pickaxe",
-        itemKey: "obsidian_pickaxe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Obsidian Pickaxe",
-        category: "tools",
-      },
-      {
-        itemType: "adamant_axe",
-        itemKey: "adamant_axe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Adamant Axe",
-        category: "tools",
-      },
-      {
-        itemType: "adamant_pickaxe",
-        itemKey: "adamant_pickaxe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Adamant Pickaxe",
-        category: "tools",
+        label: "Swords",
+        category: "weapons",
+        maxCount: 5,
       },
     ],
-    // Third ring: Lanterns
+    // Third ring: Bows progression
     [
       {
-        itemType: "iron_lantern",
-        itemKey: "iron_lantern",
+        itemType: "bows",
+        itemKeys: ["crude_bow", "huntsman_bow", "long_bow", "war_bow", "master_bow"],
         color: tailwindToHex("gray-400/80"),
-        label: "Iron Lantern",
-        category: "tools",
+        label: "Bows",
+        category: "weapons",
+        maxCount: 5,
       },
       {
-        itemType: "steel_lantern",
-        itemKey: "steel_lantern",
+        itemType: "special_weapons",
+        itemKeys: ["arbalest", "nightshade_bow", "bloodstone_staff"],
         color: tailwindToHex("gray-400/80"),
-        label: "Steel Lantern",
-        category: "tools",
-      },
-      {
-        itemType: "obsidian_lantern",
-        itemKey: "obsidian_lantern",
-        color: tailwindToHex("gray-400/80"),
-        label: "Obsidian Lantern",
-        category: "tools",
-      },
-      {
-        itemType: "adamant_lantern",
-        itemKey: "adamant_lantern",
-        color: tailwindToHex("gray-400/80"),
-        label: "Adamant Lantern",
-        category: "tools",
+        label: "Special Weapons",
+        category: "weapons",
+        maxCount: 3,
       },
     ],
-    // Fourth ring: Weapons (Swords and Bows)
+    // Fourth ring: Clothing and other tools
     [
       {
-        itemType: "iron_sword",
-        itemKey: "iron_sword",
+        itemType: "clothing",
+        itemKeys: ["explorer_pack", "hunter_cloak", "grenadier_bag", "highpriest_robe", "loggers_gloves"],
         color: tailwindToHex("gray-400/80"),
-        label: "Iron Sword",
-        category: "weapons",
-      },
-      {
-        itemType: "steel_sword",
-        itemKey: "steel_sword",
-        color: tailwindToHex("gray-400/80"),
-        label: "Steel Sword",
-        category: "weapons",
-      },
-      {
-        itemType: "obsidian_sword",
-        itemKey: "obsidian_sword",
-        color: tailwindToHex("gray-400/80"),
-        label: "Obsidian Sword",
-        category: "weapons",
-      },
-      {
-        itemType: "adamant_sword",
-        itemKey: "adamant_sword",
-        color: tailwindToHex("gray-400/80"),
-        label: "Adamant Sword",
-        category: "weapons",
-      },
-      {
-        itemType: "crude_bow",
-        itemKey: "crude_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "Crude Bow",
-        category: "weapons",
-      },
-      {
-        itemType: "huntsman_bow",
-        itemKey: "huntsman_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "Huntsman Bow",
-        category: "weapons",
-      },
-    ],
-    // Fifth ring: Advanced Weapons
-    [
-      {
-        itemType: "long_bow",
-        itemKey: "long_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "Long Bow",
-        category: "weapons",
-      },
-      {
-        itemType: "war_bow",
-        itemKey: "war_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "War Bow",
-        category: "weapons",
-      },
-      {
-        itemType: "master_bow",
-        itemKey: "master_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "Master Bow",
-        category: "weapons",
-      },
-      {
-        itemType: "arbalest",
-        itemKey: "arbalest",
-        color: tailwindToHex("gray-400/80"),
-        label: "Arbalest",
-        category: "weapons",
-      },
-      {
-        itemType: "nightshade_bow",
-        itemKey: "nightshade_bow",
-        color: tailwindToHex("gray-400/80"),
-        label: "Nightshade Bow",
-        category: "weapons",
-      },
-      {
-        itemType: "frostglass_sword",
-        itemKey: "frostglass_sword",
-        color: tailwindToHex("gray-400/80"),
-        label: "Frostglass Sword",
-        category: "weapons",
-      },
-      {
-        itemType: "bloodstone_staff",
-        itemKey: "bloodstone_staff",
-        color: tailwindToHex("gray-400/80"),
-        label: "Bloodstone Staff",
-        category: "weapons",
-      },
-    ],
-    // Sixth ring: Clothing
-    [
-      {
-        itemType: "explorer_pack",
-        itemKey: "explorer_pack",
-        color: tailwindToHex("gray-400/80"),
-        label: "Explorer's Pack",
+        label: "Clothing",
         category: "clothing",
+        maxCount: 5,
       },
       {
-        itemType: "hunter_cloak",
-        itemKey: "hunter_cloak",
+        itemType: "special_tools",
+        itemKeys: ["blacksmith_hammer", "reinforced_rope", "giant_trap", "occultist_map", "mastermason_chisel"],
         color: tailwindToHex("gray-400/80"),
-        label: "Hunter Cloak",
-        category: "clothing",
-      },
-      {
-        itemType: "grenadier_bag",
-        itemKey: "grenadier_bag",
-        color: tailwindToHex("gray-400/80"),
-        label: "Grenadier's Bag",
-        category: "clothing",
-      },
-      {
-        itemType: "highpriest_robe",
-        itemKey: "highpriest_robe",
-        color: tailwindToHex("gray-400/80"),
-        label: "Highpriest Robe",
-        category: "clothing",
-      },
-      {
-        itemType: "loggers_gloves",
-        itemKey: "loggers_gloves",
-        color: tailwindToHex("gray-400/80"),
-        label: "Logger's Gloves",
-        category: "clothing",
+        label: "Special Tools",
+        category: "tools",
+        maxCount: 5,
       },
     ],
   ];
@@ -293,22 +128,24 @@ export default function ItemProgressChart() {
     };
   });
 
-  // Helper function to get item status
-  const getItemStatus = (segment: ItemSegment): boolean => {
+  // Helper function to get item count for a segment
+  const getItemCount = (segment: ItemSegment): number => {
     const state = useGameStore.getState();
-    const category = segment.category;
-    const itemKey = segment.itemKey;
+    let count = 0;
     
-    if (category === "tools") {
-      return state.tools[itemKey as keyof typeof state.tools] || false;
-    } else if (category === "weapons") {
-      return state.weapons[itemKey as keyof typeof state.weapons] || false;
-    } else if (category === "clothing") {
-      return state.clothing[itemKey as keyof typeof state.clothing] || false;
-    } else if (category === "relics") {
-      return state.relics[itemKey as keyof typeof state.relics] || false;
+    for (const itemKey of segment.itemKeys) {
+      if (segment.category === "tools") {
+        if (state.tools[itemKey as keyof typeof state.tools]) count++;
+      } else if (segment.category === "weapons") {
+        if (state.weapons[itemKey as keyof typeof state.weapons]) count++;
+      } else if (segment.category === "clothing") {
+        if (state.clothing[itemKey as keyof typeof state.clothing]) count++;
+      } else if (segment.category === "relics") {
+        if (state.relics[itemKey as keyof typeof state.relics]) count++;
+      }
     }
-    return false;
+    
+    return count;
   };
 
   // Process each ring and filter out rings with no items acquired
@@ -317,7 +154,7 @@ export default function ItemProgressChart() {
       const { segments, innerRadius, outerRadius } = ringConfig;
 
       // Check if this ring has any items acquired
-      const hasAnyItem = segments.some((seg) => getItemStatus(seg));
+      const hasAnyItem = segments.some((seg) => getItemCount(seg) > 0);
 
       // Skip this ring if no items are acquired
       if (!hasAnyItem) {
@@ -328,43 +165,52 @@ export default function ItemProgressChart() {
       const startAngle = getStartAngle(paddingAngle);
       const totalDegrees = 360 - segments.length * paddingAngle;
 
+      // Calculate total max count for this ring
+      const totalMaxCount = segments.reduce((sum, seg) => sum + seg.maxCount, 0);
+
       // Create background segments
       const backgroundSegments = segments.map((seg) => ({
         name: seg.label,
-        value: 1,
+        value: seg.maxCount,
         fill: backgroundColor,
       }));
 
       // Create foreground segments (borders only, no fill)
       const foregroundSegments = segments.map((seg) => ({
         name: seg.label,
-        value: 1,
+        value: seg.maxCount,
         fill: "transparent",
       }));
       
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
-        const hasItem = getItemStatus(seg);
-        const segmentDegrees = totalDegrees / segments.length;
+        const currentCount = getItemCount(seg);
+        const segmentDegrees = (totalDegrees * seg.maxCount) / totalMaxCount;
         
         const segmentStartAngle = currentEndAngle;
         const segmentEndAngle = segmentStartAngle - segmentDegrees;
         currentEndAngle = segmentEndAngle;
 
+        // Calculate progress within this segment
+        const progress = seg.maxCount > 0 ? currentCount / seg.maxCount : 0;
+        const progressDegrees = segmentDegrees * progress;
+
         const adjustedStartAngle = index === 0
           ? segmentStartAngle
           : segmentStartAngle - paddingAngle * index;
-        const adjustedEndAngle = index === 0
-          ? segmentEndAngle
-          : segmentEndAngle - paddingAngle * index;
+        const adjustedProgressAngle = index === 0
+          ? segmentStartAngle - progressDegrees
+          : segmentStartAngle - progressDegrees - paddingAngle * index;
+
+        const isFull = currentCount >= seg.maxCount;
 
         return {
           name: seg.label,
-          fill: hasItem ? seg.color : "transparent",
+          fill: seg.color,
           startAngle: adjustedStartAngle,
-          endAngle: adjustedEndAngle,
-          isFull: hasItem,
+          endAngle: adjustedProgressAngle,
+          isFull: isFull,
         };
       });
 
