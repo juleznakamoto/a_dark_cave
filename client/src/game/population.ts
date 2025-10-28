@@ -1,4 +1,5 @@
 import { villageBuildActions } from '@/game/rules/villageBuildActions';
+import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 
 export interface PopulationJobConfig {
   id: string;
@@ -140,51 +141,31 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
 
 };
 
-export const getPopulationProduction = (jobId: string, count: number, state?: any) => {
+export const getPopulationProduction = (jobId: string, count: number, state?: GameState) => {
   const job = populationJobs[jobId];
   if (!job) return [];
 
-  return job.production.map((prod) => {
-    let amount = prod.amount;
+  const baseProduction = job.production.map((prod) => ({
+    ...prod,
+    baseAmount: prod.amount,
+    totalAmount: prod.amount * count,
+  }));
 
-    // Apply building production effects from villageBuildActions if state is provided
-    if (state && state.buildings) {
-      // Check each building type for productionEffects that affect this job
-      Object.entries(state.buildings).forEach(([buildingType, buildingCount]) => {
-        if (buildingCount > 0) {
-          const buildingAction = villageBuildActions[`build${buildingType.charAt(0).toUpperCase() + buildingType.slice(1)}`];
-
-          if (buildingAction && buildingAction.productionEffects && buildingAction.productionEffects[jobId]) {
-            const jobEffects = buildingAction.productionEffects[jobId];
-            if (jobEffects[prod.resource]) {
-              amount += jobEffects[prod.resource];
-            }
-          }
-        }
-      });
-    }
-
-    // Apply Flame's Touch blessing bonus to steel production
-    if (state && jobId === 'steel_forger' && prod.resource === 'steel' && prod.amount > 0) {
-      if (state.blessings?.flames_touch) {
-        amount += 1; // +1 steel per forger
-      }
-      if (state.blessings?.flames_touch_enhanced) {
-        amount += 3; // +3 steel per forger (replaces the +1 from basic)
-      }
-    }
-
-    // Apply 100x multiplier in dev mode
-    if (state && state.devMode) {
-      amount *= 100;
-    }
-
-    return {
-      ...prod,
-      amount,
-      totalAmount: amount * count,
-    };
+  // Apply building production bonuses
+  baseProduction.forEach((prod) => {
+    const buildingBonus = (state?.buildings && villageBuildActions[`build${jobId.charAt(0).toUpperCase() + jobId.slice(1)}`]?.productionEffects?.[jobId]?.[prod.resource] * (state.buildings[jobId] || 0)) || 0;
+    prod.totalAmount = prod.baseAmount * count + buildingBonus;
   });
+
+
+  // Apply feast multiplier (2x production when active)
+  if (state?.feastState?.isActive && state.feastState.endTime > Date.now()) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount *= 2;
+    });
+  }
+
+  return baseProduction;
 };
 
 export const getPopulationProductionText = (jobId: string): string => {
@@ -201,7 +182,6 @@ export const getPopulationProductionText = (jobId: string): string => {
   );
 };
 
-import { GameState } from "@shared/schema";
 
 export const getMaxPopulation = (gameState: GameState): number => {
   const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
@@ -215,7 +195,7 @@ export const getMaxPopulation = (gameState: GameState): number => {
   } else if (gameState.blessings.flames_touch_enhanced) {
     templeBonus = 8;
   }
-  
+
   return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
 };
 

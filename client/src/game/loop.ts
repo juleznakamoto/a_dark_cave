@@ -87,6 +87,16 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
 
+  // Check if feast has expired
+  if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
+    useGameStore.setState({
+      feastState: {
+        ...state.feastState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();

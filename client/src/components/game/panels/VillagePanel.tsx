@@ -13,6 +13,12 @@ import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { AnimatedCounter } from "@/components/ui/animated-counter";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function VillagePanel() {
   const {
@@ -27,6 +33,7 @@ export default function VillagePanel() {
 
   // Calculate production progress (0-100) based on production interval
   const [productionProgress, setProductionProgress] = useState(0);
+  const [feastProgress, setFeastProgress] = useState(0);
 
   useEffect(() => {
     const updateProgress = () => {
@@ -35,6 +42,17 @@ export default function VillagePanel() {
       const elapsed = now % productionInterval;
       const progress = (elapsed / productionInterval) * 100;
       setProductionProgress(progress);
+
+      // Update feast progress
+      const feastState = useGameStore.getState().feastState;
+      if (feastState?.isActive && feastState.endTime > now) {
+        const feastDuration = 10 * 60 * 1000; // 10 minutes
+        const feastElapsed = feastDuration - (feastState.endTime - now);
+        const feastProgressValue = (feastElapsed / feastDuration) * 100;
+        setFeastProgress(feastProgressValue);
+      } else {
+        setFeastProgress(0);
+      }
     };
 
     updateProgress();
@@ -356,6 +374,44 @@ export default function VillagePanel() {
                 <span>{effectsText}</span>
               </div>
             ) : null;
+          })()}
+
+          {/* Feast Timer */}
+          {(() => {
+            const feastState = useGameStore.getState().feastState;
+            if (!feastState?.isActive || feastState.endTime <= Date.now()) {
+              return null;
+            }
+
+            const timeRemaining = Math.max(0, feastState.endTime - Date.now());
+            const minutesRemaining = Math.floor(timeRemaining / 60000);
+            const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
+
+            return (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-xs text-primary flex items-center gap-3 mt-2">
+                      <CircularProgress
+                        value={feastProgress}
+                        size={16}
+                        strokeWidth={2}
+                        className="text-primary"
+                      />
+                      <span>
+                        Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      <div>Feast</div>
+                      <div>2x Production</div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            );
           })()}
         </div>
       )}

@@ -172,6 +172,11 @@ const defaultGameState: GameState = {
     integrity: 0,
   },
   hoveredTooltips: {},
+  feastState: {
+    isActive: false,
+    endTime: 0,
+    lastAcceptedLevel: 0,
+  },
 };
 
 // State management utilities

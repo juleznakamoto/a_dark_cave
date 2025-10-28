@@ -9,6 +9,7 @@ import { attackWaveEvents } from "./eventsAttackWaves";
 import { cubeEvents } from "./eventsCube";
 import { recurringEvents } from "./eventsRecurring";
 import { noChoiceEvents } from "./eventsNoChoices";
+import { feastEvents } from "./eventsFeast";
 
 export interface GameEvent {
   id: string;
@@ -75,6 +76,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...cubeEvents,
   ...recurringEvents,
   ...noChoiceEvents,
+  ...feastEvents,
 };
 
 export class EventManager {

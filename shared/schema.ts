@@ -298,6 +298,15 @@ export const gameStateSchema = z.object({
   templeDedicatedTo: z.string().default(""),
   triggeredEvents: z.record(z.boolean()).default({}),
   eventCooldowns: z.record(z.number()).default({}), // Tracks last trigger time (timestamp) for each event
+  feastState: z.object({
+    isActive: z.boolean().default(false),
+    endTime: z.number().default(0),
+    lastAcceptedLevel: z.number().default(0),
+  }).default({
+    isActive: false,
+    endTime: 0,
+    lastAcceptedLevel: 0,
+  }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
