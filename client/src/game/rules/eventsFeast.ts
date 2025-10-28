@@ -28,13 +28,18 @@ function createFeastEvent(config: FeastConfig): GameEvent {
   return {
     id: eventId,
     condition: (state: GameState) => {
+      // No feast events can trigger while a feast is active
+      if (state.feastState?.isActive && state.feastState.endTime > Date.now()) {
+        return false;
+      }
+
       // Check if previous feast was accepted (or if this is the first feast)
       if (state.feastState.lastAcceptedLevel < level - 1) {
         return false;
       }
 
-      // Check if this feast was already triggered
-      if (state.triggeredEvents?.[eventId]) {
+      // Check if this feast was already accepted (only block if accepted, not denied)
+      if (state.feastState.lastAcceptedLevel >= level) {
         return false;
       }
 
@@ -53,7 +58,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     message: `The villagers propose organizing a grand feast to celebrate recent prosperity and boost morale. They believe it will heighten productivity for days to come. The feast will require ${foodCost} food.`,
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "makeFeast",
@@ -77,6 +82,10 @@ function createFeastEvent(config: FeastConfig): GameEvent {
               isActive: true,
               endTime: endTime,
               lastAcceptedLevel: level,
+            },
+            triggeredEvents: {
+              ...(state.triggeredEvents || {}),
+              [eventId]: true,
             },
             _logMessage: `The village erupts in celebration! A magnificent feast is held, bringing joy and renewed vigor to all. For the next 10 minutes, all production from villagers is doubled.`,
           };
