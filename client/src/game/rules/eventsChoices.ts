@@ -1136,7 +1136,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 &&
       state.buildings.woodenHut <= 6 &&
-      !state.story.seen.woodcutterBetrayed,
+      !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter1Accepted,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Woodcutter",
@@ -1167,6 +1168,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ...state.story.seen,
                 woodcutterMet: true,
                 woodcutter1Met: true,
+                woodcutter1Accepted: true,
               },
             },
             _logMessage:
@@ -1192,6 +1194,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter1Met &&
       !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter2Accepted &&
       state.buildings.woodenHut >= 2 &&
       state.buildings.woodenHut <= 7,
     triggerType: "time",
@@ -1225,6 +1228,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutter2Met: true,
+                woodcutter2Accepted: true,
               },
             },
             _logMessage:
@@ -1250,6 +1254,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter3Accepted &&
       state.buildings.woodenHut >= 3 &&
       state.buildings.woodenHut <= 8,
     triggerType: "time",
@@ -1283,6 +1288,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutter3Met: true,
+                woodcutter3Accepted: true,
               },
             },
             _logMessage:
@@ -1308,6 +1314,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter4Accepted &&
       state.buildings.woodenHut >= 4 &&
       state.buildings.woodenHut <= 9,
     triggerType: "time",
@@ -1362,6 +1369,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutter4Met: true,
+                woodcutter4Accepted: true,
               },
             },
             _logMessage:
@@ -1387,6 +1395,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter5Accepted &&
       state.buildings.woodenHut >= 5 &&
       state.buildings.woodenHut <= 10,
     triggerType: "time",
@@ -1441,6 +1450,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutter5Met: true,
+                woodcutter5Accepted: true,
               },
             },
             _logMessage:
@@ -1466,6 +1476,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
+      !state.story.seen.woodcutter6Accepted &&
       state.buildings.woodenHut >= 6 &&
       state.buildings.woodenHut <= 10,
     triggerType: "time",
@@ -1499,6 +1510,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 woodcutterBetrayed: true,
+                woodcutter6Accepted: true,
               },
             },
             _logMessage:
