@@ -136,6 +136,7 @@ export const gameStateSchema = z.object({
     .default({}),
   relics: z
     .object({
+      whispering_cube: z.boolean().default(false),
       tarnished_amulet: z.boolean().default(false),
       bloodstained_belt: z.boolean().default(false),
       wooden_figure: z.boolean().default(false),
@@ -151,7 +152,6 @@ export const gameStateSchema = z.object({
       ancient_scrolls: z.boolean().default(false),
       elder_scroll: z.boolean().default(false),
       ravens_orb: z.boolean().default(false),
-      whispering_cube: z.boolean().default(false),
       black_bear_fur: z.boolean().default(false),
       occultist_grimoire: z.boolean().default(false),
       ring_of_drowned: z.boolean().default(false),
