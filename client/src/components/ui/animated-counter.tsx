@@ -9,14 +9,23 @@ const padding = 4;
 const height = fontSize + padding;
 
 export function AnimatedCounter({ value }: { value: number }) {
+  // Determine how many digits we need
+  const digitCount = value === 0 ? 1 : Math.floor(Math.log10(Math.abs(value))) + 1;
+  
+  // Generate digit places dynamically
+  const digits = [];
+  for (let i = digitCount - 1; i >= 0; i--) {
+    digits.push(Math.pow(10, i));
+  }
+
   return (
     <div
       style={{ fontSize }}
       className="flex overflow-hidden leading-none tabular-nums"
     >
-      {/* <Digit place={100} value={value} /> */}
-      <Digit place={10} value={value} />
-      <Digit place={1} value={value} />
+      {digits.map((place) => (
+        <Digit key={place} place={place} value={value} />
+      ))}
     </div>
   );
 }
