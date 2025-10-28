@@ -128,10 +128,10 @@ export default function CooldownButton({
   return (
     <div
       className="relative inline-block"
-      onClick={(e) => mobileTooltip.handleWrapperClick(buttonId, disabled, isCoolingDown, e)}
+      onClick={mobileTooltip.isMobile ? (e) => mobileTooltip.handleWrapperClick(buttonId, disabled, isCoolingDown, e) : undefined}
     >
       <TooltipProvider>
-        <Tooltip open={mobileTooltip.isTooltipOpen(buttonId)}>
+        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined}>
           <TooltipTrigger asChild>{button}</TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
