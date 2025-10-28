@@ -7,7 +7,7 @@ import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 import type { ButtonProps } from "@/components/ui/button";
 
-interface ParticleButtonProps extends ButtonProps {
+export interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
 }
@@ -80,7 +80,7 @@ function SuccessParticles({
     );
 }
 
-const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
+const ParticleButtonComponent = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     children,
     onClick,
     spawnInterval = 300,
@@ -271,6 +271,8 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     );
 });
 
-ParticleButton.displayName = "ParticleButton";
+ParticleButtonComponent.displayName = "ParticleButton";
+
+const ParticleButton = ParticleButtonComponent;
 
 export { ParticleButton };
