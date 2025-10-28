@@ -34,11 +34,6 @@ export async function saveGame(gameState: GameState): Promise<void> {
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
     
-    // Log cube events being saved for debugging
-    if (import.meta.env.DEV) {
-      console.log('[SAVE] Cube events being saved:', sanitizedState.events);
-    }
-    
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: Date.now(),
