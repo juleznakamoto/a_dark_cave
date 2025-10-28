@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -80,14 +80,14 @@ function SuccessParticles({
     );
 }
 
-const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
+function ParticleButton({
     children,
     onClick,
     spawnInterval = 300,
     hoverDelay = 100,
     className,
     ...props
-}, ref) => {
+}: ParticleButtonProps) {
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const [glowIntensity, setGlowIntensity] = useState(0);
@@ -242,14 +242,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         <>
             <SuccessParticles buttonRef={buttonRef} sparks={sparks} />
             <Button
-                ref={(node) => {
-                    buttonRef.current = node;
-                    if (typeof ref === 'function') {
-                        ref(node);
-                    } else if (ref) {
-                        ref.current = node;
-                    }
-                }}
+                ref={buttonRef}
                 onClick={handleClick}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -269,8 +262,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
             </Button>
         </>
     );
-});
-
-ParticleButton.displayName = "ParticleButton";
+}
 
 export { ParticleButton };
