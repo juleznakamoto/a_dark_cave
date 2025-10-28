@@ -292,6 +292,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fifthWaveVictory: true,
               },
             },
+            _logMessage: "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond.",
           }),
           onDefeat: () => handleDefeat(state, 5, 25),
         },
