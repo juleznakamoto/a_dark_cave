@@ -468,7 +468,7 @@ export const cubeEvents: Record<string, GameEvent> = {
           return {
             events: {
               ...state.events,
-              cube14b: true,
+              cube14c: true,
             },
           };
         },
@@ -484,7 +484,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.001,
     title: "Through the portal",
     message:
-      "'In their despair, the survivors theorized that, with the ore's aid, they might pass through solid metal, maybe even the portal itself. Using the last fragments of the material, they crafted a smaller device and positioned their healthiest, sanest man before the gate. For a fleeting instant after the detonation, he appeared ghostly, translucent, and then vanished entirely into the portal, leaving no trace behind.'",
+      "'In their despair, the survivors theorized that they might pass through the portal with the ore's aid. With the last fragments of the ore, they crafted a smaller device and positioned their healthiest, sanest man before the portal. For a brief instant after the detonation, he appeared ghostly, translucent, and then vanished through the portal.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -544,7 +544,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.01,
     title: "Recognition",
     message:
-      "One of the man steps forward: 'You are the man who vanished through the portal.",
+      "After finishing their story one of the survivors steps forward: 'You are the man who vanished through the portal.",
     triggered: false,
     priority: 3,
     repeatable: true,
