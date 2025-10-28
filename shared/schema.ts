@@ -269,6 +269,9 @@ export const gameStateSchema = z.object({
       cube14d: z.boolean().default(false),
       cube15a: z.boolean().default(false),
       cube15b: z.boolean().default(false),
+      slaughteredCreatures: z.boolean().default(false),
+      communicatedWithCreatures: z.boolean().default(false),
+      encounteredCreaturesChoice: z.boolean().default(false),
     })
     .default({}),
   effects: z

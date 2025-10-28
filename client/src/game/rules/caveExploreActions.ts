@@ -777,46 +777,9 @@ export function handleEncounterBeyondPortal(
   result.logEntries!.push({
     id: `encounter-beyond-portal-${Date.now()}`,
     message:
-      "In the depths beyond the shattered portal, you find some creatures that don't attack. Their forms are vaguely human, twisted by generations in darkness. They gesture, attempting to communicate through broken words and ancient signs.",
+      "You venture beyond the shattered portal into the depths below.",
     timestamp: Date.now(),
-    type: "event",
-    title: "The Dwellers Below",
-    choices: [
-      {
-        id: "slaughter_creatures",
-        label: "Slaughter them",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                slaughteredCreatures: true,
-              },
-            },
-            _logMessage:
-              "You cut them down without mercy. Their cries echo through the caverns as they fall.",
-          };
-        },
-      },
-      {
-        id: "attempt_communication",
-        label: "Try to communicate",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                communicatedWithCreatures: true,
-              },
-            },
-            _logMessage:
-              "You lower your weapons and attempt to understand them. Through gestures and broken words, they share fragments of their history leaving you speechless.",
-          };
-        },
-      },
-    ],
+    type: "system",
   });
 
   Object.assign(result.stateUpdates, effectUpdates);
