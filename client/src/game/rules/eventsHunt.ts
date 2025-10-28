@@ -70,8 +70,8 @@ export const huntEvents: Record<string, GameEvent> = {
         label: "Take red mask",
         effect: (state: GameState) => {
           return {
-            relics: {
-              ...state.relics,
+            clothing: {
+              ...state.clothing,
               red_mask: true,
             },
             story: {

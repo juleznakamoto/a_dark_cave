@@ -352,6 +352,14 @@ export default function ItemProgressChart() {
         category: "clothing",
         maxCount: 1,
       },
+      {
+        itemType: "red_mask",
+        itemKeys: ["red_mask"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Red Mask",
+        category: "clothing",
+        maxCount: 1,
+      },
     ],
     // Fifth ring: Special Tools
     [
