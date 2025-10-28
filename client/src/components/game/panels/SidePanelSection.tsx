@@ -65,9 +65,6 @@ export default function SidePanelSection({
   const mobileTooltip = useMobileTooltip();
 
   const handleTooltipHover = (itemId: string) => {
-    // No longer directly managing mobileOpenTooltip here.
-    // The useMobileTooltip hook handles its own state and logic.
-    // This function is primarily for non-mobile hover effects.
     if (mobileTooltip.isMobile) return;
 
     const existingTimer = hoverTimersRef.current.get(itemId);
