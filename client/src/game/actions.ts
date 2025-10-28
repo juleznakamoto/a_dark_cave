@@ -79,6 +79,7 @@ import {
   handleBuildDeepPit,
   handleBuildBottomlessPit,
   handleBuildFoundry,
+  handleBuildPrimeFoundry,
   handleBuildAltar,
   handleBuildGreatCabin,
   handleBuildTimberMill,
