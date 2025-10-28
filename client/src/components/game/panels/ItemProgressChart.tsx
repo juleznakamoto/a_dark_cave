@@ -24,10 +24,6 @@ interface RingConfig {
 }
 
 export default function ItemProgressChart() {
-  const tools = useGameStore((state) => state.tools);
-  const weapons = useGameStore((state) => state.weapons);
-  const clothing = useGameStore((state) => state.clothing);
-  const relics = useGameStore((state) => state.relics);
 
   // Ring sizing parameters
   const startRadius = 16;
@@ -98,12 +94,11 @@ export default function ItemProgressChart() {
           "steel_sword",
           "obsidian_sword",
           "adamant_sword",
-          "frostglass_sword",
         ],
         color: tailwindToHex("gray-400/80"),
         label: "Swords",
         category: "weapons",
-        maxCount: 5,
+        maxCount: 4,
       },
       {
         itemType: "bows",
@@ -136,6 +131,14 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
       {
+        itemType: "frostglass_sword",
+        itemKeys: ["frostglass_sword"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Frostglass Sword",
+        category: "weapons",
+        maxCount: 1,
+      },
+      {
         itemType: "bloodstone_staff",
         itemKeys: ["bloodstone_staff"],
         color: tailwindToHex("gray-400/80"),
@@ -146,6 +149,16 @@ export default function ItemProgressChart() {
     ],
     // Third ring: Relics
     [
+      {
+        itemType: "whispering_cube",
+        itemKeys: ["whispering_cube"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Whispering Cube",
+        category: "relics",
+        maxCount: 1,
+      },
+
+      
       {
         itemType: "relics_tier1",
         itemKeys: [
@@ -191,7 +204,6 @@ export default function ItemProgressChart() {
       {
         itemType: "relics_tier4",
         itemKeys: [
-          "whispering_cube",
           "black_bear_fur",
           "occultist_grimoire",
           "ring_of_drowned",
