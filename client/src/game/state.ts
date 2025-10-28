@@ -443,10 +443,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         bastion_stats: calculateBastionStats(savedState),
       };
       
-      if (import.meta.env.DEV) {
-        console.log('[LOAD] Loaded events state:', loadedState.events);
-      }
-      
       set(loadedState);
     } else {
       const newGameState = {
@@ -664,11 +660,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (updatedChanges._logMessage) {
       logMessage = updatedChanges._logMessage;
       delete updatedChanges._logMessage;
-    }
-
-    // Log cube event updates for debugging
-    if (import.meta.env.DEV && updatedChanges.events) {
-      console.log('[STATE] Cube event state update:', updatedChanges.events);
     }
 
     // Apply state changes FIRST - this includes relics, resources, etc.
