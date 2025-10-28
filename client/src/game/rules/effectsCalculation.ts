@@ -172,7 +172,12 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   const activeEffects: EffectDefinition[] = [];
 
-  // Clothing effects removed - no longer used in the game
+  // Check clothing effects (legacy)
+  Object.entries(state.clothing || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
+    }
+  });
 
   // Check relic effects
   Object.entries(state.relics || {}).forEach(([key, value]) => {
