@@ -664,12 +664,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
       delete updatedChanges._logMessage;
     }
 
+    // Log cube event updates for debugging
+    if (import.meta.env.DEV && updatedChanges.events) {
+      console.log('[STATE] Cube event state update:', updatedChanges.events);
+    }
+
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
-      set((prevState) => ({
-        ...prevState,
-        ...updatedChanges,
-      }));
+      set((prevState) => {
+        const newState = {
+          ...prevState,
+          ...updatedChanges,
+        };
+        
+        // Ensure events object is properly merged
+        if (updatedChanges.events) {
+          newState.events = {
+            ...prevState.events,
+            ...updatedChanges.events,
+          };
+        }
+        
+        return newState;
+      });
 
       StateManager.schedulePopulationUpdate(get);
     }
