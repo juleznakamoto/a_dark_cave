@@ -132,7 +132,11 @@ export default function CooldownButton({
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined}>
-          <TooltipTrigger asChild disabled={false}>{button}</TooltipTrigger>
+          <TooltipTrigger asChild>
+            <span className="inline-block">
+              {button}
+            </span>
+          </TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
