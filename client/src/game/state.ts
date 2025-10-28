@@ -428,12 +428,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   loadGame: async () => {
-    const loadGame = async () => {
-      const savedState = localStorage.getItem("gameState");
-      return savedState ? JSON.parse(savedState) : null;
-    };
-
-    const savedState = await loadGame();
+    const { loadGame: loadFromIDB } = await import('@/game/save');
+    const savedState = await loadFromIDB();
 
     if (savedState) {
       const loadedState = {
@@ -441,10 +437,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         cooldowns: {},
         log: savedState.log || [],
+        events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
       };
+      
+      if (import.meta.env.DEV) {
+        console.log('[LOAD] Loaded events state:', loadedState.events);
+      }
+      
       set(loadedState);
     } else {
       const newGameState = {
