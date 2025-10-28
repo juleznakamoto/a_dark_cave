@@ -626,8 +626,8 @@ export default function SidePanel() {
   };
 
   return (
-    <ScrollArea className="h-full max-h-[40vh] md:max-h-full">
-      <div className="pb-6 flex gap-6">
+    <ScrollArea className="h-full max-h-[40vh] md:max-h-full px-3 py-1.5">
+      <div className="pb-6 flex gap-12">
         {/* First column - Resources */}
         <div className="flex-[0.9]">
           {resourceItems.length > 0 && shouldShowSection("resources") && (
@@ -662,7 +662,7 @@ export default function SidePanel() {
         </div>
 
         {/* Second column - Everything else */}
-        <div className="flex-1 ">
+        <div className="flex-1">
           {toolItems.length > 0 && shouldShowSection("tools") && (
             <SidePanelSection title="Tools" items={toolItems} />
           )}
