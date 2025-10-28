@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { useState, useRef, useEffect, forwardRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,6 @@ import type { ButtonProps } from "@/components/ui/button";
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
-    autoStart?: boolean;
 }
 
 interface Spark {
@@ -81,15 +80,15 @@ function SuccessParticles({
     );
 }
 
-const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
+function ParticleButton({
     children,
     onClick,
     spawnInterval = 300,
     hoverDelay = 100,
-    autoStart = false,
     className,
+    ref,
     ...props
-}, ref) => {
+}: ParticleButtonProps) {
     const [sparks, setSparks] = useState<Spark[]>([]);
     const [isGlowing, setIsGlowing] = useState(false);
     const [glowIntensity, setGlowIntensity] = useState(0);
@@ -235,15 +234,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     };
 
     useEffect(() => {
-        if (autoStart) {
-            handleMouseEnter();
-        }
-        return () => {
-            clearAllTimers();
-        };
-    }, [autoStart]);
-
-    useEffect(() => {
         return () => {
             clearAllTimers();
         };
@@ -280,8 +270,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
             </Button>
         </>
     );
-});
-
-ParticleButton.displayName = "ParticleButton";
+}
 
 export { ParticleButton };
