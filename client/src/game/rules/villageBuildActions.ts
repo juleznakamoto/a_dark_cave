@@ -309,6 +309,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     effects: {
       1: {
+        "buildings.foundry": -1,
         "buildings.primeFoundry": 1,
         "story.seen.hasPrimeFoundry": true,
       },
@@ -1348,7 +1349,7 @@ export function handleBuildPrimeFoundry(
     primeFoundryResult.logEntries!.push({
       id: `prime-foundry-built-${Date.now()}`,
       message:
-        "The Prime Foundry rises, its advanced forges capable of producing superior steel with greater efficiency.",
+        "The old foundry is torn down and rebuilt as the Prime Foundry - its advanced forges capable of producing superior steel with greater efficiency.",
       timestamp: Date.now(),
       type: "system",
     });
