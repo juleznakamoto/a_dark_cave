@@ -105,7 +105,7 @@ export const gameStateSchema = z.object({
       giant_trap: z.boolean().default(false),
       explorer_pack: z.boolean().default(false),
       occultist_map: z.boolean().default(false),
-      mastermason_chisel: z.boolean().default(false)
+      mastermason_chisel: z.boolean().default(false),
     })
     .default({}),
   weapons: z
@@ -220,7 +220,7 @@ export const gameStateSchema = z.object({
       moonstone_miner: z.number().min(0).default(0),
       steel_forger: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
-      cinderflame_dust_maker: z.number().min(0).default(0)
+      cinderflame_dust_maker: z.number().min(0).default(0),
     })
     .default({}),
   story: z
@@ -269,8 +269,6 @@ export const gameStateSchema = z.object({
       cube14d: z.boolean().default(false),
       cube15a: z.boolean().default(false),
       cube15b: z.boolean().default(false),
-      slaughteredCreatures: z.boolean().default(false),
-      communicatedWithCreatures: z.boolean().default(false),
     })
     .default({}),
   effects: z
