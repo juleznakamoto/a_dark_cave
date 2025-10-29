@@ -278,7 +278,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}`,
+        label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -332,7 +332,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}`,
+        label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -389,7 +389,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     timeProbability: 0.010,
     title: "The Traveling Merchant",
     message:
-      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for trade'.",
+      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     triggered: false,
     priority: 3,
     repeatable: true,
