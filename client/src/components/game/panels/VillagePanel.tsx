@@ -332,7 +332,7 @@ export default function VillagePanel() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <div className="text-xs text-primary flex items-center gap-2">
+                      <div className="text-xs text-primary flex items-center gap-1">
                         <div className="relative inline-block">
                           <CircularProgress
                             value={feastProgress}
