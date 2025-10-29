@@ -3,6 +3,7 @@ import { ParticleButton } from '@/components/ui/particle-button';
 import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { audioManager } from '@/lib/audio';
 
 export default function StartScreen() {
   const { executeAction } = useGameStore();
@@ -15,10 +16,16 @@ export default function StartScreen() {
       setIsAnimationComplete(true);
     }, 6000); // 3.5s delay + 2.5s animation
 
+    // Start preloading background music immediately
+    audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
+
     return () => clearTimeout(timer);
   }, []);
 
   const handleLightFire = () => {
+    // Start background music
+    audioManager.startBackgroundMusic(0.3);
+
     if (isMobile) {
       // On mobile, trigger hover effect first
       if (buttonRef.current) {

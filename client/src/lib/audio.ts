@@ -171,7 +171,12 @@ export class AudioManager {
     this.soundUrls.set('event', '/sounds/event.wav');
     this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
     this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
+    this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
     console.log('Sound URLs registered for lazy loading');
+  }
+
+  async startBackgroundMusic(volume: number = 0.3): Promise<void> {
+    await this.playLoopingSound('backgroundMusic', volume);
   }
 }
 
