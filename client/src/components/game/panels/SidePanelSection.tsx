@@ -14,7 +14,7 @@ import {
 import { capitalizeWords } from "@/lib/utils";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
-import { useMobileTooltip, useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import cn from "clsx";
 
 interface SidePanelItem {
@@ -64,7 +64,6 @@ export default function SidePanelSection({
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
-  const mobileButtonTooltip = useMobileButtonTooltip();
 
   const handleTooltipHover = (itemId: string) => {
     if (mobileTooltip.isMobile) return;
@@ -204,8 +203,9 @@ export default function SidePanelSection({
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
 
-    // Handle tooltip interactions - mark as hovered to stop pulse
-    const handleTooltipInteraction = (id: string) => {
+    // Handle mobile tooltip click - also mark as hovered to stop pulse
+    const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
+      mobileTooltip.handleTooltipClick(id, e);
       if (!hoveredTooltips[id]) {
         setHoveredTooltip(id, true);
       }
@@ -347,26 +347,13 @@ export default function SidePanelSection({
     ) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={mobileButtonTooltip.isTooltipOpen(item.id)}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseDown={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleMouseDown(item.id, false, false, e);
-                }}
-                onMouseUp={(e) => {
-                  mobileButtonTooltip.handleMouseUp(item.id, false, () => {}, e);
-                }}
-                onTouchStart={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleTouchStart(item.id, false, false, e);
-                }}
-                onTouchEnd={(e) => {
-                  mobileButtonTooltip.handleTouchEnd(item.id, false, () => {}, e);
-                }}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileButtonTooltip.isMobile ? "cursor-pointer" : ""}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>
@@ -511,26 +498,13 @@ export default function SidePanelSection({
     if (isMadnessTooltip) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={mobileButtonTooltip.isTooltipOpen(item.id)}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseDown={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleMouseDown(item.id, false, false, e);
-                }}
-                onMouseUp={(e) => {
-                  mobileButtonTooltip.handleMouseUp(item.id, false, () => {}, e);
-                }}
-                onTouchStart={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleTouchStart(item.id, false, false, e);
-                }}
-                onTouchEnd={(e) => {
-                  mobileButtonTooltip.handleTouchEnd(item.id, false, () => {}, e);
-                }}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileButtonTooltip.isMobile ? "cursor-pointer" : ""}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>
@@ -549,26 +523,13 @@ export default function SidePanelSection({
     if (item.tooltip) {
       return (
         <TooltipProvider key={item.id}>
-          <Tooltip open={mobileButtonTooltip.isTooltipOpen(item.id)}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
             <TooltipTrigger asChild>
               <div 
-                onMouseDown={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleMouseDown(item.id, false, false, e);
-                }}
-                onMouseUp={(e) => {
-                  mobileButtonTooltip.handleMouseUp(item.id, false, () => {}, e);
-                }}
-                onTouchStart={(e) => {
-                  handleTooltipInteraction(item.id);
-                  mobileButtonTooltip.handleTouchStart(item.id, false, false, e);
-                }}
-                onTouchEnd={(e) => {
-                  mobileButtonTooltip.handleTouchEnd(item.id, false, () => {}, e);
-                }}
+                onClick={(e) => handleMobileTooltipClick(item.id, e)}
                 onMouseEnter={() => handleTooltipHover(item.id)}
                 onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileButtonTooltip.isMobile ? "cursor-pointer" : ""}
+                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
               >
                 {itemContent}
               </div>

@@ -20,7 +20,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { useMobileTooltip, useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function VillagePanel() {
   const {
@@ -33,7 +33,6 @@ export default function VillagePanel() {
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
-  const mobileButtonTooltip = useMobileButtonTooltip();
 
   // Calculate production progress (0-100) based on production interval
   const [productionProgress, setProductionProgress] = useState(0);
@@ -335,14 +334,11 @@ export default function VillagePanel() {
 
                 return (
                   <TooltipProvider>
-                    <Tooltip open={mobileButtonTooltip.isTooltipOpen('feast-progress')}>
+                    <Tooltip open={mobileTooltip.isTooltipOpen('feast-progress')}>
                       <TooltipTrigger asChild>
                         <div 
                           className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                          onMouseDown={(e) => mobileButtonTooltip.handleMouseDown('feast-progress', false, false, e)}
-                          onMouseUp={(e) => mobileButtonTooltip.handleMouseUp('feast-progress', false, () => {}, e)}
-                          onTouchStart={(e) => mobileButtonTooltip.handleTouchStart('feast-progress', false, false, e)}
-                          onTouchEnd={(e) => mobileButtonTooltip.handleTouchEnd('feast-progress', false, () => {}, e)}
+                          onClick={(e) => mobileTooltip.handleTooltipClick('feast-progress', e)}
                         >
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
