@@ -337,7 +337,7 @@ export default function VillagePanel() {
                         size={16}
                         strokeWidth={2}
                         className="text-primary"
-                      />
+                      />⟡
                       <span>
                         Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
                       </span>
