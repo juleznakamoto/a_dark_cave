@@ -30,4 +30,37 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  blindDruidBlessing: {
+    id: "blindDruidBlessing",
+    condition: (state: GameState) =>
+      state.buildings.shrine >= 1 &&
+      !state.blessings.forests_grace &&
+      !state.story.seen.blindDruidBlessing,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    title: "The Blind Druid",
+    message:
+      "A blind druid emerges from the forest, his eyes milky white yet seeing far more than most. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion,' he says in a voice like rustling leaves. 'They grant you their blessing.' He touches the shrine with his gnarled staff, and you feel the forest's power flow through you.",
+    triggered: false,
+    priority: 5,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
+    repeatable: false,
+    effect: (state: GameState) => ({
+      blessings: {
+        ...state.blessings,
+        forests_grace: true,
+      },
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          blindDruidBlessing: true,
+        },
+      },
+    }),
+  },
 };

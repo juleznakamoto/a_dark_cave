@@ -980,4 +980,17 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  forests_grace: {
+    id: "forests_grace",
+    name: "The Forest's Grace",
+    description: "+25% resources when hunting",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 1.25,
+        },
+      },
+    },
+  },
 };
