@@ -674,7 +674,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.buildings.temple >= 1 && !state.story.seen.templeDedicated,
     triggerType: "time",
     timeProbability: 1,
-    title: "The Blind Druid",
+    title: "The Blind Druid returns",
     message:
       "Shortly after the temple is built, the blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
     triggered: false,
@@ -893,7 +893,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.story.seen.sanctumDedicated,
     triggerType: "resource",
     timeProbability: 3,
-    title: "The Druid Returns",
+    title: "The Dedication of the Sanctum",
     message:
       "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     triggered: false,
