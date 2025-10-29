@@ -75,6 +75,7 @@ const caveItems = {
       probability: 0.02,
       isChoice: true,
       eventId: "boneDiceChoice",
+      category: "relics",
     },
   ],
   exploreRuins: [
@@ -83,6 +84,7 @@ const caveItems = {
       probability: 0.03,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
+      category: "clothing",
     },
   ],
   exploreTemple: [
@@ -91,6 +93,7 @@ const caveItems = {
       probability: 0.04,
       isChoice: true,
       eventId: "shadowFluteChoice",
+      category: "relics",
     },
   ],
   exploreCitadel: [
@@ -99,6 +102,7 @@ const caveItems = {
       probability: 0.05,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
+      category: "relics",
     },
   ],
 };
