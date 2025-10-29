@@ -290,137 +290,137 @@ export default function VillagePanel() {
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
-        const visibleActions = group.actions.filter((action) =>
-          shouldShowAction(action.id, state),
-        );
+          const visibleActions = group.actions.filter((action) =>
+            shouldShowAction(action.id, state),
+          );
 
-        if (visibleActions.length === 0) return null;
+          if (visibleActions.length === 0) return null;
 
-        return (
-          <div key={groupIndex} className="space-y-2">
-            {group.title && (
-              <h3 className="text-xs font-semibold text-foreground ">
-                {group.title}
-              </h3>
-            )}
-            <div className="flex flex-wrap gap-2">
-              {visibleActions.map((action) =>
-                renderButton(action.id, action.label),
+          return (
+            <div key={groupIndex} className="space-y-2">
+              {group.title && (
+                <h3 className="text-xs font-semibold text-foreground ">
+                  {group.title}
+                </h3>
+              )}
+              <div className="flex flex-wrap gap-2">
+                {visibleActions.map((action) =>
+                  renderButton(action.id, action.label),
+                )}
+              </div>
+            </div>
+          );
+        })}
+
+        {/* Rule Section */}
+        {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <h3 className="text-xs font-bold text-foreground">Rule</h3>
+              {/* Feast Timer */}
+              {(() => {
+                const feastState = useGameStore.getState().feastState;
+                if (!feastState?.isActive || feastState.endTime <= Date.now()) {
+                  return null;
+                }
+
+                const timeRemaining = Math.max(
+                  0,
+                  feastState.endTime - Date.now(),
+                );
+
+                return (
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="text-xs text-primary flex items-center gap-0.5">
+                          <div className="relative inline-block">
+                            <CircularProgress
+                              value={feastProgress}
+                              size={14}
+                              strokeWidth={1.2}
+                              className="text-yellow-600"
+                            />
+                            <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-600 -mt-[5px]">
+                              ⟡
+                            </span>
+                          </div>
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs">
+                          <div>
+                            <strong>Village Feast</strong>
+                          </div>
+                          <div>+100 % Production Bonus</div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                );
+              })()}
+            </div>
+            <div className="space-y-1 leading-tight">
+              {visiblePopulationJobs.map((job) =>
+                renderPopulationControl(job.id, job.label),
               )}
             </div>
-          </div>
-        );
-      })}
 
-      {/* Rule Section */}
-      {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
-        <div className="space-y-2">
-          <div className="flex items-center gap-3">
-            <h3 className="text-xs font-bold text-foreground">Rule</h3>
-            {/* Feast Timer */}
+            {/* Population Effects Summary */}
             {(() => {
-              const feastState = useGameStore.getState().feastState;
-              if (!feastState?.isActive || feastState.endTime <= Date.now()) {
-                return null;
+              const totalEffects: Record<string, number> = {};
+
+              // Calculate total population for base consumption
+              const totalPopulation = Object.values(villagers).reduce(
+                (sum, count) => sum + (count || 0),
+                0,
+              );
+
+              // Add base consumption for all villagers (1 wood and 1 food per villager)
+              if (totalPopulation > 0) {
+                totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+                totalEffects.food = (totalEffects.food || 0) - totalPopulation;
               }
 
-              const timeRemaining = Math.max(0, feastState.endTime - Date.now());
-              const minutesRemaining = Math.floor(timeRemaining / 60000);
-              const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
+              visiblePopulationJobs.forEach((job) => {
+                const currentCount =
+                  villagers[job.id as keyof typeof villagers] || 0;
+                if (currentCount > 0) {
+                  const production = getPopulationProduction(
+                    job.id,
+                    currentCount,
+                    state,
+                  );
+                  production.forEach((prod) => {
+                    totalEffects[prod.resource] =
+                      (totalEffects[prod.resource] || 0) + prod.totalAmount;
+                  });
+                }
+              });
 
-              return (
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <div className="text-xs text-primary flex items-center gap-1">
-                        <div className="relative inline-block">
-                          <CircularProgress
-                            value={feastProgress}
-                            size={14}
-                            strokeWidth={1.5}
-                            className="text-yellow-500 stroke-yellow"
-                          />
-                          <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500 -mt-[5px]">
-                            ⟡
-                          </span>
-                        </div>
-                        <span>
-                          Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
-                        </span>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs">
-                        <div><strong>Village Feast</strong></div>
-                        <div>+100 % Production Bonus</div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              );
+              const effectsText = Object.entries(totalEffects)
+                .filter(([resource, amount]) => amount !== 0)
+                .sort(([, a], [, b]) => b - a) // Sort from positive to negative
+                .map(
+                  ([resource, amount]) =>
+                    `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
+                )
+                .join(", ");
+
+              return effectsText && buildings.clerksHut > 0 ? (
+                <div className="text-xs text-muted-foreground flex items-center gap-3">
+                  <CircularProgress
+                    value={productionProgress}
+                    size={16}
+                    strokeWidth={2}
+                    className="text-lightgrey"
+                  />
+                  <span>{effectsText}</span>
+                </div>
+              ) : null;
             })()}
           </div>
-          <div className="space-y-1 leading-tight">
-            {visiblePopulationJobs.map((job) =>
-              renderPopulationControl(job.id, job.label),
-            )}
-          </div>
-          
-          {/* Population Effects Summary */}
-          {(() => {
-            const totalEffects: Record<string, number> = {};
-
-            // Calculate total population for base consumption
-            const totalPopulation = Object.values(villagers).reduce(
-              (sum, count) => sum + (count || 0),
-              0,
-            );
-
-            // Add base consumption for all villagers (1 wood and 1 food per villager)
-            if (totalPopulation > 0) {
-              totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
-              totalEffects.food = (totalEffects.food || 0) - totalPopulation;
-            }
-
-            visiblePopulationJobs.forEach((job) => {
-              const currentCount =
-                villagers[job.id as keyof typeof villagers] || 0;
-              if (currentCount > 0) {
-                const production = getPopulationProduction(
-                  job.id,
-                  currentCount,
-                  state,
-                );
-                production.forEach((prod) => {
-                  totalEffects[prod.resource] =
-                    (totalEffects[prod.resource] || 0) + prod.totalAmount;
-                });
-              }
-            });
-
-            const effectsText = Object.entries(totalEffects)
-              .filter(([resource, amount]) => amount !== 0)
-              .sort(([, a], [, b]) => b - a) // Sort from positive to negative
-              .map(
-                ([resource, amount]) =>
-                  `${amount > 0 ? "+" : ""}${amount} ${capitalizeWords(resource)}`,
-              )
-              .join(", ");
-
-            return effectsText && buildings.clerksHut > 0 ? (
-              <div className="text-xs text-muted-foreground flex items-center gap-3">
-                <CircularProgress
-                  value={productionProgress}
-                  size={16}
-                  strokeWidth={2}
-                  className="text-primary"
-                />
-                <span>{effectsText}</span>
-              </div>
-            ) : null;
-          })()}
-        </div>
-      )}
+        )}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
