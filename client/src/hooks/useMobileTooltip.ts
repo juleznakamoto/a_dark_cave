@@ -110,17 +110,19 @@ export function useMobileButtonTooltip() {
     if (openTooltipId === id) {
       e.preventDefault();
       e.stopPropagation();
+      setOpenTooltipId(null);
       setPressingId(null);
       return;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    // If we were pressing and didn't show tooltip yet
     if (pressingId === id) {
       setPressingId(null);
       if (!disabled) {
-        // Don't prevent default, allow normal button click
+        // Allow normal button click for active buttons
         return;
       }
+      // For disabled buttons, don't do anything on quick tap
     }
     
     setPressingId(null);
@@ -151,17 +153,19 @@ export function useMobileButtonTooltip() {
     if (openTooltipId === id) {
       e.preventDefault();
       e.stopPropagation();
+      setOpenTooltipId(null);
       setPressingId(null);
       return;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    // If we were pressing and didn't show tooltip yet
     if (pressingId === id) {
       setPressingId(null);
       if (!disabled) {
-        // Allow the click to proceed normally
+        // Execute action for active buttons
         onClick();
       }
+      // For disabled buttons, don't do anything on quick tap
     } else {
       setPressingId(null);
     }
