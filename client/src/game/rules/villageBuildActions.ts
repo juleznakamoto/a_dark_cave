@@ -1291,7 +1291,7 @@ export function handleBuildBottomlessPit(
     bottomlessPitResult.logEntries!.push({
       id: `moonstone-discovered-${Date.now()}`,
       message:
-        "In the depth of the pit, the worker's tools strike something extraordinary. They uncover veins of moonstone - luminescent mineral containing immense energy.",
+        "In the depth of the pit, the workers discover something extraordinary. They uncover veins of moonstone - a luminescent mineral containing immense energy.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1342,18 +1342,6 @@ export function handleBuildPrimeFoundry(
     "buildPrimeFoundry",
     "primeFoundry",
   );
-
-  // Add prime foundry completion message
-  if (state.buildings.primeFoundry === 0) {
-    primeFoundryResult.logEntries!.push({
-      id: `prime-foundry-built-${Date.now()}`,
-      message:
-        "The Prime Foundry rises, its advanced forges capable of producing superior steel with greater efficiency.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-  }
-
   return primeFoundryResult;
 }
 
@@ -1550,7 +1538,7 @@ export function handleBuildLonghouse(
   const currentLevel = state.buildings.longhouse || 0;
   const longhouseLabels = ["First Longhouse", "Second Longhouse"];
   const longhouseMessages = [
-    "The first longhouse rises - a massive wooden hall with thick timbers and lots of space.",
+    "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
     "A second longhouse is completed, expanding your settlement's capacity to house villagers."
   ];
 
@@ -1721,7 +1709,7 @@ export function handleBuildBastion(
     bastionResult.logEntries!.push({
       id: `bastion-built-${Date.now()}`,
       message:
-        "The bastion rises like a mountain of stone, its walls thick and unyielding.  A promise of protection against whatever stirs in the depths below.",
+        "The bastion rises like a mountain of stone, its walls thick and unyielding. A promise of protection against whatever stirs in the depths below.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1753,7 +1741,7 @@ export function handleBuildWatchtower(
   if (state.buildings.watchtower === 0) {
     watchtowerResult.logEntries!.push({
       id: `watchtower-built-${Date.now()}`,
-      message: "The watchtower stretches high above the settlement, its vantage point commanding the horizon. It helps you see things coming earlier.",
+      message: "The watchtower stretches high above the settlement.. It helps you see things coming earlier.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1802,7 +1790,7 @@ export function handleBuildWizardTower(
     wizardTowerResult.logEntries!.push({
       id: `wizard-tower-built-${Date.now()}`,
       message:
-        "The Wizard Tower spirals into the sky, crackling with arcane energy. The old wizard moves in with his collection of ancient tomes and mysterious artifacts.",
+        "The Wizard Tower spirals into the sky, crackling with arcane energy. The wizard moves in with his collection of ancient tomes and mysterious artifacts.",
       timestamp: Date.now(),
       type: "system",
     });

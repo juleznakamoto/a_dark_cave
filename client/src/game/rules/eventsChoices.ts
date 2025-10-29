@@ -185,7 +185,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "A Strange Wooden Figure",
     message:
-      "At the edge of the forest, a small wooden figure is discovered, carved with tentacled features. It emanates a strange aura. Do you keep it?",
+      "At the forest's edge a small wooden figure is found, carved with tentacled features. It emanates a strange aura. Do you keep it?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -275,7 +275,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 alphas_hide: true,
               },
               _logMessage:
-                "Your village manages to defeat the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
+                "The village defeats the wolf pack! You slay the alpha wolf and claim its hide as a trophy. It radiates with primal power.",
             };
           }
 
@@ -433,7 +433,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Offer to the Forest Gods",
     message:
-      "While hunting, villagers report unsettling figures in the forest. They are terrified. The village elders say the gods of the forest demand four villagers as sacrifice.",
+      "While hunting, villagers report unsettling figures in the forest. They are terrified. Village elders say the forest gods demand four villagers as sacrifice.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -461,7 +461,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ebony_ring: true,
               },
               _logMessage:
-                "The forest accepts your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
+                "The forest gods accept your sacrifice. The figures vanish, and an ebony ring is found on the altar where the villagers were offered. Peace returns to the woods.",
             };
           } else {
             // Failure: additional suicides
@@ -501,7 +501,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 ebony_ring: true,
               },
               _logMessage:
-                "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift. Your moral stand has been rewarded.",
+                "Your refusal to sacrifice innocent lives somehow pleases the forest gods. The appearances vanish, and you find an ebony ring left as a gift.",
             };
           } else if (rand < successChance + nothingChance) {
             // Nothing happens, event remains active
@@ -547,7 +547,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Mad Beduine",
     message:
-      "As evening falls, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
+      "In the evening, a robed figure approaches from the wilderness. His eyes burn with madness as he mutters in a foreign tongue, gestures sharp and unsettling. The villagers grow uneasy. Do you allow this Beduine to stay the night?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -586,7 +586,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 state.buildings.woodenHut - hutDestruction,
               ),
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing like the wailing of the damned. Before dawn, a tribe of cannibals descends as if summoned by his cries, killing ${villagerDeaths} and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a cannibal tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
           };
         },
       },
@@ -600,7 +600,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Hidden Lake",
     message:
-      "While gathering wood in the forest, your villagers discover a lake hidden among trees. The water is eerily clear and still. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+      "While gathering wood in the forest, your villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -622,12 +622,12 @@ export const choiceEvents: Record<string, GameEvent> = {
                 cracked_crown: true,
               },
               _logMessage:
-                "Your men approach cautiously. A creature emerges from the depths as they enter the lake and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they uncover countless human bones and a cracked golden crown.",
+                "As the men approach the lake a creature emerges from the depths and strikes with fury, but your villagers' strength prevails. At the bottom of the lake they find countless human bones and a golden crown.",
             };
           } else if (rand < successChance + fleeChance) {
             return {
               _logMessage:
-                "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee and vow never to speak of it again.",
+                "Your men wade into the waters, but the creature bursts forth with inhuman speed. Her beauty twists into rows of teeth and glowing eyes. Terrified, your villagers flee to save their lives.",
             };
           } else {
             const drownedCount = Math.floor(Math.random() * 4) + 1;
@@ -652,7 +652,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (rand < successChance + luck * 0.01) {
             return {
               _logMessage:
-                "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath still waters. Your caution might have spared lives.",
+                "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath the water.",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -676,7 +676,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Blind Druid",
     message:
-      "Shortly after the temple is built, the blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely, for this choice will shape your community's destiny forever.'",
+      "Shortly after the temple is built, the blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -797,7 +797,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 15,
     title: "The Viking Builder",
     message:
-      "One day, a strong man wearing thick furs stands at the gates and asks to enter. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
+      "One day, a strong man wearing thick furs stands at the gates. He says he comes from the far north and is a skilled builder. For a little gold, he will teach you how to build big houses that can hold many villagers.",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -826,7 +826,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pay the builder his fee. He teaches your villagers the ancient Nordic techniques for constructing longhouses - great halls that can shelter multiple families under one roof.",
+              "You pay the builder. He teaches your villagers the ancient nordic techniques for constructing longhouses.",
           };
         },
       },
@@ -860,7 +860,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction before escaping into the night.",
+                "Your men overpower the builder and force him to share his knowledge. Reluctantly, he teaches you the secrets of longhouse construction.",
             };
           } else {
             // Failure: he escapes and villagers are injured
@@ -876,7 +876,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                   vikingBuilderEvent: true,
                 },
               },
-              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} of your men before escaping into the wilderness. Your attempt to steal his knowledge has failed, and you've gained nothing but wounded villagers.`,
+              _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} of your men before escaping into the wilderness.`,
             };
           }
         },
@@ -895,7 +895,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 3,
     title: "The Druid Returns",
     message:
-      "The blind druid emerges once more: 'The Sanctum stands complete,' he intones, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
+      "The blind druid emerges: 'The Sanctum stands complete,' he says, his voice carrying the weight of ancient wisdom. 'Now you must choose: deepen your devotion to the path you have chosen, or embrace all gods and their gifts. Choose wisely.'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -983,7 +983,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             templeDedicatedTo: "all",
             _logMessage:
-              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts flowing freely through the sacred halls.",
+              "The Sanctum transforms into a nexus of divine power. All gods answer your call, their gifts are yours.",
           };
         },
       },
@@ -1011,7 +1011,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 10,
     title: "The Slave Trader",
     message:
-      "A man on a cart drawn by two horses approaches your village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. Good workers, they'll be. What say you?'",
+      "A man on a cart drawn by two horses approaches the village. An iron cage on the cart holds two miserable souls. The trader grins wickedly: 'I'll pay you 100 steel for two of your villagers. What do you say?'",
     triggered: false,
     priority: 3,
     repeatable: false,

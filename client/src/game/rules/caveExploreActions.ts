@@ -58,7 +58,7 @@ const caveRelics = {
       key: "tarnished_amulet",
       probability: 0.02,
       logMessage:
-        "In the cave's shadows, something glints. You find up a tarnished amulet.",
+        "In the cave's shadows, something glints. You find a tarnished amulet.",
       category: "clothing",
     },
     {
@@ -168,7 +168,7 @@ export const caveExploreActions: Record<string, Action> = {
         value: true,
         condition: "!relics.old_trinket && buildings.cabin >= 1",
         logMessage:
-          "While gathering wood, you find an old trinket with glowing amber liquid inside. Without hesitation, you drink the mysterious liquid. It burns as it goes down, but you feel stronger than before.",
+          "While gathering wood, you find an old trinket with glowing amber liquid inside. After some hesitation, you drink it. It burns as it goes down, but you feel stronger than before.",
       },
     },
     cooldown: 6,
@@ -577,7 +577,7 @@ export function handleDescendFurther(
     result.logEntries!.push({
       id: `descend-further-${Date.now()}`,
       message:
-        "With your lantern casting a steady glow, you descend into the deepest chambers. The walls shimmer with veins of precious metals and the air hums with ancient power.",
+        "With the lantern casting a steady glow, you descend into deeper chambers. The walls shimmer with veins of precious metals.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -616,7 +616,7 @@ export function handleExploreRuins(
     result.logEntries!.push({
       id: `explore-ruins-${Date.now()}`,
       message:
-        "Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization. Your lantern reveals treasures hidden in the shadows of time.",
+        "Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -655,7 +655,7 @@ export function handleExploreTemple(
     result.logEntries!.push({
       id: `explore-temple-${Date.now()}`,
       message:
-        "A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above. Sacred chambers hold relics of immense power and beauty.",
+        "A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -694,7 +694,7 @@ export function handleExploreCitadel(
     result.logEntries!.push({
       id: `explore-citadel-${Date.now()}`,
       message:
-        "The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm, where the greatest treasures await.",
+        "The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -713,7 +713,7 @@ export function handleLowChamber(
   result.logEntries!.push({
     id: `low-chamber-explored-${Date.now()}`,
     message:
-      "Using the reinforced rope, you descend into the low chamber. The depths reveal ancient treasures, amongst them a mastermason's chisel, a tool of legendary craftsmanship.",
+      "Using the reinforced rope, you descend into the low chamber. Amongst the treasures you find a mastermason's chisel, a tool of legendary craftsmanship.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
@@ -735,7 +735,7 @@ export function handleoccultistChamber(
   result.logEntries!.push({
     id: `occultist-chamber-explored-${Date.now()}`,
     message:
-      "Following the occultist's map, you find the hidden chamber containing the occultist's treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
+      "Following the occultist's map, you find the chamber containing his treasures. Amongst them is his grimoire, filled with forbidden knowledge and arcane secrets.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {
@@ -757,7 +757,7 @@ export function handleBlastPortal(
   result.logEntries!.push({
     id: `portal-blasted-${Date.now()}`,
     message:
-      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles, its otherworldly metal finally yielding to the explosive power. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
+      "The ember bombs detonate in a bright flash of fire and light. The ancient portal cracks and crumbles. Whatever could have been sealed within has been released... We have to get ready for whatever comes out of there.",
     timestamp: Date.now(),
     type: "system",
     visualEffect: {

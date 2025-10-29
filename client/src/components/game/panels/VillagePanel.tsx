@@ -327,11 +327,6 @@ export default function VillagePanel() {
                   return null;
                 }
 
-                const timeRemaining = Math.max(
-                  0,
-                  feastState.endTime - Date.now(),
-                );
-
                 return (
                   <TooltipProvider>
                     <Tooltip open={mobileTooltip.isTooltipOpen('feast-progress')}>
@@ -343,11 +338,11 @@ export default function VillagePanel() {
                           <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
                               value={feastProgress}
-                              size={16}
+                              size={18}
                               strokeWidth={2}
                               className="text-yellow-600"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center text-[12px] text-yellow-600 -mt-[1px]">
+                            <span className="absolute inset-0 flex items-center justify-center text-[12px] text-yellow-600 -mt-[1px] font-extrabold">
                               ⟡
                             </span>
                           </div>

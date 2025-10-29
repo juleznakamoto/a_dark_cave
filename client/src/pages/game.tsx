@@ -43,7 +43,7 @@ export default function Game() {
     const handleUserGesture = async () => {
       try {
         const { audioManager } = await import("@/lib/audio");
-        await audioManager.startBackgroundMusic(0.15);
+        await audioManager.startBackgroundMusic(0.125);
         setShouldStartMusic(false);
 
         // Remove listeners after music starts
