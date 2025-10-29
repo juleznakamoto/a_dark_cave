@@ -335,11 +335,11 @@ export default function VillagePanel() {
                       <div className="relative inline-block">
                         <CircularProgress
                           value={feastProgress}
-                          size={16}
-                          strokeWidth={2}
+                          size={14}
+                          strokeWidth={1.5}
                           className="text-primary"
                         />
-                        <span className="absolute inset-0 flex items-center justify-center text-[8px] text-yellow-500">
+                        <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500">
                           ⟡
                         </span>
                       </div>
