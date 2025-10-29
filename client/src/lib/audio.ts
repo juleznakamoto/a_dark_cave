@@ -1,4 +1,3 @@
-
 export class AudioManager {
   private static instance: AudioManager;
   private audioContext: AudioContext | null = null;
@@ -6,6 +5,7 @@ export class AudioManager {
   private soundUrls: Map<string, string> = new Map();
   private initialized: boolean = false;
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
+  private loopingGainNodes: Map<string, GainNode> = new Map(); // Added to store gain nodes for looping sounds
 
   private constructor() {}
 
@@ -20,7 +20,7 @@ export class AudioManager {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
-    
+
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
@@ -29,7 +29,7 @@ export class AudioManager {
   async loadSound(name: string, url: string): Promise<void> {
     // Store the URL for later loading
     this.soundUrls.set(name, url);
-    
+
     // Only actually load if audio context is available
     if (!this.initialized) {
       return;
@@ -101,13 +101,13 @@ export class AudioManager {
 
       const source = this.audioContext.createBufferSource();
       const gainNode = this.audioContext.createGain();
-      
+
       source.buffer = audioBuffer;
       gainNode.gain.value = Math.max(0, Math.min(1, volume));
-      
+
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
-      
+
       source.start();
     } catch (error) {
       console.warn(`Failed to play sound ${name}:`, error);
@@ -136,16 +136,22 @@ export class AudioManager {
 
       const source = this.audioContext.createBufferSource();
       const gainNode = this.audioContext.createGain();
-      
+
       source.buffer = audioBuffer;
       source.loop = true;
-      gainNode.gain.value = Math.max(0, Math.min(1, volume));
-      
+
+      // Set gain value with explicit clamping
+      const clampedVolume = Math.max(0, Math.min(1, volume));
+      gainNode.gain.setValueAtTime(clampedVolume, this.audioContext.currentTime);
+
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
-      
+
       source.start();
       this.loopingSources.set(name, source);
+      this.loopingGainNodes.set(name, gainNode); // Store the gain node
+
+      console.log(`Playing looping sound ${name} at volume ${clampedVolume} (requested: ${volume})`);
     } catch (error) {
       console.warn(`Failed to play looping sound ${name}:`, error);
     }
@@ -161,6 +167,18 @@ export class AudioManager {
         // Ignore errors if already stopped
       }
       this.loopingSources.delete(name);
+      this.loopingGainNodes.delete(name); // Also remove the gain node
+    }
+  }
+
+  setLoopingVolume(name: string, volume: number): void {
+    const gainNode = this.loopingGainNodes.get(name);
+    if (gainNode && this.audioContext) {
+      const clampedVolume = Math.max(0, Math.min(1, volume));
+      gainNode.gain.setValueAtTime(clampedVolume, this.audioContext.currentTime);
+      console.log(`Set volume for ${name} to ${clampedVolume} (requested: ${volume})`);
+    } else {
+      console.warn(`Could not set volume for ${name}: gainNode=${!!gainNode}, audioContext=${!!this.audioContext}`);
     }
   }
 
