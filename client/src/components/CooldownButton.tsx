@@ -90,10 +90,6 @@ export default function CooldownButton({
   const button = (
     <Button
       onClick={handleClick}
-      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseDown(buttonId, disabled, isCoolingDown, e) : undefined}
-      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseUp(buttonId, disabled, onClick, e) : undefined}
-      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchStart(buttonId, disabled, isCoolingDown, e) : undefined}
-      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchEnd(buttonId, disabled, onClick, e) : undefined}
       disabled={isButtonDisabled}
       variant={variant}
       size={size}
@@ -128,7 +124,11 @@ export default function CooldownButton({
   return (
     <div
       className="relative inline-block"
-      onClick={mobileTooltip.isMobile ? (e) => mobileTooltip.handleWrapperClick(buttonId, disabled, isCoolingDown, e) : undefined}
+      onClick={mobileTooltip.isMobile ? (e) => mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
+      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
+      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e) : undefined}
+      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
+      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e) : undefined}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={0}>
