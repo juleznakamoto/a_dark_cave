@@ -52,7 +52,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return false;
     },
     triggerType: "resource",
-    timeProbability: 0.08,
+    timeProbability: 0.8,
     title: "Village Feast",
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     triggered: false,
@@ -96,7 +96,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         label: "Make no feast",
         effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
           return {
-            _logMessage: "You decline the feast proposal. The villagers accept your decision with understanding, though some look disappointed.",
+            _logMessage: "You decline the feast proposal. The villagers accept your decision, though some look disappointed.",
           };
         },
       },

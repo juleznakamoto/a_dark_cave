@@ -316,6 +316,43 @@ export default function VillagePanel() {
       {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Rule</h3>
+          {/* Feast Timer */}
+          {(() => {
+            const feastState = useGameStore.getState().feastState;
+            if (!feastState?.isActive || feastState.endTime <= Date.now()) {
+              return null;
+            }
+
+            const timeRemaining = Math.max(0, feastState.endTime - Date.now());
+            const minutesRemaining = Math.floor(timeRemaining / 60000);
+            const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
+
+            return (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="text-xs text-primary flex items-center gap-3 mt-2">
+                      <CircularProgress
+                        value={feastProgress}
+                        size={16}
+                        strokeWidth={2}
+                        className="text-primary"
+                      />
+                      <span>
+                        Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
+                      </span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      <div><strong>Village Feast</strong></div>
+                      <div>+100 % Production Bonus</div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            );
+          })()}
           <div className="space-y-1 leading-tight">
             {visiblePopulationJobs.map((job) =>
               renderPopulationControl(job.id, job.label),
@@ -374,44 +411,6 @@ export default function VillagePanel() {
                 <span>{effectsText}</span>
               </div>
             ) : null;
-          })()}
-
-          {/* Feast Timer */}
-          {(() => {
-            const feastState = useGameStore.getState().feastState;
-            if (!feastState?.isActive || feastState.endTime <= Date.now()) {
-              return null;
-            }
-
-            const timeRemaining = Math.max(0, feastState.endTime - Date.now());
-            const minutesRemaining = Math.floor(timeRemaining / 60000);
-            const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
-
-            return (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-xs text-primary flex items-center gap-3 mt-2">
-                      <CircularProgress
-                        value={feastProgress}
-                        size={16}
-                        strokeWidth={2}
-                        className="text-primary"
-                      />
-                      <span>
-                        Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
-                      </span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      <div><strong>Village Feast</strong></div>
-                      <div>+100 % Production Bonus</div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
           })()}
         </div>
       )}
