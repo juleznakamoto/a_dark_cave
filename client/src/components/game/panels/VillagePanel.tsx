@@ -5,6 +5,7 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
+import { feastTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
@@ -353,11 +354,8 @@ export default function VillagePanel() {
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <div className="text-xs">
-                          <div>
-                            <strong>Village Feast</strong>
-                          </div>
-                          <div>+100 % Production Bonus</div>
+                        <div className="text-xs whitespace-pre-line">
+                          {feastTooltip.getContent(state)}
                         </div>
                       </TooltipContent>
                     </Tooltip>

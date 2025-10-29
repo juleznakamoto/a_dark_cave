@@ -4,6 +4,7 @@ import {
   weaponEffects,
   toolEffects,
 } from "@/game/rules/effects";
+import { madnessTooltip } from "@/game/rules/tooltips";
 import {
   Tooltip,
   TooltipContent,
@@ -266,9 +267,8 @@ export default function SidePanelSection({
     };
 
     // Check if the item is 'madness' and if there's any madness from events to display
-    const eventMadness =
-      item.id === "madness" ? gameState.stats.madnessFromEvents || 0 : 0;
-    const isMadnessTooltip = item.id === "madness" && eventMadness > 0;
+    const madnessTooltipContent = item.id === "madness" ? madnessTooltip.getContent(gameState) : "";
+    const isMadnessTooltip = item.id === "madness" && madnessTooltipContent.length > 0;
 
     const isMadness = item.id === "madness";
     const madnessClasses = isMadness ? getMadnessClasses(item.value) : "";
@@ -511,7 +511,7 @@ export default function SidePanelSection({
             </TooltipTrigger>
             <TooltipContent>
               <p className="whitespace-pre-line">
-                +{eventMadness} Madness from Events
+                {madnessTooltipContent}
               </p>
             </TooltipContent>
           </Tooltip>
