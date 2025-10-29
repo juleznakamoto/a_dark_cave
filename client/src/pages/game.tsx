@@ -11,7 +11,6 @@ export default function Game() {
   const { initialize } = useGameStore();
   const { eventDialog, setEventDialog, combatDialog, setCombatDialog } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
-  const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
     const initializeGame = async () => {
@@ -20,9 +19,10 @@ export default function Game() {
       if (savedState) {
         initialize(savedState);
         
-        // If game is already started (fire is lit), flag that music should start on user gesture
+        // If game is already started (fire is lit), start background music
         if (savedState.story?.seen?.fireLit) {
-          setShouldStartMusic(true);
+          const { audioManager } = await import('@/lib/audio');
+          await audioManager.startBackgroundMusic(0.3);
         }
       }
 
@@ -35,25 +35,6 @@ export default function Game() {
 
     initializeGame();
   }, [initialize]);
-
-  // Start background music on first mouse movement (user gesture)
-  useEffect(() => {
-    if (!shouldStartMusic) return;
-
-    const handleMouseMove = async () => {
-      const { audioManager } = await import('@/lib/audio');
-      await audioManager.startBackgroundMusic(0.3);
-      setShouldStartMusic(false);
-      // Remove listener after music starts
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
-
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-    };
-  }, [shouldStartMusic]);
 
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
