@@ -334,14 +334,14 @@ export default function VillagePanel() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <div className="text-xs text-primary flex items-center gap-0.5">
-                          <div className="relative inline-flex items-center gap-1 mt-[2px]">
+                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
                             <CircularProgress
                               value={feastProgress}
-                              size={14}
-                              strokeWidth={1.5}
-                              className="text-yellow-500"
+                              size={16}
+                              strokeWidth={2}
+                              className="text-yellow-600"
                             />
-                            <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500 -mt-[5px]">
+                            <span className="absolute inset-0 flex items-center justify-center text-[12px] text-yellow-600 -mt-[1px]">
                               ⟡
                             </span>
                           </div>
