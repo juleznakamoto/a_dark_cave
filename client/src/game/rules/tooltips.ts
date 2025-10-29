@@ -1,5 +1,5 @@
-
 import { GameState } from "../state";
+import { capitalizeWords } from "./utils"; // Assuming capitalizeWords is in utils
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -121,7 +121,11 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 
 // Event choice cost tooltip - formats cost string
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string) => {
-    return `-${cost}`;
+  getContent: (cost: Record<string, number> | undefined): string => {
+    if (!cost) return "";
+
+    return Object.entries(cost)
+      .map(([resource, amount]) => `${amount} ${capitalizeWords(resource)}`)
+      .join("\n");
   }
 };
