@@ -7,12 +7,10 @@ import {
 } from "@/game/rules";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore();
-  const mobileTooltip = useMobileTooltip();
 
   // Define action groups with their actions
   const actionGroups = [
