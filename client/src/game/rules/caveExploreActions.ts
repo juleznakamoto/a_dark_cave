@@ -140,9 +140,10 @@ function getInheritedItems(actionId: string) {
         value: true,
         condition:
           `!${category}.${item.key}` +
-          (item.eventId ? ` && !story.seen.${item.eventId}` : ""),
-        ...(item.isChoice && { isChoice: item.isChoice }),
-        ...(item.eventId && { eventId: item.eventId }),
+          ('eventId' in item && item.eventId ? ` && !story.seen.${item.eventId}` : ""),
+        ...('isChoice' in item && item.isChoice && { isChoice: item.isChoice }),
+        ...('eventId' in item && item.eventId && { eventId: item.eventId }),
+        ...('logMessage' in item && item.logMessage && { logMessage: item.logMessage }),
       };
     });
   }
