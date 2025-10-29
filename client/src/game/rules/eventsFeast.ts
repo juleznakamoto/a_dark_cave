@@ -63,7 +63,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         id: "makeFeast",
         label: `Make feast`,
         cost: `${foodCost} food`,
-        effect: (state: GameState) => {
+        effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
           if (state.resources.food < foodCost) {
             return {
               _logMessage: "You don't have enough food for the feast.",
@@ -94,7 +94,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       {
         id: "noFeast",
         label: "Make no feast",
-        effect: (state: GameState) => {
+        effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
           return {
             _logMessage: "You decline the feast proposal. The villagers accept your decision with understanding, though some look disappointed.",
           };
