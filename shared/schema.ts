@@ -39,8 +39,8 @@ export const gameStateSchema = z.object({
       frostglas: z.number().min(0).default(0),
       black_powder: z.number().min(0).default(0),
       ember_bomb: z.number().min(0).default(0),
-      cinderflame_dust: z.number().min(0).default(0),
-      cinderflame_bomb: z.number().min(0).default(0),
+      ashfire_dust: z.number().min(0).default(0),
+      ashfire_bomb: z.number().min(0).default(0),
     })
     .default({}),
   stats: z
@@ -220,7 +220,7 @@ export const gameStateSchema = z.object({
       moonstone_miner: z.number().min(0).default(0),
       steel_forger: z.number().min(0).default(0),
       powder_maker: z.number().min(0).default(0),
-      cinderflame_dust_maker: z.number().min(0).default(0),
+      ashfire_dust_maker: z.number().min(0).default(0),
     })
     .default({}),
   story: z

@@ -85,20 +85,20 @@ export const caveCraftResources: Record<string, Action> = {
     cooldown: 20,
   },
 
-  craftCinderflameBomb: {
-    id: "craftCinderflameBomb",
-    label: "Cinderflame Bomb",
+  craftAshfireBomb: {
+    id: "craftAshfireBomb",
+    label: "Ashfire Bomb",
     show_when: {
       "buildings.alchemistHall": 1,
       "story.seen.alchemistArrives": true,
     },
     cost: {
-      "resources.cinderflame_dust": 10,
+      "resources.ashfire_dust": 10,
       "resources.black_powder": 50,
     },
     effects: {
-      "resources.cinderflame_bomb": 1,
-      "story.seen.hasCinderflameBomb": true,
+      "resources.ashfire_bomb": 1,
+      "story.seen.hasAshfireBomb": true,
     },
     cooldown: 30,
   },
@@ -146,15 +146,15 @@ export function handleCraftEmberBomb(state: GameState, result: ActionResult): Ac
   return result;
 }
 
-export function handleCraftCinderflameBomb(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftCinderflameBomb', state);
+export function handleCraftAshfireBomb(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftAshfireBomb', state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Only show message on first craft
-  if (!state.story.seen.hasCinderflameBomb) {
+  if (!state.story.seen.hasAshfireBomb) {
     result.logEntries!.push({
-      id: `cinderflame-bomb-crafted-${Date.now()}`,
-      message: "Using the mystical cinderflame dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
+      id: `ashfire-bomb-crafted-${Date.now()}`,
+      message: "Using the mystical ashfire dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
       timestamp: Date.now(),
       type: 'system',
     });

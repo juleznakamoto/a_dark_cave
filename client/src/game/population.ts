@@ -127,11 +127,11 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
-  cinderflame_dust_maker: {
-    id: "cinderflame_dust_maker",
-    label: "cinderflame_dust_maker",
+  ashfire_dust_maker: {
+    id: "ashfire_dust_maker",
+    label: "ashfire_dust_maker",
     production: [
-      { resource: "cinderflame_dust", amount: 1, interval: 15000 },
+      { resource: "ashfire_dust", amount: 1, interval: 15000 },
       { resource: "moonstone", amount: -10, interval: 15000 },
       { resource: "sulfur", amount: -20, interval: 15000 },
       { resource: "coal", amount: -20, interval: 15000 },

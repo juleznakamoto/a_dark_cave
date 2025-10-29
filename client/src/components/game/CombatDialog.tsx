@@ -114,8 +114,8 @@ export default function CombatDialog({
   const emberBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ember_bomb",
   ).length;
-  const cinderflameBombsUsed = usedItemsInCombat.filter(
-    (id) => id === "cinderflame_bomb",
+  const ashfireBombsUsed = usedItemsInCombat.filter(
+    (id) => id === "ashfire_bomb",
   ).length;
   const poisonArrowsUsedInCombat = usedItemsInCombat.filter(
     (id) => id === "poison_arrows",
@@ -132,13 +132,13 @@ export default function CombatDialog({
         !usedItemsInRound.has("ember_bomb"),
     },
     {
-      id: "cinderflame_bomb",
-      name: "Cinderflame Bomb",
+      id: "ashfire_bomb",
+      name: "Ashfire Bomb",
       damage: 25,
       available:
-        gameState.resources.cinderflame_bomb > 0 &&
-        cinderflameBombsUsed < MAX_CINDERFLAME_BOMBS &&
-        !usedItemsInRound.has("cinderflame_bomb"),
+        gameState.resources.ashfire_bomb > 0 &&
+        ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
+        !usedItemsInRound.has("ashfire_bomb"),
     },
   ];
 
@@ -419,7 +419,7 @@ export default function CombatDialog({
 
               {/* Combat Items */}
               {combatItems.some((item) =>
-                item.id === "ember_bomb" || item.id === "cinderflame_bomb"
+                item.id === "ember_bomb" || item.id === "ashfire_bomb"
                   ? gameState.resources[
                       item.id as keyof typeof gameState.resources
                     ] > 0
@@ -474,7 +474,7 @@ export default function CombatDialog({
                                 <p>
                                   Available: {item.id === "ember_bomb"
                                     ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                    : `${MAX_CINDERFLAME_BOMBS - cinderflameBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
+                                    : `${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
                                 </p>
                               )}
                               {item.id === "poison_arrows" && (

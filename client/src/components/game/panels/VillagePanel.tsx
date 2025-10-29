@@ -156,9 +156,9 @@ export default function VillagePanel() {
       showWhen: () => buildings.alchemistHall >= 1,
     },
     {
-      id: "cinderflame_dust_maker",
-      label: "Cinderflame Dust Maker",
-      showWhen: () => state.story?.seen?.canMakeCinderflameDust === true,
+      id: "ashfire_dust_maker",
+      label: "Ashfire Dust Maker",
+      showWhen: () => state.story?.seen?.canMakeAshfireDust === true,
     },
   ];
 
@@ -405,8 +405,8 @@ export default function VillagePanel() {
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs">
-                      <div>Feast</div>
-                      <div>2x Production</div>
+                      <div><strong>Village Feast</strong></div>
+                      <div>+100 % Production Bonus</div>
                     </div>
                   </TooltipContent>
                 </Tooltip>

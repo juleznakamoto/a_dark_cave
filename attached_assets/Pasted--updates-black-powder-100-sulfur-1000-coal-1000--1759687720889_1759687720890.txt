@@ -28,8 +28,8 @@
             "frostglas": 0,
             "black_powder": 9150,
             "ember_bomb": 90,
-            "cinderflame_dust": 0,
-            "cinderflame_bomb": 0,
+            "ashfire_dust": 0,
+            "ashfire_bomb": 0,
             "free": null
         },
         "villagers": {

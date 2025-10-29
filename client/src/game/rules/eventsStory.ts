@@ -81,7 +81,7 @@ export const storyEvents: Record<string, GameEvent> = {
         seen: {
           ...state.story.seen,
           alchemistArrives: true,
-          canMakeCinderflameDust: true,
+          canMakeAshfireDust: true,
         },
       },
     }),

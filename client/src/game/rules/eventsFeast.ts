@@ -54,7 +54,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
     triggerType: "resource",
     timeProbability: 0.08,
     title: "Village Feast",
-    message: `The villagers propose organizing a feast to celebrate and boost morale. They believe it could heighten productivity for days to come.`,
+    message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     triggered: false,
     priority: 3,
     repeatable: true,

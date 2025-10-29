@@ -147,7 +147,7 @@ function handleHunterProduction() {
 function handleMinerProduction() {
   const state = useGameStore.getState();
 
-  // Process each miner type, steel forger, tanner, powder maker, and cinderflame dust maker
+  // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
       count > 0 &&
@@ -155,7 +155,7 @@ function handleMinerProduction() {
         job === "steel_forger" ||
         job === "tanner" ||
         job === "powder_maker" ||
-        job === "cinderflame_dust_maker")
+        job === "ashfire_dust_maker")
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {

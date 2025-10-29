@@ -65,7 +65,7 @@ export default function CavePanel() {
             { id: "craftBoneTotems3", label: "Bone Totems" },
             { id: "craftBoneTotems5", label: "Bone Totems" },
             { id: "craftEmberBomb", label: "Ember Bomb" },
-        { id: "craftCinderflameBomb", label: "Cinderflame Bomb" },
+        { id: "craftAshfireBomb", label: "Ashfire Bomb" },
             { id: "craftIronLantern", label: "Iron Lantern" },
             { id: "craftSteelLantern", label: "Steel Lantern" },
             { id: "craftObsidianLantern", label: "Obsidian Lantern" },
