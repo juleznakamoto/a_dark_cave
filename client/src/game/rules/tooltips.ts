@@ -1,4 +1,3 @@
-
 import { GameState } from "../state";
 
 export interface TooltipConfig {
@@ -121,7 +120,30 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
 
 // Event choice cost tooltip - formats cost string
 export const eventChoiceCostTooltip = {
-  getContent: (cost: string) => {
-    return `-${cost}`;
+  getContent: (cost: string | Record<string, number> | undefined): string => {
+    if (!cost) return "";
+
+    // Handle string cost (e.g., "5 gold")
+    if (typeof cost === 'string') {
+      const parts = cost.split(' ');
+      if (parts.length >= 2) {
+        const amount = parts[0];
+        const resource = parts.slice(1).join(' ');
+        return `-${amount} ${capitalizeWords(resource)}`;
+      }
+      return `-${cost}`;
+    }
+
+    // Handle object cost
+    return Object.entries(cost)
+      .map(([resource, amount]) => `-${amount} ${capitalizeWords(resource)}`)
+      .join("\n");
   }
 };
+
+// Helper function to capitalize the first letter of each word in a string
+// Assuming this function is defined elsewhere and available in scope.
+// If not, it would need to be added. For example:
+function capitalizeWords(str: string): string {
+  return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+}
