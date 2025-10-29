@@ -247,11 +247,44 @@ export default function VillagePanel() {
       return productionText ? ` ${productionText}` : "";
     };
 
+    // Hold-to-repeat functionality
+    const [holdInterval, setHoldInterval] = useState<NodeJS.Timeout | null>(null);
+    const [holdTimeout, setHoldTimeout] = useState<NodeJS.Timeout | null>(null);
+
+    const startHold = (action: () => void) => {
+      // Execute immediately
+      action();
+      
+      // Wait 500ms before starting repeat
+      const timeout = setTimeout(() => {
+        // Then repeat every 100ms
+        const interval = setInterval(action, 100);
+        setHoldInterval(interval);
+      }, 500);
+      
+      setHoldTimeout(timeout);
+    };
+
+    const stopHold = () => {
+      if (holdTimeout) {
+        clearTimeout(holdTimeout);
+        setHoldTimeout(null);
+      }
+      if (holdInterval) {
+        clearInterval(holdInterval);
+        setHoldInterval(null);
+      }
+    };
+
     return (
       <div key={jobId} className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Button
-            onClick={() => unassignVillager(jobId)}
+            onMouseDown={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
+            onMouseUp={stopHold}
+            onMouseLeave={stopHold}
+            onTouchStart={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
+            onTouchEnd={stopHold}
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
@@ -263,7 +296,11 @@ export default function VillagePanel() {
             <AnimatedCounter value={currentCount} />
           </div>
           <Button
-            onClick={() => assignVillager(jobId)}
+            onMouseDown={() => villagers.free > 0 && startHold(() => assignVillager(jobId))}
+            onMouseUp={stopHold}
+            onMouseLeave={stopHold}
+            onTouchStart={() => villagers.free > 0 && startHold(() => assignVillager(jobId))}
+            onTouchEnd={stopHold}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
