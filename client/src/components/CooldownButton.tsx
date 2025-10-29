@@ -79,8 +79,10 @@ export default function CooldownButton({
       : 0;
 
   const handleClick = (e: React.MouseEvent) => {
-    if (isCoolingDown || disabled) return;
-    onClick();
+    if (disabled && !isCoolingDown) return;
+    if (!isCoolingDown) {
+      onClick();
+    }
   };
 
   const isButtonDisabled = disabled || isCoolingDown;
@@ -124,11 +126,39 @@ export default function CooldownButton({
   return (
     <div
       className="relative inline-block"
-      onClick={mobileTooltip.isMobile ? (e) => mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
-      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
-      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e) : undefined}
-      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e) : undefined}
-      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e) : undefined}
+      onClick={mobileTooltip.isMobile ? (e) => {
+        // Allow showing tooltip during cooldown
+        if (isCoolingDown) {
+          e.stopPropagation();
+          mobileTooltip.handleWrapperClick(buttonId, true, false, e);
+        } else {
+          mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
+        }
+      } : undefined}
+      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Allow showing tooltip during cooldown
+        mobileTooltip.handleMouseDown(buttonId, isButtonDisabled || isCoolingDown, false, e);
+      } : undefined}
+      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Don't execute action during cooldown
+        if (isCoolingDown) {
+          mobileTooltip.handleMouseUp(buttonId, true, onClick, e);
+        } else {
+          mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e);
+        }
+      } : undefined}
+      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Allow showing tooltip during cooldown
+        mobileTooltip.handleTouchStart(buttonId, isButtonDisabled || isCoolingDown, false, e);
+      } : undefined}
+      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Don't execute action during cooldown
+        if (isCoolingDown) {
+          mobileTooltip.handleTouchEnd(buttonId, true, onClick, e);
+        } else {
+          mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e);
+        }
+      } : undefined}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={0}>
