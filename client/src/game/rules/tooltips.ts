@@ -1,5 +1,5 @@
 import { GameState } from "../state";
-import { capitalizeWords } from "./utils"; // Assuming capitalizeWords is in utils
+import { capitalizeWords } from "@/lib/utils";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
