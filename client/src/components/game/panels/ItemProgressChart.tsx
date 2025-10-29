@@ -516,7 +516,7 @@ export default function ItemProgressChart() {
                 cornerRadius={5}
                 strokeWidth={0}
                 isAnimationActive={false}
-                style={{ outline: "none" }}
+                style={{ outline: 'none' }}
               >
                 {ring.backgroundSegments.map((entry, entryIndex) => (
                   <Cell
@@ -540,14 +540,13 @@ export default function ItemProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1.5 : 0}
-                  stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
+                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
                   isAnimationActive={false}
-                  style={{ outline: "none" }}
+                  style={{ outline: 'none' }}
                 >
-                  <Cell fill={segment.fill} />
+                  <Cell key={`progress-cell-${ringIndex}-${segIndex}`} fill={segment.fill} />
                 </Pie>
               ))}
-
               {/* Foreground ring */}
               <Pie
                 key={`foreground-${ringIndex}`}
@@ -564,8 +563,15 @@ export default function ItemProgressChart() {
                 strokeWidth={0.25}
                 stroke={tailwindToHex("neutral-400")}
                 isAnimationActive={false}
-                style={{ outline: "none" }}
-              ></Pie>
+                style={{ outline: 'none' }}
+              >
+                {ring.foregroundSegments.map((entry, entryIndex) => (
+                  <Cell
+                    key={`fg-cell-${ringIndex}-${entryIndex}`}
+                    fill={entry.fill}
+                  />
+                ))}
+              </Pie>
             </>
           ))}
         </PieChart>
