@@ -1142,7 +1142,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter",
     message:
-      "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring you  wood.'",
+      "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1172,7 +1172,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised wood stacked neatly at your village edge.",
+              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised 100 wood stacked neatly at your village edge.",
           };
         },
       },
@@ -1201,7 +1201,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter Returns",
     message:
-      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood this time. What do you say?'",
+      "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1232,7 +1232,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of wood.",
+              "The woodcutter takes the food and disappears into the forest. By nightfall, he returns with a large pile of 250 wood.",
           };
         },
       },
@@ -1292,7 +1292,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of timber.",
+              "The woodcutter takes the food and ventures deep into the forest. He returns with an impressive haul of 750 wood.",
           };
         },
       },
@@ -1373,7 +1373,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of timber.",
+              "The woodcutter takes the food and spends the afternoon in the forest. He returns with an enormous pile of 1500 wood.",
           };
         },
       },
@@ -1454,7 +1454,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and within the same day he delivers a massive stockpile of wood to your village.",
+              "The woodcutter takes the food and within the same day he delivers a massive stockpile of 2500 wood to your village.",
           };
         },
       },
