@@ -315,49 +315,51 @@ export default function VillagePanel() {
       {/* Rule Section */}
       {story.seen?.hasVillagers && visiblePopulationJobs.length > 0 && (
         <div className="space-y-2">
-          <h3 className="text-xs font-bold text-foreground">Rule</h3>
-          {/* Feast Timer */}
-          {(() => {
-            const feastState = useGameStore.getState().feastState;
-            if (!feastState?.isActive || feastState.endTime <= Date.now()) {
-              return null;
-            }
+          <div className="flex items-center gap-3">
+            <h3 className="text-xs font-bold text-foreground">Rule</h3>
+            {/* Feast Timer */}
+            {(() => {
+              const feastState = useGameStore.getState().feastState;
+              if (!feastState?.isActive || feastState.endTime <= Date.now()) {
+                return null;
+              }
 
-            const timeRemaining = Math.max(0, feastState.endTime - Date.now());
-            const minutesRemaining = Math.floor(timeRemaining / 60000);
-            const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
+              const timeRemaining = Math.max(0, feastState.endTime - Date.now());
+              const minutesRemaining = Math.floor(timeRemaining / 60000);
+              const secondsRemaining = Math.floor((timeRemaining % 60000) / 1000);
 
-            return (
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="text-xs text-primary flex items-center gap-3 mt-2">
-                      <div className="relative inline-block">
-                        <CircularProgress
-                          value={feastProgress}
-                          size={14}
-                          strokeWidth={1.5}
-                          className="text-primary"
-                        />
-                        <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500">
-                          ⟡
+              return (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="text-xs text-primary flex items-center gap-2">
+                        <div className="relative inline-block">
+                          <CircularProgress
+                            value={feastProgress}
+                            size={14}
+                            strokeWidth={1.5}
+                            className="text-primary"
+                          />
+                          <span className="absolute inset-0 flex items-center justify-center text-[8px] text-yellow-500 -mt-[1px]">
+                            ⟡
+                          </span>
+                        </div>
+                        <span>
+                          Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
                         </span>
                       </div>
-                      <span>
-                        Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
-                      </span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      <div><strong>Village Feast</strong></div>
-                      <div>+100 % Production Bonus</div>
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            );
-          })()}
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs">
+                        <div><strong>Village Feast</strong></div>
+                        <div>+100 % Production Bonus</div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              );
+            })()}
+          </div>
           <div className="space-y-1 leading-tight">
             {visiblePopulationJobs.map((job) =>
               renderPopulationControl(job.id, job.label),
