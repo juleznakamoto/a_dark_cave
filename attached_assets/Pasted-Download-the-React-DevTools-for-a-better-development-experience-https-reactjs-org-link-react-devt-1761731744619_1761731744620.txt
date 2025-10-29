@@ -1,0 +1,67 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+audio.ts:168 Registering sounds for lazy loading...
+audio.ts:175 Sound URLs registered for lazy loading
+particle-button.tsx:89 Warning: ParticleButton: `ref` is not a prop. Trying to access it will result in `undefined` being returned. If you need to access the same value within the child component, you should pass it as a different prop. (https://reactjs.org/link/special-props)
+    at ParticleButton (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/particle-button.tsx:82:3)
+    at main
+    at div
+    at StartScreen (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/StartScreen.tsx?t=1761731652523:26:29)
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1761731652523:45:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1761731652523:27:26)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=17fe988f:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=17fe988f:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-PLT6GTVM.js?v=17fe988f:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=17fe988f:291:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:21:28)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=17fe988f:2805:3)
+    at App
+printWarning @ react_jsx-dev-runtime.js?v=17fe988f:64
+error @ react_jsx-dev-runtime.js?v=17fe988f:48
+warnAboutAccessingRef @ react_jsx-dev-runtime.js?v=17fe988f:556
+ParticleButton @ particle-button.tsx:89
+renderWithHooks @ chunk-WERSD76P.js?v=17fe988f:11548
+mountIndeterminateComponent @ chunk-WERSD76P.js?v=17fe988f:14926
+beginWork @ chunk-WERSD76P.js?v=17fe988f:15914
+beginWork$1 @ chunk-WERSD76P.js?v=17fe988f:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=17fe988f:19198
+workLoopSync @ chunk-WERSD76P.js?v=17fe988f:19137
+renderRootSync @ chunk-WERSD76P.js?v=17fe988f:19116
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18678
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this error
+chunk-WERSD76P.js?v=17fe988f:521 Warning: Function components cannot be given refs. Attempts to access this ref will fail. Did you mean to use React.forwardRef()?
+
+Check the render method of `StartScreen`.
+    at ParticleButton (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/particle-button.tsx:82:3)
+    at main
+    at div
+    at StartScreen (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/StartScreen.tsx?t=1761731652523:26:29)
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1761731652523:45:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1761731652523:27:26)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=17fe988f:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=17fe988f:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-PLT6GTVM.js?v=17fe988f:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=17fe988f:291:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:21:28)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=17fe988f:2805:3)
+    at App
+printWarning @ chunk-WERSD76P.js?v=17fe988f:521
+error @ chunk-WERSD76P.js?v=17fe988f:505
+validateFunctionComponentInDev @ chunk-WERSD76P.js?v=17fe988f:15013
+mountIndeterminateComponent @ chunk-WERSD76P.js?v=17fe988f:14988
+beginWork @ chunk-WERSD76P.js?v=17fe988f:15914
+beginWork$1 @ chunk-WERSD76P.js?v=17fe988f:19753
+performUnitOfWork @ chunk-WERSD76P.js?v=17fe988f:19198
+workLoopSync @ chunk-WERSD76P.js?v=17fe988f:19137
+renderRootSync @ chunk-WERSD76P.js?v=17fe988f:19116
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18678
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this error
+loop.ts:314 [AUTOSAVE] Saving game state, events: {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+loop.ts:55 State: {resources: {…}, stats: {…}, flags: {…}, schematics: {…}, tools: {…}, …}
