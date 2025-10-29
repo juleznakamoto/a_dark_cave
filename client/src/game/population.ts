@@ -152,10 +152,27 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
   }));
 
   // Apply building production bonuses
-  baseProduction.forEach((prod) => {
-    const buildingBonus = (state?.buildings && villageBuildActions[`build${jobId.charAt(0).toUpperCase() + jobId.slice(1)}`]?.productionEffects?.[jobId]?.[prod.resource] * (state.buildings[jobId] || 0)) || 0;
-    prod.totalAmount = prod.baseAmount * count + buildingBonus;
-  });
+  if (state?.buildings) {
+    baseProduction.forEach((prod) => {
+      let buildingBonus = 0;
+      
+      // Check all buildings for production effects that apply to this job
+      Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
+        if (buildAction.productionEffects?.[jobId]?.[prod.resource]) {
+          // Extract building name from action ID (e.g., "buildTimberMill" -> "timberMill")
+          const buildingKey = actionId.replace('build', '');
+          const buildingName = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
+          const buildingCount = state.buildings[buildingName as keyof typeof state.buildings] || 0;
+          
+          if (buildingCount > 0) {
+            buildingBonus += buildAction.productionEffects[jobId][prod.resource] * buildingCount;
+          }
+        }
+      });
+      
+      prod.totalAmount = prod.baseAmount * count + buildingBonus;
+    });
+  }
 
 
   // Apply feast multiplier (2x production when active)
