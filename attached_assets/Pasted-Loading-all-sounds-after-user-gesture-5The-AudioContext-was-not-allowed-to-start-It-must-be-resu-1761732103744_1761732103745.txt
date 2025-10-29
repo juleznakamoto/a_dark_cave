@@ -1,0 +1,107 @@
+Loading all sounds after user gesture...
+5The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>Understand this warning
+audio.ts:25 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:25
+loadActualSound @ audio.ts:69
+(anonymous) @ audio.ts:61
+loadAllSounds @ audio.ts:60
+playLoopingSound @ audio.ts:125
+startBackgroundMusic @ audio.ts:179
+initializeGame @ game.tsx:25
+await in initializeGame
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-WERSD76P.js?v=17fe988f:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=17fe988f:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=17fe988f:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=17fe988f:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=17fe988f:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=17fe988f:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=17fe988f:19447
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18868
+flushSyncCallbacks @ chunk-WERSD76P.js?v=17fe988f:9119
+commitRootImpl @ chunk-WERSD76P.js?v=17fe988f:19432
+commitRoot @ chunk-WERSD76P.js?v=17fe988f:19277
+finishConcurrentRender @ chunk-WERSD76P.js?v=17fe988f:18805
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18718
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this warning
+audio.ts:25 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:25
+loadActualSound @ audio.ts:69
+(anonymous) @ audio.ts:61
+loadAllSounds @ audio.ts:60
+playLoopingSound @ audio.ts:125
+startBackgroundMusic @ audio.ts:179
+initializeGame @ game.tsx:25
+await in initializeGame
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-WERSD76P.js?v=17fe988f:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=17fe988f:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=17fe988f:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=17fe988f:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=17fe988f:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=17fe988f:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=17fe988f:19447
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18868
+flushSyncCallbacks @ chunk-WERSD76P.js?v=17fe988f:9119
+commitRootImpl @ chunk-WERSD76P.js?v=17fe988f:19432
+commitRoot @ chunk-WERSD76P.js?v=17fe988f:19277
+finishConcurrentRender @ chunk-WERSD76P.js?v=17fe988f:18805
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18718
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this warning
+audio.ts:25 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:25
+loadActualSound @ audio.ts:69
+(anonymous) @ audio.ts:61
+loadAllSounds @ audio.ts:60
+playLoopingSound @ audio.ts:125
+startBackgroundMusic @ audio.ts:179
+initializeGame @ game.tsx:25
+await in initializeGame
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-WERSD76P.js?v=17fe988f:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=17fe988f:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=17fe988f:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=17fe988f:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=17fe988f:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=17fe988f:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=17fe988f:19447
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18868
+flushSyncCallbacks @ chunk-WERSD76P.js?v=17fe988f:9119
+commitRootImpl @ chunk-WERSD76P.js?v=17fe988f:19432
+commitRoot @ chunk-WERSD76P.js?v=17fe988f:19277
+finishConcurrentRender @ chunk-WERSD76P.js?v=17fe988f:18805
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18718
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this warning
+audio.ts:25 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:25
+loadActualSound @ audio.ts:69
+(anonymous) @ audio.ts:61
+loadAllSounds @ audio.ts:60
+playLoopingSound @ audio.ts:125
+startBackgroundMusic @ audio.ts:179
+initializeGame @ game.tsx:25
+await in initializeGame
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-WERSD76P.js?v=17fe988f:16915
+commitPassiveMountOnFiber @ chunk-WERSD76P.js?v=17fe988f:18156
+commitPassiveMountEffects_complete @ chunk-WERSD76P.js?v=17fe988f:18129
+commitPassiveMountEffects_begin @ chunk-WERSD76P.js?v=17fe988f:18119
+commitPassiveMountEffects @ chunk-WERSD76P.js?v=17fe988f:18109
+flushPassiveEffectsImpl @ chunk-WERSD76P.js?v=17fe988f:19490
+flushPassiveEffects @ chunk-WERSD76P.js?v=17fe988f:19447
+performSyncWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18868
+flushSyncCallbacks @ chunk-WERSD76P.js?v=17fe988f:9119
+commitRootImpl @ chunk-WERSD76P.js?v=17fe988f:19432
+commitRoot @ chunk-WERSD76P.js?v=17fe988f:19277
+finishConcurrentRender @ chunk-WERSD76P.js?v=17fe988f:18805
+performConcurrentWorkOnRoot @ chunk-WERSD76P.js?v=17fe988f:18718
+workLoop @ chunk-WERSD76P.js?v=17fe988f:197
+flushWork @ chunk-WERSD76P.js?v=17fe988f:176
+performWorkUntilDeadline @ chunk-WERSD76P.js?v=17fe988f:384Understand this warning
+audio.ts:25 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
