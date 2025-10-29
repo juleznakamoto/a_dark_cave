@@ -23,7 +23,7 @@ export default function BuildingProgressChart() {
   // Ring sizing parameters
   const startRadius = 14; // Inner radius of the first ring
   const ringSize = 3; // Thickness of each ring
-  const spaceBetweenRings = 4; // Gap between rings
+  const spaceBetweenRings = 3.2; // Gap between rings
   
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
@@ -300,7 +300,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-20 flex flex-col items-center justify-center">
+    <div className="w-full h-24 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (

@@ -28,7 +28,7 @@ export default function ItemProgressChart() {
   // Ring sizing parameters
   const startRadius = 14;
   const ringSize = 3;
-  const spaceBetweenRings = 4;
+  const spaceBetweenRings = 3.2;
 
   const getPaddingAngle = (ringIndex: number) => {
     return Math.max(2, 14 - ringIndex * 2);
@@ -496,7 +496,7 @@ export default function ItemProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-20 flex flex-col items-center justify-center">
+    <div className="w-full h-24 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (

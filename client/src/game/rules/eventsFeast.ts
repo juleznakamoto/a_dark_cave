@@ -52,7 +52,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return false;
     },
     triggerType: "resource",
-    timeProbability: 0.8,
+    timeProbability: 8,
     title: "Village Feast",
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     triggered: false,
