@@ -229,6 +229,36 @@ export default function VillagePanel() {
     );
   };
 
+  // Hold-to-repeat state management (moved outside to avoid conditional hooks)
+  const [holdState, setHoldState] = useState<{
+    interval: NodeJS.Timeout | null;
+    timeout: NodeJS.Timeout | null;
+  }>({ interval: null, timeout: null });
+
+  const startHold = (action: () => void) => {
+    // Execute immediately
+    action();
+    
+    // Wait 500ms before starting repeat
+    const timeout = setTimeout(() => {
+      // Then repeat every 100ms
+      const interval = setInterval(action, 100);
+      setHoldState(prev => ({ ...prev, interval }));
+    }, 500);
+    
+    setHoldState(prev => ({ ...prev, timeout }));
+  };
+
+  const stopHold = () => {
+    if (holdState.timeout) {
+      clearTimeout(holdState.timeout);
+    }
+    if (holdState.interval) {
+      clearInterval(holdState.interval);
+    }
+    setHoldState({ interval: null, timeout: null });
+  };
+
   const renderPopulationControl = (jobId: string, label: string) => {
     const currentCount = villagers[jobId as keyof typeof villagers] || 0;
 
@@ -245,35 +275,6 @@ export default function VillagePanel() {
         .join(", ");
 
       return productionText ? ` ${productionText}` : "";
-    };
-
-    // Hold-to-repeat functionality
-    const [holdInterval, setHoldInterval] = useState<NodeJS.Timeout | null>(null);
-    const [holdTimeout, setHoldTimeout] = useState<NodeJS.Timeout | null>(null);
-
-    const startHold = (action: () => void) => {
-      // Execute immediately
-      action();
-      
-      // Wait 500ms before starting repeat
-      const timeout = setTimeout(() => {
-        // Then repeat every 100ms
-        const interval = setInterval(action, 100);
-        setHoldInterval(interval);
-      }, 500);
-      
-      setHoldTimeout(timeout);
-    };
-
-    const stopHold = () => {
-      if (holdTimeout) {
-        clearTimeout(holdTimeout);
-        setHoldTimeout(null);
-      }
-      if (holdInterval) {
-        clearInterval(holdInterval);
-        setHoldInterval(null);
-      }
     };
 
     return (
