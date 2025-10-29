@@ -122,7 +122,7 @@ export default function MerchantDialog({
                           </div>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <div className="text-xs whitespace-pre-line">
+                          <div className="text-xs whitespace-nowrap">
                             {eventChoiceCostTooltip.getContent(choice.cost)}
                           </div>
                         </TooltipContent>
