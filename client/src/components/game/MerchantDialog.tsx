@@ -95,10 +95,6 @@ export default function MerchantDialog({
                       e.stopPropagation();
                       onChoice(choice.id);
                     } : undefined}
-                    onMouseDown={mobileTooltip.isMobile && choice.cost && !isPurchased ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                    onMouseUp={mobileTooltip.isMobile && choice.cost && !isPurchased ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
-                    onTouchStart={mobileTooltip.isMobile && choice.cost && !isPurchased ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                    onTouchEnd={mobileTooltip.isMobile && choice.cost && !isPurchased ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
                     variant="outline"
                     className={`w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}`}
                     disabled={isDisabled}
@@ -115,7 +111,13 @@ export default function MerchantDialog({
                     <TooltipProvider key={choice.id}>
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                         <TooltipTrigger asChild>
-                          <div onClick={(e) => mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e)}>
+                          <div 
+                            onClick={(e) => mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e)}
+                            onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
+                            onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
+                            onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
+                            onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
+                          >
                             {buttonContent}
                           </div>
                         </TooltipTrigger>
