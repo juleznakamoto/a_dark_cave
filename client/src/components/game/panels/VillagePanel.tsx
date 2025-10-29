@@ -332,12 +332,17 @@ export default function VillagePanel() {
                 <Tooltip>
                   <TooltipTrigger asChild>
                     <div className="text-xs text-primary flex items-center gap-3 mt-2">
-                      <CircularProgress
-                        value={feastProgress}
-                        size={16}
-                        strokeWidth={2}
-                        className="text-primary"
-                      />⟡
+                      <div className="relative inline-block">
+                        <CircularProgress
+                          value={feastProgress}
+                          size={16}
+                          strokeWidth={2}
+                          className="text-primary"
+                        />
+                        <span className="absolute inset-0 flex items-center justify-center text-[8px] text-yellow-500">
+                          ⟡
+                        </span>
+                      </div>
                       <span>
                         Feast Active: {minutesRemaining}:{secondsRemaining.toString().padStart(2, '0')}
                       </span>
