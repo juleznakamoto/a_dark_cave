@@ -90,3 +90,31 @@ export const feastTooltip: TooltipConfig = {
     return "Village Feast\n+100% Production Bonus";
   }
 };
+
+// Combat item tooltips
+export const combatItemTooltips: Record<string, TooltipConfig> = {
+  ember_bomb: {
+    getContent: (state) => {
+      const knowledge = state.stats.knowledge || 0;
+      const baseDamage = 10;
+      const knowledgeBonus = Math.floor(knowledge / 5);
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus}`;
+    }
+  },
+  ashfire_bomb: {
+    getContent: (state) => {
+      const knowledge = state.stats.knowledge || 0;
+      const baseDamage = 25;
+      const knowledgeBonus = Math.floor(knowledge / 5);
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus}`;
+    }
+  },
+  poison_arrows: {
+    getContent: (state) => {
+      const knowledge = state.stats.knowledge || 0;
+      const baseDamage = 15;
+      const knowledgeBonus = Math.floor(knowledge / 5);
+      return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus} per round`;
+    }
+  }
+};

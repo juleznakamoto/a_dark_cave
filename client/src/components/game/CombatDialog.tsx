@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import { combatItemTooltips } from "@/game/rules/tooltips";
 import {
   Dialog,
   DialogContent,
@@ -439,53 +440,43 @@ export default function CombatDialog({
                           ] > 0
                         );
                       })
-                      .map((item) => (
-                        <TooltipProvider key={item.id}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <div className="w-full">
-                                <Button
-                                  onClick={() => handleUseItem(item)}
-                                  disabled={
-                                    !item.available || isProcessingRound
-                                  }
-                                  variant="outline"
-                                  size="sm"
-                                  className="text-xs w-full"
-                                >
-                                  {item.name}
-                                </Button>
-                              </div>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              <p>Base Damage: {item.damage}</p>
-                              {getTotalKnowledge(gameState) >= 5 && (
-                                <p>
-                                  Knowledge Bonus: +
-                                  {Math.floor(getTotalKnowledge(gameState) / 5)}
-                                </p>
-                              )}
-                              <p>
-                                Total Damage:{" "}
-                                {item.damage +
-                                  Math.floor(getTotalKnowledge(gameState) / 5)} per round for 3 rounds
-                              </p>
-                              {item.id !== "poison_arrows" && (
-                                <p>
-                                  Available: {item.id === "ember_bomb"
-                                    ? `${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                                    : `${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`}
-                                </p>
-                              )}
-                              {item.id === "poison_arrows" && (
-                                <p>
-                                  Available: {poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}
-                                </p>
-                              )}
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ))}
+                      .map((item) => {
+                        const tooltipConfig = combatItemTooltips[item.id];
+                        const tooltipContent = tooltipConfig ? tooltipConfig.getContent(gameState) : '';
+                        const availabilityText = item.id === "poison_arrows" 
+                          ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
+                          : item.id === "ember_bomb"
+                            ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
+                            : `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`;
+                        
+                        return (
+                          <TooltipProvider key={item.id}>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <div className="w-full">
+                                  <Button
+                                    onClick={() => handleUseItem(item)}
+                                    disabled={
+                                      !item.available || isProcessingRound
+                                    }
+                                    variant="outline"
+                                    size="sm"
+                                    className="text-xs w-full"
+                                  >
+                                    {item.name}
+                                  </Button>
+                                </div>
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <div className="text-xs whitespace-pre-line">
+                                  {tooltipContent}
+                                  {'\n'}{availabilityText}
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        );
+                      })}
                   </div>
                 </div>
               )}
