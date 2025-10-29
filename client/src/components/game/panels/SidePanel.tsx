@@ -654,18 +654,15 @@ export default function SidePanel() {
               forceNotifications={buildings.clerksHut > 0}
             />
           )}
-          {/* Building Progress Chart */}
-          {
-            <div className="shrink-0 border-">
+          {/* Progress Charts - Side by Side */}
+          <div className="flex gap-4">
+            <div className="flex-1 shrink-0">
               <BuildingProgressChart />
             </div>
-          }
-          {/* Item Progress Chart */}
-          {
-            <div className="shrink-0 border-">
+            <div className="flex-1 shrink-0">
               <ItemProgressChart />
             </div>
-          }
+          </div>
         </div>
 
         {/* Second column - Everything else */}
