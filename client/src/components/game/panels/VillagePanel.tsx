@@ -338,7 +338,7 @@ export default function VillagePanel() {
                             value={feastProgress}
                             size={14}
                             strokeWidth={1.5}
-                            className="text-yellow-500"
+                            className="text-yellow-500 stroke-yellow"
                           />
                           <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500 -mt-[5px]">
                             ⟡
