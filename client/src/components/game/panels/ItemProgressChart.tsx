@@ -26,9 +26,9 @@ interface RingConfig {
 export default function ItemProgressChart() {
 
   // Ring sizing parameters
-  const startRadius = 16;
-  const ringSize = 4;
-  const spaceBetweenRings = 5;
+  const startRadius = 14;
+  const ringSize = 3;
+  const spaceBetweenRings = 4;
 
   const getPaddingAngle = (ringIndex: number) => {
     return Math.max(2, 14 - ringIndex * 2);
@@ -496,7 +496,7 @@ export default function ItemProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-36 flex flex-col items-center justify-center">
+    <div className="w-full h-20 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
@@ -540,7 +540,7 @@ export default function ItemProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1.5 : 0}
-                  stroke={segment.isFull ? tailwindToHex("red-800") : undefined}
+                  stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
                   style={{ outline: "none" }}
                 >

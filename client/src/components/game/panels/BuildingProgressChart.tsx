@@ -21,9 +21,9 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   // Ring sizing parameters
-  const startRadius = 16; // Inner radius of the first ring
-  const ringSize = 4; // Thickness of each ring
-  const spaceBetweenRings = 5; // Gap between rings
+  const startRadius = 14; // Inner radius of the first ring
+  const ringSize = 3; // Thickness of each ring
+  const spaceBetweenRings = 4; // Gap between rings
   
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
@@ -300,7 +300,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-36 flex flex-col items-center justify-center">
+    <div className="w-full h-20 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
@@ -344,7 +344,7 @@ export default function BuildingProgressChart() {
                   endAngle={segment.endAngle}
                   cornerRadius={5}
                   strokeWidth={segment.isFull ? 1.5 : 0}
-                  stroke={segment.isFull ? tailwindToHex("blue-800") : undefined}
+                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
                   isAnimationActive={false}
                   style={{ outline: 'none' }}
                 >
