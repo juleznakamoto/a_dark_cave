@@ -75,22 +75,15 @@ export function useMobileButtonTooltip() {
   }, []);
 
   const handleWrapperClick = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!isMobile || isCoolingDown) return;
-    
-    // On mobile with tooltip, handle inactive buttons specially
-    if (disabled) {
-      e.stopPropagation();
-      setOpenTooltipId(openTooltipId === id ? null : id);
-    }
+    // Not used anymore, keeping for backward compatibility
   };
 
   const handleMouseDown = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
     
-    // Don't prevent default to allow button interaction
     setPressingId(id);
     
-    // Start timer to show tooltip after 300ms
+    // Start timer to show tooltip after 300ms for both active and inactive buttons
     pressTimerRef.current = setTimeout(() => {
       setOpenTooltipId(id);
       setPressingId(null);
@@ -111,6 +104,7 @@ export function useMobileButtonTooltip() {
       e.preventDefault();
       e.stopPropagation();
       setPressingId(null);
+      setOpenTooltipId(null);
       return;
     }
     
@@ -120,6 +114,11 @@ export function useMobileButtonTooltip() {
       if (!disabled) {
         // Don't prevent default, allow normal button click
         return;
+      } else {
+        // For disabled buttons, quick tap should also show tooltip
+        e.preventDefault();
+        e.stopPropagation();
+        setOpenTooltipId(id);
       }
     }
     
@@ -131,7 +130,7 @@ export function useMobileButtonTooltip() {
     
     setPressingId(id);
     
-    // Start timer to show tooltip after 300ms
+    // Start timer to show tooltip after 300ms for both active and inactive buttons
     pressTimerRef.current = setTimeout(() => {
       setOpenTooltipId(id);
       setPressingId(null);
@@ -152,15 +151,21 @@ export function useMobileButtonTooltip() {
       e.preventDefault();
       e.stopPropagation();
       setPressingId(null);
+      setOpenTooltipId(null);
       return;
     }
     
-    // If we were pressing and didn't show tooltip yet, execute the action (only if not disabled)
+    // If we were pressing and didn't show tooltip yet
     if (pressingId === id) {
       setPressingId(null);
       if (!disabled) {
-        // Allow the click to proceed normally
+        // Allow the click to proceed normally for active buttons
         onClick();
+      } else {
+        // For disabled buttons, quick tap should also show tooltip
+        e.preventDefault();
+        e.stopPropagation();
+        setOpenTooltipId(id);
       }
     } else {
       setPressingId(null);
