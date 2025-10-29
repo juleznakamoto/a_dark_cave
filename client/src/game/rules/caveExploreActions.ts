@@ -50,8 +50,8 @@ function applyCaveExplorationLuckBonus(
   }
 }
 
-// Base relics for each cave exploration stage
-const caveRelics = {
+// Base items (relics and clothing) for each cave exploration stage
+const caveItems = {
   exploreCave: [],
   ventureDeeper: [
     {
@@ -103,8 +103,8 @@ const caveRelics = {
   ],
 };
 
-// Helper function to get inherited relics with 10% probability bonus
-function getInheritedRelics(actionId: string) {
+// Helper function to get inherited items with 10% probability bonus
+function getInheritedItems(actionId: string) {
   const stageOrder = [
     "exploreCave",
     "ventureDeeper",
@@ -115,32 +115,35 @@ function getInheritedRelics(actionId: string) {
   ];
   const currentIndex = stageOrder.indexOf(actionId);
 
-  const inheritedRelics: any = {};
+  const inheritedItems: any = {};
 
-  // Add relics from all previous stages with 1% probability bonus
+  // Add items from all previous stages with 1% probability bonus
   for (let i = 0; i <= currentIndex; i++) {
     const stageId = stageOrder[i];
-    const relics = caveRelics[stageId as keyof typeof caveRelics];
+    const items = caveItems[stageId as keyof typeof caveItems];
 
-    relics.forEach((relic) => {
+    items.forEach((item) => {
       const adjustedProbability =
         i === currentIndex
-          ? relic.probability
-          : relic.probability + 0.005 * (currentIndex - i);
+          ? item.probability
+          : item.probability + 0.005 * (currentIndex - i);
 
-      inheritedRelics[`relics.${relic.key}`] = {
+      // Determine the category (relics or clothing) based on the item's category
+      const category = item.category || 'relics';
+      
+      inheritedItems[`${category}.${item.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
         condition:
-          `!relics.${relic.key}` +
-          (relic.eventId ? ` && !story.seen.${relic.eventId}` : ""),
-        ...(relic.isChoice && { isChoice: relic.isChoice }),
-        ...(relic.eventId && { eventId: relic.eventId }),
+          `!${category}.${item.key}` +
+          (item.eventId ? ` && !story.seen.${item.eventId}` : ""),
+        ...(item.isChoice && { isChoice: item.isChoice }),
+        ...(item.eventId && { eventId: item.eventId }),
       };
     });
   }
 
-  return inheritedRelics;
+  return inheritedItems;
 }
 
 export const caveExploreActions: Record<string, Action> = {
@@ -190,7 +193,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.coal": { probability: 0.5, value: "random(2,5)" },
       "resources.iron": { probability: 0.5, value: "random(2,5)" },
       "resources.bones": { probability: 0.5, value: "random(2,5)" },
-      ...getInheritedRelics("exploreCave"),
+      ...getInheritedItems("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
       "story.seen.caveExplored": true
@@ -215,7 +218,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.iron": { probability: 0.55, value: "random(4,8)" },
       "resources.bones": { probability: 0.55, value: "random(4,8)" },
       "resources.sulfur": { probability: 0.55, value: "random(4,8)" },
-      ...getInheritedRelics("ventureDeeper"),
+      ...getInheritedItems("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
     },
@@ -240,7 +243,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.bones": { probability: 0.6, value: "random(6,11)" },
       "resources.sulfur": { probability: 0.6, value: "random(6,11)" },
       "resources.silver": { probability: 0.4, value: "random(2,8)" },
-      ...getInheritedRelics("descendFurther"),
+      ...getInheritedItems("descendFurther"),
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
     },
@@ -267,7 +270,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.sulfur": { probability: 0.65, value: "random(8,14)" },
       "resources.silver": { probability: 0.45, value: "random(4,10)" },
       "resources.gold": { probability: 0.2, value: "random(2,8)" },
-      ...getInheritedRelics("exploreRuins"),
+      ...getInheritedItems("exploreRuins"),
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
     },
@@ -295,7 +298,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.silver": { probability: 0.5, value: "random(6,12)" },
       "resources.gold": { probability: 0.25, value: "random(4,10)" },
       "resources.moonstone": { probability: 0.2, value: "random(1,8)" },
-      ...getInheritedRelics("exploreTemple"),
+      ...getInheritedItems("exploreTemple"),
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
     },
@@ -322,7 +325,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.silver": { probability: 0.55, value: "random(8,14)" },
       "resources.gold": { probability: 0.3, value: "random(6,12)" },
       "resources.moonstone": { probability: 0.25, value: "random(2,10)" },
-      ...getInheritedRelics("exploreCitadel"),
+      ...getInheritedItems("exploreCitadel"),
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
     },
