@@ -340,7 +340,7 @@ export default function VillagePanel() {
                             strokeWidth={1.5}
                             className="text-yellow-500"
                           />
-                          <span className="absolute inset-0 flex items-center justify-center text-[10px] text-yellow-500 -mt-[5px]">
+                          <span className="absolute inset-0 flex items-center justify-center text-[8px] text-yellow-500" style={{ lineHeight: '14px' }}>
                             ⟡
                           </span>
                         </div>
