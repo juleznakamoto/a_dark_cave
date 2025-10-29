@@ -18,6 +18,12 @@ export default function Game() {
       const savedState = await loadGame();
       if (savedState) {
         initialize(savedState);
+        
+        // If game is already started (fire is lit), start background music
+        if (savedState.story?.seen?.fireLit) {
+          const { audioManager } = await import('@/lib/audio');
+          await audioManager.startBackgroundMusic(0.3);
+        }
       }
 
       // Mark as initialized
