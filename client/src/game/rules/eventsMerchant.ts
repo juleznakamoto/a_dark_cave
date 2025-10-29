@@ -256,9 +256,6 @@ const toolTrades = [
 
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
-  // Check if we have 5+ stone huts for the 2x multiplier
-  const stoneHutMultiplier = state.buildings.stoneHut >= 5 ? 2 : 1;
-
   const availableResourceTrades = resourceTrades
     .sort(() => Math.random() - 0.5) // Shuffle
     .slice(0, 4) // Take first 4
@@ -271,14 +268,11 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         costOption.amounts[
           Math.floor(Math.random() * costOption.amounts.length)
         ];
-      const cost = Math.ceil(
-        baseCost * Math.max(0.01, 1 - knowledge * 0.01) * stoneHutMultiplier,
-      );
-      const giveAmount = trade.giveAmount * stoneHutMultiplier;
+      const cost = Math.ceil(baseCost * Math.max(0.01, 1 - knowledge * 0.01));
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}`,
+        label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -287,7 +281,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
                 ...state.resources,
                 [costOption.resource]:
                   (state.resources[costOption.resource] || 0) - cost,
-                [trade.give]: (state.resources[trade.give] || 0) + giveAmount,
+                [trade.give]:
+                  (state.resources[trade.give] || 0) + trade.giveAmount,
               },
             };
           }
@@ -332,7 +327,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `Buy ${trade.label}`,
+        label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -386,10 +381,10 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 0.010,
+    timeProbability: 0.01,
     title: "The Traveling Merchant",
     message:
-      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for trade'.",
+      "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
     triggered: false,
     priority: 3,
     repeatable: true,
