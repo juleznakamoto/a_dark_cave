@@ -36,6 +36,7 @@ interface GameStore extends GameState {
 
   // Cooldown management
   cooldowns: Record<string, number>;
+  cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
   // Population helpers
   current_population: number;
@@ -91,6 +92,7 @@ const mergeStateUpdates = (
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
+    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations }, // Merge cooldownDurations
     story: stateUpdates.story
       ? {
           ...prevState.story,
@@ -214,6 +216,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   devMode: import.meta.env.DEV,
   lastSaved: "Never",
   cooldowns: {},
+  cooldownDurations: {}, // Initialize cooldownDurations
   log: [],
   eventDialog: {
     isOpen: false,
@@ -262,6 +265,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: newState.log || [],
       effects: newState.effects || calculateTotalEffects(newState),
       bastion_stats: newState.bastion_stats || calculateBastionStats(newState),
+      cooldownDurations: newState.cooldownDurations || {}, // Ensure cooldownDurations is initialized
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -287,6 +291,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
 
     const result = executeGameAction(actionId, state);
+
+    // Store initial cooldown duration if it's a new cooldown
+    if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
+      const initialDuration = result.stateUpdates.cooldowns[actionId];
+      set((prevState) => ({
+        cooldownDurations: {
+          ...prevState.cooldownDurations,
+          [actionId]: initialDuration,
+        },
+      }));
+    }
+
 
     // Apply dev mode cooldown multiplier (0.1x)
     if (state.devMode && result.stateUpdates.cooldowns) {
@@ -392,20 +408,31 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
-    set((state) => ({
-      cooldowns: { ...state.cooldowns, [action]: duration },
-    }));
+    set((state) => {
+      const newState = {
+        cooldowns: { ...state.cooldowns, [action]: duration },
+        cooldownDurations: { ...state.cooldownDurations, [action]: duration }, // Also set initial duration
+      };
+      return newState;
+    });
   },
 
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
+      const newCooldownDurations = { ...state.cooldownDurations }; // Copy durations
+
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
           newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
         }
+
+        // If cooldown has reached 0, reset its duration as well
+        if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
+          delete newCooldownDurations[key];
+        }
       }
-      return { cooldowns: newCooldowns };
+      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
     });
   },
 
@@ -414,6 +441,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ...defaultGameState,
       activeTab: "cave",
       cooldowns: {},
+      cooldownDurations: {}, // Reset cooldownDurations
       log: [],
       devMode: import.meta.env.DEV,
       effects: calculateTotalEffects(defaultGameState),
@@ -440,20 +468,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const loadedState = {
         ...savedState,
         activeTab: "cave",
-        cooldowns: {},
+        cooldowns: savedState.cooldowns || {},
+        cooldownDurations: savedState.cooldownDurations || {}, // Load cooldownDurations
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
       };
-      
+
       set(loadedState);
     } else {
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
+        cooldownDurations: {}, // Initialize cooldownDurations
         log: [],
         devMode: import.meta.env.DEV,
         effects: calculateTotalEffects(defaultGameState),
@@ -674,7 +704,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           ...prevState,
           ...updatedChanges,
         };
-        
+
         // Ensure events object is properly merged
         if (updatedChanges.events) {
           newState.events = {
@@ -682,7 +712,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...updatedChanges.events,
           };
         }
-        
+
         return newState;
       });
 

@@ -39,8 +39,7 @@ export default function CooldownButton({
   tooltip,
   ...props
 }: CooldownButtonProps) {
-  const { cooldowns } = useGameStore();
-  const initialCooldownRef = useRef<number>(0);
+  const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -52,30 +51,26 @@ export default function CooldownButton({
 
   // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
+  const initialCooldown = cooldownDurations[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
-  // Track the initial cooldown value when cooldown starts
+  // Track first render for transition
   useEffect(() => {
-    if (isCoolingDown && initialCooldownRef.current === 0) {
-      // New cooldown started
-      initialCooldownRef.current = currentCooldown;
+    if (isCoolingDown) {
       isFirstRenderRef.current = true;
-
       // Allow transition after initial render (next frame)
       requestAnimationFrame(() => {
         isFirstRenderRef.current = false;
       });
-    } else if (!isCoolingDown) {
-      // Cooldown finished, reset
-      initialCooldownRef.current = 0;
+    } else {
       isFirstRenderRef.current = true;
     }
-  }, [isCoolingDown, currentCooldown]);
+  }, [isCoolingDown]);
 
   // Calculate width percentage directly from remaining cooldown
   const overlayWidth =
-    isCoolingDown && initialCooldownRef.current > 0
-      ? (currentCooldown / initialCooldownRef.current) * 100
+    isCoolingDown && initialCooldown > 0
+      ? (currentCooldown / initialCooldown) * 100
       : 0;
 
   const actionExecutedRef = useRef<boolean>(false);
