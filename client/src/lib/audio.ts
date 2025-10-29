@@ -175,7 +175,7 @@ export class AudioManager {
     console.log('Sound URLs registered for lazy loading');
   }
 
-  async startBackgroundMusic(volume: number = 0.02): Promise<void> {
+  async startBackgroundMusic(volume: number = 0.3): Promise<void> {
     await this.playLoopingSound('backgroundMusic', volume);
   }
 }
