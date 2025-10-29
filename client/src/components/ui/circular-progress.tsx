@@ -59,14 +59,15 @@ const CircularProgress = React.forwardRef<
           cx={size / 2}
           cy={size / 2}
           r={radius}
-          stroke="lightgrey"
+          stroke="currentColor"
           strokeWidth={strokeWidth}
           fill="none"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           className={cn(
-            "text-primary",
-            shouldAnimate && "transition-all duration-300 ease-in-out"
+            "text-[lightgrey]",
+            shouldAnimate && "transition-all duration-300 ease-in-out",
+            className
           )}
           strokeLinecap="round"
         />
