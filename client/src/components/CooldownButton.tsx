@@ -78,10 +78,17 @@ export default function CooldownButton({
       ? (currentCooldown / initialCooldownRef.current) * 100
       : 0;
 
+  const actionExecutedRef = useRef<boolean>(false);
+
   const handleClick = (e: React.MouseEvent) => {
     if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
+      actionExecutedRef.current = true;
       onClick();
+      // Reset the flag after a short delay
+      setTimeout(() => {
+        actionExecutedRef.current = false;
+      }, 100);
     }
   };
 
@@ -127,6 +134,9 @@ export default function CooldownButton({
     <div
       className="relative inline-block"
       onClick={mobileTooltip.isMobile ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) return;
+        
         // Allow showing tooltip during cooldown
         if (isCoolingDown) {
           e.stopPropagation();
@@ -140,6 +150,13 @@ export default function CooldownButton({
         mobileTooltip.handleMouseDown(buttonId, isButtonDisabled || isCoolingDown, false, e);
       } : undefined}
       onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        
         // Don't execute action during cooldown
         if (isCoolingDown) {
           mobileTooltip.handleMouseUp(buttonId, true, onClick, e);
@@ -152,6 +169,13 @@ export default function CooldownButton({
         mobileTooltip.handleTouchStart(buttonId, isButtonDisabled || isCoolingDown, false, e);
       } : undefined}
       onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+        
         // Don't execute action during cooldown
         if (isCoolingDown) {
           mobileTooltip.handleTouchEnd(buttonId, true, onClick, e);
