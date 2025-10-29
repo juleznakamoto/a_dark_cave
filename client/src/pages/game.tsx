@@ -11,6 +11,7 @@ export default function Game() {
   const { initialize } = useGameStore();
   const { eventDialog, setEventDialog, combatDialog, setCombatDialog } = useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
+  const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
     const initializeGame = async () => {
@@ -18,6 +19,11 @@ export default function Game() {
       const savedState = await loadGame();
       if (savedState) {
         initialize(savedState);
+        
+        // If game is already started (fire is lit), flag that music should start on user gesture
+        if (savedState.story?.seen?.fireLit) {
+          setShouldStartMusic(true);
+        }
       }
 
       // Mark as initialized
@@ -29,6 +35,37 @@ export default function Game() {
 
     initializeGame();
   }, [initialize]);
+
+  // Start background music on first user interaction (required by browser autoplay policies)
+  useEffect(() => {
+    if (!shouldStartMusic) return;
+
+    const handleUserGesture = async () => {
+      try {
+        const { audioManager } = await import('@/lib/audio');
+        await audioManager.startBackgroundMusic(0.3);
+        setShouldStartMusic(false);
+        
+        // Remove listeners after music starts
+        document.removeEventListener('click', handleUserGesture);
+        document.removeEventListener('keydown', handleUserGesture);
+        document.removeEventListener('touchstart', handleUserGesture);
+      } catch (error) {
+        console.warn('Failed to start background music:', error);
+      }
+    };
+
+    // Listen for various user gestures
+    document.addEventListener('click', handleUserGesture);
+    document.addEventListener('keydown', handleUserGesture);
+    document.addEventListener('touchstart', handleUserGesture);
+
+    return () => {
+      document.removeEventListener('click', handleUserGesture);
+      document.removeEventListener('keydown', handleUserGesture);
+      document.removeEventListener('touchstart', handleUserGesture);
+    };
+  }, [shouldStartMusic]);
 
   if (!isInitialized) {
     return <div className="min-h-screen bg-black"></div>; // Black screen while loading
