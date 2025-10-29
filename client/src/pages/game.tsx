@@ -6,10 +6,10 @@ import { loadGame } from "@/game/save";
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
 
-
 export default function Game() {
   const { initialize } = useGameStore();
-  const { eventDialog, setEventDialog, combatDialog, setCombatDialog } = useGameStore();
+  const { eventDialog, setEventDialog, combatDialog, setCombatDialog } =
+    useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
@@ -19,7 +19,7 @@ export default function Game() {
       const savedState = await loadGame();
       if (savedState) {
         initialize(savedState);
-        
+
         // If game is already started (fire is lit), flag that music should start on user gesture
         if (savedState.story?.seen?.fireLit) {
           setShouldStartMusic(true);
@@ -42,28 +42,28 @@ export default function Game() {
 
     const handleUserGesture = async () => {
       try {
-        const { audioManager } = await import('@/lib/audio');
-        await audioManager.startBackgroundMusic(0.3);
+        const { audioManager } = await import("@/lib/audio");
+        await audioManager.startBackgroundMusic(0.15);
         setShouldStartMusic(false);
-        
+
         // Remove listeners after music starts
-        document.removeEventListener('click', handleUserGesture);
-        document.removeEventListener('keydown', handleUserGesture);
-        document.removeEventListener('touchstart', handleUserGesture);
+        document.removeEventListener("click", handleUserGesture);
+        document.removeEventListener("keydown", handleUserGesture);
+        document.removeEventListener("touchstart", handleUserGesture);
       } catch (error) {
-        console.warn('Failed to start background music:', error);
+        console.warn("Failed to start background music:", error);
       }
     };
 
     // Listen for various user gestures
-    document.addEventListener('click', handleUserGesture);
-    document.addEventListener('keydown', handleUserGesture);
-    document.addEventListener('touchstart', handleUserGesture);
+    document.addEventListener("click", handleUserGesture);
+    document.addEventListener("keydown", handleUserGesture);
+    document.addEventListener("touchstart", handleUserGesture);
 
     return () => {
-      document.removeEventListener('click', handleUserGesture);
-      document.removeEventListener('keydown', handleUserGesture);
-      document.removeEventListener('touchstart', handleUserGesture);
+      document.removeEventListener("click", handleUserGesture);
+      document.removeEventListener("keydown", handleUserGesture);
+      document.removeEventListener("touchstart", handleUserGesture);
     };
   }, [shouldStartMusic]);
 
