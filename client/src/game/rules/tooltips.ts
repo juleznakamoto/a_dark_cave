@@ -118,3 +118,10 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
     }
   }
 };
+
+// Event choice cost tooltip - formats cost string
+export const eventChoiceCostTooltip = {
+  getContent: (cost: string) => {
+    return `-${cost}`;
+  }
+};

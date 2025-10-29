@@ -227,10 +227,10 @@ export default function CombatDialog({
         });
       }
     }
-    
+
     // Update bastion stats after combat to reflect any building damage
     gameState.updateBastionStats();
-    
+
     onClose();
   };
 
@@ -448,7 +448,7 @@ export default function CombatDialog({
                           : item.id === "ember_bomb"
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
                             : `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`;
-                        
+
                         return (
                           <TooltipProvider key={item.id}>
                             <Tooltip>

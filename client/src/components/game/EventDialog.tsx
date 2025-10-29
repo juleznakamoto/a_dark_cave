@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
   Dialog,
   DialogContent,
@@ -302,7 +303,7 @@ export default function EventDialog({
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        -{cost}
+                        {eventChoiceCostTooltip.getContent(cost)}
                       </div>
                     </TooltipContent>
                   </Tooltip>

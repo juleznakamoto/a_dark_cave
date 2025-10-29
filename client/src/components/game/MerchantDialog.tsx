@@ -1,6 +1,7 @@
 import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
+import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   DialogHeader,
@@ -120,7 +121,7 @@ export default function MerchantDialog({
                         </TooltipTrigger>
                         <TooltipContent>
                           <div className="text-xs whitespace-nowrap">
-                            -{choice.cost}
+                            {eventChoiceCostTooltip.getContent(choice.cost)}
                           </div>
                         </TooltipContent>
                       </Tooltip>
