@@ -9,7 +9,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "Ring of Drowned",
     message:
-      "In the fogotten city, you find a peculiar ring that drips constantly with water, despite there being no source. Do you dare to keep it?",
+      "In the fogotten city, you find a strange ring that drips constantly with water. Do you keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -70,7 +70,7 @@ export const caveEvents: Record<string, GameEvent> = {
             },
           },
           _logMessage:
-            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring's pull, picks it up despite your indecision. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land as the cursed ring claims its price.",
+            "Your hesitation proves fatal. One of your men, unable to resist the mysterious ring, picks it up. Immediately, water begins pouring from his mouth in an endless torrent. He drowns on dry land.",
         };
       },
     },
@@ -82,7 +82,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Shadow Flute",
     message:
-      "Deep in the cave you discover a bone flute of disturbing craftsmanship. When you pick it up and play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep the instrument?",
+      "Deep in the cave you discover a bone flute of disturbing craftsmanship. As you play it, the shadows around you begin to move in unnatural ways, as if dancing to a melody. Do you keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -146,7 +146,7 @@ export const caveEvents: Record<string, GameEvent> = {
             },
           },
           _logMessage:
-            "Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour 2 members of your fellowship, pulling them into the darkness between worlds. Their screams echo briefly before being swallowed by silence.",
+            `Your hesitation proves costly. The shadows grow hungry and violent, writhing with unnatural life. They surge forward and devour ${devoured} members of your fellowship. Their screams echo briefly before being swallowed by silence.`,
         };
       },
     },
@@ -158,7 +158,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Hollow King Scepter",
     message:
-      "In the throne room of the ruined citadel, you find a magnificent scepter of obsidian. This must have belonged to the king of this lost city. Dark knowledge flows from it, but so does terrible madness. Do you keep it?",
+      "In the throne room of the citadel, you find a magnificent scepter of obsidian. It must have belonged to the king of this lost city. Dark knowledge flows from it. Do you keep it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -220,7 +220,7 @@ export const caveEvents: Record<string, GameEvent> = {
               hollowKingScepterChoice: true,
             },
           },
-          _logMessage: `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously over who should claim it. In the bloody melee that follows ${deaths} of your fellowship lie dead on the ancient throne room floor, their blood mixing with the dust of ages.`,
+          _logMessage: `As you stand frozen in indecision, your men grow impatient and greedy. One reaches for the scepter, then another. Soon they are fighting viciously. In the bloody melee ${deaths} of your fellowship die, their blood mixing with the dust of ages.`,
         };
       },
     },
@@ -232,7 +232,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Bone Dice",
     message:
-      "As you descend further, you find a set of bone dice carved with ancient runes. Rolling them in your palm, you feel a surge of luck, but a subtle unease lingers. These dice have seen much fortune... and much tragedy. Do you keep them?",
+      "As you descend further, you find a set of bone dice carved with ancient runes. These dice have seen much fortune... and much tragedy. Do you keep them?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -273,7 +273,7 @@ export const caveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide the dice carry too much risk and leave them on the cave floor. As you walk away, you hear them rattle once, as if rolling themselves in farewell.",
+              "You decide to leave them on the cave floor. As you walk away, you hear them rattle once, as if rolling themselves in farewell.",
           };
         },
       },
@@ -282,10 +282,7 @@ export const caveEvents: Record<string, GameEvent> = {
       id: "leaveDice",
       label: "Leave them",
       effect: (state: GameState) => {
-        const cursed = Math.floor(Math.random() * 2) + 1; // 1-2 villagers
-        const deathResult = killVillagers(state, cursed);
         return {
-          ...deathResult,
           story: {
             ...state.story,
             seen: {
@@ -293,7 +290,7 @@ export const caveEvents: Record<string, GameEvent> = {
               boneDiceChoice: true,
             },
           },
-          _logMessage: `Your hesitation angers the ancient magic within the dice. They begin rolling on their own, each result bringing misfortune. ${cursed} of your men suddenly collapse, victims of the dice's terrible curse. The bones finally stop rolling, their revenge complete.`,
+          _logMessage: `Your hesitation seems to anger the ancient magic within the dice. They roll from your hand into the darkness.`,
         };
       },
     },
@@ -308,7 +305,7 @@ export const caveEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "In the citadel’s lowest depths you find the colossal portal forged from an unknown, unyielding metal. Perhaps only the fury of fire can shatter its seal.",
+      "In the citadel’s lowest depths you find the colossal portal forged from an unknown, unyielding metal. Perhaps the fury of fire can shatter its seal.",
     triggered: false,
     priority: 5,
     repeatable: false,
