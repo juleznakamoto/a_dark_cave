@@ -165,31 +165,30 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
     });
   }
 
-  // Apply Flame's Touch blessing bonus and dev mode multiplier
-  baseProduction.forEach((prod) => {
-    let { amount } = prod;
-
-    // Apply Flame's Touch blessing bonus to steel production
-    if (state && jobId === 'steel_forger' && prod.resource === 'steel' && prod.amount > 0) {
-      if (state.blessings?.flames_touch) {
-        amount += 1; // +1 steel per forger
+  // Apply Flame's Touch blessing bonus to steel production
+  if (state && jobId === 'steel_forger') {
+    baseProduction.forEach((prod) => {
+      if (prod.resource === 'steel' && prod.baseAmount > 0) {
+        let bonusSteel = 0;
+        if (state.blessings?.flames_touch) {
+          bonusSteel = 1; // +1 steel per forger
+        }
+        if (state.blessings?.flames_touch_enhanced) {
+          bonusSteel = 3; // +3 steel per forger (replaces the +1 from basic)
+        }
+        prod.totalAmount += bonusSteel * count;
       }
-      if (state.blessings?.flames_touch_enhanced) {
-        amount += 3; // +3 steel per forger (replaces the +1 from basic)
-      }
-    }
+    });
+  }
 
-    // Apply 100x multiplier in dev mode
-    if (state && state.devMode) {
-      amount *= 100;
-    }
+  // Apply 100x multiplier in dev mode
+  if (state && state.devMode) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount *= 100;
+    });
+  }
 
-    return {
-      ...prod,
-      amount,
-      totalAmount: amount * count,
-    };
-  });
+  return baseProduction;
 };
 
 export const getPopulationProductionText = (jobId: string): string => {
