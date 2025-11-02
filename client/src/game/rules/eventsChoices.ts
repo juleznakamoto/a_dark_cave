@@ -901,6 +901,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "acceptTribe",
         label: "Help them (2500 fur)",
+        cost: "2500 fur",
         effect: (state: GameState) => {
           if (state.resources.fur < 2500) {
             return {
