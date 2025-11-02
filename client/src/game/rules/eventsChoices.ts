@@ -893,7 +893,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "The Wandering Tribe",
     message:
-      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. If you help us build fur tents to shelter our people, we will join your community and contribute to its strength.'",
+      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. If you help us build fur tents to shelter our people, we will join your community.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -929,7 +929,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               free: (state.villagers.free || 0) + canAdd,
             },
             _logMessage:
-              "The tribe gratefully accepts your help. They set up their fur tents and join your community. 10 new villagers have joined your village.",
+              "The tribe gratefully accepts your help. They set up their fur tents and join your community.",
           };
         },
       },
@@ -939,7 +939,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You decline their offer. The tribe nods respectfully and continues their journey into the wilderness.",
+              "You decline their offer. The tribe leader nods respectfully and continues their journey into the wilderness.",
           };
         },
       },
