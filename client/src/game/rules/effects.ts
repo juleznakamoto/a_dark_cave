@@ -887,7 +887,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   dagons_gift: {
     id: "dagons_gift",
     name: "Dagon's Gift",
-    description: "+100% resources when hunting",
+    description: "+100% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -922,7 +922,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ashen_embrace: {
     id: "ashen_embrace",
     name: "Ashen Embrace",
-    description: "+100% resources when mining",
+    description: "+100% Mine Bonus",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -936,7 +936,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
     name: "Dagon's Great Gift",
-    description: "+300% resources when hunting",
+    description: "+300% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {
@@ -971,7 +971,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ashen_embrace_enhanced: {
     id: "ashen_embrace_enhanced",
     name: "Deep Ashen Embrace",
-    description: "+300% resources when mining",
+    description: "+300% Mine Bonus",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -984,7 +984,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   forests_grace: {
     id: "forests_grace",
     name: "The Forest's Grace",
-    description: "+25% resources when hunting",
+    description: "+25% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {

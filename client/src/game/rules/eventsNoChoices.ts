@@ -41,7 +41,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     title: "The Blind Druid",
     message:
-      "A blind druid emerges from the forest, his eyes milky white yet seeing far more than most. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion,' he says in a voice like rustling leaves. 'They grant you their blessing.' He touches the shrine with his gnarled staff, and you feel the forest's power flow through you.",
+      "A blind druid emerges from the forest. He approaches the shrine and nods approvingly. 'The gods of the forest are pleased with your devotion, they grant you their blessing'.",
     triggered: false,
     priority: 5,
     visualEffect: {

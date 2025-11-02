@@ -2,7 +2,6 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
 import { applyActionEffects } from "./index";
 import { getActionBonuses } from "@/game/rules/effectsCalculation";
-import { gameEvents } from "./events";
 
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
@@ -101,7 +100,7 @@ export function handleBoneTotems(
   }
 
   // Check for Ring of Clarity discovery BEFORE assigning to result
-  if (!state.relics.ring_of_clarity) {
+  if (!state.clothing.ring_of_clarity) {
     const baseProbability = 0.02; // 2%
     const bonusPerUse = 0.01; // 1%
     const totalProbability = baseProbability + usageCount * bonusPerUse;
@@ -111,10 +110,10 @@ export function handleBoneTotems(
 
     if (roll < totalProbability) {
       // Add ring directly to relics
-      if (!effectUpdates.relics) {
-        effectUpdates.relics = { ...state.relics };
+      if (!effectUpdates.clothing) {
+        effectUpdates.clothing = { ...state.clothing };
       }
-      effectUpdates.relics.ring_of_clarity = true;
+      effectUpdates.clothing.ring_of_clarity = true;
 
       // Add log entry for the ring discovery
       result.logEntries!.push({

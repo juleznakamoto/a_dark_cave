@@ -99,7 +99,6 @@ export const caveCraftWeapons: Record<string, Action> = {
       "buildings.blacksmith": 1,
       "weapons.crude_bow": true,
       "weapons.huntsman_bow": false,
-      "story.seen.hasIron": true,
     },
     cost: {
       "resources.wood": 500,
