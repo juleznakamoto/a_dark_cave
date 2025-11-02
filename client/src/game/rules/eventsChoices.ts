@@ -884,6 +884,68 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  wanderingTribe: {
+    id: "wanderingTribe",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 4 &&
+      state.resources.fur >= 2500,
+    triggerType: "resource",
+    timeProbability: 30,
+    title: "The Wandering Tribe",
+    message:
+      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. If you help us build fur tents to shelter our people, we will join your community and contribute to its strength.'",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "acceptTribe",
+        label: "Help them (2500 fur)",
+        effect: (state: GameState) => {
+          if (state.resources.fur < 2500) {
+            return {
+              _logMessage: "You don't have enough fur to help them.",
+            };
+          }
+
+          const currentPop = Object.values(state.villagers).reduce(
+            (sum, count) => sum + (count || 0),
+            0,
+          );
+          const maxPop = getMaxPopulation(state);
+          const canAdd = Math.min(10, maxPop + 10 - currentPop);
+
+          return {
+            resources: {
+              ...state.resources,
+              fur: state.resources.fur - 2500,
+            },
+            buildings: {
+              ...state.buildings,
+              furTents: (state.buildings.furTents || 0) + 1,
+            },
+            villagers: {
+              ...state.villagers,
+              free: (state.villagers.free || 0) + canAdd,
+            },
+            _logMessage:
+              "The tribe gratefully accepts your help. They set up their fur tents and join your community. 10 new villagers have joined your village.",
+          };
+        },
+      },
+      {
+        id: "refuseTribe",
+        label: "Refuse",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decline their offer. The tribe nods respectfully and continues their journey into the wilderness.",
+          };
+        },
+      },
+    ],
+  },
+
   sanctumDedication: {
     id: "sanctumDedication",
     condition: (state: GameState) =>

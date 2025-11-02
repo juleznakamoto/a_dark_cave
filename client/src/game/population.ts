@@ -155,7 +155,7 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
   if (state?.buildings) {
     baseProduction.forEach((prod) => {
       let buildingBonus = 0;
-      
+
       // Check all buildings for production effects that apply to this job
       Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
         if (buildAction.productionEffects?.[jobId]?.[prod.resource]) {
@@ -163,13 +163,13 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
           const buildingKey = actionId.replace('build', '');
           const buildingName = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
           const buildingCount = state.buildings[buildingName as keyof typeof state.buildings] || 0;
-          
+
           if (buildingCount > 0) {
             buildingBonus += buildAction.productionEffects[jobId][prod.resource] * buildingCount;
           }
         }
       });
-      
+
       prod.totalAmount = prod.baseAmount * count + buildingBonus;
     });
   }
@@ -223,21 +223,22 @@ export const getPopulationProductionText = (jobId: string): string => {
 };
 
 
-export const getMaxPopulation = (gameState: GameState): number => {
-  const woodenHutCapacity = (gameState.buildings.woodenHut || 0) * 2;
-  const stoneHutCapacity = (gameState.buildings.stoneHut || 0) * 4;
-  const longhouseCapacity = (gameState.buildings.longhouse || 0) * 8;
+export function getMaxPopulation(state: GameState): number {
+  const woodenHutCapacity = (state.buildings.woodenHut || 0) * 2;
+  const stoneHutCapacity = (state.buildings.stoneHut || 0) * 4;
+  const longhouseCapacity = (state.buildings.longhouse || 0) * 8;
+  const furTentsCapacity = (state.buildings.furTents || 0) * 10;
 
   // Temple dedication bonuses
   let templeBonus = 0;
-  if (gameState.blessings.flames_touch) {
+  if (state.blessings.flames_touch) {
     templeBonus = 4;
-  } else if (gameState.blessings.flames_touch_enhanced) {
+  } else if (state.blessings.flames_touch_enhanced) {
     templeBonus = 8;
   }
 
-  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + templeBonus;
-};
+  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + furTentsCapacity + templeBonus;
+}
 
 // Alias for backward compatibility
 export const calculateMaxPopulation = getMaxPopulation;

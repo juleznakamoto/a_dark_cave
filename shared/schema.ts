@@ -176,6 +176,8 @@ export const gameStateSchema = z.object({
       woodenHut: z.number().default(0),
       stoneHut: z.number().default(0),
       longhouse: z.number().default(0),
+      furTents: z.number().default(0),
+      altar: z.number().default(0),
       cabin: z.number().default(0),
       greatCabin: z.number().default(0),
       timberMill: z.number().default(0),
