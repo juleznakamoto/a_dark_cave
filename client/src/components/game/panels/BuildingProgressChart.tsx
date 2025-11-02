@@ -56,6 +56,12 @@ export default function BuildingProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Longhouses",
       },
+      {
+        buildingType: "furTents",
+        maxCount: 1,
+        color: tailwindToHex("gray-400/80"),
+        label: "Fur Tents",
+      },
     ],
     // Second ring: Basic crafting and trade buildings
     [
