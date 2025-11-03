@@ -1853,7 +1853,7 @@ export function handleBuildFortifiedMoat(
     fortifiedMoatResult.logEntries!.push({
       id: `fortified-moat-built-${Date.now()}`,
       message:
-        "A deep moat surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
+        "A deep moat now surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
       timestamp: Date.now(),
       type: "system",
     });
