@@ -1,4 +1,5 @@
 import { GameState } from "../state";
+import { getTotalKnowledge } from "./effectsCalculation";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -18,57 +19,57 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
       const defense = 10 + level * 5;
       const range = 20 + level * 10;
       return `Defense: ${defense}\nRange: ${range}`;
-    }
+    },
   },
   palisades: {
     getContent: (state) => {
       const level = state.buildings.palisades || 0;
       const defense = 5 + level * 3;
       return `Defense: ${defense}`;
-    }
+    },
   },
 };
 
 // Job/Population tooltips
 export const jobTooltips: Record<string, TooltipConfig> = {
   gatherer: {
-    getContent: () => "+3 Wood per production cycle"
+    getContent: () => "+3 Wood per production cycle",
   },
   hunter: {
-    getContent: () => "+2 Food per production cycle"
+    getContent: () => "+2 Food per production cycle",
   },
   iron_miner: {
-    getContent: () => "+1 Iron per production cycle"
+    getContent: () => "+1 Iron per production cycle",
   },
   coal_miner: {
-    getContent: () => "+1 Coal per production cycle"
+    getContent: () => "+1 Coal per production cycle",
   },
   steel_forger: {
-    getContent: () => "+1 Steel per production cycle"
+    getContent: () => "+1 Steel per production cycle",
   },
   sulfur_miner: {
-    getContent: () => "+1 Sulfur per production cycle"
+    getContent: () => "+1 Sulfur per production cycle",
   },
   silver_miner: {
-    getContent: () => "+1 Silver per production cycle"
+    getContent: () => "+1 Silver per production cycle",
   },
   obsidian_miner: {
-    getContent: () => "+1 Obsidian per production cycle"
+    getContent: () => "+1 Obsidian per production cycle",
   },
   adamant_miner: {
-    getContent: () => "+1 Adamant per production cycle"
+    getContent: () => "+1 Adamant per production cycle",
   },
   moonstone_miner: {
-    getContent: () => "+1 Moonstone per production cycle"
+    getContent: () => "+1 Moonstone per production cycle",
   },
   tanner: {
-    getContent: () => "+1 Leather per production cycle"
+    getContent: () => "+1 Leather per production cycle",
   },
   powder_maker: {
-    getContent: () => "+1 Black Powder per production cycle"
+    getContent: () => "+1 Black Powder per production cycle",
   },
   ashfire_dust_maker: {
-    getContent: () => "+1 Ashfire Dust per production cycle"
+    getContent: () => "+1 Ashfire Dust per production cycle",
   },
 };
 
@@ -80,42 +81,42 @@ export const madnessTooltip: TooltipConfig = {
       return `+${eventMadness} Madness from Events`;
     }
     return "";
-  }
+  },
 };
 
 // Feast progress tooltip
 export const feastTooltip: TooltipConfig = {
   getContent: () => {
     return "Village Feast\n+100% Production Bonus";
-  }
+  },
 };
 
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
     getContent: (state) => {
-      const knowledge = state.stats.knowledge || 0;
+      const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 10;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus}`;
-    }
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+    },
   },
   ashfire_bomb: {
     getContent: (state) => {
-      const knowledge = state.stats.knowledge || 0;
+      const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 25;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus}`;
-    }
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+    },
   },
   poison_arrows: {
     getContent: (state) => {
-      const knowledge = state.stats.knowledge || 0;
+      const knowledge = getTotalKnowledge(state) || 0;
       const baseDamage = 15;
       const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ''}Total Damage: ${baseDamage + knowledgeBonus} per round`;
-    }
-  }
+      return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus} per round`;
+    },
+  },
 };
 
 // Event choice cost tooltip - formats cost string
@@ -124,11 +125,11 @@ export const eventChoiceCostTooltip = {
     if (!cost) return "";
 
     // Handle string cost (e.g., "5 gold")
-    if (typeof cost === 'string') {
-      const parts = cost.split(' ');
+    if (typeof cost === "string") {
+      const parts = cost.split(" ");
       if (parts.length >= 2) {
         const amount = parts[0];
-        const resource = parts.slice(1).join(' ');
+        const resource = parts.slice(1).join(" ");
         return `-${amount} ${capitalizeWords(resource)}`;
       }
       return `-${cost}`;
@@ -138,12 +139,16 @@ export const eventChoiceCostTooltip = {
     return Object.entries(cost)
       .map(([resource, amount]) => `-${amount} ${capitalizeWords(resource)}`)
       .join("\n");
-  }
+  },
 };
 
 // Helper function to capitalize the first letter of each word in a string
 // Assuming this function is defined elsewhere and available in scope.
 // If not, it would need to be added. For example:
 function capitalizeWords(str: string): string {
-  return str.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 }

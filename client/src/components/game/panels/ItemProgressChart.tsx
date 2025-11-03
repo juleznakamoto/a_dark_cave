@@ -24,7 +24,6 @@ interface RingConfig {
 }
 
 export default function ItemProgressChart() {
-
   // Ring sizing parameters
   const startRadius = 12;
   const ringSize = 3;
@@ -81,6 +80,22 @@ export default function ItemProgressChart() {
         label: "Lanterns",
         category: "tools",
         maxCount: 4,
+      },
+      {
+        itemType: "blacksmith_hammer",
+        itemKeys: ["blacksmith_hammer"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Blacksmith Hammer",
+        category: "tools",
+        maxCount: 1,
+      },
+      {
+        itemType: "mastermason_chisel",
+        itemKeys: ["mastermason_chisel"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Mastermason Chisel",
+        category: "tools",
+        maxCount: 1,
       },
     ],
 
@@ -360,25 +375,8 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
     ],
-    // Fifth ring: Special Tools
-    [
-      {
-        itemType: "blacksmith_hammer",
-        itemKeys: ["blacksmith_hammer"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Blacksmith Hammer",
-        category: "tools",
-        maxCount: 1,
-      },
-      {
-        itemType: "mastermason_chisel",
-        itemKeys: ["mastermason_chisel"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Mastermason Chisel",
-        category: "tools",
-        maxCount: 1,
-      },
-    ],
+    // Fifth ring: ???
+    [],
   ];
 
   // Calculate ring configurations with radius values
