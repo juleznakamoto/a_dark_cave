@@ -451,7 +451,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldownDurations: {},
       log: [],
       devMode: import.meta.env.DEV,
-      boostMode: false, // Reset boost mode flag
+      boostMode: currentBoostMode,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
     };
@@ -497,7 +497,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
-        boostMode: currentBoostMode, // Preserve boost mode flag
+        boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
       };
@@ -515,19 +515,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
       };
-
-      // Apply boost mode resources if active
-      if (currentBoostMode) {
-        newGameState.resources = {
-          ...newGameState.resources,
-          wood: 5000,
-          stone: 5000,
-          food: 5000,
-          torch: 100,
-          iron: 1000,
-          steel: 500,
-        };
-      }
 
       set(newGameState);
 
