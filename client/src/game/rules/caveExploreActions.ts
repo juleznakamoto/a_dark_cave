@@ -445,8 +445,9 @@ export function handleLightFire(
 
   result.logEntries!.push({
     id: `fire-lit-${Date.now()}`,
-    message:
-      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
+    message: state.boostMode
+      ? "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. Someone left you a gift."
+      : "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
     timestamp: Date.now(),
     type: "system",
   });
