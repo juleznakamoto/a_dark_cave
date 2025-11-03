@@ -4,6 +4,7 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
+import { getTotalMadness } from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -315,8 +316,8 @@ function handleMadnessCheck() {
 
   if (totalPopulation === 0) return;
 
-  // Get total madness (from stats.madness and items/relics)
-  const totalMadness = (state.stats.madness || 0) + (state.stats.madnessFromEvents || 0);
+  // Get total madness using the centralized calculation function
+  const totalMadness = getTotalMadness(state);
 
   // Determine probability based on madness level
   let deathProbability = 0;
