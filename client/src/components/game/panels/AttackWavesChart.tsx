@@ -41,7 +41,7 @@ export default function AttackWavesChart() {
             : `Current Wave: ${currentWave} / ${totalWaves}`}
         </span>
       </div>
-      <div className="relative h-3 overflow-hidden rounded-full bg-black/30">
+      <div className="relative h-3 overflow-hidden rounded-full bg-gray-900">
         {/* Completed waves - normal red */}
         <div
           className="absolute h-full bg-red-900 transition-all duration-300"

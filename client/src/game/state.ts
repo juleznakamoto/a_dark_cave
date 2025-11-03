@@ -814,10 +814,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   assignVillager: (job: keyof GameState["villagers"]) => {
-    if (import.meta.env.DEV) {
-      console.log(`[STATE] Assign Villager to: ${job}`);
-    }
-
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
@@ -828,10 +824,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   unassignVillager: (job: keyof GameState["villagers"]) => {
-    if (import.meta.env.DEV) {
-      console.log(`[STATE] Unassign Villager from: ${job}`);
-    }
-
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {
