@@ -451,7 +451,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldownDurations: {},
       log: [],
       devMode: import.meta.env.DEV,
-      boostMode: currentBoostMode, // Preserve boost mode flag
+      boostMode: false, // Reset boost mode flag
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
     };
