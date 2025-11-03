@@ -12,6 +12,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Game} />
+      <Route path="/boost" component={Game} />
       <Route path="/building-progress" component={BuildingProgress} />
       <Route path="/hero-test" component={HeroTest} />
       <Route component={NotFound} />
