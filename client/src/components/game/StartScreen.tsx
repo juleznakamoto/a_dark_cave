@@ -6,12 +6,20 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { audioManager } from '@/lib/audio';
 
 export default function StartScreen() {
-  const { executeAction } = useGameStore();
+  const { executeAction, setBoostMode } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
+    // Check if we're on the /boost path and set the flag
+    const isBoostPath = window.location.pathname.includes('/boost');
+    if (isBoostPath) {
+      setBoostMode(true);
+      // Clean up the URL
+      window.history.replaceState({}, '', '/');
+    }
+
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
     }, 6000); // 3.5s delay + 2.5s animation
@@ -20,7 +28,7 @@ export default function StartScreen() {
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [setBoostMode]);
 
   const handleLightFire = () => {
     // Start background music

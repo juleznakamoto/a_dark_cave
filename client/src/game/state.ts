@@ -20,6 +20,7 @@ interface GameStore extends GameState {
   // UI state
   activeTab: string;
   devMode: boolean;
+  boostMode: boolean;
   lastSaved: string;
   eventDialog: {
     isOpen: boolean;
@@ -45,6 +46,7 @@ interface GameStore extends GameState {
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
+  setBoostMode: (enabled: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -214,6 +216,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
   activeTab: "cave",
   devMode: import.meta.env.DEV,
+  boostMode: false,
   lastSaved: "Never",
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
@@ -232,6 +235,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
+
+  setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -437,28 +442,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
-    // Check if boost mode is active via URL BEFORE any state changes
-    console.log('[BOOST MODE] restartGame - Full URL:', window.location.href);
-    console.log('[BOOST MODE] restartGame - pathname:', window.location.pathname);
-    console.log('[BOOST MODE] restartGame - hash:', window.location.hash);
-    console.log('[BOOST MODE] restartGame - search:', window.location.search);
-    const isBoostMode = window.location.pathname.includes('/boost');
-    console.log('[BOOST MODE] restartGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode);
+    const currentBoostMode = get().boostMode;
     
     const resetState = {
       ...defaultGameState,
       activeTab: "cave",
       cooldowns: {},
-      cooldownDurations: {}, // Reset cooldownDurations
+      cooldownDurations: {},
       log: [],
       devMode: import.meta.env.DEV,
+      boostMode: currentBoostMode, // Preserve boost mode flag
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
     };
 
     // Apply boost mode resources if active
-    if (isBoostMode) {
-      console.log('[BOOST MODE] Applying boost resources in restartGame');
+    if (currentBoostMode) {
       resetState.resources = {
         ...resetState.resources,
         wood: 5000,
@@ -468,7 +467,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         iron: 1000,
         steel: 500,
       };
-      console.log('[BOOST MODE] Resources after boost:', resetState.resources);
     }
 
     set(resetState);
@@ -476,43 +474,30 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: isBoostMode
+      message: currentBoostMode
         ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Someone left you a gift."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
-    console.log('[BOOST MODE] Adding log entry:', initialLogEntry.message);
     get().addLogEntry(initialLogEntry);
-
-    // Remove /boost from URL after everything is set up
-    if (isBoostMode) {
-      console.log('[BOOST MODE] Cleaning URL from /boost to /');
-      window.history.replaceState({}, '', '/');
-    }
   },
 
   loadGame: async () => {
     const { loadGame: loadFromIDB } = await import('@/game/save');
     const savedState = await loadFromIDB();
-
-    // Check if boost mode is active via URL BEFORE any state changes
-    console.log('[BOOST MODE] loadGame - Full URL:', window.location.href);
-    console.log('[BOOST MODE] loadGame - pathname:', window.location.pathname);
-    console.log('[BOOST MODE] loadGame - hash:', window.location.hash);
-    console.log('[BOOST MODE] loadGame - search:', window.location.search);
-    const isBoostMode = window.location.pathname.includes('/boost');
-    console.log('[BOOST MODE] loadGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode, 'hasSavedState:', !!savedState);
+    const currentBoostMode = get().boostMode;
 
     if (savedState) {
       const loadedState = {
         ...savedState,
         activeTab: "cave",
         cooldowns: savedState.cooldowns || {},
-        cooldownDurations: savedState.cooldownDurations || {}, // Load cooldownDurations
+        cooldownDurations: savedState.cooldownDurations || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
+        boostMode: currentBoostMode, // Preserve boost mode flag
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
       };
@@ -523,16 +508,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
-        cooldownDurations: {}, // Initialize cooldownDurations
+        cooldownDurations: {},
         log: [],
-        devMode: import.meta.env.DED,
+        devMode: import.meta.env.DEV,
+        boostMode: currentBoostMode, // Preserve boost mode flag
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
       };
 
       // Apply boost mode resources if active
-      if (isBoostMode) {
-        console.log('[BOOST MODE] Applying boost resources in loadGame (new game)');
+      if (currentBoostMode) {
         newGameState.resources = {
           ...newGameState.resources,
           wood: 5000,
@@ -542,27 +527,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
           iron: 1000,
           steel: 500,
         };
-        console.log('[BOOST MODE] Resources after boost:', newGameState.resources);
       }
 
       set(newGameState);
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message: isBoostMode
+        message: currentBoostMode
           ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Someone left you a gift."
           : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };
-      console.log('[BOOST MODE] Adding log entry in loadGame:', initialLogEntry.message);
       get().addLogEntry(initialLogEntry);
-    }
-
-    // Remove /boost from URL after everything is set up
-    if (isBoostMode) {
-      console.log('[BOOST MODE] Cleaning URL from /boost to / in loadGame');
-      window.history.replaceState({}, '', '/');
     }
 
     StateManager.scheduleEffectsUpdate(get);
