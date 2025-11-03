@@ -159,14 +159,6 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {},
     effects: {
       "story.seen.fireLit": true,
-          wood: 5000,
-          stone: 5000,
-          food: 5000,
-          torch: 100,
-          iron: 1000,
-          steel: 500,
-        };
-      }
     },
     cooldown: 1,
   },
@@ -438,10 +430,24 @@ export function handleLightFire(
     },
   };
 
+  // Apply boost mode resources if active
+  if (state.boostMode) {
+    result.stateUpdates.resources = {
+      ...state.resources,
+      wood: (state.resources.wood || 0) + 5000,
+      stone: (state.resources.stone || 0) + 5000,
+      food: (state.resources.food || 0) + 5000,
+      torch: (state.resources.torch || 0) + 100,
+      iron: (state.resources.iron || 0) + 1000,
+      steel: (state.resources.steel || 0) + 500,
+    };
+  }
+
   result.logEntries!.push({
     id: `fire-lit-${Date.now()}`,
-    message:
-      "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
+    message: state.boostMode
+      ? "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting. You notice a cache of supplies nearby - someone left you a gift."
+      : "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
     timestamp: Date.now(),
     type: "system",
   });
