@@ -312,7 +312,7 @@ export default function BuildingProgressChart() {
     .filter((ring) => ring !== null);
 
   return (
-    <div className="w-full h-20 w-20 flex flex-col items-center justify-center">
+    <div className="w-full h-20 w-26 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (

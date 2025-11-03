@@ -10,14 +10,11 @@ interface FeastConfig {
 
 const feastConfigs: FeastConfig[] = [
   { level: 1, woodenHuts: 3, foodCost: 100 },
-  { level: 2, woodenHuts: 5, foodCost: 250 },
-  { level: 3, woodenHuts: 7, foodCost: 500 },
-  { level: 4, woodenHuts: 9, foodCost: 1000 },
-  { level: 5, stoneHuts: 1, foodCost: 1500 },
-  { level: 6, stoneHuts: 3, foodCost: 2000 },
-  { level: 7, stoneHuts: 5, foodCost: 2500 },
-  { level: 8, stoneHuts: 7, foodCost: 2500 },
-  { level: 9, stoneHuts: 9, foodCost: 5000 },
+  { level: 2, woodenHuts: 6, foodCost: 500 },
+  { level: 3, woodenHuts: 9, foodCost: 1000 },
+  { level: 4, woodenHuts: 2, foodCost: 1500 },
+  { level: 5, stoneHuts: 5, foodCost: 2000 },
+  { level: 6, stoneHuts: 8, foodCost: 2500 },
 ];
 
 function createFeastEvent(config: FeastConfig): GameEvent {
