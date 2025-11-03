@@ -437,7 +437,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
-    // Check if boost mode is active via URL
+    // Check if boost mode is active via URL BEFORE any state changes
     const isBoostMode = window.location.pathname.includes('/boost');
     
     const resetState = {
@@ -462,9 +462,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         iron: 1000,
         steel: 500,
       };
-      
-      // Remove /boost from URL after applying resources
-      window.history.replaceState({}, '', '/');
     }
 
     set(resetState);
@@ -479,11 +476,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
       type: "system",
     };
     get().addLogEntry(initialLogEntry);
+
+    // Remove /boost from URL after everything is set up
+    if (isBoostMode) {
+      window.history.replaceState({}, '', '/');
+    }
   },
 
   loadGame: async () => {
     const { loadGame: loadFromIDB } = await import('@/game/save');
     const savedState = await loadFromIDB();
+
+    // Check if boost mode is active via URL BEFORE any state changes
+    const isBoostMode = window.location.pathname.includes('/boost');
 
     if (savedState) {
       const loadedState = {
@@ -500,16 +505,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set(loadedState);
     } else {
-      // Check if boost mode is active via URL
-      const isBoostMode = window.location.pathname.includes('/boost');
-      
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
         cooldowns: {},
         cooldownDurations: {}, // Initialize cooldownDurations
         log: [],
-        devMode: import.meta.env.DEV,
+        devMode: import.meta.env.DED,
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
       };
@@ -525,9 +527,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           iron: 1000,
           steel: 500,
         };
-        
-        // Remove /boost from URL after applying resources
-        window.history.replaceState({}, '', '/');
       }
 
       set(newGameState);
@@ -541,6 +540,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         type: "system",
       };
       get().addLogEntry(initialLogEntry);
+    }
+
+    // Remove /boost from URL after everything is set up
+    if (isBoostMode) {
+      window.history.replaceState({}, '', '/');
     }
 
     StateManager.scheduleEffectsUpdate(get);
