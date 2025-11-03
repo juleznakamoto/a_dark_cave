@@ -172,6 +172,12 @@ export default function BuildingProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Watchtower",
       },
+      {
+        buildingType: "fortifiedMoat",
+        maxCount: 1,
+        color: tailwindToHex("gray-400/80"),
+        label: "Fortified Moat",
+      },
     ],
   ];
 
