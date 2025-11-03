@@ -456,19 +456,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       bastion_stats: calculateBastionStats(defaultGameState),
     };
 
-    // Apply boost mode resources if active
-    if (currentBoostMode) {
-      resetState.resources = {
-        ...resetState.resources,
-        wood: 5000,
-        stone: 5000,
-        food: 5000,
-        torch: 100,
-        iron: 1000,
-        steel: 500,
-      };
-    }
-
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);
 

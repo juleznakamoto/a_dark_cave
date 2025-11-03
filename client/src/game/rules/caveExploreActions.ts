@@ -159,6 +159,14 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {},
     effects: {
       "story.seen.fireLit": true,
+          wood: 5000,
+          stone: 5000,
+          food: 5000,
+          torch: 100,
+          iron: 1000,
+          steel: 500,
+        };
+      }
     },
     cooldown: 1,
   },
