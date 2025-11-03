@@ -659,10 +659,10 @@ export default function SidePanel() {
           )}
           {/* Progress Charts - Side by Side */}
           <div className="flex">
-            <div className="flex-1 shrink-0">
+            <div className="flex-1">
               <BuildingProgressChart />
             </div>
-            <div className="flex-1 ml-0 shrink-0">
+            <div className="flex-1">
               <ItemProgressChart />
             </div>
           </div>

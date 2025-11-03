@@ -40,8 +40,8 @@ export const choiceEvents: Record<string, GameEvent> = {
           const rand = Math.random();
           if (rand < mantleChance) {
             return {
-              relics: {
-                ...state.relics,
+              clothing: {
+                ...state.clothing,
                 ravenfeather_mantle: true,
               },
               _logMessage:
@@ -234,7 +234,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   wolfAttack: {
     id: "wolfAttack",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && !state.relics.alphas_hide,
+      state.buildings.woodenHut >= 3 && !state.clothing.alphas_hide,
     triggerType: "resource",
     timeProbability: 35,
     title: "Wolf Attack",
@@ -427,7 +427,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
       state.current_population > 10 &&
-      !state.relics.ebony_ring &&
+      !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
     triggerType: "resource",
     timeProbability: 30,
@@ -676,7 +676,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 1,
     title: "The Blind Druid returns",
     message:
-      "Shortly after the temple is built, the blind druid appears at the temple. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
+      "Shortly after the temple is built, the blind druid appears. His milky eyes seem to see through your soul as he speaks: 'The temple must be dedicated to a god. Choose wisely.'",
     triggered: false,
     priority: 5,
     repeatable: false,

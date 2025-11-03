@@ -8,7 +8,7 @@ export default function AttackWavesChart() {
     { id: "secondWave", completed: story?.seen?.secondWaveVictory || false },
     { id: "thirdWave", completed: story?.seen?.thirdWaveVictory || false },
     { id: "fourthWave", completed: story?.seen?.fourthWaveVictory || false },
-    { id: "fifthWave", completed: story?.seen?.gameCompleted || false },
+    { id: "fifthWave", completed: story?.seen?.fifthWaveVictory || false },
   ];
 
   // Find current wave (first incomplete wave, or 5 if all complete)
