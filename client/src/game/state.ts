@@ -438,6 +438,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     // Check if boost mode is active via URL BEFORE any state changes
+    console.log('[BOOST MODE] restartGame - Full URL:', window.location.href);
+    console.log('[BOOST MODE] restartGame - pathname:', window.location.pathname);
+    console.log('[BOOST MODE] restartGame - hash:', window.location.hash);
+    console.log('[BOOST MODE] restartGame - search:', window.location.search);
     const isBoostMode = window.location.pathname.includes('/boost');
     console.log('[BOOST MODE] restartGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode);
     
@@ -493,6 +497,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const savedState = await loadFromIDB();
 
     // Check if boost mode is active via URL BEFORE any state changes
+    console.log('[BOOST MODE] loadGame - Full URL:', window.location.href);
+    console.log('[BOOST MODE] loadGame - pathname:', window.location.pathname);
+    console.log('[BOOST MODE] loadGame - hash:', window.location.hash);
+    console.log('[BOOST MODE] loadGame - search:', window.location.search);
     const isBoostMode = window.location.pathname.includes('/boost');
     console.log('[BOOST MODE] loadGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode, 'hasSavedState:', !!savedState);
 
