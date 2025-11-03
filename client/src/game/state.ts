@@ -437,6 +437,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
+    // Check if boost mode is active via URL
+    const isBoostMode = window.location.pathname.includes('/boost');
+    
     const resetState = {
       ...defaultGameState,
       activeTab: "cave",
@@ -447,13 +450,28 @@ export const useGameStore = create<GameStore>((set, get) => ({
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
     };
+
+    // Apply boost mode resources if active
+    if (isBoostMode) {
+      resetState.resources = {
+        ...resetState.resources,
+        wood: 5000,
+        stone: 5000,
+        food: 5000,
+        torches: 100,
+        iron: 1000,
+        steel: 500,
+      };
+    }
+
     set(resetState);
     StateManager.scheduleEffectsUpdate(get);
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message:
-        "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      message: isBoostMode
+        ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Mysterious supplies are scattered around..."
+        : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
@@ -479,6 +497,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       set(loadedState);
     } else {
+      // Check if boost mode is active via URL
+      const isBoostMode = window.location.pathname.includes('/boost');
+      
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
@@ -489,12 +510,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
       };
+
+      // Apply boost mode resources if active
+      if (isBoostMode) {
+        newGameState.resources = {
+          ...newGameState.resources,
+          wood: 5000,
+          stone: 5000,
+          food: 5000,
+          torches: 100,
+          iron: 1000,
+          steel: 500,
+        };
+      }
+
       set(newGameState);
 
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
-        message:
-          "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+        message: isBoostMode
+          ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Mysterious supplies are scattered around..."
+          : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
       };
