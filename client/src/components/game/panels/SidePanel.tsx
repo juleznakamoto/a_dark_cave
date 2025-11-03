@@ -198,7 +198,7 @@ export default function SidePanel() {
   const buildingItems = Object.entries(buildings)
     .filter(([key, value]) => {
       // Filter out fortification buildings from the buildings section
-      if (["bastion", "watchtower", "palisades"].includes(key)) {
+      if (["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)) {
         return false;
       }
       // Hide blacksmith when Grand Blacksmith is built
