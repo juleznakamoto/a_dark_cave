@@ -462,7 +462,7 @@ export default function SidePanel() {
   const fortificationItems = Object.entries(buildings)
     .map(([key, value]) => {
       // Only include fortification buildings
-      if (!["bastion", "watchtower", "palisades"].includes(key)) {
+      if (!["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)) {
         return null;
       }
 

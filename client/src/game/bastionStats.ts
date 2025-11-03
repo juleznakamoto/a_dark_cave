@@ -55,6 +55,11 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += Math.floor(20 * watchtowerMultiplier);
   }
 
+  // Fortified Moat
+  if (state.buildings.fortifiedMoat > 0) {
+    defense += 5;
+  }
+
   // Palisades
   const palisadesLevel = state.buildings.palisades || 0;
   if (palisadesLevel === 1) {
