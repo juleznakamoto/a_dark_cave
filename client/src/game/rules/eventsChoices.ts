@@ -92,7 +92,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   whispersBeneathHut: {
     id: "whispersBeneathHut",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && !state.relics.muttering_amulet,
+      state.buildings.woodenHut >= 4 && !state.clothing.muttering_amulet,
     triggerType: "resource",
     timeProbability: 25,
     title: "Whispers Beneath the Hut",
@@ -107,8 +107,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Investigate",
         effect: (state: GameState) => {
           return {
-            relics: {
-              ...state.relics,
+            clothing: {
+              ...state.clothing,
               muttering_amulet: true,
             },
             _logMessage:
