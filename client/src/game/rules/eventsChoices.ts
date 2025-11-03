@@ -617,7 +617,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (rand < successChance) {
             return {
-              relics: {
+              clothing: {
                 ...state.clothing,
                 cracked_crown: true,
               },
