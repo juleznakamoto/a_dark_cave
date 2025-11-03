@@ -983,6 +983,30 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 60,
   },
 
+  buildFortifiedMoat: {
+    id: "buildFortifiedMoat",
+    label: "Fortified Moat",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.bastion": 1,
+        "buildings.fortifiedMoat": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.fortifiedMoat": 1,
+        "story.seen.hasFortifiedMoat": true,
+      },
+    },
+    cooldown: 60,
+  },
+
   buildWizardTower: {
     id: "buildWizardTower",
     label: "Wizard Tower",
@@ -1811,4 +1835,29 @@ export function handleBuildGrandBlacksmith(
   );
 
   return grandBlacksmithResult;
+}
+
+export function handleBuildFortifiedMoat(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const fortifiedMoatResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildFortifiedMoat",
+    "fortifiedMoat",
+  );
+
+  // Add fortified moat completion message
+  if (state.buildings.fortifiedMoat === 0) {
+    fortifiedMoatResult.logEntries!.push({
+      id: `fortified-moat-built-${Date.now()}`,
+      message:
+        "A deep moat surrounds the settlement, its waters dark and treacherous. No enemy will cross it easily.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return fortifiedMoatResult;
 }

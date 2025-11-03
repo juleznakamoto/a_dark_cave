@@ -561,6 +561,9 @@ export default function SidePanel() {
         if (isDamaged) {
           label += " ↓";
         }
+      } else if (key === "fortifiedMoat") {
+        label = "Fortified Moat";
+        tooltip = "+5 Defense";
       }
 
       return {

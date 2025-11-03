@@ -75,6 +75,11 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += Math.floor(40 * palisadesMultiplier);
   }
 
+  // Fortified Moat (cannot be damaged)
+  if (state.buildings.fortifiedMoat > 0) {
+    defense += 5;
+  }
+
   // Add strength from stats to attack
   const attackFromStrength = getTotalStrength(state);
   const totalAttack = attackFromFortifications + attackFromStrength;

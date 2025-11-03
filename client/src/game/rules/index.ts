@@ -65,6 +65,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildGrandBlacksmith: "grandBlacksmith",
     buildWatchtower: "watchtower",
     buildPalisades: "palisades",
+    buildFortifiedMoat: "fortifiedMoat", // Added Fortified Moat
   };
 
   const buildingKey = buildingMap[actionId];
@@ -106,7 +107,7 @@ const checkRequirements = (
     // Handle negation (e.g., "!story.seen.castleRuinsExplored")
     const isNegated = path.startsWith("!");
     const actualPath = isNegated ? path.slice(1) : path;
-    
+
     const pathParts = actualPath.split(".");
     let current: any = state;
 
@@ -177,16 +178,16 @@ export const shouldShowAction = (
     return showWhenKeys.some(tierKey => {
       const tierConditions = action.show_when[tierKey as any];
       const tierHasCost = action.cost?.[tierKey as any];
-      
+
       if (!tierHasCost) return false;
-      
+
       return Object.entries(tierConditions).every(([key, value]) => {
         const pathParts = key.split('.');
         let current: any = state;
         for (const part of pathParts) {
           current = current?.[part];
         }
-        
+
         if (key.startsWith("buildings.")) {
           if (value === 0) {
             return (current || 0) === 0;
@@ -194,7 +195,7 @@ export const shouldShowAction = (
             return (current || 0) >= value;
           }
         }
-        
+
         return (current || 0) >= value;
       });
     });
@@ -258,12 +259,12 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (costs && typeof costs === "object") {
     const costKeys = Object.keys(costs);
     const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
-    
+
     if (hasTieredCost) {
       // Find the active tier based on show_when conditions
       const showWhenKeys = Object.keys(action.show_when || {});
       let activeTier = 1;
-      
+
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
         const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
@@ -272,7 +273,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
           for (const part of pathParts) {
             current = current?.[part];
           }
-          
+
           if (key.startsWith("buildings.")) {
             if (value === 0) {
               return (current || 0) === 0;
@@ -280,15 +281,15 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
               return (current || 0) >= value;
             }
           }
-          
+
           return (current || 0) >= value;
         });
-        
+
         if (tierSatisfied) {
           activeTier = Number(tierKey);
         }
       }
-      
+
       costs = costs[activeTier];
     }
   }
@@ -370,22 +371,22 @@ export const applyActionEffects = (
   // First apply costs (as negative effects)
   if (action.cost) {
     let costs = action.cost;
-    
+
     // For building actions, get the cost for the next level
     if (action.building) {
       const level = getNextBuildingLevel(actionId, state);
       costs = action.cost[level];
     }
-    
+
     // For tiered costs (like trade actions), determine the active tier
     const costKeys = Object.keys(costs);
     const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
-    
+
     if (hasTieredCost) {
       // Find the active tier based on show_when conditions
       const showWhenKeys = Object.keys(action.show_when || {});
       let activeTier = 1;
-      
+
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
         const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
@@ -394,7 +395,7 @@ export const applyActionEffects = (
           for (const part of pathParts) {
             current = current?.[part];
           }
-          
+
           if (key.startsWith("buildings.")) {
             if (value === 0) {
               return (current || 0) === 0;
@@ -402,15 +403,15 @@ export const applyActionEffects = (
               return (current || 0) >= value;
             }
           }
-          
+
           return (current || 0) >= value;
         });
-        
+
         if (tierSatisfied) {
           activeTier = Number(tierKey);
         }
       }
-      
+
       costs = costs[activeTier];
     }
 
@@ -467,16 +468,16 @@ export const applyActionEffects = (
   // Then apply effects
   if (action.effects) {
     let effects = action.effects;
-    
+
     // For tiered effects (like trade actions), determine the active tier
     const effectKeys = Object.keys(effects);
     const hasTieredEffects = effectKeys.length > 0 && effectKeys.every(key => !isNaN(Number(key)));
-    
+
     if (hasTieredEffects) {
       // Find the active tier based on show_when conditions
       const showWhenKeys = Object.keys(action.show_when || {});
       let activeTier = 1;
-      
+
       for (const tierKey of showWhenKeys) {
         const tierConditions = action.show_when[tierKey as any];
         const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
@@ -485,7 +486,7 @@ export const applyActionEffects = (
           for (const part of pathParts) {
             current = current?.[part];
           }
-          
+
           if (key.startsWith("buildings.")) {
             if (value === 0) {
               return (current || 0) === 0;
@@ -493,18 +494,18 @@ export const applyActionEffects = (
               return (current || 0) >= value;
             }
           }
-          
+
           return (current || 0) >= value;
         });
-        
+
         if (tierSatisfied) {
           activeTier = Number(tierKey);
         }
       }
-      
+
       effects = effects[activeTier];
     }
-    
+
     for (const [path, effect] of Object.entries(effects)) {
       const pathParts = path.split(".");
       let current: any = updates;
@@ -843,12 +844,12 @@ export function getActionCostBreakdown(
   // For tiered actions (like trade actions), determine the active tier
   const costKeys = Object.keys(costs);
   const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
-  
+
   if (hasTieredCost) {
     // Find the active tier based on show_when conditions
     const showWhenKeys = Object.keys(action.show_when || {});
     let activeTier = 1;
-    
+
     for (const tierKey of showWhenKeys) {
       const tierConditions = action.show_when[tierKey as any];
       const tierSatisfied = Object.entries(tierConditions).every(([key, value]) => {
@@ -857,7 +858,7 @@ export function getActionCostBreakdown(
         for (const part of pathParts) {
           current = current?.[part];
         }
-        
+
         if (key.startsWith("buildings.")) {
           if (value === 0) {
             return (current || 0) === 0;
@@ -865,15 +866,15 @@ export function getActionCostBreakdown(
             return (current || 0) >= value;
           }
         }
-        
+
         return (current || 0) >= value;
       });
-      
+
       if (tierSatisfied) {
         activeTier = Number(tierKey);
       }
     }
-    
+
     costs = costs[activeTier];
   }
 

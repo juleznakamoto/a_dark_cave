@@ -101,6 +101,7 @@ import {
   handleBuildWizardTower,
   handleBuildLonghouse,
   handleBuildGrandBlacksmith,
+  handleBuildFortifiedMoat, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -352,6 +353,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildGrandBlacksmith(state, result);
     case 'buildLonghouse':
       return handleBuildLonghouse(state, result);
+    case "buildFortifiedMoat": // New case for Fortified Moat
+      return handleBuildFortifiedMoat(state, result);
 
     // Forest Scout Actions
     case 'hunt':

@@ -203,6 +203,7 @@ export const gameStateSchema = z.object({
       bastion: z.number().default(0),
       watchtower: z.number().default(0),
       palisades: z.number().default(0),
+      fortifiedMoat: z.number().default(0),
       wizardTower: z.number().default(0),
     })
     .default({}),
