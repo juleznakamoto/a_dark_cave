@@ -24,15 +24,6 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesDamaged = state.story?.seen?.palisadesDamaged || false;
   const palisadesMultiplier = palisadesDamaged ? 0.5 : 1;
 
-  console.log('[BASTION STATS] Damage status:', {
-    bastionDamaged,
-    watchtowerDamaged,
-    palisadesDamaged,
-    bastionMultiplier,
-    watchtowerMultiplier,
-    palisadesMultiplier,
-  });
-
   // Bastion
   if (state.buildings.bastion > 0) {
     const defenseBonus = Math.floor(5 * bastionMultiplier);
@@ -42,8 +33,6 @@ export function calculateBastionStats(state: GameState): BastionStats {
     defense += defenseBonus;
     attackFromFortifications += attackBonus;
     baseIntegrity += integrityBonus;
-    
-    console.log('[BASTION STATS] Bastion:', { defenseBonus, attackBonus, integrityBonus });
   }
 
   // Watchtower
@@ -72,8 +61,6 @@ export function calculateBastionStats(state: GameState): BastionStats {
     defense += defenseBonus;
     attackFromFortifications += attackBonus;
     baseIntegrity += integrityBonus;
-    
-    console.log('[BASTION STATS] Cannon Tower:', { defenseBonus, attackBonus, integrityBonus });
   }
 
   // Palisades
@@ -97,16 +84,12 @@ export function calculateBastionStats(state: GameState): BastionStats {
     
     defense += defenseBonus;
     baseIntegrity += integrityBonus;
-    
-    console.log('[BASTION STATS] Reinforced Wall:', { defenseBonus, integrityBonus });
   }
 
   // Fortified Moat (cannot be damaged, no integrity bonus)
   if (state.buildings.fortifiedMoat > 0) {
     defense += 5;
   }
-
-  console.log('[BASTION STATS] Final integrity:', baseIntegrity);
 
   // Add strength from stats to attack
   const attackFromStrength = getTotalStrength(state);
