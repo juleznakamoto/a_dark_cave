@@ -60,6 +60,7 @@ export function startGameLoop() {
         handlePopulationSurvival();
         handleStarvationCheck();
         handleFreezingCheck();
+        handleMadnessCheck();
         handleStrangerApproach();
       }
     } else {
@@ -301,6 +302,88 @@ function handleFreezingCheck() {
       // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
     }
+  }
+}
+
+function handleMadnessCheck() {
+  const state = useGameStore.getState();
+
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+
+  if (totalPopulation === 0) return;
+
+  // Get total madness (from stats.madness and items/relics)
+  const totalMadness = (state.stats.madness || 0) + (state.stats.madnessFromEvents || 0);
+
+  // Determine probability based on madness level
+  let deathProbability = 0;
+  if (totalMadness <= 10) {
+    deathProbability = 0.001; // 0.1% per villager
+  } else if (totalMadness <= 20) {
+    deathProbability = 0.005; // 0.5% per villager
+  } else if (totalMadness <= 30) {
+    deathProbability = 0.01; // 1% per villager
+  } else if (totalMadness <= 40) {
+    deathProbability = 0.02; // 2% per villager
+  } else {
+    deathProbability = 0.035; // 3.5% per villager
+  }
+
+  // Check each villager for madness-induced death
+  let madnessDeaths = 0;
+  for (let i = 0; i < totalPopulation; i++) {
+    if (Math.random() < deathProbability) {
+      madnessDeaths++;
+    }
+  }
+
+  if (madnessDeaths > 0) {
+    // Use the centralized killVillagers function
+    const deathResult = killVillagers(state, madnessDeaths);
+
+    useGameStore.setState({
+      villagers: deathResult.villagers || state.villagers,
+    });
+
+    // Generate random death message based on madness
+    const deathMessages = [
+      "succumbs to madness and takes their own life.",
+      "is found dead, eyes wide with terror.",
+      "attacks another villager in a fit of madness before being subdued. Both perish.",
+      "wanders into the darkness, never to return.",
+      "is consumed by visions and dies screaming.",
+      "turns violent and must be stopped. They do not survive.",
+    ];
+
+    const pluralMessages = [
+      "succumb to madness and take their own lives.",
+      "are found dead, eyes wide with terror.",
+      "attack each other in fits of madness. None survive.",
+      "wander into the darkness, never to return.",
+      "are consumed by visions and die screaming.",
+      "turn violent and must be stopped. They do not survive.",
+    ];
+
+    const messageArray = madnessDeaths === 1 ? deathMessages : pluralMessages;
+    const randomMessage = messageArray[Math.floor(Math.random() * messageArray.length)];
+
+    const message =
+      madnessDeaths === 1
+        ? `One villager ${randomMessage}`
+        : `${madnessDeaths} villagers ${randomMessage}`;
+
+    state.addLogEntry({
+      id: `madness-death-${Date.now()}`,
+      message: message,
+      timestamp: Date.now(),
+      type: "system",
+    });
+
+    // Update population after applying changes
+    setTimeout(() => state.updatePopulation(), 0);
   }
 }
 
