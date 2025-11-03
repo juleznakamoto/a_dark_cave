@@ -24,11 +24,26 @@ export function calculateBastionStats(state: GameState): BastionStats {
   const palisadesDamaged = state.story?.seen?.palisadesDamaged || false;
   const palisadesMultiplier = palisadesDamaged ? 0.5 : 1;
 
+  console.log('[BASTION STATS] Damage status:', {
+    bastionDamaged,
+    watchtowerDamaged,
+    palisadesDamaged,
+    bastionMultiplier,
+    watchtowerMultiplier,
+    palisadesMultiplier,
+  });
+
   // Bastion
   if (state.buildings.bastion > 0) {
-    defense += Math.floor(5 * bastionMultiplier);
-    attackFromFortifications += Math.floor(5 * bastionMultiplier);
-    baseIntegrity += Math.floor(40 * bastionMultiplier);
+    const defenseBonus = Math.floor(5 * bastionMultiplier);
+    const attackBonus = Math.floor(5 * bastionMultiplier);
+    const integrityBonus = Math.floor(40 * bastionMultiplier);
+    
+    defense += defenseBonus;
+    attackFromFortifications += attackBonus;
+    baseIntegrity += integrityBonus;
+    
+    console.log('[BASTION STATS] Bastion:', { defenseBonus, attackBonus, integrityBonus });
   }
 
   // Watchtower
@@ -50,9 +65,15 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += Math.floor(15 * watchtowerMultiplier);
   } else if (watchtowerLevel === 4) {
     // Level 4: Cannon Tower
-    defense += Math.floor(10 * watchtowerMultiplier);
-    attackFromFortifications += Math.floor(20 * watchtowerMultiplier);
-    baseIntegrity += Math.floor(20 * watchtowerMultiplier);
+    const defenseBonus = Math.floor(10 * watchtowerMultiplier);
+    const attackBonus = Math.floor(20 * watchtowerMultiplier);
+    const integrityBonus = Math.floor(20 * watchtowerMultiplier);
+    
+    defense += defenseBonus;
+    attackFromFortifications += attackBonus;
+    baseIntegrity += integrityBonus;
+    
+    console.log('[BASTION STATS] Cannon Tower:', { defenseBonus, attackBonus, integrityBonus });
   }
 
   // Palisades
@@ -71,14 +92,21 @@ export function calculateBastionStats(state: GameState): BastionStats {
     baseIntegrity += Math.floor(30 * palisadesMultiplier);
   } else if (palisadesLevel === 4) {
     // Level 4: Reinforced Wall
-    defense += Math.floor(15 * palisadesMultiplier);
-    baseIntegrity += Math.floor(40 * palisadesMultiplier);
+    const defenseBonus = Math.floor(15 * palisadesMultiplier);
+    const integrityBonus = Math.floor(40 * palisadesMultiplier);
+    
+    defense += defenseBonus;
+    baseIntegrity += integrityBonus;
+    
+    console.log('[BASTION STATS] Reinforced Wall:', { defenseBonus, integrityBonus });
   }
 
-  // Fortified Moat (cannot be damaged)
+  // Fortified Moat (cannot be damaged, no integrity bonus)
   if (state.buildings.fortifiedMoat > 0) {
     defense += 5;
   }
+
+  console.log('[BASTION STATS] Final integrity:', baseIntegrity);
 
   // Add strength from stats to attack
   const attackFromStrength = getTotalStrength(state);
