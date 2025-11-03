@@ -662,7 +662,7 @@ export default function SidePanel() {
             <div className="flex-1 shrink-0">
               <BuildingProgressChart />
             </div>
-            <div className="flex-1 ml-1 shrink-0">
+            <div className="flex-1 ml-0 shrink-0">
               <ItemProgressChart />
             </div>
           </div>

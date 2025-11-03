@@ -21,9 +21,9 @@ export default function BuildingProgressChart() {
   const buildings = useGameStore((state) => state.buildings);
 
   // Ring sizing parameters
-  const startRadius = 14; // Inner radius of the first ring
+  const startRadius = 12; // Inner radius of the first ring
   const ringSize = 3; // Thickness of each ring
-  const spaceBetweenRings = 3.2; // Gap between rings
+  const spaceBetweenRings = 2.8; // Gap between rings
   
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
@@ -355,7 +355,7 @@ export default function BuildingProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1.5 : 0}
+                  strokeWidth={segment.isFull ? 1 : 0}
                   stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
                   isAnimationActive={false}
                   style={{ outline: 'none' }}

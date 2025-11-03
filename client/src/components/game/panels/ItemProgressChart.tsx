@@ -26,9 +26,9 @@ interface RingConfig {
 export default function ItemProgressChart() {
 
   // Ring sizing parameters
-  const startRadius = 14;
+  const startRadius = 12;
   const ringSize = 3;
-  const spaceBetweenRings = 3.2;
+  const spaceBetweenRings = 2.8;
 
   const getPaddingAngle = (ringIndex: number) => {
     return Math.max(2, 14 - ringIndex * 2);
@@ -539,7 +539,7 @@ export default function ItemProgressChart() {
                   startAngle={segment.startAngle}
                   endAngle={segment.endAngle}
                   cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1.5 : 0}
+                  strokeWidth={segment.isFull ? 1 : 0}
                   stroke={segment.isFull ? tailwindToHex("red-900") : undefined}
                   isAnimationActive={false}
                   style={{ outline: "none" }}
