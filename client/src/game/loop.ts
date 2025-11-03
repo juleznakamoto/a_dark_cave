@@ -318,6 +318,7 @@ function handleMadnessCheck() {
 
   // Get total madness using the centralized calculation function
   const totalMadness = getTotalMadness(state);
+  if (totalMadness <= 0) return;
 
   // Determine probability and possible death counts based on madness level
   let probability = 0;
