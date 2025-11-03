@@ -97,7 +97,7 @@ export default function StartScreen() {
       
       {boostMode && (
         <div className="absolute bottom-4 right-4 z-20">
-          <div className="text-green-500 text-2xl">↑</div>
+          <div className="text-green-600 text-xl">↑</div>
         </div>
       )}
     </div>
