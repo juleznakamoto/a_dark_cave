@@ -105,10 +105,10 @@ function processTick() {
 
   // Trigger save if events changed (for cube events persistence)
   const eventsChanged = Object.keys(state.events).some(
-    key => state.events[key] !== prevEvents[key]
+    (key) => state.events[key] !== prevEvents[key],
   );
   if (eventsChanged && import.meta.env.DEV) {
-    console.log('[LOOP] Events changed, triggering autosave');
+    console.log("[LOOP] Events changed, triggering autosave");
     // Manually call autosave to persist events changes
     handleAutoSave();
   }
@@ -322,15 +322,15 @@ function handleMadnessCheck() {
   // Determine probability and possible death counts based on madness level
   let probability = 0;
   if (totalMadness <= 10) {
-    probability = 0.05; // 5% chance of death event
+    probability = 0.01;
   } else if (totalMadness <= 20) {
-    probability = 0.1; // 10% chance of death event
+    probability = 0.02;
   } else if (totalMadness <= 30) {
-    probability = 0.15; // 15% chance of death event
+    probability = 0.03;
   } else if (totalMadness <= 40) {
-    probability = 0.2; // 20% chance of death event
+    probability = 0.04;
   } else {
-    probability = 0.25; // 25% chance of death event
+    probability = 0.05;
   }
 
   // Check if a madness death event occurs
@@ -339,10 +339,12 @@ function handleMadnessCheck() {
     const rand = Math.random();
     let madnessDeaths = 0;
 
-    if (rand < 0.5) {
+    if (rand < 0.5 - 2 * probability) {
       madnessDeaths = 1;
-    } else if (rand < 0.8) {
+    } else if (rand < 0.7 - 2 * probability) {
       madnessDeaths = 2;
+    } else if (rand < 0.9 - 2 * probability) {
+      madnessDeaths = 3;
     } else {
       madnessDeaths = 4;
     }
@@ -358,32 +360,10 @@ function handleMadnessCheck() {
         villagers: deathResult.villagers || state.villagers,
       });
 
-      // Generate random death message based on madness
-      const deathMessages = [
-        "succumbs to madness and takes their own life.",
-        "is found dead, eyes wide with terror.",
-        "attacks another villager in a fit of madness before being subdued. Both perish.",
-        "wanders into the darkness, never to return.",
-        "is consumed by visions and dies screaming.",
-        "turns violent and must be stopped. They do not survive.",
-      ];
-
-      const pluralMessages = [
-        "succumb to madness and take their own lives.",
-        "are found dead, eyes wide with terror.",
-        "attack each other in fits of madness. None survive.",
-        "wander into the darkness, never to return.",
-        "are consumed by visions and die screaming.",
-        "turn violent and must be stopped. They do not survive.",
-      ];
-
-      const messageArray = madnessDeaths === 1 ? deathMessages : pluralMessages;
-      const randomMessage = messageArray[Math.floor(Math.random() * messageArray.length)];
-
       const message =
         madnessDeaths === 1
-          ? `One villager ${randomMessage}`
-          : `${madnessDeaths} villagers ${randomMessage}`;
+          ? `One villager succumbs to madness and takes their own life.`
+          : `${madnessDeaths} villagers succumb to madness and take their own lives.`;
 
       state.addLogEntry({
         id: `madness-death-${Date.now()}`,
@@ -405,7 +385,7 @@ async function handleAutoSave() {
   try {
     // Autosave every 30 seconds
     if (import.meta.env.DEV) {
-      console.log('[AUTOSAVE] Saving game state, events:', state.events);
+      console.log("[AUTOSAVE] Saving game state, events:", state.events);
     }
     await saveGame(gameState);
     const now = new Date().toLocaleTimeString();
@@ -438,7 +418,7 @@ function handleStrangerApproach() {
   probability += state.buildings.longhouse * 0.03;
   // +5% for each fur tent -> 5%
   probability += state.buildings.furTents * 0.05;
-  
+
   // Raven's Mark blessing: +15% stranger approach probability
   if (state.blessings?.ravens_mark) {
     probability += 0.15;
@@ -475,9 +455,9 @@ function handleStrangerApproach() {
     if (state.blessings?.ravens_mark_enhanced) {
       multiStrangerMultiplier += 0.15;
     }
-    
+
     if (state.buildings.stoneHut >= 10) {
-        multiStrangerMultiplier += 0.25;
+      multiStrangerMultiplier += 0.25;
     }
 
     if (state.buildings.longhouse >= 2) {
