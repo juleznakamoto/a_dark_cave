@@ -4,12 +4,20 @@ import { useGameStore } from '@/game/state';
 import CloudShader from '@/components/ui/cloud-shader';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { audioManager } from '@/lib/audio';
+import { useMobileTooltip } from '@/hooks/useMobileTooltip';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 export default function StartScreen() {
   const { executeAction, setBoostMode, boostMode } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const mobileTooltip = useMobileTooltip();
 
   useEffect(() => {
     // Check if we're on the /boost path and set the flag
@@ -96,9 +104,23 @@ export default function StartScreen() {
       </main>
       
       {boostMode && (
-        <div className="absolute bottom-4 right-4 z-20">
-          <div className="text-green-600 text-xl">↑</div>
-        </div>
+        <TooltipProvider>
+          <Tooltip open={mobileTooltip.isTooltipOpen('boost-indicator')}>
+            <TooltipTrigger asChild>
+              <div 
+                className="absolute bottom-4 right-4 z-20 cursor-pointer"
+                onClick={(e) => mobileTooltip.handleTooltipClick('boost-indicator', e)}
+              >
+                <div className="text-green-600 text-xl">↑</div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="text-xs whitespace-nowrap">
+                Boost activated
+              </div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       )}
     </div>
   );
