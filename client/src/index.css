@@ -339,7 +339,7 @@ html, body {
   }
 
   50% {
-    text-shadow: 0 0 12px rgb(255, 255, 255, 0.8), 0 0 14px rgba(254, 57, 57, 0.7);
+    text-shadow: 0 0 12px rgb(255, 255, 255, 0.8), 0 0 15px rgba(254, 57, 57, 0.8);
   }
 }
 
@@ -358,9 +358,9 @@ html, body {
 }
 
 .log-glow {
-  animation: log-glow var(--effect-duration, 2s) ease-in-out;
+  animation: log-glow var(--effect-duration, 3s) ease-in-out;
 }
 
 .log-pulse {
-  animation: log-pulse var(--effect-duration, 2s) ease-in-out;
+  animation: log-pulse var(--effect-duration, 3s) ease-in-out;
 }
