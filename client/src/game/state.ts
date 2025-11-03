@@ -458,7 +458,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         wood: 5000,
         stone: 5000,
         food: 5000,
-        torches: 100,
+        torch: 100,
         iron: 1000,
         steel: 500,
       };
@@ -529,7 +529,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const initialLogEntry: LogEntry = {
         id: "initial-narrative",
         message: isBoostMode
-          ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Mysterious supplies are scattered around..."
+          ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Someone left you a gift."
           : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
         timestamp: Date.now(),
         type: "system",
