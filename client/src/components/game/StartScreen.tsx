@@ -6,7 +6,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { audioManager } from '@/lib/audio';
 
 export default function StartScreen() {
-  const { executeAction, setBoostMode } = useGameStore();
+  const { executeAction, setBoostMode, boostMode } = useGameStore();
   const [isAnimationComplete, setIsAnimationComplete] = useState(false);
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -94,6 +94,12 @@ export default function StartScreen() {
           Light Fire
         </ParticleButton>
       </main>
+      
+      {boostMode && (
+        <div className="absolute bottom-4 right-4 z-20">
+          <div className="text-green-500 text-2xl">↑</div>
+        </div>
+      )}
     </div>
   );
 }
