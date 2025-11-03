@@ -340,23 +340,25 @@ function handleStrangerApproach() {
   probability += state.buildings.woodenHut * 0.02;
   // +2.5% for each stone hut -> 25%
   probability += state.buildings.stoneHut * 0.025;
-  // +5% for each longhouse -> 6%
+  // +3% for each longhouse -> 6%
   probability += state.buildings.longhouse * 0.03;
-
-  // Raven's Mark blessing: +20% stranger approach probability
+  // +5% for each fur tent -> 5%
+  probability += state.buildings.furTents * 0.05;
+  
+  // Raven's Mark blessing: +15% stranger approach probability
   if (state.blessings?.ravens_mark) {
-    probability += 0.2;
+    probability += 0.15;
   }
 
-  // Raven's Mark Enhanced blessing: +40% stranger approach probability
+  // Raven's Mark Enhanced blessing: +30% stranger approach probability
   if (state.blessings?.ravens_mark_enhanced) {
-    probability += 0.4;
+    probability += 0.3;
   }
 
   if (currentPopulation === 0) {
-    probability = 0.8;
+    probability = Math.max(0.8, probability);
   } else if (currentPopulation <= 4) {
-    probability = 0.6;
+    probability = Math.max(0.5, probability);
   }
 
   // Check if stranger(s) approach based on probability
@@ -372,21 +374,24 @@ function handleStrangerApproach() {
     let strangersCount = 1; // Default to 1 stranger
     let moreStrangersProbability = Math.random();
 
-    // Raven's Mark blessing: 20% more likely to get multiple strangers
     let multiStrangerMultiplier = 1.0;
     if (state.blessings?.ravens_mark) {
-      multiStrangerMultiplier = 1.25;
+      multiStrangerMultiplier += 0.15;
     }
     if (state.blessings?.ravens_mark_enhanced) {
-      multiStrangerMultiplier = 1.5;
+      multiStrangerMultiplier += 0.15;
     }
-
+    
     if (state.buildings.stoneHut >= 10) {
-      moreStrangersProbability *= 0.75;
+        multiStrangerMultiplier += 0.25;
     }
 
     if (state.buildings.longhouse >= 2) {
-      moreStrangersProbability *= 0.75;
+      moreStrangersProbability += 0.15;
+    }
+
+    if (state.buildings.furTents >= 1) {
+      moreStrangersProbability += 0.15;
     }
 
     // multiple strangers approach at once
@@ -414,22 +419,22 @@ function handleStrangerApproach() {
       }
     }
     const messages = [
-      "A stranger approaches and joins your village.",
+      "A stranger approaches and joins the village.",
       "A traveler arrives and decides to stay.",
-      "A wanderer appears and becomes part of your community.",
+      "A wanderer appears and becomes part of the community.",
       "Someone approaches the village and settles in.",
-      "A stranger joins your community, bringing skills and hope.",
+      "A stranger joins the community, bringing skills and hope.",
       "A newcomer arrives and makes themselves at home.",
     ];
 
     // Adjust message if multiple strangers arrive
     if (strangersCount > 1) {
       messages.push(
-        `${strangersCount} strangers approach and join your village.`,
+        `${strangersCount} strangers approach and join the village.`,
       );
       messages.push(`${strangersCount} travelers arrive and decide to stay.`);
       messages.push(
-        `${strangersCount} wanderers appear and become part of your community.`,
+        `${strangersCount} wanderers appear and become part of the community.`,
       );
     }
 
@@ -440,7 +445,6 @@ function handleStrangerApproach() {
 
     if (actualStrangersToAdd <= 0) return; // No room for anyone
 
-    // Actually add the villagers to the state by updating villagers.free directly
     useGameStore.setState({
       villagers: {
         ...state.villagers,

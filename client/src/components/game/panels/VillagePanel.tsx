@@ -449,7 +449,7 @@ export default function VillagePanel() {
                     value={productionProgress}
                     size={16}
                     strokeWidth={2}
-                    className="text-lightgrey"
+                    className="text-gray-400"
                   />
                   <span>{effectsText}</span>
                 </div>

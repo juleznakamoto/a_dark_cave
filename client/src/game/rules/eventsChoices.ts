@@ -888,19 +888,20 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "wanderingTribe",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 4 &&
-      state.resources.fur >= 2500,
+      state.resources.fur >= 2500 &&
+      !state.buildings.furTents,
     triggerType: "resource",
     timeProbability: 30,
     title: "The Wandering Tribe",
     message:
-      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. If you help us build fur tents to shelter our people, we will join your community.'",
+      "A small tribe of nomads approaches the village. Their leader speaks: 'We have traveled far and seek a place to call home. Help us help build fur tents to shelter our people and we will join your community.'",
     triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "acceptTribe",
-        label: "Help them (2500 fur)",
+        label: "Help them",
         cost: "2500 fur",
         effect: (state: GameState) => {
           if (state.resources.fur < 2500) {
