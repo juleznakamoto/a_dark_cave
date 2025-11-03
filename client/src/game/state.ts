@@ -439,6 +439,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   restartGame: () => {
     // Check if boost mode is active via URL BEFORE any state changes
     const isBoostMode = window.location.pathname.includes('/boost');
+    console.log('[BOOST MODE] restartGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode);
     
     const resetState = {
       ...defaultGameState,
@@ -453,6 +454,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply boost mode resources if active
     if (isBoostMode) {
+      console.log('[BOOST MODE] Applying boost resources in restartGame');
       resetState.resources = {
         ...resetState.resources,
         wood: 5000,
@@ -462,6 +464,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         iron: 1000,
         steel: 500,
       };
+      console.log('[BOOST MODE] Resources after boost:', resetState.resources);
     }
 
     set(resetState);
@@ -475,10 +478,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
       timestamp: Date.now(),
       type: "system",
     };
+    console.log('[BOOST MODE] Adding log entry:', initialLogEntry.message);
     get().addLogEntry(initialLogEntry);
 
     // Remove /boost from URL after everything is set up
     if (isBoostMode) {
+      console.log('[BOOST MODE] Cleaning URL from /boost to /');
       window.history.replaceState({}, '', '/');
     }
   },
@@ -489,6 +494,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Check if boost mode is active via URL BEFORE any state changes
     const isBoostMode = window.location.pathname.includes('/boost');
+    console.log('[BOOST MODE] loadGame - URL:', window.location.pathname, 'isBoostMode:', isBoostMode, 'hasSavedState:', !!savedState);
 
     if (savedState) {
       const loadedState = {
@@ -518,6 +524,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       // Apply boost mode resources if active
       if (isBoostMode) {
+        console.log('[BOOST MODE] Applying boost resources in loadGame (new game)');
         newGameState.resources = {
           ...newGameState.resources,
           wood: 5000,
@@ -527,6 +534,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           iron: 1000,
           steel: 500,
         };
+        console.log('[BOOST MODE] Resources after boost:', newGameState.resources);
       }
 
       set(newGameState);
@@ -539,11 +547,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
         timestamp: Date.now(),
         type: "system",
       };
+      console.log('[BOOST MODE] Adding log entry in loadGame:', initialLogEntry.message);
       get().addLogEntry(initialLogEntry);
     }
 
     // Remove /boost from URL after everything is set up
     if (isBoostMode) {
+      console.log('[BOOST MODE] Cleaning URL from /boost to / in loadGame');
       window.history.replaceState({}, '', '/');
     }
 
