@@ -462,6 +462,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         iron: 1000,
         steel: 500,
       };
+      
+      // Remove /boost from URL after applying resources
+      window.history.replaceState({}, '', '/');
     }
 
     set(resetState);
@@ -518,10 +521,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           wood: 5000,
           stone: 5000,
           food: 5000,
-          torches: 100,
+          torch: 100,
           iron: 1000,
           steel: 500,
         };
+        
+        // Remove /boost from URL after applying resources
+        window.history.replaceState({}, '', '/');
       }
 
       set(newGameState);
