@@ -283,21 +283,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 {Object.values(SHOP_ITEMS).map((item) => (
                   <Card key={item.id} className="flex flex-col">
                     <CardHeader>
-                      <CardTitle>{item.name}</CardTitle>
-                      <CardDescription className="text-bold">
-                        {formatPrice(item.price)}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1">
-                      <div className="flex items-start gap-2">
-                        <p className="text-sm text-muted-foreground flex-1">
-                          {item.description}
-                        </p>
+                      <div className="flex items-center gap-2">
+                        <CardTitle>{item.name}</CardTitle>
                         {(item.rewards.weapons || item.rewards.tools || item.rewards.blessings) && (
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
-                                <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0 mt-0.5" />
+                                <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
                               </TooltipTrigger>
                               <TooltipContent className="max-w-xs">
                                 <div className="text-xs space-y-1">
@@ -364,6 +356,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           </TooltipProvider>
                         )}
                       </div>
+                      <CardDescription className="text-bold">
+                        {formatPrice(item.price)}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex-1">
+                      <p className="text-sm text-muted-foreground">
+                        {item.description}
+                      </p>
                     </CardContent>
                     <CardFooter>
                       <Button
