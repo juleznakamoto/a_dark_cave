@@ -978,11 +978,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const newState = {
         isPaused: !state.isPaused,
+        loopProgress: 0, // Always reset loop progress when toggling pause
       };
-      // If unpausing, reset loop progress to the start of the 15-second interval
-      if (newState.isPaused === false) {
-        newState.loopProgress = 0;
-      }
       return newState;
     });
   },
