@@ -1,4 +1,3 @@
-
 export interface ShopItemRewards {
   resources?: Record<string, number>;
   tools?: string[];
@@ -136,7 +135,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
   },
 
-    great_feast_5: {
+  great_feast_5: {
     id: 'great_feast_5',
     name: '5 Great Feasts',
     description: 'Boost the production of your village by 4x for 30 minutes (5 times)',
