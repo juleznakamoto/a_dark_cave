@@ -48,6 +48,7 @@ interface GameStore extends GameState {
   // Game loop state
   loopProgress: number; // 0-100 representing progress through the 15s production cycle
   isGameLoopActive: boolean;
+  isPaused: boolean; // New state for pause/unpause
 
   // Actions
   executeAction: (actionId: string) => void;
@@ -80,6 +81,7 @@ interface GameStore extends GameState {
   updateBastionStats: () => void;
   updateLoopProgress: (progress: number) => void; // New action to update loop progress
   setGameLoopActive: (isActive: boolean) => void; // New action to set game loop activity
+  togglePause: () => void; // New action to toggle pause state
 }
 
 // Helper functions
@@ -115,6 +117,7 @@ const mergeStateUpdates = (
     // Merge loop-related states if they are part of stateUpdates
     loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
     isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
+    isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
   };
 
   console.log("[mergeStateUpdates] Merged result:", {
@@ -199,6 +202,7 @@ const defaultGameState: GameState = {
   // Initialize game loop state
   loopProgress: 0,
   isGameLoopActive: false,
+  isPaused: false, // Initialize isPaused to false
 };
 
 // State management utilities
@@ -294,6 +298,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Ensure loop-related states are initialized from loaded state
       loopProgress: newState.loopProgress !== undefined ? newState.loopProgress : 0,
       isGameLoopActive: newState.isGameLoopActive !== undefined ? newState.isGameLoopActive : false,
+      isPaused: newState.isPaused !== undefined ? newState.isPaused : false, // Ensure isPaused is initialized
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -480,6 +485,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // Ensure loop state is reset
       loopProgress: 0,
       isGameLoopActive: false,
+      isPaused: false, // Reset pause state
     };
 
     set(resetState);
@@ -514,6 +520,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Ensure loop state is loaded correctly
         loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
+        isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
       };
 
       set(loadedState);
@@ -558,6 +565,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   checkEvents: () => {
     const state = get();
+    // If the game is paused, do not process events
+    if (state.isPaused) return;
+
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
 
@@ -715,6 +725,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   applyEventChoice: (choiceId: string, eventId: string) => {
     const state = get();
+    // If the game is paused, do not apply event choices
+    if (state.isPaused) return;
+
     const currentLogEntry = get().eventDialog.currentEvent;
     const changes = EventManager.applyEventChoice(
       state,
@@ -959,5 +972,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => ({
       isGameLoopActive: isActive,
     }));
+  },
+
+  togglePause: () => {
+    set((state) => {
+      const newState = {
+        isPaused: !state.isPaused,
+      };
+      // If unpausing, reset loop progress to the start of the 15-second interval
+      if (newState.isPaused === false) {
+        newState.loopProgress = 0;
+      }
+      return newState;
+    });
   },
 }));

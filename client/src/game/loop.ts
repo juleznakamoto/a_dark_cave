@@ -20,7 +20,9 @@ export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
   useGameStore.setState({ isGameLoopActive: true });
-  lastFrameTime = performance.now();
+  const now = performance.now();
+  lastFrameTime = now;
+  lastProduction = now; // Reset production interval to start fresh
   tickAccumulator = 0;
 
   function tick(timestamp: number) {
@@ -29,9 +31,16 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isPaused = state.isPaused || isDialogOpen;
 
-    if (!isPaused) {
+    if (isPaused) {
+      // Skip everything when paused
+      gameLoopId = requestAnimationFrame(tick);
+      return;
+    }
+
+    if (!isDialogOpen) {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
 
@@ -74,9 +83,6 @@ export function startGameLoop() {
         handleMadnessCheck();
         handleStrangerApproach();
       }
-    } else {
-      // Only tick down cooldowns when paused
-      state.tickCooldowns();
     }
 
     gameLoopId = requestAnimationFrame(tick);
