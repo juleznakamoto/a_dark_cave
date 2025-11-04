@@ -136,14 +136,16 @@ export default function GameFooter() {
             >
               New
             </Button>
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={() => setShopDialogOpen(true)}
-              className="px-2 py-1 text-xs no-hover"
-            >
-              Shop
-            </Button>
+            {!import.meta.env.PROD && (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => setShopDialogOpen(true)}
+                className="px-2 py-1 text-xs no-hover"
+              >
+                Shop
+              </Button>
+            )}
             <Button
               variant="outline"
               size="xs"
