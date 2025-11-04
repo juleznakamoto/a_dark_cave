@@ -29,7 +29,7 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen;
+    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen;
 
     if (!isPaused) {
       // Accumulate time for fixed timestep

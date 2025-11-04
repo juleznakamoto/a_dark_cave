@@ -10,7 +10,7 @@ import { useToast } from "@/hooks/use-toast";
 const VERSION = "0.14.4";
 
 export default function GameFooter() {
-  const { lastSaved, restartGame, loadGame } = useGameStore();
+  const { lastSaved, restartGame, loadGame, setAuthDialogOpen: setGameAuthDialogOpen, flags } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{ id: string; email: string } | null>(null);
@@ -25,10 +25,23 @@ export default function GameFooter() {
     setCurrentUser(user);
   };
 
+  const handleSetAuthDialogOpen = (isOpen: boolean) => {
+    setAuthDialogOpen(isOpen);
+    setGameAuthDialogOpen(isOpen);
+  };
+
+  const handleAuthSuccess = async () => {
+    const user = await getCurrentUser();
+    setCurrentUser(user);
+    // Reload game to get cloud save
+    await loadGame();
+  };
+
   const handleSignOut = async () => {
     try {
       await signOut();
       setCurrentUser(null);
+      handleSetAuthDialogOpen(false); // Close auth dialog on sign out
       toast({
         title: 'Signed out',
         description: 'You have been signed out successfully.',
@@ -40,12 +53,6 @@ export default function GameFooter() {
         variant: 'destructive',
       });
     }
-  };
-
-  const handleAuthSuccess = async () => {
-    await checkAuth();
-    // Reload game to get cloud save
-    await loadGame();
   };
 
   const handleSaveGame = async () => {
@@ -69,6 +76,11 @@ export default function GameFooter() {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
   };
 
+  // Placeholder for canOfferTribute, assuming it's defined elsewhere or not needed for this change
+  const canOfferTribute = true;
+  // Placeholder for handleNewGame, assuming it's defined elsewhere or not needed for this change
+  const handleNewGame = () => {};
+
   return (
     <>
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
@@ -87,7 +99,7 @@ export default function GameFooter() {
               <Button
                 variant="outline"
                 size="xs"
-                onClick={() => setAuthDialogOpen(true)}
+                onClick={() => handleSetAuthDialogOpen(true)}
                 className="px-3 py-1 text-xs no-hover"
               >
                 Sign In / Up
@@ -125,7 +137,7 @@ export default function GameFooter() {
       </footer>
       <AuthDialog
         isOpen={authDialogOpen}
-        onClose={() => setAuthDialogOpen(false)}
+        onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
     </>
