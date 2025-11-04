@@ -2,10 +2,8 @@ import { Action } from "@shared/schema";
 import { GameState } from "@shared/schema";
 import {
   caveExploreActions,
-  handleBlastPortal,
-  handleEncounterBeyondPortal,
 } from "./caveExploreActions";
-import { caveCraftResources, handleCraftEmberBomb } from "./caveCraftResources";
+import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMiningActions } from "./caveMineActions";

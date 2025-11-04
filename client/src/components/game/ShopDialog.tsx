@@ -270,12 +270,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
           {!isLoading && !clientSecret ? (
             <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 {Object.values(SHOP_ITEMS).map((item) => (
                   <Card key={item.id}>
                     <CardHeader>
                       <CardTitle>{item.name}</CardTitle>
-                      <CardDescription>
+                      <CardDescription className="text-bold">
                         {formatPrice(item.price)}
                       </CardDescription>
                     </CardHeader>
