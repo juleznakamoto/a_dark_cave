@@ -384,12 +384,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           </div>
                           <Button
                             onClick={() => handleActivatePurchase(itemId)}
-                            disabled={item.category === 'feast' ? (gameState.greatFeastActivations || 0) <= 0 : isActivated}
+                            disabled={item.category === 'feast' ? ((gameState.greatFeastActivations || 0) <= 0 || (gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now())) : isActivated}
                             size="sm"
-                            variant={item.category === 'feast' ? "default" : (isActivated ? "outline" : "default")}
+                            variant={item.category === 'feast' ? ((gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()) ? "outline" : "default") : (isActivated ? "outline" : "default")}
                           >
                             {item.category === 'feast' 
-                              ? "Activate"
+                              ? ((gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()) ? "Active" : "Activate")
                               : (isActivated ? "Activated" : "Activate")}
                           </Button>
                         </div>
