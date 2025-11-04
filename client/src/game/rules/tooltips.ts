@@ -86,8 +86,21 @@ export const madnessTooltip: TooltipConfig = {
 
 // Feast progress tooltip
 export const feastTooltip: TooltipConfig = {
-  getContent: () => {
-    return "Village Feast\n+100% Production Bonus";
+  getContent: (state) => {
+    const greatFeastState = state.greatFeastState;
+    const feastState = state.feastState;
+    const now = Date.now();
+    
+    const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > now;
+    const isFeast = feastState?.isActive && feastState.endTime > now;
+    
+    if (isGreatFeast) {
+      return "Great Village Feast\n+400% Production Bonus for 30 minutes";
+    } else if (isFeast) {
+      return "Village Feast\n+100% Production Bonus for 10 minutes";
+    }
+    
+    return "";
   },
 };
 
