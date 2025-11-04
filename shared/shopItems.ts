@@ -15,6 +15,7 @@ export interface ShopItem {
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
   category: 'resource' | 'weapon' | 'tool' | 'blessing' | 'feast' | 'bundle';
+  activationMessage?: string;
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
@@ -28,6 +29,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
+    activationMessage: 'Activated 50 Gold! Rewards have been added to your inventory.',
   },
 
   gold_250: {
@@ -40,6 +42,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
+    activationMessage: 'Activated 250 Gold! Rewards have been added to your inventory.',
   },
 
   gold_1000: {
@@ -52,6 +55,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
+    activationMessage: 'Activated 1000 Gold! Rewards have been added to your inventory.',
   },
 
   gold_5000: {
@@ -64,6 +68,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
+    activationMessage: 'Activated 5000 Gold! Rewards have been added to your inventory.',
   },
 
   weapon_1: {
@@ -76,6 +81,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'weapon',
+    activationMessage: 'Activated Elven Bow! Rewards have been added to your inventory.',
   },
 
   weapon_2: {
@@ -88,6 +94,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'weapon',
+    activationMessage: 'Activated Frostglass Sword! Rewards have been added to your inventory.',
   },
 
   blessing_1: {
@@ -100,6 +107,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'blessing',
+    activationMessage: "Activated Raven's Mark! Rewards have been added to your inventory.",
   },
 
   blessing_2: {
@@ -112,6 +120,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'blessing',
+    activationMessage: 'Activated Ashen Embrace! Rewards have been added to your inventory.',
   },
 
   feast_1: {
@@ -124,6 +133,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'feast',
+    activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
   },
 
   feast_5: {
@@ -136,6 +146,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'feast',
+    activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
   },
 
   dwarven_hammer: {
@@ -148,6 +159,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'tool',
+    activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
   },
 
   natharit_pickaxe: {
@@ -160,6 +172,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'tool',
+    activationMessage: 'Activated Natharit Pickaxe! Rewards have been added to your inventory.',
   },
 
   xxx_axe: {
@@ -172,6 +185,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'tool',
+    activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
   },
 
   ultimate_pack: {
@@ -185,5 +199,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'bundle',
+    activationMessage: 'Activated Ultimate Pack! Rewards have been added to your inventory.',
   },
 };

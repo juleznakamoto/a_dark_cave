@@ -221,7 +221,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       gameState.addLogEntry({
         id: `great-feast-${Date.now()}`,
-        message: `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
+        message: item.activationMessage || `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
         timestamp: Date.now(),
         type: "system",
       });
@@ -258,7 +258,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
-      message: `Activated ${item.name}! Rewards have been added to your inventory.`,
+      message: item.activationMessage || `Activated ${item.name}! Rewards have been added to your inventory.`,
       timestamp: Date.now(),
       type: "system",
     });
