@@ -353,14 +353,20 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       const item = SHOP_ITEMS[itemId];
                       if (!item) return null;
 
-                      // Skip feast items as they are handled separately
-                      if (item.category === 'feast') return null;
-
                       const isActivated = activatedPurchases[itemId] || false;
 
                       return (
                         <div key={itemId} className="flex items-center justify-between p-3 border rounded-lg">
-                          <span className="text-sm font-medium">{item.name}</span>
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium">
+                              {item.name}
+                              {item.category === 'feast' && item.rewards.feastActivations && 
+                                ` (${item.rewards.feastActivations} available)`}
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {item.description}
+                            </span>
+                          </div>
                           <Button
                             onClick={() => handleActivatePurchase(itemId)}
                             disabled={isActivated}
