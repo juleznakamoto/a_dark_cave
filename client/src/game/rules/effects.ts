@@ -69,10 +69,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
   stone_pickaxe: {
     id: "stone_pickaxe",
     name: "Stone Pickaxe",
-    description: "Rudimentary pickaxe for mining",
+    description: "Rudimentary pickaxe for mine",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
@@ -100,10 +100,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
   iron_pickaxe: {
     id: "iron_pickaxe",
     name: "Iron Pickaxe",
-    description: "Durable pickaxe for mining efficiently",
+    description: "Durable pickaxe for mine efficiently",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.5,
           cooldownReduction: 1,
         },
@@ -128,10 +128,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
   steel_pickaxe: {
     id: "steel_pickaxe",
     name: "Steel Pickaxe",
-    description: "Very sturdy mining tool crafted from resilient steel",
+    description: "Very sturdy mine tool crafted from resilient steel",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.75,
           cooldownReduction: 2,
         },
@@ -156,10 +156,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
   obsidian_pickaxe: {
     id: "obsidian_pickaxe",
     name: "Obsidian Pickaxe",
-    description: "Masterful tool for mining made of volcanic glass",
+    description: "Masterful tool for mine made of volcanic glass",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -184,10 +184,10 @@ export const toolEffects: Record<string, EffectDefinition> = {
   adamant_pickaxe: {
     id: "adamant_pickaxe",
     name: "Adamant Pickaxe",
-    description: "Pinnacle of mining tools, unyielding and precise",
+    description: "Pinnacle of mine tools, unyielding and precise",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.5,
           cooldownReduction: 6,
         },
@@ -201,7 +201,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Simple lantern providing reliable light",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
@@ -218,7 +218,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Bright lantern illuminating the darkest places",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
@@ -235,7 +235,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.5,
           cooldownReduction: 3,
         },
@@ -252,7 +252,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Ultimate light source, illuminating every path",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -679,7 +679,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Scepter of the lost king, radiating power and madness",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
         },
       },
@@ -930,7 +930,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "+50% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.5,
         },
       },
@@ -979,7 +979,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "+200% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 3.0, // 200% bonus
         },
       },
