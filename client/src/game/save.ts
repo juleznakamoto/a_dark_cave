@@ -1,6 +1,7 @@
 import { openDB, DBSchema } from 'idb';
 import { GameState, SaveData } from '@shared/schema';
 import { buildGameState } from './stateHelpers';
+import { saveGameToSupabase, loadGameFromSupabase, getCurrentUser } from './auth';
 
 interface GameDB extends DBSchema {
   saves: {
@@ -39,7 +40,20 @@ export async function saveGame(gameState: GameState): Promise<void> {
       timestamp: Date.now(),
     };
     
+    // Save locally
     await db.put('saves', saveData, SAVE_KEY);
+    
+    // Save to cloud if user is authenticated
+    const user = await getCurrentUser();
+    if (user) {
+      try {
+        await saveGameToSupabase(sanitizedState);
+        console.log('Game saved to cloud');
+      } catch (cloudError) {
+        console.error('Failed to save to cloud:', cloudError);
+        // Continue anyway - local save succeeded
+      }
+    }
   } catch (error) {
     console.error('Failed to save game:', error);
     throw error;
@@ -48,6 +62,30 @@ export async function saveGame(gameState: GameState): Promise<void> {
 
 export async function loadGame(): Promise<GameState | null> {
   try {
+    // Check if user is authenticated
+    const user = await getCurrentUser();
+    
+    if (user) {
+      // Try to load from cloud first
+      try {
+        const cloudSave = await loadGameFromSupabase();
+        if (cloudSave) {
+          console.log('Game loaded from cloud');
+          // Also save to local storage
+          const db = await getDB();
+          await db.put('saves', {
+            gameState: cloudSave,
+            timestamp: Date.now(),
+          }, SAVE_KEY);
+          return cloudSave;
+        }
+      } catch (cloudError) {
+        console.error('Failed to load from cloud:', cloudError);
+        // Fall back to local save
+      }
+    }
+    
+    // Load from local storage
     const db = await getDB();
     const saveData = await db.get('saves', SAVE_KEY);
     
