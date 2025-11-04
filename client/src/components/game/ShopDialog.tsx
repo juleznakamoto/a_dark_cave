@@ -199,7 +199,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // Show success message
     setShowSuccess(true);
-    setTimeout(() => setShowSuccess(false), 3000);
+    setTimeout(() => setShowSuccess(false), 10000);
 
     setClientSecret(null);
     setSelectedItem(null);
@@ -257,160 +257,166 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           )}
 
           {!isLoading && showSuccess && (
-            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md mb-4">
+            <div className="bg-green-800 text-gray-100 px-4 py-3 rounded-md mb-4">
               Purchase successful! Check the Purchases section below to activate
               your items.
             </div>
           )}
 
           {!isLoading && !currentUser && (
-            <div className="bg-red-800 border text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
+            <div className="bg-red-800 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
               Sign in or create an account to purchase items.
             </div>
           )}
 
           {!isLoading && !clientSecret ? (
-          <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-              {Object.values(items).map((item) => (
-                <Card key={item.id}>
-                  <CardHeader>
-                    <CardTitle>{item.name}</CardTitle>
-                    <CardDescription>{formatPrice(item.price)}</CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-2 text-sm">
-                      {item.rewards.resources && (
-                        <div>
-                          <strong>Resources:</strong>
-                          <ul className="ml-4 list-disc">
-                            {Object.entries(item.rewards.resources).map(
-                              ([resource, amount]) => (
-                                <li key={resource}>
-                                  {amount} {resource}
-                                </li>
-                              ),
-                            )}
-                          </ul>
-                        </div>
-                      )}
-                      {item.rewards.tools && (
-                        <div>
-                          <strong>Tools:</strong>
-                          <ul className="ml-4 list-disc">
-                            {item.rewards.tools.map((tool) => (
-                              <li key={tool}>{tool.replace(/_/g, " ")}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                      {item.rewards.weapons && (
-                        <div>
-                          <strong>Weapons:</strong>
-                          <ul className="ml-4 list-disc">
-                            {item.rewards.weapons.map((weapon) => (
-                              <li key={weapon}>{weapon.replace(/_/g, " ")}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      )}
-                    </div>
-                  </CardContent>
-                  <CardFooter>
-                    <Button
-                      onClick={() => handlePurchaseClick(item.id)}
-                      disabled={!currentUser}
-                      className="w-full"
-                    >
-                      Purchase
-                    </Button>
-                  </CardFooter>
-                </Card>
-              ))}
-            </div>
-
-            {purchasedItems.length > 0 && (
-              <div className="mt-6 border-t pt-4">
-                <h3 className="text-lg font-semibold mb-4">Purchases</h3>
-                <p className="text-sm text-muted-foreground mb-4">
-                  Activate your purchases to receive rewards. Each purchase can
-                  only be activated once per game.
-                </p>
-                <div className="space-y-2">
-                  {purchasedItems.map((itemId) => {
-                    const item = items[itemId];
-                    if (!item) return null;
-                    const isActivated = activatedItems.has(itemId);
-
-                    return (
-                      <Card key={itemId}>
-                        <CardHeader>
-                          <CardTitle className="text-sm">{item.name}</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="space-y-2 text-xs">
-                            {item.rewards.resources && (
-                              <div>
-                                <strong>Resources:</strong>{" "}
-                                {Object.entries(item.rewards.resources)
-                                  .map(([r, a]) => `${a} ${r}`)
-                                  .join(", ")}
-                              </div>
-                            )}
-                            {item.rewards.tools && (
-                              <div>
-                                <strong>Tools:</strong>{" "}
-                                {item.rewards.tools
-                                  .map((t) => t.replace(/_/g, " "))
-                                  .join(", ")}
-                              </div>
-                            )}
-                            {item.rewards.weapons && (
-                              <div>
-                                <strong>Weapons:</strong>{" "}
-                                {item.rewards.weapons
-                                  .map((w) => w.replace(/_/g, " "))
-                                  .join(", ")}
-                              </div>
-                            )}
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                {Object.values(items).map((item) => (
+                  <Card key={item.id}>
+                    <CardHeader>
+                      <CardTitle>{item.name}</CardTitle>
+                      <CardDescription>
+                        {formatPrice(item.price)}
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-2 text-sm">
+                        {item.rewards.resources && (
+                          <div>
+                            <strong>Resources:</strong>
+                            <ul className="ml-4 list-disc">
+                              {Object.entries(item.rewards.resources).map(
+                                ([resource, amount]) => (
+                                  <li key={resource}>
+                                    {amount} {resource}
+                                  </li>
+                                ),
+                              )}
+                            </ul>
                           </div>
-                        </CardContent>
-                        <CardFooter>
-                          <Button
-                            onClick={() => handleActivatePurchase(itemId)}
-                            disabled={isActivated}
-                            className="w-full"
-                            variant={isActivated ? "outline" : "default"}
-                          >
-                            {isActivated ? "Activated" : "Activate"}
-                          </Button>
-                        </CardFooter>
-                      </Card>
-                    );
-                  })}
-                </div>
+                        )}
+                        {item.rewards.tools && (
+                          <div>
+                            <strong>Tools:</strong>
+                            <ul className="ml-4 list-disc">
+                              {item.rewards.tools.map((tool) => (
+                                <li key={tool}>{tool.replace(/_/g, " ")}</li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {item.rewards.weapons && (
+                          <div>
+                            <strong>Weapons:</strong>
+                            <ul className="ml-4 list-disc">
+                              {item.rewards.weapons.map((weapon) => (
+                                <li key={weapon}>
+                                  {weapon.replace(/_/g, " ")}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button
+                        onClick={() => handlePurchaseClick(item.id)}
+                        disabled={!currentUser}
+                        className="w-full"
+                      >
+                        Purchase
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                ))}
               </div>
-            )}
-          </>
-        ) : clientSecret ? (
-          <div className="mt-4">
-            <h3 className="text-lg font-semibold mb-4">
-              Complete Purchase: {items[selectedItem!]?.name}
-            </h3>
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
-              <CheckoutForm
-                itemId={selectedItem!}
-                onSuccess={handlePurchaseSuccess}
-              />
-            </Elements>
-            <Button
-              variant="outline"
-              onClick={() => setClientSecret(null)}
-              className="w-full mt-4"
-            >
-              Cancel
-            </Button>
-          </div>
+
+              {purchasedItems.length > 0 && (
+                <div className="mt-6 border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">Purchases</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Activate your purchases to receive rewards. Each purchase
+                    can only be activated once per game.
+                  </p>
+                  <div className="space-y-2">
+                    {purchasedItems.map((itemId) => {
+                      const item = items[itemId];
+                      if (!item) return null;
+                      const isActivated = activatedItems.has(itemId);
+
+                      return (
+                        <Card key={itemId}>
+                          <CardHeader>
+                            <CardTitle className="text-sm">
+                              {item.name}
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent>
+                            <div className="space-y-2 text-xs">
+                              {item.rewards.resources && (
+                                <div>
+                                  <strong>Resources:</strong>{" "}
+                                  {Object.entries(item.rewards.resources)
+                                    .map(([r, a]) => `${a} ${r}`)
+                                    .join(", ")}
+                                </div>
+                              )}
+                              {item.rewards.tools && (
+                                <div>
+                                  <strong>Tools:</strong>{" "}
+                                  {item.rewards.tools
+                                    .map((t) => t.replace(/_/g, " "))
+                                    .join(", ")}
+                                </div>
+                              )}
+                              {item.rewards.weapons && (
+                                <div>
+                                  <strong>Weapons:</strong>{" "}
+                                  {item.rewards.weapons
+                                    .map((w) => w.replace(/_/g, " "))
+                                    .join(", ")}
+                                </div>
+                              )}
+                            </div>
+                          </CardContent>
+                          <CardFooter>
+                            <Button
+                              onClick={() => handleActivatePurchase(itemId)}
+                              disabled={isActivated}
+                              className="w-full"
+                              variant={isActivated ? "outline" : "default"}
+                            >
+                              {isActivated ? "Activated" : "Activate"}
+                            </Button>
+                          </CardFooter>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : clientSecret ? (
+            <div className="mt-4">
+              <h3 className="text-lg font-semibold mb-4">
+                Complete Purchase: {items[selectedItem!]?.name}
+              </h3>
+              <Elements stripe={stripePromise} options={{ clientSecret }}>
+                <CheckoutForm
+                  itemId={selectedItem!}
+                  onSuccess={handlePurchaseSuccess}
+                />
+              </Elements>
+              <Button
+                variant="outline"
+                onClick={() => setClientSecret(null)}
+                className="w-full mt-4"
+              >
+                Cancel
+              </Button>
+            </div>
           ) : null}
           <ScrollBar orientation="vertical" />
         </ScrollArea>
