@@ -11,11 +11,20 @@ import { ShopDialog } from "./ShopDialog";
 const VERSION = "0.14.5";
 
 export default function GameFooter() {
-  const { lastSaved, restartGame, loadGame, setAuthDialogOpen: setGameAuthDialogOpen, flags } = useGameStore();
+  const {
+    lastSaved,
+    restartGame,
+    loadGame,
+    setAuthDialogOpen: setGameAuthDialogOpen,
+    flags,
+  } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [isShopOpen, setIsShopOpen] = useState(false); // State for shop dialog
-  const [currentUser, setCurrentUser] = useState<{ id: string; email: string } | null>(null);
+  const [currentUser, setCurrentUser] = useState<{
+    id: string;
+    email: string;
+  } | null>(null);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -45,14 +54,14 @@ export default function GameFooter() {
       setCurrentUser(null);
       handleSetAuthDialogOpen(false); // Close auth dialog on sign out
       toast({
-        title: 'Signed out',
-        description: 'You have been signed out successfully.',
+        title: "Signed out",
+        description: "You have been signed out successfully.",
       });
     } catch (error: any) {
       toast({
-        title: 'Error',
-        description: error.message || 'Failed to sign out',
-        variant: 'destructive',
+        title: "Error",
+        description: error.message || "Failed to sign out",
+        variant: "destructive",
       });
     }
   };
@@ -89,14 +98,6 @@ export default function GameFooter() {
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setIsShopOpen(true)}
-              className="mr-4"
-            >
-              🛒 Shop
-            </Button>
             {currentUser ? (
               <Button
                 variant="outline"
@@ -133,6 +134,14 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs no-hover"
             >
               New
+            </Button>
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={() => setIsShopOpen(true)}
+              className="px-2 py-1 text-xs no-hover"
+            >
+              Shop
             </Button>
             <Button
               variant="outline"
