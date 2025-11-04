@@ -24,6 +24,13 @@ export async function signIn(email: string, password: string) {
   });
 
   if (error) throw error;
+  
+  // Check if email is confirmed
+  if (data.user && !data.user.email_confirmed_at) {
+    await supabase.auth.signOut();
+    throw new Error('Please confirm your email address before signing in. Check your inbox for the confirmation link.');
+  }
+  
   return data;
 }
 
@@ -36,6 +43,12 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
   const { data: { user } } = await supabase.auth.getUser();
   
   if (!user) return null;
+  
+  // Only return user if email is confirmed
+  if (!user.email_confirmed_at) {
+    console.warn('User email not confirmed, treating as not authenticated');
+    return null;
+  }
   
   return {
     id: user.id,
