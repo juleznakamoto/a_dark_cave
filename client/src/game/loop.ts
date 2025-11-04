@@ -18,6 +18,7 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let lastUserActivity = Date.now();
 let activityListenersAdded = false;
+let wasPaused = false;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -54,6 +55,13 @@ export function startGameLoop() {
     }
     
     const isPaused = isDialogOpen || isManuallyPaused;
+
+    // Reset production timer when transitioning from paused to unpaused
+    if (wasPaused && !isPaused) {
+      lastProduction = timestamp;
+      lastAutoSave = timestamp;
+    }
+    wasPaused = isPaused;
 
     if (!isPaused) {
       // Accumulate time for fixed timestep
@@ -96,9 +104,6 @@ export function startGameLoop() {
     } else {
       // Only tick down cooldowns when paused
       state.tickCooldowns();
-      
-      // Update lastProduction timestamp to prevent accumulated production when unpausing
-      lastProduction = timestamp;
     }
 
     gameLoopId = requestAnimationFrame(tick);
