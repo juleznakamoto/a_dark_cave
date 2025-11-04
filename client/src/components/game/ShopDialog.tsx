@@ -176,6 +176,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
+    // If this is a feast item, add the activations to game state immediately
+    if (item.category === 'feast' && item.rewards.feastActivations) {
+      useGameStore.setState((state) => ({
+        greatFeastActivations: (state.greatFeastActivations || 0) + item.rewards.feastActivations!,
+      }));
+    }
+
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
       message: `Purchase successful! ${item.name} has been added to your purchases. You can activate it once per game from the Purchases section.`,
