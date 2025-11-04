@@ -92,6 +92,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [items, setItems] = useState<Record<string, ShopItem>>({});
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
+  const [activatedItems, setActivatedItems] = useState<Set<string>>(new Set());
+  const [showSuccess, setShowSuccess] = useState(false);
   const gameState = useGameStore();
 
   useState(() => {
@@ -115,6 +118,28 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseSuccess = () => {
     const item = items[selectedItem!];
     
+    // Add to purchased items list
+    setPurchasedItems(prev => [...prev, selectedItem!]);
+
+    gameState.addLogEntry({
+      id: `purchase-${Date.now()}`,
+      message: `Purchase successful! ${item.name} has been added to your purchases. You can activate it once per game from the Purchases section.`,
+      timestamp: Date.now(),
+      type: 'system',
+    });
+
+    // Show success message
+    setShowSuccess(true);
+    setTimeout(() => setShowSuccess(false), 3000);
+
+    setClientSecret(null);
+    setSelectedItem(null);
+  };
+
+  const handleActivatePurchase = (itemId: string) => {
+    const item = items[itemId];
+    if (!item || activatedItems.has(itemId)) return;
+
     // Grant rewards
     if (item.rewards.resources) {
       Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
@@ -135,19 +160,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
 
     gameState.addLogEntry({
-      id: `purchase-${Date.now()}`,
-      message: `You purchased ${item.name}! Rewards have been added to your inventory.`,
+      id: `activate-${Date.now()}`,
+      message: `Activated ${item.name}! Rewards have been added to your inventory.`,
       timestamp: Date.now(),
       type: 'system',
     });
 
-    setClientSecret(null);
-    setSelectedItem(null);
-    onClose();
+    setActivatedItems(prev => new Set(prev).add(itemId));
   };
 
   const formatPrice = (cents: number) => {
-    return `$${(cents / 100).toFixed(2)}`;
+    return `€${(cents / 100).toFixed(2)}`;
   };
 
   return (
@@ -157,58 +180,119 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
 
-        {!clientSecret ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-            {Object.values(items).map((item) => (
-              <Card key={item.id}>
-                <CardHeader>
-                  <CardTitle>{item.name}</CardTitle>
-                  <CardDescription>{formatPrice(item.price)}</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2 text-sm">
-                    {item.rewards.resources && (
-                      <div>
-                        <strong>Resources:</strong>
-                        <ul className="ml-4 list-disc">
-                          {Object.entries(item.rewards.resources).map(([resource, amount]) => (
-                            <li key={resource}>
-                              {amount} {resource}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {item.rewards.tools && (
-                      <div>
-                        <strong>Tools:</strong>
-                        <ul className="ml-4 list-disc">
-                          {item.rewards.tools.map(tool => (
-                            <li key={tool}>{tool.replace(/_/g, ' ')}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                    {item.rewards.weapons && (
-                      <div>
-                        <strong>Weapons:</strong>
-                        <ul className="ml-4 list-disc">
-                          {item.rewards.weapons.map(weapon => (
-                            <li key={weapon}>{weapon.replace(/_/g, ' ')}</li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </div>
-                </CardContent>
-                <CardFooter>
-                  <Button onClick={() => handlePurchaseClick(item.id)} className="w-full">
-                    Purchase
-                  </Button>
-                </CardFooter>
-              </Card>
-            ))}
+        {showSuccess && (
+          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+            Purchase successful! Check the Purchases section below to activate your items.
           </div>
+        )}
+
+        {!clientSecret ? (
+          <>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+              {Object.values(items).map((item) => (
+                <Card key={item.id}>
+                  <CardHeader>
+                    <CardTitle>{item.name}</CardTitle>
+                    <CardDescription>{formatPrice(item.price)}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2 text-sm">
+                      {item.rewards.resources && (
+                        <div>
+                          <strong>Resources:</strong>
+                          <ul className="ml-4 list-disc">
+                            {Object.entries(item.rewards.resources).map(([resource, amount]) => (
+                              <li key={resource}>
+                                {amount} {resource}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {item.rewards.tools && (
+                        <div>
+                          <strong>Tools:</strong>
+                          <ul className="ml-4 list-disc">
+                            {item.rewards.tools.map(tool => (
+                              <li key={tool}>{tool.replace(/_/g, ' ')}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                      {item.rewards.weapons && (
+                        <div>
+                          <strong>Weapons:</strong>
+                          <ul className="ml-4 list-disc">
+                            {item.rewards.weapons.map(weapon => (
+                              <li key={weapon}>{weapon.replace(/_/g, ' ')}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  </CardContent>
+                  <CardFooter>
+                    <Button onClick={() => handlePurchaseClick(item.id)} className="w-full">
+                      Purchase
+                    </Button>
+                  </CardFooter>
+                </Card>
+              ))}
+            </div>
+
+            {purchasedItems.length > 0 && (
+              <div className="mt-6 border-t pt-4">
+                <h3 className="text-lg font-semibold mb-4">Purchases</h3>
+                <p className="text-sm text-muted-foreground mb-4">
+                  Activate your purchases to receive rewards. Each purchase can only be activated once per game.
+                </p>
+                <div className="space-y-2">
+                  {purchasedItems.map((itemId) => {
+                    const item = items[itemId];
+                    if (!item) return null;
+                    const isActivated = activatedItems.has(itemId);
+                    
+                    return (
+                      <Card key={itemId}>
+                        <CardHeader>
+                          <CardTitle className="text-sm">{item.name}</CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-2 text-xs">
+                            {item.rewards.resources && (
+                              <div>
+                                <strong>Resources:</strong> {Object.entries(item.rewards.resources).map(([r, a]) => `${a} ${r}`).join(', ')}
+                              </div>
+                            )}
+                            {item.rewards.tools && (
+                              <div>
+                                <strong>Tools:</strong> {item.rewards.tools.map(t => t.replace(/_/g, ' ')).join(', ')}
+                              </div>
+                            )}
+                            {item.rewards.weapons && (
+                              <div>
+                                <strong>Weapons:</strong> {item.rewards.weapons.map(w => w.replace(/_/g, ' ')).join(', ')}
+                              </div>
+                            )}
+                          </div>
+                        </CardContent>
+                        <CardFooter>
+                          <Button 
+                            onClick={() => handleActivatePurchase(itemId)} 
+                            disabled={isActivated}
+                            className="w-full"
+                            variant={isActivated ? "outline" : "default"}
+                          >
+                            {isActivated ? 'Activated' : 'Activate'}
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </>
         ) : (
           <div className="mt-4">
             <h3 className="text-lg font-semibold mb-4">
