@@ -192,7 +192,7 @@ export default function SidePanelSection({
     if (typeof value === "string") {
       return value;
     }
-    
+
     if (value < 0) {
       return `${value}`;
     } else if (value === -1) {
@@ -445,23 +445,37 @@ export default function SidePanelSection({
                           'exploreTemple',
                           'exploreCitadel'
                         ];
-                        
+
                         // Check if this item has cave explore bonuses
                         const hasCaveExploreBonus = Object.keys(effect.bonuses.actionBonuses).some(
                           actionId => caveExploreActions.includes(actionId)
                         );
-                        
-                        // Special case for items with cave explore bonuses - show simplified tooltip
-                        if (hasCaveExploreBonus) {
+
+                        // Check if this item has mining bonuses
+                        const hasMiningBonus = effect.bonuses.actionBonuses.mining;
+
+                        // Special case for lanterns - show both mining and cave explore bonuses
+                        if (hasCaveExploreBonus && hasMiningBonus) {
                           const firstCaveAction = Object.keys(effect.bonuses.actionBonuses).find(
                             actionId => caveExploreActions.includes(actionId)
                           );
-                          const bonus = firstCaveAction ? effect.bonuses.actionBonuses[firstCaveAction] : null;
-                          
-                          if (bonus?.resourceMultiplier) {
-                            const percentBonus = Math.round((bonus.resourceMultiplier - 1) * 100);
-                            return <div>+{percentBonus}% Cave Explore Bonus</div>;
-                          }
+                          const caveBonus = firstCaveAction ? effect.bonuses.actionBonuses[firstCaveAction] : null;
+                          const miningBonus = effect.bonuses.actionBonuses.mining;
+
+                          return (
+                            <>
+                              {miningBonus?.resourceMultiplier && miningBonus.resourceMultiplier !== 1 && (
+                                <div>
+                                  +{Math.round((miningBonus.resourceMultiplier - 1) * 100)}% Mining Bonus
+                                </div>
+                              )}
+                              {caveBonus?.resourceMultiplier && (
+                                <div>
+                                  +{Math.round((caveBonus.resourceMultiplier - 1) * 100)}% Cave Explore Bonus
+                                </div>
+                              )}
+                            </>
+                          );
                         }
 
                         return Object.entries(effect.bonuses.actionBonuses).map(
