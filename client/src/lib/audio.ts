@@ -198,22 +198,30 @@ export class AudioManager {
   }
 
   pause(): void {
-    if (!this.masterGainNode || this.isPaused) return;
+    if (!this.audioContext || this.isPaused) return;
     
     try {
-      this.masterGainNode.gain.setValueAtTime(0, this.audioContext!.currentTime);
-      this.isPaused = true;
+      if (this.audioContext.state === 'running') {
+        this.audioContext.suspend().then(() => {
+          this.isPaused = true;
+          console.log('Audio paused');
+        });
+      }
     } catch (error) {
       console.warn('Failed to pause audio:', error);
     }
   }
 
   resume(): void {
-    if (!this.masterGainNode || !this.isPaused) return;
+    if (!this.audioContext || !this.isPaused) return;
     
     try {
-      this.masterGainNode.gain.setValueAtTime(1, this.audioContext!.currentTime);
-      this.isPaused = false;
+      if (this.audioContext.state === 'suspended') {
+        this.audioContext.resume().then(() => {
+          this.isPaused = false;
+          console.log('Audio resumed');
+        });
+      }
     } catch (error) {
       console.warn('Failed to resume audio:', error);
     }
