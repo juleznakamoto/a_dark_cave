@@ -14,6 +14,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useGameStore } from "@/game/state";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -243,31 +244,32 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
 
-        {isLoading && (
-          <div className="flex justify-center py-8">
-            <div className="text-muted-foreground">Loading...</div>
-          </div>
-        )}
+        <ScrollArea className="max-h-[calc(80vh-80px)]">
+          {isLoading && (
+            <div className="flex justify-center py-8">
+              <div className="text-muted-foreground">Loading...</div>
+            </div>
+          )}
 
-        {!isLoading && showSuccess && (
-          <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md mb-4">
-            Purchase successful! Check the Purchases section below to activate
-            your items.
-          </div>
-        )}
+          {!isLoading && showSuccess && (
+            <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-md mb-4">
+              Purchase successful! Check the Purchases section below to activate
+              your items.
+            </div>
+          )}
 
-        {!isLoading && !currentUser && (
-          <div className="bg-red-800 border text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
-            Sign in or create an account to purchase items.
-          </div>
-        )}
+          {!isLoading && !currentUser && (
+            <div className="bg-red-800 border text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
+              Sign in or create an account to purchase items.
+            </div>
+          )}
 
-        {!isLoading && !clientSecret ? (
+          {!isLoading && !clientSecret ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {Object.values(items).map((item) => (
@@ -409,7 +411,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               Cancel
             </Button>
           </div>
-        ) : null}
+          ) : null}
+          <ScrollBar orientation="vertical" />
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );
