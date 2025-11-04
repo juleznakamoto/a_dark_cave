@@ -4,7 +4,7 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import { getTotalMadness } from "./rules/effectsCalculation";
+import { getTotalMadness, getAllActionBonuses } from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -53,9 +53,6 @@ export function startGameLoop() {
 
         // Log full state every 15 seconds
         const currentState = useGameStore.getState();
-        
-        // Import getAllActionBonuses for logging
-        const { getAllActionBonuses } = await import("./rules/effectsCalculation");
         const bonuses = getAllActionBonuses(currentState);
         
         console.log("State:", {
