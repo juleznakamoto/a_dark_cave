@@ -18,10 +18,11 @@ import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
 import { gameStateSchema } from "@shared/schema";
 
-// Extract property order from schema
-const resourceOrder = Object.keys(gameStateSchema.shape.resources.shape);
-const buildingOrder = Object.keys(gameStateSchema.shape.buildings.shape);
-const villagerOrder = Object.keys(gameStateSchema.shape.villagers.shape);
+// Extract property order from schema by parsing defaults
+const defaultGameState = gameStateSchema.parse({});
+const resourceOrder = Object.keys(defaultGameState.resources);
+const buildingOrder = Object.keys(defaultGameState.buildings);
+const villagerOrder = Object.keys(defaultGameState.villagers);
 
 export default function SidePanel() {
   const {
