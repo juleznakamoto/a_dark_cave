@@ -24,12 +24,6 @@ export default function GameFooter() {
     togglePause,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
-
-  const handleTogglePause = () => {
-    setGlowingButton("pause");
-    togglePause();
-    setTimeout(() => setGlowingButton(null), 500);
-  };
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -111,8 +105,8 @@ export default function GameFooter() {
             <Button
               variant="outline"
               size="xs"
-              onClick={handleTogglePause}
-              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
+              onClick={togglePause}
+              className="px-2 py-1 text-xs no-hover"
               title={isGamePaused ? "Resume game" : "Pause game"}
             >
               {isGamePaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
