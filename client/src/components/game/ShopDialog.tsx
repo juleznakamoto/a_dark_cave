@@ -7,7 +7,11 @@ import { useGameStore } from '@/game/state';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY || '');
+const stripePublishableKey = import.meta.env.PROD 
+  ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD 
+  : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
+
+const stripePromise = loadStripe(stripePublishableKey || '');
 
 interface ShopItem {
   id: string;
