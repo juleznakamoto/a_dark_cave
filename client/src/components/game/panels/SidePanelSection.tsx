@@ -12,7 +12,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { capitalizeWords } from "@/lib/utils";
 import ResourceChangeNotification from "./ResourceChangeNotification";
 import { useGameStore } from "@/game/state";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";

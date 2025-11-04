@@ -357,7 +357,7 @@ export const getAllActionBonuses = (state: GameState): Array<{
 
   // Convert to array and format
   return Array.from(bonusMap.entries())
-    .filter(([actionId]) => actionId !== 'forge') // Exclude forge from bonus display
+    .filter(([actionId]) => actionId !== 'steelForger') // Exclude forge from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
       const label = actionId === 'caveExplore' 
