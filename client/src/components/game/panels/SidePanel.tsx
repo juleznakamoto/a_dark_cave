@@ -612,6 +612,13 @@ export default function SidePanel() {
     const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
 
     activeEffects.forEach((effect) => {
+      // Check for cave explore multiplier in general bonuses
+      if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
+        const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
+        existing.multiplier *= effect.bonuses.generalBonuses.caveExploreMultiplier;
+        bonusMap.set('caveExplore', existing);
+      }
+
       if (effect.bonuses.actionBonuses) {
         Object.entries(effect.bonuses.actionBonuses).forEach(
           ([actionId, bonus]) => {
@@ -639,7 +646,7 @@ export default function SidePanel() {
     return Array.from(bonusMap.entries())
       .map(([actionId, bonus]) => {
         const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-        let label = capitalizeWords(actionId);
+        let label = actionId === 'caveExplore' ? 'Cave Explore' : capitalizeWords(actionId);
         
         // Build value string
         let valueStr = "";
