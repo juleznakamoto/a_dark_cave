@@ -145,6 +145,14 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
       {
+        itemType: "elven_bow",
+        itemKeys: ["elven_bow"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Elven Bow",
+        category: "weapons",
+        maxCount: 1,
+      },
+      {
         itemType: "frostglass_sword",
         itemKeys: ["frostglass_sword"],
         color: tailwindToHex("gray-400/80"),
