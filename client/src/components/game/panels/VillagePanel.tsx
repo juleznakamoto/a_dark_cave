@@ -475,30 +475,26 @@ export default function VillagePanel() {
         )}
 
         {/* Shop Section */}
-        {story.seen?.hasShop && (
-          <div className="space-y-2">
-            <h3 className="text-xs font-bold text-foreground">Shop</h3>
-            <div className="flex flex-wrap gap-2">
-              {/* Great Feast */}
-              {(() => {
-                const bought = (gameState.activatedPurchases?.feast_1 ? 1 : 0) + 
-                              (gameState.activatedPurchases?.feast_5 ? 5 : 0) + 
-                              (gameState.activatedPurchases?.feast_10 ? 10 : 0);
-                const available = gameState.greatFeastActivations || 0;
-                const total = bought + available;
-                
-                if (total > 0) {
-                  return (
-                    <div className="text-xs text-muted-foreground">
-                      Great Feast: {bought} bought, {available} available
-                    </div>
-                  );
-                }
-                return null;
-              })()}
+        {story.seen?.hasShop && (() => {
+          const bought = (gameState.activatedPurchases?.feast_1 ? 1 : 0) + 
+                        (gameState.activatedPurchases?.feast_5 ? 5 : 0) + 
+                        (gameState.activatedPurchases?.feast_10 ? 10 : 0);
+          const available = gameState.greatFeastActivations || 0;
+          const total = bought + available;
+          
+          if (total === 0) return null;
+          
+          return (
+            <div className="space-y-2">
+              <h3 className="text-xs font-bold text-foreground">Shop</h3>
+              <div className="flex flex-wrap gap-2">
+                <div className="text-xs text-muted-foreground">
+                  Great Feast: {bought} bought, {available} available
+                </div>
+              </div>
             </div>
-          </div>
-        )}
+          );
+        })()}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
