@@ -37,8 +37,10 @@ export function startGameLoop() {
     if (isPaused) {
       // Reset production timer when paused so time doesn't accumulate
       lastProduction = timestamp;
-      // Reset loop progress to 0 when paused
-      useGameStore.setState({ loopProgress: 0 });
+      // Only reset loop progress to 0 when manually paused (not when dialogs open)
+      if (state.isPaused) {
+        useGameStore.setState({ loopProgress: 0 });
+      }
       // Skip everything when paused
       gameLoopId = requestAnimationFrame(tick);
       return;
