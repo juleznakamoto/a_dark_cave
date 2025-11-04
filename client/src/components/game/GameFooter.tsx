@@ -108,7 +108,7 @@ export default function GameFooter() {
                 onClick={() => setAuthDialogOpen(true)}
                 className="px-3 py-1 text-xs no-hover"
               >
-                Sign In / Sign Up
+                Sign In / Up
               </Button>
             )}
             <Button
