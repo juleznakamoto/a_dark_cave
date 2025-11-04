@@ -41,15 +41,18 @@ export default function VillagePanel() {
   useEffect(() => {
     let pausedAt: number | null = null;
     let pauseOffset = 0;
+    let animationFrameId: number | null = null;
 
     const updateProgress = () => {
       const gameState = useGameStore.getState();
-      
+
       // Handle pause state
       if (gameState.isGamePaused) {
         if (pausedAt === null) {
           pausedAt = Date.now();
         }
+        // If paused, don't update progress, just request next frame
+        animationFrameId = requestAnimationFrame(updateProgress);
         return;
       } else if (pausedAt !== null) {
         // Just unpaused - calculate offset
@@ -80,12 +83,19 @@ export default function VillagePanel() {
       } else {
         setFeastProgress(0);
       }
+
+      // Continue the animation loop
+      animationFrameId = requestAnimationFrame(updateProgress);
     };
 
-    updateProgress();
-    const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
+    // Start the animation loop
+    animationFrameId = requestAnimationFrame(updateProgress);
 
-    return () => clearInterval(interval);
+    return () => {
+      if (animationFrameId !== null) {
+        cancelAnimationFrame(animationFrameId);
+      }
+    };
   }, []);
 
   // Define action groups with their actions
@@ -309,7 +319,7 @@ export default function VillagePanel() {
             onMouseDown={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
+            onTouchStart={() => currentCount > 0 && startHold(() => assignVillager(jobId))}
             onTouchEnd={stopHold}
             disabled={currentCount === 0}
             variant="ghost"
@@ -496,9 +506,9 @@ export default function VillagePanel() {
                         (gameState.activatedPurchases?.feast_10 ? 10 : 0);
           const available = gameState.greatFeastActivations || 0;
           const total = bought + available;
-          
+
           if (total === 0) return null;
-          
+
           return (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-foreground">Shop</h3>
