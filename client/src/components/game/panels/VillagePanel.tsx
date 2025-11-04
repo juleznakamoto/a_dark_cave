@@ -49,7 +49,7 @@ export default function VillagePanel() {
       // Update feast progress
       const feastState = useGameStore.getState().feastState;
       const greatFeastState = useGameStore.getState().greatFeastState;
-      
+
       if (greatFeastState?.isActive && greatFeastState.endTime > now) {
         const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
         const greatFeastElapsed = greatFeastDuration - (greatFeastState.endTime - now);
@@ -246,14 +246,14 @@ export default function VillagePanel() {
   const startHold = (action: () => void) => {
     // Execute immediately
     action();
-    
+
     // Wait 500ms before starting repeat
     const timeout = setTimeout(() => {
       // Then repeat every 100ms
       const interval = setInterval(action, 100);
       setHoldState(prev => ({ ...prev, interval }));
     }, 500);
-    
+
     setHoldState(prev => ({ ...prev, timeout }));
   };
 
@@ -335,6 +335,8 @@ export default function VillagePanel() {
     return false;
   });
 
+  const gameState = useGameStore.getState(); // Get current game state
+
   return (
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 pb-4">
@@ -372,7 +374,7 @@ export default function VillagePanel() {
                 const greatFeastState = useGameStore.getState().greatFeastState;
                 const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
                 const isFeast = feastState?.isActive && feastState.endTime > Date.now();
-                
+
                 if (!isGreatFeast && !isFeast) {
                   return null;
                 }
@@ -469,6 +471,21 @@ export default function VillagePanel() {
                 </div>
               ) : null;
             })()}
+          </div>
+        )}
+
+        {/* Shop Section */}
+        {story.seen?.hasShop && (
+          <div className="space-y-2">
+            <h3 className="text-xs font-bold text-foreground">Shop</h3>
+            <div className="flex flex-wrap gap-2">
+              {/* Great Feast */}
+              {gameState.greatFeastActivations > 0 && (
+                <div className="text-xs text-muted-foreground">
+                  {gameState.greatFeastActivations} Great Feast{gameState.greatFeastActivations > 1 ? 's' : ''} available in Shop
+                </div>
+              )}
+            </div>
           </div>
         )}
       </div>
