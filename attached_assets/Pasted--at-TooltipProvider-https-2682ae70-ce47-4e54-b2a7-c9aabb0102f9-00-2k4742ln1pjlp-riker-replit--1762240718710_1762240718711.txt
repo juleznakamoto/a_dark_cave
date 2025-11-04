@@ -1,0 +1,90 @@
+
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=e18f6dea:291:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:21:28)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=e18f6dea:2805:3)
+    at App
+printWarning @ react_jsx-dev-runtime.js?v=e18f6dea:64Understand this error
+audio.ts:59 Loading all sounds after user gesture...
+audio.ts:79 Successfully loaded sound: newVillager
+audio.ts:79 Successfully loaded sound: event
+audio.ts:79 Successfully loaded sound: eventMadness
+audio.ts:79 Successfully loaded sound: whisperingCube
+audio.ts:79 Successfully loaded sound: backgroundMusic
+audio.ts:64 Finished loading all sounds
+loop.ts:389 [AUTOSAVE] Saving game state, events: Object
+loop.ts:56 State: Object
+loop.ts:389 [AUTOSAVE] Saving game state, events: Object
+loop.ts:56 State: Object
+placeholder.supabase.co/auth/v1/signup:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+@supabase_supabase-js.js?v=e18f6dea:6356 TypeError: Failed to fetch
+    at @supabase_supabase-js.js?v=e18f6dea:6064:23
+    at _handleRequest3 (@supabase_supabase-js.js?v=e18f6dea:6354:20)
+    at _request (@supabase_supabase-js.js?v=e18f6dea:6344:22)
+    at SupabaseAuthClient.signUp (@supabase_supabase-js.js?v=e18f6dea:7986:21)
+    at signUp (auth.ts:11:47)
+    at handleSubmit (AuthDialog.tsx:35:15)
+    at HTMLUnknownElement.callCallback2 (chunk-UPELNCPK.js?v=e18f6dea:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-UPELNCPK.js?v=e18f6dea:3699:24)
+    at invokeGuardedCallback (chunk-UPELNCPK.js?v=e18f6dea:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-UPELNCPK.js?v=e18f6dea:3736:33)
+_handleRequest3 @ @supabase_supabase-js.js?v=e18f6dea:6356Understand this error
+loop.ts:389 [AUTOSAVE] Saving game state, events: Object
+loop.ts:56 State: Object
+supabase.ts:7 Supabase URL: undefined
+supabase.ts:8 Supabase Key: Missing
+supabase.ts:11 ⚠️ Supabase environment variables are not properly configured!
+(anonymous) @ supabase.ts:11Understand this error
+supabase.ts:12 VITE_SUPABASE_URL: undefined
+(anonymous) @ supabase.ts:12Understand this error
+supabase.ts:13 VITE_SUPABASE_ANON_KEY: [MISSING]
+(anonymous) @ supabase.ts:13Understand this error
+client:174 Error: Supabase configuration is missing. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Replit Secrets.
+    at supabase.ts:14:9
+warnFailedUpdate @ client:174Understand this error
+client:176 [hmr] Failed to reload /src/components/game/AuthDialog.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+warnFailedUpdate @ client:176Understand this error
+client:174 Error: Supabase configuration is missing. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Replit Secrets.
+    at supabase.ts:14:9
+warnFailedUpdate @ client:174Understand this error
+client:176 [hmr] Failed to reload /src/components/game/GameContainer.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+warnFailedUpdate @ client:176Understand this error
+client:174 Error: Supabase configuration is missing. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Replit Secrets.
+    at supabase.ts:14:9
+warnFailedUpdate @ client:174Understand this error
+client:176 [hmr] Failed to reload /src/components/game/GameFooter.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+warnFailedUpdate @ client:176Understand this error
+client:174 Error: Supabase configuration is missing. Please set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in Replit Secrets.
+    at supabase.ts:14:9
+warnFailedUpdate @ client:174Understand this error
+client:176 [hmr] Failed to reload /src/pages/game.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above)
+warnFailedUpdate @ client:176Understand this error
+loop.ts:389 [AUTOSAVE] Saving game state, events: Object
+loop.ts:56 State: Object
+placeholder.supabase.co/auth/v1/signup:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+@supabase_supabase-js.js?v=e18f6dea:6356 TypeError: Failed to fetch
+    at @supabase_supabase-js.js?v=e18f6dea:6064:23
+    at _handleRequest3 (@supabase_supabase-js.js?v=e18f6dea:6354:20)
+    at _request (@supabase_supabase-js.js?v=e18f6dea:6344:22)
+    at SupabaseAuthClient.signUp (@supabase_supabase-js.js?v=e18f6dea:7986:21)
+    at signUp (auth.ts:11:47)
+    at handleSubmit (AuthDialog.tsx:35:15)
+    at HTMLUnknownElement.callCallback2 (chunk-UPELNCPK.js?v=e18f6dea:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-UPELNCPK.js?v=e18f6dea:3699:24)
+    at invokeGuardedCallback (chunk-UPELNCPK.js?v=e18f6dea:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-UPELNCPK.js?v=e18f6dea:3736:33)
+_handleRequest3 @ @supabase_supabase-js.js?v=e18f6dea:6356Understand this error
+placeholder.supabase.co/auth/v1/signup:1  Failed to load resource: net::ERR_NAME_NOT_RESOLVEDUnderstand this error
+@supabase_supabase-js.js?v=e18f6dea:6356 TypeError: Failed to fetch
+    at @supabase_supabase-js.js?v=e18f6dea:6064:23
+    at _handleRequest3 (@supabase_supabase-js.js?v=e18f6dea:6354:20)
+    at _request (@supabase_supabase-js.js?v=e18f6dea:6344:22)
+    at SupabaseAuthClient.signUp (@supabase_supabase-js.js?v=e18f6dea:7986:21)
+    at signUp (auth.ts:11:47)
+    at handleSubmit (AuthDialog.tsx:35:15)
+    at HTMLUnknownElement.callCallback2 (chunk-UPELNCPK.js?v=e18f6dea:3674:22)
+    at Object.invokeGuardedCallbackDev (chunk-UPELNCPK.js?v=e18f6dea:3699:24)
+    at invokeGuardedCallback (chunk-UPELNCPK.js?v=e18f6dea:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (chunk-UPELNCPK.js?v=e18f6dea:3736:33)
+_handleRequest3 @ @supabase_supabase-js.js?v=e18f6dea:6356Understand this error
+loop.ts:389 [AUTOSAVE] Saving game state, events: Object
+loop.ts:56 State: Object
