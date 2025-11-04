@@ -920,7 +920,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   togglePause: () => {
-    set((state) => ({ isPaused: !state.isPaused }));
+    const currentState = get();
+    const newPausedState = !currentState.isPaused;
+    set({ isPaused: newPausedState });
+    
+    // If unpausing, restart the game loop
+    if (!newPausedState && !currentState.isGameLoopActive) {
+      import('./loop').then(({ startGameLoop }) => {
+        startGameLoop();
+      });
+    }
   },
 
   updateEffects: () => {
