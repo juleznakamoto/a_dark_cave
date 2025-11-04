@@ -30,6 +30,12 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/comp
 import { weaponEffects } from "@/game/rules/effects";
 import { Info } from "lucide-react";
 
+// Assuming clothingEffects is defined elsewhere or imported
+const clothingEffects: { [key: string]: any } = {};
+// Assuming toolEffects is defined elsewhere or imported
+const toolEffects: { [key: string]: any } = {};
+
+
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
@@ -281,14 +287,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             <>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 {Object.values(SHOP_ITEMS).map((item) => (
-                  <Card key={item.id}>
+                  <Card key={item.id} className="flex flex-col">
                     <CardHeader>
                       <CardTitle>{item.name}</CardTitle>
                       <CardDescription className="text-bold">
                         {formatPrice(item.price)}
                       </CardDescription>
                     </CardHeader>
-                    <CardContent>
+                    <CardContent className="flex-1">
                       <p className="text-sm text-muted-foreground">
                         {item.description}
                       </p>
@@ -347,7 +353,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                   {item.rewards.tools.map((tool) => {
                                     const effect = toolEffects[tool];
                                     const toolName = effect?.name || tool.replace(/_/g, " ");
-                                    
+
                                     return (
                                       <div key={tool} className="flex items-start gap-1 mb-1">
                                         <span className="font-semibold">{toolName}:</span>
@@ -378,7 +384,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                   {item.rewards.weapons.map((weapon) => {
                                     const effect = weaponEffects[weapon];
                                     const weaponName = effect?.name || weapon.replace(/_/g, " ");
-                                    
+
                                     return (
                                       <div key={weapon} className="flex items-start gap-1 mb-1">
                                         <span className="font-semibold">{weaponName}:</span>
@@ -402,7 +408,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                   {item.rewards.blessings.map((blessing) => {
                                     const effect = clothingEffects[blessing];
                                     const blessingName = effect?.name || blessing.replace(/_/g, " ");
-                                    
+
                                     return (
                                       <div key={blessing} className="flex items-start gap-1 mb-1">
                                         <span className="font-semibold">{blessingName}:</span>
