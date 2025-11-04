@@ -53,7 +53,15 @@ export function startGameLoop() {
 
         // Log full state every 15 seconds
         const currentState = useGameStore.getState();
-        console.log("State:", currentState);
+        
+        // Import getAllActionBonuses for logging
+        const { getAllActionBonuses } = await import("./rules/effectsCalculation");
+        const bonuses = getAllActionBonuses(currentState);
+        
+        console.log("State:", {
+          ...currentState,
+          calculatedBonuses: bonuses,
+        });
 
         handleGathererProduction();
         handleHunterProduction();

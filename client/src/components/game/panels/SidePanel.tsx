@@ -12,7 +12,7 @@ import {
   getTotalStrength,
   getTotalKnowledge,
   getTotalMadness,
-  getActiveEffects,
+  getAllActionBonuses,
 } from "@/game/rules/effectsCalculation";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
@@ -606,69 +606,14 @@ export default function SidePanel() {
       };
     });
 
-  // Dynamically generate bonus items by aggregating all action bonuses
-  const bonusItems = (() => {
-    const activeEffects = getActiveEffects(gameState);
-    const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
-
-    activeEffects.forEach((effect) => {
-      // Check for cave explore multiplier in general bonuses
-      if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
-        const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
-        // Add the bonus percentage instead of multiplying
-        existing.multiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
-        bonusMap.set('caveExplore', existing);
-      }
-
-      if (effect.bonuses.actionBonuses) {
-        Object.entries(effect.bonuses.actionBonuses).forEach(
-          ([actionId, bonus]) => {
-            const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
-
-            // Aggregate multipliers (additive)
-            if (bonus.resourceMultiplier) {
-              existing.multiplier += (bonus.resourceMultiplier - 1);
-            }
-
-            // Aggregate flat bonuses (additive)
-            if (bonus.resourceBonus) {
-              Object.values(bonus.resourceBonus).forEach((value) => {
-                existing.flatBonus += value;
-              });
-            }
-
-            bonusMap.set(actionId, existing);
-          }
-        );
-      }
-    });
-
-    // Convert to array and format
-    return Array.from(bonusMap.entries())
-      .map(([actionId, bonus]) => {
-        const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-        let label = actionId === 'caveExplore' ? 'Cave Explore' : capitalizeWords(actionId);
-        
-        // Build value string
-        let valueStr = "";
-        if (percentBonus > 0) {
-          valueStr = `+${percentBonus}%`;
-        }
-        if (bonus.flatBonus > 0) {
-          valueStr += valueStr ? ` / +${bonus.flatBonus}` : `+${bonus.flatBonus}`;
-        }
-
-        return {
-          id: actionId,
-          label,
-          value: valueStr,
-          testId: `bonus-${actionId}`,
-          visible: percentBonus > 0 || bonus.flatBonus > 0,
-        };
-      })
-      .filter((item) => item.visible)
-      .sort((a, b) => a.label.localeCompare(b.label));
-  })();
+  // Use SSOT for bonus calculations
+  const bonusItems = getAllActionBonuses(gameState).map((bonus) => ({
+    id: bonus.id,
+    label: bonus.label,
+    value: bonus.displayValue,
+    testId: `bonus-${bonus.id}`,
+    visible: true,
+  }));
 
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {

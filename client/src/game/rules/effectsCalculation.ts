@@ -306,6 +306,80 @@ export function getActionBonuses(
   return bonuses;
 }
 
+// SSOT: Calculate all action bonuses for display and internal use
+export const getAllActionBonuses = (state: GameState): Array<{
+  id: string;
+  label: string;
+  multiplier: number;
+  flatBonus: number;
+  displayValue: string;
+}> => {
+  const activeEffects = getActiveEffects(state);
+  const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
+
+  activeEffects.forEach((effect) => {
+    // Check for cave explore multiplier in general bonuses
+    if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
+      const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
+      existing.multiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
+      bonusMap.set('caveExplore', existing);
+    }
+
+    if (effect.bonuses.actionBonuses) {
+      Object.entries(effect.bonuses.actionBonuses).forEach(
+        ([actionId, bonus]) => {
+          const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
+
+          // Aggregate multipliers (additive)
+          if (bonus.resourceMultiplier) {
+            existing.multiplier += (bonus.resourceMultiplier - 1);
+          }
+
+          // Aggregate flat bonuses (additive)
+          if (bonus.resourceBonus) {
+            Object.values(bonus.resourceBonus).forEach((value) => {
+              existing.flatBonus += value;
+            });
+          }
+
+          bonusMap.set(actionId, existing);
+        }
+      );
+    }
+  });
+
+  // Convert to array and format
+  return Array.from(bonusMap.entries())
+    .map(([actionId, bonus]) => {
+      const percentBonus = Math.round((bonus.multiplier - 1) * 100);
+      const label = actionId === 'caveExplore' 
+        ? 'Cave Explore' 
+        : actionId.replace(/([A-Z])/g, ' $1').trim()
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+      
+      // Build value string
+      let valueStr = "";
+      if (percentBonus > 0) {
+        valueStr = `+${percentBonus}%`;
+      }
+      if (bonus.flatBonus > 0) {
+        valueStr += valueStr ? ` / +${bonus.flatBonus}` : `+${bonus.flatBonus}`;
+      }
+
+      return {
+        id: actionId,
+        label,
+        multiplier: bonus.multiplier,
+        flatBonus: bonus.flatBonus,
+        displayValue: valueStr,
+      };
+    })
+    .filter((item) => (item.multiplier - 1) > 0 || item.flatBonus > 0)
+    .sort((a, b) => a.label.localeCompare(b.label));
+};
+
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
