@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { getCurrentUser, signOut } from "@/game/auth";
 import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
-import ShopDialog from "./ShopDialog"; // Assuming ShopDialog is in the same directory
+import { ShopDialog } from "./ShopDialog";
 
 const VERSION = "0.14.5";
 
