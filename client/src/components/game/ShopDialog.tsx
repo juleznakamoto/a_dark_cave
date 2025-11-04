@@ -98,6 +98,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [activatedItems, setActivatedItems] = useState<Set<string>>(new Set());
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentUser, setCurrentUser] = useState<{ id: string; email: string } | null>(null);
   const gameState = useGameStore();
 
   useEffect(() => {
@@ -107,13 +108,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const itemsData = await itemsResponse.json();
       setItems(itemsData);
 
+      // Check if user is authenticated
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+
       // Load user's purchases from database
-      const currentUser = await getCurrentUser();
-      if (currentUser) {
+      if (user) {
         const { data: purchases, error } = await supabase
           .from('purchases')
           .select('item_id')
-          .eq('user_id', currentUser.id);
+          .eq('user_id', user.id);
 
         if (!error && purchases) {
           setPurchasedItems(purchases.map(p => p.item_id));
@@ -235,6 +239,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
+        {!isLoading && !currentUser && (
+          <div className="bg-blue-50 border border-blue-300 text-blue-800 px-4 py-3 rounded mb-4 text-center">
+            To purchase items you have to sign in or sign up.
+          </div>
+        )}
+
         {!isLoading && !clientSecret ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
@@ -281,7 +291,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     </div>
                   </CardContent>
                   <CardFooter>
-                    <Button onClick={() => handlePurchaseClick(item.id)} className="w-full">
+                    <Button 
+                      onClick={() => handlePurchaseClick(item.id)} 
+                      disabled={!currentUser}
+                      className="w-full"
+                    >
                       Purchase
                     </Button>
                   </CardFooter>
