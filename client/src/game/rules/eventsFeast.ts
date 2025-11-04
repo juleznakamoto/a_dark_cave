@@ -29,6 +29,11 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         return false;
       }
 
+      // No feast events can trigger while a Great Feast is active
+      if (state.greatFeastState?.isActive && state.greatFeastState.endTime > Date.now()) {
+        return false;
+      }
+
       // Check if previous feast was accepted (or if this is the first feast)
       if (state.feastState.lastAcceptedLevel < level - 1) {
         return false;

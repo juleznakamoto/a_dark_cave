@@ -104,6 +104,16 @@ function processTick() {
     });
   }
 
+  // Check if Great Feast has expired
+  if (state.greatFeastState?.isActive && state.greatFeastState.endTime <= Date.now()) {
+    useGameStore.setState({
+      greatFeastState: {
+        ...state.greatFeastState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();

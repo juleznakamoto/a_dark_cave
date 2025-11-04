@@ -48,7 +48,14 @@ export default function VillagePanel() {
 
       // Update feast progress
       const feastState = useGameStore.getState().feastState;
-      if (feastState?.isActive && feastState.endTime > now) {
+      const greatFeastState = useGameStore.getState().greatFeastState;
+      
+      if (greatFeastState?.isActive && greatFeastState.endTime > now) {
+        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+        const greatFeastElapsed = greatFeastDuration - (greatFeastState.endTime - now);
+        const greatFeastProgressValue = (greatFeastElapsed / greatFeastDuration) * 100;
+        setFeastProgress(greatFeastProgressValue);
+      } else if (feastState?.isActive && feastState.endTime > now) {
         const feastDuration = 10 * 60 * 1000; // 10 minutes
         const feastElapsed = feastDuration - (feastState.endTime - now);
         const feastProgressValue = (feastElapsed / feastDuration) * 100;
@@ -362,7 +369,11 @@ export default function VillagePanel() {
               {/* Feast Timer */}
               {(() => {
                 const feastState = useGameStore.getState().feastState;
-                if (!feastState?.isActive || feastState.endTime <= Date.now()) {
+                const greatFeastState = useGameStore.getState().greatFeastState;
+                const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
+                const isFeast = feastState?.isActive && feastState.endTime > Date.now();
+                
+                if (!isGreatFeast && !isFeast) {
                   return null;
                 }
 
@@ -379,17 +390,19 @@ export default function VillagePanel() {
                               value={feastProgress}
                               size={18}
                               strokeWidth={2}
-                              className="text-yellow-600"
+                              className={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
                             />
-                            <span className="absolute inset-0 flex items-center justify-center text-[12px] text-yellow-600 -mt-[1px] font-extrabold">
-                              ⟡
+                            <span className={`absolute inset-0 flex items-center justify-center text-[12px] -mt-[1px] font-extrabold ${isGreatFeast ? "text-orange-600" : "text-yellow-600"}`}>
+                              {isGreatFeast ? "⟡⟡" : "⟡"}
                             </span>
                           </div>
                         </div>
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-pre-line">
-                          {feastTooltip.getContent(state)}
+                          {isGreatFeast 
+                            ? `Great Feast active!\n4x production boost`
+                            : feastTooltip.getContent(state)}
                         </div>
                       </TooltipContent>
                     </Tooltip>

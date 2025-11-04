@@ -221,7 +221,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
 
     if (item.rewards.feastActivations) {
-      // Add feast activations to a counter or grant them directly
+      // Add feast activations to the counter
+      useGameStore.setState((state) => ({
+        greatFeastActivations: (state.greatFeastActivations || 0) + item.rewards.feastActivations!,
+      }));
+
       gameState.addLogEntry({
         id: `feast-${Date.now()}`,
         message: `Received ${item.rewards.feastActivations} Great Feast activation(s)! Use them wisely.`,
@@ -364,6 +368,61 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         </div>
                       );
                     })}
+                  </div>
+                </div>
+              )}
+
+              {/* Great Feast Activations */}
+              {gameState.greatFeastActivations > 0 && (
+                <div className="mt-6 border-t pt-4">
+                  <h3 className="text-lg font-semibold mb-4">Great Feast Activations</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Activate a Great Feast to boost production by 4x for 30 minutes. 
+                    {gameState.feastState?.isActive && " (Will end current Feast)"}
+                  </p>
+                  <div className="flex items-center justify-between p-3 border rounded-lg">
+                    <span className="text-sm font-medium">
+                      Great Feast ({gameState.greatFeastActivations} available)
+                    </span>
+                    <Button
+                      onClick={() => {
+                        // End any active Feast
+                        if (gameState.feastState?.isActive) {
+                          useGameStore.setState({
+                            feastState: {
+                              ...gameState.feastState,
+                              isActive: false,
+                              endTime: 0,
+                            },
+                          });
+                        }
+
+                        // Activate Great Feast
+                        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+                        const endTime = Date.now() + greatFeastDuration;
+
+                        useGameStore.setState((state) => ({
+                          greatFeastState: {
+                            isActive: true,
+                            endTime: endTime,
+                          },
+                          greatFeastActivations: state.greatFeastActivations - 1,
+                        }));
+
+                        gameState.addLogEntry({
+                          id: `great-feast-activated-${Date.now()}`,
+                          message: "A Great Feast has begun! Production is boosted by 4x for 30 minutes.",
+                          timestamp: Date.now(),
+                          type: "system",
+                        });
+                      }}
+                      size="sm"
+                      disabled={gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()}
+                    >
+                      {gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now() 
+                        ? "Active" 
+                        : "Activate"}
+                    </Button>
                   </div>
                 </div>
               )}

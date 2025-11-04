@@ -182,6 +182,13 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
     });
   }
 
+  // Apply Great Feast multiplier (4x production when active)
+  if (state?.greatFeastState?.isActive && state.greatFeastState.endTime > Date.now()) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount *= 4;
+    });
+  }
+
   // Apply Flame's Touch blessing bonus to steel production
   if (state && jobId === 'steel_forger') {
     baseProduction.forEach((prod) => {
