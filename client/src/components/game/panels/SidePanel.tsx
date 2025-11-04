@@ -14,7 +14,6 @@ import {
   getTotalMadness,
   getActiveEffects,
 } from "@/game/rules/effectsCalculation";
-import { CAVE_EXPLORE_ACTIONS } from "@/game/rules/caveExploreConfig";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
 
@@ -616,11 +615,7 @@ export default function SidePanel() {
       if (effect.bonuses.actionBonuses) {
         Object.entries(effect.bonuses.actionBonuses).forEach(
           ([actionId, bonus]) => {
-            // Check if this is a cave explore action
-            const isCaveExplore = CAVE_EXPLORE_ACTIONS.includes(actionId as any);
-            const mapKey = isCaveExplore ? 'caveExplore' : actionId;
-            
-            const existing = bonusMap.get(mapKey) || { multiplier: 1, flatBonus: 0 };
+            const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
 
             // Aggregate multipliers (multiplicative)
             if (bonus.resourceMultiplier) {
@@ -634,7 +629,7 @@ export default function SidePanel() {
               });
             }
 
-            bonusMap.set(mapKey, existing);
+            bonusMap.set(actionId, existing);
           }
         );
       }
@@ -644,7 +639,7 @@ export default function SidePanel() {
     return Array.from(bonusMap.entries())
       .map(([actionId, bonus]) => {
         const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-        let label = actionId === 'caveExplore' ? 'Cave Explore Bonus' : capitalizeWords(actionId);
+        let label = capitalizeWords(actionId);
         
         // Build value string
         let valueStr = "";
