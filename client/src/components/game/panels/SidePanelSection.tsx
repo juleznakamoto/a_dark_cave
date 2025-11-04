@@ -463,7 +463,6 @@ export default function SidePanelSection({
                             return <div>+{percentBonus}% Cave Explore Bonus</div>;
                           }
                         }
-                        }
 
                         return Object.entries(effect.bonuses.actionBonuses).map(
                           ([actionId, bonus]) => (
