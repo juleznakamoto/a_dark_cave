@@ -123,7 +123,6 @@ export const gameStateSchema = z.object({
       arbalest: z.boolean().default(false),
       nightshade_bow: z.boolean().default(false),
       elven_bow: z.boolean().default(false),
-      frostglass_sword: z.boolean().default(false),
       bloodstone_staff: z.boolean().default(false),
     })
     .default({}),

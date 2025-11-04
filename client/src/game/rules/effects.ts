@@ -455,13 +455,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     name: "Nightshade Bow",
     description: "A bow crafted from dark wood, its arrows carry poison",
     bonuses: {
-      actionBonuses: {
-        hunt: {
-          resourceMultiplier: 2.5,
-        },
-      },
       generalBonuses: {
-        strength: 6,
+        strength: 5,
       },
     },
   },
@@ -469,7 +464,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   elven_bow: {
     id: "elven_bow",
     name: "Elven Bow",
-    description: "A masterfully crafted bow from the elven forests",
+    description: "Masterfully crafted bow from the elven forests",
     bonuses: {
       actionBonuses: {
         hunt: {
