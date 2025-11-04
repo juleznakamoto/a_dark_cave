@@ -198,14 +198,13 @@ export class AudioManager {
   }
 
   pause(): void {
-    if (!this.audioContext || this.isPaused) return;
+    if (!this.audioContext) return;
     
     try {
       if (this.audioContext.state === 'running') {
-        this.audioContext.suspend().then(() => {
-          this.isPaused = true;
-          console.log('Audio paused');
-        });
+        this.isPaused = true;
+        this.audioContext.suspend();
+        console.log('Audio paused, state:', this.audioContext.state);
       }
     } catch (error) {
       console.warn('Failed to pause audio:', error);
@@ -213,14 +212,13 @@ export class AudioManager {
   }
 
   resume(): void {
-    if (!this.audioContext || !this.isPaused) return;
+    if (!this.audioContext) return;
     
     try {
       if (this.audioContext.state === 'suspended') {
-        this.audioContext.resume().then(() => {
-          this.isPaused = false;
-          console.log('Audio resumed');
-        });
+        this.isPaused = false;
+        this.audioContext.resume();
+        console.log('Audio resumed, state:', this.audioContext.state);
       }
     } catch (error) {
       console.warn('Failed to resume audio:', error);
