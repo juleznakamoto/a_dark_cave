@@ -480,11 +480,22 @@ export default function VillagePanel() {
             <h3 className="text-xs font-bold text-foreground">Shop</h3>
             <div className="flex flex-wrap gap-2">
               {/* Great Feast */}
-              {gameState.greatFeastActivations > 0 && (
-                <div className="text-xs text-muted-foreground">
-                  {gameState.greatFeastActivations} Great Feast{gameState.greatFeastActivations > 1 ? 's' : ''} available in Shop
-                </div>
-              )}
+              {(() => {
+                const bought = (gameState.activatedPurchases?.feast_1 ? 1 : 0) + 
+                              (gameState.activatedPurchases?.feast_5 ? 5 : 0) + 
+                              (gameState.activatedPurchases?.feast_10 ? 10 : 0);
+                const available = gameState.greatFeastActivations || 0;
+                const total = bought + available;
+                
+                if (total > 0) {
+                  return (
+                    <div className="text-xs text-muted-foreground">
+                      Great Feast: {bought} bought, {available} available
+                    </div>
+                  );
+                }
+                return null;
+              })()}
             </div>
           </div>
         )}
