@@ -30,6 +30,7 @@ export default function VillagePanel() {
     executeAction,
     assignVillager,
     unassignVillager,
+    isPaused,
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -40,6 +41,11 @@ export default function VillagePanel() {
 
   useEffect(() => {
     const updateProgress = () => {
+      // Don't update progress when paused
+      if (useGameStore.getState().isPaused) {
+        return;
+      }
+
       const now = Date.now();
       const productionInterval = 15000; // 15 seconds in milliseconds
       const elapsed = now % productionInterval;
@@ -69,7 +75,7 @@ export default function VillagePanel() {
     const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isPaused]);
 
   // Define action groups with their actions
   const actionGroups = [
