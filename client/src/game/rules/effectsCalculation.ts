@@ -244,9 +244,9 @@ export function getActionBonuses(
           );
         }
 
-        // Apply multipliers (multiplicative)
+        // Apply multipliers (additive)
         if (actionBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier *= actionBonus.resourceMultiplier;
+          bonuses.resourceMultiplier += (actionBonus.resourceMultiplier - 1);
         }
 
         // Apply cooldown reduction (additive)
@@ -280,9 +280,9 @@ export function getActionBonuses(
           );
         }
 
-        // Apply multipliers (multiplicative)
+        // Apply multipliers (additive)
         if (miningBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier *= miningBonus.resourceMultiplier;
+          bonuses.resourceMultiplier += (miningBonus.resourceMultiplier - 1);
         }
 
         // Apply cooldown reduction (additive)
@@ -493,14 +493,14 @@ export const calculateTotalEffects = (state: GameState) => {
             );
           }
 
-          // Resource multipliers
+          // Resource multipliers (additive)
           if (
             actionBonus.resourceMultiplier &&
             actionBonus.resourceMultiplier !== 1
           ) {
             effects.resource_multiplier[actionId] =
-              (effects.resource_multiplier[actionId] || 1) *
-              actionBonus.resourceMultiplier;
+              (effects.resource_multiplier[actionId] || 1) +
+              (actionBonus.resourceMultiplier - 1);
           }
 
           // Probability bonuses
