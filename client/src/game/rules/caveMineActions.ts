@@ -2,7 +2,7 @@ import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "../actions";
 import { applyActionEffects } from "./index";
 
-export const caveMiningActions: Record<string, Action> = {
+export const caveMineActions: Record<string, Action> = {
   mineStone: {
     id: "mineStone",
     label: "Mine Stone",

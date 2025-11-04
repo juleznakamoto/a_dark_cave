@@ -6,7 +6,7 @@ import {
 import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
-import { caveMiningActions } from "./caveMineActions";
+import { caveMineActions } from "./caveMineActions";
 import { villageBuildActions } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
@@ -30,7 +30,7 @@ export const gameActions: Record<string, Action> = {
   ...caveCraftTools,
   ...caveCraftResources,
   ...caveCraftWeapons,
-  ...caveMiningActions,
+  ...caveMineActions,
   ...forestScoutActions,
   ...forestSacrificeActions,
   ...forestTradeActions,

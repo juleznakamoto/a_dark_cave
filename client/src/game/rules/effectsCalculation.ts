@@ -216,8 +216,8 @@ export function getActionBonuses(
     probabilityBonus: {}, // Initialize as empty object
   };
 
-  // Define mining actions
-  const miningActions = [
+  // Define mine actions
+  const mineActions = [
     "mineStone",
     "mineIron",
     "mineCoal",
@@ -225,7 +225,7 @@ export function getActionBonuses(
     "mineObsidian",
     "mineAdamant",
   ];
-  const isMiningAction = miningActions.includes(actionId);
+  const isMineAction = mineActions.includes(actionId);
 
   // Apply bonuses for this specific action
   if (effects.actionBonuses) {
@@ -266,13 +266,13 @@ export function getActionBonuses(
         }
       }
 
-      // Check for general "mining" bonuses that apply to all mining actions
-      if (isMiningAction && itemBonuses.mining) {
-        const miningBonus = itemBonuses.mining;
+      // Check for general "mine" bonuses that apply to all mine actions
+      if (isMineAction && itemBonuses.mine) {
+        const MineBonus = itemBonuses.mine;
 
         // Apply resource bonuses
-        if (miningBonus.resourceBonus) {
-          Object.entries(miningBonus.resourceBonus).forEach(
+        if (MineBonus.resourceBonus) {
+          Object.entries(MineBonus.resourceBonus).forEach(
             ([resource, bonus]) => {
               bonuses.resourceBonus[resource] =
                 (bonuses.resourceBonus[resource] || 0) + bonus;
@@ -281,18 +281,18 @@ export function getActionBonuses(
         }
 
         // Apply multipliers (additive)
-        if (miningBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier += (miningBonus.resourceMultiplier - 1);
+        if (MineBonus.resourceMultiplier) {
+          bonuses.resourceMultiplier += (MineBonus.resourceMultiplier - 1);
         }
 
         // Apply cooldown reduction (additive)
-        if (miningBonus.cooldownReduction) {
-          bonuses.cooldownReduction += miningBonus.cooldownReduction;
+        if (MineBonus.cooldownReduction) {
+          bonuses.cooldownReduction += MineBonus.cooldownReduction;
         }
 
         // Apply probability bonus (additive)
-        if (miningBonus.probabilityBonus) {
-          Object.entries(miningBonus.probabilityBonus).forEach(
+        if (MineBonus.probabilityBonus) {
+          Object.entries(MineBonus.probabilityBonus).forEach(
             ([resource, bonus]) => {
               bonuses.probabilityBonus[resource] =
                 (bonuses.probabilityBonus[resource] || 0) + bonus;
@@ -555,8 +555,8 @@ export const calculateTotalEffects = (state: GameState) => {
       (effects.probability_bonus.newVillager || 0) + 0.2; // +20% new villager chance
   }
   if (state.blessings?.ashen_embrace) {
-    effects.resource_multiplier.mining =
-      (effects.resource_multiplier.mining || 1) * 2; // +100% mining resources
+    effects.resource_multiplier.mine =
+      (effects.resource_multiplier.mine || 1) * 2; // +100% mine resources
   }
 
   return effects;

@@ -74,7 +74,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Rudimentary pickaxe for mining",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
@@ -105,7 +105,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Durable pickaxe for mining efficiently",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.5,
           cooldownReduction: 1,
         },
@@ -133,7 +133,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Very sturdy mining tool crafted from resilient steel",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.75,
           cooldownReduction: 2,
         },
@@ -161,7 +161,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Masterful tool for mining made of volcanic glass",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -189,7 +189,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Pinnacle of mining tools, unyielding and precise",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 3.0,
           cooldownReduction: 6,
         },
@@ -203,7 +203,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Simple lantern providing reliable light",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
@@ -220,7 +220,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Bright lantern illuminating the darkest places",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
@@ -237,7 +237,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.5,
           cooldownReduction: 3,
         },
@@ -254,7 +254,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Ultimate light source, illuminating every path",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -681,7 +681,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Scepter of the lost king, radiating power and madness",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 1.25,
         },
       },
@@ -933,7 +933,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "+100% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 2.0,
         },
       },
@@ -982,7 +982,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "+300% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mining: {
+        mine: {
           resourceMultiplier: 4.0, // 300% bonus
         },
       },
