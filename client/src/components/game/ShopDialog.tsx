@@ -368,74 +368,29 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               )}
                               {item.rewards.tools && (
                                 <div>
-                                  {item.rewards.tools.map((tool) => {
-                                    const effect = toolEffects[tool];
-                                    const toolName = effect?.name || tool.replace(/_/g, " ");
-
-                                    return (
-                                      <div key={tool} className="flex items-start gap-1 mb-1">
-                                        <span className="font-semibold">{toolName}:</span>
-                                        {effect && (
-                                          <span className="text-muted-foreground">
-                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
-                                              const parts = [];
-                                              if (bonus.resourceMultiplier) {
-                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
-                                              }
-                                              if (bonus.cooldownReduction) {
-                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
-                                              }
-                                              return parts.join(", ");
-                                            }).join("; ")}
-                                            {effect.bonuses?.generalBonuses?.caveExploreMultiplier && (
-                                              `+${Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore`
-                                            )}
-                                          </span>
-                                        )}
-                                      </div>
-                                    );
-                                  })}
+                                  {item.rewards.tools.map((tool) => (
+                                    <div key={tool} className="mb-1">
+                                      {renderItemTooltip(tool, "tool")}
+                                    </div>
+                                  ))}
                                 </div>
                               )}
                               {item.rewards.weapons && (
                                 <div>
-                                  {item.rewards.weapons.map((weapon) => {
-                                    const effect = weaponEffects[weapon];
-                                    const weaponName = effect?.name || weapon.replace(/_/g, " ");
-
-                                    return (
-                                      <div key={weapon} className="flex items-start gap-1 mb-1">
-                                        <span className="font-semibold">{weaponName}:</span>
-                                        {effect && (
-                                          <span className="text-muted-foreground">
-                                            {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
-                                              `+${Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt`
-                                            )}
-                                            {effect.bonuses?.generalBonuses?.strength && (
-                                              ` +${effect.bonuses.generalBonuses.strength} Damage`
-                                            )}
-                                          </span>
-                                        )}
-                                      </div>
-                                    );
-                                  })}
+                                  {item.rewards.weapons.map((weapon) => (
+                                    <div key={weapon} className="mb-1">
+                                      {renderItemTooltip(weapon, "weapon")}
+                                    </div>
+                                  ))}
                                 </div>
                               )}
                               {item.rewards.blessings && (
                                 <div>
-                                  {item.rewards.blessings.map((blessing) => {
-                                    const effect = clothingEffects[blessing];
-                                    const blessingName = effect?.name || blessing.replace(/_/g, " ");
-
-                                    return (
-                                      <div key={blessing} className="flex items-start gap-1 mb-1">
-                                        <span className="font-semibold">{blessingName}:</span>
-                                        {effect?.description && (
-                                          <span className="text-muted-foreground">{effect.description}</span>
-                                        )}
-                                      </div>
-                                    );
-                                  })}
+                                  {item.rewards.blessings.map((blessing) => (
+                                    <div key={blessing} className="mb-1">
+                                      {renderItemTooltip(blessing, "blessing")}
+                                    </div>
+                                  ))}
                                 </div>
                               )}
                               {item.rewards.feastActivations && (
