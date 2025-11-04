@@ -615,7 +615,8 @@ export default function SidePanel() {
       // Check for cave explore multiplier in general bonuses
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
         const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
-        existing.multiplier *= effect.bonuses.generalBonuses.caveExploreMultiplier;
+        // Add the bonus percentage instead of multiplying
+        existing.multiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
         bonusMap.set('caveExplore', existing);
       }
 
@@ -624,9 +625,9 @@ export default function SidePanel() {
           ([actionId, bonus]) => {
             const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
 
-            // Aggregate multipliers (multiplicative)
+            // Aggregate multipliers (additive)
             if (bonus.resourceMultiplier) {
-              existing.multiplier *= bonus.resourceMultiplier;
+              existing.multiplier += (bonus.resourceMultiplier - 1);
             }
 
             // Aggregate flat bonuses (additive)
