@@ -25,24 +25,13 @@ import {
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
+import type { ShopItem } from "../../shared/shopItems";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
   : import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_DEV;
 
 const stripePromise = loadStripe(stripePublishableKey || "");
-
-interface ShopItem {
-  id: string;
-  name: string;
-  price: number;
-  rewards: {
-    resources?: Record<string, number>;
-    tools?: string[];
-    weapons?: string[];
-    relics?: string[];
-  };
-}
 
 interface CheckoutFormProps {
   itemId: string;
@@ -228,6 +217,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       });
     }
 
+    if (item.rewards.blessings) {
+      item.rewards.blessings.forEach((blessing) => {
+        gameState.blessings[blessing as keyof typeof gameState.blessings] = true;
+      });
+    }
+
+    if (item.rewards.feastActivations) {
+      // Add feast activations to a counter or grant them directly
+      gameState.addLogEntry({
+        id: `feast-${Date.now()}`,
+        message: `Received ${item.rewards.feastActivations} Great Feast activation(s)! Use them wisely.`,
+        timestamp: Date.now(),
+        type: "system",
+      });
+    }
+
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
       message: `Activated ${item.name}! Rewards have been added to your inventory.`,
@@ -318,15 +323,40 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             </ul>
                           </div>
                         )}
+                        {item.rewards.blessings && (
+                          <div>
+                            <strong>Blessings:</strong>
+                            <ul className="ml-4 list-disc">
+                              {item.rewards.blessings.map((blessing) => (
+                                <li key={blessing}>
+                                  {blessing.replace(/_/g, " ")}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                        {item.rewards.feastActivations && (
+                          <div>
+                            <strong>Great Feast Activations:</strong>{" "}
+                            {item.rewards.feastActivations}
+                          </div>
+                        )}
                       </div>
                     </CardContent>
                     <CardFooter>
                       <Button
                         onClick={() => handlePurchaseClick(item.id)}
-                        disabled={!currentUser}
+                        disabled={
+                          !currentUser ||
+                          (!item.canPurchaseMultipleTimes &&
+                            purchasedItems.includes(item.id))
+                        }
                         className="w-full"
                       >
-                        Purchase
+                        {!item.canPurchaseMultipleTimes &&
+                        purchasedItems.includes(item.id)
+                          ? "Already Purchased"
+                          : "Purchase"}
                       </Button>
                     </CardFooter>
                   </Card>
@@ -377,6 +407,20 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                   {item.rewards.weapons
                                     .map((w) => w.replace(/_/g, " "))
                                     .join(", ")}
+                                </div>
+                              )}
+                              {item.rewards.blessings && (
+                                <div>
+                                  <strong>Blessings:</strong>{" "}
+                                  {item.rewards.blessings
+                                    .map((b) => b.replace(/_/g, " "))
+                                    .join(", ")}
+                                </div>
+                              )}
+                              {item.rewards.feastActivations && (
+                                <div>
+                                  <strong>Feast Activations:</strong>{" "}
+                                  {item.rewards.feastActivations}
                                 </div>
                               )}
                             </div>
