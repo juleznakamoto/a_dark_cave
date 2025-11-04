@@ -284,7 +284,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   <Card key={item.id} className="flex flex-col">
                     <CardHeader>
                       <div className="flex items-center gap-2">
-                        <CardTitle>{item.name}</CardTitle>
+                        <CardTitle className="text-lg">{item.name}</CardTitle>
                         {(item.rewards.weapons || item.rewards.tools || item.rewards.blessings) && (
                           <TooltipProvider>
                             <Tooltip>
@@ -300,7 +300,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                       <div key={weapon}>
                                         <div className="font-bold">{weaponName}</div>
                                         {effect && (
-                                          <div className="text-muted-foreground">
+                                          <div >
                                             {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
                                               <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt</div>
                                             )}
