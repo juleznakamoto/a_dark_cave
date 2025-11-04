@@ -74,6 +74,25 @@ export default function GameFooter() {
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
+            {currentUser ? (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={handleSignOut}
+                className="px-3 py-1 text-xs no-hover"
+              >
+                Sign Out
+              </Button>
+            ) : (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => setAuthDialogOpen(true)}
+                className="px-3 py-1 text-xs no-hover"
+              >
+                Sign In / Up
+              </Button>
+            )}
             <Button
               variant="outline"
               size="xs"
@@ -92,25 +111,6 @@ export default function GameFooter() {
             >
               New Game
             </Button>
-            {currentUser ? (
-              <Button
-                variant="outline"
-                size="xs"
-                onClick={handleSignOut}
-                className="px-3 py-1 text-xs no-hover"
-              >
-                Sign Out ({currentUser.email})
-              </Button>
-            ) : (
-              <Button
-                variant="outline"
-                size="xs"
-                onClick={() => setAuthDialogOpen(true)}
-                className="px-3 py-1 text-xs no-hover"
-              >
-                Sign In / Up
-              </Button>
-            )}
             <Button
               variant="outline"
               size="xs"

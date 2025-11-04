@@ -4,7 +4,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { signIn, signUp, signOut, getCurrentUser } from '@/game/auth';
+import { signIn, signUp } from '@/game/auth';
 import { useToast } from '@/hooks/use-toast';
 
 interface AuthDialogProps {
