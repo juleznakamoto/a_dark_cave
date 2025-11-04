@@ -16,11 +16,12 @@ export default function GameFooter() {
     restartGame,
     loadGame,
     setAuthDialogOpen: setGameAuthDialogOpen,
+    setShopDialogOpen,
+    shopDialogOpen,
     flags,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [isShopOpen, setIsShopOpen] = useState(false); // State for shop dialog
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -94,7 +95,7 @@ export default function GameFooter() {
 
   return (
     <>
-      <ShopDialog isOpen={isShopOpen} onClose={() => setIsShopOpen(false)} />
+      <ShopDialog isOpen={shopDialogOpen} onClose={() => setShopDialogOpen(false)} />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
@@ -138,7 +139,7 @@ export default function GameFooter() {
             <Button
               variant="outline"
               size="xs"
-              onClick={() => setIsShopOpen(true)}
+              onClick={() => setShopDialogOpen(true)}
               className="px-2 py-1 text-xs no-hover"
             >
               Shop

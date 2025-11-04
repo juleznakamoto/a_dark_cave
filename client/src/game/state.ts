@@ -35,6 +35,7 @@ interface GameStore extends GameState {
     onDefeat: (() => Partial<GameState>) | null;
   };
   authDialogOpen: boolean;
+  shopDialogOpen: boolean;
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -70,6 +71,7 @@ interface GameStore extends GameState {
   setEventDialog: (isOpen: boolean, event?: LogEntry | null) => void;
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
+  setShopDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
 }
@@ -236,6 +238,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     onDefeat: null,
   },
   authDialogOpen: false,
+  shopDialogOpen: false,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -905,6 +908,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setAuthDialogOpen: (isOpen: boolean) => {
     set({ authDialogOpen: isOpen });
+  },
+
+  setShopDialogOpen: (isOpen: boolean) => {
+    set({ shopDialogOpen: isOpen });
   },
 
   updateEffects: () => {
