@@ -87,6 +87,9 @@ export default function VillagePanel() {
       return;
     }
 
+    // Reset animation when unpausing
+    setLoopProgress(0);
+
     const interval = setInterval(() => {
       setLoopProgress((prev) => (prev + 1) % 100);
     }, 150); // 15 seconds total (150ms * 100 steps)
