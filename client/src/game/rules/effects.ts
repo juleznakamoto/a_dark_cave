@@ -202,11 +202,26 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
+        exploreCave: {
+          resourceMultiplier: 1.1,
+        },
         ventureDeeper: {
-          cooldownReduction: 2,
+          resourceMultiplier: 1.1,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.1,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.1,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.1,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.1,
         },
       },
     },
@@ -219,8 +234,26 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 1.25,
           cooldownReduction: 2,
+        },
+        exploreCave: {
+          resourceMultiplier: 1.2,
+        },
+        ventureDeeper: {
+          resourceMultiplier: 1.2,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.2,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.2,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.2,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.2,
         },
       },
     },
@@ -233,8 +266,26 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 1.5,
           cooldownReduction: 3,
+        },
+        exploreCave: {
+          resourceMultiplier: 1.3,
+        },
+        ventureDeeper: {
+          resourceMultiplier: 1.3,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.3,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.3,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.3,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.3,
         },
       },
     },
@@ -247,8 +298,26 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 3.0,
+          resourceMultiplier: 2.0,
           cooldownReduction: 4,
+        },
+        exploreCave: {
+          resourceMultiplier: 1.5,
+        },
+        ventureDeeper: {
+          resourceMultiplier: 1.5,
+        },
+        descendFurther: {
+          resourceMultiplier: 1.5,
+        },
+        exploreRuins: {
+          resourceMultiplier: 1.5,
+        },
+        exploreTemple: {
+          resourceMultiplier: 1.5,
+        },
+        exploreCitadel: {
+          resourceMultiplier: 1.5,
         },
       },
     },
@@ -437,7 +506,8 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   arbalest: {
     id: "arbalest",
     name: "Arbalest",
-    description: "Meticulously crafted arbalest designed by a briliant engineer",
+    description:
+      "Meticulously crafted arbalest designed by a briliant engineer",
     bonuses: {
       generalBonuses: {
         strength: 10,
@@ -506,8 +576,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
-
-
 
   tarnished_amulet: {
     id: "tarnished_amulet",
