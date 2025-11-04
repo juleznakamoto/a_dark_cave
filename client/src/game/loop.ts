@@ -11,17 +11,32 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
+const INACTIVITY_TIMEOUT = 60000; // 1 minute in milliseconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
+let lastUserActivity = Date.now();
+let activityListenersAdded = false;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
-  useGameStore.setState({ isGameLoopActive: true });
+  useGameStore.setState({ isGameLoopActive: true, isGamePaused: false });
   lastFrameTime = performance.now();
   tickAccumulator = 0;
+  lastUserActivity = Date.now();
+
+  // Add activity listeners
+  if (!activityListenersAdded) {
+    const resetActivity = () => {
+      lastUserActivity = Date.now();
+    };
+    window.addEventListener('mousedown', resetActivity);
+    window.addEventListener('keydown', resetActivity);
+    window.addEventListener('touchstart', resetActivity);
+    activityListenersAdded = true;
+  }
 
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
@@ -29,7 +44,16 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isManuallyPaused = state.isGamePaused;
+    const isInactive = Date.now() - lastUserActivity > INACTIVITY_TIMEOUT;
+    
+    // Auto-pause on inactivity
+    if (isInactive && !isManuallyPaused && !isDialogOpen) {
+      useGameStore.setState({ isGamePaused: true });
+    }
+    
+    const isPaused = isDialogOpen || isManuallyPaused;
 
     if (!isPaused) {
       // Accumulate time for fixed timestep
