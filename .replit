@@ -21,6 +21,8 @@ externalPort = 3000
 
 [env]
 PORT = "5000"
+VITE_SUPABASE_URL = "${REPL_SECRETS.VITE_SUPABASE_URL}"
+VITE_SUPABASE_ANON_KEY = "${REPL_SECRETS.VITE_SUPABASE_ANON_KEY}"
 
 [workflows]
 runButton = "Project"
