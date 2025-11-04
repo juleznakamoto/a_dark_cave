@@ -116,7 +116,7 @@ export default function GameContainer() {
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay */}
       {isGamePaused && (
-        <div className="fixed inset-0 bg-black/30 z-40 pointer-events-none" style={{ bottom: 'auto', height: 'calc(100% - 2.5rem)' }} />
+        <div className="fixed inset-0 bg-black/30 z-40" style={{ bottom: 'auto', height: 'calc(100% - 2.5rem)' }} />
       )}
       
       {/* Event Log - Fixed Height at Top */}

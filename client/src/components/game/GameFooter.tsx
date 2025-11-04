@@ -99,7 +99,7 @@ export default function GameFooter() {
   return (
     <>
       <ShopDialog isOpen={shopDialogOpen} onClose={() => setShopDialogOpen(false)} />
-      <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
+      <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground relative z-50">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
             <Button
