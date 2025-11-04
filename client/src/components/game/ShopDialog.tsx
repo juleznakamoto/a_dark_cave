@@ -232,22 +232,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         timestamp: Date.now(),
         type: "system",
       });
+    } else {
+      gameState.addLogEntry({
+        id: `activate-${Date.now()}`,
+        message: `Activated ${item.name}! Rewards have been added to your inventory.`,
+        timestamp: Date.now(),
+        type: "system",
+      });
+
+      // Mark as activated in game state (only for non-feast items)
+      useGameStore.setState((state) => ({
+        activatedPurchases: {
+          ...state.activatedPurchases,
+          [itemId]: true,
+        },
+      }));
     }
-
-    gameState.addLogEntry({
-      id: `activate-${Date.now()}`,
-      message: `Activated ${item.name}! Rewards have been added to your inventory.`,
-      timestamp: Date.now(),
-      type: "system",
-    });
-
-    // Mark as activated in game state
-    useGameStore.setState((state) => ({
-      activatedPurchases: {
-        ...state.activatedPurchases,
-        [itemId]: true,
-      },
-    }));
   };
 
   const formatPrice = (cents: number) => {
@@ -369,11 +369,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           </div>
                           <Button
                             onClick={() => handleActivatePurchase(itemId)}
-                            disabled={isActivated}
+                            disabled={item.category !== 'feast' && isActivated}
                             size="sm"
-                            variant={isActivated ? "outline" : "default"}
+                            variant={item.category !== 'feast' && isActivated ? "outline" : "default"}
                           >
-                            {isActivated ? "Activated" : "Activate"}
+                            {item.category !== 'feast' && isActivated ? "Activated" : "Activate"}
                           </Button>
                         </div>
                       );
