@@ -228,7 +228,8 @@ export default function SidePanel() {
       }
       return (value ?? 0) > 0;
     })
-    .map(([key, value]) => {
+    .map(key => {
+      const value = buildings[key as keyof typeof buildings];
       // Get the action definition to access the label
       const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
       const buildAction = villageBuildActions[actionId];
