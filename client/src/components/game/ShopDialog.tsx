@@ -26,6 +26,9 @@ import {
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS, type ShopItem } from "../../../../shared/shopItems";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { weaponEffects } from "@/game/rules/effects";
+import { Info } from "lucide-react";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -312,11 +315,36 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <div>
                             <strong>Weapons:</strong>
                             <ul className="ml-4 list-disc">
-                              {item.rewards.weapons.map((weapon) => (
-                                <li key={weapon}>
-                                  {weapon.replace(/_/g, " ")}
-                                </li>
-                              ))}
+                              {item.rewards.weapons.map((weapon) => {
+                                const effect = weaponEffects[weapon];
+                                const weaponName = effect?.name || weapon.replace(/_/g, " ");
+                                
+                                return (
+                                  <li key={weapon} className="flex items-center gap-1">
+                                    {weaponName}
+                                    {effect && (
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <Info className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground" />
+                                          </TooltipTrigger>
+                                          <TooltipContent>
+                                            <div className="text-xs">
+                                              <div className="font-bold mb-1">{effect.name}</div>
+                                              {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
+                                                <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt Resources</div>
+                                              )}
+                                              {effect.bonuses?.generalBonuses?.strength && (
+                                                <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                              )}
+                                            </div>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    )}
+                                  </li>
+                                );
+                              })}
                             </ul>
                           </div>
                         )}
@@ -399,11 +427,39 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 </div>
                               )}
                               {item.rewards.weapons && (
-                                <div>
+                                <div className="flex items-center gap-1">
                                   <strong>Weapons:</strong>{" "}
-                                  {item.rewards.weapons
-                                    .map((w) => w.replace(/_/g, " "))
-                                    .join(", ")}
+                                  {item.rewards.weapons.map((weapon, idx) => {
+                                    const effect = weaponEffects[weapon];
+                                    const weaponName = effect?.name || weapon.replace(/_/g, " ");
+                                    
+                                    return (
+                                      <span key={weapon} className="flex items-center gap-1">
+                                        {idx > 0 && ", "}
+                                        {weaponName}
+                                        {effect && (
+                                          <TooltipProvider>
+                                            <Tooltip>
+                                              <TooltipTrigger asChild>
+                                                <Info className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground inline-block" />
+                                              </TooltipTrigger>
+                                              <TooltipContent>
+                                                <div className="text-xs">
+                                                  <div className="font-bold mb-1">{effect.name}</div>
+                                                  {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
+                                                    <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt Resources</div>
+                                                  )}
+                                                  {effect.bonuses?.generalBonuses?.strength && (
+                                                    <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                                  )}
+                                                </div>
+                                              </TooltipContent>
+                                            </Tooltip>
+                                          </TooltipProvider>
+                                        )}
+                                      </span>
+                                    );
+                                  })}
                                 </div>
                               )}
                               {item.rewards.blessings && (

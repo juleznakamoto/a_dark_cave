@@ -453,12 +453,32 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   nightshade_bow: {
     id: "nightshade_bow",
     name: "Nightshade Bow",
-    description: "Bow made of very dark wood, poisoning the enemy",
+    description: "A bow crafted from dark wood, its arrows carry poison",
     bonuses: {
-      generalBonuses: {
-        strength: 5,
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 2.5,
+        },
       },
-      actionBonuses: {},
+      generalBonuses: {
+        strength: 6,
+      },
+    },
+  },
+
+  elven_bow: {
+    id: "elven_bow",
+    name: "Elven Bow",
+    description: "A masterfully crafted bow from the elven forests",
+    bonuses: {
+      actionBonuses: {
+        hunt: {
+          resourceMultiplier: 2.0,
+        },
+      },
+      generalBonuses: {
+        strength: 15,
+      },
     },
   },
 };
@@ -492,7 +512,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  
+
 
   tarnished_amulet: {
     id: "tarnished_amulet",

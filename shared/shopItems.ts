@@ -72,7 +72,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description: 'A masterfully crafted bow from the elven forests',
     price: 199, // 1.99 €
     rewards: {
-      weapons: ['nightshade_bow'],
+      weapons: ['elven_bow'],
     },
     canPurchaseMultipleTimes: false,
     category: 'weapon',
