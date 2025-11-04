@@ -240,7 +240,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && !currentUser && (
-          <div className="bg-blue-50 border border-blue-300 text-blue-800 px-4 py-3 rounded mb-4 text-center">
+          <div className="bg-red-700 border text-gray-200 px-4 py-3 rounded mb-4 text-center">
             To purchase items you have to sign in or sign up.
           </div>
         )}
