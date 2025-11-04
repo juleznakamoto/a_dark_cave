@@ -34,42 +34,27 @@ export default function VillagePanel() {
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
 
-  // Calculate production progress (0-100) based on production interval
-  const [productionProgress, setProductionProgress] = useState(0);
-  const [feastProgress, setFeastProgress] = useState(0);
+  // Get progress from game loop state
+  const loopProgress = useGameStore((state) => state.loopProgress);
+  const feastState = useGameStore((state) => state.feastState);
+  const greatFeastState = useGameStore((state) => state.greatFeastState);
 
-  useEffect(() => {
-    const updateProgress = () => {
-      const now = Date.now();
-      const productionInterval = 15000; // 15 seconds in milliseconds
-      const elapsed = now % productionInterval;
-      const progress = (elapsed / productionInterval) * 100;
-      setProductionProgress(progress);
+  // Calculate feast progress based on game loop timing
+  const getFeastProgress = () => {
+    const now = Date.now();
+    if (greatFeastState?.isActive && greatFeastState.endTime > now) {
+      const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+      const greatFeastElapsed = greatFeastDuration - (greatFeastState.endTime - now);
+      return (greatFeastElapsed / greatFeastDuration) * 100;
+    } else if (feastState?.isActive && feastState.endTime > now) {
+      const feastDuration = 10 * 60 * 1000; // 10 minutes
+      const feastElapsed = feastDuration - (feastState.endTime - now);
+      return (feastElapsed / feastDuration) * 100;
+    }
+    return 0;
+  };
 
-      // Update feast progress
-      const feastState = useGameStore.getState().feastState;
-      const greatFeastState = useGameStore.getState().greatFeastState;
-
-      if (greatFeastState?.isActive && greatFeastState.endTime > now) {
-        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
-        const greatFeastElapsed = greatFeastDuration - (greatFeastState.endTime - now);
-        const greatFeastProgressValue = (greatFeastElapsed / greatFeastDuration) * 100;
-        setFeastProgress(greatFeastProgressValue);
-      } else if (feastState?.isActive && feastState.endTime > now) {
-        const feastDuration = 10 * 60 * 1000; // 10 minutes
-        const feastElapsed = feastDuration - (feastState.endTime - now);
-        const feastProgressValue = (feastElapsed / feastDuration) * 100;
-        setFeastProgress(feastProgressValue);
-      } else {
-        setFeastProgress(0);
-      }
-    };
-
-    updateProgress();
-    const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
-
-    return () => clearInterval(interval);
-  }, []);
+  const feastProgress = getFeastProgress();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -460,7 +445,7 @@ export default function VillagePanel() {
               return effectsText && buildings.clerksHut > 0 ? (
                 <div className="text-xs text-muted-foreground flex items-center gap-3">
                   <CircularProgress
-                    value={productionProgress}
+                    value={loopProgress} // Use loopProgress for production animation
                     size={16}
                     strokeWidth={2}
                     className="text-gray-400"
@@ -479,9 +464,9 @@ export default function VillagePanel() {
                         (gameState.activatedPurchases?.feast_10 ? 10 : 0);
           const available = gameState.greatFeastActivations || 0;
           const total = bought + available;
-          
+
           if (total === 0) return null;
-          
+
           return (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-foreground">Shop</h3>

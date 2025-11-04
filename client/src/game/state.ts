@@ -45,6 +45,10 @@ interface GameStore extends GameState {
   current_population: number;
   total_population: number;
 
+  // Game loop state
+  loopProgress: number; // 0-100 representing progress through the 15s production cycle
+  isGameLoopActive: boolean;
+
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
@@ -74,6 +78,8 @@ interface GameStore extends GameState {
   setShopDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
+  updateLoopProgress: (progress: number) => void; // New action to update loop progress
+  setGameLoopActive: (isActive: boolean) => void; // New action to set game loop activity
 }
 
 // Helper functions
@@ -106,6 +112,9 @@ const mergeStateUpdates = (
         }
       : prevState.story,
     effects: stateUpdates.effects || prevState.effects,
+    // Merge loop-related states if they are part of stateUpdates
+    loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
+    isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
   };
 
   console.log("[mergeStateUpdates] Merged result:", {
@@ -187,6 +196,9 @@ const defaultGameState: GameState = {
   },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
+  // Initialize game loop state
+  loopProgress: 0,
+  isGameLoopActive: false,
 };
 
 // State management utilities
@@ -279,6 +291,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       effects: newState.effects || calculateTotalEffects(newState),
       bastion_stats: newState.bastion_stats || calculateBastionStats(newState),
       cooldownDurations: newState.cooldownDurations || {}, // Ensure cooldownDurations is initialized
+      // Ensure loop-related states are initialized from loaded state
+      loopProgress: newState.loopProgress !== undefined ? newState.loopProgress : 0,
+      isGameLoopActive: newState.isGameLoopActive !== undefined ? newState.isGameLoopActive : false,
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -451,7 +466,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const currentBoostMode = get().boostMode;
-    
+
     const resetState = {
       ...defaultGameState,
       activeTab: "cave",
@@ -462,6 +477,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       boostMode: currentBoostMode,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
+      // Ensure loop state is reset
+      loopProgress: 0,
+      isGameLoopActive: false,
     };
 
     set(resetState);
@@ -493,6 +511,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
+        // Ensure loop state is loaded correctly
+        loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
+        isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
       };
 
       set(loadedState);
@@ -925,6 +946,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
   updateBastionStats: () => {
     set((state) => ({
       bastion_stats: calculateBastionStats(state),
+    }));
+  },
+
+  updateLoopProgress: (progress: number) => {
+    set((state) => ({
+      loopProgress: progress,
+    }));
+  },
+
+  setGameLoopActive: (isActive: boolean) => {
+    set((state) => ({
+      isGameLoopActive: isActive,
     }));
   },
 }));

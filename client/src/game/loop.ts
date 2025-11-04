@@ -47,9 +47,14 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
+      // Update loop progress (0-100 based on production cycle)
+      const progressPercent = ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
+      useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
+
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
         lastProduction = timestamp;
+        useGameStore.setState({ loopProgress: 0 }); // Reset to 0 when production occurs
 
         // Log full state every 15 seconds
         const currentState = useGameStore.getState();
