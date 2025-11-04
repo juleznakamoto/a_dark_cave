@@ -27,14 +27,8 @@ import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS, type ShopItem } from "../../../../shared/shopItems";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { weaponEffects } from "@/game/rules/effects";
+import { weaponEffects, toolEffects, clothingEffects } from "@/game/rules/effects";
 import { Info } from "lucide-react";
-
-// Assuming clothingEffects is defined elsewhere or imported
-const clothingEffects: { [key: string]: any } = {};
-// Assuming toolEffects is defined elsewhere or imported
-const toolEffects: { [key: string]: any } = {};
-
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -295,9 +289,81 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardDescription>
                     </CardHeader>
                     <CardContent className="flex-1">
-                      <p className="text-sm text-muted-foreground">
-                        {item.description}
-                      </p>
+                      <div className="flex items-start gap-2">
+                        <p className="text-sm text-muted-foreground flex-1">
+                          {item.description}
+                        </p>
+                        {(item.rewards.weapons || item.rewards.tools || item.rewards.blessings) && (
+                          <TooltipProvider>
+                            <Tooltip>
+                              <TooltipTrigger asChild>
+                                <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0 mt-0.5" />
+                              </TooltipTrigger>
+                              <TooltipContent className="max-w-xs">
+                                <div className="text-xs space-y-1">
+                                  {item.rewards.weapons?.map((weapon) => {
+                                    const effect = weaponEffects[weapon];
+                                    const weaponName = effect?.name || weapon.replace(/_/g, " ");
+                                    return (
+                                      <div key={weapon}>
+                                        <div className="font-bold">{weaponName}</div>
+                                        {effect && (
+                                          <div className="text-muted-foreground">
+                                            {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
+                                              <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt</div>
+                                            )}
+                                            {effect.bonuses?.generalBonuses?.strength && (
+                                              <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                  {item.rewards.tools?.map((tool) => {
+                                    const effect = toolEffects[tool];
+                                    const toolName = effect?.name || tool.replace(/_/g, " ");
+                                    return (
+                                      <div key={tool}>
+                                        <div className="font-bold">{toolName}</div>
+                                        {effect && (
+                                          <div className="text-muted-foreground">
+                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                              const parts = [];
+                                              if (bonus.resourceMultiplier) {
+                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
+                                              }
+                                              if (bonus.cooldownReduction) {
+                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                              }
+                                              return <div key={action}>{parts.join(", ")}</div>;
+                                            })}
+                                            {effect.bonuses?.generalBonuses?.caveExploreMultiplier && (
+                                              <div>+{Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore</div>
+                                            )}
+                                          </div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                  {item.rewards.blessings?.map((blessing) => {
+                                    const effect = clothingEffects[blessing];
+                                    const blessingName = effect?.name || blessing.replace(/_/g, " ");
+                                    return (
+                                      <div key={blessing}>
+                                        <div className="font-bold">{blessingName}</div>
+                                        {effect?.description && (
+                                          <div className="text-muted-foreground">{effect.description}</div>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </TooltipContent>
+                            </Tooltip>
+                          </TooltipProvider>
+                        )}
+                      </div>
                     </CardContent>
                     <CardFooter>
                       <Button
