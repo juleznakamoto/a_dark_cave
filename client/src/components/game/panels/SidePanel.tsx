@@ -16,6 +16,12 @@ import {
 } from "@/game/rules/effectsCalculation";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
+import { gameStateSchema } from "@shared/schema";
+
+// Extract property order from schema
+const resourceOrder = Object.keys(gameStateSchema.shape.resources.shape);
+const buildingOrder = Object.keys(gameStateSchema.shape.buildings.shape);
+const villagerOrder = Object.keys(gameStateSchema.shape.villagers.shape);
 
 export default function SidePanel() {
   const {
@@ -48,16 +54,16 @@ export default function SidePanel() {
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);
 
-  // Dynamically generate resource items from state
-  const resourceItems = Object.entries(resources)
-    .map(([key, value]) => ({
+  // Dynamically generate resource items from state (in schema order)
+  const resourceItems = resourceOrder
+    .filter(key => (resources[key as keyof typeof resources] ?? 0) > 0)
+    .map(key => ({
       id: key,
       label: capitalizeWords(key),
-      value: value ?? 0,
+      value: resources[key as keyof typeof resources] ?? 0,
       testId: `resource-${key}`,
-      visible: (value ?? 0) > 0,
-    }))
-    .filter((item) => item.visible);
+      visible: true,
+    }));
 
   // Get game state once for the entire component
   const gameState = useGameStore();
@@ -195,9 +201,10 @@ export default function SidePanel() {
       tooltip: clothingEffects[key]?.description,
     }));
 
-  // Dynamically generate building items from state
-  const buildingItems = Object.entries(buildings)
-    .filter(([key, value]) => {
+  // Dynamically generate building items from state (in schema order)
+  const buildingItems = buildingOrder
+    .filter(key => {
+      const value = buildings[key as keyof typeof buildings];
       // Filter out fortification buildings from the buildings section
       if (["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)) {
         return false;
@@ -386,16 +393,16 @@ export default function SidePanel() {
       return true;
     });
 
-  // Dynamically generate villager items from state
-  const populationItems = Object.entries(villagers)
-    .map(([key, value]) => ({
+  // Dynamically generate villager items from state (in schema order)
+  const populationItems = villagerOrder
+    .filter(key => (villagers[key as keyof typeof villagers] ?? 0) > 0)
+    .map(key => ({
       id: key,
       label: capitalizeWords(key),
-      value: value ?? 0,
+      value: villagers[key as keyof typeof villagers] ?? 0,
       testId: `population-${key}`,
-      visible: (value ?? 0) > 0,
-    }))
-    .filter((item) => item.visible);
+      visible: true,
+    }));
 
   // Calculate total stats including bonuses from relics/clothing
   const totalLuck = getTotalLuck(gameState);
