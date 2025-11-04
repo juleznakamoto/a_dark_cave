@@ -289,90 +289,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
-                      <p className="text-sm text-muted-foreground mb-3">
+                      <p className="text-sm text-muted-foreground">
                         {item.description}
                       </p>
-                      <div className="space-y-2 text-sm">
-                        {item.rewards.resources && (
-                          <div>
-                            <strong>Resources:</strong>
-                            <ul className="ml-4 list-disc">
-                              {Object.entries(item.rewards.resources).map(
-                                ([resource, amount]) => (
-                                  <li key={resource}>
-                                    {amount} {resource}
-                                  </li>
-                                ),
-                              )}
-                            </ul>
-                          </div>
-                        )}
-                        {item.rewards.tools && (
-                          <div>
-                            <strong>Tools:</strong>
-                            <ul className="ml-4 list-disc">
-                              {item.rewards.tools.map((tool) => (
-                                <li key={tool}>{tool.replace(/_/g, " ")}</li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {item.rewards.weapons && (
-                          <div>
-                            <strong>Weapons:</strong>
-                            <ul className="ml-4 list-disc">
-                              {item.rewards.weapons.map((weapon) => {
-                                const effect = weaponEffects[weapon];
-                                const weaponName = effect?.name || weapon.replace(/_/g, " ");
-                                
-                                return (
-                                  <li key={weapon} className="flex items-center gap-1">
-                                    {weaponName}
-                                    {effect && (
-                                      <TooltipProvider>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <Info className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground" />
-                                          </TooltipTrigger>
-                                          <TooltipContent>
-                                            <div className="text-xs">
-                                              <div className="font-bold mb-1">{effect.name}</div>
-                                              {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
-                                                <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt Resources</div>
-                                              )}
-                                              {effect.bonuses?.generalBonuses?.strength && (
-                                                <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
-                                              )}
-                                            </div>
-                                          </TooltipContent>
-                                        </Tooltip>
-                                      </TooltipProvider>
-                                    )}
-                                  </li>
-                                );
-                              })}
-                            </ul>
-                          </div>
-                        )}
-                        {item.rewards.blessings && (
-                          <div>
-                            <strong>Blessings:</strong>
-                            <ul className="ml-4 list-disc">
-                              {item.rewards.blessings.map((blessing) => (
-                                <li key={blessing}>
-                                  {blessing.replace(/_/g, " ")}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                        {item.rewards.feastActivations && (
-                          <div>
-                            <strong>Great Feast Activations:</strong>{" "}
-                            {item.rewards.feastActivations}
-                          </div>
-                        )}
-                      </div>
                     </CardContent>
                     <CardFooter>
                       <Button
@@ -418,7 +337,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             <div className="space-y-2 text-xs">
                               {item.rewards.resources && (
                                 <div>
-                                  <strong>Resources:</strong>{" "}
                                   {Object.entries(item.rewards.resources)
                                     .map(([r, a]) => `${a} ${r}`)
                                     .join(", ")}
@@ -426,60 +344,79 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               )}
                               {item.rewards.tools && (
                                 <div>
-                                  <strong>Tools:</strong>{" "}
-                                  {item.rewards.tools
-                                    .map((t) => t.replace(/_/g, " "))
-                                    .join(", ")}
+                                  {item.rewards.tools.map((tool) => {
+                                    const effect = toolEffects[tool];
+                                    const toolName = effect?.name || tool.replace(/_/g, " ");
+                                    
+                                    return (
+                                      <div key={tool} className="flex items-start gap-1 mb-1">
+                                        <span className="font-semibold">{toolName}:</span>
+                                        {effect && (
+                                          <span className="text-muted-foreground">
+                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                              const parts = [];
+                                              if (bonus.resourceMultiplier) {
+                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
+                                              }
+                                              if (bonus.cooldownReduction) {
+                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                              }
+                                              return parts.join(", ");
+                                            }).join("; ")}
+                                            {effect.bonuses?.generalBonuses?.caveExploreMultiplier && (
+                                              `+${Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore`
+                                            )}
+                                          </span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               )}
                               {item.rewards.weapons && (
-                                <div className="flex items-center gap-1">
-                                  <strong>Weapons:</strong>{" "}
-                                  {item.rewards.weapons.map((weapon, idx) => {
+                                <div>
+                                  {item.rewards.weapons.map((weapon) => {
                                     const effect = weaponEffects[weapon];
                                     const weaponName = effect?.name || weapon.replace(/_/g, " ");
                                     
                                     return (
-                                      <span key={weapon} className="flex items-center gap-1">
-                                        {idx > 0 && ", "}
-                                        {weaponName}
+                                      <div key={weapon} className="flex items-start gap-1 mb-1">
+                                        <span className="font-semibold">{weaponName}:</span>
                                         {effect && (
-                                          <TooltipProvider>
-                                            <Tooltip>
-                                              <TooltipTrigger asChild>
-                                                <Info className="h-3 w-3 cursor-pointer text-muted-foreground hover:text-foreground inline-block" />
-                                              </TooltipTrigger>
-                                              <TooltipContent>
-                                                <div className="text-xs">
-                                                  <div className="font-bold mb-1">{effect.name}</div>
-                                                  {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
-                                                    <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt Resources</div>
-                                                  )}
-                                                  {effect.bonuses?.generalBonuses?.strength && (
-                                                    <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
-                                                  )}
-                                                </div>
-                                              </TooltipContent>
-                                            </Tooltip>
-                                          </TooltipProvider>
+                                          <span className="text-muted-foreground">
+                                            {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
+                                              `+${Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt`
+                                            )}
+                                            {effect.bonuses?.generalBonuses?.strength && (
+                                              ` +${effect.bonuses.generalBonuses.strength} Damage`
+                                            )}
+                                          </span>
                                         )}
-                                      </span>
+                                      </div>
                                     );
                                   })}
                                 </div>
                               )}
                               {item.rewards.blessings && (
                                 <div>
-                                  <strong>Blessings:</strong>{" "}
-                                  {item.rewards.blessings
-                                    .map((b) => b.replace(/_/g, " "))
-                                    .join(", ")}
+                                  {item.rewards.blessings.map((blessing) => {
+                                    const effect = clothingEffects[blessing];
+                                    const blessingName = effect?.name || blessing.replace(/_/g, " ");
+                                    
+                                    return (
+                                      <div key={blessing} className="flex items-start gap-1 mb-1">
+                                        <span className="font-semibold">{blessingName}:</span>
+                                        {effect?.description && (
+                                          <span className="text-muted-foreground">{effect.description}</span>
+                                        )}
+                                      </div>
+                                    );
+                                  })}
                                 </div>
                               )}
                               {item.rewards.feastActivations && (
                                 <div>
-                                  <strong>Feast Activations:</strong>{" "}
-                                  {item.rewards.feastActivations}
+                                  {item.rewards.feastActivations} Great Feast Activation{item.rewards.feastActivations > 1 ? 's' : ''}
                                 </div>
                               )}
                             </div>
