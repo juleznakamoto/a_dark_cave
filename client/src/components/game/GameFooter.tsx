@@ -100,9 +100,9 @@ export default function GameFooter() {
                 variant="outline"
                 size="xs"
                 onClick={() => handleSetAuthDialogOpen(true)}
-                className="px-3 py-1 text-xs no-hover"
+                className="px-2 py-1 text-xs no-hover"
               >
-                Sign In / Up
+                Sign In/Up
               </Button>
             )}
             <Button
@@ -110,24 +110,24 @@ export default function GameFooter() {
               size="xs"
               onClick={handleSaveGame}
               data-testid="button-save-game"
-              className={`px-3 py-1 text-xs no-hover ${glowingButton === "save" ? "button-glow-animation" : ""}`}
+              className={`px-2 py-1 text-xs no-hover ${glowingButton === "save" ? "button-glow-animation" : ""}`}
             >
-              Save Game
+              Save
             </Button>
             <Button
               variant="outline"
               size="xs"
               onClick={handleRestartGame}
               data-testid="button-restart-game"
-              className="px-3 py-1 text-xs no-hover"
+              className="px-2 py-1 text-xs no-hover"
             >
-              New Game
+              New
             </Button>
             <Button
               variant="outline"
               size="xs"
               onClick={handleOfferTribute}
-              className="px-3 py-1 text-xs no-hover"
+              className="px-2 py-1 text-xs no-hover"
             >
               Offer Tribute
             </Button>

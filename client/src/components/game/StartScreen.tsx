@@ -30,7 +30,7 @@ export default function StartScreen() {
 
     const timer = setTimeout(() => {
       setIsAnimationComplete(true);
-    }, 6000); // 3.5s delay + 2.5s animation
+    }, 5000); // 2s delay + 3s animation
 
     // Start preloading background music immediately
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
@@ -76,7 +76,7 @@ export default function StartScreen() {
         }
 
         .animate-fade-in-button {
-          animation: fade-in-button 2.5s ease-in 3.5s forwards;
+          animation: fade-in-button 2s ease-in 3s forwards;
           opacity: 0;
           pointer-events: none;
         }
