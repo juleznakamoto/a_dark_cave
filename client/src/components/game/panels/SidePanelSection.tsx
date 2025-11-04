@@ -436,9 +436,33 @@ export default function SidePanelSection({
                     )}
                     {title !== "Blessings" && effect.bonuses.actionBonuses &&
                       (() => {
-                        // Special case for explorer pack - show simplified tooltip
-                        if (effect.id === "explorer_pack") {
-                          return <div>+20% Cave Explore Bonus</div>;
+                        // Import SSOT for cave exploration actions
+                        const caveExploreActions = [
+                          'exploreCave',
+                          'ventureDeeper',
+                          'descendFurther',
+                          'exploreRuins',
+                          'exploreTemple',
+                          'exploreCitadel'
+                        ];
+                        
+                        // Check if this item has cave explore bonuses
+                        const hasCaveExploreBonus = Object.keys(effect.bonuses.actionBonuses).some(
+                          actionId => caveExploreActions.includes(actionId)
+                        );
+                        
+                        // Special case for items with cave explore bonuses - show simplified tooltip
+                        if (hasCaveExploreBonus) {
+                          const firstCaveAction = Object.keys(effect.bonuses.actionBonuses).find(
+                            actionId => caveExploreActions.includes(actionId)
+                          );
+                          const bonus = firstCaveAction ? effect.bonuses.actionBonuses[firstCaveAction] : null;
+                          
+                          if (bonus?.resourceMultiplier) {
+                            const percentBonus = Math.round((bonus.resourceMultiplier - 1) * 100);
+                            return <div>+{percentBonus}% Cave Explore Bonus</div>;
+                          }
+                        }
                         }
 
                         return Object.entries(effect.bonuses.actionBonuses).map(

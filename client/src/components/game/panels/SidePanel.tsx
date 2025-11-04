@@ -14,6 +14,7 @@ import {
   getTotalMadness,
   getActiveEffects,
 } from "@/game/rules/effectsCalculation";
+import { CAVE_EXPLORE_ACTIONS } from "@/game/rules/caveExploreConfig";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
 
@@ -611,22 +612,12 @@ export default function SidePanel() {
     const activeEffects = getActiveEffects(gameState);
     const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
 
-    // List of cave exploration actions to combine
-    const caveExploreActions = [
-      'exploreCave',
-      'ventureDeeper',
-      'descendFurther',
-      'exploreRuins',
-      'exploreTemple',
-      'exploreCitadel'
-    ];
-
     activeEffects.forEach((effect) => {
       if (effect.bonuses.actionBonuses) {
         Object.entries(effect.bonuses.actionBonuses).forEach(
           ([actionId, bonus]) => {
             // Check if this is a cave explore action
-            const isCaveExplore = caveExploreActions.includes(actionId);
+            const isCaveExplore = CAVE_EXPLORE_ACTIONS.includes(actionId as any);
             const mapKey = isCaveExplore ? 'caveExplore' : actionId;
             
             const existing = bonusMap.get(mapKey) || { multiplier: 1, flatBonus: 0 };

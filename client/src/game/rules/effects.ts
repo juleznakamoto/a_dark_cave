@@ -1,4 +1,5 @@
 import { GameState } from "@shared/schema";
+import { CAVE_EXPLORE_ACTIONS } from "./caveExploreConfig";
 
 // Define action bonuses interface
 export interface ActionBonuses {
@@ -205,24 +206,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
-        exploreCave: {
-          resourceMultiplier: 1.1,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.1,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.1,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.1,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.1,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.1,
-        },
+        ...Object.fromEntries(
+          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.1 }])
+        ),
       },
     },
   },
@@ -237,24 +223,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
-        exploreCave: {
-          resourceMultiplier: 1.2,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.2,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.2,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.2,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.2,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.2,
-        },
+        ...Object.fromEntries(
+          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.2 }])
+        ),
       },
     },
   },
@@ -269,24 +240,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.5,
           cooldownReduction: 3,
         },
-        exploreCave: {
-          resourceMultiplier: 1.3,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.3,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.3,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.3,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.3,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.3,
-        },
+        ...Object.fromEntries(
+          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.3 }])
+        ),
       },
     },
   },
@@ -301,24 +257,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
-        exploreCave: {
-          resourceMultiplier: 1.5,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.5,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.5,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.5,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.5,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.5,
-        },
+        ...Object.fromEntries(
+          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.5 }])
+        ),
       },
     },
   },
@@ -827,26 +768,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description:
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
-      actionBonuses: {
-        exploreCave: {
-          resourceMultiplier: 1.2,
-        },
-        ventureDeeper: {
-          resourceMultiplier: 1.2,
-        },
-        descendFurther: {
-          resourceMultiplier: 1.2,
-        },
-        exploreRuins: {
-          resourceMultiplier: 1.2,
-        },
-        exploreTemple: {
-          resourceMultiplier: 1.2,
-        },
-        exploreCitadel: {
-          resourceMultiplier: 1.2,
-        },
-      },
+      actionBonuses: Object.fromEntries(
+        CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.2 }])
+      ),
     },
   },
 
