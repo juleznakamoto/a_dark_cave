@@ -29,7 +29,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
-    activationMessage: 'Activated 50 Gold! Rewards have been added to your inventory.',
+    activationMessage: '50 Gold have been added to your inventory.',
   },
 
   gold_250: {
@@ -42,7 +42,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
-    activationMessage: 'Activated 250 Gold! Rewards have been added to your inventory.',
+    activationMessage: '250 Gold have been added to your inventory.',
   },
 
   gold_1000: {
@@ -55,7 +55,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
-    activationMessage: 'Activated 1000 Gold! Rewards have been added to your inventory.',
+    activationMessage: '1000 Gold have been added to your inventory.',
   },
 
   gold_5000: {
@@ -68,11 +68,11 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
-    activationMessage: 'Activated 5000 Gold! Rewards have been added to your inventory.',
+    activationMessage: '5000 Gold have been added to your inventory.',
   },
 
-  weapon_1: {
-    id: 'weapon_1',
+  elven_bow: {
+    id: 'elven_bow',
     name: 'Elven Bow',
     description: 'A masterfully crafted bow from the elven forests',
     price: 199, // 1.99 €
@@ -81,50 +81,50 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: false,
     category: 'weapon',
-    activationMessage: 'Activated Elven Bow! Rewards have been added to your inventory.',
+    activationMessage: 'Elven Bow has been added to your inventory.',
   },
 
-  weapon_2: {
-    id: 'weapon_2',
-    name: 'Frostglass Sword',
-    description: 'A legendary blade forged from frozen glass',
-    price: 499, // 4.99 €
-    rewards: {
-      weapons: ['frostglass_sword'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'weapon',
-    activationMessage: 'Activated Frostglass Sword! Rewards have been added to your inventory.',
-  },
+  // weapon_2: {
+  //   id: 'weapon_2',
+  //   name: 'Frostglass Sword',
+  //   description: 'A legendary blade forged from frozen glass',
+  //   price: 499, // 4.99 €
+  //   rewards: {
+  //     weapons: ['frostglass_sword'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'weapon',
+  //   activationMessage: 'Frostglass Sword has been added to your inventory.',
+  // },
 
-  blessing_1: {
-    id: 'blessing_1',
-    name: "Raven's Mark",
-    description: 'A blessing that enhances your luck and knowledge',
-    price: 199, // 1.99 €
-    rewards: {
-      blessings: ['ravens_mark'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'blessing',
-    activationMessage: "Activated Raven's Mark! Rewards have been added to your inventory.",
-  },
+  // blessing_1: {
+  //   id: 'blessing_1',
+  //   name: "Raven's Mark",
+  //   description: 'A blessing that enhances your luck and knowledge',
+  //   price: 199, // 1.99 €
+  //   rewards: {
+  //     blessings: ['ravens_mark'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'blessing',
+  //   activationMessage: "Activated Raven's Mark! Rewards have been added to your inventory.",
+  // },
 
-  blessing_2: {
-    id: 'blessing_2',
-    name: 'Ashen Embrace',
-    description: 'A powerful blessing that grants resilience',
-    price: 499, // 4.99 €
-    rewards: {
-      blessings: ['ashen_embrace'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'blessing',
-    activationMessage: 'Activated Ashen Embrace! Rewards have been added to your inventory.',
-  },
+  // blessing_2: {
+  //   id: 'blessing_2',
+  //   name: 'Ashen Embrace',
+  //   description: 'A powerful blessing that grants resilience',
+  //   price: 499, // 4.99 €
+  //   rewards: {
+  //     blessings: ['ashen_embrace'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'blessing',
+  //   activationMessage: 'Activated Ashen Embrace! Rewards have been added to your inventory.',
+  // },
 
-  feast_1: {
-    id: 'feast_1',
+  great_feast_1: {
+    id: 'great_feast_1',
     name: '1 Great Feast',
     description: 'Boost the production of your village by 4x for 30 minutes',
     price: 99, // 0.99 €
@@ -136,11 +136,11 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
   },
 
-  feast_5: {
-    id: 'feast_5',
+    great_feast_5: {
+    id: 'great_feast_5',
     name: '5 Great Feasts',
     description: 'Boost the production of your village by 4x for 30 minutes (5 times)',
-    price: 199, // 1.99 €
+    price: 249, // 2.49 €
     rewards: {
       feastActivations: 5,
     },
@@ -149,44 +149,44 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
   },
 
-  dwarven_hammer: {
-    id: 'dwarven_hammer',
-    name: 'Dwarven Hammer',
-    description: "A legendary blacksmith's hammer that reduces crafting costs",
-    price: 499, // 4.99 €
-    rewards: {
-      tools: ['blacksmith_hammer'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'tool',
-    activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
-  },
+  // dwarven_hammer: {
+  //   id: 'dwarven_hammer',
+  //   name: 'Dwarven Hammer',
+  //   description: "A legendary blacksmith's hammer that reduces crafting costs",
+  //   price: 499, // 4.99 €
+  //   rewards: {
+  //     tools: ['blacksmith_hammer'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'tool',
+  //   activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
+  // },
 
-  natharit_pickaxe: {
-    id: 'natharit_pickaxe',
-    name: 'Natharit Pickaxe',
-    description: 'An adamant pickaxe of exceptional quality',
-    price: 299, // 2.99 €
-    rewards: {
-      tools: ['adamant_pickaxe'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'tool',
-    activationMessage: 'Activated Natharit Pickaxe! Rewards have been added to your inventory.',
-  },
+  // natharit_pickaxe: {
+  //   id: 'natharit_pickaxe',
+  //   name: 'Natharit Pickaxe',
+  //   description: 'An adamant pickaxe of exceptional quality',
+  //   price: 299, // 2.99 €
+  //   rewards: {
+  //     tools: ['adamant_pickaxe'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'tool',
+  //   activationMessage: 'Activated Natharit Pickaxe! Rewards have been added to your inventory.',
+  // },
 
-  xxx_axe: {
-    id: 'xxx_axe',
-    name: 'Adamant Axe',
-    description: 'An unbreakable axe made from the hardest metal',
-    price: 199, // 1.99 €
-    rewards: {
-      tools: ['adamant_axe'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'tool',
-    activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
-  },
+  // xxx_axe: {
+  //   id: 'xxx_axe',
+  //   name: 'Adamant Axe',
+  //   description: 'An unbreakable axe made from the hardest metal',
+  //   price: 199, // 1.99 €
+  //   rewards: {
+  //     tools: ['adamant_axe'],
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'tool',
+  //   activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
+  // },
 
   ultimate_pack: {
     id: 'ultimate_pack',
