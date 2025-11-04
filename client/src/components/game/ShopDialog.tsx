@@ -341,7 +341,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 ))}
               </div>
 
-              {purchasedItems.length > 0 && (
+              {(purchasedItems.length > 0 || gameState.greatFeastActivations > 0) && (
                 <div className="mt-6 border-t pt-4">
                   <h3 className="text-lg font-semibold mb-4">Purchases</h3>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -368,61 +368,60 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         </div>
                       );
                     })}
-                  </div>
-                </div>
-              )}
+                    
+                    {/* Great Feast Activations */}
+                    {gameState.greatFeastActivations > 0 && (
+                      <div className="flex items-center justify-between p-3 border rounded-lg">
+                        <div className="flex flex-col">
+                          <span className="text-sm font-medium">
+                            Great Feast ({gameState.greatFeastActivations} available)
+                          </span>
+                          <span className="text-xs text-muted-foreground">
+                            Boost production by 4x for 30 minutes
+                            {gameState.feastState?.isActive && " · Will end current Feast"}
+                          </span>
+                        </div>
+                        <Button
+                          onClick={() => {
+                            // End any active Feast
+                            if (gameState.feastState?.isActive) {
+                              useGameStore.setState({
+                                feastState: {
+                                  ...gameState.feastState,
+                                  isActive: false,
+                                  endTime: 0,
+                                },
+                              });
+                            }
 
-              {/* Great Feast Activations */}
-              {gameState.greatFeastActivations > 0 && (
-                <div className="mt-6 border-t pt-4">
-                  <h3 className="text-lg font-semibold mb-4">Great Feast Activations</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Activate a Great Feast to boost production by 4x for 30 minutes. 
-                    {gameState.feastState?.isActive && " (Will end current Feast)"}
-                  </p>
-                  <div className="flex items-center justify-between p-3 border rounded-lg">
-                    <span className="text-sm font-medium">
-                      Great Feast ({gameState.greatFeastActivations} available)
-                    </span>
-                    <Button
-                      onClick={() => {
-                        // End any active Feast
-                        if (gameState.feastState?.isActive) {
-                          useGameStore.setState({
-                            feastState: {
-                              ...gameState.feastState,
-                              isActive: false,
-                              endTime: 0,
-                            },
-                          });
-                        }
+                            // Activate Great Feast
+                            const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+                            const endTime = Date.now() + greatFeastDuration;
 
-                        // Activate Great Feast
-                        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
-                        const endTime = Date.now() + greatFeastDuration;
+                            useGameStore.setState((state) => ({
+                              greatFeastState: {
+                                isActive: true,
+                                endTime: endTime,
+                              },
+                              greatFeastActivations: state.greatFeastActivations - 1,
+                            }));
 
-                        useGameStore.setState((state) => ({
-                          greatFeastState: {
-                            isActive: true,
-                            endTime: endTime,
-                          },
-                          greatFeastActivations: state.greatFeastActivations - 1,
-                        }));
-
-                        gameState.addLogEntry({
-                          id: `great-feast-activated-${Date.now()}`,
-                          message: "A Great Feast has begun! Production is boosted by 4x for 30 minutes.",
-                          timestamp: Date.now(),
-                          type: "system",
-                        });
-                      }}
-                      size="sm"
-                      disabled={gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()}
-                    >
-                      {gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now() 
-                        ? "Active" 
-                        : "Activate"}
-                    </Button>
+                            gameState.addLogEntry({
+                              id: `great-feast-activated-${Date.now()}`,
+                              message: "A Great Feast has begun! Production is boosted by 4x for 30 minutes.",
+                              timestamp: Date.now(),
+                              type: "system",
+                            });
+                          }}
+                          size="sm"
+                          disabled={gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()}
+                        >
+                          {gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now() 
+                            ? "Active" 
+                            : "Activate"}
+                        </Button>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
