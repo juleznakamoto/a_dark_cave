@@ -24,6 +24,7 @@ export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
   useGameStore.setState({ isGameLoopActive: true, isGamePaused: false });
+  wasPaused = false;
   lastFrameTime = performance.now();
   tickAccumulator = 0;
   lastUserActivity = Date.now();
@@ -452,11 +453,8 @@ function handleStrangerApproach() {
   );
   const maxPopulation = getMaxPopulation(state);
 
-  console.log('[STRANGER] Current pop:', currentPopulation, 'Max pop:', maxPopulation);
-
   // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) {
-    console.log('[STRANGER] No room for more villagers');
     return;
   }
 
@@ -488,11 +486,8 @@ function handleStrangerApproach() {
     probability = Math.max(0.5, probability);
   }
 
-  console.log('[STRANGER] Probability:', (probability * 100).toFixed(1) + '%', 'Roll:', Math.random());
-
   // Check if stranger(s) approach based on probability
   const roll = Math.random();
-  console.log('[STRANGER] Need roll <', probability.toFixed(3), 'Got:', roll.toFixed(3), roll < probability ? 'SUCCESS' : 'FAILED');
   if (roll < probability) {
     // Calculate available room
     const currentPop = Object.values(state.villagers).reduce(
