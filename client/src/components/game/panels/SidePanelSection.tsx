@@ -432,83 +432,45 @@ export default function SidePanelSection({
                             % Build Discount
                           </div>
                         )}
+                        {effect.bonuses.generalBonuses
+                          .caveExploreMultiplier && effect.bonuses.generalBonuses.caveExploreMultiplier !== 1 && (
+                          <div>
+                            +{Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore Bonus
+                          </div>
+                        )}
                       </>
                     )}
                     {title !== "Blessings" && effect.bonuses.actionBonuses &&
-                      (() => {
-                        // Import SSOT for cave exploration actions
-                        const caveExploreActions = [
-                          'exploreCave',
-                          'ventureDeeper',
-                          'descendFurther',
-                          'exploreRuins',
-                          'exploreTemple',
-                          'exploreCitadel'
-                        ];
-
-                        // Check if this item has cave explore bonuses
-                        const hasCaveExploreBonus = Object.keys(effect.bonuses.actionBonuses).some(
-                          actionId => caveExploreActions.includes(actionId)
-                        );
-
-                        // Check if this item has mining bonuses
-                        const hasMiningBonus = effect.bonuses.actionBonuses.mining;
-
-                        // Special case for lanterns - show both mining and cave explore bonuses
-                        if (hasCaveExploreBonus && hasMiningBonus) {
-                          const firstCaveAction = Object.keys(effect.bonuses.actionBonuses).find(
-                            actionId => caveExploreActions.includes(actionId)
-                          );
-                          const caveBonus = firstCaveAction ? effect.bonuses.actionBonuses[firstCaveAction] : null;
-                          const miningBonus = effect.bonuses.actionBonuses.mining;
-
-                          return (
-                            <>
-                              {miningBonus?.resourceMultiplier && miningBonus.resourceMultiplier !== 1 && (
+                      Object.entries(effect.bonuses.actionBonuses).map(
+                        ([actionId, bonus]) => (
+                          <div key={actionId}>
+                            {bonus.resourceMultiplier &&
+                              bonus.resourceMultiplier !== 1 && (
                                 <div>
-                                  +{Math.round((miningBonus.resourceMultiplier - 1) * 100)}% Mining Bonus
+                                  +
+                                  {Math.round(
+                                    (bonus.resourceMultiplier - 1) * 100,
+                                  )}
+                                  %{" "}
+                                  {capitalizeWords(actionId).replace(
+                                    "Mining",
+                                    "Mine",
+                                  )}{" "}
+                                  Bonus
                                 </div>
                               )}
-                              {caveBonus?.resourceMultiplier && (
-                                <div>
-                                  +{Math.round((caveBonus.resourceMultiplier - 1) * 100)}% Cave Explore Bonus
-                                </div>
-                              )}
-                            </>
-                          );
-                        }
-
-                        return Object.entries(effect.bonuses.actionBonuses).map(
-                          ([actionId, bonus]) => (
-                            <div key={actionId}>
-                              {bonus.resourceMultiplier &&
-                                bonus.resourceMultiplier !== 1 && (
-                                  <div>
-                                    +
-                                    {Math.round(
-                                      (bonus.resourceMultiplier - 1) * 100,
-                                    )}
-                                    %{" "}
-                                    {capitalizeWords(actionId).replace(
-                                      "Mining",
-                                      "Mine",
-                                    )}{" "}
-                                    Bonus
+                            {bonus.resourceBonus &&
+                              Object.entries(bonus.resourceBonus).map(
+                                ([resource, amount]) => (
+                                  <div key={resource}>
+                                    {capitalizeWords(actionId)}: +{amount}{" "}
+                                    {capitalizeWords(resource)}
                                   </div>
-                                )}
-                              {bonus.resourceBonus &&
-                                Object.entries(bonus.resourceBonus).map(
-                                  ([resource, amount]) => (
-                                    <div key={resource}>
-                                      {capitalizeWords(actionId)}: +{amount}{" "}
-                                      {capitalizeWords(resource)}
-                                    </div>
-                                  ),
-                                )}
-                            </div>
-                          ),
-                        );
-                      })()}
+                                ),
+                              )}
+                          </div>
+                        ),
+                      )}
                   </>
                 ) : null}
               </div>

@@ -44,6 +44,7 @@ export interface EffectDefinition {
       buildingCostReduction?: number; // Percentage reduction in building costs (0.1 = 10% reduction)
       MAX_EMBER_BOMBS?: number; // Bonus to max ember bombs capacity
       MAX_CINDERFLAME_BOMBS?: number; // Bonus to max ashfire bombs capacity
+      caveExploreMultiplier?: number; // Multiplier for all cave exploration actions
     };
   };
 }
@@ -206,9 +207,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
-        ...Object.fromEntries(
-          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.1 }])
-        ),
+      },
+      generalBonuses: {
+        caveExploreMultiplier: 1.1,
       },
     },
   },
@@ -223,9 +224,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
-        ...Object.fromEntries(
-          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.2 }])
-        ),
+      },
+      generalBonuses: {
+        caveExploreMultiplier: 1.2,
       },
     },
   },
@@ -240,9 +241,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 1.5,
           cooldownReduction: 3,
         },
-        ...Object.fromEntries(
-          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.3 }])
-        ),
+      },
+      generalBonuses: {
+        caveExploreMultiplier: 1.3,
       },
     },
   },
@@ -257,9 +258,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
-        ...Object.fromEntries(
-          CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.5 }])
-        ),
+      },
+      generalBonuses: {
+        caveExploreMultiplier: 1.5,
       },
     },
   },
@@ -768,9 +769,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description:
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
-      actionBonuses: Object.fromEntries(
-        CAVE_EXPLORE_ACTIONS.map(action => [action, { resourceMultiplier: 1.2 }])
-      ),
+      generalBonuses: {
+        caveExploreMultiplier: 1.2,
+      },
     },
   },
 
