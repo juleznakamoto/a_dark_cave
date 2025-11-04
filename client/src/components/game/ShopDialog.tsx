@@ -305,23 +305,32 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                             {effect.description && (
                                               <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
                                             )}
-                                            {effect.bonuses && (
+                                            {effect.bonuses?.generalBonuses && (
                                               <div className="mt-1 space-y-0.5">
-                                                {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
-                                                  const parts = [];
-                                                  if (bonus.resourceMultiplier) {
-                                                    parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
-                                                  }
-                                                  if (bonus.cooldownReduction) {
-                                                    parts.push(`-${bonus.cooldownReduction}s cooldown`);
-                                                  }
-                                                  return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
-                                                })}
-                                                {effect.bonuses.generalBonuses?.strength && (
-                                                  <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                                {effect.bonuses.generalBonuses.luck && (
+                                                  <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.strength && (
+                                                  <div>+{effect.bonuses.generalBonuses.strength} Strength</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.knowledge && (
+                                                  <div>+{effect.bonuses.generalBonuses.knowledge} Knowledge</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.madness && (
+                                                  <div>{effect.bonuses.generalBonuses.madness > 0 ? '+' : ''}{effect.bonuses.generalBonuses.madness} Madness</div>
                                                 )}
                                               </div>
                                             )}
+                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                              const parts = [];
+                                              if (bonus.resourceMultiplier) {
+                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action.charAt(0).toUpperCase() + action.slice(1)} Bonus`);
+                                              }
+                                              if (bonus.cooldownReduction) {
+                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                              }
+                                              return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
+                                            })}
                                           </>
                                         )}
                                       </div>
@@ -339,23 +348,35 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                             {effect.description && (
                                               <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
                                             )}
-                                            {effect.bonuses && (
+                                            {effect.bonuses?.generalBonuses && (
                                               <div className="mt-1 space-y-0.5">
-                                                {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
-                                                  const parts = [];
-                                                  if (bonus.resourceMultiplier) {
-                                                    parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
-                                                  }
-                                                  if (bonus.cooldownReduction) {
-                                                    parts.push(`-${bonus.cooldownReduction}s cooldown`);
-                                                  }
-                                                  return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
-                                                })}
-                                                {effect.bonuses.generalBonuses?.caveExploreMultiplier && (
+                                                {effect.bonuses.generalBonuses.luck && (
+                                                  <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.strength && (
+                                                  <div>+{effect.bonuses.generalBonuses.strength} Strength</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.knowledge && (
+                                                  <div>+{effect.bonuses.generalBonuses.knowledge} Knowledge</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.madness && (
+                                                  <div>{effect.bonuses.generalBonuses.madness > 0 ? '+' : ''}{effect.bonuses.generalBonuses.madness} Madness</div>
+                                                )}
+                                                {effect.bonuses.generalBonuses.caveExploreMultiplier && (
                                                   <div>+{Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore</div>
                                                 )}
                                               </div>
                                             )}
+                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                              const parts = [];
+                                              if (bonus.resourceMultiplier) {
+                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action.charAt(0).toUpperCase() + action.slice(1)} Bonus`);
+                                              }
+                                              if (bonus.cooldownReduction) {
+                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                              }
+                                              return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
+                                            })}
                                           </>
                                         )}
                                       </div>
