@@ -342,7 +342,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </div>
             )}
           </>
-        ) : (
+        ) : clientSecret ? (
           <div className="mt-4">
             <h3 className="text-lg font-semibold mb-4">
               Complete Purchase: {items[selectedItem!]?.name}
@@ -354,7 +354,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               Cancel
             </Button>
           </div>
-        )}
+        ) : null}
       </DialogContent>
     </Dialog>
   );
