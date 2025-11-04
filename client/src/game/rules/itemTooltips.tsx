@@ -23,7 +23,7 @@ export function renderItemTooltip(
           {effect.description}
         </div>
       )}
-      {itemType !== "blessing" && effect.bonuses?.generalBonuses && (
+      {effect.bonuses?.generalBonuses && (
         <div className="mt-1 space-y-0.5">
           {effect.bonuses.generalBonuses.luck && (
             <div>+{effect.bonuses.generalBonuses.luck} Luck</div>
@@ -98,8 +98,7 @@ export function renderItemTooltip(
             )}
         </div>
       )}
-      {itemType !== "blessing" &&
-        effect.bonuses?.actionBonuses &&
+      {effect.bonuses?.actionBonuses &&
         Object.entries(effect.bonuses.actionBonuses).map(
           ([actionId, bonus]) => (
             <div key={actionId}>
