@@ -12,6 +12,7 @@ import {
   getTotalStrength,
   getTotalKnowledge,
   getTotalMadness,
+  getActiveEffects,
 } from "@/game/rules/effectsCalculation";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
@@ -605,6 +606,62 @@ export default function SidePanel() {
       };
     });
 
+  // Dynamically generate bonus items by aggregating all action bonuses
+  const bonusItems = (() => {
+    const activeEffects = getActiveEffects(gameState);
+    const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
+
+    activeEffects.forEach((effect) => {
+      if (effect.bonuses.actionBonuses) {
+        Object.entries(effect.bonuses.actionBonuses).forEach(
+          ([actionId, bonus]) => {
+            const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
+
+            // Aggregate multipliers (multiplicative)
+            if (bonus.resourceMultiplier) {
+              existing.multiplier *= bonus.resourceMultiplier;
+            }
+
+            // Aggregate flat bonuses (additive)
+            if (bonus.resourceBonus) {
+              Object.values(bonus.resourceBonus).forEach((value) => {
+                existing.flatBonus += value;
+              });
+            }
+
+            bonusMap.set(actionId, existing);
+          }
+        );
+      }
+    });
+
+    // Convert to array and format
+    return Array.from(bonusMap.entries())
+      .map(([actionId, bonus]) => {
+        const percentBonus = Math.round((bonus.multiplier - 1) * 100);
+        let label = capitalizeWords(actionId);
+        
+        // Build value string
+        let valueStr = "";
+        if (percentBonus > 0) {
+          valueStr = `+${percentBonus}%`;
+        }
+        if (bonus.flatBonus > 0) {
+          valueStr += valueStr ? ` / +${bonus.flatBonus}` : `+${bonus.flatBonus}`;
+        }
+
+        return {
+          id: actionId,
+          label,
+          value: valueStr,
+          testId: `bonus-${actionId}`,
+          visible: percentBonus > 0 || bonus.flatBonus > 0,
+        };
+      })
+      .filter((item) => item.visible)
+      .sort((a, b) => a.label.localeCompare(b.label));
+  })();
+
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
     switch (activeTab) {
@@ -616,13 +673,14 @@ export default function SidePanel() {
           "clothing",
           "stats",
           "schematics",
+          "bonuses",
         ].includes(sectionName);
       case "village":
-        return ["resources", "buildings", "population"].includes(sectionName);
+        return ["resources", "buildings", "population", "bonuses"].includes(sectionName);
       case "forest":
-        return ["resources", "relics", "blessings"].includes(sectionName);
+        return ["resources", "relics", "blessings", "bonuses"].includes(sectionName);
       case "bastion":
-        return ["resources", "fortifications", "bastion"].includes(sectionName); // Added bastion to show
+        return ["resources", "fortifications", "bastion", "bonuses"].includes(sectionName);
 
       default:
         return true; // Show all sections by default
@@ -723,6 +781,9 @@ export default function SidePanel() {
                 </div>
               )}
             </SidePanelSection>
+          )}
+          {bonusItems.length > 0 && shouldShowSection("bonuses") && (
+            <SidePanelSection title="Bonuses" items={bonusItems} />
           )}
 
         </div>

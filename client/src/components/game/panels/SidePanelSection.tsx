@@ -20,7 +20,7 @@ import cn from "clsx";
 interface SidePanelItem {
   id: string;
   label: string;
-  value: number;
+  value: number | string;
   testId?: string;
   visible?: boolean;
   tooltip?: string;
@@ -187,7 +187,12 @@ export default function SidePanelSection({
     return null;
   }
 
-  const formatValue = (value: number) => {
+  const formatValue = (value: number | string) => {
+    // If it's already a string, return it as-is
+    if (typeof value === "string") {
+      return value;
+    }
+    
     if (value < 0) {
       return `${value}`;
     } else if (value === -1) {
