@@ -1,11 +1,13 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { useGameStore } from '@/game/state';
 import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { supabase } from '@/lib/supabase';
+import { getCurrentUser } from '@/game/auth';
 
 const stripePublishableKey = import.meta.env.PROD 
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD 
@@ -95,13 +97,36 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
   const [activatedItems, setActivatedItems] = useState<Set<string>>(new Set());
   const [showSuccess, setShowSuccess] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const gameState = useGameStore();
 
-  useState(() => {
-    fetch('/api/shop/items')
-      .then(res => res.json())
-      .then(setItems);
-  });
+  useEffect(() => {
+    const loadData = async () => {
+      // Load shop items
+      const itemsResponse = await fetch('/api/shop/items');
+      const itemsData = await itemsResponse.json();
+      setItems(itemsData);
+
+      // Load user's purchases from database
+      const currentUser = await getCurrentUser();
+      if (currentUser) {
+        const { data: purchases, error } = await supabase
+          .from('purchases')
+          .select('item_id')
+          .eq('user_id', currentUser.id);
+
+        if (!error && purchases) {
+          setPurchasedItems(purchases.map(p => p.item_id));
+        }
+      }
+      
+      setIsLoading(false);
+    };
+
+    if (isOpen) {
+      loadData();
+    }
+  }, [isOpen]);
 
   const handlePurchaseClick = async (itemId: string) => {
     const response = await fetch('/api/payment/create-intent', {
@@ -115,8 +140,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     setSelectedItem(itemId);
   };
 
-  const handlePurchaseSuccess = () => {
+  const handlePurchaseSuccess = async () => {
     const item = items[selectedItem!];
+    
+    // Save purchase to database
+    const currentUser = await getCurrentUser();
+    if (currentUser) {
+      const { error } = await supabase
+        .from('purchases')
+        .insert({
+          user_id: currentUser.id,
+          item_id: selectedItem!,
+          item_name: item.name,
+          price_paid: item.price,
+          purchased_at: new Date().toISOString(),
+        });
+
+      if (error) {
+        console.error('Failed to save purchase:', error);
+      }
+    }
     
     // Add to purchased items list
     setPurchasedItems(prev => [...prev, selectedItem!]);
@@ -180,13 +223,19 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
 
-        {showSuccess && (
+        {isLoading && (
+          <div className="flex justify-center py-8">
+            <div className="text-muted-foreground">Loading...</div>
+          </div>
+        )}
+
+        {!isLoading && showSuccess && (
           <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
             Purchase successful! Check the Purchases section below to activate your items.
           </div>
         )}
 
-        {!clientSecret ? (
+        {!isLoading && !clientSecret ? (
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
               {Object.values(items).map((item) => (
