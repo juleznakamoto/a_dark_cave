@@ -351,66 +351,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       const isActivated = activatedPurchases[itemId] || false;
 
                       return (
-                        <Card key={itemId}>
-                          <CardHeader>
-                            <CardTitle className="text-sm">
-                              {item.name}
-                            </CardTitle>
-                          </CardHeader>
-                          <CardContent>
-                            <div className="space-y-2 text-xs">
-                              {item.rewards.resources && (
-                                <div>
-                                  {Object.entries(item.rewards.resources)
-                                    .map(([r, a]) => `${a} ${r}`)
-                                    .join(", ")}
-                                </div>
-                              )}
-                              {item.rewards.tools && (
-                                <div>
-                                  {item.rewards.tools.map((tool) => (
-                                    <div key={tool} className="mb-1">
-                                      {renderItemTooltip(tool, "tool")}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                              {item.rewards.weapons && (
-                                <div>
-                                  {item.rewards.weapons.map((weapon) => (
-                                    <div key={weapon} className="mb-1">
-                                      {renderItemTooltip(weapon, "weapon")}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                              {item.rewards.blessings && (
-                                <div>
-                                  {item.rewards.blessings.map((blessing) => (
-                                    <div key={blessing} className="mb-1">
-                                      {renderItemTooltip(blessing, "blessing")}
-                                    </div>
-                                  ))}
-                                </div>
-                              )}
-                              {item.rewards.feastActivations && (
-                                <div>
-                                  {item.rewards.feastActivations} Great Feast Activation{item.rewards.feastActivations > 1 ? 's' : ''}
-                                </div>
-                              )}
-                            </div>
-                          </CardContent>
-                          <CardFooter>
-                            <Button
-                              onClick={() => handleActivatePurchase(itemId)}
-                              disabled={isActivated}
-                              className="w-full"
-                              variant={isActivated ? "outline" : "default"}
-                            >
-                              {isActivated ? "Activated" : "Activate"}
-                            </Button>
-                          </CardFooter>
-                        </Card>
+                        <div key={itemId} className="flex items-center justify-between p-3 border rounded-lg">
+                          <span className="text-sm font-medium">{item.name}</span>
+                          <Button
+                            onClick={() => handleActivatePurchase(itemId)}
+                            disabled={isActivated}
+                            size="sm"
+                            variant={isActivated ? "outline" : "default"}
+                          >
+                            {isActivated ? "Activated" : "Activate"}
+                          </Button>
+                        </div>
                       );
                     })}
                   </div>
