@@ -186,6 +186,13 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
     }
   });
 
+  // Check blessing effects (blessings are also in clothingEffects)
+  Object.entries(state.blessings || {}).forEach(([key, value]) => {
+    if (value && clothingEffects[key]) {
+      activeEffects.push(clothingEffects[key]);
+    }
+  });
+
   // Check tool effects
   const displayTools = getDisplayTools(state);
   Object.keys(displayTools).forEach((toolKey) => {
