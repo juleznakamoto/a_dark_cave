@@ -317,6 +317,12 @@ export const gameStateSchema = z.object({
   greatFeastActivations: z.number().default(0),
 
   activatedPurchases: z.record(z.boolean()).default({}),
+  feastPurchases: z.record(z.object({
+    itemId: z.string(),
+    activationsRemaining: z.number(),
+    totalActivations: z.number(),
+    purchasedAt: z.number(),
+  })).default({}),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

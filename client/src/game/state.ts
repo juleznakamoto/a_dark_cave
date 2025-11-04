@@ -186,6 +186,7 @@ const defaultGameState: GameState = {
     lastAcceptedLevel: 0,
   },
   activatedPurchases: {},
+  feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
 };
 
 // State management utilities

@@ -176,16 +176,25 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
-    // If this is a feast item, add the activations to game state immediately
+    // If this is a feast item, track it individually
     if (item.category === 'feast' && item.rewards.feastActivations) {
+      const purchaseId = `feast-purchase-${Date.now()}`;
       useGameStore.setState((state) => ({
-        greatFeastActivations: (state.greatFeastActivations || 0) + item.rewards.feastActivations!,
+        feastPurchases: {
+          ...state.feastPurchases,
+          [purchaseId]: {
+            itemId: selectedItem!,
+            activationsRemaining: item.rewards.feastActivations!,
+            totalActivations: item.rewards.feastActivations!,
+            purchasedAt: Date.now(),
+          },
+        },
       }));
     }
 
     gameState.addLogEntry({
       id: `purchase-${Date.now()}`,
-      message: `Purchase successful! ${item.name} has been added to your purchases. You can activate it once per game from the Purchases section.`,
+      message: `Purchase successful! ${item.name} has been added to your purchases. You can activate it from the Purchases section.`,
       timestamp: Date.now(),
       type: "system",
     });
@@ -198,21 +207,27 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     setSelectedItem(null);
   };
 
-  const handleActivatePurchase = (itemId: string) => {
+  const handleActivatePurchase = (purchaseId: string, itemId: string) => {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
-    // For feast items, check if there are any activations available
+    // For feast items, use individual purchase tracking
     if (item.category === 'feast') {
-      const currentActivations = gameState.greatFeastActivations || 0;
-      if (currentActivations <= 0) return;
+      const purchase = gameState.feastPurchases?.[purchaseId];
+      if (!purchase || purchase.activationsRemaining <= 0) return;
 
       // Activate a Great Feast
       const feastDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
       const endTime = Date.now() + feastDuration;
 
       useGameStore.setState((state) => ({
-        greatFeastActivations: (state.greatFeastActivations || 0) - 1,
+        feastPurchases: {
+          ...state.feastPurchases,
+          [purchaseId]: {
+            ...purchase,
+            activationsRemaining: purchase.activationsRemaining - 1,
+          },
+        },
         greatFeastState: {
           isActive: true,
           endTime: endTime,
@@ -228,8 +243,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
-    // For non-feast items, check if already activated
-    if (activatedPurchases[itemId]) return;
+    // For non-feast items, check if already activated (purchaseId is the same as itemId for non-feast)
+    if (activatedPurchases[purchaseId]) return;
 
     // Grant rewards
     if (item.rewards.resources) {
@@ -267,7 +282,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     useGameStore.setState((state) => ({
       activatedPurchases: {
         ...state.activatedPurchases,
-        [itemId]: true,
+        [purchaseId]: true,
       },
     }));
   };
@@ -363,7 +378,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 ))}
               </div>
 
-              {(purchasedItems.length > 0) && (
+              {(purchasedItems.length > 0 || Object.keys(gameState.feastPurchases || {}).length > 0) && (
                 <div className="mt-6 border-t pt-4">
                   <h3 className="text-lg font-semibold mb-4">Purchases</h3>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -371,7 +386,37 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     can only be activated once per game.
                   </p>
                   <div className="space-y-2">
-                    {purchasedItems.map((itemId) => {
+                    {/* Show individual feast purchases */}
+                    {Object.entries(gameState.feastPurchases || {}).map(([purchaseId, purchase]) => {
+                      const item = SHOP_ITEMS[purchase.itemId];
+                      if (!item) return null;
+
+                      const isGreatFeastActive = gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now();
+
+                      return (
+                        <div key={purchaseId} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div className="flex flex-col">
+                            <span className="text-sm font-medium">
+                              {item.name} ({purchase.activationsRemaining}/{purchase.totalActivations} available)
+                            </span>
+                            <span className="text-xs text-muted-foreground">
+                              {item.description}
+                            </span>
+                          </div>
+                          <Button
+                            onClick={() => handleActivatePurchase(purchaseId, purchase.itemId)}
+                            disabled={purchase.activationsRemaining <= 0 || isGreatFeastActive}
+                            size="sm"
+                            variant={isGreatFeastActive ? "outline" : "default"}
+                          >
+                            {isGreatFeastActive ? "Active" : "Activate"}
+                          </Button>
+                        </div>
+                      );
+                    })}
+
+                    {/* Show non-feast purchases */}
+                    {purchasedItems.filter(itemId => SHOP_ITEMS[itemId]?.category !== 'feast').map((itemId) => {
                       const item = SHOP_ITEMS[itemId];
                       if (!item) return null;
 
@@ -382,22 +427,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <div className="flex flex-col">
                             <span className="text-sm font-medium">
                               {item.name}
-                              {item.category === 'feast' && 
-                                ` (${gameState.greatFeastActivations || 0} available)`}
                             </span>
                             <span className="text-xs text-muted-foreground">
                               {item.description}
                             </span>
                           </div>
                           <Button
-                            onClick={() => handleActivatePurchase(itemId)}
-                            disabled={item.category === 'feast' ? ((gameState.greatFeastActivations || 0) <= 0 || (gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now())) : isActivated}
+                            onClick={() => handleActivatePurchase(itemId, itemId)}
+                            disabled={isActivated}
                             size="sm"
-                            variant={item.category === 'feast' ? ((gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()) ? "outline" : "default") : (isActivated ? "outline" : "default")}
+                            variant={isActivated ? "outline" : "default"}
                           >
-                            {item.category === 'feast' 
-                              ? ((gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now()) ? "Active" : "Activate")
-                              : (isActivated ? "Activated" : "Activate")}
+                            {isActivated ? "Activated" : "Activate"}
                           </Button>
                         </div>
                       );
