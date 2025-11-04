@@ -96,6 +96,9 @@ export function startGameLoop() {
     } else {
       // Only tick down cooldowns when paused
       state.tickCooldowns();
+      
+      // Update lastProduction timestamp to prevent accumulated production when unpausing
+      lastProduction = timestamp;
     }
 
     gameLoopId = requestAnimationFrame(tick);

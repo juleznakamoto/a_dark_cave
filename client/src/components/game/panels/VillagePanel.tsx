@@ -39,14 +39,25 @@ export default function VillagePanel() {
   const [feastProgress, setFeastProgress] = useState(0);
 
   useEffect(() => {
+    let pausedAt: number | null = null;
+    let pauseOffset = 0;
+
     const updateProgress = () => {
-      // Don't update progress when game is paused
       const gameState = useGameStore.getState();
+      
+      // Handle pause state
       if (gameState.isGamePaused) {
+        if (pausedAt === null) {
+          pausedAt = Date.now();
+        }
         return;
+      } else if (pausedAt !== null) {
+        // Just unpaused - calculate offset
+        pauseOffset += Date.now() - pausedAt;
+        pausedAt = null;
       }
 
-      const now = Date.now();
+      const now = Date.now() - pauseOffset;
       const productionInterval = 15000; // 15 seconds in milliseconds
       const elapsed = now % productionInterval;
       const progress = (elapsed / productionInterval) * 100;
