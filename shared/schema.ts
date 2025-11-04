@@ -81,7 +81,7 @@ export const gameStateSchema = z.object({
     .object({
       arbalest_schematic: z.boolean().default(false),
       nightshade_bow_schematic: z.boolean().default(false),
-      bloodstone_staff_schematic: z.boolean().default(false),
+      bloodstone_bow_schematic: z.boolean().default(false),
     })
     .default({}),
   tools: z
@@ -307,11 +307,9 @@ export const gameStateSchema = z.object({
     isActive: z.boolean().default(false),
     endTime: z.number().default(0),
     lastAcceptedLevel: z.number().default(0),
-  }).default({
-    isActive: false,
-    endTime: 0,
-    lastAcceptedLevel: 0,
-  }),
+  }).default({}),
+
+  activatedPurchases: z.record(z.boolean()).default({}),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

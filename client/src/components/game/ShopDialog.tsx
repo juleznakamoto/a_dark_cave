@@ -107,7 +107,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
-  const [activatedItems, setActivatedItems] = useState<Set<string>>(new Set());
   const [showSuccess, setShowSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState<{
@@ -115,6 +114,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     email: string;
   } | null>(null);
   const gameState = useGameStore();
+  const activatedPurchases = gameState.activatedPurchases || {};
 
   useEffect(() => {
     const loadData = async () => {
@@ -193,7 +193,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const handleActivatePurchase = (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
-    if (!item || activatedItems.has(itemId)) return;
+    if (!item || activatedPurchases[itemId]) return;
 
     // Grant rewards
     if (item.rewards.resources) {
@@ -237,7 +237,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       type: "system",
     });
 
-    setActivatedItems((prev) => new Set(prev).add(itemId));
+    // Mark as activated in game state
+    useGameStore.setState((state) => ({
+      activatedPurchases: {
+        ...state.activatedPurchases,
+        [itemId]: true,
+      },
+    }));
   };
 
   const formatPrice = (cents: number) => {
@@ -399,7 +405,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     {purchasedItems.map((itemId) => {
                       const item = SHOP_ITEMS[itemId];
                       if (!item) return null;
-                      const isActivated = activatedItems.has(itemId);
+                      const isActivated = activatedPurchases[itemId] || false;
 
                       return (
                         <Card key={itemId}>

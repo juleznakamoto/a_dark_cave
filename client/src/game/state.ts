@@ -185,6 +185,7 @@ const defaultGameState: GameState = {
     endTime: 0,
     lastAcceptedLevel: 0,
   },
+  activatedPurchases: {},
 };
 
 // State management utilities
