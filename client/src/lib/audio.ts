@@ -6,6 +6,7 @@ export class AudioManager {
   private soundUrls: Map<string, string> = new Map();
   private initialized: boolean = false;
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
+  private isPaused: boolean = false;
 
   private constructor() {}
 
@@ -177,6 +178,28 @@ export class AudioManager {
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
     await this.playLoopingSound('backgroundMusic', volume);
+  }
+
+  pause(): void {
+    if (!this.audioContext || this.isPaused) return;
+    
+    try {
+      this.audioContext.suspend();
+      this.isPaused = true;
+    } catch (error) {
+      console.warn('Failed to pause audio:', error);
+    }
+  }
+
+  resume(): void {
+    if (!this.audioContext || !this.isPaused) return;
+    
+    try {
+      this.audioContext.resume();
+      this.isPaused = false;
+    } catch (error) {
+      console.warn('Failed to resume audio:', error);
+    }
   }
 }
 

@@ -249,7 +249,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
 
-  togglePause: () => set((state) => ({ isGamePaused: !state.isGamePaused })),
+  togglePause: () => {
+    const currentState = get();
+    const newPausedState = !currentState.isGamePaused;
+    
+    // Handle audio pause/resume
+    if (newPausedState) {
+      audioManager.pause();
+    } else {
+      audioManager.resume();
+    }
+    
+    set({ isGamePaused: newPausedState });
+  },
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
