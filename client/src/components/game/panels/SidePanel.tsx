@@ -611,11 +611,25 @@ export default function SidePanel() {
     const activeEffects = getActiveEffects(gameState);
     const bonusMap = new Map<string, { multiplier: number; flatBonus: number }>();
 
+    // List of cave exploration actions to combine
+    const caveExploreActions = [
+      'exploreCave',
+      'ventureDeeper',
+      'descendFurther',
+      'exploreRuins',
+      'exploreTemple',
+      'exploreCitadel'
+    ];
+
     activeEffects.forEach((effect) => {
       if (effect.bonuses.actionBonuses) {
         Object.entries(effect.bonuses.actionBonuses).forEach(
           ([actionId, bonus]) => {
-            const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
+            // Check if this is a cave explore action
+            const isCaveExplore = caveExploreActions.includes(actionId);
+            const mapKey = isCaveExplore ? 'caveExplore' : actionId;
+            
+            const existing = bonusMap.get(mapKey) || { multiplier: 1, flatBonus: 0 };
 
             // Aggregate multipliers (multiplicative)
             if (bonus.resourceMultiplier) {
@@ -629,7 +643,7 @@ export default function SidePanel() {
               });
             }
 
-            bonusMap.set(actionId, existing);
+            bonusMap.set(mapKey, existing);
           }
         );
       }
@@ -639,7 +653,7 @@ export default function SidePanel() {
     return Array.from(bonusMap.entries())
       .map(([actionId, bonus]) => {
         const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-        let label = capitalizeWords(actionId);
+        let label = actionId === 'caveExplore' ? 'Cave Explore Bonus' : capitalizeWords(actionId);
         
         // Build value string
         let valueStr = "";
