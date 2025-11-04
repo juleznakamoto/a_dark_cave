@@ -6,6 +6,8 @@ export class AudioManager {
   private soundUrls: Map<string, string> = new Map();
   private initialized: boolean = false;
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
+  private backgroundMusicVolume: number = 1;
+  private wasBackgroundMusicPlaying: boolean = false;
 
   private constructor() {}
 
@@ -164,6 +166,19 @@ export class AudioManager {
     }
   }
 
+  stopAllSounds(): void {
+    // Stop all looping sounds
+    this.loopingSources.forEach((source, name) => {
+      try {
+        source.stop();
+        source.disconnect();
+      } catch (error) {
+        // Ignore errors if already stopped
+      }
+    });
+    this.loopingSources.clear();
+  }
+
   async preloadSounds(): Promise<void> {
     console.log('Registering sounds for lazy loading...');
     // Just register the sound URLs, don't load yet
@@ -176,7 +191,23 @@ export class AudioManager {
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
+    this.backgroundMusicVolume = volume;
+    this.wasBackgroundMusicPlaying = true;
     await this.playLoopingSound('backgroundMusic', volume);
+  }
+
+  pauseAllSounds(): void {
+    // Track if background music was playing
+    this.wasBackgroundMusicPlaying = this.loopingSources.has('backgroundMusic');
+    // Stop all sounds
+    this.stopAllSounds();
+  }
+
+  async resumeSounds(): Promise<void> {
+    // Resume background music if it was playing before pause
+    if (this.wasBackgroundMusicPlaying) {
+      await this.startBackgroundMusic(this.backgroundMusicVolume);
+    }
   }
 }
 
