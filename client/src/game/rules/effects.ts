@@ -1,5 +1,3 @@
-import { GameState } from "@shared/schema";
-import { CAVE_EXPLORE_ACTIONS } from "./caveExploreConfig";
 
 // Define action bonuses interface
 export interface ActionBonuses {
@@ -74,7 +72,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Rudimentary pickaxe for mining",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
@@ -105,7 +103,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Durable pickaxe for mining efficiently",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.5,
           cooldownReduction: 1,
         },
@@ -133,7 +131,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Very sturdy mining tool crafted from resilient steel",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.75,
           cooldownReduction: 2,
         },
@@ -161,7 +159,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Masterful tool for mining made of volcanic glass",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -176,7 +174,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         gatherWood: {
-          resourceMultiplier: 3.0,
+          resourceMultiplier: 2.5,
           cooldownReduction: 1.5,
         },
       },
@@ -189,8 +187,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Pinnacle of mining tools, unyielding and precise",
     bonuses: {
       actionBonuses: {
-        mine: {
-          resourceMultiplier: 3.0,
+        mining: {
+          resourceMultiplier: 2.5,
           cooldownReduction: 6,
         },
       },
@@ -203,7 +201,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Simple lantern providing reliable light",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.1,
           cooldownReduction: 1,
         },
@@ -220,7 +218,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Bright lantern illuminating the darkest places",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.25,
           cooldownReduction: 2,
         },
@@ -237,7 +235,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Powerful lantern that casts a strong, unwavering light",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.5,
           cooldownReduction: 3,
         },
@@ -254,7 +252,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Ultimate light source, illuminating every path",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 2.0,
           cooldownReduction: 4,
         },
@@ -367,7 +365,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 3.0,
+          resourceMultiplier: 2.5,
         },
       },
       generalBonuses: {
@@ -426,7 +424,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     description: "Blade forged from frostglas, radiating cold power",
     bonuses: {
       generalBonuses: {
-        strength: 35,
+        strength: 30,
       },
       actionBonuses: {},
     },
@@ -465,7 +463,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   nightshade_bow: {
     id: "nightshade_bow",
     name: "Nightshade Bow",
-    description: "A bow crafted from dark wood, its arrows carry poison",
+    description: "Bow crafted from dark wood, its arrows carry poison",
     bonuses: {
       generalBonuses: {
         strength: 5,
@@ -681,7 +679,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Scepter of the lost king, radiating power and madness",
     bonuses: {
       actionBonuses: {
-        mine: {
+        mining: {
           resourceMultiplier: 1.25,
         },
       },
@@ -837,7 +835,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  // Relic effects
   ravens_orb: {
     id: "ravens_orb",
     name: "Raven's Orb",
@@ -895,11 +892,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   dagons_gift: {
     id: "dagons_gift",
     name: "Dagon's Gift",
-    description: "+100% Hunt Bonus",
+    description: "+50% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 1.5,
         },
       },
     },
@@ -930,11 +927,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ashen_embrace: {
     id: "ashen_embrace",
     name: "Ashen Embrace",
-    description: "+100% Mine Bonus",
+    description: "+50% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mine: {
-          resourceMultiplier: 2.0,
+        mining: {
+          resourceMultiplier: 1.5,
         },
       },
     },
@@ -944,11 +941,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
     name: "Dagon's Great Gift",
-    description: "+300% Hunt Bonus",
+    description: "+200% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 4.0, // 300% bonus
+          resourceMultiplier: 3.0, // 200% bonus
         },
       },
     },
@@ -979,11 +976,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ashen_embrace_enhanced: {
     id: "ashen_embrace_enhanced",
     name: "Deep Ashen Embrace",
-    description: "+300% Mine Bonus",
+    description: "+200% Mine Bonus",
     bonuses: {
       actionBonuses: {
-        mine: {
-          resourceMultiplier: 4.0, // 300% bonus
+        mining: {
+          resourceMultiplier: 3.0, // 200% bonus
         },
       },
     },
@@ -992,11 +989,11 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   forests_grace: {
     id: "forests_grace",
     name: "The Forest's Grace",
-    description: "+25% Hunt Bonus",
+    description: "+20% Hunt Bonus",
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.2,
         },
       },
     },
