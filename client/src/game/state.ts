@@ -22,7 +22,6 @@ interface GameStore extends GameState {
   devMode: boolean;
   boostMode: boolean;
   lastSaved: string;
-  isGamePaused: boolean;
   eventDialog: {
     isOpen: boolean;
     currentEvent: LogEntry | null;
@@ -50,7 +49,6 @@ interface GameStore extends GameState {
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   setBoostMode: (enabled: boolean) => void;
-  togglePause: () => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -226,7 +224,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   devMode: import.meta.env.DEV,
   boostMode: false,
   lastSaved: "Never",
-  isGamePaused: false,
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
   log: [],
@@ -248,20 +245,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
-
-  togglePause: () => {
-    const currentState = get();
-    const newPausedState = !currentState.isGamePaused;
-    
-    // Handle audio pause/resume
-    if (newPausedState) {
-      audioManager.pause();
-    } else {
-      audioManager.resume();
-    }
-    
-    set({ isGamePaused: newPausedState });
-  },
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));

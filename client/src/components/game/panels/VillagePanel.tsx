@@ -39,36 +39,16 @@ export default function VillagePanel() {
   const [feastProgress, setFeastProgress] = useState(0);
 
   useEffect(() => {
-    let pausedAt: number | null = null;
-    let pauseOffset = 0;
-    let animationFrameId: number | null = null;
-
     const updateProgress = () => {
-      const gameState = useGameStore.getState();
-
-      // Handle pause state
-      if (gameState.isGamePaused) {
-        if (pausedAt === null) {
-          pausedAt = Date.now();
-        }
-        // If paused, don't update progress, just request next frame
-        animationFrameId = requestAnimationFrame(updateProgress);
-        return;
-      } else if (pausedAt !== null) {
-        // Just unpaused - calculate offset
-        pauseOffset += Date.now() - pausedAt;
-        pausedAt = null;
-      }
-
-      const now = Date.now() - pauseOffset;
+      const now = Date.now();
       const productionInterval = 15000; // 15 seconds in milliseconds
       const elapsed = now % productionInterval;
       const progress = (elapsed / productionInterval) * 100;
       setProductionProgress(progress);
 
       // Update feast progress
-      const feastState = gameState.feastState;
-      const greatFeastState = gameState.greatFeastState;
+      const feastState = useGameStore.getState().feastState;
+      const greatFeastState = useGameStore.getState().greatFeastState;
 
       if (greatFeastState?.isActive && greatFeastState.endTime > now) {
         const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
@@ -83,19 +63,12 @@ export default function VillagePanel() {
       } else {
         setFeastProgress(0);
       }
-
-      // Continue the animation loop
-      animationFrameId = requestAnimationFrame(updateProgress);
     };
 
-    // Start the animation loop
-    animationFrameId = requestAnimationFrame(updateProgress);
+    updateProgress();
+    const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
 
-    return () => {
-      if (animationFrameId !== null) {
-        cancelAnimationFrame(animationFrameId);
-      }
-    };
+    return () => clearInterval(interval);
   }, []);
 
   // Define action groups with their actions
@@ -319,7 +292,7 @@ export default function VillagePanel() {
             onMouseDown={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={() => currentCount > 0 && startHold(() => assignVillager(jobId))}
+            onTouchStart={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
             onTouchEnd={stopHold}
             disabled={currentCount === 0}
             variant="ghost"
@@ -506,9 +479,9 @@ export default function VillagePanel() {
                         (gameState.activatedPurchases?.feast_10 ? 10 : 0);
           const available = gameState.greatFeastActivations || 0;
           const total = bought + available;
-
+          
           if (total === 0) return null;
-
+          
           return (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-foreground">Shop</h3>

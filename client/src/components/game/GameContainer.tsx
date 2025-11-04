@@ -25,7 +25,6 @@ export default function GameContainer() {
     setEventDialog,
     setCombatDialog,
     addLogEntry,
-    isGamePaused,
   } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
@@ -114,11 +113,6 @@ export default function GameContainer() {
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
-      {/* Pause Overlay */}
-      {isGamePaused && (
-        <div className="fixed inset-0 bg-black/30 z-40" style={{ bottom: 'auto', height: 'calc(100% - 2.5rem)' }} />
-      )}
-      
       {/* Event Log - Fixed Height at Top */}
       <div className="w-full overflow-hidden p-2 flex-shrink-0">
         <LogPanel />

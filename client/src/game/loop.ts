@@ -11,34 +11,17 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const INACTIVITY_TIMEOUT = 60000; // 1 minute in milliseconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
-let lastUserActivity = Date.now();
-let activityListenersAdded = false;
-let wasPaused = false;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
-  useGameStore.setState({ isGameLoopActive: true, isGamePaused: false });
-  wasPaused = false;
+  useGameStore.setState({ isGameLoopActive: true });
   lastFrameTime = performance.now();
   tickAccumulator = 0;
-  lastUserActivity = Date.now();
-
-  // Add activity listeners
-  if (!activityListenersAdded) {
-    const resetActivity = () => {
-      lastUserActivity = Date.now();
-    };
-    window.addEventListener('mousedown', resetActivity);
-    window.addEventListener('keydown', resetActivity);
-    window.addEventListener('touchstart', resetActivity);
-    activityListenersAdded = true;
-  }
 
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
@@ -46,23 +29,7 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
-    const isManuallyPaused = state.isGamePaused;
-    const isInactive = Date.now() - lastUserActivity > INACTIVITY_TIMEOUT;
-    
-    // Auto-pause on inactivity
-    if (isInactive && !isManuallyPaused && !isDialogOpen) {
-      useGameStore.setState({ isGamePaused: true });
-    }
-    
-    const isPaused = isDialogOpen || isManuallyPaused;
-
-    // Reset production timer when transitioning from paused to unpaused
-    if (wasPaused && !isPaused) {
-      lastProduction = timestamp;
-      lastAutoSave = timestamp;
-    }
-    wasPaused = isPaused;
+    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
 
     if (!isPaused) {
       // Accumulate time for fixed timestep
@@ -454,9 +421,7 @@ function handleStrangerApproach() {
   const maxPopulation = getMaxPopulation(state);
 
   // Only trigger if there's room for more villagers
-  if (currentPopulation >= maxPopulation) {
-    return;
-  }
+  if (currentPopulation >= maxPopulation) return;
 
   // Calculate probability based on your specifications
   let probability = 0.1; // 10% base probability
@@ -487,8 +452,7 @@ function handleStrangerApproach() {
   }
 
   // Check if stranger(s) approach based on probability
-  const roll = Math.random();
-  if (roll < probability) {
+  if (Math.random() < probability) {
     // Calculate available room
     const currentPop = Object.values(state.villagers).reduce(
       (sum, count) => sum + (count || 0),

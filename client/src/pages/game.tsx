@@ -19,6 +19,11 @@ export default function Game() {
       const savedState = await loadGame();
       if (savedState) {
         initialize(savedState);
+
+        // If game is already started (fire is lit), flag that music should start on user gesture
+        if (savedState.story?.seen?.fireLit) {
+          setShouldStartMusic(true);
+        }
       }
 
       // Mark as initialized

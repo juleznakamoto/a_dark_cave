@@ -7,7 +7,6 @@ import { getCurrentUser, signOut } from "@/game/auth";
 import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
-import { Play, Pause } from "lucide-react";
 
 const VERSION = "0.14.5";
 
@@ -20,16 +19,8 @@ export default function GameFooter() {
     setShopDialogOpen,
     shopDialogOpen,
     flags,
-    isGamePaused,
-    togglePause,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
-
-  const handleTogglePause = () => {
-    setGlowingButton("pause");
-    togglePause();
-    setTimeout(() => setGlowingButton(null), 500);
-  };
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
@@ -105,18 +96,9 @@ export default function GameFooter() {
   return (
     <>
       <ShopDialog isOpen={shopDialogOpen} onClose={() => setShopDialogOpen(false)} />
-      <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground relative z-50">
+      <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={handleTogglePause}
-              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
-              title={isGamePaused ? "Resume game" : "Pause game"}
-            >
-              {isGamePaused ? <Play className="h-3 w-3" /> : <Pause className="h-3 w-3" />}
-            </Button>
             {currentUser ? (
               <Button
                 variant="outline"

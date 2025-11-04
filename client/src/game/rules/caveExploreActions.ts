@@ -452,11 +452,6 @@ export function handleLightFire(
     type: "system",
   });
 
-  // Start background music after fire is lit
-  import("@/lib/audio").then(({ audioManager }) => {
-    audioManager.startBackgroundMusic(0.125);
-  });
-
   return result;
 }
 

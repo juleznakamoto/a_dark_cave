@@ -39,6 +39,9 @@ export default function StartScreen() {
   }, [setBoostMode]);
 
   const handleLightFire = () => {
+    // Start background music
+    audioManager.startBackgroundMusic(0.3);
+
     if (isMobile) {
       // On mobile, trigger hover effect first
       if (buttonRef.current) {
