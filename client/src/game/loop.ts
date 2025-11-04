@@ -33,7 +33,6 @@ export function startGameLoop() {
     const state = useGameStore.getState();
     const isDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
     const isPaused = state.isPaused || isDialogOpen;
-    let wasPaused = false; // Flag to check if the game was paused in the previous frame
 
     if (isPaused) {
       // Stop all sounds when paused
@@ -41,7 +40,6 @@ export function startGameLoop() {
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
-      wasPaused = true; // Set flag to indicate game is paused
       // Reset production timer when paused so time doesn't accumulate
       lastProduction = timestamp;
       // Only reset loop progress to 0 when manually paused (not when dialogs open)
@@ -51,15 +49,12 @@ export function startGameLoop() {
       // Skip everything when paused
       gameLoopId = requestAnimationFrame(tick);
       return;
-    } else {
-        // Reset the flag when unpaused
-        useGameStore.setState({ isPausedPreviously: false });
     }
 
     // Resume sounds when exiting pause state
-    if (wasPaused) {
+    if (state.isPausedPreviously) {
       audioManager.resumeSounds();
-      wasPaused = false;
+      useGameStore.setState({ isPausedPreviously: false });
     }
 
     if (!isDialogOpen) {
