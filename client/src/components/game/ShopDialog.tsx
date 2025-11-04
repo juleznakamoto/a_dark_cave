@@ -375,11 +375,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <div className="flex flex-col">
                             <span className="text-sm font-medium">
                               {item.name}
+                              {item.category === 'feast' && item.rewards.feastActivations && 
+                                ` (${item.rewards.feastActivations} available)`}
                             </span>
                             <span className="text-xs text-muted-foreground">
-                              {item.category === 'feast' 
-                                ? `Activate a Great Feast (30 min boost). ${gameState.greatFeastActivations || 0} available.`
-                                : item.description}
+                              {item.description}
                             </span>
                           </div>
                           <Button
