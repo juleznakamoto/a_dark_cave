@@ -25,7 +25,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
-import { SHOP_ITEMS, type ShopItem } from "../../shared/shopItems";
+import { SHOP_ITEMS, type ShopItem } from "../../../../shared/shopItems";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
