@@ -29,7 +29,7 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isPaused = state.isPaused || state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
 
     if (!isPaused) {
       // Accumulate time for fixed timestep
@@ -70,8 +70,7 @@ export function startGameLoop() {
         handleStrangerApproach();
       }
     } else {
-      // Only tick down cooldowns when paused
-      state.tickCooldowns();
+      // Nothing ticks when paused (including cooldowns)
     }
 
     gameLoopId = requestAnimationFrame(tick);
