@@ -25,7 +25,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
-import type { ShopItem } from "../../shared/shopItems";
+import { SHOP_ITEMS, type ShopItem } from "../../shared/shopItems";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -101,7 +101,6 @@ interface ShopDialogProps {
 }
 
 export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
-  const [items, setItems] = useState<Record<string, ShopItem>>({});
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
   const [purchasedItems, setPurchasedItems] = useState<string[]>([]);
@@ -116,11 +115,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   useEffect(() => {
     const loadData = async () => {
-      // Load shop items
-      const itemsResponse = await fetch("/api/shop/items");
-      const itemsData = await itemsResponse.json();
-      setItems(itemsData);
-
       // Check if user is authenticated
       const user = await getCurrentUser();
       setCurrentUser(user);
@@ -158,7 +152,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   };
 
   const handlePurchaseSuccess = async () => {
-    const item = items[selectedItem!];
+    const item = SHOP_ITEMS[selectedItem!];
 
     // Save purchase to database
     const currentUser = await getCurrentUser();
@@ -195,7 +189,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   };
 
   const handleActivatePurchase = (itemId: string) => {
-    const item = items[itemId];
+    const item = SHOP_ITEMS[itemId];
     if (!item || activatedItems.has(itemId)) return;
 
     // Grant rewards
@@ -277,7 +271,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           {!isLoading && !clientSecret ? (
             <>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-                {Object.values(items).map((item) => (
+                {Object.values(SHOP_ITEMS).map((item) => (
                   <Card key={item.id}>
                     <CardHeader>
                       <CardTitle>{item.name}</CardTitle>
@@ -372,7 +366,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   </p>
                   <div className="space-y-2">
                     {purchasedItems.map((itemId) => {
-                      const item = items[itemId];
+                      const item = SHOP_ITEMS[itemId];
                       if (!item) return null;
                       const isActivated = activatedItems.has(itemId);
 
@@ -445,7 +439,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           ) : clientSecret ? (
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-4">
-                Complete Purchase: {items[selectedItem!]?.name}
+                Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
               </h3>
               <Elements stripe={stripePromise} options={{ clientSecret }}>
                 <CheckoutForm
