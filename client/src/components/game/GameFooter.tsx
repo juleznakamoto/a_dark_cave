@@ -29,6 +29,13 @@ export default function GameFooter() {
     email: string;
   } | null>(null);
   const { toast } = useToast();
+  
+  // Trigger glow animation when pause state changes
+  useEffect(() => {
+    setGlowingButton("pause");
+    const timer = setTimeout(() => setGlowingButton(null), 500);
+    return () => clearTimeout(timer);
+  }, [isPaused]);
 
   useEffect(() => {
     checkAuth();
@@ -125,7 +132,7 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              className="px-2 py-1 text-xs no-hover"
+              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
             >
               {isPaused ? "▶" : "⏸"}
             </Button>
