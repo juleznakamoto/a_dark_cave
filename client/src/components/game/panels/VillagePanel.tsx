@@ -402,9 +402,7 @@ export default function VillagePanel() {
                       </TooltipTrigger>
                       <TooltipContent>
                         <div className="text-xs whitespace-pre-line">
-                          {isGreatFeast 
-                            ? `Great Feast active!\n4x production boost`
-                            : feastTooltip.getContent(state)}
+                          {feastTooltip.getContent(state)}
                         </div>
                       </TooltipContent>
                     </Tooltip>
