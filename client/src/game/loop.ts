@@ -21,61 +21,57 @@ export function startGameLoop() {
 
   useGameStore.setState({ isGameLoopActive: true });
   lastFrameTime = performance.now();
-  lastAutoSave = performance.now();
-  lastProduction = performance.now();
   tickAccumulator = 0;
 
   function tick(timestamp: number) {
-    // Check if game is paused
-    const state = useGameStore.getState();
-    const isPaused = state.isPaused || state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
-
-    if (isPaused) {
-      // When paused, stop the loop completely
-      gameLoopId = null;
-      useGameStore.setState({ isGameLoopActive: false });
-      return;
-    }
-
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
-    // Accumulate time for fixed timestep
-    tickAccumulator += deltaTime;
+    // Check if game is paused
+    const state = useGameStore.getState();
+    const isPaused = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
 
-    // Process ticks in fixed intervals
-    while (tickAccumulator >= TICK_INTERVAL) {
-      tickAccumulator -= TICK_INTERVAL;
-      processTick();
-    }
+    if (!isPaused) {
+      // Accumulate time for fixed timestep
+      tickAccumulator += deltaTime;
 
-    // Auto-save logic
-    if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
-      lastAutoSave = timestamp;
-      handleAutoSave();
-    }
+      // Process ticks in fixed intervals
+      while (tickAccumulator >= TICK_INTERVAL) {
+        tickAccumulator -= TICK_INTERVAL;
+        processTick();
+      }
 
-    // All production and game logic checks (every 15 seconds)
-    if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-      lastProduction = timestamp;
+      // Auto-save logic
+      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
+        lastAutoSave = timestamp;
+        handleAutoSave();
+      }
 
-      // Log full state every 15 seconds
-      const currentState = useGameStore.getState();
-      const bonuses = getAllActionBonuses(currentState);
+      // All production and game logic checks (every 15 seconds)
+      if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
+        lastProduction = timestamp;
 
-      console.log("State:", {
-        ...currentState,
-        calculatedBonuses: bonuses,
-      });
+        // Log full state every 15 seconds
+        const currentState = useGameStore.getState();
+        const bonuses = getAllActionBonuses(currentState);
+        
+        console.log("State:", {
+          ...currentState,
+          calculatedBonuses: bonuses,
+        });
 
-      handleGathererProduction();
-      handleHunterProduction();
-      handleMinerProduction();
-      handlePopulationSurvival();
-      handleStarvationCheck();
-      handleFreezingCheck();
-      handleMadnessCheck();
-      handleStrangerApproach();
+        handleGathererProduction();
+        handleHunterProduction();
+        handleMinerProduction();
+        handlePopulationSurvival();
+        handleStarvationCheck();
+        handleFreezingCheck();
+        handleMadnessCheck();
+        handleStrangerApproach();
+      }
+    } else {
+      // Only tick down cooldowns when paused
+      state.tickCooldowns();
     }
 
     gameLoopId = requestAnimationFrame(tick);

@@ -19,8 +19,6 @@ export default function GameFooter() {
     setShopDialogOpen,
     shopDialogOpen,
     flags,
-    isPaused, // Added from useGameStore
-    togglePause, // Added from useGameStore
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -120,15 +118,6 @@ export default function GameFooter() {
                 Sign In/Up
               </Button>
             )}
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={togglePause} // Added onClick handler for pause toggle
-              data-testid="button-pause-game"
-              className="px-2 py-1 text-xs no-hover"
-            >
-              {isPaused ? "Resume" : "Pause"} {/* Changed button text based on pause state */}
-            </Button>
             <Button
               variant="outline"
               size="xs"

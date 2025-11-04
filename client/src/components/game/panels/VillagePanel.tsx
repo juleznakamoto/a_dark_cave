@@ -30,7 +30,6 @@ export default function VillagePanel() {
     executeAction,
     assignVillager,
     unassignVillager,
-    isPaused,
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -38,17 +37,9 @@ export default function VillagePanel() {
   // Calculate production progress (0-100) based on production interval
   const [productionProgress, setProductionProgress] = useState(0);
   const [feastProgress, setFeastProgress] = useState(0);
-  // State for loop progress, used for animations
-  const [loopProgress, setLoopProgress] = useState(0);
-
 
   useEffect(() => {
     const updateProgress = () => {
-      // Don't update progress when paused
-      if (useGameStore.getState().isPaused) {
-        return;
-      }
-
       const now = Date.now();
       const productionInterval = 15000; // 15 seconds in milliseconds
       const elapsed = now % productionInterval;
@@ -78,24 +69,7 @@ export default function VillagePanel() {
     const interval = setInterval(updateProgress, 100); // Update every 100ms for smooth animation
 
     return () => clearInterval(interval);
-  }, [isPaused]);
-
-  // Animation for the loop circle - synced with game pause state
-  useEffect(() => {
-    if (isPaused) {
-      // Don't run animation when paused
-      return;
-    }
-
-    // Reset animation when unpausing
-    setLoopProgress(0);
-
-    const interval = setInterval(() => {
-      setLoopProgress((prev) => (prev + 1) % 100);
-    }, 150); // 15 seconds total (150ms * 100 steps)
-
-    return () => clearInterval(interval);
-  }, [isPaused]);
+  }, []);
 
   // Define action groups with their actions
   const actionGroups = [
@@ -505,9 +479,9 @@ export default function VillagePanel() {
                         (gameState.activatedPurchases?.feast_10 ? 10 : 0);
           const available = gameState.greatFeastActivations || 0;
           const total = bought + available;
-
+          
           if (total === 0) return null;
-
+          
           return (
             <div className="space-y-2">
               <h3 className="text-xs font-bold text-foreground">Shop</h3>
