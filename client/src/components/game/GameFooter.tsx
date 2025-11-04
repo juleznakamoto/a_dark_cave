@@ -6,13 +6,15 @@ import { useState, useEffect } from "react";
 import { getCurrentUser, signOut } from "@/game/auth";
 import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
+import ShopDialog from "./ShopDialog"; // Assuming ShopDialog is in the same directory
 
-const VERSION = "0.14.4";
+const VERSION = "0.14.5";
 
 export default function GameFooter() {
   const { lastSaved, restartGame, loadGame, setAuthDialogOpen: setGameAuthDialogOpen, flags } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [isShopOpen, setIsShopOpen] = useState(false); // State for shop dialog
   const [currentUser, setCurrentUser] = useState<{ id: string; email: string } | null>(null);
   const { toast } = useToast();
 
@@ -83,9 +85,18 @@ export default function GameFooter() {
 
   return (
     <>
+      <ShopDialog isOpen={isShopOpen} onClose={() => setIsShopOpen(false)} />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsShopOpen(true)}
+              className="mr-4"
+            >
+              🛒 Shop
+            </Button>
             {currentUser ? (
               <Button
                 variant="outline"

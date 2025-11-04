@@ -1,7 +1,9 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
+import { createPaymentIntent, verifyPayment, PURCHASE_ITEMS } from './stripe';
 
 const app = express();
+app.use(express.json());
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -44,6 +46,31 @@ import { createServer } from "http";
 
     res.status(status).json({ message });
     throw err;
+  });
+
+  // Stripe payment routes
+  app.get('/api/shop/items', (req, res) => {
+    res.json(PURCHASE_ITEMS);
+  });
+
+  app.post('/api/payment/create-intent', async (req, res) => {
+    try {
+      const { itemId } = req.body;
+      const result = await createPaymentIntent(itemId);
+      res.json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.post('/api/payment/verify', async (req, res) => {
+    try {
+      const { paymentIntentId } = req.body;
+      const result = await verifyPayment(paymentIntentId);
+      res.json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
   });
 
   // importantly only setup vite in development and after
