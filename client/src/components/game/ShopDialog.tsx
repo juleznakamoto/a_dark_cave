@@ -280,6 +280,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        {item.description}
+                      </p>
                       <div className="space-y-2 text-sm">
                         {item.rewards.resources && (
                           <div>
