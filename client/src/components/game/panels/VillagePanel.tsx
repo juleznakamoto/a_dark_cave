@@ -40,6 +40,12 @@ export default function VillagePanel() {
 
   useEffect(() => {
     const updateProgress = () => {
+      // Don't update progress when game is paused
+      const gameState = useGameStore.getState();
+      if (gameState.isGamePaused) {
+        return;
+      }
+
       const now = Date.now();
       const productionInterval = 15000; // 15 seconds in milliseconds
       const elapsed = now % productionInterval;
@@ -47,8 +53,8 @@ export default function VillagePanel() {
       setProductionProgress(progress);
 
       // Update feast progress
-      const feastState = useGameStore.getState().feastState;
-      const greatFeastState = useGameStore.getState().greatFeastState;
+      const feastState = gameState.feastState;
+      const greatFeastState = gameState.greatFeastState;
 
       if (greatFeastState?.isActive && greatFeastState.endTime > now) {
         const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
