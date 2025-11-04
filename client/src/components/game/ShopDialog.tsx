@@ -291,61 +291,89 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <TooltipTrigger asChild>
                                 <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
                               </TooltipTrigger>
-                              <TooltipContent className="max-w-xs">
-                                <div className="text-xs space-y-1">
+                              <TooltipContent>
+                                <div className="text-xs whitespace-pre-line">
                                   {item.rewards.weapons?.map((weapon) => {
                                     const effect = weaponEffects[weapon];
-                                    const weaponName = effect?.name || weapon.replace(/_/g, " ");
                                     return (
                                       <div key={weapon}>
-                                        <div className="font-bold">{weaponName}</div>
                                         {effect && (
-                                          <div >
-                                            {effect.bonuses?.actionBonuses?.hunt?.resourceMultiplier && (
-                                              <div>+{Math.round((effect.bonuses.actionBonuses.hunt.resourceMultiplier - 1) * 100)}% Hunt</div>
+                                          <>
+                                            {effect.name && (
+                                              <div className="font-bold mb-1">{effect.name}</div>
                                             )}
-                                            {effect.bonuses?.generalBonuses?.strength && (
-                                              <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                            {effect.description && (
+                                              <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
                                             )}
-                                          </div>
+                                            {effect.bonuses && (
+                                              <div className="mt-1 space-y-0.5">
+                                                {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                                  const parts = [];
+                                                  if (bonus.resourceMultiplier) {
+                                                    parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
+                                                  }
+                                                  if (bonus.cooldownReduction) {
+                                                    parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                                  }
+                                                  return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
+                                                })}
+                                                {effect.bonuses.generalBonuses?.strength && (
+                                                  <div>+{effect.bonuses.generalBonuses.strength} Damage</div>
+                                                )}
+                                              </div>
+                                            )}
+                                          </>
                                         )}
                                       </div>
                                     );
                                   })}
                                   {item.rewards.tools?.map((tool) => {
                                     const effect = toolEffects[tool];
-                                    const toolName = effect?.name || tool.replace(/_/g, " ");
                                     return (
                                       <div key={tool}>
-                                        <div className="font-bold">{toolName}</div>
                                         {effect && (
-                                          <div className="text-muted-foreground">
-                                            {effect.bonuses?.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
-                                              const parts = [];
-                                              if (bonus.resourceMultiplier) {
-                                                parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
-                                              }
-                                              if (bonus.cooldownReduction) {
-                                                parts.push(`-${bonus.cooldownReduction}s cooldown`);
-                                              }
-                                              return <div key={action}>{parts.join(", ")}</div>;
-                                            })}
-                                            {effect.bonuses?.generalBonuses?.caveExploreMultiplier && (
-                                              <div>+{Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore</div>
+                                          <>
+                                            {effect.name && (
+                                              <div className="font-bold mb-1">{effect.name}</div>
                                             )}
-                                          </div>
+                                            {effect.description && (
+                                              <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+                                            )}
+                                            {effect.bonuses && (
+                                              <div className="mt-1 space-y-0.5">
+                                                {effect.bonuses.actionBonuses && Object.entries(effect.bonuses.actionBonuses).map(([action, bonus]) => {
+                                                  const parts = [];
+                                                  if (bonus.resourceMultiplier) {
+                                                    parts.push(`+${Math.round((bonus.resourceMultiplier - 1) * 100)}% ${action}`);
+                                                  }
+                                                  if (bonus.cooldownReduction) {
+                                                    parts.push(`-${bonus.cooldownReduction}s cooldown`);
+                                                  }
+                                                  return parts.length > 0 ? <div key={action}>{parts.join(", ")}</div> : null;
+                                                })}
+                                                {effect.bonuses.generalBonuses?.caveExploreMultiplier && (
+                                                  <div>+{Math.round((effect.bonuses.generalBonuses.caveExploreMultiplier - 1) * 100)}% Cave Explore</div>
+                                                )}
+                                              </div>
+                                            )}
+                                          </>
                                         )}
                                       </div>
                                     );
                                   })}
                                   {item.rewards.blessings?.map((blessing) => {
                                     const effect = clothingEffects[blessing];
-                                    const blessingName = effect?.name || blessing.replace(/_/g, " ");
                                     return (
                                       <div key={blessing}>
-                                        <div className="font-bold">{blessingName}</div>
-                                        {effect?.description && (
-                                          <div className="text-muted-foreground">{effect.description}</div>
+                                        {effect && (
+                                          <>
+                                            {effect.name && (
+                                              <div className="font-bold mb-1">{effect.name}</div>
+                                            )}
+                                            {effect.description && (
+                                              <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">{effect.description}</div>
+                                            )}
+                                          </>
                                         )}
                                       </div>
                                     );
