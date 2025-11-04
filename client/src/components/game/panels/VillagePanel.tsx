@@ -394,8 +394,8 @@ export default function VillagePanel() {
                               strokeWidth={2}
                               className={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
                             />
-                            <span className={`absolute inset-0 flex items-center justify-center text-[12px] -mt-[1px] font-extrabold ${isGreatFeast ? "text-orange-600" : "text-yellow-600"}`}>
-                              {isGreatFeast ? "⟡⟡" : "⟡"}
+                            <span className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}>
+                              {isGreatFeast ? "✦" : "⟡"}
                             </span>
                           </div>
                         </div>
