@@ -6,6 +6,8 @@ export class AudioManager {
   private soundUrls: Map<string, string> = new Map();
   private initialized: boolean = false;
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
+  private loopingGainNodes: Map<string, GainNode> = new Map();
+  private masterGainNode: GainNode | null = null;
   private isPaused: boolean = false;
 
   private constructor() {}
@@ -20,6 +22,9 @@ export class AudioManager {
   private async initAudioContext(): Promise<void> {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+      this.masterGainNode = this.audioContext.createGain();
+      this.masterGainNode.connect(this.audioContext.destination);
+      this.masterGainNode.gain.value = 1;
     }
     
     if (this.audioContext.state === 'suspended') {
@@ -92,7 +97,7 @@ export class AudioManager {
       }
 
       await this.initAudioContext();
-      if (!this.audioContext) return;
+      if (!this.audioContext || !this.masterGainNode) return;
 
       const audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
@@ -107,7 +112,7 @@ export class AudioManager {
       gainNode.gain.value = Math.max(0, Math.min(1, volume));
       
       source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
+      gainNode.connect(this.masterGainNode);
       
       source.start();
     } catch (error) {
@@ -127,7 +132,7 @@ export class AudioManager {
       }
 
       await this.initAudioContext();
-      if (!this.audioContext) return;
+      if (!this.audioContext || !this.masterGainNode) return;
 
       const audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
@@ -143,10 +148,11 @@ export class AudioManager {
       gainNode.gain.value = Math.max(0, Math.min(1, volume));
       
       source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
+      gainNode.connect(this.masterGainNode);
       
       source.start();
       this.loopingSources.set(name, source);
+      this.loopingGainNodes.set(name, gainNode);
     } catch (error) {
       console.warn(`Failed to play looping sound ${name}:`, error);
     }
@@ -154,6 +160,8 @@ export class AudioManager {
 
   stopLoopingSound(name: string): void {
     const source = this.loopingSources.get(name);
+    const gainNode = this.loopingGainNodes.get(name);
+    
     if (source) {
       try {
         source.stop();
@@ -162,6 +170,15 @@ export class AudioManager {
         // Ignore errors if already stopped
       }
       this.loopingSources.delete(name);
+    }
+    
+    if (gainNode) {
+      try {
+        gainNode.disconnect();
+      } catch (error) {
+        // Ignore errors if already disconnected
+      }
+      this.loopingGainNodes.delete(name);
     }
   }
 
@@ -181,26 +198,22 @@ export class AudioManager {
   }
 
   pause(): void {
-    if (!this.audioContext) return;
+    if (!this.masterGainNode || this.isPaused) return;
     
     try {
-      if (this.audioContext.state === 'running') {
-        this.audioContext.suspend();
-        this.isPaused = true;
-      }
+      this.masterGainNode.gain.setValueAtTime(0, this.audioContext!.currentTime);
+      this.isPaused = true;
     } catch (error) {
       console.warn('Failed to pause audio:', error);
     }
   }
 
   resume(): void {
-    if (!this.audioContext) return;
+    if (!this.masterGainNode || !this.isPaused) return;
     
     try {
-      if (this.audioContext.state === 'suspended') {
-        this.audioContext.resume();
-        this.isPaused = false;
-      }
+      this.masterGainNode.gain.setValueAtTime(1, this.audioContext!.currentTime);
+      this.isPaused = false;
     } catch (error) {
       console.warn('Failed to resume audio:', error);
     }
