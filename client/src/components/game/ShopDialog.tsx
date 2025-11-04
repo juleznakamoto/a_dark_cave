@@ -193,7 +193,36 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const handleActivatePurchase = (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
-    if (!item || activatedPurchases[itemId]) return;
+    if (!item) return;
+
+    // For feast items, check if there are any activations available
+    if (item.category === 'feast') {
+      const currentActivations = gameState.greatFeastActivations || 0;
+      if (currentActivations <= 0) return;
+
+      // Activate a Great Feast
+      const feastDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+      const endTime = Date.now() + feastDuration;
+
+      useGameStore.setState((state) => ({
+        greatFeastActivations: (state.greatFeastActivations || 0) - 1,
+        greatFeastState: {
+          isActive: true,
+          endTime: endTime,
+        },
+      }));
+
+      gameState.addLogEntry({
+        id: `great-feast-${Date.now()}`,
+        message: `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
+        timestamp: Date.now(),
+        type: "system",
+      });
+      return;
+    }
+
+    // For non-feast items, check if already activated
+    if (activatedPurchases[itemId]) return;
 
     // Grant rewards
     if (item.rewards.resources) {
@@ -220,34 +249,20 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       });
     }
 
-    if (item.rewards.feastActivations) {
-      // Add feast activations to the counter
-      useGameStore.setState((state) => ({
-        greatFeastActivations: (state.greatFeastActivations || 0) + item.rewards.feastActivations!,
-      }));
+    gameState.addLogEntry({
+      id: `activate-${Date.now()}`,
+      message: `Activated ${item.name}! Rewards have been added to your inventory.`,
+      timestamp: Date.now(),
+      type: "system",
+    });
 
-      gameState.addLogEntry({
-        id: `feast-${Date.now()}`,
-        message: `Received ${item.rewards.feastActivations} Great Feast activation(s)! Use them wisely.`,
-        timestamp: Date.now(),
-        type: "system",
-      });
-    } else {
-      gameState.addLogEntry({
-        id: `activate-${Date.now()}`,
-        message: `Activated ${item.name}! Rewards have been added to your inventory.`,
-        timestamp: Date.now(),
-        type: "system",
-      });
-
-      // Mark as activated in game state (only for non-feast items)
-      useGameStore.setState((state) => ({
-        activatedPurchases: {
-          ...state.activatedPurchases,
-          [itemId]: true,
-        },
-      }));
-    }
+    // Mark as activated in game state
+    useGameStore.setState((state) => ({
+      activatedPurchases: {
+        ...state.activatedPurchases,
+        [itemId]: true,
+      },
+    }));
   };
 
   const formatPrice = (cents: number) => {
@@ -360,20 +375,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <div className="flex flex-col">
                             <span className="text-sm font-medium">
                               {item.name}
-                              {item.category === 'feast' && item.rewards.feastActivations && 
-                                ` (${item.rewards.feastActivations} available)`}
                             </span>
                             <span className="text-xs text-muted-foreground">
-                              {item.description}
+                              {item.category === 'feast' 
+                                ? `Activate a Great Feast (30 min boost). ${gameState.greatFeastActivations || 0} available.`
+                                : item.description}
                             </span>
                           </div>
                           <Button
                             onClick={() => handleActivatePurchase(itemId)}
-                            disabled={item.category !== 'feast' && isActivated}
+                            disabled={item.category === 'feast' ? (gameState.greatFeastActivations || 0) <= 0 : isActivated}
                             size="sm"
-                            variant={item.category !== 'feast' && isActivated ? "outline" : "default"}
+                            variant={item.category === 'feast' ? "default" : (isActivated ? "outline" : "default")}
                           >
-                            {item.category !== 'feast' && isActivated ? "Activated" : "Activate"}
+                            {item.category === 'feast' 
+                              ? "Activate"
+                              : (isActivated ? "Activated" : "Activate")}
                           </Button>
                         </div>
                       );
