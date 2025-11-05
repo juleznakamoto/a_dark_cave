@@ -10,7 +10,6 @@ import type { ButtonProps } from "@/components/ui/button";
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
-    particleColors?: string[];
 }
 
 interface Spark {
@@ -86,7 +85,6 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     onClick,
     spawnInterval = 300,
     hoverDelay = 100,
-    particleColors,
     className,
     ...props
 }: ParticleButtonProps, ref) => {
@@ -103,8 +101,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const spawnCountRef = useRef(2); // initial number of sparks per spawn
     const rampStartRef = useRef<number | null>(null);
 
-    const defaultColors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
-    const colors = particleColors || defaultColors;
+    const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
 
     const spawnSparks = () => {
         if (!buttonRef.current) return;
