@@ -32,7 +32,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: 'resource',
     activationMessage: '50 Gold have been added to your inventory.',
     symbol: '◉',
-    symbolColor: 'text-yellow-500',
+    symbolColor: 'text-yellow-600',
   },
 
   gold_250: {
@@ -47,7 +47,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: 'resource',
     activationMessage: '250 Gold have been added to your inventory.',
     symbol: '◉◉',
-    symbolColor: 'text-yellow-500',
+    symbolColor: 'text-yellow-600',
   },
 
   gold_1000: {
@@ -62,7 +62,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: 'resource',
     activationMessage: '1000 Gold have been added to your inventory.',
     symbol: '◉◉◉',
-    symbolColor: 'text-yellow-500',
+    symbolColor: 'text-yellow-600',
   },
 
   gold_5000: {
@@ -76,8 +76,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'resource',
     activationMessage: '5000 Gold have been added to your inventory.',
-    symbol: '◉◉◉◉',
-    symbolColor: 'text-yellow-500',
+    symbol: '◉◉◉◉◉',
+    symbolColor: 'text-yellow-600',
   },
 
   elven_bow: {
@@ -92,7 +92,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     category: 'weapon',
     activationMessage: 'Elven Bow has been added to your inventory.',
     symbol: '➳',
-    symbolColor: 'text-green-400',
+    symbolColor: 'text-green-600',
   },
 
   // weapon_2: {
@@ -145,8 +145,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'feast',
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
-    symbol: '🍖',
-    symbolColor: 'text-orange-400',
+    symbol: '✦',
+    symbolColor: 'text-orange-600',
   },
 
   great_feast_5: {
@@ -160,8 +160,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'feast',
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
-    symbol: '🍖×5',
-    symbolColor: 'text-orange-400',
+    symbol: '✦✦✦✦✦',
+    symbolColor: 'text-orange-600',
   },
 
   // dwarven_hammer: {
@@ -203,19 +203,19 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   //   activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
   // },
 
-  ultimate_pack: {
-    id: 'ultimate_pack',
-    name: 'Ultimate Pack',
-    description: 'All premium tools plus 1 Great Feast activation',
-    price: 999, // 9.99 €
-    rewards: {
-      tools: ['blacksmith_hammer', 'adamant_pickaxe', 'adamant_axe', 'adamant_lantern'],
-      feastActivations: 1,
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'bundle',
-    activationMessage: 'Activated Ultimate Pack! Rewards have been added to your inventory.',
-    symbol: '⬢',
-    symbolColor: 'text-purple-400',
-  },
+  // ultimate_pack: {
+  //   id: 'ultimate_pack',
+  //   name: 'Ultimate Pack',
+  //   description: 'All premium tools plus 1 Great Feast activation',
+  //   price: 999, // 9.99 €
+  //   rewards: {
+  //     tools: ['blacksmith_hammer', 'adamant_pickaxe', 'adamant_axe', 'adamant_lantern'],
+  //     feastActivations: 1,
+  //   },
+  //   canPurchaseMultipleTimes: false,
+  //   category: 'bundle',
+  //   activationMessage: 'Activated Ultimate Pack! Rewards have been added to your inventory.',
+  //   symbol: '⬢',
+  //   symbolColor: 'text-purple-400',
+  // },
 };
