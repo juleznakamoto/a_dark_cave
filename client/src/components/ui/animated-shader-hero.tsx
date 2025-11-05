@@ -536,9 +536,8 @@ void main(void) {
 		uv+=.1*cos(i*vec2(.1+.01*i, .8)+i*i+T*.5+.1*uv.x);
 		vec2 p=uv;
 		float d=length(p);
-		// Fire-colored lights: orange to yellow gradient
-		vec3 fireColor = mix(vec3(1.0, 0.5, 0.0), vec3(1.0, 0.8, 0.2), sin(i*0.5)*0.5+0.5);
-		col+=.00125/d*(cos(sin(i)*fireColor)+1.);
+		// Use customizable colors instead of hardcoded values
+		col+=.00125/d*(cos(sin(i)*PRIMARY_COLOR)+1.);
 		float b=noise(i+p+bg*1.731);
 		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
 		// Apply cloud color deviation - bg is multiplied to control how much it varies
