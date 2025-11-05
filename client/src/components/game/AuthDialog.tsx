@@ -7,7 +7,6 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { signIn, signUp } from '@/game/auth';
 import { useToast } from '@/hooks/use-toast';
-import { Link } from 'wouter';
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -127,13 +126,13 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
                 className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 I accept the{' '}
-                <Link href="/terms" className="text-primary hover:underline">
+                <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   Terms of Service
-                </Link>{' '}
+                </a>{' '}
                 and{' '}
-                <Link href="/privacy" className="text-primary hover:underline">
+                <a href="/privacy" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                   Privacy Policy
-                </Link>
+                </a>
               </label>
             </div>
           )}
