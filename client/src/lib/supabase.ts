@@ -1,64 +1,79 @@
 
-import { createClient } from '@supabase/supabase-js';
+
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 // In development, use Vite env vars
 // In production, fetch from /api/config endpoint
 const isDev = import.meta.env.DEV;
 
-let supabaseUrl: string;
-let supabaseAnonKey: string;
+let supabaseInstance: SupabaseClient | null = null;
+let initPromise: Promise<SupabaseClient> | null = null;
 
-if (isDev) {
-  supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
-  supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
-} else {
-  // In production, these will be fetched from the server
-  // We'll initialize with empty strings and fetch them
-  supabaseUrl = '';
-  supabaseAnonKey = '';
-}
-
-console.log('Environment:', isDev ? 'Development' : 'Production');
-console.log('Supabase URL:', supabaseUrl || '[Will be fetched from server]');
-console.log('Supabase Key:', supabaseAnonKey ? 'Present' : '[Will be fetched from server]');
-
-// Create a promise that will resolve with the Supabase client
-let supabaseClientPromise: Promise<ReturnType<typeof createClient>>;
-
-if (isDev) {
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Supabase configuration is missing in development. Please set VITE_SUPABASE_URL_DEV and VITE_SUPABASE_ANON_KEY_DEV in Replit Secrets.');
+async function initializeSupabase(): Promise<SupabaseClient> {
+  if (supabaseInstance) {
+    return supabaseInstance;
   }
-  supabaseClientPromise = Promise.resolve(createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true,
-      flowType: 'pkce'
-    }
-  }));
-} else {
-  // Fetch config from server in production
-  supabaseClientPromise = fetch('/api/config')
-    .then(res => res.json())
-    .then(config => {
-      console.log('Loaded Supabase config from server');
-      return createClient(config.supabaseUrl, config.supabaseAnonKey, {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true,
-          flowType: 'pkce'
+
+  if (initPromise) {
+    return initPromise;
+  }
+
+  initPromise = (async () => {
+    let supabaseUrl: string;
+    let supabaseAnonKey: string;
+
+    if (isDev) {
+      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
+      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Supabase configuration is missing in development. Please set VITE_SUPABASE_URL_DEV and VITE_SUPABASE_ANON_KEY_DEV in Replit Secrets.');
+      }
+
+      console.log('Environment: Development');
+      console.log('Supabase URL:', supabaseUrl);
+      console.log('Supabase Key: Present');
+    } else {
+      // Fetch config from server in production
+      try {
+        const response = await fetch('/api/config');
+        if (!response.ok) {
+          throw new Error(`Failed to fetch config: ${response.statusText}`);
         }
-      });
-    })
-    .catch(err => {
-      console.error('Failed to load Supabase config:', err);
-      throw new Error('Failed to load Supabase configuration from server');
+        const config = await response.json();
+        supabaseUrl = config.supabaseUrl;
+        supabaseAnonKey = config.supabaseAnonKey;
+
+        console.log('Environment: Production');
+        console.log('Loaded Supabase config from server');
+      } catch (err) {
+        console.error('Failed to load Supabase config:', err);
+        throw new Error('Failed to load Supabase configuration from server');
+      }
+    }
+
+    supabaseInstance = createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce'
+      }
     });
+
+    return supabaseInstance;
+  })();
+
+  return initPromise;
 }
 
-export const supabase = await supabaseClientPromise;
+// Export a function that returns the initialized client
+export async function getSupabase(): Promise<SupabaseClient> {
+  return initializeSupabase();
+}
+
+// For backwards compatibility, export a promise
+export const supabase = initializeSupabase();
 
 export type User = {
   id: string;

@@ -1,5 +1,5 @@
 
-import { supabase } from '@/lib/supabase';
+import { getSupabase } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 
 export interface AuthUser {
@@ -8,6 +8,7 @@ export interface AuthUser {
 }
 
 export async function signUp(email: string, password: string) {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
@@ -18,6 +19,7 @@ export async function signUp(email: string, password: string) {
 }
 
 export async function signIn(email: string, password: string) {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -35,11 +37,13 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
+  const supabase = await getSupabase();
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
+  const supabase = await getSupabase();
   const { data: { user } } = await supabase.auth.getUser();
   
   if (!user) return null;
@@ -57,6 +61,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
 }
 
 export async function resetPassword(email: string) {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${window.location.origin}/reset-password`,
   });
@@ -66,6 +71,7 @@ export async function resetPassword(email: string) {
 }
 
 export async function updatePassword(newPassword: string) {
+  const supabase = await getSupabase();
   const { data, error } = await supabase.auth.updateUser({
     password: newPassword,
   });
@@ -80,6 +86,7 @@ export async function saveGameToSupabase(gameState: GameState): Promise<void> {
 
   const sanitizedState = JSON.parse(JSON.stringify(gameState));
   
+  const supabase = await getSupabase();
   const { error } = await supabase
     .from('game_saves')
     .upsert({
@@ -97,6 +104,7 @@ export async function loadGameFromSupabase(): Promise<GameState | null> {
   const user = await getCurrentUser();
   if (!user) return null;
 
+  const supabase = await getSupabase();
   const { data, error } = await supabase
     .from('game_saves')
     .select('game_state')
