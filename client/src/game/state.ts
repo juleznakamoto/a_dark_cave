@@ -36,6 +36,7 @@ interface GameStore extends GameState {
   };
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
+  showEndScreen: boolean; // Added showEndScreen flag
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -54,6 +55,7 @@ interface GameStore extends GameState {
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   setBoostMode: (enabled: boolean) => void;
+  setShowEndScreen: (showEndScreen: boolean) => void; // Added setShowEndScreen action
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -118,6 +120,7 @@ const mergeStateUpdates = (
     loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
     isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
     isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
+    showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
   };
 
   console.log("[mergeStateUpdates] Merged result:", {
@@ -202,7 +205,8 @@ const defaultGameState: GameState = {
   // Initialize game loop state
   loopProgress: 0,
   isGameLoopActive: false,
-  isPaused: false, // Initialize isPaused to false
+  isPaused: false,
+  showEndScreen: false, // Initialize showEndScreen to false
 };
 
 // State management utilities
@@ -257,10 +261,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
   authDialogOpen: false,
   shopDialogOpen: false,
+  showEndScreen: false, // Initialize showEndScreen
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
+  setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -299,6 +305,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       loopProgress: newState.loopProgress !== undefined ? newState.loopProgress : 0,
       isGameLoopActive: newState.isGameLoopActive !== undefined ? newState.isGameLoopActive : false,
       isPaused: newState.isPaused !== undefined ? newState.isPaused : false, // Ensure isPaused is initialized
+      showEndScreen: newState.showEndScreen !== undefined ? newState.showEndScreen : false, // Ensure showEndScreen is initialized
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -486,6 +493,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       loopProgress: 0,
       isGameLoopActive: false,
       isPaused: false, // Reset pause state
+      showEndScreen: false, // Reset showEndScreen
     };
 
     set(resetState);
@@ -521,6 +529,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
         isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
+        showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
       };
 
       set(loadedState);

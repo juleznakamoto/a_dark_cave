@@ -6,6 +6,7 @@ import ForestPanel from "./panels/ForestPanel";
 import BastionPanel from "./panels/BastionPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
+import EndScreen from "./EndScreen";
 import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
@@ -26,6 +27,7 @@ export default function GameContainer() {
     setCombatDialog,
     addLogEntry,
     isPaused,
+    showEndScreen,
   } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
@@ -110,6 +112,11 @@ export default function GameContainer() {
   // Show start screen if game hasn't started yet
   if (!flags.gameStarted) {
     return <StartScreen />;
+  }
+
+  // Show end screen if game has ended
+  if (showEndScreen) {
+    return <EndScreen />;
   }
 
   return (
