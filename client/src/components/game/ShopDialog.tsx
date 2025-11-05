@@ -408,8 +408,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsList>
 
             <TabsContent value="shop" className="mt-4">
-              <ScrollArea className="max-h-[calc(80vh-180px)]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+              <ScrollArea className="h-[calc(80vh-180px)]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader>
@@ -479,14 +479,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsContent>
 
             <TabsContent value="purchases" className="mt-4">
-              <ScrollArea className="max-h-[calc(80vh-180px)]">
+              <ScrollArea className="h-[calc(80vh-180px)]">
                 {purchasedItems.length === 0 &&
                 Object.keys(gameState.feastPurchases || {}).length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
                     No purchases yet. Visit the Shop tab to buy items.
                   </div>
                 ) : (
-                  <>
+                  <div className="pr-4">
                     <p className="text-sm text-muted-foreground mb-4">
                       Activate your purchases to receive rewards. Each purchase
                       can only be activated once per game.
@@ -582,7 +582,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           );
                         })}
                     </div>
-                  </>
+                  </div>
                 )}
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
