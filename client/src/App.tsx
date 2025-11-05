@@ -8,6 +8,10 @@ import BuildingProgress from "@/pages/building-progress";
 import HeroTest from "@/pages/hero-test";
 import NotFound from "@/pages/not-found";
 import ResetPassword from "@/pages/reset-password";
+import Imprint from "@/pages/imprint";
+import Privacy from "@/pages/privacy";
+import Terms from "@/pages/terms";
+import Withdrawal from "@/pages/withdrawal";
 
 
 function Router() {
@@ -18,6 +22,10 @@ function Router() {
       <Route path="/building-progress" component={BuildingProgress} />
       <Route path="/hero-test" component={HeroTest} />
       <Route path="/reset-password" component={ResetPassword} />
+      <Route path="/imprint" component={Imprint} />
+      <Route path="/privacy" component={Privacy} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/withdrawal" component={Withdrawal} />
       <Route component={NotFound} />
     </Switch>
   );
