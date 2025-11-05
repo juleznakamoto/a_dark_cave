@@ -1,6 +1,5 @@
 
 import Hero from "@/components/ui/animated-shader-hero";
-import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
 
 export default function EndScreen() {
@@ -19,8 +18,8 @@ export default function EndScreen() {
     <div className="fixed inset-0 z-[200]">
       <Hero
         trustBadge={{
-          text: "You have completed your journey.",
-          icons: ["✨"]
+          text: "You have completed the first part of your journey.",
+          icons: [""]
         }}
         headline={{
           line1: "The Whispers",

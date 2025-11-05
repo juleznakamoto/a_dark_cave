@@ -400,11 +400,11 @@ const Hero: React.FC<HeroProps> = ({
         {/* Trust Badge */}
         {trustBadge && (
           <div className="mb-8 animate-fade-in-down">
-            <div className="flex items-center gap-2 px-6 py-3 bg-orange-500/10 backdrop-blur-md border border-orange-300/30 rounded-full text-sm">
+            <div className="flex items-center gap-2 px-6 py-3 bg-red-500/20 backdrop-blur-md border border-red-300/50 rounded-md text-sm">
               {trustBadge.icons && (
                 <div className="flex">
                   {trustBadge.icons.map((icon, index) => (
-                    <span key={index} className={`text-${index === 0 ? 'yellow' : index === 1 ? 'orange' : 'amber'}-300`}>
+                    <span key={index} className={`text-${index === 0 ? 'green' : index === 1 ? 'red' : 'amber'}-400`}>
                       {icon}
                     </span>
                   ))}
@@ -418,10 +418,10 @@ const Hero: React.FC<HeroProps> = ({
         <div className="text-center space-y-6 max-w-5xl mx-auto px-4">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-orange-300 via-yellow-400 to-amber-300 bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-orange-500 via-yellow-600 to-amber-500 bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
               {headline.line1}
             </h1>
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-yellow-300 via-orange-400 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold bg-gradient-to-r from-yellow-500 via-orange-500 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
               {headline.line2}
             </h1>
           </div>
@@ -480,12 +480,12 @@ uniform float time;
 // COLOR DEVIATION - Controls how much colors can deviate from PRIMARY_COLOR
 // Lower values = colors stay closer to defined colors (default: 1.0)
 // 0.5 = subtle variation, 1.0 = moderate variation, 2.0 = high variation
-#define MAX_COLOR_DEVIATION 1.0
+#define MAX_COLOR_DEVIATION 1.5
 
 // CLOUD COLOR DEVIATION - Controls how much the cloud color varies from BACKGROUND_TINT
 // Lower values = clouds stay closer to BACKGROUND_TINT color (default: 1.0)
 // 0.0 = no variation (pure BACKGROUND_TINT), 1.0 = normal variation, 2.0 = high variation
-#define CLOUD_COLOR_DEVIATION 0.75
+#define CLOUD_COLOR_DEVIATION 1.75
 
 // Returns a pseudo random number for a given point (white noise)
 float rnd(vec2 p) {
@@ -515,7 +515,7 @@ float fbm(vec2 p) {
 }
 // CLOUD SPEED - Adjust this value to change cloud movement speed
 // Higher values = faster clouds (default: 0.5)
-#define CLOUD_SPEED 0.075
+#define CLOUD_SPEED 0.1
 
 float clouds(vec2 p) {
 	float d=1., t=.0;
