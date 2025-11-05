@@ -410,46 +410,73 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             <TabsContent value="shop" className="mt-4">
               <ScrollArea className="h-[calc(80vh-180px)]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-4">
-                  {Object.values(SHOP_ITEMS).map((item) => (
-                    <Card key={item.id} className="flex flex-col">
-                      <CardHeader>
-                        <div className="flex items-center gap-2">
-                          <CardTitle className="text-lg">{item.name}</CardTitle>
-                          {(item.rewards.weapons ||
-                            item.rewards.tools ||
-                            item.rewards.blessings) && (
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
-                                </TooltipTrigger>
-                                <TooltipContent>
-                                  <div className="space-y-2">
-                                    {item.rewards.weapons?.map((weapon) => (
-                                      <div key={weapon}>
-                                        {renderItemTooltip(weapon, "weapon")}
-                                      </div>
-                                    ))}
-                                    {item.rewards.tools?.map((tool) => (
-                                      <div key={tool}>
-                                        {renderItemTooltip(tool, "tool")}
-                                      </div>
-                                    ))}
-                                    {item.rewards.blessings?.map((blessing) => (
-                                      <div key={blessing}>
-                                        {renderItemTooltip(blessing, "blessing")}
-                                      </div>
-                                    ))}
-                                  </div>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          )}
-                        </div>
-                        <CardDescription className="text-bold">
-                          {formatPrice(item.price)}
-                        </CardDescription>
-                      </CardHeader>
+                  {Object.values(SHOP_ITEMS).map((item) => {
+                    const getItemSymbol = (itemId: string) => {
+                      switch (itemId) {
+                        case 'gold_50':
+                          return <span className="text-yellow-500">◉</span>;
+                        case 'gold_250':
+                          return <span className="text-yellow-500">◉◉</span>;
+                        case 'gold_1000':
+                          return <span className="text-yellow-500">◉◉◉</span>;
+                        case 'gold_5000':
+                          return <span className="text-yellow-500">◉◉◉◉</span>;
+                        case 'elven_bow':
+                          return <span className="text-green-400">➳</span>;
+                        case 'great_feast_1':
+                          return <span className="text-orange-400">🍖</span>;
+                        case 'great_feast_5':
+                          return <span className="text-orange-400">🍖×5</span>;
+                        case 'ultimate_pack':
+                          return <span className="text-purple-400">⬢</span>;
+                        default:
+                          return null;
+                      }
+                    };
+
+                    return (
+                      <Card key={item.id} className="flex flex-col">
+                        <CardHeader>
+                          <div className="flex items-center gap-2">
+                            <CardTitle className="text-lg flex items-center gap-2">
+                              {getItemSymbol(item.id)}
+                              {item.name}
+                            </CardTitle>
+                            {(item.rewards.weapons ||
+                              item.rewards.tools ||
+                              item.rewards.blessings) && (
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
+                                  </TooltipTrigger>
+                                  <TooltipContent>
+                                    <div className="space-y-2">
+                                      {item.rewards.weapons?.map((weapon) => (
+                                        <div key={weapon}>
+                                          {renderItemTooltip(weapon, "weapon")}
+                                        </div>
+                                      ))}
+                                      {item.rewards.tools?.map((tool) => (
+                                        <div key={tool}>
+                                          {renderItemTooltip(tool, "tool")}
+                                        </div>
+                                      ))}
+                                      {item.rewards.blessings?.map((blessing) => (
+                                        <div key={blessing}>
+                                          {renderItemTooltip(blessing, "blessing")}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                            )}
+                          </div>
+                          <CardDescription className="text-bold">
+                            {formatPrice(item.price)}
+                          </CardDescription>
+                        </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-sm text-muted-foreground">
                           {item.description}
@@ -472,7 +499,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         </Button>
                       </CardFooter>
                     </Card>
-                  ))}
+                    );
+                  })}
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
