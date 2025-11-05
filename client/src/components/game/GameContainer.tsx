@@ -117,8 +117,8 @@ export default function GameContainer() {
       {/* Pause Overlay - covers everything except footer */}
       {isPaused && (
         <div 
-          className="fixed inset-0 bg-black/50 z-40 pointer-events-auto"
-          style={{ bottom: '42px' }}
+          className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
+          style={{ bottom: '45px' }}
         />
       )}
       

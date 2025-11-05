@@ -313,7 +313,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           )}
 
           {!isLoading && !currentUser && (
-            <div className="bg-red-800 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
+            <div className="bg-red-950 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
               Sign in or create an account to purchase items.
             </div>
           )}

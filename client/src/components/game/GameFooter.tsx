@@ -29,7 +29,7 @@ export default function GameFooter() {
     email: string;
   } | null>(null);
   const { toast } = useToast();
-  
+
   // Trigger glow animation when pause state changes
   useEffect(() => {
     setGlowingButton("pause");
@@ -97,17 +97,24 @@ export default function GameFooter() {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
   };
 
-  // Placeholder for canOfferTribute, assuming it's defined elsewhere or not needed for this change
-  const canOfferTribute = true;
-  // Placeholder for handleNewGame, assuming it's defined elsewhere or not needed for this change
-  const handleNewGame = () => {};
-
   return (
     <>
-      <ShopDialog isOpen={shopDialogOpen} onClose={() => setShopDialogOpen(false)} />
+      <ShopDialog
+        isOpen={shopDialogOpen}
+        onClose={() => setShopDialogOpen(false)}
+      />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-2">
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={togglePause}
+              data-testid="button-pause-game"
+              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
+            >
+              {isPaused ? "▶" : "❚❚"}
+            </Button>
             {currentUser ? (
               <Button
                 variant="outline"
@@ -127,15 +134,7 @@ export default function GameFooter() {
                 Sign In/Up
               </Button>
             )}
-            <Button
-              variant="outline"
-              size="xs"
-              onClick={togglePause}
-              data-testid="button-pause-game"
-              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
-            >
-              {isPaused ? "▶" : "⏸"}
-            </Button>
+
             <Button
               variant="outline"
               size="xs"

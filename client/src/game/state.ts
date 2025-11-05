@@ -79,9 +79,9 @@ interface GameStore extends GameState {
   setShopDialogOpen: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
-  updateLoopProgress: (progress: number) => void; // New action to update loop progress
-  setGameLoopActive: (isActive: boolean) => void; // New action to set game loop activity
-  togglePause: () => void; // New action to toggle pause state
+  updateLoopProgress: (progress: number) => void;
+  setGameLoopActive: (isActive: boolean) => void;
+  togglePause: () => void;
 }
 
 // Helper functions
