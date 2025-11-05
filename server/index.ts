@@ -2,7 +2,30 @@ import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
 
+// Supabase config endpoint for production
+const getSupabaseConfig = () => {
+  const isDev = process.env.NODE_ENV === 'development';
+  return {
+    supabaseUrl: isDev 
+      ? process.env.VITE_SUPABASE_URL_DEV 
+      : process.env.VITE_SUPABASE_URL_PROD,
+    supabaseAnonKey: isDev 
+      ? process.env.VITE_SUPABASE_ANON_KEY_DEV 
+      : process.env.VITE_SUPABASE_ANON_KEY_PROD
+  };
+};
+
 const app = express();
+
+// API endpoint to provide Supabase config to client in production
+app.get('/api/config', (req, res) => {
+  const config = getSupabaseConfig();
+  if (!config.supabaseUrl || !config.supabaseAnonKey) {
+    log('⚠️ Supabase config not found in environment variables');
+    return res.status(500).json({ error: 'Supabase configuration not available' });
+  }
+  res.json(config);
+});
 app.use(express.json());
 
 app.use((req, res, next) => {
