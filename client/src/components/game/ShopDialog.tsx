@@ -518,7 +518,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 isGreatFeastActive ? "outline" : "default"
                               }
                               className={
-                                isGreatFeastActive ? "bg-green-600 text-white hover:bg-green-700 border-green-600" : ""
+                                isGreatFeastActive ? "bg-green-900/50 text-white border-green-600" : ""
                               }
                             >
                               {isGreatFeastActive ? "Active" : "Activate"}
