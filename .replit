@@ -8,8 +8,8 @@ packages = ["imagemagick_light"]
 
 [deployment]
 deploymentTarget = "autoscale"
-build = ["npm", "run", "build"]
-run = ["npm", "run", "start"]
+build = ["sh", "-c", "VITE_SUPABASE_URL_PROD=$VITE_SUPABASE_URL_PROD VITE_SUPABASE_ANON_KEY_PROD=$VITE_SUPABASE_ANON_KEY_PROD npm run build"]
+run = ["sh", "-c", "NODE_ENV=production VITE_SUPABASE_URL_PROD=$VITE_SUPABASE_URL_PROD VITE_SUPABASE_ANON_KEY_PROD=$VITE_SUPABASE_ANON_KEY_PROD node dist/index.js"]
 
 [[ports]]
 localPort = 5000
