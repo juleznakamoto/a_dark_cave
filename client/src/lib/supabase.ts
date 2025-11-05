@@ -25,8 +25,8 @@ console.log('Environment:', isDev ? 'Development' : 'Production');
 console.log('Supabase URL:', supabaseUrl);
 console.log('Supabase Key:', supabaseAnonKey ? 'Present' : 'Missing');
 
-// Create initial client (will be replaced in production after config loads)
-export let supabase = createClient(supabaseUrl, supabaseAnonKey, {
+// Create initial client
+let supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
     autoRefreshToken: true,
     persistSession: true,
@@ -42,7 +42,7 @@ if (!isDev) {
     .then(config => {
       console.log('Loaded Supabase config from server');
       // Reinitialize the client with real credentials
-      supabase = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
@@ -55,6 +55,9 @@ if (!isDev) {
       console.error('Failed to load Supabase config:', err);
     });
 }
+
+// Export the client via a getter function to always get the current instance
+export const supabase = supabaseClient;
 
 export type User = {
   id: string;
