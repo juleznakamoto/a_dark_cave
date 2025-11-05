@@ -28,7 +28,12 @@ import {
 import { supabase } from "@/lib/supabase";
 import { getCurrentUser } from "@/game/auth";
 import { SHOP_ITEMS, type ShopItem } from "../../../../shared/shopItems";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { renderItemTooltip } from "@/game/rules/itemTooltips";
 import { Info } from "lucide-react";
 
@@ -59,7 +64,9 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
     }
 
     if (!consentImmediate || !consentWithdrawal) {
-      setErrorMessage("You must agree to both required terms to complete the purchase.");
+      setErrorMessage(
+        "You must agree to both required terms to complete the purchase.",
+      );
       return;
     }
 
@@ -93,37 +100,59 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
-      
-      <div className="space-y-4 border-t pt-4 mt-4">
+
+      <div className="space-y-2 border-t pt-4 mt-4">
         <div className="flex items-start space-x-3">
           <Checkbox
             id="consent-immediate"
             checked={consentImmediate}
-            onCheckedChange={(checked) => setConsentImmediate(checked as boolean)}
+            onCheckedChange={(checked) =>
+              setConsentImmediate(checked as boolean)
+            }
           />
-          <Label htmlFor="consent-immediate" className="text-sm leading-relaxed cursor-pointer">
-            I expressly agree that the execution of this contract (delivery of the digital item) begins immediately before the expiry of the withdrawal period.
+          <Label
+            htmlFor="consent-immediate"
+            className="text-xs cursor-pointer"
+          >
+            I expressly agree that the execution of this contract (delivery of
+            the digital item) begins immediately, before the expiry of the
+            withdrawal period.
           </Label>
         </div>
-        
+
         <div className="flex items-start space-x-3">
           <Checkbox
             id="consent-withdrawal"
             checked={consentWithdrawal}
-            onCheckedChange={(checked) => setConsentWithdrawal(checked as boolean)}
+            onCheckedChange={(checked) =>
+              setConsentWithdrawal(checked as boolean)
+            }
           />
-          <Label htmlFor="consent-withdrawal" className="text-sm leading-relaxed cursor-pointer">
-            I acknowledge that by agreeing to the immediate execution, I lose my right of withdrawal pursuant to § 356 (5) BGB.
+          <Label
+            htmlFor="consent-withdrawal"
+            className="text-xs cursor-pointer"
+          >
+            I acknowledge that by agreeing to immediate execution, I lose my
+            right of withdrawal pursuant to § 356 (5) BGB, as the contract will
+            be fully performed before the withdrawal period expires.
           </Label>
         </div>
 
         <p className="text-xs text-muted-foreground mt-2">
           For more information, please see our{" "}
-          <a href="/terms" target="_blank" className="underline hover:text-foreground">
+          <a
+            href="/terms"
+            target="_blank"
+            className="underline hover:text-foreground"
+          >
             Terms of Service
-          </a>
-          {" "}and{" "}
-          <a href="/withdrawal" target="_blank" className="underline hover:text-foreground">
+          </a>{" "}
+          and{" "}
+          <a
+            href="/withdrawal"
+            target="_blank"
+            className="underline hover:text-foreground"
+          >
             Right of Withdrawal
           </a>
           .
@@ -133,10 +162,12 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       {errorMessage && (
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
-      
+
       <Button
         type="submit"
-        disabled={!stripe || isProcessing || !consentImmediate || !consentWithdrawal}
+        disabled={
+          !stripe || isProcessing || !consentImmediate || !consentWithdrawal
+        }
         className="w-full"
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
@@ -224,7 +255,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
     // If this is a feast item, track it individually
-    if (item.category === 'feast' && item.rewards.feastActivations) {
+    if (item.category === "feast" && item.rewards.feastActivations) {
       const purchaseId = `feast-purchase-${Date.now()}`;
       useGameStore.setState((state) => ({
         feastPurchases: {
@@ -259,7 +290,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (!item) return;
 
     // For feast items, use individual purchase tracking
-    if (item.category === 'feast') {
+    if (item.category === "feast") {
       const purchase = gameState.feastPurchases?.[purchaseId];
       if (!purchase || purchase.activationsRemaining <= 0) return;
 
@@ -283,7 +314,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       gameState.addLogEntry({
         id: `great-feast-${Date.now()}`,
-        message: item.activationMessage || `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
+        message:
+          item.activationMessage ||
+          `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
         timestamp: Date.now(),
         type: "system",
       });
@@ -314,13 +347,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     if (item.rewards.blessings) {
       item.rewards.blessings.forEach((blessing) => {
-        gameState.blessings[blessing as keyof typeof gameState.blessings] = true;
+        gameState.blessings[blessing as keyof typeof gameState.blessings] =
+          true;
       });
     }
 
     gameState.addLogEntry({
       id: `activate-${Date.now()}`,
-      message: item.activationMessage || `Activated ${item.name}! Rewards have been added to your inventory.`,
+      message:
+        item.activationMessage ||
+        `Activated ${item.name}! Rewards have been added to your inventory.`,
       timestamp: Date.now(),
       type: "system",
     });
@@ -373,7 +409,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     <CardHeader>
                       <div className="flex items-center gap-2">
                         <CardTitle className="text-lg">{item.name}</CardTitle>
-                        {(item.rewards.weapons || item.rewards.tools || item.rewards.blessings) && (
+                        {(item.rewards.weapons ||
+                          item.rewards.tools ||
+                          item.rewards.blessings) && (
                           <TooltipProvider>
                             <Tooltip>
                               <TooltipTrigger asChild>
@@ -382,13 +420,19 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <TooltipContent>
                                 <div className="space-y-2">
                                   {item.rewards.weapons?.map((weapon) => (
-                                    <div key={weapon}>{renderItemTooltip(weapon, "weapon")}</div>
+                                    <div key={weapon}>
+                                      {renderItemTooltip(weapon, "weapon")}
+                                    </div>
                                   ))}
                                   {item.rewards.tools?.map((tool) => (
-                                    <div key={tool}>{renderItemTooltip(tool, "tool")}</div>
+                                    <div key={tool}>
+                                      {renderItemTooltip(tool, "tool")}
+                                    </div>
                                   ))}
                                   {item.rewards.blessings?.map((blessing) => (
-                                    <div key={blessing}>{renderItemTooltip(blessing, "blessing")}</div>
+                                    <div key={blessing}>
+                                      {renderItemTooltip(blessing, "blessing")}
+                                    </div>
                                   ))}
                                 </div>
                               </TooltipContent>
@@ -425,7 +469,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 ))}
               </div>
 
-              {(purchasedItems.length > 0 || Object.keys(gameState.feastPurchases || {}).length > 0) && (
+              {(purchasedItems.length > 0 ||
+                Object.keys(gameState.feastPurchases || {}).length > 0) && (
                 <div className="mt-6 border-t pt-4">
                   <h3 className="text-lg font-semibold mb-4">Purchases</h3>
                   <p className="text-sm text-muted-foreground mb-4">
@@ -434,62 +479,89 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   </p>
                   <div className="space-y-2">
                     {/* Show individual feast purchases */}
-                    {Object.entries(gameState.feastPurchases || {}).map(([purchaseId, purchase]) => {
-                      const item = SHOP_ITEMS[purchase.itemId];
-                      if (!item) return null;
+                    {Object.entries(gameState.feastPurchases || {}).map(
+                      ([purchaseId, purchase]) => {
+                        const item = SHOP_ITEMS[purchase.itemId];
+                        if (!item) return null;
 
-                      const isGreatFeastActive = gameState.greatFeastState?.isActive && gameState.greatFeastState.endTime > Date.now();
+                        const isGreatFeastActive =
+                          gameState.greatFeastState?.isActive &&
+                          gameState.greatFeastState.endTime > Date.now();
 
-                      return (
-                        <div key={purchaseId} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium">
-                              {item.name} ({purchase.activationsRemaining}/{purchase.totalActivations} available)
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {item.description}
-                            </span>
-                          </div>
-                          <Button
-                            onClick={() => handleActivatePurchase(purchaseId, purchase.itemId)}
-                            disabled={purchase.activationsRemaining <= 0 || isGreatFeastActive}
-                            size="sm"
-                            variant={isGreatFeastActive ? "outline" : "default"}
+                        return (
+                          <div
+                            key={purchaseId}
+                            className="flex items-center justify-between p-3 border rounded-lg"
                           >
-                            {isGreatFeastActive ? "Active" : "Activate"}
-                          </Button>
-                        </div>
-                      );
-                    })}
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium">
+                                {item.name} ({purchase.activationsRemaining}/
+                                {purchase.totalActivations} available)
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {item.description}
+                              </span>
+                            </div>
+                            <Button
+                              onClick={() =>
+                                handleActivatePurchase(
+                                  purchaseId,
+                                  purchase.itemId,
+                                )
+                              }
+                              disabled={
+                                purchase.activationsRemaining <= 0 ||
+                                isGreatFeastActive
+                              }
+                              size="sm"
+                              variant={
+                                isGreatFeastActive ? "outline" : "default"
+                              }
+                            >
+                              {isGreatFeastActive ? "Active" : "Activate"}
+                            </Button>
+                          </div>
+                        );
+                      },
+                    )}
 
                     {/* Show non-feast purchases */}
-                    {purchasedItems.filter(itemId => SHOP_ITEMS[itemId]?.category !== 'feast').map((itemId) => {
-                      const item = SHOP_ITEMS[itemId];
-                      if (!item) return null;
+                    {purchasedItems
+                      .filter(
+                        (itemId) => SHOP_ITEMS[itemId]?.category !== "feast",
+                      )
+                      .map((itemId) => {
+                        const item = SHOP_ITEMS[itemId];
+                        if (!item) return null;
 
-                      const isActivated = activatedPurchases[itemId] || false;
+                        const isActivated = activatedPurchases[itemId] || false;
 
-                      return (
-                        <div key={itemId} className="flex items-center justify-between p-3 border rounded-lg">
-                          <div className="flex flex-col">
-                            <span className="text-sm font-medium">
-                              {item.name}
-                            </span>
-                            <span className="text-xs text-muted-foreground">
-                              {item.description}
-                            </span>
-                          </div>
-                          <Button
-                            onClick={() => handleActivatePurchase(itemId, itemId)}
-                            disabled={isActivated}
-                            size="sm"
-                            variant={isActivated ? "outline" : "default"}
+                        return (
+                          <div
+                            key={itemId}
+                            className="flex items-center justify-between p-3 border rounded-lg"
                           >
-                            {isActivated ? "Activated" : "Activate"}
-                          </Button>
-                        </div>
-                      );
-                    })}
+                            <div className="flex flex-col">
+                              <span className="text-sm font-medium">
+                                {item.name}
+                              </span>
+                              <span className="text-xs text-muted-foreground">
+                                {item.description}
+                              </span>
+                            </div>
+                            <Button
+                              onClick={() =>
+                                handleActivatePurchase(itemId, itemId)
+                              }
+                              disabled={isActivated}
+                              size="sm"
+                              variant={isActivated ? "outline" : "default"}
+                            >
+                              {isActivated ? "Activated" : "Activate"}
+                            </Button>
+                          </div>
+                        );
+                      })}
                   </div>
                 </div>
               )}
