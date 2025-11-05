@@ -407,7 +407,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               <TabsTrigger value="purchases">Purchases</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="shop">
+            <TabsContent value="shop" className="mt-4">
               <ScrollArea className="max-h-[calc(80vh-180px)]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
@@ -478,7 +478,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
 
-            <TabsContent value="purchases">
+            <TabsContent value="purchases" className="mt-4">
               <ScrollArea className="max-h-[calc(80vh-180px)]">
                 {purchasedItems.length === 0 &&
                 Object.keys(gameState.feastPurchases || {}).length === 0 ? (
