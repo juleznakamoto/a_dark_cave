@@ -526,11 +526,11 @@ float clouds(vec2 p) {
 void main(void) {
 	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
 	// Animate flame colors over time: red -> orange -> yellow
-	vec3 flameColor1 = vec3(1.0, 0.2, 0.0); // Red-orange
-	vec3 flameColor2 = vec3(1.0, 0.6, 0.0); // Orange
-	vec3 flameColor3 = vec3(1.0, 0.9, 0.2); // Yellow-orange
-	float colorPhase = sin(T * 0.5) * 0.5 + 0.5;
-	vec3 col = mix(mix(flameColor1, flameColor2, colorPhase), flameColor3, sin(T * 0.3) * 0.5 + 0.5);
+	vec3 flameColor1 = vec3(1.5, 0.1, 0.0); // Intense red
+	vec3 flameColor2 = vec3(1.8, 0.4, 0.0); // Intense orange
+	vec3 flameColor3 = vec3(2.0, 1.2, 0.0); // Intense yellow
+	float colorPhase = sin(T * 0.8) * 0.5 + 0.5;
+	vec3 col = mix(mix(flameColor1, flameColor2, colorPhase), flameColor3, sin(T * 0.5) * 0.5 + 0.5) * 1.3;
 	float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
 	uv*=1.-.3*(sin(T*.2)*.5+.5);
 	for (float i=1.; i<12.; i++) {
