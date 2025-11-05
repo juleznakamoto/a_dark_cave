@@ -568,6 +568,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // If the game is paused, do not process events
     if (state.isPaused) return;
 
+    // Don't check for new events if any dialog is already open
+    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
+    if (isAnyDialogOpen) return;
+
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
 
