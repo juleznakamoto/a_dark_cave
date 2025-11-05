@@ -415,10 +415,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       <CardHeader>
                         <div className="flex items-center gap-2">
                           <CardTitle className="text-lg flex items-center gap-2">
+                            {item.name}
                             {item.symbol && (
                               <span className={item.symbolColor}>{item.symbol}</span>
                             )}
-                            {item.name}
                           </CardTitle>
                             {(item.rewards.weapons ||
                               item.rewards.tools ||
