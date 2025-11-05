@@ -7,6 +7,8 @@ import Game from "@/pages/game";
 import BuildingProgress from "@/pages/building-progress";
 import HeroTest from "@/pages/hero-test";
 import NotFound from "@/pages/not-found";
+import ResetPassword from "@/pages/reset-password";
+
 
 function Router() {
   return (
@@ -15,6 +17,7 @@ function Router() {
       <Route path="/boost" component={Game} />
       <Route path="/building-progress" component={BuildingProgress} />
       <Route path="/hero-test" component={HeroTest} />
+      <Route path="/reset-password" component={ResetPassword} />
       <Route component={NotFound} />
     </Switch>
   );
