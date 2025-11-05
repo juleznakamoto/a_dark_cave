@@ -3,13 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Withdrawal() {
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 px-4">
+    <div className="min-h-screen w-full bg-black py-12 px-4">
       <div className="max-w-4xl mx-auto space-y-8">
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-3xl">Right of Withdrawal</CardTitle>
+            <CardTitle className="text-3xl text-white">Right of Withdrawal</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>Right of Withdrawal</h3>
             <p>
               You have the right to withdraw from this contract within fourteen days without giving any reason. The withdrawal period is fourteen days from the day the contract is concluded.
@@ -50,12 +50,12 @@ export default function Withdrawal() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-2xl">Model Withdrawal Form</CardTitle>
+            <CardTitle className="text-2xl text-white">Model Withdrawal Form</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
-            <p className="text-muted-foreground italic">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
+            <p className="text-gray-400 italic">
               (Complete and return this form only if you wish to withdraw from the contract)
             </p>
             <div className="bg-gray-100 p-6 rounded-lg mt-4">
@@ -76,7 +76,7 @@ export default function Withdrawal() {
                 <li>— Signature of consumer(s) (only if this form is notified on paper),</li>
                 <li>— Date</li>
               </ul>
-              <p className="text-sm text-muted-foreground mt-4">(*) Delete as appropriate.</p>
+              <p className="text-sm text-gray-400 mt-4">(*) Delete as appropriate.</p>
             </div>
           </CardContent>
         </Card>

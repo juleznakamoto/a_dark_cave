@@ -3,13 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Imprint() {
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 px-4">
+    <div className="min-h-screen w-full bg-black py-12 px-4">
       <div className="max-w-4xl mx-auto space-y-12">
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-3xl">Impressum / Imprint</CardTitle>
+            <CardTitle className="text-3xl text-white">Impressum / Imprint</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>Angaben gemäß § 5 TMG / Information pursuant to § 5 TMG (German Telemedia Act)</h3>
             <p>
               <strong>Julian Bauer</strong><br />
@@ -52,11 +52,11 @@ export default function Imprint() {
         </Card>
 
         {/* English Version */}
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-3xl">Legal Notice</CardTitle>
+            <CardTitle className="text-3xl text-white">Legal Notice</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>Information pursuant to § 5 TMG (German Telemedia Act)</h3>
             <p>
               <strong>[Your Full Name or Company Name]</strong><br />

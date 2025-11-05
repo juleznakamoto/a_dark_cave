@@ -3,14 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Terms() {
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 px-4">
+    <div className="min-h-screen w-full bg-black py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-3xl">Terms of Service</CardTitle>
-            <p className="text-sm text-muted-foreground">Last Updated: [Date of last update]</p>
+            <CardTitle className="text-3xl text-white">Terms of Service</CardTitle>
+            <p className="text-sm text-gray-400">Last Updated: [Date of last update]</p>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>§ 1 Scope and Provider</h3>
             <ol>
               <li>These Terms of Service apply to the use of the browser game "A Dark Cave" (hereinafter referred to as "Game") provided by [Your Full Name or Company Name], [Your Address] (hereinafter referred to as "Provider").</li>

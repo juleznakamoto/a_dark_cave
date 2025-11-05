@@ -3,14 +3,14 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen w-full bg-gray-50 py-12 px-4">
+    <div className="min-h-screen w-full bg-black py-12 px-4">
       <div className="max-w-4xl mx-auto">
-        <Card>
+        <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
-            <CardTitle className="text-3xl">Privacy Policy</CardTitle>
-            <p className="text-sm text-muted-foreground">Last Updated: [Date of last update]</p>
+            <CardTitle className="text-3xl text-white">Privacy Policy</CardTitle>
+            <p className="text-sm text-gray-400">Last Updated: [Date of last update]</p>
           </CardHeader>
-          <CardContent className="prose prose-sm max-w-none">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>1. General Information</h3>
             <p>
               This Privacy Policy informs you about the nature, scope, and purpose of the processing of personal data (hereinafter "data") within our online game "A Dark Cave" and its associated websites, functions, and content.
