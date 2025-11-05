@@ -470,12 +470,8 @@ uniform float time;
 #define R resolution
 #define MN min(R.x,R.y)
 
-// COLOR CUSTOMIZATION - Modify these values to change the color scheme
-// Each vec3 represents RGB values (0.0 to 1.0)
-#define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)      // Orange-red (default)
-#define SECONDARY_COLOR  vec3(0.8, 0.2, 1.0)      // Purple
-#define TERTIARY_COLOR vec3(1.0, 0.5, 0.0)     // Bright orange
-#define BACKGROUND_TINT vec3(0.025, 0.025, 0.025) // Dark orange-brown
+#define PRIMARY_COLOR vec3(0.7, 0.7, 0.7)
+#define BACKGROUND_TINT vec3(0.025, 0.025, 0.025)
 
 // COLOR DEVIATION - Controls how much colors can deviate from PRIMARY_COLOR
 // Lower values = colors stay closer to defined colors (default: 1.0)
@@ -529,7 +525,7 @@ float clouds(vec2 p) {
 }
 void main(void) {
 	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-	vec3 col=vec3(0);
+	vec3 col=vec3(0.25, 0.9, 0.3);
 	float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
 	uv*=1.-.3*(sin(T*.2)*.5+.5);
 	for (float i=1.; i<12.; i++) {
@@ -537,10 +533,9 @@ void main(void) {
 		vec2 p=uv;
 		float d=length(p);
 		// Use customizable colors instead of hardcoded values
-		col+=.00125/d*(cos(sin(i)*PRIMARY_COLOR)+1.);
+		col+=.00125/d*(cos(sin(i))+1.);
 		float b=noise(i+p+bg*1.731);
 		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
-		// Apply cloud color deviation - bg is multiplied to control how much it varies
 		vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
 		col=mix(col,cloudColor,d);
 	}
