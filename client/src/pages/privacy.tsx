@@ -1,10 +1,12 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen w-full bg-black py-12 px-4">
-      <div className="max-w-4xl mx-auto">
+    <ScrollArea className="h-screen w-full bg-black">
+      <div className="py-12 px-4">
+        <div className="max-w-4xl mx-auto">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
             <CardTitle className="text-3xl text-white">Privacy Policy</CardTitle>
@@ -94,7 +96,8 @@ export default function Privacy() {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }

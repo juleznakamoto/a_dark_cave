@@ -1,9 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default function Imprint() {
   return (
-    <div className="min-h-screen w-full bg-black py-12 px-4">
-      <div className="max-w-4xl mx-auto space-y-12">
+    <ScrollArea className="h-screen w-full bg-black">
+      <div className="py-12 px-4">
+        <div className="max-w-4xl mx-auto space-y-12">
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
             <CardTitle className="text-3xl text-white">
@@ -89,7 +91,8 @@ export default function Imprint() {
             </p>
           </CardContent>
         </Card>
+        </div>
       </div>
-    </div>
+    </ScrollArea>
   );
 }
