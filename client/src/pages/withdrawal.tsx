@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -18,10 +17,10 @@ export default function Withdrawal() {
             </p>
             <p>To exercise your right of withdrawal, you must inform us:</p>
             <p>
-              [Your Full Name or Company Name]<br />
-              [Your Street and House Number]<br />
-              [Your Postal Code and City]<br />
-              Email: [Your Support Email Address]
+              Julian Bauer<br />
+              Königsberger Straße 1<br />
+              97072 Deutschland<br />
+              Email: support@a-dark-cave.com
             </p>
             <p>
               by means of a clear declaration (e.g., a letter sent by post or an email) of your decision to withdraw from this contract. You can use the attached model withdrawal form, but it is not mandatory.
@@ -63,10 +62,10 @@ export default function Withdrawal() {
             <div className="bg-gray-100 p-6 rounded-lg mt-4">
               <p>To:</p>
               <p>
-                [Your Full Name or Company Name]<br />
-                [Your Street and House Number]<br />
-                [Your Postal Code and City]<br />
-                Email: [Your Support Email Address]
+                Julian Bauer<br />
+                Königsberger Straße 1<br />
+                97072 Deutschland<br />
+                Email: support@a-dark-cave.com
               </p>
               <p className="mt-4">
                 I/We (*) hereby give notice that I/We (*) withdraw from my/our (*) contract of sale of the following goods (*)/for the provision of the following service (*),

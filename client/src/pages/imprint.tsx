@@ -30,7 +30,7 @@ export default function Imprint() {
             <p>Julian Bauer</p>
 
             <h4>Kontakt / Contact:</h4>
-            <p>E-Mail: [Your Support Email Address]</p>
+            <p>E-Mail: support@a-dark-cave.com</p>
 
             <h4>Umsatzsteuer-ID / VAT ID:</h4>
             <p>

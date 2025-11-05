@@ -1,4 +1,3 @@
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
@@ -19,10 +18,10 @@ export default function Privacy() {
             </p>
             <p>
               <strong>Data Controller:</strong><br />
-              [Your Full Name or Company Name]<br />
-              [Your Street and House Number]<br />
-              [Your Postal Code and City]<br />
-              Email: [Your Support Email Address]
+              Julian Bauer<br />
+              Königsberger Straße 1<br />
+              97072 Deutschland<br />
+              Email: support@a-dark-cave.com
             </p>
 
             <h3>2. Your Rights as a Data Subject</h3>
@@ -38,7 +37,7 @@ export default function Privacy() {
             </ul>
 
             <h3>3. Data Processing Details</h3>
-            
+
             <h4>a) When visiting the website:</h4>
             <p>
               When you access our website, our server automatically stores information in server log files that your browser transmits. These are: browser type/version, operating system used, referrer URL, hostname of the accessing computer, and time of the server request. This data is not merged with other data sources. The basis for this data processing is Art. 6(1)(f) GDPR, our legitimate interest in the technically flawless presentation and security of our website.
