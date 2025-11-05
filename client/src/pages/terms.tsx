@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Terms() {
   return (
@@ -72,6 +72,7 @@ export default function Terms() {
         </Card>
         </div>
       </div>
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 }

@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function Privacy() {
   return (
@@ -98,6 +98,7 @@ export default function Privacy() {
         </Card>
         </div>
       </div>
+      <ScrollBar orientation="vertical" />
     </ScrollArea>
   );
 }
