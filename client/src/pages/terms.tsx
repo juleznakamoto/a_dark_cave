@@ -10,7 +10,7 @@ export default function Terms() {
         <Card className="bg-gray-900 border-gray-800">
           <CardHeader>
             <CardTitle className="text-3xl text-white">Terms of Service</CardTitle>
-            <p className="text-sm text-gray-400">Last Updated: [Date of last update]</p>
+            <p className="text-sm text-gray-400">Last Updated: 03.11.2025</p>
           </CardHeader>
           <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>§ 1 Scope and Provider</h3>
