@@ -17,6 +17,7 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -381,195 +382,214 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <DialogTitle>Shop</DialogTitle>
         </DialogHeader>
 
-        <ScrollArea className="max-h-[calc(80vh-80px)]">
-          {isLoading && (
-            <div className="flex justify-center py-8">
-              <div className="text-muted-foreground">Loading...</div>
-            </div>
-          )}
+        {isLoading && (
+          <div className="flex justify-center py-8">
+            <div className="text-muted-foreground">Loading...</div>
+          </div>
+        )}
 
-          {!isLoading && showSuccess && (
-            <div className="bg-green-800 text-gray-100 px-4 py-3 rounded-md mb-4">
-              Purchase successful! Check the Purchases section below to activate
-              your items.
-            </div>
-          )}
+        {!isLoading && showSuccess && (
+          <div className="bg-green-800 text-gray-100 px-4 py-3 rounded-md mb-4">
+            Purchase successful! Check the Purchases tab to activate your items.
+          </div>
+        )}
 
-          {!isLoading && !currentUser && (
-            <div className="bg-red-950 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
-              Sign in or create an account to purchase items.
-            </div>
-          )}
+        {!isLoading && !currentUser && (
+          <div className="bg-red-950 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
+            Sign in or create an account to purchase items.
+          </div>
+        )}
 
-          {!isLoading && !clientSecret ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-                {Object.values(SHOP_ITEMS).map((item) => (
-                  <Card key={item.id} className="flex flex-col">
-                    <CardHeader>
-                      <div className="flex items-center gap-2">
-                        <CardTitle className="text-lg">{item.name}</CardTitle>
-                        {(item.rewards.weapons ||
-                          item.rewards.tools ||
-                          item.rewards.blessings) && (
-                          <TooltipProvider>
-                            <Tooltip>
-                              <TooltipTrigger asChild>
-                                <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
-                              </TooltipTrigger>
-                              <TooltipContent>
-                                <div className="space-y-2">
-                                  {item.rewards.weapons?.map((weapon) => (
-                                    <div key={weapon}>
-                                      {renderItemTooltip(weapon, "weapon")}
-                                    </div>
-                                  ))}
-                                  {item.rewards.tools?.map((tool) => (
-                                    <div key={tool}>
-                                      {renderItemTooltip(tool, "tool")}
-                                    </div>
-                                  ))}
-                                  {item.rewards.blessings?.map((blessing) => (
-                                    <div key={blessing}>
-                                      {renderItemTooltip(blessing, "blessing")}
-                                    </div>
-                                  ))}
-                                </div>
-                              </TooltipContent>
-                            </Tooltip>
-                          </TooltipProvider>
-                        )}
-                      </div>
-                      <CardDescription className="text-bold">
-                        {formatPrice(item.price)}
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="flex-1">
-                      <p className="text-sm text-muted-foreground">
-                        {item.description}
-                      </p>
-                    </CardContent>
-                    <CardFooter>
-                      <Button
-                        onClick={() => handlePurchaseClick(item.id)}
-                        disabled={
-                          !currentUser ||
-                          (!item.canPurchaseMultipleTimes &&
-                            purchasedItems.includes(item.id))
-                        }
-                        className="w-full"
-                      >
-                        {!item.canPurchaseMultipleTimes &&
-                        purchasedItems.includes(item.id)
-                          ? "Already Purchased"
-                          : "Purchase"}
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                ))}
-              </div>
+        {!isLoading && !clientSecret ? (
+          <Tabs defaultValue="shop" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="shop">Shop</TabsTrigger>
+              <TabsTrigger value="purchases">Purchases</TabsTrigger>
+            </TabsList>
 
-              {(purchasedItems.length > 0 ||
-                Object.keys(gameState.feastPurchases || {}).length > 0) && (
-                <div className="mt-6 border-t pt-4">
-                  <h3 className="text-lg font-semibold mb-4">Purchases</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Activate your purchases to receive rewards. Each purchase
-                    can only be activated once per game.
-                  </p>
-                  <div className="space-y-2">
-                    {/* Show individual feast purchases */}
-                    {Object.entries(gameState.feastPurchases || {}).map(
-                      ([purchaseId, purchase]) => {
-                        const item = SHOP_ITEMS[purchase.itemId];
-                        if (!item) return null;
-
-                        const isGreatFeastActive =
-                          gameState.greatFeastState?.isActive &&
-                          gameState.greatFeastState.endTime > Date.now();
-
-                        return (
-                          <div
-                            key={purchaseId}
-                            className="flex items-center justify-between p-3 border rounded-lg"
-                          >
-                            <div className="flex flex-col">
-                              <span className="text-sm font-medium">
-                                {item.name} ({purchase.activationsRemaining}/
-                                {purchase.totalActivations} available)
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {item.description}
-                              </span>
-                            </div>
-                            <Button
-                              onClick={() =>
-                                handleActivatePurchase(
-                                  purchaseId,
-                                  purchase.itemId,
-                                )
-                              }
-                              disabled={
-                                purchase.activationsRemaining <= 0 ||
-                                isGreatFeastActive
-                              }
-                              size="sm"
-                              variant={
-                                isGreatFeastActive ? "outline" : "default"
-                              }
-                              className={
-                                isGreatFeastActive ? "bg-green-900/50 text-white border-green-600" : ""
-                              }
-                            >
-                              {isGreatFeastActive ? "Active" : "Activate"}
-                            </Button>
-                          </div>
-                        );
-                      },
-                    )}
-
-                    {/* Show non-feast purchases */}
-                    {purchasedItems
-                      .filter(
-                        (itemId) => SHOP_ITEMS[itemId]?.category !== "feast",
-                      )
-                      .map((itemId) => {
-                        const item = SHOP_ITEMS[itemId];
-                        if (!item) return null;
-
-                        const isActivated = activatedPurchases[itemId] || false;
-
-                        return (
-                          <div
-                            key={itemId}
-                            className="flex items-center justify-between p-3 border rounded-lg"
-                          >
-                            <div className="flex flex-col">
-                              <span className="text-sm font-medium">
-                                {item.name}
-                              </span>
-                              <span className="text-xs text-muted-foreground">
-                                {item.description}
-                              </span>
-                            </div>
-                            <Button
-                              onClick={() =>
-                                handleActivatePurchase(itemId, itemId)
-                              }
-                              disabled={isActivated}
-                              size="sm"
-                              variant={isActivated ? "outline" : "default"}
-                            >
-                              {isActivated ? "Activated" : "Activate"}
-                            </Button>
-                          </div>
-                        );
-                      })}
-                  </div>
+            <TabsContent value="shop">
+              <ScrollArea className="max-h-[calc(80vh-180px)]">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                  {Object.values(SHOP_ITEMS).map((item) => (
+                    <Card key={item.id} className="flex flex-col">
+                      <CardHeader>
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-lg">{item.name}</CardTitle>
+                          {(item.rewards.weapons ||
+                            item.rewards.tools ||
+                            item.rewards.blessings) && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <div className="space-y-2">
+                                    {item.rewards.weapons?.map((weapon) => (
+                                      <div key={weapon}>
+                                        {renderItemTooltip(weapon, "weapon")}
+                                      </div>
+                                    ))}
+                                    {item.rewards.tools?.map((tool) => (
+                                      <div key={tool}>
+                                        {renderItemTooltip(tool, "tool")}
+                                      </div>
+                                    ))}
+                                    {item.rewards.blessings?.map((blessing) => (
+                                      <div key={blessing}>
+                                        {renderItemTooltip(blessing, "blessing")}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
+                        </div>
+                        <CardDescription className="text-bold">
+                          {formatPrice(item.price)}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent className="flex-1">
+                        <p className="text-sm text-muted-foreground">
+                          {item.description}
+                        </p>
+                      </CardContent>
+                      <CardFooter>
+                        <Button
+                          onClick={() => handlePurchaseClick(item.id)}
+                          disabled={
+                            !currentUser ||
+                            (!item.canPurchaseMultipleTimes &&
+                              purchasedItems.includes(item.id))
+                          }
+                          className="w-full"
+                        >
+                          {!item.canPurchaseMultipleTimes &&
+                          purchasedItems.includes(item.id)
+                            ? "Already Purchased"
+                            : "Purchase"}
+                        </Button>
+                      </CardFooter>
+                    </Card>
+                  ))}
                 </div>
-              )}
-            </>
-          ) : clientSecret ? (
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+            </TabsContent>
+
+            <TabsContent value="purchases">
+              <ScrollArea className="max-h-[calc(80vh-180px)]">
+                {purchasedItems.length === 0 &&
+                Object.keys(gameState.feastPurchases || {}).length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    No purchases yet. Visit the Shop tab to buy items.
+                  </div>
+                ) : (
+                  <>
+                    <p className="text-sm text-muted-foreground mb-4">
+                      Activate your purchases to receive rewards. Each purchase
+                      can only be activated once per game.
+                    </p>
+                    <div className="space-y-2">
+                      {/* Show individual feast purchases */}
+                      {Object.entries(gameState.feastPurchases || {}).map(
+                        ([purchaseId, purchase]) => {
+                          const item = SHOP_ITEMS[purchase.itemId];
+                          if (!item) return null;
+
+                          const isGreatFeastActive =
+                            gameState.greatFeastState?.isActive &&
+                            gameState.greatFeastState.endTime > Date.now();
+
+                          return (
+                            <div
+                              key={purchaseId}
+                              className="flex items-center justify-between p-3 border rounded-lg"
+                            >
+                              <div className="flex flex-col">
+                                <span className="text-sm font-medium">
+                                  {item.name} ({purchase.activationsRemaining}/
+                                  {purchase.totalActivations} available)
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  {item.description}
+                                </span>
+                              </div>
+                              <Button
+                                onClick={() =>
+                                  handleActivatePurchase(
+                                    purchaseId,
+                                    purchase.itemId,
+                                  )
+                                }
+                                disabled={
+                                  purchase.activationsRemaining <= 0 ||
+                                  isGreatFeastActive
+                                }
+                                size="sm"
+                                variant={
+                                  isGreatFeastActive ? "outline" : "default"
+                                }
+                                className={
+                                  isGreatFeastActive
+                                    ? "bg-green-900/50 text-white border-green-600"
+                                    : ""
+                                }
+                              >
+                                {isGreatFeastActive ? "Active" : "Activate"}
+                              </Button>
+                            </div>
+                          );
+                        },
+                      )}
+
+                      {/* Show non-feast purchases */}
+                      {purchasedItems
+                        .filter(
+                          (itemId) => SHOP_ITEMS[itemId]?.category !== "feast",
+                        )
+                        .map((itemId) => {
+                          const item = SHOP_ITEMS[itemId];
+                          if (!item) return null;
+
+                          const isActivated = activatedPurchases[itemId] || false;
+
+                          return (
+                            <div
+                              key={itemId}
+                              className="flex items-center justify-between p-3 border rounded-lg"
+                            >
+                              <div className="flex flex-col">
+                                <span className="text-sm font-medium">
+                                  {item.name}
+                                </span>
+                                <span className="text-xs text-muted-foreground">
+                                  {item.description}
+                                </span>
+                              </div>
+                              <Button
+                                onClick={() =>
+                                  handleActivatePurchase(itemId, itemId)
+                                }
+                                disabled={isActivated}
+                                size="sm"
+                                variant={isActivated ? "outline" : "default"}
+                              >
+                                {isActivated ? "Activated" : "Activate"}
+                              </Button>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </>
+                )}
+                <ScrollBar orientation="vertical" />
+              </ScrollArea>
+            </TabsContent>
+          </Tabs>
+        ) : clientSecret ? (
+          <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-4">
               <h3 className="text-lg font-semibold mb-4">
                 Complete Purchase: {SHOP_ITEMS[selectedItem!]?.name}
@@ -588,9 +608,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 Cancel
               </Button>
             </div>
-          ) : null}
-          <ScrollBar orientation="vertical" />
-        </ScrollArea>
+            <ScrollBar orientation="vertical" />
+          </ScrollArea>
+        ) : null}
       </DialogContent>
     </Dialog>
   );
