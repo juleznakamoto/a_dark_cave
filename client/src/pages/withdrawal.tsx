@@ -59,7 +59,7 @@ export default function Withdrawal() {
             <p className="text-gray-400 italic">
               (Complete and return this form only if you wish to withdraw from the contract)
             </p>
-            <div className="bg-gray-100 p-6 rounded-lg mt-4">
+            <div className="bg-gray-600 p-6 rounded-lg mt-4">
               <p>To:</p>
               <p>
                 Julian Bauer<br />

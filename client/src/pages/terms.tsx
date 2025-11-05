@@ -15,7 +15,7 @@ export default function Terms() {
           <CardContent className="prose prose-sm prose-invert max-w-none text-white">
             <h3>§ 1 Scope and Provider</h3>
             <ol>
-              <li>These Terms of Service apply to the use of the browser game "A Dark Cave" (hereinafter referred to as "Game") provided by [Your Full Name or Company Name], [Your Address] (hereinafter referred to as "Provider").</li>
+              <li>These Terms of Service apply to the use of the browser game "A Dark Cave" (hereinafter referred to as "Game") provided by Julian Bauer, Königsberger Straße 1, 97072 Deutschland (hereinafter referred to as "Provider").</li>
               <li>By using the Game, you (hereinafter referred to as "User") agree to these terms. Deviating conditions of the User are not recognized unless the Provider expressly agrees to their validity in writing.</li>
               <li>The Game is offered to consumers. A consumer is any natural person who enters into a legal transaction for purposes that are predominantly neither commercial nor self-employed.</li>
             </ol>
