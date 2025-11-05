@@ -21,6 +21,7 @@ export default function GameFooter() {
     flags,
     isPaused,
     togglePause,
+    setShowEndScreen, // Added this line
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -171,6 +172,17 @@ export default function GameFooter() {
             >
               Offer Tribute
             </Button>
+            {/* Added button to trigger end screen */}
+            {!import.meta.env.PROD && (
+              <Button
+                variant="outline"
+                size="xs"
+                onClick={() => setShowEndScreen(true)}
+                className="px-2 py-1 text-xs no-hover"
+              >
+                End Screen
+              </Button>
+            )}
           </div>
           <span data-testid="game-version">v{VERSION}</span>
         </div>
