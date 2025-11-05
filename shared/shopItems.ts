@@ -15,6 +15,8 @@ export interface ShopItem {
   canPurchaseMultipleTimes: boolean;
   category: 'resource' | 'weapon' | 'tool' | 'blessing' | 'feast' | 'bundle';
   activationMessage?: string;
+  symbol?: string;
+  symbolColor?: string;
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
@@ -29,6 +31,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'resource',
     activationMessage: '50 Gold have been added to your inventory.',
+    symbol: '◉',
+    symbolColor: 'text-yellow-500',
   },
 
   gold_250: {
@@ -42,6 +46,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'resource',
     activationMessage: '250 Gold have been added to your inventory.',
+    symbol: '◉◉',
+    symbolColor: 'text-yellow-500',
   },
 
   gold_1000: {
@@ -55,6 +61,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'resource',
     activationMessage: '1000 Gold have been added to your inventory.',
+    symbol: '◉◉◉',
+    symbolColor: 'text-yellow-500',
   },
 
   gold_5000: {
@@ -68,6 +76,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'resource',
     activationMessage: '5000 Gold have been added to your inventory.',
+    symbol: '◉◉◉◉',
+    symbolColor: 'text-yellow-500',
   },
 
   elven_bow: {
@@ -81,6 +91,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: 'weapon',
     activationMessage: 'Elven Bow has been added to your inventory.',
+    symbol: '➳',
+    symbolColor: 'text-green-400',
   },
 
   // weapon_2: {
@@ -133,6 +145,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'feast',
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
+    symbol: '🍖',
+    symbolColor: 'text-orange-400',
   },
 
   great_feast_5: {
@@ -146,6 +160,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: 'feast',
     activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
+    symbol: '🍖×5',
+    symbolColor: 'text-orange-400',
   },
 
   // dwarven_hammer: {
@@ -199,5 +215,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: 'bundle',
     activationMessage: 'Activated Ultimate Pack! Rewards have been added to your inventory.',
+    symbol: '⬢',
+    symbolColor: 'text-purple-400',
   },
 };

@@ -410,38 +410,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             <TabsContent value="shop" className="mt-4">
               <ScrollArea className="h-[calc(80vh-180px)]">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-4">
-                  {Object.values(SHOP_ITEMS).map((item) => {
-                    const getItemSymbol = (itemId: string) => {
-                      switch (itemId) {
-                        case 'gold_50':
-                          return <span className="text-yellow-500">◉</span>;
-                        case 'gold_250':
-                          return <span className="text-yellow-500">◉◉</span>;
-                        case 'gold_1000':
-                          return <span className="text-yellow-500">◉◉◉</span>;
-                        case 'gold_5000':
-                          return <span className="text-yellow-500">◉◉◉◉</span>;
-                        case 'elven_bow':
-                          return <span className="text-green-400">➳</span>;
-                        case 'great_feast_1':
-                          return <span className="text-orange-400">🍖</span>;
-                        case 'great_feast_5':
-                          return <span className="text-orange-400">🍖×5</span>;
-                        case 'ultimate_pack':
-                          return <span className="text-purple-400">⬢</span>;
-                        default:
-                          return null;
-                      }
-                    };
-
-                    return (
-                      <Card key={item.id} className="flex flex-col">
-                        <CardHeader>
-                          <div className="flex items-center gap-2">
-                            <CardTitle className="text-lg flex items-center gap-2">
-                              {getItemSymbol(item.id)}
-                              {item.name}
-                            </CardTitle>
+                  {Object.values(SHOP_ITEMS).map((item) => (
+                    <Card key={item.id} className="flex flex-col">
+                      <CardHeader>
+                        <div className="flex items-center gap-2">
+                          <CardTitle className="text-lg flex items-center gap-2">
+                            {item.symbol && (
+                              <span className={item.symbolColor}>{item.symbol}</span>
+                            )}
+                            {item.name}
+                          </CardTitle>
                             {(item.rewards.weapons ||
                               item.rewards.tools ||
                               item.rewards.blessings) && (
@@ -499,8 +477,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         </Button>
                       </CardFooter>
                     </Card>
-                    );
-                  })}
+                  ))}
                 </div>
                 <ScrollBar orientation="vertical" />
               </ScrollArea>
