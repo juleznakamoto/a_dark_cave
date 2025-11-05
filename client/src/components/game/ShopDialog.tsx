@@ -15,6 +15,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 import { useGameStore } from "@/game/state";
 import { loadStripe } from "@stripe/stripe-js";
 import {
@@ -46,11 +48,18 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [consentImmediate, setConsentImmediate] = useState(false);
+  const [consentWithdrawal, setConsentWithdrawal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!stripe || !elements) {
+      return;
+    }
+
+    if (!consentImmediate || !consentWithdrawal) {
+      setErrorMessage("You must agree to both required terms to complete the purchase.");
       return;
     }
 
@@ -84,12 +93,50 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <PaymentElement />
+      
+      <div className="space-y-4 border-t pt-4 mt-4">
+        <div className="flex items-start space-x-3">
+          <Checkbox
+            id="consent-immediate"
+            checked={consentImmediate}
+            onCheckedChange={(checked) => setConsentImmediate(checked as boolean)}
+          />
+          <Label htmlFor="consent-immediate" className="text-sm leading-relaxed cursor-pointer">
+            I expressly agree that the execution of this contract (delivery of the digital item) begins immediately before the expiry of the withdrawal period.
+          </Label>
+        </div>
+        
+        <div className="flex items-start space-x-3">
+          <Checkbox
+            id="consent-withdrawal"
+            checked={consentWithdrawal}
+            onCheckedChange={(checked) => setConsentWithdrawal(checked as boolean)}
+          />
+          <Label htmlFor="consent-withdrawal" className="text-sm leading-relaxed cursor-pointer">
+            I acknowledge that by agreeing to the immediate execution, I lose my right of withdrawal pursuant to § 356 (5) BGB.
+          </Label>
+        </div>
+
+        <p className="text-xs text-muted-foreground mt-2">
+          For more information, please see our{" "}
+          <a href="/terms" target="_blank" className="underline hover:text-foreground">
+            Terms of Service
+          </a>
+          {" "}and{" "}
+          <a href="/withdrawal" target="_blank" className="underline hover:text-foreground">
+            Right of Withdrawal
+          </a>
+          .
+        </p>
+      </div>
+
       {errorMessage && (
         <div className="text-red-500 text-sm">{errorMessage}</div>
       )}
+      
       <Button
         type="submit"
-        disabled={!stripe || isProcessing}
+        disabled={!stripe || isProcessing || !consentImmediate || !consentWithdrawal}
         className="w-full"
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
