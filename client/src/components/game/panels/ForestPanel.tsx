@@ -55,8 +55,20 @@ export default function ForestPanel() {
       // Determine which tier is active based on show_when conditions
       let activeTier = 1;
 
-      // Check tier 2 first (Merchants Guild)
-      if (action.show_when?.[2]) {
+      // Check tier 3 first (highest tier)
+      if (action.show_when?.[3]) {
+        const tier3Conditions = action.show_when[3];
+        const tier3Satisfied = Object.entries(tier3Conditions).every(([key, value]) => {
+          const [category, prop] = key.split('.');
+          return (state[category as keyof typeof state]?.[prop as any] || 0) >= value;
+        });
+        if (tier3Satisfied) {
+          activeTier = 3;
+        }
+      }
+
+      // Check tier 2 if tier 3 not satisfied
+      if (activeTier === 1 && action.show_when?.[2]) {
         const tier2Conditions = action.show_when[2];
         const tier2Satisfied = Object.entries(tier2Conditions).every(([key, value]) => {
           const [category, prop] = key.split('.');
