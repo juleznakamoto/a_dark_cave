@@ -8,7 +8,7 @@ import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 
-const VERSION = "0.14.5";
+const VERSION = "0.14.6";
 
 export default function GameFooter() {
   const {
