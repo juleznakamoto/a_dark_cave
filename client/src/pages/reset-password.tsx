@@ -140,6 +140,7 @@ export default function ResetPassword() {
     }
   };
 
+  // Show loading while checking
   if (checking) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
@@ -153,7 +154,8 @@ export default function ResetPassword() {
     );
   }
 
-  if (!validSession) {
+  // Only show invalid link after checking is complete and session is invalid
+  if (!checking && !validSession) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-900">
         <Card className="w-full max-w-md">
