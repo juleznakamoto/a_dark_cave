@@ -206,6 +206,20 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  natharit_pickaxe: {
+    id: "natharit_pickaxe",
+    name: "Natharit Pickaxe",
+    description: "Extremely sturdy pickaxe of unknown material with exceptional quality",
+    bonuses: {
+      actionBonuses: {
+        mining: {
+          resourceMultiplier: 3.0,
+          cooldownReduction: 8,
+        },
+      },
+    },
+  },
+
   iron_lantern: {
     id: "iron_lantern",
     name: "Iron Lantern",

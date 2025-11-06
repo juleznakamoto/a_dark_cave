@@ -183,11 +183,13 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description: 'Extremely sturdy pickaxe of unknown material with exceptional quality',
     price: 299, // 2.99 €
     rewards: {
-      tools: ['adamant_pickaxe'],
+      tools: ['natharit_pickaxe'],
     },
     canPurchaseMultipleTimes: false,
     category: 'tool',
     activationMessage: 'Natharit Pickaxe has been added to your inventory.',
+    symbol: '⛏',
+    symbolColor: 'text-purple-600',
   },
 
   // xxx_axe: {
