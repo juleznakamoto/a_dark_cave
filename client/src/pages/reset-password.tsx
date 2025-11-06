@@ -22,17 +22,26 @@ export default function ResetPassword() {
     const handleAuthCallback = async () => {
       // In production, wait for Supabase config to load and be properly initialized
       if (!import.meta.env.DEV) {
+        console.log('Waiting for Supabase to initialize...');
         // Wait up to 5 seconds for config to load
         let attempts = 0;
         while (attempts < 50) {
-          const currentUrl = (supabase as any).supabaseUrl;
-          if (currentUrl && !currentUrl.includes('placeholder')) {
-            console.log('Supabase properly initialized with URL:', currentUrl);
-            break;
+          try {
+            // Try to get the session - this will use the real client once it's initialized
+            const { data } = await supabase.auth.getSession();
+            // Check if we got a valid response (not from placeholder client)
+            if (data) {
+              console.log('Supabase client is ready');
+              break;
+            }
+          } catch (e) {
+            // Ignore errors during initialization
           }
           await new Promise(resolve => setTimeout(resolve, 100));
           attempts++;
         }
+        // Add extra delay to ensure config is fully loaded
+        await new Promise(resolve => setTimeout(resolve, 500));
       }
       
       // Check if we have access_token in URL hash or search params
