@@ -323,10 +323,13 @@ export const gameStateSchema = z.object({
     totalActivations: z.number(),
     purchasedAt: z.number(),
   })).default({}),
-  curseState: {
-    isActive: boolean;
-    endTime: number;
-  };
+  curseState: z.object({
+    isActive: z.boolean().default(false),
+    endTime: z.number().default(0),
+  }).default({
+    isActive: false,
+    endTime: 0,
+  }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
