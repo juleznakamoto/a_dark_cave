@@ -213,8 +213,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 3.0,
-          cooldownReduction: 8,
+          resourceMultiplier: 2.0,
         },
       },
     },
