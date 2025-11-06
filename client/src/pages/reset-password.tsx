@@ -35,29 +35,49 @@ export default function ResetPassword() {
         }
       }
       
-      // First, let Supabase process any hash fragments in the URL
-      const { data, error } = await supabase.auth.getSession();
+      // Check if we have access_token in URL hash or search params
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      const searchParams = new URLSearchParams(window.location.search);
+      const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
       
-      if (error) {
-        console.error('Session error:', error);
-        toast({
-          title: 'Invalid or expired reset link',
-          description: 'Please request a new password reset link.',
-          variant: 'destructive',
+      if (accessToken) {
+        // We have a token, set the session directly
+        const { data, error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: hashParams.get('refresh_token') || searchParams.get('refresh_token') || '',
         });
-        setTimeout(() => setLocation('/'), 3000);
-        return;
-      }
-
-      if (data.session) {
-        setValidSession(true);
+        
+        if (error) {
+          console.error('Session error:', error);
+          toast({
+            title: 'Invalid or expired reset link',
+            description: 'Please request a new password reset link.',
+            variant: 'destructive',
+          });
+          setTimeout(() => setLocation('/'), 3000);
+          return;
+        }
+        
+        if (data.session) {
+          setValidSession(true);
+          // Clean up URL
+          window.history.replaceState({}, document.title, window.location.pathname);
+        }
       } else {
-        toast({
-          title: 'Invalid or expired reset link',
-          description: 'Please request a new password reset link.',
-          variant: 'destructive',
-        });
-        setTimeout(() => setLocation('/'), 3000);
+        // No token in URL, check for existing session
+        const { data, error } = await supabase.auth.getSession();
+        
+        if (error || !data.session) {
+          toast({
+            title: 'Invalid or expired reset link',
+            description: 'Please request a new password reset link.',
+            variant: 'destructive',
+          });
+          setTimeout(() => setLocation('/'), 3000);
+          return;
+        }
+        
+        setValidSession(true);
       }
     };
 
