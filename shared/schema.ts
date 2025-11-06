@@ -192,6 +192,7 @@ export const gameStateSchema = z.object({
       clerksHut: z.number().default(0),
       scriptorium: z.number().default(0),
       tradePost: z.number().default(0),
+      grandBazaar: z.number().default(0),
       merchantsGuild: z.number().default(0),
       shallowPit: z.number().default(0),
       deepeningPit: z.number().default(0),

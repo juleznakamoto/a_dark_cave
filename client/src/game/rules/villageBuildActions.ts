@@ -702,6 +702,33 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 40,
   },
 
+  buildGrandBazaar: {
+    id: "buildGrandBazaar",
+    label: "Grand Bazaar",
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 6,
+        "buildings.tradePost": 1,
+        "buildings.grandBazaar": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 1500,
+        "resources.stone": 1500,
+        "resources.gold": 50,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.grandBazaar": 1,
+        "story.seen.hasGrandBazaar": true,
+      },
+    },
+    cooldown: 30,
+  },
+
   buildMerchantsGuild: {
     id: "buildMerchantsGuild",
     label: "Merchants Guild",
@@ -709,7 +736,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.woodenHut": 8,
-        "buildings.tradePost": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0,
       },
     },
@@ -717,6 +744,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 2500,
         "resources.stone": 2500,
+        "resources.steel": 500,
       },
     },
     effects: {
@@ -1703,6 +1731,31 @@ export function handleBuildTradePost(
   return tradePostResult;
 }
 
+export function handleBuildGrandBazaar(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const grandBazaarResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildGrandBazaar",
+    "grandBazaar",
+  );
+
+  // Add grand bazaar completion message
+  if (state.buildings.grandBazaar === 0) {
+    grandBazaarResult.logEntries!.push({
+      id: `grand-bazaar-built-${Date.now()}`,
+      message:
+        "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade exotic goods and rare treasures.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return grandBazaarResult;
+}
+
 export function handleBuildMerchantsGuild(
   state: GameState,
   result: ActionResult,
@@ -1713,6 +1766,17 @@ export function handleBuildMerchantsGuild(
     "buildMerchantsGuild",
     "merchantsGuild",
   );
+
+  // Add merchants guild completion message
+  if (state.buildings.merchantsGuild === 0) {
+    merchantsGuildResult.logEntries!.push({
+      id: `merchants-guild-built-${Date.now()}`,
+      message:
+        "The Merchants Guild stands complete, a powerful organization that controls all trade routes and brings unprecedented wealth to your settlement.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
 
   return merchantsGuildResult;
 }
