@@ -145,10 +145,10 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
       {
-        itemType: "elven_bow",
-        itemKeys: ["elven_bow"],
+        itemType: "compound_bow",
+        itemKeys: ["compound_bow"],
         color: tailwindToHex("gray-400/80"),
-        label: "Elven Bow",
+        label: "Compound Bow",
         category: "weapons",
         maxCount: 1,
       },

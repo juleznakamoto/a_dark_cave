@@ -80,21 +80,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: 'text-yellow-600',
   },
 
-  elven_bow: {
-    id: 'elven_bow',
-    name: 'Elven Bow',
-    description: 'A masterfully crafted bow from the elven forests',
-    price: 199, // 1.99 €
-    rewards: {
-      weapons: ['elven_bow'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'weapon',
-    activationMessage: 'Elven Bow has been added to your inventory.',
-    symbol: '➳',
-    symbolColor: 'text-green-600',
-  },
-
   // weapon_2: {
   //   id: 'weapon_2',
   //   name: 'Frostglass Sword',
@@ -177,18 +162,33 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   //   activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
   // },
 
-  // natharit_pickaxe: {
-  //   id: 'natharit_pickaxe',
-  //   name: 'Natharit Pickaxe',
-  //   description: 'An adamant pickaxe of exceptional quality',
-  //   price: 299, // 2.99 €
-  //   rewards: {
-  //     tools: ['adamant_pickaxe'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'tool',
-  //   activationMessage: 'Activated Natharit Pickaxe! Rewards have been added to your inventory.',
-  // },
+  compound_bow: {
+    id: 'compound_bow',
+    name: 'Compound Bow',
+    description: 'High precision weapon from the vanished civilization',
+    price: 199, // 1.99 €
+    rewards: {
+      weapons: ['compound_bow'],
+    },
+    canPurchaseMultipleTimes: false,
+    category: 'weapon',
+    activationMessage: 'Compound Bow has been added to your inventory.',
+    symbol: '➳',
+    symbolColor: 'text-green-600',
+  },
+  
+  natharit_pickaxe: {
+    id: 'natharit_pickaxe',
+    name: 'Natharit Pickaxe',
+    description: 'Extremely sturdy pickaxe of unknown material with exceptional quality',
+    price: 299, // 2.99 €
+    rewards: {
+      tools: ['adamant_pickaxe'],
+    },
+    canPurchaseMultipleTimes: false,
+    category: 'tool',
+    activationMessage: 'Natharit Pickaxe has been added to your inventory.',
+  },
 
   // xxx_axe: {
   //   id: 'xxx_axe',

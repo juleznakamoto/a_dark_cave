@@ -482,10 +482,10 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  elven_bow: {
-    id: "elven_bow",
-    name: "Elven Bow",
-    description: "Masterfully crafted bow from the elven forests",
+  compound_bow: {
+    id: "compound_bow",
+    name: "Compound Bow",
+    description: "High precision weapon from the vanished civilization",
     bonuses: {
       actionBonuses: {
         hunt: {
