@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { useLocation } from 'wouter';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -43,19 +42,23 @@ export default function ResetPassword() {
         // Add extra delay to ensure config is fully loaded
         await new Promise(resolve => setTimeout(resolve, 500));
       }
-      
-      // Check if we have access_token in URL hash or search params
+
+      // Check both URL hash and query params (Supabase can use either)
       const hashParams = new URLSearchParams(window.location.hash.substring(1));
       const searchParams = new URLSearchParams(window.location.search);
-      const accessToken = hashParams.get('access_token') || searchParams.get('access_token');
-      
-      if (accessToken) {
-        // We have a token, set the session directly
-        const { data, error } = await supabase.auth.setSession({
-          access_token: accessToken,
-          refresh_token: hashParams.get('refresh_token') || searchParams.get('refresh_token') || '',
+
+      const accessToken = searchParams.get('access_token') || hashParams.get('access_token');
+      const type = searchParams.get('type') || hashParams.get('type');
+
+      console.log('Reset password flow - type:', type, 'has token:', !!accessToken);
+
+      if (type === 'recovery' && accessToken) {
+        // Exchange the access_token for a session
+        const { data, error } = await supabase.auth.verifyOtp({
+          token_hash: accessToken,
+          type: 'recovery'
         });
-        
+
         if (error) {
           console.error('Session error:', error);
           toast({
@@ -66,8 +69,8 @@ export default function ResetPassword() {
           setTimeout(() => setLocation('/'), 3000);
           return;
         }
-        
-        if (data.session) {
+
+        if (data.user) {
           setValidSession(true);
           // Clean up URL
           window.history.replaceState({}, document.title, window.location.pathname);
@@ -75,7 +78,7 @@ export default function ResetPassword() {
       } else {
         // No token in URL, check for existing session
         const { data, error } = await supabase.auth.getSession();
-        
+
         if (error || !data.session) {
           toast({
             title: 'Invalid or expired reset link',
@@ -85,7 +88,7 @@ export default function ResetPassword() {
           setTimeout(() => setLocation('/'), 3000);
           return;
         }
-        
+
         setValidSession(true);
       }
     };
@@ -95,7 +98,7 @@ export default function ResetPassword() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (password !== confirmPassword) {
       toast({
         title: 'Passwords do not match',
