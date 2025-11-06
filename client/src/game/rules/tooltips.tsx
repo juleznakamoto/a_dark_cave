@@ -142,7 +142,6 @@ export const curseTooltip: TooltipConfig = {
   },
 };
 
-
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
