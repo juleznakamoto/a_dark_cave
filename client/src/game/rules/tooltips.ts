@@ -97,11 +97,11 @@ export const feastTooltip: TooltipConfig = {
       const remainingMs = greatFeastState.endTime - Date.now();
       const remainingMinutes = Math.ceil(remainingMs / 60000);
       return (
-        <div>
-          // <div className='font-bold'>Great Village Feast</div>
-          // <div>Production: 400%</div>
-          // <div>{remainingMinutes} min remaining</div>
-        </div>
+        <>
+          <div className="font-bold">Great Village Feast</div>
+          <div>Production: 400%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
       );
     }
 
