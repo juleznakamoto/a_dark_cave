@@ -627,18 +627,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
-  blacksmith_hammer: {
-    id: "blacksmith_hammer",
-    name: "Blacksmith Hammer",
-    description: "Legendary blacksmith hammer once owned by a great blacksmith",
-    bonuses: {
-      generalBonuses: {
-        strength: 4,
-        craftingCostReduction: 0.1,
-      },
-    },
-  },
-
   elder_scroll: {
     id: "elder_scroll",
     name: "Elder Scroll",
