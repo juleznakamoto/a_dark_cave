@@ -18,9 +18,23 @@ export default function ResetPassword() {
   const { toast } = useToast();
 
   useEffect(() => {
-    // Check if we have a valid recovery session
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) {
+    // Handle auth callback from URL hash
+    const handleAuthCallback = async () => {
+      // First, let Supabase process any hash fragments in the URL
+      const { data, error } = await supabase.auth.getSession();
+      
+      if (error) {
+        console.error('Session error:', error);
+        toast({
+          title: 'Invalid or expired reset link',
+          description: 'Please request a new password reset link.',
+          variant: 'destructive',
+        });
+        setTimeout(() => setLocation('/'), 3000);
+        return;
+      }
+
+      if (data.session) {
         setValidSession(true);
       } else {
         toast({
@@ -30,7 +44,9 @@ export default function ResetPassword() {
         });
         setTimeout(() => setLocation('/'), 3000);
       }
-    });
+    };
+
+    handleAuthCallback();
   }, [setLocation, toast]);
 
   const handleSubmit = async (e: React.FormEvent) => {

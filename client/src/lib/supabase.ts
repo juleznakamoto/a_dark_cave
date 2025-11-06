@@ -31,7 +31,8 @@ let supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: true,
-    flowType: 'pkce'
+    flowType: 'pkce',
+    storageKey: 'a-dark-cave-auth'
   }
 });
 
