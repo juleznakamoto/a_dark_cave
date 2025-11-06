@@ -1,4 +1,3 @@
-
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
 
@@ -11,30 +10,29 @@ export default function EndScreen() {
 
   const handleMainMenu = () => {
     // Navigate to main menu (or home page)
-    window.location.href = '/';
+    window.location.href = "/";
   };
 
   return (
-    <div className="fixed inset-0 z-[200]">
+    <div className="fixed inset-0 z-[99999]">
       <Hero
         trustBadge={{
-          text: "You have completed the first part of your journey.",
-          icons: [""]
+          text: "Well Done!",
         }}
         headline={{
-          line1: "The Whispers",
-          line2: "Have Ceased"
+          line1: "Your Journey",
+          line2: "Ends Here",
         }}
-        subtitle="You have faced the cube and emerged from the darkness. The ancient mysteries have been revealed, and your story has come to an end. Will you dare to venture into the darkness once more?"
+        subtitle="At least for now. You finished the first chapter. Soon the second chapter will be available. Until then, feel free to play again."
         buttons={{
           primary: {
             text: "Play Again",
-            onClick: handlePlayAgain
+            onClick: handlePlayAgain,
           },
           secondary: {
             text: "Main Menu",
-            onClick: handleMainMenu
-          }
+            onClick: handleMainMenu,
+          },
         }}
       />
     </div>
