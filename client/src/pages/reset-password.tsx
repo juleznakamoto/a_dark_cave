@@ -20,9 +20,19 @@ export default function ResetPassword() {
   useEffect(() => {
     // Handle auth callback from URL hash
     const handleAuthCallback = async () => {
-      // In production, wait a bit for Supabase config to load
+      // In production, wait for Supabase config to load and be properly initialized
       if (!import.meta.env.DEV) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        // Wait up to 5 seconds for config to load
+        let attempts = 0;
+        while (attempts < 50) {
+          const currentUrl = (supabase as any).supabaseUrl;
+          if (currentUrl && !currentUrl.includes('placeholder')) {
+            console.log('Supabase properly initialized with URL:', currentUrl);
+            break;
+          }
+          await new Promise(resolve => setTimeout(resolve, 100));
+          attempts++;
+        }
       }
       
       // First, let Supabase process any hash fragments in the URL
