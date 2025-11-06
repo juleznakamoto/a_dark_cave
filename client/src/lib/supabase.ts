@@ -63,7 +63,24 @@ if (!isDev) {
 // Export a proxy that always uses the current client
 export const supabase = new Proxy({} as any, {
   get(_target, prop) {
-    return supabaseWrapper.client[prop as keyof typeof supabaseWrapper.client];
+    const value = supabaseWrapper.client[prop as keyof typeof supabaseWrapper.client];
+    // If it's a function, bind it to the client
+    if (typeof value === 'function') {
+      return value.bind(supabaseWrapper.client);
+    }
+    // If it's an object (like 'auth'), wrap it in another proxy
+    if (value && typeof value === 'object') {
+      return new Proxy(value, {
+        get(_innerTarget, innerProp) {
+          const innerValue = (value as any)[innerProp];
+          if (typeof innerValue === 'function') {
+            return innerValue.bind(value);
+          }
+          return innerValue;
+        }
+      });
+    }
+    return value;
   }
 });
 
