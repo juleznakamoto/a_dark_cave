@@ -1,4 +1,3 @@
-
 // Define action bonuses interface
 export interface ActionBonuses {
   resourceBonus: Record<string, number>;
@@ -49,6 +48,18 @@ export interface EffectDefinition {
 
 // Tool effects
 export const toolEffects: Record<string, EffectDefinition> = {
+  blacksmith_hammer: {
+    id: "blacksmith_hammer",
+    name: "Blacksmith Hammer",
+    description: "Legendary blacksmith hammer once owned by a great blacksmith",
+    bonuses: {
+      generalBonuses: {
+        strength: 4,
+        craftingCostReduction: 0.1,
+      },
+    },
+  },
+
   stone_axe: {
     id: "stone_axe",
     name: "Stone Axe",
