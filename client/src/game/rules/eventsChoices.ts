@@ -1198,8 +1198,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "witchsCurse",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7 &&
-      state.resources.gold >= 20 &&
-      !state.curseState?.isActive,// &&
+      state.resources.gold >= 20,// &&
+      // !state.curseState?.isActive &&
       // !state.story.seen.witchsCurseEvent,
     triggerType: "resource",
     timeProbability: 0.045,
