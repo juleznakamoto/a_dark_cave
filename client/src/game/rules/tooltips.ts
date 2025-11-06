@@ -86,7 +86,6 @@ export const madnessTooltip: TooltipConfig = {
 
 // Feast progress tooltip
 export const feastTooltip: TooltipConfig = {
-  id: "feast",
   getContent: (state: GameState) => {
     const feastState = state.feastState;
     const greatFeastState = state.greatFeastState;
@@ -118,8 +117,7 @@ export const feastTooltip: TooltipConfig = {
   },
 };
 
-export const curseTooltip = {
-  id: "curse",
+export const curseTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const curseState = state.curseState;
     const isCursed = curseState?.isActive && curseState.endTime > Date.now();
