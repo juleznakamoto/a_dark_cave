@@ -95,10 +95,10 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "tradePost",
-        maxCount: 2,
+        maxCount: 3,
         color: tailwindToHex("gray-400/80"),
         label: "Trade",
-        relatedBuildings: ["merchantsGuild"],
+        relatedBuildings: ["grandBazaar", "merchantsGuild"],
       },
       {
         buildingType: "clerksHut",

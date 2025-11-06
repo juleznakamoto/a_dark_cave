@@ -13,11 +13,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -54,11 +54,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -95,11 +95,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -136,11 +136,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -177,11 +177,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -218,11 +218,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -259,11 +259,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {
@@ -300,11 +300,11 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.merchantsGuild": 1,
+        "buildings.buildGrandBazaar": 1,
+        "buildings.merchantsGuild": 0
       },
       3: {
         "buildings.merchantsGuild": 1,
-        "buildings.stoneHut": 5,
       },
     },
     cost: {

@@ -708,16 +708,15 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 6,
+        "buildings.woodenHut": 7,
         "buildings.tradePost": 1,
         "buildings.grandBazaar": 0,
       },
     },
     cost: {
       1: {
-        "resources.wood": 1500,
-        "resources.stone": 1500,
-        "resources.gold": 50,
+        "resources.wood": 1000,
+        "resources.stone": 1000,
       },
     },
     effects: {
@@ -735,7 +734,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 8,
+        "buildings.woodenHut": 10,
         "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0,
       },
@@ -744,7 +743,6 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 2500,
         "resources.stone": 2500,
-        "resources.steel": 500,
       },
     },
     effects: {
@@ -1747,7 +1745,7 @@ export function handleBuildGrandBazaar(
     grandBazaarResult.logEntries!.push({
       id: `grand-bazaar-built-${Date.now()}`,
       message:
-        "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade exotic goods and rare treasures.",
+        "The Grand Bazaar rises, a sprawling marketplace where merchants from distant lands gather to trade goods.",
       timestamp: Date.now(),
       type: "system",
     });
