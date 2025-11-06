@@ -25,16 +25,18 @@ console.log('Environment:', isDev ? 'Development' : 'Production');
 console.log('Supabase URL:', supabaseUrl);
 console.log('Supabase Key:', supabaseAnonKey ? 'Present' : 'Missing');
 
-// Create initial client
-let supabaseClient = createClient(supabaseUrl, supabaseAnonKey, {
-  auth: {
-    autoRefreshToken: true,
-    persistSession: true,
-    detectSessionInUrl: true,
-    flowType: 'pkce',
-    storageKey: 'a-dark-cave-auth'
-  }
-});
+// Create a wrapper object that will hold the client
+const supabaseWrapper = {
+  client: createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+      flowType: 'pkce',
+      storageKey: 'a-dark-cave-auth'
+    }
+  })
+};
 
 // In production, fetch the real config and reinitialize
 if (!isDev) {
@@ -43,12 +45,13 @@ if (!isDev) {
     .then(config => {
       console.log('Loaded Supabase config from server');
       // Reinitialize the client with real credentials
-      supabaseClient = createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      supabaseWrapper.client = createClient(config.supabaseUrl, config.supabaseAnonKey, {
         auth: {
           autoRefreshToken: true,
           persistSession: true,
           detectSessionInUrl: true,
-          flowType: 'pkce'
+          flowType: 'pkce',
+          storageKey: 'a-dark-cave-auth'
         }
       });
     })
@@ -57,8 +60,12 @@ if (!isDev) {
     });
 }
 
-// Export the client via a getter function to always get the current instance
-export const supabase = supabaseClient;
+// Export a proxy that always uses the current client
+export const supabase = new Proxy({} as any, {
+  get(_target, prop) {
+    return supabaseWrapper.client[prop as keyof typeof supabaseWrapper.client];
+  }
+});
 
 export type User = {
   id: string;
