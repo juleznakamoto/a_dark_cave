@@ -338,39 +338,17 @@ export const forestTradeActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-        "story.seen.hasEmberBomb": true,
-      },
-      2: {
-        "buildings.buildGrandBazaar": 1,
-        "buildings.merchantsGuild": 0,
-        "story.seen.hasEmberBomb": true,
-      },
-      3: {
-        "buildings.merchantsGuild": 1,
         "story.seen.hasEmberBomb": true,
       },
     },
     cost: {
       1: {
-        "resources.gold": 75,
-      },
-      2: {
-        "resources.gold": 150,
-      },
-      3: {
-        "resources.gold": 300,
+        "resources.gold": 10,
       },
     },
     effects: {
       1: {
         "resources.ember_bomb": 1,
-      },
-      2: {
-        "resources.ember_bomb": 2,
-      },
-      3: {
-        "resources.ember_bomb": 3,
       },
     },
     cooldown: 60,
@@ -382,39 +360,17 @@ export const forestTradeActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-        "story.seen.hasAshfireBomb": true,
-      },
-      2: {
-        "buildings.buildGrandBazaar": 1,
-        "buildings.merchantsGuild": 0,
-        "story.seen.hasAshfireBomb": true,
-      },
-      3: {
-        "buildings.merchantsGuild": 1,
         "story.seen.hasAshfireBomb": true,
       },
     },
     cost: {
       1: {
-        "resources.gold": 100,
-      },
-      2: {
-        "resources.gold": 200,
-      },
-      3: {
-        "resources.gold": 400,
+        "resources.gold": 20,
       },
     },
     effects: {
       1: {
         "resources.ashfire_bomb": 1,
-      },
-      2: {
-        "resources.ashfire_bomb": 2,
-      },
-      3: {
-        "resources.ashfire_bomb": 3,
       },
     },
     cooldown: 60,
