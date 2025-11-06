@@ -1199,10 +1199,10 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7 &&
       state.resources.gold >= 20 &&
-      !state.curseState?.isActive &&
-      !state.story.seen.witchsCurseEvent,
+      !state.curseState?.isActive,// &&
+      // !state.story.seen.witchsCurseEvent,
     triggerType: "resource",
-    timeProbability: 45,
+    timeProbability: 0.045,
     title: "The Witch's Curse",
     message:
       "A hunched old woman in tattered robes arrives at the village gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
