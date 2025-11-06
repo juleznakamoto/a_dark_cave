@@ -14,6 +14,7 @@ export default function ResetPassword() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [validSession, setValidSession] = useState(false);
+  const [checking, setChecking] = useState(true);
   const { toast } = useToast();
 
   useEffect(() => {
@@ -91,6 +92,8 @@ export default function ResetPassword() {
 
         setValidSession(true);
       }
+      
+      setChecking(false);
     };
 
     handleAuthCallback();
@@ -136,6 +139,19 @@ export default function ResetPassword() {
       setLoading(false);
     }
   };
+
+  if (checking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-900">
+        <Card className="w-full max-w-md">
+          <CardHeader>
+            <CardTitle>Verifying Reset Link</CardTitle>
+            <CardDescription>Please wait...</CardDescription>
+          </CardHeader>
+        </Card>
+      </div>
+    );
+  }
 
   if (!validSession) {
     return (
