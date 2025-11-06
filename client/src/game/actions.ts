@@ -389,6 +389,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleTradeGoldForTorch(state, result);
     case 'tradeSilverForGold':
       return handleTradeSilverForGold(state, result);
+    case 'tradeGoldForEmberBomb':
+      return handleTradeGoldForEmberBomb(state, result);
+    case 'tradeGoldForAshfireBomb':
+      return handleTradeGoldForAshfireBomb(state, result);
 
     default:
       return result;
