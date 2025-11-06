@@ -1197,15 +1197,15 @@ export const choiceEvents: Record<string, GameEvent> = {
   witchsCurse: {
     id: "witchsCurse",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 &&
+      state.buildings.woodenHut >= 7 &&
       state.resources.gold >= 20 &&
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 0.045,
     title: "The Witch's Curse",
     message:
-      "A hunched old woman in tattered robes arrives at the village gates. Her eyes gleam with malice as she croaks, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
+      "A hunched old woman in tattered robes arrives at the village gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
     triggered: false,
     priority: 4,
     repeatable: false,
@@ -1256,7 +1256,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind.",
+                "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
             };
           } else {
             const curseDuration = 10 * 60 * 1000; // 10 minutes
@@ -1273,7 +1273,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "You refuse to pay. The witch raises her gnarled hands and speaks words in a forgotten tongue. A dark shadow falls over the village. Your people work slower, their strength sapped by an unseen force.",
+                "As you refuse to pay the witch raises her gnarled hands and speaks words in a forgotten tongue. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
             };
           }
         },
@@ -1296,7 +1296,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your warriors strike her down before she can finish her incantation. The witch falls, and her body dissolves into black smoke, leaving only a foul stench.",
+                "The villagers strike her down before she can finish her curse. Before witch falls, and her body dissolves into black smoke, leaving only a foul stench.",
             };
           } else {
             const curseDuration = 10 * 60 * 1000; // 10 minutes
@@ -1313,7 +1313,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing in a cloud of black smoke. A dark shadow falls over your people, sapping their strength and will.",
+                "Your men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing inthe woods. An intense weakness falls over your people, sapping their strength and will.",
             };
           }
         },
@@ -1353,7 +1353,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your threats only anger the witch. She laughs and curses your village with dark magic. A shadow descends, draining the vitality from your workers.",
+                "Your threats only anger the witch. She laughs and curses your village with dark magic. When she leaves the villagers start to feel weak, as if their strength was sapped by an unseen force.",
             };
           }
         },
