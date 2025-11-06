@@ -54,7 +54,6 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [consentImmediate, setConsentImmediate] = useState(false);
   const [consentWithdrawal, setConsentWithdrawal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -64,9 +63,9 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       return;
     }
 
-    if (!consentImmediate || !consentWithdrawal) {
+    if (!consentWithdrawal) {
       setErrorMessage(
-        "You must agree to both required terms to complete the purchase.",
+        "You must agree to the required terms to complete the purchase.",
       );
       return;
     }
@@ -105,24 +104,6 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       <div className="space-y-2 border-t pt-4 mt-4">
         <div className="flex items-start space-x-3">
           <Checkbox
-            id="consent-immediate"
-            checked={consentImmediate}
-            onCheckedChange={(checked) =>
-              setConsentImmediate(checked as boolean)
-            }
-          />
-          <Label
-            htmlFor="consent-immediate"
-            className="text-xs cursor-pointer"
-          >
-            I expressly agree that the execution of this contract (delivery of
-            the digital item) begins immediately, before the expiry of the
-            withdrawal period.
-          </Label>
-        </div>
-
-        <div className="flex items-start space-x-3">
-          <Checkbox
             id="consent-withdrawal"
             checked={consentWithdrawal}
             onCheckedChange={(checked) =>
@@ -133,9 +114,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             htmlFor="consent-withdrawal"
             className="text-xs cursor-pointer"
           >
-            I acknowledge that by agreeing to immediate execution, I lose my
-            right of withdrawal pursuant to § 356 (5) BGB, as the contract will
-            be fully performed before the withdrawal period expires.
+            I agree that the delivery of the digital item begins immediately and acknowledge that I thereby lose my right of withdrawal.
           </Label>
         </div>
 
@@ -167,7 +146,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       <Button
         type="submit"
         disabled={
-          !stripe || isProcessing || !consentImmediate || !consentWithdrawal
+          !stripe || isProcessing || !consentWithdrawal
         }
         className="w-full"
       >
