@@ -20,6 +20,11 @@ export default function ResetPassword() {
   useEffect(() => {
     // Handle auth callback from URL hash
     const handleAuthCallback = async () => {
+      // In production, wait a bit for Supabase config to load
+      if (!import.meta.env.DEV) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
+      
       // First, let Supabase process any hash fragments in the URL
       const { data, error } = await supabase.auth.getSession();
       
