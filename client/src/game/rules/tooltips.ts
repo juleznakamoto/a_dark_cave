@@ -86,20 +86,37 @@ export const madnessTooltip: TooltipConfig = {
 
 // Feast progress tooltip
 export const feastTooltip: TooltipConfig = {
-  getContent: (state) => {
-    const greatFeastState = state.greatFeastState;
+  id: "feast",
+  getContent: (state: GameState) => {
     const feastState = state.feastState;
-    const now = Date.now();
-    
-    const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > now;
-    const isFeast = feastState?.isActive && feastState.endTime > now;
-    
+    const greatFeastState = state.greatFeastState;
+    const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
+    const isFeast = feastState?.isActive && feastState.endTime > Date.now();
+
     if (isGreatFeast) {
-      return "Great Village Feast\n+400% Production Bonus for 30 minutes";
+      const remainingMs = greatFeastState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return `Great Feast Active\nProduction: 200%\n${remainingMinutes} min remaining`;
     } else if (isFeast) {
-      return "Village Feast\n+100% Production Bonus for 10 minutes";
+      const remainingMs = feastState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return `Feast Active\nProduction: 150%\n${remainingMinutes} min remaining`;
     }
-    
+    return "";
+  },
+};
+
+export const curseTooltip = {
+  id: "curse",
+  getContent: (state: GameState) => {
+    const curseState = state.curseState;
+    const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+
+    if (isCursed) {
+      const remainingMs = curseState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return `Witch's Curse Active\nProduction: 50%\n${remainingMinutes} min remaining`;
+    }
     return "";
   },
 };

@@ -5,7 +5,7 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
-import { feastTooltip } from "@/game/rules/tooltips";
+import { feastTooltip, curseTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction } from "@/game/population";
@@ -357,41 +357,79 @@ export default function VillagePanel() {
               {(() => {
                 const feastState = useGameStore.getState().feastState;
                 const greatFeastState = useGameStore.getState().greatFeastState;
+                const curseState = useGameStore.getState().curseState;
                 const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
                 const isFeast = feastState?.isActive && feastState.endTime > Date.now();
-
-                if (!isGreatFeast && !isFeast) {
-                  return null;
-                }
+                const isCursed = curseState?.isActive && curseState.endTime > Date.now();
 
                 return (
-                  <TooltipProvider>
-                    <Tooltip open={mobileTooltip.isTooltipOpen('feast-progress')}>
-                      <TooltipTrigger asChild>
-                        <div 
-                          className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                          onClick={(e) => mobileTooltip.handleTooltipClick('feast-progress', e)}
-                        >
-                          <div className="relative inline-flex items-center gap-1 mt-[0px]">
-                            <CircularProgress
-                              value={feastProgress}
-                              size={18}
-                              strokeWidth={2}
-                              className={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
-                            />
-                            <span className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}>
-                              {isGreatFeast ? "✦" : "⟡"}
-                            </span>
-                          </div>
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <div className="text-xs whitespace-pre-line">
-                          {feastTooltip.getContent(state)}
-                        </div>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <>
+                    {/* Feast/Great Feast Indicator */}
+                    {(isGreatFeast || isFeast) && (
+                      <TooltipProvider>
+                        <Tooltip open={mobileTooltip.isTooltipOpen('feast-progress')}>
+                          <TooltipTrigger asChild>
+                            <div 
+                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                              onClick={(e) => mobileTooltip.handleTooltipClick('feast-progress', e)}
+                            >
+                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                <CircularProgress
+                                  value={feastProgress}
+                                  size={18}
+                                  strokeWidth={2}
+                                  className={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
+                                />
+                                <span className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}>
+                                  {isGreatFeast ? "✦" : "⟡"}
+                                </span>
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs whitespace-pre-line">
+                              {feastTooltip.getContent(state)}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+
+                    {/* Curse Indicator */}
+                    {isCursed && (
+                      <TooltipProvider>
+                        <Tooltip open={mobileTooltip.isTooltipOpen('curse-progress')}>
+                          <TooltipTrigger asChild>
+                            <div 
+                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                              onClick={(e) => mobileTooltip.handleTooltipClick('curse-progress', e)}
+                            >
+                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                <CircularProgress
+                                  value={(() => {
+                                    const curseDuration = 10 * 60 * 1000;
+                                    const curseElapsed = curseDuration - (curseState.endTime - Date.now());
+                                    return (curseElapsed / curseDuration) * 100;
+                                  })()}
+                                  size={18}
+                                  strokeWidth={2}
+                                  className="text-purple-600"
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-purple-600">
+                                  ✶
+                                </span>
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs whitespace-pre-line">
+                              {curseTooltip.getContent(state)}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </>
                 );
               })()}
             </div>

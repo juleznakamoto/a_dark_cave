@@ -148,6 +148,16 @@ function processTick() {
     });
   }
 
+  // Check if curse has expired
+  if (state.curseState?.isActive && state.curseState.endTime <= Date.now()) {
+    useGameStore.setState({
+      curseState: {
+        ...state.curseState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();

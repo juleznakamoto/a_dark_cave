@@ -200,6 +200,14 @@ const defaultGameState: GameState = {
     endTime: 0,
     lastAcceptedLevel: 0,
   },
+  greatFeastState: {
+    isActive: false,
+    endTime: 0,
+  },
+  curseState: {
+    isActive: false,
+    endTime: 0,
+  },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
   // Initialize game loop state

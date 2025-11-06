@@ -175,19 +175,31 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
   }
 
 
-  // Apply feast multiplier (2x production when active)
-  if (state?.feastState?.isActive && state.feastState.endTime > Date.now()) {
+  // Apply feast multiplier if active
+  const feastState = state.feastState;
+  const greatFeastState = state.greatFeastState;
+  const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
+  const isFeast = feastState?.isActive && feastState.endTime > Date.now();
+
+  if (isGreatFeast) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 2;
+      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
+    });
+  } else if (isFeast) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount = Math.ceil(prod.totalAmount * 1.5);
     });
   }
 
-  // Apply Great Feast multiplier (4x production when active)
-  if (state?.greatFeastState?.isActive && state.greatFeastState.endTime > Date.now()) {
+  // Apply curse multiplier if active (0.5x, rounded up)
+  const curseState = state.curseState;
+  const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+  if (isCursed) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 4;
+      prod.totalAmount = Math.ceil(prod.totalAmount * 0.5);
     });
   }
+
 
   // Apply Flame's Touch blessing bonus to steel production
   if (state && jobId === 'steel_forger') {

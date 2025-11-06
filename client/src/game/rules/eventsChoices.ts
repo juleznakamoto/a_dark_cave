@@ -18,11 +18,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 35,
     title: "The Pale Figure",
-    message: [
+    message:
       "At dawn, men glimpse a tall, pale, slender figure at the woods’ edge. What do you do?",
-      "In the grey morning, a tall, pale, slender figure stands at the treeline. What do you do?",
-      "Villagers report of a tall, pale, slender figure in the mist near the forest's edge. What do you do?",
-    ][Math.floor(Math.random() * 3)],
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1547,7 +1544,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 5,
     title: "The Woodcutter's Offer",
     message:
-      "The woodcutter returns to the village, 'Do you want to trade food for wood once more?' he asks.",
+      "The woodcutter returns to the village, 'Do you want to use my services once more?,' he asks.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1597,6 +1594,173 @@ export const choiceEvents: Record<string, GameEvent> = {
             _logMessage:
               "Something about his demeanor makes you uneasy. You refuse the deal. The woodcutter's smile fades, and he leaves without a word.",
           };
+        },
+      },
+    ],
+  },
+
+  witchsCurse: {
+    id: "witchsCurse",
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 4 &&
+      state.resources.gold >= 20 &&
+      !state.curseState?.isActive &&
+      !state.story.seen.witchsCurseEvent,
+    triggerType: "resource",
+    timeProbability: 25,
+    title: "The Witch's Curse",
+    message:
+      "A hunched old woman in tattered robes arrives at the village gates. Her eyes gleam with malice as she croaks, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 20 gold",
+        cost: "20 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 20) {
+            return {
+              _logMessage: "You don't have enough gold to pay her.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 20,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                witchsCurseEvent: true,
+              },
+            },
+            _logMessage:
+              "You hand over the gold. The witch cackles, pockets the coins, and disappears into the mist without another word.",
+          };
+        },
+      },
+      {
+        id: "doNotPay",
+        label: "Refuse to pay",
+        relevant_stats: ["luck"],
+        effect: (state: GameState) => {
+          const luck = getTotalLuck(state);
+          const avoidCurseChance = 0.1 + luck * 0.015;
+
+          if (Math.random() < avoidCurseChance) {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind.",
+            };
+          } else {
+            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            return {
+              curseState: {
+                isActive: true,
+                endTime: Date.now() + curseDuration,
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "You refuse to pay. The witch raises her gnarled hands and speaks words in a forgotten tongue. A dark shadow falls over the village. Your people work slower, their strength sapped by an unseen force.",
+            };
+          }
+        },
+      },
+      {
+        id: "attackHer",
+        label: "Attack the witch",
+        relevant_stats: ["strength"],
+        effect: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const successChance = 0.1 + strength * 0.01;
+
+          if (Math.random() < successChance) {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "Your warriors strike her down before she can finish her incantation. The witch falls, and her body dissolves into black smoke, leaving only a foul stench.",
+            };
+          } else {
+            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            return {
+              curseState: {
+                isActive: true,
+                endTime: Date.now() + curseDuration,
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "Your men attack, but the witch is too quick. With a final cackle, she curses the village before vanishing in a cloud of black smoke. A dark shadow falls over your people, sapping their strength and will.",
+            };
+          }
+        },
+      },
+      {
+        id: "threatenHer",
+        label: "Threaten the witch",
+        relevant_stats: ["knowledge"],
+        effect: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          const successChance = 0.1 + knowledge * 0.01;
+
+          if (Math.random() < successChance) {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
+            };
+          } else {
+            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            return {
+              curseState: {
+                isActive: true,
+                endTime: Date.now() + curseDuration,
+              },
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  witchsCurseEvent: true,
+                },
+              },
+              _logMessage:
+                "Your threats only anger the witch. She laughs and curses your village with dark magic. A shadow descends, draining the vitality from your workers.",
+            };
+          }
         },
       },
     ],
