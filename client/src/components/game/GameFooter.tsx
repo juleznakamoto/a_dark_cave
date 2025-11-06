@@ -173,7 +173,7 @@ export default function GameFooter() {
               Offer Tribute
             </Button>
             {/* Added button to trigger end screen */}
-            {!import.meta.env.PROD && (
+            {import.meta.env.DEV && (
               <Button
                 variant="outline"
                 size="xs"
