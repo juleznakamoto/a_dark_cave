@@ -413,7 +413,7 @@ export default function VillagePanel() {
                             </div>
                           </TooltipTrigger>
                           <TooltipContent>
-                            <div className="text-xs whitespace-pre-line">
+                            <div className="text-xs">
                               {feastTooltip.getContent(state)}
                             </div>
                           </TooltipContent>
