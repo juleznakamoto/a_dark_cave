@@ -96,11 +96,11 @@ export const feastTooltip: TooltipConfig = {
     if (isGreatFeast) {
       const remainingMs = greatFeastState.endTime - Date.now();
       const remainingMinutes = Math.ceil(remainingMs / 60000);
-      return `Great Feast Active\nProduction: 200%\n${remainingMinutes} min remaining`;
+      return `Great Village Feast\nProduction: 400%\n${remainingMinutes} min remaining`;
     } else if (isFeast) {
       const remainingMs = feastState.endTime - Date.now();
       const remainingMinutes = Math.ceil(remainingMs / 60000);
-      return `Feast Active\nProduction: 150%\n${remainingMinutes} min remaining`;
+      return `Village Feast\nProduction: 200%\n${remainingMinutes} min remaining`;
     }
     return "";
   },
@@ -115,7 +115,7 @@ export const curseTooltip = {
     if (isCursed) {
       const remainingMs = curseState.endTime - Date.now();
       const remainingMinutes = Math.ceil(remainingMs / 60000);
-      return `Witch's Curse Active\nProduction: 50%\n${remainingMinutes} min remaining`;
+      return `Witch's Curse\nProduction: 50%\n${remainingMinutes} min remaining`;
     }
     return "";
   },

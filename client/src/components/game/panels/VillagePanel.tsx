@@ -44,7 +44,8 @@ export default function VillagePanel() {
     const now = Date.now();
     if (greatFeastState?.isActive && greatFeastState.endTime > now) {
       const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
-      const greatFeastElapsed = greatFeastDuration - (greatFeastState.endTime - now);
+      const greatFeastElapsed =
+        greatFeastDuration - (greatFeastState.endTime - now);
       return (greatFeastElapsed / greatFeastDuration) * 100;
     } else if (feastState?.isActive && feastState.endTime > now) {
       const feastDuration = 10 * 60 * 1000; // 10 minutes
@@ -236,10 +237,10 @@ export default function VillagePanel() {
     const timeout = setTimeout(() => {
       // Then repeat every 100ms
       const interval = setInterval(action, 100);
-      setHoldState(prev => ({ ...prev, interval }));
+      setHoldState((prev) => ({ ...prev, interval }));
     }, 500);
 
-    setHoldState(prev => ({ ...prev, timeout }));
+    setHoldState((prev) => ({ ...prev, timeout }));
   };
 
   const stopHold = () => {
@@ -274,10 +275,14 @@ export default function VillagePanel() {
       <div key={jobId} className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Button
-            onMouseDown={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
+            onMouseDown={() =>
+              currentCount > 0 && startHold(() => unassignVillager(jobId))
+            }
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={() => currentCount > 0 && startHold(() => unassignVillager(jobId))}
+            onTouchStart={() =>
+              currentCount > 0 && startHold(() => unassignVillager(jobId))
+            }
             onTouchEnd={stopHold}
             disabled={currentCount === 0}
             variant="ghost"
@@ -290,10 +295,14 @@ export default function VillagePanel() {
             <AnimatedCounter value={currentCount} />
           </div>
           <Button
-            onMouseDown={() => villagers.free > 0 && startHold(() => assignVillager(jobId))}
+            onMouseDown={() =>
+              villagers.free > 0 && startHold(() => assignVillager(jobId))
+            }
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={() => villagers.free > 0 && startHold(() => assignVillager(jobId))}
+            onTouchStart={() =>
+              villagers.free > 0 && startHold(() => assignVillager(jobId))
+            }
             onTouchEnd={stopHold}
             disabled={villagers.free === 0}
             variant="ghost"
@@ -358,29 +367,46 @@ export default function VillagePanel() {
                 const feastState = useGameStore.getState().feastState;
                 const greatFeastState = useGameStore.getState().greatFeastState;
                 const curseState = useGameStore.getState().curseState;
-                const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
-                const isFeast = feastState?.isActive && feastState.endTime > Date.now();
-                const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+                const isGreatFeast =
+                  greatFeastState?.isActive &&
+                  greatFeastState.endTime > Date.now();
+                const isFeast =
+                  feastState?.isActive && feastState.endTime > Date.now();
+                const isCursed =
+                  curseState?.isActive && curseState.endTime > Date.now();
 
                 return (
                   <>
                     {/* Feast/Great Feast Indicator */}
                     {(isGreatFeast || isFeast) && (
                       <TooltipProvider>
-                        <Tooltip open={mobileTooltip.isTooltipOpen('feast-progress')}>
+                        <Tooltip
+                          open={mobileTooltip.isTooltipOpen("feast-progress")}
+                        >
                           <TooltipTrigger asChild>
-                            <div 
+                            <div
                               className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) => mobileTooltip.handleTooltipClick('feast-progress', e)}
+                              onClick={(e) =>
+                                mobileTooltip.handleTooltipClick(
+                                  "feast-progress",
+                                  e,
+                                )
+                              }
                             >
                               <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                 <CircularProgress
                                   value={feastProgress}
                                   size={18}
                                   strokeWidth={2}
-                                  className={isGreatFeast ? "text-orange-600" : "text-yellow-600"}
+                                  className={
+                                    isGreatFeast
+                                      ? "text-orange-600"
+                                      : "text-yellow-600"
+                                  }
                                 />
-                                <span className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}>
+                                <span
+                                  className={`absolute inset-0 flex items-center justify-center font-extrabold ${isGreatFeast ? "text-[12px] -mt-[0px] text-orange-600" : "text-[12px] -mt-[1px] text-yellow-600"}`}
+                                >
                                   {isGreatFeast ? "✦" : "⟡"}
                                 </span>
                               </div>
@@ -398,24 +424,33 @@ export default function VillagePanel() {
                     {/* Curse Indicator */}
                     {isCursed && (
                       <TooltipProvider>
-                        <Tooltip open={mobileTooltip.isTooltipOpen('curse-progress')}>
+                        <Tooltip
+                          open={mobileTooltip.isTooltipOpen("curse-progress")}
+                        >
                           <TooltipTrigger asChild>
-                            <div 
+                            <div
                               className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
-                              onClick={(e) => mobileTooltip.handleTooltipClick('curse-progress', e)}
+                              onClick={(e) =>
+                                mobileTooltip.handleTooltipClick(
+                                  "curse-progress",
+                                  e,
+                                )
+                              }
                             >
                               <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                 <CircularProgress
                                   value={(() => {
                                     const curseDuration = 10 * 60 * 1000;
-                                    const curseElapsed = curseDuration - (curseState.endTime - Date.now());
+                                    const curseElapsed =
+                                      curseDuration -
+                                      (curseState.endTime - Date.now());
                                     return (curseElapsed / curseDuration) * 100;
                                   })()}
                                   size={18}
                                   strokeWidth={2}
                                   className="text-purple-600"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[1px] text-purple-600">
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-purple-600">
                                   ✶
                                 </span>
                               </div>
@@ -494,28 +529,6 @@ export default function VillagePanel() {
             })()}
           </div>
         )}
-
-        {/* Shop Section */}
-        {story.seen?.hasShop && (() => {
-          const bought = (gameState.activatedPurchases?.feast_1 ? 1 : 0) + 
-                        (gameState.activatedPurchases?.feast_5 ? 5 : 0) + 
-                        (gameState.activatedPurchases?.feast_10 ? 10 : 0);
-          const available = gameState.greatFeastActivations || 0;
-          const total = bought + available;
-
-          if (total === 0) return null;
-
-          return (
-            <div className="space-y-2">
-              <h3 className="text-xs font-bold text-foreground">Shop</h3>
-              <div className="flex flex-wrap gap-2">
-                <div className="text-xs text-muted-foreground">
-                  Great Feast: {bought} bought, {available} available
-                </div>
-              </div>
-            </div>
-          );
-        })()}
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
