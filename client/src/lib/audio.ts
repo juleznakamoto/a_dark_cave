@@ -220,6 +220,10 @@ export class AudioManager {
       await this.startBackgroundMusic(this.backgroundMusicVolume);
     }
   }
+
+  getMutedState(): boolean {
+    return this.isMuted;
+  }
 }
 
 // Initialize and preload sounds
