@@ -8,6 +8,7 @@ export class AudioManager {
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
+  private isMuted: boolean = false;
 
   private constructor() {}
 
@@ -85,6 +86,9 @@ export class AudioManager {
   }
 
   async playSound(name: string, volume: number = 1): Promise<void> {
+    // Don't play if muted
+    if (this.isMuted) return;
+
     try {
       // Initialize audio on first play attempt
       if (!this.initialized) {
@@ -117,6 +121,9 @@ export class AudioManager {
   }
 
   async playLoopingSound(name: string, volume: number = 1): Promise<void> {
+    // Don't play if muted
+    if (this.isMuted) return;
+
     try {
       // Stop any existing loop for this sound
       this.stopLoopingSound(name);
@@ -201,9 +208,13 @@ export class AudioManager {
     this.wasBackgroundMusicPlaying = this.loopingSources.has('backgroundMusic');
     // Stop all sounds
     this.stopAllSounds();
+    // Set muted state
+    this.isMuted = true;
   }
 
   async resumeSounds(): Promise<void> {
+    // Clear muted state
+    this.isMuted = false;
     // Resume background music if it was playing before pause
     if (this.wasBackgroundMusicPlaying) {
       await this.startBackgroundMusic(this.backgroundMusicVolume);
