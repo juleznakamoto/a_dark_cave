@@ -6,6 +6,7 @@ import { getCurrentUser, signOut } from "@/game/auth";
 import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
+import { audioManager } from "@/lib/audio";
 
 const VERSION = "0.14.7";
 
@@ -26,6 +27,7 @@ export default function GameFooter() {
     id: string;
     email: string;
   } | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
 
   // Trigger glow animation when pause state changes
@@ -89,6 +91,16 @@ export default function GameFooter() {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
   };
 
+  const toggleVolume = () => {
+    if (isMuted) {
+      audioManager.resumeSounds();
+      setIsMuted(false);
+    } else {
+      audioManager.pauseAllSounds();
+      setIsMuted(true);
+    }
+  };
+
   return (
     <>
       <ShopDialog
@@ -106,6 +118,15 @@ export default function GameFooter() {
               className={`px-2 py-1 text-xs hover`}
             >
               {isPaused ? "▶" : "❚❚"}
+            </Button>
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={toggleVolume}
+              data-testid="button-toggle-volume"
+              className="px-2 py-1 text-xs hover"
+            >
+              {isMuted ? "🔇" : "🔊"}
             </Button>
             {currentUser ? (
               <Button
