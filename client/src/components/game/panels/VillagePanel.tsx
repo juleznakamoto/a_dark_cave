@@ -228,8 +228,21 @@ export default function VillagePanel() {
     interval: NodeJS.Timeout | null;
     timeout: NodeJS.Timeout | null;
   }>({ interval: null, timeout: null });
+  
+  // Track if a touch event occurred to prevent duplicate mouse events
+  const touchActiveRef = useState({ current: false })[0];
 
-  const startHold = (action: () => void) => {
+  const startHold = (action: () => void, isTouch: boolean = false) => {
+    // If this is a mouse event but touch is active, skip it
+    if (!isTouch && touchActiveRef.current) {
+      return;
+    }
+    
+    // Set touch active flag if this is a touch event
+    if (isTouch) {
+      touchActiveRef.current = true;
+    }
+    
     // Execute immediately
     action();
 
@@ -243,7 +256,7 @@ export default function VillagePanel() {
     setHoldState((prev) => ({ ...prev, timeout }));
   };
 
-  const stopHold = () => {
+  const stopHold = (isTouch: boolean = false) => {
     if (holdState.timeout) {
       clearTimeout(holdState.timeout);
     }
@@ -251,6 +264,13 @@ export default function VillagePanel() {
       clearInterval(holdState.interval);
     }
     setHoldState({ interval: null, timeout: null });
+    
+    // Reset touch flag after a delay to allow mouse event to be skipped
+    if (isTouch) {
+      setTimeout(() => {
+        touchActiveRef.current = false;
+      }, 100);
+    }
   };
 
   const renderPopulationControl = (jobId: string, label: string) => {
@@ -276,14 +296,14 @@ export default function VillagePanel() {
         <div className="flex items-center gap-1">
           <Button
             onMouseDown={() =>
-              currentCount > 0 && startHold(() => unassignVillager(jobId))
+              currentCount > 0 && startHold(() => unassignVillager(jobId), false)
             }
-            onMouseUp={stopHold}
-            onMouseLeave={stopHold}
+            onMouseUp={() => stopHold(false)}
+            onMouseLeave={() => stopHold(false)}
             onTouchStart={() =>
-              currentCount > 0 && startHold(() => unassignVillager(jobId))
+              currentCount > 0 && startHold(() => unassignVillager(jobId), true)
             }
-            onTouchEnd={stopHold}
+            onTouchEnd={() => stopHold(true)}
             disabled={currentCount === 0}
             variant="ghost"
             size="xs"
@@ -296,14 +316,14 @@ export default function VillagePanel() {
           </div>
           <Button
             onMouseDown={() =>
-              villagers.free > 0 && startHold(() => assignVillager(jobId))
+              villagers.free > 0 && startHold(() => assignVillager(jobId), false)
             }
-            onMouseUp={stopHold}
-            onMouseLeave={stopHold}
+            onMouseUp={() => stopHold(false)}
+            onMouseLeave={() => stopHold(false)}
             onTouchStart={() =>
-              villagers.free > 0 && startHold(() => assignVillager(jobId))
+              villagers.free > 0 && startHold(() => assignVillager(jobId), true)
             }
-            onTouchEnd={stopHold}
+            onTouchEnd={() => stopHold(true)}
             disabled={villagers.free === 0}
             variant="ghost"
             size="xs"
