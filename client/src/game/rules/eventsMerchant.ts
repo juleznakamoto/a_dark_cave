@@ -1,19 +1,6 @@
 import { GameEvent } from "./events";
-
-// Define a type for the game state
+import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
-
-type GameState = {
-  resources: {
-    [key: string]: number;
-  };
-  buildings: { woodenHut: number; stoneHut: number };
-  relics: { [key: string]: boolean };
-  tools: { [key: string]: boolean };
-  clothing: { [key: string]: boolean };
-  schematics: { [key: string]: boolean };
-  weapons: { [key: string]: boolean };
-};
 
 // Define trade configurations
 const resourceTrades = [
