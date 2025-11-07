@@ -94,10 +94,10 @@ export default function GameFooter() {
 
   const toggleVolume = () => {
     if (isMuted) {
-      audioManager.resumeSounds();
+      audioManager.globalMute(false);
       setIsMuted(false);
     } else {
-      audioManager.pauseAllSounds();
+      audioManager.globalMute(true);
       setIsMuted(true);
     }
   };
