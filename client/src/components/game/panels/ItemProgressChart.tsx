@@ -507,7 +507,7 @@ export default function ItemProgressChart() {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
-            <React.Fragment key={`ring-${ringIndex}`}>
+            <g key={`ring-${ringIndex}`}>
               {/* Background ring */}
               <Pie
                 data={ring.backgroundSegments}
@@ -570,7 +570,7 @@ export default function ItemProgressChart() {
                 isAnimationActive={false}
                 style={{ outline: "none" }}
               ></Pie>
-            </React.Fragment>
+            </g>
           ))}
         </PieChart>
       </ResponsiveContainer>
