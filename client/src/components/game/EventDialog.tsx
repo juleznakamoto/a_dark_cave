@@ -42,8 +42,9 @@ export default function EventDialog({
   onClose,
   event,
 }: EventDialogProps) {
-  const { applyEventChoice, isMuted } = useGameStore();
+  const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
+  const isMuted = useGameStore((state) => state.flags.isMuted);
   const hasScriptorium = gameState.buildings.scriptorium > 0;
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -192,7 +193,7 @@ export default function EventDialog({
 
   // Update EventDialog to use state-based mute check for cube sounds
   useEffect(() => {
-    if (isOpen && isCubeEvent && !isMuted()) {
+    if (isOpen && isCubeEvent && !isMuted) {
       audioManager.playLoopingSound("whisperingCube", 0.01);
     }
 
