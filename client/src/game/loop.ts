@@ -51,11 +51,9 @@ export function startGameLoop() {
       return;
     }
 
-    // Resume sounds when exiting pause state (only if not muted)
-    if (state.isPausedPreviously && !state.isMuted) {
+    // Resume sounds when exiting pause state
+    if (state.isPausedPreviously) {
       audioManager.resumeSounds();
-      useGameStore.setState({ isPausedPreviously: false });
-    } else if (state.isPausedPreviously && state.isMuted) {
       useGameStore.setState({ isPausedPreviously: false });
     }
 

@@ -1,4 +1,3 @@
-
 export class AudioManager {
   private static instance: AudioManager;
   private audioContext: AudioContext | null = null;
@@ -8,6 +7,7 @@ export class AudioManager {
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
+  private isMutedGlobally: boolean = false; // Added a flag for global mute state
 
   private constructor() {}
 
@@ -22,7 +22,7 @@ export class AudioManager {
     if (!this.audioContext) {
       this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
     }
-    
+
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
     }
@@ -31,7 +31,7 @@ export class AudioManager {
   async loadSound(name: string, url: string): Promise<void> {
     // Store the URL for later loading
     this.soundUrls.set(name, url);
-    
+
     // Only actually load if audio context is available
     if (!this.initialized) {
       return;
@@ -59,7 +59,7 @@ export class AudioManager {
     if (this.soundUrls.size === 0) return;
 
     console.log('Loading all sounds after user gesture...');
-    const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) => 
+    const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) =>
       this.loadActualSound(name, url)
     );
     await Promise.all(loadPromises);
@@ -85,8 +85,8 @@ export class AudioManager {
   }
 
   async playSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
-    // Don't play if muted
-    if (isMuted) return;
+    // Don't play if muted globally or if specific sound is muted
+    if (this.isMutedGlobally || isMuted) return;
 
     try {
       // Initialize audio on first play attempt
@@ -106,13 +106,13 @@ export class AudioManager {
 
       const source = this.audioContext.createBufferSource();
       const gainNode = this.audioContext.createGain();
-      
+
       source.buffer = audioBuffer;
       gainNode.gain.value = Math.max(0, Math.min(1, volume));
-      
+
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
-      
+
       source.start();
     } catch (error) {
       console.warn(`Failed to play sound ${name}:`, error);
@@ -120,8 +120,8 @@ export class AudioManager {
   }
 
   async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
-    // Don't play if muted
-    if (isMuted) return;
+    // Don't play if muted globally or if specific sound is muted
+    if (this.isMutedGlobally || isMuted) return;
 
     try {
       // Stop any existing loop for this sound
@@ -144,14 +144,14 @@ export class AudioManager {
 
       const source = this.audioContext.createBufferSource();
       const gainNode = this.audioContext.createGain();
-      
+
       source.buffer = audioBuffer;
       source.loop = true;
       gainNode.gain.value = Math.max(0, Math.min(1, volume));
-      
+
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
-      
+
       source.start();
       this.loopingSources.set(name, source);
     } catch (error) {
@@ -199,6 +199,7 @@ export class AudioManager {
   async startBackgroundMusic(volume: number = 1): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
+    // The check for mute state is now handled within playLoopingSound
     await this.playLoopingSound('backgroundMusic', volume);
   }
 
@@ -212,7 +213,21 @@ export class AudioManager {
   async resumeSounds(): Promise<void> {
     // Resume background music if it was playing before pause
     if (this.wasBackgroundMusicPlaying) {
+      // The check for mute state is now handled within playLoopingSound
       await this.startBackgroundMusic(this.backgroundMusicVolume);
+    }
+  }
+
+  // Method to globally mute/unmute all audio
+  globalMute(mute: boolean): void {
+    this.isMutedGlobally = mute;
+    if (mute) {
+      this.stopAllSounds();
+    } else {
+      // If unmuting, we might want to resume background music if it was playing
+      this.resumeSounds().catch(error => {
+        console.warn('Failed to resume sounds after unmuting:', error);
+      });
     }
   }
 }

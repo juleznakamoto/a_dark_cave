@@ -580,8 +580,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      const state = get();
-      audioManager.playSound("event", 0.02, state.isMuted);
+      audioManager.playSound("event", 0.02);
     }
 
     set((state) => ({
@@ -745,11 +744,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madnessEventIds.includes(event.id.split("-")[0]),
         );
 
-        const state = get();
         audioManager.playSound(
           hasMadnessEvent ? "eventMadness" : "event",
           0.02,
-          state.isMuted,
         );
       }
     }
@@ -956,8 +953,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      const state = get();
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02, state.isMuted);
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
     }
   },
 
