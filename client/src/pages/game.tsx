@@ -43,7 +43,15 @@ export default function Game() {
     const handleUserGesture = async () => {
       try {
         const { audioManager } = await import("@/lib/audio");
-        await audioManager.startBackgroundMusic(0.125);
+        const currentState = useGameStore.getState();
+        
+        // Set the mute state before starting music
+        audioManager.globalMute(currentState.isMuted);
+        
+        // Only start music if not muted
+        if (!currentState.isMuted) {
+          await audioManager.startBackgroundMusic(0.125);
+        }
         setShouldStartMusic(false);
 
         // Remove listeners after music starts
