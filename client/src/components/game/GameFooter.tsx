@@ -106,79 +106,70 @@ export default function GameFooter() {
       />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-1">
             <Button
-              variant="outline"
+              variant="ghost"
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              className={`px-2 py-1 text-xs no-hover ${glowingButton === "pause" ? "button-glow-animation" : ""}`}
+              className={`px-2 py-1 text-xs hover`}
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>
             {currentUser ? (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="xs"
                 onClick={handleSignOut}
-                className="px-3 py-1 text-xs no-hover"
+                className="px-2 py-1 text-xs hover"
               >
                 Sign Out
               </Button>
             ) : (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="xs"
                 onClick={() => handleSetAuthDialogOpen(true)}
-                className="px-2 py-1 text-xs no-hover"
+                className="px-2 py-1 text-xs hover"
               >
                 Sign In/Up
               </Button>
             )}
 
             <Button
-              variant="outline"
-              size="xs"
-              onClick={handleSaveGame}
-              data-testid="button-save-game"
-              className={`px-2 py-1 text-xs no-hover ${glowingButton === "save" ? "button-glow-animation" : ""}`}
-            >
-              Save
-            </Button>
-            <Button
-              variant="outline"
+              variant="ghost"
               size="xs"
               onClick={handleRestartGame}
               data-testid="button-restart-game"
-              className="px-2 py-1 text-xs no-hover"
+              className="px-2 py-1 text-xs hover"
             >
               New
             </Button>
             {!import.meta.env.PROD && (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="xs"
                 onClick={() => setShopDialogOpen(true)}
-                className="px-2 py-1 text-xs no-hover"
+                className="px-2 py-1 text-xs hover"
               >
                 Shop
               </Button>
             )}
             <Button
-              variant="outline"
+              variant="ghost"
               size="xs"
               onClick={handleOfferTribute}
-              className="px-2 py-1 text-xs no-hover"
+              className="px-2 py-1 text-xs hover"
             >
               Offer Tribute
             </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (
               <Button
-                variant="outline"
+                variant="ghost"
                 size="xs"
                 onClick={() => setShowEndScreen(true)}
-                className="px-2 py-1 text-xs no-hover"
+                className="px-2 py-1 text-xs hover"
               >
                 End Screen
               </Button>

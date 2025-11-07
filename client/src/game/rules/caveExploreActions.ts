@@ -348,8 +348,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.silver": { probability: 1, value: 100 },              
-      "resources.gold": { probability: 1, value: 50 },
+      "resources.silver": { probability: 1, value: 250 },
+      "resources.gold": { probability: 1, value: 100 },
       "resources.obsidian": { probability: 1, value: 50 },
       "resources.adamant": { probability: 1, value: 50 },
       "tools.mastermason_chisel": true,
@@ -370,7 +370,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold": { probability: 1, value: 75 },
+      "resources.gold": { probability: 1, value: 150 },
       "resources.obsidian": { probability: 1, value: 75 },
       "resources.adamant": { probability: 1, value: 50 },
       "resources.moonstone": { probability: 1, value: 30 },
@@ -440,6 +440,8 @@ export function handleLightFire(
       torch: (state.resources.torch || 0) + 100,
       iron: (state.resources.iron || 0) + 1000,
       steel: (state.resources.steel || 0) + 500,
+      gold: (state.resources.gold || 0) + 500,
+
     };
   }
 

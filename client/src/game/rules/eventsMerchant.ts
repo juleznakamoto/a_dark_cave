@@ -187,22 +187,22 @@ const resourceTrades = [
   },
   {
     id: "trade_fur_for_gold",
-    label: "5 Gold",
+    label: "50 Gold",
     give: "gold",
     giveAmount: 5,
-    condition: (state: GameState) => state.buildings.woodenHut >= 2,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     costs: [
-      { resource: "fur", amounts: [1000, 1200, 1500] },
+      { resource: "fur", amounts: [1200, 1500, 2000] },
     ],
   },
   {
     id: "trade_leather_for_gold",
-    label: "10 Gold",
+    label: "50 Gold",
     give: "gold",
     giveAmount: 10,
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7,
     costs: [
-      { resource: "leather", amounts: [800, 1000, 1200] },
+      { resource: "leather", amounts: [600, 800, 1000] },
     ],
   },
 ];

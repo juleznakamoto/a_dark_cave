@@ -294,7 +294,7 @@ export function handleCastleRuins(
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
-      gold: (state.resources.gold || 0) + 50,
+      gold: (state.resources.gold || 0) + 200,
     };
 
     result.logEntries!.push({
@@ -367,8 +367,8 @@ export function handleHillGrave(
     // Success: Find frostglas
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 200,
-      gold: (state.resources.gold || 0) + 100,
+      silver: (state.resources.silver || 0) + 150,
+      gold: (state.resources.gold || 0) + 250,
       frostglas: (state.resources.frostglas || 0) + 50,
     };
 
@@ -430,7 +430,7 @@ export function handleSunkenTemple(
     // Success: Find bloodstone
     result.stateUpdates.resources = {
       ...state.resources,
-      gold: (state.resources.gold || 0) + 250,
+      gold: (state.resources.gold || 0) + 300,
       bloodstone: (state.resources.bloodstone || 0) + 50,
     };
 

@@ -25,7 +25,6 @@ export default function GameContainer() {
     setActiveTab,
     setEventDialog,
     setCombatDialog,
-    addLogEntry,
     isPaused,
     showEndScreen,
   } = useGameStore();
@@ -144,7 +143,7 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0">
+          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0 opacity-50">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
@@ -162,8 +161,8 @@ export default function GameContainer() {
                 // Standard button design
                 <div className="flex space-x-4">
                   <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "cave" ? "font-bold " : ""
+                    className={`py-2 text-sm bg-transparent  ${
+                      activeTab === "cave" ? "font-bold opacity-100" : ""
                     }`}
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"

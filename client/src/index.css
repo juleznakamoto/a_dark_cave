@@ -245,7 +245,7 @@ html, body {
 }
 
 .button-glow-animation {
-  animation: button-glow 0.25s ease-in-out;
+  animation: button-glow 0.4s ease-in-out;
 }
 
 /* Keyframe animations for madness shadow pulsing */
