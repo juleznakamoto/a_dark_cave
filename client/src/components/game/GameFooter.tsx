@@ -97,7 +97,7 @@ export default function GameFooter() {
       />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-1">
+          <div className="flex items-center space-x-0">
             <Button
               variant="ghost"
               size="xs"
