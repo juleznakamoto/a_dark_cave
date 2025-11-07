@@ -189,7 +189,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   thirdWave: {
     id: "thirdWave",
     condition: (state: GameState) =>
-      state.story.seen.secondWaveVictory && !state.story.seen.thirdWaveVictory,
+      state.relics.ancient_scrolls &&
+      state.story.seen.secondWaveVictory &&
+      !state.story.seen.thirdWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Third Wave",
@@ -227,7 +229,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fourthWave: {
     id: "fourthWave",
     condition: (state: GameState) =>
-      state.story.seen.thirdWaveVictory && !state.story.seen.fourthWaveVictory,
+      state.weapons.frostglass_sword &&
+      state.story.seen.thirdWaveVictory &&
+      !state.story.seen.fourthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Fourth Wave",
@@ -265,7 +269,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
-      state.story.seen.fourthWaveVictory && !state.story.seen.fifthWaveVictory,
+      state.weapons.bloodstone_staff &&
+      state.story.seen.fourthWaveVictory &&
+      !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Final Wave",
@@ -292,7 +298,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fifthWaveVictory: true,
               },
             },
-            _logMessage: "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond.",
+            _logMessage:
+              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond.",
           }),
           onDefeat: () => handleDefeat(state, 5, 25),
         },
