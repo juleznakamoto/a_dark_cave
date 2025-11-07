@@ -161,4 +161,57 @@ export const recurringEvents: Record<string, GameEvent> = {
       };
     },
   },
+
+  fireStorm: {
+    id: "fireStorm",
+    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    triggerType: "resource",
+    timeProbability: 50,
+    repeatable: true,
+    message: [
+      "A raging fire sweeps through the village in the night. By morning, wooden huts are reduced to ash.",
+      "Flames consume the village. Screams pierce the night as fire devours wooden structures.",
+      "A violent storm tears through the settlement. Thunder roars as wooden huts are ripped apart by the wind.",
+      "The storm's fury is relentless. Wooden huts collapse under torrential rain and howling winds.",
+    ],
+    triggered: false,
+    priority: 2,
+    effect: (state: GameState) => {
+      const hutsDestroyed = Math.random() < 0.5 ? 1 : 2;
+      const villagersKilled = hutsDestroyed * 2;
+      
+      // Kill villagers randomly
+      const updatedVillagers = { ...state.villagers };
+      let remainingDeaths = villagersKilled;
+      
+      // Create a pool of all available villagers with their types
+      const villagerPool: string[] = [];
+      Object.keys(updatedVillagers).forEach(type => {
+        const count = updatedVillagers[type as keyof typeof updatedVillagers] || 0;
+        for (let i = 0; i < count; i++) {
+          villagerPool.push(type);
+        }
+      });
+      
+      // Randomly select villagers to kill
+      const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
+      for (let i = 0; i < actualDeaths; i++) {
+        if (villagerPool.length === 0) break;
+        
+        const randomIndex = Math.floor(Math.random() * villagerPool.length);
+        const selectedType = villagerPool[randomIndex];
+        
+        villagerPool.splice(randomIndex, 1);
+        updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
+      }
+      
+      return {
+        buildings: {
+          ...state.buildings,
+          woodenHut: Math.max(0, state.buildings.woodenHut - hutsDestroyed),
+        },
+        villagers: updatedVillagers,
+      };
+    },
+  },
 };
