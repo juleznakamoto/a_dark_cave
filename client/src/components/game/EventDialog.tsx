@@ -46,6 +46,7 @@ export default function EventDialog({
   const hasScriptorium = gameState.buildings.scriptorium > 0;
   const mobileTooltip = useMobileButtonTooltip();
   const { flags } = useGameStore(); // Access flags from game state
+  const { isMuted } = gameState.audioManager; // Access isMuted from audioManager
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -190,19 +191,18 @@ export default function EventDialog({
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
 
-  // Update EventDialog to use state-based mute check for cube sound
+  // Update EventDialog to use state-based mute check for cube sounds
   useEffect(() => {
-    if (isOpen && isCubeEvent) {
-      // Use safePlayLoopingSound which checks the mute state from flags
-      gameState.audioManager.safePlayLoopingSound("whisperingCube", 0.02, () => flags.isMuted);
-    } else {
-      gameState.audioManager.stopLoopingSound("whisperingCube");
+    if (isOpen && isCubeEvent && !isMuted()) {
+      gameState.audioManager.playLoopingSound("whisperingCube", 0.01);
     }
 
     return () => {
-      gameState.audioManager.stopLoopingSound("whisperingCube");
+      if (isCubeEvent) {
+        gameState.audioManager.pauseSound("whisperingCube");
+      }
     };
-  }, [isOpen, isCubeEvent, flags.isMuted]); // Re-run effect when mute state changes
+  }, [isOpen, isCubeEvent, isMuted]); // Re-run effect when mute state changes
 
   return (
     <>
