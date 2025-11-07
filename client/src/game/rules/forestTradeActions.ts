@@ -134,7 +134,7 @@ export const forestTradeActions: Record<string, Action> = {
       1: {
         "buildings.tradePost": 1,
         "buildings.merchantsGuild": 0,
-      },
+        "tools.iron_pickaxe": 1      },
       2: {
         "buildings.buildGrandBazaar": 1,
         "buildings.merchantsGuild": 0
@@ -175,6 +175,7 @@ export const forestTradeActions: Record<string, Action> = {
       1: {
         "buildings.tradePost": 1,
         "buildings.merchantsGuild": 0,
+        "tools.steel_pickaxe": 1
       },
       2: {
         "buildings.buildGrandBazaar": 1,
@@ -216,6 +217,7 @@ export const forestTradeActions: Record<string, Action> = {
       1: {
         "buildings.tradePost": 1,
         "buildings.merchantsGuild": 0,
+        "tools.obsidian_pickaxe": 1
       },
       2: {
         "buildings.buildGrandBazaar": 1,

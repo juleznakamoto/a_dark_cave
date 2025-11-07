@@ -145,7 +145,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 35,
     message: [
-      "By morning, raw adamant lies behind one of the huts of the village.",
+      "By morning, adamant lies behind one of the huts of the village.",
       "When dawn breaks, a pile of adamant is found close to the village.",
     ],
     triggered: false,
