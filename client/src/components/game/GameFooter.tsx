@@ -129,7 +129,8 @@ export default function GameFooter() {
               <img
                 src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
                 alt={isMuted ? "Unmute" : "Mute"}
-                className="w-4 h-4"
+                className="w-4 h-4 opacity-60"
+                style={{ filter: 'invert(1)' }}
               />
             </Button>
             {currentUser ? (
