@@ -84,8 +84,11 @@ export class AudioManager {
     }
   }
 
-  async playSound(name: string, volume: number = 1): Promise<void> {
+  async playSound(name: string, volume: number = 1, getMutedState?: () => boolean): Promise<void> {
     try {
+      // Check mute state if provided
+      if (getMutedState && getMutedState()) return;
+
       // Initialize audio on first play attempt
       if (!this.initialized) {
         this.initialized = true;
@@ -116,8 +119,11 @@ export class AudioManager {
     }
   }
 
-  async playLoopingSound(name: string, volume: number = 1): Promise<void> {
+  async playLoopingSound(name: string, volume: number = 1, getMutedState?: () => boolean): Promise<void> {
     try {
+      // Check mute state if provided
+      if (getMutedState && getMutedState()) return;
+
       // Stop any existing loop for this sound
       this.stopLoopingSound(name);
 
@@ -190,10 +196,10 @@ export class AudioManager {
     console.log('Sound URLs registered for lazy loading');
   }
 
-  async startBackgroundMusic(volume: number = 1): Promise<void> {
+  async startBackgroundMusic(volume: number = 1, getMutedState?: () => boolean): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
-    await this.playLoopingSound('backgroundMusic', volume);
+    await this.playLoopingSound('backgroundMusic', volume, getMutedState);
   }
 
   pauseAllSounds(): void {
@@ -208,17 +214,6 @@ export class AudioManager {
     if (this.wasBackgroundMusicPlaying) {
       await this.startBackgroundMusic(this.backgroundMusicVolume);
     }
-  }
-
-  // Safe play methods that check mute state from game store
-  async safePlaySound(name: string, volume: number = 1, getMutedState: () => boolean): Promise<void> {
-    if (getMutedState()) return;
-    await this.playSound(name, volume);
-  }
-
-  async safePlayLoopingSound(name: string, volume: number = 1, getMutedState: () => boolean): Promise<void> {
-    if (getMutedState()) return;
-    await this.playLoopingSound(name, volume);
   }
 }
 

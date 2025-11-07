@@ -57,11 +57,10 @@ export function startGameLoop() {
       useGameStore.setState({ isPausedPreviously: false });
     }
 
-    // Start background music when whispering cube is found (only if not muted)
+    // Start background music when whispering cube is found
     if (
       state.relics.whispering_cube &&
-      !state.previousState?.relics.whispering_cube &&
-      !state.flags.isMuted
+      !state.previousState?.relics.whispering_cube
     ) {
       audioManager.startBackgroundMusic(0.02);
     }

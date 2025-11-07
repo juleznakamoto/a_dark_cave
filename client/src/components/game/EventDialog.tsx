@@ -44,7 +44,6 @@ export default function EventDialog({
 }: EventDialogProps) {
   const { applyEventChoice } = useGameStore();
   const gameState = useGameStore();
-  const isMuted = useGameStore((state) => state.flags.isMuted);
   const hasScriptorium = gameState.buildings.scriptorium > 0;
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -191,10 +190,10 @@ export default function EventDialog({
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
 
-  // Update EventDialog to use state-based mute check for cube sounds
+  // Play cube sound effect with mute check handled by audio manager
   useEffect(() => {
-    if (isOpen && isCubeEvent && !isMuted) {
-      audioManager.playLoopingSound("whisperingCube", 0.01);
+    if (isOpen && isCubeEvent) {
+      audioManager.playLoopingSound("whisperingCube", 0.01, () => gameState.flags.isMuted);
     }
 
     return () => {
@@ -202,7 +201,7 @@ export default function EventDialog({
         audioManager.stopLoopingSound("whisperingCube");
       }
     };
-  }, [isOpen, isCubeEvent, isMuted]); // Re-run effect when mute state changes
+  }, [isOpen, isCubeEvent, gameState.flags.isMuted]);
 
   return (
     <>

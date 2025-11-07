@@ -574,10 +574,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      // Check mute state before playing sound
-      if (!get().isMuted()) {
-        audioManager.playSound("event", 0.02);
-      }
+      audioManager.playSound("event", 0.02, () => get().flags.isMuted);
     }
 
     set((state) => ({
@@ -700,13 +697,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madnessEventIds.includes(event.id.split("-")[0]),
         );
 
-        // Check mute state before playing sound
-        if (!get().isMuted()) {
-          audioManager.playSound(
-            hasMadnessEvent ? "eventMadness" : "event",
-            0.02,
-          );
-        }
+        audioManager.playSound(
+          hasMadnessEvent ? "eventMadness" : "event",
+          0.02,
+          () => get().flags.isMuted,
+        );
       }
     }
   },
@@ -880,10 +875,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      // Check mute state before playing sound
-      if (!get().isMuted()) {
-        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
-      }
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02, () => get().flags.isMuted);
     }
   },
 
