@@ -126,9 +126,11 @@ export default function GameFooter() {
               data-testid="button-toggle-volume"
               className="px-2 py-1 text-xs hover"
             >
-              <span className="material-symbols-rounded text-base">
-                {isMuted ? "volume_mute" : "volume_up"}
-              </span>
+              <img
+                src={isMuted ? "/attached_assets/volume_mute_40dp_1F1F1F_FILL1_wght400_GRAD0_opsz40_1762529298181.png" : "/attached_assets/volume_up_40dp_1F1F1F_FILL1_wght400_GRAD0_opsz40_1762529298180.png"}
+                alt={isMuted ? "Unmute" : "Mute"}
+                className="w-4 h-4"
+              />
             </Button>
             {currentUser ? (
               <Button
