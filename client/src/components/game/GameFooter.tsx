@@ -20,6 +20,8 @@ export default function GameFooter() {
     isPaused,
     togglePause,
     setShowEndScreen, // Added this line
+    isMuted,
+    setIsMuted,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -27,7 +29,6 @@ export default function GameFooter() {
     id: string;
     email: string;
   } | null>(null);
-  const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
 
   // Trigger glow animation when pause state changes

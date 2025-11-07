@@ -50,12 +50,14 @@ interface GameStore extends GameState {
   loopProgress: number; // 0-100 representing progress through the 15s production cycle
   isGameLoopActive: boolean;
   isPaused: boolean; // New state for pause/unpause
+  isMuted: boolean; // Audio mute state
 
   // Actions
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   setBoostMode: (enabled: boolean) => void;
   setShowEndScreen: (showEndScreen: boolean) => void; // Added setShowEndScreen action
+  setIsMuted: (isMuted: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -215,6 +217,7 @@ const defaultGameState: GameState = {
   isGameLoopActive: false,
   isPaused: false,
   showEndScreen: false, // Initialize showEndScreen to false
+  isMuted: false,
 };
 
 // State management utilities
@@ -270,11 +273,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
   authDialogOpen: false,
   shopDialogOpen: false,
   showEndScreen: false, // Initialize showEndScreen
+  isMuted: false,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
+  setIsMuted: (isMuted: boolean) => set({ isMuted }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -314,6 +319,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isGameLoopActive: newState.isGameLoopActive !== undefined ? newState.isGameLoopActive : false,
       isPaused: newState.isPaused !== undefined ? newState.isPaused : false, // Ensure isPaused is initialized
       showEndScreen: newState.showEndScreen !== undefined ? newState.showEndScreen : false, // Ensure showEndScreen is initialized
+      isMuted: newState.isMuted !== undefined ? newState.isMuted : false,
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -502,6 +508,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isGameLoopActive: false,
       isPaused: false, // Reset pause state
       showEndScreen: false, // Reset showEndScreen
+      isMuted: false,
     };
 
     set(resetState);
@@ -538,6 +545,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,
         isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
+        isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
       };
 
       set(loadedState);
@@ -572,7 +580,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.02);
+      const state = get();
+      audioManager.playSound("event", 0.02, state.isMuted);
     }
 
     set((state) => ({
@@ -736,9 +745,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madnessEventIds.includes(event.id.split("-")[0]),
         );
 
+        const state = get();
         audioManager.playSound(
           hasMadnessEvent ? "eventMadness" : "event",
           0.02,
+          state.isMuted,
         );
       }
     }
@@ -945,7 +956,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      const state = get();
+      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02, state.isMuted);
     }
   },
 

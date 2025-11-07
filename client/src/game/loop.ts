@@ -35,8 +35,8 @@ export function startGameLoop() {
     const isPaused = state.isPaused || isDialogOpen;
 
     if (isPaused) {
-      // Stop all sounds when paused
-      if (!state.isPausedPreviously) { // Check if this is the first frame of pause
+      // Stop all sounds when paused (unless already stopped by mute)
+      if (!state.isPausedPreviously && !state.isMuted) { // Check if this is the first frame of pause
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
@@ -51,9 +51,11 @@ export function startGameLoop() {
       return;
     }
 
-    // Resume sounds when exiting pause state
-    if (state.isPausedPreviously) {
+    // Resume sounds when exiting pause state (only if not muted)
+    if (state.isPausedPreviously && !state.isMuted) {
       audioManager.resumeSounds();
+      useGameStore.setState({ isPausedPreviously: false });
+    } else if (state.isPausedPreviously && state.isMuted) {
       useGameStore.setState({ isPausedPreviously: false });
     }
 
