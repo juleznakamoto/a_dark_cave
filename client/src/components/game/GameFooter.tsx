@@ -127,7 +127,7 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover"
             >
               <img
-                src={isMuted ? "/attached_assets/volume_mute_40dp_1F1F1F_FILL1_wght400_GRAD0_opsz40_1762529298181.png" : "/attached_assets/volume_up_40dp_1F1F1F_FILL1_wght400_GRAD0_opsz40_1762529298180.png"}
+                src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
                 alt={isMuted ? "Unmute" : "Mute"}
                 className="w-4 h-4"
               />
