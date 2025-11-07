@@ -1,4 +1,3 @@
-import React from "react";
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -317,7 +316,7 @@ export default function BuildingProgressChart() {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
-            <React.Fragment key={`ring-${ringIndex}`}>
+            <>
               {/* Background ring */}
               <Pie
                 key={`background-${ringIndex}`}
@@ -383,7 +382,7 @@ export default function BuildingProgressChart() {
                 style={{ outline: 'none' }}
               >
               </Pie>
-            </React.Fragment>
+            </>
           ))}
         </PieChart>
       </ResponsiveContainer>
