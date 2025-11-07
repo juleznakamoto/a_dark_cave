@@ -197,9 +197,7 @@ export default function EventDialog({
     }
 
     return () => {
-      if (isCubeEvent) {
-        audioManager.stopLoopingSound("whisperingCube");
-      }
+      audioManager.stopLoopingSound("whisperingCube");
     };
   }, [isOpen, isCubeEvent]);
 
