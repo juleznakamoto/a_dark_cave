@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { manualSave } from "@/game/loop";
 import { deleteSave } from "@/game/save";
 import { useState, useEffect } from "react";
 import { getCurrentUser, signOut } from "@/game/auth";
@@ -8,17 +7,15 @@ import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 
-const VERSION = "0.14.6";
+const VERSION = "0.14.7";
 
 export default function GameFooter() {
   const {
-    lastSaved,
     restartGame,
     loadGame,
     setAuthDialogOpen: setGameAuthDialogOpen,
     setShopDialogOpen,
     shopDialogOpen,
-    flags,
     isPaused,
     togglePause,
     setShowEndScreen, // Added this line
@@ -75,12 +72,6 @@ export default function GameFooter() {
         variant: "destructive",
       });
     }
-  };
-
-  const handleSaveGame = async () => {
-    setGlowingButton("save");
-    await manualSave();
-    setTimeout(() => setGlowingButton(null), 500);
   };
 
   const handleRestartGame = async () => {

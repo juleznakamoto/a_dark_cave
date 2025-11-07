@@ -143,7 +143,7 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0 opacity-50">
+          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0">
               {useLimelightNav ? (
                 // Alternative LimelightNav design
                 <LimelightNav
@@ -162,7 +162,7 @@ export default function GameContainer() {
                 <div className="flex space-x-4">
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "cave" ? "font-bold opacity-100" : "opacity-50"
+                      activeTab === "cave" ? "font-bold opacity-100" : "opacity-60"
                     }`}
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"
@@ -173,7 +173,7 @@ export default function GameContainer() {
                   {flags.villageUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "village" ? "font-bold opacity-100" : "opacity-50"
+                        activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
                       } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("village")}
                       data-testid="tab-village"
@@ -185,7 +185,7 @@ export default function GameContainer() {
                   {flags.forestUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "forest" ? "font-bold opacity-100" : "opacity-50"
+                        activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
                       } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("forest")}
                       data-testid="tab-forest"
@@ -197,7 +197,7 @@ export default function GameContainer() {
                   {flags.bastionUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "bastion" ? "font-bold opacity-100" : "opacity-50"
+                        activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
                       } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("bastion")}
                       data-testid="tab-bastion"

@@ -382,7 +382,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         {!isLoading && !clientSecret ? (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="shop">Shop</TabsTrigger>
+              <TabsTrigger value="shop">For Sale</TabsTrigger>
               <TabsTrigger value="purchases">Purchases</TabsTrigger>
             </TabsList>
 
@@ -467,7 +467,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 {purchasedItems.length === 0 &&
                 Object.keys(gameState.feastPurchases || {}).length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    No purchases yet. Visit the Shop tab to buy items.
+                    No purchases yet. Visit the For Sale tab to buy items.
                   </div>
                 ) : (
                   <div className="pr-4">

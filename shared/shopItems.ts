@@ -122,14 +122,14 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_1: {
     id: 'great_feast_1',
     name: '1 Great Feast',
-    description: 'Boost the production of your village by 4x for 30 minutes',
+    description: 'Boost the village production by 4x for 30 minutes',
     price: 99, // 0.99 €
     rewards: {
       feastActivations: 1,
     },
     canPurchaseMultipleTimes: true,
     category: 'feast',
-    activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
+    activationMessage: 'A Great Feast has begun!',
     symbol: '✦',
     symbolColor: 'text-orange-600',
   },
@@ -137,14 +137,14 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_5: {
     id: 'great_feast_5',
     name: '5 Great Feasts',
-    description: 'Boost the production of your village by 4x for 30 minutes (5 times)',
+    description: 'Boost the village production by 4x for 30 minutes (5 times)',
     price: 249, // 2.49 €
     rewards: {
       feastActivations: 5,
     },
     canPurchaseMultipleTimes: true,
     category: 'feast',
-    activationMessage: 'A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.',
+    activationMessage: 'A Great Feast has begun!',
     symbol: '✦✦✦✦✦',
     symbolColor: 'text-orange-600',
   },
