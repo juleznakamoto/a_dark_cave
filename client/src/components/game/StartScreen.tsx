@@ -122,6 +122,15 @@ export default function StartScreen() {
           </Tooltip>
         </TooltipProvider>
       )}
+
+      <div className="absolute bottom-4 right-4 z-10 flex gap-4 text-xs text-muted-foreground">
+        <a href="/privacy" className="hover:text-foreground transition-colors">
+          Privacy
+        </a>
+        <a href="/imprint" className="hover:text-foreground transition-colors">
+          Imprint
+        </a>
+      </div>
     </div>
   );
 }
