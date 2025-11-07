@@ -21,6 +21,7 @@ import {
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
+import { audioManager } from "@/lib/audio";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -41,12 +42,10 @@ export default function EventDialog({
   onClose,
   event,
 }: EventDialogProps) {
-  const { applyEventChoice } = useGameStore();
+  const { applyEventChoice, isMuted } = useGameStore();
   const gameState = useGameStore();
   const hasScriptorium = gameState.buildings.scriptorium > 0;
   const mobileTooltip = useMobileButtonTooltip();
-  const { flags } = useGameStore(); // Access flags from game state
-  const { isMuted } = gameState.audioManager; // Access isMuted from audioManager
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -194,12 +193,12 @@ export default function EventDialog({
   // Update EventDialog to use state-based mute check for cube sounds
   useEffect(() => {
     if (isOpen && isCubeEvent && !isMuted()) {
-      gameState.audioManager.playLoopingSound("whisperingCube", 0.01);
+      audioManager.playLoopingSound("whisperingCube", 0.01);
     }
 
     return () => {
       if (isCubeEvent) {
-        gameState.audioManager.pauseSound("whisperingCube");
+        audioManager.stopLoopingSound("whisperingCube");
       }
     };
   }, [isOpen, isCubeEvent, isMuted]); // Re-run effect when mute state changes
