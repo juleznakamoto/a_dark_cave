@@ -41,6 +41,7 @@ const resourceTrades = [
     label: "100 Steel",
     give: "steel",
     giveAmount: 100,
+    condition: (state: GameState) => true, // Always available
     costs: [
       { resource: "wood", amounts: [750, 1000, 1250] },
       { resource: "stone", amounts: [1000] },
@@ -53,6 +54,7 @@ const resourceTrades = [
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
+    condition: (state: GameState) => true,
     costs: [
       { resource: "bones", amounts: [400, 500, 600] },
       { resource: "wood", amounts: [500, 600] },
@@ -68,6 +70,7 @@ const resourceTrades = [
     label: "50 Obsidian",
     give: "obsidian",
     giveAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     costs: [
       { resource: "wood", amounts: [1500, 1750, 2000] },
       { resource: "silver", amounts: [20] },
@@ -79,6 +82,7 @@ const resourceTrades = [
     label: "25 Obsidian",
     give: "obsidian",
     giveAmount: 25,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
     costs: [
       { resource: "bones", amounts: [1000, 1250, 1500] },
       { resource: "fur", amounts: [1000, 1250, 1500] },
@@ -91,6 +95,7 @@ const resourceTrades = [
     label: "25 Adamant",
     give: "adamant",
     giveAmount: 25,
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
     costs: [
       { resource: "gold", amounts: [10, 15] },
       { resource: "silver", amounts: [30] },
@@ -105,6 +110,7 @@ const resourceTrades = [
     label: "500 Wood",
     give: "wood",
     giveAmount: 500,
+    condition: (state: GameState) => true,
     costs: [
       { resource: "silver", amounts: [5] },
       { resource: "iron", amounts: [25] },
@@ -117,6 +123,7 @@ const resourceTrades = [
     label: "1000 Wood",
     give: "wood",
     giveAmount: 1000,
+    condition: (state: GameState) => state.buildings.woodenHut >= 6,
     costs: [
       { resource: "gold", amounts: [5] },
       { resource: "silver", amounts: [10] },
@@ -130,6 +137,7 @@ const resourceTrades = [
     label: "500 Food",
     give: "food",
     giveAmount: 500,
+    condition: (state: GameState) => true,
     costs: [
       { resource: "gold", amounts: [5] },
       { resource: "silver", amounts: [10] },
@@ -140,6 +148,7 @@ const resourceTrades = [
     label: "1000 Food",
     give: "food",
     giveAmount: 1000,
+    condition: (state: GameState) => state.buildings.woodenHut >= 6,
     costs: [
       { resource: "gold", amounts: [10] },
       { resource: "silver", amounts: [20] },
@@ -150,6 +159,7 @@ const resourceTrades = [
     label: "25 Gold",
     give: "gold",
     giveAmount: 25,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7,
     costs: [
       { resource: "steel", amounts: [200] },
       { resource: "wood", amounts: [2500] },
@@ -164,6 +174,7 @@ const resourceTrades = [
     label: "50 Silver",
     give: "silver",
     giveAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7,
     costs: [
       { resource: "steel", amounts: [200] },
       { resource: "wood", amounts: [2500] },
@@ -177,6 +188,7 @@ const resourceTrades = [
     label: "50 Gold",
     give: "gold",
     giveAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 10,
     costs: [
       { resource: "steel", amounts: [500] },
       { resource: "wood", amounts: [5000] },
@@ -193,6 +205,7 @@ const resourceTrades = [
     label: "100 Silver",
     give: "silver",
     giveAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 10,
     costs: [
       { resource: "steel", amounts: [500] },
       { resource: "wood", amounts: [5000] },
@@ -212,6 +225,7 @@ const toolTrades = [
     label: "Reinforced Rope",
     give: "tool",
     giveItem: "reinforced_rope",
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
     costs: [{ resource: "gold", amounts: [250] }],
     message:
       "You purchase the reinforced rope. This rope can withstand tremendous strain and reach places in the deepest cave chambers.",
@@ -221,6 +235,7 @@ const toolTrades = [
     label: "Occultists's Map",
     give: "tool",
     giveItem: "occultist_map",
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
     costs: [{ resource: "gold", amounts: [250] }],
     message:
       "As you buy the occultists's map the merchant whispers: 'An old occultist hid his secrets in a chamber deep in the cave. This map will guide you.'",
@@ -230,6 +245,7 @@ const toolTrades = [
     label: "Giant Trap",
     give: "tool",
     giveItem: "giant_trap",
+    condition: (state: GameState) => state.buildings.woodenHut >= 6,
     costs: [{ resource: "gold", amounts: [100] }],
     message:
       "As you purchase the giant trap, the merchant grins: 'This can trap something gigantic in the woods. Use it wisely.'",
@@ -239,6 +255,7 @@ const toolTrades = [
     label: "Arbalest Schematic",
     give: "schematic",
     giveItem: "arbalest_schematic",
+    condition: (state: GameState) => state.buildings.woodenHut >= 9,
     costs: [{ resource: "gold", amounts: [500] }],
     message:
       "You purchase the arbalest schematic. The merchant unfurls an intricate blueprint: 'A design from a master engineer. With this, you can craft a powerful weapon.'",
@@ -248,6 +265,7 @@ const toolTrades = [
     label: "Nightshade Bow Schematic",
     give: "schematic",
     giveItem: "nightshade_bow_schematic",
+    condition: (state: GameState) => state.buildings.woodenHut >= 12,
     costs: [{ resource: "gold", amounts: [1000] }],
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
@@ -257,6 +275,7 @@ const toolTrades = [
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
   const availableResourceTrades = resourceTrades
+    .filter((trade) => trade.condition(state)) // Filter by condition
     .sort(() => Math.random() - 0.5) // Shuffle
     .slice(0, 4) // Take first 4
     .map((trade) => {
@@ -293,6 +312,10 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
   const availableToolTrades = toolTrades
     .filter((trade) => {
+      // Check condition first
+      if (!trade.condition(state)) {
+        return false;
+      }
       // Don't offer tools/relics/schematics that the player already owns
       if (
         trade.give === "tool" &&
