@@ -21,10 +21,6 @@ if (isDev) {
   supabaseAnonKey = 'placeholder-key';
 }
 
-console.log('Environment:', isDev ? 'Development' : 'Production');
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key:', supabaseAnonKey ? 'Present' : 'Missing');
-
 // Create a wrapper object that will hold the client
 const supabaseWrapper = {
   client: createClient(supabaseUrl, supabaseAnonKey, {
