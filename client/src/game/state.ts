@@ -84,6 +84,8 @@ interface GameStore extends GameState {
   updateLoopProgress: (progress: number) => void;
   setGameLoopActive: (isActive: boolean) => void;
   togglePause: () => void;
+  toggleMute: () => void; // New method to toggle mute state
+  isMuted: () => boolean; // New method to check mute state
 }
 
 // Helper functions
@@ -572,7 +574,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   addLogEntry: (entry: LogEntry) => {
     if (entry.type === "event") {
-      audioManager.playSound("event", 0.02);
+      // Check mute state before playing sound
+      if (!get().isMuted()) {
+        audioManager.playSound("event", 0.02);
+      }
     }
 
     set((state) => ({
@@ -593,14 +598,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       EventManager.checkEvents(state);
 
     if (newLogEntries.length > 0) {
-      let logMessage = null;
       let combatData = null;
       const updatedChanges = { ...stateChanges };
-
-      if (updatedChanges._logMessage) {
-        logMessage = updatedChanges._logMessage;
-        delete updatedChanges._logMessage;
-      }
 
       if (updatedChanges._combatData) {
         combatData = updatedChanges._combatData;
@@ -611,41 +610,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...updatedChanges,
       }));
-
-      // Show logMessage in dialog if present (with 200ms delay)
-      if (logMessage) {
-        // Add the log message to the game log immediately
-        const logEntry: LogEntry = {
-          id: `event-result-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: "system",
-        };
-
-        set((prevState) => ({
-          ...prevState,
-          log: [...prevState.log, logEntry].slice(-10),
-        }));
-
-        setTimeout(() => {
-          const messageEntry: LogEntry = {
-            id: `log-message-${Date.now()}`,
-            message: logMessage,
-            timestamp: Date.now(),
-            type: "event",
-            title: newLogEntries[0]?.title, // Use the original event's title
-            choices: [
-              {
-                id: "acknowledge",
-                label: "Continue",
-                effect: () => ({}),
-              },
-            ],
-            skipSound: true, // Don't play sound for log messages
-          };
-          get().setEventDialog(true, messageEntry);
-        }, 500);
-      }
 
       // Handle combat dialog for attack waves
       if (combatData) {
@@ -736,10 +700,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
           madnessEventIds.includes(event.id.split("-")[0]),
         );
 
-        audioManager.playSound(
-          hasMadnessEvent ? "eventMadness" : "event",
-          0.02,
-        );
+        // Check mute state before playing sound
+        if (!get().isMuted()) {
+          audioManager.playSound(
+            hasMadnessEvent ? "eventMadness" : "event",
+            0.02,
+          );
+        }
       }
     }
   },
@@ -758,19 +725,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
     );
 
     let combatData = null;
-    let logMessage = null;
     const updatedChanges = { ...changes };
 
     // Extract combat data if present
     if (updatedChanges._combatData) {
       combatData = updatedChanges._combatData;
       delete updatedChanges._combatData;
-    }
-
-    // Extract _logMessage if present
-    if (updatedChanges._logMessage) {
-      logMessage = updatedChanges._logMessage;
-      delete updatedChanges._logMessage;
     }
 
     // Apply state changes FIRST - this includes relics, resources, etc.
@@ -793,31 +753,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
 
       StateManager.schedulePopulationUpdate(get);
-    }
-
-    // Only create a log message dialog if there's a _logMessage but no combat
-    // Note: _logMessage is for dialog feedback only, not for the main log
-    if (logMessage && !combatData) {
-      get().setEventDialog(false);
-      setTimeout(() => {
-        const messageEntry: LogEntry = {
-          id: `log-message-${Date.now()}`,
-          message: logMessage,
-          timestamp: Date.now(),
-          type: "event",
-          title: currentLogEntry?.title, // Use the original event's title
-          choices: [
-            {
-              id: "acknowledge",
-              label: "Continue",
-              effect: () => ({}),
-            },
-          ],
-          skipSound: true, // Don't play sound for log messages
-        };
-        get().setEventDialog(true, messageEntry);
-      }, 200);
-      return; // Don't proceed to combat dialog
     }
 
     // Handle combat dialog
@@ -945,7 +880,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       ];
 
       const isMadnessEvent = madnessEventIds.includes(eventId);
-      audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      // Check mute state before playing sound
+      if (!get().isMuted()) {
+        audioManager.playSound(isMadnessEvent ? "eventMadness" : "event", 0.02);
+      }
     }
   },
 
@@ -1004,4 +942,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return newState;
     });
   },
-}));
+
+  toggleMute: () => {
+    set((state) => {
+      const newMutedState = !state.flags.isMuted;
+
+      if (newMutedState) {
+        // Stop all sounds when muting
+        audioManager.pauseAllSounds();
+      } else {
+        // Resume sounds when unmuting
+        audioManager.resumeSounds();
+      }
+
+      return {
+        flags: {
+          ...state.flags,
+          isMuted: newMutedState,
+        },
+      };
+    });
+  },
+
+  isMuted: () => {
+    return get().flags.isMuted;
+  },
+});

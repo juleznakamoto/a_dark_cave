@@ -61,7 +61,7 @@ export function startGameLoop() {
     if (
       state.relics.whispering_cube &&
       !state.previousState?.relics.whispering_cube &&
-      !audioManager.getMutedState()
+      !state.flags.isMuted
     ) {
       audioManager.startBackgroundMusic(0.02);
     }
@@ -614,7 +614,7 @@ function handleStrangerApproach() {
     state.updatePopulation();
 
     // Play new villager sound
-    audioManager.playSound("newVillager", 0.02);
+    audioManager.safePlaySound("newVillager", 0.02, () => state.flags.isMuted);
   }
 }
 

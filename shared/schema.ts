@@ -75,6 +75,7 @@ export const gameStateSchema = z.object({
       needsNewWell: z.boolean().default(false),
       portalBlasted: z.boolean().default(false),
       stoneAxeTooltipShown: z.boolean().default(false),
+      isMuted: z.boolean().default(false),
     })
     .default({}),
   schematics: z

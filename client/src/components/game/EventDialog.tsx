@@ -45,6 +45,7 @@ export default function EventDialog({
   const gameState = useGameStore();
   const hasScriptorium = gameState.buildings.scriptorium > 0;
   const mobileTooltip = useMobileButtonTooltip();
+  const { flags } = useGameStore(); // Access flags from game state
 
   const [timeRemaining, setTimeRemaining] = useState<number | null>(null);
   const [totalTime, setTotalTime] = useState<number>(0);
@@ -169,7 +170,7 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
-        
+
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -188,6 +189,20 @@ export default function EventDialog({
 
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
+
+  // Update EventDialog to use state-based mute check for cube sound
+  useEffect(() => {
+    if (isOpen && isCubeEvent) {
+      // Use safePlayLoopingSound which checks the mute state from flags
+      gameState.audioManager.safePlayLoopingSound("whisperingCube", 0.02, () => flags.isMuted);
+    } else {
+      gameState.audioManager.stopLoopingSound("whisperingCube");
+    }
+
+    return () => {
+      gameState.audioManager.stopLoopingSound("whisperingCube");
+    };
+  }, [isOpen, isCubeEvent, flags.isMuted]); // Re-run effect when mute state changes
 
   return (
     <>
@@ -252,7 +267,7 @@ export default function EventDialog({
             {eventChoices.map((choice) => {
               const cost = choice.cost;
               let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
-              
+
               // Check if player can afford the cost for woodcutter events
               if (cost && cost.includes('food')) {
                 const foodCost = parseInt(cost.match(/\d+/)?.[0] || '0');
@@ -260,7 +275,7 @@ export default function EventDialog({
                   isDisabled = true;
                 }
               }
-              
+
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -288,7 +303,7 @@ export default function EventDialog({
                   )}
                 </Button>
               );
-              
+
               return cost ? (
                 <TooltipProvider key={choice.id}>
                   <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
