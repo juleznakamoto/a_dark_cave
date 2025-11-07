@@ -127,7 +127,7 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover"
             >
               <span className="material-symbols-rounded text-base">
-                {isMuted ? "volume_off" : "volume_up"}
+                {isMuted ? "volume_mute" : "volume_up"}
               </span>
             </Button>
             {currentUser ? (
