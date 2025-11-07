@@ -271,32 +271,18 @@ export default function VillagePanel() {
       return productionText ? ` ${productionText}` : "";
     };
 
-    const handleUnassignStart = (e: React.MouseEvent | React.TouchEvent) => {
-      if ('touches' in e) {
-        e.preventDefault(); // Prevent mouse events from firing on touch
-      }
-      if (currentCount > 0) {
-        startHold(() => unassignVillager(jobId));
-      }
-    };
-
-    const handleAssignStart = (e: React.MouseEvent | React.TouchEvent) => {
-      if ('touches' in e) {
-        e.preventDefault(); // Prevent mouse events from firing on touch
-      }
-      if (villagers.free > 0) {
-        startHold(() => assignVillager(jobId));
-      }
-    };
-
     return (
       <div key={jobId} className="flex items-center justify-between">
         <div className="flex items-center gap-1">
           <Button
-            onMouseDown={handleUnassignStart}
+            onMouseDown={() =>
+              currentCount > 0 && startHold(() => unassignVillager(jobId))
+            }
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={handleUnassignStart}
+            onTouchStart={() =>
+              currentCount > 0 && startHold(() => unassignVillager(jobId))
+            }
             onTouchEnd={stopHold}
             disabled={currentCount === 0}
             variant="ghost"
@@ -309,10 +295,14 @@ export default function VillagePanel() {
             <AnimatedCounter value={currentCount} />
           </div>
           <Button
-            onMouseDown={handleAssignStart}
+            onMouseDown={() =>
+              villagers.free > 0 && startHold(() => assignVillager(jobId))
+            }
             onMouseUp={stopHold}
             onMouseLeave={stopHold}
-            onTouchStart={handleAssignStart}
+            onTouchStart={() =>
+              villagers.free > 0 && startHold(() => assignVillager(jobId))
+            }
             onTouchEnd={stopHold}
             disabled={villagers.free === 0}
             variant="ghost"
