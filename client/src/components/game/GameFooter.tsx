@@ -126,7 +126,9 @@ export default function GameFooter() {
               data-testid="button-toggle-volume"
               className="px-2 py-1 text-xs hover"
             >
-              {isMuted ? "🔇" : "🔊"}
+              <span className="material-symbols-rounded text-base">
+                {isMuted ? "no_sound" : "volume_up"}
+              </span>
             </Button>
             {currentUser ? (
               <Button
