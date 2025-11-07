@@ -613,7 +613,7 @@ function handleStrangerApproach() {
     state.updatePopulation();
 
     // Play new villager sound
-    audioManager.safePlaySound("newVillager", 0.02, () => state.flags.isMuted);
+    audioManager.playSound("newVillager", 0.02);
   }
 }
 

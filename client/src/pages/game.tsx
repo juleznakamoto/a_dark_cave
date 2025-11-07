@@ -14,27 +14,24 @@ export default function Game() {
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
-    const initializeGame = async () => {
-      // Load saved game or initialize with defaults
-      const savedState = await loadGame();
-      if (savedState) {
-        initialize(savedState);
-
-        // If game is already started (fire is lit), flag that music should start on user gesture
-        if (savedState.story?.seen?.fireLit) {
-          setShouldStartMusic(true);
-        }
+    const initGame = async () => {
+      try {
+        await loadGame();
+        // Set up audio manager to check mute state from game store
+        const { audioManager } = await import("@/lib/audio");
+        audioManager.setMutedStateGetter(() => useGameStore.getState().flags.isMuted);
+        setIsInitialized(true);
+        startGameLoop();
+      } catch (error) {
+        console.error("Failed to initialize game:", error);
       }
-
-      // Mark as initialized
-      setIsInitialized(true);
-
-      // Start game loop
-      startGameLoop();
     };
+    initGame();
 
-    initializeGame();
-  }, [initialize]);
+    return () => {
+      stopGameLoop();
+    };
+  }, [loadGame]);
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {

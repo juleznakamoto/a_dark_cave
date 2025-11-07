@@ -8,8 +8,17 @@ export class AudioManager {
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
+  private getMutedState: (() => boolean) | null = null;
 
   private constructor() {}
+
+  setMutedStateGetter(getter: () => boolean): void {
+    this.getMutedState = getter;
+  }
+
+  private isMuted(): boolean {
+    return this.getMutedState ? this.getMutedState() : false;
+  }
 
   static getInstance(): AudioManager {
     if (!AudioManager.instance) {
@@ -84,10 +93,10 @@ export class AudioManager {
     }
   }
 
-  async playSound(name: string, volume: number = 1, getMutedState?: () => boolean): Promise<void> {
+  async playSound(name: string, volume: number = 1): Promise<void> {
     try {
-      // Check mute state if provided
-      if (getMutedState && getMutedState()) return;
+      // Check mute state
+      if (this.isMuted()) return;
 
       // Initialize audio on first play attempt
       if (!this.initialized) {
@@ -119,10 +128,10 @@ export class AudioManager {
     }
   }
 
-  async playLoopingSound(name: string, volume: number = 1, getMutedState?: () => boolean): Promise<void> {
+  async playLoopingSound(name: string, volume: number = 1): Promise<void> {
     try {
-      // Check mute state if provided
-      if (getMutedState && getMutedState()) return;
+      // Check mute state
+      if (this.isMuted()) return;
 
       // Stop any existing loop for this sound
       this.stopLoopingSound(name);
@@ -196,10 +205,10 @@ export class AudioManager {
     console.log('Sound URLs registered for lazy loading');
   }
 
-  async startBackgroundMusic(volume: number = 1, getMutedState?: () => boolean): Promise<void> {
+  async startBackgroundMusic(volume: number = 1): Promise<void> {
     this.backgroundMusicVolume = volume;
     this.wasBackgroundMusicPlaying = true;
-    await this.playLoopingSound('backgroundMusic', volume, getMutedState);
+    await this.playLoopingSound('backgroundMusic', volume);
   }
 
   pauseAllSounds(): void {

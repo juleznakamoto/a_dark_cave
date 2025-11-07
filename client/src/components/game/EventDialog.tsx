@@ -193,7 +193,7 @@ export default function EventDialog({
   // Play cube sound effect with mute check handled by audio manager
   useEffect(() => {
     if (isOpen && isCubeEvent) {
-      audioManager.playLoopingSound("whisperingCube", 0.01, () => gameState.flags.isMuted);
+      audioManager.playLoopingSound("whisperingCube", 0.01);
     }
 
     return () => {
@@ -201,7 +201,7 @@ export default function EventDialog({
         audioManager.stopLoopingSound("whisperingCube");
       }
     };
-  }, [isOpen, isCubeEvent, gameState.flags.isMuted]);
+  }, [isOpen, isCubeEvent]);
 
   return (
     <>
