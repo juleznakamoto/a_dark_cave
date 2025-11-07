@@ -185,6 +185,26 @@ const resourceTrades = [
       { resource: "adamant", amounts: [20] },
     ],
   },
+  {
+    id: "trade_fur_for_gold",
+    label: "5 Gold",
+    give: "gold",
+    giveAmount: 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 2,
+    costs: [
+      { resource: "fur", amounts: [1000, 1200, 1500] },
+    ],
+  },
+  {
+    id: "trade_leather_for_gold",
+    label: "10 Gold",
+    give: "gold",
+    giveAmount: 10,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    costs: [
+      { resource: "leather", amounts: [800, 1000, 1200] },
+    ],
+  },
 ];
 
 const toolTrades = [
