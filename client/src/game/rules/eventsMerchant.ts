@@ -270,6 +270,26 @@ const toolTrades = [
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
   },
+  {
+    id: "trade_compound_bow",
+    label: "Compound Bow",
+    give: "tool",
+    giveItem: "compound_bow",
+    condition: (state: GameState) => state.buildings.woodenHut >= 8,
+    costs: [{ resource: "gold", amounts: [1250] }],
+    message:
+      "You purchase the compound bow. The merchant nods approvingly: 'High precision weapon from the vanished civilization. It will serve you well.'",
+  },
+  {
+    id: "trade_natharit_pickaxe",
+    label: "Natharit Pickaxe",
+    give: "tool",
+    giveItem: "natharit_pickaxe",
+    condition: (state: GameState) => state.buildings.woodenHut >= 9,
+    costs: [{ resource: "gold", amounts: [1750] }],
+    message:
+      "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
+  },
 ];
 
 // Function to generate fresh merchant choices
@@ -316,10 +336,16 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       if (!trade.condition(state)) {
         return false;
       }
-      // Don't offer tools/relics/schematics that the player already owns
+      // Don't offer tools/weapons/relics/schematics that the player already owns
       if (
         trade.give === "tool" &&
         state.tools[trade.giveItem as keyof typeof state.tools]
+      ) {
+        return false;
+      }
+      if (
+        trade.give === "weapon" &&
+        state.weapons[trade.giveItem as keyof typeof state.weapons]
       ) {
         return false;
       }
@@ -367,6 +393,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
             if (trade.give === "tool") {
               result.tools = { ...state.tools, [trade.giveItem]: true };
+            } else if (trade.give === "weapon") {
+              result.weapons = { ...state.weapons, [trade.giveItem]: true };
             } else if (trade.give === "relic") {
               result.relics = { ...state.relics, [trade.giveItem]: true };
             } else if (trade.give === "schematic") {

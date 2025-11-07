@@ -162,36 +162,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   //   activationMessage: 'Activated Dwarven Hammer! Rewards have been added to your inventory.',
   // },
 
-  compound_bow: {
-    id: 'compound_bow',
-    name: 'Compound Bow',
-    description: 'High precision weapon from the vanished civilization',
-    price: 199, // 1.99 €
-    rewards: {
-      weapons: ['compound_bow'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'weapon',
-    activationMessage: 'Compound Bow has been added to your inventory.',
-    symbol: '➳',
-    symbolColor: 'text-green-600',
-  },
-  
-  natharit_pickaxe: {
-    id: 'natharit_pickaxe',
-    name: 'Natharit Pickaxe',
-    description: 'Extremely sturdy pickaxe of unknown material with exceptional quality',
-    price: 299, // 2.99 €
-    rewards: {
-      tools: ['natharit_pickaxe'],
-    },
-    canPurchaseMultipleTimes: false,
-    category: 'tool',
-    activationMessage: 'Natharit Pickaxe has been added to your inventory.',
-    symbol: '⛏',
-    symbolColor: 'text-purple-600',
-  },
-
   // xxx_axe: {
   //   id: 'xxx_axe',
   //   name: 'Adamant Axe',
