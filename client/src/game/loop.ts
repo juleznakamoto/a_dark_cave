@@ -57,14 +57,6 @@ export function startGameLoop() {
       useGameStore.setState({ isPausedPreviously: false });
     }
 
-    // Start background music when whispering cube is found
-    if (
-      state.relics.whispering_cube &&
-      !state.previousState?.relics.whispering_cube
-    ) {
-      audioManager.startBackgroundMusic(0.02);
-    }
-
     if (!isDialogOpen) {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;

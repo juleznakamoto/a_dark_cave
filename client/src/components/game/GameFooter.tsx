@@ -20,8 +20,6 @@ export default function GameFooter() {
     isPaused,
     togglePause,
     setShowEndScreen, // Added this line
-    flags,
-    toggleMute,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -29,6 +27,7 @@ export default function GameFooter() {
     id: string;
     email: string;
   } | null>(null);
+  const [isMuted, setIsMuted] = useState(false);
   const { toast } = useToast();
 
   // Trigger glow animation when pause state changes
@@ -93,7 +92,13 @@ export default function GameFooter() {
   };
 
   const toggleVolume = () => {
-    toggleMute();
+    if (isMuted) {
+      audioManager.resumeSounds();
+      setIsMuted(false);
+    } else {
+      audioManager.pauseAllSounds();
+      setIsMuted(true);
+    }
   };
 
   return (
@@ -122,8 +127,8 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover"
             >
               <img
-                src={flags.isMuted ? "/volume_mute.png" : "/volume_up.png"}
-                alt={flags.isMuted ? "Unmute" : "Mute"}
+                src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
+                alt={isMuted ? "Unmute" : "Mute"}
                 className="w-4 h-4 opacity-60"
                 style={{ filter: 'invert(1)' }}
               />

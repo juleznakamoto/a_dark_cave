@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
-import { startGameLoop, stopGameLoop } from "@/game/loop";
+import { startGameLoop } from "@/game/loop";
 import { loadGame } from "@/game/save";
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
@@ -14,24 +14,27 @@ export default function Game() {
   const [shouldStartMusic, setShouldStartMusic] = useState(false);
 
   useEffect(() => {
-    const initGame = async () => {
-      try {
-        await loadGame();
-        // Set up audio manager to check mute state from game store
-        const { audioManager } = await import("@/lib/audio");
-        audioManager.setMutedStateGetter(() => useGameStore.getState().flags.isMuted);
-        setIsInitialized(true);
-        startGameLoop();
-      } catch (error) {
-        console.error("Failed to initialize game:", error);
-      }
-    };
-    initGame();
+    const initializeGame = async () => {
+      // Load saved game or initialize with defaults
+      const savedState = await loadGame();
+      if (savedState) {
+        initialize(savedState);
 
-    return () => {
-      stopGameLoop();
+        // If game is already started (fire is lit), flag that music should start on user gesture
+        if (savedState.story?.seen?.fireLit) {
+          setShouldStartMusic(true);
+        }
+      }
+
+      // Mark as initialized
+      setIsInitialized(true);
+
+      // Start game loop
+      startGameLoop();
     };
-  }, [loadGame]);
+
+    initializeGame();
+  }, [initialize]);
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {

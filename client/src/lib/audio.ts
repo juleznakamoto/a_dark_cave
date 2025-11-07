@@ -8,17 +8,8 @@ export class AudioManager {
   private loopingSources: Map<string, AudioBufferSourceNode> = new Map();
   private backgroundMusicVolume: number = 1;
   private wasBackgroundMusicPlaying: boolean = false;
-  private getMutedState: (() => boolean) | null = null;
 
   private constructor() {}
-
-  setMutedStateGetter(getter: () => boolean): void {
-    this.getMutedState = getter;
-  }
-
-  private isMuted(): boolean {
-    return this.getMutedState ? this.getMutedState() : false;
-  }
 
   static getInstance(): AudioManager {
     if (!AudioManager.instance) {
@@ -95,9 +86,6 @@ export class AudioManager {
 
   async playSound(name: string, volume: number = 1): Promise<void> {
     try {
-      // Check mute state
-      if (this.isMuted()) return;
-
       // Initialize audio on first play attempt
       if (!this.initialized) {
         this.initialized = true;
@@ -130,9 +118,6 @@ export class AudioManager {
 
   async playLoopingSound(name: string, volume: number = 1): Promise<void> {
     try {
-      // Check mute state
-      if (this.isMuted()) return;
-
       // Stop any existing loop for this sound
       this.stopLoopingSound(name);
 

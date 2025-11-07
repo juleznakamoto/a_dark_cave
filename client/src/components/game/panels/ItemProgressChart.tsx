@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
@@ -507,9 +506,10 @@ export default function ItemProgressChart() {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
-            <g key={`ring-${ringIndex}`}>
+            <>
               {/* Background ring */}
               <Pie
+                key={`background-${ringIndex}`}
                 data={ring.backgroundSegments}
                 cx="50%"
                 cy="50%"
@@ -535,6 +535,7 @@ export default function ItemProgressChart() {
               {/* Progress segments */}
               {ring.progressSegments.map((segment, segIndex) => (
                 <Pie
+                  key={`progress-${ringIndex}-${segIndex}`}
                   data={[{ value: 1 }]}
                   cx="50%"
                   cy="50%"
@@ -555,6 +556,7 @@ export default function ItemProgressChart() {
 
               {/* Foreground ring */}
               <Pie
+                key={`foreground-${ringIndex}`}
                 data={ring.foregroundSegments}
                 cx="50%"
                 cy="50%"
@@ -570,7 +572,7 @@ export default function ItemProgressChart() {
                 isAnimationActive={false}
                 style={{ outline: "none" }}
               ></Pie>
-            </g>
+            </>
           ))}
         </PieChart>
       </ResponsiveContainer>

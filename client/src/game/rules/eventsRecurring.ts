@@ -165,13 +165,15 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   fireStorm: {
     id: "fireStorm",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 10,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
     timeProbability: 50,
     repeatable: true,
     message: [
-      "A raging fire sweeps through the village, bringing death and destruction.",
-      "A violent storm tears through the settlement, claiming homes and souls.",
+      "A raging fire sweeps through the village in the night. By morning, wooden huts are reduced to ash.",
+      "Flames consume the village. Screams pierce the night as fire devours wooden structures.",
+      "A violent storm tears through the settlement. Thunder roars as wooden huts are ripped apart by the wind.",
+      "The storm's fury is relentless. Wooden huts collapse under torrential rain and howling winds.",
     ],
     triggered: false,
     priority: 2,

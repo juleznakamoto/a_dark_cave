@@ -21,7 +21,6 @@ import {
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
-import { audioManager } from "@/lib/audio";
 
 interface EventDialogProps {
   isOpen: boolean;
@@ -170,7 +169,7 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
-
+        
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -189,17 +188,6 @@ export default function EventDialog({
 
   const isMerchantEvent = event?.id.includes("merchant");
   const isCubeEvent = event?.id.includes("cube");
-
-  // Play cube sound effect with mute check handled by audio manager
-  useEffect(() => {
-    if (isOpen && isCubeEvent) {
-      audioManager.playLoopingSound("whisperingCube", 0.01);
-    }
-
-    return () => {
-      audioManager.stopLoopingSound("whisperingCube");
-    };
-  }, [isOpen, isCubeEvent]);
 
   return (
     <>
@@ -264,7 +252,7 @@ export default function EventDialog({
             {eventChoices.map((choice) => {
               const cost = choice.cost;
               let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
-
+              
               // Check if player can afford the cost for woodcutter events
               if (cost && cost.includes('food')) {
                 const foodCost = parseInt(cost.match(/\d+/)?.[0] || '0');
@@ -272,7 +260,7 @@ export default function EventDialog({
                   isDisabled = true;
                 }
               }
-
+              
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -300,7 +288,7 @@ export default function EventDialog({
                   )}
                 </Button>
               );
-
+              
               return cost ? (
                 <TooltipProvider key={choice.id}>
                   <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
