@@ -967,4 +967,4 @@ export const useGameStore = create<GameStore>((set, get) => ({
   isMuted: () => {
     return get().flags.isMuted;
   },
-});
+}));
