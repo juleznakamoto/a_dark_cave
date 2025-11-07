@@ -161,8 +161,8 @@ export default function GameContainer() {
                 // Standard button design
                 <div className="flex space-x-4">
                   <button
-                    className={`py-2 text-sm bg-transparent  ${
-                      activeTab === "cave" ? "font-bold opacity-100" : ""
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "cave" ? "font-bold opacity-100" : "opacity-50"
                     }`}
                     onClick={() => setActiveTab("cave")}
                     data-testid="tab-cave"
@@ -173,7 +173,7 @@ export default function GameContainer() {
                   {flags.villageUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "village" ? "font-bold " : ""
+                        activeTab === "village" ? "font-bold opacity-100" : "opacity-50"
                       } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("village")}
                       data-testid="tab-village"
@@ -185,7 +185,7 @@ export default function GameContainer() {
                   {flags.forestUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "forest" ? "font-bold " : ""
+                        activeTab === "forest" ? "font-bold opacity-100" : "opacity-50"
                       } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("forest")}
                       data-testid="tab-forest"
@@ -197,7 +197,7 @@ export default function GameContainer() {
                   {flags.bastionUnlocked && (
                     <button
                       className={`py-2 text-sm bg-transparent ${
-                        activeTab === "bastion" ? "font-bold " : ""
+                        activeTab === "bastion" ? "font-bold opacity-100" : "opacity-50"
                       } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
                       onClick={() => setActiveTab("bastion")}
                       data-testid="tab-bastion"
