@@ -1,82 +1,95 @@
-import { createClient } from '@supabase/supabase-js';
 
-// In development, use Vite env vars
-// In production, fetch from /api/config endpoint
-const isDev = import.meta.env.DEV;
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
-let supabaseUrl: string;
-let supabaseAnonKey: string;
+const isDev = import.meta.env.MODE === 'development';
 
-if (isDev) {
-  supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
-  supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+// In production, we need to wait for config before creating the client
+let supabaseClient: SupabaseClient | null = null;
+let initPromise: Promise<SupabaseClient> | null = null;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    throw new Error('Supabase configuration is missing in development. Please set VITE_SUPABASE_URL_DEV and VITE_SUPABASE_ANON_KEY_DEV in Replit Secrets.');
-  }
-} else {
-  // In production, these will be set after fetching from server
-  // Use placeholder values initially
-  supabaseUrl = 'https://placeholder.supabase.co';
-  supabaseAnonKey = 'placeholder-key';
-}
+// Function to initialize Supabase
+async function initializeSupabase(): Promise<SupabaseClient> {
+  if (isDev) {
+    // In development, use environment variables directly
+    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
+    const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
 
-// Create a wrapper object that will hold the client
-const supabaseWrapper = {
-  client: createClient(supabaseUrl, supabaseAnonKey, {
-    auth: {
-      autoRefreshToken: true,
-      persistSession: true,
-      detectSessionInUrl: true,
-      flowType: 'pkce',
-      storageKey: 'a-dark-cave-auth'
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error('Supabase configuration is missing in development.');
     }
-  })
-};
 
-// In production, fetch the real config and reinitialize
-if (!isDev) {
-  fetch('/api/config')
-    .then(res => res.json())
-    .then(config => {
-      console.log('Loaded Supabase config from server');
-      // Reinitialize the client with real credentials
-      supabaseWrapper.client = createClient(config.supabaseUrl, config.supabaseAnonKey, {
-        auth: {
-          autoRefreshToken: true,
-          persistSession: true,
-          detectSessionInUrl: true,
-          flowType: 'pkce',
-          storageKey: 'a-dark-cave-auth'
-        }
-      });
-    })
-    .catch(err => {
-      console.error('Failed to load Supabase config:', err);
+    return createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce',
+        storageKey: 'a-dark-cave-auth'
+      }
     });
+  } else {
+    // In production, fetch config from server
+    const response = await fetch('/api/config');
+    if (!response.ok) {
+      throw new Error('Failed to load Supabase config');
+    }
+    
+    const config = await response.json();
+    console.log('Loaded Supabase config from server');
+
+    return createClient(config.supabaseUrl, config.supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce',
+        storageKey: 'a-dark-cave-auth'
+      }
+    });
+  }
 }
 
-// Export a proxy that always uses the current client
-export const supabase = new Proxy({} as any, {
+// Get or create the client
+function getSupabaseClient(): Promise<SupabaseClient> {
+  if (supabaseClient) {
+    return Promise.resolve(supabaseClient);
+  }
+
+  if (!initPromise) {
+    initPromise = initializeSupabase().then(client => {
+      supabaseClient = client;
+      return client;
+    });
+  }
+
+  return initPromise;
+}
+
+// Export a proxy that waits for initialization
+export const supabase = new Proxy({} as SupabaseClient, {
   get(_target, prop) {
-    const value = supabaseWrapper.client[prop as keyof typeof supabaseWrapper.client];
-    // If it's a function, bind it to the client
-    if (typeof value === 'function') {
-      return value.bind(supabaseWrapper.client);
-    }
-    // If it's an object (like 'auth'), wrap it in another proxy
-    if (value && typeof value === 'object') {
-      return new Proxy(value, {
-        get(_innerTarget, innerProp) {
-          const innerValue = (value as any)[innerProp];
-          if (typeof innerValue === 'function') {
-            return innerValue.bind(value);
-          }
-          return innerValue;
+    // Return a function that waits for the client to be ready
+    return function(...args: any[]) {
+      return getSupabaseClient().then(client => {
+        const value = (client as any)[prop];
+        if (typeof value === 'function') {
+          return value.apply(client, args);
         }
+        // For nested objects like 'auth', return another proxy
+        if (value && typeof value === 'object') {
+          return new Proxy(value, {
+            get(_innerTarget, innerProp) {
+              const innerValue = value[innerProp];
+              if (typeof innerValue === 'function') {
+                return innerValue.bind(value);
+              }
+              return innerValue;
+            }
+          });
+        }
+        return value;
       });
-    }
-    return value;
+    };
   }
 });
 
