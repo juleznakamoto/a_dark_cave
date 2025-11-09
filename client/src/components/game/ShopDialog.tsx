@@ -44,6 +44,14 @@ const stripePublishableKey = import.meta.env.PROD
 
 const stripePromise = loadStripe(stripePublishableKey || "");
 
+// Function to get an initialized Supabase client
+const getSupabaseClient = async () => {
+  // Assuming supabase client is already initialized and ready
+  // If there's a more complex initialization logic (e.g., async setup),
+  // you would handle it here to ensure the client is ready before use.
+  return supabase;
+};
+
 interface CheckoutFormProps {
   itemId: string;
   onSuccess: () => void;
@@ -86,7 +94,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       const response = await fetch("/api/payment/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ paymentIntentId: paymentIntent.id }),
+        body: JSON.JSONstring({ paymentIntentId: paymentIntent.id }),
       });
 
       const result = await response.json();
@@ -174,6 +182,69 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
 
+  const verifyPurchase = async (sessionId: string) => {
+    try {
+      const user = await getCurrentUser();
+      if (!user) {
+        throw new Error("User not authenticated");
+      }
+
+      const response = await fetch("/api/payment/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.JSONstring({ sessionId }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Payment verification failed");
+      }
+
+      const result = await response.json();
+
+      if (result.success) {
+        const itemIds = result.items;
+
+        // Update the user's purchased items in Supabase
+        const supabase = await getSupabaseClient();
+        const { error } = await supabase.from("purchases").insert(
+          itemIds.map((itemId: string) => ({
+            user_id: user.id,
+            item_id: itemId,
+            purchased_at: new Date().toISOString(),
+          }))
+        );
+
+        if (error) throw error;
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error("Error verifying purchase:", error);
+      return false;
+    }
+  };
+
+  const loadPurchasedItems = async () => {
+    try {
+      const user = await getCurrentUser();
+      if (!user) return;
+
+      const supabase = await getSupabaseClient();
+      const { data, error } = await supabase
+        .from("purchases")
+        .select("item_id")
+        .eq("user_id", user.id);
+
+      if (error) throw error;
+      if (data) {
+        setPurchasedItems(data.map((p) => p.item_id));
+      }
+    } catch (error) {
+      console.error("Error loading purchased items:", error);
+    }
+  };
+
+
   useEffect(() => {
     const loadData = async () => {
       // Check if user is authenticated
@@ -182,14 +253,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       // Load user's purchases from database
       if (user) {
-        const { data: purchases, error } = await supabase
-          .from("purchases")
-          .select("item_id")
-          .eq("user_id", user.id);
-
-        if (!error && purchases) {
-          setPurchasedItems(purchases.map((p) => p.item_id));
-        }
+        await loadPurchasedItems();
       }
 
       setIsLoading(false);
@@ -204,7 +268,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemId }),
+      body: JSON.JSONstring({ itemId }),
     });
 
     const { clientSecret } = await response.json();
@@ -215,22 +279,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    // Save purchase to database
-    const currentUser = await getCurrentUser();
-    if (currentUser) {
-      const { error } = await supabase.from("purchases").insert({
-        user_id: currentUser.id,
-        item_id: selectedItem!,
-        item_name: item.name,
-        price_paid: item.price,
-        purchased_at: new Date().toISOString(),
-      });
-
-      if (error) {
-        console.error("Failed to save purchase:", error);
-      }
-    }
-
+    // Save purchase to database is now handled by verifyPurchase
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 

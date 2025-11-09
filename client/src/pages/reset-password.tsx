@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { updatePassword } from '@/game/auth';
-import { supabase } from '@/lib/supabase';
+import { getSupabaseClient } from "@/lib/supabase";
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();
@@ -20,80 +20,87 @@ export default function ResetPassword() {
   useEffect(() => {
     // Handle auth callback from URL hash
     const handleAuthCallback = async () => {
-      // In production, wait for Supabase config to load and be properly initialized
-      if (!import.meta.env.DEV) {
-        console.log('Waiting for Supabase to initialize...');
-        // Wait up to 5 seconds for config to load
-        let attempts = 0;
-        while (attempts < 50) {
-          try {
-            // Try to get the session - this will use the real client once it's initialized
-            const { data } = await supabase.auth.getSession();
-            // Check if we got a valid response (not from placeholder client)
-            if (data) {
-              console.log('Supabase client is ready');
-              break;
+      const supabase = await getSupabaseClient();
+
+      // Handle auth callback from URL hash
+      const handleAuthCallback = async () => {
+        // In production, wait for Supabase config to load and be properly initialized
+        if (!import.meta.env.DEV) {
+          console.log('Waiting for Supabase to initialize...');
+          // Wait up to 5 seconds for config to load
+          let attempts = 0;
+          while (attempts < 50) {
+            try {
+              // Try to get the session - this will use the real client once it's initialized
+              const { data } = await supabase.auth.getSession();
+              // Check if we got a valid response (not from placeholder client)
+              if (data) {
+                console.log('Supabase client is ready');
+                break;
+              }
+            } catch (e) {
+              // Ignore errors during initialization
             }
-          } catch (e) {
-            // Ignore errors during initialization
+            await new Promise(resolve => setTimeout(resolve, 100));
+            attempts++;
           }
-          await new Promise(resolve => setTimeout(resolve, 100));
-          attempts++;
+          // Add extra delay to ensure config is fully loaded
+          await new Promise(resolve => setTimeout(resolve, 500));
         }
-        // Add extra delay to ensure config is fully loaded
-        await new Promise(resolve => setTimeout(resolve, 500));
-      }
 
-      // Check both URL hash and query params (Supabase can use either)
-      const hashParams = new URLSearchParams(window.location.hash.substring(1));
-      const searchParams = new URLSearchParams(window.location.search);
+        // Check both URL hash and query params (Supabase can use either)
+        const hashParams = new URLSearchParams(window.location.hash.substring(1));
+        const searchParams = new URLSearchParams(window.location.search);
 
-      const accessToken = searchParams.get('access_token') || hashParams.get('access_token');
-      const type = searchParams.get('type') || hashParams.get('type');
+        const accessToken = searchParams.get('access_token') || hashParams.get('access_token');
+        const type = searchParams.get('type') || hashParams.get('type');
 
-      console.log('Reset password flow - type:', type, 'has token:', !!accessToken);
+        console.log('Reset password flow - type:', type, 'has token:', !!accessToken);
 
-      if (type === 'recovery' && accessToken) {
-        // Exchange the access_token for a session
-        const { data, error } = await supabase.auth.verifyOtp({
-          token_hash: accessToken,
-          type: 'recovery'
-        });
-
-        if (error) {
-          console.error('Session error:', error);
-          toast({
-            title: 'Invalid or expired reset link',
-            description: 'Please request a new password reset link.',
-            variant: 'destructive',
+        if (type === 'recovery' && accessToken) {
+          // Exchange the access_token for a session
+          const { data, error } = await supabase.auth.verifyOtp({
+            token_hash: accessToken,
+            type: 'recovery'
           });
-          setTimeout(() => setLocation('/'), 3000);
-          return;
-        }
 
-        if (data.user) {
+          if (error) {
+            console.error('Session error:', error);
+            toast({
+              title: 'Invalid or expired reset link',
+              description: 'Please request a new password reset link.',
+              variant: 'destructive',
+            });
+            setTimeout(() => setLocation('/'), 3000);
+            return;
+          }
+
+          if (data.user) {
+            setValidSession(true);
+            // Clean up URL
+            window.history.replaceState({}, document.title, window.location.pathname);
+          }
+        } else {
+          // No token in URL, check for existing session
+          const { data, error } = await supabase.auth.getSession();
+
+          if (error || !data.session) {
+            toast({
+              title: 'Invalid or expired reset link',
+              description: 'Please request a new password reset link.',
+              variant: 'destructive',
+            });
+            setTimeout(() => setLocation('/'), 3000);
+            return;
+          }
+
           setValidSession(true);
-          // Clean up URL
-          window.history.replaceState({}, document.title, window.location.pathname);
-        }
-      } else {
-        // No token in URL, check for existing session
-        const { data, error } = await supabase.auth.getSession();
-
-        if (error || !data.session) {
-          toast({
-            title: 'Invalid or expired reset link',
-            description: 'Please request a new password reset link.',
-            variant: 'destructive',
-          });
-          setTimeout(() => setLocation('/'), 3000);
-          return;
         }
 
-        setValidSession(true);
-      }
-      
-      setChecking(false);
+        setChecking(false);
+      };
+
+      handleAuthCallback();
     };
 
     handleAuthCallback();
@@ -123,6 +130,7 @@ export default function ResetPassword() {
     setLoading(true);
 
     try {
+      const supabase = await getSupabaseClient();
       await updatePassword(password);
       toast({
         title: 'Password updated successfully',

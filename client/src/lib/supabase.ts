@@ -1,10 +1,7 @@
-
-
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const isDev = import.meta.env.MODE === 'development';
 
-// In production, we need to wait for config before creating the client
 let supabaseClient: SupabaseClient | null = null;
 let initPromise: Promise<SupabaseClient> | null = null;
 
@@ -34,7 +31,7 @@ async function initializeSupabase(): Promise<SupabaseClient> {
     if (!response.ok) {
       throw new Error('Failed to load Supabase config');
     }
-    
+
     const config = await response.json();
     console.log('Loaded Supabase config from server');
 
@@ -51,9 +48,9 @@ async function initializeSupabase(): Promise<SupabaseClient> {
 }
 
 // Get or create the client
-function getSupabaseClient(): Promise<SupabaseClient> {
+export async function getSupabaseClient(): Promise<SupabaseClient> {
   if (supabaseClient) {
-    return Promise.resolve(supabaseClient);
+    return supabaseClient;
   }
 
   if (!initPromise) {
@@ -66,42 +63,15 @@ function getSupabaseClient(): Promise<SupabaseClient> {
   return initPromise;
 }
 
-// Create a proxy that handles nested properties
-function createAsyncProxy(getClient: () => Promise<SupabaseClient>): any {
-  return new Proxy({}, {
-    get(_target, prop) {
-      return new Proxy(() => {}, {
-        get(_fnTarget, innerProp) {
-          if (innerProp === 'then' || innerProp === 'catch' || innerProp === 'finally') {
-            // Don't intercept promise methods
-            return undefined;
-          }
-          // Return another proxy for nested properties (like auth.getUser)
-          return createAsyncProxy(async () => {
-            const client = await getClient();
-            return (client as any)[prop];
-          });
-        },
-        apply(_fnTarget, _thisArg, args) {
-          // When called as a function, wait for client and call the method
-          return getClient().then(client => {
-            const value = (client as any)[prop];
-            if (typeof value === 'function') {
-              return value.apply(client, args);
-            }
-            return value;
-          });
-        }
-      });
-    }
-  });
+// For backward compatibility - get the client synchronously (will throw if not initialized)
+export function getSupabaseClientSync(): SupabaseClient {
+  if (!supabaseClient) {
+    throw new Error('Supabase client not initialized. Call getSupabaseClient() first.');
+  }
+  return supabaseClient;
 }
-
-// Export the proxy
-export const supabase = createAsyncProxy(getSupabaseClient) as SupabaseClient;
 
 export type User = {
   id: string;
   email: string;
 };
-
