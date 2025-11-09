@@ -1,4 +1,5 @@
 
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const isDev = import.meta.env.MODE === 'development';
@@ -65,35 +66,42 @@ function getSupabaseClient(): Promise<SupabaseClient> {
   return initPromise;
 }
 
-// Export a proxy that waits for initialization
-export const supabase = new Proxy({} as SupabaseClient, {
-  get(_target, prop) {
-    // Return a function that waits for the client to be ready
-    return function(...args: any[]) {
-      return getSupabaseClient().then(client => {
-        const value = (client as any)[prop];
-        if (typeof value === 'function') {
-          return value.apply(client, args);
-        }
-        // For nested objects like 'auth', return another proxy
-        if (value && typeof value === 'object') {
-          return new Proxy(value, {
-            get(_innerTarget, innerProp) {
-              const innerValue = value[innerProp];
-              if (typeof innerValue === 'function') {
-                return innerValue.bind(value);
-              }
-              return innerValue;
+// Create a proxy that handles nested properties
+function createAsyncProxy(getClient: () => Promise<SupabaseClient>): any {
+  return new Proxy({}, {
+    get(_target, prop) {
+      return new Proxy(() => {}, {
+        get(_fnTarget, innerProp) {
+          if (innerProp === 'then' || innerProp === 'catch' || innerProp === 'finally') {
+            // Don't intercept promise methods
+            return undefined;
+          }
+          // Return another proxy for nested properties (like auth.getUser)
+          return createAsyncProxy(async () => {
+            const client = await getClient();
+            return (client as any)[prop];
+          });
+        },
+        apply(_fnTarget, _thisArg, args) {
+          // When called as a function, wait for client and call the method
+          return getClient().then(client => {
+            const value = (client as any)[prop];
+            if (typeof value === 'function') {
+              return value.apply(client, args);
             }
+            return value;
           });
         }
-        return value;
       });
-    };
-  }
-});
+    }
+  });
+}
+
+// Export the proxy
+export const supabase = createAsyncProxy(getSupabaseClient) as SupabaseClient;
 
 export type User = {
   id: string;
   email: string;
 };
+
