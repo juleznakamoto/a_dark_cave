@@ -71,7 +71,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "silver_miner",
     production: [
       { resource: "silver", amount: 1, interval: 15000 },
-      { resource: "food", amount: -25, interval: 15000 },
+      { resource: "food", amount: -20, interval: 15000 },
     ],
   },
   obsidian_miner: {
@@ -79,7 +79,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "obsidian_miner",
     production: [
       { resource: "obsidian", amount: 5, interval: 15000 },
-      { resource: "food", amount: -50, interval: 15000 },
+      { resource: "food", amount: -30, interval: 15000 },
     ],
   },
   adamant_miner: {
@@ -87,7 +87,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "adamant_miner",
     production: [
       { resource: "adamant", amount: 5, interval: 15000 },
-      { resource: "food", amount: -100, interval: 15000 },
+      { resource: "food", amount: -40, interval: 15000 },
     ],
   },
   moonstone_miner: {
@@ -95,7 +95,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "moonstone_miner",
     production: [
       { resource: "moonstone", amount: 1, interval: 15000 },
-      { resource: "food", amount: -150, interval: 15000 },
+      { resource: "food", amount: -50, interval: 15000 },
     ],
   },
   steel_forger: {

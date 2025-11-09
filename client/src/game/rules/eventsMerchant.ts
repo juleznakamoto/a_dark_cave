@@ -22,7 +22,7 @@ const resourceTrades = [
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
-    condition: (state: GameState) => true,
+    condition: (state: GameState) => state.buildings.woodenHut <= 4,
     costs: [
       { resource: "bones", amounts: [400, 500, 600] },
       { resource: "wood", amounts: [500, 600] },
@@ -50,7 +50,7 @@ const resourceTrades = [
     label: "25 Obsidian",
     give: "obsidian",
     giveAmount: 25,
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 10,
     costs: [
       { resource: "bones", amounts: [1000, 1250, 1500] },
       { resource: "fur", amounts: [1000, 1250, 1500] },
@@ -78,7 +78,7 @@ const resourceTrades = [
     label: "500 Wood",
     give: "wood",
     giveAmount: 500,
-    condition: (state: GameState) => true,
+    condition: (state: GameState) => state.buildings.woodenHut <= 8,
     costs: [
       { resource: "silver", amounts: [5] },
       { resource: "iron", amounts: [25] },
@@ -105,7 +105,7 @@ const resourceTrades = [
     label: "500 Food",
     give: "food",
     giveAmount: 500,
-    condition: (state: GameState) => true,
+    condition: (state: GameState) => state.buildings.woodenHut <= 8,
     costs: [
       { resource: "gold", amounts: [5] },
       { resource: "silver", amounts: [10] },
@@ -193,6 +193,16 @@ const resourceTrades = [
     condition: (state: GameState) => state.buildings.woodenHut >= 5,
     costs: [
       { resource: "fur", amounts: [1200, 1500, 2000] },
+    ],
+  },
+  {
+    id: "trade_bones_for_gold",
+    label: "50 Gold",
+    give: "gold",
+    giveAmount: 5,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5,
+    costs: [
+      { resource: "bones", amounts: [1300, 1600, 2000] },
     ],
   },
   {
