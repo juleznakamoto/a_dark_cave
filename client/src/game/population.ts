@@ -184,11 +184,11 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
 
   if (isGreatFeast) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
+      prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
     });
   } else if (isFeast) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 1.5);
+      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
     });
   }
 
