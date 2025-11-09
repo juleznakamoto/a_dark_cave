@@ -1,4 +1,4 @@
-import { villageBuildActions } from '@/game/rules/villageBuildActions';
+import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { GameState } from "@shared/schema"; // Assuming GameState is defined elsewhere
 
 export interface PopulationJobConfig {
@@ -39,7 +39,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       },
       { resource: "fur", amount: 1, interval: 15000 },
       { resource: "bones", amount: 1, interval: 15000 },
-
     ],
   },
   iron_miner: {
@@ -138,10 +137,13 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
-
 };
 
-export const getPopulationProduction = (jobId: string, count: number, state?: GameState) => {
+export const getPopulationProduction = (
+  jobId: string,
+  count: number,
+  state?: GameState,
+) => {
   const job = populationJobs[jobId];
   if (!job) return [];
 
@@ -160,12 +162,16 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
       Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
         if (buildAction.productionEffects?.[jobId]?.[prod.resource]) {
           // Extract building name from action ID (e.g., "buildTimberMill" -> "timberMill")
-          const buildingKey = actionId.replace('build', '');
-          const buildingName = buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
-          const buildingCount = state.buildings[buildingName as keyof typeof state.buildings] || 0;
+          const buildingKey = actionId.replace("build", "");
+          const buildingName =
+            buildingKey.charAt(0).toLowerCase() + buildingKey.slice(1);
+          const buildingCount =
+            state.buildings[buildingName as keyof typeof state.buildings] || 0;
 
           if (buildingCount > 0) {
-            buildingBonusPerWorker += buildAction.productionEffects[jobId][prod.resource] * buildingCount;
+            buildingBonusPerWorker +=
+              buildAction.productionEffects[jobId][prod.resource] *
+              buildingCount;
           }
         }
       });
@@ -175,22 +181,12 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
     });
   }
 
-
   // Apply feast multiplier if active
   const feastState = state.feastState;
   const greatFeastState = state.greatFeastState;
-  const isGreatFeast = greatFeastState?.isActive && greatFeastState.endTime > Date.now();
+  const isGreatFeast =
+    greatFeastState?.isActive && greatFeastState.endTime > Date.now();
   const isFeast = feastState?.isActive && feastState.endTime > Date.now();
-
-  if (isGreatFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
-    });
-  } else if (isFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
-    });
-  }
 
   // Apply curse multiplier if active (0.5x, rounded up)
   const curseState = state.curseState;
@@ -201,11 +197,10 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
     });
   }
 
-
   // Apply Flame's Touch blessing bonus to steel production
-  if (state && jobId === 'steel_forger') {
+  if (state && jobId === "steel_forger") {
     baseProduction.forEach((prod) => {
-      if (prod.resource === 'steel' && prod.baseAmount > 0) {
+      if (prod.resource === "steel" && prod.baseAmount > 0) {
         let bonusSteel = 0;
         if (state.blessings?.flames_touch) {
           bonusSteel = 1; // +1 steel per forger
@@ -215,6 +210,16 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
         }
         prod.totalAmount += bonusSteel * count;
       }
+    });
+  }
+  
+  if (isGreatFeast) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
+    });
+  } else if (isFeast) {
+    baseProduction.forEach((prod) => {
+      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
     });
   }
 
@@ -242,7 +247,6 @@ export const getPopulationProductionText = (jobId: string): string => {
   );
 };
 
-
 export function getMaxPopulation(state: GameState): number {
   const woodenHutCapacity = (state.buildings.woodenHut || 0) * 2;
   const stoneHutCapacity = (state.buildings.stoneHut || 0) * 4;
@@ -257,7 +261,13 @@ export function getMaxPopulation(state: GameState): number {
     templeBonus = 8;
   }
 
-  return woodenHutCapacity + stoneHutCapacity + longhouseCapacity + furTentsCapacity + templeBonus;
+  return (
+    woodenHutCapacity +
+    stoneHutCapacity +
+    longhouseCapacity +
+    furTentsCapacity +
+    templeBonus
+  );
 }
 
 // Alias for backward compatibility
