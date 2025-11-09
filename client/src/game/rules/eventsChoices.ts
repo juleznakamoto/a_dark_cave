@@ -1280,7 +1280,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "attackHer",
-        label: "Attack the witch",
+        label: "Attack witch",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
@@ -1320,7 +1320,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "threatenHer",
-        label: "Threaten the witch",
+        label: "Threaten witch",
         relevant_stats: ["knowledge"],
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);
