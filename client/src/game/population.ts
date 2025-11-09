@@ -154,7 +154,7 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
   // Apply building production bonuses
   if (state?.buildings) {
     baseProduction.forEach((prod) => {
-      let buildingBonus = 0;
+      let buildingBonusPerWorker = 0;
 
       // Check all buildings for production effects that apply to this job
       Object.entries(villageBuildActions).forEach(([actionId, buildAction]) => {
@@ -165,12 +165,13 @@ export const getPopulationProduction = (jobId: string, count: number, state?: Ga
           const buildingCount = state.buildings[buildingName as keyof typeof state.buildings] || 0;
 
           if (buildingCount > 0) {
-            buildingBonus += buildAction.productionEffects[jobId][prod.resource] * buildingCount;
+            buildingBonusPerWorker += buildAction.productionEffects[jobId][prod.resource] * buildingCount;
           }
         }
       });
 
-      prod.totalAmount = prod.baseAmount * count + buildingBonus;
+      // Apply per-worker bonus: (baseAmount + buildingBonus) * workerCount
+      prod.totalAmount = (prod.baseAmount + buildingBonusPerWorker) * count;
     });
   }
 
