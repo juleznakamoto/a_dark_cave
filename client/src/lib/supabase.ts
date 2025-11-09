@@ -1,3 +1,4 @@
+
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const isDev = import.meta.env.MODE === 'development';
@@ -63,13 +64,60 @@ export async function getSupabaseClient(): Promise<SupabaseClient> {
   return initPromise;
 }
 
-// For backward compatibility - get the client synchronously (will throw if not initialized)
-export function getSupabaseClientSync(): SupabaseClient {
-  if (!supabaseClient) {
-    throw new Error('Supabase client not initialized. Call getSupabaseClient() first.');
+// Export a wrapper object that provides the same interface as SupabaseClient
+// but lazily initializes on first use
+export const supabase = {
+  auth: {
+    getUser: async () => {
+      const client = await getSupabaseClient();
+      return client.auth.getUser();
+    },
+    signUp: async (credentials: any) => {
+      const client = await getSupabaseClient();
+      return client.auth.signUp(credentials);
+    },
+    signInWithPassword: async (credentials: any) => {
+      const client = await getSupabaseClient();
+      return client.auth.signInWithPassword(credentials);
+    },
+    signOut: async () => {
+      const client = await getSupabaseClient();
+      return client.auth.signOut();
+    },
+    resetPasswordForEmail: async (email: string, options?: any) => {
+      const client = await getSupabaseClient();
+      return client.auth.resetPasswordForEmail(email, options);
+    },
+    updateUser: async (attributes: any) => {
+      const client = await getSupabaseClient();
+      return client.auth.updateUser(attributes);
+    },
+    getSession: async () => {
+      const client = await getSupabaseClient();
+      return client.auth.getSession();
+    },
+    verifyOtp: async (params: any) => {
+      const client = await getSupabaseClient();
+      return client.auth.verifyOtp(params);
+    }
+  },
+  from: (table: string) => {
+    return {
+      select: async (columns?: string) => {
+        const client = await getSupabaseClient();
+        return client.from(table).select(columns);
+      },
+      insert: async (data: any) => {
+        const client = await getSupabaseClient();
+        return client.from(table).insert(data);
+      },
+      upsert: async (data: any, options?: any) => {
+        const client = await getSupabaseClient();
+        return client.from(table).upsert(data, options);
+      }
+    };
   }
-  return supabaseClient;
-}
+};
 
 export type User = {
   id: string;
