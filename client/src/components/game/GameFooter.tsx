@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
 
-const VERSION = "0.14.7";
+const VERSION = "0.14.8";
 
 export default function GameFooter() {
   const {
