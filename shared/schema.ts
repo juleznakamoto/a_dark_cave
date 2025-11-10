@@ -353,6 +353,7 @@ export type GameState = z.infer<typeof gameStateSchema>;
 export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
+  description: z.string().optional(),
   building: z.boolean().optional(),
   show_when: z
     .union([
