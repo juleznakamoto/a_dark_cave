@@ -566,7 +566,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   moon_bracelet: {
     id: "moon_bracelet",
     name: "Moon Bracelet",
-    description: "Fine Bracelet of some very sturdy white stone",
+    description: "Fine weightless bracelet of enduring white stone",
     bonuses: {
       generalBonuses: {
         luck: 5,

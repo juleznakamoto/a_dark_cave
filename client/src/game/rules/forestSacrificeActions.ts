@@ -177,7 +177,7 @@ export function handleBoneTotems(
     {
       itemKey: "ring_of_clarity",
       itemName: "Ring of Clarity",
-      discoveryMessage: "Among the offerings, you discover a crystal-clear ring, its surface perfectly smooth and radiating a sense of peace.",
+      discoveryMessage: "Among the sacrifice offerings, you discover a crystal-clear ring.",
       baseProbability: 0.02, // 2%
       bonusPerUse: 0.01, // 1%
     }
@@ -195,10 +195,9 @@ export function handleLeatherTotems(
     state,
     result,
     {
-        // TODO
-      itemKey: "highpriest_robe" as keyof GameState["clothing"],
-      itemName: "Highpriest Robe",
-      discoveryMessage: "Among the leather offerings, you discover an ornate robe woven with golden threads, radiating divine power.",
+      itemKey: "moon_bracelet" as keyof GameState["clothing"],
+      itemName: "Moon Bracelet",
+      discoveryMessage: "Among the sacrifice offerings, you discover a white bracelet.",
       baseProbability: 0.02, // 2%
       bonusPerUse: 0.01, // 1%
     }
