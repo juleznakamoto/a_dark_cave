@@ -23,7 +23,7 @@ interface SidePanelItem {
   value: number | string;
   testId?: string;
   visible?: boolean;
-  tooltip?: string;
+  tooltip?: string | React.ReactNode; // Changed to allow ReactNode
   icon?: string;
   iconColor?: string;
 }
@@ -355,16 +355,14 @@ export default function SidePanelSection({
                 {itemContent}
               </div>
             </TooltipTrigger>
-            <TooltipContent>
-              {hasTooltip &&
-              (title === "Fortifications" || title === "Buildings") ? (
-                <div className="text-xs whitespace-pre-line">{item.tooltip}</div>
-              ) : (
-                renderItemTooltip(
-                  item.id,
-                  title === "Weapons" ? "weapon" : title === "Tools" ? "tool" : "blessing"
-                )
-              )}
+            <TooltipContent className="max-w-xs">
+              <div className="text-xs">
+                {typeof item.tooltip === 'string' ? (
+                  <div className="whitespace-pre-line">{item.tooltip}</div>
+                ) : (
+                  item.tooltip
+                )}
+              </div>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -409,8 +407,14 @@ export default function SidePanelSection({
                 {itemContent}
               </div>
             </TooltipTrigger>
-            <TooltipContent>
-              <p className="whitespace-pre-line">{item.tooltip}</p>
+            <TooltipContent className="max-w-xs">
+              <div className="text-xs">
+                {typeof item.tooltip === 'string' ? (
+                  <div className="whitespace-pre-line">{item.tooltip}</div>
+                ) : (
+                  item.tooltip
+                )}
+              </div>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>

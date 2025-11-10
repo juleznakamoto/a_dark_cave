@@ -5,6 +5,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
     id: "buildWoodenHut",
     label: "Wooden Hut",
+    description: "A simple wooden structure that provides basic shelter for villagers.",
     building: true,
     show_when: {
       1: {
@@ -110,6 +111,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildCabin: {
     id: "buildCabin",
     label: "Cabin",
+    description: "A sturdy cabin that unlocks hunting and improves living conditions.",
     building: true,
     show_when: {
       1: {
@@ -134,6 +136,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBlacksmith: {
     id: "buildBlacksmith",
     label: "Blacksmith",
+    description: "A forge where iron tools and weapons can be crafted.",
     building: true,
     show_when: {
       1: {
@@ -162,6 +165,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildShallowPit: {
     id: "buildShallowPit",
     label: "Shallow Pit",
+    description: "A mining pit that allows extraction of iron and coal.",
     building: true,
     show_when: {
       1: {
@@ -189,6 +193,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDeepeningPit: {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
+    description: "A deeper pit that reaches sulfur and silver deposits.",
     building: true,
     show_when: {
       1: {
@@ -215,6 +220,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDeepPit: {
     id: "buildDeepPit",
     label: "Deep Pit",
+    description: "An extremely deep pit that exposes obsidian veins.",
     building: true,
     show_when: {
       1: {
@@ -241,6 +247,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBottomlessPit: {
     id: "buildBottomlessPit",
     label: "Bottomless Pit",
+    description: "A pit so deep it reaches the rarest materials: adamant and moonstone.",
     building: true,
     show_when: {
       1: {
@@ -267,6 +274,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFoundry: {
     id: "buildFoundry",
     label: "Foundry",
+    description: "A specialized facility for forging steel from iron and coal.",
     building: true,
     show_when: {
       1: {
@@ -292,6 +300,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildPrimeFoundry: {
     id: "buildPrimeFoundry",
     label: "Prime Foundry",
+    description: "An advanced foundry that doubles steel production.",
     building: true,
     show_when: {
       1: {
@@ -324,6 +333,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGreatCabin: {
     id: "buildGreatCabin",
     label: "Great Cabin",
+    description: "An expanded hunting lodge that significantly increases hunter output.",
     building: true,
     show_when: {
       1: {
@@ -357,6 +367,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTimberMill: {
     id: "buildTimberMill",
     label: "Timber Mill",
+    description: "A mill that processes wood more efficiently, increasing gatherer wood output.",
     building: true,
     show_when: {
       1: {
@@ -387,6 +398,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildQuarry: {
     id: "buildQuarry",
     label: "Quarry",
+    description: "A stone quarry that increases gatherer stone output.",
     building: true,
     show_when: {
       1: {
@@ -417,6 +429,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildClerksHut: {
     id: "buildClerksHut",
     label: "Clerk's Hut",
+    description: "A hut where clerks track resource changes and village knowledge.",
     building: true,
     show_when: {
       1: {
@@ -445,6 +458,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildScriptorium: {
     id: "buildScriptorium",
     label: "Scriptorium",
+    description: "A library of knowledge that provides detailed tracking and increases village wisdom.",
     building: true,
     show_when: {
       1: {
@@ -474,6 +488,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",
+    description: "A workshop where animal furs are processed into leather.",
     building: true,
     show_when: {
       1: {
@@ -499,6 +514,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildMasterTannery: {
     id: "buildMasterTannery",
     label: "Master Tannery",
+    description: "An advanced tannery that doubles leather production.",
     building: true,
     show_when: {
       1: {
@@ -531,6 +547,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildAltar: {
     id: "buildAltar",
     label: "Altar",
+    description: "A sacred place of worship that reduces the madness afflicting your people.",
     building: true,
     show_when: {
       1: {
@@ -562,6 +579,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
+    description: "A holy shrine that provides greater protection against madness.",
     building: true,
     show_when: {
       1: {
@@ -593,6 +611,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTemple: {
     id: "buildTemple",
     label: "Temple",
+    description: "A grand temple whose prayers offer strong resistance to madness.",
     building: true,
     show_when: {
       1: {
@@ -623,6 +642,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildSanctum: {
     id: "buildSanctum",
     label: "Sanctum",
+    description: "A divine sanctum that provides the greatest protection against the darkness.",
     building: true,
     show_when: {
       1: {
@@ -654,6 +674,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildAlchemistHall: {
     id: "buildAlchemistHall",
     label: "Alchemist's Hall",
+    description: "A hall where alchemists create black powder and other volatile substances.",
     building: true,
     show_when: {
       1: {
@@ -680,6 +701,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTradePost: {
     id: "buildTradePost",
     label: "Trade Post",
+    description: "A trading post that attracts merchants selling rare goods.",
     building: true,
     show_when: {
       1: {
@@ -705,6 +727,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandBazaar: {
     id: "buildGrandBazaar",
     label: "Grand Bazaar",
+    description: "A sprawling marketplace that improves trade opportunities.",
     building: true,
     show_when: {
       1: {
@@ -731,6 +754,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildMerchantsGuild: {
     id: "buildMerchantsGuild",
     label: "Merchants Guild",
+    description: "A powerful guild that brings the best trades and merchants.",
     building: true,
     show_when: {
       1: {
@@ -757,6 +781,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBastion: {
     id: "buildBastion",
     label: "Bastion",
+    description: "A massive fortification that serves as the first line of defense.",
     building: true,
     show_when: {
       1: {
@@ -782,6 +807,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWatchtower: {
     id: "buildWatchtower",
     label: "Watchtower",
+    description: "A tall tower that provides defense and early warning of threats.",
     building: true,
     show_when: {
       1: {
@@ -848,6 +874,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildPalisades: {
     id: "buildPalisades",
     label: "Palisades",
+    description: "Defensive walls that protect the settlement from attack.",
     building: true,
     show_when: {
       1: {
@@ -905,6 +932,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
+    description: "A durable stone dwelling that provides superior shelter for villagers.",
     building: true,
     show_when: {
       1: {
@@ -1012,6 +1040,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFortifiedMoat: {
     id: "buildFortifiedMoat",
     label: "Fortified Moat",
+    description: "A defensive moat that slows and weakens attackers.",
     building: true,
     show_when: {
       1: {
@@ -1036,6 +1065,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWizardTower: {
     id: "buildWizardTower",
     label: "Wizard Tower",
+    description: "A mystical tower where the wizard conducts arcane research.",
     building: true,
     show_when: {
       1: {
@@ -1062,6 +1092,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildLonghouse: {
     id: "buildLonghouse",
     label: "Longhouse",
+    description: "A massive communal hall that houses many villagers.",
     building: true,
     show_when: {
       1: {
@@ -1096,6 +1127,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
+    description: "An advanced forge capable of working the finest materials.",
     building: true,
     show_when: {
       1: {
