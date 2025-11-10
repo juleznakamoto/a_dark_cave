@@ -50,6 +50,8 @@ import {
   handleCraftBoneTotems2,
   handleCraftBoneTotems3,
   handleCraftBoneTotems5,
+  handleCraftLeatherTotem,
+  handleCraftLeatherTotems5,
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
 } from '@/game/rules/caveCraftResources';
@@ -114,6 +116,7 @@ import {
 
 import {
   handleBoneTotems,
+  handleLeatherTotems,
 } from '@/game/rules/forestSacrificeActions';
 
 import {
@@ -247,6 +250,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleCraftBoneTotems3(state, result);
     case 'craftBoneTotems5':
       return handleCraftBoneTotems5(state, result);
+    case 'craftLeatherTotem':
+      return handleCraftLeatherTotem(state, result);
+    case 'craftLeatherTotems5':
+      return handleCraftLeatherTotems5(state, result);
     case 'craftEmberBomb':
       return handleCraftEmberBomb(state, result);
     case 'craftAshfireBomb':
@@ -371,6 +378,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     // Forest Sacrifice Actions
     case 'boneTotems':
       return handleBoneTotems(state, result);
+    case 'leatherTotems':
+      return handleLeatherTotems(state, result);
 
     // Forest Trade Actions
     case 'tradeGoldForFood':

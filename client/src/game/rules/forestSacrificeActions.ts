@@ -190,9 +190,9 @@ export function handleLeatherTotems(
     state,
     result,
     {
-      itemKey: "placeholder_leather_item" as keyof GameState["clothing"], // TODO: Replace with actual item key
-      itemName: "Placeholder Leather Item",
-      discoveryMessage: "Among the leather offerings, you discover a mysterious item...", // TODO: Replace with actual discovery message
+      itemKey: "highpriest_robe" as keyof GameState["clothing"],
+      itemName: "Highpriest Robe",
+      discoveryMessage: "Among the leather offerings, you discover an ornate robe woven with golden threads, radiating divine power.",
       baseProbability: 0.02, // 2%
       bonusPerUse: 0.01, // 1%
     }
