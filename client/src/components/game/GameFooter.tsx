@@ -127,7 +127,7 @@ export default function GameFooter() {
                 src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
                 alt={isMuted ? "Unmute" : "Mute"}
                 className="w-4 h-4 opacity-60"
-                style={{ filter: 'invert(1)' }}
+                style={{ filter: "invert(1)" }}
               />
             </Button>
             {currentUser ? (
@@ -159,16 +159,14 @@ export default function GameFooter() {
             >
               New
             </Button>
-            {!import.meta.env.PROD && (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => setShopDialogOpen(true)}
-                className="px-2 py-1 text-xs hover"
-              >
-                Shop
-              </Button>
-            )}
+            <Button
+              variant="ghost"
+              size="xs"
+              onClick={() => setShopDialogOpen(true)}
+              className="px-2 py-1 text-xs hover"
+            >
+              Shop
+            </Button>
             <Button
               variant="ghost"
               size="xs"
