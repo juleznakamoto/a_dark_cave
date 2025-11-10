@@ -20,7 +20,6 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.bone_totem": 5,
     },
     effects: {
-      "resources.gold": "random(5,10)",
       "resources.silver": "random(10,20)",
       "story.seen.actionBoneTotems": true,
     },
@@ -37,8 +36,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       "resources.leather_totem": 5,
     },
     effects: {
-      "resources.gold": "random(5,10)",
-      "resources.silver": "random(10,20)",
+      "resources.gold": "random(10,20)",
       "story.seen.actionLeatherTotems": true,
     },
     cooldown: 60,
