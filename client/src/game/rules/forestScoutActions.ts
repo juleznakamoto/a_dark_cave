@@ -369,7 +369,11 @@ export function handleHillGrave(
       ...state.resources,
       silver: (state.resources.silver || 0) + 150,
       gold: (state.resources.gold || 0) + 250,
-      frostglas: (state.resources.frostglas || 0) + 50,
+    };
+
+    result.stateUpdates.relics = {
+      ...state.relics,
+      frostglas: true,
     };
 
     // Set both flags in a single assignment to avoid overwriting
@@ -431,7 +435,11 @@ export function handleSunkenTemple(
     result.stateUpdates.resources = {
       ...state.resources,
       gold: (state.resources.gold || 0) + 300,
-      bloodstone: (state.resources.bloodstone || 0) + 50,
+    };
+
+    result.stateUpdates.relics = {
+      ...state.relics,
+      bloodstone: true,
     };
 
     // Set both flags in a single assignment to avoid overwriting

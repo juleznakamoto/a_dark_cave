@@ -33,8 +33,6 @@ export const gameStateSchema = z.object({
       obsidian: z.number().min(0).default(0),
       adamant: z.number().min(0).default(0),
       moonstone: z.number().min(0).default(0),
-      bloodstone: z.number().min(0).default(0),
-      frostglas: z.number().min(0).default(0),
       black_powder: z.number().min(0).default(0),
       ember_bomb: z.number().min(0).default(0),
       ashfire_dust: z.number().min(0).default(0),
@@ -156,6 +154,8 @@ export const gameStateSchema = z.object({
       ravens_orb: z.boolean().default(false),
       occultist_grimoire: z.boolean().default(false),
       shadow_flute: z.boolean().default(false),
+      bloodstone: z.boolean().default(false),
+      frostglas: z.boolean().default(false),
     })
     .default({}),
   blessings: z
