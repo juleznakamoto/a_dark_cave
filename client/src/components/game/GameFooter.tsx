@@ -8,7 +8,7 @@ import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
 
-const VERSION = "0.14.8";
+const VERSION = "0.15.1";
 
 export default function GameFooter() {
   const {
@@ -192,7 +192,7 @@ export default function GameFooter() {
               href="mailto:support@a-dark-cave.com"
               className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
             >
-              Support
+              Feedback
             </a>
             <a
               href="/privacy"
