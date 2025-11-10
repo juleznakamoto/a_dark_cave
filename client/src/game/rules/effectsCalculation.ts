@@ -360,13 +360,13 @@ export const getAllActionBonuses = (state: GameState): Array<{
     .filter(([actionId]) => actionId !== 'steelForger') // Exclude forge from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-      const label = actionId === 'caveExplore' 
-        ? 'Cave Explore' 
+      const label = actionId === 'caveExplore'
+        ? 'Cave Explore'
         : actionId.replace(/([A-Z])/g, ' $1').trim()
           .split(' ')
           .map(word => word.charAt(0).toUpperCase() + word.slice(1))
           .join(' ');
-      
+
       // Build value string
       let valueStr = "";
       if (percentBonus > 0) {
@@ -433,9 +433,22 @@ export const getTotalCraftingCostReduction = (state: GameState): number => {
   const activeEffects = getActiveEffects(state);
   let reduction = 0;
 
+  // Add reduction from items/tools
   activeEffects.forEach((effect) => {
     if (effect.bonuses.generalBonuses?.craftingCostReduction) {
       reduction += effect.bonuses.generalBonuses.craftingCostReduction;
+    }
+  });
+
+  // Add reduction from buildings (similar to statsEffects processing)
+  Object.entries(state.buildings).forEach(([buildingKey, buildingCount]) => {
+    if (buildingCount > 0) {
+      const actionId = `build${buildingKey.charAt(0).toUpperCase() + buildingKey.slice(1)}`;
+      const buildAction = villageBuildActions[actionId];
+
+      if (buildAction?.craftingCostReduction) {
+        reduction += buildAction.craftingCostReduction;
+      }
     }
   });
 
