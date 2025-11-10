@@ -105,7 +105,6 @@ function handleTotemSacrifice(
   // Apply sacrifice bonuses and multipliers from relics/items
   const actionBonuses = getActionBonuses(actionId, state);
 
-  // Apply resource multipliers (like 20% bonus from ebony ring)
   if (
     actionBonuses.resourceMultiplier &&
     actionBonuses.resourceMultiplier !== 1 &&
