@@ -189,7 +189,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   thirdWave: {
     id: "thirdWave",
     condition: (state: GameState) =>
-      state.relics.ancient_scrolls &&
+      state.story.seen.wizardDecryptsScrolls &&
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory,
     triggerType: "resource",
@@ -229,6 +229,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fourthWave: {
     id: "fourthWave",
     condition: (state: GameState) =>
+      state.weapons.frostglass_sword &&
       state.story.seen.thirdWaveVictory &&
       !state.story.seen.fourthWaveVictory,
     triggerType: "resource",
@@ -268,6 +269,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
+      state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
