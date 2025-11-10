@@ -103,9 +103,13 @@ export const supabase = {
   },
   from: (table: string) => {
     return {
-      select: async (columns?: string) => {
-        const client = await getSupabaseClient();
-        return client.from(table).select(columns);
+      select: (columns?: string) => {
+        return {
+          eq: async (column: string, value: any) => {
+            const client = await getSupabaseClient();
+            return client.from(table).select(columns).eq(column, value);
+          }
+        };
       },
       insert: async (data: any) => {
         const client = await getSupabaseClient();

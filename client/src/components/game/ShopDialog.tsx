@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -429,6 +430,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       <DialogContent className="max-w-4xl max-h-[80vh]">
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
+          <DialogDescription className="sr-only">
+            Purchase items and manage your purchases
+          </DialogDescription>
         </DialogHeader>
 
         {isLoading && (
