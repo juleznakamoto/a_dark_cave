@@ -281,6 +281,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         const { error } = await client.from("purchases").insert({
           user_id: user.id,
           item_id: itemId,
+          item_name: item.name,
+          price_paid: item.price,
           purchased_at: new Date().toISOString(),
         });
 
