@@ -189,7 +189,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   thirdWave: {
     id: "thirdWave",
     condition: (state: GameState) =>
-      state.relics.ancient_scrolls &&
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory,
     triggerType: "resource",
