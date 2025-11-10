@@ -1188,8 +1188,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildLeatherTents: {
     id: "buildLeatherTents",
     label: "Leather Tents",
-    description: "Temporary leather shelters providing basic protection",
-    tooltipEffects: ["+1 Max Population"],
+    description: "Small camp of leather tents housing several families",
+    tooltipEffects: ["+10 Max Population"],
     building: true,
     // No show_when - cannot be built directly, obtained through events/other means
     cost: {},
