@@ -356,7 +356,14 @@ export default function SidePanelSection({
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
               <div className="text-xs">
-                {renderItemTooltip(item.id, title === "Weapons" ? "weapon" : title === "Blessings" ? "blessing" : "tool")}
+                {renderItemTooltip(
+                  item.id,
+                  title === "Weapons"
+                    ? "weapon"
+                    : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics"
+                    ? "blessing"
+                    : "tool"
+                )}
               </div>
             </TooltipContent>
           </Tooltip>
