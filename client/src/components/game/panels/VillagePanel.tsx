@@ -311,7 +311,7 @@ export default function VillagePanel() {
           >
             -
           </Button>
-          <div className="w-8 flex items-center justify-center">
+          <div className="w-5 flex items-center justify-center">
             <AnimatedCounter value={currentCount} />
           </div>
           <Button
