@@ -346,7 +346,7 @@ export default function SidePanel() {
         tooltipParts.push(
           <div key="effects">
             {effectsList.map((effect, idx) => (
-              <div key={idx} className="text-green-400">
+              <div key={idx}>
                 {effect}
               </div>
             ))}
