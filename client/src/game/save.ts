@@ -40,22 +40,23 @@ export async function saveGame(gameState: GameState): Promise<void> {
       timestamp: Date.now(),
     };
     
-    // Save locally
+    // Save locally first (most important)
     await db.put('saves', saveData, SAVE_KEY);
+    console.log('Game saved locally');
     
-    // Save to cloud if user is authenticated
-    const user = await getCurrentUser();
-    if (user) {
-      try {
+    // Try to save to cloud if user is authenticated (optional enhancement)
+    try {
+      const user = await getCurrentUser();
+      if (user) {
         await saveGameToSupabase(sanitizedState);
         console.log('Game saved to cloud');
-      } catch (cloudError) {
-        console.error('Failed to save to cloud:', cloudError);
-        // Continue anyway - local save succeeded
       }
+    } catch (cloudError) {
+      // Silently fail cloud save - local save is what matters
+      console.debug('Cloud save skipped:', cloudError);
     }
   } catch (error) {
-    console.error('Failed to save game:', error);
+    console.error('Failed to save game locally:', error);
     throw error;
   }
 }

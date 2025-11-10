@@ -43,21 +43,31 @@ export async function signOut() {
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
-  const supabase = await getSupabaseClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  
-  if (!user) return null;
-  
-  // Only return user if email is confirmed
-  if (!user.email_confirmed_at) {
-    console.warn('User email not confirmed, treating as not authenticated');
+  try {
+    const supabase = await getSupabaseClient();
+    const { data: { user }, error } = await supabase.auth.getUser();
+    
+    if (error) {
+      console.warn('Auth error, user not authenticated:', error.message);
+      return null;
+    }
+    
+    if (!user) return null;
+    
+    // Only return user if email is confirmed
+    if (!user.email_confirmed_at) {
+      console.warn('User email not confirmed, treating as not authenticated');
+      return null;
+    }
+    
+    return {
+      id: user.id,
+      email: user.email || '',
+    };
+  } catch (error) {
+    console.warn('Failed to get current user:', error);
     return null;
   }
-  
-  return {
-    id: user.id,
-    email: user.email || '',
-  };
 }
 
 export async function resetPassword(email: string) {
