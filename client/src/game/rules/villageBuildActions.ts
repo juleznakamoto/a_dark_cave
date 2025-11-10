@@ -132,7 +132,6 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.cabin": 1,
       },
     },
-    craftingCostReduction: 0.1,
     cooldown: 15,
   },
 
@@ -1095,7 +1094,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWizardTower: {
     id: "buildWizardTower",
     label: "Wizard Tower",
-    description: "A mystical tower where the wizard conducts arcane research.",
+    description: "Mystical tower where the wizard conducts arcane research",
     tooltipEffects: ["Unlocks Wizard Actions"],
     building: true,
     show_when: {
@@ -1123,8 +1122,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildLonghouse: {
     id: "buildLonghouse",
     label: "Longhouse",
-    description: "A massive communal hall that houses many villagers.",
-    tooltipEffects: ["+50 Population"],
+    description: "Massive nordic communal hall housing many villagers",
+    tooltipEffects: ["+8 Population"],
     building: true,
     show_when: {
       1: {

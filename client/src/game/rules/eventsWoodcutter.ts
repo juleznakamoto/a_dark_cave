@@ -11,7 +11,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter1Accepted,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter",
     message:
       "A muscular man with a large axe approaches your village. He flexes his arms 'I can cut trees like no other,' he boasts. 'Give me food, and I'll bring wood.'",
@@ -70,7 +70,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 2 &&
       state.buildings.woodenHut <= 7,
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter Returns",
     message:
       "The woodcutter returns, his axe gleaming in the sun. 'Your village grows well,' he observes. 'I can bring you more wood. What do you say?'",
@@ -130,7 +130,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 3 &&
       state.buildings.woodenHut <= 8,
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter's Offer",
     message:
       "The woodcutter approaches again 'I see your village continues to thrive,' he says with a grin. 'I can bring you more wood if you pay for it.'",
@@ -190,7 +190,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 4 &&
       state.buildings.woodenHut <= 9,
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter's Ambitious Plan",
     message:
       "The woodcutter arrives once more, 'Do you want to use my services once more?,' he asks.'",
@@ -271,7 +271,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 5 &&
       state.buildings.woodenHut <= 10,
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter's Grand Proposal",
     message:
       "The woodcutter appears with a confident smile. 'How about we make one more deal?'",
@@ -352,7 +352,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
       state.buildings.woodenHut >= 6 &&
       state.buildings.woodenHut <= 10,
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 7,
     title: "The Woodcutter's Offer",
     message:
       "The woodcutter returns to the village, 'Do you want to use my services once more?,' he asks.'",
