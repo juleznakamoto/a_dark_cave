@@ -167,14 +167,14 @@ export default function GameFooter() {
             >
               Shop
             </Button>
-            <Button
+            {/* <Button
               variant="ghost"
               size="xs"
               onClick={handleOfferTribute}
               className="px-2 py-1 text-xs hover"
             >
               Offer Tribute
-            </Button>
+            </Button> */}
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (
               <Button
