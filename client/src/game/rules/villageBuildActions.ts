@@ -1181,6 +1181,7 @@ export const villageBuildActions: Record<string, Action> = {
         "story.seen.hasGrandBlacksmith": true,
       },
     },
+    craftingCostReduction: 0.1,
     cooldown: 120,
   },
 };
