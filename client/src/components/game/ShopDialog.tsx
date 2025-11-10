@@ -94,7 +94,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       const response = await fetch("/api/payment/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.JSONstring({ paymentIntentId: paymentIntent.id }),
+        body: JSON.stringify({ paymentIntentId: paymentIntent.id }),
       });
 
       const result = await response.json();
@@ -192,7 +192,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const response = await fetch("/api/payment/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.JSONstring({ sessionId }),
+        body: JSON.stringify({ sessionId }),
       });
 
       if (!response.ok) {
@@ -268,7 +268,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.JSONstring({ itemId }),
+      body: JSON.stringify({ itemId }),
     });
 
     const { clientSecret } = await response.json();
