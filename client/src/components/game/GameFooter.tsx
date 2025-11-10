@@ -112,7 +112,7 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              className={`px-2 py-1 text-xs hover`}
+              className={`px-1.5 py-1 text-xs hover`}
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>
@@ -121,7 +121,7 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleVolume}
               data-testid="button-toggle-volume"
-              className="px-2 py-1 text-xs hover"
+              className="px-1.5 py-1 text-xs hover"
             >
               <img
                 src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
@@ -135,7 +135,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={handleSignOut}
-                className="px-2 py-1 text-xs hover"
+                className="px-1.5 py-1 text-xs hover"
               >
                 Sign Out
               </Button>
@@ -144,7 +144,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => handleSetAuthDialogOpen(true)}
-                className="px-2 py-1 text-xs hover"
+                className="px-1.5 py-1 text-xs hover"
               >
                 Sign In/Up
               </Button>
@@ -155,7 +155,7 @@ export default function GameFooter() {
               size="xs"
               onClick={handleRestartGame}
               data-testid="button-restart-game"
-              className="px-2 py-1 text-xs hover"
+              className="px-1.5 py-1 text-xs hover"
             >
               New
             </Button>
@@ -171,7 +171,7 @@ export default function GameFooter() {
               variant="ghost"
               size="xs"
               onClick={handleOfferTribute}
-              className="px-2 py-1 text-xs hover"
+              className="px-1.5 py-1 text-xs hover"
             >
               Offer Tribute
             </Button> */}
@@ -181,13 +181,13 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={() => setShowEndScreen(true)}
-                className="px-2 py-1 text-xs hover"
+                className="px-1.5 py-1 text-xs hover"
               >
                 End Screen
               </Button>
             )}
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
             <a
               href="mailto:support@a-dark-cave.com"
               className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
@@ -207,7 +207,7 @@ export default function GameFooter() {
               Imprint
             </a>
 
-            <span data-testid="game-version">v{VERSION}</span>
+            <span className="opacity-40" data-testid="game-version">v{VERSION}</span>
           </div>
         </div>
       </footer>
