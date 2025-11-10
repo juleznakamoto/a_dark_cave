@@ -428,7 +428,7 @@ export const cubeEvents: Record<string, GameEvent> = {
     timeProbability: 0.001,
     title: "The unknown ore",
     message:
-      "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the portal. But the bomb failed to breach the portal, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices.'",
+      "'One day, deep in the earth, they found a monolith of unknown ore. From it they forged an explosive to destroy the portal. But the bomb failed to breach the portal, instead unleashed an electro-magnetic pulse spanning the whole planet destroying all devices, ending civilization.'",
     triggered: false,
     priority: 3,
     repeatable: true,
