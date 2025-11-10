@@ -274,7 +274,7 @@ const toolTrades = [
     give: "tool",
     giveItem: "natharit_pickaxe",
     condition: (state: GameState) => state.buildings.stoneHut >= 4,
-    costs: [{ resource: "gold", amounts: [2050] }],
+    costs: [{ resource: "gold", amounts: [2000] }],
     message:
       "You purchase the natharit pickaxe. The merchant hands you the sturdy tool: 'Extremely durable pickaxe of unknown material. Its quality is exceptional.'",
   },

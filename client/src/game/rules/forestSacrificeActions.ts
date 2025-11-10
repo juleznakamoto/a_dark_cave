@@ -6,12 +6,12 @@ import { getActionBonuses } from "@/game/rules/effectsCalculation";
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-  return 10 + usageCount;
+  return 5 + usageCount;
 }
 
 export function getLeatherTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
-  return 10 + usageCount;
+  return 5 + usageCount;
 }
 
 export const forestSacrificeActions: Record<string, Action> = {
