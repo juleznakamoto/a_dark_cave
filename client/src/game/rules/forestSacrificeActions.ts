@@ -100,7 +100,7 @@ function handleTotemSacrifice(
   if (!effectUpdates.story.seen) {
     effectUpdates.story.seen = { ...state.story.seen };
   }
-  effectUpdates.story.seen[usageCountKey] = usageCount + 1;
+  (effectUpdates.story.seen as any)[usageCountKey] = usageCount + 1;
 
   // Apply sacrifice bonuses and multipliers from relics/items
   const actionBonuses = getActionBonuses(actionId, state);
@@ -108,18 +108,19 @@ function handleTotemSacrifice(
   // Apply resource multipliers (like 20% bonus from ebony ring)
   if (
     actionBonuses.resourceMultiplier &&
-    actionBonuses.resourceMultiplier !== 1
+    actionBonuses.resourceMultiplier !== 1 &&
+    effectUpdates.resources
   ) {
     ["gold", "silver"].forEach((resource) => {
       const currentAmount =
-        effectUpdates.resources[resource] || state.resources[resource] || 0;
+        effectUpdates.resources![resource] || state.resources[resource] || 0;
       const baseAmount = currentAmount - (state.resources[resource] || 0);
       if (baseAmount > 0) {
         // Only apply multiplier to positive gains
         const bonusAmount = Math.ceil(
           baseAmount * (actionBonuses.resourceMultiplier - 1),
         );
-        effectUpdates.resources[resource] = currentAmount + bonusAmount;
+        effectUpdates.resources![resource] = currentAmount + bonusAmount;
       }
     });
   }
