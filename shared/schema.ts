@@ -27,6 +27,7 @@ export const gameStateSchema = z.object({
       sulfur: z.number().min(0).default(0),
       bones: z.number().min(0).default(0),
       bone_totem: z.number().min(0).default(0),
+      leather_totem: z.number().min(0).default(0),
       fur: z.number().min(0).default(0),
       leather: z.number().min(0).default(0),
       torch: z.number().min(0).default(0),

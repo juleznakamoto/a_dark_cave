@@ -67,6 +67,39 @@ export const caveCraftResources: Record<string, Action> = {
     cooldown: 20,
   },
 
+  craftLeatherTotem: {
+    id: "craftLeatherTotem",
+    label: "Leather Totem",
+    show_when: {
+      "buildings.temple": 1,
+      "buildings.sanctum": 0,
+    },
+    cost: {
+      "resources.leather": 10,
+    },
+    effects: {
+      "resources.leather_totem": 1,
+      "story.seen.hasLeatherTotem": true,
+    },
+    cooldown: 20,
+  },
+
+  craftLeatherTotems5: {
+    id: "craftLeatherTotems5",
+    label: "Leather Totems",
+    show_when: {
+      "buildings.sanctum": 1,
+    },
+    cost: {
+      "resources.leather": 50,
+    },
+    effects: {
+      "resources.leather_totem": 5,
+      "story.seen.hasLeatherTotem": true,
+    },
+    cooldown: 20,
+  },
+
   craftEmberBomb: {
     id: "craftEmberBomb",
     label: "Ember Bomb",
@@ -119,6 +152,18 @@ export function handleCraftBoneTotems2(state: GameState, result: ActionResult): 
 
 export function handleCraftBoneTotems3(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('craftBoneTotems3', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftLeatherTotem(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftLeatherTotem', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+  return result;
+}
+
+export function handleCraftLeatherTotems5(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftLeatherTotems5', state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
