@@ -79,8 +79,8 @@ export const caveMineActions: Record<string, Action> = {
       "tools.steel_pickaxe": true,
     },
     cost: {
-      "resources.food": 30,
-      "resources.torch": 3,
+      "resources.food": 25,
+      "resources.torch": 5,
     },
     effects: {
       "resources.obsidian": "random(4,8)",
