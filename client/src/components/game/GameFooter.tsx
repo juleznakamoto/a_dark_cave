@@ -8,8 +8,6 @@ import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
 
-const VERSION = "0.15.1";
-
 export default function GameFooter() {
   const {
     restartGame,
@@ -206,8 +204,6 @@ export default function GameFooter() {
             >
               Imprint
             </a>
-
-            <span className="opacity-40" data-testid="game-version">v{VERSION}</span>
           </div>
         </div>
       </footer>

@@ -502,7 +502,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",
-    description: "Workshop where animal furs are processed into leather",
+    description: "Workshop where furs are processed into leather",
     tooltipEffects: ["Unlocks Tanners"],
     building: true,
     show_when: {
