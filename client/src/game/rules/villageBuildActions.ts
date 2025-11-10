@@ -5,8 +5,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
     id: "buildWoodenHut",
     label: "Wooden Hut",
-    description: "Simple wooden structure that provides basic shelter for villagers.",
-    tooltipEffects: ["+10 Population"],
+    description: "Simple wooden hut providing basic shelter",
+    tooltipEffects: ["+2 Max Population"],
     building: true,
     show_when: {
       1: {
@@ -112,7 +112,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildCabin: {
     id: "buildCabin",
     label: "Cabin",
-    description: "Sturdy cabin that unlocks hunting and improves living conditions.",
+    description: "Basic hunting cabin with tools for hunters",
     tooltipEffects: ["Unlocks Hunters"],
     building: true,
     show_when: {
@@ -138,8 +138,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildBlacksmith: {
     id: "buildBlacksmith",
     label: "Blacksmith",
-    description: "A forge where iron tools and weapons can be crafted.",
-    tooltipEffects: ["Unlocks Iron Crafting"],
+    description: "Blacksmith with basic tools for crafting",
+    tooltipEffects: ["Unlocks Crafting"],
     building: true,
     show_when: {
       1: {
@@ -168,7 +168,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildShallowPit: {
     id: "buildShallowPit",
     label: "Shallow Pit",
-    description: "A mining pit that allows extraction of iron and coal.",
+    description: "Small mining pit allowing extraction of minerals",
     tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners"],
     building: true,
     show_when: {
@@ -197,7 +197,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDeepeningPit: {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
-    description: "A deeper pit that reaches sulfur and silver deposits.",
+    description: "Deeper pit reaching further earth resources",
     tooltipEffects: ["Unlocks Sulfur Miners", "Unlocks Silver Miners"],
     building: true,
     show_when: {
@@ -225,7 +225,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDeepPit: {
     id: "buildDeepPit",
     label: "Deep Pit",
-    description: "An extremely deep pit that exposes obsidian veins.",
+    description: "Very deep pit exposing valuable mineral veins",
     tooltipEffects: ["Unlocks Obsidian Miners"],
     building: true,
     show_when: {
@@ -253,7 +253,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBottomlessPit: {
     id: "buildBottomlessPit",
     label: "Bottomless Pit",
-    description: "A pit so deep it reaches the rarest materials: adamant and moonstone.",
+    description: "Extremely deep pit reaching the rarest materials",
     tooltipEffects: ["Unlocks Adamant Miners", "Unlocks Moonstone Miners"],
     building: true,
     show_when: {
@@ -281,7 +281,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFoundry: {
     id: "buildFoundry",
     label: "Foundry",
-    description: "A specialized facility for forging steel from iron and coal.",
+    description: "Specialized building for forging steel",
     tooltipEffects: ["Unlocks Steel Forgers"],
     building: true,
     show_when: {
@@ -308,7 +308,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildPrimeFoundry: {
     id: "buildPrimeFoundry",
     label: "Prime Foundry",
-    description: "An advanced foundry that doubles steel production.",
+    description: "Advanced foundry with improved steel production",
     tooltipEffects: ["+1 Steel (Steel Forger)"],
     building: true,
     show_when: {
@@ -342,8 +342,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildGreatCabin: {
     id: "buildGreatCabin",
     label: "Great Cabin",
-    description: "An expanded hunting lodge that significantly increases hunter output.",
-    tooltipEffects: ["+5 Food (Hunter)", "+4 Fur (Hunter)", "+4 Bones (Hunter)"],
+    description: "Expanded hunting lodge increasing hunter output",
+    tooltipEffects: ["+5 Food (Hunter)", "+1 Fur (Hunter)", "+1 Bones (Hunter)"],
     building: true,
     show_when: {
       1: {
@@ -367,8 +367,8 @@ export const villageBuildActions: Record<string, Action> = {
     productionEffects: {
       hunter: {
         food: 5,
-        fur: 4,
-        bones: 4,
+        fur: 1,
+        bones: 1,
       },
     },
     cooldown: 30,
@@ -377,7 +377,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTimberMill: {
     id: "buildTimberMill",
     label: "Timber Mill",
-    description: "A mill that processes wood more efficiently, increasing gatherer wood output.",
+    description: "Mill helping processes wood more efficiently",
     tooltipEffects: ["+5 Wood (Gatherer)"],
     building: true,
     show_when: {
@@ -409,7 +409,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildQuarry: {
     id: "buildQuarry",
     label: "Quarry",
-    description: "A stone quarry that increases gatherer stone output.",
+    description: "Stone quarry increasing gatherer stone output",
     tooltipEffects: ["+5 Stone (Gatherer)"],
     building: true,
     show_when: {
@@ -441,7 +441,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildClerksHut: {
     id: "buildClerksHut",
     label: "Clerk's Hut",
-    description: "A hut where clerks track resource changes and village knowledge.",
+    description: "Hut where clerks track resources of the village",
     tooltipEffects: ["+2 Knowledge"],
     building: true,
     show_when: {
@@ -471,7 +471,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildScriptorium: {
     id: "buildScriptorium",
     label: "Scriptorium",
-    description: "A library of knowledge that provides detailed tracking and increases village wisdom.",
+    description: "Library of knowledge providing detailed tracking of resources",
     tooltipEffects: ["+5 Knowledge"],
     building: true,
     show_when: {
@@ -502,7 +502,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",
-    description: "A workshop where animal furs are processed into leather.",
+    description: "Workshop where animal furs are processed into leather",
     tooltipEffects: ["Unlocks Tanners"],
     building: true,
     show_when: {
@@ -529,7 +529,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildMasterTannery: {
     id: "buildMasterTannery",
     label: "Master Tannery",
-    description: "An advanced tannery that doubles leather production.",
+    description: "Advanced tannery improving leather production",
     tooltipEffects: ["+1 Leather (Tanner)"],
     building: true,
     show_when: {
@@ -563,7 +563,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildAltar: {
     id: "buildAltar",
     label: "Altar",
-    description: "A sacred place of worship that reduces the madness afflicting your people.",
+    description: "Sacred place of worship and sacrificing",
     tooltipEffects: ["-2 Madness"],
     building: true,
     show_when: {
@@ -596,7 +596,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildShrine: {
     id: "buildShrine",
     label: "Shrine",
-    description: "A holy shrine that provides greater protection against madness.",
+    description: "Holy shrine providing greater protection against madness",
     tooltipEffects: ["-5 Madness"],
     building: true,
     show_when: {
@@ -629,7 +629,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTemple: {
     id: "buildTemple",
     label: "Temple",
-    description: "A grand temple whose prayers offer strong resistance to madness.",
+    description: "Grand temple offering strong resistance to madness",
     tooltipEffects: ["-8 Madness"],
     building: true,
     show_when: {
@@ -661,7 +661,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildSanctum: {
     id: "buildSanctum",
     label: "Sanctum",
-    description: "A divine sanctum that provides the greatest protection against the darkness.",
+    description: "Divine sanctum providing the greatest protection against the darkness",
     tooltipEffects: ["-12 Madness"],
     building: true,
     show_when: {
@@ -694,7 +694,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildAlchemistHall: {
     id: "buildAlchemistHall",
     label: "Alchemist's Hall",
-    description: "A hall where alchemists create black powder and other volatile substances.",
+    description: "Hall where the alchemist creates powders and explosives",
     tooltipEffects: ["Unlocks Powder Makers"],
     building: true,
     show_when: {
@@ -722,8 +722,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildTradePost: {
     id: "buildTradePost",
     label: "Trade Post",
-    description: "A trading post that attracts merchants selling rare goods.",
-    tooltipEffects: ["Unlocks Merchant Visits"],
+    description: "Trading post attracting merchants selling goods",
+    tooltipEffects: ["Unlocks Trade"],
     building: true,
     show_when: {
       1: {
@@ -749,8 +749,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandBazaar: {
     id: "buildGrandBazaar",
     label: "Grand Bazaar",
-    description: "A sprawling marketplace that improves trade opportunities.",
-    tooltipEffects: ["Better Merchant Prices"],
+    description: "Sprawling marketplace attracting more merchants",
+    tooltipEffects: ["Improved Trade"],
     building: true,
     show_when: {
       1: {
@@ -777,8 +777,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildMerchantsGuild: {
     id: "buildMerchantsGuild",
     label: "Merchants Guild",
-    description: "A powerful guild that brings the best trades and merchants.",
-    tooltipEffects: ["Best Merchant Prices"],
+    description: "Powerful guild bringing the best trades and merchants",
+    tooltipEffects: ["Further improved Trade"],
     building: true,
     show_when: {
       1: {
