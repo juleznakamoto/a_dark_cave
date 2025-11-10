@@ -194,6 +194,9 @@ export default function GameFooter() {
             <a href="/imprint" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
               Imprint
             </a>
+            <a href="mailto:support@a-dark-cave.com" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+              Support
+            </a>
             <span data-testid="game-version">v{VERSION}</span>
           </div>
         </div>
