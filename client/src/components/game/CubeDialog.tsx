@@ -49,8 +49,8 @@ export default function CubeDialog({
     audioManager.stopLoopingSound('whisperingCube');
     onChoice(eventChoices[0]?.id);
     
-    // Check if this is the last cube event (cube15b)
-    if (event?.id?.includes('cube15b')) {
+    // Check if this is one of the final cube events (cube15a or cube15b)
+    if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
       // Delay showing end screen slightly to allow dialog to close
       setTimeout(() => {
         const { setShowEndScreen } = require('@/game/state').useGameStore.getState();
