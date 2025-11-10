@@ -260,102 +260,11 @@ export default function SidePanel() {
         );
       }
 
-      // Add stats effects
-      const effectsList: string[] = [];
+      // Check if manual tooltipEffects exist
+      const hasManualTooltip = buildAction?.tooltipEffects && buildAction.tooltipEffects.length > 0;
 
-      if (buildAction?.statsEffects) {
-        Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
-          // Apply 50% reduction and round down if damaged
-          const finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
-          effectsList.push(`${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`);
-        });
-      }
-
-      // Special handling for production effects
-      if (buildAction?.productionEffects) {
-        Object.entries(buildAction.productionEffects).forEach(([jobType, production]) => {
-          Object.entries(production).forEach(([resource, amount]) => {
-            effectsList.push(`+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`);
-          });
-        });
-      }
-
-      // Special handling for fortification buildings (bastion, watchtower, palisades)
-      if (key === "bastion" && buildings.bastion > 0) {
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutBastion = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, bastion: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutBastion.defense;
-        const attack =
-          currentStats.attackFromFortifications -
-          statsWithoutBastion.attackFromFortifications;
-        const integrity = currentStats.integrity - statsWithoutBastion.integrity;
-
-        effectsList.push(`+${defense} Defense`);
-        effectsList.push(`+${attack} Attack`);
-        effectsList.push(`+${integrity} Integrity`);
-      } else if (key === "watchtower" && buildings.watchtower > 0) {
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutWatchtower = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, watchtower: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutWatchtower.defense;
-        const attack =
-          currentStats.attackFromFortifications -
-          statsWithoutWatchtower.attackFromFortifications;
-        const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
-
-        effectsList.push(`+${defense} Defense`);
-        effectsList.push(`+${attack} Attack`);
-        effectsList.push(`+${integrity} Integrity`);
-      } else if (key === "palisades" && buildings.palisades > 0) {
-        const currentStats = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings },
-        });
-
-        const statsWithoutPalisades = calculateBastionStats({
-          ...useGameStore.getState(),
-          buildings: { ...buildings, palisades: 0 },
-        });
-
-        const defense = currentStats.defense - statsWithoutPalisades.defense;
-        const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
-
-        effectsList.push(`+${defense} Defense`);
-        effectsList.push(`+${integrity} Integrity`);
-      } else if (key === "fortifiedMoat" && buildings.fortifiedMoat > 0) {
-        effectsList.push("+5 Defense");
-      }
-
-      // Add effects section if there are any effects
-      if (effectsList.length > 0) {
-        tooltipParts.push(
-          <div key="effects">
-            {effectsList.map((effect, idx) => (
-              <div key={idx}>
-                {effect}
-              </div>
-            ))}
-          </div>
-        );
-      }
-
-      // Add effects from manual tooltipEffects
-      if (buildAction?.tooltipEffects && buildAction.tooltipEffects.length > 0) {
+      if (hasManualTooltip) {
+        // Use manual tooltipEffects
         tooltipParts.push(
           <div key="effects">
             {buildAction.tooltipEffects.map((effect, idx) => (
@@ -365,6 +274,100 @@ export default function SidePanel() {
             ))}
           </div>
         );
+      } else {
+        // Auto-generate effects from statsEffects and productionEffects
+        const effectsList: string[] = [];
+
+        if (buildAction?.statsEffects) {
+          Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
+            // Apply 50% reduction and round down if damaged
+            const finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
+            effectsList.push(`${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`);
+          });
+        }
+
+        // Special handling for production effects
+        if (buildAction?.productionEffects) {
+          Object.entries(buildAction.productionEffects).forEach(([jobType, production]) => {
+            Object.entries(production).forEach(([resource, amount]) => {
+              effectsList.push(`+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`);
+            });
+          });
+        }
+
+        // Special handling for fortification buildings (bastion, watchtower, palisades)
+        if (key === "bastion" && buildings.bastion > 0) {
+          const currentStats = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings },
+          });
+
+          const statsWithoutBastion = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings, bastion: 0 },
+          });
+
+          const defense = currentStats.defense - statsWithoutBastion.defense;
+          const attack =
+            currentStats.attackFromFortifications -
+            statsWithoutBastion.attackFromFortifications;
+          const integrity = currentStats.integrity - statsWithoutBastion.integrity;
+
+          effectsList.push(`+${defense} Defense`);
+          effectsList.push(`+${attack} Attack`);
+          effectsList.push(`+${integrity} Integrity`);
+        } else if (key === "watchtower" && buildings.watchtower > 0) {
+          const currentStats = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings },
+          });
+
+          const statsWithoutWatchtower = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings, watchtower: 0 },
+          });
+
+          const defense = currentStats.defense - statsWithoutWatchtower.defense;
+          const attack =
+            currentStats.attackFromFortifications -
+            statsWithoutWatchtower.attackFromFortifications;
+          const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
+
+          effectsList.push(`+${defense} Defense`);
+          effectsList.push(`+${attack} Attack`);
+          effectsList.push(`+${integrity} Integrity`);
+        } else if (key === "palisades" && buildings.palisades > 0) {
+          const currentStats = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings },
+          });
+
+          const statsWithoutPalisades = calculateBastionStats({
+            ...useGameStore.getState(),
+            buildings: { ...buildings, palisades: 0 },
+          });
+
+          const defense = currentStats.defense - statsWithoutPalisades.defense;
+          const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
+
+          effectsList.push(`+${defense} Defense`);
+          effectsList.push(`+${integrity} Integrity`);
+        } else if (key === "fortifiedMoat" && buildings.fortifiedMoat > 0) {
+          effectsList.push("+5 Defense");
+        }
+
+        // Add effects section if there are any auto-generated effects
+        if (effectsList.length > 0) {
+          tooltipParts.push(
+            <div key="effects">
+              {effectsList.map((effect, idx) => (
+                <div key={idx}>
+                  {effect}
+                </div>
+              ))}
+            </div>
+          );
+        }
       }
 
 
