@@ -14,6 +14,7 @@ import { calculateTotalEffects } from "@/game/rules/effectsCalculation";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
+import { GAME_CONSTANTS } from "@/game/constants";
 
 // Types
 interface GameStore extends GameState {
@@ -401,7 +402,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         ...prevState,
         ...mergedUpdates,
         log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(-10)
+          ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
 
@@ -584,7 +585,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     set((state) => ({
-      log: [...state.log, entry].slice(-10),
+      log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
     }));
   },
 
@@ -632,7 +633,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         set((prevState) => ({
           ...prevState,
-          log: [...prevState.log, logEntry].slice(-10),
+          log: [...prevState.log, logEntry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
         }));
 
         setTimeout(() => {
@@ -676,7 +677,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                       timestamp: Date.now(),
                       type: "system",
                     },
-                  ].slice(-10)
+                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -696,7 +697,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                       timestamp: Date.now(),
                       type: "system",
                     },
-                  ].slice(-10)
+                  ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
                 : prevState.log,
             }));
             get().setCombatDialog(false);
@@ -849,7 +850,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     timestamp: Date.now(),
                     type: "system",
                   },
-                ].slice(-10)
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);
@@ -868,7 +869,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
                     timestamp: Date.now(),
                     type: "system",
                   },
-                ].slice(-10)
+                ].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
               : prevState.log,
           }));
           get().setCombatDialog(false);

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
+import { GAME_CONSTANTS } from "@/game/constants";
 
 export default function LogPanel() {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
 
-  // Get only the last 10 entries and reverse them so latest is at top
-  const recentEntries = log.slice(-10).reverse();
+  // Get only the last entries and reverse them so latest is at top
+  const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
 
   useEffect(() => {
     // Check for new entries with visual effects
@@ -36,7 +37,7 @@ export default function LogPanel() {
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
               let opacity = "";
-              if (recentEntries.length >= 10) {
+              if (recentEntries.length >= GAME_CONSTANTS.LOG_MAX_ENTRIES) {
                 if (index === recentEntries.length - 1) {
                   opacity = "opacity-20";
                 } else if (index === recentEntries.length - 2) {
