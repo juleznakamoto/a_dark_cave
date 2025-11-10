@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { audioManager } from "@/lib/audio";
+import { useGameStore } from "@/game/state"; // Import useGameStore
 
 interface CubeDialogProps {
   isOpen: boolean;
@@ -48,12 +49,12 @@ export default function CubeDialog({
   const handleClose = () => {
     audioManager.stopLoopingSound('whisperingCube');
     onChoice(eventChoices[0]?.id);
-    
+
     // Check if this is one of the final cube events (cube15a or cube15b)
     if (event?.id?.includes('cube15a') || event?.id?.includes('cube15b')) {
       // Delay showing end screen slightly to allow dialog to close
       setTimeout(() => {
-        const { setShowEndScreen } = require('@/game/state').useGameStore.getState();
+        const { setShowEndScreen } = useGameStore.getState();
         setShowEndScreen(true);
       }, 500);
     }
