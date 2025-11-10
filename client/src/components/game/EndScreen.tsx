@@ -30,7 +30,7 @@ export default function EndScreen() {
             onClick: handlePlayAgain,
           },
           secondary: {
-            text: "Main Menu",
+            text: "Close",
             onClick: handleMainMenu,
           },
         }}
