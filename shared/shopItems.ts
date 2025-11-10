@@ -20,6 +20,21 @@ export interface ShopItem {
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
+  gold_100_free: {
+    id: 'gold_100_free',
+    name: '100 Gold (Free Gift)',
+    description: 'A generous gift to get you started',
+    price: 0, // Free!
+    rewards: {
+      resources: { gold: 100 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: 'resource',
+    activationMessage: '100 Gold have been added to your inventory as a gift!',
+    symbol: '🎁',
+    symbolColor: 'text-green-600',
+  },
+
   gold_50: {
     id: 'gold_50',
     name: '50 Gold',
