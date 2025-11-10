@@ -377,9 +377,12 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
 
     // Forest Sacrifice Actions
     case 'boneTotems':
-      return handleBoneTotems(state, result);
-    case 'leatherTotems':
-      return handleLeatherTotems(state, result);
+      result = handleBoneTotems(state, result);
+      break;
+
+    case "leatherTotems":
+      result = handleLeatherTotems(state, result);
+      break;
 
     // Forest Trade Actions
     case 'tradeGoldForFood':
