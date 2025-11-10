@@ -12,7 +12,7 @@ export default function Imprint() {
               Impressum / Imprint
             </CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white select-text">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
             <h3>
               Angaben gemäß § 5 TMG / Information pursuant to § 5 TMG (German
               Telemedia Act)

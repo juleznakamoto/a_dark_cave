@@ -11,7 +11,7 @@ export default function Privacy() {
             <CardTitle className="text-3xl text-white">Privacy Policy</CardTitle>
             <p className="text-sm text-gray-400">Last Updated: 03.11.2025</p>
           </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white select-text">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
             <h3>1. General Information</h3>
             <p>
               This Privacy Policy informs you about the nature, scope, and purpose of the processing of personal data (hereinafter "data") within our online game "A Dark Cave" and its associated websites, functions, and content.

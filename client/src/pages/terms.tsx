@@ -12,7 +12,7 @@ export default function Terms() {
             <CardTitle className="text-3xl text-white">Terms of Service</CardTitle>
             <p className="text-sm text-gray-400">Last Updated: 03.11.2025</p>
           </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white select-text">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
             <h3>§ 1 Scope and Provider</h3>
             <ol>
               <li>These Terms of Service apply to the use of the browser game "A Dark Cave" (hereinafter referred to as "Game") provided by Julian Bauer, Königsberger Straße 1, 97072 Deutschland (hereinafter referred to as "Provider").</li>

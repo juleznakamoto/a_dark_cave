@@ -10,7 +10,7 @@ export default function Withdrawal() {
           <CardHeader>
             <CardTitle className="text-3xl text-white">Right of Withdrawal</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white select-text">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
             <h3>Right of Withdrawal</h3>
             <p>
               You have the right to withdraw from this contract within fourteen days without giving any reason. The withdrawal period is fourteen days from the day the contract is concluded.
@@ -55,7 +55,7 @@ export default function Withdrawal() {
           <CardHeader>
             <CardTitle className="text-2xl text-white">Model Withdrawal Form</CardTitle>
           </CardHeader>
-          <CardContent className="prose prose-sm prose-invert max-w-none text-white select-text">
+          <CardContent className="prose prose-sm prose-invert max-w-none text-white legal-content">
             <p className="text-gray-400 italic">
               (Complete and return this form only if you wish to withdraw from the contract)
             </p>
