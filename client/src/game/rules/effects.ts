@@ -209,7 +209,8 @@ export const toolEffects: Record<string, EffectDefinition> = {
   natharit_pickaxe: {
     id: "natharit_pickaxe",
     name: "Natharit Pickaxe",
-    description: "Extremely sturdy pickaxe of unknown material with exceptional quality",
+    description:
+      "Extremely sturdy pickaxe of unknown material with exceptional quality",
     bonuses: {
       actionBonuses: {
         mining: {
@@ -442,6 +443,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  ashen_dagger: {
+    id: "ashen_dagger",
+    name: "Ashen Dagger",
+    description: "Dagger forged of volcanic ash given by the Ashbringer",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+      },
+    },
+  },
+
   frostglass_sword: {
     id: "frostglass_sword",
     name: "Frostglass Sword",
@@ -450,7 +462,6 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         strength: 30,
       },
-      actionBonuses: {},
     },
   },
 
@@ -463,7 +474,6 @@ export const weaponEffects: Record<string, EffectDefinition> = {
         strength: 5,
         knowledge: 30,
       },
-      actionBonuses: {},
     },
   },
 
@@ -899,17 +909,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     name: "Nightshade Bow Schematic",
     description: "Blueprint for crafting a poisonous nightshade bow",
     bonuses: {},
-  },
-
-  ashen_dagger: {
-    id: "ashen_dagger",
-    name: "Ashen Dagger",
-    description: "Dagger forged of volcanic ash given by the Ashbringer",
-    bonuses: {
-      generalBonuses: {
-        strength: 5,
-      },
-    },
   },
 
   // Blessings

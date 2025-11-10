@@ -121,10 +121,11 @@ export const gameStateSchema = z.object({
       long_bow: z.boolean().default(false),
       war_bow: z.boolean().default(false),
       master_bow: z.boolean().default(false),
-      frostglass_sword: z.boolean().default(false),
+      ashen_dagger: z.boolean().default(false),
       arbalest: z.boolean().default(false),
       nightshade_bow: z.boolean().default(false),
       compound_bow: z.boolean().default(false),
+      frostglass_sword: z.boolean().default(false),
       bloodstone_staff: z.boolean().default(false),
     })
     .default({}),
@@ -307,33 +308,43 @@ export const gameStateSchema = z.object({
   templeDedicatedTo: z.string().default(""),
   triggeredEvents: z.record(z.boolean()).default({}),
   eventCooldowns: z.record(z.number()).default({}), // Tracks last trigger time (timestamp) for each event
-  feastState: z.object({
-    isActive: z.boolean().default(false),
-    endTime: z.number().default(0),
-    lastAcceptedLevel: z.number().default(0),
-  }).default({}),
+  feastState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+      lastAcceptedLevel: z.number().default(0),
+    })
+    .default({}),
 
-  greatFeastState: z.object({
-    isActive: z.boolean().default(false),
-    endTime: z.number().default(0),
-  }).default({}),
+  greatFeastState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({}),
 
   greatFeastActivations: z.number().default(0),
 
   activatedPurchases: z.record(z.boolean()).default({}),
-  feastPurchases: z.record(z.object({
-    itemId: z.string(),
-    activationsRemaining: z.number(),
-    totalActivations: z.number(),
-    purchasedAt: z.number(),
-  })).default({}),
-  curseState: z.object({
-    isActive: z.boolean().default(false),
-    endTime: z.number().default(0),
-  }).default({
-    isActive: false,
-    endTime: 0,
-  }),
+  feastPurchases: z
+    .record(
+      z.object({
+        itemId: z.string(),
+        activationsRemaining: z.number(),
+        totalActivations: z.number(),
+        purchasedAt: z.number(),
+      }),
+    )
+    .default({}),
+  curseState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({
+      isActive: false,
+      endTime: 0,
+    }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
