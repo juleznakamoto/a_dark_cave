@@ -132,6 +132,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.cabin": 1,
       },
     },
+    craftingCostReduction: 0.1,
     cooldown: 15,
   },
 
