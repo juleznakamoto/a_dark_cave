@@ -12,6 +12,7 @@ import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
   getBoneTotemsCost,
+  getLeatherTotemsCost,
 } from "./forestSacrificeActions";
 import { caveEvents } from "../eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -238,6 +239,12 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
     return (state.resources.bone_totem || 0) >= dynamicCost;
+  }
+
+  // Handle dynamic cost for leather totems
+  if (actionId === "leatherTotems") {
+    const dynamicCost = getLeatherTotemsCost(state);
+    return (state.resources.leather_totem || 0) >= dynamicCost;
   }
 
   // Check cooldown first
@@ -770,6 +777,12 @@ export function getActionCostDisplay(
     return `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
+  // Handle dynamic cost for leather totems
+  if (actionId === "leatherTotems") {
+    const dynamicCost = getLeatherTotemsCost(state);
+    return `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`;
+  }
+
   const action = gameActions[actionId];
   if (!action?.cost) return "";
 
@@ -823,6 +836,18 @@ export function getActionCostBreakdown(
     return [
       {
         text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
+        satisfied: currentAmount >= dynamicCost,
+      },
+    ];
+  }
+
+  // Handle dynamic cost for leather totems
+  if (actionId === "leatherTotems") {
+    const dynamicCost = getLeatherTotemsCost(state);
+    const currentAmount = state.resources.leather_totem || 0;
+    return [
+      {
+        text: `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
         satisfied: currentAmount >= dynamicCost,
       },
     ];
