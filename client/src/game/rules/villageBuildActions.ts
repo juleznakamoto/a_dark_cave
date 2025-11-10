@@ -1184,6 +1184,17 @@ export const villageBuildActions: Record<string, Action> = {
     craftingCostReduction: 0.1,
     cooldown: 120,
   },
+
+  buildLeatherTents: {
+    id: "buildLeatherTents",
+    label: "Leather Tents",
+    description: "Temporary leather shelters providing basic protection",
+    tooltipEffects: ["+1 Max Population"],
+    building: true,
+    // No show_when - cannot be built directly, obtained through events/other means
+    cost: {},
+    effects: {},
+  },
 };
 
 // Action handlers
