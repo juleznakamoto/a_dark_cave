@@ -141,6 +141,13 @@ html, body {
   }
 }
 
+/* Allow text selection on legal pages */
+.legal-content,
+.legal-content * {
+  user-select: text !important;
+  -webkit-user-select: text !important;
+}
+
 @keyframes fade-in {
   0% {
     background-color: rgba(0, 0, 0, 0);
