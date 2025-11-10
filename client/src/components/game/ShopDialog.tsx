@@ -229,8 +229,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const user = await getCurrentUser();
       if (!user) return;
 
-      const supabase = await getSupabaseClient();
-      const { data, error } = await supabase
+      const client = await getSupabaseClient();
+      const { data, error } = await client
         .from("purchases")
         .select("item_id")
         .eq("user_id", user.id);
@@ -265,6 +265,27 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   }, [isOpen]);
 
   const handlePurchaseClick = async (itemId: string) => {
+    const item = SHOP_ITEMS[itemId];
+    
+    // For free items, skip payment and activate directly
+    if (item.price === 0) {
+      // Add to purchased items list
+      setPurchasedItems((prev) => [...prev, itemId]);
+      
+      // Show success message
+      gameState.addLogEntry({
+        id: `free-gift-${Date.now()}`,
+        message: `${item.name} has been added to your purchases! You can activate it from the Purchases section.`,
+        timestamp: Date.now(),
+        type: "system",
+      });
+      
+      setShowSuccess(true);
+      setTimeout(() => setShowSuccess(false), 10000);
+      return;
+    }
+    
+    // For paid items, create payment intent
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
