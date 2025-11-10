@@ -58,11 +58,9 @@ export const gameStateSchema = z.object({
     .object({
       villageUnlocked: z.boolean().default(false),
       bastionUnlocked: z.boolean().default(false),
-      torchBuilt: z.boolean().default(false),
       caveExplored: z.boolean().default(false),
       venturedDeeper: z.boolean().default(false),
       gameStarted: z.boolean().default(false),
-      trinketDrunk: z.boolean().default(false),
       descendedFurther: z.boolean().default(false),
       exploredRuins: z.boolean().default(false),
       exploredTemple: z.boolean().default(false),
@@ -71,10 +69,7 @@ export const gameStateSchema = z.object({
       occultistChamberExplored: z.boolean().default(false),
       starvationActive: z.boolean().default(false),
       forestUnlocked: z.boolean().default(false),
-      altarBuilt: z.boolean().default(false),
-      needsNewWell: z.boolean().default(false),
       portalBlasted: z.boolean().default(false),
-      stoneAxeTooltipShown: z.boolean().default(false),
     })
     .default({}),
   schematics: z

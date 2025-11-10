@@ -399,10 +399,6 @@ export const madnessEvents: Record<string, GameEvent> = {
 
           return {
             ...deathResult,
-            flags: {
-              ...state.flags,
-              needsNewWell: true,
-            },
             _logMessage:
               `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
           };
