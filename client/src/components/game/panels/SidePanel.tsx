@@ -13,6 +13,8 @@ import {
   getTotalKnowledge,
   getTotalMadness,
   getAllActionBonuses,
+  getTotalCraftingCostReduction,
+  getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
@@ -665,6 +667,30 @@ export default function SidePanel() {
     testId: `bonus-${bonus.id}`,
     visible: true,
   }));
+
+  // Add crafting cost reduction if present
+  const craftingCostReduction = getTotalCraftingCostReduction(gameState);
+  if (craftingCostReduction > 0) {
+    bonusItems.push({
+      id: 'craftingCostReduction',
+      label: 'Crafting Cost Reduction',
+      value: `-${Math.round(craftingCostReduction * 100)}%`,
+      testId: 'bonus-crafting-cost-reduction',
+      visible: true,
+    });
+  }
+
+  // Add building cost reduction if present
+  const buildingCostReduction = getTotalBuildingCostReduction(gameState);
+  if (buildingCostReduction > 0) {
+    bonusItems.push({
+      id: 'buildingCostReduction',
+      label: 'Building Cost Reduction',
+      value: `-${Math.round(buildingCostReduction * 100)}%`,
+      testId: 'bonus-building-cost-reduction',
+      visible: true,
+    });
+  }
 
   // Determine which sections to show based on active tab
   const shouldShowSection = (sectionName: string): boolean => {
