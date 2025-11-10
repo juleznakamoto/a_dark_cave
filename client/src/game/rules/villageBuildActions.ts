@@ -959,8 +959,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
-    description: "A durable stone dwelling that provides superior shelter for villagers.",
-    tooltipEffects: ["+10 Population"],
+    description: "Durable stone dwelling providing superior shelter for villagers",
+    tooltipEffects: ["+4 Population"],
     building: true,
     show_when: {
       1: {
@@ -1158,7 +1158,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
-    description: "An advanced forge capable of working the finest materials.",
+    description: "Advanced forge capable of working the finest materials",
     tooltipEffects: ["Unlocks Frostglas Crafting"],
     building: true,
     show_when: {
