@@ -111,7 +111,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildCabin: {
     id: "buildCabin",
     label: "Cabin",
-    description: "A sturdy cabin that unlocks hunting and improves living conditions.",
+    description: "Sturdy cabin that unlocks hunting and improves living conditions.",
     building: true,
     show_when: {
       1: {
