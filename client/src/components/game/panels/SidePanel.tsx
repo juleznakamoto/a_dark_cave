@@ -354,6 +354,20 @@ export default function SidePanel() {
         );
       }
 
+      // Add effects from manual tooltipEffects
+      if (buildAction?.tooltipEffects && buildAction.tooltipEffects.length > 0) {
+        tooltipParts.push(
+          <div key="effects">
+            {buildAction.tooltipEffects.map((effect, idx) => (
+              <div key={idx}>
+                {effect}
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+
       // Combine tooltip parts
       if (tooltipParts.length > 0) {
         tooltip = (
