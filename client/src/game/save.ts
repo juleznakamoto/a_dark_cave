@@ -72,6 +72,7 @@ export async function loadGame(): Promise<GameState | null> {
         const cloudSave = await loadGameFromSupabase();
         if (cloudSave) {
           console.log('Game loaded from cloud');
+          console.log('Loaded stats from Supabase:', cloudSave.stats);
           // Also save to local storage
           const db = await getDB();
           await db.put('saves', {

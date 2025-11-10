@@ -443,10 +443,6 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // Autosave every 30 seconds
-    if (import.meta.env.DEV) {
-      console.log("[AUTOSAVE] Saving game state, events:", state.events);
-    }
     await saveGame(gameState);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
