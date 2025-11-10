@@ -5,7 +5,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWoodenHut: {
     id: "buildWoodenHut",
     label: "Wooden Hut",
-    description: "A simple wooden structure that provides basic shelter for villagers.",
+    description: "Simple wooden structure that provides basic shelter for villagers.",
     building: true,
     show_when: {
       1: {
