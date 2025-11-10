@@ -268,21 +268,46 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
     
-    // For free items, skip payment and activate directly
+    // For free items, skip payment but save to Supabase
     if (item.price === 0) {
-      // Add to purchased items list
-      setPurchasedItems((prev) => [...prev, itemId]);
-      
-      // Show success message
-      gameState.addLogEntry({
-        id: `free-gift-${Date.now()}`,
-        message: `${item.name} has been added to your purchases! You can activate it from the Purchases section.`,
-        timestamp: Date.now(),
-        type: "system",
-      });
-      
-      setShowSuccess(true);
-      setTimeout(() => setShowSuccess(false), 10000);
+      try {
+        const user = await getCurrentUser();
+        if (!user) {
+          throw new Error("User not authenticated");
+        }
+
+        // Save purchase to Supabase
+        const client = await getSupabaseClient();
+        const { error } = await client.from("purchases").insert({
+          user_id: user.id,
+          item_id: itemId,
+          purchased_at: new Date().toISOString(),
+        });
+
+        if (error) throw error;
+
+        // Add to purchased items list
+        setPurchasedItems((prev) => [...prev, itemId]);
+        
+        // Show success message
+        gameState.addLogEntry({
+          id: `free-gift-${Date.now()}`,
+          message: `${item.name} has been added to your purchases! You can activate it from the Purchases section.`,
+          timestamp: Date.now(),
+          type: "system",
+        });
+        
+        setShowSuccess(true);
+        setTimeout(() => setShowSuccess(false), 10000);
+      } catch (error) {
+        console.error("Error claiming free item:", error);
+        gameState.addLogEntry({
+          id: `free-gift-error-${Date.now()}`,
+          message: `Failed to claim ${item.name}. Please try again.`,
+          timestamp: Date.now(),
+          type: "system",
+        });
+      }
       return;
     }
     
