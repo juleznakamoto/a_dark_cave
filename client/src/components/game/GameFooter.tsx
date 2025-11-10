@@ -188,15 +188,25 @@ export default function GameFooter() {
             )}
           </div>
           <div className="flex gap-4 items-center">
-            <a href="/privacy" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
-              Privacy
-            </a>
-            <a href="/imprint" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
-              Imprint
-            </a>
-            <a href="mailto:support@a-dark-cave.com" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+            <a
+              href="mailto:support@a-dark-cave.com"
+              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+            >
               Support
             </a>
+            <a
+              href="/privacy"
+              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+            >
+              Privacy
+            </a>
+            <a
+              href="/imprint"
+              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+            >
+              Imprint
+            </a>
+
             <span data-testid="game-version">v{VERSION}</span>
           </div>
         </div>
