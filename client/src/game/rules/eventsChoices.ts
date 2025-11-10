@@ -1296,7 +1296,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "The villagers strike her down before she can finish her curse. Before witch falls, and her body dissolves into black smoke, leaving only a foul stench.",
+                "The villagers strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
             };
           } else {
             const curseDuration = 10 * 60 * 1000; // 10 minutes
