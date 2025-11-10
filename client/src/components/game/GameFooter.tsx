@@ -106,7 +106,7 @@ export default function GameFooter() {
       />
       <footer className="border-t border-border px-4 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
-          <div className="flex items-center space-x-0">
+          <div className="flex items-center space-x-0 flex-1">
             <Button
               variant="ghost"
               size="xs"
@@ -187,7 +187,15 @@ export default function GameFooter() {
               </Button>
             )}
           </div>
-          <span data-testid="game-version">v{VERSION}</span>
+          <div className="flex gap-4 items-center">
+            <a href="/privacy" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+              Privacy
+            </a>
+            <a href="/imprint" className="hover:text-foreground transition-colors opacity-40 hover:opacity-100">
+              Imprint
+            </a>
+            <span data-testid="game-version">v{VERSION}</span>
+          </div>
         </div>
       </footer>
       <AuthDialog
