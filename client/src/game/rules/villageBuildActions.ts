@@ -296,7 +296,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.foundry": 1,
-        "buildings.deepeningPit": 1,
+        "buildings.deepPit": 1,
         "buildings.primeFoundry": 0,
       },
     },
