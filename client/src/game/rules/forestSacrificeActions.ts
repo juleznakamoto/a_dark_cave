@@ -9,6 +9,11 @@ export function getBoneTotemsCost(state: GameState): number {
   return 10 + usageCount;
 }
 
+export function getLeatherTotemsCost(state: GameState): number {
+  const usageCount = Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
+  return 10 + usageCount;
+}
+
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
@@ -190,6 +195,7 @@ export function handleLeatherTotems(
     state,
     result,
     {
+        // TODO
       itemKey: "highpriest_robe" as keyof GameState["clothing"],
       itemName: "Highpriest Robe",
       discoveryMessage: "Among the leather offerings, you discover an ornate robe woven with golden threads, radiating divine power.",
