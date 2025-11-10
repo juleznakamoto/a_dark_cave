@@ -331,16 +331,15 @@ export default function SidePanelSection({
       </div>
     );
 
-    // If this item has effects or tooltip, wrap it in a tooltip
+    // If this item has effects, wrap it in a tooltip with item effects
     if (
-      (hasEffect &&
-        (title === "Relics" ||
-          title === "Tools" ||
-          title === "Weapons" ||
-          title === "Clothing" ||
-          title === "Schematics" ||
-          title === "Blessings")) ||
-      (hasTooltip && (title === "Fortifications" || title === "Buildings"))
+      hasEffect &&
+      (title === "Relics" ||
+        title === "Tools" ||
+        title === "Weapons" ||
+        title === "Clothing" ||
+        title === "Schematics" ||
+        title === "Blessings")
     ) {
       return (
         <TooltipProvider key={item.id}>
@@ -357,11 +356,7 @@ export default function SidePanelSection({
             </TooltipTrigger>
             <TooltipContent className="max-w-xs">
               <div className="text-xs">
-                {typeof item.tooltip === 'string' ? (
-                  <div className="whitespace-pre-line">{item.tooltip}</div>
-                ) : (
-                  item.tooltip
-                )}
+                {renderItemTooltip(item.id, title === "Weapons" ? "weapon" : title === "Blessings" ? "blessing" : "tool")}
               </div>
             </TooltipContent>
           </Tooltip>
