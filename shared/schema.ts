@@ -146,6 +146,7 @@ export const gameStateSchema = z.object({
       black_bear_fur: z.boolean().default(false),
       ring_of_drowned: z.boolean().default(false),
       red_mask: z.boolean().default(false),
+      moon_bracelet: z.boolean().default(false),
     })
     .default({}),
   relics: z

@@ -382,6 +382,14 @@ export default function ItemProgressChart() {
         category: "clothing",
         maxCount: 1,
       },
+      {
+        itemType: "moon_bracelet",
+        itemKeys: ["moon_bracelet"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Moon Bracelet",
+        category: "clothing",
+        maxCount: 1,
+      },
     ],
     // Fifth ring: ???
     [],
