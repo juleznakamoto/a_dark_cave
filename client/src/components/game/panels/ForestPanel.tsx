@@ -24,6 +24,7 @@ export default function ForestPanel() {
       title: 'Sacrifice',
       actions: [
         { id: 'boneTotems', label: 'Bone Totems' },
+        { id: 'leatherTotems', label: 'Leather Totems' },
       ]
     },
     {
