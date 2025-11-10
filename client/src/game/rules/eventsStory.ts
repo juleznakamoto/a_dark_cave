@@ -52,7 +52,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -79,7 +79,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -107,7 +107,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -136,7 +136,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       relics: {
         ...state.relics,
@@ -171,7 +171,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -198,7 +198,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -226,7 +226,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
@@ -255,7 +255,7 @@ export const storyEvents: Record<string, GameEvent> = {
       type: "glow",
       duration: 2,
     },
-    repeatable: false,
+    repeatable: true,
     effect: (state: GameState) => ({
       story: {
         ...state.story,
