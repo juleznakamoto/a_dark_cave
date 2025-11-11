@@ -926,25 +926,8 @@ export function getActionCostBreakdown(
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
-    // Convert true to 1 for display purposes
-    let displayCost = amount === true ? 1 : amount;
-    const isBooleanCost = amount === true;
-
-    // Determine action type
-    const action = gameActions[actionId];
-    const isCraftingAction = actionId.startsWith("craft") || actionId.startsWith("forge");
-    const isBuildingAction = action?.building || false;
-
-    // Get cost reductions
-    const craftingCostReduction = isCraftingAction ? getTotalCraftingCostReductionCalc(state) : 0;
-    const buildingCostReduction = isBuildingAction ? getTotalBuildingCostReductionCalc(state) : 0;
-
-    // Apply cost reductions (but never reduce boolean costs below 1)
-    if (isCraftingAction && craftingCostReduction > 0) {
-      displayCost = Math.max(isBooleanCost ? 1 : 0, displayCost - craftingCostReduction);
-    } else if (isBuildingAction && buildingCostReduction > 0) {
-      displayCost = Math.max(isBooleanCost ? 1 : 0, displayCost - buildingCostReduction);
-    }
+    // Handle boolean true values as -1
+    const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
 
     // Check if we can afford this cost
     let satisfied: boolean;
