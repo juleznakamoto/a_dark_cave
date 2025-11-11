@@ -321,16 +321,14 @@ export const gameStateSchema = z.object({
   greatFeastActivations: z.number().default(0),
 
   activatedPurchases: z.record(z.boolean()).default({}),
-  feastPurchases: z
-    .record(
-      z.object({
-        itemId: z.string(),
-        activationsRemaining: z.number(),
-        totalActivations: z.number(),
-        purchasedAt: z.number(),
-      }),
-    )
-    .default({}),
+  feastPurchases: z.record(
+    z.object({
+      itemId: z.string(),
+      activationsRemaining: z.number(),
+      totalActivations: z.number(),
+      purchasedAt: z.number(),
+    }),
+  ).default({}),
   curseState: z
     .object({
       isActive: z.boolean().default(false),
@@ -340,6 +338,7 @@ export const gameStateSchema = z.object({
       isActive: false,
       endTime: 0,
     }),
+  shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

@@ -20,6 +20,8 @@ export default function GameFooter() {
     setShowEndScreen, // Added this line
     isMuted,
     setIsMuted,
+    shopNotificationSeen,
+    setShopNotificationSeen,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -28,6 +30,8 @@ export default function GameFooter() {
     email: string;
   } | null>(null);
   const { toast } = useToast();
+  const [gameStartTime] = useState<number>(Date.now());
+  const [showShopNotification, setShowShopNotification] = useState(false);
 
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -39,6 +43,24 @@ export default function GameFooter() {
   useEffect(() => {
     checkAuth();
   }, []);
+
+  // Check if 10 minutes have passed to show shop notification
+  useEffect(() => {
+    if (shopNotificationSeen) {
+      setShowShopNotification(false);
+      return;
+    }
+
+    const checkNotification = () => {
+      const elapsed = Date.now() - gameStartTime;
+      if (elapsed >= 10 * 60 * 1000) { // 10 minutes
+        setShowShopNotification(true);
+      }
+    };
+
+    const interval = setInterval(checkNotification, 1000);
+    return () => clearInterval(interval);
+  }, [gameStartTime, shopNotificationSeen]);
 
   const checkAuth = async () => {
     const user = await getCurrentUser();
@@ -160,10 +182,19 @@ export default function GameFooter() {
             <Button
               variant="ghost"
               size="xs"
-              onClick={() => setShopDialogOpen(true)}
-              className="px-2 py-1 text-xs hover"
+              onClick={() => {
+                setShopDialogOpen(true);
+                if (showShopNotification) {
+                  setShopNotificationSeen(true);
+                  setShowShopNotification(false);
+                }
+              }}
+              className="px-2 py-1 text-xs hover relative"
             >
               Shop
+              {showShopNotification && !shopNotificationSeen && (
+                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse" />
+              )}
             </Button>
             {/* <Button
               variant="ghost"

@@ -11,10 +11,12 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
+const SHOP_NOTIFICATION_DELAY = 10 * 60 * 1000; // 10 minutes in milliseconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
+let gameStartTime = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -24,6 +26,9 @@ export function startGameLoop() {
   lastFrameTime = now;
   lastProduction = now; // Reset production interval to start fresh
   tickAccumulator = 0;
+  if (gameStartTime === 0) {
+    gameStartTime = now; // Set game start time only once
+  }
 
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
@@ -71,6 +76,13 @@ export function startGameLoop() {
       if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
         lastAutoSave = timestamp;
         handleAutoSave();
+      }
+
+      // Shop notification logic (after 10 minutes of gameplay)
+      const state = useGameStore.getState();
+      if (!state.shopNotificationSeen && gameStartTime > 0 && timestamp - gameStartTime >= SHOP_NOTIFICATION_DELAY) {
+        // Don't set shopNotificationSeen here - let the user clicking shop do that
+        // This just allows the notification to show
       }
 
       // All production and game logic checks (every 15 seconds)

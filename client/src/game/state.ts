@@ -39,6 +39,9 @@ interface GameStore extends GameState {
   shopDialogOpen: boolean;
   showEndScreen: boolean; // Added showEndScreen flag
 
+  // Notification state for shop
+  shopNotificationSeen: boolean;
+
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
@@ -59,6 +62,7 @@ interface GameStore extends GameState {
   setBoostMode: (enabled: boolean) => void;
   setShowEndScreen: (showEndScreen: boolean) => void; // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => void;
+  setShopNotificationSeen: (seen: boolean) => void; // Added setShopNotificationSeen action
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -219,6 +223,8 @@ const defaultGameState: GameState = {
   isPaused: false,
   showEndScreen: false, // Initialize showEndScreen to false
   isMuted: false,
+  // Initialize shop notification state
+  shopNotificationSeen: false,
 };
 
 // State management utilities
@@ -275,12 +281,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopDialogOpen: false,
   showEndScreen: false, // Initialize showEndScreen
   isMuted: false,
+  // Initialize shop notification state
+  shopNotificationSeen: false,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
+  setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }), // Added setShopNotificationSeen action
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -321,6 +330,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isPaused: newState.isPaused !== undefined ? newState.isPaused : false, // Ensure isPaused is initialized
       showEndScreen: newState.showEndScreen !== undefined ? newState.showEndScreen : false, // Ensure showEndScreen is initialized
       isMuted: newState.isMuted !== undefined ? newState.isMuted : false,
+      shopNotificationSeen: newState.shopNotificationSeen !== undefined ? newState.shopNotificationSeen : false, // Ensure shopNotificationSeen is initialized
     };
     set(stateWithEffects);
     StateManager.scheduleEffectsUpdate(get);
@@ -510,6 +520,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isPaused: false, // Reset pause state
       showEndScreen: false, // Reset showEndScreen
       isMuted: false,
+      shopNotificationSeen: false, // Reset shop notification state
     };
 
     set(resetState);
@@ -547,6 +558,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
+        shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false, // Ensure shopNotificationSeen is loaded
       };
 
       set(loadedState);
