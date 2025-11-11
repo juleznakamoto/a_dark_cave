@@ -932,14 +932,8 @@ export function getActionCostBreakdown(
     // Check if we can afford this cost
     let satisfied: boolean;
     if (amount === true) {
-      // For boolean costs (relics), check if the resource is true
-      // Use the original amount (true) to determine this is a boolean check
-      // Check in relics if the path starts with resources but the value is boolean
-      if (resource.startsWith("resources.") && (resourceName === "bloodstone" || resourceName === "frostglass")) {
-        satisfied = state.relics[resourceName as keyof typeof state.relics] === true;
-      } else {
-        satisfied = resources[resourceName as keyof typeof resources] === true;
-      }
+      // For boolean costs (relics), check in the relics object
+      satisfied = Boolean(state.relics[resourceName as keyof typeof state.relics]);
     } else {
       // For numeric costs, check if we have enough
       satisfied = (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
