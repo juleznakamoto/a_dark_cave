@@ -42,7 +42,7 @@ export const forestScoutActions: Record<string, Action> = {
           return prob;
         },
         value: true,
-        condition: "!clothing.red_mask && !story.seen.redMaskChoice",
+        condition: "",
         logMessage: "",
         isChoice: true,
         eventId: "redMaskChoice",
