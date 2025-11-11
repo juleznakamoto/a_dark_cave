@@ -84,7 +84,7 @@ export function startGameLoop() {
       const state = useGameStore.getState();
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
-        
+
         // First notification after 10 minutes
         if (elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY && lastShopNotificationTime === 0) {
           lastShopNotificationTime = timestamp;
@@ -109,15 +109,6 @@ export function startGameLoop() {
         setTimeout(() => {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
-
-        // Log full state every 15 seconds
-        const currentState = useGameStore.getState();
-        const bonuses = getAllActionBonuses(currentState);
-
-        console.log("State:", {
-          ...currentState,
-          calculatedBonuses: bonuses,
-        });
 
         handleGathererProduction();
         handleHunterProduction();
