@@ -286,10 +286,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
           const casualtyChance = Math.max(0.15, 0.5 - strength * 0.02);
 
-          let villagerDeaths = 0;
-          let villagersAbducted = 0;
+          let totalLost = 0;
 
-          // Determine deaths and abductions
+          // Determine casualties
           const maxPotentialCasualties = Math.min(
             4 + state.buildings.woodenHut,
             currentPopulation,
@@ -297,16 +296,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           for (let i = 0; i < maxPotentialCasualties; i++) {
             if (Math.random() < casualtyChance) {
-              // 60% chance of death, 40% chance of abduction
-              if (Math.random() < 0.6) {
-                villagerDeaths++;
-              } else {
-                villagersAbducted++;
-              }
+              totalLost++;
             }
           }
-
-          const totalLost = villagerDeaths + villagersAbducted;
 
           // Calculate resource losses
           const silverLoss = Math.min(
@@ -326,18 +318,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (totalLost === 0) {
             message += "Your villagers manage to survive, though barely.";
-          } else if (villagerDeaths > 0 && villagersAbducted > 0) {
-            message += `${villagerDeaths} ${villagerDeaths === 1 ? "villager is" : "villagers are"} slain in the raid, and ${villagersAbducted} ${villagersAbducted === 1 ? "is" : "are"} dragged away screaming into the darkness.`;
-          } else if (villagerDeaths > 0) {
-            message +=
-              villagerDeaths === 1
-                ? "One villager is brutally slain."
-                : `${villagerDeaths} villagers are brutally slain.`;
-          } else if (villagersAbducted > 0) {
-            message +=
-              villagersAbducted === 1
-                ? "One villager is dragged away screaming into the darkness."
-                : `${villagersAbducted} villagers are dragged away screaming into the darkness.`;
+          } else if (totalLost === 1) {
+            message += "One villager is killed or abducted by the cannibals.";
+          } else {
+            message += `${totalLost} villagers are killed or abducted by the cannibals.`;
           }
 
           if (silverLoss > 0 || foodLoss > 0) {
@@ -385,8 +369,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           // Base 30% casualty chance, reduced by 2% per luck point, minimum 5%
           const casualtyChance = Math.max(0.05, 0.3 - luck * 0.02);
 
-          let villagerDeaths = 0;
-          let villagersAbducted = 0;
+          let totalLost = 0;
 
           // Fewer potential casualties when hiding
           const maxPotentialCasualties = Math.min(
@@ -396,16 +379,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           for (let i = 0; i < maxPotentialCasualties; i++) {
             if (Math.random() < casualtyChance) {
-              // Higher abduction chance when hiding (50/50)
-              if (Math.random() < 0.5) {
-                villagerDeaths++;
-              } else {
-                villagersAbducted++;
-              }
+              totalLost++;
             }
           }
-
-          const totalLost = villagerDeaths + villagersAbducted;
 
           // Higher resource losses when not defending
           const silverLoss = Math.min(
@@ -425,18 +401,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (totalLost === 0) {
             message += "By dawn, the cannibals have left without finding anyone.";
-          } else if (villagerDeaths > 0 && villagersAbducted > 0) {
-            message += `${villagerDeaths} ${villagerDeaths === 1 ? "villager is" : "villagers are"} discovered and killed, while ${villagersAbducted} ${villagersAbducted === 1 ? "is" : "are"} taken alive.`;
-          } else if (villagerDeaths > 0) {
-            message +=
-              villagerDeaths === 1
-                ? "One villager is discovered and killed."
-                : `${villagerDeaths} villagers are discovered and killed.`;
-          } else if (villagersAbducted > 0) {
-            message +=
-              villagersAbducted === 1
-                ? "One villager is discovered and taken alive."
-                : `${villagersAbducted} villagers are discovered and taken alive.`;
+          } else if (totalLost === 1) {
+            message += "One villager is discovered and killed or abducted.";
+          } else {
+            message += `${totalLost} villagers are discovered and killed or abducted.`;
           }
 
           message += ` The cannibals plunder your stores freely, taking ${silverLoss} silver and ${foodLoss} food.`;
