@@ -234,7 +234,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "cannibalRaid",
     condition: (state: GameState) => state.buildings.woodenHut >= 9,
     triggerType: "resource",
-    timeProbability: 40,
+    timeProbability: 0.040,
     title: "Cannibal Raid",
     message:
       "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
@@ -244,7 +244,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "fightCannibals",
-        label: "Fight the cannibals",
+        label: "Defend village",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const currentPopulation =
@@ -284,7 +284,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // Defeat - casualties and resource loss
           // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
-          const casualtyChance = Math.max(0.15, 0.5 - strength * 0.02);
+          const casualtyChance = Math.max(0.15, 0.5 - strength * 0.01);
 
           let totalLost = 0;
 
@@ -303,11 +303,11 @@ export const choiceEvents: Record<string, GameEvent> = {
           // Calculate resource losses
           const silverLoss = Math.min(
             state.resources.silver,
-            Math.floor(Math.random() * 50) + 25,
+            Math.floor(Math.random() * 6) * 25 + 25,
           );
           const foodLoss = Math.min(
             state.resources.food,
-            Math.floor(Math.random() * 100) + 50,
+            Math.floor(Math.random() * 6) * 50 + 50,
           );
 
           // Apply deaths to villagers
@@ -319,7 +319,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (totalLost === 0) {
             message += "Your villagers manage to survive, though barely.";
           } else if (totalLost === 1) {
-            message += "One villager is killed or abducted by the cannibals.";
+            message += "One villager is abducted by the cannibals.";
           } else {
             message += `${totalLost} villagers are killed or abducted by the cannibals.`;
           }
@@ -348,8 +348,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
       },
       {
-        id: "hideFroCannibals",
-        label: "Hide and hope they pass",
+        id: "hideFromCannibals",
+        label: "Hide",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
           const currentPopulation =
@@ -366,14 +366,14 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           const luck = getTotalLuck(state);
-          // Base 30% casualty chance, reduced by 2% per luck point, minimum 5%
-          const casualtyChance = Math.max(0.05, 0.3 - luck * 0.02);
+          // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
+          const casualtyChance = Math.max(0.1, 0.3 - luck * 0.01);
 
           let totalLost = 0;
 
           // Fewer potential casualties when hiding
           const maxPotentialCasualties = Math.min(
-            2 + Math.floor(state.buildings.woodenHut / 2),
+            4 + Math.floor(state.buildings.woodenHut / 2),
             currentPopulation,
           );
 
@@ -386,25 +386,27 @@ export const choiceEvents: Record<string, GameEvent> = {
           // Higher resource losses when not defending
           const silverLoss = Math.min(
             state.resources.silver,
-            Math.floor(Math.random() * 75) + 50,
+            Math.floor(Math.random() * 6) * 50 + 50,
           );
           const foodLoss = Math.min(
             state.resources.food,
-            Math.floor(Math.random() * 150) + 100,
+            Math.floor(Math.random() * 6) * 100 + 100,
           );
 
           // Apply deaths to villagers
           const deathResult = killVillagers(state, totalLost);
 
           // Construct result message
-          let message = "The villagers hide in terror as the cannibals search the village. ";
+          let message =
+            "The villagers hide in terror as the cannibals search the village. ";
 
           if (totalLost === 0) {
-            message += "By dawn, the cannibals have left without finding anyone.";
+            message +=
+              "By dawn, the cannibals have left without finding anyone.";
           } else if (totalLost === 1) {
-            message += "One villager is discovered and killed or abducted.";
+            message += "One villager gets abducted.";
           } else {
-            message += `${totalLost} villagers are discovered and killed or abducted.`;
+            message += `${totalLost} villagers are killed or abducted.`;
           }
 
           message += ` The cannibals plunder your stores freely, taking ${silverLoss} silver and ${foodLoss} food.`;
@@ -477,13 +479,14 @@ export const choiceEvents: Record<string, GameEvent> = {
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25,
+            (state.buildings.woodenHut + Math.floor(Math.random() * 8)) * 25 +
+              25,
           );
           let hutDestroyed = false;
 
           // Determine villager casualties
           const maxPotentialDeaths = Math.min(
-            6 + state.buildings.woodenHut,
+            4 + state.buildings.woodenHut,
             currentPopulation,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -562,13 +565,14 @@ export const choiceEvents: Record<string, GameEvent> = {
           let villagerDeaths = 0;
           let foodLoss = Math.min(
             state.resources.food,
-            (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25,
+            (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25 +
+              25,
           );
           let hutDestroyed = false;
 
-          // Determine villager casualties (1-4 potential deaths)
+          // Determine villager casualties
           const maxPotentialDeaths = Math.min(
-            2 + state.buildings.woodenHut,
+            2 + state.buildings.woodenHut / 2,
             currentPopulation,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -778,7 +782,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 state.buildings.woodenHut - hutDestruction,
               ),
             },
-            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a cannibal tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
+            _logMessage: `You refuse the stranger entry. He leaves screaming curses in his alien tongue, echoing through the night. Before dawn, a barbarian tribe attacks as if summoned by his cries, killing ${villagerDeaths} villagers and destroying ${hutDestruction} hut${hutDestruction > 1 ? "s" : ""} before vanishing into the wilds.`,
           };
         },
       },
