@@ -907,6 +907,11 @@ export function getActionCostBreakdown(
   const { resources } = state; // Destructure resources for easier access
 
   Object.entries(costs).forEach(([resource, amount]) => {
+    // Extract the clean resource name from paths like "resources.wood"
+    const resourceName = resource.includes(".")
+      ? resource.split(".").pop()!
+      : resource;
+
     // Apply cost reductions using single source of truth
     const adjustedAmount = getAdjustedCost(
       actionId,
@@ -914,11 +919,6 @@ export function getActionCostBreakdown(
       resource.startsWith("resources."),
       state,
     );
-
-    // Extract the clean resource name from paths like "resources.wood"
-    const resourceName = resource.includes(".")
-      ? resource.split(".").pop()
-      : resource;
 
     // Replace underscores with spaces and capitalize each word
     const resourceNameFormatted = resourceName
@@ -931,8 +931,9 @@ export function getActionCostBreakdown(
 
     // Check if we can afford this cost
     let satisfied: boolean;
-    if (adjustedAmount === true) {
+    if (amount === true) {
       // For boolean costs (relics), check if the resource is true
+      // Use the original amount (true) to determine this is a boolean check
       satisfied = resources[resourceName as keyof typeof resources] === true;
     } else {
       // For numeric costs, check if we have enough
