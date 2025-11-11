@@ -390,6 +390,14 @@ export default function ItemProgressChart() {
         category: "clothing",
         maxCount: 1,
       },
+      {
+        itemType: "bone_necklace",
+        itemKeys: ["bone_necklace"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Bone Necklace",
+        category: "clothing",
+        maxCount: 1,
+      },
     ],
     // Fifth ring: ???
     [],

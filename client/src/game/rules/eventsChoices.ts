@@ -273,12 +273,21 @@ export const choiceEvents: Record<string, GameEvent> = {
             );
             const deathResult = killVillagers(state, minimalDeaths);
 
+            // Give bone necklace if they don't have it
+            const giveNecklace = !state.clothing.bone_necklace;
+
             return {
               ...deathResult,
+              clothing: giveNecklace
+                ? {
+                    ...state.clothing,
+                    bone_necklace: true,
+                  }
+                : state.clothing,
               _logMessage:
                 minimalDeaths === 1
-                  ? "Your villagers drive back the cannibals! One villager falls in the  battle, but the tribe retreats in defeat."
-                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat.`,
+                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat.${giveNecklace ? " Among the bodies, you find a primitive necklace made of human bones." : ""}`
+                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat.${giveNecklace ? " Among the bodies, you find a primitive necklace made of human bones." : ""}`,
             };
           }
 

@@ -585,6 +585,19 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  bone_necklace: {
+    id: "bone_necklace",
+    name: "Bone Necklace",
+    description: "Primitive necklace made out of human bones",
+    bonuses: {
+      generalBonuses: {
+        strength: 5,
+        luck: 3,
+        madness: 2,
+      },
+    },
+  },
+
   grenadier_bag: {
     id: "grenadier_bag",
     name: "Grenadier's Bag",
