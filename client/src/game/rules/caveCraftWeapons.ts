@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { applyActionEffects } from '@/game/rules';
+import { ActionResult } from "@/game/actions";
+import { applyActionEffects } from "@/game/rules";
 
 export const caveCraftWeapons: Record<string, Action> = {
   craftIronSword: {
@@ -219,7 +219,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.frostglass_sword": false,
     },
     cost: {
-      "resources.frostglas": 50,
+      "relics.frostglass": true,
     },
     effects: {
       "weapons.frostglass_sword": true,
@@ -227,7 +227,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cooldown: 60,
   },
-  
+
   craftBloodstoneStaff: {
     id: "craftBloodstoneStaff",
     label: "Bloodstone Staff",
@@ -236,7 +236,7 @@ export const caveCraftWeapons: Record<string, Action> = {
       "weapons.bloodstone_staff": false,
     },
     cost: {
-      "resources.bloodstone": 50,
+      "resources.bloodstone": true,
       "resources.wood": 1000,
     },
     effects: {
@@ -248,122 +248,170 @@ export const caveCraftWeapons: Record<string, Action> = {
 };
 
 // Action handlers
-export function handleCraftIronSword(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftIronSword', state);
+export function handleCraftIronSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftIronSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftSteelSword(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftSteelSword', state);
+export function handleCraftSteelSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftSteelSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftObsidianSword(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftObsidianSword', state);
+export function handleCraftObsidianSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftObsidianSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftAdamantSword(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftAdamantSword', state);
+export function handleCraftAdamantSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftAdamantSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftCrudeBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftCrudeBow', state);
+export function handleCraftCrudeBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftCrudeBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Add forest unlock message when crude bow is crafted
-  if (effectUpdates.flags && effectUpdates.flags.forestUnlocked && !state.flags.forestUnlocked) {
+  if (
+    effectUpdates.flags &&
+    effectUpdates.flags.forestUnlocked &&
+    !state.flags.forestUnlocked
+  ) {
     result.logEntries!.push({
       id: `forest-unlocked-${Date.now()}`,
-      message: 'The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to hunt.',
+      message:
+        "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to hunt.",
       timestamp: Date.now(),
-      type: 'system',
+      type: "system",
     });
   }
 
   return result;
 }
 
-export function handleCraftHuntsmanBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftHuntsmanBow', state);
+export function handleCraftHuntsmanBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftHuntsmanBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftLongBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftLongBow', state);
+export function handleCraftLongBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftLongBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftWarBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftWarBow', state);
+export function handleCraftWarBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftWarBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftMasterBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftMasterBow', state);
+export function handleCraftMasterBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftMasterBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
 
-export function handleCraftFrostglassSword(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftFrostglassSword', state);
+export function handleCraftFrostglassSword(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftFrostglassSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
-    message: "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
+    message:
+      "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   return result;
 }
 
-export function handleCraftArbalest(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftArbalest', state);
+export function handleCraftArbalest(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftArbalest", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
     id: `arbalest-crafted-${Date.now()}`,
-    message: "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
+    message:
+      "Following the schematic, you craft a meticulously decorated arbalest. Its engineering is flawless, designed by a master craftsman.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   return result;
 }
 
-export function handleCraftNightshadeBow(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftNightshadeBow', state);
+export function handleCraftNightshadeBow(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftNightshadeBow", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
     id: `nightshade-bow-crafted-${Date.now()}`,
-    message: "You craft a bow from dark wood. Its arrows will carry poison into your enemies, dealing damage over time.",
+    message:
+      "You craft a bow from dark wood. Its arrows will carry poison into your enemies, dealing damage over time.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   return result;
 }
 
-export function handleCraftBloodstoneStaff(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('craftBloodstoneStaff', state);
+export function handleCraftBloodstoneStaff(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("craftBloodstoneStaff", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   result.logEntries!.push({
     id: `bloodstone-staff-crafted-${Date.now()}`,
-    message: "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge. You have forged a weapon of immense power.",
+    message:
+      "The wizard channels his arcane power into the bloodstone gems, fusing them with ancient wood. The Bloodstone Staff pulses with crimson energy, radiating both strength and forbidden knowledge. You have forged a weapon of immense power.",
     timestamp: Date.now(),
-    type: 'system',
+    type: "system",
   });
 
   return result;
