@@ -232,7 +232,9 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   cannibalRaid: {
     id: "cannibalRaid",
-    condition: (state: GameState) => state.buildings.woodenHut >= 9,
+    condition: (state: GameState) => 
+      state.buildings.woodenHut >= 9 && 
+      !state.story.seen.cannibalRaidVictory,
     triggerType: "resource",
     timeProbability: 0.040,
     title: "Cannibal Raid",
@@ -284,6 +286,13 @@ export const choiceEvents: Record<string, GameEvent> = {
                     bone_necklace: true,
                   }
                 : state.clothing,
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  cannibalRaidVictory: true,
+                },
+              },
               _logMessage:
                 minimalDeaths === 1
                   ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat.${giveNecklace ? " Among the bodies, you find a primitive necklace made of human bones." : ""}`
