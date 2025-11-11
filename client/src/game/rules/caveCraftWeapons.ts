@@ -352,6 +352,13 @@ export function handleCraftFrostglassSword(
   const effectUpdates = applyActionEffects("craftFrostglassSword", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
+  // Consume the frostglass relic
+  result.stateUpdates.relics = {
+    ...state.relics,
+    ...result.stateUpdates.relics,
+    frostglass: false,
+  };
+
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
     message:
@@ -405,6 +412,13 @@ export function handleCraftBloodstoneStaff(
 ): ActionResult {
   const effectUpdates = applyActionEffects("craftBloodstoneStaff", state);
   Object.assign(result.stateUpdates, effectUpdates);
+
+  // Consume the bloodstone relic
+  result.stateUpdates.relics = {
+    ...state.relics,
+    ...result.stateUpdates.relics,
+    bloodstone: false,
+  };
 
   result.logEntries!.push({
     id: `bloodstone-staff-crafted-${Date.now()}`,
