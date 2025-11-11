@@ -914,14 +914,14 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   arbalest_schematic: {
     id: "arbalest_schematic",
     name: "Arbalest Schematic",
-    description: "Blueprint for crafting a powerful arbalest",
+    description: "Blueprint for crafting a powerful crossbow",
     bonuses: {},
   },
 
   nightshade_bow_schematic: {
     id: "nightshade_bow_schematic",
     name: "Nightshade Bow Schematic",
-    description: "Blueprint for crafting a poisonous nightshade bow",
+    description: "Blueprint for crafting a poisonous bow",
     bonuses: {},
   },
 
