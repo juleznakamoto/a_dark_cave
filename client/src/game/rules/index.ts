@@ -930,8 +930,14 @@ export function getActionCostBreakdown(
     const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
 
     // Check if we can afford this cost
-    const satisfied =
-      (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
+    let satisfied: boolean;
+    if (adjustedAmount === true) {
+      // For boolean costs (relics), check if the resource is true
+      satisfied = resources[resourceName as keyof typeof resources] === true;
+    } else {
+      // For numeric costs, check if we have enough
+      satisfied = (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
+    }
 
     breakdown.push({ text: `-${displayCost} ${resourceNameFormatted}`, satisfied });
   });
