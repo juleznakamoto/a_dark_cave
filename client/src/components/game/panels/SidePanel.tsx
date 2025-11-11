@@ -216,8 +216,12 @@ export default function SidePanel() {
       if (key === "blacksmith" && buildings.grandBlacksmith > 0) {
         return false;
       }
-      // Hide Trade Post when Merchants Guild is built
-      if (key === "tradePost" && buildings.merchantsGuild > 0) {
+      // Hide Trade Post when Grand Bazaar or Merchants Guild is built
+      if (key === "tradePost" && (buildings.grandBazaar > 0 || buildings.merchantsGuild > 0)) {
+        return false;
+      }
+      // Hide Grand Bazaar when Merchants Guild is built
+      if (key === "grandBazaar" && buildings.merchantsGuild > 0) {
         return false;
       }
       // Hide tannery when Master Tannery is built
