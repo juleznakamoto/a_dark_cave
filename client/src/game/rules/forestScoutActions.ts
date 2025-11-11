@@ -25,7 +25,7 @@ export const forestScoutActions: Record<string, Action> = {
       "tools.blacksmith_hammer": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + (stoneHuts * 0.01); // Base 0.75% + 1% per stone hut
+          let prob = 1.0 + (stoneHuts * 0.01); // Base 0.75% + 1% per stone hut
           return prob;
         },
         value: true,
