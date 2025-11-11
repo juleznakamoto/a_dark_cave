@@ -31,8 +31,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: false,
     category: 'resource',
     activationMessage: '100 Gold have been added to your inventory as a gift!',
-    symbol: '✧⍟⚵',
-    symbolColor: 'text-amber-600',
+    symbol: '⚵',
+    symbolColor: 'text-amber-500',
   },
 
   gold_50: {
