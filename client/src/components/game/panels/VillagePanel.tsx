@@ -1,3 +1,4 @@
+import React from 'react';
 import { useGameStore } from "@/game/state";
 import {
   gameActions,
@@ -41,7 +42,7 @@ export default function VillagePanel() {
 
   // Calculate feast progress based on game loop timing
   const [feastProgress, setFeastProgress] = React.useState(0);
-  
+
   React.useEffect(() => {
     const updateFeastProgress = () => {
       const now = Date.now();
@@ -61,7 +62,7 @@ export default function VillagePanel() {
 
     updateFeastProgress();
     const interval = setInterval(updateFeastProgress, 1000);
-    
+
     return () => clearInterval(interval);
   }, [feastState, greatFeastState]);
 
@@ -237,7 +238,7 @@ export default function VillagePanel() {
     interval: NodeJS.Timeout | null;
     timeout: NodeJS.Timeout | null;
   }>({ interval: null, timeout: null });
-  
+
   // Track if a touch event occurred to prevent duplicate mouse events
   const touchActiveRef = useState({ current: false })[0];
 
@@ -246,12 +247,12 @@ export default function VillagePanel() {
     if (!isTouch && touchActiveRef.current) {
       return;
     }
-    
+
     // Set touch active flag if this is a touch event
     if (isTouch) {
       touchActiveRef.current = true;
     }
-    
+
     // Execute immediately
     action();
 
@@ -273,7 +274,7 @@ export default function VillagePanel() {
       clearInterval(holdState.interval);
     }
     setHoldState({ interval: null, timeout: null });
-    
+
     // Reset touch flag after a delay to allow mouse event to be skipped
     if (isTouch) {
       setTimeout(() => {
