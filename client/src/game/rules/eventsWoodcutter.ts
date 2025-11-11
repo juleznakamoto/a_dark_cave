@@ -7,7 +7,6 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     id: "woodcutter1",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 &&
-      state.buildings.woodenHut <= 6 &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter1Accepted,
     triggerType: "resource",
