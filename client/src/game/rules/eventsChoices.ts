@@ -237,7 +237,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 40,
     title: "Cannibal Raid",
     message:
-      "War drums echo through the night. A tribe of cannibals emerges from the wilderness, their bodies painted with blood, eyes wild with hunger. They advance on your village with crude weapons and terrible intent.",
+      "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -262,8 +262,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           const strength = getTotalStrength(state);
 
-          // Check for victory: 20% base chance + 1% per strength point
-          const victoryChance = 0.2 + strength * 0.01;
+          // Check for victory: 10% base chance + 1% per strength point
+          const victoryChance = 0.1 + strength * 0.01;
 
           if (Math.random() < victoryChance) {
             // Victory - minimal losses
@@ -277,7 +277,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...deathResult,
               _logMessage:
                 minimalDeaths === 1
-                  ? "Your villagers drive back the cannibals! One villager falls in the fierce battle, but the tribe retreats in defeat."
+                  ? "Your villagers drive back the cannibals! One villager falls in the  battle, but the tribe retreats in defeat."
                   : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat.`,
             };
           }
