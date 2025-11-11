@@ -158,32 +158,6 @@ export const gameStateSchema = z.object({
       frostglass: z.boolean().default(false),
     })
     .default({}),
-  resources: z
-    .object({
-      wood: z.number().default(0),
-      food: z.number().default(0),
-      stone: z.number().default(0),
-      iron: z.number().default(0),
-      coal: z.number().default(0),
-      steel: z.number().default(0),
-      sulfur: z.number().default(0),
-      bones: z.number().default(0),
-      bone_totem: z.number().default(0),
-      leather_totem: z.number().default(0),
-      fur: z.number().default(0),
-      leather: z.number().default(0),
-      torch: z.number().default(0),
-      silver: z.number().default(0),
-      gold: z.number().default(0),
-      obsidian: z.number().default(0),
-      adamant: z.number().default(0),
-      moonstone: z.number().default(0),
-      black_powder: z.number().default(0),
-      ember_bomb: z.number().default(0),
-      ashfire_dust: z.number().default(0),
-      ashfire_bomb: z.number().default(0),
-    })
-    .default({}),
   blessings: z
     .object({
       dagons_gift: z.boolean().default(false),
