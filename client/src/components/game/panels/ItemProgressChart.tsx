@@ -212,14 +212,6 @@ export default function ItemProgressChart() {
         maxCount: 1,
       },
       {
-        itemType: "ancient_scrolls",
-        itemKeys: ["ancient_scrolls"],
-        color: tailwindToHex("gray-400/80"),
-        label: "Ancient Scrolls",
-        category: "relics",
-        maxCount: 1,
-      },
-      {
         itemType: "elder_scroll",
         itemKeys: ["elder_scroll"],
         color: tailwindToHex("gray-400/80"),

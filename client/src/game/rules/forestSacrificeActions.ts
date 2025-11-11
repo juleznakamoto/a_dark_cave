@@ -197,7 +197,7 @@ export function handleLeatherTotems(
     {
       itemKey: "moon_bracelet" as keyof GameState["clothing"],
       itemName: "Moon Bracelet",
-      discoveryMessage: "Among the sacrifice offerings, you discover a white bracelet.",
+      discoveryMessage: "Among the sacrifice offerings, you discover a white stone bracelet.",
       baseProbability: 0.02, // 2%
       bonusPerUse: 0.01, // 1%
     }

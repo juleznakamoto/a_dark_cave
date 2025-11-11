@@ -677,7 +677,7 @@ export default function SidePanel() {
   if (craftingCostReduction > 0) {
     bonusItems.push({
       id: 'craftingCostReduction',
-      label: 'Crafting Cost Reduction',
+      label: 'Crafting Discount',
       value: `-${Math.round(craftingCostReduction * 100)}%`,
       testId: 'bonus-crafting-cost-reduction',
       visible: true,
@@ -689,7 +689,7 @@ export default function SidePanel() {
   if (buildingCostReduction > 0) {
     bonusItems.push({
       id: 'buildingCostReduction',
-      label: 'Building Cost Reduction',
+      label: 'Building Discount',
       value: `-${Math.round(buildingCostReduction * 100)}%`,
       testId: 'bonus-building-cost-reduction',
       visible: true,

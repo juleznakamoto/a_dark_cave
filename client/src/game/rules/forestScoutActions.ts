@@ -35,14 +35,14 @@ export const forestScoutActions: Record<string, Action> = {
         isChoice: true,
         eventId: "blacksmithHammerChoice",
       },
-      "relics.red_mask": {
+      "clothing.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + (stoneHuts * 0.01); // Base 0.5% + 1% per stone hut
+          let prob = 0.99 + (stoneHuts * 0.01); // Base 0.5% + 1% per stone hut
           return prob;
         },
         value: true,
-        condition: "!relics.red_mask && !story.seen.redMaskChoice",
+        condition: "!clothing.red_mask && !story.seen.redMaskChoice",
         logMessage: "",
         isChoice: true,
         eventId: "redMaskChoice",
