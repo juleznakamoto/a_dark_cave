@@ -573,7 +573,7 @@ export const applyActionEffects = (
       ) {
         // Handle probability-based effects like { probability: 0.3, value: 5, logMessage: "Found something!", condition: "!clothing.tarnished_amulet", triggerEvent: "eventId" }
         const probabilityEffect = effect as {
-          probability: number;
+          probability: number | ((state: GameState) => number);
           value:
             | number
             | string
@@ -598,11 +598,15 @@ export const applyActionEffects = (
           conditionMet = evaluateCondition(probabilityEffect.condition, state);
         }
 
+        // Evaluate probability (can be a number or a function)
+        const baseProbability = typeof probabilityEffect.probability === 'function'
+          ? probabilityEffect.probability(state)
+          : probabilityEffect.probability;
+
         const totalLuck = getTotalLuckCalc(state);
         const luckBonus = totalLuck / 100; // Convert luck to percentage (10 luck = 0.1 = 10%)
         const adjustedProbability = Math.min(
-          probabilityEffect.probability +
-            probabilityEffect.probability * luckBonus,
+          baseProbability + baseProbability * luckBonus,
           1.0,
         );
         const shouldTrigger =
