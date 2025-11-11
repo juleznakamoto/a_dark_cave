@@ -903,11 +903,14 @@ export function getActionCostBreakdown(
 
   if (!costs || Object.keys(costs).length === 0) return [];
 
-  return Object.entries(costs).map(([resource, amount]) => {
+  const breakdown: Array<{ text: string; satisfied: boolean }> = [];
+  const { resources } = state; // Destructure resources for easier access
+
+  Object.entries(costs).forEach(([resource, amount]) => {
     // Apply cost reductions using single source of truth
     const adjustedAmount = getAdjustedCost(
       actionId,
-      amount,
+      amount as number, // Cast amount to number as it's expected here
       resource.startsWith("resources."),
       state,
     );
@@ -918,24 +921,22 @@ export function getActionCostBreakdown(
       : resource;
 
     // Replace underscores with spaces and capitalize each word
-    const formattedName = resourceName
+    const resourceNameFormatted = resourceName
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
       .join(" ");
 
-    // Check if we can afford this cost
-    const pathParts = resource.split(".");
-    let currentAmount: any = state;
-    for (const part of pathParts) {
-      currentAmount = currentAmount?.[part];
-    }
-    const satisfied = (currentAmount || 0) >= adjustedAmount;
+    // Handle boolean true values as -1
+    const displayCost = adjustedAmount === true ? 1 : adjustedAmount;
 
-    return {
-      text: `-${adjustedAmount} ${formattedName}`,
-      satisfied,
-    };
+    // Check if we can afford this cost
+    const satisfied =
+      (resources[resourceName as keyof typeof resources] || 0) >= displayCost;
+
+    breakdown.push({ text: `-${displayCost} ${resourceNameFormatted}`, satisfied });
   });
+
+  return breakdown;
 }
 
 // Export getCostText as an alias for getActionCostDisplay for backward compatibility
