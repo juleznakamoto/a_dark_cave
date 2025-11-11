@@ -54,7 +54,7 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -95,7 +95,7 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -136,7 +136,7 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
         "tools.iron_pickaxe": 1      },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -178,7 +178,7 @@ export const forestTradeActions: Record<string, Action> = {
         "tools.steel_pickaxe": 1
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -220,7 +220,7 @@ export const forestTradeActions: Record<string, Action> = {
         "tools.obsidian_pickaxe": 1
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -261,7 +261,7 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
@@ -302,7 +302,7 @@ export const forestTradeActions: Record<string, Action> = {
         "buildings.merchantsGuild": 0,
       },
       2: {
-        "buildings.buildGrandBazaar": 1,
+        "buildings.grandBazaar": 1,
         "buildings.merchantsGuild": 0
       },
       3: {
