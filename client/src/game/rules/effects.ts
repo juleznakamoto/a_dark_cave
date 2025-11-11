@@ -457,7 +457,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
   frostglass_sword: {
     id: "frostglass_sword",
     name: "Frostglass Sword",
-    description: "Blade forged from frostglas, radiating cold power",
+    description: "Blade forged from frostglass, radiating cold power",
     bonuses: {
       generalBonuses: {
         strength: 30,

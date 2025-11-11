@@ -1159,7 +1159,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced forge capable of working the finest materials",
-    tooltipEffects: ["Unlocks Frostglas Crafting"],
+    tooltipEffects: ["Unlocks Frostglass Crafting"],
     building: true,
     show_when: {
       1: {

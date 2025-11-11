@@ -319,7 +319,7 @@ export function handleCraftFrostglassSword(state: GameState, result: ActionResul
 
   result.logEntries!.push({
     id: `frostglass-sword-forged-${Date.now()}`,
-    message: "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglas is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
+    message: "The Grand Blacksmith's forge burns with ethereal blue flames as the frostglass is shaped into a magnificent sword. The blade gleams with an otherworldly cold light, radiating immense power. You have forged the legendary Frostglass Sword.",
     timestamp: Date.now(),
     type: 'system',
   });

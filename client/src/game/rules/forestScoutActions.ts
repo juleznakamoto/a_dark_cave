@@ -364,7 +364,7 @@ export function handleHillGrave(
   const rand = Math.random();
 
   if (rand < successChance) {
-    // Success: Find frostglas
+    // Success: Find frostglass
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 150,
@@ -373,7 +373,7 @@ export function handleHillGrave(
 
     result.stateUpdates.relics = {
       ...state.relics,
-      frostglas: true,
+      frostglass: true,
     };
 
     // Set both flags in a single assignment to avoid overwriting
@@ -388,7 +388,7 @@ export function handleHillGrave(
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
       message:
-        "Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover weapons forged of pure frostglas, cold as the void itself.",
+        "Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover weapons forged of pure frostglass, cold as the void itself.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {

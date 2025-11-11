@@ -129,7 +129,7 @@ export const storyEvents: Record<string, GameEvent> = {
     timeProbability: 0.5,
     title: "Ancient Knowledge",
     message:
-      "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglas and a staff crowned with bloodstone. 'Deep in the forest lies the grave of an ancient king which treasures may hold the frostglas we need.'",
+      "The wizard steps from his tower, 'I have decrypted the ancient scrolls,' he says. 'The creatures below can only be slain with weapons of great power: a sword of frostglass and a staff crowned with bloodstone. 'Deep in the forest lies the grave of an ancient king which treasures may hold the frostglass we need.'",
     triggered: false,
     priority: 5,
     visualEffect: {
@@ -157,14 +157,14 @@ export const storyEvents: Record<string, GameEvent> = {
     id: "wizardFrostglassSword",
     condition: (state: GameState) =>
       state.story.seen.hillGraveExplored &&
-      state.relics.frostglas &&
+      state.relics.frostglass &&
       state.buildings.blacksmith >= 1 &&
       state.buildings.grandBlacksmith === 0 &&
       !state.story.seen.wizardFrostglassSword,
     triggerType: "resource",
     timeProbability: 0.5,
     message:
-      "The wizard spots the frostglas found at the hill grave: 'You have found it,' he says. 'But our blacksmith lacks the tools to shape such a material. We must build a better one, only then can the Frostglas Sword be crafted.'",
+      "The wizard spots the frostglass found at the hill grave: 'You have found it,' he says. 'But our blacksmith lacks the tools to shape such a material. We must build a better one, only then can the Frostglass Sword be crafted.'",
     triggered: false,
     priority: 5,
     visualEffect: {
