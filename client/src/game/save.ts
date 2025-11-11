@@ -31,19 +31,19 @@ async function getDB() {
 export async function saveGame(gameState: GameState): Promise<void> {
   try {
     const db = await getDB();
-    
+
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
-    
+
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: Date.now(),
     };
-    
+
     // Save locally first (most important)
     await db.put('saves', saveData, SAVE_KEY);
     console.log('Game saved locally');
-    
+
     // Try to save to cloud if user is authenticated (optional enhancement)
     try {
       const user = await getCurrentUser();
@@ -65,13 +65,15 @@ export async function loadGame(): Promise<GameState | null> {
   try {
     // Check if user is authenticated
     const user = await getCurrentUser();
-    
+
     if (user) {
       // Try to load from cloud first
       try {
         const cloudSave = await loadGameFromSupabase();
         if (cloudSave) {
-          console.log('Game State loaded from cloud: ', cloudSave);
+          if (import.meta.env.DEV) {
+            console.log('Game State loaded from cloud: ', cloudSave);
+          }
           // Also save to local storage
           const db = await getDB();
           await db.put('saves', {
@@ -85,15 +87,15 @@ export async function loadGame(): Promise<GameState | null> {
         // Fall back to local save
       }
     }
-    
+
     // Load from local storage
     const db = await getDB();
     const saveData = await db.get('saves', SAVE_KEY);
-    
+
     if (saveData) {
       return saveData.gameState;
     }
-    
+
     return null;
   } catch (error) {
     console.error('Failed to load game:', error);

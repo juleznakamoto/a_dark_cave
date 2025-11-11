@@ -130,12 +130,6 @@ const mergeStateUpdates = (
     showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
   };
 
-  console.log("[mergeStateUpdates] Merged result:", {
-    mergedResources: merged.resources,
-    mergedBuildings: merged.buildings,
-  });
-
-  // Calculate and update effects when items change
   if (
     stateUpdates.tools ||
     stateUpdates.weapons ||
@@ -144,6 +138,13 @@ const mergeStateUpdates = (
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
+  }
+
+  if (import.meta.env.DEV) {
+    console.log("[mergeStateUpdates] Merged result:", {
+      mergedResources: merged.resources,
+      mergedBuildings: merged.buildings,
+    });
   }
 
   return merged;
