@@ -183,48 +183,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
 
-  const verifyPurchase = async (sessionId: string) => {
-    try {
-      const user = await getCurrentUser();
-      if (!user) {
-        throw new Error("User not authenticated");
-      }
-
-      const response = await fetch("/api/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ sessionId }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Payment verification failed");
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        const itemIds = result.items;
-
-        // Update the user's purchased items in Supabase
-        const supabase = await getSupabaseClient();
-        const { error } = await supabase.from("purchases").insert(
-          itemIds.map((itemId: string) => ({
-            user_id: user.id,
-            item_id: itemId,
-            purchased_at: new Date().toISOString(),
-          }))
-        );
-
-        if (error) throw error;
-        return true;
-      }
-      return false;
-    } catch (error) {
-      console.error("Error verifying purchase:", error);
-      return false;
-    }
-  };
-
   const loadPurchasedItems = async () => {
     try {
       const user = await getCurrentUser();
