@@ -206,10 +206,11 @@ export const shouldShowAction = (
 // Helper function to calculate adjusted cost with discounts (single source of truth)
 function getAdjustedCost(
   actionId: string,
-  cost: number,
+  cost: number | boolean,
   isResourceCost: boolean,
   state: GameState,
-): number {
+): number | boolean {
+  if (cost === true || cost === false) return cost;
   if (!isResourceCost) return cost;
 
   const action = gameActions[actionId];
