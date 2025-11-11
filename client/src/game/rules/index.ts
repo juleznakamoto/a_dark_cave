@@ -611,20 +611,28 @@ export const applyActionEffects = (
         if (shouldTrigger) {
           // Check if this is a choice event (cave relic with eventId)
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
+            console.log(`[applyActionEffects] Looking for event ${probabilityEffect.eventId}`);
+            console.log(`[applyActionEffects] caveEvents:`, Object.keys(caveEvents));
+            console.log(`[applyActionEffects] huntEvents:`, Object.keys(huntEvents));
+            
             const event =
               caveEvents[probabilityEffect.eventId] ||
               huntEvents[probabilityEffect.eventId];
-            console.log(`[applyActionEffects] Checking event ${probabilityEffect.eventId}:`, {
+            
+            console.log(`[applyActionEffects] Event lookup result for ${probabilityEffect.eventId}:`, {
+              foundInCaveEvents: !!caveEvents[probabilityEffect.eventId],
+              foundInHuntEvents: !!huntEvents[probabilityEffect.eventId],
               eventExists: !!event,
               alreadySeen: state.story.seen[probabilityEffect.eventId],
               shouldTrigger: event && !state.story.seen[probabilityEffect.eventId]
             });
+            
             // Ensure the event exists and hasn't been seen before
             if (event && !state.story.seen[probabilityEffect.eventId]) {
               // Trigger the cave event instead of directly applying the effect
               if (!updates.logMessages) updates.logMessages = [];
               // Construct a unique log message ID for the event
-              console.log(`[applyActionEffects] Triggering event ${probabilityEffect.eventId}`);
+              console.log(`[applyActionEffects] ✓ Triggering event ${probabilityEffect.eventId}`);
               updates.logMessages.push({
                 type: "event",
                 id: `${probabilityEffect.eventId}-${Date.now()}`,

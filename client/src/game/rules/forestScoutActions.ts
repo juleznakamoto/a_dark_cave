@@ -118,10 +118,13 @@ export function handleHunt(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
+  console.log('[handleHunt] Starting hunt action');
   const effectUpdates = applyActionEffects("hunt", state);
+  console.log('[handleHunt] Effect updates:', effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
+    console.log('[handleHunt] Found log messages:', effectUpdates.logMessages);
     effectUpdates.logMessages.forEach((message: string | any) => {
       if (typeof message === "string") {
         result.logEntries!.push({
