@@ -40,22 +40,30 @@ export default function VillagePanel() {
   const greatFeastState = useGameStore((state) => state.greatFeastState);
 
   // Calculate feast progress based on game loop timing
-  const getFeastProgress = () => {
-    const now = Date.now();
-    if (greatFeastState?.isActive && greatFeastState.endTime > now) {
-      const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
-      const greatFeastElapsed =
-        greatFeastDuration - (greatFeastState.endTime - now);
-      return (greatFeastElapsed / greatFeastDuration) * 100;
-    } else if (feastState?.isActive && feastState.endTime > now) {
-      const feastDuration = 10 * 60 * 1000; // 10 minutes
-      const feastElapsed = feastDuration - (feastState.endTime - now);
-      return (feastElapsed / feastDuration) * 100;
-    }
-    return 0;
-  };
+  const [feastProgress, setFeastProgress] = React.useState(0);
+  
+  React.useEffect(() => {
+    const updateFeastProgress = () => {
+      const now = Date.now();
+      if (greatFeastState?.isActive && greatFeastState.endTime > now) {
+        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+        const greatFeastElapsed =
+          greatFeastDuration - (greatFeastState.endTime - now);
+        setFeastProgress((greatFeastElapsed / greatFeastDuration) * 100);
+      } else if (feastState?.isActive && feastState.endTime > now) {
+        const feastDuration = 10 * 60 * 1000; // 10 minutes
+        const feastElapsed = feastDuration - (feastState.endTime - now);
+        setFeastProgress((feastElapsed / feastDuration) * 100);
+      } else {
+        setFeastProgress(0);
+      }
+    };
 
-  const feastProgress = getFeastProgress();
+    updateFeastProgress();
+    const interval = setInterval(updateFeastProgress, 1000);
+    
+    return () => clearInterval(interval);
+  }, [feastState, greatFeastState]);
 
   // Define action groups with their actions
   const actionGroups = [

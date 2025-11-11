@@ -95,6 +95,7 @@ export default function SidePanelSection({
   useEffect(() => {
     return () => {
       hoverTimersRef.current.forEach((timer) => clearTimeout(timer));
+      hoverTimersRef.current.clear();
     };
   }, []);
 

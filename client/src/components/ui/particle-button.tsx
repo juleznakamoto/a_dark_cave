@@ -167,6 +167,9 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     };
 
     const handleMouseEnter = () => {
+        // Clear any existing timers first
+        clearAllTimers();
+        
         // start delayed spawn
         delayTimeoutRef.current = setTimeout(() => {
             setIsGlowing(true);
@@ -187,8 +190,10 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                     } else {
                         spawnCountRef.current =
                             Math.floor(Math.random() * 7) + 6; // max
-                        clearInterval(rampUpRef.current!);
-                        rampUpRef.current = null;
+                        if (rampUpRef.current) {
+                            clearInterval(rampUpRef.current);
+                            rampUpRef.current = null;
+                        }
                     }
                 }
             }, Math.random() * 101 + 100);
@@ -202,8 +207,10 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
                         setGlowIntensity(0.1 + progress * 0.9); // from 0.1 to 1.0
                     } else {
                         setGlowIntensity(1.0); // max intensity
-                        clearInterval(glowRampRef.current!);
-                        glowRampRef.current = null;
+                        if (glowRampRef.current) {
+                            clearInterval(glowRampRef.current);
+                            glowRampRef.current = null;
+                        }
                         glowRampRef.current = setInterval(
                             () => {
                                 setGlowIntensity(1.0);

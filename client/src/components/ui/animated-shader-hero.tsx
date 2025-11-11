@@ -270,17 +270,6 @@ void main(){gl_Position=position;}`;
     }
   };
 
-  const loop = (now: number) => {
-    if (!rendererRef.current || !pointersRef.current) return;
-
-    rendererRef.current.updateMouse(pointersRef.current.first);
-    rendererRef.current.updatePointerCount(pointersRef.current.count);
-    rendererRef.current.updatePointerCoords(pointersRef.current.coords);
-    rendererRef.current.updateMove(pointersRef.current.move);
-    rendererRef.current.render(now);
-    animationFrameRef.current = requestAnimationFrame(loop);
-  };
-
   useEffect(() => {
     if (!canvasRef.current) return;
 
@@ -299,18 +288,34 @@ void main(){gl_Position=position;}`;
       rendererRef.current.updateShader(defaultShaderSource);
     }
 
+    let isActive = true;
+    const loop = (now: number) => {
+      if (!isActive || !rendererRef.current || !pointersRef.current) return;
+
+      rendererRef.current.updateMouse(pointersRef.current.first);
+      rendererRef.current.updatePointerCount(pointersRef.current.count);
+      rendererRef.current.updatePointerCoords(pointersRef.current.coords);
+      rendererRef.current.updateMove(pointersRef.current.move);
+      rendererRef.current.render(now);
+      animationFrameRef.current = requestAnimationFrame(loop);
+    };
+
     loop(0);
 
     window.addEventListener('resize', resize);
 
     return () => {
+      isActive = false;
       window.removeEventListener('resize', resize);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
       }
       if (rendererRef.current) {
         rendererRef.current.reset();
+        rendererRef.current = null;
       }
+      pointersRef.current = null;
     };
   }, []);
 

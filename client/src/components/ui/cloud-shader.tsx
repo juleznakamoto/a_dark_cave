@@ -184,8 +184,9 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     rendererRef.current.setup();
     rendererRef.current.init();
 
+    let isActive = true;
     const loop = (now: number) => {
-      if (!rendererRef.current) return;
+      if (!isActive || !rendererRef.current) return;
       rendererRef.current.render(now);
       animationFrameRef.current = requestAnimationFrame(loop);
     };
@@ -203,12 +204,15 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     window.addEventListener('resize', resize);
 
     return () => {
+      isActive = false;
       window.removeEventListener('resize', resize);
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
+        animationFrameRef.current = undefined;
       }
       if (rendererRef.current) {
         rendererRef.current.reset();
+        rendererRef.current = null;
       }
     };
   }, []);
