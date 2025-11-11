@@ -7,7 +7,6 @@ import {
   getTotalKnowledge,
 } from "@/game/rules/effectsCalculation";
 import { killVillagers } from "@/game/stateHelpers";
-import { GameEvent, gameEvents } from "./events";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -18,9 +17,9 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cost: {},
     effects: {
-      "resources.food": "random(4,8)",
-      "resources.fur": "random(1,4)",
-      "resources.bones": "random(1,4)",
+      "resources.food": "random(5,10)",
+      "resources.fur": "random(2,5)",
+      "resources.bones": "random(2,5)",
       "story.seen.hasHunted": true,
       "tools.blacksmith_hammer": {
         probability: (state: any) => {

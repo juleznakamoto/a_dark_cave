@@ -250,7 +250,7 @@ export default function ItemProgressChart() {
         itemType: "explorer_pack",
         itemKeys: ["explorer_pack"],
         color: tailwindToHex("gray-400/80"),
-        label: "Explorer Pack",
+        label: "Explorer Backpack",
         category: "clothing",
         maxCount: 1,
       },
