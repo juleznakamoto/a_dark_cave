@@ -38,7 +38,7 @@ export const forestScoutActions: Record<string, Action> = {
       "clothing.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.99 + (stoneHuts * 0.01); // Base 0.5% + 1% per stone hut
+          let prob = 0.0050 + (stoneHuts * 0.01); // Base 0.5% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -138,38 +138,6 @@ export function handleHunt(
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
-
-  // Check for blacksmith hammer choice event (0.5% probability if not yet found)
-  if (!state.story.seen.blacksmithHammerChoice && Math.random() < 0.005) {
-    const hammerEvent = gameEvents.blacksmithHammerChoice;
-    if (hammerEvent) {
-      result.logEntries = result.logEntries || [];
-      result.logEntries.push({
-        id: `${hammerEvent.id}-${Date.now()}`,
-        message: hammerEvent.message as string,
-        timestamp: Date.now(),
-        type: "event",
-        title: hammerEvent.title,
-        choices: hammerEvent.choices,
-      });
-    }
-  }
-
-  // Check for red mask choice event (0.25% probability if not yet found)
-  if (!state.story.seen.redMaskChoice && Math.random() < 0.0025) {
-    const maskEvent = gameEvents.redMaskChoice;
-    if (maskEvent) {
-      result.logEntries = result.logEntries || [];
-      result.logEntries.push({
-        id: `${maskEvent.id}-${Date.now()}`,
-        message: maskEvent.message as string,
-        timestamp: Date.now(),
-        type: "event",
-        title: maskEvent.title,
-        choices: maskEvent.choices,
-      });
-    }
-  }
 
   return result;
 }
