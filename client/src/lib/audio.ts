@@ -41,7 +41,9 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      console.log(`Loading sound: ${name} from ${url}`);
+      if (import.meta.env.DEV) {
+        console.log(`Loading sound: ${name} from ${url}`);
+      }
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -49,7 +51,9 @@ export class AudioManager {
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
-      console.log(`Successfully loaded sound: ${name}`);
+      if (import.meta.env.DEV) {
+        console.log(`Successfully loaded sound: ${name}`);
+      }
     } catch (error) {
       console.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
@@ -58,12 +62,16 @@ export class AudioManager {
   private async loadAllSounds(): Promise<void> {
     if (this.soundUrls.size === 0) return;
 
-    console.log('Loading all sounds after user gesture...');
+    if (import.meta.env.DEV) {
+      console.log('Loading all sounds after user gesture...');
+    }
     const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) =>
       this.loadActualSound(name, url)
     );
     await Promise.all(loadPromises);
-    console.log('Finished loading all sounds');
+    if (import.meta.env.DEV) {
+      console.log('Finished loading all sounds');
+    }
   }
 
   private async loadActualSound(name: string, url: string): Promise<void> {
@@ -78,7 +86,9 @@ export class AudioManager {
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
-      console.log(`Successfully loaded sound: ${name}`);
+      if (import.meta.env.DEV) {
+        console.log(`Successfully loaded sound: ${name}`);
+      }
     } catch (error) {
       console.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
