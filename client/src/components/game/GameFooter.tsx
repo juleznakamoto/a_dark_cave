@@ -53,7 +53,7 @@ export default function GameFooter() {
 
     const checkNotification = () => {
       const elapsed = Date.now() - gameStartTime;
-      if (elapsed >= 30 * 1000) { // 30 seconds
+      if (elapsed >= 10 * 60 * 1000 && !shopNotificationSeen) { // 10 minutes
         setShowShopNotification(true);
       }
     };

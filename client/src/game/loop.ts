@@ -11,12 +11,14 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const SHOP_NOTIFICATION_DELAY = 30 * 1000; // 30 seconds in milliseconds
+const SHOP_NOTIFICATION_INITIAL_DELAY = 10 * 60 * 1000; // 10 minutes in milliseconds
+const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
 let gameStartTime = 0;
+let lastShopNotificationTime = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -78,11 +80,23 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      // Shop notification logic (after 10 minutes of gameplay)
+      // Shop notification logic (first after 10 minutes, then every 60 minutes)
       const state = useGameStore.getState();
-      if (!state.shopNotificationSeen && gameStartTime > 0 && timestamp - gameStartTime >= SHOP_NOTIFICATION_DELAY) {
-        // Don't set shopNotificationSeen here - let the user clicking shop do that
-        // This just allows the notification to show
+      if (gameStartTime > 0) {
+        const elapsedSinceStart = timestamp - gameStartTime;
+        
+        // First notification after 10 minutes
+        if (elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY && lastShopNotificationTime === 0) {
+          lastShopNotificationTime = timestamp;
+          // Trigger notification by resetting shopNotificationSeen
+          useGameStore.setState({ shopNotificationSeen: false });
+        }
+        // Subsequent notifications every 60 minutes
+        else if (lastShopNotificationTime > 0 && timestamp - lastShopNotificationTime >= SHOP_NOTIFICATION_REPEAT_INTERVAL) {
+          lastShopNotificationTime = timestamp;
+          // Trigger notification again
+          useGameStore.setState({ shopNotificationSeen: false });
+        }
       }
 
       // All production and game logic checks (every 15 seconds)
