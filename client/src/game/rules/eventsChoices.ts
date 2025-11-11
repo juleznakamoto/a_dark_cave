@@ -232,11 +232,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
   cannibalRaid: {
     id: "cannibalRaid",
-    condition: (state: GameState) => 
-      state.buildings.woodenHut >= 9 && 
-      !state.story.seen.cannibalRaidVictory,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 9 && !state.story.seen.cannibalRaidVictory,
     triggerType: "resource",
-    timeProbability: 0.040,
+    timeProbability: 40,
     title: "Cannibal Raid",
     message:
       "War drums echo through the night as tribe of cannibals emerges from the wilderness. They advance on the village with crude weapons and terrible intent.",
@@ -280,12 +279,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
-              clothing: giveNecklace
-                ? {
-                    ...state.clothing,
-                    bone_necklace: true,
-                  }
-                : state.clothing,
+              clothing: {
+                ...state.clothing,
+                bone_necklace: true,
+              },
               story: {
                 ...state.story,
                 seen: {
@@ -295,8 +292,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 minimalDeaths === 1
-                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat.${giveNecklace ? " Among the bodies, you find a primitive necklace made of human bones." : ""}`
-                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat.${giveNecklace ? " Among the bodies, you find a primitive necklace made of human bones." : ""}`,
+                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones.`
+                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.`,
             };
           }
 
