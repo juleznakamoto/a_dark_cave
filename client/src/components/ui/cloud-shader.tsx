@@ -145,21 +145,21 @@ float fbm(vec2 p) {
 }
 
 float clouds(vec2 p) {
-	float d=1., t=.0;
-	for (float i=.0; i<3.; i++) {
-		float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
-		t=mix(t,d,a);
-		d=a;
-		p*=2./(i+1.);
-	}
-	return t;
+  float d=1., t=.0;
+  for (float i=.0; i<3.; i++) {
+    float a=d*fbm(i*10.+p.x*.2+.2*(1.+i)*p.y+d+i*i+p);
+    t=mix(t,d,a);
+    d=a;
+    p*=2./(i+1.);
+  }
+  return t;
 }
 
 void main(void) {
-	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
-	float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
-	vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
-	O=vec4(cloudColor,1);
+  vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
+  float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
+  vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
+  O=vec4(cloudColor,1);
 }`;
 
 interface CloudShaderProps {
@@ -175,7 +175,8 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
-    const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
+    // Reduce DPR further to save memory
+    const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
 
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
@@ -185,9 +186,14 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     rendererRef.current.init();
 
     let isActive = true;
+    let frameCount = 0;
     const loop = (now: number) => {
       if (!isActive || !rendererRef.current) return;
-      rendererRef.current.render(now);
+      // Render every other frame to reduce GPU load
+      if (frameCount % 2 === 0) {
+        rendererRef.current.render(now);
+      }
+      frameCount++;
       animationFrameRef.current = requestAnimationFrame(loop);
     };
 
@@ -196,7 +202,7 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     const resize = () => {
       if (!canvasRef.current) return;
       const canvas = canvasRef.current;
-      const dpr = Math.max(1, 0.5 * window.devicePixelRatio);
+      const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
       canvas.width = window.innerWidth * dpr;
       canvas.height = window.innerHeight * dpr;
     };
