@@ -8,7 +8,7 @@ export const huntEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Giant's Forge",
     message:
-      "Deep in the forest, you discover the ruin of a stone building with a massive furnace. Skeletal remains of what must have been a giant lie near the furnace, next to it a magnificent blacksmith hammer, its head bearing traces of ancient forge-fire. Do you take it?",
+      "Deep in the forest, you discover the ruin of a stone building with a massive furnace. You find skeletal remains of what must have been a giant, next to it a magnificent blacksmith hammer. Do you take it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -60,7 +60,7 @@ export const huntEvents: Record<string, GameEvent> = {
     triggerType: "action",
     title: "The Raven's Gift",
     message:
-      "While hunting, you see an oddly large black raven staring at you from a broken tree. Even when you come nearer it keeps staring. Suddenly it croaks, sounding like it's saying a word you don't understand, again and again. As you come closer it flies away. On the ground in front of the tree lies a mask made of deep red leather. Do you take it?",
+      "While hunting, you see an oddly large black raven staring at you from a broken tree. As you approach it, Suddenly it croaks, sounding like it's saying a word again and again. Then it flies away. In front of the tree lies a mask made of deep red leather. Do you take it?",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -82,7 +82,7 @@ export const huntEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You pick up the crimson leather mask. It feels warm to the touch, and when you hold it up to your face, the world seems to shift slightly, revealing hidden truths in the shadows of the forest.",
+              "You pick up the crimson leather mask. It feels warm to the touch.",
           };
         },
       },
@@ -99,7 +99,7 @@ export const huntEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decide the raven's gift carries too much mystery. As you walk away, you hear the raven's call echoing through the trees, neither angry nor pleased, but somehow... patient.",
+              "You decide the raven's gift carries too much mystery. As you walk away, you hear the raven's call echoing through the trees.",
           };
         },
       },
