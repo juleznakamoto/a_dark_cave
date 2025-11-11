@@ -165,9 +165,9 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   fireStorm: {
     id: "fireStorm",
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 5 && state.buildings.stoneHut <= 4,
     triggerType: "resource",
-    timeProbability: 50,
+    timeProbability: 70,
     repeatable: true,
     message: [
       "A raging fire sweeps through the village in the night, bringing death and destruction.",
@@ -176,7 +176,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const hutsDestroyed = Math.random() < 0.5 ? 1 : 2;
+      const hutsDestroyed = Math.random() < 0.75 ? 1 : 2;
       const villagersKilled = hutsDestroyed * 2;
       
       // Use the centralized killVillagers function
