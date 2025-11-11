@@ -38,6 +38,7 @@ import {
 } from "@/components/ui/tooltip";
 import { renderItemTooltip } from "@/game/rules/itemTooltips";
 import { Info } from "lucide-react";
+import { tailwindToHex } from "@/lib/tailwindColors";
 
 const stripePublishableKey = import.meta.env.PROD
   ? import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY_PROD
@@ -225,7 +226,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
   const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
-    
+
     // For free items, skip payment but save to Supabase
     if (item.price === 0) {
       try {
@@ -248,7 +249,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Add to purchased items list
         setPurchasedItems((prev) => [...prev, itemId]);
-        
+
         // Show success message
         gameState.addLogEntry({
           id: `free-gift-${Date.now()}`,
@@ -256,7 +257,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           timestamp: Date.now(),
           type: "system",
         });
-        
+
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 10000);
       } catch (error) {
@@ -270,7 +271,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }
       return;
     }
-    
+
     // For paid items, create payment intent
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
@@ -455,7 +456,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <CardTitle className="text-lg flex items-center gap-2">
                             {item.name}
                             {item.symbol && (
-                              <span className={item.symbolColor}>{item.symbol}</span>
+                              <span className="text-2xl" style={{ color: tailwindToHex(item.symbolColor.replace('text-', '')) }}>
+                                {item.symbol}
+                              </span>
                             )}
                           </CardTitle>
                             {(item.rewards.weapons ||
