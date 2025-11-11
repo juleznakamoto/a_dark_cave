@@ -442,7 +442,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
-              <TabsTrigger value="purchases">Purchases</TabsTrigger>
+              <TabsTrigger value="purchases" disabled={!currentUser}>Purchases</TabsTrigger>
             </TabsList>
 
             <TabsContent value="shop" className="mt-4">
