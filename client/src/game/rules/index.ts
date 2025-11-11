@@ -936,7 +936,11 @@ export function getActionCostBreakdown(
       // Use the original amount (true) to determine this is a boolean check
       // Check in relics if the path starts with resources but the value is boolean
       if (resource.startsWith("resources.") && (resourceName === "bloodstone" || resourceName === "frostglass")) {
-        satisfied = state.relics[resourceName as keyof typeof state.relics] === true;
+        // Handle potential typo in frostglass name
+        const actualRelicName = resourceName === "frostglass" && !state.relics.frostglass && state.relics.frostglas
+          ? "frostglas" as keyof typeof state.relics
+          : resourceName as keyof typeof state.relics;
+        satisfied = state.relics[actualRelicName] === true;
       } else {
         satisfied = resources[resourceName as keyof typeof resources] === true;
       }
