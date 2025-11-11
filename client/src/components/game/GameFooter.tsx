@@ -193,7 +193,7 @@ export default function GameFooter() {
             >
               Shop
               {showShopNotification && !shopNotificationSeen && (
-                <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse" />
+                <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
             {/* <Button

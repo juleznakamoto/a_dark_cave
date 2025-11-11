@@ -373,16 +373,16 @@ html, body {
 
 /* Shop notification dot pulsating animation */
 @keyframes shop-notification-pulse {
-  0%, 100% {
+  0% {
     opacity: 1;
     box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
   }
-  50% {
+  100% {
     opacity: 0.7;
-    box-shadow: 0 0 0 4px rgba(220, 38, 38, 0);
+    box-shadow: 0 0 0 6px rgba(220, 38, 38, 0);
   }
 }
 
 .shop-notification-pulse {
-  animation: shop-notification-pulse 2s ease-in-out infinite;
+  animation: shop-notification-pulse 1s ease-in-out infinite;
 }
