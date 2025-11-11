@@ -186,14 +186,18 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    console.log('Registering sounds for lazy loading...');
+    if (import.meta.env.DEV) {
+      console.log('Registering sounds for lazy loading...');
+    }
     // Just register the sound URLs, don't load yet
     this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
     this.soundUrls.set('event', '/sounds/event.wav');
     this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
     this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
     this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
-    console.log('Sound URLs registered for lazy loading');
+    if (import.meta.env.DEV) {
+      console.log('Sound URLs registered for lazy loading');
+    }
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
