@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -7,6 +6,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
     id: "woodcutter1",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 2 &&
+      state.resources.food > 25 &&
       !state.story.seen.woodcutterBetrayed &&
       !state.story.seen.woodcutter1Accepted,
     triggerType: "resource",
@@ -63,11 +63,10 @@ export const woodcutterEvents: Record<string, GameEvent> = {
   woodcutter2: {
     id: "woodcutter2",
     condition: (state: GameState) =>
+      state.buildings.woodenHut >= 3 &&
       state.story.seen.woodcutter1Met &&
       !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter2Accepted &&
-      state.buildings.woodenHut >= 2 &&
-      state.buildings.woodenHut <= 7,
+      !state.story.seen.woodcutter2Accepted,
     triggerType: "time",
     timeProbability: 7,
     title: "The Woodcutter Returns",
@@ -123,11 +122,10 @@ export const woodcutterEvents: Record<string, GameEvent> = {
   woodcutter3: {
     id: "woodcutter3",
     condition: (state: GameState) =>
+      state.buildings.woodenHut >= 4 &&
       state.story.seen.woodcutter2Met &&
       !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter3Accepted &&
-      state.buildings.woodenHut >= 3 &&
-      state.buildings.woodenHut <= 8,
+      !state.story.seen.woodcutter3Accepted,
     triggerType: "time",
     timeProbability: 7,
     title: "The Woodcutter's Offer",
@@ -183,11 +181,10 @@ export const woodcutterEvents: Record<string, GameEvent> = {
   woodcutter4: {
     id: "woodcutter4",
     condition: (state: GameState) =>
+      state.buildings.woodenHut >= 5 &&
       state.story.seen.woodcutter3Met &&
       !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter4Accepted &&
-      state.buildings.woodenHut >= 4 &&
-      state.buildings.woodenHut <= 9,
+      !state.story.seen.woodcutter4Accepted,
     triggerType: "time",
     timeProbability: 7,
     title: "The Woodcutter's Ambitious Plan",
@@ -264,11 +261,10 @@ export const woodcutterEvents: Record<string, GameEvent> = {
   woodcutter5: {
     id: "woodcutter5",
     condition: (state: GameState) =>
+      state.buildings.woodenHut >= 6 &&
       state.story.seen.woodcutter4Met &&
       !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter5Accepted &&
-      state.buildings.woodenHut >= 5 &&
-      state.buildings.woodenHut <= 10,
+      !state.story.seen.woodcutter5Accepted,
     triggerType: "time",
     timeProbability: 7,
     title: "The Woodcutter's Grand Proposal",
@@ -345,11 +341,10 @@ export const woodcutterEvents: Record<string, GameEvent> = {
   woodcutter6: {
     id: "woodcutter6",
     condition: (state: GameState) =>
+      state.buildings.woodenHut >= 7 &&
       state.story.seen.woodcutter5Met &&
       !state.story.seen.woodcutterBetrayed &&
-      !state.story.seen.woodcutter6Accepted &&
-      state.buildings.woodenHut >= 6 &&
-      state.buildings.woodenHut <= 10,
+      !state.story.seen.woodcutter6Accepted,
     triggerType: "time",
     timeProbability: 7,
     title: "The Woodcutter's Offer",
