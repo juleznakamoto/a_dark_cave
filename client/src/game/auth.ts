@@ -48,7 +48,6 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     const { data: { user }, error } = await supabase.auth.getUser();
     
     if (error) {
-      console.warn('Auth error, user not authenticated:', error.message);
       return null;
     }
     
@@ -56,7 +55,6 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
     
     // Only return user if email is confirmed
     if (!user.email_confirmed_at) {
-      console.warn('User email not confirmed, treating as not authenticated');
       return null;
     }
     
