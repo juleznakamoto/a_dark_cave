@@ -896,6 +896,20 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {},
   },
 
+  bloodstone: {
+    id: "bloodstone",
+    name: "Bloodstone",
+    description: "Crimson gem pulsing with dark energy, found in the Sunken Temple",
+    bonuses: {},
+  },
+
+  frostglass: {
+    id: "frostglass",
+    name: "Frostglass",
+    description: "Crystalline material radiating cold, discovered at the hill grave",
+    bonuses: {},
+  },
+
   // Schematics
   arbalest_schematic: {
     id: "arbalest_schematic",
