@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
-import { startGameLoop } from "@/game/loop";
+import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame } from "@/game/save";
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
@@ -34,6 +34,11 @@ export default function Game() {
     };
 
     initializeGame();
+
+    // Cleanup function to stop the game loop when the component unmounts
+    return () => {
+      stopGameLoop();
+    };
   }, [initialize]);
 
   // Start background music on first user interaction (required by browser autoplay policies)

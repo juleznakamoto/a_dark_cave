@@ -1,4 +1,4 @@
-import { useGameStore } from "./state";
+import { useGameStore, StateManager } from "./state";
 import { saveGame } from "./save";
 import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
@@ -19,6 +19,7 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
+let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -106,7 +107,8 @@ export function startGameLoop() {
         lastProduction = timestamp;
 
         // Reset to 0 after a brief moment to ensure 100% is visible
-        setTimeout(() => {
+        if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
+        loopProgressTimeoutId = setTimeout(() => {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
@@ -137,6 +139,11 @@ export function stopGameLoop() {
     gameLoopId = null;
     useGameStore.setState({ isGameLoopActive: false });
   }
+  if (loopProgressTimeoutId) {
+    clearTimeout(loopProgressTimeoutId);
+    loopProgressTimeoutId = null;
+  }
+  StateManager.clearUpdateTimer();
 }
 
 function processTick() {

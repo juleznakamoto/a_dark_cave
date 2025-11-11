@@ -215,7 +215,7 @@ const defaultGameState: GameState = {
 };
 
 // State management utilities
-class StateManager {
+export class StateManager {
   private static updateTimer: NodeJS.Timeout | null = null;
 
   static scheduleEffectsUpdate(store: () => GameStore) {
@@ -227,6 +227,13 @@ class StateManager {
       state.updateBastionStats();
       this.updateTimer = null;
     }, 0);
+  }
+
+  static clearUpdateTimer() {
+    if (this.updateTimer) {
+      clearTimeout(this.updateTimer);
+      this.updateTimer = null;
+    }
   }
 
   static schedulePopulationUpdate(store: () => GameStore) {
