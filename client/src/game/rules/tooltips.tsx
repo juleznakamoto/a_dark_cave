@@ -174,49 +174,6 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
   },
 };
 
-// Job/Population tooltips
-export const jobTooltips: Record<string, TooltipConfig> = {
-  gatherer: {
-    getContent: () => "+3 Wood per production cycle",
-  },
-  hunter: {
-    getContent: () => "+2 Food per production cycle",
-  },
-  iron_miner: {
-    getContent: () => "+1 Iron per production cycle",
-  },
-  coal_miner: {
-    getContent: () => "+1 Coal per production cycle",
-  },
-  steel_forger: {
-    getContent: () => "+1 Steel per production cycle",
-  },
-  sulfur_miner: {
-    getContent: () => "+1 Sulfur per production cycle",
-  },
-  silver_miner: {
-    getContent: () => "+1 Silver per production cycle",
-  },
-  obsidian_miner: {
-    getContent: () => "+1 Obsidian per production cycle",
-  },
-  adamant_miner: {
-    getContent: () => "+1 Adamant per production cycle",
-  },
-  moonstone_miner: {
-    getContent: () => "+1 Moonstone per production cycle",
-  },
-  tanner: {
-    getContent: () => "+1 Leather per production cycle",
-  },
-  powder_maker: {
-    getContent: () => "+1 Black Powder per production cycle",
-  },
-  ashfire_dust_maker: {
-    getContent: () => "+1 Ashfire Dust per production cycle",
-  },
-};
-
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
