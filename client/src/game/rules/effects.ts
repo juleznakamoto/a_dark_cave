@@ -227,12 +227,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.1,
+          resourceMultiplier: 1.25,
           cooldownReduction: 1,
         },
       },
       generalBonuses: {
-        caveExploreMultiplier: 1.1,
+        caveExploreMultiplier: 1.25,
       },
     },
   },
@@ -244,12 +244,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
       },
       generalBonuses: {
-        caveExploreMultiplier: 1.2,
+        caveExploreMultiplier: 1.5,
       },
     },
   },
@@ -261,12 +261,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 1.75,
           cooldownReduction: 3,
         },
       },
       generalBonuses: {
-        caveExploreMultiplier: 1.3,
+        caveExploreMultiplier: 1.75,
       },
     },
   },
@@ -283,7 +283,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
         },
       },
       generalBonuses: {
-        caveExploreMultiplier: 1.5,
+        caveExploreMultiplier: 2.0,
       },
     },
   },
@@ -499,7 +499,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.25,
+          resourceMultiplier: 1.5,
         },
       },
     },
@@ -523,7 +523,7 @@ export const weaponEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 2.5,
         },
       },
       generalBonuses: {
@@ -826,7 +826,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       "Well-crafted leather backpack easing the weight upon the shoulders",
     bonuses: {
       generalBonuses: {
-        caveExploreMultiplier: 1.2,
+        caveExploreMultiplier: 1.25,
       },
     },
   },
@@ -838,7 +838,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         chopWood: {
-          resourceMultiplier: 1.2,
+          resourceMultiplier: 1.25,
         },
       },
     },
@@ -851,7 +851,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.2,
+          resourceMultiplier: 1.25,
         },
       },
     },
@@ -1043,7 +1043,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         hunt: {
-          resourceMultiplier: 1.2,
+          resourceMultiplier: 1.25,
         },
       },
     },
