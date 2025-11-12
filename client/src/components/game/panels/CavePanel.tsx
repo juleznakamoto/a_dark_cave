@@ -1,4 +1,3 @@
-import React from 'react';
 import { useGameStore } from "@/game/state";
 import {
   gameActions,
@@ -6,7 +5,6 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
-import { getActionGainsTooltip } from '@/game/rules/tooltips';
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
@@ -128,39 +126,33 @@ export default function CavePanel() {
 
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
-    const gainsTooltip = getActionGainsTooltip(actionId, state);
 
-    let tooltipContent = null;
-
-    if (actionId === "mineStone" || actionId === "mineIron" || actionId === "mineCoal" || actionId === "mineSulfur" || actionId === "mineObsidian" || actionId === "mineAdamant" || actionId === "chopWood" || actionId === "hunt") {
-      tooltipContent = (
+    if (showCost) {
+      const costBreakdown = getActionCostBreakdown(actionId, state);
+      const tooltipContent = (
         <div className="text-xs whitespace-nowrap">
-          {gainsTooltip.map((gainItem, index) => (
-            <div key={index} className={gainItem.satisfied ? "" : "text-muted-foreground"}>
-              {gainItem.text}
-            </div>
-          ))}
-          {showCost && (
-            <>
-              <div className="border-t my-1 border-muted-foreground" />
-              {getActionCostBreakdown(actionId, state).map((costItem, index) => (
-                <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-                  {costItem.text}
-                </div>
-              ))}
-            </>
-          )}
-        </div>
-      );
-    } else if (showCost) {
-      tooltipContent = (
-        <div className="text-xs whitespace-nowrap">
-          {getActionCostBreakdown(actionId, state).map((costItem, index) => (
+          {costBreakdown.map((costItem, index) => (
             <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
               {costItem.text}
             </div>
           ))}
         </div>
+      );
+
+      return (
+        <CooldownButton
+          key={actionId}
+          onClick={() => executeAction(actionId)}
+          cooldownMs={action.cooldown * 1000}
+          data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
+          size="xs"
+          disabled={!canExecute}
+          variant="outline"
+          className="hover:bg-transparent hover:text-foreground"
+          tooltip={tooltipContent}
+        >
+          {label}
+        </CooldownButton>
       );
     }
 
@@ -174,7 +166,6 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
-        tooltip={tooltipContent}
       >
         {label}
       </CooldownButton>
