@@ -43,6 +43,7 @@ interface SidePanelSectionProps {
   showNotifications?: boolean;
   forceNotifications?: boolean; // Added prop
   onResourceChange?: (change: ResourceChange) => void;
+  titleTooltip?: string;
 }
 
 export default function SidePanelSection({
@@ -51,6 +52,7 @@ export default function SidePanelSection({
   className = "",
   resourceChanges = [],
   onResourceChange,
+  titleTooltip,
 }: SidePanelSectionProps) {
   const visibleItems = (items || []).filter((item) => item.visible !== false);
   const [animatedItems, setAnimatedItems] = useState<Set<string>>(new Set());
@@ -64,6 +66,7 @@ export default function SidePanelSection({
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
+  const [titleHovered, setTitleHovered] = useState(false);
 
   const handleTooltipHover = (itemId: string) => {
     if (mobileTooltip.isMobile) return;
@@ -430,7 +433,32 @@ export default function SidePanelSection({
 
   return (
     <div className={`py-1.5 border-border ${className}`}>
-      <h3 className="text-xs py-0 font-medium tracking-wide mb-0.5">{title}</h3>
+      {titleTooltip ? (
+        <TooltipProvider>
+          <Tooltip open={mobileTooltip.isTooltipOpen(`section-title-${title}`)}>
+            <TooltipTrigger asChild>
+              <h3
+                className={cn(
+                  "text-xs font-medium tracking-wide mb-0.5 cursor-pointer",
+                  !titleHovered && "new-item-pulse"
+                )}
+                onClick={(e) => {
+                  mobileTooltip.handleTooltipClick(`section-title-${title}`, e);
+                  setTitleHovered(true);
+                }}
+                onMouseEnter={() => setTitleHovered(true)}
+              >
+                {title}
+              </h3>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="text-xs">{titleTooltip}</div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
+      )}
       <div className="text-xs">
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
