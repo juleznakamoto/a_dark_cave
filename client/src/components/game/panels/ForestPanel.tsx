@@ -134,6 +134,26 @@ export default function ForestPanel() {
       );
     }
 
+    // Handle Sacrifice buttons specifically to add resource gain tooltips
+    if (actionId === 'boneTotems' || actionId === 'leatherTotems') {
+      const sacrificeTooltip = getResourceGainTooltip(actionId, state);
+      return (
+        <CooldownButton
+          key={actionId}
+          onClick={() => executeAction(actionId)}
+          cooldownMs={action.cooldown * 1000}
+          data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+          size="xs"
+          disabled={!canExecute}
+          variant="outline"
+          className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
+          tooltip={sacrificeTooltip}
+        >
+          {displayLabel}
+        </CooldownButton>
+      );
+    }
+
     return (
       <CooldownButton
         key={actionId}
