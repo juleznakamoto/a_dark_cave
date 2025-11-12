@@ -90,7 +90,9 @@ export function startGameLoop() {
         if (elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY && lastShopNotificationTime === 0) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
-            useGameStore.setState({ shopNotificationSeen: false });
+            useGameStore.setState({ shopNotificationSeen: false, shopNotificationVisible: true });
+          } else if (!state.shopNotificationVisible) {
+            useGameStore.setState({ shopNotificationVisible: true });
           }
         }
         // Subsequent notifications every 60 minutes after the last one

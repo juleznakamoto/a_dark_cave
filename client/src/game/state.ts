@@ -41,6 +41,7 @@ interface GameStore extends GameState {
 
   // Notification state for shop
   shopNotificationSeen: boolean;
+  shopNotificationVisible: boolean;
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -62,7 +63,8 @@ interface GameStore extends GameState {
   setBoostMode: (enabled: boolean) => void;
   setShowEndScreen: (showEndScreen: boolean) => void; // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => void;
-  setShopNotificationSeen: (seen: boolean) => void; // Added setShopNotificationSeen action
+  setShopNotificationSeen: (seen: boolean) => void;
+  setShopNotificationVisible: (visible: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -212,6 +214,7 @@ const defaultGameState: GameState = {
   isMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
+  shopNotificationVisible: false,
 };
 
 // State management utilities
@@ -283,7 +286,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setBoostMode: (enabled: boolean) => set({ boostMode: enabled }),
   setShowEndScreen: (showEndScreen: boolean) => set({ showEndScreen }), // Added setShowEndScreen action
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
-  setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }), // Added setShopNotificationSeen action
+  setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }),
+  setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -514,7 +518,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isPaused: false, // Reset pause state
       showEndScreen: false, // Reset showEndScreen
       isMuted: false,
-      shopNotificationSeen: false, // Reset shop notification state
+      shopNotificationSeen: false,
+      shopNotificationVisible: false,
     };
 
     set(resetState);
@@ -552,7 +557,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isPaused: savedState.isPaused !== undefined ? savedState.isPaused : false, // Ensure isPaused is loaded
         showEndScreen: savedState.showEndScreen !== undefined ? savedState.showEndScreen : false, // Ensure showEndScreen is loaded
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
-        shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false, // Ensure shopNotificationSeen is loaded
+        shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
+        shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
       };
 
       set(loadedState);

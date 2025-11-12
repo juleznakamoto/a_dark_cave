@@ -17,11 +17,12 @@ export default function GameFooter() {
     shopDialogOpen,
     isPaused,
     togglePause,
-    setShowEndScreen, // Added this line
+    setShowEndScreen,
     isMuted,
     setIsMuted,
     shopNotificationSeen,
     setShopNotificationSeen,
+    shopNotificationVisible,
   } = useGameStore();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
@@ -168,7 +169,7 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative"
             >
               Shop
-              {!shopNotificationSeen && (
+              {shopNotificationVisible && !shopNotificationSeen && (
                 <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
