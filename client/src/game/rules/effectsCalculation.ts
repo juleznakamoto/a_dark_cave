@@ -297,7 +297,7 @@ export const getAllActionBonuses = (state: GameState): Array<{
     // Check for cave explore multiplier in general bonuses
     if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
       const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
-      existing.multiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
+      existing.multiplier *= effect.bonuses.generalBonuses.caveExploreMultiplier;
       bonusMap.set('caveExplore', existing);
     }
 
@@ -306,9 +306,9 @@ export const getAllActionBonuses = (state: GameState): Array<{
         ([actionId, bonus]) => {
           const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
 
-          // Aggregate multipliers (additive)
+          // Aggregate multipliers (multiplicative)
           if (bonus.resourceMultiplier) {
-            existing.multiplier += (bonus.resourceMultiplier - 1);
+            existing.multiplier *= bonus.resourceMultiplier;
           }
 
           // Aggregate flat bonuses (additive)
@@ -557,14 +557,14 @@ export const calculateTotalEffects = (state: GameState) => {
             );
           }
 
-          // Resource multipliers (additive)
+          // Resource multipliers (multiplicative)
           if (
             actionBonus.resourceMultiplier &&
             actionBonus.resourceMultiplier !== 1
           ) {
             effects.resource_multiplier[actionId] =
-              (effects.resource_multiplier[actionId] || 1) +
-              (actionBonus.resourceMultiplier - 1);
+              (effects.resource_multiplier[actionId] || 1) *
+              actionBonus.resourceMultiplier;
           }
 
           // Probability bonuses
