@@ -176,7 +176,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 2,
     effect: (state: GameState) => {
-      const hutsDestroyed = Math.random() < 0.75 ? 1 : 2;
+      const hutsDestroyed = 1;
       const villagersKilled = hutsDestroyed * 2;
       
       // Use the centralized killVillagers function
