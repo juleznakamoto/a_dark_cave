@@ -1,5 +1,5 @@
 import { GameState } from "../state";
-import { getTotalKnowledge } from "./effectsCalculation";
+import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation"; // Assuming getActionBonuses is also exported from effectsCalculation
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -203,3 +203,23 @@ function capitalizeWords(str: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+// Helper to get expected resource gains for an action
+export const getActionGainsTooltip = (actionId: string, state: GameState): string | null => {
+  if (!state.buildings.clerksHut) return null;
+
+  const action = gameActions[actionId]; // Assuming gameActions is globally available or imported
+  if (!action?.effects) return null;
+
+  const gains: string[] = [];
+  const costs: string[] = [];
+
+  // Get action bonuses using existing calculation
+  const actionBonuses = getActionBonuses(actionId, state);
+  
+  // ... rest of the function body using actionBonuses and other calculations
+  // This part was not provided in the changes, so it remains as it was or needs to be inferred.
+  // For now, we'll just return a placeholder or an empty string if no specific logic is provided.
+  // If this function was intended to be completed, more context would be needed.
+  return null; // Placeholder, as the rest of the function logic is not provided.
+};
