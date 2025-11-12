@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getActionCostBreakdown } from '@/game/rules';
+import { actionTooltips } from "@/game/rules/tooltips";
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
@@ -91,9 +92,13 @@ export default function ForestPanel() {
       }
     }
 
+    const tooltipContent = actionTooltips[actionId]
+      ? actionTooltips[actionId](state)
+      : null;
+
     if (showCost) {
       const costBreakdown = getActionCostBreakdown(actionId, state);
-      const tooltipContent = (
+      const costTooltipContent = (
         <div className="text-xs whitespace-nowrap">
           {costBreakdown.map((costItem, index) => (
             <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
@@ -113,7 +118,17 @@ export default function ForestPanel() {
           disabled={!canExecute}
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
-          tooltip={tooltipContent}
+          tooltip={tooltipContent ? (
+            <div>
+              {tooltipContent}
+              {costTooltipContent && (
+                <>
+                  <div className="my-1 border-t border-muted-foreground" />
+                  {costTooltipContent}
+                </>
+              )}
+            </div>
+          ) : costTooltipContent}
         >
           {displayLabel}
         </CooldownButton>
@@ -130,6 +145,7 @@ export default function ForestPanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
+        tooltip={tooltipContent}
       >
         {displayLabel}
       </CooldownButton>

@@ -5,6 +5,7 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
+import { actionTooltips } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
@@ -156,6 +157,10 @@ export default function CavePanel() {
       );
     }
 
+    // Check if this action has a resource tooltip (for mine actions, gather wood, hunt)
+    const actionTooltip = actionTooltips[actionId];
+    const tooltipContent = actionTooltip ? actionTooltip.getContent(state) : null;
+
     return (
       <CooldownButton
         key={actionId}
@@ -166,6 +171,7 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
+        tooltip={tooltipContent ? <div className="text-xs whitespace-nowrap">{tooltipContent}</div> : undefined}
       >
         {label}
       </CooldownButton>
