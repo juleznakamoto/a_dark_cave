@@ -20,109 +20,60 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
   const gains: Array<{ resource: string; min: number; max: number }> = [];
   const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> = [];
 
-  // Handle sacrifice actions with dynamic costs
-  const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
-  
-  if (isSacrificeAction) {
-    // Import the cost functions
-    const { getBoneTotemsCost, getLeatherTotemsCost } = require('./forestSacrificeActions');
-    
-    // Get dynamic cost
-    const dynamicCost = actionId === "boneTotems" 
-      ? getBoneTotemsCost(state)
-      : getLeatherTotemsCost(state);
-    
-    const costResource = actionId === "boneTotems" ? "bone_totem" : "leather_totem";
-    const hasEnough = (state.resources[costResource as keyof typeof state.resources] || 0) >= dynamicCost;
-    costs.push({ resource: costResource, amount: dynamicCost, hasEnough });
-    
-    // Calculate gains with bonuses (5% per usage + item bonuses)
-    const usageCountKey = actionId === "boneTotems" ? "boneTotemsUsageCount" : "leatherTotemsUsageCount";
-    const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-    const usageMultiplier = 1 + (usageCount * 0.05);
-    
-    // Base gains from effects
-    Object.entries(action.effects).forEach(([key, value]) => {
-      if (key.startsWith("resources.")) {
-        const resource = key.split(".")[1];
-        
-        if (typeof value === "string" && value.startsWith("random(")) {
-          const match = value.match(/random\((\d+),(\d+)\)/);
-          if (match) {
-            let min = parseInt(match[1]);
-            let max = parseInt(match[2]);
-            
-            // Apply usage multiplier
-            min = Math.floor(min * usageMultiplier);
-            max = Math.floor(max * usageMultiplier);
-            
-            // Apply item bonuses
-            if (bonuses.resourceMultiplier > 1) {
-              min = Math.floor(min * bonuses.resourceMultiplier);
-              max = Math.floor(max * bonuses.resourceMultiplier);
-            }
-            
-            gains.push({ resource, min, max });
-          }
-        }
-      }
-    });
-  } else {
-    // Parse effects for resource gains (normal actions)
-    Object.entries(action.effects).forEach(([key, value]) => {
-      if (key.startsWith("resources.")) {
-        const resource = key.split(".")[1];
-        
-        if (typeof value === "string" && value.startsWith("random(")) {
-          // Parse random(min,max) format
-          const match = value.match(/random\((\d+),(\d+)\)/);
-          if (match) {
-            let min = parseInt(match[1]);
-            let max = parseInt(match[2]);
+  // Parse effects for resource gains
+  Object.entries(action.effects).forEach(([key, value]) => {
+    if (key.startsWith("resources.")) {
+      const resource = key.split(".")[1];
+      
+      if (typeof value === "string" && value.startsWith("random(")) {
+        // Parse random(min,max) format
+        const match = value.match(/random\((\d+),(\d+)\)/);
+        if (match) {
+          let min = parseInt(match[1]);
+          let max = parseInt(match[2]);
 
-            // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
-            const flatBonus = bonuses.resourceBonus[resource] || 0;
-            min += flatBonus;
-            max += flatBonus;
-
-            // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
-            if (bonuses.resourceMultiplier > 1) {
-              min = Math.floor(min * bonuses.resourceMultiplier);
-              max = Math.floor(max * bonuses.resourceMultiplier);
-            }
-
-            gains.push({ resource, min, max });
-          }
-        } else if (typeof value === "number") {
-          // Fixed value
-          let amount = value;
-          
           // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;
-          amount += flatBonus;
+          min += flatBonus;
+          max += flatBonus;
 
           // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
           if (bonuses.resourceMultiplier > 1) {
-            amount = Math.floor(amount * bonuses.resourceMultiplier);
+            min = Math.floor(min * bonuses.resourceMultiplier);
+            max = Math.floor(max * bonuses.resourceMultiplier);
           }
 
-          gains.push({ resource, min: amount, max: amount });
+          gains.push({ resource, min, max });
+        }
+      } else if (typeof value === "number") {
+        // Fixed value
+        let amount = value;
+        
+        // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
+        const flatBonus = bonuses.resourceBonus[resource] || 0;
+        amount += flatBonus;
+
+        // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
+        if (bonuses.resourceMultiplier > 1) {
+          amount = Math.floor(amount * bonuses.resourceMultiplier);
+        }
+
+        gains.push({ resource, min: amount, max: amount });
+      }
+    }
+  });
+
+  // Parse costs for mine actions
+  if (action.cost) {
+    Object.entries(action.cost).forEach(([key, value]) => {
+      if (key.startsWith("resources.")) {
+        const resource = key.split(".")[1];
+        if (typeof value === "number") {
+          const hasEnough = (state.resources[resource as keyof typeof state.resources] || 0) >= value;
+          costs.push({ resource, amount: value, hasEnough });
         }
       }
     });
-
-    // Parse costs for mine actions
-    if (action.cost) {
-      Object.entries(action.cost).forEach(([key, value]) => {
-        if (key.startsWith("resources.")) {
-          const resource = key.split(".")[1];
-          if (typeof value === "number") {
-            const hasEnough = (state.resources[resource as keyof typeof state.resources] || 0) >= value;
-            costs.push({ resource, amount: value, hasEnough });
-          }
-        }
-      });
-    }
   }
 
   if (gains.length === 0 && costs.length === 0) {
