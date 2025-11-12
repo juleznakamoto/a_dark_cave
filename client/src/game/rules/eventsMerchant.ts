@@ -300,7 +300,16 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
         costOption.amounts[
           Math.floor(Math.random() * costOption.amounts.length)
         ];
-      const cost = Math.ceil(baseCost * Math.max(0.01, 1 - knowledge * 0.01));
+      
+      // Calculate stepped discount: 5% per 10 knowledge, max 25%
+      let discount = 0;
+      if (knowledge >= 10) discount = 0.05;
+      if (knowledge >= 20) discount = 0.10;
+      if (knowledge >= 30) discount = 0.15;
+      if (knowledge >= 40) discount = 0.20;
+      if (knowledge >= 50) discount = 0.25;
+      
+      const cost = Math.ceil(baseCost * (1 - discount));
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
@@ -363,9 +372,16 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const knowledge = getTotalKnowledge(state);
       const costOption =
         trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const cost = Math.ceil(
-        costOption.amounts[0] * Math.max(0.01, 1 - knowledge * 0.01),
-      );
+      
+      // Calculate stepped discount: 5% per 10 knowledge, max 25%
+      let discount = 0;
+      if (knowledge >= 10) discount = 0.05;
+      if (knowledge >= 20) discount = 0.10;
+      if (knowledge >= 30) discount = 0.15;
+      if (knowledge >= 40) discount = 0.20;
+      if (knowledge >= 50) discount = 0.25;
+      
+      const cost = Math.ceil(costOption.amounts[0] * (1 - discount));
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
