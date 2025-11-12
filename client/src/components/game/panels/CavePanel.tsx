@@ -21,7 +21,7 @@ export default function CavePanel() {
       subGroups: [
         {
           actions: [
-            { id: "gatherWood", label: "Gather Wood" },
+            { id: "gatherWood", label: "Gather Wood", showWhen: !state.flags.forestUnlocked },
             { id: "exploreCave", label: "Explore Cave" },
             { id: "ventureDeeper", label: "Venture Deeper" },
             { id: "descendFurther", label: "Descend Further" },
