@@ -18,7 +18,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
 
   const bonuses = getActionBonuses(actionId, state);
   const gains: Array<{ resource: string; min: number; max: number }> = [];
-  const costs: Array<{ resource: string; amount: number }> = [];
+  const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> = [];
 
   // Parse effects for resource gains
   Object.entries(action.effects).forEach(([key, value]) => {
@@ -32,12 +32,12 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
           let min = parseInt(match[1]);
           let max = parseInt(match[2]);
 
-          // Apply flat bonuses
+          // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;
           min += flatBonus;
           max += flatBonus;
 
-          // Apply multipliers
+          // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
           if (bonuses.resourceMultiplier > 1) {
             min = Math.floor(min * bonuses.resourceMultiplier);
             max = Math.floor(max * bonuses.resourceMultiplier);
@@ -49,11 +49,11 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         // Fixed value
         let amount = value;
         
-        // Apply flat bonuses
+        // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
         const flatBonus = bonuses.resourceBonus[resource] || 0;
         amount += flatBonus;
 
-        // Apply multipliers
+        // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
         if (bonuses.resourceMultiplier > 1) {
           amount = Math.floor(amount * bonuses.resourceMultiplier);
         }
@@ -69,7 +69,8 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
         if (typeof value === "number") {
-          costs.push({ resource, amount: value });
+          const hasEnough = (state.resources[resource as keyof typeof state.resources] || 0) >= value;
+          costs.push({ resource, amount: value, hasEnough });
         }
       }
     });
@@ -96,7 +97,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         </div>
       ))}
       {costs.map((cost, index) => (
-        <div key={`cost-${index}`} className="text-muted-foreground">
+        <div key={`cost-${index}`} className={cost.hasEnough ? "" : "text-muted-foreground"}>
           -{cost.amount} {formatResourceName(cost.resource)}
         </div>
       ))}

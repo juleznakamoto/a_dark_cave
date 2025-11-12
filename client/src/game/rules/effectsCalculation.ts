@@ -273,9 +273,9 @@ export function getActionBonuses(
         }
       }
 
-      // Check for general "mine" bonuses that apply to all mine actions
-      if (isMineAction && itemBonuses.mine) {
-        const MineBonus = itemBonuses.mine;
+      // Check for general "mine" or "mining" bonuses that apply to all mine actions
+      if (isMineAction && (itemBonuses.mine || itemBonuses.mining)) {
+        const MineBonus = itemBonuses.mine || itemBonuses.mining;
 
         // Apply resource bonuses
         if (MineBonus.resourceBonus) {
