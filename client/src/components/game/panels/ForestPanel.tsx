@@ -52,10 +52,11 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith('trade');
 
-    // Check if this is chopWood or hunt action
+    // Check if this is chopWood, hunt, or sacrifice action
     const isChopWood = actionId === 'chopWood';
     const isHunt = actionId === 'hunt';
-    const resourceGainTooltip = (isChopWood || isHunt) ? getResourceGainTooltip(actionId, state) : null;
+    const isSacrificeAction = actionId === 'boneTotems' || actionId === 'leatherTotems';
+    const resourceGainTooltip = (isChopWood || isHunt || isSacrificeAction) ? getResourceGainTooltip(actionId, state) : null;
 
     // Get dynamic label for trade buttons based on the amount
     let displayLabel = label;
