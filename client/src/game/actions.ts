@@ -4,7 +4,7 @@ import { gameActions } from '@/game/rules';
 // Import all handlers from the modular action files
 import {
   handleLightFire,
-  handlechopWood,
+  handleChopWood,
   handleExploreCave,
   handleVentureDeeper,
   handleDescendFurther,
@@ -170,7 +170,7 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
     case 'lightFire':
       return handleLightFire(state, result);
     case 'chopWood':
-      return handlechopWood(state, result);
+      return handleChopWood(state, result);
     case 'exploreCave':
       return handleExploreCave(state, result);
     case 'ventureDeeper':

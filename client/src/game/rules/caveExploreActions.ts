@@ -133,17 +133,20 @@ function getInheritedItems(actionId: string) {
           : item.probability + 0.005 * (currentIndex - i);
 
       // Determine the category (relics or clothing) based on the item's category
-      const category = item.category || 'relics';
-      
+      const category = item.category || "relics";
+
       inheritedItems[`${category}.${item.key}`] = {
         probability: Math.min(adjustedProbability, 1.0), // Cap at 100%
         value: true,
         condition:
           `!${category}.${item.key}` +
-          ('eventId' in item && item.eventId ? ` && !story.seen.${item.eventId}` : ""),
-        ...('isChoice' in item && item.isChoice && { isChoice: item.isChoice }),
-        ...('eventId' in item && item.eventId && { eventId: item.eventId }),
-        ...('logMessage' in item && item.logMessage && { logMessage: item.logMessage }),
+          ("eventId" in item && item.eventId
+            ? ` && !story.seen.${item.eventId}`
+            : ""),
+        ...("isChoice" in item && item.isChoice && { isChoice: item.isChoice }),
+        ...("eventId" in item && item.eventId && { eventId: item.eventId }),
+        ...("logMessage" in item &&
+          item.logMessage && { logMessage: item.logMessage }),
       };
     });
   }
@@ -193,15 +196,15 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.torch": 3,
     },
     effects: {
-      "resources.wood": { probability: 0.5, value: "random(2,5)" },
-      "resources.stone": { probability: 1, value: "random(2,5)" },
-      "resources.coal": { probability: 0.5, value: "random(2,5)" },
-      "resources.iron": { probability: 0.5, value: "random(2,5)" },
-      "resources.bones": { probability: 0.5, value: "random(2,5)" },
+      "resources.wood": "random(2,5)",
+      "resources.stone": "random(2,5)",
+      "resources.coal": "random(2,5)",
+      "resources.iron": "random(2,5)",
+      "resources.bones": "random(2,5)",
       ...getInheritedItems("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
-      "story.seen.caveExplored": true
+      "story.seen.caveExplored": true,
     },
     cooldown: 10,
   },
@@ -218,11 +221,11 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 10,
     },
     effects: {
-      "resources.stone": { probability: 1, value: "random(4,8)" },
-      "resources.coal": { probability: 0.55, value: "random(4,8)" },
-      "resources.iron": { probability: 0.55, value: "random(4,8)" },
-      "resources.bones": { probability: 0.55, value: "random(4,8)" },
-      "resources.sulfur": { probability: 0.55, value: "random(4,8)" },
+      "resources.stone": "random(4,8)",
+      "resources.coal": "random(4,8)",
+      "resources.iron": "random(4,8)",
+      "resources.bones": "random(4,8)",
+      "resources.sulfur": "random(4,8)",
       ...getInheritedItems("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,
@@ -241,13 +244,13 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 25,
     },
     effects: {
-      "resources.stone": { probability: 1, value: "random(6,11)" },
-      "resources.iron": { probability: 0.6, value: "random(6,11)" },
-      "resources.coal": { probability: 0.6, value: "random(6,11)" },
-      "resources.obsidian": { probability: 0.25, value: "random(1,3)" },
-      "resources.bones": { probability: 0.6, value: "random(6,11)" },
-      "resources.sulfur": { probability: 0.6, value: "random(6,11)" },
-      "resources.silver": { probability: 0.4, value: "random(2,8)" },
+      "resources.stone": "random(6,11)",
+      "resources.iron": "random(6,11)",
+      "resources.coal": "random(6,11)",
+      "resources.obsidian": "random(1,3)",
+      "resources.bones": "random(6,11)",
+      "resources.sulfur": "random(6,11)",
+      "resources.silver": "random(2,8)",
       ...getInheritedItems("descendFurther"),
       "flags.descendedFurther": true,
       "story.seen.descendedFurther": true,
@@ -266,15 +269,15 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 50,
     },
     effects: {
-      "resources.stone": { probability: 1, value: "random(8,14)" },
-      "resources.iron": { probability: 0.65, value: "random(8,14)" },
-      "resources.coal": { probability: 0.65, value: "random(8,14)" },
-      "resources.obsidian": { probability: 0.3, value: "random(2,4)" },
-      "resources.adamant": { probability: 0.2, value: "random(1,3)" },
-      "resources.bones": { probability: 0.65, value: "random(8,14)" },
-      "resources.sulfur": { probability: 0.65, value: "random(8,14)" },
-      "resources.silver": { probability: 0.45, value: "random(4,10)" },
-      "resources.gold": { probability: 0.2, value: "random(2,8)" },
+      "resources.stone": "random(8,14)",
+      "resources.iron": "random(8,14)",
+      "resources.coal": "random(8,14)",
+      "resources.obsidian": "random(2,4)",
+      "resources.adamant": "random(1,3)",
+      "resources.bones": "random(8,14)",
+      "resources.sulfur": "random(8,14)",
+      "resources.silver": "random(4,10)",
+      "resources.gold": "random(2,8)",
       ...getInheritedItems("exploreRuins"),
       "flags.exploredRuins": true,
       "story.seen.exploredRuins": true,
@@ -293,16 +296,16 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 100,
     },
     effects: {
-      "resources.stone": { probability: 1, value: "random(10,17)" },
-      "resources.iron": { probability: 0.7, value: "random(10,17)" },
-      "resources.coal": { probability: 0.7, value: "random(10,17" },
-      "resources.obsidian": { probability: 0.35, value: "random(3,5)" },
-      "resources.adamant": { probability: 0.25, value: "random(2,4)" },
-      "resources.bones": { probability: 0.7, value: "random(10,17)" },
-      "resources.sulfur": { probability: 0.7, value: "random(10,17)" },
-      "resources.silver": { probability: 0.5, value: "random(6,12)" },
-      "resources.gold": { probability: 0.25, value: "random(4,10)" },
-      "resources.moonstone": { probability: 0.2, value: "random(1,8)" },
+      "resources.stone": "random(10,17)",
+      "resources.iron": "random(10,17)",
+      "resources.coal": "random(10,17)",
+      "resources.obsidian": "random(3,5)",
+      "resources.adamant": "random(2,4)",
+      "resources.bones": "random(10,17)",
+      "resources.sulfur": "random(10,17)",
+      "resources.silver": "random(6,12)",
+      "resources.gold": "random(4,10)",
+      "resources.moonstone": "random(1,8)",
       ...getInheritedItems("exploreTemple"),
       "flags.exploredTemple": true,
       "story.seen.exploredTemple": true,
@@ -320,16 +323,16 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 250,
     },
     effects: {
-      "resources.stone": { probability: 1, value: "random(12,20)" },
-      "resources.iron": { probability: 0.75, value: "random(12,20)" },
-      "resources.coal": { probability: 0.75, value: "random(12,20)" },
-      "resources.obsidian": { probability: 0.4, value: "random(4,5)" },
-      "resources.adamant": { probability: 0.3, value: "random(3,5)" },
-      "resources.bones": { probability: 0.75, value: "random(12,20)" },
-      "resources.sulfur": { probability: 0.75, value: "random(12,20)" },
-      "resources.silver": { probability: 0.55, value: "random(8,14)" },
-      "resources.gold": { probability: 0.3, value: "random(6,12)" },
-      "resources.moonstone": { probability: 0.25, value: "random(2,10)" },
+      "resources.stone": 20,
+      "resources.iron": "random(12,20)",
+      "resources.coal": "random(12,20)",
+      "resources.obsidian": "random(4,5)",
+      "resources.adamant": "random(3,5)",
+      "resources.bones": "random(12,20)",
+      "resources.sulfur": "random(12,20)",
+      "resources.silver": "random(8,14)",
+      "resources.gold": "random(6,12)",
+      "resources.moonstone": "random(2,10)",
       ...getInheritedItems("exploreCitadel"),
       "flags.exploredCitadel": true,
       "story.seen.exploredCitadel": true,
@@ -441,7 +444,6 @@ export function handleLightFire(
       iron: (state.resources.iron || 0) + 1000,
       steel: (state.resources.steel || 0) + 500,
       gold: (state.resources.gold || 0) + 500,
-
     };
   }
 
@@ -457,7 +459,7 @@ export function handleLightFire(
   return result;
 }
 
-export function handlechopWood(
+export function handleChopWood(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
@@ -484,7 +486,8 @@ export function handlechopWood(
   if (state.resources.wood === 0 && !state.story.seen.firstWoodGathered) {
     result.logEntries!.push({
       id: `first-wood-gather-${Date.now()}`,
-      message: "Some wood lies scattered near the cave's entrance. It might prove useful.",
+      message:
+        "Some wood lies scattered near the cave's entrance. It might prove useful.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -802,8 +805,7 @@ export function handleEncounterBeyondPortal(
 
   result.logEntries!.push({
     id: `encounter-beyond-portal-${Date.now()}`,
-    message:
-      "You venture beyond the shattered portal into the depths below.",
+    message: "You venture beyond the shattered portal into the depths below.",
     timestamp: Date.now(),
     type: "system",
   });

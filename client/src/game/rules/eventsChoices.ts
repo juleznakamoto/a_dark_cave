@@ -445,7 +445,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 3 && !state.clothing.alphas_hide,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 40,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle your village.",
@@ -575,7 +575,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           const luck = getTotalLuck(state);
-          const casualtyChance = Math.max(0.1, 0.4 - luck * 0.02);
+          const casualtyChance = Math.max(0.1, 0.35 - luck * 0.02);
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
