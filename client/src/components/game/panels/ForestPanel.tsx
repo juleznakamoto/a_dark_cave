@@ -3,7 +3,6 @@ import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { jobTooltips, getActionGainsTooltip } from "@/game/rules/tooltips";
 
 export default function ForestPanel() {
   const { executeAction, buildings } = useGameStore();
@@ -114,28 +113,7 @@ export default function ForestPanel() {
           disabled={!canExecute}
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
-          tooltip={
-                    action.description || buildings.clerksHut ? (
-                      <div className="space-y-1">
-                        <div className="font-bold">{action.label}</div>
-                        {action.description && (
-                          <div className="text-muted-foreground">
-                            {action.description}
-                          </div>
-                        )}
-                        {buildings.clerksHut && (() => {
-                          const gainsTooltip = getActionGainsTooltip(action.id, useGameStore.getState());
-                          return gainsTooltip ? (
-                            <div className="text-sm mt-2 border-t border-border pt-2">
-                              {gainsTooltip.split('\n').map((line, i) => (
-                                <div key={i}>{line}</div>
-                              ))}
-                            </div>
-                          ) : null;
-                        })()}
-                      </div>
-                    ) : undefined
-                  }
+          tooltip={tooltipContent}
         >
           {displayLabel}
         </CooldownButton>
@@ -152,28 +130,6 @@ export default function ForestPanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
-        tooltip={
-                    action.description || buildings.clerksHut ? (
-                      <div className="space-y-1">
-                        <div className="font-bold">{action.label}</div>
-                        {action.description && (
-                          <div className="text-muted-foreground">
-                            {action.description}
-                          </div>
-                        )}
-                        {buildings.clerksHut && (() => {
-                          const gainsTooltip = getActionGainsTooltip(action.id, useGameStore.getState());
-                          return gainsTooltip ? (
-                            <div className="text-sm mt-2 border-t border-border pt-2">
-                              {gainsTooltip.split('\n').map((line, i) => (
-                                <div key={i}>{line}</div>
-                              ))}
-                            </div>
-                          ) : null;
-                        })()}
-                      </div>
-                    ) : undefined
-                  }
       >
         {displayLabel}
       </CooldownButton>
