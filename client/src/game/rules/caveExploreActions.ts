@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
-import { getTotalLuck } from "@/game/rules/effectsCalculation";
+import { getTotalLuck, getActionBonuses } from "@/game/rules/effectsCalculation";
 
 // Helper function to apply cave explore multiplier to cave exploration probability effects
 function applyCaveExplorationBonuses(
@@ -9,7 +9,6 @@ function applyCaveExplorationBonuses(
   actionId: string,
   effectUpdates: any,
 ): void {
-  const { getActionBonuses } = require('./effectsCalculation');
   const bonuses = getActionBonuses(actionId, state);
 
   // Define which resources can benefit from bonuses in cave exploration
