@@ -1,8 +1,107 @@
 import { GameState } from "../state";
-import { getTotalKnowledge } from "./effectsCalculation";
+import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
+import { gameActions } from "./index";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
+}
+
+// Helper function to get resource gain range tooltip
+export const getResourceGainTooltip = (actionId: string, state: GameState): React.ReactNode | null => {
+  // Only show if clerks hut is built
+  if (!state.buildings.clerksHut) {
+    return null;
+  }
+
+  const action = gameActions[actionId];
+  if (!action?.effects) return null;
+
+  const bonuses = getActionBonuses(actionId, state);
+  const gains: Array<{ resource: string; min: number; max: number }> = [];
+  const costs: Array<{ resource: string; amount: number }> = [];
+
+  // Parse effects for resource gains
+  Object.entries(action.effects).forEach(([key, value]) => {
+    if (key.startsWith("resources.")) {
+      const resource = key.split(".")[1];
+      
+      if (typeof value === "string" && value.startsWith("random(")) {
+        // Parse random(min,max) format
+        const match = value.match(/random\((\d+),(\d+)\)/);
+        if (match) {
+          let min = parseInt(match[1]);
+          let max = parseInt(match[2]);
+
+          // Apply flat bonuses
+          const flatBonus = bonuses.resourceBonus[resource] || 0;
+          min += flatBonus;
+          max += flatBonus;
+
+          // Apply multipliers
+          if (bonuses.resourceMultiplier > 1) {
+            min = Math.floor(min * bonuses.resourceMultiplier);
+            max = Math.floor(max * bonuses.resourceMultiplier);
+          }
+
+          gains.push({ resource, min, max });
+        }
+      } else if (typeof value === "number") {
+        // Fixed value
+        let amount = value;
+        
+        // Apply flat bonuses
+        const flatBonus = bonuses.resourceBonus[resource] || 0;
+        amount += flatBonus;
+
+        // Apply multipliers
+        if (bonuses.resourceMultiplier > 1) {
+          amount = Math.floor(amount * bonuses.resourceMultiplier);
+        }
+
+        gains.push({ resource, min: amount, max: amount });
+      }
+    }
+  });
+
+  // Parse costs
+  if (action.cost) {
+    Object.entries(action.cost).forEach(([key, value]) => {
+      if (key.startsWith("resources.")) {
+        const resource = key.split(".")[1];
+        if (typeof value === "number") {
+          costs.push({ resource, amount: value });
+        }
+      }
+    });
+  }
+
+  if (gains.length === 0 && costs.length === 0) {
+    return null;
+  }
+
+  const formatResourceName = (resource: string) => {
+    return resource
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  };
+
+  return (
+    <div className="text-xs whitespace-nowrap">
+      {gains.map((gain, index) => (
+        <div key={`gain-${index}`}>
+          {gain.min === gain.max
+            ? `+${gain.min} ${formatResourceName(gain.resource)}`
+            : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
+        </div>
+      ))}
+      {costs.map((cost, index) => (
+        <div key={`cost-${index}`} className="text-muted-foreground">
+          -{cost.amount} {formatResourceName(cost.resource)}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 // Action button tooltips (for cost breakdowns)

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
 import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
+import { getResourceGainTooltip } from '@/game/rules/tooltips';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
@@ -51,6 +52,11 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith('trade');
 
+    // Check if this is chopWood or hunt action
+    const isChopWood = actionId === 'chopWood';
+    const isHunt = actionId === 'hunt';
+    const resourceGainTooltip = (isChopWood || isHunt) ? getResourceGainTooltip(actionId, state) : null;
+
     // Get dynamic label for trade buttons based on the amount
     let displayLabel = label;
     if (isTradeButton && action.effects) {
@@ -91,17 +97,25 @@ export default function ForestPanel() {
       }
     }
 
-    if (showCost) {
-      const costBreakdown = getActionCostBreakdown(actionId, state);
-      const tooltipContent = (
-        <div className="text-xs whitespace-nowrap">
-          {costBreakdown.map((costItem, index) => (
-            <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-              {costItem.text}
-            </div>
-          ))}
-        </div>
-      );
+    if (showCost || resourceGainTooltip) {
+      let tooltipContent;
+
+      if (resourceGainTooltip) {
+        // chopWood or hunt: show resource gains only
+        tooltipContent = resourceGainTooltip;
+      } else {
+        // Other actions with costs
+        const costBreakdown = getActionCostBreakdown(actionId, state);
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap">
+            {costBreakdown.map((costItem, index) => (
+              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                {costItem.text}
+              </div>
+            ))}
+          </div>
+        );
+      }
 
       return (
         <CooldownButton

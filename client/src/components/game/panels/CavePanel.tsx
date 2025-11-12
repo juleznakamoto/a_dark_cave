@@ -5,6 +5,7 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
+import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
@@ -127,17 +128,29 @@ export default function CavePanel() {
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
-    if (showCost) {
-      const costBreakdown = getActionCostBreakdown(actionId, state);
-      const tooltipContent = (
-        <div className="text-xs whitespace-nowrap">
-          {costBreakdown.map((costItem, index) => (
-            <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-              {costItem.text}
-            </div>
-          ))}
-        </div>
-      );
+    // Check if this is a mine action
+    const isMineAction = actionId.startsWith("mine");
+    const resourceGainTooltip = isMineAction ? getResourceGainTooltip(actionId, state) : null;
+
+    if (showCost || resourceGainTooltip) {
+      let tooltipContent;
+
+      if (resourceGainTooltip) {
+        // Mine actions: show gains first, then costs
+        tooltipContent = resourceGainTooltip;
+      } else {
+        // Other actions with costs
+        const costBreakdown = getActionCostBreakdown(actionId, state);
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap">
+            {costBreakdown.map((costItem, index) => (
+              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                {costItem.text}
+              </div>
+            ))}
+          </div>
+        );
+      }
 
       return (
         <CooldownButton
