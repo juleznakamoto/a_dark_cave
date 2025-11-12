@@ -3,19 +3,18 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
 
-// Helper function to apply luck bonuses to cave exploration probability effects
-function applyCaveExplorationLuckBonus(
+// Helper function to apply luck bonuses and cave explore multiplier to cave exploration probability effects
+function applyCaveExplorationBonuses(
   state: GameState,
   actionId: string,
   effectUpdates: any,
 ): void {
+  const { getActionBonuses } = require('./effectsCalculation');
+  const bonuses = getActionBonuses(actionId, state);
   const luck = getTotalLuck(state);
   const luckBonus = luck * 0.01; // 1% per luck point
 
-  // Skip if no luck
-  if (luck <= 0) return;
-
-  // Define which resources can benefit from luck in cave exploration
+  // Define which resources can benefit from bonuses in cave exploration
   const caveResources = [
     "wood",
     "stone",
@@ -30,20 +29,29 @@ function applyCaveExplorationLuckBonus(
     "moonstone",
   ];
 
-  // Apply luck bonus to probability-based resource effects
+  // Apply cave explore multiplier and luck bonus to resource effects
   if (effectUpdates.resources) {
     Object.keys(effectUpdates.resources).forEach((resource) => {
       if (caveResources.includes(resource)) {
         const totalAmount = effectUpdates.resources[resource] || 0;
         const existingAmount = state.resources[resource] || 0;
-        const actuallyAddedAmount = totalAmount - existingAmount;
+        let actuallyAddedAmount = totalAmount - existingAmount;
 
         if (actuallyAddedAmount > 0) {
-          // Calculate luck bonus based only on the newly added resources
-          const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
-          if (luckBonusAmount > 0) {
-            effectUpdates.resources[resource] = totalAmount + luckBonusAmount;
+          // Apply cave explore multiplier first
+          if (bonuses.caveExploreMultiplier > 1) {
+            actuallyAddedAmount = Math.floor(actuallyAddedAmount * bonuses.caveExploreMultiplier);
           }
+
+          // Then apply luck bonus
+          if (luck > 0) {
+            const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
+            if (luckBonusAmount > 0) {
+              actuallyAddedAmount += luckBonusAmount;
+            }
+          }
+
+          effectUpdates.resources[resource] = existingAmount + actuallyAddedAmount;
         }
       }
     });
@@ -512,8 +520,8 @@ export function handleExploreCave(
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCave", state);
 
-  // Apply luck bonus to the resolved resource amounts
-  applyCaveExplorationLuckBonus(state, "exploreCave", effectUpdates);
+  // Apply cave explore multiplier and luck bonus to the resolved resource amounts
+  applyCaveExplorationBonuses(state, "exploreCave", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -541,7 +549,7 @@ export function handleVentureDeeper(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("ventureDeeper", state);
-  applyCaveExplorationLuckBonus(state, "ventureDeeper", effectUpdates);
+  applyCaveExplorationBonuses(state, "ventureDeeper", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -580,7 +588,7 @@ export function handleDescendFurther(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("descendFurther", state);
-  applyCaveExplorationLuckBonus(state, "descendFurther", effectUpdates);
+  applyCaveExplorationBonuses(state, "descendFurther", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -619,7 +627,7 @@ export function handleExploreRuins(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreRuins", state);
-  applyCaveExplorationLuckBonus(state, "exploreRuins", effectUpdates);
+  applyCaveExplorationBonuses(state, "exploreRuins", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -658,7 +666,7 @@ export function handleExploreTemple(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreTemple", state);
-  applyCaveExplorationLuckBonus(state, "exploreTemple", effectUpdates);
+  applyCaveExplorationBonuses(state, "exploreTemple", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -697,7 +705,7 @@ export function handleExploreCitadel(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCitadel", state);
-  applyCaveExplorationLuckBonus(state, "exploreCitadel", effectUpdates);
+  applyCaveExplorationBonuses(state, "exploreCitadel", effectUpdates);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
