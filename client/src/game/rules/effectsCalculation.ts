@@ -231,7 +231,8 @@ export const getActionBonuses = (
     if (effect.bonuses.actionBonuses?.[actionId]) {
       const bonus = effect.bonuses.actionBonuses[actionId];
       if (bonus.resourceMultiplier) {
-        resourceMultiplier *= bonus.resourceMultiplier;
+        // Additive: sum the bonus percentages
+        resourceMultiplier += (bonus.resourceMultiplier - 1);
       }
       if (bonus.cooldownReduction) {
         cooldownReduction += bonus.cooldownReduction;
@@ -248,7 +249,8 @@ export const getActionBonuses = (
       if (effect.bonuses.actionBonuses?.mining) {
         const mineBonus = effect.bonuses.actionBonuses.mining;
         if (mineBonus.resourceMultiplier) {
-          resourceMultiplier *= mineBonus.resourceMultiplier;
+          // Additive: sum the bonus percentages
+          resourceMultiplier += (mineBonus.resourceMultiplier - 1);
         }
         if (mineBonus.cooldownReduction) {
           cooldownReduction += mineBonus.cooldownReduction;
@@ -274,7 +276,8 @@ export const getActionBonuses = (
     ];
     if (caveExploreActions.includes(actionId)) {
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
-        caveExploreMultiplier *= effect.bonuses.generalBonuses.caveExploreMultiplier;
+        // Additive: sum the bonus percentages
+        caveExploreMultiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
       }
     }
   });
