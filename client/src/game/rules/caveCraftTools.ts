@@ -496,7 +496,6 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.loggers_gloves": true,
       "story.seen.hasLoggersGloves": true,
       "story.seen.actionCraftLoggersGloves": true,
-      "bonuses.wood_gathering": 0.20,
     },
     cooldown: 15,
   },

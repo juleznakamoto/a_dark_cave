@@ -66,7 +66,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Basic axe for chopping wood",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 1.25,
           cooldownReduction: 0.25,
         },
@@ -97,7 +97,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Sharp axe for heavy chopping",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 1.5,
           cooldownReduction: 0.5,
         },
@@ -128,7 +128,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Finely crafted axe forged from tempered steel",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 1.75,
           cooldownReduction: 0.75,
         },
@@ -156,7 +156,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Legendary axe with razor-sharp volcanic edges",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 2.0,
           cooldownReduction: 1,
         },
@@ -184,7 +184,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "Unbreakable axe, forged from the hardest metal",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 2.5,
           cooldownReduction: 1.5,
         },
@@ -826,7 +826,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Sturdy leather gloves that help with wood gathering",
     bonuses: {
       actionBonuses: {
-        gatherWood: {
+        chopWood: {
           resourceMultiplier: 1.2,
         },
       },

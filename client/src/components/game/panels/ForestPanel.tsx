@@ -13,7 +13,7 @@ export default function ForestPanel() {
     {
       title: '',
       actions: [
-        { id: 'gatherWood', label: 'Chop Wood' },
+        { id: 'chopWood', label: 'Chop Wood' },
         { id: 'hunt', label: 'Hunt' },
         { id: 'layTrap', label: 'Lay Trap' },
         { id: 'castleRuins', label: 'Castle Ruins' },

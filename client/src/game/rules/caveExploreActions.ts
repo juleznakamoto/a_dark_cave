@@ -163,8 +163,8 @@ export const caveExploreActions: Record<string, Action> = {
     cooldown: 1,
   },
 
-  gatherWood: {
-    id: "gatherWood",
+  chopWood: {
+    id: "chopWood",
     label: "Gather Wood",
     show_when: {},
     cost: {},
@@ -457,11 +457,11 @@ export function handleLightFire(
   return result;
 }
 
-export function handleGatherWood(
+export function handlechopWood(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const effectUpdates = applyActionEffects("gatherWood", state);
+  const effectUpdates = applyActionEffects("chopWood", state);
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
