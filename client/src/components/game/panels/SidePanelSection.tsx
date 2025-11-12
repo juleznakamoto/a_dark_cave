@@ -282,6 +282,24 @@ export default function SidePanelSection({
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
 
+    const labelContent = (
+      <span
+        className={`text-xs text-gray-400 flex items-center gap-1 ${newItemPulseClass}`}
+      >
+        {item.icon !== undefined && (
+          <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
+        )}
+        {item.label.includes("↓") ? (
+          <>
+            {item.label.replace(" ↓", "")}
+            <span className="text-red-800 ml-1">↓</span>
+          </>
+        ) : (
+          item.label
+        )}
+      </span>
+    );
+
     const itemContent = (
       <div
         data-testid={item.testId}
@@ -293,21 +311,7 @@ export default function SidePanelSection({
               : ""
         }`}
       >
-        <span
-          className={`text-xs text-gray-400 flex items-center gap-1 ${newItemPulseClass}`}
-        >
-          {item.icon !== undefined && (
-            <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
-          )}
-          {item.label.includes("↓") ? (
-            <>
-              {item.label.replace(" ↓", "")}
-              <span className="text-red-800 ml-1">↓</span>
-            </>
-          ) : (
-            item.label
-          )}
-        </span>
+        {labelContent}
         {![
           "Relics",
           "Tools",
@@ -348,16 +352,27 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <TooltipTrigger asChild>
-              <div
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-              >
-                {itemContent}
-              </div>
-            </TooltipTrigger>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+            </div>
             <TooltipContent className="max-w-xs">
               <div className="text-xs">
                 {renderItemTooltip(
@@ -380,16 +395,51 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <TooltipTrigger asChild>
-              <div
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-              >
-                {itemContent}
-              </div>
-            </TooltipTrigger>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+              {![
+                "Relics",
+                "Tools",
+                "Weapons",
+                "Clothing",
+                "Buildings",
+                "Fortifications",
+                "Blessings",
+                "Schematics",
+              ].includes(title) && (
+                <span
+                  className={`font-mono ${
+                    isAnimated
+                      ? "text-green-800 font-bold"
+                      : isDecreaseAnimated
+                        ? "text-red-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""
+                  }`}
+                >
+                  {displayValue}
+                </span>
+              )}
+            </div>
             <TooltipContent>
               <p className="whitespace-pre-line">{madnessTooltipContent}</p>
             </TooltipContent>
@@ -403,16 +453,51 @@ export default function SidePanelSection({
       return (
         <TooltipProvider key={item.id}>
           <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <TooltipTrigger asChild>
-              <div
-                onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                onMouseEnter={() => handleTooltipHover(item.id)}
-                onMouseLeave={() => handleTooltipLeave(item.id)}
-                className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-              >
-                {itemContent}
-              </div>
-            </TooltipTrigger>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+              {![
+                "Relics",
+                "Tools",
+                "Weapons",
+                "Clothing",
+                "Buildings",
+                "Fortifications",
+                "Blessings",
+                "Schematics",
+              ].includes(title) && (
+                <span
+                  className={`font-mono ${
+                    isAnimated
+                      ? "text-green-800 font-bold"
+                      : isDecreaseAnimated
+                        ? "text-red-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""
+                  }`}
+                >
+                  {displayValue}
+                </span>
+              )}
+            </div>
             <TooltipContent className="max-w-xs">
               <div className="text-xs">
                 {typeof item.tooltip === 'string' ? (
