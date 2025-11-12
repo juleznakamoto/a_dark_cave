@@ -63,6 +63,17 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
       }
     });
   } else {
+    // Check if this is a cave exploration action
+    const caveExploreActions = [
+      'exploreCave',
+      'ventureDeeper', 
+      'descendFurther',
+      'exploreRuins',
+      'exploreTemple',
+      'exploreCitadel'
+    ];
+    const isCaveExploreAction = caveExploreActions.includes(actionId);
+    
     // Parse effects for resource gains (normal actions)
     Object.entries(action.effects).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
@@ -85,6 +96,12 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
               min = Math.floor(min * bonuses.resourceMultiplier);
               max = Math.floor(max * bonuses.resourceMultiplier);
             }
+            
+            // Apply cave exploration multiplier for cave explore actions
+            if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
+              min = Math.floor(min * bonuses.caveExploreMultiplier);
+              max = Math.floor(max * bonuses.caveExploreMultiplier);
+            }
 
             gains.push({ resource, min, max });
           }
@@ -99,6 +116,11 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
           // Apply multipliers (this already includes both specific and general mine multipliers from getActionBonuses)
           if (bonuses.resourceMultiplier > 1) {
             amount = Math.floor(amount * bonuses.resourceMultiplier);
+          }
+          
+          // Apply cave exploration multiplier for cave explore actions
+          if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
+            amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
           gains.push({ resource, min: amount, max: amount });
