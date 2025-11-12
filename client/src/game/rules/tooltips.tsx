@@ -1,5 +1,6 @@
 import { GameState } from "../state";
-import { getTotalKnowledge } from "./effectsCalculation";
+import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
+import { gameActions } from "./index";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -194,8 +195,6 @@ export const eventChoiceCostTooltip = {
 };
 
 // Helper function to capitalize the first letter of each word in a string
-// Assuming this function is defined elsewhere and available in scope.
-// If not, it would need to be added. For example:
 function capitalizeWords(str: string): string {
   return str
     .toLowerCase()
@@ -203,3 +202,55 @@ function capitalizeWords(str: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+// Helper to get expected resource gains for an action
+export const getActionGainsTooltip = (actionId: string, state: GameState): string | null => {
+  if (!state.buildings.clerksHut) return null;
+
+  const action = gameActions[actionId];
+  if (!action?.effects) return null;
+
+  const gains: string[] = [];
+  const costs: string[] = [];
+
+  // Get action bonuses using existing calculation
+  const actionBonuses = getActionBonuses(actionId, state);
+  
+  // Process all effects
+  Object.entries(action.effects).forEach(([key, value]) => {
+    if (typeof value === 'number' && value !== 0) {
+      // Extract resource name from key (e.g., "resources.wood" -> "wood")
+      const parts = key.split('.');
+      const resourceName = parts[parts.length - 1];
+      
+      let finalValue = value;
+      
+      // Apply bonuses if they exist for this resource
+      if (actionBonuses.resourceBonus[resourceName]) {
+        finalValue += actionBonuses.resourceBonus[resourceName];
+      }
+      
+      // Apply multiplier
+      if (actionBonuses.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+        finalValue = Math.floor(finalValue * actionBonuses.resourceMultiplier);
+      }
+      
+      if (finalValue > 0) {
+        gains.push(`+${finalValue} ${capitalizeWords(resourceName)}`);
+      } else if (finalValue < 0) {
+        costs.push(`${finalValue} ${capitalizeWords(resourceName)}`);
+      }
+    }
+  });
+
+  // Combine costs and gains
+  const tooltipParts: string[] = [];
+  if (costs.length > 0) {
+    tooltipParts.push(...costs);
+  }
+  if (gains.length > 0) {
+    tooltipParts.push(...gains);
+  }
+
+  return tooltipParts.length > 0 ? tooltipParts.join('\n') : null;
+};

@@ -8,6 +8,7 @@ import {
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { combatItemTooltips, getActionGainsTooltip } from "@/game/rules/tooltips";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -126,6 +127,7 @@ export default function CavePanel() {
 
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
+    const buildings = state.buildings; // Assuming buildings state is available
 
     if (showCost) {
       const costBreakdown = getActionCostBreakdown(actionId, state);
@@ -149,7 +151,28 @@ export default function CavePanel() {
           disabled={!canExecute}
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
-          tooltip={tooltipContent}
+          tooltip={
+            action.description || buildings.clerksHut ? (
+              <div className="space-y-1">
+                <div className="font-bold">{action.label}</div>
+                {action.description && (
+                  <div className="text-muted-foreground">
+                    {action.description}
+                  </div>
+                )}
+                {buildings.clerksHut && (() => {
+                  const gainsTooltip = getActionGainsTooltip(action.id, useGameStore.getState());
+                  return gainsTooltip ? (
+                    <div className="text-sm mt-2 border-t border-border pt-2">
+                      {gainsTooltip.split('\n').map((line, i) => (
+                        <div key={i}>{line}</div>
+                      ))}
+                    </div>
+                  ) : null;
+                })()}
+              </div>
+            ) : undefined
+          }
         >
           {label}
         </CooldownButton>
@@ -166,6 +189,28 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
+        tooltip={
+          action.description || buildings.clerksHut ? (
+            <div className="space-y-1">
+              <div className="font-bold">{action.label}</div>
+              {action.description && (
+                <div className="text-muted-foreground">
+                  {action.description}
+                </div>
+              )}
+              {buildings.clerksHut && (() => {
+                const gainsTooltip = getActionGainsTooltip(action.id, useGameStore.getState());
+                return gainsTooltip ? (
+                  <div className="text-sm mt-2 border-t border-border pt-2">
+                    {gainsTooltip.split('\n').map((line, i) => (
+                      <div key={i}>{line}</div>
+                    ))}
+                  </div>
+                ) : null;
+              })()}
+            </div>
+          ) : undefined
+        }
       >
         {label}
       </CooldownButton>
