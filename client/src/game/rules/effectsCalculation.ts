@@ -211,107 +211,76 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to get action bonuses from pre-calculated effects in state
-export function getActionBonuses(
+export const getActionBonuses = (
   actionId: string,
-  state: GameState,
-): ActionBonuses {
-  const effects = calculateTotalEffects(state);
-  let bonuses: ActionBonuses = {
-    resourceBonus: {},
-    resourceMultiplier: 1,
-    cooldownReduction: 0,
-    probabilityBonus: {}, // Initialize as empty object
-  };
+  state: GameState
+): {
+  resourceMultiplier: number;
+  resourceBonus: Record<string, number>;
+  cooldownReduction: number;
+  caveExploreMultiplier: number;
+} => {
+  const activeEffects = getActiveEffects(state);
+  let resourceMultiplier = 1;
+  let cooldownReduction = 0;
+  let caveExploreMultiplier = 1;
+  const resourceBonus: Record<string, number> = {};
 
-  // Define mine actions
-  const mineActions = [
-    "mineStone",
-    "mineIron",
-    "mineCoal",
-    "mineSulfur",
-    "mineObsidian",
-    "mineAdamant",
-  ];
-  const isMineAction = mineActions.includes(actionId);
+  activeEffects.forEach((effect) => {
+    // Check if this effect has bonuses for the specific action
+    if (effect.bonuses.actionBonuses?.[actionId]) {
+      const bonus = effect.bonuses.actionBonuses[actionId];
+      if (bonus.resourceMultiplier) {
+        resourceMultiplier *= bonus.resourceMultiplier;
+      }
+      if (bonus.cooldownReduction) {
+        cooldownReduction += bonus.cooldownReduction;
+      }
+      if (bonus.resourceBonus) {
+        Object.entries(bonus.resourceBonus).forEach(([resource, amount]) => {
+          resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+        });
+      }
+    }
 
-  // Apply bonuses for this specific action
-  if (effects.actionBonuses) {
-    Object.entries(effects.actionBonuses).forEach(([itemId, itemBonuses]) => {
-      // Check for specific action bonuses
-      if (itemBonuses[actionId]) {
-        const actionBonus = itemBonuses[actionId];
-
-        // Apply resource bonuses
-        if (actionBonus.resourceBonus) {
-          Object.entries(actionBonus.resourceBonus).forEach(
-            ([resource, bonus]) => {
-              bonuses.resourceBonus[resource] =
-                (bonuses.resourceBonus[resource] || 0) + bonus;
-            },
-          );
+    // Add general mine bonuses for mine actions
+    if (actionId.startsWith("mine")) {
+      if (effect.bonuses.actionBonuses?.mining) {
+        const mineBonus = effect.bonuses.actionBonuses.mining;
+        if (mineBonus.resourceMultiplier) {
+          resourceMultiplier *= mineBonus.resourceMultiplier;
         }
-
-        // Apply multipliers (additive)
-        if (actionBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier += (actionBonus.resourceMultiplier - 1);
+        if (mineBonus.cooldownReduction) {
+          cooldownReduction += mineBonus.cooldownReduction;
         }
-
-        // Apply cooldown reduction (additive)
-        if (actionBonus.cooldownReduction) {
-          bonuses.cooldownReduction += actionBonus.cooldownReduction;
-        }
-
-        // Apply probability bonus (additive)
-        if (actionBonus.probabilityBonus) {
-          // Assuming probabilityBonus is also a Record<string, number>
-          Object.entries(actionBonus.probabilityBonus).forEach(
-            ([resource, bonus]) => {
-              bonuses.probabilityBonus[resource] =
-                (bonuses.probabilityBonus[resource] || 0) + bonus;
-            },
+        if (mineBonus.resourceBonus) {
+          Object.entries(mineBonus.resourceBonus).forEach(
+            ([resource, amount]) => {
+              resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+            }
           );
         }
       }
+    }
 
-      // Check for general "mine" or "mining" bonuses that apply to all mine actions
-      if (isMineAction && (itemBonuses.mine || itemBonuses.mining)) {
-        const MineBonus = itemBonuses.mine || itemBonuses.mining;
-
-        // Apply resource bonuses
-        if (MineBonus.resourceBonus) {
-          Object.entries(MineBonus.resourceBonus).forEach(
-            ([resource, bonus]) => {
-              bonuses.resourceBonus[resource] =
-                (bonuses.resourceBonus[resource] || 0) + bonus;
-            },
-          );
-        }
-
-        // Apply multipliers (additive)
-        if (MineBonus.resourceMultiplier) {
-          bonuses.resourceMultiplier += (MineBonus.resourceMultiplier - 1);
-        }
-
-        // Apply cooldown reduction (additive)
-        if (MineBonus.cooldownReduction) {
-          bonuses.cooldownReduction += MineBonus.cooldownReduction;
-        }
-
-        // Apply probability bonus (additive)
-        if (MineBonus.probabilityBonus) {
-          Object.entries(MineBonus.probabilityBonus).forEach(
-            ([resource, bonus]) => {
-              bonuses.probabilityBonus[resource] =
-                (bonuses.probabilityBonus[resource] || 0) + bonus;
-            },
-          );
-        }
+    // Add cave exploration multiplier for cave explore actions
+    const caveExploreActions = [
+      'exploreCave',
+      'ventureDeeper',
+      'descendFurther',
+      'exploreRuins',
+      'exploreTemple',
+      'exploreCitadel'
+    ];
+    if (caveExploreActions.includes(actionId)) {
+      if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
+        caveExploreMultiplier *= effect.bonuses.generalBonuses.caveExploreMultiplier;
       }
-    });
-  }
+    }
+  });
 
-  return bonuses;
-}
+  return { resourceMultiplier, resourceBonus, cooldownReduction, caveExploreMultiplier };
+};
 
 // SSOT: Calculate all action bonuses for display and internal use
 export const getAllActionBonuses = (state: GameState): Array<{
