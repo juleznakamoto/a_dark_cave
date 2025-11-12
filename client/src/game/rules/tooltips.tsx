@@ -193,6 +193,71 @@ export const eventChoiceCostTooltip = {
   },
 };
 
+// Helper to get expected resource gains for an action
+export const getActionGainsTooltip = (actionId: string, state: GameState): string | null => {
+  if (!state.buildings.clerksHut) return null;
+
+  const action = gameActions[actionId];
+  if (!action?.effects) return null;
+
+  const actionBonuses = getActionBonuses(actionId, state);
+  const gains: string[] = [];
+
+  // Parse effects to find resource gains
+  Object.entries(action.effects).forEach(([path, effect]) => {
+    if (!path.startsWith('resources.')) return;
+
+    const resource = path.split('.')[1];
+
+    if (typeof effect === 'string' && effect.startsWith('random(')) {
+      const match = effect.match(/random\((\d+),(\d+)\)/);
+      if (match) {
+        let min = parseInt(match[1]);
+        let max = parseInt(match[2]);
+
+        // Add bonuses to both min and max
+        if (actionBonuses?.resourceBonus?.[resource]) {
+          const bonus = actionBonuses.resourceBonus[resource];
+          min += bonus;
+          max += bonus;
+        }
+
+        // Apply multiplier to both min and max
+        if (actionBonuses?.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+          min = Math.floor(min * actionBonuses.resourceMultiplier);
+          max = Math.floor(max * actionBonuses.resourceMultiplier);
+        }
+
+        const resourceName = resource.split('_').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+        gains.push(`+${min}-${max} ${resourceName}`);
+      }
+    } else if (typeof effect === 'number' && effect > 0) {
+      let amount = effect;
+
+      // Add bonuses
+      if (actionBonuses?.resourceBonus?.[resource]) {
+        amount += actionBonuses.resourceBonus[resource];
+      }
+
+      // Apply multiplier
+      if (actionBonuses?.resourceMultiplier && actionBonuses.resourceMultiplier !== 1) {
+        amount = Math.floor(amount * actionBonuses.resourceMultiplier);
+      }
+
+      if (amount > 0) {
+        const resourceName = resource.split('_').map(word => 
+          word.charAt(0).toUpperCase() + word.slice(1)
+        ).join(' ');
+        gains.push(`+${amount} ${resourceName}`);
+      }
+    }
+  });
+
+  return gains.length > 0 ? gains.join(', ') : null;
+}
+
 // Helper function to capitalize the first letter of each word in a string
 // Assuming this function is defined elsewhere and available in scope.
 // If not, it would need to be added. For example:
