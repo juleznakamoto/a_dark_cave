@@ -134,7 +134,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
   return (
     <div className="text-xs whitespace-nowrap">
       {gains.map((gain, index) => (
-        <div key={`gain-${index}`}>
+        <div key={`gain-${index}`} className="font-bold">
           {gain.min === gain.max
             ? `+${gain.min} ${formatResourceName(gain.resource)}`
             : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
