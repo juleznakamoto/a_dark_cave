@@ -3,7 +3,7 @@ import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
 import { getTotalLuck } from "@/game/rules/effectsCalculation";
 
-// Helper function to apply luck bonuses and cave explore multiplier to cave exploration probability effects
+// Helper function to apply cave explore multiplier to cave exploration probability effects
 function applyCaveExplorationBonuses(
   state: GameState,
   actionId: string,
@@ -11,8 +11,6 @@ function applyCaveExplorationBonuses(
 ): void {
   const { getActionBonuses } = require('./effectsCalculation');
   const bonuses = getActionBonuses(actionId, state);
-  const luck = getTotalLuck(state);
-  const luckBonus = luck * 0.01; // 1% per luck point
 
   // Define which resources can benefit from bonuses in cave exploration
   const caveResources = [
@@ -29,7 +27,7 @@ function applyCaveExplorationBonuses(
     "moonstone",
   ];
 
-  // Apply cave explore multiplier and luck bonus to resource effects
+  // Apply cave explore multiplier to resource effects
   if (effectUpdates.resources) {
     Object.keys(effectUpdates.resources).forEach((resource) => {
       if (caveResources.includes(resource)) {
@@ -38,17 +36,9 @@ function applyCaveExplorationBonuses(
         let actuallyAddedAmount = totalAmount - existingAmount;
 
         if (actuallyAddedAmount > 0) {
-          // Apply cave explore multiplier first
+          // Apply cave explore multiplier
           if (bonuses.caveExploreMultiplier > 1) {
             actuallyAddedAmount = Math.floor(actuallyAddedAmount * bonuses.caveExploreMultiplier);
-          }
-
-          // Then apply luck bonus
-          if (luck > 0) {
-            const luckBonusAmount = Math.floor(actuallyAddedAmount * luckBonus);
-            if (luckBonusAmount > 0) {
-              actuallyAddedAmount += luckBonusAmount;
-            }
           }
 
           effectUpdates.resources[resource] = existingAmount + actuallyAddedAmount;
