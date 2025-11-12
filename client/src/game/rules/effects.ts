@@ -288,6 +288,17 @@ export const toolEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  mastermason_chisel: {
+    id: "mastermason_chisel",
+    name: "Mastermason Chisel",
+    description: "Exquisitely crafted tool of a long-forgotten master builder",
+    bonuses: {
+      generalBonuses: {
+        buildingCostReduction: 0.1,
+      },
+    },
+  },
+
   reinforced_rope: {
     id: "reinforced_rope",
     name: "Reinforced Rope",
@@ -867,17 +878,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       generalBonuses: {
         knowledge: 7,
         madness: 3,
-      },
-    },
-  },
-
-  mastermason_chisel: {
-    id: "mastermason_chisel",
-    name: "Mastermason Chisel",
-    description: "Exquisitely crafted tool of a long-forgotten master builder",
-    bonuses: {
-      generalBonuses: {
-        buildingCostReduction: 0.1,
       },
     },
   },
