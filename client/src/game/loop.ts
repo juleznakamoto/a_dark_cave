@@ -11,7 +11,7 @@ let lastFrameTime = 0;
 const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
-const SHOP_NOTIFICATION_INITIAL_DELAY = 10 * 60 * 1000; // 10 minutes in milliseconds
+const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 
 let tickAccumulator = 0;
