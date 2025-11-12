@@ -786,6 +786,7 @@ export default function SidePanel() {
             <SidePanelSection
               title={`Population ${current_population}/${total_population}`}
               items={populationItems}
+              titleTooltip="Each villager consumes 1 food and 1 wood"
             />
           )}
           {statsItems.length > 0 && shouldShowSection("stats") && (

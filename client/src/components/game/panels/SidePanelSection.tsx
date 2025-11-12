@@ -64,6 +64,7 @@ export default function SidePanelSection({
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
+  const [titleHovered, setTitleHovered] = useState(false); // State for title hover
 
   const handleTooltipHover = (itemId: string) => {
     if (mobileTooltip.isMobile) return;
@@ -428,9 +429,38 @@ export default function SidePanelSection({
     return <div key={item.id}>{itemContent}</div>;
   };
 
+  // Determine if the title needs a tooltip
+  const titleTooltip = title === "Population" ? "Each villagers consumes 1 food and 1 wood" : null;
+
   return (
     <div className={`py-1.5 border-border ${className}`}>
-      <h3 className="text-xs py-0 font-medium tracking-wide mb-0.5">{title}</h3>
+      {titleTooltip ? (
+        <TooltipProvider>
+          <Tooltip open={mobileTooltip.isTooltipOpen(`section-title-${title}`)}>
+            <TooltipTrigger asChild>
+              <h3
+                className={cn(
+                  "text-xs font-medium tracking-wide mb-0.5 cursor-pointer",
+                  !titleHovered && "new-item-pulse"
+                )}
+                onClick={(e) => {
+                  mobileTooltip.handleTooltipClick(`section-title-${title}`, e);
+                  setTitleHovered(true); // Mark as hovered on click
+                }}
+                onMouseEnter={() => setTitleHovered(true)}
+                onMouseLeave={() => setTitleHovered(false)} // Reset hover state when leaving
+              >
+                {title}
+              </h3>
+            </TooltipTrigger>
+            <TooltipContent>
+              <div className="text-xs">{titleTooltip}</div>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      ) : (
+        <h3 className="text-xs font-medium tracking-wide mb-0.5">{title}</h3>
+      )}
       <div className="text-xs">
         {visibleItems.map((item) => (
           <div key={item.id} className="relative">
