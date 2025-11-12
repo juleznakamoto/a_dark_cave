@@ -108,7 +108,6 @@ import {
 } from "./rules/villageBuildActions";
 
 import {
-  handleChopWood,
   handleHunt,
   handleLayTrap,
   handleCastleRuins,
@@ -368,8 +367,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildFortifiedMoat(state, result);
 
     // Forest Scout Actions
-    case 'chopWood':
-      return handleChopWood(state, result);
     case 'hunt':
       return handleHunt(state, result);
     case 'layTrap':

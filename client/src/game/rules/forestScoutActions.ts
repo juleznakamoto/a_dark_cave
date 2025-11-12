@@ -1,33 +1,12 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
-import { applyActionEffects } from "./index";
-
-export function handleChopWood(
-  state: GameState,
-  result: ActionResult,
-): ActionResult {
-  const effectUpdates = applyActionEffects("chopWood", state);
-
-  // Handle any log messages from probability effects
-  if (effectUpdates.logMessages) {
-    effectUpdates.logMessages.forEach((message: string | any) => {
-      if (typeof message === "string") {
-        result.logEntries!.push({
-          id: `probability-effect-${Date.now()}-${Math.random()}`,
-          message: message,
-          timestamp: Date.now(),
-          type: "system",
-        });
-      } else if (message.type === "event") {
-        result.logEntries!.push(message);
-      }
-    });
-    delete effectUpdates.logMessages;
-  }
-
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
+import { applyActionEffects } from "@/game/rules";
+import {
+  getTotalLuck,
+  getTotalStrength,
+  getTotalKnowledge,
+} from "@/game/rules/effectsCalculation";
+import { killVillagers } from "@/game/stateHelpers";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -129,23 +108,6 @@ export const forestScoutActions: Record<string, Action> = {
       "events.wizardSaysBloodstoneStaff": true,
     },
     cooldown: 45,
-  },
-
-  gatherWood: {
-    id: "gatherWood",
-    label: "Chop Wood",
-    show_when: {
-      "flags.forestUnlocked": true,
-    },
-    cost: {
-      "resources.food": 100,
-    },
-    effects: {
-      "resources.wood": "random(50, 150)",
-      "resources.food": -50,
-      "story.seen.hasChoppedWood": true,
-    },
-    cooldown: 10,
   },
 };
 
