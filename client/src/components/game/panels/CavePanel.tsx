@@ -136,9 +136,9 @@ export default function CavePanel() {
       let tooltipContent;
 
       if (resourceGainTooltip) {
-        // Mine actions: show gains first, then costs
+        // Mine actions: show gains and costs (getResourceGainTooltip handles both)
         tooltipContent = resourceGainTooltip;
-      } else {
+      } else if (showCost) {
         // Other actions with costs
         const costBreakdown = getActionCostBreakdown(actionId, state);
         tooltipContent = (

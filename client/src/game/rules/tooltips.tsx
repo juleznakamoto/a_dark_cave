@@ -63,7 +63,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
     }
   });
 
-  // Parse costs
+  // Parse costs for mine actions
   if (action.cost) {
     Object.entries(action.cost).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
