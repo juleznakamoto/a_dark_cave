@@ -30,9 +30,6 @@ export default function GameFooter() {
     email: string;
   } | null>(null);
   const { toast } = useToast();
-  const [gameStartTime] = useState<number>(Date.now());
-  const [showShopNotification, setShowShopNotification] = useState(false);
-
   // Trigger glow animation when pause state changes
   useEffect(() => {
     setGlowingButton("pause");
@@ -43,24 +40,6 @@ export default function GameFooter() {
   useEffect(() => {
     checkAuth();
   }, []);
-
-  // Check if 10 minutes have passed to show shop notification
-  useEffect(() => {
-    if (shopNotificationSeen) {
-      setShowShopNotification(false);
-      return;
-    }
-
-    const checkNotification = () => {
-      const elapsed = Date.now() - gameStartTime;
-      if (elapsed >= 10 * 60 * 1000 && !shopNotificationSeen) { // 10 minutes
-        setShowShopNotification(true);
-      }
-    };
-
-    const interval = setInterval(checkNotification, 1000);
-    return () => clearInterval(interval);
-  }, [gameStartTime, shopNotificationSeen]);
 
   const checkAuth = async () => {
     const user = await getCurrentUser();
@@ -184,15 +163,12 @@ export default function GameFooter() {
               size="xs"
               onClick={() => {
                 setShopDialogOpen(true);
-                if (showShopNotification) {
-                  setShopNotificationSeen(true);
-                  setShowShopNotification(false);
-                }
+                setShopNotificationSeen(true);
               }}
               className="px-2 py-1 text-xs hover relative"
             >
               Shop
-              {showShopNotification && !shopNotificationSeen && (
+              {!shopNotificationSeen && (
                 <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>

@@ -82,21 +82,23 @@ export function startGameLoop() {
       }
 
       // Shop notification logic (first after 10 minutes, then every 60 minutes)
-      const state = useGameStore.getState();
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
+        const state = useGameStore.getState();
 
         // First notification after 10 minutes
         if (elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY && lastShopNotificationTime === 0) {
           lastShopNotificationTime = timestamp;
-          // Trigger notification by resetting shopNotificationSeen
-          useGameStore.setState({ shopNotificationSeen: false });
+          if (state.shopNotificationSeen) {
+            useGameStore.setState({ shopNotificationSeen: false });
+          }
         }
-        // Subsequent notifications every 60 minutes
+        // Subsequent notifications every 60 minutes after the last one
         else if (lastShopNotificationTime > 0 && timestamp - lastShopNotificationTime >= SHOP_NOTIFICATION_REPEAT_INTERVAL) {
           lastShopNotificationTime = timestamp;
-          // Trigger notification again
-          useGameStore.setState({ shopNotificationSeen: false });
+          if (state.shopNotificationSeen) {
+            useGameStore.setState({ shopNotificationSeen: false });
+          }
         }
       }
 
