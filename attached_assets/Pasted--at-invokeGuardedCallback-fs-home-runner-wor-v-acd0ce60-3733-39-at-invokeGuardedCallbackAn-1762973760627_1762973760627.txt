@@ -1,0 +1,66 @@
+  at invokeGuardedCallback (/@fs/home/runner/wor…?v=acd0ce60:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (/@fs/home/runner/wor…?v=acd0ce60:3736:33)
+applyCaveExplorationBonuses @ caveExploreActions.ts:12
+handleExploreCitadel @ caveExploreActions.ts:698
+executeGameAction @ actions.ts:185
+executeAction @ state.ts:356
+onClick @ CavePanel.tsx:167
+handleClick @ CooldownButton.tsx:82
+callCallback2 @ /@fs/home/runner/wor….js?v=acd0ce60:3674
+invokeGuardedCallbackDev @ /@fs/home/runner/wor….js?v=acd0ce60:3699
+invokeGuardedCallback @ /@fs/home/runner/wor….js?v=acd0ce60:3733
+invokeGuardedCallbackAndCatchFirstError @ /@fs/home/runner/wor….js?v=acd0ce60:3736
+executeDispatch @ /@fs/home/runner/wor….js?v=acd0ce60:7014
+processDispatchQueueItemsInOrder @ /@fs/home/runner/wor….js?v=acd0ce60:7034
+processDispatchQueue @ /@fs/home/runner/wor….js?v=acd0ce60:7043
+dispatchEventsForPlugins @ /@fs/home/runner/wor….js?v=acd0ce60:7051
+(anonymous) @ /@fs/home/runner/wor….js?v=acd0ce60:7174
+batchedUpdates$1 @ /@fs/home/runner/wor…js?v=acd0ce60:18913
+batchedUpdates @ /@fs/home/runner/wor….js?v=acd0ce60:3579
+dispatchEventForPluginEventSystem @ /@fs/home/runner/wor….js?v=acd0ce60:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ /@fs/home/runner/wor….js?v=acd0ce60:5478
+dispatchEvent @ /@fs/home/runner/wor….js?v=acd0ce60:5472
+dispatchDiscreteEvent @ /@fs/home/runner/wor….js?v=acd0ce60:5449Understand this error
+caveExploreActions.ts:12 Uncaught ReferenceError: require is not defined
+    at applyCaveExplorationBonuses (caveExploreActions.ts:12:32)
+    at handleExploreCitadel (caveExploreActions.ts:698:3)
+    at executeGameAction (actions.ts:185:14)
+    at executeAction (state.ts:356:20)
+    at onClick (CavePanel.tsx:167:26)
+    at handleClick (CooldownButton.tsx:82:7)
+    at HTMLUnknownElement.callCallback2 (/@fs/home/runner/wor…?v=acd0ce60:3674:22)
+    at Object.invokeGuardedCallbackDev (/@fs/home/runner/wor…?v=acd0ce60:3699:24)
+    at invokeGuardedCallback (/@fs/home/runner/wor…?v=acd0ce60:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (/@fs/home/runner/wor…?v=acd0ce60:3736:33)
+applyCaveExplorationBonuses @ caveExploreActions.ts:12
+handleExploreCitadel @ caveExploreActions.ts:698
+executeGameAction @ actions.ts:185
+executeAction @ state.ts:356
+onClick @ CavePanel.tsx:167
+handleClick @ CooldownButton.tsx:82
+callCallback2 @ /@fs/home/runner/wor….js?v=acd0ce60:3674
+invokeGuardedCallbackDev @ /@fs/home/runner/wor….js?v=acd0ce60:3699
+invokeGuardedCallback @ /@fs/home/runner/wor….js?v=acd0ce60:3733
+invokeGuardedCallbackAndCatchFirstError @ /@fs/home/runner/wor….js?v=acd0ce60:3736
+executeDispatch @ /@fs/home/runner/wor….js?v=acd0ce60:7014
+processDispatchQueueItemsInOrder @ /@fs/home/runner/wor….js?v=acd0ce60:7034
+processDispatchQueue @ /@fs/home/runner/wor….js?v=acd0ce60:7043
+dispatchEventsForPlugins @ /@fs/home/runner/wor….js?v=acd0ce60:7051
+(anonymous) @ /@fs/home/runner/wor….js?v=acd0ce60:7174
+batchedUpdates$1 @ /@fs/home/runner/wor…js?v=acd0ce60:18913
+batchedUpdates @ /@fs/home/runner/wor….js?v=acd0ce60:3579
+dispatchEventForPluginEventSystem @ /@fs/home/runner/wor….js?v=acd0ce60:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ /@fs/home/runner/wor….js?v=acd0ce60:5478
+dispatchEvent @ /@fs/home/runner/wor….js?v=acd0ce60:5472
+dispatchDiscreteEvent @ /@fs/home/runner/wor….js?v=acd0ce60:5449Understand this error
+/@fs/home/runner/wor….js?v=acd0ce60:3750 Uncaught ReferenceError: require is not defined
+    at applyCaveExplorationBonuses (caveExploreActions.ts:12:32)
+    at handleExploreCitadel (caveExploreActions.ts:698:3)
+    at executeGameAction (actions.ts:185:14)
+    at executeAction (state.ts:356:20)
+    at onClick (CavePanel.tsx:167:26)
+    at handleClick (CooldownButton.tsx:82:7)
+    at HTMLUnknownElement.callCallback2 (/@fs/home/runner/wor…?v=acd0ce60:3674:22)
+    at Object.invokeGuardedCallbackDev (/@fs/home/runner/wor…?v=acd0ce60:3699:24)
+    at invokeGuardedCallback (/@fs/home/runner/wor…?v=acd0ce60:3733:39)
+    at invokeGuardedCallbackAndCatchFirstError (/@fs/home/runner/wor…?v=acd0ce60:3736:33)
