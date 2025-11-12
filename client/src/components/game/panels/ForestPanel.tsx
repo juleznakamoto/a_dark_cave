@@ -93,8 +93,14 @@ export default function ForestPanel() {
 
     if (showCost) {
       const costBreakdown = getActionCostBreakdown(actionId, state);
+      const { getActionGainsTooltip } = require('@/game/rules/tooltips');
+      const gainsText = getActionGainsTooltip(actionId, state);
+      
       const tooltipContent = (
         <div className="text-xs whitespace-nowrap">
+          {gainsText && (
+            <div className="text-green-400 mb-1">{gainsText}</div>
+          )}
           {costBreakdown.map((costItem, index) => (
             <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
               {costItem.text}
