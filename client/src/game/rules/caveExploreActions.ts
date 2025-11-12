@@ -166,7 +166,9 @@ export const caveExploreActions: Record<string, Action> = {
   gatherWood: {
     id: "gatherWood",
     label: "Gather Wood",
-    show_when: {},
+    show_when: {
+      "flags.forestUnlocked": false,
+    },
     cost: {},
     effects: {
       "resources.wood": "random(5,10)",
