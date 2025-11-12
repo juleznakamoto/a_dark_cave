@@ -128,9 +128,18 @@ export default function CavePanel() {
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
-    // Check if this is a mine action
+    // Check if this is a mine action or cave exploration action
     const isMineAction = actionId.startsWith("mine");
-    const resourceGainTooltip = isMineAction ? getResourceGainTooltip(actionId, state) : null;
+    const caveExploreActions = [
+      'exploreCave',
+      'ventureDeeper', 
+      'descendFurther',
+      'exploreRuins',
+      'exploreTemple',
+      'exploreCitadel'
+    ];
+    const isCaveExploreAction = caveExploreActions.includes(actionId);
+    const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
 
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
