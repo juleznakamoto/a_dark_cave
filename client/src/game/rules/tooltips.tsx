@@ -1,131 +1,14 @@
 import { GameState } from "../state";
-import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
-import { gameActions } from "./index";
+import { getTotalKnowledge } from "./effectsCalculation";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
 }
 
-// Helper to parse random range from effect value
-function parseRandomRange(effectValue: string | number): { min: number; max: number } | null {
-  if (typeof effectValue === 'string' && effectValue.startsWith('random(')) {
-    const match = effectValue.match(/random\((\d+),(\d+)\)/);
-    if (match) {
-      return { min: parseInt(match[1]), max: parseInt(match[2]) };
-    }
-  }
-  return null;
-}
-
-// Helper to get resource gains with bonuses for an action
-function getResourceGainsWithBonuses(
-  actionId: string,
-  state: GameState
-): Array<{ resource: string; min: number; max: number }> {
-  const action = gameActions[actionId];
-  if (!action?.effects) return [];
-
-  const bonuses = getActionBonuses(actionId, state);
-  const gains: Array<{ resource: string; min: number; max: number }> = [];
-
-  Object.entries(action.effects).forEach(([path, value]) => {
-    if (path.startsWith('resources.')) {
-      const resource = path.split('.')[1];
-      const range = parseRandomRange(value);
-      
-      if (range) {
-        // Apply flat bonus
-        const flatBonus = bonuses.resourceBonus[resource] || 0;
-        
-        // Apply multiplier
-        const multiplier = bonuses.resourceMultiplier || 1;
-        
-        // Calculate final range
-        let min = Math.floor((range.min + flatBonus) * multiplier);
-        let max = Math.floor((range.max + flatBonus) * multiplier);
-        
-        gains.push({
-          resource: resource.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-          min,
-          max
-        });
-      }
-    }
-  });
-
-  return gains;
-}
-
-// Helper to get costs for an action
-function getActionCosts(actionId: string, state: GameState): Array<{ resource: string; amount: number }> {
-  const action = gameActions[actionId];
-  if (!action?.cost) return [];
-
-  const costs: Array<{ resource: string; amount: number }> = [];
-
-  Object.entries(action.cost).forEach(([path, amount]) => {
-    if (path.startsWith('resources.') && typeof amount === 'number') {
-      const resource = path.split('.')[1];
-      costs.push({
-        resource: resource.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
-        amount
-      });
-    }
-  });
-
-  return costs;
-}
-
-// Dynamic tooltips for actions with resource gains
-export function getActionResourceTooltip(actionId: string, showCosts: boolean = false): TooltipConfig {
-  return {
-    getContent: (state: GameState) => {
-      // Only show after clerks hut is built
-      if (!state.buildings.clerksHut || state.buildings.clerksHut < 1) {
-        return null;
-      }
-
-      const gains = getResourceGainsWithBonuses(actionId, state);
-      const costs = showCosts ? getActionCosts(actionId, state) : [];
-
-      if (gains.length === 0 && costs.length === 0) {
-        return null;
-      }
-
-      return (
-        <>
-          {gains.map((gain, idx) => (
-            <div key={`gain-${idx}`}>
-              +{gain.min}-{gain.max} {gain.resource}
-            </div>
-          ))}
-          {costs.map((cost, idx) => (
-            <div key={`cost-${idx}`}>
-              -{cost.amount} {cost.resource}
-            </div>
-          ))}
-        </>
-      );
-    }
-  };
-}
-
 // Action button tooltips (for cost breakdowns)
 export const actionTooltips: Record<string, TooltipConfig> = {
-  // Mine actions (show gains then costs)
-  mineStone: getActionResourceTooltip('mineStone', true),
-  mineIron: getActionResourceTooltip('mineIron', true),
-  mineCoal: getActionResourceTooltip('mineCoal', true),
-  mineSulfur: getActionResourceTooltip('mineSulfur', true),
-  mineObsidian: getActionResourceTooltip('mineObsidian', true),
-  mineAdamant: getActionResourceTooltip('mineAdamant', true),
-  
-  // Gather/Chop Wood actions (gains only)
-  gatherWood: getActionResourceTooltip('gatherWood', false),
-  chopWood: getActionResourceTooltip('chopWood', false),
-  
-  // Hunt action (gains only)
-  hunt: getActionResourceTooltip('hunt', false),
+  // These are handled dynamically by getActionCostBreakdown
+  // This file is for static/simple tooltips
 };
 
 // Building tooltips
