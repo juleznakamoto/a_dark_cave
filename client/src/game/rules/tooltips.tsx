@@ -134,12 +134,15 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
   return (
     <div className="text-xs whitespace-nowrap">
       {gains.map((gain, index) => (
-        <div key={`gain-${index}`} className="font-bold">
+        <div key={`gain-${index}`}>
           {gain.min === gain.max
             ? `+${gain.min} ${formatResourceName(gain.resource)}`
             : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
         </div>
       ))}
+      {gains.length > 0 && costs.length > 0 && (
+        <div className="border-t border-border my-1" />
+      )}
       {costs.map((cost, index) => (
         <div key={`cost-${index}`} className={cost.hasEnough ? "" : "text-muted-foreground"}>
           -{cost.amount} {formatResourceName(cost.resource)}
