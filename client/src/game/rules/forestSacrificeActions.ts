@@ -14,6 +14,13 @@ export function getLeatherTotemsCost(state: GameState): number {
   return 5 + usageCount;
 }
 
+// Helper function to get dynamic cost for animal sacrifices
+export function getAnimalsCost(state: GameState): number {
+  const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+  // Cost increases by 500 each time, up to 10 times
+  return 500 * (usageCount + 1);
+}
+
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
@@ -51,142 +58,21 @@ export const forestSacrificeActions: Record<string, Action> = {
     id: "animals",
     label: "Animals",
     show_when: {
-      1: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 0,
-      },
-      2: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 1,
-      },
-      3: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 2,
-      },
-      4: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 3,
-      },
-      5: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 4,
-      },
-      6: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 5,
-      },
-      7: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 6,
-      },
-      8: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 7,
-      },
-      9: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 8,
-      },
-      10: {
-        "buildings.blackMonolith": 1,
-        "story.seen.animalsSacrificeLevel": 9,
-      },
+      // This will be dynamically checked in handleAnimals
+      // to ensure it only shows up to 10 times.
+      "buildings.blackMonolith": 1,
     },
     cost: {
-      1: {
-        "resources.food": 500,
-      },
-      2: {
-        "resources.food": 1000,
-      },
-      3: {
-        "resources.food": 1500,
-      },
-      4: {
-        "resources.food": 2000,
-      },
-      5: {
-        "resources.food": 2500,
-      },
-      6: {
-        "resources.food": 3000,
-      },
-      7: {
-        "resources.food": 3500,
-      },
-      8: {
-        "resources.food": 4000,
-      },
-      9: {
-        "resources.food": 4500,
-      },
-      10: {
-        "resources.food": 5000,
-      },
+      // This will be dynamically calculated based on usage count
+      "resources.food": 500,
     },
     effects: {
-      1: {
-        "story.seen.animalsSacrificeLevel": 1,
-      },
-      2: {
-        "story.seen.animalsSacrificeLevel": 2,
-      },
-      3: {
-        "story.seen.animalsSacrificeLevel": 3,
-      },
-      4: {
-        "story.seen.animalsSacrificeLevel": 4,
-      },
-      5: {
-        "story.seen.animalsSacrificeLevel": 5,
-      },
-      6: {
-        "story.seen.animalsSacrificeLevel": 6,
-      },
-      7: {
-        "story.seen.animalsSacrificeLevel": 7,
-      },
-      8: {
-        "story.seen.animalsSacrificeLevel": 8,
-      },
-      9: {
-        "story.seen.animalsSacrificeLevel": 9,
-      },
-      10: {
-        "story.seen.animalsSacrificeLevel": 10,
-      },
+      // This will be dynamically updated
+      "story.seen.actionAnimals": true,
     },
     statsEffects: {
-      1: {
-        madness: -1,
-      },
-      2: {
-        madness: -1,
-      },
-      3: {
-        madness: -1,
-      },
-      4: {
-        madness: -1,
-      },
-      5: {
-        madness: -1,
-      },
-      6: {
-        madness: -1,
-      },
-      7: {
-        madness: -1,
-      },
-      8: {
-        madness: -1,
-      },
-      9: {
-        madness: -1,
-      },
-      10: {
-        madness: -1,
-      },
+      // This will be dynamically applied
+      madness: -1,
     },
     cooldown: 60,
   },
@@ -362,48 +248,66 @@ export function handleAnimals(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const currentLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
-  const nextLevel = currentLevel + 1;
+  const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+  const maxLevels = 10;
 
-  if (nextLevel > 10) {
+  // If max levels reached, do nothing
+  if (usageCount >= maxLevels) {
     return result;
   }
 
   const action = forestSacrificeActions.animals;
-  const actionCosts = action?.cost?.[nextLevel];
-  const actionEffects = action?.effects?.[nextLevel];
+  const currentCost = getAnimalsCost(state);
+  const madnessDeduction = -1; // Madness is deducted
 
-  if (!actionEffects || !actionCosts) {
-    return result;
+  // Check if player has enough food for the current cost
+  if ((state.resources.food || 0) < currentCost) {
+    return result; // Not enough resources
   }
-
-  // Apply resource costs
-  const newResources = { ...state.resources };
-  for (const [path, cost] of Object.entries(actionCosts) as [string, number][]) {
-    if (path.startsWith("resources.")) {
-      const resource = path.split(".")[1] as keyof typeof newResources;
-      newResources[resource] -= cost;
-    }
-  }
-
-  result.stateUpdates.resources = newResources;
 
   // Apply effects
-  if (!result.stateUpdates.story) {
-    result.stateUpdates.story = { ...state.story };
+  const effectUpdates: Partial<GameState> = {};
+
+  // Update resources
+  if (!effectUpdates.resources) {
+    effectUpdates.resources = { ...state.resources };
   }
-  if (!result.stateUpdates.story.seen) {
-    result.stateUpdates.story.seen = { ...state.story.seen };
+  effectUpdates.resources.food = (state.resources.food || 0) - currentCost;
+
+  // Update story for next level and track usage
+  if (!effectUpdates.story) {
+    effectUpdates.story = { ...state.story };
   }
-  result.stateUpdates.story.seen.animalsSacrificeLevel = nextLevel;
+  if (!effectUpdates.story.seen) {
+    effectUpdates.story.seen = { ...state.story.seen };
+  }
+  effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
+  effectUpdates.story.seen.actionAnimals = true; // Mark that the action has been used
+
+  // Apply stats effects (madness deduction)
+  if (!effectUpdates.stats) {
+    effectUpdates.stats = { ...state.stats };
+  }
+  if (effectUpdates.stats.madness !== undefined) {
+    effectUpdates.stats.madness += madnessDeduction;
+  } else {
+    // If madness is not in state.stats, initialize it
+    effectUpdates.stats.madness = madnessDeduction;
+  }
 
   // Add log entry
   result.logEntries!.push({
-    id: `animals-sacrifice-${nextLevel}-${Date.now()}`,
-    message: `Animals are led to the Black Monolith and sacrificed. The dark stone seems to pulse with satisfaction, and the madness plaguing your mind recedes slightly.`,
+    id: `animals-sacrifice-${usageCount + 1}-${Date.now()}`,
+    message: `The animals are sacrificed at the Black Monolith. You feel a slight reduction in the madness that clouds your mind.`,
     timestamp: Date.now(),
     type: "system",
+    visualEffect: {
+      type: "blur", // Visual effect for madness reduction
+      duration: 2,
+    },
   });
+
+  Object.assign(result.stateUpdates, effectUpdates);
 
   return result;
 }

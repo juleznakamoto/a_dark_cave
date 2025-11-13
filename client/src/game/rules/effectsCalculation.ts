@@ -520,9 +520,9 @@ export const calculateTotalEffects = (state: GameState) => {
     }
 
     // Add madness reduction from animal sacrifices
-    const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
-    if (sacrificeLevel > 0) {
-      const sacrificeMadnessReduction = Math.min(sacrificeLevel * -1, -10);
+    const usageCount = Number(state.story?.seen?.animalsUsageCount) || 0;
+    if (usageCount > 0) {
+      const sacrificeMadnessReduction = Math.min(usageCount * -1, -10);
       effects.madness_reduction.animals_sacrifice_madness = sacrificeMadnessReduction;
     }
   }

@@ -16,6 +16,7 @@ import {
   handleAnimals,
   handleBoneTotems,
   handleLeatherTotems,
+  getAnimalsCost, // Added getAnimalsCost import
 } from "./forestSacrificeActions";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -262,25 +263,31 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];
   if (!action) return false;
 
-  // Handle dynamic cost for bone totems
-  if (actionId === "boneTotems") {
+  // Handle dynamic totem costs
+  if (actionId === 'boneTotems') {
     const dynamicCost = getBoneTotemsCost(state);
-    return (state.resources.bone_totem || 0) >= dynamicCost;
+    if ((state.resources.bone_totem || 0) < dynamicCost) {
+      return false;
+    }
   }
 
-  // Handle dynamic cost for leather totems
-  if (actionId === "leatherTotems") {
+  if (actionId === 'leatherTotems') {
     const dynamicCost = getLeatherTotemsCost(state);
-    return (state.resources.leather_totem || 0) >= dynamicCost;
+    if ((state.resources.leather_totem || 0) < dynamicCost) {
+      return false;
+    }
   }
 
-  // Handle dynamic cost for animals sacrifice
-  if (actionId === "animals") {
-    // Sacrifice has 10 steps, each costing food and reducing madness.
-    // The cost is dynamic based on the current step.
-    const currentStep = state.sacrifices?.forest?.animals?.step || 1;
-    const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
-    return (state.resources.food || 0) >= foodCost;
+  // Handle dynamic animals cost
+  if (actionId === 'animals') {
+    const usageCount = Number(state.story?.seen?.animalsUsageCount) || 0;
+    if (usageCount >= 10) {
+      return false; // Max 10 uses
+    }
+    const dynamicCost = getAnimalsCost(state);
+    if ((state.resources.food || 0) < dynamicCost) {
+      return false;
+    }
   }
 
   // Check cooldown first
@@ -895,14 +902,13 @@ export function getActionCostBreakdown(
   actionId: string,
   state: GameState,
 ): Array<{ text: string; satisfied: boolean }> {
-  // Handle dynamic cost for bone totems
+  // Handle dynamic totem costs
   if (actionId === "boneTotems") {
     const dynamicCost = getBoneTotemsCost(state);
-    const currentAmount = state.resources.bone_totem || 0;
     return [
       {
         text: `-${dynamicCost} Bone Totem${dynamicCost !== 1 ? "s" : ""}`,
-        satisfied: currentAmount >= dynamicCost,
+        satisfied: (state.resources.bone_totem || 0) >= dynamicCost,
       },
     ];
   }
@@ -910,24 +916,21 @@ export function getActionCostBreakdown(
   // Handle dynamic cost for leather totems
   if (actionId === "leatherTotems") {
     const dynamicCost = getLeatherTotemsCost(state);
-    const currentAmount = state.resources.leather_totem || 0;
     return [
       {
         text: `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
-        satisfied: currentAmount >= dynamicCost,
+        satisfied: (state.resources.leather_totem || 0) >= dynamicCost,
       },
     ];
   }
 
   // Handle dynamic cost for animals sacrifice
   if (actionId === "animals") {
-    const currentStep = state.sacrifices?.forest?.animals?.step || 1;
-    const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
-    const currentFood = state.resources.food || 0;
+    const dynamicCost = getAnimalsCost(state);
     return [
       {
-        text: `-${foodCost} Food`,
-        satisfied: currentFood >= foodCost,
+        text: `-${dynamicCost} Food`,
+        satisfied: (state.resources.food || 0) >= dynamicCost,
       },
     ];
   }

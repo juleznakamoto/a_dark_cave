@@ -1237,7 +1237,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Black Monolith",
     description:
       "Dark monument built for living sacrifices.",
-    tooltipEffects: ["-5 Madness", "Additional -1 Madness per Animal Sacrifice (max -10)"],
+    tooltipEffects: ["-5 Madness", "Additional -1 Madness per Animals sacrifice (max -10)"],
     building: true,
     show_when: {
       1: {
