@@ -207,7 +207,7 @@ const defaultGameState: GameState = {
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
   cruelMode: false,
-  state.CM: 0,
+  CM: 0,
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
@@ -493,7 +493,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentBoostMode = get().boostMode;
     const currentActivatedPurchases = get().activatedPurchases || {};
     const currentFeastPurchases = get().feastPurchases || {};
-    
+
     // Check if Extreme Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
 
@@ -526,7 +526,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: cruelModeActivated 
+      message: cruelModeActivated
         ? "A dark cave. The air is cold and damp. You barely see the shapes around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
@@ -553,7 +553,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
         cruelMode: savedState.cruelMode !== undefined ? savedState.cruelMode : false,
-        state.CM: savedState.CM !== undefined ? savedState.CM : 0,
+        CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
         feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly
