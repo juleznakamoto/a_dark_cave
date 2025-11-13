@@ -215,7 +215,6 @@ const defaultGameState: GameState = {
   isMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
-  shopNotificationVisible: false,
 };
 
 // State management utilities
@@ -316,22 +315,19 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }));
   },
 
-  initialize: (newState: GameState) => {
-    const stateWithEffects = {
-      ...newState,
-      log: newState.log || [],
-      effects: newState.effects || calculateTotalEffects(newState),
-      bastion_stats: newState.bastion_stats || calculateBastionStats(newState),
-      cooldownDurations: newState.cooldownDurations || {}, // Ensure cooldownDurations is initialized
-      // Ensure loop-related states are initialized from loaded state
-      loopProgress: newState.loopProgress !== undefined ? newState.loopProgress : 0,
-      isGameLoopActive: newState.isGameLoopActive !== undefined ? newState.isGameLoopActive : false,
-      isPaused: newState.isPaused !== undefined ? newState.isPaused : false, // Ensure isPaused is initialized
-      showEndScreen: newState.showEndScreen !== undefined ? newState.showEndScreen : false, // Ensure showEndScreen is initialized
-      isMuted: newState.isMuted !== undefined ? newState.isMuted : false,
-      shopNotificationSeen: newState.shopNotificationSeen !== undefined ? newState.shopNotificationSeen : false, // Ensure shopNotificationSeen is initialized
-    };
-    set(stateWithEffects);
+  initialize: (initialState?: Partial<GameState>) => {
+    if (initialState) {
+      set({ ...defaultGameState, ...initialState });
+    } else {
+      // Check if Extreme Mode was activated in a previous session
+      const currentState = get();
+      const extremeModeActivated = currentState.activatedPurchases?.['extreme_mode'];
+      set({ 
+        ...defaultGameState, 
+        extremeMode: extremeModeActivated || false,
+        activatedPurchases: currentState.activatedPurchases || {},
+      });
+    }
     StateManager.scheduleEffectsUpdate(get);
   },
 

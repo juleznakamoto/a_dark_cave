@@ -352,8 +352,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (itemId === "extreme_mode") {
       if (activatedPurchases[purchaseId]) return;
 
+      // Just mark as activated - extreme mode will be enabled on new game start
       useGameStore.setState((state) => ({
-        extremeMode: true,
+        activatedPurchases: {
+          ...state.activatedPurchases,
+          [purchaseId]: true,
+        },
       }));
 
       gameState.addLogEntry({
@@ -365,13 +369,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         type: "system",
       });
 
-      // Mark as activated in game state
-      useGameStore.setState((state) => ({
-        activatedPurchases: {
-          ...state.activatedPurchases,
-          [purchaseId]: true,
-        },
-      }));
       return;
     }
 
