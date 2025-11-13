@@ -2,39 +2,7 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const storyEvents: Record<string, GameEvent> = {
-  foodGone: {
-    id: "foodGone",
-    condition: (state: GameState) => state.resources.food > 50,
-    triggerType: "resource",
-    timeProbability: 20,
-    repeatable: true,
-    message: [
-      "Food is missing. Villagers speak of voices in the dark.",
-      "By morning, the stores are lighter. Something was here.",
-    ],
-    triggered: false,
-    priority: 2,
-    visualEffect: {
-      type: "glow",
-      duration: 2,
-    },
-    effect: (state: GameState) => ({
-      resources: {
-        ...state.resources,
-        food:
-          state.resources.food -
-          Math.min(
-            state.resources.food,
-            Math.ceil(
-              Math.random() *
-                (50 * state.buildings.woodenHut +
-                  100 * state.buildings.stoneHut),
-            ),
-          ),
-      },
-    }),
-  },
-
+ 
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>

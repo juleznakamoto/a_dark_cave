@@ -37,7 +37,7 @@ export interface GameEvent {
 
 export interface EventChoice {
   id: string;
-  label: string;
+  label: string | ((state: GameState) => string);
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   cost?: string; // Optional cost information for hover display
   effect: (state: GameState) => Partial<GameState>;
@@ -51,7 +51,6 @@ export interface LogEntry {
   type: "event" | "action" | "system";
   title?: string;
   choices?: EventChoice[];
-  // New timed choice properties
   isTimedChoice?: boolean;
   baseDecisionTime?: number;
   fallbackChoice?: EventChoice;

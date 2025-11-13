@@ -209,7 +209,7 @@ export default function GameFooter() {
                 >
                   <TooltipTrigger asChild>
                     <div
-                      className="px-1.5 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
+                      className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick(
                           "extreme-mode-indicator",
@@ -217,7 +217,7 @@ export default function GameFooter() {
                         )
                       }
                     >
-                      <span className="text-red-600 text-sm">⚠</span>
+                      <span className="text-red-600 text-xs font-bold">⛤</span>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>
@@ -232,7 +232,7 @@ export default function GameFooter() {
           <div className="flex gap-2 items-center">
             <a
               href="mailto:support@a-dark-cave.com"
-              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+              className="hover:text-foreground transition-colors opacity-50 hover:opacity-100"
             >
               Feedback
             </a>

@@ -61,7 +61,7 @@ function handleTotemSacrifice(
     discoveryMessage: string;
     baseProbability: number;
     bonusPerUse: number;
-  }
+  },
 ): ActionResult {
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
@@ -80,17 +80,21 @@ function handleTotemSacrifice(
   }
 
   // Apply 5% bonus per usage to gold and silver rewards
-  const bonusMultiplier = 1 + (usageCount * 0.05);
+  const bonusMultiplier = 1 + usageCount * 0.05;
   if (effectUpdates.resources.gold !== undefined) {
     const baseGold = effectUpdates.resources.gold - (state.resources.gold || 0);
     if (baseGold > 0) {
-      effectUpdates.resources.gold = (state.resources.gold || 0) + Math.floor(baseGold * bonusMultiplier);
+      effectUpdates.resources.gold =
+        (state.resources.gold || 0) + Math.floor(baseGold * bonusMultiplier);
     }
   }
   if (effectUpdates.resources.silver !== undefined) {
-    const baseSilver = effectUpdates.resources.silver - (state.resources.silver || 0);
+    const baseSilver =
+      effectUpdates.resources.silver - (state.resources.silver || 0);
     if (baseSilver > 0) {
-      effectUpdates.resources.silver = (state.resources.silver || 0) + Math.floor(baseSilver * bonusMultiplier);
+      effectUpdates.resources.silver =
+        (state.resources.silver || 0) +
+        Math.floor(baseSilver * bonusMultiplier);
     }
   }
 
@@ -132,10 +136,14 @@ function handleTotemSacrifice(
 
   // Check for item discovery if configured
   if (discoveryConfig && !state.clothing[discoveryConfig.itemKey]) {
-    const totalProbability = discoveryConfig.baseProbability + usageCount * discoveryConfig.bonusPerUse;
+    const totalProbability =
+      discoveryConfig.baseProbability +
+      usageCount * discoveryConfig.bonusPerUse;
     const roll = Math.random();
 
-    console.log(`[${discoveryConfig.itemName}] Usage count: ${usageCount}, Probability: ${(totalProbability * 100).toFixed(1)}%, Roll: ${(roll * 100).toFixed(1)}%`);
+    console.log(
+      `[${discoveryConfig.itemName}] Usage count: ${usageCount}, Probability: ${(totalProbability * 100).toFixed(1)}%, Roll: ${(roll * 100).toFixed(1)}%`,
+    );
 
     if (roll < totalProbability) {
       // Add item to clothing
@@ -177,10 +185,11 @@ export function handleBoneTotems(
     {
       itemKey: "ring_of_clarity",
       itemName: "Ring of Clarity",
-      discoveryMessage: "Among the sacrifice offerings, you discover a crystal-clear ring.",
-      baseProbability: 0.02, // 2%
-      bonusPerUse: 0.01, // 1%
-    }
+      discoveryMessage:
+        "Among the sacrifice offerings, you discover a crystal-clear ring.",
+      baseProbability: 0.02 - state.EM * 0.01, // 2%
+      bonusPerUse: 0.01 - state.EM * 0.005, // 1%
+    },
   );
 }
 
@@ -197,9 +206,10 @@ export function handleLeatherTotems(
     {
       itemKey: "moon_bracelet" as keyof GameState["clothing"],
       itemName: "Moon Bracelet",
-      discoveryMessage: "Among the sacrifice offerings, you discover a white stone bracelet.",
-      baseProbability: 0.02, // 2%
-      bonusPerUse: 0.01, // 1%
-    }
+      discoveryMessage:
+        "Among the sacrifice offerings, you discover a white stone bracelet.",
+      baseProbability: 0.02 - state.EM * 0.01, // 2%
+      bonusPerUse: 0.01 - state.EM * 0.005, // 1%
+    },
   );
 }

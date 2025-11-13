@@ -24,7 +24,7 @@ export const forestScoutActions: Record<string, Action> = {
       "tools.blacksmith_hammer": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + stoneHuts * 0.01; // Base 0.75% + 1% per stone hut
+          let prob = 0.0075 + stoneHuts * 0.01 - state.EM * 0.005; // Base 0.75% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -37,7 +37,7 @@ export const forestScoutActions: Record<string, Action> = {
       "clothing.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + stoneHuts * 0.01; // Base 0.5% + 1% per stone hut
+          let prob = 0.005 + stoneHuts * 0.01 - state.EM * 0.0025; // Base 0.5% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -150,23 +150,23 @@ export function handleLayTrap(
 
   // Calculate success based on luck
   const luck = getTotalLuck(state);
-  const successChance = 0.25 + luck * 0.01;
+  const successChance = 0.25 + luck * 0.01 - state.EM * 0.05;
   const rand = Math.random();
 
   if (rand < successChance) {
     // Success: Giant bear trapped - now determine combat outcome based on strength
     const strength = state.stats.strength || 0;
-    const fightChance = 0.1 + strength * 0.02; // 10% base + 2% per strength point
+    const fightChance = 0.1 + strength * 0.02 - state.EM * 0.05; // 10% base + 2% per strength point
     const fightRand = Math.random();
 
     let villagerDeaths: number;
 
     if (fightRand < fightChance) {
       // Victory with minimal or no casualties (0-2 deaths)
-      villagerDeaths = Math.floor(Math.random() * 3); // 0-2 deaths
+      villagerDeaths = Math.floor(Math.random() * 3)+state.EM*1; // 0-2 deaths
     } else {
       // Defeat with heavy casualties (3-6 deaths)
-      villagerDeaths = Math.floor(Math.random() * 4) + 3; // 3-6 deaths
+      villagerDeaths = Math.floor(Math.random() * 4) + 3+state.EM*2; // 3-6 deaths
     }
 
     const deathResult = killVillagers(state, villagerDeaths);
@@ -239,7 +239,7 @@ export function handleCastleRuins(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 10% base + (strength + knowledge)/2%
 
   const rand = Math.random();
 
@@ -261,7 +261,7 @@ export function handleCastleRuins(
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
-      gold: (state.resources.gold || 0) + 200,
+      gold: (state.resources.gold || 0) + 50,
     };
 
     result.logEntries!.push({
@@ -279,15 +279,15 @@ export function handleCastleRuins(
     // Failure: Undead attack scenarios
     const failureRand = Math.random();
 
-    if (failureRand < 0.5) {
+    if (failureRand < 0.5-state.EM*0.1) {
       // Scenario 1: Minor undead attack (1-4 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 4) + 1; // 1-4 deaths
+      const villagerDeaths = Math.floor(Math.random() * 4) + 1+state.EM*2; // 1-4 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
       result.logEntries!.push({
         id: `castle-ruins-minor-attack-${Date.now()}`,
-        message: `Your expedition is ambushed by shambling undead grotesque experiments left behind by the necromancer. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead horde before the survivors manage to retreat to safety.`,
+        message: `Your expedition is ambushed by grotesque undead experiments left behind by the necromancer. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} to the undead before the survivors manage to retreat.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -297,13 +297,13 @@ export function handleCastleRuins(
       });
     } else {
       // Scenario 2: Major undead attack (5-10 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 6) + 5; // 5-10 deaths
+      const villagerDeaths = Math.floor(Math.random() * 6) + 5+state.EM*4; // 5-10 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
       result.logEntries!.push({
         id: `castle-ruins-major-attack-${Date.now()}`,
-        message: `Shortly after your expedition enters the cursed castle ruins the very stones awaken with malevolent energy as dozens of undead creatures pour from hidden chambers - failed experiments of the mad necromancer, twisted into monstrous forms. In the desperate battle that follows, ${villagerDeaths} brave villagers are overwhelmed by the supernatural horde. The survivors flee in terror, carrying only tales of horror.`,
+        message: `Shortly after your expedition enters the cursed castle ruins dozens of undead creatures pour from hidden chambers. In the desperate battle that follows, ${villagerDeaths} villagers are overwhelmed by the supernatural horde. The survivors flee in terror.`,
         timestamp: Date.now(),
         type: "system",
         visualEffect: {
@@ -327,7 +327,7 @@ export function handleHillGrave(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01; // 15% base + (strength + knowledge)/2%
+  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 15% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -335,7 +335,7 @@ export function handleHillGrave(
     result.stateUpdates.resources = {
       ...state.resources,
       silver: (state.resources.silver || 0) + 150,
-      gold: (state.resources.gold || 0) + 250,
+      gold: (state.resources.gold || 0) + 100,
     };
 
     result.stateUpdates.relics = {
@@ -355,7 +355,7 @@ export function handleHillGrave(
     result.logEntries!.push({
       id: `hill-grave-success-${Date.now()}`,
       message:
-        "Your expedition carefully navigates the treacherous traps of the hill grave. Through skill and knowledge, your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover weapons forged of pure frostglass, cold as the void itself.",
+        "Your expedition carefully navigates the treacherous traps of the hill grave. Your villagers disarm the ancient mechanisms and reach the burial chamber. Among the king's treasures, you discover pure frostglass, cold as the void itself.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -365,13 +365,13 @@ export function handleHillGrave(
     });
   } else {
     // Failure: Villagers die to traps (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.EM*3; // 5-15 deaths
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `hill-grave-failure-${Date.now()}`,
-      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. Poisoned arrows fly from hidden slots, floors collapse into spike pits, and ancient mechanisms crush those who trigger them. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
+      message: `Your expedition enters the hill grave but lacks the skill to navigate its deadly traps. ${villagerDeaths} villagers fall to the king's final defenses before the survivors retreat in horror, leaving their companions' bodies in the cursed tomb.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -394,14 +394,14 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01; // 10% base + (strength + knowledge)/2%
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 10% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
     // Success: Find bloodstone
     result.stateUpdates.resources = {
       ...state.resources,
-      gold: (state.resources.gold || 0) + 300,
+      gold: (state.resources.gold || 0) + 200,
     };
 
     result.stateUpdates.relics = {
@@ -422,7 +422,7 @@ export function handleSunkenTemple(
     result.logEntries!.push({
       id: `sunken-temple-success-${Date.now()}`,
       message:
-        "Your expedition wades through the fetid swamp waters to reach the ancient temple, half-sunken in the murky depths. Despite the dangers lurking in the dark waters, your villagers navigate carefully through the submerged halls. In the temple's inner sanctum, you discover a cache of bloodstone gems, pulsing with a deep crimson glow.",
+        "Your expedition wades through the swamp waters to reach the ancient half-sunken temple. Despite the dangers lurking in the dark waters, your villagers navigate carefully through the submerged halls and find the bloodstone gems in the temple's inner sanctum.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -432,13 +432,13 @@ export function handleSunkenTemple(
     });
   } else {
     // Failure: Villagers die to swamp creatures (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.EM*3; // 5-15 deaths
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
       id: `sunken-temple-failure-${Date.now()}`,
-      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors - twisted creatures born of ancient magic and decay rise from the depths. ${villagerDeaths} villagers are dragged beneath the surface by grasping tendrils and fanged maws before the survivors flee in terror, their screams echoing across the swamp.`,
+      message: `Your expedition ventures into the swamp, seeking the sunken temple. The murky waters hide unspeakable horrors. Abominable creatures born of ancient magic rise from the depths and drag ${villagerDeaths} villagers beneath the surface before the survivors flee.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {

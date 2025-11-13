@@ -5,7 +5,10 @@ import { killVillagers } from "@/game/stateHelpers";
 export const recurringEvents: Record<string, GameEvent> = {
   foodGone: {
     id: "foodGone",
-    condition: (state: GameState) => state.resources.food > 50,
+    condition: (state: GameState) =>
+      state.resources.food > 50 &&
+      state.buildings.woodenHut >= 3 &&
+      state.buildings.stoneHut <= 5,
     triggerType: "resource",
     timeProbability: 30,
     repeatable: true,
@@ -22,7 +25,8 @@ export const recurringEvents: Record<string, GameEvent> = {
           state.resources.food -
           Math.min(
             state.resources.food,
-            Math.ceil(Math.random() * 50 * state.buildings.woodenHut),
+            Math.ceil(Math.random() * state.buildings.woodenHut) * 25 +
+              state.EM * 100,
           ),
       },
     }),
@@ -30,7 +34,8 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   villagerMissing: {
     id: "villagerMissing",
-    condition: (state: GameState) => state.villagers.free > 0,
+    condition: (state: GameState) =>
+      state.villagers.free > 0 && state.buildings.stoneHut <= 10,
     triggerType: "resource",
     timeProbability: 30,
     message: [
@@ -51,7 +56,7 @@ export const recurringEvents: Record<string, GameEvent> = {
   findWood: {
     id: "woodGift",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 5,
+      state.buildings.woodenHut >= 1 && state.buildings.woodenHut < 8,
     triggerType: "resource",
     timeProbability: 12,
     repeatable: true,
@@ -97,9 +102,10 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   steelGift: {
     id: "steelGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 2,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 2 && state.buildings.stoneHut <= 10,
     triggerType: "resource",
-    timeProbability: 25,
+    timeProbability: 30,
     message: [
       "Villagers find steel bars at the village's edge.",
       "Someone has left gleaming steel ingots at the edge of the village.",
@@ -119,7 +125,8 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   obsidianGift: {
     id: "obsidianGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 6,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 10,
     triggerType: "resource",
     timeProbability: 35,
     message: [
@@ -142,7 +149,8 @@ export const recurringEvents: Record<string, GameEvent> = {
 
   adamantGift: {
     id: "adamantGift",
-    condition: (state: GameState) => state.buildings.woodenHut >= 8,
+    condition: (state: GameState) =>
+      state.buildings.woodenHut >= 8 && state.buildings.stoneHut <= 10,
     triggerType: "resource",
     timeProbability: 35,
     message: [
@@ -166,7 +174,7 @@ export const recurringEvents: Record<string, GameEvent> = {
   fireStorm: {
     id: "fireStorm",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 5 && state.buildings.stoneHut <= 4,
+      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 6,
     triggerType: "resource",
     timeProbability: 70,
     repeatable: true,
@@ -176,7 +184,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     priority: 2,
     effect: (state: GameState) => {
       const hutsDestroyed = 1;
-      const villagersKilled = hutsDestroyed * 2;
+      const villagersKilled = hutsDestroyed;
 
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, villagersKilled);

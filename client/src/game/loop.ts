@@ -4,7 +4,10 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import { getTotalMadness, getAllActionBonuses } from "./rules/effectsCalculation";
+import {
+  getTotalMadness,
+  getAllActionBonuses,
+} from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -39,12 +42,17 @@ export function startGameLoop() {
 
     // Check if game is paused
     const state = useGameStore.getState();
-    const isDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.authDialogOpen || state.shopDialogOpen;
+    const isDialogOpen =
+      state.eventDialog.isOpen ||
+      state.combatDialog.isOpen ||
+      state.authDialogOpen ||
+      state.shopDialogOpen;
     const isPaused = state.isPaused || isDialogOpen;
 
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
-      if (!state.isPausedPreviously && !state.isMuted) { // Check if this is the first frame of pause
+      if (!state.isPausedPreviously && !state.isMuted) {
+        // Check if this is the first frame of pause
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
@@ -87,16 +95,26 @@ export function startGameLoop() {
         const state = useGameStore.getState();
 
         // First notification after 10 minutes
-        if (elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY && lastShopNotificationTime === 0) {
+        if (
+          elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY &&
+          lastShopNotificationTime === 0
+        ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
-            useGameStore.setState({ shopNotificationSeen: false, shopNotificationVisible: true });
+            useGameStore.setState({
+              shopNotificationSeen: false,
+              shopNotificationVisible: true,
+            });
           } else if (!state.shopNotificationVisible) {
             useGameStore.setState({ shopNotificationVisible: true });
           }
         }
         // Subsequent notifications every 60 minutes after the last one
-        else if (lastShopNotificationTime > 0 && timestamp - lastShopNotificationTime >= SHOP_NOTIFICATION_REPEAT_INTERVAL) {
+        else if (
+          lastShopNotificationTime > 0 &&
+          timestamp - lastShopNotificationTime >=
+            SHOP_NOTIFICATION_REPEAT_INTERVAL
+        ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
             useGameStore.setState({ shopNotificationSeen: false });
@@ -126,7 +144,8 @@ export function startGameLoop() {
         handleStrangerApproach();
       } else {
         // Update loop progress (0-100 based on production cycle)
-        const progressPercent = ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
+        const progressPercent =
+          ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
         useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
       }
     }
@@ -167,7 +186,10 @@ function processTick() {
   }
 
   // Check if Great Feast has expired
-  if (state.greatFeastState?.isActive && state.greatFeastState.endTime <= Date.now()) {
+  if (
+    state.greatFeastState?.isActive &&
+    state.greatFeastState.endTime <= Date.now()
+  ) {
     useGameStore.setState({
       greatFeastState: {
         ...state.greatFeastState,
@@ -319,7 +341,7 @@ function handleStarvationCheck() {
     // 5% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05) {
+      if (Math.random() < 0.05 + state.EM * 0.025) {
         starvationDeaths++;
       }
     }
@@ -362,7 +384,7 @@ function handleFreezingCheck() {
     // 5% chance for each villager to die from cold
     let freezingDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05) {
+      if (Math.random() < 0.05 + state.EM * 0.025) {
         freezingDeaths++;
       }
     }
@@ -408,17 +430,17 @@ function handleMadnessCheck() {
   if (totalMadness <= 0) return;
 
   // Determine probability and possible death counts based on madness level
-  let probability = 0;
+  let probability = 0 + state.EM * 0.01;
   if (totalMadness <= 10) {
-    probability = 0.01;
+    probability += 0.01;
   } else if (totalMadness <= 20) {
-    probability = 0.02;
+    probability += 0.02;
   } else if (totalMadness <= 30) {
-    probability = 0.03;
+    probability += 0.03;
   } else if (totalMadness <= 40) {
-    probability = 0.04;
+    probability += 0.04;
   } else {
-    probability = 0.05;
+    probability += 0.05;
   }
 
   // Check if a madness death event occurs
@@ -492,7 +514,7 @@ function handleStrangerApproach() {
   if (currentPopulation >= maxPopulation) return;
 
   // Calculate probability based on your specifications
-  let probability = 0.1; // 10% base probability
+  let probability = 0.1 - state.EM * 0.05; // 10% base probability
 
   // +2.0% for each wooden hut -> 20 %
   probability += state.buildings.woodenHut * 0.02;

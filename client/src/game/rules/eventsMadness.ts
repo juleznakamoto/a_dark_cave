@@ -25,6 +25,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 1,
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1
       },
     }),
   },
@@ -47,6 +48,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 2,
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
       },
     }),
   },
@@ -71,7 +73,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Confront villager",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.3) {
+          if (rand < 0.3-state.EM * 0.05) {
             return {
               events: {
                 ...state.events,
@@ -80,6 +82,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 3,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
               },
               _logMessage:
                 "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.",
@@ -112,6 +115,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             stats: {
               ...state.stats,
               madness: (state.stats.madness || 0) + 3,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
             },
             _logMessage:
               "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime.",
@@ -139,6 +143,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 3,
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
       },
     }),
   },
@@ -230,6 +235,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         stats: {
           ...state.stats,
           madness: (state.stats.madness || 0) + 2,
+          madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
         },
       };
     },
@@ -254,7 +260,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Try to calm down",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.5) {
+          if (rand < 0.5-state.EM * 0.1) {
             return {
               events: {
                 ...state.events,
@@ -284,7 +290,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         id: "keep_scratching",
         label: "Keep scratching",
         effect: (state: GameState) => {
-          const killedVillagers = Math.floor(Math.random() * 4) + 3; // 3-6 villagers
+          const killedVillagers = Math.floor(Math.random() * 4) + 3+state.EM * 2; // 3-6 villagers
           const deathResult = killVillagers(state, killedVillagers);
           return {
             ...deathResult,
@@ -295,6 +301,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             stats: {
               ...state.stats,
               madness: (state.stats.madness || 0) + 2,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
             },
             _logMessage:
               `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands.`,
@@ -394,7 +401,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Cover well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
-          const thirstDeaths = Math.floor(Math.random() * 5) + 6; // 6-10 deaths
+          const thirstDeaths = Math.floor(Math.random() * 5) + 6+state.EM * 2; // 6-10 deaths
           const deathResult = killVillagers(state, thirstDeaths);
 
           return {
@@ -426,7 +433,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.6) {
+          if (rand < 0.6-state.EM * 0.15) {
             return {
               events: {
                 ...state.events,
@@ -435,6 +442,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 3,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
               },
               _logMessage:
                 "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
@@ -450,6 +458,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 4,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4
               },
               _logMessage:
                 "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too - something vast and hungry watching from above.",
@@ -468,6 +477,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 6,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 6
           },
           _logMessage:
             "You crane your neck skyward and suddenly see it - something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever.",

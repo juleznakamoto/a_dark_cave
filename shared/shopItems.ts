@@ -13,7 +13,7 @@ export interface ShopItem {
   price: number; // in cents
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
-  category: 'resource' | 'weapon' | 'tool' | 'blessing' | 'feast' | 'bundle';
+  category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle";
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
@@ -21,160 +21,108 @@ export interface ShopItem {
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
   gold_100_free: {
-    id: 'gold_100_free',
-    name: '100 Gold (Free Gift)',
-    description: 'A generous gift to get you started',
+    id: "gold_100_free",
+    name: "100 Gold (Free Gift)",
+    description: "A generous gift to get you started",
     price: 0, // Free!
     rewards: {
       resources: { gold: 100 },
     },
     canPurchaseMultipleTimes: false,
-    category: 'resource',
-    activationMessage: '100 Gold have been added to your inventory as a gift!',
-    symbol: '⚵',
-    symbolColor: 'text-sky-700',
-  },
-
-  gold_100: {
-    id: 'gold_100',
-    name: '100 Gold',
-    description: 'A small pouch of gold coins',
-    price: 99, // 0.99 €
-    rewards: {
-      resources: { gold: 100 },
-    },
-    canPurchaseMultipleTimes: true,
-    category: 'resource',
-    activationMessage: '100 Gold have been added to your inventory.',
-    symbol: '◉',
-    symbolColor: 'text-yellow-600',
+    category: "resource",
+    activationMessage: "100 Gold have been added to your inventory as a gift!",
+    symbol: "⚵",
+    symbolColor: "text-sky-700",
   },
 
   gold_250: {
-    id: 'gold_250',
-    name: '250 Gold',
-    description: 'A decent amount of gold',
-    price: 199, // 1.99 €
+    id: "gold_250",
+    name: "250 Gold",
+    description: "A decent amount of gold",
+    price: 0.99, // 0.99 €
     rewards: {
       resources: { gold: 250 },
     },
     canPurchaseMultipleTimes: true,
-    category: 'resource',
-    activationMessage: '250 Gold have been added to your inventory.',
-    symbol: '◉◉',
-    symbolColor: 'text-yellow-600',
+    category: "resource",
+    activationMessage: "250 Gold have been added to your inventory.",
+    symbol: "◉",
+    symbolColor: "text-yellow-600",
   },
 
   gold_1000: {
-    id: 'gold_1000',
-    name: '1000 Gold',
-    description: 'A substantial treasure',
+    id: "gold_1000",
+    name: "1000 Gold",
+    description: "A substantial treasure",
     price: 499, // 4.99 €
     rewards: {
       resources: { gold: 1000 },
     },
     canPurchaseMultipleTimes: true,
-    category: 'resource',
-    activationMessage: '1000 Gold have been added to your inventory.',
-    symbol: '◉◉◉',
-    symbolColor: 'text-yellow-600',
+    category: "resource",
+    activationMessage: "1000 Gold have been added to your inventory.",
+    symbol: "◉◉",
+    symbolColor: "text-yellow-600",
   },
 
   gold_5000: {
-    id: 'gold_5000',
-    name: '5000 Gold',
-    description: 'A fortune in gold',
+    id: "gold_5000",
+    name: "5000 Gold",
+    description: "A fortune in gold",
     price: 999, // 9.99 €
     rewards: {
       resources: { gold: 5000 },
     },
     canPurchaseMultipleTimes: true,
-    category: 'resource',
-    activationMessage: '5000 Gold have been added to your inventory.',
-    symbol: '◉◉◉◉◉',
-    symbolColor: 'text-yellow-600',
+    category: "resource",
+    activationMessage: "5000 Gold have been added to your inventory.",
+    symbol: "◉◉◉",
+    symbolColor: "text-yellow-600",
   },
 
-  // weapon_2: {
-  //   id: 'weapon_2',
-  //   name: 'Frostglass Sword',
-  //   description: 'A legendary blade forged from frozen glass',
-  //   price: 499, // 4.99 €
-  //   rewards: {
-  //     weapons: ['frostglass_sword'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'weapon',
-  //   activationMessage: 'Frostglass Sword has been added to your inventory.',
-  // },
-
-  // blessing_1: {
-  //   id: 'blessing_1',
-  //   name: "Raven's Mark",
-  //   description: 'A blessing that enhances your luck and knowledge',
-  //   price: 199, // 1.99 €
-  //   rewards: {
-  //     blessings: ['ravens_mark'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'blessing',
-  //   activationMessage: "Activated Raven's Mark! Rewards have been added to your inventory.",
-  // },
-
-  // blessing_2: {
-  //   id: 'blessing_2',
-  //   name: 'Ashen Embrace',
-  //   description: 'A powerful blessing that grants resilience',
-  //   price: 499, // 4.99 €
-  //   rewards: {
-  //     blessings: ['ashen_embrace'],
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'blessing',
-  //   activationMessage: 'Activated Ashen Embrace! Rewards have been added to your inventory.',
-  // },
-
   great_feast_1: {
-    id: 'great_feast_1',
-    name: '1 Great Feast',
-    description: 'Boost the village production by 4x for 30 minutes',
+    id: "great_feast_1",
+    name: "1 Great Feast",
+    description: "Boost the village production by 4x for 30 minutes",
     price: 149, // 1.49 €
     rewards: {
       feastActivations: 1,
     },
     canPurchaseMultipleTimes: true,
-    category: 'feast',
-    activationMessage: 'A Great Feast has begun!',
-    symbol: '✦',
-    symbolColor: 'text-orange-600',
+    category: "feast",
+    activationMessage: "A Great Feast has begun!",
+    symbol: "✦",
+    symbolColor: "text-orange-600",
   },
 
   great_feast_5: {
-    id: 'great_feast_5',
-    name: '5 Great Feasts',
-    description: 'Boost the village production by 4x for 30 minutes (5 times)',
+    id: "great_feast_5",
+    name: "5 Great Feasts",
+    description: "Boost the village production by 4x for 30 minutes (5 times)",
     price: 299, // 2.99 €
     rewards: {
       feastActivations: 5,
     },
     canPurchaseMultipleTimes: true,
-    category: 'feast',
-    activationMessage: 'A Great Feast has begun!',
-    symbol: '✦✦✦✦✦',
-    symbolColor: 'text-orange-600',
+    category: "feast",
+    activationMessage: "A Great Feast has begun!",
+    symbol: "✦✦✦✦✦",
+    symbolColor: "text-orange-600",
   },
 
   extreme_mode: {
-    id: 'extreme_mode',
-    name: 'Extreme Mode',
-    description: 'Experience a cruel world, with more events, more items and deadlier foes. Endure, or vanish.',
+    id: "extreme_mode",
+    name: "Extreme Mode",
+    description:
+      "Experience a cruel world, with new events, new items and deadlier foes. Endure, or vanish.",
     price: 199, // 1.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,
-    category: 'blessing',
-    activationMessage: 'Extreme Mode unlocked! Start a new game to experience the ultimate challenge.',
-    symbol: '⚠',
-    symbolColor: 'text-red-600',
+    category: "blessing",
+    activationMessage:
+      "Extreme Mode unlocked! Start a new game to experience the ultimate challenge.",
+    symbol: "⛤",
+    symbolColor: "text-red-600",
   },
 
   // dwarven_hammer: {
@@ -201,21 +149,5 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   //   canPurchaseMultipleTimes: false,
   //   category: 'tool',
   //   activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
-  // },
-
-  // ultimate_pack: {
-  //   id: 'ultimate_pack',
-  //   name: 'Ultimate Pack',
-  //   description: 'All premium tools plus 1 Great Feast activation',
-  //   price: 999, // 9.99 €
-  //   rewards: {
-  //     tools: ['blacksmith_hammer', 'adamant_pickaxe', 'adamant_axe', 'adamant_lantern'],
-  //     feastActivations: 1,
-  //   },
-  //   canPurchaseMultipleTimes: false,
-  //   category: 'bundle',
-  //   activationMessage: 'Activated Ultimate Pack! Rewards have been added to your inventory.',
-  //   symbol: '⬢',
-  //   symbolColor: 'text-purple-400',
   // },
 };

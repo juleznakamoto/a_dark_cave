@@ -1,7 +1,7 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
-import { getTotalLuck, getActionBonuses } from "@/game/rules/effectsCalculation";
+import { getActionBonuses } from "@/game/rules/effectsCalculation";
 
 // Helper function to apply cave explore multiplier to cave exploration probability effects
 function applyCaveExplorationBonuses(
@@ -118,7 +118,7 @@ function getInheritedItems(actionId: string) {
 
   const inheritedItems: any = {};
 
-  // Add items from all previous stages with 1% probability bonus
+  // Add items from all previous stages with 0.5% probability bonus
   for (let i = 0; i <= currentIndex; i++) {
     const stageId = stageOrder[i];
     const items = caveItems[stageId as keyof typeof caveItems];
@@ -172,7 +172,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.wood": "random(5,10)",
       "story.seen.hasWood": true,
       "relics.old_trinket": {
-        probability: 0.0005,
+        probability: 0.01,
         value: true,
         condition: "!relics.old_trinket && buildings.cabin >= 1",
         logMessage:
