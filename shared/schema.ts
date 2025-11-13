@@ -69,7 +69,6 @@ export const gameStateSchema = z.object({
       forestUnlocked: z.boolean().default(false),
       portalBlasted: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
-      trapsSuggested: z.boolean().default(false),
       hasTraps: z.boolean().default(false),
     })
     .default({}),

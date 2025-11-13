@@ -1199,12 +1199,12 @@ export const villageBuildActions: Record<string, Action> = {
   buildTraps: {
     id: "buildTraps",
     label: "Traps",
-    description: "Defensive traps around the village that catch and weaken attackers",
-    tooltipEffects: ["+20% Wolf Victory Chance", "+20% Cannibal Victory Chance", "-25% Casualty Chance", "-2 Max Deaths"],
+    description: "Traps around the village weakening attackers",
+    tooltipEffects: [""],
     building: true,
     show_when: {
       1: {
-        "story.seen.trapsSuggested": true,
+        "story.seen.firstWolfAttack": true,
         "buildings.traps": 0,
       },
     },
