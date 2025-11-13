@@ -290,4 +290,28 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  portalDiscovered: {
+    id: "portalDiscovered",
+    condition: (state: GameState) =>
+      state.buildings.alchemistHall >= 1 &&
+      state.flags.exploredCitadel &&
+      !state.story.seen.portalDiscovered,
+    triggerType: "resource",
+    timeProbability: 0.5,
+    message:
+      "In the citadel's lowest depths you find the colossal portal forged from an unknown, unyielding metal. Perhaps the fury of fire can shatter its seal.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      story: {
+        ...state.story,
+        seen: {
+          ...state.story.seen,
+          portalDiscovered: true,
+        },
+      },
+    }),
+  },
 };
