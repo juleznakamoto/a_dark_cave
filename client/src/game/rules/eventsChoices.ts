@@ -646,11 +646,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   offerToTheForestGods: {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
-      state.current_population > 12 &&
+      state.current_population >= 10 &&
       !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
     triggerType: "resource",
-    timeProbability: 0.03,
+    timeProbability: 35,
     title: "Offer to the Forest Gods",
     message:
       "While hunting, villagers report unsettling figures in the forest. They are terrified. Village elders say the forest gods demand four villagers as sacrifice.",
