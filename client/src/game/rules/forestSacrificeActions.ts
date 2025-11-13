@@ -59,9 +59,8 @@ export const forestSacrificeActions: Record<string, Action> = {
     label: "Animals",
     tooltipEffects: ["-1 Madness"],
     show_when: {
-      // This will be dynamically checked in handleAnimals
-      // to ensure it only shows up to 10 times.
       "buildings.blackMonolith": 1,
+      "!story.seen.animalsSacrificeMaxed": true,
     },
     cost: {
       // This will be dynamically calculated based on usage count
@@ -282,6 +281,11 @@ export function handleAnimals(
   }
   effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
   effectUpdates.story.seen.actionAnimals = true; // Mark that the action has been used
+
+  // Set flag when max uses reached
+  if (usageCount + 1 >= maxLevels) {
+    effectUpdates.story.seen.animalsSacrificeMaxed = true;
+  }
 
   Object.assign(result.stateUpdates, effectUpdates);
 
