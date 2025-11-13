@@ -51,36 +51,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     id: "animals",
     label: "Animals",
     show_when: {
-      1: {
-        "buildings.blackMonolith": 1,
-      },
-      2: {
-        "buildings.blackMonolith": 1,
-      },
-      3: {
-        "buildings.blackMonolith": 1,
-      },
-      4: {
-        "buildings.blackMonolith": 1,
-      },
-      5: {
-        "buildings.blackMonolith": 1,
-      },
-      6: {
-        "buildings.blackMonolith": 1,
-      },
-      7: {
-        "buildings.blackMonolith": 1,
-      },
-      8: {
-        "buildings.blackMonolith": 1,
-      },
-      9: {
-        "buildings.blackMonolith": 1,
-      },
-      10: {
-        "buildings.blackMonolith": 1,
-      },
+      "buildings.blackMonolith": 1,
     },
     cost: {
       1: {
