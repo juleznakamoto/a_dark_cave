@@ -518,7 +518,7 @@ export const calculateTotalEffects = (state: GameState) => {
     if (buildAction?.statsEffects?.madness) {
       effects.madness_reduction.blackMonolith_madness = buildAction.statsEffects.madness;
     }
-    
+
     // Add madness reduction from animal sacrifices
     const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
     if (sacrificeLevel > 0) {

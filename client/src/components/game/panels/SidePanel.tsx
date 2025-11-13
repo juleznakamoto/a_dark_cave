@@ -288,7 +288,7 @@ export default function SidePanel() {
           Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
             // Apply 50% reduction and round down if damaged
             let finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
-            
+
             // For Black Monolith, add the sacrifice madness reduction
             if (key === "blackMonolith" && stat === "madness") {
               const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
@@ -299,7 +299,7 @@ export default function SidePanel() {
               }
               return; // Skip the normal display for this stat
             }
-            
+
             effectsList.push(`${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`);
           });
         }

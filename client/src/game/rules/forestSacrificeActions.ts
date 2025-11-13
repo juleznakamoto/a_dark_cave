@@ -51,7 +51,46 @@ export const forestSacrificeActions: Record<string, Action> = {
     id: "animals",
     label: "Animals",
     show_when: {
-      "buildings.blackMonolith": 1,
+      1: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 0,
+      },
+      2: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 1,
+      },
+      3: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 2,
+      },
+      4: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 3,
+      },
+      5: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 4,
+      },
+      6: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 5,
+      },
+      7: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 6,
+      },
+      8: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 7,
+      },
+      9: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 8,
+      },
+      10: {
+        "buildings.blackMonolith": 1,
+        "story.seen.animalsSacrificeLevel": 9,
+      },
     },
     cost: {
       1: {
@@ -333,7 +372,6 @@ export function handleAnimals(
   const action = forestSacrificeActions.animals;
   const actionCosts = action?.cost?.[nextLevel];
   const actionEffects = action?.effects?.[nextLevel];
-  const statsEffects = action?.statsEffects?.[nextLevel];
 
   if (!actionEffects || !actionCosts) {
     return result;
@@ -358,14 +396,6 @@ export function handleAnimals(
     result.stateUpdates.story.seen = { ...state.story.seen };
   }
   result.stateUpdates.story.seen.animalsSacrificeLevel = nextLevel;
-
-  // Apply madness reduction
-  if (statsEffects && statsEffects.madness !== undefined) {
-    if (!result.stateUpdates.stats) {
-      result.stateUpdates.stats = { ...state.stats };
-    }
-    result.stateUpdates.stats.madness = (state.stats.madness || 0) + statsEffects.madness;
-  }
 
   // Add log entry
   result.logEntries!.push({
