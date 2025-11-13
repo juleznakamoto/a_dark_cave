@@ -93,14 +93,10 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       setIsProcessing(false);
     } else if (paymentIntent && paymentIntent.status === "succeeded") {
       // Verify payment on backend and grant rewards
-      const user = await getCurrentUser();
       const response = await fetch("/api/payment/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ 
-          paymentIntentId: paymentIntent.id,
-          userId: user?.id 
-        }),
+        body: JSON.stringify({ paymentIntentId: paymentIntent.id }),
       });
 
       const result = await response.json();
