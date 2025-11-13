@@ -106,6 +106,7 @@ import {
   handleBuildGrandBlacksmith,
   handleBuildFortifiedMoat,
   handleBuildTraps, // Import the new handler
+  handleBuildBlackMonolith, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -368,6 +369,11 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildFortifiedMoat(state, result);
     case "buildTraps": // New case for Traps
       return handleBuildTraps(state, result);
+    case 'buildBlackMonolith':
+      return handleBuildBlackMonolith(state, result);
+    case 'buildBastion':
+      return handleBuildBastion(state, result);
+
 
     // Forest Scout Actions
     case 'hunt':
