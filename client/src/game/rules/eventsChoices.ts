@@ -646,7 +646,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   offerToTheForestGods: {
     id: "offerToTheForestGods",
     condition: (state: GameState) =>
-      state.current_population > 10 &&
+      state.current_population > 12 &&
       !state.clothing.ebony_ring &&
       state.buildings.altar == 1,
     triggerType: "resource",
