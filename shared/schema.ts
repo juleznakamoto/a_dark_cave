@@ -68,6 +68,9 @@ export const gameStateSchema = z.object({
       starvationActive: z.boolean().default(false),
       forestUnlocked: z.boolean().default(false),
       portalBlasted: z.boolean().default(false),
+      firstWolfAttack: z.boolean().default(false),
+      trapsSuggested: z.boolean().default(false),
+      hasTraps: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -207,6 +210,7 @@ export const gameStateSchema = z.object({
       palisades: z.number().default(0),
       fortifiedMoat: z.number().default(0),
       wizardTower: z.number().default(0),
+      traps: z.number().default(0),
     })
     .default({}),
   villagers: z

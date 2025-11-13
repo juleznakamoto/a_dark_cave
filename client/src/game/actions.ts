@@ -1,4 +1,4 @@
-import { GameState } from '@shared/schema';
+import { GameState } from '@shared/game/schema';
 import { LogEntry } from '@/game/rules/events';
 import { gameActions } from '@/game/rules';
 // Import all handlers from the modular action files
@@ -104,7 +104,8 @@ import {
   handleBuildWizardTower,
   handleBuildLonghouse,
   handleBuildGrandBlacksmith,
-  handleBuildFortifiedMoat, // Import the new handler
+  handleBuildFortifiedMoat,
+  handleBuildTraps, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -363,8 +364,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildGrandBlacksmith(state, result);
     case 'buildLonghouse':
       return handleBuildLonghouse(state, result);
-    case "buildFortifiedMoat": // New case for Fortified Moat
+    case "buildFortifiedMoat":
       return handleBuildFortifiedMoat(state, result);
+    case "buildTraps": // New case for Traps
+      return handleBuildTraps(state, result);
 
     // Forest Scout Actions
     case 'hunt':

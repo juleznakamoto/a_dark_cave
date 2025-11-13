@@ -1195,6 +1195,33 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {},
     effects: {},
   },
+
+  buildTraps: {
+    id: "buildTraps",
+    label: "Traps",
+    description: "Defensive traps around the village that catch and weaken attackers",
+    tooltipEffects: ["+20% Wolf Victory Chance", "+20% Cannibal Victory Chance", "-25% Casualty Chance", "-2 Max Deaths"],
+    building: true,
+    show_when: {
+      1: {
+        "story.seen.trapsSuggested": true,
+        "buildings.traps": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 500,
+        "resources.iron": 250,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.traps": 1,
+        "story.seen.hasTraps": true,
+      },
+    },
+    cooldown: 30,
+  },
 };
 
 // Action handlers
@@ -1998,4 +2025,29 @@ export function handleBuildFortifiedMoat(
   }
 
   return fortifiedMoatResult;
+}
+
+export function handleBuildTraps(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const trapsResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildTraps",
+    "traps",
+  );
+
+  // Add traps completion message
+  if (state.buildings.traps === 0) {
+    trapsResult.logEntries!.push({
+      id: `traps-built-${Date.now()}`,
+      message:
+        "Traps have been laid around the village perimeter. Hidden pits, snares, and sharpened stakes await any who dare attack.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return trapsResult;
 }

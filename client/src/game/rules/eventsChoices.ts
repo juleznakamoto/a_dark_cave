@@ -448,7 +448,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   wolfAttack: {
     id: "wolfAttack",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && !state.clothing.alphas_hide,
+      state.buildings.woodenHut >= 3 && !state.clothing.alphas_hide && !state.story.seen.firstWolfAttack,
     triggerType: "resource",
     timeProbability: 40,
     title: "Wolf Attack",
@@ -476,10 +476,28 @@ export const choiceEvents: Record<string, GameEvent> = {
             };
           }
 
+          // Check if this is the first wolf attack
+          if (!state.story.seen.firstWolfAttack) {
+            return {
+              ...killVillagers(state, 0), // No deaths, but the event is marked as seen
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  firstWolfAttack: true,
+                },
+              },
+              _logMessage:
+                "The wolves attack, but your villagers stand their ground with surprising resilience. The wolves are driven back, unharmed, but the villagers learn a valuable lesson. Villagers suggest laying out traps around the village to help against wolf attacks and other attacks.",
+            };
+          }
+
           const strength = getTotalStrength(state);
 
           // Check for victory: 15% base chance + 1% per strength point
-          const victoryChance = 0.15 + strength * 0.01 - state.EM * 0.05;
+          // Traps increase victory chance by 15%
+          const trapsBonus = state.buildings.traps > 0 ? 0.15 : 0;
+          const victoryChance = 0.15 + strength * 0.01 + trapsBonus - state.EM * 0.05;
 
           if (Math.random() < victoryChance) {
             // Victory! Get Alpha's Hide
@@ -494,8 +512,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
+          // Traps reduce death chance by 15%
+          const trapsCasualtyReduction = state.buildings.traps > 0 ? 0.15 : 0;
           const casualtyChance =
-            Math.max(0.2, 0.6 - strength * 0.02) + state.EM * 0.05;
+            Math.max(0.2, 0.6 - strength * 0.02 - trapsCasualtyReduction) + state.EM * 0.05;
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
@@ -507,8 +527,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           let hutDestroyed = false;
 
           // Determine villager casualties
+          // Traps reduce max deaths by 1
+          const trapDeathReduction = state.buildings.traps > 0 ? 1 : 0;
           const maxPotentialDeaths = Math.min(
-            4 + state.buildings.woodenHut + state.EM * 2,
+            4 + state.buildings.woodenHut + state.EM * 2 - trapDeathReduction,
             currentPopulation,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -578,6 +600,22 @@ export const choiceEvents: Record<string, GameEvent> = {
             return {
               _logMessage:
                 "The wolves find an empty village and move on, their supernatural hunger unsated.",
+            };
+          }
+
+          // Check if this is the first wolf attack
+          if (!state.story.seen.firstWolfAttack) {
+            return {
+              ...killVillagers(state, 0), // No deaths, but the event is marked as seen
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  firstWolfAttack: true,
+                },
+              },
+              _logMessage:
+                "The wolves attack, but your villagers manage to hide effectively. The wolves are driven back, unharmed, but the villagers learn a valuable lesson. Villagers suggest laying out traps around the village to help against wolf attacks and other attacks.",
             };
           }
 
