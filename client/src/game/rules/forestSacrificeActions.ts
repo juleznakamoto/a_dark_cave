@@ -57,6 +57,7 @@ export const forestSacrificeActions: Record<string, Action> = {
   animals: {
     id: "animals",
     label: "Animals",
+    tooltipEffects: ["-1 Madness"],
     show_when: {
       // This will be dynamically checked in handleAnimals
       // to ensure it only shows up to 10 times.
