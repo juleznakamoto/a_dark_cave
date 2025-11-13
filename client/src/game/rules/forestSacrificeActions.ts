@@ -285,17 +285,6 @@ export function handleAnimals(
   effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
   effectUpdates.story.seen.actionAnimals = true; // Mark that the action has been used
 
-  // Apply stats effects (madness deduction)
-  if (!effectUpdates.stats) {
-    effectUpdates.stats = { ...state.stats };
-  }
-  if (effectUpdates.stats.madness !== undefined) {
-    effectUpdates.stats.madness += madnessDeduction;
-  } else {
-    // If madness is not in state.stats, initialize it
-    effectUpdates.stats.madness = madnessDeduction;
-  }
-
   // Add log entry
   result.logEntries!.push({
     id: `animals-sacrifice-${usageCount + 1}-${Date.now()}`,
