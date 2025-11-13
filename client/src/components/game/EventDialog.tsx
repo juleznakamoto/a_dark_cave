@@ -261,6 +261,11 @@ export default function EventDialog({
                 }
               }
               
+              // Evaluate label if it's a function
+              const labelText = typeof choice.label === 'function' 
+                ? choice.label(gameState) 
+                : choice.label;
+              
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -268,7 +273,7 @@ export default function EventDialog({
                   className="w-full text-left justify-between"
                   disabled={isDisabled}
                 >
-                  <span>{choice.label}</span>
+                  <span>{labelText}</span>
                   {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
                     <div className="flex gap-1 ml-2">
                       {choice.relevant_stats.map((stat) => {
