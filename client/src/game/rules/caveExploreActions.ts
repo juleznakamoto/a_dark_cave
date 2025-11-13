@@ -509,6 +509,17 @@ export function handleExploreCave(
     delete effectUpdates.logMessages;
   }
 
+  // Add a special log message for first time exploring the cave
+  if (!state.story.seen.caveExplored) {
+    result.logEntries!.push({
+      id: `explore-cave-${Date.now()}`,
+      message:
+        "The torchlight illuminates the cave walls. You gather resources scattered throughout the cavern. In the flickering light, you notice a path leading deeper into the caves.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
   Object.assign(result.stateUpdates, effectUpdates);
   return result;
 }
