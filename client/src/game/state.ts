@@ -319,14 +319,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (initialState) {
       set({ ...defaultGameState, ...initialState });
     } else {
-      // Check if Extreme Mode was activated in a previous session
-      const currentState = get();
-      const extremeModeActivated = currentState.activatedPurchases?.['extreme_mode'];
-      set({ 
-        ...defaultGameState, 
-        extremeMode: extremeModeActivated || false,
-        activatedPurchases: currentState.activatedPurchases || {},
-      });
+      set(defaultGameState);
     }
     StateManager.scheduleEffectsUpdate(get);
   },
@@ -498,7 +491,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const currentBoostMode = get().boostMode;
-    const currentExtremeMode = get().extremeMode;
+    const currentActivatedPurchases = get().activatedPurchases || {};
+    const currentFeastPurchases = get().feastPurchases || {};
+    
+    // Check if Extreme Mode was activated
+    const extremeModeActivated = currentActivatedPurchases['extreme_mode'] || false;
 
     const resetState = {
       ...defaultGameState,
@@ -508,7 +505,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
-      extremeMode: currentExtremeMode,
+      extremeMode: extremeModeActivated,
+      activatedPurchases: currentActivatedPurchases,
+      feastPurchases: currentFeastPurchases,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
       // Ensure loop state is reset
@@ -526,7 +525,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      message: extremeModeActivated 
+        ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Something feels different... more dangerous."
+        : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
     };
@@ -551,6 +552,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
         extremeMode: savedState.extremeMode !== undefined ? savedState.extremeMode : false,
+        activatedPurchases: savedState.activatedPurchases || {},
+        feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly
         loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,

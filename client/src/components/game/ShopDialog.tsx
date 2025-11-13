@@ -352,7 +352,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (itemId === "extreme_mode") {
       if (activatedPurchases[purchaseId]) return;
 
-      // Just mark as activated - extreme mode will be enabled on new game start
+      // Mark as activated - extreme mode will be enabled on new game start
       useGameStore.setState((state) => ({
         activatedPurchases: {
           ...state.activatedPurchases,
@@ -364,7 +364,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         id: `activate-extreme-mode-${Date.now()}`,
         message:
           item.activationMessage ||
-          "Extreme Mode unlocked! Start a new game to experience the ultimate challenge.",
+          "Extreme Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
