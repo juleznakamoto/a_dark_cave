@@ -14,13 +14,6 @@ import { useState, useEffect, useMemo } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { stopGameLoop } from "@/game/loop";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function GameContainer() {
   const {
@@ -35,11 +28,9 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     showEndScreen,
-    extremeMode,
   } = useGameStore();
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
-  const mobileTooltip = useMobileTooltip();
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
@@ -137,27 +128,6 @@ export default function GameContainer() {
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
-      {/* Extreme Mode Indicator - Upper Right Corner */}
-      {extremeMode && (
-        <TooltipProvider>
-          <Tooltip open={mobileTooltip.isTooltipOpen('extreme-mode-indicator')}>
-            <TooltipTrigger asChild>
-              <div 
-                className="fixed top-4 right-4 z-50 cursor-pointer opacity-60 hover:opacity-100 transition-opacity"
-                onClick={(e) => mobileTooltip.handleTooltipClick('extreme-mode-indicator', e)}
-              >
-                <div className="text-red-600 text-2xl">⚠</div>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="text-xs whitespace-nowrap">
-                Extreme Mode activated
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
-
       {/* Pause Overlay - covers everything except footer */}
       {isPaused && (
         <div

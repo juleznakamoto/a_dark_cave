@@ -7,6 +7,13 @@ import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function GameFooter() {
   const {
@@ -23,7 +30,9 @@ export default function GameFooter() {
     shopNotificationSeen,
     setShopNotificationSeen,
     shopNotificationVisible,
+    extremeMode,
   } = useGameStore();
+  const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
@@ -130,6 +139,25 @@ export default function GameFooter() {
                 style={{ filter: "invert(1)" }}
               />
             </Button>
+            {extremeMode && (
+              <TooltipProvider>
+                <Tooltip open={mobileTooltip.isTooltipOpen('extreme-mode-indicator')}>
+                  <TooltipTrigger asChild>
+                    <div 
+                      className="px-1.5 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
+                      onClick={(e) => mobileTooltip.handleTooltipClick('extreme-mode-indicator', e)}
+                    >
+                      <span className="text-red-600 text-sm">⚠</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      Extreme Mode activated
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
             {currentUser ? (
               <Button
                 variant="ghost"
