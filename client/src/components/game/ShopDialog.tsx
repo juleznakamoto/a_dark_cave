@@ -348,23 +348,24 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
-    // Handle Extreme Mode activation
+    // Handle Extreme Mode activation/deactivation
     if (itemId === "extreme_mode") {
-      if (activatedPurchases[purchaseId]) return;
+      const isCurrentlyActivated = activatedPurchases[purchaseId] || false;
 
-      // Mark as activated - extreme mode will be enabled on new game start
+      // Toggle activation state
       useGameStore.setState((state) => ({
         activatedPurchases: {
           ...state.activatedPurchases,
-          [purchaseId]: true,
+          [purchaseId]: !isCurrentlyActivated,
         },
       }));
 
       gameState.addLogEntry({
-        id: `activate-extreme-mode-${Date.now()}`,
-        message:
-          item.activationMessage ||
-          "Extreme Mode activated! Start a new game to experience the ultimate challenge.",
+        id: `toggle-extreme-mode-${Date.now()}`,
+        message: isCurrentlyActivated
+          ? "Extreme Mode deactivated. New games will use normal difficulty."
+          : (item.activationMessage ||
+            "Extreme Mode activated! Start a new game to experience the ultimate challenge."),
         timestamp: Date.now(),
         type: "system",
       });
@@ -646,6 +647,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           if (!item) return null;
 
                           const isActivated = activatedPurchases[itemId] || false;
+                          const isExtremeModeItem = itemId === "extreme_mode";
 
                           return (
                             <div
@@ -655,9 +657,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                   {item.name}
-                                  {itemId === "extreme_mode" && (
+                                  {isExtremeModeItem && (
                                     <span className="text-md  font-medium  ml-2">
-                                      (to play activate and start a new game)
+                                      (to play {isActivated ? 'deactivate and ' : 'activate and '}start a new game)
                                     </span>
                                   )}
                                 </span>
@@ -669,11 +671,14 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(itemId, itemId)
                                 }
-                                disabled={isActivated}
+                                disabled={!isExtremeModeItem && isActivated}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                               >
-                                {isActivated ? "Activated" : "Activate"}
+                                {isExtremeModeItem 
+                                  ? (isActivated ? "Deactivate" : "Activate")
+                                  : (isActivated ? "Activated" : "Activate")
+                                }
                               </Button>
                             </div>
                           );
