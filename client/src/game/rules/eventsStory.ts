@@ -2,7 +2,10 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const storyEvents: Record<string, GameEvent> = {
- 
+
+
+
+  
   alchemistArrives: {
     id: "alchemistArrives",
     condition: (state: GameState) =>

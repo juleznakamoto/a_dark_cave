@@ -669,7 +669,7 @@ export function handleExploreTemple(
     result.logEntries!.push({
       id: `explore-temple-${Date.now()}`,
       message:
-        "A magnificent temple rises from the cavern floor overlooking the city ruins, its pillars reaching toward the darkness above.",
+        "As you delve deeper into the ruins of the underground city, a grand temple emerges from the cavern floor, mostly intact, its shadow stretching over the forgotten remnants of the city.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -708,7 +708,7 @@ export function handleExploreCitadel(
     result.logEntries!.push({
       id: `explore-citadel-${Date.now()}`,
       message:
-        "The ultimate depths reveal a vast citadel, its walls gleaming with otherworldly light. This is the heart of the ancient realm.",
+        "At the deepest part of the city, a massive citadel rises before you. Its size suggests it houses something of great power, or something of geat danger.",
       timestamp: Date.now(),
       type: "system",
     });

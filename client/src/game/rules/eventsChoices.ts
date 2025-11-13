@@ -1582,13 +1582,13 @@ export const choiceEvents: Record<string, GameEvent> = {
   mysteriousWoman: {
     id: "mysteriousWoman",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 &&
-      state.resources.silver >= 50,
+      state.buildings.stoneHut >= 3 &&
+      state.resources.silver >= 200 + state.EM * 50,
     triggerType: "resource",
-    timeProbability: 35,
+    timeProbability: 5,
     title: "The Mysterious Woman",
     message:
-      "An attractive young woman arrives at the village as the sun sets. Her clothes are fine, yet stained with road dust. She smiles warmly and asks, 'Might I have shelter in one of your huts for the night? I've traveled far and have nowhere else to go.'",
+      "An attractive young woman in fine clothes arrives at the village as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -1598,30 +1598,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Let her stay",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
-          const luck = getTotalLuck(state);
-          const stealChance = 0.85 - luck * 0.01 + state.EM * 0.05;
-
-          if (Math.random() < stealChance) {
-            // She steals silver
-            const silverStolen = Math.min(
-              state.resources.silver,
-              Math.floor(Math.random() * 150) + 100 + state.EM * 50
-            );
-
-            return {
-              resources: {
-                ...state.resources,
-                silver: Math.max(0, state.resources.silver - silverStolen),
-              },
-              _logMessage: `You grant her shelter for the night. By morning, she has vanished without a trace. When you check your stores, ${silverStolen} silver is missing.`,
-            };
-          } else {
-            // Nothing happens, she leaves peacefully
-            return {
-              _logMessage:
-                "You grant her shelter for the night. At dawn, she thanks you graciously and continues on her journey, leaving a small blessing upon your village.",
-            };
-          }
+          // She steals silver
+          const silverStolen = 200 + state.EM * 50;
+          return {
+            resources: {
+              ...state.resources,
+              silver: Math.max(0, state.resources.silver - silverStolen),
+            },
+            _logMessage: `You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
+          };
+          
         },
       },
       {
