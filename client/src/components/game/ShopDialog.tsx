@@ -101,6 +101,28 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
 
       const result = await response.json();
       if (result.success) {
+        // Save purchase to Supabase (same as free items)
+        try {
+          const user = await getCurrentUser();
+          if (user) {
+            const item = SHOP_ITEMS[result.itemId];
+            const client = await getSupabaseClient();
+            const { error } = await client.from("purchases").insert({
+              user_id: user.id,
+              item_id: result.itemId,
+              item_name: item.name,
+              price_paid: item.price,
+              purchased_at: new Date().toISOString(),
+            });
+
+            if (error) {
+              console.error('Error saving purchase to Supabase:', error);
+            }
+          }
+        } catch (error) {
+          console.error('Exception saving purchase to Supabase:', error);
+        }
+        
         onSuccess();
       }
       setIsProcessing(false);
