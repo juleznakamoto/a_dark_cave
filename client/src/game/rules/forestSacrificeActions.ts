@@ -257,9 +257,7 @@ export function handleAnimals(
     return result;
   }
 
-  const action = forestSacrificeActions.animals;
   const currentCost = getAnimalsCost(state);
-  const madnessDeduction = -1; // Madness is deducted
 
   // Check if player has enough food for the current cost
   if ((state.resources.food || 0) < currentCost) {
@@ -284,18 +282,6 @@ export function handleAnimals(
   }
   effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
   effectUpdates.story.seen.actionAnimals = true; // Mark that the action has been used
-
-  // Add log entry
-  result.logEntries!.push({
-    id: `animals-sacrifice-${usageCount + 1}-${Date.now()}`,
-    message: `The animals are sacrificed at the Black Monolith. You feel a slight reduction in the madness that clouds your mind.`,
-    timestamp: Date.now(),
-    type: "system",
-    visualEffect: {
-      type: "blur", // Visual effect for madness reduction
-      duration: 2,
-    },
-  });
 
   Object.assign(result.stateUpdates, effectUpdates);
 
