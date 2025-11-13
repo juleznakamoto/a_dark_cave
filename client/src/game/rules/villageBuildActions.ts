@@ -626,7 +626,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: 25,
+      madness: -5,
     },
     cooldown: 40,
   },
@@ -1236,7 +1236,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBlackMonolith",
     label: "Black Monolith",
     description:
-      "A towering dark monument where animal sacrifices appease the creeping madness",
+      "Dark monument built for living sacrifices.",
     tooltipEffects: ["-5 Madness"],
     building: true,
     show_when: {
