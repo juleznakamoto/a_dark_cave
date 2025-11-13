@@ -34,10 +34,14 @@ export async function saveGame(gameState: GameState): Promise<void> {
 
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
+    
+    // Add timestamp to track save recency
+    const now = Date.now();
+    sanitizedState.lastSaved = now;
 
     const saveData: SaveData = {
       gameState: sanitizedState,
-      timestamp: Date.now(),
+      timestamp: now,
     };
 
     // Save locally first (most important)
@@ -67,37 +71,78 @@ export async function saveGame(gameState: GameState): Promise<void> {
 
 export async function loadGame(): Promise<GameState | null> {
   try {
+    const db = await getDB();
+    const localSave = await db.get('saves', SAVE_KEY);
+    
     // Check if user is authenticated
     const user = await getCurrentUser();
 
     if (user) {
-      // Try to load from cloud first
+      // Try to load from cloud
       try {
         const cloudSave = await loadGameFromSupabase();
-        if (cloudSave) {
+        
+        // Compare timestamps and use the most recent save
+        if (cloudSave && localSave) {
+          const cloudTimestamp = cloudSave.lastSaved || 0;
+          const localTimestamp = localSave.timestamp || 0;
+          
           if (import.meta.env.DEV) {
-            console.log('Game State loaded from cloud: ', cloudSave);
+            console.log('Comparing saves - Cloud:', new Date(cloudTimestamp), 'Local:', new Date(localTimestamp));
           }
-          // Also save to local storage
-          const db = await getDB();
+          
+          // Use whichever is more recent
+          if (cloudTimestamp > localTimestamp) {
+            if (import.meta.env.DEV) {
+              console.log('Using cloud save (more recent)');
+            }
+            // Update local with cloud save
+            await db.put('saves', {
+              gameState: cloudSave,
+              timestamp: Date.now(),
+            }, SAVE_KEY);
+            return cloudSave;
+          } else {
+            if (import.meta.env.DEV) {
+              console.log('Using local save (more recent), syncing to cloud');
+            }
+            // Local is more recent, sync it to cloud
+            await saveGameToSupabase(localSave.gameState);
+            return localSave.gameState;
+          }
+        } else if (cloudSave) {
+          // Only cloud save exists
+          if (import.meta.env.DEV) {
+            console.log('Game State loaded from cloud (no local save)');
+          }
           await db.put('saves', {
             gameState: cloudSave,
             timestamp: Date.now(),
           }, SAVE_KEY);
           return cloudSave;
+        } else if (localSave) {
+          // Only local save exists, sync to cloud
+          if (import.meta.env.DEV) {
+            console.log('Local save found, syncing to cloud');
+          }
+          await saveGameToSupabase(localSave.gameState);
+          return localSave.gameState;
         }
       } catch (cloudError) {
         console.error('Failed to load from cloud:', cloudError);
-        // Fall back to local save
+        // Fall back to local save if cloud fails
+        if (localSave) {
+          if (import.meta.env.DEV) {
+            console.log('Using local save (cloud error)');
+          }
+          return localSave.gameState;
+        }
       }
-    }
-
-    // Load from local storage
-    const db = await getDB();
-    const saveData = await db.get('saves', SAVE_KEY);
-
-    if (saveData) {
-      return saveData.gameState;
+    } else {
+      // Not authenticated, use local save only
+      if (localSave) {
+        return localSave.gameState;
+      }
     }
 
     return null;

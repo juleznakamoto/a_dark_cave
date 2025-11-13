@@ -385,3 +385,10 @@ export const saveDataSchema = z.object({
 });
 
 export type SaveData = z.infer<typeof saveDataSchema>;
+
+// Extend GameState to include lastSaved tracking
+declare module './schema' {
+  interface GameState {
+    lastSaved?: number;
+  }
+}
