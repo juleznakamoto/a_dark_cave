@@ -35,17 +35,17 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: 'text-sky-700',
   },
 
-  gold_50: {
-    id: 'gold_50',
-    name: '50 Gold',
+  gold_100: {
+    id: 'gold_100',
+    name: '100 Gold',
     description: 'A small pouch of gold coins',
     price: 99, // 0.99 €
     rewards: {
-      resources: { gold: 50 },
+      resources: { gold: 100 },
     },
     canPurchaseMultipleTimes: true,
     category: 'resource',
-    activationMessage: '50 Gold have been added to your inventory.',
+    activationMessage: '100 Gold have been added to your inventory.',
     symbol: '◉',
     symbolColor: 'text-yellow-600',
   },
