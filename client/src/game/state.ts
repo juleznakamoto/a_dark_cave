@@ -506,7 +506,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
       cruelMode: cruelModeActivated,
-      state.CM: cruelModeActivated ? 1 : 0,
+      CM: cruelModeActivated ? 1 : 0,
       activatedPurchases: currentActivatedPurchases,
       feastPurchases: currentFeastPurchases,
       effects: calculateTotalEffects(defaultGameState),
