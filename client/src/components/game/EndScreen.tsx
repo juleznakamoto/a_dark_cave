@@ -1,7 +1,6 @@
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
 import { useGameStore } from "@/game/state";
-import { Button } from "@/components/ui/button";
 
 export default function EndScreen() {
   const { setShopDialogOpen, setShowEndScreen } = useGameStore();

@@ -33,9 +33,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
-          // Base 10% chance + 1 % per strength 0.5 % per luck
-          const mantleChance = 0.1 + strength + luck * 0.005;
 
+          let mantleChance
+          if (state.extremeMode) {
+            mantleChance = 0.05 + strength + luck * 0.005;
+          } else {
+            // Base 10% chance + 1 % per strength 0.5 % per luck
+            mantleChance = 0.1 + strength + luck * 0.005;
+          }
+          
           const rand = Math.random();
           if (rand < mantleChance) {
             return {
@@ -53,10 +59,15 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The investigation goes wrong. One man screams in the mist and is never seen again. The others flee in terror.",
             };
           } else {
-            const deaths = Math.min(
+            let deaths
+            deaths = Math.min(
               4,
               2 + Math.floor(Math.random() * state.buildings.woodenHut),
             );
+            if (state.extremeMode) {
+              deaths += 1
+            }
+            
             return {
               ...killVillagers(state, deaths),
               _logMessage: `The pale figure moves with inhuman speed. ${deaths} men vanish into the mist, their screams echoing through the trees.`,
@@ -273,9 +284,6 @@ export const choiceEvents: Record<string, GameEvent> = {
               currentPopulation,
             );
             const deathResult = killVillagers(state, minimalDeaths);
-
-            // Give bone necklace if they don't have it
-            const giveNecklace = !state.clothing.bone_necklace;
 
             return {
               ...deathResult,

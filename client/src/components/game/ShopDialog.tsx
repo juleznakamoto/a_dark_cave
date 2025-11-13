@@ -659,7 +659,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                   {item.name}
                                   {isExtremeModeItem && (
                                     <span className="text-md  font-medium  ml-2">
-                                      (to play {isActivated ? 'deactivate and ' : 'activate and '}start a new game)
+                                      (to play activate and start a new game)
                                     </span>
                                   )}
                                 </span>

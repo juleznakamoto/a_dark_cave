@@ -207,7 +207,7 @@ const defaultGameState: GameState = {
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
   extremeMode: false,
-  // Initialize game loop state
+  extremeModeInt: 0,
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
@@ -526,7 +526,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
       message: extremeModeActivated 
-        ? "A dark cave. The air is cold and damp. You barely see the shapes around you. Something feels different... more dangerous."
+        ? "A dark cave. The air is cold and damp. You barely see the shapes around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
       type: "system",
