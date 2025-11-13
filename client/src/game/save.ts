@@ -28,7 +28,7 @@ async function getDB() {
   }
 }
 
-export async function saveGame(gameState: GameState): Promise<void> {
+export async function saveGame(gameState: GameState, playTime: number = 0): Promise<void> {
   try {
     const db = await getDB();
 
@@ -42,6 +42,7 @@ export async function saveGame(gameState: GameState): Promise<void> {
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
+      playTime: playTime,
     };
 
     // Save locally first (most important)
@@ -82,31 +83,32 @@ export async function loadGame(): Promise<GameState | null> {
       try {
         const cloudSave = await loadGameFromSupabase();
         
-        // Compare timestamps and use the most recent save
+        // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
-          const cloudTimestamp = cloudSave.lastSaved || 0;
-          const localTimestamp = localSave.timestamp || 0;
+          const cloudPlayTime = cloudSave.playTime || 0;
+          const localPlayTime = localSave.playTime || 0;
           
           if (import.meta.env.DEV) {
-            console.log('Comparing saves - Cloud:', new Date(cloudTimestamp), 'Local:', new Date(localTimestamp));
+            console.log('Comparing saves - Cloud playTime:', cloudPlayTime, 'Local playTime:', localPlayTime);
           }
           
-          // Use whichever is more recent
-          if (cloudTimestamp > localTimestamp) {
+          // Use whichever has longer play time
+          if (cloudPlayTime > localPlayTime) {
             if (import.meta.env.DEV) {
-              console.log('Using cloud save (more recent)');
+              console.log('Using cloud save (longer play time)');
             }
             // Update local with cloud save
             await db.put('saves', {
               gameState: cloudSave,
               timestamp: Date.now(),
+              playTime: cloudPlayTime,
             }, SAVE_KEY);
             return cloudSave;
           } else {
             if (import.meta.env.DEV) {
-              console.log('Using local save (more recent), syncing to cloud');
+              console.log('Using local save (longer play time), syncing to cloud');
             }
-            // Local is more recent, sync it to cloud
+            // Local has longer play time, sync it to cloud
             await saveGameToSupabase(localSave.gameState);
             return localSave.gameState;
           }
@@ -118,6 +120,7 @@ export async function loadGame(): Promise<GameState | null> {
           await db.put('saves', {
             gameState: cloudSave,
             timestamp: Date.now(),
+            playTime: cloudSave.playTime || 0,
           }, SAVE_KEY);
           return cloudSave;
         } else if (localSave) {

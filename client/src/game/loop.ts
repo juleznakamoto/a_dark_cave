@@ -22,6 +22,7 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
+let playTimeAccumulator = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 
 export function startGameLoop() {
@@ -127,6 +128,9 @@ export function startGameLoop() {
         // Set to 100% before resetting
         useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
+        
+        // Accumulate play time (15 seconds in milliseconds)
+        playTimeAccumulator += PRODUCTION_INTERVAL;
 
         // Reset to 0 after a brief moment to ensure 100% is visible
         if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
@@ -493,7 +497,8 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    await saveGame(gameState);
+    // Add accumulated play time to the save
+    await saveGame(gameState, playTimeAccumulator);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
   } catch (error) {
