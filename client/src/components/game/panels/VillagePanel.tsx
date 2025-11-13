@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import { useGameStore } from "@/game/state";
 import {
   gameActions,
@@ -86,6 +86,7 @@ export default function VillagePanel() {
         { id: "buildShrine", label: "Shrine" },
         { id: "buildTemple", label: "Temple" },
         { id: "buildSanctum", label: "Sanctum" },
+        { id: "buildBlackMonolith", label: "Black Monolith" },
         { id: "buildGreatCabin", label: "Great Cabin" },
         { id: "buildTimberMill", label: "Timber Mill" },
         { id: "buildQuarry", label: "Quarry" },
@@ -307,7 +308,8 @@ export default function VillagePanel() {
         <div className="flex items-center gap-1">
           <Button
             onMouseDown={() =>
-              currentCount > 0 && startHold(() => unassignVillager(jobId), false)
+              currentCount > 0 &&
+              startHold(() => unassignVillager(jobId), false)
             }
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
@@ -327,7 +329,8 @@ export default function VillagePanel() {
           </div>
           <Button
             onMouseDown={() =>
-              villagers.free > 0 && startHold(() => assignVillager(jobId), false)
+              villagers.free > 0 &&
+              startHold(() => assignVillager(jobId), false)
             }
             onMouseUp={() => stopHold(false)}
             onMouseLeave={() => stopHold(false)}
