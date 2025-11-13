@@ -207,7 +207,7 @@ const defaultGameState: GameState = {
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
   cruelMode: false,
-  CM: 0,
+  state.CM: 0,
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
@@ -506,7 +506,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
       cruelMode: cruelModeActivated,
-      CM: cruelModeActivated ? 1 : 0,
+      state.CM: cruelModeActivated ? 1 : 0,
       activatedPurchases: currentActivatedPurchases,
       feastPurchases: currentFeastPurchases,
       effects: calculateTotalEffects(defaultGameState),
@@ -553,7 +553,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
         cruelMode: savedState.cruelMode !== undefined ? savedState.cruelMode : false,
-        CM: savedState.CM !== undefined ? savedState.CM : 0,
+        state.CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
         feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly
