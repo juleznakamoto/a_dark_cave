@@ -167,7 +167,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   extreme_mode: {
     id: 'extreme_mode',
     name: 'Extreme Mode',
-    description: 'Unlock Extreme Mode for your next game - face harder challenges and tougher enemies',
+    description: 'Experience a cruel world, with more events, more items and deadlier foes. Endure, or vanish.',
     price: 199, // 1.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,

@@ -36,8 +36,8 @@ export default function EndScreen() {
         subtitle="At least for now... You finished the first chapter. Feel free to play again or try Extreme Mode."
         buttons={{
           primary: {
-            text: "Play Again",
-            onClick: handlePlayAgain,
+            text: "Extreme Mode",
+            onClick: handleExtremeMode,
           },
           secondary: {
             text: "Close",
@@ -45,15 +45,6 @@ export default function EndScreen() {
           },
         }}
       />
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-        <Button
-          onClick={handleExtremeMode}
-          variant="outline"
-          className="bg-red-950/80 text-red-100 border-red-600 hover:bg-red-900/80 hover:text-red-50"
-        >
-          ⚠ Extreme Mode
-        </Button>
-      </div>
     </div>
   );
 }
