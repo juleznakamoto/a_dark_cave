@@ -84,8 +84,8 @@ import { createServer } from "http";
 
   app.post("/api/payment/verify", async (req, res) => {
     try {
-      const { paymentIntentId } = req.body;
-      const result = await verifyPayment(paymentIntentId);
+      const { paymentIntentId, userId } = req.body;
+      const result = await verifyPayment(paymentIntentId, userId);
       res.json(result);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
