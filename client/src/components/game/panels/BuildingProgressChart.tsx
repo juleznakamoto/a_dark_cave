@@ -157,6 +157,12 @@ export default function BuildingProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Wizard Tower",
       },
+      {
+        buildingType: "blackMonolith",
+        maxCount: 1,
+        color: tailwindToHex("gray-400/80"),
+        label: "Black Monolith",
+      },
     ],
     // Fifth ring: Fortifications
     [

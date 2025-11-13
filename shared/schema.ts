@@ -70,6 +70,7 @@ export const gameStateSchema = z.object({
       portalBlasted: z.boolean().default(false),
       firstWolfAttack: z.boolean().default(false),
       hasTraps: z.boolean().default(false),
+      monolithUnlocked: z.boolean().default(false),
     })
     .default({}),
   schematics: z
@@ -210,6 +211,7 @@ export const gameStateSchema = z.object({
       fortifiedMoat: z.number().default(0),
       wizardTower: z.number().default(0),
       traps: z.number().default(0),
+      blackMonolith: z.number().default(0),
     })
     .default({}),
   villagers: z
@@ -234,6 +236,7 @@ export const gameStateSchema = z.object({
   story: z
     .object({
       seen: z.record(z.boolean()).default({}),
+      animalsSacrificeLevel: z.number().default(0),
     })
     .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),

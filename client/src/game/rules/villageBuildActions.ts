@@ -1222,6 +1222,35 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  buildBlackMonolith: {
+    id: "buildBlackMonolith",
+    label: "Black Monolith",
+    description: "A towering dark monument where animal sacrifices appease the creeping madness",
+    tooltipEffects: ["-5 Madness"],
+    building: true,
+    show_when: {
+      1: {
+        "flags.monolithUnlocked": true,
+        "buildings.blackMonolith": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.adamant": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.blackMonolith": 1,
+        "story.seen.hasBlackMonolith": true,
+      },
+    },
+    statsEffects: {
+      madness: -5,
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -2050,4 +2079,29 @@ export function handleBuildTraps(
   }
 
   return trapsResult;
+}
+
+export function handleBuildBlackMonolith(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const monolithResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildBlackMonolith",
+    "blackMonolith",
+  );
+
+  // Add monolith completion message
+  if (state.buildings.blackMonolith === 0) {
+    monolithResult.logEntries!.push({
+      id: `black-monolith-built-${Date.now()}`,
+      message:
+        "The Black Monolith rises from the village center, a towering monument of dark adamant. Its surface seems to drink in the light, and the villagers gather around it with reverence and fear.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return monolithResult;
 }

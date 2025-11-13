@@ -7,12 +7,15 @@ import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions } from "./villageBuildActions";
+import { villageBuildActions, handleBuildBlackMonolith } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
   getBoneTotemsCost,
   getLeatherTotemsCost,
+  handleAnimals,
+  handleBoneTotems,
+  handleLeatherTotems,
 } from "./forestSacrificeActions";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
@@ -23,6 +26,25 @@ import {
   getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
   getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
 } from "./effectsCalculation";
+
+// Action handlers map
+const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
+  ...villageBuildActions.handlers,
+  ...caveExploreActions.handlers,
+  ...caveCraftTools.handlers,
+  ...caveCraftResources.handlers,
+  ...caveCraftWeapons.handlers,
+  ...caveMineActions.handlers,
+  ...forestScoutActions.handlers,
+  ...forestSacrificeActions.handlers,
+  ...forestTradeActions.handlers,
+  // Add new handlers here
+  buildBlackMonolith: handleBuildBlackMonolith,
+  animals: handleAnimals,
+  boneTotems: handleBoneTotems,
+  leatherTotems: handleLeatherTotems,
+};
+
 
 // Combine all actions
 export const gameActions: Record<string, Action> = {
@@ -35,6 +57,9 @@ export const gameActions: Record<string, Action> = {
   ...forestScoutActions,
   ...forestSacrificeActions,
   ...forestTradeActions,
+  // Add new actions here
+  buildBlackMonolith: villageBuildActions.buildBlackMonolith,
+  animals: forestSacrificeActions.animals,
 };
 
 // Utility function to get the next building level
@@ -65,6 +90,7 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildWatchtower: "watchtower",
     buildPalisades: "palisades",
     buildFortifiedMoat: "fortifiedMoat", // Added Fortified Moat
+    buildBlackMonolith: "blackMonolith", // Added Black Monolith
   };
 
   const buildingKey = buildingMap[actionId];
@@ -246,6 +272,15 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
   if (actionId === "leatherTotems") {
     const dynamicCost = getLeatherTotemsCost(state);
     return (state.resources.leather_totem || 0) >= dynamicCost;
+  }
+
+  // Handle dynamic cost for animals sacrifice
+  if (actionId === "animals") {
+    // Sacrifice has 10 steps, each costing food and reducing madness.
+    // The cost is dynamic based on the current step.
+    const currentStep = state.sacrifices?.forest?.animals?.step || 1;
+    const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
+    return (state.resources.food || 0) >= foodCost;
   }
 
   // Check cooldown first
@@ -463,7 +498,16 @@ export const applyActionEffects = (
           if (actionId === "boneTotems" && path === "resources.bone_totem") {
             const dynamicCost = getBoneTotemsCost(state);
             current[finalKey] = (state.resources.bone_totem || 0) - dynamicCost;
-          } else {
+          } else if (actionId === "leatherTotems" && path === "resources.leather_totem") {
+            const dynamicCost = getLeatherTotemsCost(state);
+            current[finalKey] = (state.resources.leather_totem || 0) - dynamicCost;
+          } else if (actionId === "animals" && path === "resources.food") {
+            // Dynamic cost for animals sacrifice
+            const currentStep = state.sacrifices?.forest?.animals?.step || 1;
+            const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
+            current[finalKey] = (state.resources.food || 0) - foodCost;
+          }
+           else {
             current[finalKey] = (current[finalKey] || 0) - adjustedCost;
           }
         }
@@ -618,7 +662,7 @@ export const applyActionEffects = (
             const event =
               caveEvents[probabilityEffect.eventId] ||
               huntEvents[probabilityEffect.eventId];
-            
+
             // Ensure the event exists and hasn't been seen before
             if (event && !state.story.seen[probabilityEffect.eventId]) {
               // Trigger the cave event instead of directly applying the effect
@@ -663,7 +707,12 @@ export const applyActionEffects = (
               }
             }
           } else if (typeof probabilityEffect.value === "number") {
-            if (pathParts[0] === "resources") {
+            // Apply madness reduction for monolith sacrifice
+            if (actionId === "animals" && path === "madness") {
+              const currentStep = state.sacrifices?.forest?.animals?.step || 1;
+              const madnessReduction = 1 + Math.floor((currentStep - 1) / 2); // -1, -1, -2, -2, -3, -3...
+              current[finalKey] = (state.madness || 0) - madnessReduction;
+            } else if (pathParts[0] === "resources") {
               current[finalKey] =
                 (state.resources[finalKey as keyof typeof state.resources] ||
                   0) + probabilityEffect.value;
@@ -701,7 +750,11 @@ export const applyActionEffects = (
           current[finalKey] =
             (state.resources[finalKey as keyof typeof state.resources] || 0) +
             adjustedEffect;
-        } else {
+        } else if (path === "madness") {
+          // Handle madness effect (e.g., from building the monolith)
+          current[finalKey] = (state.madness || 0) + effect;
+        }
+         else {
           current[finalKey] = effect;
         }
       } else if (typeof effect === "boolean") {
@@ -789,6 +842,13 @@ export function getActionCostDisplay(
     return `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`;
   }
 
+  // Handle dynamic cost for animals sacrifice
+  if (actionId === "animals") {
+    const currentStep = state.sacrifices?.forest?.animals?.step || 1;
+    const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
+    return `-${foodCost} Food`;
+  }
+
   const action = gameActions[actionId];
   if (!action?.cost) return "";
 
@@ -855,6 +915,19 @@ export function getActionCostBreakdown(
       {
         text: `-${dynamicCost} Leather Totem${dynamicCost !== 1 ? "s" : ""}`,
         satisfied: currentAmount >= dynamicCost,
+      },
+    ];
+  }
+
+  // Handle dynamic cost for animals sacrifice
+  if (actionId === "animals") {
+    const currentStep = state.sacrifices?.forest?.animals?.step || 1;
+    const foodCost = 500 + (currentStep - 1) * 500; // 500, 1000, 1500...
+    const currentFood = state.resources.food || 0;
+    return [
+      {
+        text: `-${foodCost} Food`,
+        satisfied: currentFood >= foodCost,
       },
     ];
   }
@@ -950,6 +1023,3 @@ export function getActionCostBreakdown(
 
   return breakdown;
 }
-
-// Export getCostText as an alias for getActionCostDisplay for backward compatibility
-export const getCostText = getActionCostDisplay;

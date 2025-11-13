@@ -512,6 +512,21 @@ export const calculateTotalEffects = (state: GameState) => {
     }
   }
 
+  // Add Black Monolith madness reduction (applies independently)
+  if (state.buildings.blackMonolith > 0) {
+    const buildAction = villageBuildActions.buildBlackMonolith;
+    if (buildAction?.statsEffects?.madness) {
+      effects.madness_reduction.blackMonolith_madness = buildAction.statsEffects.madness;
+    }
+    
+    // Add madness reduction from animal sacrifices
+    const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
+    if (sacrificeLevel > 0) {
+      const sacrificeMadnessReduction = Math.min(sacrificeLevel * -1, -10);
+      effects.madness_reduction.animals_sacrifice_madness = sacrificeMadnessReduction;
+    }
+  }
+
   // Apply knowledge bonus from highest tier building only
   // Order by priority: scriptorium > clerksHut
   const knowledgePriority = ["scriptorium", "clerksHut"];

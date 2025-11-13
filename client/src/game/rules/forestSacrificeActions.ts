@@ -46,6 +46,140 @@ export const forestSacrificeActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  animals: {
+    id: "animals",
+    label: "Animals",
+    show_when: {
+      1: {
+        "buildings.blackMonolith": 1,
+      },
+      2: {
+        "buildings.blackMonolith": 1,
+      },
+      3: {
+        "buildings.blackMonolith": 1,
+      },
+      4: {
+        "buildings.blackMonolith": 1,
+      },
+      5: {
+        "buildings.blackMonolith": 1,
+      },
+      6: {
+        "buildings.blackMonolith": 1,
+      },
+      7: {
+        "buildings.blackMonolith": 1,
+      },
+      8: {
+        "buildings.blackMonolith": 1,
+      },
+      9: {
+        "buildings.blackMonolith": 1,
+      },
+      10: {
+        "buildings.blackMonolith": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.food": 500,
+      },
+      2: {
+        "resources.food": 1000,
+      },
+      3: {
+        "resources.food": 1500,
+      },
+      4: {
+        "resources.food": 2000,
+      },
+      5: {
+        "resources.food": 2500,
+      },
+      6: {
+        "resources.food": 3000,
+      },
+      7: {
+        "resources.food": 3500,
+      },
+      8: {
+        "resources.food": 4000,
+      },
+      9: {
+        "resources.food": 4500,
+      },
+      10: {
+        "resources.food": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "story.seen.animalsSacrificeLevel": 1,
+      },
+      2: {
+        "story.seen.animalsSacrificeLevel": 2,
+      },
+      3: {
+        "story.seen.animalsSacrificeLevel": 3,
+      },
+      4: {
+        "story.seen.animalsSacrificeLevel": 4,
+      },
+      5: {
+        "story.seen.animalsSacrificeLevel": 5,
+      },
+      6: {
+        "story.seen.animalsSacrificeLevel": 6,
+      },
+      7: {
+        "story.seen.animalsSacrificeLevel": 7,
+      },
+      8: {
+        "story.seen.animalsSacrificeLevel": 8,
+      },
+      9: {
+        "story.seen.animalsSacrificeLevel": 9,
+      },
+      10: {
+        "story.seen.animalsSacrificeLevel": 10,
+      },
+    },
+    statsEffects: {
+      1: {
+        madness: -1,
+      },
+      2: {
+        madness: -1,
+      },
+      3: {
+        madness: -1,
+      },
+      4: {
+        madness: -1,
+      },
+      5: {
+        madness: -1,
+      },
+      6: {
+        madness: -1,
+      },
+      7: {
+        madness: -1,
+      },
+      8: {
+        madness: -1,
+      },
+      9: {
+        madness: -1,
+      },
+      10: {
+        madness: -1,
+      },
+    },
+    cooldown: 60,
+  },
 };
 
 // Helper function to handle totem sacrifice logic
@@ -212,4 +346,63 @@ export function handleLeatherTotems(
       bonusPerUse: 0.01 - CM * 0.005, // 1%
     },
   );
+}
+
+export function handleAnimals(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const currentLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
+  const nextLevel = currentLevel + 1;
+
+  if (nextLevel > 10) {
+    return result;
+  }
+
+  const action = forestSacrificeActions.animals;
+  const actionCosts = action?.cost?.[nextLevel];
+  const actionEffects = action?.effects?.[nextLevel];
+  const statsEffects = action?.statsEffects?.[nextLevel];
+
+  if (!actionEffects || !actionCosts) {
+    return result;
+  }
+
+  // Apply resource costs
+  const newResources = { ...state.resources };
+  for (const [path, cost] of Object.entries(actionCosts) as [string, number][]) {
+    if (path.startsWith("resources.")) {
+      const resource = path.split(".")[1] as keyof typeof newResources;
+      newResources[resource] -= cost;
+    }
+  }
+
+  result.stateUpdates.resources = newResources;
+
+  // Apply effects
+  if (!result.stateUpdates.story) {
+    result.stateUpdates.story = { ...state.story };
+  }
+  if (!result.stateUpdates.story.seen) {
+    result.stateUpdates.story.seen = { ...state.story.seen };
+  }
+  result.stateUpdates.story.seen.animalsSacrificeLevel = nextLevel;
+
+  // Apply madness reduction
+  if (statsEffects && statsEffects.madness !== undefined) {
+    if (!result.stateUpdates.stats) {
+      result.stateUpdates.stats = { ...state.stats };
+    }
+    result.stateUpdates.stats.madness = (state.stats.madness || 0) + statsEffects.madness;
+  }
+
+  // Add log entry
+  result.logEntries!.push({
+    id: `animals-sacrifice-${nextLevel}-${Date.now()}`,
+    message: `Animals are led to the Black Monolith and sacrificed. The dark stone seems to pulse with satisfaction, and the madness plaguing your mind recedes slightly.`,
+    timestamp: Date.now(),
+    type: "system",
+  });
+
+  return result;
 }
