@@ -341,7 +341,7 @@ function handleStarvationCheck() {
     // 5% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05 + state.EM * 0.025) {
+      if (Math.random() < 0.05 + state.CM * 0.025) {
         starvationDeaths++;
       }
     }
@@ -384,7 +384,7 @@ function handleFreezingCheck() {
     // 5% chance for each villager to die from cold
     let freezingDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
-      if (Math.random() < 0.05 + state.EM * 0.025) {
+      if (Math.random() < 0.05 + state.CM * 0.025) {
         freezingDeaths++;
       }
     }
@@ -430,7 +430,7 @@ function handleMadnessCheck() {
   if (totalMadness <= 0) return;
 
   // Determine probability and possible death counts based on madness level
-  let probability = 0 + state.EM * 0.01;
+  let probability = 0 + state.CM * 0.01;
   if (totalMadness <= 10) {
     probability += 0.01;
   } else if (totalMadness <= 20) {
@@ -514,7 +514,7 @@ function handleStrangerApproach() {
   if (currentPopulation >= maxPopulation) return;
 
   // Calculate probability based on your specifications
-  let probability = 0.1 - state.EM * 0.05; // 10% base probability
+  let probability = 0.1 - state.CM * 0.05; // 10% base probability
 
   // +2.0% for each wooden hut -> 20 %
   probability += state.buildings.woodenHut * 0.02;

@@ -24,7 +24,7 @@ export const forestScoutActions: Record<string, Action> = {
       "tools.blacksmith_hammer": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + stoneHuts * 0.01 - state.EM * 0.005; // Base 0.75% + 1% per stone hut
+          let prob = 0.0075 + stoneHuts * 0.01 - CM * 0.005; // Base 0.75% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -37,7 +37,7 @@ export const forestScoutActions: Record<string, Action> = {
       "clothing.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + stoneHuts * 0.01 - state.EM * 0.0025; // Base 0.5% + 1% per stone hut
+          let prob = 0.005 + stoneHuts * 0.01 - CM * 0.0025; // Base 0.5% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -150,23 +150,23 @@ export function handleLayTrap(
 
   // Calculate success based on luck
   const luck = getTotalLuck(state);
-  const successChance = 0.25 + luck * 0.01 - state.EM * 0.05;
+  const successChance = 0.25 + luck * 0.01 - CM * 0.05;
   const rand = Math.random();
 
   if (rand < successChance) {
     // Success: Giant bear trapped - now determine combat outcome based on strength
     const strength = state.stats.strength || 0;
-    const fightChance = 0.1 + strength * 0.02 - state.EM * 0.05; // 10% base + 2% per strength point
+    const fightChance = 0.1 + strength * 0.02 - CM * 0.05; // 10% base + 2% per strength point
     const fightRand = Math.random();
 
     let villagerDeaths: number;
 
     if (fightRand < fightChance) {
       // Victory with minimal or no casualties (0-2 deaths)
-      villagerDeaths = Math.floor(Math.random() * 3)+state.EM*1; // 0-2 deaths
+      villagerDeaths = Math.floor(Math.random() * 3)+CM*1; // 0-2 deaths
     } else {
       // Defeat with heavy casualties (3-6 deaths)
-      villagerDeaths = Math.floor(Math.random() * 4) + 3+state.EM*2; // 3-6 deaths
+      villagerDeaths = Math.floor(Math.random() * 4) + 3+CM*2; // 3-6 deaths
     }
 
     const deathResult = killVillagers(state, villagerDeaths);
@@ -239,7 +239,7 @@ export function handleCastleRuins(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 10% base + (strength + knowledge)/2%
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-CM*0.05; // 10% base + (strength + knowledge)/2%
 
   const rand = Math.random();
 
@@ -279,9 +279,9 @@ export function handleCastleRuins(
     // Failure: Undead attack scenarios
     const failureRand = Math.random();
 
-    if (failureRand < 0.5-state.EM*0.1) {
+    if (failureRand < 0.5-CM*0.1) {
       // Scenario 1: Minor undead attack (1-4 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 4) + 1+state.EM*2; // 1-4 deaths
+      const villagerDeaths = Math.floor(Math.random() * 4) + 1+CM*2; // 1-4 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -297,7 +297,7 @@ export function handleCastleRuins(
       });
     } else {
       // Scenario 2: Major undead attack (5-10 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 6) + 5+state.EM*4; // 5-10 deaths
+      const villagerDeaths = Math.floor(Math.random() * 6) + 5+CM*4; // 5-10 deaths
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -327,7 +327,7 @@ export function handleHillGrave(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 15% base + (strength + knowledge)/2%
+  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01-CM*0.05; // 15% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -365,7 +365,7 @@ export function handleHillGrave(
     });
   } else {
     // Failure: Villagers die to traps (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.EM*3; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5+CM*3; // 5-15 deaths
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -394,7 +394,7 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.EM*0.05; // 10% base + (strength + knowledge)/2%
+  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-CM*0.05; // 10% base + (strength + knowledge)/2%
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -432,7 +432,7 @@ export function handleSunkenTemple(
     });
   } else {
     // Failure: Villagers die to swamp creatures (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.EM*3; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 11) + 5+CM*3; // 5-15 deaths
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 

@@ -132,11 +132,11 @@ export default function VillagePanel() {
       label: "Sulfur Miner",
       showWhen: () => buildings.deepeningPit >= 1,
     },
-    {
-      id: "silver_miner",
-      label: "Silver Miner",
-      showWhen: () => buildings.deepeningPit >= 1,
-    },
+    // {
+    //   id: "silver_miner",
+    //   label: "Silver Miner",
+    //   showWhen: () => buildings.deepeningPit >= 1,
+    // },
     {
       id: "obsidian_miner",
       label: "Obsidian Miner",

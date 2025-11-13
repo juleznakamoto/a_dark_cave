@@ -26,7 +26,7 @@ export function calculateBastionStats(state: GameState): BastionStats {
 
   // Bastion
   if (state.buildings.bastion > 0) {
-    const defenseBonus = Math.floor(5 * bastionMultiplier);
+    const defenseBonus = Math.floor(10 * bastionMultiplier);
     const attackBonus = Math.floor(5 * bastionMultiplier);
     const integrityBonus = Math.floor(40 * bastionMultiplier);
     

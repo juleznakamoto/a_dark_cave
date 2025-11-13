@@ -206,8 +206,8 @@ const defaultGameState: GameState = {
   },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
-  extremeMode: false,
-  EM: 0,
+  cruelMode: false,
+  CM: 0,
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,
@@ -495,7 +495,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentFeastPurchases = get().feastPurchases || {};
     
     // Check if Extreme Mode was activated
-    const extremeModeActivated = currentActivatedPurchases['extreme_mode'] || false;
+    const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
 
     const resetState = {
       ...defaultGameState,
@@ -505,8 +505,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
-      extremeMode: extremeModeActivated,
-      EM: extremeModeActivated ? 1 : 0,
+      cruelMode: cruelModeActivated,
+      CM: cruelModeActivated ? 1 : 0,
       activatedPurchases: currentActivatedPurchases,
       feastPurchases: currentFeastPurchases,
       effects: calculateTotalEffects(defaultGameState),
@@ -526,7 +526,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: extremeModeActivated 
+      message: cruelModeActivated 
         ? "A dark cave. The air is cold and damp. You barely see the shapes around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
@@ -552,8 +552,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
-        extremeMode: savedState.extremeMode !== undefined ? savedState.extremeMode : false,
-        EM: savedState.EM !== undefined ? savedState.EM : 0,
+        cruelMode: savedState.cruelMode !== undefined ? savedState.cruelMode : false,
+        CM: savedState.CM !== undefined ? savedState.CM : 0,
         activatedPurchases: savedState.activatedPurchases || {},
         feastPurchases: savedState.feastPurchases || {},
         // Ensure loop state is loaded correctly

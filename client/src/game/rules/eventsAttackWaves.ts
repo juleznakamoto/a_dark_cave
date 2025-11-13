@@ -49,8 +49,8 @@ function handleDefeat(
     (sum, count) => sum + (count || 0),
     0,
   );
-  const minCasualities = Math.floor(
-    Math.random() * 0.75 * maxCasualties + 0.25 * maxCasualties+state.EM*5,
+  const minCasualities = Math.ceil(
+    Math.random() * 0.75 * maxCasualties + 0.25 * maxCasualties+CM*5,
   );
   const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);
@@ -59,7 +59,7 @@ function handleDefeat(
   const damagedBuildings: string[] = [];
 
   // Probability increases with multiplier (from 15% to 90%)
-  const baseChance = Math.min(DamageBuildingMultiplier * 0.15+state.EM*0.05, 0.9);
+  const baseChance = Math.min(DamageBuildingMultiplier * 0.15+CM*0.05, 0.9);
 
   // helper function for random check
   const chance = (prob: number) => Math.random() < prob;
@@ -126,9 +126,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
-            attack: Math.floor(Math.random() * 6) + 15+state.EM*5,
-            maxHealth: 100+state.EM*50,
-            currentHealth: 100+state.EM*50,
+            attack: Math.ceil(Math.random() * 10) + 15+CM*5,
+            maxHealth: 150+CM*50,
+            currentHealth: 150+CM*50,
           },
           eventTitle: "The First Wave",
           eventMessage: FIRST_WAVE_MESSAGE,
@@ -168,9 +168,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
-            attack: Math.floor(Math.random() * 6) + 25+state.EM*5,
-            maxHealth: 150+state.EM*50,
-            currentHealth: 150+state.EM*50,
+            attack: Math.ceil(Math.random() * 10) + 25+CM*5,
+            maxHealth: 200+CM*50,
+            currentHealth: 200+CM*50,
           },
           eventTitle: "The Second Wave",
           eventMessage: SECOND_WAVE_MESSAGE,
@@ -212,9 +212,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
-            attack: Math.floor(Math.random() * 6) + 35+state.EM*10,
-            maxHealth: 200+state.EM*100,
-            currentHealth: 200+state.EM*100,
+            attack: Math.ceil(Math.random() * 10) + 35+CM*10,
+            maxHealth: 250+CM*100,
+            currentHealth: 250+CM*100,
           },
           eventTitle: "The Third Wave",
           eventMessage: THIRD_WAVE_MESSAGE,
@@ -256,9 +256,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
-            attack: Math.floor(Math.random() * 6) + 45+state.EM*15,
-            maxHealth: 250+state.EM*150,
-            currentHealth: 250+state.EM*150,
+            attack: Math.ceil(Math.random() * 10) + 45+CM*15,
+            maxHealth: 300+CM*150,
+            currentHealth: 300+CM*150,
           },
           eventTitle: "The Fourth Wave",
           eventMessage: FOURTH_WAVE_MESSAGE,
@@ -300,9 +300,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",
-            attack: [55, 60, 65][Math.floor(Math.random() * 3)]+state.EM*20,
-            maxHealth: 500+state.EM*250,
-            currentHealth: 500+state.EM*250,
+            attack: [60, 65, 70][Math.ceil(Math.random() * 10)]+CM*20,
+            maxHealth: 600+CM*250,
+            currentHealth: 600+CM*250,
           },
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,

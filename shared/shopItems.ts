@@ -110,11 +110,11 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  extreme_mode: {
-    id: "extreme_mode",
+  cruel_mode: {
+    id: "_mode",
     name: "Extreme Mode",
     description:
-      "Experience a cruel world, with new events, new items and deadlier foes. Endure, or vanish.",
+      "Experience a cruel world, with an expanded story, new items, more lore and deadlier foes. Endure, or vanish.",
     price: 199, // 1.99 €
     rewards: {},
     canPurchaseMultipleTimes: false,

@@ -348,8 +348,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
-    // Handle Extreme Mode activation/deactivation
-    if (itemId === "extreme_mode") {
+    // Handle Cruel Mode activation/deactivation
+    if (itemId === "cruel_mode") {
       const isCurrentlyActivated = activatedPurchases[purchaseId] || false;
 
       // Toggle activation state
@@ -361,7 +361,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }));
 
       gameState.addLogEntry({
-        id: `toggle-extreme-mode-${Date.now()}`,
+        id: `toggle-cruel-mode-${Date.now()}`,
         message: isCurrentlyActivated
           ? "Extreme Mode deactivated. New games will use normal difficulty."
           : (item.activationMessage ||
@@ -647,7 +647,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           if (!item) return null;
 
                           const isActivated = activatedPurchases[itemId] || false;
-                          const isExtremeModeItem = itemId === "extreme_mode";
+                          const isExtremeModeItem = itemId === "cruel_mode";
 
                           return (
                             <div

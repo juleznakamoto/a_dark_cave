@@ -30,7 +30,7 @@ export default function GameFooter() {
     shopNotificationSeen,
     setShopNotificationSeen,
     shopNotificationVisible,
-    extremeMode,
+    cruelMode,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
@@ -202,17 +202,17 @@ export default function GameFooter() {
                 End Screen
               </Button>
             )}
-            {extremeMode && (
+            {cruelMode && (
               <TooltipProvider>
                 <Tooltip
-                  open={mobileTooltip.isTooltipOpen("extreme-mode-indicator")}
+                  open={mobileTooltip.isTooltipOpen("cruel-mode-indicator")}
                 >
                   <TooltipTrigger asChild>
                     <div
                       className="px-1 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick(
-                          "extreme-mode-indicator",
+                          "cruel-mode-indicator",
                           e,
                         )
                       }
