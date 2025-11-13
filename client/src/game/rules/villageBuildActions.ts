@@ -127,9 +127,6 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 100,
       },
     },
-    statsEffects: {
-      madness: 20,
-    },
     effects: {
       1: {
         "buildings.cabin": 1,
@@ -629,7 +626,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: -5,
+      madness: 25,
     },
     cooldown: 40,
   },

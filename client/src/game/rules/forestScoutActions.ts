@@ -24,7 +24,7 @@ export const forestScoutActions: Record<string, Action> = {
       "tools.blacksmith_hammer": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.0075 + stoneHuts * 0.01 - CM * 0.005; // Base 0.75% + 1% per stone hut
+          let prob = 0.0075 + stoneHuts * 0.01 - state.CM * 0.005; // Base 0.75% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -37,7 +37,7 @@ export const forestScoutActions: Record<string, Action> = {
       "clothing.red_mask": {
         probability: (state: any) => {
           const stoneHuts = state.buildings.stoneHut || 0;
-          let prob = 0.005 + stoneHuts * 0.01 - CM * 0.0025; // Base 0.5% + 1% per stone hut
+          let prob = 0.005 + stoneHuts * 0.01 - state.CM * 0.0025; // Base 0.5% + 1% per stone hut
           return prob;
         },
         value: true,
@@ -150,13 +150,13 @@ export function handleLayTrap(
 
   // Calculate success based on luck
   const luck = getTotalLuck(state);
-  const successChance = 0.25 + luck * 0.01 - CM * 0.05;
+  const successChance = 0.25 + luck * 0.01 - state.CM * 0.05;
   const rand = Math.random();
 
   if (rand < successChance) {
     // Success: Giant bear trapped - now determine combat outcome based on strength
     const strength = state.stats.strength || 0;
-    const fightChance = 0.1 + strength * 0.02 - CM * 0.05; // 10% base + 2% per strength point
+    const fightChance = 0.1 + strength * 0.02 - state.CM * 0.05; // 10% base + 2% per strength point
     const fightRand = Math.random();
 
     let villagerDeaths: number;

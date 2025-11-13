@@ -26,7 +26,7 @@ export const recurringEvents: Record<string, GameEvent> = {
           Math.min(
             state.resources.food,
             Math.ceil(Math.random() * state.buildings.woodenHut) * 25 +
-              CM * 100,
+              state.CM * 100,
           ),
       },
     }),

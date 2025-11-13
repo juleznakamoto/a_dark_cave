@@ -490,10 +490,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     id: "monolithDemand",
     condition: (state: GameState) => getTotalMadness(state) >= 20 && !state.events.monolithDemand && !state.buildings.blackMonolith,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "Demand for the Monolith",
     message:
-      "The villagers gather in the center of the settlement, their eyes wild with fear and madness. They speak in unison: 'We must build a monolith, a monument to appease the darkness that creeps into our minds. Only through sacrifice of beasts can we find peace.' Their demand is absolute.",
+      "The villagers demand to build a monolith in the village center, a monument to appease the darkness that creeps into their minds. Through sacrifice of animals they want to find peace.",
     triggered: false,
     priority: 3,
     repeatable: false,

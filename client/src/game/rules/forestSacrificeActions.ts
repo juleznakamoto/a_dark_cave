@@ -321,8 +321,8 @@ export function handleBoneTotems(
       itemName: "Ring of Clarity",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a crystal-clear ring.",
-      baseProbability: 0.02 - CM * 0.01, // 2%
-      bonusPerUse: 0.01 - CM * 0.005, // 1%
+      baseProbability: 0.02 - state.CM * 0.01, // 2%
+      bonusPerUse: 0.01 - state.CM * 0.005, // 1%
     },
   );
 }
@@ -342,8 +342,8 @@ export function handleLeatherTotems(
       itemName: "Moon Bracelet",
       discoveryMessage:
         "Among the sacrifice offerings, you discover a white stone bracelet.",
-      baseProbability: 0.02 - CM * 0.01, // 2%
-      bonusPerUse: 0.01 - CM * 0.005, // 1%
+      baseProbability: 0.02 - state.CM * 0.01, // 2%
+      bonusPerUse: 0.01 - state.CM * 0.005, // 1%
     },
   );
 }
