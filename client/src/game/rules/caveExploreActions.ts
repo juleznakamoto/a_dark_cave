@@ -489,7 +489,6 @@ export function handleExploreCave(
 ): ActionResult {
   const effectUpdates = applyActionEffects("exploreCave", state);
 
-  // Apply cave explore multiplier and luck bonus to the resolved resource amounts
   applyCaveExplorationBonuses(state, "exploreCave", effectUpdates);
 
   // Handle any log messages from probability effects
@@ -514,7 +513,7 @@ export function handleExploreCave(
     result.logEntries!.push({
       id: `explore-cave-${Date.now()}`,
       message:
-        "The torchlight illuminates the cave walls. You gather resources scattered throughout the cavern. In the flickering light, you notice a path leading deeper into the caves.",
+        "The torchlight illuminates the cave walls. In the flickering light, you notice a path leading deeper into the caves.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -553,7 +552,7 @@ export function handleVentureDeeper(
     result.logEntries!.push({
       id: `venture-deeper-${Date.now()}`,
       message:
-        "The torchlight reveals deeper passages carved into the rock. The air grows colder as you descend.",
+        "The air grows colder as you descend the path deeper into the cave. The walls around you seem unnaturally smooth, as if shaped by someone.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -592,7 +591,7 @@ export function handleDescendFurther(
     result.logEntries!.push({
       id: `descend-further-${Date.now()}`,
       message:
-        "With the lantern casting a steady glow, you descend into deeper chambers. The walls shimmer with veins of precious metals.",
+        "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -631,7 +630,7 @@ export function handleExploreRuins(
     result.logEntries!.push({
       id: `explore-ruins-${Date.now()}`,
       message:
-        "Ancient ruins sprawl before you deep in the cave, their crumbling walls telling stories of a lost civilization.",
+        "At the end of the stairs, a vast cavern opens before you. In the dark lie the ruins of a lost city, the remains of a civilization long gone.",
       timestamp: Date.now(),
       type: "system",
     });

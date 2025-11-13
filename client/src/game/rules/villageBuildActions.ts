@@ -1015,19 +1015,19 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 3000,
       },
       6: {
-        "resources.stone": 3500,
-      },
-      7: {
         "resources.stone": 4000,
       },
-      8: {
-        "resources.stone": 4500,
-      },
-      9: {
+      7: {
         "resources.stone": 5000,
       },
+      8: {
+        "resources.stone": 6000,
+      },
+      9: {
+        "resources.stone": 7000,
+      },
       10: {
-        "resources.stone": 5500,
+        "resources.stone": 8000,
       },
     },
     effects: {
@@ -1199,7 +1199,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildTraps: {
     id: "buildTraps",
     label: "Traps",
-    description: "Traps around the village weakening attackers",
+    description: "Traps around the village weakening all attackers",
     tooltipEffects: [""],
     building: true,
     show_when: {
@@ -1210,7 +1210,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 500,
+        "resources.wood": 750,
         "resources.iron": 250,
       },
     },
