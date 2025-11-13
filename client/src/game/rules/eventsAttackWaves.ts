@@ -17,8 +17,8 @@ const FOURTH_WAVE_MESSAGE =
 const FIFTH_WAVE_MESSAGE =
   "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.";
 
-const VICTORY_MESSAGE =
-  "Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours!";
+const VICTORY_MESSAGE = (goldReward: number) =>
+  `Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours! You claim ${goldReward} gold from the fallen creatures.`;
 
 function createDefeatMessage(
   casualties: number,
@@ -133,6 +133,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           eventTitle: "The First Wave",
           eventMessage: FIRST_WAVE_MESSAGE,
           onVictory: () => ({
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 50,
+            },
             story: {
               ...state.story,
               seen: {
@@ -140,7 +144,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 firstWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE,
+            _logMessage: VICTORY_MESSAGE(50),
           }),
           onDefeat: () => handleDefeat(state, 1, 5),
         },
@@ -171,6 +175,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           eventTitle: "The Second Wave",
           eventMessage: SECOND_WAVE_MESSAGE,
           onVictory: () => ({
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 100,
+            },
             story: {
               ...state.story,
               seen: {
@@ -178,7 +186,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE,
+            _logMessage: VICTORY_MESSAGE(100),
           }),
           onDefeat: () => handleDefeat(state, 2, 10),
         },
@@ -211,6 +219,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           eventTitle: "The Third Wave",
           eventMessage: THIRD_WAVE_MESSAGE,
           onVictory: () => ({
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 150,
+            },
             story: {
               ...state.story,
               seen: {
@@ -218,7 +230,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE,
+            _logMessage: VICTORY_MESSAGE(150),
           }),
           onDefeat: () => handleDefeat(state, 3, 15),
         },
@@ -251,6 +263,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           eventTitle: "The Fourth Wave",
           eventMessage: FOURTH_WAVE_MESSAGE,
           onVictory: () => ({
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 200,
+            },
             story: {
               ...state.story,
               seen: {
@@ -258,7 +274,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE,
+            _logMessage: VICTORY_MESSAGE(200),
           }),
           onDefeat: () => handleDefeat(state, 4, 20),
         },
@@ -291,6 +307,10 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,
           onVictory: () => ({
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold + 250,
+            },
             story: {
               ...state.story,
               seen: {
@@ -299,7 +319,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond.",
+              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 250 gold from the fallen creatures.",
           }),
           onDefeat: () => handleDefeat(state, 5, 25),
         },
