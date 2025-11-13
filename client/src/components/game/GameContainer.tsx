@@ -12,7 +12,8 @@ import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
 import { useState, useEffect, useMemo } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
-import { Mountain, Trees, Castle, Landmark  } from "lucide-react";
+import { Mountain, Trees, Castle, Landmark } from "lucide-react";
+import { stopGameLoop } from "@/game/loop";
 
 export default function GameContainer() {
   const {
@@ -58,6 +59,13 @@ export default function GameContainer() {
     setPreviousFlags(flags);
   }, [flags, previousFlags]);
 
+  // Stop game loop when end screen is shown
+  useEffect(() => {
+    if (showEndScreen) {
+      stopGameLoop();
+    }
+  }, [showEndScreen]);
+
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = relics.odd_bracelet;
 
@@ -75,7 +83,7 @@ export default function GameContainer() {
     if (flags.villageUnlocked) {
       tabs.push({
         id: "village",
-        icon: <Landmark  />,
+        icon: <Landmark />,
         label: buildings.stoneHut >= 5 ? "The City" : "The Village",
         onClick: () => setActiveTab("village"),
       });
@@ -122,12 +130,12 @@ export default function GameContainer() {
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer */}
       {isPaused && (
-        <div 
+        <div
           className="fixed inset-0 bg-black/70 z-40 pointer-events-auto"
           style={{ bottom: '45px' }}
         />
       )}
-      
+
       {/* Event Log - Fixed Height at Top */}
       <div className="w-full overflow-hidden p-2 flex-shrink-0">
         <LogPanel />
@@ -144,72 +152,72 @@ export default function GameContainer() {
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
           <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0">
-              {useLimelightNav ? (
-                // Alternative LimelightNav design
-                <LimelightNav
-                  items={limelightNavItems}
-                  defaultActiveIndex={limelightNavItems.findIndex(item => item.id === activeTab)}
-                  onTabChange={(index) => {
-                    const selectedTab = limelightNavItems[index];
-                    if (selectedTab && selectedTab.onClick) {
-                      selectedTab.onClick();
-                    }
-                  }}
-                  className="bg-transparent border-0"
-                />
-              ) : (
-                // Standard button design
-                <div className="flex space-x-4">
+            {useLimelightNav ? (
+              // Alternative LimelightNav design
+              <LimelightNav
+                items={limelightNavItems}
+                defaultActiveIndex={limelightNavItems.findIndex(item => item.id === activeTab)}
+                onTabChange={(index) => {
+                  const selectedTab = limelightNavItems[index];
+                  if (selectedTab && selectedTab.onClick) {
+                    selectedTab.onClick();
+                  }
+                }}
+                className="bg-transparent border-0"
+              />
+            ) : (
+              // Standard button design
+              <div className="flex space-x-4">
+                <button
+                  className={`py-2 text-sm bg-transparent ${
+                    activeTab === "cave" ? "font-bold opacity-100" : "opacity-60"
+                  }`}
+                  onClick={() => setActiveTab("cave")}
+                  data-testid="tab-cave"
+                >
+                  Cave
+                </button>
+
+                {flags.villageUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
-                      activeTab === "cave" ? "font-bold opacity-100" : "opacity-60"
-                    }`}
-                    onClick={() => setActiveTab("cave")}
-                    data-testid="tab-cave"
+                      activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
+                    } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
+                    onClick={() => setActiveTab("village")}
+                    data-testid="tab-village"
                   >
-                    Cave
+                    {buildings.stoneHut >= 5 ? "City" : "Village"}
                   </button>
+                )}
 
-                  {flags.villageUnlocked && (
-                    <button
-                      className={`py-2 text-sm bg-transparent ${
-                        activeTab === "village" ? "font-bold opacity-100" : "opacity-60"
-                      } ${animatingTabs.has("village") ? "tab-fade-in" : ""}`}
-                      onClick={() => setActiveTab("village")}
-                      data-testid="tab-village"
-                    >
-                      {buildings.stoneHut >= 5 ? "City" : "Village"}
-                    </button>
-                  )}
+                {flags.forestUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
+                    } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
+                    onClick={() => setActiveTab("forest")}
+                    data-testid="tab-forest"
+                  >
+                    Forest
+                  </button>
+                )}
 
-                  {flags.forestUnlocked && (
-                    <button
-                      className={`py-2 text-sm bg-transparent ${
-                        activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
-                      } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
-                      onClick={() => setActiveTab("forest")}
-                      data-testid="tab-forest"
-                    >
-                      Forest
-                    </button>
-                  )}
+                {flags.bastionUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
+                    } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
+                    onClick={() => setActiveTab("bastion")}
+                    data-testid="tab-bastion"
+                  >
+                    Bastion
+                  </button>
+                )}
+              </div>
+            )}
+          </nav>
 
-                  {flags.bastionUnlocked && (
-                    <button
-                      className={`py-2 text-sm bg-transparent ${
-                        activeTab === "bastion" ? "font-bold opacity-100" : "opacity-60"
-                      } ${animatingTabs.has("bastion") ? "tab-fade-in" : ""}`}
-                      onClick={() => setActiveTab("bastion")}
-                      data-testid="tab-bastion"
-                    >
-                      Bastion
-                    </button>
-                  )}
-                </div>
-              )}
-            </nav>
-
-            {/* Action Panels */}
+          {/* Action Panels */}
           <div className="flex-1 overflow-auto pl-2 md:pl-4 min-h-0">
 
             {activeTab === "cave" && <CavePanel />}
