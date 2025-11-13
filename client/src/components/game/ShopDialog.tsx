@@ -662,6 +662,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 <span className="text-xs text-muted-foreground">
                                   {item.description}
                                 </span>
+                                {itemId === "extreme_mode" && (
+                                  <span className="text-xs text-muted-foreground italic mt-1">
+                                    (To play activate and start a new game)
+                                  </span>
+                                )}
                               </div>
                               <Button
                                 onClick={() =>
