@@ -237,7 +237,9 @@ export const choiceEvents: Record<string, GameEvent> = {
   cannibalRaid: {
     id: "cannibalRaid",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 9 && state.current_population > 10 && !state.story.seen.cannibalRaidVictory,
+      state.buildings.woodenHut >= 8 &&
+      state.current_population > 10 &&
+      !state.story.seen.cannibalRaidVictory,
     triggerType: "resource",
     timeProbability: 40,
     title: "Cannibal Raid",
@@ -252,15 +254,17 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Defend village",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
+          const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
 
           // Check for victory: 10% base chance + 1% per strength point
-          const victoryChance = 0.1 + strength * 0.01 - state.EM * 0.05;
+          const victoryChance =
+            0.1 + strength * 0.01 + traps * 0.1 - state.EM * 0.05;
 
           if (Math.random() < victoryChance) {
             // Victory - minimal losses
             const minimalDeaths = Math.min(
-              Math.floor(Math.random() * 2) + 1 + state.EM * 1,
+              Math.floor(Math.random() * 2) + state.EM * 1,
               state.current_population,
             );
             const deathResult = killVillagers(state, minimalDeaths);
@@ -287,16 +291,16 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // Defeat - casualties and resource loss
           // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
-          const casualtyChance = Math.max(
-            0.15 + state.EM * 0.05,
-            0.5 - strength * 0.01 + state.EM * 0.1,
-          );
+          const casualtyChance =
+            Math.max(0.15, 0.5 - strength * 0.01) -
+            traps * 0.1 +
+            state.EM * 0.1;
 
           let totalLost = 0;
 
           // Determine casualties
           const maxPotentialCasualties = Math.min(
-            4 + state.buildings.woodenHut + state.EM * 2,
+            4 + state.buildings.woodenHut - traps * 3 + state.EM * 2,
             state.current_population,
           );
 
@@ -358,16 +362,20 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Hide",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
+          const traps = state.buildings.traps;
           const luck = getTotalLuck(state);
           // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
           const casualtyChance =
-            Math.max(0.1, 0.3 - luck * 0.01) + state.EM * 0.05;
+            Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.EM * 0.05;
 
           let totalLost = 0;
 
           // Fewer potential casualties when hiding
           const maxPotentialCasualties = Math.min(
-            4 + Math.floor(state.buildings.woodenHut / 2) + state.EM * 1,
+            4 +
+              Math.floor(state.buildings.woodenHut / 2) -
+              traps * 2 +
+              state.EM * 2,
             state.current_population,
           );
 
@@ -424,9 +432,9 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 3 &&
       !state.clothing.alphas_hide &&
-      state.current_population > 1,
+      state.current_population > 10,
     triggerType: "resource",
-    timeProbability: 0.04,
+    timeProbability: 40,
     title: "Wolf Attack",
     message:
       "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle your village.",
@@ -440,15 +448,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           let victoryChance;
+          const traps = state.buildings.traps * 0.1;
           const strength = getTotalStrength(state);
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
           } else {
             // Check for victory: 15% base chance + 1% per strength point
-            // Traps increase victory chance by 15%
-            const trapsBonus = state.buildings.traps > 0 ? 0.15 : 0;
+            // Traps increase victory chance by 10%
             victoryChance =
-              0.15 + strength * 0.01 + trapsBonus - state.EM * 0.05;
+              0.15 + strength * 0.01 + traps * 0.1 - state.EM * 0.05;
           }
 
           if (Math.random() < victoryChance) {
@@ -464,10 +472,10 @@ export const choiceEvents: Record<string, GameEvent> = {
           }
 
           // Base chance of casualties (70%), reduced by 2% per strength point, minimum 20%
-          // Traps reduce death chance by 15%
-          const trapsCasualtyReduction = state.buildings.traps > 0 ? 0.15 : 0;
+          // Traps reduce death chance by 10%
           const casualtyChance =
-            Math.max(0.2, 0.6 - strength * 0.02 - trapsCasualtyReduction) +
+            Math.max(0.2, 0.6 - strength * 0.02) -
+            traps * 0.1 +
             state.EM * 0.05;
 
           let villagerDeaths = 0;
@@ -480,10 +488,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           let hutDestroyed = false;
 
           // Determine villager casualties
-          // Traps reduce max deaths by 1
-          const trapDeathReduction = state.buildings.traps > 0 ? 1 : 0;
+          // Traps reduce max deaths by 3
           const maxPotentialDeaths = Math.min(
-            4 + state.buildings.woodenHut + state.EM * 2 - trapDeathReduction,
+            4 + state.buildings.woodenHut + state.EM * 2 - traps * 3,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -494,7 +501,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // If 2+ villagers die and there's a hut, 25% chance to destroy it
           if (villagerDeaths >= 2 && state.buildings.woodenHut > 0) {
-            if (Math.random() < 0.25 + state.EM * 0.1) {
+            if (Math.random() < 0.25 - traps * 0.05 + state.EM * 0.1) {
               hutDestroyed = true;
             }
           }
@@ -524,7 +531,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           if (!state.story.seen.firstWolfAttack)
             message +=
-              " Villagers suggest to lay traps around the village to protect better from wolfs and other foes."
+              " Villagers suggest to lay traps around the village to protect better from wolfs and other foes.";
 
           return {
             ...deathResult,
@@ -554,9 +561,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Hide",
         relevant_stats: ["luck"],
         effect: (state: GameState) => {
+          const traps = state.buildings.traps * 0.1;
           const luck = getTotalLuck(state);
           const casualtyChance =
-            Math.max(0.1, 0.35 - luck * 0.02) + state.EM * 0.05;
+            Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.EM * 0.05;
 
           let villagerDeaths = 0;
           let foodLoss = Math.min(
@@ -569,7 +577,7 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           // Determine villager casualties
           const maxPotentialDeaths = Math.min(
-            2 + state.buildings.woodenHut / 2 + state.EM * 2,
+            2 + state.buildings.woodenHut / 2 - traps * 1 + state.EM * 2,
             state.current_population,
           );
           for (let i = 0; i < maxPotentialDeaths; i++) {
@@ -772,11 +780,15 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "turnAway",
         label: "Turn away",
         effect: (state: GameState) => {
+          const traps = state.buildings.traps;
           const villagerDeaths = Math.floor(
-            Math.random() * state.buildings.woodenHut + 1 + state.EM * 2,
+            Math.random() * state.buildings.woodenHut +
+              1 -
+              traps * 2 +
+              state.EM * 2,
           );
           const hutDestruction =
-            Math.floor(Math.random() * 2) + 1 + state.EM * 1;
+            Math.ceil(Math.random() * 2) + state.EM * 1;
 
           const deathResult = killVillagers(state, villagerDeaths);
 

@@ -133,6 +133,12 @@ export default function BuildingProgressChart() {
     // Fourth ring: Advanced buildings
     [
       {
+        buildingType: "traps",
+        maxCount: 1,
+        color: tailwindToHex("gray-400/80"),
+        label: "Traps",
+      },
+      {
         buildingType: "altar",
         maxCount: 4,
         color: tailwindToHex("gray-400/80"),
