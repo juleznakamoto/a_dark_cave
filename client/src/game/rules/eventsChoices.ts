@@ -662,7 +662,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "sacrifice",
-        label: "Sacrifice villagers",
+        label: (state: GameState) => `Sacrifice ${state.EM ? 8 : 4} villagers`,
         relevant_stats: ["knowledge"],
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);

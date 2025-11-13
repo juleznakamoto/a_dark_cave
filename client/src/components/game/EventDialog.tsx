@@ -113,20 +113,7 @@ export default function EventDialog({
   }, [event?.id, event?.isTimedChoice, event?.baseDecisionTime, isOpen]);
 
   // Use choices directly from the event (they're already generated fresh for merchant events)
-  let eventChoices = event?.choices || [];
-
-  // Handle dynamic labels for sacrifice action
-  if (event?.id === "offerToTheForestGods") {
-    eventChoices = eventChoices.map(choice => {
-      if (choice.id === "sacrifice") {
-        return {
-          ...choice,
-          label: `Sacrifice ${gameState.extremeMode ? 8 : 4} villagers`
-        };
-      }
-      return choice;
-    });
-  }
+  const eventChoices = event?.choices || [];
 
   if (!event || !eventChoices.length) return null;
 
