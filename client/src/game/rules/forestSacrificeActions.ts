@@ -66,10 +66,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       // This will be dynamically calculated based on usage count
       "resources.food": 500,
     },
-    effects: {
-      // This will be dynamically updated
-      "story.seen.actionAnimals": true,
-    },
+    effects: {},
     statsEffects: {
       // This will be dynamically applied
       madness: -1,
@@ -280,7 +277,6 @@ export function handleAnimals(
     effectUpdates.story.seen = { ...state.story.seen };
   }
   effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
-  effectUpdates.story.seen.actionAnimals = true; // Mark that the action has been used
 
   // Set flag when max uses reached
   if (usageCount + 1 >= maxLevels) {
