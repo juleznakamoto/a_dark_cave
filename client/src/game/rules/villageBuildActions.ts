@@ -127,6 +127,9 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.stone": 100,
       },
     },
+    statsEffects: {
+      madness: 20,
+    },
     effects: {
       1: {
         "buildings.cabin": 1,
@@ -343,7 +346,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGreatCabin",
     label: "Great Cabin",
     description: "Expanded hunting lodge increasing hunter output",
-    tooltipEffects: ["+5 Food (Hunter)", "+1 Fur (Hunter)", "+1 Bones (Hunter)"],
+    tooltipEffects: [
+      "+5 Food (Hunter)",
+      "+1 Fur (Hunter)",
+      "+1 Bones (Hunter)",
+    ],
     building: true,
     show_when: {
       1: {
@@ -471,7 +478,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildScriptorium: {
     id: "buildScriptorium",
     label: "Scriptorium",
-    description: "Library of knowledge providing detailed tracking of resources",
+    description:
+      "Library of knowledge providing detailed tracking of resources",
     tooltipEffects: ["+5 Knowledge"],
     building: true,
     show_when: {
@@ -661,7 +669,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildSanctum: {
     id: "buildSanctum",
     label: "Sanctum",
-    description: "Divine sanctum providing the greatest protection against the darkness",
+    description:
+      "Divine sanctum providing the greatest protection against the darkness",
     tooltipEffects: ["-12 Madness"],
     building: true,
     show_when: {
@@ -805,7 +814,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildBastion: {
     id: "buildBastion",
     label: "Bastion",
-    description: "A massive fortification that serves as the first line of defense.",
+    description:
+      "A massive fortification that serves as the first line of defense.",
     tooltipEffects: ["+20 Defense", "+10 Attack", "+50 Integrity"],
     building: true,
     show_when: {
@@ -832,7 +842,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildWatchtower: {
     id: "buildWatchtower",
     label: "Watchtower",
-    description: "A tall tower that provides defense and early warning of threats.",
+    description:
+      "A tall tower that provides defense and early warning of threats.",
     tooltipEffects: ["+15 Defense", "+20 Attack", "+30 Integrity"],
     building: true,
     show_when: {
@@ -959,7 +970,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
-    description: "Durable stone dwelling providing superior shelter for villagers",
+    description:
+      "Durable stone dwelling providing superior shelter for villagers",
     tooltipEffects: ["+4 Population"],
     building: true,
     show_when: {
@@ -1226,7 +1238,8 @@ export const villageBuildActions: Record<string, Action> = {
   buildBlackMonolith: {
     id: "buildBlackMonolith",
     label: "Black Monolith",
-    description: "A towering dark monument where animal sacrifices appease the creeping madness",
+    description:
+      "A towering dark monument where animal sacrifices appease the creeping madness",
     tooltipEffects: ["-5 Madness"],
     building: true,
     show_when: {
@@ -1279,7 +1292,10 @@ function handleBuildingConstruction(
   if (actionCosts) {
     const newResources = { ...state.resources };
 
-    for (const [path, cost] of Object.entries(actionCosts) as [string, number][]) {
+    for (const [path, cost] of Object.entries(actionCosts) as [
+      string,
+      number,
+    ][]) {
       if (path.startsWith("resources.")) {
         const resource = path.split(".")[1] as keyof typeof newResources;
         newResources[resource] -= cost;
@@ -1290,7 +1306,10 @@ function handleBuildingConstruction(
   }
 
   // Apply building effects
-  for (const [path, effect] of Object.entries(actionEffects) as [string, number][]) {
+  for (const [path, effect] of Object.entries(actionEffects) as [
+    string,
+    number,
+  ][]) {
     if (path.startsWith("buildings.")) {
       const building = path.split(".")[1] as keyof GameState["buildings"];
       const currentBuildingCount = state.buildings[building] || 0;
@@ -1313,7 +1332,7 @@ function handleBuildingConstruction(
       if (!result.stateUpdates.story) {
         result.stateUpdates.story = {
           ...state.story,
-          seen: { ...state.story.seen }
+          seen: { ...state.story.seen },
         };
       }
       if (!result.stateUpdates.story.seen) {
@@ -1498,8 +1517,7 @@ export function handleBuildFoundry(
   if (builtFoundry) {
     resultWithBuilding.logEntries!.push({
       id: `foundry-complete-${Date.now()}`,
-      message:
-        "The foundry roars to life as fire and heat fuse raw materials.",
+      message: "The foundry roars to life as fire and heat fuse raw materials.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1676,7 +1694,12 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const stoneHutResult = handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
+  const stoneHutResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildStoneHut",
+    "stoneHut",
+  );
 
   // Add city message when 5th stone hut is built
   if (state.buildings.stoneHut === 5 && !state.story.seen.villageBecomesCity) {
@@ -1721,7 +1744,7 @@ export function handleBuildLonghouse(
   const longhouseLabels = ["First Longhouse", "Second Longhouse"];
   const longhouseMessages = [
     "The first longhouse rises, a massive wooden hall with thick timbers and lots of space.",
-    "A second longhouse is completed, expanding your settlement's capacity to house villagers."
+    "A second longhouse is completed, expanding your settlement's capacity to house villagers.",
   ];
 
   if (currentLevel < longhouseLabels.length) {
@@ -1827,7 +1850,7 @@ export function handleBuildAlchemistHall(
     alchemistHallResult.logEntries!.push({
       id: `alchemist-hall-built-${Date.now()}`,
       message:
-       "The Alchemist’s Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
+        "The Alchemist’s Halls stand tall, their chambers filled with bubbling crucibles and gleaming instruments of forgotten craft.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1953,13 +1976,19 @@ export function handleBuildWatchtower(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const watchtowerResult = handleBuildingConstruction(state, result, "buildWatchtower", "watchtower");
+  const watchtowerResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildWatchtower",
+    "watchtower",
+  );
 
   // Add watchtower completion message only for first watchtower
   if (state.buildings.watchtower === 0) {
     watchtowerResult.logEntries!.push({
       id: `watchtower-built-${Date.now()}`,
-      message: "The watchtower stretches high above the settlement.. It helps you see things coming earlier.",
+      message:
+        "The watchtower stretches high above the settlement.. It helps you see things coming earlier.",
       timestamp: Date.now(),
       type: "system",
     });
@@ -1983,7 +2012,8 @@ export function handleBuildPalisades(
   if (state.buildings.palisades === 0) {
     palisadesResult.logEntries!.push({
       id: `palisades-built-${Date.now()}`,
-      message: "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
+      message:
+        "Wooden palisades rise around your settlement, providing basic protection against incoming threats.",
       timestamp: Date.now(),
       type: "system",
     });

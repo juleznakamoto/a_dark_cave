@@ -73,7 +73,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Confront villager",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.3-CM * 0.05) {
+          if (rand < 0.3-state.CM * 0.05) {
             return {
               events: {
                 ...state.events,
@@ -260,7 +260,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Try to calm down",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.5-CM * 0.1) {
+          if (rand < 0.5-state.CM * 0.1) {
             return {
               events: {
                 ...state.events,
