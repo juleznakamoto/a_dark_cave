@@ -120,6 +120,7 @@ import {
 import {
   handleBoneTotems,
   handleLeatherTotems,
+  handleAnimals,
 } from '@/game/rules/forestSacrificeActions';
 
 import {
@@ -392,6 +393,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBoneTotems(state, result);
     case 'leatherTotems':
       return handleLeatherTotems(state, result);
+    case 'animals':
+      return handleAnimals(state, result);
 
     // Forest Trade Actions
     case 'tradeGoldForFood':

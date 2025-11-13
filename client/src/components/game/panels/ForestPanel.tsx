@@ -27,6 +27,7 @@ export default function ForestPanel() {
       actions: [
         { id: 'boneTotems', label: 'Bone Totems' },
         { id: 'leatherTotems', label: 'Leather Totems' },
+        { id: 'animals', label: 'Animals' },
       ]
     },
     {
