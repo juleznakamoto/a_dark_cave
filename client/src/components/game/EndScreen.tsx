@@ -23,7 +23,7 @@ export default function EndScreen() {
           line1: "Your Journey",
           line2: "Ends Here",
         }}
-        subtitle="At least for now. You finished the first chapter. Soon the second chapter will be available. Until then, feel free to play again."
+        subtitle="At least for now... You finished the first chapter. Feel free to play again or try Extreme Mode."
         buttons={{
           primary: {
             text: "Play Again",
