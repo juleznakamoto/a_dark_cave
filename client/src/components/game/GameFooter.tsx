@@ -139,25 +139,7 @@ export default function GameFooter() {
                 style={{ filter: "invert(1)" }}
               />
             </Button>
-            {extremeMode && (
-              <TooltipProvider>
-                <Tooltip open={mobileTooltip.isTooltipOpen('extreme-mode-indicator')}>
-                  <TooltipTrigger asChild>
-                    <div 
-                      className="px-1.5 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
-                      onClick={(e) => mobileTooltip.handleTooltipClick('extreme-mode-indicator', e)}
-                    >
-                      <span className="text-red-600 text-sm">⚠</span>
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs whitespace-nowrap">
-                      Extreme Mode activated
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            )}
+
             {currentUser ? (
               <Button
                 variant="ghost"
@@ -219,6 +201,32 @@ export default function GameFooter() {
               >
                 End Screen
               </Button>
+            )}
+            {extremeMode && (
+              <TooltipProvider>
+                <Tooltip
+                  open={mobileTooltip.isTooltipOpen("extreme-mode-indicator")}
+                >
+                  <TooltipTrigger asChild>
+                    <div
+                      className="px-1.5 py-1 cursor-pointer opacity-60 hover:opacity-100 transition-opacity flex items-center"
+                      onClick={(e) =>
+                        mobileTooltip.handleTooltipClick(
+                          "extreme-mode-indicator",
+                          e,
+                        )
+                      }
+                    >
+                      <span className="text-red-600 text-sm">⚠</span>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      Extreme Mode activated
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </div>
           <div className="flex gap-2 items-center">
