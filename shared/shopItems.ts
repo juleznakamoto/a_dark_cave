@@ -164,6 +164,19 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: 'text-orange-600',
   },
 
+  extreme_mode: {
+    id: 'extreme_mode',
+    name: 'Extreme Mode',
+    description: 'Unlock Extreme Mode for your next game - face harder challenges and tougher enemies',
+    price: 199, // 1.99 €
+    rewards: {},
+    canPurchaseMultipleTimes: false,
+    category: 'blessing',
+    activationMessage: 'Extreme Mode unlocked! Start a new game to experience the ultimate challenge.',
+    symbol: '⚠',
+    symbolColor: 'text-red-600',
+  },
+
   // dwarven_hammer: {
   //   id: 'dwarven_hammer',
   //   name: 'Dwarven Hammer',

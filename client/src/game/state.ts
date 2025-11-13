@@ -206,6 +206,7 @@ const defaultGameState: GameState = {
   },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
+  extremeMode: false,
   // Initialize game loop state
   loopProgress: 0,
   isGameLoopActive: false,
@@ -501,6 +502,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const currentBoostMode = get().boostMode;
+    const currentExtremeMode = get().extremeMode;
 
     const resetState = {
       ...defaultGameState,
@@ -510,6 +512,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
+      extremeMode: currentExtremeMode,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
       // Ensure loop state is reset
@@ -551,6 +554,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: savedState.boostMode,
         effects: calculateTotalEffects(savedState),
         bastion_stats: calculateBastionStats(savedState),
+        extremeMode: savedState.extremeMode !== undefined ? savedState.extremeMode : false,
         // Ensure loop state is loaded correctly
         loopProgress: savedState.loopProgress !== undefined ? savedState.loopProgress : 0,
         isGameLoopActive: savedState.isGameLoopActive !== undefined ? savedState.isGameLoopActive : false,

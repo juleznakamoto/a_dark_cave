@@ -329,6 +329,7 @@ export const gameStateSchema = z.object({
       purchasedAt: z.number(),
     }),
   ).default({}),
+  extremeMode: z.boolean().default(false),
   curseState: z
     .object({
       isActive: z.boolean().default(false),

@@ -326,6 +326,33 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[itemId];
     if (!item) return;
 
+    // Handle Extreme Mode activation
+    if (itemId === "extreme_mode") {
+      if (activatedPurchases[purchaseId]) return;
+
+      useGameStore.setState((state) => ({
+        extremeMode: true,
+      }));
+
+      gameState.addLogEntry({
+        id: `activate-extreme-mode-${Date.now()}`,
+        message:
+          item.activationMessage ||
+          "Extreme Mode unlocked! Start a new game to experience the ultimate challenge.",
+        timestamp: Date.now(),
+        type: "system",
+      });
+
+      // Mark as activated in game state
+      useGameStore.setState((state) => ({
+        activatedPurchases: {
+          ...state.activatedPurchases,
+          [purchaseId]: true,
+        },
+      }));
+      return;
+    }
+
     // For feast items, use individual purchase tracking
     if (item.category === "feast") {
       const purchase = gameState.feastPurchases?.[purchaseId];

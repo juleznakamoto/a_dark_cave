@@ -1,7 +1,11 @@
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
+import { useGameStore } from "@/game/state";
+import { Button } from "@/components/ui/button";
 
 export default function EndScreen() {
+  const { setShopDialogOpen, setShowEndScreen } = useGameStore();
+
   const handlePlayAgain = () => {
     // Delete save and reload the page to start fresh
     deleteSave();
@@ -11,6 +15,12 @@ export default function EndScreen() {
   const handleMainMenu = () => {
     // Navigate to main menu (or home page)
     window.location.href = "/";
+  };
+
+  const handleExtremeMode = () => {
+    // Close end screen and open shop
+    setShowEndScreen(false);
+    setShopDialogOpen(true);
   };
 
   return (
@@ -35,6 +45,15 @@ export default function EndScreen() {
           },
         }}
       />
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        <Button
+          onClick={handleExtremeMode}
+          variant="outline"
+          className="bg-red-950/80 text-red-100 border-red-600 hover:bg-red-900/80 hover:text-red-50"
+        >
+          ⚠ Extreme Mode
+        </Button>
+      </div>
     </div>
   );
 }
