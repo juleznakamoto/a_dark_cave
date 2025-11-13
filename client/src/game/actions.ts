@@ -372,8 +372,6 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildTraps(state, result);
     case 'buildBlackMonolith':
       return handleBuildBlackMonolith(state, result);
-    case 'buildBastion':
-      return handleBuildBastion(state, result);
 
 
     // Forest Scout Actions

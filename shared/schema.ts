@@ -337,7 +337,7 @@ export const gameStateSchema = z.object({
     }),
   ).default({}),
   cruelMode: z.boolean().default(false),
-  state.CM: z.number().default(0),
+  CM: z.number().default(0),
   curseState: z
     .object({
       isActive: z.boolean().default(false),
