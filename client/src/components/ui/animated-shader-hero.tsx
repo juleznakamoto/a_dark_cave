@@ -514,15 +514,13 @@ const Hero: React.FC<HeroProps> = ({
               If you enjoyed the game, consider supporting me so I can continue
               to develop it.
             </p>
-            <a
-              href="https://buymeacoffee.com/julez.b"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in-up animation-delay-1600"
+            <button
+              onClick={() => window.open("https://buymeacoffee.com/julez.b", "_blank", "noopener,noreferrer")}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in-up animation-delay-1600"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>
-            </a>
+            </button>
           </div>
         </div>
       </div>
