@@ -293,7 +293,7 @@ export default function SidePanel() {
             // Apply 50% reduction and round down if damaged
             let finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
 
-            // For Black Monolith, add the sacrifice madness reduction and costs
+            // For Black Monolith, add the sacrifice madness reduction
             if (key === "blackMonolith" && stat === "madness") {
               const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
               const sacrificeMadnessReduction = Math.min(sacrificeLevel * -1, -10);
@@ -301,18 +301,6 @@ export default function SidePanel() {
               if (sacrificeLevel > 0) {
                 effectsList.push(`${sacrificeMadnessReduction} Madness (Sacrifices)`);
               }
-              
-              // Add dynamic sacrifice costs
-              const boneTotemCost = Math.min(5 + (Number(state.story?.seen?.boneTotemsUsageCount) || 0), 25);
-              const leatherTotemCost = Math.min(5 + (Number(state.story?.seen?.leatherTotemsUsageCount) || 0), 25);
-              
-              if (state.buildings.altar > 0) {
-                effectsList.push(`Bone Totems: ${boneTotemCost} cost`);
-              }
-              if (state.buildings.temple > 0) {
-                effectsList.push(`Leather Totems: ${leatherTotemCost} cost`);
-              }
-              
               return; // Skip the normal display for this stat
             }
 

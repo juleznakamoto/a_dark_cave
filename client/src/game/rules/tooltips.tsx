@@ -27,13 +27,16 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
     // Get dynamic cost
     const usageCountKey = actionId === "boneTotems" ? "boneTotemsUsageCount" : "leatherTotemsUsageCount";
     const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-    const dynamicCost = Math.min(5 + usageCount, 25);
+    const dynamicCost = 5 + usageCount;
     
     const costResource = actionId === "boneTotems" ? "bone_totem" : "leather_totem";
     const hasEnough = (state.resources[costResource as keyof typeof state.resources] || 0) >= dynamicCost;
     costs.push({ resource: costResource, amount: dynamicCost, hasEnough });
     
-    // Base gains from effects (no usage multiplier)
+    // Calculate gains with bonuses (5% per usage + item bonuses)
+    const usageMultiplier = 1 + (usageCount * 0.05);
+    
+    // Base gains from effects
     Object.entries(action.effects).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
@@ -43,6 +46,10 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
+            
+            // Apply usage multiplier
+            min = Math.floor(min * usageMultiplier);
+            max = Math.floor(max * usageMultiplier);
             
             // Apply item bonuses (like ebony ring 20% multiplier)
             if (bonuses.resourceMultiplier > 1) {

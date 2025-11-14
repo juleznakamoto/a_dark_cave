@@ -4,15 +4,10 @@ import { gameActions, shouldShowAction, canExecuteAction, getCostText, getAction
 import { getResourceGainTooltip } from '@/game/rules/tooltips';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { getBoneTotemsCost, getLeatherTotemsCost } from '@/game/rules/forestSacrificeActions';
 
 export default function ForestPanel() {
-  const { executeAction, buildings, story } = useGameStore();
+  const { executeAction, buildings } = useGameStore();
   const state = useGameStore();
-  
-  // Track usage counts to force tooltip re-render
-  const boneTotemUsage = Number(story?.seen?.boneTotemsUsageCount) || 0;
-  const leatherTotemUsage = Number(story?.seen?.leatherTotemsUsageCount) || 0;
 
   // Define action groups with their actions
   const actionGroups = [
