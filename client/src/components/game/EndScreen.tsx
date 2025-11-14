@@ -44,7 +44,10 @@ export default function EndScreen() {
           },
         }}
       />
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-[100000]">
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-[100000] flex flex-col items-center gap-3">
+        <p className="text-sm text-gray-300 text-center max-w-md px-4">
+          If you enjoyed the game, consider supporting me so I can continue to develop it.
+        </p>
         <a
           href="https://buymeacoffee.com/julez.b"
           target="_blank"
