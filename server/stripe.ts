@@ -5,7 +5,7 @@ const stripeSecretKey = process.env.NODE_ENV === 'production'
   ? process.env.STRIPE_SECRET_KEY_PROD 
   : process.env.STRIPE_SECRET_KEY_DEV;
 
-const stripe = new Stripe(stripeSecretKey || '', {
+const stripe = new Stripe(stripeSecretKey || 'sk_test_123', {
   apiVersion: '2024-12-18.acacia',
 });
 
