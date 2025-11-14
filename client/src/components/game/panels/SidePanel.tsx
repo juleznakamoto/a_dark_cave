@@ -539,7 +539,7 @@ export default function SidePanel() {
       if ((value ?? 0) === 0) return null;
 
       let label = capitalizeWords(key);
-      let tooltip = undefined;
+      let tooltip: React.ReactNode = undefined;
 
       // Map building keys to their contributions using bastion_stats
       if (key === "watchtower") {
@@ -569,7 +569,25 @@ export default function SidePanel() {
         const integrity =
           currentStats.integrity - statsWithoutWatchtower.integrity;
 
-        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        tooltip = (
+          <div className="space-y-1">
+            <div className="font-bold text-foreground">{label}</div>
+            {buildAction?.description && (
+              <div className="text-muted-foreground mb-2">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>+{defense} Defense</div>
+              <div>+{attack} Attack</div>
+              <div>+{integrity} Integrity</div>
+            </div>
+          </div>
+        );
 
         // Add red down arrow if damaged
         if (isDamaged) {
@@ -593,7 +611,25 @@ export default function SidePanel() {
         const integrity =
           currentStats.integrity - statsWithoutBastion.integrity;
 
-        tooltip = `+${defense} Defense\n+${attack} Attack\n+${integrity} Integrity`;
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        tooltip = (
+          <div className="space-y-1">
+            <div className="font-bold text-foreground">{label}</div>
+            {buildAction?.description && (
+              <div className="text-muted-foreground mb-2">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>+{defense} Defense</div>
+              <div>+{attack} Attack</div>
+              <div>+{integrity} Integrity</div>
+            </div>
+          </div>
+        );
 
         // Add red down arrow if damaged
         if (isDamaged) {
@@ -625,7 +661,24 @@ export default function SidePanel() {
         const integrity =
           currentStats.integrity - statsWithoutPalisades.integrity;
 
-        tooltip = `+${defense} Defense\n+${integrity} Integrity`;
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        tooltip = (
+          <div className="space-y-1">
+            <div className="font-bold text-foreground">{label}</div>
+            {buildAction?.description && (
+              <div className="text-muted-foreground mb-2">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>+{defense} Defense</div>
+              <div>+{integrity} Integrity</div>
+            </div>
+          </div>
+        );
 
         // Add red down arrow if damaged
         if (isDamaged) {
@@ -633,7 +686,24 @@ export default function SidePanel() {
         }
       } else if (key === "fortifiedMoat") {
         label = "Fortified Moat";
-        tooltip = "+5 Defense";
+        
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        tooltip = (
+          <div className="space-y-1">
+            <div className="font-bold text-foreground">{label}</div>
+            {buildAction?.description && (
+              <div className="text-muted-foreground mb-2">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>+5 Defense</div>
+            </div>
+          </div>
+        );
       }
 
       return {
