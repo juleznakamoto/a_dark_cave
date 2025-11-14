@@ -267,13 +267,17 @@ export default function SidePanel() {
       }
 
       // Check if manual tooltipEffects exist
-      const hasManualTooltip = buildAction?.tooltipEffects && buildAction.tooltipEffects.length > 0;
+      const tooltipEffects = buildAction?.tooltipEffects;
+      const effectsArray = typeof tooltipEffects === 'function' 
+        ? tooltipEffects(gameState) 
+        : tooltipEffects;
+      const hasManualTooltip = effectsArray && effectsArray.length > 0;
 
       if (hasManualTooltip) {
         // Use manual tooltipEffects
         tooltipParts.push(
           <div key="effects">
-            {buildAction.tooltipEffects.map((effect, idx) => (
+            {effectsArray.map((effect, idx) => (
               <div key={idx}>
                 {effect}
               </div>
