@@ -593,7 +593,7 @@ export const villageBuildActions: Record<string, Action> = {
       },
     },
     statsEffects: {
-      madness: 20,
+      madness: -2,
     },
     cooldown: 5,
   },
