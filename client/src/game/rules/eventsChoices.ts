@@ -1596,7 +1596,6 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "allowStay",
         label: "Let her stay",
-        relevant_stats: ["luck"],
         effect: (state: GameState) => {
           // She steals silver
           const silverStolen = 200 + state.CM * 50;
