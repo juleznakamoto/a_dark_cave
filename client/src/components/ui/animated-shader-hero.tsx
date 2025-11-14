@@ -459,6 +459,22 @@ const Hero: React.FC<HeroProps> = ({
               )}
             </div>
           )}
+
+          {/* Support Section */}
+          <div className="flex flex-col items-center gap-3 mt-16">
+            <p className="text-sm text-gray-300 text-center max-w-md px-4">
+              If you enjoyed the game, consider supporting me so I can continue to develop it.
+            </p>
+            <a
+              href="https://buymeacoffee.com/julez.b"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors duration-200"
+            >
+              <span>☕</span>
+              <span>Buy Me a Coffee</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
