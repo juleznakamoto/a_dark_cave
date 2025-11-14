@@ -417,19 +417,39 @@ const Hero: React.FC<HeroProps> = ({
         }
 
         .animation-delay-1200 {
-          animation-delay: 1s;
+          animation-delay: 1.2s;
         }
 
         .animation-delay-1600 {
-          animation-delay: 1s;
+          animation-delay: 1.6;
         }
 
         .animation-delay-2000 {
-          animation-delay: 1s;
+          animation-delay: 2s;
         }
 
         .animation-delay-2400 {
-          animation-delay: 1s;
+          animation-delay: 2.4s;
+        }
+
+        .animation-delay-3000 {
+          animation-delay: 3s;
+        }
+
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+
+        .animation-delay-4500 {
+          animation-delay: 4.5s;
+        }
+
+        .animation-delay-6000 {
+          animation-delay: 6s;
+        }
+
+        .animation-delay-7000 {
+          animation-delay: 7s;
         }
 
         @keyframes gradient-shift {
@@ -479,28 +499,28 @@ const Hero: React.FC<HeroProps> = ({
         <div className="text-center space-y-4 max-w-5xl mx-auto px-4">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-600 via-yellow-700 to-amber-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
               {headline.line1}
             </h1>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-500 via-orange-500 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
               {headline.line2}
             </h1>
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-2400">
-            <p className="text-lg md:text-lg lg:text-xl text-orange-100/90 font-light leading-relaxed">
+          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-3000">
+            <p className="mt-6 mb-6 text-lg md:text-lg lg:text-xl text-orange-100/90 font-light leading-relaxed">
               {subtitle}
             </p>
           </div>
 
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-00">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-4000">
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
-                  className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25"
+                  className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
                 >
                   {buttons.primary.text}
                 </button>
@@ -508,7 +528,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.secondary && (
                 <button
                   onClick={buttons.secondary.onClick}
-                  className="px-6 py-3 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-300/30 hover:border-orange-300/50 text-orange-100 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
+                  className="px-6 py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                 >
                   {buttons.secondary.text}
                 </button>
@@ -517,8 +537,8 @@ const Hero: React.FC<HeroProps> = ({
           )}
 
           {/* Support Section */}
-          <div className="py-6 flex flex-col items-center gap-3 mt-16">
-            <p className="text-sm text-gray-300 text-center max-w-md px-4 animate-fade-in-up animation-delay-2000">
+          <div className="py-6 flex flex-col items-center gap-3 mt-16 animate-fade-in-up animation-delay-6000">
+            <p className="text-sm text-gray-300 text-center max-w-md px-4">
               If you enjoyed the game, consider supporting me so I can continue
               to develop it.
             </p>
@@ -530,7 +550,7 @@ const Hero: React.FC<HeroProps> = ({
                   "noopener,noreferrer",
                 )
               }
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 animate-fade-in-up animation-delay-2400"
+              className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>
@@ -608,9 +628,9 @@ float clouds(vec2 p) {
 void main(void) {
 	vec2 uv=(FC-.5*R)/MN,st=uv*vec2(2,1);
 	// Animate flame colors over time: red -> orange -> yellow
-	vec3 flameColor1 = vec3(1.5, 0.1, 0.0); // Intense red
-	vec3 flameColor2 = vec3(1.8, 0.4, 0.0); // Intense orange
-	vec3 flameColor3 = vec3(2.0, 1.2, 0.0); // Intense yellow
+	vec3 flameColor1 = vec3(1.4, 0.1, 0.0); // Intense red
+	vec3 flameColor2 = vec3(1.8, 0.4, 0.1); // Intense orange
+	vec3 flameColor3 = vec3(2.0, 0.6, 0.0); // Intense yellow
 	float colorPhase = sin(T * 0.8) * 0.5 + 0.5;
 	vec3 col = mix(mix(flameColor1, flameColor2, colorPhase), flameColor3, sin(T * 0.5) * 0.5 + 0.5) * 1.3;
 	float bg=clouds(vec2(st.x+T*CLOUD_SPEED,-st.y));
