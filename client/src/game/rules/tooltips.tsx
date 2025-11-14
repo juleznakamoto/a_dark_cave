@@ -44,9 +44,10 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
             
-            // Apply fixed +1 bonus per usage
-            min = min + usageCount;
-            max = max + usageCount;
+            // Apply fixed +1 bonus per usage, capped at 20 usages
+            const cappedUsageCount = Math.min(usageCount, 20);
+            min = min + cappedUsageCount;
+            max = max + cappedUsageCount;
             
             // Apply item bonuses (like ebony ring 20% multiplier)
             if (bonuses.resourceMultiplier > 1) {
