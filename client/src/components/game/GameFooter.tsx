@@ -222,7 +222,7 @@ export default function GameFooter() {
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs whitespace-nowrap">
-                      Extreme Mode activated
+                      Cruel Mode activated
                     </div>
                   </TooltipContent>
                 </Tooltip>

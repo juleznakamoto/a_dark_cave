@@ -363,9 +363,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       gameState.addLogEntry({
         id: `toggle-cruel-mode-${Date.now()}`,
         message: isCurrentlyActivated
-          ? "Extreme Mode deactivated. New games will use normal difficulty."
+          ? "Cruel Mode deactivated. New games will use normal difficulty."
           : (item.activationMessage ||
-            "Extreme Mode activated! Start a new game to experience the ultimate challenge."),
+            "Cruel Mode activated! Start a new game to experience the ultimate challenge."),
         timestamp: Date.now(),
         type: "system",
       });
@@ -647,7 +647,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           if (!item) return null;
 
                           const isActivated = activatedPurchases[itemId] || false;
-                          const isExtremeModeItem = itemId === "cruel_mode";
+                          const isCruelModeItem = itemId === "cruel_mode";
 
                           return (
                             <div
@@ -657,7 +657,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               <div className="flex flex-col">
                                 <span className="text-sm font-medium">
                                   {item.name}
-                                  {isExtremeModeItem && (
+                                  {isCruelModeItem && (
                                     <span className="text-md  font-medium  ml-2">
                                       (to play activate and start a new game)
                                     </span>
@@ -671,11 +671,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 onClick={() =>
                                   handleActivatePurchase(itemId, itemId)
                                 }
-                                disabled={!isExtremeModeItem && isActivated}
+                                disabled={!isCruelModeItem && isActivated}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                               >
-                                {isExtremeModeItem 
+                                {isCruelModeItem 
                                   ? (isActivated ? "Deactivate" : "Activate")
                                   : (isActivated ? "Activated" : "Activate")
                                 }

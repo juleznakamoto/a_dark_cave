@@ -511,7 +511,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentActivatedPurchases = get().activatedPurchases || {};
     const currentFeastPurchases = get().feastPurchases || {};
 
-    // Check if Extreme Mode was activated
+    // Check if Cruel Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
 
     const resetState = {

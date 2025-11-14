@@ -16,7 +16,7 @@ export default function EndScreen() {
     window.location.href = "/";
   };
 
-  const handleExtremeMode = () => {
+  const handleCruelMode = () => {
     // Close end screen and open shop
     setShowEndScreen(false);
     setShopDialogOpen(true);
@@ -32,11 +32,11 @@ export default function EndScreen() {
           line1: "Your Journey",
           line2: "Ends Here",
         }}
-        subtitle="At least for now... You finished the first chapter. Feel free to play again or try Extreme Mode."
+        subtitle="At least for now... You finished the first chapter. Feel free to play again or try Cruel Mode."
         buttons={{
           primary: {
-            text: "Extreme Mode",
-            onClick: handleExtremeMode,
+            text: "Cruel Mode",
+            onClick: handleCruelMode,
           },
           secondary: {
             text: "Close",
@@ -44,20 +44,6 @@ export default function EndScreen() {
           },
         }}
       />
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-[100000] flex flex-col items-center gap-3">
-        <p className="text-sm text-gray-300 text-center max-w-md px-4">
-          If you enjoyed the game, consider supporting me so I can continue to develop it.
-        </p>
-        <a
-          href="https://buymeacoffee.com/julez.b"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-6 py-3 bg-yellow-400 hover:bg-yellow-500 text-black font-semibold rounded-lg transition-colors duration-200"
-        >
-          <span>☕</span>
-          <span>Buy Me a Coffee</span>
-        </a>
-      </div>
     </div>
   );
 }
