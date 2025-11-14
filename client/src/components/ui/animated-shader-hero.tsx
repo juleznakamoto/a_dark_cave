@@ -499,10 +499,10 @@ const Hero: React.FC<HeroProps> = ({
         <div className="text-center space-y-4 max-w-5xl mx-auto px-4">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="pb-2 text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-800 via-red-700 to-orange-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-600">
               {headline.line1}
             </h1>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
+            <h1 className="pb-2 text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-700 via-red-600 to-orange-700 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
               {headline.line2}
             </h1>
           </div>
@@ -550,7 +550,7 @@ const Hero: React.FC<HeroProps> = ({
                   "noopener,noreferrer",
                 )
               }
-              className="px-4 py-2 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>
@@ -640,7 +640,7 @@ void main(void) {
 		vec2 p=uv;
 		float d=length(p);
 		col+=.0015/d*(cos(sin(i))+1.);
-		float b=noise(i+p+bg*1.731);
+		float b=noise(i+p+bg*2.8);
 		col+=.002*MAX_COLOR_DEVIATION*b/length(max(p,vec2(b*p.x*.02,p.y)));
 		vec3 cloudColor = BACKGROUND_TINT * (1.0 + (bg - 0.5) * CLOUD_COLOR_DEVIATION);
 		col=mix(col,cloudColor,d);
