@@ -22,6 +22,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
 
   // Handle sacrifice actions with dynamic costs and bonuses
   const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
+  const isAnimalsSacrifice = actionId === "animals";
   
   if (isSacrificeAction) {
     // Get dynamic cost
@@ -59,6 +60,16 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         }
       }
     });
+  } else if (isAnimalsSacrifice) {
+    // Handle animals sacrifice with dynamic cost
+    const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+    const currentCost = 500 * (usageCount + 1);
+    
+    const hasEnough = (state.resources.food || 0) >= currentCost;
+    costs.push({ resource: "food", amount: currentCost, hasEnough });
+    
+    // Show -1 Madness gain
+    gains.push({ resource: "madness", min: -1, max: -1 });
   } else {
     // Check if this is a cave exploration action
     const caveExploreActions = [
@@ -144,6 +155,9 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
   }
 
   const formatResourceName = (resource: string) => {
+    if (resource === "madness") {
+      return "Madness";
+    }
     return resource
       .split("_")
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1))

@@ -57,7 +57,6 @@ export const forestSacrificeActions: Record<string, Action> = {
   animals: {
     id: "animals",
     label: "Animals",
-    tooltipEffects: ["-1 Madness"],
     show_when: {
       "buildings.blackMonolith": 1,
       "!story.seen.animalsSacrificeMaxed": true,
