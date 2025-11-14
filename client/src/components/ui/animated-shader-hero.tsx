@@ -516,7 +516,7 @@ const Hero: React.FC<HeroProps> = ({
             </p>
             <button
               onClick={() => window.open("https://buymeacoffee.com/julez.b", "_blank", "noopener,noreferrer")}
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/5 animate-fade-in-up animation-delay-1600"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 animate-fade-in-up animation-delay-1600"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>

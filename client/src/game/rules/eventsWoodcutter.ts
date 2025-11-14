@@ -31,7 +31,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               food: state.resources.food - 25,
-              wood: state.resources.wood + 100,
+              wood: state.resources.wood + 200,
             },
             story: {
               ...state.story,
@@ -91,7 +91,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               food: state.resources.food - 50,
-              wood: state.resources.wood + 250,
+              wood: state.resources.wood + 500,
             },
             story: {
               ...state.story,
@@ -150,7 +150,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               food: state.resources.food - 100,
-              wood: state.resources.wood + 750,
+              wood: state.resources.wood + 1000,
             },
             story: {
               ...state.story,
@@ -310,7 +310,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
             resources: {
               ...state.resources,
               food: state.resources.food - 200,
-              wood: state.resources.wood + 2500,
+              wood: state.resources.wood + 2000,
             },
             story: {
               ...state.story,

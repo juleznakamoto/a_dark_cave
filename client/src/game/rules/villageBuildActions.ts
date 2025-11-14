@@ -812,7 +812,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBastion",
     label: "Bastion",
     description:
-      "A massive fortification that serves as the first line of defense.",
+      "Mssive fortification serving as the last line of defense",
     tooltipEffects: ["+20 Defense", "+10 Attack", "+50 Integrity"],
     building: true,
     show_when: {
@@ -840,7 +840,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildWatchtower",
     label: "Watchtower",
     description:
-      "A tall tower that provides defense and early warning of threats.",
+      "Tall tower providing early warning of threats",
     tooltipEffects: ["+15 Defense", "+20 Attack", "+30 Integrity"],
     building: true,
     show_when: {
@@ -908,7 +908,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildPalisades: {
     id: "buildPalisades",
     label: "Palisades",
-    description: "Defensive walls that protect the settlement from attack.",
+    description: "Defensive walls protecting the settlement",
     tooltipEffects: ["+10 Defense", "+20 Integrity"],
     building: true,
     show_when: {
@@ -968,7 +968,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildStoneHut",
     label: "Stone Hut",
     description:
-      "Durable stone dwelling providing superior shelter for villagers",
+      "Durable stone dwelling providing superior shelter",
     tooltipEffects: ["+4 Population"],
     building: true,
     show_when: {
@@ -1077,7 +1077,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildFortifiedMoat: {
     id: "buildFortifiedMoat",
     label: "Fortified Moat",
-    description: "A defensive moat that slows and weakens attackers.",
+    description: "Defensive moat slowing and weakening attackers",
     tooltipEffects: ["+5 Defense"],
     building: true,
     show_when: {
