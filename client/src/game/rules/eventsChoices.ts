@@ -273,7 +273,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...deathResult,
               resources: {
                 ...state.resources,
-                silver: state.resources.silver + 200,
+                silver: state.resources.silver + 500,
               },
               clothing: {
                 ...state.clothing,
@@ -288,8 +288,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 minimalDeaths === 1
-                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 200 silver.`
-                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 200 silver.`,
+                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
+                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
             };
           }
 
@@ -791,8 +791,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               traps * 2 +
               state.CM * 2,
           );
-          const hutDestruction =
-            Math.ceil(Math.random() * 2) + state.CM * 1;
+          const hutDestruction = Math.ceil(Math.random() * 2) + state.CM * 1;
 
           const deathResult = killVillagers(state, villagerDeaths);
 
@@ -1610,7 +1609,6 @@ export const choiceEvents: Record<string, GameEvent> = {
             },
             _logMessage: `You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
           };
-          
         },
       },
       {

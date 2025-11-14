@@ -9,7 +9,7 @@ const resourceTrades = [
     label: "100 Steel",
     give: "steel",
     giveAmount: 100,
-    condition: (state: GameState) => true, // Always available
+    condition: (state: GameState) => state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 9,
     costs: [
       { resource: "wood", amounts: [750, 1000, 1250] },
       { resource: "stone", amounts: [1000] },
@@ -22,7 +22,7 @@ const resourceTrades = [
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
-    condition: (state: GameState) => state.buildings.woodenHut <= 4,
+    condition: (state: GameState) => state.buildings.woodenHut <= 6,
     costs: [
       { resource: "bones", amounts: [400, 500, 600] },
       { resource: "wood", amounts: [500, 600] },
@@ -38,7 +38,7 @@ const resourceTrades = [
     label: "50 Obsidian",
     give: "obsidian",
     giveAmount: 50,
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 5,
     costs: [
       { resource: "wood", amounts: [1500, 1750, 2000] },
       { resource: "silver", amounts: [20] },
@@ -64,7 +64,7 @@ const resourceTrades = [
     label: "25 Adamant",
     give: "adamant",
     giveAmount: 25,
-    condition: (state: GameState) => state.buildings.woodenHut >= 7,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 8,
     costs: [
       { resource: "gold", amounts: [10, 15] },
       { resource: "silver", amounts: [30] },
@@ -92,7 +92,7 @@ const resourceTrades = [
     label: "1000 Wood",
     give: "wood",
     giveAmount: 1000,
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 8,
     costs: [
       { resource: "gold", amounts: [5] },
       { resource: "silver", amounts: [10] },
@@ -109,7 +109,7 @@ const resourceTrades = [
     condition: (state: GameState) => state.buildings.woodenHut <= 8,
     costs: [
       { resource: "gold", amounts: [5] },
-      { resource: "silver", amounts: [10] },
+      { resource: "silver", amounts: [8, 10, 12] },
     ],
   },
   {
@@ -117,10 +117,10 @@ const resourceTrades = [
     label: "1000 Food",
     give: "food",
     giveAmount: 1000,
-    condition: (state: GameState) => state.buildings.woodenHut >= 4,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
       { resource: "gold", amounts: [10] },
-      { resource: "silver", amounts: [20] },
+      { resource: "silver", amounts: [15, 20, 25] },
     ],
   },
   {
@@ -128,7 +128,7 @@ const resourceTrades = [
     label: "25 Gold",
     give: "gold",
     giveAmount: 25,
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3 && state.buildings.stoneHut <= 6,
     costs: [
       { resource: "steel", amounts: [200] },
       { resource: "wood", amounts: [2500] },
@@ -143,7 +143,7 @@ const resourceTrades = [
     label: "50 Silver",
     give: "silver",
     giveAmount: 50,
-    condition: (state: GameState) => state.buildings.woodenHut >= 3,
+    condition: (state: GameState) => state.buildings.woodenHut >= 3 && state.buildings.stoneHut <= 6,
     costs: [
       { resource: "steel", amounts: [200] },
       { resource: "wood", amounts: [2500] },
@@ -186,6 +186,7 @@ const resourceTrades = [
       { resource: "adamant", amounts: [20] },
     ],
   },
+  
   {
     id: "trade_fur_for_gold",
     label: "50 Gold",
