@@ -6,12 +6,12 @@ import { getActionBonuses } from "@/game/rules/effectsCalculation";
 // Helper function to get dynamic cost for bone totems
 export function getBoneTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.boneTotemsUsageCount) || 0;
-  return 5 + usageCount;
+  return Math.min(5 + usageCount, 25);
 }
 
 export function getLeatherTotemsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.leatherTotemsUsageCount) || 0;
-  return 5 + usageCount;
+  return Math.min(5 + usageCount, 25);
 }
 
 // Helper function to get dynamic cost for animal sacrifices
@@ -106,13 +106,12 @@ function handleTotemSacrifice(
     effectUpdates.resources = { ...state.resources };
   }
 
-  // Apply 5% bonus per usage to gold and silver rewards
-  const bonusMultiplier = 1 + usageCount * 0.05;
+  // Apply fixed +1 bonus per usage to gold and silver rewards
   if (effectUpdates.resources.gold !== undefined) {
     const baseGold = effectUpdates.resources.gold - (state.resources.gold || 0);
     if (baseGold > 0) {
       effectUpdates.resources.gold =
-        (state.resources.gold || 0) + Math.floor(baseGold * bonusMultiplier);
+        (state.resources.gold || 0) + baseGold + usageCount;
     }
   }
   if (effectUpdates.resources.silver !== undefined) {
@@ -120,8 +119,7 @@ function handleTotemSacrifice(
       effectUpdates.resources.silver - (state.resources.silver || 0);
     if (baseSilver > 0) {
       effectUpdates.resources.silver =
-        (state.resources.silver || 0) +
-        Math.floor(baseSilver * bonusMultiplier);
+        (state.resources.silver || 0) + baseSilver + usageCount;
     }
   }
 
