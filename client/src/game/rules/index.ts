@@ -363,7 +363,7 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         true,
         state,
       );
-      if ((current || 0) < adjustedCost) {
+      if ((current || 0) < adjustedAmount) {
         if (actionId === "buildStoneHut") {
           console.log(
             `[canExecuteAction] buildStoneHut blocked - ${path}: has ${current || 0}, needs ${adjustedCost}`,

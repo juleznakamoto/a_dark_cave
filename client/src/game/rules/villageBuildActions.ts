@@ -1237,7 +1237,15 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Black Monolith",
     description:
       "Dark monument built for living sacrifices",
-    tooltipEffects: ["-5 Madness", "-1 Madness per Animals sacrifice (max -10)"],
+    tooltipEffects: (state: GameState) => {
+      const animalSacrificeLevel = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+      const bonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
+      
+      if (bonusMadnessReduction > 0) {
+        return ["-5 Madness", `-${bonusMadnessReduction} Madness from Animals sacrifices`];
+      }
+      return ["-5 Madness", "-1 Madness per Animals sacrifice (max -10)"];
+    },
     building: true,
     show_when: {
       1: {
