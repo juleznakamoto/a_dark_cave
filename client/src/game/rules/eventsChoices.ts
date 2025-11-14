@@ -271,6 +271,10 @@ export const choiceEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver + 200,
+              },
               clothing: {
                 ...state.clothing,
                 bone_necklace: true,
@@ -284,8 +288,8 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 minimalDeaths === 1
-                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones.`
-                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones.`,
+                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 200 silver.`
+                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 200 silver.`,
             };
           }
 
