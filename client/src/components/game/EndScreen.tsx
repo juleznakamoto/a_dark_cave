@@ -35,7 +35,7 @@ export default function EndScreen() {
         subtitle="At least for now... You finished the first chapter. Feel free to play again or try Cruel Mode."
         buttons={{
           primary: {
-            text: "Cruel Mode",
+            text: "Cruel Mode (coming soon)",
             onClick: handleCruelMode,
           },
           secondary: {

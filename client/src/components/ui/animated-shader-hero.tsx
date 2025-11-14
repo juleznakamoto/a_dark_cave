@@ -471,10 +471,10 @@ const Hero: React.FC<HeroProps> = ({
         <div className="text-center space-y-4 max-w-5xl mx-auto px-4">
           {/* Main Heading with Animation */}
           <div className="space-y-2">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-600 via-yellow-700 to-amber-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-200">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-600 via-yellow-700 to-amber-600 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
               {headline.line1}
             </h1>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-500 via-orange-500 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-400">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-yellow-500 via-orange-500 to-red-400 bg-clip-text text-transparent animate-fade-in-up animation-delay-800">
               {headline.line2}
             </h1>
           </div>
