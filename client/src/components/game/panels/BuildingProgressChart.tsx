@@ -2,6 +2,7 @@ import { useGameStore } from "@/game/state";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
 import { GameState } from "@shared/schema";
 import { tailwindToHex } from "@/lib/tailwindColors";
+import React from "react";
 
 interface BuildingSegment {
   buildingType: keyof GameState["buildings"];
@@ -24,13 +25,13 @@ export default function BuildingProgressChart() {
   const startRadius = 12; // Inner radius of the first ring
   const ringSize = 3; // Thickness of each ring
   const spaceBetweenRings = 2.8; // Gap between rings
-  
+
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
     // Inner rings have larger padding, outer rings have smaller
     return Math.max(2, 14 - ringIndex * 2);
   };
-  
+
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
@@ -268,7 +269,7 @@ export default function BuildingProgressChart() {
         value: seg.maxCount,
         fill: "transparent",
       }));
-      
+
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -328,7 +329,7 @@ export default function BuildingProgressChart() {
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           {processedRings.map((ring, ringIndex) => (
-            <>
+            <React.Fragment key={`ring-${ringIndex}`}>
               {/* Background ring */}
               <Pie
                 key={`background-${ringIndex}`}
@@ -394,7 +395,7 @@ export default function BuildingProgressChart() {
                 style={{ outline: 'none' }}
               >
               </Pie>
-            </>
+            </React.Fragment>
           ))}
         </PieChart>
       </ResponsiveContainer>
