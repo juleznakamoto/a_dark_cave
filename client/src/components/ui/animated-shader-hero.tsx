@@ -480,7 +480,7 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-600">
+          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-1200">
             <p className="text-lg md:text-lg lg:text-xl text-orange-100/90 font-light leading-relaxed">
               {subtitle}
             </p>
@@ -488,7 +488,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-800">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-1600">
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
@@ -510,13 +510,13 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* Support Section */}
           <div className="py-6 flex flex-col items-center gap-3 mt-16">
-            <p className="text-sm text-gray-300 text-center max-w-md px-4 animate-fade-in-up animation-delay-1200">
+            <p className="text-sm text-gray-300 text-center max-w-md px-4 animate-fade-in-up animation-delay-2000">
               If you enjoyed the game, consider supporting me so I can continue
               to develop it.
             </p>
             <button
               onClick={() => window.open("https://buymeacoffee.com/julez.b", "_blank", "noopener,noreferrer")}
-              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 animate-fade-in-up animation-delay-1600"
+              className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 animate-fade-in-up animation-delay-2400"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>
