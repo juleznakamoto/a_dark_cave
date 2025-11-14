@@ -57,6 +57,7 @@ export default function ForestPanel() {
     const isChopWood = actionId === 'chopWood';
     const isHunt = actionId === 'hunt';
     const isSacrificeAction = actionId === 'boneTotems' || actionId === 'leatherTotems';
+    const isAnimalsSacrifice = actionId === 'animals';
     const resourceGainTooltip = (isChopWood || isHunt || isSacrificeAction) ? getResourceGainTooltip(actionId, state) : null;
 
     // Get dynamic label for trade buttons based on the amount
@@ -99,12 +100,32 @@ export default function ForestPanel() {
       }
     }
 
-    if (showCost || resourceGainTooltip) {
+    if (showCost || resourceGainTooltip || isAnimalsSacrifice) {
       let tooltipContent;
 
       if (resourceGainTooltip) {
         // chopWood or hunt: show resource gains only
         tooltipContent = resourceGainTooltip;
+      } else if (isAnimalsSacrifice && action.tooltipEffects) {
+        // Animals sacrifice: show -1 Madness effect
+        const costBreakdown = getActionCostBreakdown(actionId, state);
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap">
+            {action.tooltipEffects.map((effect, index) => (
+              <div key={`effect-${index}`}>
+                {effect}
+              </div>
+            ))}
+            {costBreakdown.length > 0 && (
+              <div className="border-t border-border my-1" />
+            )}
+            {costBreakdown.map((costItem, index) => (
+              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                {costItem.text}
+              </div>
+            ))}
+          </div>
+        );
       } else {
         // Other actions with costs
         const costBreakdown = getActionCostBreakdown(actionId, state);
