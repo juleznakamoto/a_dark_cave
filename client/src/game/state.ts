@@ -43,6 +43,9 @@ interface GameStore extends GameState {
   shopNotificationSeen: boolean;
   shopNotificationVisible: boolean;
 
+  // Play time tracking
+  playTime: number;
+
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
@@ -123,6 +126,7 @@ const mergeStateUpdates = (
     isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
     isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
     showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
+    playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
   };
 
   if (
@@ -215,6 +219,14 @@ const defaultGameState: GameState = {
   isMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
+  shopNotificationVisible: false,
+
+  // Play time tracking
+  playTime: 0,
+
+  // Cooldown management
+  cooldowns: {},
+  cooldownDurations: {}, // Initialize cooldownDurations
 };
 
 // State management utilities
@@ -280,6 +292,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   isMuted: false,
   // Initialize shop notification state
   shopNotificationSeen: false,
+  shopNotificationVisible: false,
+
+  // Play time tracking
+  playTime: 0,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -519,6 +535,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isMuted: false,
       shopNotificationSeen: false,
       shopNotificationVisible: false,
+      playTime: 0, // Reset play time
     };
 
     set(resetState);
@@ -564,6 +581,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
         shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
         shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
+        playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
       };
 
       set(loadedState);

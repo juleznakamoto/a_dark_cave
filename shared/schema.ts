@@ -348,6 +348,7 @@ export const gameStateSchema = z.object({
       endTime: 0,
     }),
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
+  playTime: z.number().default(0), // Track total play time in milliseconds
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

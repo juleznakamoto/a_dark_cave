@@ -22,7 +22,6 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
-let playTimeAccumulator = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 
 export function startGameLoop() {
@@ -78,6 +77,10 @@ export function startGameLoop() {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
 
+      // Update play time in state
+      const currentState = useGameStore.getState();
+      currentState.updatePlayTime(deltaTime);
+
       // Process ticks in fixed intervals
       while (tickAccumulator >= TICK_INTERVAL) {
         tickAccumulator -= TICK_INTERVAL;
@@ -128,9 +131,6 @@ export function startGameLoop() {
         // Set to 100% before resetting
         useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
-        
-        // Accumulate play time (15 seconds in milliseconds)
-        playTimeAccumulator += PRODUCTION_INTERVAL;
 
         // Reset to 0 after a brief moment to ensure 100% is visible
         if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
@@ -498,7 +498,7 @@ async function handleAutoSave() {
 
   try {
     // Add accumulated play time to the save
-    await saveGame(gameState, playTimeAccumulator);
+    await saveGame(gameState, state.playTime);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
   } catch (error) {
@@ -669,7 +669,7 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    await saveGame(gameState);
+    await saveGame(gameState, state.playTime);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
   } catch (error) {
