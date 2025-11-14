@@ -96,6 +96,7 @@ interface GameStore extends GameState {
   updateLoopProgress: (progress: number) => void;
   setGameLoopActive: (isActive: boolean) => void;
   togglePause: () => void;
+  updatePlayTime: (deltaTime: number) => void;
 }
 
 // Helper functions
@@ -1047,5 +1048,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
       return newState;
     });
+  },
+
+  updatePlayTime: (deltaTime: number) => {
+    set((state) => ({
+      playTime: state.playTime + deltaTime,
+    }));
   },
 }));
