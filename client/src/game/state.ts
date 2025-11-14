@@ -232,41 +232,6 @@ const defaultGameState: GameState = {
   cooldownDurations: {}, // Initialize cooldownDurations
 };
 
-// State management utilities
-export class StateManager {
-  private static updateTimer: NodeJS.Timeout | null = null;
-
-  static scheduleEffectsUpdate(store: () => GameStore) {
-    if (this.updateTimer) return;
-
-    this.updateTimer = setTimeout(() => {
-      const state = store();
-      state.updateEffects();
-      state.updateBastionStats();
-      this.updateTimer = null;
-    }, 0);
-  }
-
-  static clearUpdateTimer() {
-    if (this.updateTimer) {
-      clearTimeout(this.updateTimer);
-      this.updateTimer = null;
-    }
-  }
-
-  static schedulePopulationUpdate(store: () => GameStore) {
-    setTimeout(() => store().updatePopulation(), 0);
-  }
-
-  static handleDelayedEffects(delayedEffects: Array<() => void> | undefined) {
-    if (!delayedEffects) return;
-
-    delayedEffects.forEach((effect) => {
-      effect();
-    });
-  }
-}
-
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
@@ -309,12 +274,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    set((state) => updateResource(state, resource, amount));
-
-    // If updating free villagers, update population counts immediately
-    if (resource === ("free" as any)) {
-      setTimeout(() => get().updatePopulation(), 0);
-    }
+    set((state) => {
+      const newState = updateResource(state, resource, amount);
+      // If updating free villagers, update population counts immediately
+      if (resource === ("free" as any)) {
+        return { ...newState, ...updatePopulationCounts(newState) };
+      }
+      return newState;
+    });
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
@@ -453,7 +420,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         buildingChanges.watchtower !== undefined ||
         buildingChanges.palisades !== undefined
       ) {
-        setTimeout(() => get().updateBastionStats(), 0);
+        get().updateBastionStats();
       }
 
       // Update population when housing buildings change
@@ -462,7 +429,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         buildingChanges.stoneHut !== undefined ||
         buildingChanges.longhouse !== undefined
       ) {
-        setTimeout(() => get().updatePopulation(), 0);
+        get().updatePopulation();
       }
     }
 
@@ -765,8 +732,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       }
 
-      StateManager.schedulePopulationUpdate(get);
-
       if (triggeredEvents && triggeredEvents.length > 0) {
         const madnessEventIds = [
           "whisperingVoices",
@@ -840,8 +805,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         return newState;
       });
-
-      StateManager.schedulePopulationUpdate(get);
     }
 
     // Only create a log message dialog if there's a _logMessage but no combat

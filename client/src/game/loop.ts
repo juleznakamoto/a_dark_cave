@@ -40,8 +40,9 @@ export function startGameLoop() {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
-    // Check if game is paused
     const state = useGameStore.getState();
+    const batchedUpdates: { [key: string]: any } = {};
+
     const isDialogOpen =
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
@@ -50,108 +51,85 @@ export function startGameLoop() {
     const isPaused = state.isPaused || isDialogOpen;
 
     if (isPaused) {
-      // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && !state.isMuted) {
-        // Check if this is the first frame of pause
         audioManager.stopAllSounds();
-        useGameStore.setState({ isPausedPreviously: true });
+        batchedUpdates.isPausedPreviously = true;
       }
-      // Reset production timer when paused so time doesn't accumulate
       lastProduction = timestamp;
-      // Only reset loop progress to 0 when manually paused (not when dialogs open)
       if (state.isPaused) {
-        useGameStore.setState({ loopProgress: 0 });
+        batchedUpdates.loopProgress = 0;
       }
-      // Skip everything when paused
+      if (Object.keys(batchedUpdates).length > 0) {
+        useGameStore.setState(batchedUpdates);
+      }
       gameLoopId = requestAnimationFrame(tick);
       return;
     }
 
-    // Resume sounds when exiting pause state
     if (state.isPausedPreviously) {
       audioManager.resumeSounds();
-      useGameStore.setState({ isPausedPreviously: false });
+      batchedUpdates.isPausedPreviously = false;
     }
 
     if (!isDialogOpen) {
-      // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
+      state.updatePlayTime(deltaTime);
 
-      // Update play time in state
-      const currentState = useGameStore.getState();
-      currentState.updatePlayTime(deltaTime);
-
-      // Process ticks in fixed intervals
       while (tickAccumulator >= TICK_INTERVAL) {
         tickAccumulator -= TICK_INTERVAL;
-        processTick();
+        processTick(state, batchedUpdates);
       }
 
-      // Auto-save logic
       if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
         lastAutoSave = timestamp;
         handleAutoSave();
       }
 
-      // Shop notification logic (first after 10 minutes, then every 60 minutes)
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
-        const state = useGameStore.getState();
 
-        // First notification after 10 minutes
         if (
           elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY &&
           lastShopNotificationTime === 0
         ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
-            useGameStore.setState({
-              shopNotificationSeen: false,
-              shopNotificationVisible: true,
-            });
+            batchedUpdates.shopNotificationSeen = false;
+            batchedUpdates.shopNotificationVisible = true;
           } else if (!state.shopNotificationVisible) {
-            useGameStore.setState({ shopNotificationVisible: true });
+            batchedUpdates.shopNotificationVisible = true;
           }
-        }
-        // Subsequent notifications every 60 minutes after the last one
-        else if (
+        } else if (
           lastShopNotificationTime > 0 &&
           timestamp - lastShopNotificationTime >=
             SHOP_NOTIFICATION_REPEAT_INTERVAL
         ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
-            useGameStore.setState({ shopNotificationSeen: false });
+            batchedUpdates.shopNotificationSeen = false;
           }
         }
       }
 
-      // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-        // Set to 100% before resetting
-        useGameStore.setState({ loopProgress: 100 });
+        batchedUpdates.loopProgress = 100;
         lastProduction = timestamp;
 
-        // Reset to 0 after a brief moment to ensure 100% is visible
         if (loopProgressTimeoutId) clearTimeout(loopProgressTimeoutId);
         loopProgressTimeoutId = setTimeout(() => {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        handleGathererProduction();
-        handleHunterProduction();
-        handleMinerProduction();
-        handlePopulationSurvival();
-        handleStarvationCheck();
-        handleFreezingCheck();
-        handleMadnessCheck();
-        handleStrangerApproach();
+        handleAllProduction(state, batchedUpdates);
       } else {
-        // Update loop progress (0-100 based on production cycle)
         const progressPercent =
           ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
-        useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
+        batchedUpdates.loopProgress = Math.min(progressPercent, 100);
       }
+    }
+
+    if (Object.keys(batchedUpdates).length > 0) {
+      useGameStore.setState(batchedUpdates);
     }
 
     gameLoopId = requestAnimationFrame(tick);
@@ -159,7 +137,6 @@ export function startGameLoop() {
 
   gameLoopId = requestAnimationFrame(tick);
 }
-
 export function stopGameLoop() {
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
@@ -173,70 +150,83 @@ export function stopGameLoop() {
   StateManager.clearUpdateTimer();
 }
 
-function processTick() {
-  const state = useGameStore.getState();
-
-  // Tick down cooldowns
+function processTick(state: GameState, batchedUpdates: { [key: string]: any }) {
   state.tickCooldowns();
 
-  // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
-    useGameStore.setState({
-      feastState: {
-        ...state.feastState,
-        isActive: false,
-      },
-    });
+    batchedUpdates.feastState = {
+      ...state.feastState,
+      isActive: false,
+    };
   }
 
-  // Check if Great Feast has expired
   if (
     state.greatFeastState?.isActive &&
     state.greatFeastState.endTime <= Date.now()
   ) {
-    useGameStore.setState({
-      greatFeastState: {
-        ...state.greatFeastState,
-        isActive: false,
-      },
-    });
+    batchedUpdates.greatFeastState = {
+      ...state.greatFeastState,
+      isActive: false,
+    };
   }
 
-  // Check if curse has expired
   if (state.curseState?.isActive && state.curseState.endTime <= Date.now()) {
-    useGameStore.setState({
-      curseState: {
-        ...state.curseState,
-        isActive: false,
-      },
-    });
+    batchedUpdates.curseState = {
+      ...state.curseState,
+      isActive: false,
+    };
   }
 
-  // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();
 
-  // Trigger save if events changed (for cube events persistence)
   const eventsChanged = Object.keys(state.events).some(
     (key) => state.events[key] !== prevEvents[key],
   );
   if (eventsChanged && import.meta.env.DEV) {
     console.log("[LOOP] Events changed, triggering autosave");
-    // Manually call autosave to persist events changes
     handleAutoSave();
   }
 }
 
-function handleGathererProduction() {
-  const state = useGameStore.getState();
+function updateResourceInBatch(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+  resource: keyof GameState["resources"],
+  amount: number,
+) {
+  if (!batchedUpdates.resources) {
+    batchedUpdates.resources = {};
+  }
+  const currentAmount =
+    batchedUpdates.resources[resource] ?? state.resources[resource] ?? 0;
+  batchedUpdates.resources[resource] = Math.max(0, currentAmount + amount);
+}
+function handleAllProduction(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
+  handleGathererProduction(state, batchedUpdates);
+  handleHunterProduction(state, batchedUpdates);
+  handleMinerProduction(state, batchedUpdates);
+  handlePopulationSurvival(state, batchedUpdates);
+  handleStarvationCheck(state, batchedUpdates);
+  handleFreezingCheck(state, batchedUpdates);
+  handleMadnessCheck(state, batchedUpdates);
+  handleStrangerApproach(state, batchedUpdates);
+}
+function handleGathererProduction(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    const updates: Record<string, number> = {};
     const production = getPopulationProduction("gatherer", gatherer, state);
     production.forEach((prod) => {
-      updates[prod.resource] = prod.totalAmount;
-      state.updateResource(
+      updateResourceInBatch(
+        state,
+        batchedUpdates,
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
       );
@@ -244,14 +234,18 @@ function handleGathererProduction() {
   }
 }
 
-function handleHunterProduction() {
-  const state = useGameStore.getState();
+function handleHunterProduction(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const hunter = state.villagers.hunter;
 
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
     production.forEach((prod) => {
-      state.updateResource(
+      updateResourceInBatch(
+        state,
+        batchedUpdates,
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
       );
@@ -259,10 +253,10 @@ function handleHunterProduction() {
   }
 }
 
-function handleMinerProduction() {
-  const state = useGameStore.getState();
-
-  // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
+function handleMinerProduction(
+  state: GameState,
+  batchedUpdates: { [key:string]: any },
+) {
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
       count > 0 &&
@@ -274,7 +268,9 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
-        state.updateResource(
+        updateResourceInBatch(
+          state,
+          batchedUpdates,
           prod.resource as keyof typeof state.resources,
           prod.totalAmount,
         );
@@ -283,9 +279,10 @@ function handleMinerProduction() {
   });
 }
 
-function handlePopulationSurvival() {
-  const state = useGameStore.getState();
-
+function handlePopulationSurvival(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
@@ -293,44 +290,31 @@ function handlePopulationSurvival() {
 
   if (totalPopulation === 0) return;
 
-  // Only start starvation checks once the player has accumulated at least 5 food
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
-    // Activate starvation system permanently once food reaches at least 5
-    useGameStore.setState({
-      flags: { ...state.flags, starvationActive: true },
-    });
+    if (!batchedUpdates.flags) {
+      batchedUpdates.flags = {};
+    }
+    batchedUpdates.flags.starvationActive = true;
   }
 
-  // Handle food consumption (but not starvation - that's handled by events)
   const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
+  const foodUpdate =
+    availableFood >= foodNeeded ? -foodNeeded : -availableFood;
+  updateResourceInBatch(state, batchedUpdates, "food", foodUpdate);
 
-  if (availableFood >= foodNeeded) {
-    // Everyone can eat, consume food normally
-    state.updateResource("food", -foodNeeded);
-  } else {
-    // Not enough food, consume all available food (starvation event will trigger separately)
-    state.updateResource("food", -availableFood);
-  }
-
-  // Handle wood consumption (1 wood per villager for heating/shelter)
   const woodNeeded = totalPopulation;
   const availableWood = state.resources.wood;
-
-  if (availableWood >= woodNeeded) {
-    // Consume wood normally
-    state.updateResource("wood", -woodNeeded);
-  } else {
-    // Not enough wood, consume all available wood (freezing check will handle deaths)
-    state.updateResource("wood", -availableWood);
-  }
+  const woodUpdate =
+    availableWood >= woodNeeded ? -woodNeeded : -availableWood;
+  updateResourceInBatch(state, batchedUpdates, "wood", woodUpdate);
 }
 
-function handleStarvationCheck() {
-  const state = useGameStore.getState();
-
-  // Only proceed if starvation is already active (activated in handlePopulationSurvival)
+function handleStarvationCheck(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   if (!state.flags.starvationActive) return;
 
   const totalPopulation = Object.values(state.villagers).reduce(
@@ -339,10 +323,11 @@ function handleStarvationCheck() {
   );
   if (totalPopulation === 0) return;
 
-  const availableFood = state.resources.food;
+  const availableFood =
+    (batchedUpdates.resources && batchedUpdates.resources.food) ??
+    state.resources.food;
 
   if (availableFood === 0) {
-    // 5% chance for each villager to die from starvation when food is 0
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
       if (Math.random() < 0.05 + state.CM * 0.025) {
@@ -351,12 +336,11 @@ function handleStarvationCheck() {
     }
 
     if (starvationDeaths > 0) {
-      // Use the centralized killVillagers function
       const deathResult = killVillagers(state, starvationDeaths);
-
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      batchedUpdates.villagers = {
+        ...(batchedUpdates.villagers ?? {}),
+        ...deathResult.villagers,
+      };
 
       const message =
         starvationDeaths === 1
@@ -370,22 +354,25 @@ function handleStarvationCheck() {
         type: "system",
       });
 
-      // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
     }
   }
 }
 
-function handleFreezingCheck() {
-  const state = useGameStore.getState();
-
+function handleFreezingCheck(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
   );
 
-  if (totalPopulation > 0 && state.resources.wood === 0) {
-    // 5% chance for each villager to die from cold
+  const availableWood =
+    (batchedUpdates.resources && batchedUpdates.resources.wood) ??
+    state.resources.wood;
+
+  if (totalPopulation > 0 && availableWood === 0) {
     let freezingDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
       if (Math.random() < 0.05 + state.CM * 0.025) {
@@ -394,12 +381,11 @@ function handleFreezingCheck() {
     }
 
     if (freezingDeaths > 0) {
-      // Use the centralized killVillagers function
       const deathResult = killVillagers(state, freezingDeaths);
-
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      batchedUpdates.villagers = {
+        ...(batchedUpdates.villagers ?? {}),
+        ...deathResult.villagers,
+      };
 
       const message =
         freezingDeaths === 1
@@ -413,15 +399,15 @@ function handleFreezingCheck() {
         type: "system",
       });
 
-      // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
     }
   }
 }
 
-function handleMadnessCheck() {
-  const state = useGameStore.getState();
-
+function handleMadnessCheck(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const totalPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
@@ -429,11 +415,9 @@ function handleMadnessCheck() {
 
   if (totalPopulation === 0) return;
 
-  // Get total madness using the centralized calculation function
   const totalMadness = getTotalMadness(state);
   if (totalMadness <= 0) return;
 
-  // Determine probability and possible death counts based on madness level
   let probability = 0 + state.CM * 0.01;
   if (totalMadness <= 10) {
     probability += 0.01;
@@ -447,9 +431,7 @@ function handleMadnessCheck() {
     probability += 0.05;
   }
 
-  // Check if a madness death event occurs
   if (Math.random() < probability) {
-    // Determine number of deaths: 0, 1, 2, or 4 villagers
     const rand = Math.random();
     let madnessDeaths = 0;
 
@@ -463,16 +445,14 @@ function handleMadnessCheck() {
       madnessDeaths = 4;
     }
 
-    // Cap deaths at current population
     madnessDeaths = Math.min(madnessDeaths, totalPopulation);
 
     if (madnessDeaths > 0) {
-      // Use the centralized killVillagers function
       const deathResult = killVillagers(state, madnessDeaths);
-
-      useGameStore.setState({
-        villagers: deathResult.villagers || state.villagers,
-      });
+      batchedUpdates.villagers = {
+        ...(batchedUpdates.villagers ?? {}),
+        ...deathResult.villagers,
+      };
 
       const message =
         madnessDeaths === 1
@@ -486,7 +466,6 @@ function handleMadnessCheck() {
         type: "system",
       });
 
-      // Update population after applying changes
       setTimeout(() => state.updatePopulation(), 0);
     }
   }
@@ -497,7 +476,6 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // Add accumulated play time to the save
     await saveGame(gameState, state.playTime);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
@@ -506,36 +484,29 @@ async function handleAutoSave() {
   }
 }
 
-function handleStrangerApproach() {
-  const state = useGameStore.getState();
-
+function handleStrangerApproach(
+  state: GameState,
+  batchedUpdates: { [key: string]: any },
+) {
   const currentPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
     0,
   );
   const maxPopulation = getMaxPopulation(state);
 
-  // Only trigger if there's room for more villagers
   if (currentPopulation >= maxPopulation) return;
 
-  // Calculate probability based on your specifications
-  let probability = 0.1 - state.CM * 0.05; // 10% base probability
+  let probability = 0.1 - state.CM * 0.05;
 
-  // +2.0% for each wooden hut -> 20 %
   probability += state.buildings.woodenHut * 0.02;
-  // +2.5% for each stone hut -> 25%
   probability += state.buildings.stoneHut * 0.025;
-  // +3% for each longhouse -> 6%
   probability += state.buildings.longhouse * 0.03;
-  // +5% for each fur tent -> 5%
   probability += state.buildings.furTents * 0.05;
 
-  // Raven's Mark blessing: +15% stranger approach probability
   if (state.blessings?.ravens_mark) {
     probability += 0.15;
   }
 
-  // Raven's Mark Enhanced blessing: +30% stranger approach probability
   if (state.blessings?.ravens_mark_enhanced) {
     probability += 0.3;
   }
@@ -546,40 +517,28 @@ function handleStrangerApproach() {
     probability = Math.max(0.5, probability);
   }
 
-  // Check if stranger(s) approach based on probability
   if (Math.random() < probability) {
-    // Calculate available room
-    const currentPop = Object.values(state.villagers).reduce(
-      (sum, count) => sum + (count || 0),
-      0,
-    );
-    const maxPop = getMaxPopulation(state);
-    const availableRoom = maxPop - currentPop;
-
-    let strangersCount = 1; // Default to 1 stranger
+    const availableRoom = maxPopulation - currentPopulation;
+    let strangersCount = 1;
     let moreStrangersProbability = Math.random();
-
     let multiStrangerMultiplier = 1.0;
+
     if (state.blessings?.ravens_mark) {
       multiStrangerMultiplier += 0.15;
     }
     if (state.blessings?.ravens_mark_enhanced) {
       multiStrangerMultiplier += 0.15;
     }
-
     if (state.buildings.stoneHut >= 10) {
       multiStrangerMultiplier += 0.25;
     }
-
     if (state.buildings.longhouse >= 2) {
       moreStrangersProbability += 0.15;
     }
-
     if (state.buildings.furTents >= 1) {
       moreStrangersProbability += 0.15;
     }
 
-    // multiple strangers approach at once
     if (state.buildings.stoneHut >= 1) {
       if (
         availableRoom >= 5 &&
@@ -603,48 +562,43 @@ function handleStrangerApproach() {
         strangersCount = 2;
       }
     }
-    const messages = [
-      "A stranger approaches and joins the village.",
-      "A traveler arrives and decides to stay.",
-      "A wanderer appears and becomes part of the community.",
-      "Someone approaches the village and settles in.",
-      "A stranger joins the community, bringing skills and hope.",
-      "A newcomer arrives and makes themselves at home.",
-    ];
 
-    // Adjust message if multiple strangers arrive
-    if (strangersCount > 1) {
-      messages.push(
-        `${strangersCount} strangers approach and join the village.`,
-      );
-      messages.push(`${strangersCount} travelers arrive and decide to stay.`);
-      messages.push(
-        `${strangersCount} wanderers appear and become part of the community.`,
-      );
-    }
-
-    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-
-    // Add the villager(s) - only the amount that fits
     const actualStrangersToAdd = Math.min(strangersCount, availableRoom);
+    if (actualStrangersToAdd <= 0) return;
 
-    if (actualStrangersToAdd <= 0) return; // No room for anyone
+    if (!batchedUpdates.villagers) {
+      batchedUpdates.villagers = {};
+    }
+    batchedUpdates.villagers.free =
+      (batchedUpdates.villagers.free ?? state.villagers.free) +
+      actualStrangersToAdd;
 
-    useGameStore.setState({
-      villagers: {
-        ...state.villagers,
-        free: state.villagers.free + actualStrangersToAdd,
-      },
-      story: {
-        ...state.story,
-        seen: {
-          ...state.story.seen,
-          hasVillagers: true,
-        },
-      },
-    });
+    if (!batchedUpdates.story) {
+      batchedUpdates.story = { seen: {} };
+    }
+    batchedUpdates.story.seen = {
+      ...(batchedUpdates.story.seen ?? state.story.seen),
+      hasVillagers: true,
+    };
 
-    // Add log entry
+    const messages =
+      strangersCount > 1
+        ? [
+            `${strangersCount} strangers approach and join the village.`,
+            `${strangersCount} travelers arrive and decide to stay.`,
+            `${strangersCount} wanderers appear and become part of the community.`,
+          ]
+        : [
+            "A stranger approaches and joins the village.",
+            "A traveler arrives and decides to stay.",
+            "A wanderer appears and becomes part of the community.",
+            "Someone approaches the village and settles in.",
+            "A stranger joins the community, bringing skills and hope.",
+            "A newcomer arrives and makes themselves at home.",
+          ];
+    const randomMessage =
+      messages[Math.floor(Math.random() * messages.length)];
+
     state.addLogEntry({
       id: `stranger-approaches-${Date.now()}`,
       message: randomMessage,
@@ -652,15 +606,11 @@ function handleStrangerApproach() {
       type: "system",
     });
 
-    // Update population immediately
     state.updatePopulation();
-
-    // Play new villager sound
     audioManager.playSound("newVillager", 0.02);
   }
 }
 
-// Export the manual save function
 export async function manualSave() {
   console.log("[SAVE] Manual save initiated.");
 

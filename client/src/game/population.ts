@@ -139,11 +139,22 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
   },
 };
 
+const productionCache = new Map<string, any>();
+
 export const getPopulationProduction = (
   jobId: string,
   count: number,
   state?: GameState,
 ) => {
+  const cacheKey = `${jobId}-${count}-${JSON.stringify(state?.buildings)}-${
+    state?.feastState?.isActive
+  }-${state?.greatFeastState?.isActive}-${state?.curseState?.isActive}-${
+    state?.devMode
+  }`;
+  if (productionCache.has(cacheKey)) {
+    return productionCache.get(cacheKey);
+  }
+
   const job = populationJobs[jobId];
   if (!job) return [];
 
@@ -230,6 +241,7 @@ export const getPopulationProduction = (
     });
   }
 
+  productionCache.set(cacheKey, baseProduction);
   return baseProduction;
 };
 
