@@ -278,8 +278,6 @@ export function handleAnimals(
   }
   effectUpdates.story.seen.animalsSacrificeLevel = usageCount + 1;
 
-  effectUpdates.story.seen.animalsSacrificeMaxed = true;
-
   // Set flag when max uses reached
   if (usageCount + 1 >= maxLevels) {
     effectUpdates.story.seen.animalsSacrificeMaxed = true;
