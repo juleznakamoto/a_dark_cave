@@ -1,3 +1,4 @@
+console.log("[Jules] server/index.ts is being executed.");
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
@@ -96,9 +97,13 @@ import { createServer } from "http";
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {
+    console.log("[Jules] Setting up Vite...");
     await setupVite(app, server);
+    console.log("[Jules] Vite setup complete.");
   } else {
+    console.log("[Jules] Serving static files...");
     serveStatic(app);
+    console.log("[Jules] Static files served.");
   }
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
@@ -106,6 +111,7 @@ import { createServer } from "http";
   // this serves both the API and the client.
   // It is the only port that is not firewalled.
   const port = parseInt(process.env.PORT || "5000", 10);
+  console.log(`[Jules] Server is listening on port ${port}`);
   server.listen(
     {
       port,

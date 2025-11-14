@@ -232,41 +232,6 @@ const defaultGameState: GameState = {
   cooldownDurations: {}, // Initialize cooldownDurations
 };
 
-// State management utilities
-export class StateManager {
-  private static updateTimer: NodeJS.Timeout | null = null;
-
-  static scheduleEffectsUpdate(store: () => GameStore) {
-    if (this.updateTimer) return;
-
-    this.updateTimer = setTimeout(() => {
-      const state = store();
-      state.updateEffects();
-      state.updateBastionStats();
-      this.updateTimer = null;
-    }, 0);
-  }
-
-  static clearUpdateTimer() {
-    if (this.updateTimer) {
-      clearTimeout(this.updateTimer);
-      this.updateTimer = null;
-    }
-  }
-
-  static schedulePopulationUpdate(store: () => GameStore) {
-    setTimeout(() => store().updatePopulation(), 0);
-  }
-
-  static handleDelayedEffects(delayedEffects: Array<() => void> | undefined) {
-    if (!delayedEffects) return;
-
-    delayedEffects.forEach((effect) => {
-      effect();
-    });
-  }
-}
-
 // Main store
 export const useGameStore = create<GameStore>((set, get) => ({
   ...defaultGameState,
@@ -309,12 +274,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    set((state) => updateResource(state, resource, amount));
-
-    // If updating free villagers, update population counts immediately
-    if (resource === ("free" as any)) {
-      setTimeout(() => get().updatePopulation(), 0);
-    }
+    set((state) => {
+      const newState = updateResource(state, resource, amount);
+      // If updating free villagers, update population counts immediately
+      if (resource === ("free" as any)) {
+        return { ...newState, ...updatePopulationCounts(newState) };
+      }
+      return newState;
+    });
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
@@ -340,7 +307,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     } else {
       set(defaultGameState);
     }
-    StateManager.scheduleEffectsUpdate(get);
+    // Defer the initial effects calculation to allow the state to settle
+    setTimeout(() => {
+      get().updateEffects();
+      get().updateBastionStats();
+    }, 0);
   },
 
   executeAction: (actionId: string) => {
@@ -442,7 +413,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.clothing ||
       result.stateUpdates.relics
     ) {
-      StateManager.scheduleEffectsUpdate(get);
+      setTimeout(() => {
+        get().updateEffects();
+        get().updateBastionStats();
+      }, 0);
     }
 
     // Update bastion stats when fortification buildings change
@@ -476,7 +450,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Handle delayed effects
-    StateManager.handleDelayedEffects(result.delayedEffects);
+    if (result.delayedEffects) {
+      result.delayedEffects.forEach((effect) => {
+        effect();
+      });
+    }
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -543,7 +521,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     };
 
     set(resetState);
-    StateManager.scheduleEffectsUpdate(get);
+    get().updateEffects();
+    get().updateBastionStats();
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
@@ -616,7 +595,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       get().addLogEntry(initialLogEntry);
     }
 
-    StateManager.scheduleEffectsUpdate(get);
+    get().updateEffects();
+    get().updateBastionStats();
   },
 
   addLogEntry: (entry: LogEntry) => {
@@ -765,8 +745,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       }
 
-      StateManager.schedulePopulationUpdate(get);
-
       if (triggeredEvents && triggeredEvents.length > 0) {
         const madnessEventIds = [
           "whisperingVoices",
@@ -840,8 +818,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
         return newState;
       });
-
-      StateManager.schedulePopulationUpdate(get);
     }
 
     // Only create a log message dialog if there's a _logMessage but no combat
@@ -929,7 +905,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const updates = assignVillagerToJob(state, job);
       if (Object.keys(updates).length > 0) {
-        StateManager.schedulePopulationUpdate(get);
+        get().updatePopulation();
       }
       return updates;
     });
@@ -939,7 +915,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set((state) => {
       const updates = unassignVillagerFromJob(state, job);
       if (Object.keys(updates).length > 0) {
-        StateManager.schedulePopulationUpdate(get);
+        get().updatePopulation();
       }
       return updates;
     });

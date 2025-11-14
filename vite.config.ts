@@ -1,3 +1,4 @@
+console.log("[Jules] vite.config.ts is being executed.");
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
