@@ -328,7 +328,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.silver":  250 ,
+      "resources.silver":  500 ,
       "resources.gold": 100 ,
       "resources.obsidian":  50 ,
       "resources.adamant": 50 ,
@@ -350,7 +350,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 1000,
     },
     effects: {
-      "resources.gold":  150 ,
+      "resources.gold":  250 ,
       "resources.obsidian":  75 ,
       "resources.adamant":  50 ,
       "resources.moonstone":  25 ,
