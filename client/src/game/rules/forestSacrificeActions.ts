@@ -29,7 +29,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       "buildings.altar": 1,
     },
     cost: {
-      "resources.bone_totem": 5,
+      "resources.bone_totem": (state: GameState) => getBoneTotemsCost(state),
     },
     effects: {
       "resources.silver": "random(10,25)",
@@ -45,7 +45,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       "buildings.temple": 1,
     },
     cost: {
-      "resources.leather_totem": 5,
+      "resources.leather_totem": (state: GameState) => getLeatherTotemsCost(state),
     },
     effects: {
       "resources.gold": "random(10,25)",
