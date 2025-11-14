@@ -25,7 +25,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "Cruel Mode",
     description:
       "Experience a cruel world, with an expanded story, new items, more lore and deadlier foes. Endure, or vanish.",
-    price: 199, // 1.99 €
+    price: 349, // 3.49 €
     rewards: {},
     canPurchaseMultipleTimes: false,
     category: "blessing",
