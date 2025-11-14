@@ -359,7 +359,10 @@ export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
   description: z.string().optional(),
-  tooltipEffects: z.array(z.string()).optional(),
+  tooltipEffects: z.union([
+    z.array(z.string()),
+    z.function().args(z.any()).returns(z.array(z.string()))
+  ]).optional(),
   building: z.boolean().optional(),
   show_when: z
     .union([
