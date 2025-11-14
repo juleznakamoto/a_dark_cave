@@ -424,6 +424,14 @@ const Hero: React.FC<HeroProps> = ({
           animation-delay: 1s;
         }
 
+        .animation-delay-2000 {
+          animation-delay: 1s;
+        }
+
+        .animation-delay-2400 {
+          animation-delay: 1s;
+        }
+
         @keyframes gradient-shift {
           0% {
             background-position: 0% 50%;
@@ -480,7 +488,7 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-1200">
+          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-2400">
             <p className="text-lg md:text-lg lg:text-xl text-orange-100/90 font-light leading-relaxed">
               {subtitle}
             </p>
@@ -488,7 +496,7 @@ const Hero: React.FC<HeroProps> = ({
 
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-1600">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-00">
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
@@ -515,7 +523,13 @@ const Hero: React.FC<HeroProps> = ({
               to develop it.
             </p>
             <button
-              onClick={() => window.open("https://buymeacoffee.com/julez.b", "_blank", "noopener,noreferrer")}
+              onClick={() =>
+                window.open(
+                  "https://buymeacoffee.com/julez.b",
+                  "_blank",
+                  "noopener,noreferrer",
+                )
+              }
               className="px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-black rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-orange-500/25 animate-fade-in-up animation-delay-2400"
             >
               <span>☕</span>
