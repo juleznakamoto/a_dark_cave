@@ -45,6 +45,7 @@ interface GameStore extends GameState {
 
   // Play time tracking
   playTime: number;
+  isNewGame: boolean; // Track if this is a newly started game
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -224,6 +225,7 @@ const defaultGameState: GameState = {
 
   // Play time tracking
   playTime: 0,
+  isNewGame: false,
 
   // Cooldown management
   cooldowns: {},
@@ -537,6 +539,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       shopNotificationSeen: false,
       shopNotificationVisible: false,
       playTime: 0, // Reset play time
+      isNewGame: true, // Mark as a new game
     };
 
     set(resetState);
@@ -583,6 +586,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
         shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
+        isNewGame: false, // Clear the new game flag when loading
       };
 
       set(loadedState);

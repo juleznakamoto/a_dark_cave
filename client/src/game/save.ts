@@ -55,7 +55,8 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
     try {
       const user = await getCurrentUser();
       if (user) {
-        await saveGameToSupabase(sanitizedState);
+        const isNewGame = gameState.isNewGame || false;
+        await saveGameToSupabase(sanitizedState, playTime, isNewGame);
         if (import.meta.env.DEV) {
           console.log('Game saved to cloud');
         }
