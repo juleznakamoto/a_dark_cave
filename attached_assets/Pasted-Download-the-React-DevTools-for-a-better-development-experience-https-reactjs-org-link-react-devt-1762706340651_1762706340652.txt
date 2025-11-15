@@ -1,0 +1,109 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+audio.ts:189 Registering sounds for lazy loading...
+audio.ts:196 Sound URLs registered for lazy loading
+save.ts:98 Failed to load game: TypeError: supabase.auth.getUser is not a function
+    at getCurrentUser (auth.ts:43:50)
+    at loadGame (save.ts:66:24)
+    at initializeGame (game.tsx:19:32)
+    at game.tsx:36:5
+    at commitHookEffectListMount (chunk-UPELNCPK.js?v=acd0ce60:16915:34)
+    at commitPassiveMountOnFiber (chunk-UPELNCPK.js?v=acd0ce60:18156:19)
+    at commitPassiveMountEffects_complete (chunk-UPELNCPK.js?v=acd0ce60:18129:17)
+    at commitPassiveMountEffects_begin (chunk-UPELNCPK.js?v=acd0ce60:18119:15)
+    at commitPassiveMountEffects (chunk-UPELNCPK.js?v=acd0ce60:18109:11)
+    at flushPassiveEffectsImpl (chunk-UPELNCPK.js?v=acd0ce60:19490:11)
+loadGame @ save.ts:98
+await in loadGame
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-UPELNCPK.js?v=acd0ce60:16915
+commitPassiveMountOnFiber @ chunk-UPELNCPK.js?v=acd0ce60:18156
+commitPassiveMountEffects_complete @ chunk-UPELNCPK.js?v=acd0ce60:18129
+commitPassiveMountEffects_begin @ chunk-UPELNCPK.js?v=acd0ce60:18119
+commitPassiveMountEffects @ chunk-UPELNCPK.js?v=acd0ce60:18109
+flushPassiveEffectsImpl @ chunk-UPELNCPK.js?v=acd0ce60:19490
+flushPassiveEffects @ chunk-UPELNCPK.js?v=acd0ce60:19447
+performSyncWorkOnRoot @ chunk-UPELNCPK.js?v=acd0ce60:18868
+flushSyncCallbacks @ chunk-UPELNCPK.js?v=acd0ce60:9119
+commitRootImpl @ chunk-UPELNCPK.js?v=acd0ce60:19432
+commitRoot @ chunk-UPELNCPK.js?v=acd0ce60:19277
+finishConcurrentRender @ chunk-UPELNCPK.js?v=acd0ce60:18805
+performConcurrentWorkOnRoot @ chunk-UPELNCPK.js?v=acd0ce60:18718
+workLoop @ chunk-UPELNCPK.js?v=acd0ce60:197
+flushWork @ chunk-UPELNCPK.js?v=acd0ce60:176
+performWorkUntilDeadline @ chunk-UPELNCPK.js?v=acd0ce60:384Understand this error
+loop.ts:448 [AUTOSAVE] Saving game state, events: {available: Array(0), active: Array(0), log: Array(0), whisperingVoices: false, shadowsMove: false, …}
+save.ts:58 Failed to save game: TypeError: supabase.auth.getUser is not a function
+    at getCurrentUser (auth.ts:43:50)
+    at saveGame (save.ts:47:24)
+    at async handleAutoSave (loop.ts:450:5)
+saveGame @ save.ts:58
+await in saveGame
+handleAutoSave @ loop.ts:450
+tick @ loop.ts:73
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111
+requestAnimationFrame
+tick @ loop.ts:111Understand this error
+loop.ts:454 Auto save failed: TypeError: supabase.auth.getUser is not a function
+    at getCurrentUser (auth.ts:43:50)
+    at saveGame (save.ts:47:24)
+    at async handleAutoSave (loop.ts:450:5)

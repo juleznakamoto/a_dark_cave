@@ -4,7 +4,10 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import { getTotalMadness } from "./rules/effectsCalculation";
+import {
+  getTotalMadness,
+  getAllActionBonuses,
+} from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -20,9 +23,6 @@ let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
-
-// Reuse objects to reduce memory allocation
-const resourceUpdatesPool: Record<string, number> = {};
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -147,7 +147,7 @@ export function startGameLoop() {
         const allResourceUpdates = {
           ...gathererUpdates,
           ...hunterUpdates,
-          ...minerUpdates,
+          ...minerUpdates
         };
 
         // Apply all production updates in a single setState
@@ -156,8 +156,8 @@ export function startGameLoop() {
           useGameStore.setState({
             resources: {
               ...state.resources,
-              ...allResourceUpdates,
-            },
+              ...allResourceUpdates
+            }
           });
         }
 
@@ -172,11 +172,9 @@ export function startGameLoop() {
           ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
         const roundedProgress = Math.floor(progressPercent / 5) * 5; // Update in 5% increments
         const currentProgress = useGameStore.getState().loopProgress;
-
+        
         if (Math.abs(roundedProgress - currentProgress) >= 5) {
-          useGameStore.setState({
-            loopProgress: Math.min(roundedProgress, 100),
-          });
+          useGameStore.setState({ loopProgress: Math.min(roundedProgress, 100) });
         }
       }
     }
@@ -260,18 +258,14 @@ function handleGathererProduction() {
 
   if (gatherer > 0) {
     const production = getPopulationProduction("gatherer", gatherer, state);
-    // Clear and reuse the pool object instead of creating new ones
-    for (const key in resourceUpdatesPool) {
-      delete resourceUpdatesPool[key];
-    }
-
+    const resourceUpdates: Record<string, number> = {};
+    
     production.forEach((prod) => {
-      const currentAmount =
-        state.resources[prod.resource as keyof typeof state.resources] || 0;
-      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
+      const currentAmount = state.resources[prod.resource as keyof typeof state.resources] || 0;
+      resourceUpdates[prod.resource] = currentAmount + prod.totalAmount;
     });
 
-    return resourceUpdatesPool;
+    return resourceUpdates;
   }
   return {};
 }
@@ -282,28 +276,21 @@ function handleHunterProduction() {
 
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
-    // Clear and reuse the pool object
-    for (const key in resourceUpdatesPool) {
-      delete resourceUpdatesPool[key];
-    }
-
+    const resourceUpdates: Record<string, number> = {};
+    
     production.forEach((prod) => {
-      const currentAmount =
-        state.resources[prod.resource as keyof typeof state.resources] || 0;
-      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
+      const currentAmount = state.resources[prod.resource as keyof typeof state.resources] || 0;
+      resourceUpdates[prod.resource] = currentAmount + prod.totalAmount;
     });
 
-    return resourceUpdatesPool;
+    return resourceUpdates;
   }
   return {};
 }
 
 function handleMinerProduction() {
   const state = useGameStore.getState();
-  // Clear and reuse the pool object
-  for (const key in resourceUpdatesPool) {
-    delete resourceUpdatesPool[key];
-  }
+  const resourceUpdates: Record<string, number> = {};
 
   // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -317,15 +304,13 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
-        const currentAmount =
-          state.resources[prod.resource as keyof typeof state.resources] || 0;
-        resourceUpdatesPool[prod.resource] =
-          (resourceUpdatesPool[prod.resource] || currentAmount) + prod.totalAmount;
+        const currentAmount = state.resources[prod.resource as keyof typeof state.resources] || 0;
+        resourceUpdates[prod.resource] = (resourceUpdates[prod.resource] || currentAmount) + prod.totalAmount;
       });
     }
   });
 
-  return resourceUpdatesPool;
+  return resourceUpdates;
 }
 
 function handlePopulationSurvival() {
@@ -361,7 +346,7 @@ function handlePopulationSurvival() {
   updates.resources = {
     ...state.resources,
     food: state.resources.food - foodToConsume,
-    wood: state.resources.wood - woodToConsume,
+    wood: state.resources.wood - woodToConsume
   };
 
   // Apply all updates in a single setState

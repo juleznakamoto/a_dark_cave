@@ -1,0 +1,43 @@
+**Last Updated:** [Date of last update]
+
+### § 1 Scope and Provider
+1.  These Terms of Service apply to the use of the browser game "A Dark Cave" (hereinafter referred to as "Game") provided by [Your Full Name or Company Name], [Your Address] (hereinafter referred to as "Provider").
+2.  By using the Game, you (hereinafter referred to as "User") agree to these terms. Deviating conditions of the User are not recognized unless the Provider expressly agrees to their validity in writing.
+3.  The Game is offered to consumers. A consumer is any natural person who enters into a legal transaction for purposes that are predominantly neither commercial nor self-employed.
+
+### § 2 Service Description
+1.  "A Dark Cave" is a text-based incremental survival/strategy game. The basic version of the game can be played free of charge.
+2.  Users have the option to create a free account to save their game progress on the Provider's servers ("Cloud Save"). The game can also be played without an account, in which case progress is saved locally in the User's browser.
+3.  The Provider reserves the right to modify, interrupt, or discontinue the Game or parts thereof, temporarily or permanently, with or without notice.
+
+### § 3 User Account
+1.  To use the Cloud Save feature, the User must create an account by providing a valid email address and choosing a password. The User is responsible for the confidentiality of their login credentials.
+2.  The User is obliged to provide truthful and complete information during registration.
+3.  The User is responsible for all activities that occur under their account. The Provider must be informed immediately of any unauthorized use of the account.
+4.  The Provider reserves the right to temporarily or permanently block or delete accounts, especially in cases of violation of these Terms of Service.
+
+### § 4 Payment Terms and In-Game Purchases
+1.  **General:** Users can purchase virtual items (e.g., resources, tools, time-based boosts) within the Game for real money ("Purchases"). These items are intended to enhance the gameplay experience. Purchases are optional and the base game is playable without them.
+2.  **Pricing:** All prices are displayed in EUR (€) and are final prices, including the applicable statutory value-added tax. We reserve the right to change the prices of virtual goods at any time.
+3.  **Payment Processor:** We use Stripe Payments Europe, Ltd., as our external payment processor. Payment methods accepted are those supported by Stripe, primarily credit and debit cards. We do not collect or store any of your financial data (e.g., credit card numbers). This information is provided directly to Stripe and is subject to their privacy policy.
+4.  **Conclusion of Contract:** The contract for a Purchase is concluded when you click the final "Buy Now" (or similarly labeled) button and your payment is successfully authorized by Stripe. Before this, you will be presented with a summary of your order and must explicitly agree to the immediate execution of the contract and waive your right of withdrawal.
+5.  **Delivery:** The purchased virtual items will be credited to your game account immediately after successful payment confirmation.
+6.  **No Refunds:** Beyond the statutory withdrawal rights, there is no right to a refund for purchased virtual items, unless required by mandatory law. Virtual items have no real-world monetary value and cannot be exchanged for cash.
+7.  **No Subscriptions:** All purchases are one-time transactions. There are no recurring charges or subscriptions.
+
+### § 5 User Obligations
+1.  The User agrees not to engage in any activity that interferes with or disrupts the Game or its servers.
+2.  The use of cheats, bots, scripts, or any other form of manipulation is strictly prohibited.
+3.  The User is solely responsible for their interactions within the Game. Harassment, insults, or any form of harmful behavior towards other users or the Provider is prohibited.
+
+### § 6 Liability
+1.  The Provider is liable without limitation for intent and gross negligence.
+2.  For simple negligence, the Provider is liable only for damages resulting from the breach of essential contractual obligations (obligations whose fulfillment is essential for the proper execution of the contract and on whose observance the contractual partner regularly relies and may rely). In this case, liability is limited to the typically foreseeable damage.
+3.  The above liability limitations do not apply in case of injury to life, body, or health.
+4.  The Provider is not liable for data loss if the User does not use the Cloud Save feature or for damages caused by improper use of the account.
+
+### § 7 Final Provisions
+1.  The law of the Federal Republic of Germany shall apply, excluding the UN Convention on Contracts for the International Sale of Goods.
+2.  Should individual provisions of these Terms of Service be or become invalid, the validity of the remaining provisions shall not be affected.
+3.  The place of jurisdiction is [Your City], if the User is a merchant, a legal entity under public law, or a special fund under public law.
+4.  The Provider reserves the right to amend these Terms of Service. Users will be informed of changes in a timely manner. If the User does not object to the changes within four weeks of notification, the amended terms shall be deemed accepted.

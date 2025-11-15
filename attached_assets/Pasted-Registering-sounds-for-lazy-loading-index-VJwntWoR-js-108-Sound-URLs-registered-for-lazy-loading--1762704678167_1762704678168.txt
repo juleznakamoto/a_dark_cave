@@ -1,0 +1,406 @@
+Registering sounds for lazy loading...
+index-VJwntWoR.js:108 Sound URLs registered for lazy loading
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at index-VJwntWoR.js:219:4141
+    at index-VJwntWoR.js:219:4212
+    at new Promise (<anonymous>)
+    at S1e (index-VJwntWoR.js:219:4070)
+    at uSe._refreshAccessToken (index-VJwntWoR.js:235:18114)
+    at uSe._callRefreshToken (index-VJwntWoR.js:235:21010)
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:235 Loaded Supabase config from server
+index-VJwntWoR.js:234 Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+bf @ index-VJwntWoR.js:234
+uSe @ index-VJwntWoR.js:235
+_initSupabaseAuthClient @ index-VJwntWoR.js:235
+dSe @ index-VJwntWoR.js:235
+WF @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:235
+Promise.then
+(anonymous) @ index-VJwntWoR.js:235Understand this warning
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  POST https://placeholder.supabase.co/auth/v1/token?grant_type=refresh_token net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:18208
+    at async index-VJwntWoR.js:219:4135
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+await in (anonymous)
+(anonymous) @ index-VJwntWoR.js:219
+S1e @ index-VJwntWoR.js:219
+_refreshAccessToken @ index-VJwntWoR.js:235
+_callRefreshToken @ index-VJwntWoR.js:235
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:235 AuthRetryableFetchError: Failed to fetch
+    at I1e (index-VJwntWoR.js:219:9692)
+    at async pe (index-VJwntWoR.js:219:9375)
+    at async index-VJwntWoR.js:235:18202
+    at async index-VJwntWoR.js:219:4135
+_recoverAndRefresh @ index-VJwntWoR.js:235
+await in _recoverAndRefresh
+_initialize @ index-VJwntWoR.js:234
+await in _initialize
+(anonymous) @ index-VJwntWoR.js:234
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219  GET https://placeholder.supabase.co/auth/v1/user net::ERR_NAME_NOT_RESOLVED
+(anonymous) @ index-VJwntWoR.js:219
+I1e @ index-VJwntWoR.js:219
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+_useSession @ index-VJwntWoR.js:235
+await in _useSession
+_getUser @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:219 TypeError: Failed to fetch
+    at index-VJwntWoR.js:219:3233
+    at I1e (index-VJwntWoR.js:219:9635)
+    at pe (index-VJwntWoR.js:219:9381)
+    at index-VJwntWoR.js:235:8882
+    at uSe._useSession (index-VJwntWoR.js:235:7222)
+    at async uSe._getUser (index-VJwntWoR.js:235:8667)
+    at async index-VJwntWoR.js:235:8528
+I1e @ index-VJwntWoR.js:219
+await in I1e
+pe @ index-VJwntWoR.js:219
+(anonymous) @ index-VJwntWoR.js:235
+_useSession @ index-VJwntWoR.js:235
+await in _useSession
+_getUser @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:235
+(anonymous) @ index-VJwntWoR.js:219Understand this error
+index-VJwntWoR.js:512 State: {resources: {…}, stats: {…}, boostMode: true, flags: {…}, schematics: {…}, …}
+index-VJwntWoR.js:235 Game saved to cloud
+index-VJwntWoR.js:512 State: {resources: {…}, stats: {…}, boostMode: true, flags: {…}, schematics: {…}, …}
+index-VJwntWoR.js:235 Game saved to cloud
+index-VJwntWoR.js:512 State: {resources: {…}, stats: {…}, boostMode: true, flags: {…}, schematics: {…}, …}
+index-VJwntWoR.js:108 Loading all sounds after user gesture...
+5The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>Understand this warning
+index-VJwntWoR.js:235 Game saved to cloud
