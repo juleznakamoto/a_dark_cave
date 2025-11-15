@@ -29,34 +29,11 @@ export class AudioManager {
   }
 
   async loadSound(name: string, url: string): Promise<void> {
-    // Store the URL for later loading
-    this.soundUrls.set(name, url);
-
-    // Only actually load if audio context is available
-    if (!this.initialized) {
-      return;
+    // RAM TEST: Audio loading completely disabled
+    if (import.meta.env.DEV) {
+      console.log(`[RAM TEST] Audio loading disabled for: ${name}`);
     }
-
-    try {
-      await this.initAudioContext();
-      if (!this.audioContext) return;
-
-      if (import.meta.env.DEV) {
-        console.log(`Loading sound: ${name} from ${url}`);
-      }
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      const arrayBuffer = await response.arrayBuffer();
-      const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
-      this.sounds.set(name, audioBuffer);
-      if (import.meta.env.DEV) {
-        console.log(`Successfully loaded sound: ${name}`);
-      }
-    } catch (error) {
-      console.warn(`Failed to load sound ${name} from ${url}:`, error);
-    }
+    return;
   }
 
   private async loadAllSounds(): Promise<void> {
@@ -95,78 +72,13 @@ export class AudioManager {
   }
 
   async playSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
-    // Don't play if muted globally or if specific sound is muted
-    if (this.isMutedGlobally || isMuted) return;
-
-    try {
-      // Initialize audio on first play attempt
-      if (!this.initialized) {
-        this.initialized = true;
-        await this.loadAllSounds();
-      }
-
-      await this.initAudioContext();
-      if (!this.audioContext) return;
-
-      const audioBuffer = this.sounds.get(name);
-      if (!audioBuffer) {
-        console.warn(`Sound ${name} not found`);
-        return;
-      }
-
-      const source = this.audioContext.createBufferSource();
-      const gainNode = this.audioContext.createGain();
-
-      source.buffer = audioBuffer;
-      gainNode.gain.value = Math.max(0, Math.min(1, volume));
-
-      source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
-
-      source.start();
-    } catch (error) {
-      console.warn(`Failed to play sound ${name}:`, error);
-    }
+    // RAM TEST: Audio playback completely disabled
+    return;
   }
 
   async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
-    // Don't play if muted globally or if specific sound is muted
-    if (this.isMutedGlobally || isMuted) return;
-
-    try {
-      // Stop any existing loop for this sound
-      this.stopLoopingSound(name);
-
-      // Initialize audio on first play attempt
-      if (!this.initialized) {
-        this.initialized = true;
-        await this.loadAllSounds();
-      }
-
-      await this.initAudioContext();
-      if (!this.audioContext) return;
-
-      const audioBuffer = this.sounds.get(name);
-      if (!audioBuffer) {
-        console.warn(`Sound ${name} not found`);
-        return;
-      }
-
-      const source = this.audioContext.createBufferSource();
-      const gainNode = this.audioContext.createGain();
-
-      source.buffer = audioBuffer;
-      source.loop = true;
-      gainNode.gain.value = Math.max(0, Math.min(1, volume));
-
-      source.connect(gainNode);
-      gainNode.connect(this.audioContext.destination);
-
-      source.start();
-      this.loopingSources.set(name, source);
-    } catch (error) {
-      console.warn(`Failed to play looping sound ${name}:`, error);
-    }
+    // RAM TEST: Audio playback completely disabled
+    return;
   }
 
   stopLoopingSound(name: string): void {
@@ -196,18 +108,11 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
+    // RAM TEST: Audio preloading completely disabled
     if (import.meta.env.DEV) {
-      console.log('Registering sounds for lazy loading...');
+      console.log('[RAM TEST] Audio preloading disabled');
     }
-    // Just register the sound URLs, don't load yet
-    this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
-    this.soundUrls.set('event', '/sounds/event.wav');
-    this.soundUrls.set('eventMadness', '/sounds/event_madness.wav');
-    this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
-    this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
-    if (import.meta.env.DEV) {
-      console.log('Sound URLs registered for lazy loading');
-    }
+    return;
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {

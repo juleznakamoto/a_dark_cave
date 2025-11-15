@@ -15,29 +15,35 @@ export default function Game() {
 
   useEffect(() => {
     const initializeGame = async () => {
-      // Load saved game or initialize with defaults
-      const savedState = await loadGame();
-      if (savedState) {
-        initialize(savedState);
+      // RAM TEST: Load disabled
+      // const savedState = await loadGame();
+      // if (savedState) {
+      //   initialize(savedState);
 
-        // If game is already started (fire is lit), flag that music should start on user gesture
-        if (savedState.story?.seen?.fireLit) {
-          setShouldStartMusic(true);
-        }
-      }
+      //   // If game is already started (fire is lit), flag that music should start on user gesture
+      //   if (savedState.story?.seen?.fireLit) {
+      //     setShouldStartMusic(true);
+      //   }
+      // }
+
+      // Just initialize with defaults, no loading
+      initialize(null as any);
 
       // Mark as initialized
       setIsInitialized(true);
 
-      // Start game loop
-      startGameLoop();
+      // RAM TEST: Game loop disabled
+      // startGameLoop();
+      
+      console.log('[RAM TEST] Loop, save, and audio completely disabled');
     };
 
     initializeGame();
 
     // Cleanup function to stop the game loop when the component unmounts
     return () => {
-      stopGameLoop();
+      // RAM TEST: stopGameLoop disabled
+      // stopGameLoop();
     };
   }, [initialize]);
 
