@@ -290,7 +290,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         id: "keep_scratching",
         label: "Keep scratching",
         effect: (state: GameState) => {
-          const killedVillagers = Math.floor(Math.random() * 4) + 3+CM * 2; // 3-6 villagers
+          const killedVillagers = Math.floor(Math.random() * 4) + 3+state.CM * 2; // 3-6 villagers
           const deathResult = killVillagers(state, killedVillagers);
           return {
             ...deathResult,
@@ -401,7 +401,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Cover well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
-          const thirstDeaths = Math.floor(Math.random() * 5) + 6+CM * 2; // 6-10 deaths
+          const thirstDeaths = Math.floor(Math.random() * 5) + 6+state.CM * 2; // 6-10 deaths
           const deathResult = killVillagers(state, thirstDeaths);
 
           return {
@@ -433,7 +433,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.6-CM * 0.15) {
+          if (rand < 0.6-state.CM * 0.15) {
             return {
               events: {
                 ...state.events,

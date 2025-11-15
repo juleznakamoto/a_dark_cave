@@ -132,12 +132,10 @@ export default function CooldownButton({
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
         
-        // Allow showing tooltip during cooldown
-        if (isCoolingDown) {
+        // Only show tooltip if button is disabled or cooling down (not active)
+        if (isButtonDisabled || isCoolingDown) {
           e.stopPropagation();
           mobileTooltip.handleWrapperClick(buttonId, true, false, e);
-        } else {
-          mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
         }
       } : undefined}
       onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => {

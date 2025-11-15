@@ -235,6 +235,8 @@ const defaultGameState: GameState = {
 // State management utilities
 export class StateManager {
   private static updateTimer: NodeJS.Timeout | null = null;
+  private static pendingUpdates: Partial<GameState> = {};
+  private static batchTimer: NodeJS.Timeout | null = null;
 
   static scheduleEffectsUpdate(store: () => GameStore) {
     if (this.updateTimer) return;
@@ -264,6 +266,16 @@ export class StateManager {
     delayedEffects.forEach((effect) => {
       effect();
     });
+  }
+
+  static batchUpdate(updates: Partial<GameState>, store: () => GameStore) {
+    // REMOVED: Batching was causing memory leaks by accumulating objects
+    // Apply updates immediately instead
+    set(updates);
+  }
+
+  static flushBatchedUpdates(store: () => GameStore) {
+    // REMOVED: No longer needed since we apply updates immediately
   }
 }
 
@@ -950,15 +962,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return getMaxPopulation(state);
   },
 
-  updatePopulation: () => {
-    set((state) => {
-      const updates = updatePopulationCounts(state);
-      return {
-        ...state,
-        ...updates,
-      };
-    });
-  },
+  updatePopulation: (() => {
+    let debounceTimer: NodeJS.Timeout | null = null;
+    return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+      debounceTimer = setTimeout(() => {
+        set((state) => {
+          const updates = updatePopulationCounts(state);
+          return {
+            ...state,
+            ...updates,
+          };
+        });
+        debounceTimer = null;
+      }, 50);
+    };
+  })(),
 
   // Computed getter for current population
   get current_population() {
@@ -1020,11 +1041,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ shopDialogOpen: isOpen });
   },
 
-  updateEffects: () => {
-    set((state) => ({
-      effects: calculateTotalEffects(state),
-    }));
-  },
+  updateEffects: (() => {
+    let debounceTimer: NodeJS.Timeout | null = null;
+    return () => {
+      if (debounceTimer) {
+        clearTimeout(debounceTimer);
+      }
+      debounceTimer = setTimeout(() => {
+        set((state) => ({
+          effects: calculateTotalEffects(state),
+        }));
+        debounceTimer = null;
+      }, 50);
+    };
+  })(),
 
   updateBastionStats: () => {
     set((state) => ({

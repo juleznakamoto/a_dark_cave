@@ -4,10 +4,7 @@ import { GameState } from "@shared/schema";
 import { getPopulationProduction, getMaxPopulation } from "./population";
 import { killVillagers, buildGameState } from "@/game/stateHelpers";
 import { audioManager } from "@/lib/audio";
-import {
-  getTotalMadness,
-  getAllActionBonuses,
-} from "./rules/effectsCalculation";
+import { getTotalMadness } from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -23,6 +20,9 @@ let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
+
+// Reuse objects to reduce memory allocation
+const resourceUpdatesPool: Record<string, number> = {};
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -138,19 +138,46 @@ export function startGameLoop() {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        handleGathererProduction();
-        handleHunterProduction();
-        handleMinerProduction();
+        // Batch all production updates
+        const gathererUpdates = handleGathererProduction();
+        const hunterUpdates = handleHunterProduction();
+        const minerUpdates = handleMinerProduction();
+
+        // Merge all resource updates
+        const allResourceUpdates = {
+          ...gathererUpdates,
+          ...hunterUpdates,
+          ...minerUpdates,
+        };
+
+        // Apply all production updates in a single setState
+        if (Object.keys(allResourceUpdates).length > 0) {
+          const state = useGameStore.getState();
+          useGameStore.setState({
+            resources: {
+              ...state.resources,
+              ...allResourceUpdates,
+            },
+          });
+        }
+
         handlePopulationSurvival();
         handleStarvationCheck();
         handleFreezingCheck();
         handleMadnessCheck();
         handleStrangerApproach();
       } else {
-        // Update loop progress (0-100 based on production cycle)
+        // Update loop progress less frequently (every 500ms instead of every frame)
         const progressPercent =
           ((timestamp - lastProduction) / PRODUCTION_INTERVAL) * 100;
-        useGameStore.setState({ loopProgress: Math.min(progressPercent, 100) });
+        const roundedProgress = Math.floor(progressPercent / 5) * 5; // Update in 5% increments
+        const currentProgress = useGameStore.getState().loopProgress;
+
+        if (Math.abs(roundedProgress - currentProgress) >= 5) {
+          useGameStore.setState({
+            loopProgress: Math.min(roundedProgress, 100),
+          });
+        }
       }
     }
 
@@ -232,16 +259,21 @@ function handleGathererProduction() {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    const updates: Record<string, number> = {};
     const production = getPopulationProduction("gatherer", gatherer, state);
+    // Clear and reuse the pool object instead of creating new ones
+    for (const key in resourceUpdatesPool) {
+      delete resourceUpdatesPool[key];
+    }
+
     production.forEach((prod) => {
-      updates[prod.resource] = prod.totalAmount;
-      state.updateResource(
-        prod.resource as keyof typeof state.resources,
-        prod.totalAmount,
-      );
+      const currentAmount =
+        state.resources[prod.resource as keyof typeof state.resources] || 0;
+      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
+
+    return resourceUpdatesPool;
   }
+  return {};
 }
 
 function handleHunterProduction() {
@@ -250,17 +282,28 @@ function handleHunterProduction() {
 
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
+    // Clear and reuse the pool object
+    for (const key in resourceUpdatesPool) {
+      delete resourceUpdatesPool[key];
+    }
+
     production.forEach((prod) => {
-      state.updateResource(
-        prod.resource as keyof typeof state.resources,
-        prod.totalAmount,
-      );
+      const currentAmount =
+        state.resources[prod.resource as keyof typeof state.resources] || 0;
+      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
+
+    return resourceUpdatesPool;
   }
+  return {};
 }
 
 function handleMinerProduction() {
   const state = useGameStore.getState();
+  // Clear and reuse the pool object
+  for (const key in resourceUpdatesPool) {
+    delete resourceUpdatesPool[key];
+  }
 
   // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -274,13 +317,15 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       production.forEach((prod) => {
-        state.updateResource(
-          prod.resource as keyof typeof state.resources,
-          prod.totalAmount,
-        );
+        const currentAmount =
+          state.resources[prod.resource as keyof typeof state.resources] || 0;
+        resourceUpdatesPool[prod.resource] =
+          (resourceUpdatesPool[prod.resource] || currentAmount) + prod.totalAmount;
       });
     }
   });
+
+  return resourceUpdatesPool;
 }
 
 function handlePopulationSurvival() {
@@ -293,37 +338,35 @@ function handlePopulationSurvival() {
 
   if (totalPopulation === 0) return;
 
+  const updates: Partial<GameState> = {};
+
   // Only start starvation checks once the player has accumulated at least 5 food
   if (!state.flags.starvationActive) {
     if (state.resources.food < 5) return;
     // Activate starvation system permanently once food reaches at least 5
-    useGameStore.setState({
-      flags: { ...state.flags, starvationActive: true },
-    });
+    updates.flags = { ...state.flags, starvationActive: true };
   }
 
   // Handle food consumption (but not starvation - that's handled by events)
   const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
-
-  if (availableFood >= foodNeeded) {
-    // Everyone can eat, consume food normally
-    state.updateResource("food", -foodNeeded);
-  } else {
-    // Not enough food, consume all available food (starvation event will trigger separately)
-    state.updateResource("food", -availableFood);
-  }
+  const foodToConsume = Math.min(availableFood, foodNeeded);
 
   // Handle wood consumption (1 wood per villager for heating/shelter)
   const woodNeeded = totalPopulation;
   const availableWood = state.resources.wood;
+  const woodToConsume = Math.min(availableWood, woodNeeded);
 
-  if (availableWood >= woodNeeded) {
-    // Consume wood normally
-    state.updateResource("wood", -woodNeeded);
-  } else {
-    // Not enough wood, consume all available wood (freezing check will handle deaths)
-    state.updateResource("wood", -availableWood);
+  // Batch resource updates
+  updates.resources = {
+    ...state.resources,
+    food: state.resources.food - foodToConsume,
+    wood: state.resources.wood - woodToConsume,
+  };
+
+  // Apply all updates in a single setState
+  if (Object.keys(updates).length > 0) {
+    useGameStore.setState(updates);
   }
 }
 
