@@ -24,6 +24,9 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 // Reuse objects to reduce memory allocation
 const resourceUpdatesPool: Record<string, number> = {};
 
+let memoryLogCounter = 0;
+const MEMORY_LOG_INTERVAL = 100; // Log every 100 ticks
+
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
@@ -36,9 +39,25 @@ export function startGameLoop() {
     gameStartTime = now; // Set game start time only once
   }
 
+  console.log('[MEMORY] Game loop started');
+
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
+
+    // Log memory usage periodically
+    memoryLogCounter++;
+    if (memoryLogCounter >= MEMORY_LOG_INTERVAL && (performance as any).memory) {
+      const memory = (performance as any).memory;
+      console.log('[MEMORY] Usage:', {
+        usedJSHeapSize: (memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
+        totalJSHeapSize: (memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
+        jsHeapSizeLimit: (memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB',
+        loopProgress: useGameStore.getState().loopProgress,
+        logEntries: useGameStore.getState().log.length
+      });
+      memoryLogCounter = 0;
+    }
 
     // Check if game is paused
     const state = useGameStore.getState();
@@ -259,7 +278,9 @@ function handleGathererProduction() {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
+    const productionStart = performance.now();
     const production = getPopulationProduction("gatherer", gatherer, state);
+    
     // Clear and reuse the pool object instead of creating new ones
     for (const key in resourceUpdatesPool) {
       delete resourceUpdatesPool[key];
@@ -270,6 +291,11 @@ function handleGathererProduction() {
         state.resources[prod.resource as keyof typeof state.resources] || 0;
       resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
+
+    const duration = performance.now() - productionStart;
+    if (duration > 10) {
+      console.log(`[PERF] Gatherer production took ${duration.toFixed(2)}ms`);
+    }
 
     return resourceUpdatesPool;
   }
@@ -537,6 +563,16 @@ function handleMadnessCheck() {
 
 async function handleAutoSave() {
   const state = useGameStore.getState();
+  const saveStart = performance.now();
+  
+  console.log('[MEMORY] Pre-save state size:', {
+    logEntries: state.log.length,
+    villagers: Object.keys(state.villagers).length,
+    resources: Object.keys(state.resources).length,
+    buildings: Object.keys(state.buildings).length,
+    cooldowns: Object.keys(state.cooldowns).length
+  });
+  
   const gameState: GameState = buildGameState(state);
 
   try {
@@ -544,6 +580,9 @@ async function handleAutoSave() {
     await saveGame(gameState, state.playTime);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
+    
+    const duration = performance.now() - saveStart;
+    console.log(`[PERF] Auto-save took ${duration.toFixed(2)}ms`);
   } catch (error) {
     console.error("Auto save failed:", error);
   }
