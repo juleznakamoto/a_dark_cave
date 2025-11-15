@@ -30,14 +30,14 @@ export default function Game() {
       setIsInitialized(true);
 
       // Start game loop
-      // startGameLoop(); // DISABLED FOR RAM TESTING
+      startGameLoop();
     };
 
     initializeGame();
 
     // Cleanup function to stop the game loop when the component unmounts
     return () => {
-      // stopGameLoop(); // DISABLED FOR RAM TESTING
+      stopGameLoop();
     };
   }, [initialize]);
 
