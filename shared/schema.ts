@@ -317,13 +317,16 @@ export const gameStateSchema = z.object({
       lastAcceptedLevel: z.number().default(0),
     })
     .default({}),
+
   greatFeastState: z
     .object({
       isActive: z.boolean().default(false),
       endTime: z.number().default(0),
     })
     .default({}),
+
   greatFeastActivations: z.number().default(0),
+
   activatedPurchases: z.record(z.boolean()).default({}),
   feastPurchases: z.record(
     z.object({

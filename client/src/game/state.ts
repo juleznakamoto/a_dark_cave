@@ -235,8 +235,6 @@ const defaultGameState: GameState = {
 // State management utilities
 export class StateManager {
   private static updateTimer: NodeJS.Timeout | null = null;
-  private static pendingUpdates: Partial<GameState> = {};
-  private static batchTimer: NodeJS.Timeout | null = null;
 
   static scheduleEffectsUpdate(store: () => GameStore) {
     if (this.updateTimer) return;
@@ -266,49 +264,6 @@ export class StateManager {
     delayedEffects.forEach((effect) => {
       effect();
     });
-  }
-
-  static batchUpdate(updates: Partial<GameState>, store: () => GameStore) {
-    // Merge new updates with pending ones
-    Object.entries(updates).forEach(([key, value]) => {
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        this.pendingUpdates[key as keyof GameState] = {
-          ...(this.pendingUpdates[key as keyof GameState] as any || {}),
-          ...value
-        };
-      } else {
-        this.pendingUpdates[key as keyof GameState] = value as any;
-      }
-    });
-
-    // Clear existing batch timer
-    if (this.batchTimer) {
-      clearTimeout(this.batchTimer);
-    }
-
-    // Schedule batch update
-    this.batchTimer = setTimeout(() => {
-      const currentUpdates = { ...this.pendingUpdates };
-      this.pendingUpdates = {};
-      this.batchTimer = null;
-
-      const state = store();
-      set(currentUpdates);
-    }, 0);
-  }
-
-  static flushBatchedUpdates(store: () => GameStore) {
-    if (this.batchTimer) {
-      clearTimeout(this.batchTimer);
-      this.batchTimer = null;
-    }
-
-    if (Object.keys(this.pendingUpdates).length > 0) {
-      const currentUpdates = { ...this.pendingUpdates };
-      this.pendingUpdates = {};
-      
-      set(currentUpdates);
-    }
   }
 }
 
@@ -995,24 +950,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     return getMaxPopulation(state);
   },
 
-  updatePopulation: (() => {
-    let debounceTimer: NodeJS.Timeout | null = null;
-    return () => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer);
-      }
-      debounceTimer = setTimeout(() => {
-        set((state) => {
-          const updates = updatePopulationCounts(state);
-          return {
-            ...state,
-            ...updates,
-          };
-        });
-        debounceTimer = null;
-      }, 50);
-    };
-  })(),
+  updatePopulation: () => {
+    set((state) => {
+      const updates = updatePopulationCounts(state);
+      return {
+        ...state,
+        ...updates,
+      };
+    });
+  },
 
   // Computed getter for current population
   get current_population() {
@@ -1074,20 +1020,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     set({ shopDialogOpen: isOpen });
   },
 
-  updateEffects: (() => {
-    let debounceTimer: NodeJS.Timeout | null = null;
-    return () => {
-      if (debounceTimer) {
-        clearTimeout(debounceTimer);
-      }
-      debounceTimer = setTimeout(() => {
-        set((state) => ({
-          effects: calculateTotalEffects(state),
-        }));
-        debounceTimer = null;
-      }, 50);
-    };
-  })(),
+  updateEffects: () => {
+    set((state) => ({
+      effects: calculateTotalEffects(state),
+    }));
+  },
 
   updateBastionStats: () => {
     set((state) => ({

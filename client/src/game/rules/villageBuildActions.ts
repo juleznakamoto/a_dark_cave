@@ -1194,10 +1194,10 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 120,
   },
 
-  buildFurTents: {
-    id: "buildFurTents",
-    label: "Fur Tents",
-    description: "Small camp of fur tents housing several families",
+  buildLeatherTents: {
+    id: "buildLeatherTents",
+    label: "Leather Tents",
+    description: "Small camp of leather tents housing several families",
     tooltipEffects: ["+10 Max Population"],
     building: true,
     // No show_when - cannot be built directly, obtained through events/other means
