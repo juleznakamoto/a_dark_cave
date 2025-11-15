@@ -3,11 +3,7 @@ import { useGameStore } from "@/game/state";
 import { useEffect } from "react";
 
 export default function GameTabs() {
-  // Use selectors for state slices
-  const buildings = useGameStore((state) => state.buildings);
-  const blessings = useGameStore((state) => state.blessings);
-  const villagers = useGameStore((state) => state.villagers);
-  const updatePopulation = useGameStore((state) => state.updatePopulation);
+  const { buildings, blessings, villagers, updatePopulation } = useGameStore();
 
   // Update population whenever the component renders
   useEffect(() => {

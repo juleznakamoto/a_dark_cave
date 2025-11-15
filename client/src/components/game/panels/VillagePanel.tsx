@@ -24,20 +24,21 @@ import {
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function VillagePanel() {
-  // Use selectors to subscribe only to needed state slices
-  const villagers = useGameStore((state) => state.villagers);
-  const buildings = useGameStore((state) => state.buildings);
-  const story = useGameStore((state) => state.story);
+  const {
+    villagers,
+    buildings,
+    story,
+    executeAction,
+    assignVillager,
+    unassignVillager,
+  } = useGameStore();
+  const state = useGameStore.getState();
+  const mobileTooltip = useMobileTooltip();
+
+  // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
   const feastState = useGameStore((state) => state.feastState);
   const greatFeastState = useGameStore((state) => state.greatFeastState);
-  const executeAction = useGameStore((state) => state.executeAction);
-  const assignVillager = useGameStore((state) => state.assignVillager);
-  const unassignVillager = useGameStore((state) => state.unassignVillager);
-  
-  // Get state snapshot only when needed for action checks
-  const state = useGameStore.getState();
-  const mobileTooltip = useMobileTooltip();
 
   // Calculate feast progress based on game loop timing
   const [feastProgress, setFeastProgress] = React.useState(0);

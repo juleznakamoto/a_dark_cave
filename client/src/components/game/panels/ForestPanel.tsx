@@ -6,12 +6,8 @@ import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 
 export default function ForestPanel() {
-  // Use selectors to subscribe only to needed state slices
-  const executeAction = useGameStore((state) => state.executeAction);
-  const buildings = useGameStore((state) => state.buildings);
-  
-  // Get state snapshot only when needed for action checks
-  const state = useGameStore.getState();
+  const { executeAction, buildings } = useGameStore();
+  const state = useGameStore();
 
   // Define action groups with their actions
   const actionGroups = [
