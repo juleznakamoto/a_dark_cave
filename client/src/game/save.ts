@@ -29,19 +29,131 @@ async function getDB() {
 }
 
 export async function saveGame(gameState: GameState, playTime: number = 0): Promise<void> {
-  // RAM TEST: Save game completely disabled
-  if (import.meta.env.DEV) {
-    console.log('[RAM TEST] saveGame() called but disabled');
+  try {
+    const db = await getDB();
+
+    // Deep clone and sanitize the game state to remove non-serializable data
+    const sanitizedState = JSON.parse(JSON.stringify(gameState));
+    
+    // Add timestamp to track save recency
+    const now = Date.now();
+    sanitizedState.lastSaved = now;
+
+    const saveData: SaveData = {
+      gameState: sanitizedState,
+      timestamp: now,
+      playTime: playTime,
+    };
+
+    // Save locally first (most important)
+    await db.put('saves', saveData, SAVE_KEY);
+    if (import.meta.env.DEV) {
+      console.log('Game saved locally');
+    }
+
+    // Try to save to cloud if user is authenticated (optional enhancement)
+    try {
+      const user = await getCurrentUser();
+      if (user) {
+        const isNewGame = gameState.isNewGame || false;
+        await saveGameToSupabase(sanitizedState, playTime, isNewGame);
+        if (import.meta.env.DEV) {
+          console.log('Game saved to cloud');
+        }
+      }
+    } catch (cloudError) {
+      // Silently fail cloud save - local save is what matters
+      console.debug('Cloud save skipped:', cloudError);
+    }
+  } catch (error) {
+    console.error('Failed to save game locally:', error);
+    throw error;
   }
-  return;
 }
 
 export async function loadGame(): Promise<GameState | null> {
-  // RAM TEST: Load game completely disabled
-  if (import.meta.env.DEV) {
-    console.log('[RAM TEST] loadGame() called but disabled - returning null');
+  try {
+    const db = await getDB();
+    const localSave = await db.get('saves', SAVE_KEY);
+    
+    // Check if user is authenticated
+    const user = await getCurrentUser();
+
+    if (user) {
+      // Try to load from cloud
+      try {
+        const cloudSave = await loadGameFromSupabase();
+        
+        // Compare play times and use the save with longer play time
+        if (cloudSave && localSave) {
+          const cloudPlayTime = cloudSave.playTime || 0;
+          const localPlayTime = localSave.playTime || 0;
+          
+          if (import.meta.env.DEV) {
+            console.log('Comparing saves - Cloud playTime:', cloudPlayTime, 'Local playTime:', localPlayTime);
+          }
+          
+          // Use whichever has longer play time
+          if (cloudPlayTime > localPlayTime) {
+            if (import.meta.env.DEV) {
+              console.log('Using cloud save (longer play time)');
+            }
+            // Update local with cloud save
+            await db.put('saves', {
+              gameState: cloudSave,
+              timestamp: Date.now(),
+              playTime: cloudPlayTime,
+            }, SAVE_KEY);
+            return cloudSave;
+          } else {
+            if (import.meta.env.DEV) {
+              console.log('Using local save (longer play time), syncing to cloud');
+            }
+            // Local has longer play time, sync it to cloud
+            await saveGameToSupabase(localSave.gameState);
+            return localSave.gameState;
+          }
+        } else if (cloudSave) {
+          // Only cloud save exists
+          if (import.meta.env.DEV) {
+            console.log('Game State loaded from cloud (no local save)');
+          }
+          await db.put('saves', {
+            gameState: cloudSave,
+            timestamp: Date.now(),
+            playTime: cloudSave.playTime || 0,
+          }, SAVE_KEY);
+          return cloudSave;
+        } else if (localSave) {
+          // Only local save exists, sync to cloud
+          if (import.meta.env.DEV) {
+            console.log('Local save found, syncing to cloud');
+          }
+          await saveGameToSupabase(localSave.gameState);
+          return localSave.gameState;
+        }
+      } catch (cloudError) {
+        console.error('Failed to load from cloud:', cloudError);
+        // Fall back to local save if cloud fails
+        if (localSave) {
+          if (import.meta.env.DEV) {
+            console.log('Using local save (cloud error)');
+          }
+          return localSave.gameState;
+        }
+      }
+    } else {
+      // Not authenticated, use local save only
+      if (localSave) {
+        return localSave.gameState;
+      }
+    }
+
+    return null;
+  } catch (error) {
+    console.error('Failed to load game:', error);
+    return null;
   }
-  return null;
 }
 
 export async function deleteSave(): Promise<void> {
