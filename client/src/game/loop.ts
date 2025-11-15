@@ -24,6 +24,11 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 // Reuse objects to reduce memory allocation
 const resourceUpdatesPool: Record<string, number> = {};
 
+// Memory tracking
+let lastMemoryCheck = 0;
+const MEMORY_CHECK_INTERVAL = 5000; // Check memory every 5 seconds
+let frameCount = 0;
+
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
@@ -39,6 +44,17 @@ export function startGameLoop() {
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
+    frameCount++;
+
+    // Memory tracking
+    if (timestamp - lastMemoryCheck >= MEMORY_CHECK_INTERVAL) {
+      lastMemoryCheck = timestamp;
+      if (performance.memory) {
+        const memoryMB = (performance.memory.usedJSHeapSize / 1048576).toFixed(2);
+        const totalMB = (performance.memory.totalJSHeapSize / 1048576).toFixed(2);
+        console.log(`[MEMORY] Frame ${frameCount}: ${memoryMB}MB / ${totalMB}MB used`);
+      }
+    }
 
     // Check if game is paused
     const state = useGameStore.getState();
@@ -128,6 +144,8 @@ export function startGameLoop() {
 
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
+        console.log('[LOOP] Starting production cycle');
+        
         // Set to 100% before resetting
         useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
@@ -139,8 +157,11 @@ export function startGameLoop() {
         }, 50);
 
         // Batch all production updates
+        console.log('[LOOP] Handling gatherer production');
         const gathererUpdates = handleGathererProduction();
+        console.log('[LOOP] Handling hunter production');
         const hunterUpdates = handleHunterProduction();
+        console.log('[LOOP] Handling miner production');
         const minerUpdates = handleMinerProduction();
 
         // Merge all resource updates
@@ -152,6 +173,7 @@ export function startGameLoop() {
 
         // Apply all production updates in a single setState
         if (Object.keys(allResourceUpdates).length > 0) {
+          console.log('[LOOP] Applying resource updates:', Object.keys(allResourceUpdates).length, 'resources');
           const state = useGameStore.getState();
           useGameStore.setState({
             resources: {
@@ -161,11 +183,13 @@ export function startGameLoop() {
           });
         }
 
+        console.log('[LOOP] Running survival checks');
         handlePopulationSurvival();
         handleStarvationCheck();
         handleFreezingCheck();
         handleMadnessCheck();
         handleStrangerApproach();
+        console.log('[LOOP] Production cycle complete');
       } else {
         // Update loop progress less frequently (every 500ms instead of every frame)
         const progressPercent =
@@ -208,6 +232,7 @@ function processTick() {
 
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
+    console.log('[TICK] Feast expired');
     useGameStore.setState({
       feastState: {
         ...state.feastState,
@@ -221,6 +246,7 @@ function processTick() {
     state.greatFeastState?.isActive &&
     state.greatFeastState.endTime <= Date.now()
   ) {
+    console.log('[TICK] Great Feast expired');
     useGameStore.setState({
       greatFeastState: {
         ...state.greatFeastState,
@@ -231,6 +257,7 @@ function processTick() {
 
   // Check if curse has expired
   if (state.curseState?.isActive && state.curseState.endTime <= Date.now()) {
+    console.log('[TICK] Curse expired');
     useGameStore.setState({
       curseState: {
         ...state.curseState,
@@ -241,6 +268,7 @@ function processTick() {
 
   // Check for random events
   const prevEvents = { ...state.events };
+  console.log('[TICK] Checking for events');
   state.checkEvents();
 
   // Trigger save if events changed (for cube events persistence)

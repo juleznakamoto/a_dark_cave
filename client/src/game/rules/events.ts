@@ -95,8 +95,14 @@ export class EventManager {
     // Initialize event cooldowns if not present
     const eventCooldowns = state.eventCooldowns || {};
     const currentTime = Date.now();
+    
+    let eventsChecked = 0;
+    let eventsOnCooldown = 0;
+    let eventsTriggered = 0;
 
     for (const event of sortedEvents) {
+      eventsChecked++;
+      
       // Skip if already triggered and not repeatable
       if (event.triggered && !event.repeatable) continue;
 
@@ -114,6 +120,7 @@ export class EventManager {
         const timeSinceLastTrigger = currentTime - eventCooldowns[event.id];
         
         if (timeSinceLastTrigger < cooldownPeriod) {
+          eventsOnCooldown++;
           continue; // Skip this event, it's still on cooldown
         }
       }
@@ -142,6 +149,9 @@ export class EventManager {
       }
 
       if (shouldTrigger) {
+        eventsTriggered++;
+        console.log(`[EVENT] Triggered: ${event.id}`);
+        
         // Generate fresh choices for merchant events
         let eventChoices = event.choices;
         if (event.id === "merchant") {
@@ -194,6 +204,10 @@ export class EventManager {
         
         break; // Only trigger one event per tick
       }
+    }
+
+    if (eventsChecked > 0) {
+      console.log(`[EVENTS] Checked: ${eventsChecked}, On cooldown: ${eventsOnCooldown}, Triggered: ${eventsTriggered}`);
     }
 
     return { newLogEntries, stateChanges };
