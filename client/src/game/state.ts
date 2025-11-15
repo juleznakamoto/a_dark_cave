@@ -105,65 +105,32 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  // Only merge what actually changed to reduce memory allocation
-  const merged: Partial<GameState> = {};
+  const merged = {
+    resources: { ...prevState.resources, ...stateUpdates.resources },
+    weapons: { ...prevState.weapons, ...stateUpdates.weapons },
+    tools: { ...prevState.tools, ...stateUpdates.tools },
+    buildings: { ...prevState.buildings, ...stateUpdates.buildings },
+    flags: { ...prevState.flags, ...stateUpdates.flags },
+    villagers: { ...prevState.villagers, ...stateUpdates.villagers },
+    clothing: { ...prevState.clothing, ...stateUpdates.clothing },
+    relics: { ...prevState.relics, ...stateUpdates.relics },
+    cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
+    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations }, // Merge cooldownDurations
+    story: stateUpdates.story
+      ? {
+          ...prevState.story,
+          seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
+        }
+      : prevState.story,
+    effects: stateUpdates.effects || prevState.effects,
+    // Merge loop-related states if they are part of stateUpdates
+    loopProgress: stateUpdates.loopProgress !== undefined ? stateUpdates.loopProgress : prevState.loopProgress,
+    isGameLoopActive: stateUpdates.isGameLoopActive !== undefined ? stateUpdates.isGameLoopActive : prevState.isGameLoopActive,
+    isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
+    showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
+    playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
+  };
 
-  if (stateUpdates.resources) {
-    merged.resources = { ...prevState.resources, ...stateUpdates.resources };
-  }
-  if (stateUpdates.weapons) {
-    merged.weapons = { ...prevState.weapons, ...stateUpdates.weapons };
-  }
-  if (stateUpdates.tools) {
-    merged.tools = { ...prevState.tools, ...stateUpdates.tools };
-  }
-  if (stateUpdates.buildings) {
-    merged.buildings = { ...prevState.buildings, ...stateUpdates.buildings };
-  }
-  if (stateUpdates.flags) {
-    merged.flags = { ...prevState.flags, ...stateUpdates.flags };
-  }
-  if (stateUpdates.villagers) {
-    merged.villagers = { ...prevState.villagers, ...stateUpdates.villagers };
-  }
-  if (stateUpdates.clothing) {
-    merged.clothing = { ...prevState.clothing, ...stateUpdates.clothing };
-  }
-  if (stateUpdates.relics) {
-    merged.relics = { ...prevState.relics, ...stateUpdates.relics };
-  }
-  if (stateUpdates.cooldowns) {
-    merged.cooldowns = { ...prevState.cooldowns, ...stateUpdates.cooldowns };
-  }
-  if (stateUpdates.cooldownDurations) {
-    merged.cooldownDurations = { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations };
-  }
-  if (stateUpdates.story) {
-    merged.story = {
-      ...prevState.story,
-      seen: { ...prevState.story.seen, ...stateUpdates.story.seen },
-    };
-  }
-  if (stateUpdates.effects) {
-    merged.effects = stateUpdates.effects;
-  }
-  if (stateUpdates.loopProgress !== undefined) {
-    merged.loopProgress = stateUpdates.loopProgress;
-  }
-  if (stateUpdates.isGameLoopActive !== undefined) {
-    merged.isGameLoopActive = stateUpdates.isGameLoopActive;
-  }
-  if (stateUpdates.isPaused !== undefined) {
-    merged.isPaused = stateUpdates.isPaused;
-  }
-  if (stateUpdates.showEndScreen !== undefined) {
-    merged.showEndScreen = stateUpdates.showEndScreen;
-  }
-  if (stateUpdates.playTime !== undefined) {
-    merged.playTime = stateUpdates.playTime;
-  }
-
-  // Only recalculate effects if items changed
   if (
     stateUpdates.tools ||
     stateUpdates.weapons ||
@@ -301,7 +268,15 @@ export class StateManager {
     });
   }
 
-  // Removed batchUpdate and flushBatchedUpdates - they were accumulating objects in memory
+  static batchUpdate(updates: Partial<GameState>, store: () => GameStore) {
+    // REMOVED: Batching was causing memory leaks by accumulating objects
+    // Apply updates immediately instead
+    set(updates);
+  }
+
+  static flushBatchedUpdates(store: () => GameStore) {
+    // REMOVED: No longer needed since we apply updates immediately
+  }
 }
 
 // Main store
