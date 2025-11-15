@@ -8,7 +8,7 @@ import { getTotalMadness } from "./rules/effectsCalculation";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
-const TICK_INTERVAL = 10000; // 200ms ticks
+const TICK_INTERVAL = 200; // 200ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
@@ -24,64 +24,6 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 // Reuse objects to reduce memory allocation
 const resourceUpdatesPool: Record<string, number> = {};
 
-let memoryLogCounter = 0;
-const MEMORY_LOG_INTERVAL = 50; // Log every 50 ticks for more frequent updates
-
-// Event checking throttling
-let eventCheckCounter = 0;
-const EVENT_CHECK_INTERVAL = 5; // Check events every 5 ticks (50 seconds with 10s tick interval)
-
-// Track memory allocation sources
-interface MemorySnapshot {
-  timestamp: number;
-  usedHeap: number;
-  source: string;
-  details?: any;
-}
-
-const memorySnapshots: MemorySnapshot[] = [];
-const MAX_SNAPSHOTS = 20;
-
-function takeMemorySnapshot(source: string, details?: any) {
-  if (!(performance as any).memory) return;
-  
-  const memory = (performance as any).memory;
-  const snapshot: MemorySnapshot = {
-    timestamp: Date.now(),
-    usedHeap: memory.usedJSHeapSize,
-    source,
-    details
-  };
-  
-  memorySnapshots.push(snapshot);
-  if (memorySnapshots.length > MAX_SNAPSHOTS) {
-    memorySnapshots.shift();
-  }
-}
-
-function logMemoryDeltas() {
-  if (memorySnapshots.length < 2) return;
-  
-  const deltas = [];
-  for (let i = 1; i < memorySnapshots.length; i++) {
-    const prev = memorySnapshots[i - 1];
-    const curr = memorySnapshots[i];
-    const delta = (curr.usedHeap - prev.usedHeap) / 1048576; // MB
-    
-    if (Math.abs(delta) > 0.5) { // Only log significant changes (>0.5 MB)
-      deltas.push({
-        source: curr.source,
-        deltaMB: delta.toFixed(2),
-        details: curr.details
-      });
-    }
-  }
-  
-  if (deltas.length > 0) {
-    console.log('[MEMORY] Significant allocations:', deltas);
-  }
-}
-
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
@@ -94,37 +36,9 @@ export function startGameLoop() {
     gameStartTime = now; // Set game start time only once
   }
 
-  console.log('[MEMORY] Game loop started');
-  takeMemorySnapshot('loop-start');
-
   function tick(timestamp: number) {
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
-
-    // Log memory usage periodically
-    memoryLogCounter++;
-    if (memoryLogCounter >= MEMORY_LOG_INTERVAL && (performance as any).memory) {
-      const memory = (performance as any).memory;
-      const state = useGameStore.getState();
-      
-      console.log('[MEMORY] Detailed Usage:', {
-        usedJSHeapSize: (memory.usedJSHeapSize / 1048576).toFixed(2) + ' MB',
-        totalJSHeapSize: (memory.totalJSHeapSize / 1048576).toFixed(2) + ' MB',
-        jsHeapSizeLimit: (memory.jsHeapSizeLimit / 1048576).toFixed(2) + ' MB',
-        loopProgress: state.loopProgress,
-        state: {
-          logEntries: state.log.length,
-          cooldowns: Object.keys(state.cooldowns).length,
-          cooldownDurations: Object.keys(state.cooldownDurations || {}).length,
-          triggeredEvents: Object.keys(state.triggeredEvents || {}).length,
-          eventCooldowns: Object.keys(state.eventCooldowns || {}).length,
-          hoveredTooltips: Object.keys(state.hoveredTooltips || {}).length
-        }
-      });
-      
-      logMemoryDeltas();
-      memoryLogCounter = 0;
-    }
 
     // Check if game is paused
     const state = useGameStore.getState();
@@ -214,8 +128,6 @@ export function startGameLoop() {
 
       // All production and game logic checks (every 15 seconds)
       if (timestamp - lastProduction >= PRODUCTION_INTERVAL) {
-        takeMemorySnapshot('production-cycle-start');
-        
         // Set to 100% before resetting
         useGameStore.setState({ loopProgress: 100 });
         lastProduction = timestamp;
@@ -227,15 +139,9 @@ export function startGameLoop() {
         }, 50);
 
         // Batch all production updates
-        takeMemorySnapshot('pre-gatherer');
         const gathererUpdates = handleGathererProduction();
-        takeMemorySnapshot('post-gatherer');
-        
         const hunterUpdates = handleHunterProduction();
-        takeMemorySnapshot('post-hunter');
-        
         const minerUpdates = handleMinerProduction();
-        takeMemorySnapshot('post-miner');
 
         // Merge all resource updates
         const allResourceUpdates = {
@@ -246,7 +152,6 @@ export function startGameLoop() {
 
         // Apply all production updates in a single setState
         if (Object.keys(allResourceUpdates).length > 0) {
-          takeMemorySnapshot('pre-resource-update');
           const state = useGameStore.getState();
           useGameStore.setState({
             resources: {
@@ -254,18 +159,13 @@ export function startGameLoop() {
               ...allResourceUpdates,
             },
           });
-          takeMemorySnapshot('post-resource-update', { 
-            updateCount: Object.keys(allResourceUpdates).length 
-          });
         }
 
-        takeMemorySnapshot('pre-survival-checks');
         handlePopulationSurvival();
         handleStarvationCheck();
         handleFreezingCheck();
         handleMadnessCheck();
         handleStrangerApproach();
-        takeMemorySnapshot('production-cycle-end');
       } else {
         // Update loop progress less frequently (every 500ms instead of every frame)
         const progressPercent =
@@ -301,13 +201,10 @@ export function stopGameLoop() {
 }
 
 function processTick() {
-  takeMemorySnapshot('tick-start');
   const state = useGameStore.getState();
 
   // Tick down cooldowns
-  takeMemorySnapshot('pre-cooldown-tick');
   state.tickCooldowns();
-  takeMemorySnapshot('post-cooldown-tick');
 
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
@@ -342,28 +239,18 @@ function processTick() {
     });
   }
 
-  // Check for random events - ONLY every 5 ticks (every 50 seconds with 10s tick interval)
-  eventCheckCounter++;
-  if (eventCheckCounter >= EVENT_CHECK_INTERVAL) {
-    eventCheckCounter = 0;
-    console.log(`[EVENT] Checking events now (counter reached ${EVENT_CHECK_INTERVAL})`);
-    takeMemorySnapshot('pre-event-check');
-    const prevEvents = { ...state.events };
-    const eventCheckStart = performance.now();
-    state.checkEvents();
-    const eventCheckDuration = performance.now() - eventCheckStart;
-    console.log(`[PERF] Event check took ${eventCheckDuration.toFixed(2)}ms`);
-    takeMemorySnapshot('post-event-check');
+  // Check for random events
+  const prevEvents = { ...state.events };
+  state.checkEvents();
 
   // Trigger save if events changed (for cube events persistence)
   const eventsChanged = Object.keys(state.events).some(
-      (key) => state.events[key] !== prevEvents[key],
-    );
-    if (eventsChanged && import.meta.env.DEV) {
-      console.log("[LOOP] Events changed, triggering autosave");
-      // Manually call autosave to persist events changes
-      handleAutoSave();
-    }
+    (key) => state.events[key] !== prevEvents[key],
+  );
+  if (eventsChanged && import.meta.env.DEV) {
+    console.log("[LOOP] Events changed, triggering autosave");
+    // Manually call autosave to persist events changes
+    handleAutoSave();
   }
 }
 
@@ -372,10 +259,7 @@ function handleGathererProduction() {
   const gatherer = state.villagers.gatherer;
 
   if (gatherer > 0) {
-    takeMemorySnapshot('gatherer-production-start', { gathererCount: gatherer });
-    const productionStart = performance.now();
     const production = getPopulationProduction("gatherer", gatherer, state);
-    
     // Clear and reuse the pool object instead of creating new ones
     for (const key in resourceUpdatesPool) {
       delete resourceUpdatesPool[key];
@@ -386,13 +270,6 @@ function handleGathererProduction() {
         state.resources[prod.resource as keyof typeof state.resources] || 0;
       resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
-
-    const duration = performance.now() - productionStart;
-    if (duration > 10) {
-      console.log(`[PERF] Gatherer production took ${duration.toFixed(2)}ms`);
-    }
-    
-    takeMemorySnapshot('gatherer-production-end', { productionItems: production.length });
 
     return resourceUpdatesPool;
   }
@@ -660,16 +537,6 @@ function handleMadnessCheck() {
 
 async function handleAutoSave() {
   const state = useGameStore.getState();
-  const saveStart = performance.now();
-  
-  console.log('[MEMORY] Pre-save state size:', {
-    logEntries: state.log.length,
-    villagers: Object.keys(state.villagers).length,
-    resources: Object.keys(state.resources).length,
-    buildings: Object.keys(state.buildings).length,
-    cooldowns: Object.keys(state.cooldowns).length
-  });
-  
   const gameState: GameState = buildGameState(state);
 
   try {
@@ -677,9 +544,6 @@ async function handleAutoSave() {
     await saveGame(gameState, state.playTime);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now });
-    
-    const duration = performance.now() - saveStart;
-    console.log(`[PERF] Auto-save took ${duration.toFixed(2)}ms`);
   } catch (error) {
     console.error("Auto save failed:", error);
   }

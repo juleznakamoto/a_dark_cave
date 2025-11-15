@@ -101,19 +101,10 @@ interface GameStore extends GameState {
 }
 
 // Helper functions
-let mergeCounter = 0;
-const MERGE_LOG_INTERVAL = 50;
-
 const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
-  mergeCounter++;
-  const mergeStart = performance.now();
-  
-  // Track which parts are being updated
-  const updateKeys = Object.keys(stateUpdates);
-  
   const merged = {
     resources: { ...prevState.resources, ...stateUpdates.resources },
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
@@ -148,19 +139,6 @@ const mergeStateUpdates = (
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
-  }
-
-  const duration = performance.now() - mergeStart;
-  if (mergeCounter >= MERGE_LOG_INTERVAL) {
-    console.log(`[PERF] State merge took ${duration.toFixed(2)}ms (count: ${mergeCounter})`, {
-      updatingKeys: updateKeys,
-      mergedObjectSizes: {
-        resources: Object.keys(merged.resources).length,
-        cooldowns: Object.keys(merged.cooldowns).length,
-        cooldownDurations: Object.keys(merged.cooldownDurations || {}).length,
-      }
-    });
-    mergeCounter = 0;
   }
 
   return merged;
@@ -658,16 +636,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
       audioManager.playSound("event", 0.02);
     }
 
-    set((state) => {
-      const newLog = [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES);
-      const removedEntries = state.log.length + 1 - newLog.length;
-      
-      if (removedEntries > 0) {
-        console.log(`[MEMORY] Log trimmed, removed ${removedEntries} entries, now at ${newLog.length}/${GAME_CONSTANTS.LOG_MAX_ENTRIES}`);
-      }
-      
-      return { log: newLog };
-    });
+    set((state) => ({
+      log: [...state.log, entry].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES),
+    }));
   },
 
   checkEvents: () => {
@@ -679,23 +650,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
-    const eventStart = performance.now();
     const { newLogEntries, stateChanges, triggeredEvents } =
       EventManager.checkEvents(state);
-    
-    const duration = performance.now() - eventStart;
-    if (duration > 5) {
-      console.log(`[PERF] Event check took ${duration.toFixed(2)}ms, triggered: ${triggeredEvents?.length || 0}`, {
-        stateChangeKeys: Object.keys(stateChanges),
-        logEntriesAdded: newLogEntries.length
-      });
-    }
 
     if (newLogEntries.length > 0) {
-      console.log(`[MEMORY] New log entries: ${newLogEntries.length}, total logs: ${state.log.length}`, {
-        eventIds: newLogEntries.map(e => e.id),
-        hasChoices: newLogEntries.map(e => !!e.choices)
-      });
       let logMessage = null;
       let combatData = null;
       const updatedChanges = { ...stateChanges };

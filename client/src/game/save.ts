@@ -30,16 +30,10 @@ async function getDB() {
 
 export async function saveGame(gameState: GameState, playTime: number = 0): Promise<void> {
   try {
-    const saveStart = performance.now();
     const db = await getDB();
 
     // Deep clone and sanitize the game state to remove non-serializable data
-    const cloneStart = performance.now();
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
-    const cloneDuration = performance.now() - cloneStart;
-    
-    console.log(`[PERF] State clone took ${cloneDuration.toFixed(2)}ms`);
-    console.log('[MEMORY] Serialized state size:', new Blob([JSON.stringify(sanitizedState)]).size / 1024 + ' KB');
     
     // Add timestamp to track save recency
     const now = Date.now();
@@ -52,12 +46,9 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
     };
 
     // Save locally first (most important)
-    const dbStart = performance.now();
     await db.put('saves', saveData, SAVE_KEY);
-    const dbDuration = performance.now() - dbStart;
-    
     if (import.meta.env.DEV) {
-      console.log(`Game saved locally in ${dbDuration.toFixed(2)}ms`);
+      console.log('Game saved locally');
     }
 
     // Try to save to cloud if user is authenticated (optional enhancement)
