@@ -11,7 +11,13 @@ const TooltipProvider = ({ children, ...props }: React.ComponentProps<typeof Too
   </TooltipPrimitive.Provider>
 )
 
-const Tooltip = TooltipPrimitive.Root
+const Tooltip = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>
+>((props, ref) => (
+  <TooltipPrimitive.Root disableHoverableContent forceMount {...props} />
+))
+Tooltip.displayName = "Tooltip"
 
 const TooltipTrigger = TooltipPrimitive.Trigger
 
@@ -23,6 +29,7 @@ const TooltipContent = React.forwardRef<
     <TooltipPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
+      style={{ pointerEvents: "none" }}
       className={cn(
         "z-[99999] overflow-hidden rounded-md border bg-popover px-2 py-1 text-xs text-popover-foreground shadow-md animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-tooltip-content-transform-origin] max-w-fit whitespace-nowrap",
         className
