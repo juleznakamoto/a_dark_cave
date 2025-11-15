@@ -269,46 +269,13 @@ export class StateManager {
   }
 
   static batchUpdate(updates: Partial<GameState>, store: () => GameStore) {
-    // Merge new updates with pending ones
-    Object.entries(updates).forEach(([key, value]) => {
-      if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
-        this.pendingUpdates[key as keyof GameState] = {
-          ...(this.pendingUpdates[key as keyof GameState] as any || {}),
-          ...value
-        };
-      } else {
-        this.pendingUpdates[key as keyof GameState] = value as any;
-      }
-    });
-
-    // Clear existing batch timer
-    if (this.batchTimer) {
-      clearTimeout(this.batchTimer);
-    }
-
-    // Schedule batch update
-    this.batchTimer = setTimeout(() => {
-      const currentUpdates = { ...this.pendingUpdates };
-      this.pendingUpdates = {};
-      this.batchTimer = null;
-
-      const state = store();
-      set(currentUpdates);
-    }, 0);
+    // REMOVED: Batching was causing memory leaks by accumulating objects
+    // Apply updates immediately instead
+    set(updates);
   }
 
   static flushBatchedUpdates(store: () => GameStore) {
-    if (this.batchTimer) {
-      clearTimeout(this.batchTimer);
-      this.batchTimer = null;
-    }
-
-    if (Object.keys(this.pendingUpdates).length > 0) {
-      const currentUpdates = { ...this.pendingUpdates };
-      this.pendingUpdates = {};
-      
-      set(currentUpdates);
-    }
+    // REMOVED: No longer needed since we apply updates immediately
   }
 }
 

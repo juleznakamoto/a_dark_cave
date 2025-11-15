@@ -21,6 +21,9 @@ let gameStartTime = 0;
 let lastShopNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 
+// Reuse objects to reduce memory allocation
+const resourceUpdatesPool: Record<string, number> = {};
+
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
@@ -257,15 +260,18 @@ function handleGathererProduction() {
 
   if (gatherer > 0) {
     const production = getPopulationProduction("gatherer", gatherer, state);
-    const resourceUpdates: Record<string, number> = {};
+    // Clear and reuse the pool object instead of creating new ones
+    for (const key in resourceUpdatesPool) {
+      delete resourceUpdatesPool[key];
+    }
 
     production.forEach((prod) => {
       const currentAmount =
         state.resources[prod.resource as keyof typeof state.resources] || 0;
-      resourceUpdates[prod.resource] = currentAmount + prod.totalAmount;
+      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
 
-    return resourceUpdates;
+    return resourceUpdatesPool;
   }
   return {};
 }
@@ -276,22 +282,28 @@ function handleHunterProduction() {
 
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
-    const resourceUpdates: Record<string, number> = {};
+    // Clear and reuse the pool object
+    for (const key in resourceUpdatesPool) {
+      delete resourceUpdatesPool[key];
+    }
 
     production.forEach((prod) => {
       const currentAmount =
         state.resources[prod.resource as keyof typeof state.resources] || 0;
-      resourceUpdates[prod.resource] = currentAmount + prod.totalAmount;
+      resourceUpdatesPool[prod.resource] = currentAmount + prod.totalAmount;
     });
 
-    return resourceUpdates;
+    return resourceUpdatesPool;
   }
   return {};
 }
 
 function handleMinerProduction() {
   const state = useGameStore.getState();
-  const resourceUpdates: Record<string, number> = {};
+  // Clear and reuse the pool object
+  for (const key in resourceUpdatesPool) {
+    delete resourceUpdatesPool[key];
+  }
 
   // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
   Object.entries(state.villagers).forEach(([job, count]) => {
@@ -307,13 +319,13 @@ function handleMinerProduction() {
       production.forEach((prod) => {
         const currentAmount =
           state.resources[prod.resource as keyof typeof state.resources] || 0;
-        resourceUpdates[prod.resource] =
-          (resourceUpdates[prod.resource] || currentAmount) + prod.totalAmount;
+        resourceUpdatesPool[prod.resource] =
+          (resourceUpdatesPool[prod.resource] || currentAmount) + prod.totalAmount;
       });
     }
   });
 
-  return resourceUpdates;
+  return resourceUpdatesPool;
 }
 
 function handlePopulationSurvival() {
