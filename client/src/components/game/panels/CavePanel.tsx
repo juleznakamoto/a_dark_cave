@@ -11,9 +11,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function CavePanel() {
-  const flags = useGameStore((state) => state.flags);
-  const executeAction = useGameStore((state) => state.executeAction);
-  const state = useGameStore.getState();
+  const { flags, executeAction } = useGameStore();
+  const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
 
   // Define action groups with their actions
