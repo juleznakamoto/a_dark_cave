@@ -338,20 +338,27 @@ function processTick() {
     });
   }
 
-  // Check for random events
-  takeMemorySnapshot('pre-event-check');
-  const prevEvents = { ...state.events };
-  state.checkEvents();
-  takeMemorySnapshot('post-event-check');
+  // Check for random events - ONLY every 5 seconds instead of every tick
+  eventCheckCounter++;
+  if (eventCheckCounter >= EVENT_CHECK_INTERVAL) {
+    eventCheckCounter = 0;
+    takeMemorySnapshot('pre-event-check');
+    const prevEvents = { ...state.events };
+    const eventCheckStart = performance.now();
+    state.checkEvents();
+    const eventCheckDuration = performance.now() - eventCheckStart;
+    console.log(`[PERF] Event check took ${eventCheckDuration.toFixed(2)}ms`);
+    takeMemorySnapshot('post-event-check');
 
   // Trigger save if events changed (for cube events persistence)
   const eventsChanged = Object.keys(state.events).some(
-    (key) => state.events[key] !== prevEvents[key],
-  );
-  if (eventsChanged && import.meta.env.DEV) {
-    console.log("[LOOP] Events changed, triggering autosave");
-    // Manually call autosave to persist events changes
-    handleAutoSave();
+      (key) => state.events[key] !== prevEvents[key],
+    );
+    if (eventsChanged && import.meta.env.DEV) {
+      console.log("[LOOP] Events changed, triggering autosave");
+      // Manually call autosave to persist events changes
+      handleAutoSave();
+    }
   }
 }
 

@@ -97,8 +97,6 @@ export class EventManager {
     // Initialize event cooldowns if not present
     const eventCooldowns = state.eventCooldowns || {};
     const currentTime = Date.now();
-    
-    console.log(`[MEMORY] Event check started, checking ${sortedEvents.length} events`);
 
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
