@@ -27,6 +27,10 @@ const resourceUpdatesPool: Record<string, number> = {};
 let memoryLogCounter = 0;
 const MEMORY_LOG_INTERVAL = 50; // Log every 50 ticks for more frequent updates
 
+// Event checking throttling
+let eventCheckCounter = 0;
+const EVENT_CHECK_INTERVAL = 5; // Check events every 5 ticks (50 seconds with 10s tick interval)
+
 // Track memory allocation sources
 interface MemorySnapshot {
   timestamp: number;
@@ -338,10 +342,11 @@ function processTick() {
     });
   }
 
-  // Check for random events - ONLY every 5 seconds instead of every tick
+  // Check for random events - ONLY every 5 ticks (every 50 seconds with 10s tick interval)
   eventCheckCounter++;
   if (eventCheckCounter >= EVENT_CHECK_INTERVAL) {
     eventCheckCounter = 0;
+    console.log(`[EVENT] Checking events now (counter reached ${EVENT_CHECK_INTERVAL})`);
     takeMemorySnapshot('pre-event-check');
     const prevEvents = { ...state.events };
     const eventCheckStart = performance.now();
