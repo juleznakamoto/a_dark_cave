@@ -11,29 +11,9 @@ const TooltipProvider = ({ children, ...props }: React.ComponentProps<typeof Too
   </TooltipPrimitive.Provider>
 )
 
-const Tooltip = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root>
->((props, ref) => (
-  <TooltipPrimitive.Root disableHoverableContent {...props} />
-))
-Tooltip.displayName = "Tooltip"
+const Tooltip = TooltipPrimitive.Root
 
-const TooltipTrigger = React.forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
->(({ onPointerLeave, ...props }, ref) => (
-  <TooltipPrimitive.Trigger
-    ref={ref}
-    onPointerLeave={(e) => {
-      // Forces Radix to cancel intent immediately
-      e.currentTarget.dispatchEvent(new PointerEvent("pointercancel", { bubbles: true }));
-      onPointerLeave?.(e);
-    }}
-    {...props}
-  />
-))
-TooltipTrigger.displayName = TooltipPrimitive.Trigger.displayName
+const TooltipTrigger = TooltipPrimitive.Trigger
 
 const TooltipContent = React.forwardRef<
   React.ElementRef<typeof TooltipPrimitive.Content>,
