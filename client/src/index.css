@@ -1,7 +1,7 @@
-* {
+/* * {
   outline: 1px solid red;
 }
-
+ */
 
 /* Mobile fullscreen support */
 @supports (-webkit-touch-callout: none) {
