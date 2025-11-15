@@ -1194,7 +1194,7 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 120,
   },
 
-  buildLeatherTents: {
+  buildFurTents: {
     id: "buildFurTents",
     label: "Fur Tents",
     description: "Small camp of fur tents housing several families",
