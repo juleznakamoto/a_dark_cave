@@ -212,7 +212,7 @@ export const getPopulationProduction = (
       }
     });
   }
-  
+
   if (isGreatFeast) {
     baseProduction.forEach((prod) => {
       prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
