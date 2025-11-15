@@ -1194,8 +1194,8 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 120,
   },
 
-  buildLeatherTents: {
-    id: "buildLeatherTents",
+  buildFurTents: {
+    id: "buildFurTents",
     label: "Leather Tents",
     description: "Small camp of leather tents housing several families",
     tooltipEffects: ["+10 Max Population"],
