@@ -111,6 +111,9 @@ const mergeStateUpdates = (
   mergeCounter++;
   const mergeStart = performance.now();
   
+  // Track which parts are being updated
+  const updateKeys = Object.keys(stateUpdates);
+  
   const merged = {
     resources: { ...prevState.resources, ...stateUpdates.resources },
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
@@ -149,7 +152,14 @@ const mergeStateUpdates = (
 
   const duration = performance.now() - mergeStart;
   if (mergeCounter >= MERGE_LOG_INTERVAL) {
-    console.log(`[PERF] State merge took ${duration.toFixed(2)}ms (count: ${mergeCounter})`);
+    console.log(`[PERF] State merge took ${duration.toFixed(2)}ms (count: ${mergeCounter})`, {
+      updatingKeys: updateKeys,
+      mergedObjectSizes: {
+        resources: Object.keys(merged.resources).length,
+        cooldowns: Object.keys(merged.cooldowns).length,
+        cooldownDurations: Object.keys(merged.cooldownDurations || {}).length,
+      }
+    });
     mergeCounter = 0;
   }
 
@@ -675,11 +685,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     
     const duration = performance.now() - eventStart;
     if (duration > 5) {
-      console.log(`[PERF] Event check took ${duration.toFixed(2)}ms, triggered: ${triggeredEvents?.length || 0}`);
+      console.log(`[PERF] Event check took ${duration.toFixed(2)}ms, triggered: ${triggeredEvents?.length || 0}`, {
+        stateChangeKeys: Object.keys(stateChanges),
+        logEntriesAdded: newLogEntries.length
+      });
     }
 
     if (newLogEntries.length > 0) {
-      console.log(`[MEMORY] New log entries: ${newLogEntries.length}, total logs: ${state.log.length}`);
+      console.log(`[MEMORY] New log entries: ${newLogEntries.length}, total logs: ${state.log.length}`, {
+        eventIds: newLogEntries.map(e => e.id),
+        hasChoices: newLogEntries.map(e => !!e.choices)
+      });
       let logMessage = null;
       let combatData = null;
       const updatedChanges = { ...stateChanges };

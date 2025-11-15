@@ -85,9 +85,11 @@ export class EventManager {
   static checkEvents(state: GameState): {
     newLogEntries: LogEntry[];
     stateChanges: Partial<GameState>;
+    triggeredEvents?: { id: string; message: string }[];
   } {
     const newLogEntries: LogEntry[] = [];
     let stateChanges: Partial<GameState> = {};
+    const triggeredEvents: { id: string; message: string }[] = [];
     const sortedEvents = Object.values(this.allEvents).sort(
       (a, b) => (b.priority || 0) - (a.priority || 0),
     );
@@ -95,6 +97,8 @@ export class EventManager {
     // Initialize event cooldowns if not present
     const eventCooldowns = state.eventCooldowns || {};
     const currentTime = Date.now();
+    
+    console.log(`[MEMORY] Event check started, checking ${sortedEvents.length} events`);
 
     for (const event of sortedEvents) {
       // Skip if already triggered and not repeatable
@@ -168,6 +172,7 @@ export class EventManager {
         };
 
         newLogEntries.push(logEntry);
+        triggeredEvents.push({ id: event.id, message });
 
         // Apply effect if it exists and there are no choices
         if (event.effect && !eventChoices?.length) {
@@ -192,11 +197,13 @@ export class EventManager {
           [event.id]: currentTime,
         };
         
+        console.log(`[MEMORY] Event triggered: ${event.id}, hasChoices: ${!!eventChoices?.length}`);
+        
         break; // Only trigger one event per tick
       }
     }
 
-    return { newLogEntries, stateChanges };
+    return { newLogEntries, stateChanges, triggeredEvents };
   }
 
   static applyEventChoice(
