@@ -5,13 +5,9 @@ const stripeSecretKey = process.env.NODE_ENV === 'production'
   ? process.env.STRIPE_SECRET_KEY_PROD 
   : process.env.STRIPE_SECRET_KEY_DEV;
 
-// DISABLED FOR RAM TESTING - Stripe not initialized
-const stripe = null as any;
-/* ORIGINAL CODE DISABLED
 const stripe = new Stripe(stripeSecretKey || '', {
   apiVersion: '2024-12-18.acacia',
 });
-*/
 
 export { SHOP_ITEMS };
 export type { ShopItem };
