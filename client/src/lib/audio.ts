@@ -95,6 +95,11 @@ export class AudioManager {
   }
 
   async playSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
+    if (import.meta.env.DEV) {
+      console.log(`[RAM TEST] Audio playback disabled for: ${name}`);
+    }
+    return;
+    /* DISABLED FOR RAM TESTING
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
@@ -127,9 +132,15 @@ export class AudioManager {
     } catch (error) {
       console.warn(`Failed to play sound ${name}:`, error);
     }
+    */
   }
 
   async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
+    if (import.meta.env.DEV) {
+      console.log(`[RAM TEST] Audio loading disabled for: ${name}`);
+    }
+    return;
+    /* DISABLED FOR RAM TESTING
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
@@ -167,6 +178,7 @@ export class AudioManager {
     } catch (error) {
       console.warn(`Failed to play looping sound ${name}:`, error);
     }
+    */
   }
 
   stopLoopingSound(name: string): void {
@@ -197,6 +209,11 @@ export class AudioManager {
 
   async preloadSounds(): Promise<void> {
     if (import.meta.env.DEV) {
+      console.log('[RAM TEST] Audio preloading disabled');
+    }
+    return;
+    /* DISABLED FOR RAM TESTING
+    if (import.meta.env.DEV) {
       console.log('Registering sounds for lazy loading...');
     }
     // Just register the sound URLs, don't load yet
@@ -208,6 +225,7 @@ export class AudioManager {
     if (import.meta.env.DEV) {
       console.log('Sound URLs registered for lazy loading');
     }
+    */
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {

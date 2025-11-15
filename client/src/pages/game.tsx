@@ -15,6 +15,9 @@ export default function Game() {
 
   useEffect(() => {
     const initializeGame = async () => {
+      if (import.meta.env.DEV) {
+        console.log('[RAM TEST] Loop, save, audio, and Stripe completely disabled');
+      }
       // Load saved game or initialize with defaults
       const savedState = await loadGame();
       if (savedState) {
@@ -30,14 +33,17 @@ export default function Game() {
       setIsInitialized(true);
 
       // Start game loop
-      startGameLoop();
+      // startGameLoop(); // DISABLED FOR RAM TESTING
+      if (import.meta.env.DEV) {
+        console.log('[RAM TEST] Game loop disabled');
+      }
     };
 
     initializeGame();
 
     // Cleanup function to stop the game loop when the component unmounts
     return () => {
-      stopGameLoop();
+      // stopGameLoop(); // DISABLED FOR RAM TESTING
     };
   }, [initialize]);
 

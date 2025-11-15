@@ -29,6 +29,11 @@ async function getDB() {
 }
 
 export async function saveGame(gameState: GameState, playTime: number = 0): Promise<void> {
+  if (import.meta.env.DEV) {
+    console.log('[RAM TEST] saveGame() disabled');
+  }
+  return;
+  /* DISABLED FOR RAM TESTING
   try {
     const db = await getDB();
 
@@ -69,6 +74,7 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
     console.error('Failed to save game locally:', error);
     throw error;
   }
+  */
 }
 
 export async function loadGame(): Promise<GameState | null> {
