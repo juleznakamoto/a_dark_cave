@@ -356,7 +356,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   executeAction: (actionId: string) => {
-    console.log(`[ACTION] Executing: ${actionId}`);
     const state = get();
     const action = gameActions[actionId];
 
@@ -368,24 +367,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
       });
     }
 
-    if (!action || (state.cooldowns[actionId] || 0) > 0) {
-      console.log(`[ACTION] ${actionId} blocked - action missing or on cooldown`);
-      return;
-    }
+    if (!action || (state.cooldowns[actionId] || 0) > 0) return;
     if (
       !shouldShowAction(actionId, state) ||
       !canExecuteAction(actionId, state)
-    ) {
-      console.log(`[ACTION] ${actionId} blocked - conditions not met`);
+    )
       return;
-    }
 
     const result = executeGameAction(actionId, state);
-    console.log(`[ACTION] ${actionId} result:`, {
-      hasStateUpdates: !!result.stateUpdates,
-      hasLogEntries: !!result.logEntries,
-      hasDelayedEffects: !!result.delayedEffects
-    });
 
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
