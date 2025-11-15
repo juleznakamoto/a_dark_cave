@@ -16,19 +16,17 @@ import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { stopGameLoop } from "@/game/loop";
 
 export default function GameContainer() {
-  const {
-    activeTab,
-    flags,
-    buildings,
-    relics,
-    eventDialog,
-    combatDialog,
-    setActiveTab,
-    setEventDialog,
-    setCombatDialog,
-    isPaused,
-    showEndScreen,
-  } = useGameStore();
+  const activeTab = useGameStore((state) => state.activeTab);
+  const flags = useGameStore((state) => state.flags);
+  const buildings = useGameStore((state) => state.buildings);
+  const relics = useGameStore((state) => state.relics);
+  const eventDialog = useGameStore((state) => state.eventDialog);
+  const combatDialog = useGameStore((state) => state.combatDialog);
+  const setActiveTab = useGameStore((state) => state.setActiveTab);
+  const setEventDialog = useGameStore((state) => state.setEventDialog);
+  const setCombatDialog = useGameStore((state) => state.setCombatDialog);
+  const isPaused = useGameStore((state) => state.isPaused);
+  const showEndScreen = useGameStore((state) => state.showEndScreen);
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
   const [previousFlags, setPreviousFlags] = useState(flags);
 

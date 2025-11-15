@@ -24,7 +24,9 @@ const getBuildingLabel = (buildingType: 'watchtower' | 'palisades', level: numbe
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources } = useGameStore();
+  const buildings = useGameStore((state) => state.buildings);
+  const story = useGameStore((state) => state.story);
+  const resources = useGameStore((state) => state.resources);
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
 
