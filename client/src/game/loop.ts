@@ -25,7 +25,7 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 const resourceUpdatesPool: Record<string, number> = {};
 
 let memoryLogCounter = 0;
-const MEMORY_LOG_INTERVAL = 50; // Log every 50 ticks for more frequent updates
+const MEMORY_LOG_INTERVAL = 500; // Log every 50 ticks for more frequent updates
 
 // Track memory allocation sources
 interface MemorySnapshot {
