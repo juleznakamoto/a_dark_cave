@@ -9,7 +9,7 @@ export const storyEvents: Record<string, GameEvent> = {
       state.flags.exploredCitadel &&
       !state.story.seen.portalDiscovered,
     triggerType: "resource",
-    timeProbability: 3,
+    timeProbability: 1,
     message:
       "In the citadel's lowest chambers you find a colossal portal forged from an unknown, unyielding metal. Perhaps the alchemist creations will be able to open it.",
     triggered: false,
