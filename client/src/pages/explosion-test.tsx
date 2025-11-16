@@ -38,12 +38,12 @@ function ExplosionParticles({
         return (
           <motion.div
             key={particle.id}
-            className="fixed rounded-full shadow-md"
+            className="fixed rounded-full"
             style={{
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              left: particle.startX,
-              top: particle.startY,
+              left: particle.startX - particle.size / 2,
+              top: particle.startY - particle.size / 2,
               zIndex: 9999,
               pointerEvents: "none",
             }}
@@ -67,7 +67,7 @@ function ExplosionParticles({
             }}
             transition={{
               duration: particle.lifetime,
-              ease: [0.15, 0.5, 0.5, 0.85], // cubic-bezier easing
+              ease: [0.15, 0.5, 0.5, 0.85],
             }}
           />
         );
