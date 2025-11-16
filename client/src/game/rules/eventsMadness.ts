@@ -304,7 +304,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
             },
             _logMessage:
-              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+1 Madness)`,
+              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+2 Madness)`,
           };
         },
       },
@@ -318,7 +318,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Something in the Hut",
     message:
-      "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. Its limbs bend wrong, and when it turns toward you, you see eyes like dying stars.",
+      "Through the cracks in one of your wooden huts, you glimpse something that shouldn't be there. A dark shape moves in the darkness, too tall and too thin to be human. As it turns toward you, you see eyes gleaming like dying stars.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -339,7 +339,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
           },
           _logMessage:
-            "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth.",
+            "You turn away and try to forget what you saw. But in your dreams, the creature visits you. It whispers your name with a voice like grinding stone, and shows you visions of what lies beneath the earth. (+3 Madness)",
         }),
       },
       {
