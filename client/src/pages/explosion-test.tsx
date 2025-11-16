@@ -87,13 +87,13 @@ export default function ExplosionTest() {
   const triggerExplosion = () => {
     if (!buttonRef.current) return;
 
-    const particleCount = 50; // Number of particles in explosion
+    const particleCount = 200; // Number of particles in explosion
     const newParticles: Particle[] = Array.from({
       length: particleCount,
     }).map(() => ({
       id: idRef.current++,
       angle: Math.random() * Math.PI * 2, // Full 360 degrees
-      distance: Math.random() * 300 + 100, // Random distance
+      distance: Math.random() * 400 + 100, // Random distance
       color: colors[Math.floor(Math.random() * colors.length)],
       lifetime: 0.8 + Math.random() * 0.8, // Random lifetime
       createdAt: Date.now(),
