@@ -33,6 +33,7 @@ export default function GameFooter() {
     authNotificationSeen,
     setAuthNotificationSeen,
     authNotificationVisible,
+    setIsUserSignedIn,
     cruelMode,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
@@ -57,6 +58,7 @@ export default function GameFooter() {
   const checkAuth = async () => {
     const user = await getCurrentUser();
     setCurrentUser(user);
+    setIsUserSignedIn(!!user);
   };
 
   const handleSetAuthDialogOpen = (isOpen: boolean) => {
@@ -67,6 +69,7 @@ export default function GameFooter() {
   const handleAuthSuccess = async () => {
     const user = await getCurrentUser();
     setCurrentUser(user);
+    setIsUserSignedIn(!!user);
     // Reload game to get cloud save
     await loadGame();
   };
@@ -75,6 +78,7 @@ export default function GameFooter() {
     try {
       await signOut();
       setCurrentUser(null);
+      setIsUserSignedIn(false);
       handleSetAuthDialogOpen(false); // Close auth dialog on sign out
       toast({
         title: "Signed out",

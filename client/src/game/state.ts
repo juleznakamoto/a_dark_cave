@@ -47,6 +47,9 @@ interface GameStore extends GameState {
   authNotificationSeen: boolean;
   authNotificationVisible: boolean;
 
+  // Auth state
+  isUserSignedIn: boolean;
+
   // Play time tracking
   playTime: number;
   isNewGame: boolean; // Track if this is a newly started game
@@ -75,6 +78,7 @@ interface GameStore extends GameState {
   setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
+  setIsUserSignedIn: (signedIn: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -233,6 +237,9 @@ const defaultGameState: GameState = {
   authNotificationSeen: false,
   authNotificationVisible: false,
 
+  // Auth state
+  isUserSignedIn: false,
+
   // Play time tracking
   playTime: 0,
   isNewGame: false,
@@ -322,6 +329,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
   setAuthNotificationSeen: (seen: boolean) => set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
+  setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));

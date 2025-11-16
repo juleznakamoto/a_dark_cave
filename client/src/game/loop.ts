@@ -142,41 +142,34 @@ export function startGameLoop() {
         }
 
         // Auth notification logic (first after 15 minutes, then every 60 minutes) - only if not signed in
-        // Check auth state synchronously by importing at module level
-        import('@/game/auth').then(async ({ getCurrentUser }) => {
-          const currentUser = await getCurrentUser();
-          
-          if (!currentUser && gameStartTime > 0) {
-            const elapsedSinceStart = timestamp - gameStartTime;
-            const state = useGameStore.getState();
+        if (!state.isUserSignedIn) {
           // First notification after 15 minutes
-            if (
-              elapsedSinceStart >= AUTH_NOTIFICATION_INITIAL_DELAY &&
-              lastAuthNotificationTime === 0
-            ) {
-              lastAuthNotificationTime = timestamp;
-              if (state.authNotificationSeen) {
-                useGameStore.setState({
-                  authNotificationSeen: false,
-                  authNotificationVisible: true,
-                });
-              } else if (!state.authNotificationVisible) {
-                useGameStore.setState({ authNotificationVisible: true });
-              }
-            }
-            // Subsequent notifications every 60 minutes after the last one
-            else if (
-              lastAuthNotificationTime > 0 &&
-              timestamp - lastAuthNotificationTime >=
-                AUTH_NOTIFICATION_REPEAT_INTERVAL
-            ) {
-              lastAuthNotificationTime = timestamp;
-              if (state.authNotificationSeen) {
-                useGameStore.setState({ authNotificationSeen: false });
-              }
+          if (
+            elapsedSinceStart >= AUTH_NOTIFICATION_INITIAL_DELAY &&
+            lastAuthNotificationTime === 0
+          ) {
+            lastAuthNotificationTime = timestamp;
+            if (state.authNotificationSeen) {
+              useGameStore.setState({
+                authNotificationSeen: false,
+                authNotificationVisible: true,
+              });
+            } else if (!state.authNotificationVisible) {
+              useGameStore.setState({ authNotificationVisible: true });
             }
           }
-        });
+          // Subsequent notifications every 60 minutes after the last one
+          else if (
+            lastAuthNotificationTime > 0 &&
+            timestamp - lastAuthNotificationTime >=
+              AUTH_NOTIFICATION_REPEAT_INTERVAL
+          ) {
+            lastAuthNotificationTime = timestamp;
+            if (state.authNotificationSeen) {
+              useGameStore.setState({ authNotificationSeen: false });
+            }
+          }
+        }
       }
 
       // All production and game logic checks (every 15 seconds)
