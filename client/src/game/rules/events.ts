@@ -10,6 +10,7 @@ import { cubeEvents } from "./eventsCube";
 import { recurringEvents } from "./eventsRecurring";
 import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
+import { GAME_CONSTANTS } from "../constants";
 
 export interface GameEvent {
   id: string;
@@ -123,11 +124,10 @@ export class EventManager {
 
       // Apply time-based probability if specified
       if (shouldTrigger && event.timeProbability) {
-        // Game loop runs every 200ms (5 times per second)
-        // Ticks per minute = 5 * 60 = 300
-        // Average ticks between events = timeProbability * 300
-        // Probability per tick = 1 / (timeProbability * 300)
-        const ticksPerMinute = 300;
+        // Calculate ticks per minute dynamically based on TICK_INTERVAL from constants
+        // TICK_INTERVAL is in milliseconds, so: (1000ms / TICK_INTERVAL) * 60 seconds
+        const ticksPerSecond = 1000 / GAME_CONSTANTS.TICK_INTERVAL;
+        const ticksPerMinute = ticksPerSecond * 60;
 
         // Get timeProbability - can be number or function
         const timeProbability =

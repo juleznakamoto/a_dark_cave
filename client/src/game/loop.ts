@@ -8,10 +8,11 @@ import {
   getTotalMadness,
   getAllActionBonuses,
 } from "./rules/effectsCalculation";
+import { GAME_CONSTANTS } from "./constants";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
-const TICK_INTERVAL = 250; // 250ms ticks
+const TICK_INTERVAL = GAME_CONSTANTS.TICK_INTERVAL;
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
