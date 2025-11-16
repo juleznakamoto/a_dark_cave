@@ -741,8 +741,8 @@ export const choiceEvents: Record<string, GameEvent> = {
 
           const wasForced = state.story.seen.vikingBuilderEventForced;
           const message = wasForced
-            ? `You purchase the Nordic War Axe for ${cost} gold. The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before,' he mutters before leaving. The axe radiates with ancient Nordic power.`
-            : `You purchase the Nordic War Axe for ${cost} gold. The viking nods approvingly and departs. The axe radiates with ancient Nordic power.`;
+            ? `The viking takes the payment with a cold smile. 'Perhaps you should have been more generous before, instead of attacking me. You would have paid much less for the axe then.' he speaks before leaving.`
+            : `Happy with the trade the viking nods approvingly and departs.`;
 
           return {
             resources: {

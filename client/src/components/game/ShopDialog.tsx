@@ -495,7 +495,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
             <TabsContent value="shop" className="mt-4">
               <ScrollArea className="h-[calc(80vh-180px)]">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pr-4">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader>
@@ -503,7 +503,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           <CardTitle className="text-lg flex items-center gap-2">
                             {item.name}
                             {item.symbol && (
-                              <span className="text-2xl" style={{ color: tailwindToHex(item.symbolColor.replace('text-', '')) }}>
+                              <span className="text-lg" style={{ color: tailwindToHex(item.symbolColor.replace('text-', '')) }}>
                                 {item.symbol}
                               </span>
                             )}
