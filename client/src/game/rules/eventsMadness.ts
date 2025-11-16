@@ -13,7 +13,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Whispering Voices",
     message:
-      "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone.",
+      "You hear faint whispers in the wind, speaking words in no language you recognize, but somehow you understand them. They speak of ancient things buried beneath the earth. The voices grow clearer until in the evening they are suddenly gone. (+1 Madness)",
     triggered: false,
     priority: 2,
     repeatable: false,
@@ -36,7 +36,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message:
-      "The shadows in your village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there.",
+      "The shadows in your village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
     triggered: false,
     priority: 1,
     repeatable: false,
@@ -81,11 +81,11 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
+                madness: (state.stats.madness || 0) + 2,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
               },
               _logMessage:
-                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.",
+                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.  (+1 Madness)",
             };
           } else {
             const deathResult = killVillagers(state, 1);
