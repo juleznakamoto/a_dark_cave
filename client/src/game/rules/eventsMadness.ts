@@ -85,7 +85,7 @@ export const madnessEvents: Record<string, GameEvent> = {
                 madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
               },
               _logMessage:
-                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.  (+1 Madness)",
+                "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.  (+2 Madness)",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -96,7 +96,7 @@ export const madnessEvents: Record<string, GameEvent> = {
                 villagerStares: true,
               },
               _logMessage:
-                "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours.",
+                "As you approach, the villager's smile widens impossibly. They collapse, black fluid pouring from their eyes and mouth. You realize they've been dead for hours. (+3 Madness)",
             };
           }
         },
@@ -118,7 +118,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
             },
             _logMessage:
-              "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime.",
+              "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime. (+2 Madness)",
           };
         },
       },
@@ -131,7 +131,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message:
-      "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water.",
+      "The village water runs red for three days. The villagers don't seem to notice, drinking it as if nothing has changed. You taste copper and iron, but they claim it tastes like the sweetest spring water. (+2 Madness)",
     triggered: false,
     priority: 2,
     repeatable: false,
@@ -142,8 +142,8 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
       stats: {
         ...state.stats,
-        madness: (state.stats.madness || 0) + 3,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
+        madness: (state.stats.madness || 0) + 2,
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
       },
     }),
   },
@@ -176,7 +176,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
-            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago.",
+            "You lean close to one of the faces. Its eyes snap open and it whispers your name. You recognize the face as someone who died years ago. (+3 Madness)",
         }),
       },
       {
@@ -193,7 +193,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
           },
           _logMessage:
-            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there.",
+            "You try to ignore the faces, but they multiply. Soon every wooden surface in the village bears the mark of tortured souls. One morning they are all gone, as they were never there. (+2 Madness)",
         }),
       },
     ],
@@ -214,7 +214,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message:
-      "You count your villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice.",
+      "You count your villagers and there are three more than there should be. The extra ones look exactly like villagers who died months ago. They work, eat, and sleep normally, but their eyes hold depths of ancient malice. (+2 Madness)",
     triggered: false,
     priority: 2,
     repeatable: false,
@@ -277,11 +277,11 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
+                madness: (state.stats.madness || 0) + 2,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
               },
               _logMessage:
-                "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers.",
+                "You try to calm yourself, but the sensation intensifies. Your vision blurs and you collapse. In your fevered dreams, ancient things whisper your true name. When you awaken, the crawling has stopped, but the memory lingers. (+2 Madness)",
             };
           }
         },
@@ -304,7 +304,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
             },
             _logMessage:
-              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands.`,
+              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+1 Madness)`,
           };
         },
       },
