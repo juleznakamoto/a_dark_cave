@@ -1,6 +1,7 @@
 import { GameState } from "../state";
 import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
 import { gameActions } from "./index";
+import { getTotalMadness } from "./effectsCalculation";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -216,9 +217,11 @@ export const buildingTooltips: Record<string, TooltipConfig> = {
 // Madness tooltip
 export const madnessTooltip: TooltipConfig = {
   getContent: (state) => {
+    const totalMadness = getTotalMadness(state);
+    const itemMadness = totalMadness - (state.stats.madnessFromEvents || 0);
     const eventMadness = state.stats.madnessFromEvents || 0;
-    if (eventMadness > 0) {
-      return `+${eventMadness} Madness from Events`;
+    if (totalMadness > 0) {
+      return `${itemMadness} from Items/Buildings\n${eventMadness} from Events`;
     }
     return "";
   },
@@ -285,7 +288,8 @@ export const curseTooltip: TooltipConfig = {
 export const miningBoostTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const miningBoostState = state.miningBoostState;
-    const isBoosted = miningBoostState?.isActive && miningBoostState.endTime > Date.now();
+    const isBoosted =
+      miningBoostState?.isActive && miningBoostState.endTime > Date.now();
 
     if (isBoosted) {
       const remainingMs = miningBoostState.endTime - Date.now();

@@ -114,8 +114,8 @@ export const madnessEvents: Record<string, GameEvent> = {
             },
             stats: {
               ...state.stats,
-              madness: (state.stats.madness || 0) + 3,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
+              madness: (state.stats.madness || 0) + 2,
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
             },
             _logMessage:
               "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime.",
@@ -172,7 +172,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 5,
+            madness: (state.stats.madness || 0) + 3,
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
@@ -189,7 +189,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 3,
+            madness: (state.stats.madness || 0) + 2,
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
           },
           _logMessage:
@@ -389,7 +389,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 5,
+            madness: (state.stats.madness || 0) + 3,
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
