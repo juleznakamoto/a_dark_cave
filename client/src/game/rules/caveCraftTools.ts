@@ -23,7 +23,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches: {
     id: "craftTorches",
-    label: "Torches",
+    label: "2 Torches",
     show_when: {
       "tools.stone_axe": true,
       "tools.iron_axe": false,
@@ -40,7 +40,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches3: {
     id: "craftTorches3",
-    label: "Torches",
+    label: "3 Torches",
     show_when: {
       "tools.iron_axe": true,
       "tools.steel_axe": false,
@@ -57,7 +57,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches4: {
     id: "craftTorches4",
-    label: "Torches",
+    label: "4 Torches",
     show_when: {
       "tools.steel_axe": true,
       "tools.obsidian_axe": false,
@@ -74,7 +74,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches5: {
     id: "craftTorches5",
-    label: "Torches",
+    label: "5 Torches",
     show_when: {
       "tools.obsidian_axe": true,
       "tools.adamant_axe": false,
@@ -91,7 +91,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches10: {
     id: "craftTorches10",
-    label: "Torches",
+    label: "10 Torches",
     show_when: {
       "tools.adamant_axe": true,
     },
