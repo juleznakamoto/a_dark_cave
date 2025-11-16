@@ -169,7 +169,7 @@ export default function EventDialog({
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
-        
+
         setPurchasedItems(prev => new Set(prev).add(choiceId));
       }
       return;
@@ -252,20 +252,23 @@ export default function EventDialog({
             {eventChoices.map((choice) => {
               const cost = choice.cost;
               let isDisabled = (timeRemaining !== null && timeRemaining <= 0) || fallbackExecutedRef.current;
-              
+
+              // Evaluate cost if it's a function
+              const costText = typeof cost === 'function' ? cost(gameState) : cost;
+
               // Check if player can afford the cost for woodcutter events
-              if (cost && cost.includes('food')) {
-                const foodCost = parseInt(cost.match(/\d+/)?.[0] || '0');
+              if (costText && costText.includes('food')) {
+                const foodCost = parseInt(costText.match(/\d+/)?.[0] || '0');
                 if (gameState.resources.food < foodCost) {
                   isDisabled = true;
                 }
               }
-              
+
               // Evaluate label if it's a function
-              const labelText = typeof choice.label === 'function' 
-                ? choice.label(gameState) 
+              const labelText = typeof choice.label === 'function'
+                ? choice.label(gameState)
                 : choice.label;
-              
+
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -293,12 +296,12 @@ export default function EventDialog({
                   )}
                 </Button>
               );
-              
-              return cost ? (
+
+              return costText ? (
                 <TooltipProvider key={choice.id}>
                   <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                     <TooltipTrigger asChild>
-                      <div 
+                      <div
                         onClick={(e) => mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e)}
                         onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
                         onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}
@@ -310,13 +313,13 @@ export default function EventDialog({
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        {eventChoiceCostTooltip.getContent(cost)}
+                        {eventChoiceCostTooltip.getContent(costText)}
                       </div>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
               ) : (
-                <div 
+                <div
                   key={choice.id}
                   onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
                   onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => handleChoice(choice.id), e) : undefined}

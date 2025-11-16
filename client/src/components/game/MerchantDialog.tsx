@@ -81,12 +81,22 @@ export default function MerchantDialog({
                 // Check if choice can be afforded (for merchant trades)
                 const testResult = choice.effect(gameState);
                 const canAfford = Object.keys(testResult).length > 0;
-                const isPurchased = purchasedItems.has(choice.id);
 
-                const isDisabled = (timeRemaining !== null && timeRemaining <= 0) ||
-                  fallbackExecutedRef.current ||
-                  !canAfford ||
-                  isPurchased;
+                // Evaluate label if it's a function
+                const labelText = typeof choice.label === 'function' 
+                  ? choice.label(gameState) 
+                  : choice.label;
+
+                // Evaluate cost if it's a function
+                const costText = typeof choice.cost === 'function' 
+                  ? choice.cost(gameState) 
+                  : choice.cost;
+
+                const isPurchased = purchasedItems.has(choice.id);
+                const isDisabled = (timeRemaining !== null && timeRemaining <= 0) || 
+                                   fallbackExecutedRef.current || 
+                                   isPurchased;
+
 
                 const buttonContent = (
                   <Button
