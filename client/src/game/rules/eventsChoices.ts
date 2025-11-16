@@ -675,6 +675,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 seen: {
                   ...state.story.seen,
                   vikingBuilderEvent: true,
+                  vikingBuilderEventForced: true,
                   longhouseUnlocked: true,
                 },
               },
@@ -698,6 +699,78 @@ export const choiceEvents: Record<string, GameEvent> = {
               _logMessage: `The builder proves stronger than expected! He fights back fiercely, killing ${casualties} of your men before escaping into the wilderness.`,
             };
           }
+        },
+      },
+    ],
+  },
+
+  nordicWarAxe: {
+    id: "nordicWarAxe",
+    condition: (state: GameState) =>
+      state.buildings.longhouse >= 2 &&
+      state.cruelMode &&
+      !state.weapons.nordic_war_axe &&
+      !state.story.seen.nordicWarAxeEvent,
+    triggerType: "resource",
+    timeProbability: 15,
+    title: "The Viking Returns",
+    message:
+      "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "buyAxe",
+        label: (state: GameState) => {
+          const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
+          return `Buy Nordic War Axe (${cost} gold)`;
+        },
+        cost: "500-750 gold",
+        effect: (state: GameState) => {
+          const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
+          
+          if (state.resources.gold < cost) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - cost,
+            },
+            weapons: {
+              ...state.weapons,
+              nordic_war_axe: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                nordicWarAxeEvent: true,
+              },
+            },
+            _logMessage: `You purchase the Nordic War Axe for ${cost} gold. The viking nods approvingly and departs. The axe radiates with ancient Nordic power.`,
+          };
+        },
+      },
+      {
+        id: "decline",
+        label: "Decline",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                nordicWarAxeEvent: true,
+              },
+            },
+            _logMessage:
+              "You decline the offer. The viking shrugs and leaves with his war axe.",
+          };
         },
       },
     ],

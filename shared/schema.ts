@@ -122,6 +122,7 @@ export const gameStateSchema = z.object({
       compound_bow: z.boolean().default(false),
       frostglass_sword: z.boolean().default(false),
       bloodstone_staff: z.boolean().default(false),
+      nordic_war_axe: z.boolean().default(false),
     })
     .default({}),
   clothing: z

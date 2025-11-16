@@ -36,6 +36,9 @@ export default function ItemProgressChart() {
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
+  const state = useGameStore.getState();
+  const isCruelMode = state.cruelMode;
+
   // Define ring segment configurations - each segment represents upgradable progression
   const ringSegments: ItemSegment[][] = [
     // First ring: Tools
@@ -168,6 +171,14 @@ export default function ItemProgressChart() {
         category: "weapons",
         maxCount: 1,
       },
+      ...(isCruelMode ? [{
+        itemType: "nordic_war_axe",
+        itemKeys: ["nordic_war_axe" as keyof GameState["weapons"]],
+        color: tailwindToHex("gray-400/80"),
+        label: "Nordic War Axe",
+        category: "weapons" as const,
+        maxCount: 1,
+      }] : []),
     ],
     // Third ring: Relics
     [

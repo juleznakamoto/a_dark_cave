@@ -531,6 +531,17 @@ export const weaponEffects: Record<string, EffectDefinition> = {
       },
     },
   },
+
+  nordic_war_axe: {
+    id: "nordic_war_axe",
+    name: "Nordic War Axe",
+    description: "Legendary war axe forged by a viking master",
+    bonuses: {
+      generalBonuses: {
+        strength: 12,
+      },
+    },
+  },
 };
 
 // Relic effects
