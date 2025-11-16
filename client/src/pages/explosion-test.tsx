@@ -9,6 +9,7 @@ interface Particle {
   distance: number;
   color: string;
   lifetime: number;
+  size: number;
   createdAt: number;
 }
 
@@ -36,14 +37,14 @@ function ExplosionParticles({
             key={particle.id}
             className="fixed rounded-full shadow-md"
             style={{
-              width: "6px",
-              height: "6px",
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
               backgroundColor: particle.color,
               left: startX,
               top: startY,
               zIndex: 9999,
               pointerEvents: "none",
-              boxShadow: `0 0 ${Math.random() * 10 + 5}px ${particle.color}`,
+              boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
             }}
             initial={{
               opacity: 1,
@@ -96,6 +97,7 @@ export default function ExplosionTest() {
       distance: Math.random() * 400 + 100, // Random distance
       color: colors[Math.floor(Math.random() * colors.length)],
       lifetime: 0.8 + Math.random() * 0.8, // Random lifetime
+      size: Math.random() * 8 + 3, // Random size between 3px and 11px
       createdAt: Date.now(),
     }));
 
