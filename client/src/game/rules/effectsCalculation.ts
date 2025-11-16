@@ -213,7 +213,7 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 // Helper function to get action bonuses from pre-calculated effects in state
 export const getActionBonuses = (
   actionId: string,
-  state: GameState
+  state: GameState,
 ): {
   resourceMultiplier: number;
   resourceBonus: Record<string, number>;
@@ -232,7 +232,7 @@ export const getActionBonuses = (
       const bonus = effect.bonuses.actionBonuses[actionId];
       if (bonus.resourceMultiplier) {
         // Additive: sum the bonus percentages
-        resourceMultiplier += (bonus.resourceMultiplier - 1);
+        resourceMultiplier += bonus.resourceMultiplier - 1;
       }
       if (bonus.cooldownReduction) {
         cooldownReduction += bonus.cooldownReduction;
@@ -250,7 +250,7 @@ export const getActionBonuses = (
         const mineBonus = effect.bonuses.actionBonuses.mining;
         if (mineBonus.resourceMultiplier) {
           // Additive: sum the bonus percentages
-          resourceMultiplier += (mineBonus.resourceMultiplier - 1);
+          resourceMultiplier += mineBonus.resourceMultiplier - 1;
         }
         if (mineBonus.cooldownReduction) {
           cooldownReduction += mineBonus.cooldownReduction;
@@ -259,7 +259,7 @@ export const getActionBonuses = (
           Object.entries(mineBonus.resourceBonus).forEach(
             ([resource, amount]) => {
               resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
-            }
+            },
           );
         }
       }
@@ -267,26 +267,34 @@ export const getActionBonuses = (
 
     // Add cave exploration multiplier for cave explore actions
     const caveExploreActions = [
-      'exploreCave',
-      'ventureDeeper',
-      'descendFurther',
-      'exploreRuins',
-      'exploreTemple',
-      'exploreCitadel'
+      "exploreCave",
+      "ventureDeeper",
+      "descendFurther",
+      "exploreRuins",
+      "exploreTemple",
+      "exploreCitadel",
     ];
     if (caveExploreActions.includes(actionId)) {
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
         // Additive: sum the bonus percentages
-        caveExploreMultiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
+        caveExploreMultiplier +=
+          effect.bonuses.generalBonuses.caveExploreMultiplier - 1;
       }
     }
   });
 
-  return { resourceMultiplier, resourceBonus, cooldownReduction, caveExploreMultiplier };
+  return {
+    resourceMultiplier,
+    resourceBonus,
+    cooldownReduction,
+    caveExploreMultiplier,
+  };
 };
 
 // SSOT: Calculate all action bonuses for display and internal use
-export const getAllActionBonuses = (state: GameState): Array<{
+export const getAllActionBonuses = (
+  state: GameState,
+): Array<{
   id: string;
   label: string;
   multiplier: number;
@@ -299,19 +307,26 @@ export const getAllActionBonuses = (state: GameState): Array<{
   activeEffects.forEach((effect) => {
     // Check for cave explore multiplier in general bonuses
     if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
-      const existing = bonusMap.get('caveExplore') || { multiplier: 1, flatBonus: 0 };
-      existing.multiplier += (effect.bonuses.generalBonuses.caveExploreMultiplier - 1);
-      bonusMap.set('caveExplore', existing);
+      const existing = bonusMap.get("caveExplore") || {
+        multiplier: 1,
+        flatBonus: 0,
+      };
+      existing.multiplier +=
+        effect.bonuses.generalBonuses.caveExploreMultiplier - 1;
+      bonusMap.set("caveExplore", existing);
     }
 
     if (effect.bonuses.actionBonuses) {
       Object.entries(effect.bonuses.actionBonuses).forEach(
         ([actionId, bonus]) => {
-          const existing = bonusMap.get(actionId) || { multiplier: 1, flatBonus: 0 };
+          const existing = bonusMap.get(actionId) || {
+            multiplier: 1,
+            flatBonus: 0,
+          };
 
           // Aggregate multipliers (additive)
           if (bonus.resourceMultiplier) {
-            existing.multiplier += (bonus.resourceMultiplier - 1);
+            existing.multiplier += bonus.resourceMultiplier - 1;
           }
 
           // Aggregate flat bonuses (additive)
@@ -322,22 +337,25 @@ export const getAllActionBonuses = (state: GameState): Array<{
           }
 
           bonusMap.set(actionId, existing);
-        }
+        },
       );
     }
   });
 
   // Convert to array and format
   return Array.from(bonusMap.entries())
-    .filter(([actionId]) => actionId !== 'steelForger') // Exclude forge from bonus display
+    .filter(([actionId]) => actionId !== "steelForger") // Exclude forge from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
-      const label = actionId === 'caveExplore'
-        ? 'Cave Explore'
-        : actionId.replace(/([A-Z])/g, ' $1').trim()
-          .split(' ')
-          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-          .join(' ');
+      const label =
+        actionId === "caveExplore"
+          ? "Cave Explore"
+          : actionId
+              .replace(/([A-Z])/g, " $1")
+              .trim()
+              .split(" ")
+              .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+              .join(" ");
 
       // Build value string
       let valueStr = "";
@@ -356,7 +374,7 @@ export const getAllActionBonuses = (state: GameState): Array<{
         displayValue: valueStr,
       };
     })
-    .filter((item) => (item.multiplier - 1) > 0 || item.flatBonus > 0)
+    .filter((item) => item.multiplier - 1 > 0 || item.flatBonus > 0)
     .sort((a, b) => a.label.localeCompare(b.label));
 };
 
@@ -388,27 +406,16 @@ export const getTotalMadness = (state: GameState): number => {
   // So we just use the base madness value
   let totalMadness = state.stats.madness || 0;
 
-  console.log('=== Madness Calculation ===');
-  console.log('Base madness (includes events):', state.stats.madness || 0);
-  console.log('Madness from events (for tracking only):', state.stats.madnessFromEvents || 0);
-
   // Add madness from effects
   const effectMadness = effects.statBonuses?.madness || 0;
   totalMadness += effectMadness;
-  console.log('Madness from effects:', effectMadness);
 
   // Apply madness reduction from effects (includes building madness reductions)
-  console.log('Madness reductions:', effects.madness_reduction);
   Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
-    console.log(`  ${key}:`, reduction);
     totalMadness += reduction; // Already negative values
   });
 
   const finalMadness = Math.max(0, totalMadness);
-  console.log('Total madness (before max):', totalMadness);
-  console.log('Final madness:', finalMadness);
-  console.log('=========================');
-
   return finalMadness;
 };
 
@@ -528,14 +535,16 @@ export const calculateTotalEffects = (state: GameState) => {
   if (state.buildings.blackMonolith > 0) {
     const buildAction = villageBuildActions.buildBlackMonolith;
     if (buildAction?.statsEffects?.madness) {
-      effects.madness_reduction.blackMonolith_madness = buildAction.statsEffects.madness;
+      effects.madness_reduction.blackMonolith_madness =
+        buildAction.statsEffects.madness;
     }
 
     // Add madness reduction from animal sacrifices
     const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
     if (usageCount > 0) {
       const sacrificeMadnessReduction = usageCount * -1;
-      effects.madness_reduction.animals_sacrifice_madness = sacrificeMadnessReduction;
+      effects.madness_reduction.animals_sacrifice_madness =
+        sacrificeMadnessReduction;
     }
   }
 
@@ -565,7 +574,8 @@ export const calculateTotalEffects = (state: GameState) => {
     // Process madness reduction from general bonuses (items that REDUCE madness)
     if (effect.bonuses.generalBonuses?.madnessReduction) {
       const effectKey = `${effect.id}_madness_reduction`;
-      effects.madness_reduction[effectKey] = -effect.bonuses.generalBonuses.madnessReduction;
+      effects.madness_reduction[effectKey] =
+        -effect.bonuses.generalBonuses.madnessReduction;
     }
 
     // Populate actionBonuses directly from effects
