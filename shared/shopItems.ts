@@ -55,6 +55,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_250",
     name: "250 Gold",
     description: "A decent amount of gold",
+    originalPrice: 199,
     price: 99, // 0.99 €
     rewards: {
       resources: { gold: 250 },
@@ -70,6 +71,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_1000",
     name: "1000 Gold",
     description: "A substantial treasure",
+    originalPrice: 499,
     price: 249, // 2.99 €
     rewards: {
       resources: { gold: 1000 },
@@ -85,6 +87,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "gold_5000",
     name: "5000 Gold",
     description: "A fortune in gold",
+    originalPrice: 999,
     price: 499, // 4.99 €
     rewards: {
       resources: { gold: 5000 },
@@ -100,6 +103,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description: "Boost the village production by 4x for 30 minutes",
+    originalPrice: 299,
     price: 149, // 1.49 €
     rewards: {
       feastActivations: 1,
@@ -115,8 +119,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_5",
     name: "5 Great Feasts",
     description: "Boost the village production by 4x for 30 minutes (5 times)",
+    originalPrice: 499,
     price: 299, // 2.99 €
-    originalPrice: 499, // 4.99 € - crossed out
     rewards: {
       feastActivations: 5,
     },
