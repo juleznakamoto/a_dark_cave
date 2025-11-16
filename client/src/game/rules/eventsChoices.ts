@@ -413,7 +413,9 @@ export const choiceEvents: Record<string, GameEvent> = {
   hiddenLake: {
     id: "hiddenLake",
     condition: (state: GameState) =>
-      state.flags.forestUnlocked && state.buildings.woodenHut >= 4,
+      state.flags.forestUnlocked && 
+      state.buildings.woodenHut >= 4 &&
+      !state.clothing.cracked_crown,
     triggerType: "resource",
     timeProbability: 35,
     title: "The Hidden Lake",
