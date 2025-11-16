@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -7,6 +7,7 @@ import { GAME_CONSTANTS } from "@/game/constants";
 export default function LogPanel() {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
+  const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
@@ -19,15 +20,24 @@ export default function LogPanel() {
 
         // Remove effect after duration
         const duration = entry.visualEffect.duration * 1000;
-        setTimeout(() => {
+        const timerId = setTimeout(() => {
           setActiveEffects((prev) => {
             const newSet = new Set(prev);
             newSet.delete(entry.id);
             return newSet;
           });
+          timersRef.current.delete(entry.id);
         }, duration);
+        
+        timersRef.current.set(entry.id, timerId);
       }
     });
+
+    // Cleanup function: clear all active timers
+    return () => {
+      timersRef.current.forEach((timerId) => clearTimeout(timerId));
+      timersRef.current.clear();
+    };
   }, [recentEntries]);
 
   return (
