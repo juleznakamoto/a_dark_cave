@@ -154,6 +154,41 @@ export const getPopulationProduction = (
   }));
 
   // Apply building production bonuses
+
+
+export const getTotalPopulationEffects = (
+  state: GameState,
+  visibleJobIds: string[]
+): Record<string, number> => {
+  const totalEffects: Record<string, number> = {};
+
+  // Calculate total population for base consumption
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+
+  // Add base consumption for all villagers (1 wood and 1 food per villager)
+  if (totalPopulation > 0) {
+    totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
+    totalEffects.food = (totalEffects.food || 0) - totalPopulation;
+  }
+
+  // Calculate production for each visible job
+  visibleJobIds.forEach((jobId) => {
+    const currentCount = state.villagers[jobId as keyof typeof state.villagers] || 0;
+    if (currentCount > 0) {
+      const production = getPopulationProduction(jobId, currentCount, state);
+      production.forEach((prod) => {
+        totalEffects[prod.resource] =
+          (totalEffects[prod.resource] || 0) + prod.totalAmount;
+      });
+    }
+  });
+
+  return totalEffects;
+};
+
   if (state?.buildings) {
     baseProduction.forEach((prod) => {
       let buildingBonusPerWorker = 0;

@@ -9,7 +9,7 @@ import {
 import { feastTooltip, curseTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import { getPopulationProduction } from "@/game/population";
+import { getPopulationProduction, getTotalPopulationEffects } from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
@@ -510,35 +510,8 @@ export default function VillagePanel() {
 
             {/* Population Effects Summary */}
             {(() => {
-              const totalEffects: Record<string, number> = {};
-
-              // Calculate total population for base consumption
-              const totalPopulation = Object.values(villagers).reduce(
-                (sum, count) => sum + (count || 0),
-                0,
-              );
-
-              // Add base consumption for all villagers (1 wood and 1 food per villager)
-              if (totalPopulation > 0) {
-                totalEffects.wood = (totalEffects.wood || 0) - totalPopulation;
-                totalEffects.food = (totalEffects.food || 0) - totalPopulation;
-              }
-
-              visiblePopulationJobs.forEach((job) => {
-                const currentCount =
-                  villagers[job.id as keyof typeof villagers] || 0;
-                if (currentCount > 0) {
-                  const production = getPopulationProduction(
-                    job.id,
-                    currentCount,
-                    state,
-                  );
-                  production.forEach((prod) => {
-                    totalEffects[prod.resource] =
-                      (totalEffects[prod.resource] || 0) + prod.totalAmount;
-                  });
-                }
-              });
+              const visibleJobIds = visiblePopulationJobs.map((job) => job.id);
+              const totalEffects = getTotalPopulationEffects(state, visibleJobIds);
 
               const effectsText = Object.entries(totalEffects)
                 .filter(([resource, amount]) => amount !== 0)
