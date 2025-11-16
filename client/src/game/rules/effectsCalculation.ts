@@ -386,18 +386,32 @@ export const getTotalMadness = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
   let totalMadness = state.stats.madness || 0;
 
+  console.log('=== Madness Calculation ===');
+  console.log('Base madness:', state.stats.madness || 0);
+
   // Add madness from events
-  totalMadness += state.stats.madnessFromEvents || 0;
+  const eventMadness = state.stats.madnessFromEvents || 0;
+  totalMadness += eventMadness;
+  console.log('Madness from events:', eventMadness);
 
   // Add madness from effects
-  totalMadness += effects.statBonuses?.madness || 0;
+  const effectMadness = effects.statBonuses?.madness || 0;
+  totalMadness += effectMadness;
+  console.log('Madness from effects:', effectMadness);
 
   // Apply madness reduction from effects (includes building madness reductions)
-  Object.values(effects.madness_reduction).forEach((reduction) => {
+  console.log('Madness reductions:', effects.madness_reduction);
+  Object.entries(effects.madness_reduction).forEach(([key, reduction]) => {
+    console.log(`  ${key}:`, reduction);
     totalMadness += reduction; // Already negative values
   });
 
-  return Math.max(0, totalMadness);
+  const finalMadness = Math.max(0, totalMadness);
+  console.log('Total madness (before max):', totalMadness);
+  console.log('Final madness:', finalMadness);
+  console.log('=========================');
+
+  return finalMadness;
 };
 
 // Helper function to calculate total crafting cost reduction
