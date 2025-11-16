@@ -763,6 +763,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "decline",
         label: "Decline",
         effect: (state: GameState) => {
+          const wasForced = state.story.seen.vikingBuilderEventForced;
+          const message = wasForced
+            ? "You decline the offer. The viking spits on the ground, muttering curses as he leaves with his war axe. 'You should have paid me when you had the chance,' he growls."
+            : "You decline the offer. The viking nods respectfully and leaves with his war axe.";
+
           return {
             story: {
               ...state.story,
@@ -771,8 +776,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 nordicWarAxeEvent: true,
               },
             },
-            _logMessage:
-              "You decline the offer. The viking looks grim as he leaves with his war axe.",
+            _logMessage: message,
           };
         },
       },
