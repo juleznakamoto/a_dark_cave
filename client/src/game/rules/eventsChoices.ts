@@ -1270,7 +1270,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "mysteriousWoman",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 3 &&
-      state.resources.silver >= 200 + state.CM * 50,
+      state.resources.silver >= 200 + state.CM * 50 &&
+      !state.story.seen.mysteriousWomanEvent,
     triggerType: "resource",
     timeProbability: 5,
     title: "The Mysterious Woman",
@@ -1278,7 +1279,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "An attractive young woman in fine clothes arrives at the village as the sun sets. She smiles warmly at you and asks, 'Might I have shelter in your hut for the night? I've traveled far and have nowhere else to go.'",
     triggered: false,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "allowStay",
@@ -1291,6 +1292,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               ...state.resources,
               silver: Math.max(0, state.resources.silver - silverStolen),
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousWomanEvent: true,
+              },
+            },
             _logMessage: `You grant her shelter for the night. By morning, she has vanished without a trace, leaving your bed still warm and ${silverStolen} silver missing.`,
           };
         },
@@ -1300,6 +1308,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Refuse her",
         effect: (state: GameState) => {
           return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousWomanEvent: true,
+              },
+            },
             _logMessage:
               "You politely refuse her request. She looks disappointed but nods in understanding, disappearing into the evening mist without another word.",
           };
