@@ -30,6 +30,9 @@ export default function GameFooter() {
     shopNotificationSeen,
     setShopNotificationSeen,
     shopNotificationVisible,
+    authNotificationSeen,
+    setAuthNotificationSeen,
+    authNotificationVisible,
     cruelMode,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
@@ -153,10 +156,16 @@ export default function GameFooter() {
               <Button
                 variant="ghost"
                 size="xs"
-                onClick={() => handleSetAuthDialogOpen(true)}
-                className="px-1.5 py-1 text-xs hover"
+                onClick={() => {
+                  handleSetAuthDialogOpen(true);
+                  setAuthNotificationSeen(true);
+                }}
+                className="px-2 py-1 text-xs hover relative"
               >
                 Sign In/Up
+                {authNotificationVisible && !authNotificationSeen && (
+                  <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                )}
               </Button>
             )}
 

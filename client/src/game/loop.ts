@@ -17,6 +17,8 @@ const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
+const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
+const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 
@@ -25,6 +27,7 @@ let lastAutoSave = 0;
 let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
+let lastAuthNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
 
@@ -106,12 +109,12 @@ export function startGameLoop() {
         handleAutoSave();
       }
 
-      // Shop notification logic (first after 10 minutes, then every 60 minutes)
+      // Shop notification logic (first after 30 minutes, then every 60 minutes)
       if (gameStartTime > 0) {
         const elapsedSinceStart = timestamp - gameStartTime;
         const state = useGameStore.getState();
 
-        // First notification after 10 minutes
+        // First notification after 30 minutes
         if (
           elapsedSinceStart >= SHOP_NOTIFICATION_INITIAL_DELAY &&
           lastShopNotificationTime === 0
@@ -135,6 +138,39 @@ export function startGameLoop() {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
             useGameStore.setState({ shopNotificationSeen: false });
+          }
+        }
+
+        // Auth notification logic (first after 15 minutes, then every 60 minutes) - only if not signed in
+        const { getCurrentUser } = await import('@/game/auth');
+        const currentUser = await getCurrentUser();
+        
+        if (!currentUser) {
+          // First notification after 15 minutes
+          if (
+            elapsedSinceStart >= AUTH_NOTIFICATION_INITIAL_DELAY &&
+            lastAuthNotificationTime === 0
+          ) {
+            lastAuthNotificationTime = timestamp;
+            if (state.authNotificationSeen) {
+              useGameStore.setState({
+                authNotificationSeen: false,
+                authNotificationVisible: true,
+              });
+            } else if (!state.authNotificationVisible) {
+              useGameStore.setState({ authNotificationVisible: true });
+            }
+          }
+          // Subsequent notifications every 60 minutes after the last one
+          else if (
+            lastAuthNotificationTime > 0 &&
+            timestamp - lastAuthNotificationTime >=
+              AUTH_NOTIFICATION_REPEAT_INTERVAL
+          ) {
+            lastAuthNotificationTime = timestamp;
+            if (state.authNotificationSeen) {
+              useGameStore.setState({ authNotificationSeen: false });
+            }
           }
         }
       }

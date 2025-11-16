@@ -43,6 +43,10 @@ interface GameStore extends GameState {
   shopNotificationSeen: boolean;
   shopNotificationVisible: boolean;
 
+  // Notification state for auth
+  authNotificationSeen: boolean;
+  authNotificationVisible: boolean;
+
   // Play time tracking
   playTime: number;
   isNewGame: boolean; // Track if this is a newly started game
@@ -69,6 +73,8 @@ interface GameStore extends GameState {
   setIsMuted: (isMuted: boolean) => void;
   setShopNotificationSeen: (seen: boolean) => void;
   setShopNotificationVisible: (visible: boolean) => void;
+  setAuthNotificationSeen: (seen: boolean) => void;
+  setAuthNotificationVisible: (visible: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
     amount: number,
@@ -223,6 +229,10 @@ const defaultGameState: GameState = {
   shopNotificationSeen: false,
   shopNotificationVisible: false,
 
+  // Initialize auth notification state
+  authNotificationSeen: false,
+  authNotificationVisible: false,
+
   // Play time tracking
   playTime: 0,
   isNewGame: false,
@@ -296,6 +306,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,
+  // Initialize auth notification state
+  authNotificationSeen: false,
+  authNotificationVisible: false,
 
   // Play time tracking
   playTime: 0,
@@ -307,6 +320,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setIsMuted: (isMuted: boolean) => set({ isMuted }),
   setShopNotificationSeen: (seen: boolean) => set({ shopNotificationSeen: seen }),
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
+  setAuthNotificationSeen: (seen: boolean) => set({ authNotificationSeen: seen }),
+  setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
     set((state) => updateResource(state, resource, amount));
@@ -538,6 +553,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       isMuted: false,
       shopNotificationSeen: false,
       shopNotificationVisible: false,
+      authNotificationSeen: false,
+      authNotificationVisible: false,
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
     };
@@ -585,6 +602,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isMuted: savedState.isMuted !== undefined ? savedState.isMuted : false,
         shopNotificationSeen: savedState.shopNotificationSeen !== undefined ? savedState.shopNotificationSeen : false,
         shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
+        authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
+        authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
       };

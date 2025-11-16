@@ -356,6 +356,8 @@ export const gameStateSchema = z.object({
       endTime: 0,
     }),
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
+  authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
+  authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
   playTime: z.number().default(0), // Track total play time in milliseconds
   isNewGame: z.boolean().default(false), // Track if the current game is a new game
 });
