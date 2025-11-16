@@ -86,6 +86,11 @@ export function useMobileButtonTooltip() {
 
   const handleMouseDown = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
     if (!isMobile || isCoolingDown) return;
+
+    // Clear any existing timer before starting a new one
+    if (pressTimerRef.current) {
+      clearTimeout(pressTimerRef.current);
+    }
     
     // Don't prevent default to allow button interaction
     setPressingId(id);
@@ -128,6 +133,11 @@ export function useMobileButtonTooltip() {
 
   const handleTouchStart = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
     if (!isMobile || isCoolingDown) return;
+
+    // Clear any existing timer before starting a new one
+    if (pressTimerRef.current) {
+      clearTimeout(pressTimerRef.current);
+    }
     
     setPressingId(id);
     
