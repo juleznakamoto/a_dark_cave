@@ -718,13 +718,13 @@ export const choiceEvents: Record<string, GameEvent> = {
       "The viking builder returns to your village, carrying a magnificent war axe. 'I forged this Nordic War Axe in my homeland. It shall be yours... for a price.'",
     triggered: false,
     priority: 5,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "buyAxe",
         label: (state: GameState) => {
           const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
-          return `Buy Nordic War Axe (${cost} gold)`;
+          return `Buy for (${cost} gold)`;
         },
         cost: "500-750 gold",
         effect: (state: GameState) => {
@@ -769,7 +769,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decline the offer. The viking shrugs and leaves with his war axe.",
+              "You decline the offer. The viking looks grim as he leaves with his war axe.",
           };
         },
       },
