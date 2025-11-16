@@ -282,6 +282,27 @@ export const curseTooltip: TooltipConfig = {
   },
 };
 
+export const miningBoostTooltip: TooltipConfig = {
+  getContent: (state: GameState) => {
+    const miningBoostState = state.miningBoostState;
+    const isBoosted = miningBoostState?.isActive && miningBoostState.endTime > Date.now();
+
+    if (isBoosted) {
+      const remainingMs = miningBoostState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Mining Boost</div>
+          <div>Mining Production: 200%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
+
+    return null;
+  },
+};
+
 // Combat item tooltips
 export const combatItemTooltips: Record<string, TooltipConfig> = {
   ember_bomb: {
