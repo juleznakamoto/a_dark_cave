@@ -225,6 +225,16 @@ function processTick() {
     });
   }
 
+  // Check if mining boost has expired
+  if (state.miningBoostState?.isActive && state.miningBoostState.endTime <= Date.now()) {
+    useGameStore.setState({
+      miningBoostState: {
+        ...state.miningBoostState,
+        isActive: false,
+      },
+    });
+  }
+
   // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();

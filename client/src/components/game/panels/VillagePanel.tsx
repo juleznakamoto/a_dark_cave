@@ -6,7 +6,7 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
-import { feastTooltip, curseTooltip } from "@/game/rules/tooltips";
+import { feastTooltip, curseTooltip, miningBoostTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
 import { getPopulationProduction, getTotalPopulationEffects } from "@/game/population";
@@ -401,6 +401,7 @@ export default function VillagePanel() {
                 const feastState = useGameStore.getState().feastState;
                 const greatFeastState = useGameStore.getState().greatFeastState;
                 const curseState = useGameStore.getState().curseState;
+                const miningBoostState = useGameStore.getState().miningBoostState;
                 const isGreatFeast =
                   greatFeastState?.isActive &&
                   greatFeastState.endTime > Date.now();
@@ -408,6 +409,8 @@ export default function VillagePanel() {
                   feastState?.isActive && feastState.endTime > Date.now();
                 const isCursed =
                   curseState?.isActive && curseState.endTime > Date.now();
+                const isMiningBoosted =
+                  miningBoostState?.isActive && miningBoostState.endTime > Date.now();
 
                 return (
                   <>
@@ -493,6 +496,50 @@ export default function VillagePanel() {
                           <TooltipContent>
                             <div className="text-xs whitespace-pre-line">
                               {curseTooltip.getContent(state)}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+
+                    {/* Mining Boost Indicator */}
+                    {isMiningBoosted && (
+                      <TooltipProvider>
+                        <Tooltip
+                          open={mobileTooltip.isTooltipOpen("mining-boost-progress")}
+                        >
+                          <TooltipTrigger asChild>
+                            <div
+                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                              onClick={(e) =>
+                                mobileTooltip.handleTooltipClick(
+                                  "mining-boost-progress",
+                                  e,
+                                )
+                              }
+                            >
+                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                <CircularProgress
+                                  value={(() => {
+                                    const boostDuration = 30 * 60 * 1000;
+                                    const boostElapsed =
+                                      boostDuration -
+                                      (miningBoostState.endTime - Date.now());
+                                    return (boostElapsed / boostDuration) * 100;
+                                  })()}
+                                  size={18}
+                                  strokeWidth={2}
+                                  className="text-amber-600"
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-amber-600">
+                                  ⛏
+                                </span>
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs whitespace-pre-line">
+                              {miningBoostTooltip.getContent(state)}
                             </div>
                           </TooltipContent>
                         </Tooltip>

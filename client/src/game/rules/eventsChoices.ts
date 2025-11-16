@@ -1222,4 +1222,84 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  unnamedWanderer: {
+    id: "unnamedWanderer",
+    condition: (state: GameState) =>
+      state.buildings.deepPit >= 1 &&
+      state.buildings.stoneHut >= 5 &&
+      !state.miningBoostState?.isActive,
+    triggerType: "resource",
+    timeProbability: 30,
+    title: "The Unnamed Wanderer",
+    message:
+      "A weathered man in torn clothes approaches your city gates. His hands are calloused from years of hard labor. 'I come from a mining colony,' he says in a gruff voice. 'Spent years underground. I can teach your miners tricks that will double their yield, but I need something in return.'",
+    triggered: false,
+    priority: 3,
+    repeatable: true,
+    choices: [
+      {
+        id: "offerFood",
+        label: "Offer food",
+        cost: "2500 food",
+        effect: (state: GameState) => {
+          if (state.resources.food < 2500) {
+            return {
+              _logMessage: "You don't have enough food to offer.",
+            };
+          }
+
+          const boostDuration = 30 * 60 * 1000; // 30 minutes
+          return {
+            resources: {
+              ...state.resources,
+              food: state.resources.food - 2500,
+            },
+            miningBoostState: {
+              isActive: true,
+              endTime: Date.now() + boostDuration,
+            },
+            _logMessage:
+              "You provide the wanderer with a generous meal. He nods gratefully and spends the next hours teaching your miners advanced techniques from the colony. Their efficiency doubles!",
+          };
+        },
+      },
+      {
+        id: "offerGold",
+        label: "Offer gold",
+        cost: "50 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 50) {
+            return {
+              _logMessage: "You don't have enough gold to offer.",
+            };
+          }
+
+          const boostDuration = 30 * 60 * 1000; // 30 minutes
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 50,
+            },
+            miningBoostState: {
+              isActive: true,
+              endTime: Date.now() + boostDuration,
+            },
+            _logMessage:
+              "The wanderer pockets the gold with a satisfied grunt. He gathers your miners and shares techniques honed in the depths of the colony. Mining output doubles!",
+          };
+        },
+      },
+      {
+        id: "sendAway",
+        label: "Send away",
+        effect: (state: GameState) => {
+          return {
+            _logMessage:
+              "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road without another word.",
+          };
+        },
+      },
+    ],
+  },
 };

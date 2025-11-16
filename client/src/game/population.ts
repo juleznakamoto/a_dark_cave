@@ -184,9 +184,22 @@ export const getPopulationProduction = (
   // Apply feast multiplier if active
   const feastState = state.feastState;
   const greatFeastState = state.greatFeastState;
-  const isGreatFeast =
-    greatFeastState?.isActive && greatFeastState.endTime > Date.now();
-  const isFeast = feastState?.isActive && feastState.endTime > Date.now();
+  let feastMultiplier = 1;
+
+  if (greatFeastState?.isActive && greatFeastState.endTime > Date.now()) {
+    feastMultiplier = 3; // Great Feast triples production
+  } else if (feastState?.isActive && feastState.endTime > Date.now()) {
+    feastMultiplier = 2; // Regular feast doubles production
+  }
+
+  // Apply mining boost multiplier if active (for mining jobs only)
+  const miningBoostState = state.miningBoostState;
+  let miningBoostMultiplier = 1;
+  const isMiningJob = jobId.endsWith("_miner");
+
+  if (isMiningJob && miningBoostState?.isActive && miningBoostState.endTime > Date.now()) {
+    miningBoostMultiplier = 2; // Mining boost doubles mining production
+  }
 
   // Apply curse multiplier if active (0.5x, rounded up)
   const curseState = state.curseState;
@@ -212,16 +225,13 @@ export const getPopulationProduction = (
       }
     });
   }
-  
-  if (isGreatFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
-    });
-  } else if (isFeast) {
-    baseProduction.forEach((prod) => {
-      prod.totalAmount = Math.ceil(prod.totalAmount * 2.0);
-    });
-  }
+
+  // Apply multipliers to total amount
+  baseProduction.forEach((prod) => {
+    prod.totalAmount = Math.floor(
+      prod.baseAmount * count * feastMultiplier * miningBoostMultiplier * (isCursed ? 0.5 : 1),
+    );
+  });
 
   // Apply 100x multiplier in dev mode
   if (state && state.devMode) {

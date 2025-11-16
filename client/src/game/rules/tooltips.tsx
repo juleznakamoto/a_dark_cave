@@ -22,39 +22,39 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
 
   // Handle sacrifice actions with dynamic costs and bonuses
   const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
-  
+
   if (isSacrificeAction) {
     // Get dynamic cost
     const usageCountKey = actionId === "boneTotems" ? "boneTotemsUsageCount" : "leatherTotemsUsageCount";
     const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
     const dynamicCost = Math.min(5 + usageCount, 25);
-    
+
     const costResource = actionId === "boneTotems" ? "bone_totem" : "leather_totem";
     const hasEnough = (state.resources[costResource as keyof typeof state.resources] || 0) >= dynamicCost;
     costs.push({ resource: costResource, amount: dynamicCost, hasEnough });
-    
+
     // Base gains from effects
     Object.entries(action.effects).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
-        
+
         if (typeof value === "string" && value.startsWith("random(")) {
           const match = value.match(/random\((\d+),(\d+)\)/);
           if (match) {
             let min = parseInt(match[1]);
             let max = parseInt(match[2]);
-            
+
             // Apply fixed +1 bonus per usage, capped at 20 usages
             const cappedUsageCount = Math.min(usageCount, 20);
             min = min + cappedUsageCount;
             max = max + cappedUsageCount;
-            
+
             // Apply item bonuses (like ebony ring 20% multiplier)
             if (bonuses.resourceMultiplier > 1) {
               min = Math.floor(min * bonuses.resourceMultiplier);
               max = Math.floor(max * bonuses.resourceMultiplier);
             }
-            
+
             gains.push({ resource, min, max });
           }
         }
@@ -64,19 +64,19 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
     // Check if this is a cave exploration action
     const caveExploreActions = [
       'exploreCave',
-      'ventureDeeper', 
+      'ventureDeeper',
       'descendFurther',
       'exploreRuins',
       'exploreTemple',
       'exploreCitadel'
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
-    
+
     // Parse effects for resource gains (normal actions)
     Object.entries(action.effects).forEach(([key, value]) => {
       if (key.startsWith("resources.")) {
         const resource = key.split(".")[1];
-        
+
         if (typeof value === "string" && value.startsWith("random(")) {
           // Parse random(min,max) format
           const match = value.match(/random\((\d+),(\d+)\)/);
@@ -94,7 +94,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
               min = Math.floor(min * bonuses.resourceMultiplier);
               max = Math.floor(max * bonuses.resourceMultiplier);
             }
-            
+
             // Apply cave exploration multiplier for cave explore actions
             if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
               min = Math.floor(min * bonuses.caveExploreMultiplier);
@@ -106,7 +106,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         } else if (typeof value === "number") {
           // Fixed value
           let amount = value;
-          
+
           // Apply flat bonuses (includes both specific action bonuses and general mine bonuses)
           const flatBonus = bonuses.resourceBonus[resource] || 0;
           amount += flatBonus;
@@ -115,7 +115,7 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
           if (bonuses.resourceMultiplier > 1) {
             amount = Math.floor(amount * bonuses.resourceMultiplier);
           }
-          
+
           // Apply cave exploration multiplier for cave explore actions
           if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
@@ -245,24 +245,33 @@ export const feastTooltip: TooltipConfig = {
   },
 };
 
-export const curseTooltip: TooltipConfig = {
+export const curseTooltip = {
   getContent: (state: GameState) => {
     const curseState = state.curseState;
-    const isCursed = curseState?.isActive && curseState.endTime > Date.now();
-
-    if (isCursed) {
-      const remainingMs = curseState.endTime - Date.now();
-      const remainingMinutes = Math.ceil(remainingMs / 60000);
-      return (
-        <>
-          <div className="font-bold">Witch&apos;s Curse</div>
-          <div>Production Bonus: -50%</div>
-          <div>{remainingMinutes} min remaining</div>
-        </>
-      );
+    if (!curseState?.isActive || curseState.endTime <= Date.now()) {
+      return "";
     }
 
-    return null;
+    const remaining = Math.max(0, curseState.endTime - Date.now());
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
+
+    return `Cursed!\nAll production halved\n${minutes}m ${seconds}s remaining`;
+  },
+};
+
+export const miningBoostTooltip = {
+  getContent: (state: GameState) => {
+    const miningBoostState = state.miningBoostState;
+    if (!miningBoostState?.isActive || miningBoostState.endTime <= Date.now()) {
+      return "";
+    }
+
+    const remaining = Math.max(0, miningBoostState.endTime - Date.now());
+    const minutes = Math.floor(remaining / 60000);
+    const seconds = Math.floor((remaining % 60000) / 1000);
+
+    return `Mining Boost!\nAll mining doubled\n${minutes}m ${seconds}s remaining`;
   },
 };
 

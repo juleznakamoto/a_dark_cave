@@ -327,6 +327,13 @@ export const gameStateSchema = z.object({
 
   greatFeastActivations: z.number().default(0),
 
+  miningBoostState: z
+    .object({
+      isActive: z.boolean().default(false),
+      endTime: z.number().default(0),
+    })
+    .default({}),
+
   activatedPurchases: z.record(z.boolean()).default({}),
   feastPurchases: z.record(
     z.object({
