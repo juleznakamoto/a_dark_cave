@@ -540,6 +540,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             )}
                           </div>
                           <CardDescription className="text-bold">
+                            {item.originalPrice && (
+                              <span className="line-through text-muted-foreground mr-2">
+                                {formatPrice(item.originalPrice)}
+                              </span>
+                            )}
                             {formatPrice(item.price)}
                           </CardDescription>
                         </CardHeader>

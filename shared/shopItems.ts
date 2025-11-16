@@ -11,6 +11,7 @@ export interface ShopItem {
   name: string;
   description: string;
   price: number; // in cents
+  originalPrice?: number; // in cents, for showing crossed-out prices
   rewards: ShopItemRewards;
   canPurchaseMultipleTimes: boolean;
   category: "resource" | "weapon" | "tool" | "blessing" | "feast" | "bundle";
@@ -115,6 +116,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     name: "5 Great Feasts",
     description: "Boost the village production by 4x for 30 minutes (5 times)",
     price: 299, // 2.99 €
+    originalPrice: 499, // 4.99 € - crossed out
     rewards: {
       feastActivations: 5,
     },
