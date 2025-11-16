@@ -103,7 +103,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "At night, faint whispers seem to rise from under the floor of one of the huts. The villagers are uneasy. Do you investigate?",
     triggered: false,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "investigateHut",
@@ -145,7 +145,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A wandering tradesman offers a tall, cracked mirror framed in black iron. It radiates a cold, unnatural aura. He claims it can give glimpses of the future.",
     triggered: false,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "buyMirror",
@@ -421,7 +421,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "While gathering wood in the forest, your villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "investigate",
@@ -1113,7 +1113,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       "A hunched old woman in tattered robes arrives at the village gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
     triggered: false,
     priority: 4,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "payGold",
