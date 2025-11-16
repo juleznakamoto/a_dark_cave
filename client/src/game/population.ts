@@ -200,15 +200,10 @@ export const getPopulationProduction = (
   // Apply mining boost multiplier if active (for mining jobs only)
   const miningBoostState = state.miningBoostState;
   let miningBoostMultiplier = 1;
-  const isMiningJob = jobId.endsWith("_miner") || jobId === "gatherer";
+  const isMiningJob = jobId.endsWith("_miner");
 
   if (isMiningJob && miningBoostState?.isActive && miningBoostState.endTime > Date.now()) {
     miningBoostMultiplier = 2; // Mining boost doubles mining production
-    baseProduction.forEach((prod) => {
-      if (prod.resource !== "food") { // Don't double food consumption
-        prod.totalAmount = Math.ceil(prod.totalAmount * miningBoostMultiplier);
-      }
-    });
   }
   
   // Apply Flame's Touch blessing bonus to steel production
