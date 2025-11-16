@@ -12,6 +12,8 @@ export default function LogPanel() {
   const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
 
   useEffect(() => {
+    const timeouts = new Set<NodeJS.Timeout>();
+
     // Check for new entries with visual effects
     recentEntries.forEach((entry) => {
       if (entry.visualEffect && !activeEffects.has(entry.id)) {
@@ -19,15 +21,22 @@ export default function LogPanel() {
 
         // Remove effect after duration
         const duration = entry.visualEffect.duration * 1000;
-        setTimeout(() => {
+        const timeoutId = setTimeout(() => {
           setActiveEffects((prev) => {
             const newSet = new Set(prev);
             newSet.delete(entry.id);
             return newSet;
           });
+          timeouts.delete(timeoutId);
         }, duration);
+        timeouts.add(timeoutId);
       }
     });
+
+    // Cleanup function to clear all timeouts
+    return () => {
+      timeouts.forEach((timeoutId) => clearTimeout(timeoutId));
+    };
   }, [recentEntries]);
 
   return (
