@@ -10,7 +10,10 @@ interface HeroProps {
     line1: string;
     line2: string;
   };
-  subtitle: string;
+  subtitle1: string; 
+  subtitle2: string;
+  subtitle3: string;
+
   buttons?: {
     primary?: {
       text: string;
@@ -358,7 +361,9 @@ void main(){gl_Position=position;}`;
 const Hero: React.FC<HeroProps> = ({
   trustBadge,
   headline,
-  subtitle,
+  subtitle1,
+  subtitle2,
+  subtitle3,
   buttons,
   className = "",
 }) => {
@@ -508,19 +513,25 @@ const Hero: React.FC<HeroProps> = ({
           </div>
 
           {/* Subtitle with Animation */}
-          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-3000">
-            <p className="mt-6 mb-6 text-lg md:text-lg lg:text-xl text-orange-100/90 font-light leading-relaxed">
-              {subtitle}
+          <div className="max-w-3xl mx-auto animate-fade-in-up animation-delay-2400">
+            <p className="mt-4 text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+              {subtitle1}
+            </p>
+            <p className="text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+              {subtitle2}
+            </p>
+            <p className="mb-6 text-lg md:text-lg lg:text-xl text-orange-100/90 font-medium leading-relaxed">
+              {subtitle3}
             </p>
           </div>
 
           {/* CTA Buttons with Animation */}
           {buttons && (
-            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-4000">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center mt-10 animate-fade-in-up animation-delay-3000">
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
-                  className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+                  className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-800 hover:from-red-700 hover:to-red-700 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
                 >
                   {buttons.primary.text}
                 </button>
@@ -537,8 +548,8 @@ const Hero: React.FC<HeroProps> = ({
           )}
 
           {/* Support Section */}
-          <div className="py-6 flex flex-col items-center gap-3 mt-16 animate-fade-in-up animation-delay-6000">
-            <p className="text-sm text-gray-300 text-center max-w-md px-4">
+          <div className="py-6 flex flex-col items-center gap-3 mt-16 animate-fade-in-up animation-delay-4000">
+            <p className="text-sm font-medium text-gray-300 text-center max-w-md px-4">
               If you enjoyed the game, consider supporting me so I can continue
               to develop it.
             </p>
@@ -550,7 +561,7 @@ const Hero: React.FC<HeroProps> = ({
                   "noopener,noreferrer",
                 )
               }
-              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-600 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
+              className="px-5 py-3 bg-gradient-to-r from-red-800 to-red-700 hover:from-red-700 hover:to-red-600 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
             >
               <span>☕</span>
               <span>Buy Me a Coffee</span>
