@@ -11,13 +11,13 @@ import {
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
-const TICK_INTERVAL = 200; // 200ms ticks
+const TICK_INTERVAL = 500; // 500ms ticks
 const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
-const TARGET_FPS = 10;
-const FRAME_DURATION = 1000 / TARGET_FPS; // 100ms per frame at 10 FPS
+const TARGET_FPS = 2;
+const FRAME_DURATION = 1000 / TARGET_FPS; // 500ms per frame at 2 FPS
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
