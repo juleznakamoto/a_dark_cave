@@ -531,8 +531,8 @@ export default function VillagePanel() {
                                   strokeWidth={2}
                                   className="text-amber-600"
                                 />
-                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-amber-600">
-                                  ⛏
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[7px] -mt-[0px] text-amber-600">
+                                  ⛰
                                 </span>
                               </div>
                             </div>

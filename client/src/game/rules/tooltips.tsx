@@ -7,7 +7,10 @@ export interface TooltipConfig {
 }
 
 // Helper function to get resource gain range tooltip
-export const getResourceGainTooltip = (actionId: string, state: GameState): React.ReactNode | null => {
+export const getResourceGainTooltip = (
+  actionId: string,
+  state: GameState,
+): React.ReactNode | null => {
   // Only show if clerks hut is built
   if (!state.buildings.clerksHut) {
     return null;
@@ -18,19 +21,27 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
 
   const bonuses = getActionBonuses(actionId, state);
   const gains: Array<{ resource: string; min: number; max: number }> = [];
-  const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> = [];
+  const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> =
+    [];
 
   // Handle sacrifice actions with dynamic costs and bonuses
-  const isSacrificeAction = actionId === "boneTotems" || actionId === "leatherTotems";
+  const isSacrificeAction =
+    actionId === "boneTotems" || actionId === "leatherTotems";
 
   if (isSacrificeAction) {
     // Get dynamic cost
-    const usageCountKey = actionId === "boneTotems" ? "boneTotemsUsageCount" : "leatherTotemsUsageCount";
+    const usageCountKey =
+      actionId === "boneTotems"
+        ? "boneTotemsUsageCount"
+        : "leatherTotemsUsageCount";
     const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
     const dynamicCost = Math.min(5 + usageCount, 25);
 
-    const costResource = actionId === "boneTotems" ? "bone_totem" : "leather_totem";
-    const hasEnough = (state.resources[costResource as keyof typeof state.resources] || 0) >= dynamicCost;
+    const costResource =
+      actionId === "boneTotems" ? "bone_totem" : "leather_totem";
+    const hasEnough =
+      (state.resources[costResource as keyof typeof state.resources] || 0) >=
+      dynamicCost;
     costs.push({ resource: costResource, amount: dynamicCost, hasEnough });
 
     // Base gains from effects
@@ -63,12 +74,12 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
   } else {
     // Check if this is a cave exploration action
     const caveExploreActions = [
-      'exploreCave',
-      'ventureDeeper',
-      'descendFurther',
-      'exploreRuins',
-      'exploreTemple',
-      'exploreCitadel'
+      "exploreCave",
+      "ventureDeeper",
+      "descendFurther",
+      "exploreRuins",
+      "exploreTemple",
+      "exploreCitadel",
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
 
@@ -132,7 +143,9 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         if (key.startsWith("resources.")) {
           const resource = key.split(".")[1];
           if (typeof value === "number") {
-            const hasEnough = (state.resources[resource as keyof typeof state.resources] || 0) >= value;
+            const hasEnough =
+              (state.resources[resource as keyof typeof state.resources] ||
+                0) >= value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
@@ -164,13 +177,16 @@ export const getResourceGainTooltip = (actionId: string, state: GameState): Reac
         <div className="border-t border-border my-1" />
       )}
       {costs.map((cost, index) => (
-        <div key={`cost-${index}`} className={cost.hasEnough ? "" : "text-muted-foreground"}>
+        <div
+          key={`cost-${index}`}
+          className={cost.hasEnough ? "" : "text-muted-foreground"}
+        >
           -{cost.amount} {formatResourceName(cost.resource)}
         </div>
       ))}
     </div>
   );
-}
+};
 
 // Action button tooltips (for cost breakdowns)
 export const actionTooltips: Record<string, TooltipConfig> = {
@@ -245,33 +261,24 @@ export const feastTooltip: TooltipConfig = {
   },
 };
 
-export const curseTooltip = {
+export const curseTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
     const curseState = state.curseState;
-    if (!curseState?.isActive || curseState.endTime <= Date.now()) {
-      return "";
+    const isCursed = curseState?.isActive && curseState.endTime > Date.now();
+
+    if (isCursed) {
+      const remainingMs = curseState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Witch&apos;s Curse</div>
+          <div>Production Bonus: -50%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
     }
 
-    const remaining = Math.max(0, curseState.endTime - Date.now());
-    const minutes = Math.floor(remaining / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-
-    return `Cursed!\nAll production halved\n${minutes}m ${seconds}s remaining`;
-  },
-};
-
-export const miningBoostTooltip = {
-  getContent: (state: GameState) => {
-    const miningBoostState = state.miningBoostState;
-    if (!miningBoostState?.isActive || miningBoostState.endTime <= Date.now()) {
-      return "";
-    }
-
-    const remaining = Math.max(0, miningBoostState.endTime - Date.now());
-    const minutes = Math.floor(remaining / 60000);
-    const seconds = Math.floor((remaining % 60000) / 1000);
-
-    return `Mining Boost!\nAll mining doubled\n${minutes}m ${seconds}s remaining`;
+    return null;
   },
 };
 
