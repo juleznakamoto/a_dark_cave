@@ -16,6 +16,8 @@ const AUTO_SAVE_INTERVAL = 15000; // Auto-save every 15 seconds
 const PRODUCTION_INTERVAL = 15000; // All production and checks happen every 15 seconds
 const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in milliseconds
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
+const TARGET_FPS = 10;
+const FRAME_DURATION = 1000 / TARGET_FPS; // 100ms per frame at 10 FPS
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
@@ -23,6 +25,7 @@ let lastProduction = 0;
 let gameStartTime = 0;
 let lastShopNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
+let lastRenderTime = 0;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -30,6 +33,7 @@ export function startGameLoop() {
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
+  lastRenderTime = now;
   lastProduction = now; // Reset production interval to start fresh
   tickAccumulator = 0;
   if (gameStartTime === 0) {
@@ -37,6 +41,14 @@ export function startGameLoop() {
   }
 
   function tick(timestamp: number) {
+    // Limit to 10 FPS
+    const timeSinceLastRender = timestamp - lastRenderTime;
+    if (timeSinceLastRender < FRAME_DURATION) {
+      gameLoopId = requestAnimationFrame(tick);
+      return;
+    }
+    lastRenderTime = timestamp;
+
     const deltaTime = timestamp - lastFrameTime;
     lastFrameTime = timestamp;
 
