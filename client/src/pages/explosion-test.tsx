@@ -13,65 +13,6 @@ interface Particle {
   createdAt: number;
 }
 
-interface Circle {
-  id: number;
-  size: number;
-  duration: number;
-  delay: number;
-  createdAt: number;
-}
-
-function ExpandingCircles({
-  buttonRef,
-  circles,
-}: {
-  buttonRef: React.RefObject<HTMLButtonElement>;
-  circles: Circle[];
-}) {
-  const rect = buttonRef.current?.getBoundingClientRect();
-  if (!rect) return null;
-
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  return (
-    <>
-      {circles.map((circle) => (
-        <motion.div
-          key={circle.id}
-          className="fixed rounded-full"
-          style={{
-            left: centerX,
-            top: centerY,
-            zIndex: 9998,
-            pointerEvents: "none",
-            border: "4px solid #255ff4",
-          }}
-          initial={{
-            width: 0,
-            height: 0,
-            opacity: 1,
-            x: 0,
-            y: 0,
-          }}
-          animate={{
-            width: circle.size,
-            height: circle.size,
-            opacity: 0,
-            x: -circle.size / 2,
-            y: -circle.size / 2,
-          }}
-          transition={{
-            duration: circle.duration,
-            delay: circle.delay,
-            ease: [0.15, 0.5, 0.5, 0.85], // cubic-bezier(0.15,0.5,0.5,0.85)
-          }}
-        />
-      ))}
-    </>
-  );
-}
-
 function ExplosionParticles({
   buttonRef,
   particles,
@@ -128,10 +69,8 @@ function ExplosionParticles({
 
 export default function ExplosionTest() {
   const [particles, setParticles] = useState<Particle[]>([]);
-  const [circles, setCircles] = useState<Circle[]>([]);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const idRef = useRef(0);
-  const circleIdRef = useRef(0);
 
   const colors = [
     "#ff4500",
@@ -162,36 +101,19 @@ export default function ExplosionTest() {
       createdAt: Date.now(),
     }));
 
-    // Generate expanding circles (3 circles with staggered timing)
-    const circleCount = 3;
-    const newCircles: Circle[] = Array.from({
-      length: circleCount,
-    }).map((_, i) => ({
-      id: circleIdRef.current++,
-      size: 600, // Maximum size
-      duration: 1.0, // 1 second duration
-      delay: i * 0.1, // Staggered by 100ms
-      createdAt: Date.now(),
-    }));
-
     setParticles((prev) => [...prev, ...newParticles]);
-    setCircles((prev) => [...prev, ...newCircles]);
 
-    // Clean up old particles and circles after 3 seconds
+    // Clean up old particles after 3 seconds
     setTimeout(() => {
       const now = Date.now();
       setParticles((prev) =>
         prev.filter((p) => now - p.createdAt < 3000)
-      );
-      setCircles((prev) =>
-        prev.filter((c) => now - c.createdAt < 3000)
       );
     }, 3000);
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex flex-col items-center justify-center p-8">
-      <ExpandingCircles buttonRef={buttonRef} circles={circles} />
       <ExplosionParticles buttonRef={buttonRef} particles={particles} />
       
       <div className="text-center mb-8">
@@ -212,7 +134,7 @@ export default function ExplosionTest() {
       </Button>
 
       <div className="mt-8 text-gray-500 text-sm">
-        <p>Particles: {particles.length} | Circles: {circles.length}</p>
+        <p>Particles created: {particles.length}</p>
       </div>
     </div>
   );
