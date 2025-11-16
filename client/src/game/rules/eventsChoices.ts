@@ -1227,16 +1227,15 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "unnamedWanderer",
     condition: (state: GameState) =>
       state.buildings.deepPit >= 1 &&
-      state.buildings.stoneHut >= 5 &&
       !state.miningBoostState?.isActive,
     triggerType: "resource",
-    timeProbability: 30,
+    timeProbability: 0.0060,
     title: "The Unnamed Wanderer",
     message:
-      "A weathered man in torn clothes approaches your city gates. His hands are calloused from years of hard labor. 'I come from a mining colony,' he says in a gruff voice. 'Spent years underground. I can teach your miners tricks that will double their yield, but I need something in return.'",
+      "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
     triggered: false,
     priority: 3,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "offerFood",
@@ -1260,7 +1259,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               endTime: Date.now() + boostDuration,
             },
             _logMessage:
-              "You provide the wanderer with a generous meal. He nods gratefully and spends the next hours teaching your miners advanced techniques from the colony. Their efficiency doubles!",
+              "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
           };
         },
       },
@@ -1286,7 +1285,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               endTime: Date.now() + boostDuration,
             },
             _logMessage:
-              "The wanderer pockets the gold with a satisfied grunt. He gathers your miners and shares techniques honed in the depths of the colony. Mining output doubles!",
+              "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
           };
         },
       },
@@ -1296,7 +1295,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           return {
             _logMessage:
-              "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road without another word.",
+              "You decline the wanderer's offer. He shrugs, adjusts his worn pack, and disappears down the road.",
           };
         },
       },
