@@ -590,7 +590,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     description: "Ring carved out of very clear crytal",
     bonuses: {
       generalBonuses: {
-        madnessReduction: 5,
+        madness: -5,
       },
     },
   },
