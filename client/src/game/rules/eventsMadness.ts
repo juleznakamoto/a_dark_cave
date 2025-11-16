@@ -433,7 +433,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.6-CM * 0.15) {
+          if (rand < 0.6-state.CM * 0.15) {
             return {
               events: {
                 ...state.events,
