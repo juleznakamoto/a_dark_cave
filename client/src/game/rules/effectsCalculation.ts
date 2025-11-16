@@ -384,15 +384,13 @@ export const getTotalKnowledge = (state: GameState): number => {
 // Helper function to calculate total madness
 export const getTotalMadness = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
+  // Base madness already includes madnessFromEvents (they're added together when events trigger)
+  // So we just use the base madness value
   let totalMadness = state.stats.madness || 0;
 
   console.log('=== Madness Calculation ===');
-  console.log('Base madness:', state.stats.madness || 0);
-
-  // Add madness from events
-  const eventMadness = state.stats.madnessFromEvents || 0;
-  totalMadness += eventMadness;
-  console.log('Madness from events:', eventMadness);
+  console.log('Base madness (includes events):', state.stats.madness || 0);
+  console.log('Madness from events (for tracking only):', state.stats.madnessFromEvents || 0);
 
   // Add madness from effects
   const effectMadness = effects.statBonuses?.madness || 0;
