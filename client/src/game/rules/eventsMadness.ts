@@ -358,7 +358,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               woodenHut: Math.max(0, state.buildings.woodenHut - 1),
             },
             _logMessage:
-              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside,. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
+              "You set the hut ablaze. The flames consume everything - including the two villagers sleeping inside. In the morning, you find only ash and the lingering smell of something that was never meant to burn.",
           };
         },
       },
@@ -393,7 +393,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             madnessFromEvents: (state.stats.madnessFromEvents || 0) + 5,
           },
           _logMessage:
-            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind.",
+            "You lean over the well's edge. Your reflection grins back with too many teeth and whispers secrets about what was once built where the village stands now. You pull back, but the knowledge remains, burning in your mind. (+3 Madness)",
         }),
       },
       {
@@ -407,7 +407,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           return {
             ...deathResult,
             _logMessage:
-              `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst.`,
+              `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst. (+1 Madness)`,
           };
         },
       },
@@ -441,11 +441,11 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
+                madness: (state.stats.madness || 0) + 2,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
               },
               _logMessage:
-                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit.",
+                "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit. (+2 Madness)",
             };
           } else {
             const deathResult = killVillagers(state, 1);
@@ -457,11 +457,11 @@ export const madnessEvents: Record<string, GameEvent> = {
               },
               stats: {
                 ...state.stats,
-                madness: (state.stats.madness || 0) + 4,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4
+                madness: (state.stats.madness || 0) + 3,
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
               },
               _logMessage:
-                "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too - something vast and hungry watching from above.",
+                "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above. (+3 Madness)",
             };
           }
         },
@@ -476,11 +476,11 @@ export const madnessEvents: Record<string, GameEvent> = {
           },
           stats: {
             ...state.stats,
-            madness: (state.stats.madness || 0) + 6,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 6
+            madness: (state.stats.madness || 0) + 4,
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4
           },
           _logMessage:
-            "You crane your neck skyward and suddenly see it - something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever.",
+            "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever. (+4 Madness)",
         }),
       },
     ],
