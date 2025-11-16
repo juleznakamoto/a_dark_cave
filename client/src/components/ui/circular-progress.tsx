@@ -66,7 +66,7 @@ const CircularProgress = React.forwardRef<
           strokeDashoffset={strokeDashoffset}
           className={cn(
             "text-[lightgrey]",
-            shouldAnimate && "transition-all duration-300 ease-in-out",
+            shouldAnimate && "transition-all duration-500 ease-in-out",
             className
           )}
           strokeLinecap="round"
