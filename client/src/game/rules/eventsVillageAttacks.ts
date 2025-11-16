@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -189,6 +188,12 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
+            buildings: hutDestroyed
+              ? {
+                  ...state.buildings,
+                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
+                }
+              : state.buildings,
             story: {
               ...state.story,
               seen: {
@@ -240,6 +245,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
 
             return {
               ...deathResult,
+              resources: {
+                ...state.resources,
+                silver: state.resources.silver + 500,
+              },
+              clothing: {
+                ...state.clothing,
+                bone_necklace: true,
+              },
               story: {
                 ...state.story,
                 seen: {
@@ -248,28 +261,68 @@ export const villageAttackEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                minimalDeaths > 0
-                  ? `After a fierce battle, the village drives off the cannibals! ${minimalDeaths} villager${minimalDeaths === 1 ? "" : "s"} fell in the defense, but the threat is ended.`
-                  : "After a fierce battle, the village drives off the cannibals! No villagers were lost in the defense.",
+                minimalDeaths === 1
+                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
+                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
             };
           }
 
-          // Defeat - heavy casualties
-          const baseDeaths = Math.floor(state.current_population * 0.3);
-          const actualDeaths = Math.min(
-            baseDeaths + Math.floor(Math.random() * 5) + state.CM * 2,
+          // Defeat - casualties and resource loss
+          // Base 50% casualty chance, reduced by 2% per strength point, minimum 15%
+          const casualtyChance =
+            Math.max(0.15, 0.5 - strength * 0.01) -
+            traps * 0.1 +
+            state.CM * 0.1;
+
+          let totalLost = 0;
+
+          // Determine casualties
+          const maxPotentialCasualties = Math.min(
+            4 + state.buildings.woodenHut - traps * 3 + state.CM * 2,
             state.current_population,
+          );
+
+          for (let i = 0; i < maxPotentialCasualties; i++) {
+            if (Math.random() < casualtyChance) {
+              totalLost++;
+            }
+          }
+
+          // Calculate resource losses
+          const silverLoss = Math.min(
+            state.resources.silver,
+            Math.floor(Math.random() * 4) * 25 + 25 + state.CM * 100,
           );
           const foodLoss = Math.min(
             state.resources.food,
-            Math.floor(state.resources.food * 0.5) + state.CM * 150,
-          );
-          const silverLoss = Math.min(
-            state.resources.silver,
-            Math.floor(state.resources.silver * 0.3) + state.CM * 50,
+            Math.floor(Math.random() * 6) * 50 + 50 + state.CM * 250,
           );
 
-          const deathResult = killVillagers(state, actualDeaths);
+          // Apply deaths to villagers
+          const deathResult = killVillagers(state, totalLost);
+
+          // Construct result message
+          let message = "The cannibals overwhelm your defenses. ";
+
+          if (totalLost === 0) {
+            message += "Your villagers manage to survive, though barely.";
+          } else if (totalLost === 1) {
+            message += "One villager is abducted by the cannibals.";
+          } else {
+            message += `${totalLost} villagers are killed or abducted by the cannibals.`;
+          }
+
+          if (silverLoss > 0 || foodLoss > 0) {
+            message += " The cannibals ransack your stores";
+            if (silverLoss > 0 && foodLoss > 0) {
+              message += `, stealing ${silverLoss} silver and ${foodLoss} food`;
+            } else if (silverLoss > 0) {
+              message += `, stealing ${silverLoss} silver`;
+            } else {
+              message += `, stealing ${foodLoss} food`;
+            }
+            message += ".";
+          }
 
           return {
             ...deathResult,
@@ -278,7 +331,74 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               silver: Math.max(0, state.resources.silver - silverLoss),
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            _logMessage: `The cannibals overwhelm the village defenses. ${actualDeaths} villagers are killed or taken. The raiders make off with ${foodLoss} food and ${silverLoss} silver.`,
+            _logMessage: message,
+          };
+        },
+      },
+      {
+        id: "hideFromCannibals",
+        label: "Hide",
+        relevant_stats: ["luck"],
+        effect: (state: GameState) => {
+          const traps = state.buildings.traps;
+          const luck = getTotalLuck(state);
+          // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
+          const casualtyChance =
+            Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.CM * 0.05;
+
+          let totalLost = 0;
+
+          // Fewer potential casualties when hiding
+          const maxPotentialCasualties = Math.min(
+            4 +
+              Math.floor(state.buildings.woodenHut / 2) -
+              traps * 2 +
+              state.CM * 2,
+            state.current_population,
+          );
+
+          for (let i = 0; i < maxPotentialCasualties; i++) {
+            if (Math.random() < casualtyChance) {
+              totalLost++;
+            }
+          }
+
+          // Higher resource losses when not defending
+          const silverLoss = Math.min(
+            state.resources.silver,
+            Math.floor(Math.random() * 4) * 50 + 50 + state.CM * 200,
+          );
+          const foodLoss = Math.min(
+            state.resources.food,
+            Math.floor(Math.random() * 6) * 100 + 100 + state.CM * 500,
+          );
+
+          // Apply deaths to villagers
+          const deathResult = killVillagers(state, totalLost);
+
+          // Construct result message
+          let message =
+            "The villagers hide in terror as the cannibals search the village. ";
+
+          if (totalLost === 0) {
+            message +=
+              "By dawn, the cannibals have left without finding anyone.";
+          } else if (totalLost === 1) {
+            message += "One villager gets abducted.";
+          } else {
+            message += `${totalLost} villagers are killed or abducted.`;
+          }
+
+          message += ` The cannibals plunder your stores freely, taking ${silverLoss} silver and ${foodLoss} food.`;
+
+          return {
+            ...deathResult,
+            resources: {
+              ...state.resources,
+              silver: Math.max(0, state.resources.silver - silverLoss),
+              food: Math.max(0, state.resources.food - foodLoss),
+            },
+            _logMessage: message,
           };
         },
       },
