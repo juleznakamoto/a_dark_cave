@@ -169,7 +169,7 @@ export default function ExplosionTest() {
     const newFireParticles: FireParticle[] = Array.from({
       length: fireCount,
     }).map(() => {
-      const r = Math.random() * 0.25 + 0.25; // radius between 0.25 and 0.5 em
+      const r = Math.random() * 0.2 + 0.2; // radius between 0.25 and 0.5 em
       const diameter = r * 2;
       const xBound = rect.width / 2 - r * 16; // convert em to px roughly
       const yBound = rect.height / 2 - r * 16;
@@ -178,8 +178,8 @@ export default function ExplosionTest() {
       const y = (Math.random() * 2 - 1) * yBound;
       
       const angle = Math.atan2(y - centerY, x - centerX);
-      const distance = (Math.random() * 4 + 1) * 16; // 1-5 em in px
-      const duration = Math.random() * 500 + 500; // 500-1000ms
+      const distance = (Math.random() * 4 + 1) * 15; // 1-5 em in px
+      const duration = Math.random() * 500 + 100; // 500-1000ms
 
       return {
         id: fireIdRef.current++,
