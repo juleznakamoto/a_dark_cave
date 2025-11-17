@@ -47,9 +47,6 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
     // Save locally first (most important)
     await db.put('saves', saveData, SAVE_KEY);
-    if (import.meta.env.DEV) {
-      console.log('Game saved locally');
-    }
 
     // Try to save to cloud if user is authenticated (optional enhancement)
     try {
@@ -57,9 +54,6 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
       if (user) {
         const isNewGame = gameState.isNewGame || false;
         await saveGameToSupabase(sanitizedState, playTime, isNewGame);
-        if (import.meta.env.DEV) {
-          console.log('Game saved to cloud');
-        }
       }
     } catch (cloudError) {
       // Silently fail cloud save - local save is what matters

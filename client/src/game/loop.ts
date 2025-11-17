@@ -184,6 +184,27 @@ export function startGameLoop() {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
+        // Log full state in dev mode every 15 seconds
+        if (import.meta.env.DEV) {
+          const currentState = useGameStore.getState();
+          console.log('[GAME STATE - 15s Loop]', {
+            resources: currentState.resources,
+            villagers: currentState.villagers,
+            buildings: currentState.buildings,
+            tools: currentState.tools,
+            weapons: currentState.weapons,
+            clothing: currentState.clothing,
+            relics: currentState.relics,
+            flags: currentState.flags,
+            effects: currentState.effects,
+            bastion_stats: currentState.bastion_stats,
+            playTime: currentState.playTime,
+            cooldowns: currentState.cooldowns,
+            story: currentState.story,
+            events: currentState.events,
+          });
+        }
+
         handleGathererProduction();
         handleHunterProduction();
         handleMinerProduction();
