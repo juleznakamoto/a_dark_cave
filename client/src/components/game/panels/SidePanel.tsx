@@ -324,9 +324,9 @@ export default function SidePanel() {
             statsWithoutBastion.attackFromFortifications;
           const integrity = currentStats.integrity - statsWithoutBastion.integrity;
 
-          effectsList.push(`+${defense} Defense`);
-          effectsList.push(`+${attack} Attack`);
-          effectsList.push(`+${integrity} Integrity`);
+          effectsList.push(`${defense > 0 ? "+" : ""}${defense} Defense`);
+          effectsList.push(`${attack > 0 ? "+" : ""}${attack} Attack`);
+          effectsList.push(`${integrity > 0 ? "+" : ""}${integrity} Integrity`);
         } else if (key === "watchtower" && buildings.watchtower > 0) {
           const currentStats = calculateBastionStats({
             ...useGameStore.getState(),
@@ -342,11 +342,12 @@ export default function SidePanel() {
           const attack =
             currentStats.attackFromFortifications -
             statsWithoutWatchtower.attackFromFortifications;
-          const integrity = currentStats.integrity - statsWithoutWatchtower.integrity;
+          const integrity =
+            currentStats.integrity - statsWithoutWatchtower.integrity;
 
-          effectsList.push(`+${defense} Defense`);
-          effectsList.push(`+${attack} Attack`);
-          effectsList.push(`+${integrity} Integrity`);
+          effectsList.push(`${defense > 0 ? "+" : ""}${defense} Defense`);
+          effectsList.push(`${attack > 0 ? "+" : ""}${attack} Attack`);
+          effectsList.push(`${integrity > 0 ? "+" : ""}${integrity} Integrity`);
         } else if (key === "palisades" && buildings.palisades > 0) {
           const currentStats = calculateBastionStats({
             ...useGameStore.getState(),
@@ -359,10 +360,11 @@ export default function SidePanel() {
           });
 
           const defense = currentStats.defense - statsWithoutPalisades.defense;
-          const integrity = currentStats.integrity - statsWithoutPalisades.integrity;
+          const integrity =
+            currentStats.integrity - statsWithoutPalisades.integrity;
 
-          effectsList.push(`+${defense} Defense`);
-          effectsList.push(`+${integrity} Integrity`);
+          effectsList.push(`${defense > 0 ? "+" : ""}${defense} Defense`);
+          effectsList.push(`${integrity > 0 ? "+" : ""}${integrity} Integrity`);
         } else if (key === "fortifiedMoat" && buildings.fortifiedMoat > 0) {
           effectsList.push("+5 Defense");
         }
@@ -385,9 +387,16 @@ export default function SidePanel() {
       // Combine tooltip parts
       if (tooltipParts.length > 0) {
         tooltip = (
-          <div className="space-y-1">
-            <div className="font-bold text-foreground">{label}</div>
-            {tooltipParts}
+          <div>
+            <div className="font-bold">{label}</div>
+            {buildAction?.description && (
+              <div className="text-gray-400 mb-1">
+                {buildAction.description}
+              </div>
+            )}
+            {tooltipParts.filter(part => part.key !== "description").map((part, idx) => (
+              <div key={idx}>{part}</div>
+            ))}
           </div>
         );
       }
@@ -567,10 +576,10 @@ export default function SidePanel() {
         const buildAction = villageBuildActions[actionId];
 
         tooltip = (
-          <div className="space-y-1">
-            <div className="font-bold text-foreground">{label}</div>
+          <div>
+            <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-2">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -600,7 +609,9 @@ export default function SidePanel() {
         });
 
         const defense = currentStats.defense - statsWithoutBastion.defense;
-        const attack = currentStats.attack - statsWithoutBastion.attack;
+        const attack =
+          currentStats.attackFromFortifications -
+          statsWithoutBastion.attackFromFortifications;
         const integrity =
           currentStats.integrity - statsWithoutBastion.integrity;
 
@@ -609,10 +620,10 @@ export default function SidePanel() {
         const buildAction = villageBuildActions[actionId];
 
         tooltip = (
-          <div className="space-y-1">
-            <div className="font-bold text-foreground">{label}</div>
+          <div>
+            <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-2">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -659,10 +670,10 @@ export default function SidePanel() {
         const buildAction = villageBuildActions[actionId];
 
         tooltip = (
-          <div className="space-y-1">
-            <div className="font-bold text-foreground">{label}</div>
+          <div>
+            <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-2">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
@@ -679,16 +690,16 @@ export default function SidePanel() {
         }
       } else if (key === "fortifiedMoat") {
         label = "Fortified Moat";
-        
+
         // Get the action definition to access the description
         const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
         const buildAction = villageBuildActions[actionId];
 
         tooltip = (
-          <div className="space-y-1">
-            <div className="font-bold text-foreground">{label}</div>
+          <div>
+            <div className="font-bold">{label}</div>
             {buildAction?.description && (
-              <div className="text-muted-foreground mb-2">
+              <div className="text-gray-400 mb-1">
                 {buildAction.description}
               </div>
             )}
