@@ -338,18 +338,12 @@ export function handleHumans(
     return result; // Not enough villagers
   }
 
-  // Apply effects
-  const effectUpdates: Partial<GameState> = {};
+  // Apply the action effects (including madness reduction)
+  const effectUpdates = applyActionEffects("humans", state);
 
   // Use killVillagers helper to kill the required number
   const deathResult = killVillagers(state, currentCost);
   Object.assign(effectUpdates, deathResult);
-
-  // Update stats - reduce madness by 2
-  if (!effectUpdates.stats) {
-    effectUpdates.stats = { ...state.stats };
-  }
-  effectUpdates.stats.madness = Math.max(0, (state.stats.madness || 0) - 2);
 
   // Update story for next level and track usage
   if (!effectUpdates.story) {
