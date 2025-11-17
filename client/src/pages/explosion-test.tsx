@@ -222,15 +222,15 @@ export default function ExplosionTest() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex flex-col items-center justify-center p-8">
+    <div className="min-h-screen bg-background text-foreground flex flex-col items-center justify-center p-8">
       <FireParticles buttonRef={buttonRef} fireParticles={fireParticles} />
       <ExplosionParticles buttonRef={buttonRef} particles={particles} />
       
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-white mb-4">
+        <h1 className="text-4xl font-bold mb-4">
           Explosion Effect Test
         </h1>
-        <p className="text-gray-400">
+        <p className="text-muted-foreground">
           Click the button to trigger an explosion of particles in all directions
         </p>
       </div>
@@ -238,12 +238,13 @@ export default function ExplosionTest() {
       <Button
         ref={buttonRef}
         onClick={triggerExplosion}
-        className="bg-orange-600 hover:bg-orange-700 text-white text-lg px-8 py-6 text-xl font-bold"
+        variant="default"
+        size="lg"
       >
         💥 Explode!
       </Button>
 
-      <div className="mt-8 text-gray-500 text-sm">
+      <div className="mt-8 text-muted-foreground text-sm">
         <p>Fire particles: {fireParticles.length} | Explosion particles: {particles.length}</p>
       </div>
     </div>
