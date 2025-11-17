@@ -379,7 +379,7 @@ export const caveExploreActions: Record<string, Action> = {
 
     },
     cost: {
-      "resources.ember_bomb": 10,
+      "resources.ember_bomb": 0,
     },
     effects: {
       "resources.ember_bomb": -10,
