@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { audioManager } from "@/lib/audio";
@@ -22,6 +21,8 @@ interface FireParticle {
   size: number;
   duration: number;
   createdAt: number;
+  buttonCenterX: number; // Added this field
+  buttonCenterY: number; // Added this field
 }
 
 function FireParticles({
@@ -156,8 +157,8 @@ export function useExplosionEffect() {
     audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
-    const centerX = 0;
-    const centerY = 0;
+    const buttonCenterX = rect.left + rect.width / 2;
+    const buttonCenterY = rect.top + rect.height / 2;
 
     // Generate fire particles
     const fireCount = 100;
@@ -166,11 +167,11 @@ export function useExplosionEffect() {
       const diameter = r * 2;
       const xBound = rect.width / 2 - r * 16;
       const yBound = rect.height / 2 - r * 16;
-      
+
       const x = (Math.random() * 2 - 1) * xBound;
       const y = (Math.random() * 2 - 1) * yBound;
-      
-      const angle = Math.atan2(y - centerY, x - centerX);
+
+      const angle = Math.atan2(y, x);
       const distance = (Math.random() * 4 + 1) * 10;
       const duration = Math.random() * 500 + 500;
 
@@ -183,6 +184,8 @@ export function useExplosionEffect() {
         size: diameter * 16,
         duration,
         createdAt: Date.now(),
+        buttonCenterX,
+        buttonCenterY,
       };
     });
 
