@@ -27,18 +27,19 @@ interface FireParticle {
 function FireParticles({
   buttonRef,
   fireParticles,
+  explosionCenterX,
+  explosionCenterY,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement>;
   fireParticles: FireParticle[];
+  explosionCenterX: number;
+  explosionCenterY: number;
 }) {
-  const rect = buttonRef.current?.getBoundingClientRect();
-  if (!rect) return null;
-
   return (
     <>
       {fireParticles.map((particle) => {
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
+        const centerX = explosionCenterX;
+        const centerY = explosionCenterY;
 
         const adjustedAngle = particle.angle + Math.PI / 2;
         const endX = particle.startX + Math.sin(adjustedAngle) * particle.distance;
@@ -86,18 +87,19 @@ function FireParticles({
 function ExplosionParticles({
   buttonRef,
   particles,
+  explosionCenterX,
+  explosionCenterY,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement>;
   particles: Particle[];
+  explosionCenterX: number;
+  explosionCenterY: number;
 }) {
-  const rect = buttonRef.current?.getBoundingClientRect();
-  if (!rect) return null;
-
   return (
     <>
       {particles.map((particle) => {
-        const startX = rect.left + rect.width / 2;
-        const startY = rect.top + rect.height / 2;
+        const startX = explosionCenterX;
+        const startY = explosionCenterY;
 
         const endX = startX + Math.cos(particle.angle) * particle.distance;
         const endY = startY + Math.sin(particle.angle) * particle.distance;
@@ -140,6 +142,7 @@ function ExplosionParticles({
 export function useExplosionEffect() {
   const [particles, setParticles] = useState<Particle[]>([]);
   const [fireParticles, setFireParticles] = useState<FireParticle[]>([]);
+  const [explosionCenter, setExplosionCenter] = useState({ x: 0, y: 0 });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const idRef = useRef(0);
   const fireIdRef = useRef(0);
@@ -149,15 +152,27 @@ export function useExplosionEffect() {
     "#D2691E", "#8B4513", "#A0522D", "#CD853F", "#DAA520",
   ];
 
-  const triggerExplosion = () => {
-    if (!buttonRef.current) return;
+  const triggerExplosion = (providedX?: number, providedY?: number) => {
+    if (!buttonRef.current && (providedX === undefined || providedY === undefined)) return;
 
     // Play explosion sound
     audioManager.playSound('explosion', 0.5);
 
-    const rect = buttonRef.current.getBoundingClientRect();
-    const centerX = 0;
-    const centerY = 0;
+    let centerX: number, centerY: number;
+    
+    if (providedX !== undefined && providedY !== undefined) {
+      // Use provided coordinates
+      centerX = providedX;
+      centerY = providedY;
+    } else {
+      // Calculate from button position
+      const rect = buttonRef.current!.getBoundingClientRect();
+      centerX = rect.left + rect.width / 2;
+      centerY = rect.top + rect.height / 2;
+    }
+
+    // Store the explosion center for rendering
+    setExplosionCenter({ x: centerX, y: centerY });
 
     // Generate fire particles
     const fireCount = 100;
@@ -216,8 +231,18 @@ export function useExplosionEffect() {
     triggerExplosion,
     ExplosionEffectRenderer: () => (
       <>
-        <FireParticles buttonRef={buttonRef} fireParticles={fireParticles} />
-        <ExplosionParticles buttonRef={buttonRef} particles={particles} />
+        <FireParticles 
+          buttonRef={buttonRef} 
+          fireParticles={fireParticles}
+          explosionCenterX={explosionCenter.x}
+          explosionCenterY={explosionCenter.y}
+        />
+        <ExplosionParticles 
+          buttonRef={buttonRef} 
+          particles={particles}
+          explosionCenterX={explosionCenter.x}
+          explosionCenterY={explosionCenter.y}
+        />
       </>
     ),
   };
