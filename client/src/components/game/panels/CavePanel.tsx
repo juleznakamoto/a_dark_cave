@@ -147,13 +147,21 @@ export default function CavePanel() {
     // Special handling for blastPortal and test explosion buttons
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
+    
+    // Create a ref callback that sets the explosion button ref when either button is clicked
+    const getButtonRef = (isExplosionButton: boolean) => {
+      if (!isExplosionButton) return undefined;
+      return (el: HTMLButtonElement | null) => {
+        if (el) {
+          (explosionEffect.buttonRef as any).current = el;
+        }
+      };
+    };
 
-    const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       if (isBlastPortal || isTestExplosion) {
         // Set the ref to the clicked button before triggering explosion
-        if (e?.currentTarget) {
-          explosionEffect.buttonRef.current = e.currentTarget;
-        }
+        (explosionEffect.buttonRef as any).current = e.currentTarget;
         explosionEffect.triggerExplosion();
       }
       if (!isTestExplosion) {
