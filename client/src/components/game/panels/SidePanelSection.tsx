@@ -373,17 +373,15 @@ export default function SidePanelSection({
                 </span>
               </TooltipTrigger>
             </div>
-            <TooltipContent className="max-w-xs">
-              <div className="text-xs">
-                {renderItemTooltip(
-                  item.id,
-                  title === "Weapons"
-                    ? "weapon"
-                    : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics"
-                    ? "blessing"
-                    : "tool"
-                )}
-              </div>
+            <TooltipContent className="max-w-xs whitespace-pre-line">
+              {renderItemTooltip(
+                item.id,
+                title === "Weapons"
+                  ? "weapon"
+                  : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics"
+                  ? "blessing"
+                  : "tool"
+              )}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
@@ -498,14 +496,8 @@ export default function SidePanelSection({
                 </span>
               )}
             </div>
-            <TooltipContent className="max-w-xs">
-              <div className="text-xs">
-                {typeof item.tooltip === 'string' ? (
-                  <div className="whitespace-pre-line">{item.tooltip}</div>
-                ) : (
-                  item.tooltip
-                )}
-              </div>
+            <TooltipContent className="max-w-xs whitespace-pre-line">
+              {typeof item.tooltip === 'string' ? item.tooltip : item.tooltip}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
