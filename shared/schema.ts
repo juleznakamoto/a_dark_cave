@@ -224,8 +224,6 @@ export const gameStateSchema = z.object({
       iron_miner: z.number().min(0).default(0),
       coal_miner: z.number().min(0).default(0),
       sulfur_miner: z.number().min(0).default(0),
-      silver_miner: z.number().min(0).default(0),
-      gold_miner: z.number().min(0).default(0),
       obsidian_miner: z.number().min(0).default(0),
       adamant_miner: z.number().min(0).default(0),
       moonstone_miner: z.number().min(0).default(0),
