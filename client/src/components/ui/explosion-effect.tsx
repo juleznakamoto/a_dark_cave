@@ -24,11 +24,6 @@ interface FireParticle {
   createdAt: number;
 }
 
-interface ExplosionEffectProps {
-  buttonRef: React.RefObject<HTMLButtonElement>;
-  onTrigger?: () => void;
-}
-
 function FireParticles({
   buttonRef,
   fireParticles,
@@ -36,8 +31,7 @@ function FireParticles({
   buttonRef: React.RefObject<HTMLButtonElement>;
   fireParticles: FireParticle[];
 }) {
-  if (!buttonRef.current) return null;
-  const rect = buttonRef.current.getBoundingClientRect();
+  const rect = buttonRef.current?.getBoundingClientRect();
   if (!rect) return null;
 
   return (
@@ -96,8 +90,7 @@ function ExplosionParticles({
   buttonRef: React.RefObject<HTMLButtonElement>;
   particles: Particle[];
 }) {
-  if (!buttonRef.current) return null;
-  const rect = buttonRef.current.getBoundingClientRect();
+  const rect = buttonRef.current?.getBoundingClientRect();
   if (!rect) return null;
 
   return (
@@ -150,57 +143,36 @@ export function useExplosionEffect() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const idRef = useRef(0);
   const fireIdRef = useRef(0);
-  const soundPreloadedRef = useRef(false);
-  
-  // Preload explosion sound on first render
-  if (!soundPreloadedRef.current) {
-    soundPreloadedRef.current = true;
-    audioManager.playSound('explosion', 0).catch(() => {
-      // Silently fail - this just preloads the sound
-    });
-  }
 
   const colors = [
-    "#8B0000", // dark red
-    "#B22222", // firebrick
-    "#DC143C", // crimson
-    "#FF4500", // orange red
-    "#FF6347", // tomato
-    "#D2691E", // chocolate
-    "#8B4513", // saddle brown
-    "#A0522D", // sienna
-    "#CD853F", // peru
-    "#DAA520", // goldenrod
+    "#8B0000", "#B22222", "#DC143C", "#FF4500", "#FF6347",
+    "#D2691E", "#8B4513", "#A0522D", "#CD853F", "#DAA520",
   ];
 
   const triggerExplosion = () => {
     if (!buttonRef.current) return;
 
-    // Play explosion sound immediately (with fallback for audio context)
-    audioManager.playSound('explosion', 0.5).catch(() => {
-      // Silently fail if audio can't play
-    });
+    // Play explosion sound
+    audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = 0;
     const centerY = 0;
 
-    // Generate fire particles (100 particles)
+    // Generate fire particles
     const fireCount = 100;
-    const newFireParticles: FireParticle[] = Array.from({
-      length: fireCount,
-    }).map(() => {
-      const r = Math.random() * 0.25 + 0.05; // radius between 0.25 and 0.5 em
+    const newFireParticles: FireParticle[] = Array.from({ length: fireCount }).map(() => {
+      const r = Math.random() * 0.25 + 0.05;
       const diameter = r * 2;
-      const xBound = rect.width / 2 - r * 16; // convert em to px roughly
+      const xBound = rect.width / 2 - r * 16;
       const yBound = rect.height / 2 - r * 16;
       
       const x = (Math.random() * 2 - 1) * xBound;
       const y = (Math.random() * 2 - 1) * yBound;
       
       const angle = Math.atan2(y - centerY, x - centerX);
-      const distance = (Math.random() * 4 + 1) * 10; // 1-5 em in px
-      const duration = Math.random() * 500 + 500; // 500-1000ms
+      const distance = (Math.random() * 4 + 1) * 10;
+      const duration = Math.random() * 500 + 500;
 
       return {
         id: fireIdRef.current++,
@@ -208,49 +180,32 @@ export function useExplosionEffect() {
         distance,
         startX: x,
         startY: y,
-        size: diameter * 16, // em to px
+        size: diameter * 16,
         duration,
         createdAt: Date.now(),
       };
     });
 
-    const particleCount = 250; // Number of particles in explosion
-    const newParticles: Particle[] = Array.from({
-      length: particleCount,
-    }).map(() => ({
+    // Generate explosion particles
+    const particleCount = 250;
+    const newParticles: Particle[] = Array.from({ length: particleCount }).map(() => ({
       id: idRef.current++,
-      angle: Math.random() * Math.PI * 2, // Full 360 degrees
-      distance: Math.random() * 600 + 100, // Random distance
+      angle: Math.random() * Math.PI * 2,
+      distance: Math.random() * 600 + 100,
       color: colors[Math.floor(Math.random() * colors.length)],
-      lifetime: 1 + Math.random() * 3.5, // Random lifetime
-      size: Math.random() * 6 + 1, // Random size between 3px and 11px
+      lifetime: 1 + Math.random() * 3.5,
+      size: Math.random() * 6 + 1,
       createdAt: Date.now(),
     }));
 
-    setFireParticles((prev) => {
-      const updated = [...prev, ...newFireParticles];
-      if (import.meta.env.DEV) {
-        console.log(`Fire particles: ${updated.length}`);
-      }
-      return updated;
-    });
-    setParticles((prev) => {
-      const updated = [...prev, ...newParticles];
-      if (import.meta.env.DEV) {
-        console.log(`Explosion particles: ${updated.length}`);
-      }
-      return updated;
-    });
+    setFireParticles((prev) => [...prev, ...newFireParticles]);
+    setParticles((prev) => [...prev, ...newParticles]);
 
-    // Clean up old particles after 3 seconds
+    // Clean up old particles
     setTimeout(() => {
       const now = Date.now();
-      setFireParticles((prev) =>
-        prev.filter((p) => now - p.createdAt < 3000)
-      );
-      setParticles((prev) =>
-        prev.filter((p) => now - p.createdAt < 3000)
-      );
+      setFireParticles((prev) => prev.filter((p) => now - p.createdAt < 3000));
+      setParticles((prev) => prev.filter((p) => now - p.createdAt < 3000));
     }, 3000);
   };
 
