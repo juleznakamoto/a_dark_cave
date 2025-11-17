@@ -450,7 +450,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 5,
+        "buildings.woodenHut": 4,
         "buildings.clerksHut": 0,
       },
     },
@@ -481,7 +481,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.stoneHut": 2,
+        "buildings.woodenHut": 8,
         "buildings.clerksHut": 1,
         "buildings.scriptorium": 0,
       },
