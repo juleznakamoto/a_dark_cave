@@ -1,4 +1,3 @@
-
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { audioManager } from "@/lib/audio";
@@ -42,8 +41,10 @@ function FireParticles({
         const centerY = explosionCenterY;
 
         const adjustedAngle = particle.angle + Math.PI / 2;
-        const endX = particle.startX + Math.sin(adjustedAngle) * particle.distance;
-        const endY = particle.startY - Math.cos(adjustedAngle) * particle.distance;
+        const endX =
+          particle.startX + Math.sin(adjustedAngle) * particle.distance;
+        const endY =
+          particle.startY - Math.cos(adjustedAngle) * particle.distance;
 
         return (
           <motion.div
@@ -70,8 +71,20 @@ function FireParticles({
                 "hsl(0, 0%, 20%)",
               ],
               scale: [1, 4, 7, 7, 0],
-              x: [0, (endX - particle.startX) * 0.25, (endX - particle.startX) * 0.5, (endX - particle.startX) * 0.75, endX - particle.startX],
-              y: [0, (endY - particle.startY) * 0.25, (endY - particle.startY) * 0.5, (endY - particle.startY) * 0.75, endY - particle.startY],
+              x: [
+                0,
+                (endX - particle.startX) * 0.25,
+                (endX - particle.startX) * 0.5,
+                (endX - particle.startX) * 0.75,
+                endX - particle.startX,
+              ],
+              y: [
+                0,
+                (endY - particle.startY) * 0.25,
+                (endY - particle.startY) * 0.5,
+                (endY - particle.startY) * 0.75,
+                endY - particle.startY,
+              ],
             }}
             transition={{
               duration: particle.duration / 1000,
@@ -116,7 +129,7 @@ function ExplosionParticles({
               top: startY,
               zIndex: 9999,
               pointerEvents: "none",
-              boxShadow: `0 0 ${particle.size * 2}px ${particle.color}`,
+              boxShadow: `0 0 ${particle.size * 0.5}px ${"#FFFFFF"}`,
             }}
             initial={{
               opacity: 1,
@@ -148,25 +161,37 @@ export function useExplosionEffect() {
   const fireIdRef = useRef(0);
 
   const colors = [
-    "#8B0000", "#B22222", "#DC143C", "#FF4500", "#FF6347",
-    "#D2691E", "#8B4513", "#A0522D", "#CD853F", "#DAA520",
+    "#8B0000",
+    "#B22222",
+    "#DC143C",
+    "#FF4500",
+    "#FF6347",
+    "#D2691E",
+    "#8B4513",
+    "#A0522D",
+    "#CD853F",
+    "#DAA520",
   ];
 
   const triggerExplosion = (providedX?: number, providedY?: number) => {
-    if (!buttonRef.current && (providedX === undefined || providedY === undefined)) return;
+    if (
+      !buttonRef.current &&
+      (providedX === undefined || providedY === undefined)
+    )
+      return;
 
     // Play explosion sound
-    audioManager.playSound('explosion', 0.5);
+    audioManager.playSound("explosion", 0.5);
 
     let centerX: number, centerY: number;
     let rect: DOMRect;
-    
+
     if (providedX !== undefined && providedY !== undefined) {
       // Use provided coordinates
       centerX = providedX;
       centerY = providedY;
       // Create a fake rect for particle calculations
-      rect = new DOMRect(providedX - 50, providedY - 50, 100, 100);
+      rect = new DOMRect(providedX - 50, providedY - 50, 100, 50);
     } else {
       // Calculate from button position
       rect = buttonRef.current!.getBoundingClientRect();
@@ -179,18 +204,20 @@ export function useExplosionEffect() {
 
     // Generate fire particles
     const fireCount = 100;
-    const newFireParticles: FireParticle[] = Array.from({ length: fireCount }).map(() => {
+    const newFireParticles: FireParticle[] = Array.from({
+      length: fireCount,
+    }).map(() => {
       const r = Math.random() * 0.25 + 0.05;
       const diameter = r * 2;
       const xBound = rect.width / 2 - r * 16;
       const yBound = rect.height / 2 - r * 16;
-      
+
       const x = (Math.random() * 2 - 1) * xBound;
       const y = (Math.random() * 2 - 1) * yBound;
-      
-      const angle = Math.atan2(y - centerY, x - centerX);
+
+      const angle = Math.atan2(-1, 0);
       const distance = (Math.random() * 4 + 1) * 10;
-      const duration = Math.random() * 500 + 500;
+      const duration = Math.random() * 800 + 500;
 
       return {
         id: fireIdRef.current++,
@@ -205,16 +232,18 @@ export function useExplosionEffect() {
     });
 
     // Generate explosion particles
-    const particleCount = 250;
-    const newParticles: Particle[] = Array.from({ length: particleCount }).map(() => ({
-      id: idRef.current++,
-      angle: Math.random() * Math.PI * 2,
-      distance: Math.random() * 600 + 100,
-      color: colors[Math.floor(Math.random() * colors.length)],
-      lifetime: 1 + Math.random() * 3.5,
-      size: Math.random() * 6 + 1,
-      createdAt: Date.now(),
-    }));
+    const particleCount = 300;
+    const newParticles: Particle[] = Array.from({ length: particleCount }).map(
+      () => ({
+        id: idRef.current++,
+        angle: Math.random() * Math.PI * 2,
+        distance: Math.random() * 1000 + 200,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        lifetime: 1.5 + Math.random() * 3.5,
+        size: Math.random() * 6 + 1,
+        createdAt: Date.now(),
+      }),
+    );
 
     setFireParticles((prev) => [...prev, ...newFireParticles]);
     setParticles((prev) => [...prev, ...newParticles]);
@@ -234,14 +263,14 @@ export function useExplosionEffect() {
     triggerExplosion,
     ExplosionEffectRenderer: () => (
       <>
-        <FireParticles 
-          buttonRef={buttonRef} 
+        <FireParticles
+          buttonRef={buttonRef}
           fireParticles={fireParticles}
           explosionCenterX={explosionCenter.x}
           explosionCenterY={explosionCenter.y}
         />
-        <ExplosionParticles 
-          buttonRef={buttonRef} 
+        <ExplosionParticles
+          buttonRef={buttonRef}
           particles={particles}
           explosionCenterX={explosionCenter.x}
           explosionCenterY={explosionCenter.y}
