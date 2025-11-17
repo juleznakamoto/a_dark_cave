@@ -193,10 +193,6 @@ function handleTotemSacrifice(
       usageCount * discoveryConfig.bonusPerUse;
     const roll = Math.random();
 
-    console.log(
-      `[${discoveryConfig.itemName}] Usage count: ${usageCount}, Probability: ${(totalProbability * 100).toFixed(1)}%, Roll: ${(roll * 100).toFixed(1)}%`,
-    );
-
     if (roll < totalProbability) {
       // Add item to clothing
       if (!effectUpdates.clothing) {

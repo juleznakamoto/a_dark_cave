@@ -1270,6 +1270,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
+        "resources.stone": 1000,
         "resources.adamant": 500,
       },
     },
