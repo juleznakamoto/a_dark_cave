@@ -10,17 +10,15 @@ import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import { useRef } from "react";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
-  const explosionEffect = useExplosionEffect();
   
-  // Separate refs for each explosion button
-  const blastPortalRef = useRef<HTMLButtonElement>(null);
-  const testExplosionRef = useRef<HTMLButtonElement>(null);
+  // Create separate explosion effects for each button
+  const blastPortalExplosion = useExplosionEffect();
+  const testExplosion = useExplosionEffect();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -153,14 +151,10 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
     const handleClick = () => {
-      if (isBlastPortal || isTestExplosion) {
-        // Set the appropriate button ref before triggering explosion
-        if (isBlastPortal && blastPortalRef.current) {
-          explosionEffect.buttonRef.current = blastPortalRef.current;
-        } else if (isTestExplosion && testExplosionRef.current) {
-          explosionEffect.buttonRef.current = testExplosionRef.current;
-        }
-        explosionEffect.triggerExplosion();
+      if (isBlastPortal) {
+        blastPortalExplosion.triggerExplosion();
+      } else if (isTestExplosion) {
+        testExplosion.triggerExplosion();
       }
       if (!isTestExplosion) {
         executeAction(actionId);
@@ -190,7 +184,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={isBlastPortal ? blastPortalRef : isTestExplosion ? testExplosionRef : null}
+          ref={isBlastPortal ? blastPortalExplosion.buttonRef : isTestExplosion ? testExplosion.buttonRef : null}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -208,7 +202,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={isBlastPortal ? blastPortalRef : isTestExplosion ? testExplosionRef : null}
+        ref={isBlastPortal ? blastPortalExplosion.buttonRef : isTestExplosion ? testExplosion.buttonRef : null}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -224,7 +218,8 @@ export default function CavePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      {explosionEffect.ExplosionEffectRenderer()}
+      {blastPortalExplosion.ExplosionEffectRenderer()}
+      {testExplosion.ExplosionEffectRenderer()}
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
