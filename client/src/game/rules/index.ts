@@ -924,6 +924,21 @@ export function getActionCostBreakdown(
     ];
   }
 
+  // Handle dynamic cost for humans sacrifice
+  if (actionId === "humans") {
+    const dynamicCost = getHumansCost(state);
+    const totalVillagers = Object.values(state.villagers).reduce(
+      (sum, count) => sum + (count || 0),
+      0,
+    );
+    return [
+      {
+        text: `-${dynamicCost} Villager${dynamicCost !== 1 ? "s" : ""}`,
+        satisfied: totalVillagers >= dynamicCost,
+      },
+    ];
+  }
+
   // Handle dynamic cost for animals sacrifice
   if (actionId === "animals") {
     const dynamicCost = getAnimalsCost(state);
