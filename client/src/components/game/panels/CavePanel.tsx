@@ -10,7 +10,6 @@ import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
-import React from "react";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -148,16 +147,8 @@ export default function CavePanel() {
     // Special handling for blastPortal and test explosion buttons
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
-
-    // Store a ref to the button element for explosion buttons
-    const buttonElementRef = React.useRef<HTMLButtonElement | null>(null);
-
     const handleClick = () => {
       if (isBlastPortal || isTestExplosion) {
-        // Set the explosion effect's ref to this button before triggering
-        if (buttonElementRef.current) {
-          explosionEffect.buttonRef.current = buttonElementRef.current;
-        }
         explosionEffect.triggerExplosion();
       }
       if (!isTestExplosion) {
@@ -188,7 +179,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={(isBlastPortal || isTestExplosion) ? buttonElementRef : null}
+          ref={(isBlastPortal || isTestExplosion) ? explosionEffect.buttonRef : null}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -206,7 +197,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={(isBlastPortal || isTestExplosion) ? buttonElementRef : null}
+        ref={(isBlastPortal || isTestExplosion) ? explosionEffect.buttonRef : null}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
