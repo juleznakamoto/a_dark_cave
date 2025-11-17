@@ -90,8 +90,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       "!story.seen.humansSacrificeMaxed": true,
     },
     cost: {
-      // This will be dynamically calculated based on usage count
-      "villagers.free": 1,
+      // Cost is dynamically calculated and checked in handleHumans
     },
     effects: {},
     statsEffects: {
