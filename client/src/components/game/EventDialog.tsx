@@ -256,11 +256,19 @@ export default function EventDialog({
               // Evaluate cost if it's a function
               const costText = typeof cost === 'function' ? cost(gameState) : cost;
 
-              // Check if player can afford the cost for woodcutter events
-              if (costText && costText.includes('food')) {
-                const foodCost = parseInt(costText.match(/\d+/)?.[0] || '0');
-                if (gameState.resources.food < foodCost) {
-                  isDisabled = true;
+              // Check if player can afford the cost
+              if (costText) {
+                if (costText.includes('food')) {
+                  const foodCost = parseInt(costText.match(/\d+/)?.[0] || '0');
+                  if (gameState.resources.food < foodCost) {
+                    isDisabled = true;
+                  }
+                }
+                if (costText.includes('gold')) {
+                  const goldCost = parseInt(costText.match(/\d+/)?.[0] || '0');
+                  if (gameState.resources.gold < goldCost) {
+                    isDisabled = true;
+                  }
                 }
               }
 
