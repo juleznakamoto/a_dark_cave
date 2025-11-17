@@ -104,7 +104,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description:
-      "Activate a magnificent Great Feast that boosts all production by 400% for 60 minutes. Can be purchased multiple times and activated when needed.",
+      "Boost the village production by 4x for 60 minutes",
     originalPrice: 299,
     price: 149, // 1.49 €
     rewards: {
