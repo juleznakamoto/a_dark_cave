@@ -152,14 +152,6 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
-  testExplosion: {
-    id: "testExplosion",
-    label: "💥 Test Explosion",
-    show_when: {},
-    cost: {},
-    effects: {},
-    cooldown: 0,
-  },
 
   lightFire: {
     id: "lightFire",
@@ -202,10 +194,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.torch": 3,
     },
     effects: {
-      "resources.wood": "random(2,5)",
-      "resources.stone": "random(2,5)",
-      "resources.coal": "random(2,5)",
-      "resources.iron": "random(2,5)",
+      "resources.wood": "random(3,7)",
+      "resources.stone": "random(3,7)",
+      "resources.coal": "random(3,7)",
+      "resources.iron": "random(3,7)",
       ...getInheritedItems("exploreCave"),
       "flags.caveExplored": true,
       "story.seen.hasStone": true,
@@ -226,10 +218,10 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 10,
     },
     effects: {
-      "resources.stone": "random(3,6)",
-      "resources.coal": "random(3,6)",
-      "resources.iron": "random(3,6)",
-      "resources.sulfur": "random(3,6)",
+      "resources.stone": "random(4,8)",
+      "resources.coal": "random(4,8)",
+      "resources.iron": "random(4,8)",
+      "resources.sulfur": "random(4,8)",
       ...getInheritedItems("ventureDeeper"),
       "flags.venturedDeeper": true,
       "story.seen.venturedDeeper": true,

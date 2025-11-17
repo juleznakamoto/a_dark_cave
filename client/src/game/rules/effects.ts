@@ -129,7 +129,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         chopWood: {
-          resourceMultiplier: 1.75,
+          resourceMultiplier: 2.0,
           cooldownReduction: 0.75,
         },
       },
@@ -157,7 +157,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         chopWood: {
-          resourceMultiplier: 2.0,
+          resourceMultiplier: 2.5,
           cooldownReduction: 1,
         },
       },
@@ -185,7 +185,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         chopWood: {
-          resourceMultiplier: 2.5,
+          resourceMultiplier: 3.0,
           cooldownReduction: 1.5,
         },
       },

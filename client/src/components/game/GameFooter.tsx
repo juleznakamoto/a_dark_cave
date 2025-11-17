@@ -128,7 +128,7 @@ export default function GameFooter() {
               size="xs"
               onClick={togglePause}
               data-testid="button-pause-game"
-              className={`px-1.5 py-1 text-xs hover`}
+              className={`px-1 py-1 text-xs hover`}
             >
               {isPaused ? "▶" : "❚❚"}
             </Button>
@@ -137,7 +137,7 @@ export default function GameFooter() {
               size="xs"
               onClick={toggleVolume}
               data-testid="button-toggle-volume"
-              className="px-1.5 py-1 text-xs hover"
+              className="px-1 py-1 text-xs hover"
             >
               <img
                 src={isMuted ? "/volume_mute.png" : "/volume_up.png"}
@@ -152,7 +152,7 @@ export default function GameFooter() {
                 variant="ghost"
                 size="xs"
                 onClick={handleSignOut}
-                className="px-1.5 py-1 text-xs hover"
+                className="px-1 py-1 text-xs hover"
               >
                 Sign Out
               </Button>
@@ -164,7 +164,7 @@ export default function GameFooter() {
                   handleSetAuthDialogOpen(true);
                   setAuthNotificationSeen(true);
                 }}
-                className="px-2 py-1 text-xs hover relative"
+                className="px-1 py-1 text-xs hover relative"
               >
                 Sign In/Up
                 {authNotificationVisible && !authNotificationSeen && (
@@ -178,7 +178,7 @@ export default function GameFooter() {
               size="xs"
               onClick={handleRestartGame}
               data-testid="button-restart-game"
-              className="px-1.5 py-1 text-xs hover"
+              className="px-1 py-1 text-xs hover"
             >
               New
             </Button>
@@ -189,28 +189,28 @@ export default function GameFooter() {
                 setShopDialogOpen(true);
                 setShopNotificationSeen(true);
               }}
-              className="px-2 py-1 text-xs hover relative"
+              className="px-1 py-1 text-xs hover relative"
             >
               Shop
               {shopNotificationVisible && !shopNotificationSeen && (
                 <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
-            {/* <Button
+            <Button
               variant="ghost"
               size="xs"
               onClick={handleOfferTribute}
-              className="px-1.5 py-1 text-xs hover"
+              className="px-1 py-1 text-xs hover"
             >
-              Offer Tribute
-            </Button> */}
+              Donate
+            </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (
               <Button
                 variant="ghost"
                 size="xs"
                 onClick={() => setShowEndScreen(true)}
-                className="px-1.5 py-1 text-xs hover"
+                className="px-1 py-1 text-xs hover"
               >
                 End Screen
               </Button>

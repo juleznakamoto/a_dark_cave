@@ -500,18 +500,16 @@ function handleMadnessCheck() {
 
   // Determine probability and possible death counts based on madness level
   let probability = 0;
-  if (totalMadness <= 5) {
-    probability += 0.0;
-  } else if (totalMadness <= 10) {
-    probability += 0.005 + state.CM * 0.01;
+  if (totalMadness <= 10) {
+    probability += 0.0 + state.CM * 0.01;
   } else if (totalMadness <= 20) {
-    probability += 0.01 + state.CM * 0.01;
+    probability += 0.005 + state.CM * 0.01;
   } else if (totalMadness <= 30) {
-    probability += 0.015 + state.CM * 0.01;
+    probability += 0.01 + state.CM * 0.01;
   } else if (totalMadness <= 40) {
-    probability += 0.02 + state.CM * 0.01;
+    probability += 0.015 + state.CM * 0.01;
   } else {
-    probability += 0.025 + state.CM * 0.01;
+    probability += 0.02 + state.CM * 0.01;
   }
 
   // Check if a madness death event occurs
