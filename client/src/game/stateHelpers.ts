@@ -108,31 +108,38 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   let updatedVillagers = { ...state.villagers };
   let remainingDeaths = deathCount;
 
-  // Get all villager types dynamically from the state
-  const villagerTypes = Object.keys(updatedVillagers);
+  // First, kill free villagers
+  if (updatedVillagers.free && updatedVillagers.free > 0) {
+    const freeToKill = Math.min(remainingDeaths, updatedVillagers.free);
+    updatedVillagers.free -= freeToKill;
+    remainingDeaths -= freeToKill;
+  }
 
-  // Create a pool of all available villagers with their types
-  const villagerPool: string[] = [];
-  villagerTypes.forEach(type => {
-    const count = updatedVillagers[type as keyof typeof updatedVillagers] || 0;
-    for (let i = 0; i < count; i++) {
-      villagerPool.push(type);
+  // If more deaths are needed, kill from other villager types randomly
+  if (remainingDeaths > 0) {
+    const villagerTypes = Object.keys(updatedVillagers).filter(type => type !== 'free') as Array<keyof typeof updatedVillagers>;
+    
+    // Create a pool of non-free villagers
+    const villagerPool: string[] = [];
+    villagerTypes.forEach(type => {
+      const count = updatedVillagers[type] || 0;
+      for (let i = 0; i < count; i++) {
+        villagerPool.push(type);
+      }
+    });
+
+    // Kill remaining villagers randomly from the pool
+    const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
+    for (let i = 0; i < actualDeaths; i++) {
+      if (villagerPool.length === 0) break;
+
+      const randomIndex = Math.floor(Math.random() * villagerPool.length);
+      const selectedType = villagerPool[randomIndex];
+
+      // Remove the selected villager from the pool and from the state
+      villagerPool.splice(randomIndex, 1);
+      updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
     }
-  });
-
-  // If we have fewer villagers than deaths requested, kill all available
-  const actualDeaths = Math.min(remainingDeaths, villagerPool.length);
-
-  // Randomly select villagers to kill
-  for (let i = 0; i < actualDeaths; i++) {
-    if (villagerPool.length === 0) break;
-
-    const randomIndex = Math.floor(Math.random() * villagerPool.length);
-    const selectedType = villagerPool[randomIndex];
-
-    // Remove the selected villager from the pool and from the state
-    villagerPool.splice(randomIndex, 1);
-    updatedVillagers[selectedType as keyof typeof updatedVillagers]--;
   }
 
   return {
