@@ -374,12 +374,11 @@ export const caveExploreActions: Record<string, Action> = {
     id: "blastPortal",
     label: "Blast Portal",
     show_when: {
-      // "story.seen.portalDiscovered": true,
+      "story.seen.portalDiscovered": true,
       "flags.portalBlasted": false,
-
     },
     cost: {
-      "resources.ember_bomb": 0,
+      "resources.ember_bomb": 10,
     },
     effects: {
       "resources.ember_bomb": -10,
