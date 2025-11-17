@@ -1,6 +1,6 @@
 import { Action, GameState } from "@shared/schema";
-import { ActionResult } from '@/game/actions';
-import { getTotalKnowledge } from './effectsCalculation';
+import { ActionResult } from "@/game/actions";
+import { getTotalKnowledge } from "./effectsCalculation";
 import { applyActionEffects } from "./index";
 
 export const forestTradeActions: Record<string, Action> = {
@@ -14,7 +14,7 @@ export const forestTradeActions: Record<string, Action> = {
       },
       2: {
         "buildings.buildGrandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -28,21 +28,21 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 20,
       },
       3: {
-        "resources.gold": 30,
+        "resources.gold": 40,
       },
     },
     effects: {
       1: {
-        "resources.food": 500,
+        "resources.food": 250,
       },
       2: {
-        "resources.food": 1000,
+        "resources.food": 500,
       },
       3: {
-        "resources.food": 1500,
+        "resources.food": 1000,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeGoldForWood: {
@@ -55,7 +55,7 @@ export const forestTradeActions: Record<string, Action> = {
       },
       2: {
         "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -69,21 +69,21 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 20,
       },
       3: {
-        "resources.gold": 30,
+        "resources.gold": 40,
       },
     },
     effects: {
       1: {
-        "resources.wood": 500,
+        "resources.wood": 250,
       },
       2: {
-        "resources.wood": 1000,
+        "resources.wood": 500,
       },
       3: {
-        "resources.wood": 1500,
+        "resources.wood": 1000,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeGoldForStone: {
@@ -96,7 +96,50 @@ export const forestTradeActions: Record<string, Action> = {
       },
       2: {
         "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
+      },
+      3: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 15,
+      },
+      2: {
+        "resources.gold": 30,
+      },
+      3: {
+        "resources.gold": 60,
+      },
+    },
+    effects: {
+      1: {
+        "resources.stone": 250,
+      },
+      2: {
+        "resources.stone": 500,
+      },
+      3: {
+        "resources.stone": 1000,
+      },
+    },
+    cooldown: 90,
+  },
+
+  tradeGoldForSteel: {
+    id: "tradeGoldForSteel",
+    label: "Buy Steel",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+        "tools.iron_pickaxe": 1,
+      },
+      2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+        "tools.iron_pickaxe": 1,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -110,34 +153,79 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 40,
       },
       3: {
-        "resources.gold": 60,
+        "resources.gold": 100,
       },
     },
     effects: {
       1: {
-        "resources.stone": 500,
+        "resources.steel": 50,
       },
       2: {
-        "resources.stone": 1000,
+        "resources.steel": 100,
       },
       3: {
-        "resources.stone": 1500,
+        "resources.steel": 250,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
-  tradeGoldForSteel: {
-    id: "tradeGoldForSteel",
-    label: "Buy Steel",
+  tradeGoldForObsidian: {
+    id: "tradeGoldForObsidian",
+    label: "Buy Obsidian",
     show_when: {
       1: {
         "buildings.tradePost": 1,
         "buildings.merchantsGuild": 0,
-        "tools.iron_pickaxe": 1      },
+        "tools.steel_pickaxe": 1,
+      },
       2: {
         "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
+        "tools.steel_pickaxe": 1,
+      },
+      3: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 25,
+      },
+      2: {
+        "resources.gold": 50,
+      },
+      3: {
+        "resources.gold": 100,
+      },
+    },
+    effects: {
+      1: {
+        "resources.obsidian": 25,
+      },
+      2: {
+        "resources.obsidian": 50,
+      },
+      3: {
+        "resources.obsidian": 100,
+      },
+    },
+    cooldown: 90,
+  },
+
+  tradeGoldForAdamant: {
+    id: "tradeGoldForAdamant",
+    label: "Buy Adamant",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+        "tools.obsidian_pickaxe": 1,
+      },
+      2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+        "tools.obsidian_pickaxe": 1,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -151,105 +239,21 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 60,
       },
       3: {
-        "resources.gold": 90,
-      },
-    },
-    effects: {
-      1: {
-        "resources.steel": 100,
-      },
-      2: {
-        "resources.steel": 200,
-      },
-      3: {
-        "resources.steel": 300,
-      },
-    },
-    cooldown: 60,
-  },
-
-  tradeGoldForObsidian: {
-    id: "tradeGoldForObsidian",
-    label: "Buy Obsidian",
-    show_when: {
-      1: {
-        "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-        "tools.steel_pickaxe": 1
-      },
-      2: {
-        "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
-      },
-      3: {
-        "buildings.merchantsGuild": 1,
-      },
-    },
-    cost: {
-      1: {
-        "resources.gold": 40,
-      },
-      2: {
-        "resources.gold": 80,
-      },
-      3: {
         "resources.gold": 120,
       },
     },
     effects: {
       1: {
-        "resources.obsidian": 50,
+        "resources.adamant": 25,
       },
       2: {
-        "resources.obsidian": 100,
-      },
-      3: {
-        "resources.obsidian": 150,
-      },
-    },
-    cooldown: 60,
-  },
-
-  tradeGoldForAdamant: {
-    id: "tradeGoldForAdamant",
-    label: "Buy Adamant",
-    show_when: {
-      1: {
-        "buildings.tradePost": 1,
-        "buildings.merchantsGuild": 0,
-        "tools.obsidian_pickaxe": 1
-      },
-      2: {
-        "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
-      },
-      3: {
-        "buildings.merchantsGuild": 1,
-      },
-    },
-    cost: {
-      1: {
-        "resources.gold": 50,
-      },
-      2: {
-        "resources.gold": 100,
-      },
-      3: {
-        "resources.gold": 150,
-      },
-    },
-    effects: {
-      1: {
         "resources.adamant": 50,
       },
-      2: {
+      3: {
         "resources.adamant": 100,
       },
-      3: {
-        "resources.adamant": 150,
-      },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeGoldForTorch: {
@@ -262,7 +266,7 @@ export const forestTradeActions: Record<string, Action> = {
       },
       2: {
         "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -290,7 +294,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.torch": 250,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeSilverForGold: {
@@ -303,7 +307,7 @@ export const forestTradeActions: Record<string, Action> = {
       },
       2: {
         "buildings.grandBazaar": 1,
-        "buildings.merchantsGuild": 0
+        "buildings.merchantsGuild": 0,
       },
       3: {
         "buildings.merchantsGuild": 1,
@@ -311,27 +315,27 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.silver": 100,
+        "resources.silver": 40,
       },
       2: {
-        "resources.silver": 200,
+        "resources.silver": 100,
       },
       3: {
-        "resources.silver": 500,
+        "resources.silver": 200,
       },
     },
     effects: {
       1: {
-        "resources.gold": 25,
+        "resources.gold": 10,
       },
       2: {
-        "resources.gold": 50,
+        "resources.gold": 25,
       },
       3: {
-        "resources.gold": 125,
+        "resources.gold": 50,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeGoldForEmberBomb: {
@@ -345,7 +349,7 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.gold": 15,
+        "resources.gold": 25,
       },
     },
     effects: {
@@ -353,7 +357,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ember_bomb": 1,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   tradeGoldForAshfireBomb: {
@@ -367,7 +371,7 @@ export const forestTradeActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.gold": 30,
+        "resources.gold": 50,
       },
     },
     effects: {
@@ -375,7 +379,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.ashfire_bomb": 1,
       },
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 };
 
@@ -383,7 +387,7 @@ export const forestTradeActions: Record<string, Action> = {
 function handleTradeAction(
   actionId: string,
   state: GameState,
-  result: ActionResult
+  result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects(actionId, state);
   Object.assign(result.stateUpdates, effectUpdates);
@@ -400,42 +404,72 @@ function handleTradeAction(
   return result;
 }
 
-export function handleTradeGoldForFood(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForFood', state, result);
+export function handleTradeGoldForFood(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForFood", state, result);
 }
 
-export function handleTradeGoldForWood(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForWood', state, result);
+export function handleTradeGoldForWood(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForWood", state, result);
 }
 
-export function handleTradeGoldForStone(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForStone', state, result);
+export function handleTradeGoldForStone(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForStone", state, result);
 }
 
-export function handleTradeGoldForSteel(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForSteel', state, result);
+export function handleTradeGoldForSteel(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForSteel", state, result);
 }
 
-export function handleTradeGoldForObsidian(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForObsidian', state, result);
+export function handleTradeGoldForObsidian(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForObsidian", state, result);
 }
 
-export function handleTradeGoldForAdamant(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForAdamant', state, result);
+export function handleTradeGoldForAdamant(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForAdamant", state, result);
 }
 
-export function handleTradeGoldForTorch(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForTorch', state, result);
+export function handleTradeGoldForTorch(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForTorch", state, result);
 }
 
-export function handleTradeSilverForGold(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeSilverForGold', state, result);
+export function handleTradeSilverForGold(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeSilverForGold", state, result);
 }
 
-export function handleTradeGoldForEmberBomb(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForEmberBomb', state, result);
+export function handleTradeGoldForEmberBomb(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForEmberBomb", state, result);
 }
 
-export function handleTradeGoldForAshfireBomb(state: GameState, result: ActionResult): ActionResult {
-  return handleTradeAction('tradeGoldForAshfireBomb', state, result);
+export function handleTradeGoldForAshfireBomb(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForAshfireBomb", state, result);
 }

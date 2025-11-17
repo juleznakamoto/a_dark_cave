@@ -499,30 +499,32 @@ function handleMadnessCheck() {
   if (totalMadness <= 0) return;
 
   // Determine probability and possible death counts based on madness level
-  let probability = 0 + state.CM * 0.01;
-  if (totalMadness <= 10) {
-    probability += 0.01;
+  let probability = 0;
+  if (totalMadness <= 5) {
+    probability += 0.0;
+  } else if (totalMadness <= 10) {
+    probability += 0.005 + state.CM * 0.01;
   } else if (totalMadness <= 20) {
-    probability += 0.02;
+    probability += 0.01 + state.CM * 0.01;
   } else if (totalMadness <= 30) {
-    probability += 0.03;
+    probability += 0.015 + state.CM * 0.01;
   } else if (totalMadness <= 40) {
-    probability += 0.04;
+    probability += 0.02 + state.CM * 0.01;
   } else {
-    probability += 0.05;
+    probability += 0.025 + state.CM * 0.01;
   }
 
   // Check if a madness death event occurs
   if (Math.random() < probability) {
     // Determine number of deaths: 0, 1, 2, or 4 villagers
-    const rand = Math.random();
+    const rand = Math.random() + state.CM * 0.1;
     let madnessDeaths = 0;
 
-    if (rand < 0.5 - 2 * probability) {
+    if (rand < 0.6) {
       madnessDeaths = 1;
-    } else if (rand < 0.7 - 2 * probability) {
+    } else if (rand < 0.8) {
       madnessDeaths = 2;
-    } else if (rand < 0.9 - 2 * probability) {
+    } else if (rand < 0.95) {
       madnessDeaths = 3;
     } else {
       madnessDeaths = 4;
@@ -541,7 +543,7 @@ function handleMadnessCheck() {
 
       const message =
         madnessDeaths === 1
-          ? `One villager succumbs to madness and takes their own life.`
+          ? `One villager succumbs to madness and takes his own life.`
           : `${madnessDeaths} villagers succumb to madness and take their own lives.`;
 
       state.addLogEntry({

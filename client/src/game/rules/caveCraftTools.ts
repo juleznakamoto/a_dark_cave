@@ -243,7 +243,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.wood": 500,
-      "resources.obsidian": 200,
+      "resources.obsidian": 250,
     },
     effects: {
       "tools.obsidian_axe": true,
@@ -265,7 +265,7 @@ export const caveCraftTools: Record<string, Action> = {
     },
     cost: {
       "resources.wood": 750,
-      "resources.obsidian": 300,
+      "resources.obsidian": 500,
     },
     effects: {
       "tools.obsidian_pickaxe": true,
@@ -417,7 +417,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.explorer_pack": false,
     },
     cost: {
-      "resources.leather": 250,
+      "resources.leather": 200,
     },
     effects: {
       "clothing.explorer_pack": true,
@@ -435,7 +435,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.hunter_cloak": false,
     },
     cost: {
-      "resources.leather": 200,
+      "resources.leather": 150,
     },
     effects: {
       "clothing.hunter_cloak": true,
@@ -453,7 +453,7 @@ export const caveCraftTools: Record<string, Action> = {
       "clothing.grenadier_bag": false,
     },
     cost: {
-      "resources.leather": 1000,
+      "resources.leather": 750,
     },
     effects: {
       "clothing.grenadier_bag": true,

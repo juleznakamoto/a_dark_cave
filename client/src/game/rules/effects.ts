@@ -244,7 +244,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.5,
+          resourceMultiplier: 1.50,
           cooldownReduction: 2,
         },
       },
@@ -704,7 +704,6 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 10,
-        madness: 3,
       },
     },
   },
@@ -780,8 +779,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
       "Tall cracked mirror framed in black iron that radiates cold aura",
     bonuses: {
       generalBonuses: {
+        luck: 2,
         knowledge: 7,
-        madness: 3,
+        madness: 4,
       },
     },
   },
