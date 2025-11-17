@@ -338,8 +338,8 @@ export function handleHumans(
     return result; // Not enough villagers
   }
 
-  // Apply the action effects (including madness reduction)
-  const effectUpdates = applyActionEffects("humans", state);
+  // Apply effects
+  const effectUpdates: Partial<GameState> = {};
 
   // Use killVillagers helper to kill the required number
   const deathResult = killVillagers(state, currentCost);
