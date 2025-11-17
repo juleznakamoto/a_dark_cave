@@ -53,14 +53,14 @@ const caveItems = {
   ventureDeeper: [
     {
       key: "tarnished_amulet",
-      probability: 0.02,
+      probability: 0.01,
       logMessage:
         "In the cave's shadows, something glints. You find a tarnished amulet.",
       category: "clothing",
     },
     {
       key: "bloodstained_belt",
-      probability: 0.02,
+      probability: 0.015,
       logMessage:
         "In the cave you find a leather belt stained with ancient blood.",
       category: "clothing",
@@ -78,7 +78,7 @@ const caveItems = {
   exploreRuins: [
     {
       key: "ring_of_drowned",
-      probability: 0.03,
+      probability: 0.025,
       isChoice: true,
       eventId: "ringOfDrownedChoice",
       category: "clothing",
@@ -87,7 +87,7 @@ const caveItems = {
   exploreTemple: [
     {
       key: "shadow_flute",
-      probability: 0.04,
+      probability: 0.03,
       isChoice: true,
       eventId: "shadowFluteChoice",
       category: "relics",
@@ -96,7 +96,7 @@ const caveItems = {
   exploreCitadel: [
     {
       key: "hollow_king_scepter",
-      probability: 0.05,
+      probability: 0.04,
       isChoice: true,
       eventId: "hollowKingScepterChoice",
       category: "relics",
