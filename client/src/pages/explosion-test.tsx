@@ -205,7 +205,7 @@ export default function ExplosionTest() {
       angle: Math.random() * Math.PI * 2, // Full 360 degrees
       distance: Math.random() * 600 + 100, // Random distance
       color: colors[Math.floor(Math.random() * colors.length)],
-      lifetime: 1 + Math.random() * 3, // Random lifetime
+      lifetime: 1 + Math.random() * 3.5, // Random lifetime
       size: Math.random() * 6 + 1, // Random size between 3px and 11px
       createdAt: Date.now(),
     }));
