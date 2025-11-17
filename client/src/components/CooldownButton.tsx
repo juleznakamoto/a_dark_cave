@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonProps } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import {
@@ -8,121 +8,99 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CircularProgress } from "@/components/ui/circular-progress"; // Assuming this is the correct import path
 
-interface CooldownButtonProps {
-  children: React.ReactNode;
-  onClick: () => void;
-  cooldownMs: number;
-  disabled?: boolean;
-  className?: string;
-  variant?:
-    | "default"
-    | "destructive"
-    | "outline"
-    | "secondary"
-    | "ghost"
-    | "link";
-  size?: "default" | "sm" | "xs" | "lg" | "icon";
-  "data-testid"?: string;
-  tooltip?: React.ReactNode;
-}
+// Mock useCooldown hook if it's not provided or defined elsewhere in the snippet
+const useCooldown = (onClick: () => void, cooldownMs: number) => {
+  const { cooldowns, cooldownDurations, setCooldown } = useGameStore();
+  const actionId = useRef(`cooldown-${Math.random()}`).current; // Generate a unique ID for this cooldown instance
 
-export default function CooldownButton({
-  children,
-  onClick,
-  cooldownMs,
-  disabled = false,
-  className = "",
-  variant = "default",
-  size = "default",
-  "data-testid": testId,
-  tooltip,
-  ...props
-}: CooldownButtonProps) {
-  const { cooldowns, cooldownDurations } = useGameStore();
-  const isFirstRenderRef = useRef<boolean>(true);
-  const mobileTooltip = useMobileButtonTooltip();
-
-  // Get the action ID from the test ID or generate one
-  const actionId =
-    testId
-      ?.replace("button-", "")
-      .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
-
-  // Get current cooldown from game state
   const currentCooldown = cooldowns[actionId] || 0;
-  const initialCooldown = cooldownDurations[actionId] || 0;
-  const isCoolingDown = currentCooldown > 0;
+  const initialCooldown = cooldownDurations[actionId] || cooldownMs; // Use provided cooldownMs if not in store
 
-  // Track first render for transition
-  useEffect(() => {
-    if (isCoolingDown) {
-      isFirstRenderRef.current = true;
-      // Allow transition after initial render (next frame)
-      requestAnimationFrame(() => {
-        isFirstRenderRef.current = false;
-      });
-    } else {
-      isFirstRenderRef.current = true;
-    }
-  }, [isCoolingDown]);
+  const isOnCooldown = currentCooldown > 0;
+  const progress = initialCooldown > 0 ? (currentCooldown / initialCooldown) * 100 : 0;
 
-  // Calculate width percentage directly from remaining cooldown
-  const overlayWidth =
-    isCoolingDown && initialCooldown > 0
-      ? (currentCooldown / initialCooldown) * 100
-      : 0;
-
-  const actionExecutedRef = useRef<boolean>(false);
-
-  const handleClick = (e: React.MouseEvent) => {
-    if (disabled && !isCoolingDown) return;
-    if (!isCoolingDown) {
-      actionExecutedRef.current = true;
+  const handleClick = () => {
+    if (!isOnCooldown) {
       onClick();
-      // Reset the flag after a short delay
-      setTimeout(() => {
-        actionExecutedRef.current = false;
-      }, 100);
+      setCooldown(actionId, cooldownMs); // Set cooldown in game state
     }
   };
 
-  const isButtonDisabled = disabled || isCoolingDown;
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isOnCooldown) {
+      timer = setInterval(() => {
+        setCooldown(actionId, currentCooldown - 100); // Decrement cooldown by 100ms
+      }, 100);
+    } else {
+      clearInterval(timer);
+    }
+    return () => clearInterval(timer);
+  }, [isOnCooldown, currentCooldown, actionId, setCooldown]);
 
-  const buttonId = testId || `button-${Math.random()}`;
+  return { isOnCooldown, progress, handleClick };
+};
 
-  const button = (
-    <Button
-      onClick={handleClick}
-      disabled={isButtonDisabled}
-      variant={variant}
-      size={size}
-      className={`relative overflow-hidden transition-all duration-200 select-none ${
-        isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
-      } ${className}`}
-      data-testid={testId}
-      {...props}
-    >
-      {/* Button content */}
-      <span className="relative">{children}</span>
 
-      {/* Cooldown progress overlay */}
-      {isCoolingDown && (
-        <div
-          className="absolute inset-0 bg-white/15"
-          style={{
-            width: `${overlayWidth}%`,
-            left: 0,
-            transition: isFirstRenderRef.current ? "none" : "width 0.3s ease-out",
-          }}
+interface CooldownButtonProps extends ButtonProps {
+  onClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  cooldownMs: number;
+  tooltip?: React.ReactNode;
+  customButton?: (props: ButtonProps) => React.ReactNode;
+}
+
+export default function CooldownButton({
+  onClick,
+  cooldownMs,
+  children,
+  disabled,
+  tooltip,
+  customButton,
+  ...props
+}: CooldownButtonProps) {
+  const { isOnCooldown, progress, handleClick } = useCooldown(
+    onClick,
+    cooldownMs,
+  );
+  const mobileTooltip = useMobileButtonTooltip();
+  const tooltipId = useRef(`cooldown-${Math.random()}`).current; // Generate unique ID for tooltip
+
+  const buttonProps = {
+    onClick: handleClick,
+    disabled: disabled || isOnCooldown,
+    className: "relative overflow-hidden",
+    ...props,
+  };
+
+  const buttonContent = customButton ? (
+    <div className="relative">
+      {customButton(buttonProps)}
+      {isOnCooldown && (
+        <CircularProgress
+          value={progress}
+          size="sm"
+          className="absolute inset-0 pointer-events-none"
         />
       )}
+    </div>
+  ) : (
+    <Button {...buttonProps}>
+      {isOnCooldown && (
+        <CircularProgress
+          value={progress}
+          size="sm"
+          className="absolute inset-0 pointer-events-none"
+        />
+      )}
+      <span className={isOnCooldown ? "opacity-50" : ""}>{children}</span>
     </Button>
   );
 
   // If no tooltip, return button without tooltip
   if (!tooltip) {
-    return <div className="relative inline-block">{button}</div>;
+    return <div className="relative inline-block">{buttonContent}</div>;
   }
 
   return (
@@ -130,48 +108,48 @@ export default function CooldownButton({
       className="relative inline-block"
       onClick={mobileTooltip.isMobile && tooltip ? (e) => {
         // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) return;
+        if (mobileTooltip.isActionExecuted(tooltipId)) return;
 
         // Only show tooltip if button is disabled or cooling down
-        if (isButtonDisabled || isCoolingDown) {
+        if (isButtonDisabled || isOnCooldown) {
           e.stopPropagation();
-          mobileTooltip.handleWrapperClick(buttonId, true, false, e);
+          mobileTooltip.handleWrapperClick(tooltipId, true, false, e);
         }
       } : undefined}
       onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e);
+        mobileTooltip.handleMouseDown(tooltipId, isButtonDisabled, isOnCooldown, e);
       } : undefined}
       onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => {
         // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) {
+        if (mobileTooltip.isActionExecuted(tooltipId)) {
           e.preventDefault();
           e.stopPropagation();
           return;
         }
 
-        mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e);
+        mobileTooltip.handleMouseUp(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
       onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
-        mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e);
+        mobileTooltip.handleTouchStart(tooltipId, isButtonDisabled, isOnCooldown, e);
       } : undefined}
       onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => {
         // Don't show tooltip if action was just executed
-        if (actionExecutedRef.current) {
+        if (mobileTooltip.isActionExecuted(tooltipId)) {
           e.preventDefault();
           e.stopPropagation();
           return;
         }
 
-        mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e);
+        mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
     >
       <TooltipProvider>
-        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={0}>
+        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={0}>
           <TooltipTrigger asChild>
             <span className="inline-block">
-              {button}
+              {buttonContent}
             </span>
           </TooltipTrigger>
           <TooltipContent>{tooltip}</TooltipContent>
