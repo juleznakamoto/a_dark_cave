@@ -17,8 +17,8 @@ export function getLeatherTotemsCost(state: GameState): number {
 // Helper function to get dynamic cost for animal sacrifices
 export function getAnimalsCost(state: GameState): number {
   const usageCount = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
-  // Cost increases by 500 each time, up to 10 times
-  return 500 * (usageCount + 1);
+  // Cost increases by 250 each time, up to 10 times
+  return 250 * (usageCount + 1);
 }
 
 export const forestSacrificeActions: Record<string, Action> = {

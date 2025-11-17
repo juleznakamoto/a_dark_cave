@@ -58,8 +58,8 @@ function handleDefeat(
   let buildingDamage = {};
   const damagedBuildings: string[] = [];
 
-  // Probability increases with multiplier (from 15% to 90%)
-  const baseChance = Math.min(DamageBuildingMultiplier * 0.15+state.CM*0.05, 0.9);
+  // Probability increases with multiplier (from 10% to 90%)
+  const baseChance = Math.min(DamageBuildingMultiplier * 0.1+state.CM*0.1, 0.9);
 
   // helper function for random check
   const chance = (prob: number) => Math.random() < prob;
@@ -68,7 +68,7 @@ function handleDefeat(
   if (
     state.buildings.bastion > 0 &&
     !state.story.seen.bastionDamaged &&
-    chance(baseChance * 0.8) // bastion is more resilient
+    chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, bastionDamaged: true };
     damagedBuildings.push("bastion");
@@ -88,7 +88,7 @@ function handleDefeat(
   if (
     state.buildings.palisades > 0 &&
     !state.story.seen.palisadesDamaged &&
-    chance(baseChance * 1.1) // palisades are more exposed
+    chance(baseChance)
   ) {
     buildingDamage = { ...buildingDamage, palisadesDamaged: true };
     damagedBuildings.push("palisades");
