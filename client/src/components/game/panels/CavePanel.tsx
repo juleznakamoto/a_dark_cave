@@ -16,7 +16,7 @@ export default function CavePanel() {
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
   
-  // Create separate explosion effects for each button
+  // Separate explosion effects for each button
   const blastPortalExplosion = useExplosionEffect();
   const testExplosion = useExplosionEffect();
 
