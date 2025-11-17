@@ -1329,7 +1329,8 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "unnamedWanderer",
     condition: (state: GameState) =>
       // state.buildings.deepPit >= 1 &&
-      !state.miningBoostState?.isActive,
+      !state.miningBoostState?.isActive &&
+      !state.story.seen.unnamedWandererAccepted,
     triggerType: "resource",
     timeProbability: 0.060,
     title: "The Unnamed Wanderer",
@@ -1360,6 +1361,13 @@ export const choiceEvents: Record<string, GameEvent> = {
               isActive: true,
               endTime: Date.now() + boostDuration,
             },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                unnamedWandererAccepted: true,
+              },
+            },
             _logMessage:
               "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
           };
@@ -1385,6 +1393,13 @@ export const choiceEvents: Record<string, GameEvent> = {
             miningBoostState: {
               isActive: true,
               endTime: Date.now() + boostDuration,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                unnamedWandererAccepted: true,
+              },
             },
             _logMessage:
               "The wanderer gives a brief nod and walks off to the mining pit to begin his labor.",
