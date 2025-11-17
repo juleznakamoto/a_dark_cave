@@ -181,11 +181,7 @@ export function useExplosionEffect() {
       // Silently fail if audio can't play
     });
 
-    // Wait for next frame to ensure button position is correct
-    requestAnimationFrame(() => {
-      if (!buttonRef.current) return;
-      
-      const rect = buttonRef.current.getBoundingClientRect();
+    const rect = buttonRef.current.getBoundingClientRect();
     const centerX = 0;
     const centerY = 0;
 
@@ -248,15 +244,14 @@ export function useExplosionEffect() {
 
     // Clean up old particles after 3 seconds
     setTimeout(() => {
-        const now = Date.now();
-        setFireParticles((prev) =>
-          prev.filter((p) => now - p.createdAt < 3000)
-        );
-        setParticles((prev) =>
-          prev.filter((p) => now - p.createdAt < 3000)
-        );
-      }, 3000);
-    });
+      const now = Date.now();
+      setFireParticles((prev) =>
+        prev.filter((p) => now - p.createdAt < 3000)
+      );
+      setParticles((prev) =>
+        prev.filter((p) => now - p.createdAt < 3000)
+      );
+    }, 3000);
   };
 
   return {
