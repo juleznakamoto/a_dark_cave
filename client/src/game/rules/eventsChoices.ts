@@ -1328,11 +1328,11 @@ export const choiceEvents: Record<string, GameEvent> = {
   unnamedWanderer: {
     id: "unnamedWanderer",
     condition: (state: GameState) =>
-      // state.buildings.deepPit >= 1 &&
+      state.buildings.deepPit >= 1 &&
       !state.miningBoostState?.isActive &&
       !state.story.seen.unnamedWandererAccepted,
     triggerType: "resource",
-    timeProbability: 0.060,
+    timeProbability: 60,
     title: "The Unnamed Wanderer",
     message:
       "A man in torn clothes approaches the village, his hands marked from years of hard labor. 'I come from a mining colony,' he says in a rough voice. 'I can work for you to improve your mining yield.'",
