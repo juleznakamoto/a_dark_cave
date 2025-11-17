@@ -145,16 +145,16 @@ export default function ExplosionTest() {
   const fireIdRef = useRef(0);
 
   const colors = [
-    "#ff4500",
-    "#ff6347",
-    "#ff8c00",
-    "#ffa500",
-    "#ffb347",
-    "#ff9234",
-    "#ffcd94",
-    "#ff6f3c",
-    "#ff0000",
-    "#ff1493",
+    "#8B0000", // dark red
+    "#B22222", // firebrick
+    "#DC143C", // crimson
+    "#FF4500", // orange red
+    "#FF6347", // tomato
+    "#D2691E", // chocolate
+    "#8B4513", // saddle brown
+    "#A0522D", // sienna
+    "#CD853F", // peru
+    "#DAA520", // goldenrod
   ];
 
   const triggerExplosion = () => {
