@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, forwardRef } from "react";
+import React, { useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
@@ -27,7 +27,7 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
 }
 
-const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(({
+export default function CooldownButton({
   children,
   onClick,
   cooldownMs,
@@ -38,7 +38,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(({
   "data-testid": testId,
   tooltip,
   ...props
-}, ref) => {
+}: CooldownButtonProps) {
   const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
@@ -93,7 +93,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(({
 
   const button = (
     <Button
-      ref={ref}
       onClick={handleClick}
       disabled={isButtonDisabled}
       variant={variant}
@@ -180,8 +179,4 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(({
       </TooltipProvider>
     </div>
   );
-});
-
-CooldownButton.displayName = "CooldownButton";
-
-export default CooldownButton;
+}
