@@ -159,14 +159,17 @@ export function useExplosionEffect() {
     audioManager.playSound('explosion', 0.5);
 
     let centerX: number, centerY: number;
+    let rect: DOMRect;
     
     if (providedX !== undefined && providedY !== undefined) {
       // Use provided coordinates
       centerX = providedX;
       centerY = providedY;
+      // Create a fake rect for particle calculations
+      rect = new DOMRect(providedX - 50, providedY - 50, 100, 100);
     } else {
       // Calculate from button position
-      const rect = buttonRef.current!.getBoundingClientRect();
+      rect = buttonRef.current!.getBoundingClientRect();
       centerX = rect.left + rect.width / 2;
       centerY = rect.top + rect.height / 2;
     }
