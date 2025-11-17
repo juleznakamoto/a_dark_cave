@@ -25,14 +25,15 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 1,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 1,
       },
     }),
   },
 
   shadowsMove: {
     id: "shadowsMove",
-    condition: (state: GameState) => getTotalMadness(state) >= 15 && !state.events.shadowsMove,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 15 && !state.events.shadowsMove,
     triggerType: "resource",
     timeProbability: 30,
     message:
@@ -48,7 +49,7 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 2,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
       },
     }),
   },
@@ -56,7 +57,9 @@ export const madnessEvents: Record<string, GameEvent> = {
   villagerStares: {
     id: "villagerStares",
     condition: (state: GameState) =>
-      getTotalMadness(state) >= 20 && state.villagers.free > 0 && !state.events.villagerStares,
+      getTotalMadness(state) >= 20 &&
+      state.villagers.free > 0 &&
+      !state.events.villagerStares,
     triggerType: "resource",
     timeProbability: 30,
     title: "Hollow Stares",
@@ -73,7 +76,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Confront villager",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.3-state.CM * 0.05) {
+          if (rand < 0.3 - state.CM * 0.05) {
             return {
               events: {
                 ...state.events,
@@ -82,7 +85,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 2,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
               },
               _logMessage:
                 "You confront the villager. They turn to you with that black-eyed smile and whisper something that makes your mind reel. The words echo in your head for days.  (+2 Madness)",
@@ -115,7 +118,7 @@ export const madnessEvents: Record<string, GameEvent> = {
             stats: {
               ...state.stats,
               madness: (state.stats.madness || 0) + 2,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
             },
             _logMessage:
               "You avoid the villager, but you feel their hollow gaze following you wherever you go. Sleep becomes difficult. After a few nights, the villager is found dead in his bed, his clothes soaked through with a black, reeking slime. (+2 Madness)",
@@ -127,7 +130,8 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   bloodInWater: {
     id: "bloodInWater",
-    condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.bloodInWater,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 25 && !state.events.bloodInWater,
     triggerType: "resource",
     timeProbability: 30,
     message:
@@ -143,14 +147,15 @@ export const madnessEvents: Record<string, GameEvent> = {
       stats: {
         ...state.stats,
         madness: (state.stats.madness || 0) + 2,
-        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+        madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
       },
     }),
   },
 
   facesInWalls: {
     id: "facesInWalls",
-    condition: (state: GameState) => getTotalMadness(state) >= 25 && !state.events.facesInWalls,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 25 && !state.events.facesInWalls,
     triggerType: "resource",
     timeProbability: 30,
     title: "Faces in the Walls",
@@ -202,14 +207,19 @@ export const madnessEvents: Record<string, GameEvent> = {
   wrongVillagers: {
     id: "wrongVillagers",
     condition: (state: GameState) => {
-      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+      const currentPopulation = Object.values(state.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
       const maxPopulation = getMaxPopulation(state);
       const spaceForThree = currentPopulation + 3 <= maxPopulation;
 
-      return getTotalMadness(state) >= 30 &&
-             state.villagers.free > 2 &&
-             spaceForThree &&
-             !state.events.wrongVillagers;
+      return (
+        getTotalMadness(state) >= 30 &&
+        state.villagers.free > 2 &&
+        spaceForThree &&
+        !state.events.wrongVillagers
+      );
     },
     triggerType: "resource",
     timeProbability: 30,
@@ -219,7 +229,10 @@ export const madnessEvents: Record<string, GameEvent> = {
     priority: 2,
     repeatable: false,
     effect: (state: GameState) => {
-      const currentPopulation = Object.values(state.villagers).reduce((sum, count) => sum + (count || 0), 0);
+      const currentPopulation = Object.values(state.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
       const maxPopulation = getMaxPopulation(state);
       const villagersToAdd = Math.min(3, maxPopulation - currentPopulation);
 
@@ -235,7 +248,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         stats: {
           ...state.stats,
           madness: (state.stats.madness || 0) + 2,
-          madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+          madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
         },
       };
     },
@@ -243,7 +256,8 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   skinCrawling: {
     id: "skinCrawling",
-    condition: (state: GameState) => getTotalMadness(state) >= 35 && !state.events.skinCrawling,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 35 && !state.events.skinCrawling,
     triggerType: "resource",
     timeProbability: 30,
     title: "Crawling Skin",
@@ -260,7 +274,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Try to calm down",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.5-state.CM * 0.1) {
+          if (rand < 0.5 - state.CM * 0.1) {
             return {
               events: {
                 ...state.events,
@@ -290,7 +304,8 @@ export const madnessEvents: Record<string, GameEvent> = {
         id: "keep_scratching",
         label: "Keep scratching",
         effect: (state: GameState) => {
-          const killedVillagers = Math.floor(Math.random() * 4) + 3+state.CM * 2; // 3-6 villagers
+          const killedVillagers =
+            Math.floor(Math.random() * 4) + 3 + state.CM * 2; // 3-6 villagers
           const deathResult = killVillagers(state, killedVillagers);
           return {
             ...deathResult,
@@ -301,10 +316,9 @@ export const madnessEvents: Record<string, GameEvent> = {
             stats: {
               ...state.stats,
               madness: (state.stats.madness || 0) + 2,
-              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+              madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
             },
-            _logMessage:
-              `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+2 Madness)`,
+            _logMessage: `You claw frantically at your skin, drawing blood. The villagers rush to stop you, grabbing your arms. In your maddened rage, you lash out violently, killing ${killedVillagers} villagers before collapsing from exhaustion. When you awaken, the crawling has stopped, but blood stains your hands. (+2 Madness)`,
           };
         },
       },
@@ -313,7 +327,10 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   creatureInHut: {
     id: "creatureInHut",
-    condition: (state: GameState) => getTotalMadness(state) >= 35 && state.buildings.woodenHut > 0 && !state.events.creatureInHut,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 35 &&
+      state.buildings.woodenHut > 0 &&
+      !state.events.creatureInHut,
     triggerType: "resource",
     timeProbability: 30,
     title: "Something in the Hut",
@@ -367,7 +384,8 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   wrongReflections: {
     id: "wrongReflections",
-    condition: (state: GameState) => getTotalMadness(state) >= 40 && !state.events.wrongReflections,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 40 && !state.events.wrongReflections,
     triggerType: "resource",
     timeProbability: 30,
     title: "Wrong Reflections",
@@ -401,13 +419,12 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Cover well with planks",
         effect: (state: GameState) => {
           // Kill 4-8 older villagers from thirst
-          const thirstDeaths = Math.floor(Math.random() * 5) + 6+state.CM * 2; // 6-10 deaths
+          const thirstDeaths = Math.floor(Math.random() * 5) + 6 + state.CM * 2; // 6-10 deaths
           const deathResult = killVillagers(state, thirstDeaths);
 
           return {
             ...deathResult,
-            _logMessage:
-              `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst. (+1 Madness)`,
+            _logMessage: `You board up the well with wooden planks, forbidding all access to the unholy water. Building a new well takes too long to finish, and ${thirstDeaths} of the weaker villagers perish of thirst. (+1 Madness)`,
           };
         },
       },
@@ -416,7 +433,8 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   villagersStareAtSky: {
     id: "villagersStareAtSky",
-    condition: (state: GameState) => getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 45 && !state.events.villagersStareAtSky,
     triggerType: "resource",
     timeProbability: 30,
     title: "Skyward Gaze",
@@ -433,7 +451,7 @@ export const madnessEvents: Record<string, GameEvent> = {
         label: "Wake them",
         effect: (state: GameState) => {
           const rand = Math.random();
-          if (rand < 0.6-state.CM * 0.15) {
+          if (rand < 0.6 - state.CM * 0.15) {
             return {
               events: {
                 ...state.events,
@@ -442,7 +460,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 2,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 2,
               },
               _logMessage:
                 "You grab the nearest villager and shake them. They blink once and return to normal, but whisper 'It's coming' before resuming their work. The others slowly follow suit. (+2 Madness)",
@@ -458,7 +476,7 @@ export const madnessEvents: Record<string, GameEvent> = {
               stats: {
                 ...state.stats,
                 madness: (state.stats.madness || 0) + 3,
-                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3
+                madnessFromEvents: (state.stats.madnessFromEvents || 0) + 3,
               },
               _logMessage:
                 "When you touch one villager, they crumble to dust. The others snap out of their trance and scream, pointing at the sky. For just a moment, you see it too, something vast and hungry watching from above. (+3 Madness)",
@@ -477,7 +495,7 @@ export const madnessEvents: Record<string, GameEvent> = {
           stats: {
             ...state.stats,
             madness: (state.stats.madness || 0) + 4,
-            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4
+            madnessFromEvents: (state.stats.madnessFromEvents || 0) + 4,
           },
           _logMessage:
             "You crane your neck skyward and suddenly see it, something immense and impossible that exists between the clouds. Your mind rejects what it witnesses, but the image burns itself into your memory forever. (+4 Madness)",
@@ -488,7 +506,10 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   monolithDemand: {
     id: "monolithDemand",
-    condition: (state: GameState) => getTotalMadness(state) >= 20 && !state.events.monolithDemand && !state.buildings.blackMonolith,
+    condition: (state: GameState) =>
+      getTotalMadness(state) >= 20 &&
+      !state.events.monolithDemand &&
+      !state.buildings.blackMonolith,
     triggerType: "resource",
     timeProbability: 5,
     title: "Demand for the Monolith",
@@ -511,12 +532,16 @@ export const madnessEvents: Record<string, GameEvent> = {
 
   humanSacrificeDemand: {
     id: "humanSacrificeDemand",
-    condition: (state: GameState) => getTotalMadness(state) >= 30 && !state.events.humanSacrificeDemand && state.buildings.blackMonolith > 0,
+    condition: (state: GameState) =>
+      state.flags.monolithUnlocked &&
+      getTotalMadness(state) >= 30 &&
+      !state.events.humanSacrificeDemand &&
+      state.buildings.blackMonolith > 0,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "The Dark Hunger",
     message:
-      "The villagers gather around the black monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
+      "The villagers gather around the monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -531,4 +556,4 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
     }),
   },
-}
+};

@@ -28,6 +28,7 @@ export default function ForestPanel() {
         { id: 'boneTotems', label: 'Bone Totems' },
         { id: 'leatherTotems', label: 'Leather Totems' },
         { id: 'animals', label: 'Animals' },
+        { id: 'humans', label: 'Villagers' }
       ]
     },
     {
