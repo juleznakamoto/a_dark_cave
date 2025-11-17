@@ -688,6 +688,33 @@ export default function SidePanel() {
         if (isDamaged) {
           label += " ↓";
         }
+      } else if (key === "blackMonolith") {
+        label = "Black Monolith";
+        
+        // Get the action definition to access the description
+        const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
+        const buildAction = villageBuildActions[actionId];
+
+        // Calculate madness reduction from animal sacrifices
+        const animalSacrificeLevel = Number(useGameStore.getState().story?.seen?.animalsSacrificeLevel) || 0;
+        const bonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
+
+        tooltip = (
+          <div className="space-y-1">
+            <div className="font-bold text-foreground">{label}</div>
+            {buildAction?.description && (
+              <div className="text-muted-foreground mb-2">
+                {buildAction.description}
+              </div>
+            )}
+            <div>
+              <div>-5 Madness</div>
+              {bonusMadnessReduction > 0 && (
+                <div>-{bonusMadnessReduction} Madness from Animals sacrifices</div>
+              )}
+            </div>
+          </div>
+        );
       } else if (key === "fortifiedMoat") {
         label = "Fortified Moat";
         
