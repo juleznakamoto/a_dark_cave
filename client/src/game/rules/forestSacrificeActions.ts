@@ -21,6 +21,13 @@ export function getAnimalsCost(state: GameState): number {
   return 250 * (usageCount + 1);
 }
 
+// Helper function to get dynamic cost for human sacrifices
+export function getHumansCost(state: GameState): number {
+  const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+  // Cost increases by 1 each time, up to 10 villagers
+  return Math.min(usageCount + 1, 10);
+}
+
 export const forestSacrificeActions: Record<string, Action> = {
   boneTotems: {
     id: "boneTotems",
@@ -70,6 +77,26 @@ export const forestSacrificeActions: Record<string, Action> = {
     statsEffects: {
       // This will be dynamically applied
       madness: -1,
+    },
+    cooldown: 60,
+  },
+
+  humans: {
+    id: "humans",
+    label: "Humans",
+    tooltipEffects: ["-2 Madness"],
+    show_when: {
+      "flags.humanSacrificeUnlocked": true,
+      "!story.seen.humansSacrificeMaxed": true,
+    },
+    cost: {
+      // This will be dynamically calculated based on usage count
+      "villagers.free": 1,
+    },
+    effects: {},
+    statsEffects: {
+      // This will be dynamically applied
+      madness: -2,
     },
     cooldown: 60,
   },
@@ -279,6 +306,59 @@ export function handleAnimals(
   // Set flag when max uses reached
   if (usageCount + 1 >= maxLevels) {
     effectUpdates.story.seen.animalsSacrificeMaxed = true;
+  }
+
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  return result;
+}
+
+export function handleHumans(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const usageCount = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+  const maxLevels = 10;
+
+  // If max levels reached, do nothing
+  if (usageCount >= maxLevels) {
+    return result;
+  }
+
+  const currentCost = getHumansCost(state);
+
+  // Check if player has enough villagers for the current cost
+  if ((state.villagers.free || 0) < currentCost) {
+    return result; // Not enough villagers
+  }
+
+  // Apply effects
+  const effectUpdates: Partial<GameState> = {};
+
+  // Update villagers - kill the required number
+  if (!effectUpdates.villagers) {
+    effectUpdates.villagers = { ...state.villagers };
+  }
+  effectUpdates.villagers.free = (state.villagers.free || 0) - currentCost;
+
+  // Update stats - reduce madness by 2
+  if (!effectUpdates.stats) {
+    effectUpdates.stats = { ...state.stats };
+  }
+  effectUpdates.stats.madness = Math.max(0, (state.stats.madness || 0) - 2);
+
+  // Update story for next level and track usage
+  if (!effectUpdates.story) {
+    effectUpdates.story = { ...state.story };
+  }
+  if (!effectUpdates.story.seen) {
+    effectUpdates.story.seen = { ...state.story.seen };
+  }
+  effectUpdates.story.seen.humansSacrificeLevel = usageCount + 1;
+
+  // Set flag when max uses reached
+  if (usageCount + 1 >= maxLevels) {
+    effectUpdates.story.seen.humansSacrificeMaxed = true;
   }
 
   Object.assign(result.stateUpdates, effectUpdates);

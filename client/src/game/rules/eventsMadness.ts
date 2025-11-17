@@ -508,4 +508,27 @@ export const madnessEvents: Record<string, GameEvent> = {
       },
     }),
   },
+
+  humanSacrificeDemand: {
+    id: "humanSacrificeDemand",
+    condition: (state: GameState) => getTotalMadness(state) >= 30 && !state.events.humanSacrificeDemand && state.buildings.blackMonolith > 0,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "The Dark Hunger",
+    message:
+      "The villagers gather around the black monolith, their eyes hollow. 'The animals are not enough,' they whisper in unison. 'The darkness demands more. It hungers for human souls.' They look at you, waiting for your command to make the ultimate sacrifice.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      events: {
+        ...state.events,
+        humanSacrificeDemand: true,
+      },
+      flags: {
+        ...state.flags,
+        humanSacrificeUnlocked: true,
+      },
+    }),
+  },
 }
