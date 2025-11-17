@@ -379,7 +379,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       if (!purchase || purchase.activationsRemaining <= 0) return;
 
       // Activate a Great Feast
-      const feastDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
+      const feastDuration = 60 * 60 * 1000; // 60 minutes in milliseconds
       const endTime = Date.now() + feastDuration;
 
       useGameStore.setState((state) => ({
@@ -400,7 +400,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         id: `great-feast-${Date.now()}`,
         message:
           item.activationMessage ||
-          `A Great Feast has begun! The village celebrates with exceptional vigor for the next 30 minutes.`,
+          `A Great Feast has begun! The village celebrates with exceptional vigor for the next 60 minutes.`,
         timestamp: Date.now(),
         type: "system",
       });

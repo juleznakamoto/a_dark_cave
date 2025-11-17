@@ -47,7 +47,7 @@ export default function VillagePanel() {
     const updateFeastProgress = () => {
       const now = Date.now();
       if (greatFeastState?.isActive && greatFeastState.endTime > now) {
-        const greatFeastDuration = 30 * 60 * 1000; // 30 minutes
+        const greatFeastDuration = 60 * 60 * 1000; // 60 minutes
         const greatFeastElapsed =
           greatFeastDuration - (greatFeastState.endTime - now);
         setFeastProgress((greatFeastElapsed / greatFeastDuration) * 100);
