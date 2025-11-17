@@ -43,7 +43,6 @@ export default function CavePanel() {
             { id: "lowChamber", label: "Low Chamber" },
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "blastPortal", label: "Blast Portal" },
-            { id: "testExplosion", label: "💥 Test Explosion", isTestButton: true },
             { id: "encounterBeyondPortal", label: "Venture Beyond Portal" }
           ],
         },
@@ -149,13 +148,12 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
 
-    // Special handling for blastPortal and test explosion buttons
+    // Special handling for blastPortal button
     const isBlastPortal = actionId === 'blastPortal';
-    const isTestExplosion = actionId === 'testExplosion';
     const handleClick = () => {
-      if (isBlastPortal || isTestExplosion) {
+      if (isBlastPortal) {
         // Capture button position before it's potentially removed
-        const buttonElement = isBlastPortal ? blastPortalRef.current : testExplosionRef.current;
+        const buttonElement = blastPortalRef.current;
         if (buttonElement) {
           const rect = buttonElement.getBoundingClientRect();
           const centerX = rect.left + rect.width / 2;
@@ -163,9 +161,7 @@ export default function CavePanel() {
           explosionEffect.triggerExplosion(centerX, centerY);
         }
       }
-      if (!isTestExplosion) {
-        executeAction(actionId);
-      }
+      executeAction(actionId);
     };
 
     if (showCost || resourceGainTooltip) {
@@ -191,7 +187,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={isBlastPortal ? blastPortalRef : isTestExplosion ? testExplosionRef : null}
+          ref={isBlastPortal ? blastPortalRef : undefined}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -209,7 +205,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={isBlastPortal ? blastPortalRef : isTestExplosion ? testExplosionRef : null}
+        ref={isBlastPortal ? blastPortalRef : undefined}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
