@@ -15,7 +15,7 @@ export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
-  const { buttonRef: explosionButtonRef, triggerExplosion, ExplosionEffectRenderer } = useExplosionEffect();
+  const explosionEffect = useExplosionEffect();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -134,7 +134,7 @@ export default function CavePanel() {
     const isMineAction = actionId.startsWith("mine");
     const caveExploreActions = [
       'exploreCave',
-      'ventureDeeper', 
+      'ventureDeeper',
       'descendFurther',
       'exploreRuins',
       'exploreTemple',
@@ -147,7 +147,7 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const handleClick = () => {
       if (isBlastPortal) {
-        triggerExplosion();
+        explosionEffect.triggerExplosion();
       }
       executeAction(actionId);
     };
@@ -175,7 +175,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={isBlastPortal ? explosionButtonRef : null}
+          ref={isBlastPortal ? explosionEffect.buttonRef : null}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -193,7 +193,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={isBlastPortal ? explosionButtonRef : null}
+        ref={isBlastPortal ? explosionEffect.buttonRef : null}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -209,7 +209,7 @@ export default function CavePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <ExplosionEffectRenderer />
+      <explosionEffect.ExplosionEffectRenderer />
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
