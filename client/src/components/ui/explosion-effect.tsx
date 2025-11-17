@@ -36,7 +36,8 @@ function FireParticles({
   buttonRef: React.RefObject<HTMLButtonElement>;
   fireParticles: FireParticle[];
 }) {
-  const rect = buttonRef.current?.getBoundingClientRect();
+  if (!buttonRef.current) return null;
+  const rect = buttonRef.current.getBoundingClientRect();
   if (!rect) return null;
 
   return (
@@ -95,7 +96,8 @@ function ExplosionParticles({
   buttonRef: React.RefObject<HTMLButtonElement>;
   particles: Particle[];
 }) {
-  const rect = buttonRef.current?.getBoundingClientRect();
+  if (!buttonRef.current) return null;
+  const rect = buttonRef.current.getBoundingClientRect();
   if (!rect) return null;
 
   return (

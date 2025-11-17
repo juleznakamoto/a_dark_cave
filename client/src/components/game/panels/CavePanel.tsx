@@ -175,7 +175,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={isBlastPortal ? explosionButtonRef : undefined}
+          ref={isBlastPortal ? explosionButtonRef : null}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -193,7 +193,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={isBlastPortal ? explosionButtonRef : undefined}
+        ref={isBlastPortal ? explosionButtonRef : null}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
