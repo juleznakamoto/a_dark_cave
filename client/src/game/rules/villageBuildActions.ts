@@ -1239,12 +1239,25 @@ export const villageBuildActions: Record<string, Action> = {
       "Dark monument built for living sacrifices",
     tooltipEffects: (state: GameState) => {
       const animalSacrificeLevel = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
-      const bonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
+      const humanSacrificeLevel = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+      const animalBonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
+      const humanBonusMadnessReduction = Math.min(humanSacrificeLevel * 2, 20);
       
-      if (bonusMadnessReduction > 0) {
-        return ["-5 Madness", `-${bonusMadnessReduction} Madness from Animals sacrifices`];
+      const effects = ["-5 Madness"];
+      
+      if (animalBonusMadnessReduction > 0) {
+        effects.push(`-${animalBonusMadnessReduction} Madness from Animal sacrifices`);
+      } else {
+        effects.push("-1 Madness per Animal sacrifice (max -10)");
       }
-      return ["-5 Madness", "-1 Madness per Animals sacrifice (max -10)"];
+      
+      if (humanBonusMadnessReduction > 0) {
+        effects.push(`-${humanBonusMadnessReduction} Madness from Human sacrifices`);
+      } else if (state.flags?.humanSacrificeUnlocked) {
+        effects.push("-2 Madness per Human sacrifice (max -20)");
+      }
+      
+      return effects;
     },
     building: true,
     show_when: {
