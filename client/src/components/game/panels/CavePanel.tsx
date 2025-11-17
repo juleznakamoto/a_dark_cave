@@ -240,6 +240,7 @@ export default function CavePanel() {
                 const visibleActions = subGroup.actions.filter((action) => {
                   // Always show test buttons
                   if (action.isTestButton) {
+                    console.log('Test button found:', action.id, action.label);
                     return true;
                   }
                   if (action.showWhen !== undefined) {
@@ -250,6 +251,7 @@ export default function CavePanel() {
 
                 if (visibleActions.length === 0) return null;
 
+                console.log('Rendering subgroup with visible actions:', visibleActions.map(a => a.label));
                 return (
                   <div key={subGroupIndex} className="flex flex-wrap gap-2">
                     {visibleActions.map((action) =>
