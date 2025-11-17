@@ -7,7 +7,6 @@ import {
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
-import { ExplosionButton } from "@/components/ui/explosion-button";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
@@ -141,69 +140,6 @@ export default function CavePanel() {
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
-
-    // Special handling for blastPortal action
-    if (actionId === 'blastPortal') {
-      const costBreakdown = showCost ? getActionCostBreakdown(actionId, state) : null;
-      const tooltipContent = costBreakdown ? (
-        <div className="text-xs whitespace-nowrap">
-          {costBreakdown.map((costItem, index) => (
-            <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-              {costItem.text}
-            </div>
-          ))}
-        </div>
-      ) : null;
-
-      if (tooltipContent) {
-        return (
-          <CooldownButton
-            key={actionId}
-            onClick={() => executeAction(actionId)}
-            cooldownMs={action.cooldown * 1000}
-            data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-            size="xs"
-            disabled={!canExecute}
-            variant="outline"
-            className="hover:bg-transparent hover:text-foreground"
-            tooltip={tooltipContent}
-            customButton={(props) => (
-              <ExplosionButton
-                {...props}
-                soundVolume={0.5}
-              >
-                {label}
-              </ExplosionButton>
-            )}
-          >
-            {label}
-          </CooldownButton>
-        );
-      }
-
-      return (
-        <CooldownButton
-          key={actionId}
-          onClick={() => executeAction(actionId)}
-          cooldownMs={action.cooldown * 1000}
-          data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-          size="xs"
-          disabled={!canExecute}
-          variant="outline"
-          className="hover:bg-transparent hover:text-foreground"
-          customButton={(props) => (
-            <ExplosionButton
-              {...props}
-              soundVolume={0.5}
-            >
-              {label}
-            </ExplosionButton>
-          )}
-        >
-          {label}
-        </CooldownButton>
-      );
-    }
 
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
