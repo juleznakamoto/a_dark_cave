@@ -152,6 +152,15 @@ function getInheritedItems(actionId: string) {
 }
 
 export const caveExploreActions: Record<string, Action> = {
+  testExplosion: {
+    id: "testExplosion",
+    label: "💥 Test Explosion",
+    show_when: {},
+    cost: {},
+    effects: {},
+    cooldown: 0,
+  },
+
   lightFire: {
     id: "lightFire",
     label: "Light Fire",

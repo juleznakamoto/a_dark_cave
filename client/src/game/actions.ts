@@ -170,6 +170,9 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
   // Route to appropriate handler based on action ID
   switch (actionId) {
     // Cave Explore Actions
+    case 'testExplosion':
+      // Test button does nothing, just triggers explosion effect
+      return result;
     case 'lightFire':
       return handleLightFire(state, result);
     case 'chopWood':
