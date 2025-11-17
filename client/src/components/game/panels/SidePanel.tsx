@@ -295,11 +295,17 @@ export default function SidePanel() {
 
             // For Black Monolith, add the sacrifice madness reduction
             if (key === "blackMonolith" && stat === "madness") {
-              const sacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
-              const sacrificeMadnessReduction = Math.min(sacrificeLevel * -1, -10);
+              const animalSacrificeLevel = (state.story?.seen?.animalsSacrificeLevel as number) || 0;
+              const humanSacrificeLevel = (state.story?.seen?.humansSacrificeLevel as number) || 0;
+              const animalMadnessReduction = Math.min(animalSacrificeLevel * -1, -10);
+              const humanMadnessReduction = Math.min(humanSacrificeLevel * -2, -20);
+              
               effectsList.push(`${finalValue} Madness (Building)`);
-              if (sacrificeLevel > 0) {
-                effectsList.push(`${sacrificeMadnessReduction} Madness (Sacrifices)`);
+              if (animalSacrificeLevel > 0) {
+                effectsList.push(`${animalMadnessReduction} Madness (Animals)`);
+              }
+              if (humanSacrificeLevel > 0) {
+                effectsList.push(`${humanMadnessReduction} Madness (Humans)`);
               }
               return; // Skip the normal display for this stat
             }
