@@ -156,8 +156,8 @@ export function useExplosionEffect() {
     audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
-    const centerX = 0;
-    const centerY = 0;
+    const centerX = 100;
+    const centerY = 100;
 
     // Generate fire particles
     const fireCount = 100;
