@@ -198,7 +198,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
     description: "Deeper pit reaching further earth resources",
-    tooltipEffects: ["Unlocks Sulfur Miners", ""],
+    tooltipEffects: ["Unlocks Sulfur Miners"],
     building: true,
     show_when: {
       1: {
@@ -811,8 +811,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildBastion: {
     id: "buildBastion",
     label: "Bastion",
-    description:
-      "Massive fortification serving as the last line of defense",
+    description: "Massive fortification serving as the last line of defense",
     tooltipEffects: ["+20 Defense", "+10 Attack", "+50 Integrity"],
     building: true,
     show_when: {
@@ -839,8 +838,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildWatchtower: {
     id: "buildWatchtower",
     label: "Watchtower",
-    description:
-      "Tall tower providing early warning of threats",
+    description: "Tall tower providing early warning of threats",
     tooltipEffects: ["+15 Defense", "+20 Attack", "+30 Integrity"],
     building: true,
     show_when: {
@@ -967,8 +965,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildStoneHut: {
     id: "buildStoneHut",
     label: "Stone Hut",
-    description:
-      "Durable stone dwelling providing superior shelter",
+    description: "Durable stone dwelling providing superior shelter",
     tooltipEffects: ["+4 Population"],
     building: true,
     show_when: {
@@ -1235,28 +1232,33 @@ export const villageBuildActions: Record<string, Action> = {
   buildBlackMonolith: {
     id: "buildBlackMonolith",
     label: "Black Monolith",
-    description:
-      "Dark monument built for living sacrifices",
+    description: "Dark monument built for living sacrifices",
     tooltipEffects: (state: GameState) => {
-      const animalSacrificeLevel = Number(state.story?.seen?.animalsSacrificeLevel) || 0;
-      const humanSacrificeLevel = Number(state.story?.seen?.humansSacrificeLevel) || 0;
+      const animalSacrificeLevel =
+        Number(state.story?.seen?.animalsSacrificeLevel) || 0;
+      const humanSacrificeLevel =
+        Number(state.story?.seen?.humansSacrificeLevel) || 0;
       const animalBonusMadnessReduction = Math.min(animalSacrificeLevel, 10);
       const humanBonusMadnessReduction = Math.min(humanSacrificeLevel * 2, 20);
-      
+
       const effects = ["-5 Madness"];
-      
+
       if (animalBonusMadnessReduction > 0) {
-        effects.push(`-${animalBonusMadnessReduction} Madness from Animal sacrifices`);
+        effects.push(
+          `-${animalBonusMadnessReduction} Madness from Animal sacrifices`,
+        );
       } else {
         effects.push("-1 Madness per Animal sacrifice (max -10)");
       }
-      
+
       if (humanBonusMadnessReduction > 0) {
-        effects.push(`-${humanBonusMadnessReduction} Madness from Human sacrifices`);
+        effects.push(
+          `-${humanBonusMadnessReduction} Madness from Human sacrifices`,
+        );
       } else if (state.flags?.humanSacrificeUnlocked) {
         effects.push("-2 Madness per Human sacrifice (max -20)");
       }
-      
+
       return effects;
     },
     building: true,
