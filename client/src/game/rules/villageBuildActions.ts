@@ -812,7 +812,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBastion",
     label: "Bastion",
     description:
-      "Mssive fortification serving as the last line of defense",
+      "Massive fortification serving as the last line of defense",
     tooltipEffects: ["+20 Defense", "+10 Attack", "+50 Integrity"],
     building: true,
     show_when: {
