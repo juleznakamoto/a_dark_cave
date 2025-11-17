@@ -177,7 +177,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 100,
+              gold: state.resources.gold + 75,
             },
             story: {
               ...state.story,
@@ -186,7 +186,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(100),
+            _logMessage: VICTORY_MESSAGE(10750),
           }),
           onDefeat: () => handleDefeat(state, 2, 10),
         },

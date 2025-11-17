@@ -65,14 +65,6 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
       { resource: "food", amount: -10, interval: 15000 },
     ],
   },
-  // silver_miner: {
-  //   id: "silver_miner",
-  //   label: "silver_miner",
-  //   production: [
-  //     { resource: "silver", amount: 1, interval: 15000 },
-  //     { resource: "food", amount: -20, interval: 15000 },
-  //   ],
-  // },
   obsidian_miner: {
     id: "obsidian_miner",
     label: "obsidian_miner",
@@ -201,12 +193,16 @@ export const getPopulationProduction = (
   const miningBoostState = state.miningBoostState;
   const isMiningJob = jobId.endsWith("_miner");
 
-  if (isMiningJob && miningBoostState?.isActive && miningBoostState.endTime > Date.now()) {
+  if (
+    isMiningJob &&
+    miningBoostState?.isActive &&
+    miningBoostState.endTime > Date.now()
+  ) {
     baseProduction.forEach((prod) => {
       prod.totalAmount = Math.ceil(prod.totalAmount * 2); // Mining boost doubles mining production
     });
   }
-  
+
   // Apply Flame's Touch blessing bonus to steel production
   if (state && jobId === "steel_forger") {
     baseProduction.forEach((prod) => {
@@ -222,7 +218,7 @@ export const getPopulationProduction = (
       }
     });
   }
-  
+
   if (isGreatFeast) {
     baseProduction.forEach((prod) => {
       prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
@@ -245,7 +241,7 @@ export const getPopulationProduction = (
 
 export const getTotalPopulationEffects = (
   state: GameState,
-  visibleJobIds: string[]
+  visibleJobIds: string[],
 ): Record<string, number> => {
   const totalEffects: Record<string, number> = {};
 
@@ -263,7 +259,8 @@ export const getTotalPopulationEffects = (
 
   // Calculate production for each visible job
   visibleJobIds.forEach((jobId) => {
-    const currentCount = state.villagers[jobId as keyof typeof state.villagers] || 0;
+    const currentCount =
+      state.villagers[jobId as keyof typeof state.villagers] || 0;
     if (currentCount > 0) {
       const production = getPopulationProduction(jobId, currentCount, state);
       production.forEach((prod) => {

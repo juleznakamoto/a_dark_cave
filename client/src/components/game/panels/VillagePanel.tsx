@@ -6,10 +6,17 @@ import {
   canExecuteAction,
   getActionCostBreakdown,
 } from "@/game/rules";
-import { feastTooltip, curseTooltip, miningBoostTooltip } from "@/game/rules/tooltips";
+import {
+  feastTooltip,
+  curseTooltip,
+  miningBoostTooltip,
+} from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { Button } from "@/components/ui/button";
-import { getPopulationProduction, getTotalPopulationEffects } from "@/game/population";
+import {
+  getPopulationProduction,
+  getTotalPopulationEffects,
+} from "@/game/population";
 import { CircularProgress } from "@/components/ui/circular-progress";
 import { capitalizeWords } from "@/lib/utils";
 import { useState, useEffect } from "react";
@@ -133,11 +140,6 @@ export default function VillagePanel() {
       label: "Sulfur Miner",
       showWhen: () => buildings.deepeningPit >= 1,
     },
-    // {
-    //   id: "silver_miner",
-    //   label: "Silver Miner",
-    //   showWhen: () => buildings.deepeningPit >= 1,
-    // },
     {
       id: "obsidian_miner",
       label: "Obsidian Miner",
@@ -401,7 +403,8 @@ export default function VillagePanel() {
                 const feastState = useGameStore.getState().feastState;
                 const greatFeastState = useGameStore.getState().greatFeastState;
                 const curseState = useGameStore.getState().curseState;
-                const miningBoostState = useGameStore.getState().miningBoostState;
+                const miningBoostState =
+                  useGameStore.getState().miningBoostState;
                 const isGreatFeast =
                   greatFeastState?.isActive &&
                   greatFeastState.endTime > Date.now();
@@ -410,7 +413,8 @@ export default function VillagePanel() {
                 const isCursed =
                   curseState?.isActive && curseState.endTime > Date.now();
                 const isMiningBoosted =
-                  miningBoostState?.isActive && miningBoostState.endTime > Date.now();
+                  miningBoostState?.isActive &&
+                  miningBoostState.endTime > Date.now();
 
                 return (
                   <>
@@ -506,7 +510,9 @@ export default function VillagePanel() {
                     {isMiningBoosted && (
                       <TooltipProvider>
                         <Tooltip
-                          open={mobileTooltip.isTooltipOpen("mining-boost-progress")}
+                          open={mobileTooltip.isTooltipOpen(
+                            "mining-boost-progress",
+                          )}
                         >
                           <TooltipTrigger asChild>
                             <div
@@ -558,7 +564,10 @@ export default function VillagePanel() {
             {/* Population Effects Summary */}
             {(() => {
               const visibleJobIds = visiblePopulationJobs.map((job) => job.id);
-              const totalEffects = getTotalPopulationEffects(state, visibleJobIds);
+              const totalEffects = getTotalPopulationEffects(
+                state,
+                visibleJobIds,
+              );
 
               const effectsText = Object.entries(totalEffects)
                 .filter(([resource, amount]) => amount !== 0)
