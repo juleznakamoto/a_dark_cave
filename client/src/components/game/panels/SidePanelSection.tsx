@@ -373,7 +373,7 @@ export default function SidePanelSection({
                 </span>
               </TooltipTrigger>
             </div>
-            <TooltipContent className="max-w-xs whitespace-pre-line">
+            <TooltipContent className="max-w-xs">
               {renderItemTooltip(
                 item.id,
                 title === "Weapons"
@@ -496,7 +496,7 @@ export default function SidePanelSection({
                 </span>
               )}
             </div>
-            <TooltipContent className="max-w-xs whitespace-pre-line">
+            <TooltipContent className="max-w-xs">
               {typeof item.tooltip === 'string' ? item.tooltip : item.tooltip}
             </TooltipContent>
           </Tooltip>
