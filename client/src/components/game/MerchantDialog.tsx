@@ -95,7 +95,8 @@ export default function MerchantDialog({
                 const isPurchased = purchasedItems.has(choice.id);
                 const isDisabled = (timeRemaining !== null && timeRemaining <= 0) || 
                                    fallbackExecutedRef.current || 
-                                   isPurchased;
+                                   isPurchased ||
+                                   !canAfford;
 
 
                 const buttonContent = (
