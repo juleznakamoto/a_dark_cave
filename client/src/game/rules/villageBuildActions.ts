@@ -198,7 +198,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
     description: "Deeper pit reaching further earth resources",
-    tooltipEffects: ["Unlocks Sulfur Miners", "Unlocks Silver Miners"],
+    tooltipEffects: ["Unlocks Sulfur Miners", ""],
     building: true,
     show_when: {
       1: {
