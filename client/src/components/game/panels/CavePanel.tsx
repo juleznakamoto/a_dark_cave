@@ -38,6 +38,7 @@ export default function CavePanel() {
             { id: "lowChamber", label: "Low Chamber" },
             { id: "occultistChamber", label: "Occultist Chamber" },
             { id: "blastPortal", label: "Blast Portal" },
+            { id: "testExplosion", label: "💥 Test Explosion", isTestButton: true },
             { id: "encounterBeyondPortal", label: "Venture Beyond Portal" }
           ],
         },
@@ -143,13 +144,16 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
 
-    // Special handling for blastPortal button
+    // Special handling for blastPortal and test explosion buttons
     const isBlastPortal = actionId === 'blastPortal';
+    const isTestExplosion = actionId === 'testExplosion';
     const handleClick = () => {
-      if (isBlastPortal) {
+      if (isBlastPortal || isTestExplosion) {
         explosionEffect.triggerExplosion();
       }
-      executeAction(actionId);
+      if (!isTestExplosion) {
+        executeAction(actionId);
+      }
     };
 
     if (showCost || resourceGainTooltip) {
@@ -175,7 +179,7 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          ref={isBlastPortal ? explosionEffect.buttonRef : null}
+          ref={(isBlastPortal || isTestExplosion) ? explosionEffect.buttonRef : null}
           onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -193,7 +197,7 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        ref={isBlastPortal ? explosionEffect.buttonRef : null}
+        ref={(isBlastPortal || isTestExplosion) ? explosionEffect.buttonRef : null}
         onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
@@ -234,6 +238,10 @@ export default function CavePanel() {
               )}
               {group.subGroups.map((subGroup, subGroupIndex) => {
                 const visibleActions = subGroup.actions.filter((action) => {
+                  // Always show test buttons
+                  if (action.isTestButton) {
+                    return true;
+                  }
                   if (action.showWhen !== undefined) {
                     return action.showWhen;
                   }
@@ -256,6 +264,10 @@ export default function CavePanel() {
 
         // Handle regular groups (like Explore, Mine)
         const visibleActions = group.actions.filter((action) => {
+          // Always show test buttons
+          if (action.isTestButton) {
+            return true;
+          }
           // Handle custom show conditions
           if (action.showWhen !== undefined) {
             return action.showWhen;
