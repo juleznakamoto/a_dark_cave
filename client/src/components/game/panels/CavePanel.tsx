@@ -17,7 +17,7 @@ export default function CavePanel() {
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const explosionEffect = useExplosionEffect();
-  
+
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
   const testExplosionRef = useRef<HTMLButtonElement>(null);
@@ -153,14 +153,20 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
     const handleClick = () => {
-      if (isBlastPortal || isTestExplosion) {
-        // Set the appropriate button ref before triggering explosion
-        if (isBlastPortal && blastPortalRef.current) {
-          explosionEffect.buttonRef.current = blastPortalRef.current;
-        } else if (isTestExplosion && testExplosionRef.current) {
-          explosionEffect.buttonRef.current = testExplosionRef.current;
+      if (isBlastPortal) {
+        console.log('Blast Portal button ref:', blastPortalRef.current); // Corrected ref
+        if (blastPortalRef.current) { // Corrected ref
+          const rect = blastPortalRef.current.getBoundingClientRect(); // Corrected ref
+          console.log('Blast Portal button rect:', rect);
         }
-        explosionEffect.triggerExplosion();
+        explosionEffect.triggerExplosion(); // This will use the ref set below
+      } else if (isTestExplosion) {
+        console.log('Test Explosion button ref:', testExplosionRef.current); // Corrected ref
+        if (testExplosionRef.current) { // Corrected ref
+          const rect = testExplosionRef.current.getBoundingClientRect(); // Corrected ref
+          console.log('Test Explosion button rect:', rect);
+        }
+        explosionEffect.triggerExplosion(); // This will use the ref set below
       }
       if (!isTestExplosion) {
         executeAction(actionId);
