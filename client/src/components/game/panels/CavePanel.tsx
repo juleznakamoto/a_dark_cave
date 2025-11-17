@@ -9,11 +9,13 @@ import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useExplosionEffect } from "@/components/ui/explosion-effect";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
+  const { buttonRef: explosionButtonRef, triggerExplosion, ExplosionEffectRenderer } = useExplosionEffect();
 
   // Define action groups with their actions
   const actionGroups = [
@@ -141,6 +143,15 @@ export default function CavePanel() {
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
 
+    // Special handling for blastPortal button
+    const isBlastPortal = actionId === 'blastPortal';
+    const handleClick = () => {
+      if (isBlastPortal) {
+        triggerExplosion();
+      }
+      executeAction(actionId);
+    };
+
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
 
@@ -164,7 +175,8 @@ export default function CavePanel() {
       return (
         <CooldownButton
           key={actionId}
-          onClick={() => executeAction(actionId)}
+          ref={isBlastPortal ? explosionButtonRef : undefined}
+          onClick={handleClick}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
           size="xs"
@@ -181,7 +193,8 @@ export default function CavePanel() {
     return (
       <CooldownButton
         key={actionId}
-        onClick={() => executeAction(actionId)}
+        ref={isBlastPortal ? explosionButtonRef : undefined}
+        onClick={handleClick}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
         size="xs"
@@ -196,6 +209,7 @@ export default function CavePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
+      <ExplosionEffectRenderer />
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
