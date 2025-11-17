@@ -2,6 +2,7 @@
 import { useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { audioManager } from "@/lib/audio";
 
 interface Particle {
   id: number;
@@ -159,6 +160,9 @@ export default function ExplosionTest() {
 
   const triggerExplosion = () => {
     if (!buttonRef.current) return;
+
+    // Play explosion sound
+    audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
     const centerX = 0;
