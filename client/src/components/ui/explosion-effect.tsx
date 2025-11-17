@@ -150,6 +150,15 @@ export function useExplosionEffect() {
   const buttonRef = useRef<HTMLButtonElement>(null);
   const idRef = useRef(0);
   const fireIdRef = useRef(0);
+  const soundPreloadedRef = useRef(false);
+  
+  // Preload explosion sound on first render
+  if (!soundPreloadedRef.current) {
+    soundPreloadedRef.current = true;
+    audioManager.playSound('explosion', 0).catch(() => {
+      // Silently fail - this just preloads the sound
+    });
+  }
 
   const colors = [
     "#8B0000", // dark red
@@ -167,10 +176,16 @@ export function useExplosionEffect() {
   const triggerExplosion = () => {
     if (!buttonRef.current) return;
 
-    // Play explosion sound
-    audioManager.playSound('explosion', 0.5);
+    // Play explosion sound immediately (with fallback for audio context)
+    audioManager.playSound('explosion', 0.5).catch(() => {
+      // Silently fail if audio can't play
+    });
 
-    const rect = buttonRef.current.getBoundingClientRect();
+    // Wait for next frame to ensure button position is correct
+    requestAnimationFrame(() => {
+      if (!buttonRef.current) return;
+      
+      const rect = buttonRef.current.getBoundingClientRect();
     const centerX = 0;
     const centerY = 0;
 
@@ -216,19 +231,32 @@ export function useExplosionEffect() {
       createdAt: Date.now(),
     }));
 
-    setFireParticles((prev) => [...prev, ...newFireParticles]);
-    setParticles((prev) => [...prev, ...newParticles]);
+    setFireParticles((prev) => {
+      const updated = [...prev, ...newFireParticles];
+      if (import.meta.env.DEV) {
+        console.log(`Fire particles: ${updated.length}`);
+      }
+      return updated;
+    });
+    setParticles((prev) => {
+      const updated = [...prev, ...newParticles];
+      if (import.meta.env.DEV) {
+        console.log(`Explosion particles: ${updated.length}`);
+      }
+      return updated;
+    });
 
     // Clean up old particles after 3 seconds
     setTimeout(() => {
-      const now = Date.now();
-      setFireParticles((prev) =>
-        prev.filter((p) => now - p.createdAt < 3000)
-      );
-      setParticles((prev) =>
-        prev.filter((p) => now - p.createdAt < 3000)
-      );
-    }, 3000);
+        const now = Date.now();
+        setFireParticles((prev) =>
+          prev.filter((p) => now - p.createdAt < 3000)
+        );
+        setParticles((prev) =>
+          prev.filter((p) => now - p.createdAt < 3000)
+        );
+      }, 3000);
+    });
   };
 
   return {
