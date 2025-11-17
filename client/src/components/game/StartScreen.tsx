@@ -109,14 +109,17 @@ export default function StartScreen() {
             <TooltipTrigger asChild>
               <div 
                 className="absolute bottom-4 right-4 z-20 cursor-pointer"
-                onClick={(e) => mobileTooltip.handleTooltipClick('boost-indicator', e)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  setBoostMode(false);
+                }}
               >
                 <div className="text-green-600 text-xl">↑</div>
               </div>
             </TooltipTrigger>
             <TooltipContent>
               <div className="text-xs whitespace-nowrap">
-                Boost activated
+                Click to deactivate boost
               </div>
             </TooltipContent>
           </Tooltip>
