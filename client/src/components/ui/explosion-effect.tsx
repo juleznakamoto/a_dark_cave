@@ -37,9 +37,6 @@ function FireParticles({
   return (
     <>
       {fireParticles.map((particle) => {
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
         const adjustedAngle = particle.angle + Math.PI / 2;
         const endX = particle.startX + Math.sin(adjustedAngle) * particle.distance;
         const endY = particle.startY - Math.cos(adjustedAngle) * particle.distance;
@@ -51,8 +48,8 @@ function FireParticles({
             style={{
               width: `${particle.size}px`,
               height: `${particle.size}px`,
-              left: centerX + particle.startX - particle.size / 2,
-              top: centerY + particle.startY - particle.size / 2,
+              left: particle.startX - particle.size / 2,
+              top: particle.startY - particle.size / 2,
               zIndex: 9998,
               pointerEvents: "none",
             }}
@@ -156,6 +153,8 @@ export function useExplosionEffect() {
     audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
 
     // Generate fire particles
     const fireCount = 100;
@@ -176,8 +175,8 @@ export function useExplosionEffect() {
         id: fireIdRef.current++,
         angle,
         distance,
-        startX: x,
-        startY: y,
+        startX: centerX + x,
+        startY: centerY + y,
         size: diameter * 16,
         duration,
         createdAt: Date.now(),
