@@ -16,7 +16,8 @@ import {
   handleAnimals,
   handleBoneTotems,
   handleLeatherTotems,
-  getAnimalsCost, // Added getAnimalsCost import
+  getAnimalsCost,
+  getHumansCost,
 } from "./forestSacrificeActions";
 import { caveEvents } from "./eventsCave";
 import { huntEvents } from "./eventsHunt";
