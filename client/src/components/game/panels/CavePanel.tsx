@@ -148,10 +148,10 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
       if (isBlastPortal || isTestExplosion) {
         // Set the ref to the clicked button before triggering explosion
-        if (e.currentTarget) {
+        if (e?.currentTarget) {
           explosionEffect.buttonRef.current = e.currentTarget;
         }
         explosionEffect.triggerExplosion();
