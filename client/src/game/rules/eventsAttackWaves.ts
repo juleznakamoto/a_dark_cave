@@ -186,7 +186,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(10750),
+            _logMessage: VICTORY_MESSAGE(75),
           }),
           onDefeat: () => handleDefeat(state, 2, 10),
         },
@@ -221,7 +221,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 150,
+              gold: state.resources.gold + 100,
             },
             story: {
               ...state.story,
@@ -230,7 +230,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(150),
+            _logMessage: VICTORY_MESSAGE(100),
           }),
           onDefeat: () => handleDefeat(state, 3, 15),
         },
@@ -265,7 +265,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 200,
+              gold: state.resources.gold + 150,
             },
             story: {
               ...state.story,
@@ -274,7 +274,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(200),
+            _logMessage: VICTORY_MESSAGE(150),
           }),
           onDefeat: () => handleDefeat(state, 4, 20),
         },
@@ -309,7 +309,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 250,
+              gold: state.resources.gold + 200,
             },
             story: {
               ...state.story,
@@ -319,7 +319,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 250 gold from the fallen creatures.",
+              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 200 gold from the fallen creatures.",
           }),
           onDefeat: () => handleDefeat(state, 5, 25),
         },
