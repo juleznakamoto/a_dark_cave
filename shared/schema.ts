@@ -264,6 +264,7 @@ export const gameStateSchema = z.object({
       wrongReflections: z.boolean().default(false),
       villagersStareAtSky: z.boolean().default(false),
       monolithDemand: z.boolean().default(false),
+      humanSacrificeDemand: z.boolean().default(false),
       cube01: z.boolean().default(false),
       cube02: z.boolean().default(false),
       cube03: z.boolean().default(false),
