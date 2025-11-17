@@ -220,6 +220,26 @@ export default function SidePanelSection({
       }
     };
 
+    // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
+    const relicEffect = clothingEffects[item.id];
+    const weaponEffect = weaponEffects[item.id];
+    const toolEffect = toolEffects[item.id];
+    const effect = relicEffect || weaponEffect || toolEffect;
+
+    // Check if the effect has actual content to display
+    const hasGeneralBonuses =
+      effect?.bonuses?.generalBonuses &&
+      Object.keys(effect.bonuses.generalBonuses).length > 0;
+    const hasActionBonuses =
+      effect?.bonuses?.actionBonuses &&
+      Object.keys(effect.bonuses.actionBonuses).length > 0;
+    const hasEffect =
+      effect &&
+      (hasGeneralBonuses ||
+        hasActionBonuses ||
+        effect.name ||
+        effect.description);
+
     // Check if this item has a tooltip (for buildings with stats)
     const hasTooltip = item.tooltip && item.tooltip.length > 0;
 
@@ -248,7 +268,14 @@ export default function SidePanelSection({
 
     // Only apply pulse to items that have tooltips (effects or item.tooltip)
     const shouldPulse =
-      (item.tooltip && (title === "Fortifications" || title === "Buildings")) ||
+      (hasEffect &&
+        (title === "Relics" ||
+          title === "Tools" ||
+          title === "Weapons" ||
+          title === "Clothing" ||
+          title === "Schematics" ||
+          title === "Blessings")) ||
+      (hasTooltip && (title === "Fortifications" || title === "Buildings")) ||
       isMadnessTooltip ||
       item.tooltip;
 
@@ -314,9 +341,7 @@ export default function SidePanelSection({
 
     // If this item has effects, wrap it in a tooltip with item effects
     if (
-      (clothingEffects[item.id] ||
-        weaponEffects[item.id] ||
-        toolEffects[item.id]) &&
+      hasEffect &&
       (title === "Relics" ||
         title === "Tools" ||
         title === "Weapons" ||
@@ -324,61 +349,101 @@ export default function SidePanelSection({
         title === "Schematics" ||
         title === "Blessings")
     ) {
-      const effect =
-        clothingEffects[item.id] ||
-        weaponEffects[item.id] ||
-        toolEffects[item.id];
-      const hasEffect =
-        effect &&
-        ((effect.bonuses?.generalBonuses &&
-          Object.keys(effect.bonuses.generalBonuses).length > 0) ||
-          (effect.bonuses?.actionBonuses &&
-            Object.keys(effect.bonuses.actionBonuses).length > 0) ||
-          effect.name ||
-          effect.description);
+      return (
+        <TooltipProvider key={item.id}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+            </div>
+            <TooltipContent className="max-w-xs">
+              {renderItemTooltip(
+                item.id,
+                title === "Weapons"
+                  ? "weapon"
+                  : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics"
+                  ? "blessing"
+                  : "tool"
+              )}
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
+    }
 
-      if (hasEffect) {
-        return (
-          <TooltipProvider key={item.id}>
-            <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-              <div
-                data-testid={item.testId}
-                className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                  isAnimated
-                    ? "text-green-400"
-                    : isDecreaseAnimated
-                      ? "text-red-400"
-                      : ""
-                }`}
-              >
-                <TooltipTrigger asChild>
-                  <span
-                    onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                    onMouseEnter={() => handleTooltipHover(item.id)}
-                    onMouseLeave={() => handleTooltipLeave(item.id)}
-                    className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                  >
-                    {labelContent}
-                  </span>
-                </TooltipTrigger>
-              </div>
-              <TooltipContent className="max-w-xs">
-                {renderItemTooltip(
-                  item.id,
-                  title === "Weapons"
-                    ? "weapon"
-                    : title === "Blessings" ||
-                        title === "Clothing" ||
-                        title === "Relics" ||
-                        title === "Schematics"
-                      ? "blessing"
-                      : "tool"
-                )}
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        );
-      }
+    // If this is madness with events, show tooltip
+    if (isMadnessTooltip) {
+      return (
+        <TooltipProvider key={item.id}>
+          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
+            <div
+              data-testid={item.testId}
+              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
+                isAnimated
+                  ? "text-green-400"
+                  : isDecreaseAnimated
+                    ? "text-red-400"
+                    : ""
+              }`}
+            >
+              <TooltipTrigger asChild>
+                <span
+                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
+                  onMouseEnter={() => handleTooltipHover(item.id)}
+                  onMouseLeave={() => handleTooltipLeave(item.id)}
+                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
+                >
+                  {labelContent}
+                </span>
+              </TooltipTrigger>
+              {![
+                "Relics",
+                "Tools",
+                "Weapons",
+                "Clothing",
+                "Buildings",
+                "Fortifications",
+                "Blessings",
+                "Schematics",
+              ].includes(title) && (
+                <span
+                  className={`font-mono ${
+                    isAnimated
+                      ? "text-green-800 font-bold"
+                      : isDecreaseAnimated
+                        ? "text-red-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""
+                  }`}
+                >
+                  {displayValue}
+                </span>
+              )}
+            </div>
+            <TooltipContent>
+              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      );
     }
 
     // If this item has a tooltip, wrap it in a tooltip
