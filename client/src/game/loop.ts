@@ -187,22 +187,7 @@ export function startGameLoop() {
         // Log full state in dev mode every 15 seconds
         if (import.meta.env.DEV) {
           const currentState = useGameStore.getState();
-          console.log('[GAME STATE - 15s Loop]', {
-            resources: currentState.resources,
-            villagers: currentState.villagers,
-            buildings: currentState.buildings,
-            tools: currentState.tools,
-            weapons: currentState.weapons,
-            clothing: currentState.clothing,
-            relics: currentState.relics,
-            flags: currentState.flags,
-            effects: currentState.effects,
-            bastion_stats: currentState.bastion_stats,
-            playTime: currentState.playTime,
-            cooldowns: currentState.cooldowns,
-            story: currentState.story,
-            events: currentState.events,
-          });
+          console.log("[GAME STATE - 15s Loop]", { currentState });
         }
 
         handleGathererProduction();
@@ -280,7 +265,10 @@ function processTick() {
   }
 
   // Check if mining boost has expired
-  if (state.miningBoostState?.isActive && state.miningBoostState.endTime <= Date.now()) {
+  if (
+    state.miningBoostState?.isActive &&
+    state.miningBoostState.endTime <= Date.now()
+  ) {
     useGameStore.setState({
       miningBoostState: {
         ...state.miningBoostState,
