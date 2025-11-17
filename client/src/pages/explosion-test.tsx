@@ -164,12 +164,12 @@ export default function ExplosionTest() {
     const centerX = 0;
     const centerY = 0;
 
-    // Generate fire particles (25 particles)
-    const fireCount = 25;
+    // Generate fire particles (100 particles)
+    const fireCount = 100;
     const newFireParticles: FireParticle[] = Array.from({
       length: fireCount,
     }).map(() => {
-      const r = Math.random() * 0.2 + 0.1; // radius between 0.25 and 0.5 em
+      const r = Math.random() * 0.25 + 0.05; // radius between 0.25 and 0.5 em
       const diameter = r * 2;
       const xBound = rect.width / 2 - r * 16; // convert em to px roughly
       const yBound = rect.height / 2 - r * 16;
@@ -179,7 +179,7 @@ export default function ExplosionTest() {
       
       const angle = Math.atan2(y - centerY, x - centerX);
       const distance = (Math.random() * 4 + 1) * 10; // 1-5 em in px
-      const duration = Math.random() * 500 + 100; // 500-1000ms
+      const duration = Math.random() * 500 + 500; // 500-1000ms
 
       return {
         id: fireIdRef.current++,
@@ -199,9 +199,9 @@ export default function ExplosionTest() {
     }).map(() => ({
       id: idRef.current++,
       angle: Math.random() * Math.PI * 2, // Full 360 degrees
-      distance: Math.random() * 500 + 100, // Random distance
+      distance: Math.random() * 600 + 100, // Random distance
       color: colors[Math.floor(Math.random() * colors.length)],
-      lifetime: 1 + Math.random() * 2, // Random lifetime
+      lifetime: 1 + Math.random() * 3, // Random lifetime
       size: Math.random() * 6 + 1, // Random size between 3px and 11px
       createdAt: Date.now(),
     }));
