@@ -327,19 +327,23 @@ export function handleHumans(
 
   const currentCost = getHumansCost(state);
 
+  // Calculate total villagers
+  const totalVillagers = Object.values(state.villagers).reduce(
+    (sum, count) => sum + (count || 0),
+    0,
+  );
+
   // Check if player has enough villagers for the current cost
-  if ((state.villagers.free || 0) < currentCost) {
+  if (totalVillagers < currentCost) {
     return result; // Not enough villagers
   }
 
   // Apply effects
   const effectUpdates: Partial<GameState> = {};
 
-  // Update villagers - kill the required number
-  if (!effectUpdates.villagers) {
-    effectUpdates.villagers = { ...state.villagers };
-  }
-  effectUpdates.villagers.free = (state.villagers.free || 0) - currentCost;
+  // Use killVillagers helper to kill the required number
+  const deathResult = killVillagers(state, currentCost);
+  Object.assign(effectUpdates, deathResult);
 
   // Update stats - reduce madness by 2
   if (!effectUpdates.stats) {
