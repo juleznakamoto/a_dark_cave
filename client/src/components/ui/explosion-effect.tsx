@@ -156,6 +156,8 @@ export function useExplosionEffect() {
     audioManager.playSound('explosion', 0.5);
 
     const rect = buttonRef.current.getBoundingClientRect();
+    const centerX = 0;
+    const centerY = 0;
 
     // Generate fire particles
     const fireCount = 100;
@@ -168,7 +170,7 @@ export function useExplosionEffect() {
       const x = (Math.random() * 2 - 1) * xBound;
       const y = (Math.random() * 2 - 1) * yBound;
       
-      const angle = Math.atan2(y, x);
+      const angle = Math.atan2(y - centerY, x - centerX);
       const distance = (Math.random() * 4 + 1) * 10;
       const duration = Math.random() * 500 + 500;
 
