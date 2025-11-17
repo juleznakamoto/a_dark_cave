@@ -86,7 +86,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     label: "Humans",
     tooltipEffects: ["-2 Madness"],
     show_when: {
-      // "flags.humanSacrificeUnlocked": true,
+      "flags.humanSacrificeUnlocked": true,
       "!story.seen.humansSacrificeMaxed": true,
     },
     cost: {
