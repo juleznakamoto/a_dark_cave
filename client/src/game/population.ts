@@ -199,11 +199,12 @@ export const getPopulationProduction = (
 
   // Apply mining boost multiplier if active (for mining jobs only)
   const miningBoostState = state.miningBoostState;
-  let miningBoostMultiplier = 1;
   const isMiningJob = jobId.endsWith("_miner");
 
   if (isMiningJob && miningBoostState?.isActive && miningBoostState.endTime > Date.now()) {
-    miningBoostMultiplier = 2; // Mining boost doubles mining production
+    baseProduction.forEach((prod) => {
+      prod.totalAmount = Math.ceil(prod.totalAmount * 2); // Mining boost doubles mining production
+    });
   }
   
   // Apply Flame's Touch blessing bonus to steel production
