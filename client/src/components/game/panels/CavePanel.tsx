@@ -21,13 +21,6 @@ export default function CavePanel() {
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
   const testExplosionRef = useRef<HTMLButtonElement>(null);
-  
-  // Create a function to trigger explosion with a specific button ref
-  const triggerExplosionForButton = (buttonElement: HTMLButtonElement | null) => {
-    if (!buttonElement) return;
-    explosionEffect.buttonRef.current = buttonElement;
-    explosionEffect.triggerExplosion();
-  };
 
   // Define action groups with their actions
   const actionGroups = [
@@ -160,10 +153,14 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const isTestExplosion = actionId === 'testExplosion';
     const handleClick = () => {
-      if (isBlastPortal) {
-        triggerExplosionForButton(blastPortalRef.current);
-      } else if (isTestExplosion) {
-        triggerExplosionForButton(testExplosionRef.current);
+      if (isBlastPortal || isTestExplosion) {
+        // Set the appropriate button ref before triggering explosion
+        if (isBlastPortal && blastPortalRef.current) {
+          explosionEffect.buttonRef.current = blastPortalRef.current;
+        } else if (isTestExplosion && testExplosionRef.current) {
+          explosionEffect.buttonRef.current = testExplosionRef.current;
+        }
+        explosionEffect.triggerExplosion();
       }
       if (!isTestExplosion) {
         executeAction(actionId);
