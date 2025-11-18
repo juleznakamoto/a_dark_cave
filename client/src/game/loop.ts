@@ -327,7 +327,8 @@ function handleHunterProduction() {
 function handleMinerProduction() {
   const state = useGameStore.getState();
 
-  // Process each miner type, steel forger, tanner, powder maker, and ashfire dust maker
+  // Collect all production data
+  const allProduction: { job: string; production: any[] }[] = [];
   Object.entries(state.villagers).forEach(([job, count]) => {
     if (
       count > 0 &&
@@ -338,7 +339,32 @@ function handleMinerProduction() {
         job === "ashfire_dust_maker")
     ) {
       const production = getPopulationProduction(job, count, state);
+      allProduction.push({ job, production });
+    }
+  });
+
+  // Track available resources after each job's production/consumption
+  const availableResources = { ...state.resources };
+
+  // Process each job sequentially
+  allProduction.forEach(({ job, production }) => {
+    // Check if this job can produce based on currently available resources
+    const canProduce = production.every((prod) => {
+      if (prod.totalAmount < 0) {
+        // Consumption - check if we have enough available
+        const available = availableResources[prod.resource as keyof typeof availableResources] || 0;
+        return available >= Math.abs(prod.totalAmount);
+      }
+      return true; // Production is always allowed
+    });
+
+    // Only apply production if all resources are available
+    if (canProduce) {
       production.forEach((prod) => {
+        // Update both the tracked available resources and the actual state
+        availableResources[prod.resource as keyof typeof availableResources] = 
+          (availableResources[prod.resource as keyof typeof availableResources] || 0) + prod.totalAmount;
+
         state.updateResource(
           prod.resource as keyof typeof state.resources,
           prod.totalAmount,
