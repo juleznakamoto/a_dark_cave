@@ -146,7 +146,7 @@ export default function IdleModeDialog() {
       if (resourcesList) {
         useGameStore.getState().addLogEntry({
           id: `idle-mode-end-${Date.now()}`,
-          message: `While you were idle, the villagers produced: ${resourcesList}`,
+          message: `While you slept, the villagers produced: ${resourcesList}`,
           timestamp: Date.now(),
           type: 'system',
         });
@@ -183,10 +183,10 @@ export default function IdleModeDialog() {
   const isTimeUp = remainingTime <= 0;
 
   return (
-    <Dialog open={idleModeDialog.isOpen} onOpenChange={(open) => !open && handleEndIdleMode()}>
-      <DialogContent className="sm:max-w-md">
+    <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
+      <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
-          <DialogTitle>Idle Mode</DialogTitle>
+          <DialogTitle>Sleep Mode</DialogTitle>
           <DialogDescription>
             {isTimeUp ? (
               <span className="text-yellow-600">Time's up! Your villagers have finished their work.</span>
@@ -217,7 +217,7 @@ export default function IdleModeDialog() {
 
         <div className="flex justify-end">
           <Button onClick={handleEndIdleMode} variant="default">
-            End Idle Mode
+            End Sleep Mode
           </Button>
         </div>
       </DialogContent>

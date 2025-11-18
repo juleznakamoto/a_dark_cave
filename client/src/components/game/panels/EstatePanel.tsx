@@ -80,9 +80,9 @@ export default function EstatePanel() {
           </p>
         </div>
 
-        {/* Idle Mode Section */}
+        {/* Sleep Mode Section */}
         <div className="space-y-2 pt-4 border-t border-border">
-          <h3 className="text-xs font-bold text-foreground">Idle Mode</h3>
+          <h3 className="text-xs font-bold text-foreground">Sleep Mode</h3>
           <p className="text-sm text-muted-foreground">
             Gather resources while away (requires positive wood and food production)
           </p>
@@ -93,7 +93,7 @@ export default function EstatePanel() {
             variant="outline"
             className="w-full"
           >
-            Activate Idle Mode
+            Activate Sleep Mode
           </Button>
           {!canActivateIdle && (
             <p className="text-xs text-muted-foreground italic">
