@@ -213,7 +213,7 @@ export default function IdleModeDialog() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Only show resources that are being produced, after 15 seconds have elapsed
+  // Show resources that are being produced
   const now = Date.now();
   const elapsed = now - startTime;
   const secondsElapsed = Math.floor(elapsed / 1000);
@@ -221,11 +221,14 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
   
-  const producedResources = hasCompletedFirstInterval 
-    ? Object.entries(accumulatedResources)
-        .filter(([_, amount]) => amount > 0)
-        .sort(([a], [b]) => a.localeCompare(b))
-    : [];
+  // Get all resources that will be produced (even if not accumulated yet)
+  const totalEffects = getTotalPopulationEffects(state, Object.keys(state.villagers));
+  const relevantResources = Object.keys(totalEffects).filter(resource => totalEffects[resource] > 0);
+  
+  const producedResources = relevantResources.map(resource => {
+    const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
+    return [resource, amount] as [string, number];
+  }).sort(([a], [b]) => a.localeCompare(b));
 
   const isTimeUp = remainingTime <= 0;
 
