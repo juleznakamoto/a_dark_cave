@@ -105,21 +105,17 @@ export default function IdleModeDialog() {
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
+    // Calculate time until next 15-second interval
     const now = Date.now();
     const elapsed = now - startTime;
     const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
     
     if (remaining <= 0) return;
 
-    // Calculate how many complete 15-second intervals have passed since idle mode started
-    const totalDurationSeconds = IDLE_DURATION_MS / 1000;
-    const elapsedSeconds = Math.floor(elapsed / 1000);
-    const secondsRemaining = totalDurationSeconds - elapsedSeconds;
-    
-    // Calculate milliseconds until the next 15-second mark
-    // (when secondsRemaining becomes divisible by 15)
-    const secondsUntilNextMark = (15 - (secondsRemaining % 15)) % 15 || 15;
-    const msUntilNextInterval = secondsUntilNextMark * 1000;
+    // Calculate milliseconds until next interval (e.g., 1:45, 1:30, 1:15, etc.)
+    const secondsRemaining = Math.ceil(remaining / 1000);
+    const secondsUntilNextInterval = secondsRemaining % 15 || 15;
+    const msUntilNextInterval = secondsUntilNextInterval * 1000;
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
@@ -213,16 +209,15 @@ export default function IdleModeDialog() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Only show resources that are being produced, and only after first interval
+  // Only show resources that are being produced
   const now = Date.now();
   const elapsed = now - startTime;
   const secondsElapsed = Math.floor(elapsed / 1000);
-  const totalDurationSeconds = IDLE_DURATION_MS / 1000;
-  const secondsRemaining = totalDurationSeconds - secondsElapsed;
   
-  // Show resources only after we've passed a 15-second interval mark
-  // E.g., at 1:45, 1:30, 1:15, etc. (when secondsRemaining is divisible by 15 or less)
-  const hasCompletedFirstInterval = secondsRemaining < totalDurationSeconds && secondsRemaining % 15 !== 0;
+  // Show resources if any time has elapsed (including when resuming from refresh)
+  // or if we've accumulated any resources
+  const hasAccumulatedResources = Object.values(accumulatedResources).some(amount => amount > 0);
+  const hasCompletedFirstInterval = secondsElapsed >= 15 || hasAccumulatedResources;
   
   const producedResources = hasCompletedFirstInterval 
     ? Object.entries(accumulatedResources)
