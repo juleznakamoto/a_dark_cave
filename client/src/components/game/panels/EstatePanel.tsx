@@ -47,9 +47,6 @@ export default function EstatePanel() {
         {/* Cube Section */}
         <div className="space-y-2 pt-4 border-t border-border">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
-          <p className="text-sm text-muted-foreground mb-3">
-            Memories stored within the whispering cube
-          </p>
           
           {completedCubeEvents.length === 0 ? (
             <p className="text-sm text-muted-foreground italic">
@@ -64,7 +61,7 @@ export default function EstatePanel() {
                   className="aspect-square bg-gray-800 border-2 border-gray-600 rounded flex items-center justify-center hover:bg-gray-700 hover:border-gray-400 transition-all cursor-pointer group relative"
                   title={event.title}
                 >
-                  <div className="text-2xl group-hover:scale-110 transition-transform">
+                  <div className="text-md group-hover:scale-110 transition-transform">
                     ▣
                   </div>
                   <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
