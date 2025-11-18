@@ -1,4 +1,3 @@
-
 import React from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -38,6 +37,8 @@ export default function EstatePanel() {
   const { events, setEventDialog, setIdleModeDialog, sleepUpgrades, resources } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const state = useGameStore.getState();
+  const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
+  const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -172,7 +173,15 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-xs font-medium text-foreground cursor-pointer new-item-pulse">
+                    <span 
+                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-length'] ? 'new-item-pulse' : ''}`}
+                      onClick={(e) => {
+                        mobileTooltip.handleTooltipClick('sleep-length', e);
+                        if (!hoveredTooltips['sleep-length']) {
+                          setHoveredTooltip('sleep-length', true);
+                        }
+                      }}
+                    >
                       Sleep Length
                     </span>
                   </TooltipTrigger>
@@ -210,7 +219,15 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-xs font-medium text-foreground cursor-pointer new-item-pulse">
+                    <span 
+                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-intensity'] ? 'new-item-pulse' : ''}`}
+                      onClick={(e) => {
+                        mobileTooltip.handleTooltipClick('sleep-intensity', e);
+                        if (!hoveredTooltips['sleep-intensity']) {
+                          setHoveredTooltip('sleep-intensity', true);
+                        }
+                      }}
+                    >
                       Sleep Intensity
                     </span>
                   </TooltipTrigger>
