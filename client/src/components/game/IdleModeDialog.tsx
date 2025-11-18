@@ -185,10 +185,16 @@ export default function IdleModeDialog() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Only show resources that are being produced
-  const producedResources = Object.entries(accumulatedResources)
-    .filter(([_, amount]) => amount > 0)
-    .sort(([a], [b]) => a.localeCompare(b));
+  // Only show resources that are being produced, and only after first interval
+  const now = Date.now();
+  const elapsed = now - startTime;
+  const hasCompletedFirstInterval = elapsed >= 15000;
+  
+  const producedResources = hasCompletedFirstInterval 
+    ? Object.entries(accumulatedResources)
+        .filter(([_, amount]) => amount > 0)
+        .sort(([a], [b]) => a.localeCompare(b))
+    : [];
 
   const isTimeUp = remainingTime <= 0;
 
