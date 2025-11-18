@@ -479,7 +479,23 @@ export default function SidePanelSection({
                 "Fortifications",
                 "Blessings",
                 "Schematics",
+                "Stats",
               ].includes(title) && (
+                <span
+                  className={`font-mono ${
+                    isAnimated
+                      ? "text-green-800 font-bold"
+                      : isDecreaseAnimated
+                        ? "text-red-800 font-bold"
+                        : isMadness
+                          ? madnessClasses
+                          : ""
+                  }`}
+                >
+                  {displayValue}
+                </span>
+              )}
+              {title === "Stats" && (
                 <span
                   className={`font-mono ${
                     isAnimated

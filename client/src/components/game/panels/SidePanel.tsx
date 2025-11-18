@@ -481,6 +481,7 @@ export default function SidePanel() {
   // Build stats items with total values
   const statsItems = [];
   const hasScriptorium = buildings.scriptorium > 0;
+  const hasClerksHut = buildings.clerksHut > 0;
 
   // Add luck if it's greater than 0
   if (totalLuck > 0) {
@@ -492,6 +493,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "☆" : undefined,
       iconColor: hasScriptorium ? "text-green-300/80" : undefined,
+      tooltip: hasClerksHut ? "Increases success rate of cave exploration and scouting actions" : undefined,
     });
   }
 
@@ -505,6 +507,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "⬡" : undefined,
       iconColor: hasScriptorium ? "text-red-300/80" : undefined,
+      tooltip: hasClerksHut ? "Increases attack power and resource gathering efficiency" : undefined,
     });
   }
 
@@ -518,21 +521,22 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "✧" : undefined,
       iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
+      tooltip: hasClerksHut ? "Enhances crafting effectiveness and bomb damage" : undefined,
     });
   }
 
-  // Add madness if it's greater than 0
-  if (totalMadness > 0) {
-    statsItems.push({
-      id: "madness",
-      label: "Madness",
-      value: totalMadness,
-      testId: "stat-madness",
-      visible: true,
-      icon: hasScriptorium ? "✺" : undefined,
-      iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-    });
-  }
+  // Always show madness (show 0 if below 0)
+  const displayMadness = Math.max(0, totalMadness);
+  statsItems.push({
+    id: "madness",
+    label: "Madness",
+    value: displayMadness,
+    testId: "stat-madness",
+    visible: true,
+    icon: hasScriptorium ? "✺" : undefined,
+    iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
+    tooltip: hasClerksHut ? "Triggers madness events and affects villager morale" : undefined,
+  });
 
   // Dynamically generate fortification items from state
   const fortificationItems = Object.entries(buildings)
