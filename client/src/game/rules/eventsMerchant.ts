@@ -314,7 +314,7 @@ const toolTrades = [
   {
     id: "trade_compound_bow",
     label: "Compound Bow",
-    give: "tool",
+    give: "weapon",
     giveItem: "compound_bow",
     condition: (state: GameState) => state.buildings.stoneHut >= 2,
     costs: [{ resource: "gold", amounts: [1500] }],
@@ -499,7 +499,7 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 10,
+    timeProbability: 0.10,
     title: "The Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",
