@@ -119,7 +119,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       !state.story.seen.firstWaveVictory,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.firstWaveTriggered ? 10 : 4;
+      return state.story.seen.firstWaveTriggered ? 10 : 5;
     },
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
