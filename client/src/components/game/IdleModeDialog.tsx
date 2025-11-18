@@ -101,20 +101,23 @@ export default function IdleModeDialog() {
     return () => clearInterval(timerInterval);
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
-  // Resource accumulation loop (every 15 seconds)
+  // Resource accumulation loop (synchronized to timer intervals)
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
-    const resourceInterval = setInterval(() => {
-      const now = Date.now();
-      const elapsed = now - startTime;
-      const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+    // Calculate time until next 15-second interval
+    const now = Date.now();
+    const elapsed = now - startTime;
+    const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+    
+    if (remaining <= 0) return;
 
-      if (remaining <= 0) {
-        return;
-      }
+    // Calculate milliseconds until next interval (e.g., 1:45, 1:30, 1:15, etc.)
+    const secondsRemaining = Math.ceil(remaining / 1000);
+    const secondsUntilNextInterval = secondsRemaining % 15 || 15;
+    const msUntilNextInterval = secondsUntilNextInterval * 1000;
 
-      // Calculate production - same as normal loop
+    const updateResources = () => {
       const currentState = useGameStore.getState();
       const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
 
@@ -124,16 +127,37 @@ export default function IdleModeDialog() {
         Object.entries(totalEffects).forEach(([resource, amount]) => {
           // Apply the 10% production speed multiplier to the full 15-second production amount
           const production = amount * PRODUCTION_SPEED_MULTIPLIER;
-          const offlineAmount = accumulatedResources[resource] || 0; // Use accumulatedResources from state
+          const offlineAmount = accumulatedResources[resource] || 0;
           const currentAccumulated = (prev[resource] || 0) - offlineAmount;
           updated[resource] = offlineAmount + currentAccumulated + production;
         });
         return updated;
       });
-    }, 15000); // Update resources every 15 seconds
+    };
 
-    return () => clearInterval(resourceInterval);
-  }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]); // Added accumulatedResources to dependencies
+    // Set up initial timeout to sync with the timer interval
+    const initialTimeout = setTimeout(() => {
+      updateResources();
+      
+      // After first sync, continue every 15 seconds
+      const resourceInterval = setInterval(() => {
+        const now = Date.now();
+        const elapsed = now - startTime;
+        const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+
+        if (remaining <= 0) {
+          clearInterval(resourceInterval);
+          return;
+        }
+
+        updateResources();
+      }, 15000);
+
+      return () => clearInterval(resourceInterval);
+    }, msUntilNextInterval);
+
+    return () => clearTimeout(initialTimeout);
+  }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]);
 
   const handleEndIdleMode = () => {
     // Apply accumulated resources to the game state
@@ -188,7 +212,13 @@ export default function IdleModeDialog() {
   // Only show resources that are being produced, and only after first interval
   const now = Date.now();
   const elapsed = now - startTime;
-  const hasCompletedFirstInterval = elapsed >= 15000;
+  const secondsElapsed = Math.floor(elapsed / 1000);
+  const totalDurationSeconds = IDLE_DURATION_MS / 1000;
+  const secondsRemaining = totalDurationSeconds - secondsElapsed;
+  
+  // Show resources only after we've passed a 15-second interval mark
+  // E.g., at 1:45, 1:30, 1:15, etc. (when secondsRemaining is divisible by 15 or less)
+  const hasCompletedFirstInterval = secondsRemaining < totalDurationSeconds && secondsRemaining % 15 !== 0;
   
   const producedResources = hasCompletedFirstInterval 
     ? Object.entries(accumulatedResources)
