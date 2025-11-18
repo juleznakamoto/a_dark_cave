@@ -3,6 +3,7 @@ import GameFooter from "./GameFooter";
 import CavePanel from "./panels/CavePanel";
 import VillagePanel from "./panels/VillagePanel";
 import ForestPanel from "./panels/ForestPanel";
+import EstatePanel from "./panels/EstatePanel";
 import BastionPanel from "./panels/BastionPanel";
 import LogPanel from "./panels/LogPanel";
 import StartScreen from "./StartScreen";
@@ -10,7 +11,7 @@ import EndScreen from "./EndScreen";
 import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { stopGameLoop } from "@/game/loop";
@@ -29,35 +30,55 @@ export default function GameContainer() {
     isPaused,
     showEndScreen,
   } = useGameStore();
+
+  // Estate unlocks after forest
+  const estateUnlocked = flags.forestUnlocked;
+
+  const [activeTab, setActiveTab] = useState<
+    "cave" | "village" | "forest" | "estate" | "bastion"
+  >("cave");
+
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
-  const [previousFlags, setPreviousFlags] = useState(flags);
+
+  // Track unlocked tabs to trigger fade-in animation
+  const prevFlagsRef = useRef({
+    villageUnlocked: flags.villageUnlocked,
+    forestUnlocked: flags.forestUnlocked,
+    estateUnlocked: estateUnlocked,
+    bastionUnlocked: flags.bastionUnlocked,
+  });
 
   // Track when new tabs are unlocked and trigger animations
   useEffect(() => {
-    const newlyUnlocked: string[] = [];
+    const prev = prevFlagsRef.current;
+    const newAnimations = new Set<string>();
 
-    if (flags.villageUnlocked && !previousFlags.villageUnlocked) {
-      newlyUnlocked.push("village");
+    if (!prev.villageUnlocked && flags.villageUnlocked) {
+      newAnimations.add("village");
     }
-    if (flags.forestUnlocked && !previousFlags.forestUnlocked) {
-      newlyUnlocked.push("forest");
+    if (!prev.forestUnlocked && flags.forestUnlocked) {
+      newAnimations.add("forest");
     }
-    // Check for Bastion unlock condition
-    if (flags.bastionUnlocked && !previousFlags.bastionUnlocked) {
-      newlyUnlocked.push("bastion");
+    if (!prev.estateUnlocked && estateUnlocked) {
+      newAnimations.add("estate");
     }
-
-    if (newlyUnlocked.length > 0) {
-      setAnimatingTabs(new Set(newlyUnlocked));
-
-      // Remove animation class after animation completes
-      setTimeout(() => {
-        setAnimatingTabs(new Set());
-      }, 800);
+    if (!prev.bastionUnlocked && flags.bastionUnlocked) {
+      newAnimations.add("bastion");
     }
 
-    setPreviousFlags(flags);
-  }, [flags, previousFlags]);
+    if (newAnimations.size > 0) {
+      setAnimatingTabs(newAnimations);
+      setTimeout(() => setAnimatingTabs(new Set()), 1000);
+    }
+
+    prevFlagsRef.current = {
+      villageUnlocked: flags.villageUnlocked,
+      forestUnlocked: flags.forestUnlocked,
+      estateUnlocked: estateUnlocked,
+      bastionUnlocked: flags.bastionUnlocked,
+    };
+  }, [flags.villageUnlocked, flags.forestUnlocked, estateUnlocked, flags.bastionUnlocked]);
+
 
   // Stop game loop when end screen is shown
   useEffect(() => {
@@ -98,6 +119,17 @@ export default function GameContainer() {
       });
     }
 
+    // Add Estate tab if unlocked
+    if (estateUnlocked) {
+      tabs.push({
+        id: "estate",
+        icon: <Castle />, // Consider a different icon if needed
+        label: "The Estate",
+        onClick: () => setActiveTab("estate"),
+      });
+    }
+
+
     if (flags.bastionUnlocked) {
       tabs.push({
         id: "bastion",
@@ -111,6 +143,7 @@ export default function GameContainer() {
   }, [
     flags.villageUnlocked,
     flags.forestUnlocked,
+    estateUnlocked,
     flags.bastionUnlocked,
     buildings.stoneHut,
     setActiveTab,
@@ -202,6 +235,19 @@ export default function GameContainer() {
                   </button>
                 )}
 
+                {/* Estate Tab Button */}
+                {estateUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"
+                    } ${animatingTabs.has("estate") ? "tab-fade-in" : ""}`}
+                    onClick={() => setActiveTab("estate")}
+                    data-testid="tab-estate"
+                  >
+                    Estate
+                  </button>
+                )}
+
                 {flags.bastionUnlocked && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
@@ -223,6 +269,7 @@ export default function GameContainer() {
             {activeTab === "cave" && <CavePanel />}
             {activeTab === "village" && <VillagePanel />}
             {activeTab === "forest" && <ForestPanel />}
+            {activeTab === "estate" && <EstatePanel />}
             {activeTab === "bastion" && <BastionPanel />}
           </div>
         </section>
