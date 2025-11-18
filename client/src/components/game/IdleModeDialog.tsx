@@ -82,11 +82,11 @@ export default function IdleModeDialog() {
     }
   }, [idleModeDialog.isOpen, isActive]);
 
-  // Main idle mode loop
+  // Timer update loop (every second)
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
-    const interval = setInterval(() => {
+    const timerInterval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
       const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
@@ -96,10 +96,26 @@ export default function IdleModeDialog() {
       if (remaining <= 0) {
         // Time's up
         setIsActive(false);
+      }
+    }, 1000); // Update timer every second
+
+    return () => clearInterval(timerInterval);
+  }, [isActive, idleModeDialog.isOpen, startTime]);
+
+  // Resource accumulation loop (every 15 seconds)
+  useEffect(() => {
+    if (!isActive || !idleModeDialog.isOpen) return;
+
+    const resourceInterval = setInterval(() => {
+      const now = Date.now();
+      const elapsed = now - startTime;
+      const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+
+      if (remaining <= 0) {
         return;
       }
 
-      // Calculate production (every second)
+      // Calculate production
       const currentState = useGameStore.getState();
       const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
 
@@ -121,9 +137,9 @@ export default function IdleModeDialog() {
         });
         return updated;
       });
-    }, 15000); // Update every 15 seconds
+    }, 15000); // Update resources every 15 seconds
 
-    return () => clearInterval(interval);
+    return () => clearInterval(resourceInterval);
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
