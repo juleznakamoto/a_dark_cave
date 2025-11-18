@@ -82,7 +82,7 @@ export default function IdleModeDialog() {
     }
   }, [idleModeDialog.isOpen, isActive]);
 
-  // Timer update loop (every second)
+  // alrTimer update loop (every second)
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
