@@ -66,7 +66,6 @@ export default function SidePanelSection({
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
-  const [titleHovered, setTitleHovered] = useState(false);
 
   const handleTooltipHover = (itemId: string) => {
     if (mobileTooltip.isMobile) return;
@@ -517,13 +516,13 @@ export default function SidePanelSection({
               <h3
                 className={cn(
                   "text-xs font-medium tracking-wide mb-0.5 cursor-pointer",
-                  !titleHovered && "new-item-pulse"
+                  !hoveredTooltips[`section-title-${title}`] && "new-item-pulse"
                 )}
                 onClick={(e) => {
                   mobileTooltip.handleTooltipClick(`section-title-${title}`, e);
-                  setTitleHovered(true);
+                  setHoveredTooltip(`section-title-${title}`, true);
                 }}
-                onMouseEnter={() => setTitleHovered(true)}
+                onMouseEnter={() => setHoveredTooltip(`section-title-${title}`, true)}
               >
                 {title}
               </h3>
