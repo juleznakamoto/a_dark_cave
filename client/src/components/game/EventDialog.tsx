@@ -152,6 +152,13 @@ export default function EventDialog({
             }
           });
         }
+        if (result.weapons) {
+          Object.entries(result.weapons).forEach(([weapon, value]) => {
+            if (value) {
+              gameState.weapons[weapon as keyof typeof gameState.weapons] = true;
+            }
+          });
+        }
         if (result.relics) {
           Object.entries(result.relics).forEach(([relic, value]) => {
             if (value) {
