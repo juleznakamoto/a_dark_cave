@@ -119,7 +119,7 @@ function handleTotemSacrifice(
 ): ActionResult {
   // Track how many times this action has been used
   const usageCount = Number(state.story?.seen?.[usageCountKey]) || 0;
-  const currentCost = 5 + usageCount;
+  const currentCost = Math.min(5 + usageCount, 25);
 
   // Check if player has enough totems for the current price
   if ((state.resources[totemResource] || 0) < currentCost) {
