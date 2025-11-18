@@ -493,7 +493,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "☆" : undefined,
       iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-      tooltip: hasClerksHut ? "Increases success rate of cave exploration and scouting actions" : undefined,
+      tooltip: hasClerksHut ? <span className="text-muted-foreground">Increases success rate of cave exploration and scouting actions</span> : undefined,
     });
   }
 
@@ -507,7 +507,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "⬡" : undefined,
       iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-      tooltip: hasClerksHut ? "Increases attack power and resource gathering efficiency" : undefined,
+      tooltip: hasClerksHut ? <span className="text-muted-foreground">Increases attack power and resource gathering efficiency</span> : undefined,
     });
   }
 
@@ -521,7 +521,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "✧" : undefined,
       iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? "Enhances crafting effectiveness and bomb damage" : undefined,
+      tooltip: hasClerksHut ? <span className="text-muted-foreground">Enhances crafting effectiveness and bomb damage</span> : undefined,
     });
   }
 
@@ -536,7 +536,7 @@ export default function SidePanel() {
     
     madnessTooltipContent = (
       <>
-        <div>Triggers madness events and affects villager morale</div>
+        <div className="text-muted-foreground">Triggers madness events and affects villager morale</div>
         {totalMadness > 0 && (
           <div className="text-muted-foreground mt-1 pt-1 border-t border-border">
             <div>{itemMadness} from Items/Buildings</div>
