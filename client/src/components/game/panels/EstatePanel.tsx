@@ -58,7 +58,7 @@ export default function EstatePanel() {
                 <button
                   key={event.id}
                   onClick={() => handleCubeClick(event)}
-                  className="aspect-square bg-gray-800 border-2 border-gray-600 rounded flex items-center justify-center hover:bg-gray-700 hover:border-gray-400 transition-all cursor-pointer group relative"
+                  className="w-12 h-12 bg-gray-800 border-2 border-gray-600 rounded flex items-center justify-center hover:bg-gray-700 hover:border-gray-400 transition-all cursor-pointer group relative"
                   title={event.title}
                 >
                   <div className="text-md group-hover:scale-110 transition-transform">
