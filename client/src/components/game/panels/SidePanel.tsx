@@ -493,7 +493,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "☆" : undefined,
       iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Strength helps where words reach their limit</span> : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Increases success rate of cave exploration and scouting actions</span> : undefined,
     });
   }
 
@@ -507,7 +507,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "⬡" : undefined,
       iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Strength helps where words </span> : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Increases attack power and resource gathering efficiency</span> : undefined,
     });
   }
 
