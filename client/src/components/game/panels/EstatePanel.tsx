@@ -50,15 +50,23 @@ export default function EstatePanel() {
   const foodProduction = totalEffects.food || 0;
   const canActivateIdle = woodProduction > 0 && foodProduction > 0;
 
-  const handleActivateIdleMode = () => {
+  const handleActivateIdleMode = async () => {
+    const now = Date.now();
+    
     // Set idle mode state before opening dialog
     useGameStore.setState({
       idleModeState: {
         isActive: true,
-        startTime: Date.now(),
+        startTime: now,
         needsDisplay: true,
       },
     });
+    
+    // Immediately save to Supabase so user can close tab
+    const { saveGame } = await import('@/game/save');
+    const currentState = useGameStore.getState();
+    await saveGame(currentState, currentState.playTime);
+    
     setIdleModeDialog(true);
   };
 

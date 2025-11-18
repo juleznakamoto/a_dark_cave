@@ -71,6 +71,13 @@ export default function IdleModeDialog() {
             needsDisplay: true,
           },
         });
+        
+        // Immediately save to Supabase so user can close tab
+        (async () => {
+          const { saveGame } = await import('@/game/save');
+          const currentState = useGameStore.getState();
+          await saveGame(currentState, currentState.playTime);
+        })();
       }
     }
   }, [idleModeDialog.isOpen, isActive]);
