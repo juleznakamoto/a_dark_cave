@@ -4,9 +4,17 @@ import { useGameStore } from '@/game/state';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { cubeEvents } from '@/game/rules/eventsCube';
 import { LogEntry } from '@/game/rules/events';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { useMobileTooltip } from '@/hooks/useMobileTooltip';
 
 export default function EstatePanel() {
   const { events, setEventDialog } = useGameStore();
+  const mobileTooltip = useMobileTooltip();
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -55,17 +63,27 @@ export default function EstatePanel() {
           ) : (
             <div className="grid grid-cols-6 gap-3 w-40 h-12">
               {completedCubeEvents.map((event) => (
-                <button
-                  key={event.id}
-                  onClick={() => handleCubeClick(event)}
-                  className="w-6 h-6 bg-neutral-800 border-2 border-neutral-500 rounded flex items-center justify-center hover:bg-gray-700 hover:border-neutral-400 transition-all cursor-pointer group relative"
-                  title={event.title}
-                >
-                  <div className="text-md group-hover:scale-110 transition-transform">
-                    ▣
-                  </div>
-                  <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
-                </button>
+                <TooltipProvider key={event.id}>
+                  <Tooltip open={mobileTooltip.isTooltipOpen(`cube-${event.id}`)}>
+                    <TooltipTrigger asChild>
+                      <button
+                        onClick={(e) => {
+                          mobileTooltip.handleTooltipClick(`cube-${event.id}`, e);
+                          handleCubeClick(event);
+                        }}
+                        className="w-6 h-6 bg-neutral-800 border-2 border-neutral-500 rounded flex items-center justify-center hover:bg-gray-700 hover:border-neutral-400 transition-all cursor-pointer group relative"
+                      >
+                        <div className="text-md group-hover:scale-110 transition-transform">
+                          ▣
+                        </div>
+                        <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
+                      </button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs">{event.title}</div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               ))}
             </div>
           )}
