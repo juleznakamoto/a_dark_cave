@@ -521,7 +521,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "✧" : undefined,
       iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Unlocks advanced crafting and building options</span> : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
     });
   }
 
@@ -536,7 +536,7 @@ export default function SidePanel() {
     
     madnessTooltipContent = (
       <>
-        <div className="text-gray-400">Triggers madness events and affects villager morale</div>
+        <div className="text-gray-400">Leads thoughts into dangerous paths</div>
         {totalMadness > 0 && (
           <div className="text-gray-400 mt-1 pt-1 border-t border-border">
             <div>{itemMadness} from Items/Buildings</div>
