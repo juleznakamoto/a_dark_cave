@@ -204,7 +204,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: (state: GameState) => {
+      return state.story.seen.thirdWaveTriggered ? 10 : 5;
+    },
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
     triggered: false,
@@ -212,6 +214,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            thirdWaveTriggered: true,
+          },
+        },
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
@@ -248,7 +257,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.story.seen.thirdWaveVictory &&
       !state.story.seen.fourthWaveVictory,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: (state: GameState) => {
+      return state.story.seen.fourthWaveTriggered ? 10 : 5;
+    },
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
@@ -256,6 +267,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            fourthWaveTriggered: true,
+          },
+        },
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
