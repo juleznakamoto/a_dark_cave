@@ -53,12 +53,12 @@ export default function EstatePanel() {
               No cube memories yet...
             </p>
           ) : (
-            <div className="grid grid-cols-5 gap-2">
+            <div className="grid grid-cols-6 gap-3 w-40 h-12">
               {completedCubeEvents.map((event) => (
                 <button
                   key={event.id}
                   onClick={() => handleCubeClick(event)}
-                  className="w-12 h-12 bg-gray-800 border-2 border-gray-600 rounded flex items-center justify-center hover:bg-gray-700 hover:border-gray-400 transition-all cursor-pointer group relative"
+                  className="w-6 h-6 bg-neutral-800 border-2 border-neutral-500 rounded flex items-center justify-center hover:bg-gray-700 hover:border-neutral-400 transition-all cursor-pointer group relative"
                   title={event.title}
                 >
                   <div className="text-md group-hover:scale-110 transition-transform">
