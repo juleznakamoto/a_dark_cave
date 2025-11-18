@@ -491,7 +491,7 @@ export default function SidePanelSection({
               </h3>
             </TooltipTrigger>
             <TooltipContent>
-              <div className="text-xs text-muted-foreground">{titleTooltip}</div>
+              <div className="text-xs">{titleTooltip}</div>
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
