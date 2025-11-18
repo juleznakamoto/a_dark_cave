@@ -19,6 +19,7 @@ const PRODUCTION_SPEED_MULTIPLIER = 0.1; // 10% of normal speed
 export default function IdleModeDialog() {
   const { idleModeDialog, setIdleModeDialog, idleModeState } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<Record<string, number>>({});
+  const [offlineResources, setOfflineResources] = useState<Record<string, number>>({});
   const [remainingTime, setRemainingTime] = useState(IDLE_DURATION_MS);
   const [isActive, setIsActive] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
@@ -52,6 +53,7 @@ export default function IdleModeDialog() {
           }
         });
         
+        setOfflineResources(offlineResources);
         setAccumulatedResources(offlineResources);
         setIsActive(remaining > 0);
         
@@ -60,6 +62,7 @@ export default function IdleModeDialog() {
         // Start fresh idle mode
         setIsActive(true);
         setStartTime(now);
+        setOfflineResources({});
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
         
@@ -140,7 +143,9 @@ export default function IdleModeDialog() {
         const updated = { ...prev };
         Object.entries(productionPerSecond).forEach(([resource, amount]) => {
           // Multiply by 15 since we're updating every 15 seconds instead of every 1 second
-          updated[resource] = (updated[resource] || 0) + (amount * 15);
+          const offlineAmount = offlineResources[resource] || 0;
+          const currentAccumulated = (prev[resource] || 0) - offlineAmount;
+          updated[resource] = offlineAmount + currentAccumulated + (amount * 15);
         });
         return updated;
       });
@@ -199,7 +204,8 @@ export default function IdleModeDialog() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Only show resources that are being produced
+  // Show offline resources immediately, or current session resources after first interval
+  const hasOfflineResources = Object.keys(offlineResources).length > 0;
   const producedResources = Object.entries(accumulatedResources)
     .filter(([_, amount]) => amount > 0)
     .sort(([a], [b]) => a.localeCompare(b));
