@@ -105,17 +105,21 @@ export default function IdleModeDialog() {
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
-    // Calculate time until next 15-second interval
     const now = Date.now();
     const elapsed = now - startTime;
     const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
     
     if (remaining <= 0) return;
 
-    // Calculate milliseconds until next interval (e.g., 1:45, 1:30, 1:15, etc.)
-    const secondsRemaining = Math.ceil(remaining / 1000);
-    const secondsUntilNextInterval = secondsRemaining % 15 || 15;
-    const msUntilNextInterval = secondsUntilNextInterval * 1000;
+    // Calculate how many complete 15-second intervals have passed since idle mode started
+    const totalDurationSeconds = IDLE_DURATION_MS / 1000;
+    const elapsedSeconds = Math.floor(elapsed / 1000);
+    const secondsRemaining = totalDurationSeconds - elapsedSeconds;
+    
+    // Calculate milliseconds until the next 15-second mark
+    // (when secondsRemaining becomes divisible by 15)
+    const secondsUntilNextMark = (15 - (secondsRemaining % 15)) % 15 || 15;
+    const msUntilNextInterval = secondsUntilNextMark * 1000;
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
