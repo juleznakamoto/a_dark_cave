@@ -172,6 +172,7 @@ export const caveExploreActions: Record<string, Action> = {
     effects: {
       "resources.wood": "random(5,10)",
       "story.seen.hasWood": true,
+      "story.seen.firstWoodGathered": true,
       "relics.old_trinket": {
         probability: 0.01,
         value: true,
@@ -461,7 +462,7 @@ export function handleChopWood(
   }
 
   // Add message for first time gathering wood
-  if (state.resources.wood === 0 && !state.story.seen.firstWoodGathered) {
+  if (!state.story.seen.firstWoodGathered) {
     result.logEntries!.push({
       id: `first-wood-gather-${Date.now()}`,
       message:
@@ -469,15 +470,6 @@ export function handleChopWood(
       timestamp: Date.now(),
       type: "system",
     });
-
-    // Mark as seen so it only triggers once
-    result.stateUpdates.story = {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
-        firstWoodGathered: true,
-      },
-    };
   }
 
   Object.assign(result.stateUpdates, effectUpdates);
