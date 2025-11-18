@@ -25,11 +25,11 @@ export default function GameContainer() {
     relics,
     eventDialog,
     combatDialog,
-    idleDialog,
+    idleModeDialog,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
-    setIdleDialog,
+    setIdleModeDialog,
     isPaused,
     showEndScreen,
     devMode,
@@ -305,10 +305,7 @@ export default function GameContainer() {
       />
 
       {/* Idle Mode Dialog */}
-      <IdleModeDialog
-        isOpen={idleDialog.isOpen}
-        onClose={() => setIdleDialog({ isOpen: false })}
-      />
+      <IdleModeDialog />
     </div>
   );
 }
