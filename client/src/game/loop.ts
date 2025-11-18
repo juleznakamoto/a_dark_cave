@@ -586,23 +586,23 @@ function handleStrangerApproach() {
   // Calculate probability based on your specifications
   let probability = 0.1 - state.CM * 0.05; // 10% base probability
 
-  // +2.0% for each wooden hut -> 20 %
-  probability += state.buildings.woodenHut * 0.02;
-  // +2.5% for each stone hut -> 25%
-  probability += state.buildings.stoneHut * 0.025;
-  // +3% for each longhouse -> 6%
-  probability += state.buildings.longhouse * 0.03;
-  // +5% for each fur tent -> 5%
-  probability += state.buildings.furTents * 0.05;
+  // +2.0% for each wooden hut -> 15 %
+  probability += state.buildings.woodenHut * 0.015;
+  // +2.5% for each stone hut -> 20%
+  probability += state.buildings.stoneHut * 0.02;
+  // +3% for each longhouse -> 5%
+  probability += state.buildings.longhouse * 0.025;
+  // +5% for each fur tent -> 3%
+  probability += state.buildings.furTents * 0.03;
 
   // Raven's Mark blessing: +15% stranger approach probability
   if (state.blessings?.ravens_mark) {
-    probability += 0.15;
+    probability += 0.1;
   }
 
   // Raven's Mark Enhanced blessing: +30% stranger approach probability
   if (state.blessings?.ravens_mark_enhanced) {
-    probability += 0.3;
+    probability += 0.25;
   }
 
   if (currentPopulation === 0) {
