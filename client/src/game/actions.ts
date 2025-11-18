@@ -107,6 +107,7 @@ import {
   handleBuildFortifiedMoat,
   handleBuildTraps, // Import the new handler
   handleBuildBlackMonolith, // Import the new handler
+  handleBuildMasterworkFoundry, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -326,6 +327,8 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildFoundry(state, result);
     case 'buildPrimeFoundry':
       return handleBuildPrimeFoundry(state, result);
+    case 'buildMasterworkFoundry':
+      return handleBuildMasterworkFoundry(state, result);
     case 'buildAltar':
       return handleBuildAltar(state, result);
     case 'buildGreatCabin':

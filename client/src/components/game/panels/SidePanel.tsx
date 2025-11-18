@@ -228,8 +228,12 @@ export default function SidePanel() {
       if (key === "tannery" && buildings.masterTannery > 0) {
         return false;
       }
-      // Hide foundry when Prime Foundry is built
-      if (key === "foundry" && buildings.primeFoundry > 0) {
+      // Hide foundry when Prime Foundry or Masterwork Foundry is built
+      if (key === "foundry" && (buildings.primeFoundry > 0 || buildings.masterworkFoundry > 0)) {
+        return false;
+      }
+      // Hide Prime Foundry when Masterwork Foundry is built
+      if (key === "primeFoundry" && buildings.masterworkFoundry > 0) {
         return false;
       }
       return (value ?? 0) > 0;

@@ -7,7 +7,7 @@ import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions, handleBuildBlackMonolith } from "./villageBuildActions";
+import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
@@ -42,6 +42,7 @@ const actionHandlers: Record<string, (state: GameState, actionId: string) => Par
   ...forestTradeActions.handlers,
   // Add new handlers here
   buildBlackMonolith: handleBuildBlackMonolith,
+  buildMasterworkFoundry: handleBuildMasterworkFoundry,
   animals: handleAnimals,
   boneTotems: handleBoneTotems,
   leatherTotems: handleLeatherTotems,
@@ -61,6 +62,7 @@ export const gameActions: Record<string, Action> = {
   ...forestTradeActions,
   // Add new actions here
   buildBlackMonolith: villageBuildActions.buildBlackMonolith,
+  buildMasterworkFoundry: villageBuildActions.buildMasterworkFoundry,
   animals: forestSacrificeActions.animals,
 };
 
@@ -75,6 +77,8 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildCabin: "cabin",
     buildBlacksmith: "blacksmith",
     buildFoundry: "foundry",
+    buildPrimeFoundry: "primeFoundry", // Added Prime Foundry
+    buildMasterworkFoundry: "masterworkFoundry", // Added Masterwork Foundry
     buildAltar: "altar",
     buildGreatCabin: "greatCabin",
     buildTimberMill: "timberMill",

@@ -339,6 +339,40 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 40,
   },
 
+  buildMasterworkFoundry: {
+    id: "buildMasterworkFoundry",
+    label: "Masterwork Foundry",
+    description: "Masterwork foundry with superior steel production",
+    tooltipEffects: ["+1 Steel (Steel Forger)"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.primeFoundry": 1,
+        "buildings.bottomlessPit": 1,
+        "buildings.masterworkFoundry": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 5000,
+        "resources.stone": 5000,
+        "resources.steel": 5000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.masterworkFoundry": 1,
+        "story.seen.hasMasterworkFoundry": true,
+      },
+    },
+    productionEffects: {
+      steel_forger: {
+        steel: 1,
+      },
+    },
+    cooldown: 60,
+  },
+
   buildGreatCabin: {
     id: "buildGreatCabin",
     label: "Great Cabin",
@@ -1564,6 +1598,31 @@ export function handleBuildPrimeFoundry(
     "primeFoundry",
   );
   return primeFoundryResult;
+}
+
+export function handleBuildMasterworkFoundry(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const masterworkFoundryResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildMasterworkFoundry",
+    "masterworkFoundry",
+  );
+  
+  // Add masterwork foundry completion message
+  if (state.buildings.masterworkFoundry === 0) {
+    masterworkFoundryResult.logEntries!.push({
+      id: `masterwork-foundry-built-${Date.now()}`,
+      message:
+        "The Masterwork Foundry stands complete, a monument to the pinnacle of metallurgical craft. Steel flows like water from its blazing forges.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return masterworkFoundryResult;
 }
 
 export function handleBuildAltar(

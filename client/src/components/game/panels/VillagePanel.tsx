@@ -89,6 +89,7 @@ export default function VillagePanel() {
         { id: "buildBottomlessPit", label: "Bottomless Pit" },
         { id: "buildFoundry", label: "Foundry" },
         { id: "buildPrimeFoundry", label: "Prime Foundry" },
+        { id: "buildMasterworkFoundry", label: "Masterwork Foundry" },
         { id: "buildAltar", label: "Altar" },
         { id: "buildShrine", label: "Shrine" },
         { id: "buildTemple", label: "Temple" },

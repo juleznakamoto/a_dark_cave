@@ -81,10 +81,10 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "foundry",
-        maxCount: 2,
+        maxCount: 3,
         color: tailwindToHex("gray-400/80"),
         label: "Foundry",
-        relatedBuildings: ["primeFoundry"],
+        relatedBuildings: ["primeFoundry", "masterworkFoundry"],
       },
       {
         buildingType: "tannery",
