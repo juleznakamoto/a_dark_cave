@@ -56,11 +56,11 @@ export default function IdleModeDialog() {
 
         // Don't auto-end when time is up - let user see the results
       } else {
-        // Start fresh idle mode
+        // Start fresh idle mode - begin with completely empty resources
         setIsActive(true);
         setStartTime(now);
-        setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
+        setAccumulatedResources({}); // Start with empty object
 
         // Persist the start time
         useGameStore.setState({
