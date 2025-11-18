@@ -1112,7 +1112,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 45,
     title: "The Witch's Curse",
     message:
-      "A hunched old woman in tattered robes arrives at the village gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse your village with misfortune.'",
+      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse you with misfortune.'",
     triggered: false,
     priority: 4,
     repeatable: false,
