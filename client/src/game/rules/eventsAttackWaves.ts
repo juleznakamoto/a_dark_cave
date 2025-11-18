@@ -306,8 +306,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
-      // state.weapons.bloodstone_staff &&
-      // state.story.seen.fourthWaveVictory &&
+      state.weapons.bloodstone_staff &&
+      state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
