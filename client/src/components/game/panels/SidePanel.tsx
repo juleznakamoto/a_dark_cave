@@ -538,7 +538,7 @@ export default function SidePanel() {
       <>
         <div>Triggers madness events and affects villager morale</div>
         {totalMadness > 0 && (
-          <div className="mt-1 pt-1 border-t border-border">
+          <div className="text-muted-foreground mt-1 pt-1 border-t border-border">
             <div>{itemMadness} from Items/Buildings</div>
             <div>{eventMadness} from Events</div>
           </div>
