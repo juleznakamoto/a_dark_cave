@@ -233,12 +233,12 @@ export default function IdleModeDialog() {
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
-          <DialogTitle>Sleep Mode</DialogTitle>
+          <DialogTitle>Sleeping</DialogTitle>
           <DialogDescription>
             {isTimeUp ? (
               <span className="text-yellow-600">You are awake!.</span>
             ) : (
-              <span>Time remaining: {formatTime(remainingTime)}</span>
+              <span>Waking up in: {formatTime(remainingTime)}</span>
             )}
           </DialogDescription>
         </DialogHeader>
@@ -264,7 +264,7 @@ export default function IdleModeDialog() {
 
         <div className="flex justify-end">
           <Button onClick={handleEndIdleMode} variant="default">
-            End Sleep Mode
+            Wake Up
           </Button>
         </div>
       </DialogContent>
