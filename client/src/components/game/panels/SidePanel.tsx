@@ -527,6 +527,26 @@ export default function SidePanel() {
 
   // Always show madness (show 0 if below 0)
   const displayMadness = Math.max(0, totalMadness);
+  
+  // Build combined madness tooltip
+  let madnessTooltipContent: React.ReactNode = undefined;
+  if (hasClerksHut) {
+    const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
+    const eventMadness = gameState.stats.madnessFromEvents || 0;
+    
+    madnessTooltipContent = (
+      <>
+        <div>Triggers madness events and affects villager morale</div>
+        {totalMadness > 0 && (
+          <div className="mt-1 pt-1 border-t border-border">
+            <div>{itemMadness} from Items/Buildings</div>
+            <div>{eventMadness} from Events</div>
+          </div>
+        )}
+      </>
+    );
+  }
+  
   statsItems.push({
     id: "madness",
     label: "Madness",
@@ -535,7 +555,7 @@ export default function SidePanel() {
     visible: true,
     icon: hasScriptorium ? "✺" : undefined,
     iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-    tooltip: hasClerksHut ? "Triggers madness events and affects villager morale" : undefined,
+    tooltip: madnessTooltipContent,
   });
 
   // Dynamically generate fortification items from state

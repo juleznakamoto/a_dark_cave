@@ -387,65 +387,7 @@ export default function SidePanelSection({
       );
     }
 
-    // If this is madness with events, show tooltip
-    if (isMadnessTooltip) {
-      return (
-        <TooltipProvider key={item.id}>
-          <Tooltip open={mobileTooltip.isTooltipOpen(item.id)}>
-            <div
-              data-testid={item.testId}
-              className={`flex leading-tight justify-between items-center transition-all duration-300 ${
-                isAnimated
-                  ? "text-green-400"
-                  : isDecreaseAnimated
-                    ? "text-red-400"
-                    : ""
-              }`}
-            >
-              <TooltipTrigger asChild>
-                <span
-                  onClick={(e) => handleMobileTooltipClick(item.id, e)}
-                  onMouseEnter={() => handleTooltipHover(item.id)}
-                  onMouseLeave={() => handleTooltipLeave(item.id)}
-                  className={mobileTooltip.isMobile ? "cursor-pointer" : ""}
-                >
-                  {labelContent}
-                </span>
-              </TooltipTrigger>
-              {![
-                "Relics",
-                "Tools",
-                "Weapons",
-                "Clothing",
-                "Buildings",
-                "Fortifications",
-                "Blessings",
-                "Schematics",
-              ].includes(title) && (
-                <span
-                  className={`font-mono ${
-                    isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : ""
-                  }`}
-                >
-                  {displayValue}
-                </span>
-              )}
-            </div>
-            <TooltipContent>
-              <p className="whitespace-pre-line">{madnessTooltipContent}</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      );
-    }
-
-    // If this item has a tooltip, wrap it in a tooltip
+    // If this item has a tooltip, render with tooltip
     if (item.tooltip) {
       return (
         <TooltipProvider key={item.id}>
@@ -512,7 +454,12 @@ export default function SidePanelSection({
               )}
             </div>
             <TooltipContent className="max-w-xs">
-              {typeof item.tooltip === 'string' ? item.tooltip : item.tooltip}
+              {typeof item.tooltip === 'string' ? (
+                <>
+                  {isMadnessTooltip && <p className="whitespace-pre-line">{madnessTooltipContent}</p>}
+                  {item.tooltip}
+                </>
+              ) : item.tooltip}
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
