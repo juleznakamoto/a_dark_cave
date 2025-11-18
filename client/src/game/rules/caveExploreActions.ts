@@ -241,6 +241,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 25,
     },
     effects: {
+      "resources.stone": "random(5,10)",
       "resources.coal": "random(5,10)",
       "resources.iron": "random(5,10)",
       "resources.obsidian": "random(1,5)",

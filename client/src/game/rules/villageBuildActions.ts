@@ -1198,7 +1198,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildGrandBlacksmith: {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
-    description: "Advanced forge capable of working the finest materials",
+    description: "Advanced blacksmith capable of creating the finest products",
     tooltipEffects: ["Unlocks Frostglass Crafting"],
     building: true,
     show_when: {
@@ -1616,7 +1616,7 @@ export function handleBuildMasterworkFoundry(
     masterworkFoundryResult.logEntries!.push({
       id: `masterwork-foundry-built-${Date.now()}`,
       message:
-        "The Masterwork Foundry stands complete, a monument to the pinnacle of metallurgical craft. Steel flows like water from its blazing forges.",
+        "The Masterwork Foundry is complete, a monument to the pinnacle of metallurgical craft.",
       timestamp: Date.now(),
       type: "system",
     });
