@@ -303,8 +303,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",
-            attack: [60, 65, 70][Math.ceil(Math.random() * 2)] + state.CM * 20,
-            maxHealth: 650 + state.CM * 250,
+            attack: [55, 60, 65, 70][Math.ceil(Math.random() * 3)] + state.CM * 20,
+            maxHealth: [550, 600, 650][Math.ceil(Math.random() * 2)] + state.CM * 250,
             currentHealth: 650 + state.CM * 250,
           },
           eventTitle: "The Final Wave",
