@@ -112,15 +112,16 @@ export default function IdleModeDialog() {
         }
       });
 
-      // Accumulate resources
+      // Accumulate resources (calculate for 15 seconds of production)
       setAccumulatedResources(prev => {
         const updated = { ...prev };
         Object.entries(productionPerSecond).forEach(([resource, amount]) => {
-          updated[resource] = (updated[resource] || 0) + amount;
+          // Multiply by 15 since we're updating every 15 seconds instead of every 1 second
+          updated[resource] = (updated[resource] || 0) + (amount * 15);
         });
         return updated;
       });
-    }, 1000); // Update every second
+    }, 15000); // Update every 15 seconds
 
     return () => clearInterval(interval);
   }, [isActive, idleModeDialog.isOpen, startTime]);
