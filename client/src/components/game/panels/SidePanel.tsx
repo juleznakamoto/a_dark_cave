@@ -521,7 +521,7 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "✧" : undefined,
       iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Helps,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Unlocks advanced crafting and building options</span> : undefined,
     });
   }
 
