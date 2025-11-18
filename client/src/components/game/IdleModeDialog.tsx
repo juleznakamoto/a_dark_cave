@@ -56,11 +56,20 @@ export default function IdleModeDialog() {
 
         // Don't auto-end when time is up - let user see the results
       } else {
-        // Start fresh idle mode
+        // Start fresh idle mode - begin with zero resources
         setIsActive(true);
         setStartTime(now);
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
+
+        // Clear any stale accumulated resources from a previous session
+        const currentState = useGameStore.getState();
+        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
+        const freshResources: Record<string, number> = {};
+        Object.keys(totalEffects).forEach((resource) => {
+          freshResources[resource] = 0;
+        });
+        setAccumulatedResources(freshResources);
 
         // Persist the start time
         useGameStore.setState({
@@ -124,16 +133,14 @@ export default function IdleModeDialog() {
         Object.entries(totalEffects).forEach(([resource, amount]) => {
           // Apply the 10% production speed multiplier to the full 15-second production amount
           const production = amount * PRODUCTION_SPEED_MULTIPLIER;
-          const offlineAmount = accumulatedResources[resource] || 0; // Use accumulatedResources from state
-          const currentAccumulated = (prev[resource] || 0) - offlineAmount;
-          updated[resource] = offlineAmount + currentAccumulated + production;
+          updated[resource] = (prev[resource] || 0) + production;
         });
         return updated;
       });
     }, 15000); // Update resources every 15 seconds
 
     return () => clearInterval(resourceInterval);
-  }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]); // Added accumulatedResources to dependencies
+  }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
     // Apply accumulated resources to the game state
