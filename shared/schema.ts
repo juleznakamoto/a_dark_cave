@@ -361,6 +361,22 @@ export const gameStateSchema = z.object({
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
   playTime: z.number().default(0), // Track total play time in milliseconds
   isNewGame: z.boolean().default(false), // Track if the current game is a new game
+  idleModeState: z.object({
+    isActive: z.boolean().default(false),
+    startTime: z.number().default(0),
+    needsDisplay: z.boolean().default(false),
+  }).default({
+    isActive: false,
+    startTime: 0,
+    needsDisplay: false,
+  }),
+  sleepUpgrades: z.object({
+    lengthLevel: z.number().default(0), // 0-5
+    intensityLevel: z.number().default(0), // 0-5
+  }).default({
+    lengthLevel: 0,
+    intensityLevel: 0,
+  }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

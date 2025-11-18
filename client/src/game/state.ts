@@ -327,6 +327,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     startTime: 0,
     needsDisplay: false,
   },
+  sleepUpgrades: {
+    lengthLevel: 0,
+    intensityLevel: 0,
+  },
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,

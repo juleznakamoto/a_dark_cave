@@ -12,17 +12,39 @@ import { getTotalPopulationEffects } from '@/game/population';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { capitalizeWords } from '@/lib/utils';
 
-const IDLE_DURATION_MS = 2 * 60 * 1000; // 2 minutes for testing
-const PRODUCTION_SPEED_MULTIPLIER = 0.1; // 10% of normal speed
+// Sleep upgrade configurations
+const SLEEP_LENGTH_UPGRADES = [
+  { level: 0, hours: 4 },
+  { level: 1, hours: 4 },
+  { level: 2, hours: 6 },
+  { level: 3, hours: 10 },
+  { level: 4, hours: 16 },
+  { level: 5, hours: 24 },
+];
+
+const SLEEP_INTENSITY_UPGRADES = [
+  { level: 0, percentage: 10 },
+  { level: 1, percentage: 12.5 },
+  { level: 2, percentage: 15 },
+  { level: 3, percentage: 17.5 },
+  { level: 4, percentage: 20 },
+  { level: 5, percentage: 25 },
+];
 
 export default function IdleModeDialog() {
-  const { idleModeDialog, setIdleModeDialog, idleModeState } = useGameStore();
+  const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<Record<string, number>>({});
-  const [remainingTime, setRemainingTime] = useState(IDLE_DURATION_MS);
+  const [remainingTime, setRemainingTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
 
   const state = useGameStore.getState();
+
+  // Get current sleep duration and multiplier from upgrades
+  const sleepLengthConfig = SLEEP_LENGTH_UPGRADES[sleepUpgrades?.lengthLevel || 0];
+  const sleepIntensityConfig = SLEEP_INTENSITY_UPGRADES[sleepUpgrades?.intensityLevel || 0];
+  const IDLE_DURATION_MS = sleepLengthConfig.hours * 60 * 60 * 1000;
+  const PRODUCTION_SPEED_MULTIPLIER = sleepIntensityConfig.percentage / 100;
 
   // Initialize idle mode when dialog opens
   useEffect(() => {

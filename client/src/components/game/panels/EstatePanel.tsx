@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -12,9 +13,29 @@ import {
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { Button } from "@/components/ui/button";
 import { getTotalPopulationEffects } from "@/game/population";
+import { Progress } from "@/components/ui/progress";
+
+// Sleep upgrade configurations
+const SLEEP_LENGTH_UPGRADES = [
+  { level: 0, hours: 4, cost: 0, currency: null },
+  { level: 1, hours: 4, cost: 250, currency: "silver" },
+  { level: 2, hours: 6, cost: 500, currency: "silver" },
+  { level: 3, hours: 10, cost: 1000, currency: "silver" },
+  { level: 4, hours: 16, cost: 2500, currency: "silver" },
+  { level: 5, hours: 24, cost: 5000, currency: "silver" },
+];
+
+const SLEEP_INTENSITY_UPGRADES = [
+  { level: 0, percentage: 10, cost: 0, currency: null },
+  { level: 1, percentage: 12.5, cost: 50, currency: "gold" },
+  { level: 2, percentage: 15, cost: 250, currency: "gold" },
+  { level: 3, percentage: 17.5, cost: 500, currency: "gold" },
+  { level: 4, percentage: 20, cost: 1000, currency: "gold" },
+  { level: 5, percentage: 25, cost: 2500, currency: "gold" },
+];
 
 export default function EstatePanel() {
-  const { events, setEventDialog, setIdleModeDialog } = useGameStore();
+  const { events, setEventDialog, setIdleModeDialog, sleepUpgrades, resources } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const state = useGameStore.getState();
 
@@ -73,6 +94,54 @@ export default function EstatePanel() {
     setIdleModeDialog(true);
   };
 
+  // Handle sleep length upgrade
+  const handleSleepLengthUpgrade = () => {
+    const currentLevel = sleepUpgrades.lengthLevel;
+    if (currentLevel >= 5) return;
+
+    const nextUpgrade = SLEEP_LENGTH_UPGRADES[currentLevel + 1];
+    if (resources.silver >= nextUpgrade.cost) {
+      useGameStore.setState({
+        sleepUpgrades: {
+          ...sleepUpgrades,
+          lengthLevel: currentLevel + 1,
+        },
+        resources: {
+          ...resources,
+          silver: resources.silver - nextUpgrade.cost,
+        },
+      });
+    }
+  };
+
+  // Handle sleep intensity upgrade
+  const handleSleepIntensityUpgrade = () => {
+    const currentLevel = sleepUpgrades.intensityLevel;
+    if (currentLevel >= 5) return;
+
+    const nextUpgrade = SLEEP_INTENSITY_UPGRADES[currentLevel + 1];
+    if (resources.gold >= nextUpgrade.cost) {
+      useGameStore.setState({
+        sleepUpgrades: {
+          ...sleepUpgrades,
+          intensityLevel: currentLevel + 1,
+        },
+        resources: {
+          ...resources,
+          gold: resources.gold - nextUpgrade.cost,
+        },
+      });
+    }
+  };
+
+  const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
+  const nextLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
+  const canUpgradeLength = sleepUpgrades.lengthLevel < 5 && resources.silver >= (nextLengthUpgrade?.cost || 0);
+
+  const currentIntensityUpgrade = SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel];
+  const nextIntensityUpgrade = SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
+  const canUpgradeIntensity = sleepUpgrades.intensityLevel < 5 && resources.gold >= (nextIntensityUpgrade?.cost || 0);
+
   return (
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 pb-4">
@@ -93,6 +162,87 @@ export default function EstatePanel() {
               Requires positive wood and food production
             </p>
           )}
+        </div>
+
+        {/* Sleep Upgrades Section */}
+        <div className="space-y-3 pt-2">
+          {/* Sleep Length Upgrade */}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-xs font-medium text-foreground cursor-help">
+                      Sleep Length
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      <div>Current: {currentLengthUpgrade.hours}h max</div>
+                      {nextLengthUpgrade && (
+                        <div>Next: {nextLengthUpgrade.hours}h max</div>
+                      )}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              {sleepUpgrades.lengthLevel < 5 && (
+                <Button
+                  onClick={handleSleepLengthUpgrade}
+                  disabled={!canUpgradeLength}
+                  size="sm"
+                  variant="outline"
+                  className="h-6 text-xs px-2"
+                >
+                  {nextLengthUpgrade.cost} Silver
+                </Button>
+              )}
+            </div>
+            <Progress value={(sleepUpgrades.lengthLevel / 5) * 100} className="h-2" />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{currentLengthUpgrade.hours}h</span>
+              <span>Level {sleepUpgrades.lengthLevel}/5</span>
+            </div>
+          </div>
+
+          {/* Sleep Intensity Upgrade */}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span className="text-xs font-medium text-foreground cursor-help">
+                      Sleep Intensity
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">
+                      <div>Current: {currentIntensityUpgrade.percentage}% production</div>
+                      {nextIntensityUpgrade && (
+                        <div>Next: {nextIntensityUpgrade.percentage}% production</div>
+                      )}
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+              {sleepUpgrades.intensityLevel < 5 && (
+                <Button
+                  onClick={handleSleepIntensityUpgrade}
+                  disabled={!canUpgradeIntensity}
+                  size="sm"
+                  variant="outline"
+                  className="h-6 text-xs px-2"
+                >
+                  {nextIntensityUpgrade.cost} Gold
+                </Button>
+              )}
+            </div>
+            <Progress value={(sleepUpgrades.intensityLevel / 5) * 100} className="h-2" />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{currentIntensityUpgrade.percentage}%</span>
+              <span>Level {sleepUpgrades.intensityLevel}/5</span>
+            </div>
+          </div>
         </div>
 
         {/* Cube Section */}
