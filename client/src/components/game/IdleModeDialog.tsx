@@ -247,22 +247,16 @@ export default function IdleModeDialog() {
         </DialogHeader>
 
         <div className="space-y-3 py-4">
-          {producedResources.length === 0 ? (
-            <p className="text-sm text-muted-foreground italic">
-              No resources produced yet...
-            </p>
-          ) : (
-            <div className="space-y-2">
-              {producedResources.map(([resource, amount]) => (
-                <div key={resource} className="flex justify-between items-center">
-                  <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
-                  <span className="text-sm tabular-nums">
-                    <AnimatedCounter value={Math.floor(amount)} />
-                  </span>
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="space-y-2">
+            {producedResources.map(([resource, amount]) => (
+              <div key={resource} className="flex justify-between items-center">
+                <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
+                <span className="text-sm tabular-nums">
+                  <AnimatedCounter value={Math.floor(amount)} />
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
 
         <div className="flex justify-end">
