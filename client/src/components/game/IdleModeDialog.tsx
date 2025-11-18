@@ -89,6 +89,23 @@ export default function IdleModeDialog() {
       }
     });
 
+    // Create log message showing resources gained
+    if (Object.keys(accumulatedResources).length > 0) {
+      const resourcesList = Object.entries(accumulatedResources)
+        .filter(([_, amount]) => amount > 0)
+        .map(([resource, amount]) => `${capitalizeWords(resource)}: ${Math.floor(amount)}`)
+        .join(', ');
+
+      if (resourcesList) {
+        useGameStore.getState().addLogEntry({
+          id: `idle-mode-end-${Date.now()}`,
+          message: `While you were idle, the villagers produced: ${resourcesList}`,
+          timestamp: Date.now(),
+          type: 'system',
+        });
+      }
+    }
+
     // Close dialog and reset
     setIsActive(false);
     setIdleModeDialog(false);
