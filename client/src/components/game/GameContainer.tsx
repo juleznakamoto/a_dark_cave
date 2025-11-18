@@ -29,14 +29,11 @@ export default function GameContainer() {
     setCombatDialog,
     isPaused,
     showEndScreen,
+    devMode,
   } = useGameStore();
 
-  // Estate unlocks after forest
-  const estateUnlocked = flags.forestUnlocked;
-
-  const [activeTab, setActiveTab] = useState<
-    "cave" | "village" | "forest" | "estate" | "bastion"
-  >("cave");
+  // Estate unlocks after forest and only visible in dev mode
+  const estateUnlocked = flags.forestUnlocked && devMode;
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
 
