@@ -31,7 +31,7 @@ export default function IdleModeDialog() {
       const now = Date.now();
       
       // Check if there's a persisted idle mode state
-      if (idleModeState?.isActive && idleModeState.startTime) {
+      if (idleModeState?.startTime && idleModeState.startTime > 0) {
         const elapsed = now - idleModeState.startTime;
         const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
         
@@ -55,10 +55,7 @@ export default function IdleModeDialog() {
         setAccumulatedResources(offlineResources);
         setIsActive(remaining > 0);
         
-        // If time expired while offline, end idle mode immediately
-        if (remaining <= 0) {
-          setTimeout(() => handleEndIdleMode(), 100);
-        }
+        // Don't auto-end when time is up - let user see the results
       } else {
         // Start fresh idle mode
         setIsActive(true);
@@ -71,6 +68,7 @@ export default function IdleModeDialog() {
           idleModeState: {
             isActive: true,
             startTime: now,
+            needsDisplay: true,
           },
         });
       }
@@ -153,6 +151,7 @@ export default function IdleModeDialog() {
       idleModeState: {
         isActive: false,
         startTime: 0,
+        needsDisplay: false,
       },
     });
 

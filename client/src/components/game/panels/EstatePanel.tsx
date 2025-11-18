@@ -56,6 +56,7 @@ export default function EstatePanel() {
       idleModeState: {
         isActive: true,
         startTime: Date.now(),
+        needsDisplay: true,
       },
     });
     setIdleModeDialog(true);

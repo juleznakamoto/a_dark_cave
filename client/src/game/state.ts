@@ -44,6 +44,7 @@ interface GameStore extends GameState {
   idleModeState: {
     isActive: boolean;
     startTime: number;
+    needsDisplay: boolean; // Track if user needs to see results
   };
 
   // Notification state for shop
@@ -324,6 +325,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   idleModeState: {
     isActive: false,
     startTime: 0,
+    needsDisplay: false,
   },
   // Initialize shop notification state
   shopNotificationSeen: false,
@@ -580,7 +582,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       authNotificationVisible: false,
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
-      idleModeState: { isActive: false, startTime: 0 }, // Reset idle mode state
+      idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
     };
 
     set(resetState);
@@ -630,7 +632,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
-        idleModeState: savedState.idleModeState || { isActive: false, startTime: 0 }, // Load idle mode state
+        idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
       };
 
       set(loadedState);
