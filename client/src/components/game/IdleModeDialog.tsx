@@ -236,7 +236,7 @@ export default function IdleModeDialog() {
           <DialogTitle>Sleeping</DialogTitle>
           <DialogDescription>
             {isTimeUp ? (
-              <span className="text-yellow-600">You are awake!.</span>
+              <span className="text-yellow-600">You are awake!</span>
             ) : (
               <span>Waking up in: {formatTime(remainingTime)}</span>
             )}
@@ -264,7 +264,7 @@ export default function IdleModeDialog() {
 
         <div className="flex justify-end">
           <Button onClick={handleEndIdleMode} variant="default">
-            Wake Up
+            {isTimeUp ? "Get Up" : "Wake Up"}
           </Button>
         </div>
       </DialogContent>
