@@ -118,7 +118,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.story.seen.hasBastion &&
       !state.story.seen.firstWaveVictory,
     triggerType: "resource",
-    timeProbability: 4,
+    timeProbability: (state: GameState) => {
+      return state.story.seen.firstWaveTriggered ? 10 : 4;
+    },
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
     triggered: false,
@@ -126,6 +128,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            firstWaveTriggered: true,
+          },
+        },
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
@@ -160,7 +169,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory,
     triggerType: "resource",
-    timeProbability: 5,
+    timeProbability: (state: GameState) => {
+      return state.story.seen.secondWaveTriggered ? 10 : 5;
+    },
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,
@@ -168,6 +179,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
+        story: {
+          ...state.story,
+          seen: {
+            ...state.story.seen,
+            secondWaveTriggered: true,
+          },
+        },
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
