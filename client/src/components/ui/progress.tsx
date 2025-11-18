@@ -16,7 +16,7 @@ const Progress = React.forwardRef<
   <ProgressPrimitive.Root
     ref={ref}
     className={cn(
-      "relative h-4 w-full overflow-hidden rounded-full bg-grey",
+      "relative h-4 w-full overflow-hidden rounded-full",
       className
     )}
     {...props}
@@ -27,7 +27,7 @@ const Progress = React.forwardRef<
         {Array.from({ length: segments }).map((_, i) => (
           <div
             key={i}
-            className="flex-1 border-r border-neutral-600 last:border-r-0"
+            className="flex-1 border-r border-neutral-600 last:border-r-0 bg-neutral"
           />
         ))}
       </div>

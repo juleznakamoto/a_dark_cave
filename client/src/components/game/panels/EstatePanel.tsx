@@ -165,7 +165,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Sleep Upgrades Section */}
-        <div className="space-y-3 pt-2">
+        <div className="w-80 space-y-3 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
@@ -201,7 +201,6 @@ export default function EstatePanel() {
             <Progress value={(sleepUpgrades.lengthLevel / 5) * 100} className="h-2" segments={5} />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentLengthUpgrade.hours}h</span>
-              <span>Level {sleepUpgrades.lengthLevel}/5</span>
             </div>
           </div>
 
@@ -240,7 +239,6 @@ export default function EstatePanel() {
             <Progress value={(sleepUpgrades.intensityLevel / 5) * 100} className="h-2" segments={5} />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentIntensityUpgrade.percentage}%</span>
-              <span>Level {sleepUpgrades.intensityLevel}/5</span>
             </div>
           </div>
         </div>
@@ -249,7 +247,7 @@ export default function EstatePanel() {
         <div className="space-y-2 pt-4">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
 
-          <div className="grid grid-cols-6 gap-3 w-40 h-12">
+          <div className="grid grid-cols-6 gap-4 w-40 h-12">
             {completedCubeEvents.map((event) => (
               <TooltipProvider key={event.id}>
                 <Tooltip
