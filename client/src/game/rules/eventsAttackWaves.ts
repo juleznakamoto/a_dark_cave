@@ -50,7 +50,7 @@ function handleDefeat(
     0,
   );
   const minCasualities = Math.ceil(
-    Math.random() * 0.75 * maxCasualties + 0.25 * maxCasualties + state.CM * 5,
+    Math.random() * 0.8 * maxCasualties + 0.2 * maxCasualties + state.CM * 5,
   );
   const casualties = Math.min(minCasualities, currentPopulation);
   const deathResult = killVillagers(state, casualties);
@@ -288,8 +288,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   fifthWave: {
     id: "fifthWave",
     condition: (state: GameState) =>
-      state.weapons.bloodstone_staff &&
-      state.story.seen.fourthWaveVictory &&
+      // state.weapons.bloodstone_staff &&
+      // state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory,
     triggerType: "resource",
     timeProbability: 5,
@@ -304,7 +304,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           enemy: {
             name: "Swarm of pale creatures",
             attack: [55, 60, 65, 70][Math.ceil(Math.random() * 3)] + state.CM * 20,
-            maxHealth: [550, 600, 650][Math.ceil(Math.random() * 2)] + state.CM * 250,
+            maxHealth: 650 + state.CM * 250,
             currentHealth: 650 + state.CM * 250,
           },
           eventTitle: "The Final Wave",
