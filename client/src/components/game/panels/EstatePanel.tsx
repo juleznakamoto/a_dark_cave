@@ -175,6 +175,11 @@ export default function EstatePanel() {
                   <TooltipTrigger asChild>
                     <span 
                       className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-length'] ? 'new-item-pulse' : ''}`}
+                      onMouseEnter={() => {
+                        if (!hoveredTooltips['sleep-length']) {
+                          setHoveredTooltip('sleep-length', true);
+                        }
+                      }}
                       onClick={(e) => {
                         mobileTooltip.handleTooltipClick('sleep-length', e);
                         if (!hoveredTooltips['sleep-length']) {
@@ -221,6 +226,11 @@ export default function EstatePanel() {
                   <TooltipTrigger asChild>
                     <span 
                       className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-intensity'] ? 'new-item-pulse' : ''}`}
+                      onMouseEnter={() => {
+                        if (!hoveredTooltips['sleep-intensity']) {
+                          setHoveredTooltip('sleep-intensity', true);
+                        }
+                      }}
                       onClick={(e) => {
                         mobileTooltip.handleTooltipClick('sleep-intensity', e);
                         if (!hoveredTooltips['sleep-intensity']) {
