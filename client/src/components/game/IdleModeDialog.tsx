@@ -105,17 +105,20 @@ export default function IdleModeDialog() {
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
-    // Calculate time until next 15-second interval
     const now = Date.now();
     const elapsed = now - startTime;
     const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
     
     if (remaining <= 0) return;
 
-    // Calculate milliseconds until next interval (e.g., 1:45, 1:30, 1:15, etc.)
-    const secondsRemaining = Math.ceil(remaining / 1000);
-    const secondsUntilNextInterval = secondsRemaining % 15 || 15;
-    const msUntilNextInterval = secondsUntilNextInterval * 1000;
+    // Calculate how many seconds have elapsed since idle mode started
+    const secondsElapsed = Math.floor(elapsed / 1000);
+    
+    // Calculate how many seconds until the next 15-second mark from start
+    // For example: if 7 seconds elapsed, wait 8 more seconds to reach 15
+    // if 18 seconds elapsed, wait 12 more seconds to reach 30
+    const secondsUntilNextMark = 15 - (secondsElapsed % 15);
+    const msUntilNextInterval = secondsUntilNextMark * 1000;
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
@@ -135,7 +138,8 @@ export default function IdleModeDialog() {
       });
     };
 
-    // Set up initial timeout to sync with the timer interval
+    // Only schedule the next update if we haven't reached the first 15-second mark yet
+    // or if we need to continue updates after that
     const initialTimeout = setTimeout(() => {
       updateResources();
       
@@ -209,15 +213,13 @@ export default function IdleModeDialog() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Only show resources that are being produced
+  // Only show resources that are being produced, after 15 seconds have elapsed
   const now = Date.now();
   const elapsed = now - startTime;
   const secondsElapsed = Math.floor(elapsed / 1000);
   
-  // Show resources if any time has elapsed (including when resuming from refresh)
-  // or if we've accumulated any resources
-  const hasAccumulatedResources = Object.values(accumulatedResources).some(amount => amount > 0);
-  const hasCompletedFirstInterval = secondsElapsed >= 15 || hasAccumulatedResources;
+  // Show resources only after at least 15 seconds have elapsed from idle mode start
+  const hasCompletedFirstInterval = secondsElapsed >= 15;
   
   const producedResources = hasCompletedFirstInterval 
     ? Object.entries(accumulatedResources)
