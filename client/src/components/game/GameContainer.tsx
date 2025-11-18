@@ -33,6 +33,8 @@ export default function GameContainer() {
     isPaused,
     showEndScreen,
     devMode,
+    authDialogOpen, // Added authDialogOpen to state
+    shopDialogOpen, // Added shopDialogOpen to state
   } = useGameStore();
 
   // Estate unlocks after forest and only visible in dev mode
@@ -159,6 +161,14 @@ export default function GameContainer() {
     return <EndScreen />;
   }
 
+  // Determine if any dialog is open to prevent tab switching or other interactions
+  const isDialogOpen =
+      eventDialog.isOpen ||
+      combatDialog.isOpen ||
+      authDialogOpen ||
+      shopDialogOpen ||
+      idleModeDialog.isOpen;
+
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer */}
@@ -204,7 +214,7 @@ export default function GameContainer() {
                 <button
                   className={`py-2 text-sm bg-transparent ${
                     activeTab === "cave" ? "font-bold opacity-100" : "opacity-60"
-                  }`}
+                  } `}
                   onClick={() => setActiveTab("cave")}
                   data-testid="tab-cave"
                 >
