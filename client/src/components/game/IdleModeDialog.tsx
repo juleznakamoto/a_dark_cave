@@ -235,7 +235,7 @@ export default function IdleModeDialog() {
           <DialogTitle>Sleep Mode</DialogTitle>
           <DialogDescription>
             {isTimeUp ? (
-              <span className="text-yellow-600">Time's up! Your villagers have finished their work.</span>
+              <span className="text-yellow-600">You are awake!.</span>
             ) : (
               <span>Time remaining: {formatTime(remainingTime)}</span>
             )}
