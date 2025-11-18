@@ -56,19 +56,11 @@ export default function IdleModeDialog() {
 
         // Don't auto-end when time is up - let user see the results
       } else {
-        // Start fresh idle mode - begin with zero resources
+        // Start fresh idle mode
         setIsActive(true);
         setStartTime(now);
+        setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
-
-        // Initialize all resources to 0
-        const currentState = useGameStore.getState();
-        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
-        const freshResources: Record<string, number> = {};
-        Object.keys(totalEffects).forEach((resource) => {
-          freshResources[resource] = 0;
-        });
-        setAccumulatedResources(freshResources);
 
         // Persist the start time
         useGameStore.setState({
@@ -116,12 +108,6 @@ export default function IdleModeDialog() {
     const resourceInterval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
-      
-      // Only accumulate if at least 15 seconds have passed
-      if (elapsed < 15000) {
-        return;
-      }
-
       const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
       if (remaining <= 0) {
@@ -138,14 +124,16 @@ export default function IdleModeDialog() {
         Object.entries(totalEffects).forEach(([resource, amount]) => {
           // Apply the 10% production speed multiplier to the full 15-second production amount
           const production = amount * PRODUCTION_SPEED_MULTIPLIER;
-          updated[resource] = (prev[resource] || 0) + production;
+          const offlineAmount = accumulatedResources[resource] || 0; // Use accumulatedResources from state
+          const currentAccumulated = (prev[resource] || 0) - offlineAmount;
+          updated[resource] = offlineAmount + currentAccumulated + production;
         });
         return updated;
       });
     }, 15000); // Update resources every 15 seconds
 
     return () => clearInterval(resourceInterval);
-  }, [isActive, idleModeDialog.isOpen, startTime]);
+  }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]); // Added accumulatedResources to dependencies
 
   const handleEndIdleMode = () => {
     // Apply accumulated resources to the game state
