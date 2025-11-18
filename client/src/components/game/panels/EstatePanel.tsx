@@ -71,9 +71,9 @@ export default function EstatePanel() {
                           mobileTooltip.handleTooltipClick(`cube-${event.id}`, e);
                           handleCubeClick(event);
                         }}
-                        className="w-6 h-6 bg-neutral-800 border-2 border-neutral-500 rounded flex items-center justify-center hover:bg-gray-700 hover:border-neutral-400 transition-all cursor-pointer group relative"
+                        className="w-6 h-6 bg-neutral-900 border border-neutral-400 rounded flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-300 transition-all cursor-pointer group relative"
                       >
-                        <div className="text-md group-hover:scale-110 transition-transform">
+                        <div className="text-md">
                           ▣
                         </div>
                         <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
