@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cubeEvents } from "@/game/rules/eventsCube";
@@ -39,6 +39,26 @@ export default function EstatePanel() {
   const state = useGameStore.getState();
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
+  const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+
+  const handleTooltipHover = (itemId: string) => {
+    if (mobileTooltip.isMobile) return;
+
+    const existingTimer = hoverTimersRef.current.get(itemId);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+    }
+
+    // Set a timer to mark as hovered after 500ms
+    const timer = setTimeout(() => {
+      if (!hoveredTooltips[itemId]) {
+        setHoveredTooltip(itemId, true);
+      }
+      hoverTimersRef.current.delete(itemId);
+    }, 500);
+
+    hoverTimersRef.current.set(itemId, timer);
+  };
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -175,11 +195,7 @@ export default function EstatePanel() {
                   <TooltipTrigger asChild>
                     <span 
                       className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-length'] ? 'new-item-pulse' : ''}`}
-                      onMouseEnter={() => {
-                        if (!hoveredTooltips['sleep-length']) {
-                          setHoveredTooltip('sleep-length', true);
-                        }
-                      }}
+                      onMouseEnter={() => handleTooltipHover('sleep-length')}
                       onClick={(e) => {
                         mobileTooltip.handleTooltipClick('sleep-length', e);
                         if (!hoveredTooltips['sleep-length']) {
@@ -226,11 +242,7 @@ export default function EstatePanel() {
                   <TooltipTrigger asChild>
                     <span 
                       className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-intensity'] ? 'new-item-pulse' : ''}`}
-                      onMouseEnter={() => {
-                        if (!hoveredTooltips['sleep-intensity']) {
-                          setHoveredTooltip('sleep-intensity', true);
-                        }
-                      }}
+                      onMouseEnter={() => handleTooltipHover('sleep-intensity')}
                       onClick={(e) => {
                         mobileTooltip.handleTooltipClick('sleep-intensity', e);
                         if (!hoveredTooltips['sleep-intensity']) {
