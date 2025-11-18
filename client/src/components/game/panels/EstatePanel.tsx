@@ -1,3 +1,4 @@
+
 import React from "react";
 import { useGameStore } from "@/game/state";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
@@ -236,7 +237,7 @@ export default function EstatePanel() {
                 </Button>
               )}
             </div>
-            <Progress value={(sleepUpgrades.intensityLevel / 5) * 100} className="h-2" segments={5} />
+            <Progress value={(sleepUpgrades.intensityLevel / 5) * 100} className="h-2" />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentIntensityUpgrade.percentage}%</span>
               <span>Level {sleepUpgrades.intensityLevel}/5</span>
