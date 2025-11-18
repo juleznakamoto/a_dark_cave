@@ -102,40 +102,34 @@ export default function EstatePanel() {
         <div className="space-y-2 pt-4 border-t border-border">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
 
-          {completedCubeEvents.length === 0 ? (
-            <p className="text-sm text-muted-foreground italic">
-              No cube memories yet...
-            </p>
-          ) : (
-            <div className="grid grid-cols-6 gap-3 w-40 h-12">
-              {completedCubeEvents.map((event) => (
-                <TooltipProvider key={event.id}>
-                  <Tooltip
-                    open={mobileTooltip.isTooltipOpen(`cube-${event.id}`)}
-                  >
-                    <TooltipTrigger asChild>
-                      <button
-                        onClick={(e) => {
-                          mobileTooltip.handleTooltipClick(
-                            `cube-${event.id}`,
-                            e,
-                          );
-                          handleCubeClick(event);
-                        }}
-                        className="w-6 h-6 bg-neutral-900 border border-neutral-400 rounded flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-300 transition-all cursor-pointer group relative"
-                      >
-                        <div className="text-md">▣</div>
-                        <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs">{event.title}</div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ))}
-            </div>
-          )}
+          <div className="grid grid-cols-6 gap-3 w-40 h-12">
+            {completedCubeEvents.map((event) => (
+              <TooltipProvider key={event.id}>
+                <Tooltip
+                  open={mobileTooltip.isTooltipOpen(`cube-${event.id}`)}
+                >
+                  <TooltipTrigger asChild>
+                    <button
+                      onClick={(e) => {
+                        mobileTooltip.handleTooltipClick(
+                          `cube-${event.id}`,
+                          e,
+                        );
+                        handleCubeClick(event);
+                      }}
+                      className="w-6 h-6 bg-neutral-900 border border-neutral-400 rounded flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-300 transition-all cursor-pointer group relative"
+                    >
+                      <div className="text-md">▣</div>
+                      <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs">{event.title}</div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            ))}
+          </div>
         </div>
       </div>
       <ScrollBar orientation="vertical" />
