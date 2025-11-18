@@ -217,9 +217,12 @@ export default function IdleModeDialog() {
   const now = Date.now();
   const elapsed = now - startTime;
   const secondsElapsed = Math.floor(elapsed / 1000);
+  const totalDurationSeconds = IDLE_DURATION_MS / 1000;
+  const secondsRemaining = totalDurationSeconds - secondsElapsed;
   
-  // Show resources only after at least 15 seconds have elapsed
-  const hasCompletedFirstInterval = secondsElapsed >= 15;
+  // Show resources only after we've passed a 15-second interval mark
+  // E.g., at 1:45, 1:30, 1:15, etc. (when secondsRemaining is divisible by 15 or less)
+  const hasCompletedFirstInterval = secondsRemaining < totalDurationSeconds && secondsRemaining % 15 !== 0;
   
   const producedResources = hasCompletedFirstInterval 
     ? Object.entries(accumulatedResources)
