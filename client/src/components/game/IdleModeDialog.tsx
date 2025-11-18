@@ -17,7 +17,7 @@ const IDLE_DURATION_MS = 2 * 60 * 1000; // 2 minutes for testing
 const PRODUCTION_SPEED_MULTIPLIER = 0.1; // 10% of normal speed
 
 export default function IdleModeDialog() {
-  const { idleModeDialog, setIdleModeDialog } = useGameStore();
+  const { idleModeDialog, setIdleModeDialog, idleModeState } = useGameStore();
   const [accumulatedResources, setAccumulatedResources] = useState<Record<string, number>>({});
   const [remainingTime, setRemainingTime] = useState(IDLE_DURATION_MS);
   const [isActive, setIsActive] = useState(false);
@@ -28,10 +28,52 @@ export default function IdleModeDialog() {
   // Initialize idle mode when dialog opens
   useEffect(() => {
     if (idleModeDialog.isOpen && !isActive) {
-      setIsActive(true);
-      setStartTime(Date.now());
-      setAccumulatedResources({});
-      setRemainingTime(IDLE_DURATION_MS);
+      const now = Date.now();
+      
+      // Check if there's a persisted idle mode state
+      if (idleModeState?.isActive && idleModeState.startTime) {
+        const elapsed = now - idleModeState.startTime;
+        const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
+        
+        setStartTime(idleModeState.startTime);
+        setRemainingTime(remaining);
+        
+        // Calculate resources accumulated while offline
+        const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
+        const currentState = useGameStore.getState();
+        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
+        
+        const offlineResources: Record<string, number> = {};
+        Object.entries(totalEffects).forEach(([resource, amount]) => {
+          if (amount > 0) {
+            // Production per second at 10% speed
+            const productionPerSecond = (amount / 15) * PRODUCTION_SPEED_MULTIPLIER;
+            offlineResources[resource] = productionPerSecond * secondsElapsed;
+          }
+        });
+        
+        setAccumulatedResources(offlineResources);
+        setIsActive(remaining > 0);
+        
+        // If time expired while offline, end idle mode immediately
+        if (remaining <= 0) {
+          setTimeout(() => handleEndIdleMode(), 100);
+        }
+      } else {
+        // Start fresh idle mode
+        setIsActive(true);
+        setStartTime(now);
+        setAccumulatedResources({});
+        setRemainingTime(IDLE_DURATION_MS);
+        
+        // Persist the start time
+        useGameStore.setState({
+          idleModeState: {
+            isActive: true,
+            startTime: now,
+          },
+        });
+      }
     }
   }, [idleModeDialog.isOpen, isActive]);
 
@@ -105,6 +147,14 @@ export default function IdleModeDialog() {
         });
       }
     }
+
+    // Clear persisted idle mode state
+    useGameStore.setState({
+      idleModeState: {
+        isActive: false,
+        startTime: 0,
+      },
+    });
 
     // Close dialog and reset
     setIsActive(false);

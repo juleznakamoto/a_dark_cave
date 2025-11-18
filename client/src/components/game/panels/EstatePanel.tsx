@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useGameStore } from '@/game/state';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
@@ -52,9 +51,14 @@ export default function EstatePanel() {
   const canActivateIdle = woodProduction > 0 && foodProduction > 0;
 
   const handleActivateIdleMode = () => {
-    if (canActivateIdle) {
-      setIdleModeDialog(true);
-    }
+    // Set idle mode state before opening dialog
+    useGameStore.setState({
+      idleModeState: {
+        isActive: true,
+        startTime: Date.now(),
+      },
+    });
+    setIdleModeDialog(true);
   };
 
   return (
@@ -92,7 +96,7 @@ export default function EstatePanel() {
         {/* Cube Section */}
         <div className="space-y-2 pt-4 border-t border-border">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
-          
+
           {completedCubeEvents.length === 0 ? (
             <p className="text-sm text-muted-foreground italic">
               No cube memories yet...

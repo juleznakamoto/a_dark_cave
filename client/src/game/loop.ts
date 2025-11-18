@@ -44,6 +44,15 @@ export function startGameLoop() {
     gameStartTime = now; // Set game start time only once
   }
 
+  // Check if idle mode was active when the user left
+  const state = useGameStore.getState();
+  if (state.idleModeState?.isActive && state.idleModeState.startTime > 0) {
+    // Open idle mode dialog to show accumulated resources
+    setTimeout(() => {
+      useGameStore.getState().setIdleModeDialog(true);
+    }, 500);
+  }
+
   function tick(timestamp: number) {
     // Limit to 10 FPS
     const timeSinceLastRender = timestamp - lastRenderTime;
