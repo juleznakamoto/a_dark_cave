@@ -89,7 +89,7 @@ export default function EstatePanel() {
             variant="outline"
             className="w-24 h-8"
           >
-            Go to Sleep
+            Sleep
           </Button>
           {!canActivateIdle && (
             <p className="text-xs text-muted-foreground italic">
