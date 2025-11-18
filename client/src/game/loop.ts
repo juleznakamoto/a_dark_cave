@@ -62,7 +62,8 @@ export function startGameLoop() {
       state.eventDialog.isOpen ||
       state.combatDialog.isOpen ||
       state.authDialogOpen ||
-      state.shopDialogOpen;
+      state.shopDialogOpen ||
+      state.idleModeDialog.isOpen;
     const isPaused = state.isPaused || isDialogOpen;
 
     if (isPaused) {

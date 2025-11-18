@@ -11,6 +11,7 @@ import EndScreen from "./EndScreen";
 import { useGameStore } from "@/game/state";
 import EventDialog from "./EventDialog";
 import CombatDialog from "./CombatDialog";
+import IdleModeDialog from "./IdleModeDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -24,9 +25,11 @@ export default function GameContainer() {
     relics,
     eventDialog,
     combatDialog,
+    idleDialog,
     setActiveTab,
     setEventDialog,
     setCombatDialog,
+    setIdleDialog,
     isPaused,
     showEndScreen,
     devMode,
@@ -289,6 +292,12 @@ export default function GameContainer() {
         isOpen={combatDialog.isOpen}
         onClose={() => setCombatDialog(false)}
         combat={combatDialog.currentCombat}
+      />
+
+      {/* Idle Mode Dialog */}
+      <IdleModeDialog
+        isOpen={idleDialog.isOpen}
+        onClose={() => setIdleDialog({ isOpen: false })}
       />
     </div>
   );

@@ -38,6 +38,9 @@ interface GameStore extends GameState {
   authDialogOpen: boolean;
   shopDialogOpen: boolean;
   showEndScreen: boolean; // Added showEndScreen flag
+  idleModeDialog: {
+    isOpen: boolean;
+  };
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -102,6 +105,7 @@ interface GameStore extends GameState {
   setCombatDialog: (isOpen: boolean, data?: any) => void;
   setAuthDialogOpen: (isOpen: boolean) => void;
   setShopDialogOpen: (isOpen: boolean) => void;
+  setIdleModeDialog: (isOpen: boolean) => void;
   updateEffects: () => void;
   updateBastionStats: () => void;
   updateLoopProgress: (progress: number) => void;
@@ -310,6 +314,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   shopDialogOpen: false,
   showEndScreen: false, // Initialize showEndScreen
   isMuted: false,
+  idleModeDialog: {
+    isOpen: false,
+  },
   // Initialize shop notification state
   shopNotificationSeen: false,
   shopNotificationVisible: false,
@@ -1045,6 +1052,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setShopDialogOpen: (isOpen: boolean) => {
     set({ shopDialogOpen: isOpen });
+  },
+
+  setIdleModeDialog: (isOpen: boolean) => {
+    set((state) => ({
+      idleModeDialog: {
+        isOpen,
+      },
+    }));
   },
 
   updateEffects: () => {

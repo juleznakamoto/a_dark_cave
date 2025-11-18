@@ -11,10 +11,13 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip';
 import { useMobileTooltip } from '@/hooks/useMobileTooltip';
+import { Button } from '@/components/ui/button';
+import { getTotalPopulationEffects } from '@/game/population';
 
 export default function EstatePanel() {
-  const { events, setEventDialog } = useGameStore();
+  const { events, setEventDialog, setIdleModeDialog } = useGameStore();
   const mobileTooltip = useMobileTooltip();
+  const state = useGameStore.getState();
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -42,6 +45,18 @@ export default function EstatePanel() {
     setEventDialog(true, logEntry);
   };
 
+  // Check if idle mode can be activated
+  const totalEffects = getTotalPopulationEffects(state, Object.keys(state.villagers));
+  const woodProduction = totalEffects.wood || 0;
+  const foodProduction = totalEffects.food || 0;
+  const canActivateIdle = woodProduction > 0 && foodProduction > 0;
+
+  const handleActivateIdleMode = () => {
+    if (canActivateIdle) {
+      setIdleModeDialog(true);
+    }
+  };
+
   return (
     <ScrollArea className="h-full w-full">
       <div className="space-y-4 pb-4">
@@ -50,6 +65,28 @@ export default function EstatePanel() {
           <p className="text-sm text-muted-foreground">
             Your personal estate - coming soon!
           </p>
+        </div>
+
+        {/* Idle Mode Section */}
+        <div className="space-y-2 pt-4 border-t border-border">
+          <h3 className="text-xs font-bold text-foreground">Idle Mode</h3>
+          <p className="text-sm text-muted-foreground">
+            Gather resources while away (requires positive wood and food production)
+          </p>
+          <Button
+            onClick={handleActivateIdleMode}
+            disabled={!canActivateIdle}
+            size="sm"
+            variant="outline"
+            className="w-full"
+          >
+            Activate Idle Mode
+          </Button>
+          {!canActivateIdle && (
+            <p className="text-xs text-muted-foreground italic">
+              Requires positive wood and food production
+            </p>
+          )}
         </div>
 
         {/* Cube Section */}
