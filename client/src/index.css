@@ -386,22 +386,3 @@ html, body {
 .shop-notification-pulse {
   animation: shop-notification-pulse 1s ease-in-out infinite;
 }
-
-/* Sleep upgrade label blinking animation */
-@keyframes sleep-label-blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.4;
-  }
-}
-
-.sleep-label-blink {
-  animation: sleep-label-blink 2s ease-in-out infinite;
-}
-
-.sleep-label-blink:hover {
-  animation: none;
-  opacity: 1;
-}
