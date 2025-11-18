@@ -59,10 +59,9 @@ export default function IdleModeDialog() {
         // Start fresh idle mode - begin with zero resources
         setIsActive(true);
         setStartTime(now);
-        setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
 
-        // Clear any stale accumulated resources from a previous session
+        // Initialize all resources to 0
         const currentState = useGameStore.getState();
         const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
         const freshResources: Record<string, number> = {};
@@ -117,6 +116,12 @@ export default function IdleModeDialog() {
     const resourceInterval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
+      
+      // Only accumulate if at least 15 seconds have passed
+      if (elapsed < 15000) {
+        return;
+      }
+
       const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
       if (remaining <= 0) {
