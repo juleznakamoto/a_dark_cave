@@ -172,7 +172,7 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-xs font-medium text-foreground cursor-help">
+                    <span className="text-xs font-medium text-foreground cursor-pointer sleep-label-blink">
                       Sleep Length
                     </span>
                   </TooltipTrigger>
@@ -210,7 +210,7 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span className="text-xs font-medium text-foreground cursor-help">
+                    <span className="text-xs font-medium text-foreground cursor-pointer sleep-label-blink">
                       Sleep Intensity
                     </span>
                   </TooltipTrigger>
