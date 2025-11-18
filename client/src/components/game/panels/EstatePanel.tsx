@@ -2,9 +2,37 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { cubeEvents } from '@/game/rules/eventsCube';
+import { LogEntry } from '@/game/rules/events';
 
 export default function EstatePanel() {
-  const state = useGameStore();
+  const { events, setEventDialog } = useGameStore();
+
+  // Get all cube events that have been triggered
+  const completedCubeEvents = Object.entries(cubeEvents)
+    .filter(([eventId]) => {
+      // Check if this cube event has been triggered
+      const baseEventId = eventId.replace(/[a-z]$/, ''); // Remove trailing letter (e.g., cube14a -> cube14)
+      return events[eventId] === true || events[baseEventId] === true;
+    })
+    .map(([eventId, eventData]) => ({
+      id: eventId,
+      ...eventData,
+    }));
+
+  const handleCubeClick = (event: typeof completedCubeEvents[0]) => {
+    // Create a log entry from the event data
+    const logEntry: LogEntry = {
+      id: event.id,
+      title: event.title,
+      message: event.message,
+      timestamp: Date.now(),
+      type: 'event',
+      choices: event.choices,
+    };
+
+    setEventDialog(true, logEntry);
+  };
 
   return (
     <ScrollArea className="h-full w-full">
@@ -14,6 +42,36 @@ export default function EstatePanel() {
           <p className="text-sm text-muted-foreground">
             Your personal estate - coming soon!
           </p>
+        </div>
+
+        {/* Cube Section */}
+        <div className="space-y-2 pt-4 border-t border-border">
+          <h3 className="text-xs font-bold text-foreground">Cube</h3>
+          <p className="text-sm text-muted-foreground mb-3">
+            Memories stored within the whispering cube
+          </p>
+          
+          {completedCubeEvents.length === 0 ? (
+            <p className="text-sm text-muted-foreground italic">
+              No cube memories yet...
+            </p>
+          ) : (
+            <div className="grid grid-cols-5 gap-2">
+              {completedCubeEvents.map((event) => (
+                <button
+                  key={event.id}
+                  onClick={() => handleCubeClick(event)}
+                  className="aspect-square bg-gray-800 border-2 border-gray-600 rounded flex items-center justify-center hover:bg-gray-700 hover:border-gray-400 transition-all cursor-pointer group relative"
+                  title={event.title}
+                >
+                  <div className="text-2xl group-hover:scale-110 transition-transform">
+                    ▣
+                  </div>
+                  <div className="absolute inset-0 cube-dialog-glow opacity-0 group-hover:opacity-30 transition-opacity pointer-events-none rounded"></div>
+                </button>
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <ScrollBar orientation="vertical" />
