@@ -106,9 +106,16 @@ export default function IdleModeDialog() {
   useEffect(() => {
     if (!isActive || !idleModeDialog.isOpen) return;
 
+    // Don't start accumulating until 15 seconds have passed (first interval)
     const resourceInterval = setInterval(() => {
       const now = Date.now();
       const elapsed = now - startTime;
+      
+      // Only accumulate if at least 15 seconds have passed
+      if (elapsed < 15000) {
+        return;
+      }
+
       const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
       if (remaining <= 0) {
