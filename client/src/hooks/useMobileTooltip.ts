@@ -93,11 +93,6 @@ export function useMobileButtonTooltip() {
       pressTimerRef.current = null;
     }
     
-    // Close any open tooltip immediately when starting a new press
-    if (openTooltipId !== null) {
-      setOpenTooltipId(null);
-    }
-    
     // Don't prevent default to allow button interaction
     setPressingId(id);
     
@@ -144,11 +139,6 @@ export function useMobileButtonTooltip() {
     if (pressTimerRef.current) {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
-    }
-    
-    // Close any open tooltip immediately when starting a new press
-    if (openTooltipId !== null) {
-      setOpenTooltipId(null);
     }
     
     setPressingId(id);
