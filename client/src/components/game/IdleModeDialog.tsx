@@ -1,4 +1,3 @@
-
 import React, { useEffect, useState } from 'react';
 import {
   Dialog,
@@ -147,7 +146,7 @@ export default function IdleModeDialog() {
         // Calculate resources accumulated while offline
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
-        
+
         const currentState = useGameStore.getState();
         const offlineResources: Record<string, number> = {};
 
@@ -351,8 +350,8 @@ export default function IdleModeDialog() {
             {producedResources.map(([resource, amount]) => (
               <div key={resource} className="flex justify-between items-center">
                 <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
-                <span className="text-sm tabular-nums">
-                  <AnimatedCounter value={Math.floor(amount)} />
+                <span className={`text-sm tabular-nums ${amount < 0 ? 'text-red-400' : 'text-green-400'}`}>
+                  {amount < 0 ? '-' : ''}<AnimatedCounter value={Math.floor(Math.abs(amount))} />
                 </span>
               </div>
             ))}
