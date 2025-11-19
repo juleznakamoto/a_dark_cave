@@ -1326,7 +1326,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
-    description: "A place for you to retreat to, away from the chaos of the village",
+    description: "Place to retreat to, away from the chaos",
     tooltipEffects: ["Unlocks Estate tab"],
     building: true,
     show_when: {
