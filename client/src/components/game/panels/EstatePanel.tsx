@@ -182,35 +182,40 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span className="inline-block">
-                  <Button
-                    onClick={handleActivateIdleMode}
-                    disabled={!canActivateIdle}
-                    size="xs"
-                    variant="outline"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    Sleep
-                  </Button>
-                </span>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="text-xs whitespace-nowrap">
-                  {canActivateIdle ? (
-                    <>
-                      <div>Sleep for up to {currentLengthUpgrade.hours}h</div>
-                      <div>Gain {currentIntensityUpgrade.percentage}% of production</div>
-                    </>
-                  ) : (
+          {!canActivateIdle ? (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <span className="inline-block">
+                    <Button
+                      onClick={handleActivateIdleMode}
+                      disabled={!canActivateIdle}
+                      size="xs"
+                      variant="outline"
+                      className="hover:bg-transparent hover:text-foreground"
+                    >
+                      Sleep
+                    </Button>
+                  </span>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-xs whitespace-nowrap">
                     <div>Requires positive wood and food production</div>
-                  )}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          ) : (
+            <Button
+              onClick={handleActivateIdleMode}
+              disabled={!canActivateIdle}
+              size="xs"
+              variant="outline"
+              className="hover:bg-transparent hover:text-foreground"
+            >
+              Sleep
+            </Button>
+          )}
         </div>
 
         {/* Sleep Upgrades Section */}
