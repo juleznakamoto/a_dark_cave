@@ -194,20 +194,6 @@ export function startGameLoop() {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        // Only log during idle mode for debugging
-        if (state.idleModeState?.isActive) {
-          console.log('[GAME STATE - 15s Loop]', {
-            currentState: {
-              resources: state.resources,
-              stats: state.stats,
-              boostMode: state.boostMode,
-              flags: state.flags,
-              schematics: state.schematics,
-              tools: state.tools,
-            }
-          });
-        }
-
         handleGathererProduction();
         handleHunterProduction();
         handleMinerProduction();

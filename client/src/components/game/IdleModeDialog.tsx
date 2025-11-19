@@ -177,19 +177,12 @@ export default function IdleModeDialog() {
         const offlineResources: Record<string, number> = { ...currentState.resources };
 
         // Simulate each 15-second interval
+        console.log(`[IDLE MODE] Simulating ${intervals} intervals while you were away`);
         for (let i = 0; i < intervals; i++) {
-          console.log(`[IDLE MODE] Simulating interval ${i + 1}/${intervals}`, {
-            before: { ...offlineResources }
-          });
-          
           simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
-          
-          console.log(`[IDLE MODE] After interval ${i + 1}`, {
-            after: { ...offlineResources }
-          });
         }
 
         console.log('[IDLE MODE] Final simulated resources:', offlineResources);
@@ -278,7 +271,8 @@ export default function IdleModeDialog() {
       const currentState = useGameStore.getState();
 
       console.log('[IDLE MODE UPDATE] Starting resource update', {
-        initialResources
+        initialResources,
+        currentResources: currentState.resources
       });
 
       // Accumulate resources using the same production functions as normal mode
