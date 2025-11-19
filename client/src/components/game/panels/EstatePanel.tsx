@@ -191,6 +191,9 @@ export default function EstatePanel() {
               <TooltipTrigger asChild>
                 <div
                   className="inline-block"
+                  onClick={mobileTooltip.isMobile ? (e) => {
+                    mobileTooltip.handleWrapperClick("sleep-button", !canActivateIdle, false, e);
+                  } : undefined}
                   onTouchStart={mobileTooltip.isMobile ? (e) => {
                     mobileTooltip.handleTouchStart("sleep-button", !canActivateIdle, false, e);
                   } : undefined}
@@ -245,6 +248,9 @@ export default function EstatePanel() {
                     <TooltipTrigger asChild>
                       <div
                         className="inline-block"
+                        onClick={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleWrapperClick("upgrade-length-button", !canUpgradeLength, false, e);
+                        } : undefined}
                         onTouchStart={mobileTooltip.isMobile ? (e) => {
                           mobileTooltip.handleTouchStart("upgrade-length-button", !canUpgradeLength, false, e);
                         } : undefined}
@@ -307,6 +313,9 @@ export default function EstatePanel() {
                     <TooltipTrigger asChild>
                       <div
                         className="inline-block"
+                        onClick={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleWrapperClick("upgrade-intensity-button", !canUpgradeIntensity, false, e);
+                        } : undefined}
                         onTouchStart={mobileTooltip.isMobile ? (e) => {
                           mobileTooltip.handleTouchStart("upgrade-intensity-button", !canUpgradeIntensity, false, e);
                         } : undefined}
