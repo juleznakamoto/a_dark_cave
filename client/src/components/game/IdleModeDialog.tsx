@@ -198,8 +198,10 @@ export default function IdleModeDialog() {
         setAccumulatedResources(resourceDeltas);
         // Store the CURRENT resources as initial state (most recent before simulation started)
         setInitialResources({ ...currentState.resources });
+        // Only set active if there's time remaining - otherwise just show results
         setIsActive(remaining > 0);
-      } else {
+      } else if (!idleModeState?.isActive) {
+        // Only start fresh idle mode if there's no active state
         console.log('[IDLE MODE] Starting fresh idle mode');
         
         // Get the CURRENT (most recent) resources state
@@ -242,10 +244,10 @@ export default function IdleModeDialog() {
       setRemainingTime(remaining);
 
       if (remaining <= 0) {
-        // Time's up - stop active state
+        // Time's up - stop active state and resource accumulation
         setIsActive(false);
         
-        // Clear idle mode state in global store to stop all logging
+        // Clear idle mode state in global store - this stops production and prevents new cycles
         useGameStore.setState({
           idleModeState: {
             isActive: false,
