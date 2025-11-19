@@ -168,11 +168,12 @@ export default function IdleModeDialog() {
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
 
+        // Get CURRENT resources state (most recent)
         const currentState = useGameStore.getState();
         
         console.log('[IDLE MODE] Starting resources:', currentState.resources);
         
-        // Start with current game resources
+        // Start with CURRENT game resources (most recent state)
         const offlineResources: Record<string, number> = { ...currentState.resources };
 
         // Simulate each 15-second interval
@@ -202,18 +203,20 @@ export default function IdleModeDialog() {
         console.log('[IDLE MODE] Resource deltas:', resourceDeltas);
 
         setAccumulatedResources(resourceDeltas);
-        setInitialResources({ ...currentState.resources }); // Store initial resources for ongoing updates
+        // Store the CURRENT resources as initial state (most recent before simulation started)
+        setInitialResources({ ...currentState.resources });
         setIsActive(remaining > 0);
       } else {
         console.log('[IDLE MODE] Starting fresh idle mode');
         
-        // Start fresh idle mode
+        // Get the CURRENT (most recent) resources state
         const currentState = useGameStore.getState();
         setIsActive(true);
         setStartTime(now);
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
-        setInitialResources({ ...currentState.resources }); // Store initial resources
+        // Store the CURRENT resources as initial state
+        setInitialResources({ ...currentState.resources });
 
         // Persist the start time
         useGameStore.setState({

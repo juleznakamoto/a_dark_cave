@@ -113,9 +113,11 @@ export default function EstatePanel() {
       },
     });
 
+    // Get the MOST RECENT game state right before saving
+    const currentState = useGameStore.getState();
+
     // Immediately save to Supabase so user can close tab
     const { saveGame } = await import("@/game/save");
-    const currentState = useGameStore.getState();
     await saveGame(currentState, currentState.playTime);
 
     setIdleModeDialog(true);
