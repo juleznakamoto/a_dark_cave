@@ -282,6 +282,12 @@ export default function IdleModeDialog() {
     const msUntilNextInterval = secondsUntilNextMark * 1000;
 
     const updateResources = () => {
+      // Check if still active before updating
+      const state = useGameStore.getState();
+      if (!state.idleModeState?.isActive) {
+        return false; // Signal to stop
+      }
+
       const currentState = useGameStore.getState();
 
       console.log('[IDLE MODE UPDATE] Starting resource update', {
@@ -314,29 +320,32 @@ export default function IdleModeDialog() {
 
         return newDeltas;
       });
+      
+      return true; // Continue
     };
 
+    let resourceInterval: NodeJS.Timeout | null = null;
+
     const initialTimeout = setTimeout(() => {
-      updateResources();
+      if (updateResources() === false) return;
 
       // After first sync, continue every 15 seconds
-      const resourceInterval = setInterval(() => {
+      resourceInterval = setInterval(() => {
         const now = Date.now();
         const elapsed = now - startTime;
         const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
-        if (remaining <= 0) {
-          clearInterval(resourceInterval);
+        if (remaining <= 0 || updateResources() === false) {
+          if (resourceInterval) clearInterval(resourceInterval);
           return;
         }
-
-        updateResources();
       }, 15000);
-
-      return () => clearInterval(resourceInterval);
     }, msUntilNextInterval);
 
-    return () => clearTimeout(initialTimeout);
+    return () => {
+      clearTimeout(initialTimeout);
+      if (resourceInterval) clearInterval(resourceInterval);
+    };
   }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
