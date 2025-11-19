@@ -258,8 +258,9 @@ export default function EstatePanel() {
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
                         <div>+{nextLengthUpgrade.hours - currentLengthUpgrade.hours}h</div>
+                        <div className="border-t border-border my-1" />
                         <div className={resources.silver >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
-                          {nextLengthUpgrade.cost} Silver
+                          -{nextLengthUpgrade.cost} Silver
                         </div>
                       </div>
                     </TooltipContent>
@@ -324,8 +325,9 @@ export default function EstatePanel() {
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
                         <div>+{nextIntensityUpgrade.percentage - currentIntensityUpgrade.percentage}%</div>
+                        <div className="border-t border-border my-1" />
                         <div className={resources.gold >= nextIntensityUpgrade.cost ? "" : "text-muted-foreground"}>
-                          {nextIntensityUpgrade.cost} Gold
+                          -{nextIntensityUpgrade.cost} Gold
                         </div>
                       </div>
                     </TooltipContent>
