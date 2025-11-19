@@ -18,7 +18,6 @@ export interface ShopItem {
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
-  bundleItems?: string[]; // IDs of items included in the bundle
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
@@ -149,7 +148,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     activationMessage: "Basic Bundle has been used!",
     symbol: "◻",
     symbolColor: "text-purple-600",
-    bundleItems: ["gold_1000", "great_feast_1"],
   },
 
   // dwarven_hammer: {
