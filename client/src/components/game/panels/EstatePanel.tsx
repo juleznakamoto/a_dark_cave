@@ -193,11 +193,13 @@ export default function EstatePanel() {
             variant="outline"
             className="hover:bg-transparent hover:text-foreground"
             tooltip={
-              !canActivateIdle ? (
-                <div className="text-xs whitespace-nowrap">
+              <div className="text-xs whitespace-nowrap">
+                {canActivateIdle ? (
+                  <div>Enter sleep mode to progress while away</div>
+                ) : (
                   <div>Requires positive wood and food production</div>
-                </div>
-              ) : null
+                )}
+              </div>
             }
           >
             Sleep
@@ -212,7 +214,7 @@ export default function EstatePanel() {
               <span className="text-xs font-medium text-foreground">
                 Sleep Length
               </span>
-              {sleepUpgrades.lengthLevel < 5 && (
+              {sleepUpgrades.lengthLevel < 5 ? (
                 <CooldownButton
                   onClick={handleSleepLengthUpgrade}
                   disabled={!canUpgradeLength}
@@ -232,7 +234,7 @@ export default function EstatePanel() {
                 >
                   Improve
                 </CooldownButton>
-              )}
+              ) : null}
             </div>
             <Progress
               value={(sleepUpgrades.lengthLevel / 5) * 100}
@@ -250,7 +252,7 @@ export default function EstatePanel() {
               <span className="text-xs font-medium text-foreground">
                 Sleep Intensity
               </span>
-              {sleepUpgrades.intensityLevel < 5 && (
+              {sleepUpgrades.intensityLevel < 5 ? (
                 <CooldownButton
                   onClick={handleSleepIntensityUpgrade}
                   disabled={!canUpgradeIntensity}
@@ -270,7 +272,7 @@ export default function EstatePanel() {
                 >
                   Improve
                 </CooldownButton>
-              )}
+              ) : null}
             </div>
             <Progress
               value={(sleepUpgrades.intensityLevel / 5) * 100}
