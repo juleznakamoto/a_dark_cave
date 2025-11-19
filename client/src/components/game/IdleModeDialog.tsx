@@ -283,7 +283,7 @@ export default function IdleModeDialog() {
         </div>
 
         <div className="flex justify-end">
-          <Button onClick={handleEndIdleMode} variant="default">
+          <Button onClick={handleEndIdleMode} variant="outline" className="text-xs h-10">
             {isTimeUp ? "Get Up" : "Wake Up"}
           </Button>
         </div>
