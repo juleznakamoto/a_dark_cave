@@ -133,23 +133,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  basic_bundle: {
-    id: "basic_bundle",
-    name: "Basic Bundle",
-    description: "1000 Gold + 1 Great Feast - Perfect starter pack",
-    originalPrice: 699,
-    price: 349, // 3.49 €
-    rewards: {
-      resources: { gold: 1000 },
-      feastActivations: 1,
-    },
-    canPurchaseMultipleTimes: true,
-    category: "bundle",
-    activationMessage: "Basic Bundle activated! 1000 Gold added to your inventory and a Great Feast has begun!",
-    symbol: "⚔",
-    symbolColor: "text-purple-600",
-  },
-
   // dwarven_hammer: {
   //   id: 'dwarven_hammer',
   //   name: 'Dwarven Hammer',
