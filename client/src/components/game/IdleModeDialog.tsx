@@ -200,8 +200,9 @@ export default function IdleModeDialog() {
         setInitialResources({ ...currentState.resources });
         // Only set active if there's time remaining - otherwise just show results
         setIsActive(remaining > 0);
-      } else if (!idleModeState?.isActive) {
-        // Only start fresh idle mode if there's no active state
+      } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
+        // Only start fresh idle mode if there's no active state AND no previous startTime
+        // This prevents starting a new idle mode after one just finished
         console.log('[IDLE MODE] Starting fresh idle mode');
         
         // Get the CURRENT (most recent) resources state
