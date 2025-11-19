@@ -124,8 +124,19 @@ const mergeStateUpdates = (
   prevState: GameState,
   stateUpdates: Partial<GameState>,
 ): Partial<GameState> => {
+  // Ensure resources never go negative when merging
+  const mergedResources = { ...prevState.resources, ...stateUpdates.resources };
+  Object.keys(mergedResources).forEach(key => {
+    if (typeof mergedResources[key as keyof typeof mergedResources] === 'number') {
+      const value = mergedResources[key as keyof typeof mergedResources];
+      if (value < 0) {
+        mergedResources[key as keyof typeof mergedResources] = 0;
+      }
+    }
+  });
+
   const merged = {
-    resources: { ...prevState.resources, ...stateUpdates.resources },
+    resources: mergedResources,
     weapons: { ...prevState.weapons, ...stateUpdates.weapons },
     tools: { ...prevState.tools, ...stateUpdates.tools },
     buildings: { ...prevState.buildings, ...stateUpdates.buildings },
