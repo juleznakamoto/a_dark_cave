@@ -302,7 +302,7 @@ function processTick() {
   }
 }
 
-export function handleGathererProduction() {
+function handleGathererProduction() {
   const state = useGameStore.getState();
   const gatherer = state.villagers.gatherer;
 
@@ -319,7 +319,7 @@ export function handleGathererProduction() {
   }
 }
 
-export function handleHunterProduction() {
+function handleHunterProduction() {
   const state = useGameStore.getState();
   const hunter = state.villagers.hunter;
 
@@ -334,7 +334,7 @@ export function handleHunterProduction() {
   }
 }
 
-export function handleMinerProduction() {
+function handleMinerProduction() {
   const state = useGameStore.getState();
 
   // Collect all production data
