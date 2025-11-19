@@ -480,7 +480,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader>
                         <div className="flex items-center gap-2">
-                          <CardTitle className="text-lg flex items-center gap-2">
+                          <CardTitle className="text-md flex items-center gap-2">
                             {item.name}
                             {item.symbol && (
                               <span className="text-lg" style={{ color: tailwindToHex(item.symbolColor.replace('text-', '')) }}>
