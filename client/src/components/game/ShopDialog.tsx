@@ -293,8 +293,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
-    // If this is a feast item, track it individually
-    if (item.category === "feast" && item.rewards.feastActivations) {
+    // If this item has feast activations (feast or bundle), track it individually
+    if (item.rewards.feastActivations) {
       const purchaseId = `feast-purchase-${Date.now()}`;
       useGameStore.setState((state) => ({
         feastPurchases: {
@@ -353,10 +353,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
-    // For feast items, use individual purchase tracking
-    if (item.category === "feast") {
+    // For items with feast activations (feast or bundle), use individual purchase tracking
+    if (item.rewards.feastActivations) {
       const purchase = gameState.feastPurchases?.[purchaseId];
       if (!purchase || purchase.activationsRemaining <= 0) return;
+
+      // Grant resources if this is a bundle
+      if (item.rewards.resources) {
+        Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
+          gameState.updateResource(resource as any, amount);
+        });
+      }
 
       // Activate a Great Feast
       const feastDuration = 60 * 60 * 1000; // 60 minutes in milliseconds
@@ -570,7 +577,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       can only be activated once per game.
                     </p>
                     <div className="space-y-2">
-                      {/* Show individual feast purchases */}
+                      {/* Show individual feast purchases and bundles */}
                       {Object.entries(gameState.feastPurchases || {}).map(
                         ([purchaseId, purchase]) => {
                           const item = SHOP_ITEMS[purchase.itemId];
@@ -622,10 +629,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         },
                       )}
 
-                      {/* Show non-feast purchases */}
+                      {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
                         .filter(
-                          (itemId) => SHOP_ITEMS[itemId]?.category !== "feast",
+                          (itemId) => {
+                            const item = SHOP_ITEMS[itemId];
+                            return item && !item.rewards.feastActivations;
+                          }
                         )
                         .map((itemId) => {
                           const item = SHOP_ITEMS[itemId];
