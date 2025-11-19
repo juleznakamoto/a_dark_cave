@@ -188,7 +188,7 @@ export default function EstatePanel() {
           <CooldownButton
             onClick={handleActivateIdleMode}
             disabled={!canActivateIdle}
-            cooldownMs={0}
+            cooldownMs={10}
             size="xs"
             variant="outline"
             className="hover:bg-transparent hover:text-foreground"
@@ -218,7 +218,7 @@ export default function EstatePanel() {
                 <CooldownButton
                   onClick={handleSleepLengthUpgrade}
                   disabled={!canUpgradeLength}
-                  cooldownMs={0}
+                  cooldownMs={10}
                   size="xs"
                   variant="outline"
                   className="hover:bg-transparent hover:text-foreground"
@@ -256,7 +256,7 @@ export default function EstatePanel() {
                 <CooldownButton
                   onClick={handleSleepIntensityUpgrade}
                   disabled={!canUpgradeIntensity}
-                  cooldownMs={0}
+                  cooldownMs={10}
                   size="xs"
                   variant="outline"
                   className="hover:bg-transparent hover:text-foreground"
