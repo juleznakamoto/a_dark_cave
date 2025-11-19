@@ -166,6 +166,57 @@ interface ShopDialogProps {
   onClose: () => void;
 }
 
+// Helper function to get combined rewards from bundle items
+const getBundleRewards = (bundleItemIds: string[]): ShopItemRewards => {
+  const combinedRewards: ShopItemRewards = {};
+
+  bundleItemIds.forEach(itemId => {
+    const item = SHOP_ITEMS[itemId];
+    if (!item) return;
+
+    // Combine resources
+    if (item.rewards.resources) {
+      if (!combinedRewards.resources) {
+        combinedRewards.resources = {};
+      }
+      Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
+        combinedRewards.resources![resource] = (combinedRewards.resources![resource] || 0) + amount;
+      });
+    }
+
+    // Combine tools
+    if (item.rewards.tools) {
+      if (!combinedRewards.tools) {
+        combinedRewards.tools = [];
+      }
+      combinedRewards.tools.push(...item.rewards.tools);
+    }
+
+    // Combine weapons
+    if (item.rewards.weapons) {
+      if (!combinedRewards.weapons) {
+        combinedRewards.weapons = [];
+      }
+      combinedRewards.weapons.push(...item.rewards.weapons);
+    }
+
+    // Combine blessings
+    if (item.rewards.blessings) {
+      if (!combinedRewards.blessings) {
+        combinedRewards.blessings = [];
+      }
+      combinedRewards.blessings.push(...item.rewards.blessings);
+    }
+
+    // Combine feast activations
+    if (item.rewards.feastActivations) {
+      combinedRewards.feastActivations = (combinedRewards.feastActivations || 0) + item.rewards.feastActivations;
+    }
+  });
+
+  return combinedRewards;
+};
+
 export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [clientSecret, setClientSecret] = useState<string | null>(null);
@@ -286,16 +337,19 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
+    // Get actual rewards (from bundleItems if it's a bundle, otherwise from item.rewards)
+    const actualRewards = item.bundleItems ? getBundleRewards(item.bundleItems) : item.rewards;
+
     // If this item has feast activations (feast or bundle), track it individually
-    if (item.rewards.feastActivations) {
+    if (actualRewards.feastActivations) {
       const purchaseId = `feast-purchase-${Date.now()}`;
       useGameStore.setState((state) => ({
         feastPurchases: {
           ...state.feastPurchases,
           [purchaseId]: {
             itemId: selectedItem!,
-            activationsRemaining: item.rewards.feastActivations!,
-            totalActivations: item.rewards.feastActivations!,
+            activationsRemaining: actualRewards.feastActivations!,
+            totalActivations: actualRewards.feastActivations!,
             purchasedAt: Date.now(),
           },
         },
@@ -346,14 +400,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
+    // Get actual rewards (from bundleItems if it's a bundle, otherwise from item.rewards)
+    const actualRewards = item.bundleItems ? getBundleRewards(item.bundleItems) : item.rewards;
+
     // For items with feast activations (feast or bundle), use individual purchase tracking
-    if (item.rewards.feastActivations) {
+    if (actualRewards.feastActivations) {
       const purchase = gameState.feastPurchases?.[purchaseId];
       if (!purchase || purchase.activationsRemaining <= 0) return;
 
       // Grant resources if this is a bundle
-      if (item.rewards.resources) {
-        Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
+      if (actualRewards.resources) {
+        Object.entries(actualRewards.resources).forEach(([resource, amount]) => {
           gameState.updateResource(resource as any, amount);
         });
       }
@@ -391,26 +448,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     if (activatedPurchases[purchaseId]) return;
 
     // Grant rewards
-    if (item.rewards.resources) {
-      Object.entries(item.rewards.resources).forEach(([resource, amount]) => {
+    if (actualRewards.resources) {
+      Object.entries(actualRewards.resources).forEach(([resource, amount]) => {
         gameState.updateResource(resource as any, amount);
       });
     }
 
-    if (item.rewards.tools) {
-      item.rewards.tools.forEach((tool) => {
+    if (actualRewards.tools) {
+      actualRewards.tools.forEach((tool) => {
         gameState.tools[tool as keyof typeof gameState.tools] = true;
       });
     }
 
-    if (item.rewards.weapons) {
-      item.rewards.weapons.forEach((weapon) => {
+    if (actualRewards.weapons) {
+      actualRewards.weapons.forEach((weapon) => {
         gameState.weapons[weapon as keyof typeof gameState.weapons] = true;
       });
     }
 
-    if (item.rewards.blessings) {
-      item.rewards.blessings.forEach((blessing) => {
+    if (actualRewards.blessings) {
+      actualRewards.blessings.forEach((blessing) => {
         gameState.blessings[blessing as keyof typeof gameState.blessings] =
           true;
       });
