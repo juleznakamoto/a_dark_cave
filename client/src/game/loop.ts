@@ -307,14 +307,11 @@ function handleGathererProduction() {
   const state = useGameStore.getState();
   const gatherer = state.villagers.gatherer;
 
-  console.log('[NORMAL PRODUCTION] Gatherer count:', gatherer);
   if (gatherer > 0) {
     const updates: Record<string, number> = {};
     const production = getPopulationProduction("gatherer", gatherer, state);
-    console.log('[NORMAL PRODUCTION] Gatherer production:', production);
     production.forEach((prod) => {
       updates[prod.resource] = prod.totalAmount;
-      console.log(`[NORMAL PRODUCTION] Gatherer ${prod.resource}: ${state.resources[prod.resource as keyof typeof state.resources] || 0} + ${prod.totalAmount}`);
       state.updateResource(
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
@@ -327,12 +324,9 @@ function handleHunterProduction() {
   const state = useGameStore.getState();
   const hunter = state.villagers.hunter;
 
-  console.log('[NORMAL PRODUCTION] Hunter count:', hunter);
   if (hunter > 0) {
     const production = getPopulationProduction("hunter", hunter, state);
-    console.log('[NORMAL PRODUCTION] Hunter production:', production);
     production.forEach((prod) => {
-      console.log(`[NORMAL PRODUCTION] Hunter ${prod.resource}: ${state.resources[prod.resource as keyof typeof state.resources] || 0} + ${prod.totalAmount}`);
       state.updateResource(
         prod.resource as keyof typeof state.resources,
         prod.totalAmount,
@@ -357,13 +351,11 @@ function handleMinerProduction() {
     ) {
       const production = getPopulationProduction(job, count, state);
       allProduction.push({ job, production });
-      console.log(`[NORMAL PRODUCTION] ${job} (${count}):`, production);
     }
   });
 
   // Track available resources after each job's production/consumption
   const availableResources = { ...state.resources };
-  console.log('[NORMAL PRODUCTION] Starting available resources:', availableResources);
 
   // Process each job sequentially
   allProduction.forEach(({ job, production }) => {
@@ -372,31 +364,23 @@ function handleMinerProduction() {
       if (prod.totalAmount < 0) {
         // Consumption - check if we have enough available
         const available = availableResources[prod.resource as keyof typeof availableResources] || 0;
-        const needed = Math.abs(prod.totalAmount);
-        console.log(`[NORMAL PRODUCTION] ${job} needs ${needed} ${prod.resource}, has ${available}`);
-        return available >= needed;
+        return available >= Math.abs(prod.totalAmount);
       }
       return true; // Production is always allowed
     });
 
-    console.log(`[NORMAL PRODUCTION] ${job} canProduce:`, canProduce);
-
     // Only apply production if all resources are available
     if (canProduce) {
       production.forEach((prod) => {
-        const before = availableResources[prod.resource as keyof typeof availableResources] || 0;
         // Update both the tracked available resources and the actual state
         availableResources[prod.resource as keyof typeof availableResources] =
           (availableResources[prod.resource as keyof typeof availableResources] || 0) + prod.totalAmount;
-        console.log(`[NORMAL PRODUCTION] ${job} ${prod.resource}: ${before} + ${prod.totalAmount} = ${availableResources[prod.resource as keyof typeof availableResources]}`);
 
         state.updateResource(
           prod.resource as keyof typeof state.resources,
           prod.totalAmount,
         );
       });
-    } else {
-      console.log(`[NORMAL PRODUCTION] ${job} BLOCKED - insufficient resources`);
     }
   });
 }
@@ -408,8 +392,6 @@ function handlePopulationSurvival() {
     (sum, count) => sum + (count || 0),
     0,
   );
-
-  console.log('[NORMAL PRODUCTION] Population survival - total population:', totalPopulation);
 
   if (totalPopulation === 0) return;
 
@@ -426,7 +408,6 @@ function handlePopulationSurvival() {
   const foodNeeded = totalPopulation;
   const availableFood = state.resources.food;
 
-  console.log(`[NORMAL PRODUCTION] Food consumption: ${availableFood} - ${foodNeeded}`);
   if (availableFood >= foodNeeded) {
     // Everyone can eat, consume food normally
     state.updateResource("food", -foodNeeded);
@@ -439,7 +420,6 @@ function handlePopulationSurvival() {
   const woodNeeded = totalPopulation;
   const availableWood = state.resources.wood;
 
-  console.log(`[NORMAL PRODUCTION] Wood consumption: ${availableWood} - ${woodNeeded}`);
   if (availableWood >= woodNeeded) {
     // Consume wood normally
     state.updateResource("wood", -woodNeeded);
