@@ -319,7 +319,6 @@ export default function IdleModeDialog() {
               <div key={resource} className="flex justify-between items-center">
                 <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
                 <span className={`text-sm tabular-nums ${amount < 0 ? 'text-red-400' : 'text-green-400'}`}>
-                  {amount > 0 ? '+' : ''}
                   <AnimatedCounter value={Math.floor(amount)} />
                 </span>
               </div>
