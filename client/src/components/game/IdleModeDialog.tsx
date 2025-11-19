@@ -408,7 +408,7 @@ export default function IdleModeDialog() {
         </DialogHeader>
 
         <div className="space-y-3 py-4">
-          <div className="space-y-2">
+          <div className="space-y-1">
             {producedResources.map(([resource, amount]) => (
               <div key={resource} className="flex justify-between items-center">
                 <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
