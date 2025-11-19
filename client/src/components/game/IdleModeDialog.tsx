@@ -77,7 +77,7 @@ function simulateMinerProduction(state: any, multiplier: number, accumulatedReso
 
   // Track available resources after each job's production/consumption
   const availableResources = { ...accumulatedResources };
-  
+
   console.log('[IDLE MINER] Available resources at start:', availableResources);
 
   // Process each job sequentially
@@ -170,9 +170,9 @@ export default function IdleModeDialog() {
 
         // Get CURRENT resources state (most recent)
         const currentState = useGameStore.getState();
-        
+
         console.log('[IDLE MODE] Starting resources:', currentState.resources);
-        
+
         // Start with CURRENT game resources (most recent state)
         const offlineResources: Record<string, number> = { ...currentState.resources };
 
@@ -204,7 +204,7 @@ export default function IdleModeDialog() {
         // Only start fresh idle mode if there's no active state AND no previous startTime
         // This prevents starting a new idle mode after one just finished
         console.log('[IDLE MODE] Starting fresh idle mode');
-        
+
         // Get the CURRENT (most recent) resources state
         const currentState = useGameStore.getState();
         setIsActive(true);
@@ -247,7 +247,7 @@ export default function IdleModeDialog() {
       if (remaining <= 0) {
         // Time's up - stop active state and resource accumulation
         setIsActive(false);
-        
+
         // Clear idle mode state in global store - this stops production and prevents new cycles
         useGameStore.setState({
           idleModeState: {
@@ -302,7 +302,7 @@ export default function IdleModeDialog() {
       setAccumulatedResources(prev => {
         // Start with current tracked resources (delta from start)
         const currentTracked = { ...prev };
-        
+
         // Create a simulated resource state (initial + accumulated changes)
         const simulatedResources: Record<string, number> = {};
         Object.keys(initialResources).forEach(resource => {
@@ -323,7 +323,7 @@ export default function IdleModeDialog() {
 
         return newDeltas;
       });
-      
+
       return true; // Continue
     };
 
@@ -377,19 +377,21 @@ export default function IdleModeDialog() {
       }
     }
 
-    // Clear persisted idle mode state
+    // Clear persisted idle mode state completely - now reset startTime to 0
     useGameStore.setState({
       idleModeState: {
         isActive: false,
-        startTime: 0,
+        startTime: 0, // Reset to 0 only when user closes dialog
         needsDisplay: false,
       },
     });
 
-    // Close dialog and reset
+    // Close dialog and reset local state
     setIsActive(false);
     setIdleModeDialog(false);
     setAccumulatedResources({});
+    setStartTime(0);
+    setInitialResources({});
   };
 
   const formatTime = (ms: number) => {
