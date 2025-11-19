@@ -225,31 +225,9 @@ export default function EstatePanel() {
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span
-                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips["sleep-length"] ? "new-item-pulse" : ""}`}
-                      onMouseEnter={() => handleTooltipHover("sleep-length")}
-                      onClick={(e) => {
-                        mobileTooltip.handleTooltipClick("sleep-length", e);
-                        if (!hoveredTooltips["sleep-length"]) {
-                          setHoveredTooltip("sleep-length", true);
-                        }
-                      }}
-                    >
-                      Sleep Length
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      {nextLengthUpgrade && (
-                        <div>Next: {nextLengthUpgrade.hours}h</div>
-                      )}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <span className="text-xs font-medium text-foreground">
+                Sleep Length
+              </span>
               {sleepUpgrades.lengthLevel < 5 && (
                 <TooltipProvider>
                   <Tooltip>
@@ -290,33 +268,9 @@ export default function EstatePanel() {
           {/* Sleep Intensity Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span
-                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips["sleep-intensity"] ? "new-item-pulse" : ""}`}
-                      onMouseEnter={() => handleTooltipHover("sleep-intensity")}
-                      onClick={(e) => {
-                        mobileTooltip.handleTooltipClick("sleep-intensity", e);
-                        if (!hoveredTooltips["sleep-intensity"]) {
-                          setHoveredTooltip("sleep-intensity", true);
-                        }
-                      }}
-                    >
-                      Sleep Intensity
-                    </span>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <div className="text-xs">
-                      {nextIntensityUpgrade && (
-                        <div>
-                          Next: {nextIntensityUpgrade.percentage}%
-                        </div>
-                      )}
-                    </div>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
+              <span className="text-xs font-medium text-foreground">
+                Sleep Intensity
+              </span>
               {sleepUpgrades.intensityLevel < 5 && (
                 <TooltipProvider>
                   <Tooltip>
