@@ -27,7 +27,8 @@ export function useMobileTooltip() {
     if (!isMobile) return;
     
     e.stopPropagation();
-    setOpenTooltipId(openTooltipId === id ? null : id);
+    // Always close any open tooltip first, then toggle the clicked one
+    setOpenTooltipId(prev => prev === id ? null : id);
   };
 
   const isTooltipOpen = (id: string) => {
@@ -80,7 +81,7 @@ export function useMobileButtonTooltip() {
     // On mobile with tooltip, handle inactive buttons specially
     if (disabled) {
       e.stopPropagation();
-      setOpenTooltipId(openTooltipId === id ? null : id);
+      setOpenTooltipId(prev => prev === id ? null : id);
     }
   };
 
@@ -92,6 +93,9 @@ export function useMobileButtonTooltip() {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
+    
+    // Close any currently open tooltip immediately
+    setOpenTooltipId(null);
     
     // Don't prevent default to allow button interaction
     setPressingId(id);
@@ -140,6 +144,9 @@ export function useMobileButtonTooltip() {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
+    
+    // Close any currently open tooltip immediately
+    setOpenTooltipId(null);
     
     setPressingId(id);
     
