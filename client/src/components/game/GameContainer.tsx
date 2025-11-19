@@ -225,18 +225,6 @@ export default function GameContainer() {
                   </button>
                 )}
 
-                {flags.forestUnlocked && (
-                  <button
-                    className={`py-2 text-sm bg-transparent ${
-                      activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
-                    } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
-                    onClick={() => setActiveTab("forest")}
-                    data-testid="tab-forest"
-                  >
-                    Forest
-                  </button>
-                )}
-
                 {/* Estate Tab Button */}
                 {estateUnlocked && (
                   <button
@@ -247,6 +235,18 @@ export default function GameContainer() {
                     data-testid="tab-estate"
                   >
                     Estate
+                  </button>
+                )}
+
+                {flags.forestUnlocked && (
+                  <button
+                    className={`py-2 text-sm bg-transparent ${
+                      activeTab === "forest" ? "font-bold opacity-100" : "opacity-60"
+                    } ${animatingTabs.has("forest") ? "tab-fade-in" : ""}`}
+                    onClick={() => setActiveTab("forest")}
+                    data-testid="tab-forest"
+                  >
+                    Forest
                   </button>
                 )}
 
