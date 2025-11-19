@@ -18,7 +18,7 @@ import { Progress } from "@/components/ui/progress";
 const SLEEP_LENGTH_UPGRADES = [
   { level: 0, hours: 2, cost: 0, currency: null },
   { level: 1, hours: 4, cost: 250, currency: "silver" },
-  { level: 2, hours: 6, cost: 500, currency: "silver" },
+  { level: 2, hours: 0.05, cost: 500, currency: "silver" },
   { level: 3, hours: 10, cost: 1000, currency: "silver" },
   { level: 4, hours: 16, cost: 2500, currency: "silver" },
   { level: 5, hours: 24, cost: 5000, currency: "silver" },

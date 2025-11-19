@@ -16,7 +16,7 @@ import { getPopulationProduction } from '@/game/population';
 const SLEEP_LENGTH_UPGRADES = [
   { level: 0, hours: 4 },
   { level: 1, hours: 4 },
-  { level: 2, hours: 6 },
+  { level: 2, hours: 0.01 },
   { level: 3, hours: 10 },
   { level: 4, hours: 16 },
   { level: 5, hours: 24 },
