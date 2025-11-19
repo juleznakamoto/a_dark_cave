@@ -1,6 +1,6 @@
-import { GameState } from '@shared/game/schema';
-import { LogEntry } from '@/game/rules/events';
-import { gameActions } from '@/game/rules';
+import { GameState } from "@shared/game/schema";
+import { LogEntry } from "@/game/rules/events";
+import { gameActions } from "@/game/rules";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -15,7 +15,7 @@ import {
   handleoccultistChamber,
   handleBlastPortal,
   handleEncounterBeyondPortal,
-} from '@/game/rules/caveExploreActions';
+} from "@/game/rules/caveExploreActions";
 
 import {
   handleCraftTorch,
@@ -43,7 +43,7 @@ import {
   handleCraftGrenadierBag,
   handleCraftHighpriestRobe,
   handleCraftLoggersGloves,
-} from '@/game/rules/caveCraftTools';
+} from "@/game/rules/caveCraftTools";
 
 import {
   handleCraftBoneTotem,
@@ -54,7 +54,7 @@ import {
   handleCraftLeatherTotems5,
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
-} from '@/game/rules/caveCraftResources';
+} from "@/game/rules/caveCraftResources";
 
 import {
   handleCraftIronSword,
@@ -70,7 +70,7 @@ import {
   handleCraftArbalest,
   handleCraftNightshadeBow,
   handleCraftBloodstoneStaff,
-} from '@/game/rules/caveCraftWeapons';
+} from "@/game/rules/caveCraftWeapons";
 
 import {
   handleBuildWoodenHut,
@@ -117,14 +117,14 @@ import {
   handleCastleRuins,
   handleHillGrave,
   handleSunkenTemple,
-} from '@/game/rules/forestScoutActions';
+} from "@/game/rules/forestScoutActions";
 
 import {
   handleBoneTotems,
   handleLeatherTotems,
   handleAnimals,
   handleHumans,
-} from '@/game/rules/forestSacrificeActions';
+} from "@/game/rules/forestSacrificeActions";
 
 import {
   handleTradeGoldForFood,
@@ -135,7 +135,7 @@ import {
   handleTradeGoldForAdamant,
   handleTradeGoldForTorch,
   handleTradeSilverForGold,
-} from '@/game/rules/forestTradeActions';
+} from "@/game/rules/forestTradeActions";
 
 import {
   handleMineStone,
@@ -144,7 +144,7 @@ import {
   handleMineSulfur,
   handleMineObsidian,
   handleMineAdamant,
-} from '@/game/rules/caveMineActions';
+} from "@/game/rules/caveMineActions";
 
 export interface ActionResult {
   stateUpdates: Partial<GameState> & {
@@ -154,234 +154,282 @@ export interface ActionResult {
   delayedEffects?: Array<() => void>;
 }
 
-export function executeGameAction(actionId: string, state: GameState): ActionResult {
+export function executeGameAction(
+  actionId: string,
+  state: GameState,
+): ActionResult {
   const result: ActionResult = {
     stateUpdates: {
-      cooldowns: { ...state.cooldowns, [actionId]: getActionCooldown(actionId) },
+      cooldowns: {
+        ...state.cooldowns,
+        [actionId]: getActionCooldown(actionId),
+      },
       story: {
         ...state.story,
         seen: {
           ...state.story.seen,
-          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`]: true
-        }
-      }
+          [`action${actionId.charAt(0).toUpperCase() + actionId.slice(1)}`]:
+            true,
+        },
+      },
     },
     logEntries: [],
-    delayedEffects: []
+    delayedEffects: [],
   };
 
   // Route to appropriate handler based on action ID
   switch (actionId) {
     // Cave Explore Actions
-    case 'testExplosion':
+    case "testExplosion":
       // Test button does nothing, just triggers explosion effect
       return result;
-    case 'lightFire':
+    case "lightFire":
       return handleLightFire(state, result);
-    case 'chopWood':
+    case "chopWood":
       return handleChopWood(state, result);
-    case 'exploreCave':
+    case "exploreCave":
       return handleExploreCave(state, result);
-    case 'ventureDeeper':
+    case "ventureDeeper":
       return handleVentureDeeper(state, result);
-    case 'descendFurther':
+    case "descendFurther":
       return handleDescendFurther(state, result);
-    case 'exploreRuins':
+    case "exploreRuins":
       return handleExploreRuins(state, result);
-    case 'exploreTemple':
+    case "exploreTemple":
       return handleExploreTemple(state, result);
-    case 'exploreCitadel':
+    case "exploreCitadel":
       return handleExploreCitadel(state, result);
-    case 'lowChamber':
+    case "lowChamber":
       return handleLowChamber(state, result);
-    case 'occultistChamber':
+    case "occultistChamber":
       return handleoccultistChamber(state, result);
-    case 'blastPortal':
+    case "blastPortal":
       return handleBlastPortal(state, result);
-    case 'encounterBeyondPortal':
+    case "encounterBeyondPortal":
       return handleEncounterBeyondPortal(state, result);
 
     // Cave Craft Actions
-    case 'craftTorch':
+    case "craftTorch":
       return handleCraftTorch(state, result);
-    case 'craftTorches':
+    case "craftTorches":
       return handleCraftTorches(state, result);
-    case 'craftTorches3':
+    case "craftTorches3":
       return handleCraftTorches3(state, result);
-    case 'craftTorches4':
+    case "craftTorches4":
       return handleCraftTorches4(state, result);
-    case 'craftTorches5':
+    case "craftTorches5":
       return handleCraftTorches5(state, result);
-    case 'craftTorches10':
+    case "craftTorches10":
       return handleCraftTorches10(state, result);
-    case 'craftStoneAxe':
+    case "craftStoneAxe":
       return handleCraftStoneAxe(state, result);
-    case 'craftStonePickaxe':
+    case "craftStonePickaxe":
       return handleCraftStonePickaxe(state, result);
-    case 'craftIronAxe':
+    case "craftIronAxe":
       return handleCraftIronAxe(state, result);
-    case 'craftIronPickaxe':
+    case "craftIronPickaxe":
       return handleCraftIronPickaxe(state, result);
-    case 'craftSteelAxe':
+    case "craftSteelAxe":
       return handleCraftSteelAxe(state, result);
-    case 'craftSteelPickaxe':
+    case "craftSteelPickaxe":
       return handleCraftSteelPickaxe(state, result);
-    case 'craftObsidianAxe':
+    case "craftObsidianAxe":
       return handleCraftObsidianAxe(state, result);
-    case 'craftObsidianPickaxe':
+    case "craftObsidianPickaxe":
       return handleCraftObsidianPickaxe(state, result);
-    case 'craftAdamantAxe':
+    case "craftAdamantAxe":
       return handleCraftAdamantAxe(state, result);
-    case 'craftAdamantPickaxe':
+    case "craftAdamantPickaxe":
       return handleCraftAdamantPickaxe(state, result);
-    case 'craftIronLantern':
+    case "craftIronLantern":
       return handleCraftIronLantern(state, result);
-    case 'craftSteelLantern':
+    case "craftSteelLantern":
       return handleCraftSteelLantern(state, result);
-    case 'craftObsidianLantern':
+    case "craftObsidianLantern":
       return handleCraftObsidianLantern(state, result);
-    case 'craftAdamantLantern':
+    case "craftAdamantLantern":
       return handleCraftAdamantLantern(state, result);
-    case 'craftExplorerPack':
+    case "craftExplorerPack":
       return handleCraftExplorerPack(state, result);
-    case 'craftHunterCloak':
+    case "craftHunterCloak":
       return handleCraftHunterCloak(state, result);
-    case 'craftLoggersGloves':
+    case "craftLoggersGloves":
       return handleCraftLoggersGloves(state, result);
-    case 'craftGrenadierBag':
+    case "craftGrenadierBag":
       return handleCraftGrenadierBag(state, result);
-    case 'craftHighpriestRobe':
+    case "craftHighpriestRobe":
       return handleCraftHighpriestRobe(state, result);
-    case 'craftBoneTotem':
+    case "craftBoneTotem":
       return handleCraftBoneTotem(state, result);
-    case 'craftBoneTotems2':
+    case "craftBoneTotems2":
       return handleCraftBoneTotems2(state, result);
-    case 'craftBoneTotems3':
+    case "craftBoneTotems3":
       return handleCraftBoneTotems3(state, result);
-    case 'craftBoneTotems5':
+    case "craftBoneTotems5":
       return handleCraftBoneTotems5(state, result);
-    case 'craftLeatherTotem':
+    case "craftLeatherTotem":
       return handleCraftLeatherTotem(state, result);
-    case 'craftLeatherTotems5':
+    case "craftLeatherTotems5":
       return handleCraftLeatherTotems5(state, result);
-    case 'craftEmberBomb':
+    case "craftEmberBomb":
       return handleCraftEmberBomb(state, result);
-    case 'craftAshfireBomb':
+    case "craftAshfireBomb":
       return handleCraftAshfireBomb(state, result);
-    case 'craftIronSword':
+    case "craftIronSword":
       return handleCraftIronSword(state, result);
-    case 'craftSteelSword':
+    case "craftSteelSword":
       return handleCraftSteelSword(state, result);
-    case 'craftObsidianSword':
+    case "craftObsidianSword":
       return handleCraftObsidianSword(state, result);
-    case 'craftAdamantSword':
+    case "craftAdamantSword":
       return handleCraftAdamantSword(state, result);
-    case 'craftCrudeBow':
+    case "craftCrudeBow":
       return handleCraftCrudeBow(state, result);
-    case 'craftHuntsmanBow':
+    case "craftHuntsmanBow":
       return handleCraftHuntsmanBow(state, result);
-    case 'craftLongBow':
+    case "craftLongBow":
       return handleCraftLongBow(state, result);
-    case 'craftWarBow':
+    case "craftWarBow":
       return handleCraftWarBow(state, result);
-    case 'craftMasterBow':
+    case "craftMasterBow":
       return handleCraftMasterBow(state, result);
-    case 'craftFrostglassSword':
+    case "craftFrostglassSword":
       return handleCraftFrostglassSword(state, result);
-    case 'craftArbalest':
+    case "craftArbalest":
       return handleCraftArbalest(state, result);
-    case 'craftNightshadeBow':
+    case "craftNightshadeBow":
       return handleCraftNightshadeBow(state, result);
-    case 'craftBloodstoneStaff':
+    case "craftBloodstoneStaff":
       return handleCraftBloodstoneStaff(state, result);
 
     // Cave Mine Actions
-    case 'mineStone':
+    case "mineStone":
       return handleMineStone(state, result);
-    case 'mineIron':
+    case "mineIron":
       return handleMineIron(state, result);
-    case 'mineCoal':
+    case "mineCoal":
       return handleMineCoal(state, result);
-    case 'mineSulfur':
+    case "mineSulfur":
       return handleMineSulfur(state, result);
-    case 'mineObsidian':
+    case "mineObsidian":
       return handleMineObsidian(state, result);
-    case 'mineAdamant':
+    case "mineAdamant":
       return handleMineAdamant(state, result);
 
     // Village Build Actions
-    case 'buildWoodenHut':
+    case "buildWoodenHut":
       return handleBuildWoodenHut(state, result);
-    case 'buildCabin':
+    case "buildCabin":
       return handleBuildCabin(state, result);
-    case 'buildBlacksmith':
+    case "buildBlacksmith":
       return handleBuildBlacksmith(state, result);
-    case 'buildShallowPit':
+    case "buildShallowPit":
       return handleBuildShallowPit(state, result);
-    case 'buildDeepeningPit':
+    case "buildDeepeningPit":
       return handleBuildDeepeningPit(state, result);
-    case 'buildDeepPit':
+    case "buildDeepPit":
       return handleBuildDeepPit(state, result);
-    case 'buildBottomlessPit':
+    case "buildBottomlessPit":
       return handleBuildBottomlessPit(state, result);
-    case 'buildFoundry':
+    case "buildFoundry":
       return handleBuildFoundry(state, result);
-    case 'buildPrimeFoundry':
+    case "buildPrimeFoundry":
       return handleBuildPrimeFoundry(state, result);
-    case 'buildMasterworkFoundry':
+    case "buildMasterworkFoundry":
       return handleBuildMasterworkFoundry(state, result);
-    case 'buildAltar':
+    case "buildAltar":
       return handleBuildAltar(state, result);
-    case 'buildGreatCabin':
+    case "buildGreatCabin":
       return handleBuildGreatCabin(state, result);
-    case 'buildTimberMill':
+    case "buildTimberMill":
       return handleBuildTimberMill(state, result);
-    case 'buildQuarry':
+    case "buildQuarry":
       return handleBuildQuarry(state, result);
-    case 'buildClerksHut':
+    case "buildClerksHut":
       return handleBuildClerksHut(state, result);
-    case 'buildScriptorium':
+    case "buildScriptorium":
       return handleBuildScriptorium(state, result);
-    case 'buildTannery':
+    case "buildTannery":
       return handleBuildTannery(state, result);
-    case 'buildMasterTannery':
+    case "buildMasterTannery":
       return handleBuildMasterTannery(state, result);
-    case 'buildStoneHut':
+    case "buildStoneHut":
       return handleBuildStoneHut(state, result);
-    case 'buildShrine':
+    case "buildShrine":
       return handleBuildShrine(state, result);
-    case 'buildTemple':
+    case "buildTemple":
       return handleBuildTemple(state, result);
-    case 'buildSanctum':
+    case "buildSanctum":
       return handleBuildSanctum(state, result);
-    case 'buildAlchemistHall':
+    case "buildAlchemistHall":
       return handleBuildAlchemistHall(state, result);
-    case 'buildTradePost':
+    case "buildTradePost":
       return handleBuildTradePost(state, result);
-    case 'buildGrandBazaar':
+    case "buildGrandBazaar":
       return handleBuildGrandBazaar(state, result);
-    case 'buildMerchantsGuild':
+    case "buildMerchantsGuild":
       return handleBuildMerchantsGuild(state, result);
-    case 'buildWizardTower':
+    case "buildWizardTower":
       return handleBuildWizardTower(state, result);
-    case 'buildBastion':
+    case "buildBastion":
       return handleBuildBastion(state, result);
-    case 'buildWatchtower':
+    case "buildWatchtower":
       return handleBuildWatchtower(state, result);
-    case 'buildPalisades':
+    case "buildPalisades":
       return handleBuildPalisades(state, result);
-    case 'buildGrandBlacksmith':
+    case "buildGrandBlacksmith":
       return handleBuildGrandBlacksmith(state, result);
-    case 'buildLonghouse':
+    case "buildLonghouse":
       return handleBuildLonghouse(state, result);
     case "buildFortifiedMoat":
       return handleBuildFortifiedMoat(state, result);
     case "buildTraps": // New case for Traps
       return handleBuildTraps(state, result);
-    case 'buildBlackMonolith':
+    case "buildBlackMonolith":
       return handleBuildBlackMonolith(state, result);
     case "buildDarkEstate":
       return handleBuildDarkEstate(state, result);
+
+    // Forest Scout Actions
+    case "hunt":
+      return handleHunt(state, result);
+    case "layTrap":
+      return handleLayTrap(state, result);
+    case "castleRuins":
+      return handleCastleRuins(state, result);
+    case "hillGrave":
+      return handleHillGrave(state, result);
+    case "sunkenTemple":
+      return handleSunkenTemple(state, result);
+
+    // Forest Sacrifice Actions
+    case "boneTotems":
+      return handleBoneTotems(state, result);
+    case "leatherTotems":
+      return handleLeatherTotems(state, result);
+
+    // Forest Trade Actions
+    case "tradeGoldForFood":
+      return handleTradeGoldForFood(state, result);
+    case "tradeGoldForWood":
+      return handleTradeGoldForWood(state, result);
+    case "tradeGoldForStone":
+      return handleTradeGoldForStone(state, result);
+    case "tradeGoldForSteel":
+      return handleTradeGoldForSteel(state, result);
+    case "tradeGoldForObsidian":
+      return handleTradeGoldForObsidian(state, result);
+    case "tradeGoldForAdamant":
+      return handleTradeGoldForAdamant(state, result);
+    case "tradeGoldForTorch":
+      return handleTradeGoldForTorch(state, result);
+    case "tradeSilverForGold":
+      return handleTradeSilverForGold(state, result);
+    case "tradeGoldForEmberBomb":
+      return handleTradeGoldForEmberBomb(state, result);
+    case "tradeGoldForAshfireBomb":
+      return handleTradeGoldForAshfireBomb(state, result);
+
     default:
       console.warn(`No handler found for action: ${actionId}`);
       return result;

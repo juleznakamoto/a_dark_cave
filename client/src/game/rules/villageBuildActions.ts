@@ -1326,7 +1326,7 @@ export const villageBuildActions: Record<string, Action> = {
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
-    description: "Place to retreat to, away from the chaos",
+    description: "Place to retreat to away from the chaos",
     tooltipEffects: ["Unlocks Estate tab"],
     building: true,
     show_when: {
@@ -2262,7 +2262,7 @@ export function handleBuildDarkEstate(
     estateResult.logEntries!.push({
       id: `dark-estate-built-${Date.now()}`,
       message:
-        "The Dark Estate is complete. A quiet refuge stands apart from the village, offering solitude and respite from the daily struggles.",
+        "The Dark Estate stands has been built on a small hill near the village, offering solitude and refuge.",
       timestamp: Date.now(),
       type: "system",
     });
