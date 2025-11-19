@@ -36,8 +36,10 @@ function simulateGathererProduction(state: any, multiplier: number, accumulatedR
   const gatherer = state.villagers.gatherer;
   if (gatherer > 0) {
     const production = getPopulationProduction("gatherer", gatherer, state);
+    console.log('[IDLE GATHERER]', { gatherer, production, multiplier });
     production.forEach((prod) => {
       const amount = prod.totalAmount * multiplier;
+      console.log(`[IDLE GATHERER] ${prod.resource}: ${accumulatedResources[prod.resource] || 0} + ${amount}`);
       accumulatedResources[prod.resource] = (accumulatedResources[prod.resource] || 0) + amount;
     });
   }
@@ -71,8 +73,12 @@ function simulateMinerProduction(state: any, multiplier: number, accumulatedReso
     }
   });
 
+  console.log('[IDLE MINER] All production jobs:', allProduction.map(p => ({ job: p.job, production: p.production })));
+
   // Track available resources after each job's production/consumption
   const availableResources = { ...accumulatedResources };
+  
+  console.log('[IDLE MINER] Available resources at start:', availableResources);
 
   // Process each job sequentially
   allProduction.forEach(({ job, production }) => {
@@ -81,15 +87,20 @@ function simulateMinerProduction(state: any, multiplier: number, accumulatedReso
       if (prod.totalAmount < 0) {
         // Consumption - check if we have enough available
         const available = availableResources[prod.resource] || 0;
-        return available >= Math.abs(prod.totalAmount * multiplier);
+        const needed = Math.abs(prod.totalAmount * multiplier);
+        console.log(`[IDLE MINER] ${job} needs ${needed} ${prod.resource}, has ${available}`);
+        return available >= needed;
       }
       return true; // Production is always allowed
     });
+
+    console.log(`[IDLE MINER] ${job} canProduce:`, canProduce);
 
     // Only apply production if all resources are available
     if (canProduce) {
       production.forEach((prod) => {
         const amount = prod.totalAmount * multiplier;
+        console.log(`[IDLE MINER] ${job} ${prod.resource}: ${availableResources[prod.resource] || 0} + ${amount}`);
         // Update both the tracked available resources and accumulated resources
         availableResources[prod.resource] = (availableResources[prod.resource] || 0) + amount;
         accumulatedResources[prod.resource] = (accumulatedResources[prod.resource] || 0) + amount;
@@ -107,10 +118,12 @@ function simulatePopulationConsumption(state: any, multiplier: number, accumulat
   if (totalPopulation > 0) {
     // Food consumption (1 per villager per 15 seconds)
     const foodConsumption = totalPopulation * multiplier;
+    console.log(`[IDLE CONSUMPTION] Food: ${accumulatedResources['food'] || 0} - ${foodConsumption} (${totalPopulation} pop * ${multiplier})`);
     accumulatedResources['food'] = (accumulatedResources['food'] || 0) - foodConsumption;
 
     // Wood consumption (1 per villager per 15 seconds)
     const woodConsumption = totalPopulation * multiplier;
+    console.log(`[IDLE CONSUMPTION] Wood: ${accumulatedResources['wood'] || 0} - ${woodConsumption} (${totalPopulation} pop * ${multiplier})`);
     accumulatedResources['wood'] = (accumulatedResources['wood'] || 0) - woodConsumption;
   }
 }
@@ -140,6 +153,13 @@ export default function IdleModeDialog() {
         const elapsed = now - idleModeState.startTime;
         const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
+        console.log('[IDLE MODE] Loading persisted state:', {
+          startTime: idleModeState.startTime,
+          elapsed,
+          remaining,
+          intervals: Math.floor((Math.min(elapsed, IDLE_DURATION_MS) / 1000) / 15)
+        });
+
         setStartTime(idleModeState.startTime);
         setRemainingTime(remaining);
 
@@ -148,16 +168,29 @@ export default function IdleModeDialog() {
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
 
         const currentState = useGameStore.getState();
+        
+        console.log('[IDLE MODE] Starting resources:', currentState.resources);
+        
         // Start with current game resources
         const offlineResources: Record<string, number> = { ...currentState.resources };
 
         // Simulate each 15-second interval
         for (let i = 0; i < intervals; i++) {
+          console.log(`[IDLE MODE] Simulating interval ${i + 1}/${intervals}`, {
+            before: { ...offlineResources }
+          });
+          
           simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
           simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
+          
+          console.log(`[IDLE MODE] After interval ${i + 1}`, {
+            after: { ...offlineResources }
+          });
         }
+
+        console.log('[IDLE MODE] Final simulated resources:', offlineResources);
 
         // Calculate the delta (change) from starting resources
         const resourceDeltas: Record<string, number> = {};
@@ -165,9 +198,13 @@ export default function IdleModeDialog() {
           resourceDeltas[resource] = offlineResources[resource] - (currentState.resources[resource as keyof typeof currentState.resources] || 0);
         });
 
+        console.log('[IDLE MODE] Resource deltas:', resourceDeltas);
+
         setAccumulatedResources(resourceDeltas);
         setIsActive(remaining > 0);
       } else {
+        console.log('[IDLE MODE] Starting fresh idle mode');
+        
         // Start fresh idle mode
         setIsActive(true);
         setStartTime(now);
@@ -236,10 +273,16 @@ export default function IdleModeDialog() {
       // Get initial resources at sleep start
       const initialResources = { ...currentState.resources };
 
+      console.log('[IDLE MODE UPDATE] Starting resource update', {
+        initialResources
+      });
+
       // Accumulate resources using the same production functions as normal mode
       setAccumulatedResources(prev => {
         // Start with current tracked resources (delta from start)
         const currentTracked = { ...prev };
+        
+        console.log('[IDLE MODE UPDATE] Current tracked deltas:', currentTracked);
         
         // Create a simulated resource state (initial + accumulated changes)
         const simulatedResources: Record<string, number> = {};
@@ -247,17 +290,23 @@ export default function IdleModeDialog() {
           simulatedResources[resource] = initialResources[resource as keyof typeof initialResources] + (currentTracked[resource] || 0);
         });
 
+        console.log('[IDLE MODE UPDATE] Simulated resources before production:', simulatedResources);
+
         // Apply production functions to the simulated state
         simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
         simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
         simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
         simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
 
+        console.log('[IDLE MODE UPDATE] Simulated resources after production:', simulatedResources);
+
         // Calculate new deltas from initial state
         const newDeltas: Record<string, number> = {};
         Object.keys(simulatedResources).forEach(resource => {
           newDeltas[resource] = simulatedResources[resource] - initialResources[resource as keyof typeof initialResources];
         });
+
+        console.log('[IDLE MODE UPDATE] New deltas:', newDeltas);
 
         return newDeltas;
       });
