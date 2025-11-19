@@ -85,7 +85,7 @@ export function useMobileButtonTooltip() {
   };
 
   const handleMouseDown = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.MouseEvent) => {
-    if (!isMobile || isCoolingDown) return;
+    if (!isMobile) return;
     
     // Clear any existing timer before creating a new one
     if (pressTimerRef.current) {
@@ -133,7 +133,7 @@ export function useMobileButtonTooltip() {
   };
 
   const handleTouchStart = (id: string, disabled: boolean, isCoolingDown: boolean, e: React.TouchEvent) => {
-    if (!isMobile || isCoolingDown) return;
+    if (!isMobile) return;
     
     // Clear any existing timer before creating a new one
     if (pressTimerRef.current) {
