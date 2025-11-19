@@ -245,19 +245,19 @@ export default function GameFooter() {
           <div className="flex gap-2 items-center">
             <a
               href="mailto:support@a-dark-cave.com"
-              className="hover:text-foreground transition-colors opacity-50 hover:opacity-100"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
             >
               Feedback
             </a>
             <a
               href="/privacy"
-              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
             >
               Privacy
             </a>
             <a
               href="/imprint"
-              className="hover:text-foreground transition-colors opacity-40 hover:opacity-100"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
             >
               Imprint
             </a>
