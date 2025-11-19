@@ -92,22 +92,44 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
 
       const result = await response.json();
       if (result.success) {
-        // Save purchase to Supabase (same as free items)
+        // Save purchase to Supabase
         try {
           const user = await getCurrentUser();
           if (user) {
             const item = SHOP_ITEMS[result.itemId];
             const client = await getSupabaseClient();
-            const { error } = await client.from("purchases").insert({
-              user_id: user.id,
-              item_id: result.itemId,
-              item_name: item.name,
-              price_paid: item.price,
-              purchased_at: new Date().toISOString(),
-            });
 
-            if (error) {
-              console.error('Error saving purchase to Supabase:', error);
+            // For bundles, save each component item separately
+            if (item.category === "bundle" && item.bundleContains) {
+              for (const componentItemId of item.bundleContains) {
+                const componentItem = SHOP_ITEMS[componentItemId];
+                if (!componentItem) continue;
+
+                const { error } = await client.from("purchases").insert({
+                  user_id: user.id,
+                  item_id: componentItemId,
+                  item_name: componentItem.name,
+                  price_paid: 0, // Components from bundle are tracked as free
+                  purchased_at: new Date().toISOString(),
+                });
+
+                if (error) {
+                  console.error('Error saving bundle component purchase to Supabase:', error);
+                }
+              }
+            } else {
+              // For non-bundle items, save single purchase
+              const { error } = await client.from("purchases").insert({
+                user_id: user.id,
+                item_id: result.itemId,
+                item_name: item.name,
+                price_paid: item.price,
+                purchased_at: new Date().toISOString(),
+              });
+
+              if (error) {
+                console.error('Error saving purchase to Supabase:', error);
+              }
             }
           }
         } catch (error) {
@@ -230,20 +252,42 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           throw new Error("User not authenticated");
         }
 
-        // Save purchase to Supabase
         const client = await getSupabaseClient();
-        const { error } = await client.from("purchases").insert({
-          user_id: user.id,
-          item_id: itemId,
-          item_name: item.name,
-          price_paid: item.price,
-          purchased_at: new Date().toISOString(),
-        });
 
-        if (error) throw error;
+        // For bundles, save each component item separately
+        if (item.category === "bundle" && item.bundleContains) {
+          for (const componentItemId of item.bundleContains) {
+            const componentItem = SHOP_ITEMS[componentItemId];
+            if (!componentItem) continue;
 
-        // Add to purchased items list
-        setPurchasedItems((prev) => [...prev, itemId]);
+            const { error } = await client.from("purchases").insert({
+              user_id: user.id,
+              item_id: componentItemId,
+              item_name: componentItem.name,
+              price_paid: 0, // Components from bundle are tracked as free
+              purchased_at: new Date().toISOString(),
+            });
+
+            if (error) throw error;
+          }
+
+          // Add all component items to purchased items list
+          setPurchasedItems((prev) => [...prev, ...item.bundleContains!]);
+        } else {
+          // Save single purchase to Supabase
+          const { error } = await client.from("purchases").insert({
+            user_id: user.id,
+            item_id: itemId,
+            item_name: item.name,
+            price_paid: item.price,
+            purchased_at: new Date().toISOString(),
+          });
+
+          if (error) throw error;
+
+          // Add to purchased items list
+          setPurchasedItems((prev) => [...prev, itemId]);
+        }
 
         // Show success message
         gameState.addLogEntry({
@@ -282,24 +326,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    // Save purchase to database is now handled by verifyPurchase
-    // Add to purchased items list
-    setPurchasedItems((prev) => [...prev, selectedItem!]);
-
-    // If this item has feast activations (feast or bundle), track it individually
-    if (item.rewards.feastActivations) {
-      const purchaseId = `feast-purchase-${Date.now()}`;
-      useGameStore.setState((state) => ({
-        feastPurchases: {
-          ...state.feastPurchases,
-          [purchaseId]: {
-            itemId: selectedItem!,
-            activationsRemaining: item.rewards.feastActivations!,
-            totalActivations: item.rewards.feastActivations!,
-            purchasedAt: Date.now(),
-          },
-        },
-      }));
+    // For bundles, add component items to purchased items list
+    if (item.category === "bundle" && item.bundleContains) {
+      setPurchasedItems((prev) => [...prev, ...item.bundleContains!]);
+    } else {
+      // For non-bundle items, add to purchased items list
+      setPurchasedItems((prev) => [...prev, selectedItem!]);
     }
 
     gameState.addLogEntry({

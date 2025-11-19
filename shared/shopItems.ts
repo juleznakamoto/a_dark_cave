@@ -18,6 +18,7 @@ export interface ShopItem {
   activationMessage?: string;
   symbol?: string;
   symbolColor?: string;
+  bundleContains?: string[]; // For bundles: IDs of items this bundle contains
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
@@ -139,13 +140,10 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     description: "A great starter pack with 1000 Gold and 1 Great Feast",
     originalPrice: 699,
     price: 349, // 3.49 €
-    rewards: {
-      resources: { gold: 1000 },
-      feastActivations: 1,
-    },
+    rewards: {},
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Basic Bundle has been used!",
+    bundleContains: ["gold_1000", "great_feast_1"],
     symbol: "◻",
     symbolColor: "text-purple-600",
   },
