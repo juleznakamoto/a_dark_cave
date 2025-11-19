@@ -228,32 +228,27 @@ export default function IdleModeDialog() {
   }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]);
 
   const handleEndIdleMode = () => {
-    // Apply accumulated resources to the game state (including negative values for consumption)
+    // Apply accumulated resources to the game state
     Object.entries(accumulatedResources).forEach(([resource, amount]) => {
-      useGameStore.getState().updateResource(
-        resource as keyof typeof state.resources,
-        Math.floor(amount)
-      );
+      if (amount > 0) {
+        useGameStore.getState().updateResource(
+          resource as keyof typeof state.resources,
+          Math.floor(amount)
+        );
+      }
     });
 
-    // Create log message showing net resource changes
+    // Create log message showing resources gained
     if (Object.keys(accumulatedResources).length > 0) {
-      const positiveResources = Object.entries(accumulatedResources)
+      const resourcesList = Object.entries(accumulatedResources)
         .filter(([_, amount]) => amount > 0)
-        .map(([resource, amount]) => `${capitalizeWords(resource)}: +${Math.floor(amount)}`)
-        .join(', ');
-
-      const negativeResources = Object.entries(accumulatedResources)
-        .filter(([_, amount]) => amount < 0)
         .map(([resource, amount]) => `${capitalizeWords(resource)}: ${Math.floor(amount)}`)
         .join(', ');
 
-      const allChanges = [positiveResources, negativeResources].filter(s => s).join(', ');
-
-      if (allChanges) {
+      if (resourcesList) {
         useGameStore.getState().addLogEntry({
           id: `idle-mode-end-${Date.now()}`,
-          message: `While you slept: ${allChanges}`,
+          message: `While you slept, the villagers produced: ${resourcesList}`,
           timestamp: Date.now(),
           type: 'system',
         });
