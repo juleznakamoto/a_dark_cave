@@ -132,7 +132,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       <PaymentElement />
 
       <div className="space-y-2 border-t pt-4 mt-4">
-        <p className="text-xs text-muted-foreground">
+        <p className="text-[10px] text-muted-foreground">
           By completing this purchase, you agree that the delivery of the digital item begins immediately and acknowledge that you thereby lose your right of withdrawal. For more information, please see our{" "}
           <a
             href="/terms"
