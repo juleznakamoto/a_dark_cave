@@ -232,7 +232,7 @@ export const getPopulationProduction = (
   // Apply 100x multiplier in dev mode
   if (state && state.devMode) {
     baseProduction.forEach((prod) => {
-      prod.totalAmount *= 100;
+      prod.totalAmount *= 1;
     });
   }
 
