@@ -154,17 +154,43 @@ export default function IdleModeDialog() {
       setAccumulatedResources(prev => {
         const updated = { ...prev };
         
-        // Use the same production calculation as the normal game loop
+        // Track available resources after each job's production/consumption
+        const availableResources: Record<string, number> = {};
+        
+        // Initialize with current game state resources + accumulated resources
+        Object.keys(currentState.resources).forEach((resource) => {
+          availableResources[resource] = 
+            (currentState.resources[resource as keyof typeof currentState.resources] || 0) + 
+            (prev[resource] || 0);
+        });
+        
+        // Process each job sequentially (same as handleMinerProduction)
         Object.entries(currentState.villagers).forEach(([jobId, count]) => {
           if (count > 0) {
             const production = getPopulationProduction(jobId, count, currentState);
-            production.forEach((prod) => {
-              // Apply production/consumption for this 15-second cycle, multiplied by sleep intensity
-              const amountThisCycle = prod.totalAmount * PRODUCTION_SPEED_MULTIPLIER;
-              const offlineAmount = accumulatedResources[prod.resource] || 0;
-              const currentAccumulated = (prev[prod.resource] || 0) - offlineAmount;
-              updated[prod.resource] = offlineAmount + currentAccumulated + amountThisCycle;
+            
+            // Check if this job can produce based on currently available resources
+            const canProduce = production.every((prod) => {
+              if (prod.totalAmount < 0) {
+                // Consumption - check if we have enough available
+                const available = availableResources[prod.resource] || 0;
+                return available >= Math.abs(prod.totalAmount * PRODUCTION_SPEED_MULTIPLIER);
+              }
+              return true; // Production is always allowed
             });
+            
+            // Only apply production if all resources are available
+            if (canProduce) {
+              production.forEach((prod) => {
+                // Apply production/consumption for this 15-second cycle, multiplied by sleep intensity
+                const amountThisCycle = prod.totalAmount * PRODUCTION_SPEED_MULTIPLIER;
+                const offlineAmount = accumulatedResources[prod.resource] || 0;
+                const currentAccumulated = (prev[prod.resource] || 0) - offlineAmount;
+                
+                updated[prod.resource] = offlineAmount + currentAccumulated + amountThisCycle;
+                availableResources[prod.resource] = (availableResources[prod.resource] || 0) + amountThisCycle;
+              });
+            }
           }
         });
         
