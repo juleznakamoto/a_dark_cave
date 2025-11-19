@@ -1,0 +1,47 @@
+[GAME STATE - 15s Loop] Object
+ [IDLE MODE] Loading persisted state: {startTime: 1763566355929, elapsed: 665, remaining: 21599335, intervals: 0}
+ [IDLE MODE] Starting resources: {fur: 351464, coal: 0, food: 467818, gold: 41778, iron: 0, …}adamant: 33925ashfire_bomb: 0ashfire_dust: 0black_powder: 0bone_totem: 1619bones: 375381coal: 0ember_bomb: 0food: 467818fur: 351464gold: 41778iron: 0leather: 4698leather_totem: 232moonstone: 6450obsidian: 52745silver: 107186steel: 359453stone: 829902sulfur: 1900torch: 3719wood: 1236472[[Prototype]]: Object
+ [IDLE MODE] Final simulated resources: {fur: 351464, coal: 0, food: 467818, gold: 41778, iron: 0, …}adamant: 33925ashfire_bomb: 0ashfire_dust: 0black_powder: 0bone_totem: 1619bones: 375381coal: 0ember_bomb: 0food: 467818fur: 351464gold: 41778iron: 0leather: 4698leather_totem: 232moonstone: 6450obsidian: 52745silver: 107186steel: 359453stone: 829902sulfur: 1900torch: 3719wood: 1236472[[Prototype]]: Object
+ [IDLE MODE] Resource deltas: {fur: 0, coal: 0, food: 0, gold: 0, iron: 0, …}
+ [IDLE MODE UPDATE] Starting resource update {initialResources: {…}}
+ [IDLE MODE UPDATE] Current tracked deltas: {fur: 500, coal: -375, food: 1969.375, gold: 0, iron: -375, …}
+ [IDLE MODE UPDATE] Simulated resources before production: {fur: 351964, coal: -375, food: 469787.375, gold: 41778, iron: -375, …}
+ [IDLE GATHERER] {gatherer: 1, production: Array(2), multiplier: 0.125}
+ [IDLE GATHERER] wood: 1237191.375 + 187.5
+ [IDLE GATHERER] stone: 830527 + 125
+ [IDLE MINER] All production jobs: [{…}]
+ [IDLE MINER] Available resources at start: {fur: 352064, coal: -375, food: 470287.375, gold: 41778, iron: -375, …}
+ [IDLE MINER] steel_forger needs 375 iron, has -375
+ [IDLE MINER] steel_forger canProduce: false
+ [IDLE CONSUMPTION] Food: 470287.375 - 6.125 (49 pop * 0.125)
+ [IDLE CONSUMPTION] Wood: 1237378.875 - 6.125 (49 pop * 0.125)
+ [IDLE MODE UPDATE] Simulated resources after production: {fur: 352064, coal: -375, food: 470281.25, gold: 41778, iron: -375, …}
+ [IDLE MODE UPDATE] New deltas: {fur: 600, coal: -375, food: 2463.25, gold: 0, iron: -375, …}
+ [IDLE MODE UPDATE] Starting resource update {initialResources: {…}}
+ [IDLE MODE UPDATE] Current tracked deltas: {fur: 1100, coal: -750, food: 4432.625, gold: 0, iron: -750, …}
+ [IDLE MODE UPDATE] Simulated resources before production: {fur: 352564, coal: -750, food: 472250.625, gold: 41778, iron: -750, …}
+ [IDLE GATHERER] {gatherer: 1, production: Array(2), multiplier: 0.125}
+ [IDLE GATHERER] wood: 1238092.125 + 187.5
+ [IDLE GATHERER] stone: 831277 + 125
+ [IDLE MINER] All production jobs: [{…}]
+ [IDLE MINER] Available resources at start: {fur: 352664, coal: -750, food: 472750.625, gold: 41778, iron: -750, …}
+ [IDLE MINER] steel_forger needs 375 iron, has -750
+ [IDLE MINER] steel_forger canProduce: false
+ [IDLE CONSUMPTION] Food: 472750.625 - 6.125 (49 pop * 0.125)
+ [IDLE CONSUMPTION] Wood: 1238279.625 - 6.125 (49 pop * 0.125)
+ [IDLE MODE UPDATE] Simulated resources after production: {fur: 352664, coal: -750, food: 472744.5, gold: 41778, iron: -750, …}
+ [IDLE MODE UPDATE] New deltas: {fur: 1200, coal: -750, food: 4926.5, gold: 0, iron: -750, …}
+ [IDLE MODE UPDATE] Starting resource update {initialResources: {…}}
+ [IDLE MODE UPDATE] Current tracked deltas: {}
+ [IDLE MODE UPDATE] Simulated resources before production: {fur: 353164, coal: 0, food: 474713, gold: 41778, iron: 0, …}
+ [IDLE GATHERER] {gatherer: 1, production: Array(2), multiplier: 0.125}
+ [IDLE GATHERER] wood: 1238992 + 187.5
+ [IDLE GATHERER] stone: 832027 + 125
+ [IDLE MINER] All production jobs: [{…}]
+ [IDLE MINER] Available resources at start: {fur: 353264, coal: 0, food: 475213, gold: 41778, iron: 0, …}
+ [IDLE MINER] steel_forger needs 375 iron, has 0
+ [IDLE MINER] steel_forger canProduce: false
+ [IDLE CONSUMPTION] Food: 475213 - 6.125 (49 pop * 0.125)
+ [IDLE CONSUMPTION] Wood: 1239179.5 - 6.125 (49 pop * 0.125)
+ [IDLE MODE UPDATE] Simulated resources after production: {fur: 353264, coal: 0, food: 475206.875, gold: 41778, iron: 0, …}
+ [IDLE MODE UPDATE] New deltas: {fur: 100, coal: 0, food: 493.875, gold: 0, iron: 0, …}
