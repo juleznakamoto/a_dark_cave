@@ -189,37 +189,26 @@ export default function EstatePanel() {
           <TooltipProvider>
             <Tooltip open={mobileTooltip.isTooltipOpen("sleep-button")}>
               <TooltipTrigger asChild>
-                <span className="inline-block">
+                <div
+                  className="inline-block"
+                  onTouchStart={mobileTooltip.isMobile ? (e) => {
+                    mobileTooltip.handleTouchStart("sleep-button", !canActivateIdle, false, e);
+                  } : undefined}
+                  onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                    mobileTooltip.handleTouchEnd("sleep-button", !canActivateIdle, handleActivateIdleMode, e);
+                  } : undefined}
+                  onMouseDown={mobileTooltip.isMobile ? (e) => {
+                    mobileTooltip.handleMouseDown("sleep-button", !canActivateIdle, false, e);
+                  } : undefined}
+                  onMouseUp={mobileTooltip.isMobile ? (e) => {
+                    mobileTooltip.handleMouseUp("sleep-button", !canActivateIdle, handleActivateIdleMode, e);
+                  } : undefined}
+                >
                   <Button
-                    onClick={(e) => {
-                      if (!mobileTooltip.isMobile || !mobileTooltip.isTooltipOpen("sleep-button")) {
-                        handleActivateIdleMode();
-                      } else {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        mobileTooltip.closeTooltip();
-                      }
-                    }}
-                    onTouchStart={(e) => {
-                      if (mobileTooltip.isMobile) {
-                        mobileTooltip.handleTouchStart("sleep-button", !canActivateIdle, false, e);
-                      }
-                    }}
-                    onTouchEnd={(e) => {
-                      if (mobileTooltip.isMobile) {
-                        mobileTooltip.handleTouchEnd("sleep-button", !canActivateIdle, handleActivateIdleMode, e);
-                      }
-                    }}
-                    onMouseDown={(e) => {
-                      if (mobileTooltip.isMobile) {
-                        mobileTooltip.handleMouseDown("sleep-button", !canActivateIdle, false, e);
-                      }
-                    }}
-                    onMouseUp={(e) => {
-                      if (mobileTooltip.isMobile) {
-                        mobileTooltip.handleMouseUp("sleep-button", !canActivateIdle, handleActivateIdleMode, e);
-                      }
-                    }}
+                    onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("sleep-button") ? (e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                    } : handleActivateIdleMode}
                     disabled={!canActivateIdle}
                     size="xs"
                     variant="outline"
@@ -227,7 +216,7 @@ export default function EstatePanel() {
                   >
                     Sleep
                   </Button>
-                </span>
+                </div>
               </TooltipTrigger>
               <TooltipContent>
                 <div className="text-xs whitespace-nowrap">
@@ -254,37 +243,26 @@ export default function EstatePanel() {
                 <TooltipProvider>
                   <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-length-button")}>
                     <TooltipTrigger asChild>
-                      <span className="inline-block">
+                      <div
+                        className="inline-block"
+                        onTouchStart={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleTouchStart("upgrade-length-button", !canUpgradeLength, false, e);
+                        } : undefined}
+                        onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleTouchEnd("upgrade-length-button", !canUpgradeLength, handleSleepLengthUpgrade, e);
+                        } : undefined}
+                        onMouseDown={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleMouseDown("upgrade-length-button", !canUpgradeLength, false, e);
+                        } : undefined}
+                        onMouseUp={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleMouseUp("upgrade-length-button", !canUpgradeLength, handleSleepLengthUpgrade, e);
+                        } : undefined}
+                      >
                         <Button
-                          onClick={(e) => {
-                            if (!mobileTooltip.isMobile || !mobileTooltip.isTooltipOpen("upgrade-length-button")) {
-                              handleSleepLengthUpgrade();
-                            } else {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              mobileTooltip.closeTooltip();
-                            }
-                          }}
-                          onTouchStart={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleTouchStart("upgrade-length-button", !canUpgradeLength, false, e);
-                            }
-                          }}
-                          onTouchEnd={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleTouchEnd("upgrade-length-button", !canUpgradeLength, handleSleepLengthUpgrade, e);
-                            }
-                          }}
-                          onMouseDown={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleMouseDown("upgrade-length-button", !canUpgradeLength, false, e);
-                            }
-                          }}
-                          onMouseUp={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleMouseUp("upgrade-length-button", !canUpgradeLength, handleSleepLengthUpgrade, e);
-                            }
-                          }}
+                          onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-length-button") ? (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          } : handleSleepLengthUpgrade}
                           disabled={!canUpgradeLength}
                           size="xs"
                           variant="outline"
@@ -292,7 +270,7 @@ export default function EstatePanel() {
                         >
                           Improve
                         </Button>
-                      </span>
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
@@ -327,37 +305,26 @@ export default function EstatePanel() {
                 <TooltipProvider>
                   <Tooltip open={mobileTooltip.isTooltipOpen("upgrade-intensity-button")}>
                     <TooltipTrigger asChild>
-                      <span className="inline-block">
+                      <div
+                        className="inline-block"
+                        onTouchStart={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleTouchStart("upgrade-intensity-button", !canUpgradeIntensity, false, e);
+                        } : undefined}
+                        onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleTouchEnd("upgrade-intensity-button", !canUpgradeIntensity, handleSleepIntensityUpgrade, e);
+                        } : undefined}
+                        onMouseDown={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleMouseDown("upgrade-intensity-button", !canUpgradeIntensity, false, e);
+                        } : undefined}
+                        onMouseUp={mobileTooltip.isMobile ? (e) => {
+                          mobileTooltip.handleMouseUp("upgrade-intensity-button", !canUpgradeIntensity, handleSleepIntensityUpgrade, e);
+                        } : undefined}
+                      >
                         <Button
-                          onClick={(e) => {
-                            if (!mobileTooltip.isMobile || !mobileTooltip.isTooltipOpen("upgrade-intensity-button")) {
-                              handleSleepIntensityUpgrade();
-                            } else {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              mobileTooltip.closeTooltip();
-                            }
-                          }}
-                          onTouchStart={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleTouchStart("upgrade-intensity-button", !canUpgradeIntensity, false, e);
-                            }
-                          }}
-                          onTouchEnd={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleTouchEnd("upgrade-intensity-button", !canUpgradeIntensity, handleSleepIntensityUpgrade, e);
-                            }
-                          }}
-                          onMouseDown={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleMouseDown("upgrade-intensity-button", !canUpgradeIntensity, false, e);
-                            }
-                          }}
-                          onMouseUp={(e) => {
-                            if (mobileTooltip.isMobile) {
-                              mobileTooltip.handleMouseUp("upgrade-intensity-button", !canUpgradeIntensity, handleSleepIntensityUpgrade, e);
-                            }
-                          }}
+                          onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-intensity-button") ? (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          } : handleSleepIntensityUpgrade}
                           disabled={!canUpgradeIntensity}
                           size="xs"
                           variant="outline"
@@ -365,7 +332,7 @@ export default function EstatePanel() {
                         >
                           Improve
                         </Button>
-                      </span>
+                      </div>
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
