@@ -134,6 +134,7 @@ export default function IdleModeDialog() {
   const [remainingTime, setRemainingTime] = useState(0);
   const [isActive, setIsActive] = useState(false);
   const [startTime, setStartTime] = useState<number>(0);
+  const [initialResources, setInitialResources] = useState<Record<string, number>>({});
 
   const state = useGameStore.getState();
 
@@ -201,15 +202,18 @@ export default function IdleModeDialog() {
         console.log('[IDLE MODE] Resource deltas:', resourceDeltas);
 
         setAccumulatedResources(resourceDeltas);
+        setInitialResources({ ...currentState.resources }); // Store initial resources for ongoing updates
         setIsActive(remaining > 0);
       } else {
         console.log('[IDLE MODE] Starting fresh idle mode');
         
         // Start fresh idle mode
+        const currentState = useGameStore.getState();
         setIsActive(true);
         setStartTime(now);
         setAccumulatedResources({});
         setRemainingTime(IDLE_DURATION_MS);
+        setInitialResources({ ...currentState.resources }); // Store initial resources
 
         // Persist the start time
         useGameStore.setState({
@@ -269,9 +273,6 @@ export default function IdleModeDialog() {
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
-      
-      // Get initial resources at sleep start
-      const initialResources = { ...currentState.resources };
 
       console.log('[IDLE MODE UPDATE] Starting resource update', {
         initialResources
@@ -287,7 +288,7 @@ export default function IdleModeDialog() {
         // Create a simulated resource state (initial + accumulated changes)
         const simulatedResources: Record<string, number> = {};
         Object.keys(initialResources).forEach(resource => {
-          simulatedResources[resource] = initialResources[resource as keyof typeof initialResources] + (currentTracked[resource] || 0);
+          simulatedResources[resource] = initialResources[resource] + (currentTracked[resource] || 0);
         });
 
         console.log('[IDLE MODE UPDATE] Simulated resources before production:', simulatedResources);
@@ -303,7 +304,7 @@ export default function IdleModeDialog() {
         // Calculate new deltas from initial state
         const newDeltas: Record<string, number> = {};
         Object.keys(simulatedResources).forEach(resource => {
-          newDeltas[resource] = simulatedResources[resource] - initialResources[resource as keyof typeof initialResources];
+          newDeltas[resource] = simulatedResources[resource] - initialResources[resource];
         });
 
         console.log('[IDLE MODE UPDATE] New deltas:', newDeltas);
