@@ -174,10 +174,10 @@ export const recurringEvents: Record<string, GameEvent> = {
   fireStorm: {
     id: "fireStorm",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 6,
+      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 5,
     triggerType: "resource",
-    timeProbability: 70,
-    repeatable: true,
+    timeProbability: 80,
+    repeatable: false,
     message:
       "A fire sweeps through the village in the night, bringing death and destruction.",
     triggered: false,
