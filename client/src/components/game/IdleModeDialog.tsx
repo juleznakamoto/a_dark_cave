@@ -420,17 +420,17 @@ export default function IdleModeDialog() {
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-sm" hideClose={true}>
         <DialogHeader>
-          <DialogTitle>Sleeping</DialogTitle>
-          <DialogDescription>
+          <DialogTitle >Sleeping</DialogTitle>
+          <DialogDescription className = "py-1Cu">
             {isTimeUp ? (
-              <span className="text-yellow-600">You are awake!</span>
+              <span className="pt-2">You are awake!</span>
             ) : (
               <span>Waking up in: {formatTime(remainingTime)}</span>
             )}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-3 py-4">
+        <div className="py-1">
           <div className="space-y-1">
             {producedResources.map(([resource, amount]) => (
               <div key={resource} className="flex justify-between items-center">
