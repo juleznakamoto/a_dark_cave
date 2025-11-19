@@ -27,7 +27,6 @@ export function useMobileTooltip() {
     if (!isMobile) return;
     
     e.stopPropagation();
-    // Always close previous tooltip when opening a new one
     setOpenTooltipId(openTooltipId === id ? null : id);
   };
 
@@ -94,9 +93,6 @@ export function useMobileButtonTooltip() {
       pressTimerRef.current = null;
     }
     
-    // Close any open tooltip when starting a new press
-    setOpenTooltipId(null);
-    
     // Don't prevent default to allow button interaction
     setPressingId(id);
     
@@ -144,9 +140,6 @@ export function useMobileButtonTooltip() {
       clearTimeout(pressTimerRef.current);
       pressTimerRef.current = null;
     }
-    
-    // Close any open tooltip when starting a new press
-    setOpenTooltipId(null);
     
     setPressingId(id);
     
