@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { Button } from "@/components/ui/button";
-import CooldownButton from "@/components/CooldownButton";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 
