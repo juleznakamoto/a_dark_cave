@@ -34,7 +34,13 @@ const SLEEP_INTENSITY_UPGRADES = [
 ];
 
 export default function EstatePanel() {
-  const { events, setEventDialog, setIdleModeDialog, sleepUpgrades, resources } = useGameStore();
+  const {
+    events,
+    setEventDialog,
+    setIdleModeDialog,
+    sleepUpgrades,
+    resources,
+  } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const state = useGameStore.getState();
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
@@ -156,16 +162,23 @@ export default function EstatePanel() {
   };
 
   const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
-  const nextLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
-  const canUpgradeLength = sleepUpgrades.lengthLevel < 5 && resources.silver >= (nextLengthUpgrade?.cost || 0);
+  const nextLengthUpgrade =
+    SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
+  const canUpgradeLength =
+    sleepUpgrades.lengthLevel < 5 &&
+    resources.silver >= (nextLengthUpgrade?.cost || 0);
 
-  const currentIntensityUpgrade = SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel];
-  const nextIntensityUpgrade = SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
-  const canUpgradeIntensity = sleepUpgrades.intensityLevel < 5 && resources.gold >= (nextIntensityUpgrade?.cost || 0);
+  const currentIntensityUpgrade =
+    SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel];
+  const nextIntensityUpgrade =
+    SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel + 1];
+  const canUpgradeIntensity =
+    sleepUpgrades.intensityLevel < 5 &&
+    resources.gold >= (nextIntensityUpgrade?.cost || 0);
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-4 pb-4">
+      <div className="space-y-2 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
@@ -193,13 +206,13 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span 
-                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-length'] ? 'new-item-pulse' : ''}`}
-                      onMouseEnter={() => handleTooltipHover('sleep-length')}
+                    <span
+                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips["sleep-length"] ? "new-item-pulse" : ""}`}
+                      onMouseEnter={() => handleTooltipHover("sleep-length")}
                       onClick={(e) => {
-                        mobileTooltip.handleTooltipClick('sleep-length', e);
-                        if (!hoveredTooltips['sleep-length']) {
-                          setHoveredTooltip('sleep-length', true);
+                        mobileTooltip.handleTooltipClick("sleep-length", e);
+                        if (!hoveredTooltips["sleep-length"]) {
+                          setHoveredTooltip("sleep-length", true);
                         }
                       }}
                     >
@@ -208,9 +221,8 @@ export default function EstatePanel() {
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs">
-                      <div>Current: {currentLengthUpgrade.hours}h max</div>
                       {nextLengthUpgrade && (
-                        <div>Next: {nextLengthUpgrade.hours}h max</div>
+                        <div>Next: {nextLengthUpgrade.hours}h</div>
                       )}
                     </div>
                   </TooltipContent>
@@ -228,7 +240,11 @@ export default function EstatePanel() {
                 </Button>
               )}
             </div>
-            <Progress value={(sleepUpgrades.lengthLevel / 5) * 100} className="h-2" segments={5} />
+            <Progress
+              value={(sleepUpgrades.lengthLevel / 5) * 100}
+              className="h-2"
+              segments={5}
+            />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentLengthUpgrade.hours}h</span>
             </div>
@@ -240,13 +256,13 @@ export default function EstatePanel() {
               <TooltipProvider>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <span 
-                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips['sleep-intensity'] ? 'new-item-pulse' : ''}`}
-                      onMouseEnter={() => handleTooltipHover('sleep-intensity')}
+                    <span
+                      className={`text-xs font-medium text-foreground cursor-pointer ${!hoveredTooltips["sleep-intensity"] ? "new-item-pulse" : ""}`}
+                      onMouseEnter={() => handleTooltipHover("sleep-intensity")}
                       onClick={(e) => {
-                        mobileTooltip.handleTooltipClick('sleep-intensity', e);
-                        if (!hoveredTooltips['sleep-intensity']) {
-                          setHoveredTooltip('sleep-intensity', true);
+                        mobileTooltip.handleTooltipClick("sleep-intensity", e);
+                        if (!hoveredTooltips["sleep-intensity"]) {
+                          setHoveredTooltip("sleep-intensity", true);
                         }
                       }}
                     >
@@ -255,9 +271,10 @@ export default function EstatePanel() {
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs">
-                      <div>Current: {currentIntensityUpgrade.percentage}% production</div>
                       {nextIntensityUpgrade && (
-                        <div>Next: {nextIntensityUpgrade.percentage}% production</div>
+                        <div>
+                          Next: {nextIntensityUpgrade.percentage}%
+                        </div>
                       )}
                     </div>
                   </TooltipContent>
@@ -275,7 +292,11 @@ export default function EstatePanel() {
                 </Button>
               )}
             </div>
-            <Progress value={(sleepUpgrades.intensityLevel / 5) * 100} className="h-2" segments={5} />
+            <Progress
+              value={(sleepUpgrades.intensityLevel / 5) * 100}
+              className="h-2"
+              segments={5}
+            />
             <div className="flex justify-between text-xs text-muted-foreground">
               <span>{currentIntensityUpgrade.percentage}%</span>
             </div>
@@ -283,22 +304,17 @@ export default function EstatePanel() {
         </div>
 
         {/* Cube Section */}
-        <div className="space-y-2 pt-4">
+        <div className="space-y-2 pt-0">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
 
-          <div className="grid grid-cols-6 gap-4 w-40 h-12">
+          <div className="grid grid-cols-6 gap-5 w-40 h-12">
             {completedCubeEvents.map((event) => (
               <TooltipProvider key={event.id}>
-                <Tooltip
-                  open={mobileTooltip.isTooltipOpen(`cube-${event.id}`)}
-                >
+                <Tooltip open={mobileTooltip.isTooltipOpen(`cube-${event.id}`)}>
                   <TooltipTrigger asChild>
                     <button
                       onClick={(e) => {
-                        mobileTooltip.handleTooltipClick(
-                          `cube-${event.id}`,
-                          e,
-                        );
+                        mobileTooltip.handleTooltipClick(`cube-${event.id}`, e);
                         handleCubeClick(event);
                       }}
                       className="w-6 h-6 bg-neutral-900 border border-neutral-400 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-300 transition-all cursor-pointer group relative"

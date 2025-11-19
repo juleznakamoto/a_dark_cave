@@ -161,14 +161,6 @@ export default function GameContainer() {
     return <EndScreen />;
   }
 
-  // Determine if any dialog is open to prevent tab switching or other interactions
-  const isDialogOpen =
-      eventDialog.isOpen ||
-      combatDialog.isOpen ||
-      authDialogOpen ||
-      shopDialogOpen ||
-      idleModeDialog.isOpen;
-
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
       {/* Pause Overlay - covers everything except footer */}
