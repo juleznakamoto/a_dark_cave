@@ -286,15 +286,11 @@ export default function IdleModeDialog() {
         // Start with current tracked resources (delta from start)
         const currentTracked = { ...prev };
         
-        console.log('[IDLE MODE UPDATE] Current tracked deltas:', currentTracked);
-        
         // Create a simulated resource state (initial + accumulated changes)
         const simulatedResources: Record<string, number> = {};
         Object.keys(initialResources).forEach(resource => {
           simulatedResources[resource] = initialResources[resource] + (currentTracked[resource] || 0);
         });
-
-        console.log('[IDLE MODE UPDATE] Simulated resources before production:', simulatedResources);
 
         // Apply production functions to the simulated state
         simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
@@ -302,15 +298,11 @@ export default function IdleModeDialog() {
         simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
         simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
 
-        console.log('[IDLE MODE UPDATE] Simulated resources after production:', simulatedResources);
-
         // Calculate new deltas from initial state
         const newDeltas: Record<string, number> = {};
         Object.keys(simulatedResources).forEach(resource => {
           newDeltas[resource] = simulatedResources[resource] - initialResources[resource];
         });
-
-        console.log('[IDLE MODE UPDATE] New deltas:', newDeltas);
 
         return newDeltas;
       });

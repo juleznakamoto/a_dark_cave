@@ -194,10 +194,18 @@ export function startGameLoop() {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        // Log full state in dev mode every 15 seconds
-        if (import.meta.env.DEV) {
-          const currentState = useGameStore.getState();
-          console.log("[GAME STATE - 15s Loop]", { currentState });
+        // Only log during idle mode for debugging
+        if (state.idleModeState?.isActive) {
+          console.log('[GAME STATE - 15s Loop]', {
+            currentState: {
+              resources: state.resources,
+              stats: state.stats,
+              boostMode: state.boostMode,
+              flags: state.flags,
+              schematics: state.schematics,
+              tools: state.tools,
+            }
+          });
         }
 
         handleGathererProduction();
@@ -372,7 +380,7 @@ function handleMinerProduction() {
     if (canProduce) {
       production.forEach((prod) => {
         // Update both the tracked available resources and the actual state
-        availableResources[prod.resource as keyof typeof availableResources] = 
+        availableResources[prod.resource as keyof typeof availableResources] =
           (availableResources[prod.resource as keyof typeof availableResources] || 0) + prod.totalAmount;
 
         state.updateResource(
