@@ -71,13 +71,6 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       return;
     }
 
-    if (!consentWithdrawal) {
-      setErrorMessage(
-        "You must agree to the required terms to complete the purchase.",
-      );
-      return;
-    }
-
     setIsProcessing(true);
     setErrorMessage("");
 
