@@ -137,10 +137,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
 
-        // Only show tooltip if button is disabled or cooling down
-        if (isButtonDisabled || isCoolingDown) {
+        // Only show tooltip if button is disabled
+        if (isButtonDisabled) {
           e.stopPropagation();
-          mobileTooltip.handleWrapperClick(buttonId, true, false, e);
+          mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
         }
       } : undefined}
       onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => {
