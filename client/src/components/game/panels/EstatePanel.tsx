@@ -185,15 +185,17 @@ export default function EstatePanel() {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger asChild>
-                <Button
-                  onClick={handleActivateIdleMode}
-                  disabled={!canActivateIdle}
-                  size="xs"
-                  variant="outline"
-                  className="hover:bg-transparent hover:text-foreground"
-                >
-                  Sleep
-                </Button>
+                <span className="inline-block">
+                  <Button
+                    onClick={handleActivateIdleMode}
+                    disabled={!canActivateIdle}
+                    size="xs"
+                    variant="outline"
+                    className="hover:bg-transparent hover:text-foreground"
+                  >
+                    Sleep
+                  </Button>
+                </span>
               </TooltipTrigger>
               <TooltipContent>
                 <div className="text-xs whitespace-nowrap">
@@ -203,7 +205,7 @@ export default function EstatePanel() {
                       <div>Gain {currentIntensityUpgrade.percentage}% of production</div>
                     </>
                   ) : (
-                    <div className="text-muted-foreground">Requires positive wood and food production</div>
+                    <div>Requires positive wood and food production</div>
                   )}
                 </div>
               </TooltipContent>
