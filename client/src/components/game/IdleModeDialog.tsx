@@ -146,8 +146,20 @@ export default function IdleModeDialog() {
 
   // Initialize idle mode when dialog opens
   useEffect(() => {
+    console.log('[IDLE MODE INIT] Dialog open check:', {
+      dialogOpen: idleModeDialog.isOpen,
+      isActive,
+      idleModeState,
+    });
+
     if (idleModeDialog.isOpen && !isActive) {
       const now = Date.now();
+
+      console.log('[IDLE MODE INIT] Checking initialization conditions:', {
+        hasStartTime: !!idleModeState?.startTime,
+        startTimeValue: idleModeState?.startTime,
+        isIdleModeActive: idleModeState?.isActive,
+      });
 
       // Check if there's a persisted idle mode state
       if (idleModeState?.startTime && idleModeState.startTime > 0) {
@@ -203,7 +215,10 @@ export default function IdleModeDialog() {
       } else if (!idleModeState?.isActive && idleModeState?.startTime === 0) {
         // Only start fresh idle mode if there's no active state AND no previous startTime
         // This prevents starting a new idle mode after one just finished
-        console.log('[IDLE MODE] Starting fresh idle mode');
+        console.log('[IDLE MODE] Starting fresh idle mode', {
+          idleModeActive: idleModeState?.isActive,
+          startTime: idleModeState?.startTime,
+        });
 
         // Get the CURRENT (most recent) resources state
         const currentState = useGameStore.getState();
@@ -246,13 +261,19 @@ export default function IdleModeDialog() {
 
       if (remaining <= 0) {
         // Time's up - stop active state and resource accumulation
+        console.log('[IDLE MODE TIMER] Time expired, stopping idle mode', {
+          wasActive: isActive,
+          currentStartTime: startTime,
+        });
+        
         setIsActive(false);
 
-        // Clear idle mode state in global store - this stops production and prevents new cycles
+        // DO NOT CLEAR startTime HERE - only clear when user closes dialog
+        console.log('[IDLE MODE TIMER] Setting global state to inactive (keeping startTime)');
         useGameStore.setState({
           idleModeState: {
             isActive: false,
-            startTime: 0,
+            startTime: startTime, // Keep the original startTime, don't reset to 0
             needsDisplay: false,
           },
         });
@@ -378,6 +399,11 @@ export default function IdleModeDialog() {
     }
 
     // Clear persisted idle mode state completely - now reset startTime to 0
+    console.log('[IDLE MODE] User closing dialog, resetting all state', {
+      wasActive: isActive,
+      hadStartTime: startTime,
+    });
+    
     useGameStore.setState({
       idleModeState: {
         isActive: false,
