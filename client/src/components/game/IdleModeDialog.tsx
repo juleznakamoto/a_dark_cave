@@ -242,8 +242,17 @@ export default function IdleModeDialog() {
       setRemainingTime(remaining);
 
       if (remaining <= 0) {
-        // Time's up
+        // Time's up - stop active state
         setIsActive(false);
+        
+        // Clear idle mode state in global store to stop all logging
+        useGameStore.setState({
+          idleModeState: {
+            isActive: false,
+            startTime: 0,
+            needsDisplay: false,
+          },
+        });
       }
     }, 1000); // Update timer every second
 
@@ -252,13 +261,18 @@ export default function IdleModeDialog() {
 
   // Resource accumulation loop (synchronized to timer intervals)
   useEffect(() => {
+    // Stop accumulation if not active or dialog closed
     if (!isActive || !idleModeDialog.isOpen) return;
 
     const now = Date.now();
     const elapsed = now - startTime;
     const remaining = Math.max(0, IDLE_DURATION_MS - elapsed);
 
-    if (remaining <= 0) return;
+    // Don't start accumulation if time is already up
+    if (remaining <= 0) {
+      setIsActive(false);
+      return;
+    }
 
     // Calculate how many seconds have elapsed since idle mode started
     const secondsElapsed = Math.floor(elapsed / 1000);
