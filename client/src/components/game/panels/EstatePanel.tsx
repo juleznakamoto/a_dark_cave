@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { Button } from "@/components/ui/button";
+import CooldownButton from "@/components/CooldownButton";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 
@@ -184,45 +185,25 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
-          <TooltipProvider>
-            <Tooltip open={mobileTooltip.isTooltipOpen('sleep-button')}>
-              <TooltipTrigger asChild>
-                <div
-                  onClick={(e) => {
-                    if (mobileTooltip.isMobile) {
-                      mobileTooltip.handleTooltipClick('sleep-button', e);
-                    }
-                  }}
-                >
-                  <Button
-                    onClick={!mobileTooltip.isMobile ? handleActivateIdleMode : (e) => {
-                      if (mobileTooltip.isTooltipOpen('sleep-button')) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        return;
-                      }
-                      handleActivateIdleMode();
-                    }}
-                    disabled={!canActivateIdle}
-                    size="xs"
-                    variant="outline"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    Sleep
-                  </Button>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="text-xs whitespace-nowrap">
-                  {canActivateIdle ? (
-                    <div>Enter sleep mode to progress while away</div>
-                  ) : (
-                    <div>Requires positive wood and food production</div>
-                  )}
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <CooldownButton
+            onClick={handleActivateIdleMode}
+            disabled={!canActivateIdle}
+            cooldownMs={10}
+            size="xs"
+            variant="outline"
+            className="hover:bg-transparent hover:text-foreground"
+            tooltip={
+              <div className="text-xs whitespace-nowrap">
+                {canActivateIdle ? (
+                  <div>Enter sleep mode to progress while away</div>
+                ) : (
+                  <div>Requires positive wood and food production</div>
+                )}
+              </div>
+            }
+          >
+            Sleep
+          </CooldownButton>
         </div>
 
         {/* Sleep Upgrades Section */}
@@ -234,45 +215,25 @@ export default function EstatePanel() {
                 Sleep Length
               </span>
               {sleepUpgrades.lengthLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip open={mobileTooltip.isTooltipOpen('length-upgrade')}>
-                    <TooltipTrigger asChild>
-                      <div
-                        onClick={(e) => {
-                          if (mobileTooltip.isMobile) {
-                            mobileTooltip.handleTooltipClick('length-upgrade', e);
-                          }
-                        }}
-                      >
-                        <Button
-                          onClick={!mobileTooltip.isMobile ? handleSleepLengthUpgrade : (e) => {
-                            if (mobileTooltip.isTooltipOpen('length-upgrade')) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            handleSleepLengthUpgrade();
-                          }}
-                          disabled={!canUpgradeLength}
-                          size="xs"
-                          variant="outline"
-                          className="hover:bg-transparent hover:text-foreground"
-                        >
-                          Improve
-                        </Button>
+                <CooldownButton
+                  onClick={handleSleepLengthUpgrade}
+                  disabled={!canUpgradeLength}
+                  cooldownMs={10}
+                  size="xs"
+                  variant="outline"
+                  className="hover:bg-transparent hover:text-foreground"
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      <div>+{nextLengthUpgrade.hours - currentLengthUpgrade.hours}h</div>
+                      <div className="border-t border-border my-1" />
+                      <div className={resources.silver >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
+                        -{nextLengthUpgrade.cost} Silver
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        <div>+{nextLengthUpgrade.hours - currentLengthUpgrade.hours}h</div>
-                        <div className="border-t border-border my-1" />
-                        <div className={resources.silver >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
-                          -{nextLengthUpgrade.cost} Silver
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                    </div>
+                  }
+                >
+                  Improve
+                </CooldownButton>
               ) : null}
             </div>
             <Progress
@@ -292,45 +253,25 @@ export default function EstatePanel() {
                 Sleep Intensity
               </span>
               {sleepUpgrades.intensityLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip open={mobileTooltip.isTooltipOpen('intensity-upgrade')}>
-                    <TooltipTrigger asChild>
-                      <div
-                        onClick={(e) => {
-                          if (mobileTooltip.isMobile) {
-                            mobileTooltip.handleTooltipClick('intensity-upgrade', e);
-                          }
-                        }}
-                      >
-                        <Button
-                          onClick={!mobileTooltip.isMobile ? handleSleepIntensityUpgrade : (e) => {
-                            if (mobileTooltip.isTooltipOpen('intensity-upgrade')) {
-                              e.preventDefault();
-                              e.stopPropagation();
-                              return;
-                            }
-                            handleSleepIntensityUpgrade();
-                          }}
-                          disabled={!canUpgradeIntensity}
-                          size="xs"
-                          variant="outline"
-                          className="hover:bg-transparent hover:text-foreground"
-                        >
-                          Improve
-                        </Button>
+                <CooldownButton
+                  onClick={handleSleepIntensityUpgrade}
+                  disabled={!canUpgradeIntensity}
+                  cooldownMs={10}
+                  size="xs"
+                  variant="outline"
+                  className="hover:bg-transparent hover:text-foreground"
+                  tooltip={
+                    <div className="text-xs whitespace-nowrap">
+                      <div>+{nextIntensityUpgrade.percentage - currentIntensityUpgrade.percentage}%</div>
+                      <div className="border-t border-border my-1" />
+                      <div className={resources.gold >= nextIntensityUpgrade.cost ? "" : "text-muted-foreground"}>
+                        -{nextIntensityUpgrade.cost} Gold
                       </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        <div>+{nextIntensityUpgrade.percentage - currentIntensityUpgrade.percentage}%</div>
-                        <div className="border-t border-border my-1" />
-                        <div className={resources.gold >= nextIntensityUpgrade.cost ? "" : "text-muted-foreground"}>
-                          -{nextIntensityUpgrade.cost} Gold
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
+                    </div>
+                  }
+                >
+                  Improve
+                </CooldownButton>
               ) : null}
             </div>
             <Progress
