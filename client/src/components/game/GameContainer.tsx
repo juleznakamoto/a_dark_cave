@@ -37,8 +37,8 @@ export default function GameContainer() {
     shopDialogOpen, // Added shopDialogOpen to state
   } = useGameStore();
 
-  // Estate unlocks after forest and only visible in dev mode
-  const estateUnlocked = flags.forestUnlocked && devMode;
+  // Estate unlocks when Dark Estate is built
+  const estateUnlocked = buildings.darkEstate >= 1;
 
   const [animatingTabs, setAnimatingTabs] = useState<Set<string>>(new Set());
 
