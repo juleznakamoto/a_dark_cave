@@ -382,13 +382,13 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
 
-  // Get all resources that have changed
+  // Get all resources that have changed (only positive)
   const producedResources = Object.keys(accumulatedResources)
     .map(resource => {
       const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
       return [resource, amount] as [string, number];
     })
-    .filter(([_, amount]) => Math.floor(amount) !== 0) // Only show resources that have changed
+    .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
     .sort(([a], [b]) => a.localeCompare(b));
 
   const isTimeUp = remainingTime <= 0;
@@ -412,8 +412,8 @@ export default function IdleModeDialog() {
             {producedResources.map(([resource, amount]) => (
               <div key={resource} className="flex justify-between items-center">
                 <span className="text-sm font-medium">{capitalizeWords(resource)}:</span>
-                <span className={`text-sm tabular-nums ${amount < 0 ? 'text-red-400' : 'text-green-400'}`}>
-                  {amount < 0 ? '-' : ''}<AnimatedCounter value={Math.floor(Math.abs(amount))} />
+                <span className="text-sm tabular-nums">
+                  <AnimatedCounter value={Math.floor(amount)} />
                 </span>
               </div>
             ))}
