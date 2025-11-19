@@ -483,74 +483,79 @@ export default function SidePanel() {
   const hasScriptorium = buildings.scriptorium > 0;
   const hasClerksHut = buildings.clerksHut > 0;
 
-  // Always show luck
-  statsItems.push({
-    id: "luck",
-    label: "Luck",
-    value: totalLuck,
-    testId: "stat-luck",
-    visible: true,
-    icon: hasScriptorium ? "☆" : undefined,
-    iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-    tooltip: hasClerksHut ? <span className="text-gray-400">Bends fate in your favor</span> : undefined,
-  });
+  // Only show stats if at least one is > 0
+  const hasAnyStats = totalLuck > 0 || totalStrength > 0 || totalKnowledge > 0 || totalMadness > 0;
 
-  // Always show strength
-  statsItems.push({
-    id: "strength",
-    label: "Strength",
-    value: totalStrength,
-    testId: "stat-strength",
-    visible: true,
-    icon: hasScriptorium ? "⬡" : undefined,
-    iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-    tooltip: hasClerksHut ? <span className="text-gray-400">Helps where words reach their limit</span> : undefined,
-  });
+  if (hasAnyStats) {
+    // Always show luck
+    statsItems.push({
+      id: "luck",
+      label: "Luck",
+      value: totalLuck,
+      testId: "stat-luck",
+      visible: true,
+      icon: hasScriptorium ? "☆" : undefined,
+      iconColor: hasScriptorium ? "text-green-300/80" : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Bends fate in your favor</span> : undefined,
+    });
 
-  // Always show knowledge
-  statsItems.push({
-    id: "knowledge",
-    label: "Knowledge",
-    value: totalKnowledge,
-    testId: "stat-knowledge",
-    visible: true,
-    icon: hasScriptorium ? "✧" : undefined,
-    iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-    tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
-  });
+    // Always show strength
+    statsItems.push({
+      id: "strength",
+      label: "Strength",
+      value: totalStrength,
+      testId: "stat-strength",
+      visible: true,
+      icon: hasScriptorium ? "⬡" : undefined,
+      iconColor: hasScriptorium ? "text-red-300/80" : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Helps where words reach their limit</span> : undefined,
+    });
 
-  // Always show madness (show 0 if below 0)
-  const displayMadness = Math.max(0, totalMadness);
-  
-  // Build combined madness tooltip
-  let madnessTooltipContent: React.ReactNode = undefined;
-  if (hasClerksHut) {
-    const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
-    const eventMadness = gameState.stats.madnessFromEvents || 0;
+    // Always show knowledge
+    statsItems.push({
+      id: "knowledge",
+      label: "Knowledge",
+      value: totalKnowledge,
+      testId: "stat-knowledge",
+      visible: true,
+      icon: hasScriptorium ? "✧" : undefined,
+      iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
+      tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
+    });
+
+    // Always show madness (show 0 if below 0)
+    const displayMadness = Math.max(0, totalMadness);
     
-    madnessTooltipContent = (
-      <>
-        <div className="text-gray-400">Leads thoughts into dangerous paths</div>
-        {totalMadness > 0 && (
-          <div className="text-gray-400 mt-1 pt-1 border-t border-border">
-            <div>{itemMadness} from Items/Buildings</div>
-            <div>{eventMadness} from Events</div>
-          </div>
-        )}
-      </>
-    );
+    // Build combined madness tooltip
+    let madnessTooltipContent: React.ReactNode = undefined;
+    if (hasClerksHut) {
+      const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
+      const eventMadness = gameState.stats.madnessFromEvents || 0;
+      
+      madnessTooltipContent = (
+        <>
+          <div className="text-gray-400">Leads thoughts into dangerous paths</div>
+          {totalMadness > 0 && (
+            <div className="text-gray-400 mt-1 pt-1 border-t border-border">
+              <div>{itemMadness} from Items/Buildings</div>
+              <div>{eventMadness} from Events</div>
+            </div>
+          )}
+        </>
+      );
+    }
+    
+    statsItems.push({
+      id: "madness",
+      label: "Madness",
+      value: displayMadness,
+      testId: "stat-madness",
+      visible: true,
+      icon: hasScriptorium ? "✺" : undefined,
+      iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
+      tooltip: madnessTooltipContent,
+    });
   }
-  
-  statsItems.push({
-    id: "madness",
-    label: "Madness",
-    value: displayMadness,
-    testId: "stat-madness",
-    visible: true,
-    icon: hasScriptorium ? "✺" : undefined,
-    iconColor: hasScriptorium ? "text-violet-300/80" : undefined,
-    tooltip: madnessTooltipContent,
-  });
 
   // Dynamically generate fortification items from state
   const fortificationItems = Object.entries(buildings)
