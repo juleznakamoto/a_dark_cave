@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { Button } from "@/components/ui/button";
-import TooltipButton from "@/components/TooltipButton";
+import CooldownButton from "@/components/CooldownButton";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
 
@@ -185,9 +185,10 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
-          <TooltipButton
+          <CooldownButton
             onClick={handleActivateIdleMode}
             disabled={!canActivateIdle}
+            cooldownMs={0}
             size="xs"
             variant="outline"
             className="hover:bg-transparent hover:text-foreground"
@@ -202,7 +203,7 @@ export default function EstatePanel() {
             }
           >
             Sleep
-          </TooltipButton>
+          </CooldownButton>
         </div>
 
         {/* Sleep Upgrades Section */}
@@ -214,9 +215,10 @@ export default function EstatePanel() {
                 Sleep Length
               </span>
               {sleepUpgrades.lengthLevel < 5 ? (
-                <TooltipButton
+                <CooldownButton
                   onClick={handleSleepLengthUpgrade}
                   disabled={!canUpgradeLength}
+                  cooldownMs={0}
                   size="xs"
                   variant="outline"
                   className="hover:bg-transparent hover:text-foreground"
@@ -231,7 +233,7 @@ export default function EstatePanel() {
                   }
                 >
                   Improve
-                </TooltipButton>
+                </CooldownButton>
               ) : null}
             </div>
             <Progress
@@ -251,9 +253,10 @@ export default function EstatePanel() {
                 Sleep Intensity
               </span>
               {sleepUpgrades.intensityLevel < 5 ? (
-                <TooltipButton
+                <CooldownButton
                   onClick={handleSleepIntensityUpgrade}
                   disabled={!canUpgradeIntensity}
+                  cooldownMs={0}
                   size="xs"
                   variant="outline"
                   className="hover:bg-transparent hover:text-foreground"
@@ -268,7 +271,7 @@ export default function EstatePanel() {
                   }
                 >
                   Improve
-                </TooltipButton>
+                </CooldownButton>
               ) : null}
             </div>
             <Progress
