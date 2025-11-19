@@ -63,15 +63,34 @@ export default function IdleModeDialog() {
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
         const currentState = useGameStore.getState();
         const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
+        
+        // Calculate total population for consumption
+        const totalPopulation = Object.values(currentState.villagers).reduce(
+          (sum, count) => sum + (count || 0),
+          0,
+        );
 
         const offlineResources: Record<string, number> = {};
+        
+        // Add production for all resources
         Object.entries(totalEffects).forEach(([resource, amount]) => {
           if (amount > 0) {
-            // Production per second at 10% speed
+            // Production per second at the multiplier speed
             const productionPerSecond = (amount / 15) * PRODUCTION_SPEED_MULTIPLIER;
             offlineResources[resource] = productionPerSecond * secondsElapsed;
           }
         });
+        
+        // Subtract consumption for food and wood (1 per villager per 15 seconds, at the multiplier rate)
+        if (totalPopulation > 0) {
+          const consumptionPerSecond = (totalPopulation / 15) * PRODUCTION_SPEED_MULTIPLIER;
+          
+          const foodProduced = offlineResources['food'] || 0;
+          const woodProduced = offlineResources['wood'] || 0;
+          
+          offlineResources['food'] = foodProduced - (consumptionPerSecond * secondsElapsed);
+          offlineResources['wood'] = woodProduced - (consumptionPerSecond * secondsElapsed);
+        }
 
         setAccumulatedResources(offlineResources);
         setIsActive(remaining > 0);
@@ -145,17 +164,40 @@ export default function IdleModeDialog() {
     const updateResources = () => {
       const currentState = useGameStore.getState();
       const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
+      
+      // Calculate total population for consumption
+      const totalPopulation = Object.values(currentState.villagers).reduce(
+        (sum, count) => sum + (count || 0),
+        0,
+      );
 
-      // Accumulate resources - normal production multiplied by the speed multiplier
+      // Accumulate resources - production minus consumption
       setAccumulatedResources(prev => {
         const updated = { ...prev };
+        
+        // Add production for all resources
         Object.entries(totalEffects).forEach(([resource, amount]) => {
-          // Apply the 10% production speed multiplier to the full 15-second production amount
+          // Apply the production speed multiplier to the full 15-second production amount
           const production = amount * PRODUCTION_SPEED_MULTIPLIER;
           const offlineAmount = accumulatedResources[resource] || 0;
           const currentAccumulated = (prev[resource] || 0) - offlineAmount;
           updated[resource] = offlineAmount + currentAccumulated + production;
         });
+        
+        // Subtract consumption for food and wood (1 per villager per 15 seconds, at the multiplier rate)
+        if (totalPopulation > 0) {
+          const foodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
+          const woodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
+          
+          const offlineFood = accumulatedResources['food'] || 0;
+          const currentFood = (prev['food'] || 0) - offlineFood;
+          updated['food'] = offlineFood + currentFood - foodConsumption;
+          
+          const offlineWood = accumulatedResources['wood'] || 0;
+          const currentWood = (prev['wood'] || 0) - offlineWood;
+          updated['wood'] = offlineWood + currentWood - woodConsumption;
+        }
+        
         return updated;
       });
     };
