@@ -16,8 +16,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Label } from "@/components/ui/label";
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useGameStore } from "@/game/state";
 import { loadStripe } from "@stripe/stripe-js";
@@ -64,7 +63,6 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
   const elements = useElements();
   const [isProcessing, setIsProcessing] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [consentWithdrawal, setConsentWithdrawal] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -134,24 +132,8 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       <PaymentElement />
 
       <div className="space-y-2 border-t pt-4 mt-4">
-        <div className="flex items-start space-x-3">
-          <Checkbox
-            id="consent-withdrawal"
-            checked={consentWithdrawal}
-            onCheckedChange={(checked) =>
-              setConsentWithdrawal(checked as boolean)
-            }
-          />
-          <Label
-            htmlFor="consent-withdrawal"
-            className="text-xs cursor-pointer"
-          >
-            I agree that the delivery of the digital item begins immediately and acknowledge that I thereby lose my right of withdrawal.
-          </Label>
-        </div>
-
-        <p className="text-xs text-muted-foreground mt-2">
-          For more information, please see our{" "}
+        <p className="text-xs text-muted-foreground">
+          By completing this purchase, you agree that the delivery of the digital item begins immediately and acknowledge that you thereby lose your right of withdrawal. For more information, please see our{" "}
           <a
             href="/terms"
             target="_blank"
@@ -177,9 +159,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
 
       <Button
         type="submit"
-        disabled={
-          !stripe || isProcessing || !consentWithdrawal
-        }
+        disabled={!stripe || isProcessing}
         className="w-full"
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
