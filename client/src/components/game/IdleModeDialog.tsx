@@ -163,19 +163,6 @@ export default function IdleModeDialog() {
 
         setStartTime(idleModeState.startTime);
         setRemainingTime(remaining);
-        
-        // If time has already run out, don't activate - just clear state
-        if (remaining <= 0) {
-          useGameStore.setState({
-            idleModeState: {
-              isActive: false,
-              startTime: 0,
-              needsDisplay: false,
-            },
-          });
-          setIsActive(false);
-          return;
-        }
 
         // Calculate resources accumulated while offline
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
@@ -255,7 +242,7 @@ export default function IdleModeDialog() {
       setRemainingTime(remaining);
 
       if (remaining <= 0) {
-        // Time's up - stop active state and close dialog after a moment
+        // Time's up - stop active state
         setIsActive(false);
         
         // Clear idle mode state in global store to stop all logging
@@ -266,11 +253,6 @@ export default function IdleModeDialog() {
             needsDisplay: false,
           },
         });
-        
-        // Auto-close dialog and apply resources after showing "You are awake!"
-        setTimeout(() => {
-          handleEndIdleMode();
-        }, 2000);
       }
     }, 1000); // Update timer every second
 
