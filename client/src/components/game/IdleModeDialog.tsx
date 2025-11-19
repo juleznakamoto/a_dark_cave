@@ -257,7 +257,7 @@ export default function IdleModeDialog() {
 
   return (
     <Dialog open={idleModeDialog.isOpen} onOpenChange={() => {}}>
-      <DialogContent className="sm:max-w-md" hideClose={true}>
+      <DialogContent className="sm:max-w-sm" hideClose={true}>
         <DialogHeader>
           <DialogTitle>Sleeping</DialogTitle>
           <DialogDescription>
