@@ -206,7 +206,14 @@ export default function IdleModeDialog() {
         const currentState = useGameStore.getState();
         setIsActive(true);
         setStartTime(now);
-        setAccumulatedResources({});
+        
+        // Initialize all resources with 0 so they appear in the list immediately
+        const initialResourceDeltas: Record<string, number> = {};
+        Object.keys(currentState.resources).forEach(resource => {
+          initialResourceDeltas[resource] = 0;
+        });
+        setAccumulatedResources(initialResourceDeltas);
+        
         setRemainingTime(IDLE_DURATION_MS);
         // Store the CURRENT resources as initial state
         setInitialResources({ ...currentState.resources });
@@ -382,13 +389,13 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
 
-  // Get all resources that have changed (only positive)
+  // Get all resources (including those at 0)
   const producedResources = Object.keys(accumulatedResources)
     .map(resource => {
       const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
       return [resource, amount] as [string, number];
     })
-    .filter(([_, amount]) => Math.floor(amount) > 0) // Only show positive resource changes
+    .filter(([_, amount]) => Math.floor(amount) >= 0) // Show all resources including 0
     .sort(([a], [b]) => a.localeCompare(b));
 
   const isTimeUp = remainingTime <= 0;
