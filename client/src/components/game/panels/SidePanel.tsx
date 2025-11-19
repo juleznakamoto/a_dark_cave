@@ -483,47 +483,41 @@ export default function SidePanel() {
   const hasScriptorium = buildings.scriptorium > 0;
   const hasClerksHut = buildings.clerksHut > 0;
 
-  // Add luck if it's greater than 0
-  if (totalLuck > 0) {
-    statsItems.push({
-      id: "luck",
-      label: "Luck",
-      value: totalLuck,
-      testId: "stat-luck",
-      visible: true,
-      icon: hasScriptorium ? "☆" : undefined,
-      iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Bends fate in your favor</span> : undefined,
-    });
-  }
+  // Always show luck
+  statsItems.push({
+    id: "luck",
+    label: "Luck",
+    value: totalLuck,
+    testId: "stat-luck",
+    visible: true,
+    icon: hasScriptorium ? "☆" : undefined,
+    iconColor: hasScriptorium ? "text-green-300/80" : undefined,
+    tooltip: hasClerksHut ? <span className="text-gray-400">Bends fate in your favor</span> : undefined,
+  });
 
-  // Add strength if it's greater than 0
-  if (totalStrength > 0) {
-    statsItems.push({
-      id: "strength",
-      label: "Strength",
-      value: totalStrength,
-      testId: "stat-strength",
-      visible: true,
-      icon: hasScriptorium ? "⬡" : undefined,
-      iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Helps where words reach their limit</span> : undefined,
-    });
-  }
+  // Always show strength
+  statsItems.push({
+    id: "strength",
+    label: "Strength",
+    value: totalStrength,
+    testId: "stat-strength",
+    visible: true,
+    icon: hasScriptorium ? "⬡" : undefined,
+    iconColor: hasScriptorium ? "text-red-300/80" : undefined,
+    tooltip: hasClerksHut ? <span className="text-gray-400">Helps where words reach their limit</span> : undefined,
+  });
 
-  // Add knowledge if it's greater than 0
-  if (totalKnowledge > 0) {
-    statsItems.push({
-      id: "knowledge",
-      label: "Knowledge",
-      value: totalKnowledge,
-      testId: "stat-knowledge",
-      visible: true,
-      icon: hasScriptorium ? "✧" : undefined,
-      iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
-    });
-  }
+  // Always show knowledge
+  statsItems.push({
+    id: "knowledge",
+    label: "Knowledge",
+    value: totalKnowledge,
+    testId: "stat-knowledge",
+    visible: true,
+    icon: hasScriptorium ? "✧" : undefined,
+    iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
+    tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
+  });
 
   // Always show madness (show 0 if below 0)
   const displayMadness = Math.max(0, totalMadness);
