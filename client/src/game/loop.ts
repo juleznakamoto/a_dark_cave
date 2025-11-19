@@ -196,7 +196,7 @@ export function startGameLoop() {
 
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
-        if (!currentState.idleModeDialog.isOpen) {
+        if (!currentState.idleModeState?.isActive) {
           console.log('[GAME LOOP] Normal production running - idle mode is NOT active');
           handleGathererProduction();
           handleHunterProduction();
