@@ -207,7 +207,8 @@ export default function VillagePanel() {
       displayLabel = palisadesLabels[palisadesLevel] || "Wooden Palisades";
     }
 
-    const tooltipContent = (
+    // Always show tooltip for cost breakdown, similar to mine buttons
+    const tooltipContent = costBreakdown.length > 0 ? (
       <div className="text-xs whitespace-nowrap">
         {costBreakdown.map((cost, index) => (
           <div
@@ -220,7 +221,7 @@ export default function VillagePanel() {
           </div>
         ))}
       </div>
-    );
+    ) : null;
 
     return (
       <CooldownButton
