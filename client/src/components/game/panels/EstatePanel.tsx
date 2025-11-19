@@ -221,7 +221,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Sleep Upgrades Section */}
-        <div className="w-80 space-y-3 pt-2">
+        <div className="w-64 space-y-3 pt-2">
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
@@ -310,7 +310,7 @@ export default function EstatePanel() {
         </div>
 
         {/* Cube Section */}
-        <div className="space-y-2 pt-0">
+        <div className="space-y-2 pt-1">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
 
           <div className="grid grid-cols-6 gap-5 w-40 h-12">
