@@ -148,7 +148,8 @@ export default function IdleModeDialog() {
         const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
 
         const currentState = useGameStore.getState();
-        const offlineResources: Record<string, number> = {};
+        // Start with current game resources
+        const offlineResources: Record<string, number> = { ...currentState.resources };
 
         // Simulate each 15-second interval
         for (let i = 0; i < intervals; i++) {
@@ -158,7 +159,13 @@ export default function IdleModeDialog() {
           simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
         }
 
-        setAccumulatedResources(offlineResources);
+        // Calculate the delta (change) from starting resources
+        const resourceDeltas: Record<string, number> = {};
+        Object.keys(offlineResources).forEach(resource => {
+          resourceDeltas[resource] = offlineResources[resource] - (currentState.resources[resource as keyof typeof currentState.resources] || 0);
+        });
+
+        setAccumulatedResources(resourceDeltas);
         setIsActive(remaining > 0);
       } else {
         // Start fresh idle mode
@@ -225,18 +232,34 @@ export default function IdleModeDialog() {
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
+      
+      // Get initial resources at sleep start
+      const initialResources = { ...currentState.resources };
 
       // Accumulate resources using the same production functions as normal mode
       setAccumulatedResources(prev => {
-        const updated = { ...prev };
+        // Start with current tracked resources (delta from start)
+        const currentTracked = { ...prev };
+        
+        // Create a simulated resource state (initial + accumulated changes)
+        const simulatedResources: Record<string, number> = {};
+        Object.keys(initialResources).forEach(resource => {
+          simulatedResources[resource] = initialResources[resource as keyof typeof initialResources] + (currentTracked[resource] || 0);
+        });
 
-        // Apply production functions
-        simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
-        simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
-        simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
-        simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
+        // Apply production functions to the simulated state
+        simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
+        simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
+        simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
+        simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, simulatedResources);
 
-        return updated;
+        // Calculate new deltas from initial state
+        const newDeltas: Record<string, number> = {};
+        Object.keys(simulatedResources).forEach(resource => {
+          newDeltas[resource] = simulatedResources[resource] - initialResources[resource as keyof typeof initialResources];
+        });
+
+        return newDeltas;
       });
     };
 
