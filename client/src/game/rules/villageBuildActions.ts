@@ -1322,6 +1322,33 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
+
+  buildDarkEstate: {
+    id: "buildDarkEstate",
+    label: "Dark Estate",
+    description: "A place for you to retreat to, away from the chaos of the village",
+    tooltipEffects: ["Unlocks Estate tab"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.woodenHut": 5,
+        "buildings.darkEstate": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.wood": 2500,
+        "resources.stone": 1000,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.darkEstate": 1,
+        "story.seen.hasDarkEstate": true,
+      },
+    },
+    cooldown: 60,
+  },
 };
 
 // Action handlers
@@ -2217,4 +2244,29 @@ export function handleBuildBlackMonolith(
   }
 
   return monolithResult;
+}
+
+export function handleBuildDarkEstate(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const estateResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildDarkEstate",
+    "darkEstate",
+  );
+
+  // Add dark estate completion message
+  if (state.buildings.darkEstate === 0) {
+    estateResult.logEntries!.push({
+      id: `dark-estate-built-${Date.now()}`,
+      message:
+        "The Dark Estate is complete. A quiet refuge stands apart from the village, offering solitude and respite from the daily struggles.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return estateResult;
 }

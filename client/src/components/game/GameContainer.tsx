@@ -226,7 +226,7 @@ export default function GameContainer() {
                 )}
 
                 {/* Estate Tab Button */}
-                {estateUnlocked && (
+                {(estateUnlocked || buildings.darkEstate >= 1) && (
                   <button
                     className={`py-2 text-sm bg-transparent ${
                       activeTab === "estate" ? "font-bold opacity-100" : "opacity-60"

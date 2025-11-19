@@ -214,6 +214,7 @@ export const gameStateSchema = z.object({
       wizardTower: z.number().default(0),
       traps: z.number().default(0),
       blackMonolith: z.number().default(0),
+      darkEstate: z.number().default(0),
     })
     .default({}),
   villagers: z

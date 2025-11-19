@@ -108,6 +108,7 @@ import {
   handleBuildTraps, // Import the new handler
   handleBuildBlackMonolith, // Import the new handler
   handleBuildMasterworkFoundry, // Import the new handler
+  handleBuildDarkEstate, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
@@ -379,53 +380,10 @@ export function executeGameAction(actionId: string, state: GameState): ActionRes
       return handleBuildTraps(state, result);
     case 'buildBlackMonolith':
       return handleBuildBlackMonolith(state, result);
-
-
-    // Forest Scout Actions
-    case 'hunt':
-      return handleHunt(state, result);
-    case 'layTrap':
-      return handleLayTrap(state, result);
-    case 'castleRuins':
-      return handleCastleRuins(state, result);
-    case 'hillGrave':
-      return handleHillGrave(state, result);
-    case 'sunkenTemple':
-      return handleSunkenTemple(state, result);
-
-    // Forest Sacrifice Actions
-    case 'boneTotems':
-      return handleBoneTotems(state, result);
-    case 'leatherTotems':
-      return handleLeatherTotems(state, result);
-    case 'animals':
-      return handleAnimals(state, result);
-    case 'humans':
-      return handleHumans(state, result);
-
-    // Forest Trade Actions
-    case 'tradeGoldForFood':
-      return handleTradeGoldForFood(state, result);
-    case 'tradeGoldForWood':
-      return handleTradeGoldForWood(state, result);
-    case 'tradeGoldForStone':
-      return handleTradeGoldForStone(state, result);
-    case 'tradeGoldForSteel':
-      return handleTradeGoldForSteel(state, result);
-    case 'tradeGoldForObsidian':
-      return handleTradeGoldForObsidian(state, result);
-    case 'tradeGoldForAdamant':
-      return handleTradeGoldForAdamant(state, result);
-    case 'tradeGoldForTorch':
-      return handleTradeGoldForTorch(state, result);
-    case 'tradeSilverForGold':
-      return handleTradeSilverForGold(state, result);
-    case 'tradeGoldForEmberBomb':
-      return handleTradeGoldForEmberBomb(state, result);
-    case 'tradeGoldForAshfireBomb':
-      return handleTradeGoldForAshfireBomb(state, result);
-
+    case "buildDarkEstate":
+      return handleBuildDarkEstate(state, result);
     default:
+      console.warn(`No handler found for action: ${actionId}`);
       return result;
   }
 }

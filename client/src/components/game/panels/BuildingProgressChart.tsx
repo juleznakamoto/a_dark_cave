@@ -163,6 +163,12 @@ export default function BuildingProgressChart() {
         color: tailwindToHex("gray-400/80"),
         label: "Black Monolith",
       },
+      {
+        buildingType: "darkEstate",
+        maxCount: 1,
+        color: tailwindToHex("gray-400/80"),
+        label: "Dark Estate",
+      },
     ],
     // Fifth ring: Fortifications
     [
