@@ -182,20 +182,33 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
-          <Button
-            onClick={handleActivateIdleMode}
-            disabled={!canActivateIdle}
-            size="sm"
-            variant="outline"
-            className="w-18 h-7"
-          >
-            Sleep
-          </Button>
-          {!canActivateIdle && (
-            <p className="text-xs text-muted-foreground italic">
-              Requires positive wood and food production
-            </p>
-          )}
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleActivateIdleMode}
+                  disabled={!canActivateIdle}
+                  size="xs"
+                  variant="outline"
+                  className="hover:bg-transparent hover:text-foreground"
+                >
+                  Sleep
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="text-xs whitespace-nowrap">
+                  {canActivateIdle ? (
+                    <>
+                      <div>Sleep for up to {currentLengthUpgrade.hours}h</div>
+                      <div>Gain {currentIntensityUpgrade.percentage}% of production</div>
+                    </>
+                  ) : (
+                    <div className="text-muted-foreground">Requires positive wood and food production</div>
+                  )}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {/* Sleep Upgrades Section */}
@@ -229,15 +242,29 @@ export default function EstatePanel() {
                 </Tooltip>
               </TooltipProvider>
               {sleepUpgrades.lengthLevel < 5 && (
-                <Button
-                  onClick={handleSleepLengthUpgrade}
-                  disabled={!canUpgradeLength}
-                  size="sm"
-                  variant="outline"
-                  className="h-6 text-xs px-2"
-                >
-                  {nextLengthUpgrade.cost} Silver
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={handleSleepLengthUpgrade}
+                        disabled={!canUpgradeLength}
+                        size="xs"
+                        variant="outline"
+                        className="hover:bg-transparent hover:text-foreground"
+                      >
+                        Improve
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        <div>+{nextLengthUpgrade.hours - currentLengthUpgrade.hours}h</div>
+                        <div className={resources.silver >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
+                          {nextLengthUpgrade.cost} Silver
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
             <Progress
@@ -281,15 +308,29 @@ export default function EstatePanel() {
                 </Tooltip>
               </TooltipProvider>
               {sleepUpgrades.intensityLevel < 5 && (
-                <Button
-                  onClick={handleSleepIntensityUpgrade}
-                  disabled={!canUpgradeIntensity}
-                  size="sm"
-                  variant="outline"
-                  className="h-6 text-xs px-2"
-                >
-                  {nextIntensityUpgrade.cost} Gold
-                </Button>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        onClick={handleSleepIntensityUpgrade}
+                        disabled={!canUpgradeIntensity}
+                        size="xs"
+                        variant="outline"
+                        className="hover:bg-transparent hover:text-foreground"
+                      >
+                        Improve
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        <div>+{nextIntensityUpgrade.percentage - currentIntensityUpgrade.percentage}%</div>
+                        <div className={resources.gold >= nextIntensityUpgrade.cost ? "" : "text-muted-foreground"}>
+                          {nextIntensityUpgrade.cost} Gold
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
             <Progress
