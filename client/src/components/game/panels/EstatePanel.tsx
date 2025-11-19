@@ -182,35 +182,33 @@ export default function EstatePanel() {
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>
-          <div className="flex justify-center">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    onClick={handleActivateIdleMode}
-                    disabled={!canActivateIdle}
-                    size="xs"
-                    variant="outline"
-                    className="hover:bg-transparent hover:text-foreground"
-                  >
-                    Sleep
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-xs whitespace-nowrap">
-                    {canActivateIdle ? (
-                      <>
-                        <div>Sleep for up to {currentLengthUpgrade.hours}h</div>
-                        <div>Gain {currentIntensityUpgrade.percentage}% of production</div>
-                      </>
-                    ) : (
-                      <div className="text-muted-foreground">Requires positive wood and food production</div>
-                    )}
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button
+                  onClick={handleActivateIdleMode}
+                  disabled={!canActivateIdle}
+                  size="xs"
+                  variant="outline"
+                  className="hover:bg-transparent hover:text-foreground"
+                >
+                  Sleep
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="text-xs whitespace-nowrap">
+                  {canActivateIdle ? (
+                    <>
+                      <div>Sleep for up to {currentLengthUpgrade.hours}h</div>
+                      <div>Gain {currentIntensityUpgrade.percentage}% of production</div>
+                    </>
+                  ) : (
+                    <div className="text-muted-foreground">Requires positive wood and food production</div>
+                  )}
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
 
         {/* Sleep Upgrades Section */}
