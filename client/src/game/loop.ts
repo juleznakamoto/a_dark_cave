@@ -194,14 +194,18 @@ export function startGameLoop() {
           useGameStore.setState({ loopProgress: 0 });
         }, 50);
 
-        handleGathererProduction();
-        handleHunterProduction();
-        handleMinerProduction();
-        handlePopulationSurvival();
-        handleStarvationCheck();
-        handleFreezingCheck();
-        handleMadnessCheck();
-        handleStrangerApproach();
+        // Skip production if idle mode is active
+        const currentState = useGameStore.getState();
+        if (!currentState.idleModeDialog.isOpen) {
+          handleGathererProduction();
+          handleHunterProduction();
+          handleMinerProduction();
+          handlePopulationSurvival();
+          handleStarvationCheck();
+          handleFreezingCheck();
+          handleMadnessCheck();
+          handleStrangerApproach();
+        }
       } else {
         // Update loop progress (0-100 based on production cycle)
         const progressPercent =
