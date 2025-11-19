@@ -1,3 +1,4 @@
+
 import React, { useEffect, useState } from 'react';
 import {
   Dialog,
@@ -8,9 +9,9 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import { getTotalPopulationEffects } from '@/game/population';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { capitalizeWords } from '@/lib/utils';
+import { getPopulationProduction } from '@/game/population';
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -30,6 +31,90 @@ const SLEEP_INTENSITY_UPGRADES = [
   { level: 4, percentage: 20 },
   { level: 5, percentage: 25 },
 ];
+
+// Simulate production functions from loop.ts
+function simulateGathererProduction(state: any, multiplier: number, accumulatedResources: Record<string, number>) {
+  const gatherer = state.villagers.gatherer;
+  if (gatherer > 0) {
+    const production = getPopulationProduction("gatherer", gatherer, state);
+    production.forEach((prod) => {
+      const amount = prod.totalAmount * multiplier;
+      accumulatedResources[prod.resource] = (accumulatedResources[prod.resource] || 0) + amount;
+    });
+  }
+}
+
+function simulateHunterProduction(state: any, multiplier: number, accumulatedResources: Record<string, number>) {
+  const hunter = state.villagers.hunter;
+  if (hunter > 0) {
+    const production = getPopulationProduction("hunter", hunter, state);
+    production.forEach((prod) => {
+      const amount = prod.totalAmount * multiplier;
+      accumulatedResources[prod.resource] = (accumulatedResources[prod.resource] || 0) + amount;
+    });
+  }
+}
+
+function simulateMinerProduction(state: any, multiplier: number, accumulatedResources: Record<string, number>) {
+  // Collect all production data
+  const allProduction: { job: string; production: any[] }[] = [];
+  Object.entries(state.villagers).forEach(([job, count]) => {
+    if (
+      count > 0 &&
+      (job.endsWith("miner") ||
+        job === "steel_forger" ||
+        job === "tanner" ||
+        job === "powder_maker" ||
+        job === "ashfire_dust_maker")
+    ) {
+      const production = getPopulationProduction(job, count as number, state);
+      allProduction.push({ job, production });
+    }
+  });
+
+  // Track available resources after each job's production/consumption
+  const availableResources = { ...accumulatedResources };
+
+  // Process each job sequentially
+  allProduction.forEach(({ job, production }) => {
+    // Check if this job can produce based on currently available resources
+    const canProduce = production.every((prod) => {
+      if (prod.totalAmount < 0) {
+        // Consumption - check if we have enough available
+        const available = availableResources[prod.resource] || 0;
+        return available >= Math.abs(prod.totalAmount * multiplier);
+      }
+      return true; // Production is always allowed
+    });
+
+    // Only apply production if all resources are available
+    if (canProduce) {
+      production.forEach((prod) => {
+        const amount = prod.totalAmount * multiplier;
+        // Update both the tracked available resources and accumulated resources
+        availableResources[prod.resource] = (availableResources[prod.resource] || 0) + amount;
+        accumulatedResources[prod.resource] = (accumulatedResources[prod.resource] || 0) + amount;
+      });
+    }
+  });
+}
+
+function simulatePopulationConsumption(state: any, multiplier: number, accumulatedResources: Record<string, number>) {
+  const totalPopulation = Object.values(state.villagers).reduce(
+    (sum, count) => sum + ((count as number) || 0),
+    0,
+  );
+
+  if (totalPopulation > 0) {
+    // Food consumption (1 per villager per 15 seconds)
+    const foodConsumption = totalPopulation * multiplier;
+    accumulatedResources['food'] = (accumulatedResources['food'] || 0) - foodConsumption;
+
+    // Wood consumption (1 per villager per 15 seconds)
+    const woodConsumption = totalPopulation * multiplier;
+    accumulatedResources['wood'] = (accumulatedResources['wood'] || 0) - woodConsumption;
+  }
+}
 
 export default function IdleModeDialog() {
   const { idleModeDialog, setIdleModeDialog, idleModeState, sleepUpgrades } = useGameStore();
@@ -61,41 +146,21 @@ export default function IdleModeDialog() {
 
         // Calculate resources accumulated while offline
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
+        const intervals = Math.floor(secondsElapsed / 15); // How many 15-second intervals have passed
+        
         const currentState = useGameStore.getState();
-        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
-
-        // Calculate total population for consumption
-        const totalPopulation = Object.values(currentState.villagers).reduce(
-          (sum, count) => sum + (count || 0),
-          0,
-        );
-
         const offlineResources: Record<string, number> = {};
 
-        // Add production for all resources
-        Object.entries(totalEffects).forEach(([resource, amount]) => {
-          if (amount > 0) {
-            // Production per second at the multiplier speed
-            const productionPerSecond = (amount / 15) * PRODUCTION_SPEED_MULTIPLIER;
-            offlineResources[resource] = productionPerSecond * secondsElapsed;
-          }
-        });
-
-        // Subtract consumption for food and wood (1 per villager per 15 seconds, at the multiplier rate)
-        if (totalPopulation > 0) {
-          const consumptionPerSecond = (totalPopulation / 15) * PRODUCTION_SPEED_MULTIPLIER;
-
-          const foodProduced = offlineResources['food'] || 0;
-          const woodProduced = offlineResources['wood'] || 0;
-
-          offlineResources['food'] = foodProduced - (consumptionPerSecond * secondsElapsed);
-          offlineResources['wood'] = woodProduced - (consumptionPerSecond * secondsElapsed);
+        // Simulate each 15-second interval
+        for (let i = 0; i < intervals; i++) {
+          simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
+          simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
+          simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
+          simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, offlineResources);
         }
 
         setAccumulatedResources(offlineResources);
         setIsActive(remaining > 0);
-
-        // Don't auto-end when time is up - let user see the results
       } else {
         // Start fresh idle mode
         setIsActive(true);
@@ -153,53 +218,28 @@ export default function IdleModeDialog() {
     if (remaining <= 0) return;
 
     // Calculate how many seconds have elapsed since idle mode started
-      const secondsElapsed = Math.floor(elapsed / 1000);
+    const secondsElapsed = Math.floor(elapsed / 1000);
 
-      // Calculate how many seconds until the next 15-second mark from start
-      // For example: if 7 seconds elapsed, wait 8 more seconds to reach 15
-      // if 18 seconds elapsed, wait 12 more seconds to reach 30
-      const secondsUntilNextMark = 15 - (secondsElapsed % 15);
-      const msUntilNextInterval = secondsUntilNextMark * 1000;
+    // Calculate how many seconds until the next 15-second mark from start
+    const secondsUntilNextMark = 15 - (secondsElapsed % 15);
+    const msUntilNextInterval = secondsUntilNextMark * 1000;
 
-      const updateResources = () => {
-        const currentState = useGameStore.getState();
-        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
+    const updateResources = () => {
+      const currentState = useGameStore.getState();
 
-        // Calculate total population for consumption
-        const totalPopulation = Object.values(currentState.villagers).reduce(
-          (sum, count) => sum + (count || 0),
-          0,
-        );
+      // Accumulate resources using the same production functions as normal mode
+      setAccumulatedResources(prev => {
+        const updated = { ...prev };
 
-        // Accumulate resources
-        setAccumulatedResources(prev => {
-          const updated = { ...prev };
+        // Apply production functions
+        simulateGathererProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
+        simulateHunterProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
+        simulateMinerProduction(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
+        simulatePopulationConsumption(currentState, PRODUCTION_SPEED_MULTIPLIER, updated);
 
-          // Add production for all resources (multiplied by sleep intensity)
-          Object.entries(totalEffects).forEach(([resource, amount]) => {
-            const production = amount * PRODUCTION_SPEED_MULTIPLIER;
-            const offlineAmount = accumulatedResources[resource] || 0;
-            const currentAccumulated = (prev[resource] || 0) - offlineAmount;
-            updated[resource] = offlineAmount + currentAccumulated + production;
-          });
-
-          // Subtract consumption for food and wood (1 per villager per 15 seconds, multiplied by sleep intensity)
-          if (totalPopulation > 0) {
-            const foodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
-            const woodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
-
-            const offlineFood = accumulatedResources['food'] || 0;
-            const currentFood = (prev['food'] || 0) - offlineFood;
-            updated['food'] = offlineFood + currentFood - foodConsumption;
-
-            const offlineWood = accumulatedResources['wood'] || 0;
-            const currentWood = (prev['wood'] || 0) - offlineWood;
-            updated['wood'] = offlineWood + currentWood - woodConsumption;
-          }
-
-          return updated;
-        });
-      };
+        return updated;
+      });
+    };
 
     const initialTimeout = setTimeout(() => {
       updateResources();
@@ -222,30 +262,28 @@ export default function IdleModeDialog() {
     }, msUntilNextInterval);
 
     return () => clearTimeout(initialTimeout);
-  }, [isActive, idleModeDialog.isOpen, startTime, accumulatedResources]);
+  }, [isActive, idleModeDialog.isOpen, startTime]);
 
   const handleEndIdleMode = () => {
     // Apply accumulated resources to the game state
     Object.entries(accumulatedResources).forEach(([resource, amount]) => {
-      if (amount > 0) {
-        useGameStore.getState().updateResource(
-          resource as keyof typeof state.resources,
-          Math.floor(amount)
-        );
-      }
+      useGameStore.getState().updateResource(
+        resource as keyof typeof state.resources,
+        Math.floor(amount)
+      );
     });
 
     // Create log message showing resources gained
     if (Object.keys(accumulatedResources).length > 0) {
       const resourcesList = Object.entries(accumulatedResources)
-        .filter(([_, amount]) => amount > 0)
-        .map(([resource, amount]) => `${capitalizeWords(resource)}: ${Math.floor(amount)}`)
+        .filter(([_, amount]) => Math.floor(amount) !== 0)
+        .map(([resource, amount]) => `${capitalizeWords(resource)}: ${Math.floor(amount) > 0 ? '+' : ''}${Math.floor(amount)}`)
         .join(', ');
 
       if (resourcesList) {
         useGameStore.getState().addLogEntry({
           id: `idle-mode-end-${Date.now()}`,
-          message: `While you slept, the villagers produced: ${resourcesList}`,
+          message: `While you slept: ${resourcesList}`,
           timestamp: Date.now(),
           type: 'system',
         });
@@ -283,14 +321,14 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
 
-  // Get all resources that will be produced (even if not accumulated yet)
-  const totalEffects = getTotalPopulationEffects(state, Object.keys(state.villagers));
-  const relevantResources = Object.keys(totalEffects).filter(resource => totalEffects[resource] > 0);
-
-  const producedResources = relevantResources.map(resource => {
-    const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
-    return [resource, amount] as [string, number];
-  }).sort(([a], [b]) => a.localeCompare(b));
+  // Get all resources that have changed
+  const producedResources = Object.keys(accumulatedResources)
+    .map(resource => {
+      const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
+      return [resource, amount] as [string, number];
+    })
+    .filter(([_, amount]) => Math.floor(amount) !== 0) // Only show resources that have changed
+    .sort(([a], [b]) => a.localeCompare(b));
 
   const isTimeUp = remainingTime <= 0;
 
