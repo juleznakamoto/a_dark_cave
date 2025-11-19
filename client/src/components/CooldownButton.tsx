@@ -133,7 +133,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   return (
     <div
       className="relative inline-block"
-      onClick={mobileTooltip.isMobile && tooltip ? (e) => {
+      onClick={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) return;
 
@@ -143,11 +143,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
           mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
         }
       } : undefined}
-      onMouseDown={mobileTooltip.isMobile && tooltip ? (e) => {
+      onMouseDown={mobileTooltip.isMobile ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
         mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e);
       } : undefined}
-      onMouseUp={mobileTooltip.isMobile && tooltip ? (e) => {
+      onMouseUp={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) {
           e.preventDefault();
@@ -157,11 +157,11 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e);
       } : undefined}
-      onTouchStart={mobileTooltip.isMobile && tooltip ? (e) => {
+      onTouchStart={mobileTooltip.isMobile ? (e) => {
         // Start hold timer for tooltip (will show for both active and inactive buttons if held)
         mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e);
       } : undefined}
-      onTouchEnd={mobileTooltip.isMobile && tooltip ? (e) => {
+      onTouchEnd={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
         if (actionExecutedRef.current) {
           e.preventDefault();
