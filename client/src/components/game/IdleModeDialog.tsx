@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
-import { getTotalPopulationEffects } from '@/game/population';
+import { getPopulationProduction } from '@/game/population';
 import { AnimatedCounter } from '@/components/ui/animated-counter';
 import { capitalizeWords } from '@/lib/utils';
 
@@ -61,36 +61,22 @@ export default function IdleModeDialog() {
 
         // Calculate resources accumulated while offline
         const secondsElapsed = Math.min(elapsed, IDLE_DURATION_MS) / 1000;
+        const cyclesElapsed = secondsElapsed / 15; // How many 15-second cycles occurred
         const currentState = useGameStore.getState();
-        const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
         
-        // Calculate total population for consumption
-        const totalPopulation = Object.values(currentState.villagers).reduce(
-          (sum, count) => sum + (count || 0),
-          0,
-        );
-
         const offlineResources: Record<string, number> = {};
         
-        // Add production for all resources
-        Object.entries(totalEffects).forEach(([resource, amount]) => {
-          if (amount > 0) {
-            // Production per second at the multiplier speed
-            const productionPerSecond = (amount / 15) * PRODUCTION_SPEED_MULTIPLIER;
-            offlineResources[resource] = productionPerSecond * secondsElapsed;
+        // Use the same production calculation as the normal game loop
+        Object.entries(currentState.villagers).forEach(([jobId, count]) => {
+          if (count > 0) {
+            const production = getPopulationProduction(jobId, count, currentState);
+            production.forEach((prod) => {
+              // Apply production/consumption per cycle, multiplied by sleep intensity
+              const amountPerCycle = prod.totalAmount * PRODUCTION_SPEED_MULTIPLIER;
+              offlineResources[prod.resource] = (offlineResources[prod.resource] || 0) + (amountPerCycle * cyclesElapsed);
+            });
           }
         });
-        
-        // Subtract consumption for food and wood (1 per villager per 15 seconds, at the multiplier rate)
-        if (totalPopulation > 0) {
-          const consumptionPerSecond = (totalPopulation / 15) * PRODUCTION_SPEED_MULTIPLIER;
-          
-          const foodProduced = offlineResources['food'] || 0;
-          const woodProduced = offlineResources['wood'] || 0;
-          
-          offlineResources['food'] = foodProduced - (consumptionPerSecond * secondsElapsed);
-          offlineResources['wood'] = woodProduced - (consumptionPerSecond * secondsElapsed);
-        }
 
         setAccumulatedResources(offlineResources);
         setIsActive(remaining > 0);
@@ -163,40 +149,24 @@ export default function IdleModeDialog() {
 
     const updateResources = () => {
       const currentState = useGameStore.getState();
-      const totalEffects = getTotalPopulationEffects(currentState, Object.keys(currentState.villagers));
-      
-      // Calculate total population for consumption
-      const totalPopulation = Object.values(currentState.villagers).reduce(
-        (sum, count) => sum + (count || 0),
-        0,
-      );
 
-      // Accumulate resources - production minus consumption
+      // Accumulate resources using the same logic as the game loop
       setAccumulatedResources(prev => {
         const updated = { ...prev };
         
-        // Add production for all resources
-        Object.entries(totalEffects).forEach(([resource, amount]) => {
-          // Apply the production speed multiplier to the full 15-second production amount
-          const production = amount * PRODUCTION_SPEED_MULTIPLIER;
-          const offlineAmount = accumulatedResources[resource] || 0;
-          const currentAccumulated = (prev[resource] || 0) - offlineAmount;
-          updated[resource] = offlineAmount + currentAccumulated + production;
+        // Use the same production calculation as the normal game loop
+        Object.entries(currentState.villagers).forEach(([jobId, count]) => {
+          if (count > 0) {
+            const production = getPopulationProduction(jobId, count, currentState);
+            production.forEach((prod) => {
+              // Apply production/consumption for this 15-second cycle, multiplied by sleep intensity
+              const amountThisCycle = prod.totalAmount * PRODUCTION_SPEED_MULTIPLIER;
+              const offlineAmount = accumulatedResources[prod.resource] || 0;
+              const currentAccumulated = (prev[prod.resource] || 0) - offlineAmount;
+              updated[prod.resource] = offlineAmount + currentAccumulated + amountThisCycle;
+            });
+          }
         });
-        
-        // Subtract consumption for food and wood (1 per villager per 15 seconds, at the multiplier rate)
-        if (totalPopulation > 0) {
-          const foodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
-          const woodConsumption = totalPopulation * PRODUCTION_SPEED_MULTIPLIER;
-          
-          const offlineFood = accumulatedResources['food'] || 0;
-          const currentFood = (prev['food'] || 0) - offlineFood;
-          updated['food'] = offlineFood + currentFood - foodConsumption;
-          
-          const offlineWood = accumulatedResources['wood'] || 0;
-          const currentWood = (prev['wood'] || 0) - offlineWood;
-          updated['wood'] = offlineWood + currentWood - woodConsumption;
-        }
         
         return updated;
       });
@@ -293,11 +263,18 @@ export default function IdleModeDialog() {
   // Show resources only after at least 15 seconds have elapsed from idle mode start
   const hasCompletedFirstInterval = secondsElapsed >= 15;
   
-  // Get all resources that will be produced (even if not accumulated yet)
-  const totalEffects = getTotalPopulationEffects(state, Object.keys(state.villagers));
-  const relevantResources = Object.keys(totalEffects).filter(resource => totalEffects[resource] > 0);
+  // Get all resources that will be produced/consumed (using the same logic as game loop)
+  const allResourceEffects: Record<string, boolean> = {};
+  Object.entries(state.villagers).forEach(([jobId, count]) => {
+    if (count > 0) {
+      const production = getPopulationProduction(jobId, count, state);
+      production.forEach((prod) => {
+        allResourceEffects[prod.resource] = true;
+      });
+    }
+  });
   
-  const producedResources = relevantResources.map(resource => {
+  const producedResources = Object.keys(allResourceEffects).map(resource => {
     const amount = hasCompletedFirstInterval ? (accumulatedResources[resource] || 0) : 0;
     return [resource, amount] as [string, number];
   }).sort(([a], [b]) => a.localeCompare(b));
