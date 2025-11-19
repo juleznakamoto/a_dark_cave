@@ -1331,7 +1331,7 @@ export const villageBuildActions: Record<string, Action> = {
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 5,
+        "buildings.woodenHut": 6,
         "buildings.darkEstate": 0,
       },
     },

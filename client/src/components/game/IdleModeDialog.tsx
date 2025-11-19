@@ -391,7 +391,7 @@ export default function IdleModeDialog() {
       if (resourcesList) {
         useGameStore.getState().addLogEntry({
           id: `idle-mode-end-${Date.now()}`,
-          message: `While you slept: ${resourcesList}`,
+          message: `While you slept villagers produced: ${resourcesList}`,
           timestamp: Date.now(),
           type: 'system',
         });
