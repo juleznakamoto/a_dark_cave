@@ -145,8 +145,8 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     },
     canPurchaseMultipleTimes: true,
     category: "bundle",
-    activationMessage: "Basic Bundle activated! 1000 Gold added and 1 Great Feast is now available.",
-    symbol: "⚔",
+    activationMessage: "Basic Bundle has been used!",
+    symbol: "◻",
     symbolColor: "text-purple-600",
   },
 
