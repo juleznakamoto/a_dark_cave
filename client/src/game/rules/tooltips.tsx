@@ -1,7 +1,12 @@
 import { GameState } from "@shared/schema";
 import { getActionBonuses } from "./effectsCalculation";
 import { capitalizeWords } from "@/lib/utils";
-import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo, UPGRADE_KEY_NAMES } from "@/game/buttonUpgrades";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  getButtonUpgradeInfo,
+  UPGRADE_KEY_NAMES,
+} from "@/game/buttonUpgrades";
+import { getTotalMadness } from "@/game/rules/effectsCalculation";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -153,8 +158,8 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] ||
-                0) >= value;
+              (state.resources[resource as keyof typeof state.resources] || 0) >=
+              value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
