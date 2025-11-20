@@ -20,35 +20,34 @@ export interface UpgradeLevel {
   level: number;
   clicksRequired: number;
   bonus: number; // Percentage bonus (5 = 5%)
-  label: string;
 }
 
 export const MAX_UPGRADE_LEVEL = 8;
 
 // Default upgrade levels (for most actions)
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 10, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 16, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 50, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 100, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 200, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 400, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 750, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 1500, bonus: 40, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 10, bonus: 5},
+  { level: 2, clicksRequired: 16, bonus: 10},
+  { level: 3, clicksRequired: 50, bonus: 15},
+  { level: 4, clicksRequired: 100, bonus: 20},
+  { level: 5, clicksRequired: 200, bonus: 25},
+  { level: 6, clicksRequired: 400, bonus: 30},
+  { level: 7, clicksRequired: 750, bonus: 35},
+  { level: 8, clicksRequired: 1500, bonus: 40},
 ];
 
 // Mining upgrade levels (faster progression)
 export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 5, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 15, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 30, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 60, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 120, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 240, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 450, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 900, bonus: 40, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 5, bonus: 5},
+  { level: 2, clicksRequired: 15, bonus: 10},
+  { level: 3, clicksRequired: 30, bonus: 15},
+  { level: 4, clicksRequired: 60, bonus: 20},
+  { level: 5, clicksRequired: 120, bonus: 25},
+  { level: 6, clicksRequired: 240, bonus: 30},
+  { level: 7, clicksRequired: 450, bonus: 35},
+  { level: 8, clicksRequired: 900, bonus: 40},
 ];
 
 // Get the appropriate upgrade levels for a given key
@@ -143,7 +142,6 @@ export function getButtonUpgradeInfo(key: UpgradeKey, upgrade: { clicks: number;
     level: currentLevel,
     clicks: currentClicks,
     bonus: currentLevelInfo?.bonus || 0,
-    label: currentLevelInfo?.label || "Unknown",
     clicksNeeded,
     isMaxLevel,
     nextLevel: nextLevelInfo,
