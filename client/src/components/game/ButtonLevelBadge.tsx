@@ -58,19 +58,10 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                 <span className=" ">Bonus:</span>
                 <span>+{info.bonus}%</span>
               </div>
-              {!info.isMaxLevel && info.nextLevel ? (
-                <>
-                  <div className="flex justify-between gap-2">
-                    <span>Clicks:</span>
-                    <span>{info.clicks.toLocaleString()} / {info.nextLevel.clicksRequired.toLocaleString()}</span>
-                  </div>
-                </>
-              ) : (
-                <div className="flex justify-between gap-2">
-                  <span>Total clicks:</span>
-                  <span>{info.clicks.toLocaleString()}</span>
-                </div>
-              )}
+              <div className="flex justify-between gap-2">
+                <span>Clicks:</span>
+                <span>{info.clicks.toLocaleString()}</span>
+              </div>
               {!info.isMaxLevel && info.nextLevel && (
                 <>
                   <div className="border-t my-1.5 pt-1.5">
@@ -84,7 +75,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                     </div>
                     <div className="flex justify-between gap-2">
                       <span>Clicks needed:</span>
-                      <span>{info.clicksNeeded}</span>
+                      <span>{info.nextLevel.clicksRequired}</span>
                     </div>
                   </div>
                 </>
