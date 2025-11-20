@@ -152,7 +152,18 @@ const mergeStateUpdates = (
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
-    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations }, // Merge cooldownDurations
+    cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
+    buttonUpgrades: stateUpdates.buttonUpgrades
+      ? {
+          ...prevState.buttonUpgrades,
+          ...Object.fromEntries(
+            Object.entries(stateUpdates.buttonUpgrades).map(([key, value]) => [
+              key,
+              { ...prevState.buttonUpgrades[key as keyof typeof prevState.buttonUpgrades], ...value }
+            ])
+          )
+        }
+      : prevState.buttonUpgrades,
     story: stateUpdates.story
       ? {
           ...prevState.story,
