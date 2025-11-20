@@ -25,7 +25,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           let victoryChance;
-          const traps = state.buildings.traps * 0.1;
+          const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
