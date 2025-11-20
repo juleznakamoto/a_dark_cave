@@ -240,14 +240,14 @@ export function getActionBonuses(
       const bonus = effect.bonuses.actionBonuses[actionId];
       if (bonus.resourceMultiplier) {
         // Additive: sum the bonus percentages
-        resourceMultiplier += bonus.resourceMultiplier - 1;
+        bonuses.resourceMultiplier += bonus.resourceMultiplier - 1;
       }
       if (bonus.cooldownReduction) {
-        cooldownReduction += bonus.cooldownReduction;
+        bonuses.cooldownReduction += bonus.cooldownReduction;
       }
       if (bonus.resourceBonus) {
         Object.entries(bonus.resourceBonus).forEach(([resource, amount]) => {
-          resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + amount;
         });
       }
     }
@@ -258,15 +258,15 @@ export function getActionBonuses(
         const mineBonus = effect.bonuses.actionBonuses.mining;
         if (mineBonus.resourceMultiplier) {
           // Additive: sum the bonus percentages
-          resourceMultiplier += mineBonus.resourceMultiplier - 1;
+          bonuses.resourceMultiplier += mineBonus.resourceMultiplier - 1;
         }
         if (mineBonus.cooldownReduction) {
-          cooldownReduction += mineBonus.cooldownReduction;
+          bonuses.cooldownReduction += mineBonus.cooldownReduction;
         }
         if (mineBonus.resourceBonus) {
           Object.entries(mineBonus.resourceBonus).forEach(
             ([resource, amount]) => {
-              resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
+              bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + amount;
             },
           );
         }
@@ -285,18 +285,13 @@ export function getActionBonuses(
     if (caveExploreActions.includes(actionId)) {
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
         // Additive: sum the bonus percentages
-        caveExploreMultiplier +=
+        bonuses.caveExploreMultiplier +=
           effect.bonuses.generalBonuses.caveExploreMultiplier - 1;
       }
     }
   });
 
-  return {
-    resourceMultiplier,
-    resourceBonus,
-    cooldownReduction,
-    caveExploreMultiplier,
-  };
+  return bonuses;
 };
 
 // SSOT: Calculate all action bonuses for display and internal use
