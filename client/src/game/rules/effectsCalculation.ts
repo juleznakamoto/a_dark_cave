@@ -284,6 +284,16 @@ export const getActionBonuses = (
     }
   });
 
+  // Add button upgrade bonuses
+  const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+  if (upgradeKey) {
+    const bonus = getUpgradeBonus(upgradeKey, state);
+    if (bonus > 0) {
+      // Button upgrades are percentage bonuses, convert to multiplier
+      resourceMultiplier += bonus / 100;
+    }
+  }
+
   return {
     resourceMultiplier,
     resourceBonus,
