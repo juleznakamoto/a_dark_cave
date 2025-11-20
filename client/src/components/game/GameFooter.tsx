@@ -35,6 +35,9 @@ export default function GameFooter() {
     authNotificationVisible,
     setIsUserSignedIn,
     cruelMode,
+    story,
+    mysteriousNoteShopNotificationSeen,
+    mysteriousNoteDonateNotificationSeen,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
@@ -188,21 +191,33 @@ export default function GameFooter() {
               onClick={() => {
                 setShopDialogOpen(true);
                 setShopNotificationSeen(true);
+                if (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen) {
+                  useGameStore.setState({ mysteriousNoteShopNotificationSeen: true });
+                }
               }}
               className="px-1 py-1 text-xs hover relative"
             >
               Shop
-              {shopNotificationVisible && !shopNotificationSeen && (
+              {((shopNotificationVisible && !shopNotificationSeen) || 
+                (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen)) && (
                 <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
             <Button
               variant="ghost"
               size="xs"
-              onClick={handleOfferTribute}
-              className="px-1 py-1 text-xs hover"
+              onClick={() => {
+                handleOfferTribute();
+                if (story.seen.mysteriousNoteReceived && !mysteriousNoteDonateNotificationSeen) {
+                  useGameStore.setState({ mysteriousNoteDonateNotificationSeen: true });
+                }
+              }}
+              className="px-1 py-1 text-xs hover relative"
             >
               Donate
+              {story.seen.mysteriousNoteReceived && !mysteriousNoteDonateNotificationSeen && (
+                <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              )}
             </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (

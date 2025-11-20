@@ -360,6 +360,8 @@ export const gameStateSchema = z.object({
   shopNotificationSeen: z.boolean().default(false), // Added new field for shop notification
   authNotificationSeen: z.boolean().default(false), // Added new field for auth notification
   authNotificationVisible: z.boolean().default(false), // Added new field for auth notification visibility
+  mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
+  mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
   playTime: z.number().default(0), // Track total play time in milliseconds
   isNewGame: z.boolean().default(false), // Track if the current game is a new game

@@ -55,6 +55,10 @@ interface GameStore extends GameState {
   authNotificationSeen: boolean;
   authNotificationVisible: boolean;
 
+  // Notification state for mysterious note
+  mysteriousNoteShopNotificationSeen: boolean;
+  mysteriousNoteDonateNotificationSeen: boolean;
+
   // Auth state
   isUserSignedIn: boolean;
 
@@ -86,6 +90,8 @@ interface GameStore extends GameState {
   setShopNotificationVisible: (visible: boolean) => void;
   setAuthNotificationSeen: (seen: boolean) => void;
   setAuthNotificationVisible: (visible: boolean) => void;
+  setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
+  setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -257,6 +263,10 @@ const defaultGameState: GameState = {
   authNotificationSeen: false,
   authNotificationVisible: false,
 
+  // Initialize mysterious note notification state
+  mysteriousNoteShopNotificationSeen: false,
+  mysteriousNoteDonateNotificationSeen: false,
+
   // Auth state
   isUserSignedIn: false,
 
@@ -348,9 +358,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize auth notification state
   authNotificationSeen: false,
   authNotificationVisible: false,
-
-  // Play time tracking
-  playTime: 0,
+  // Initialize mysterious note notification state
+  mysteriousNoteShopNotificationSeen: false,
+  mysteriousNoteDonateNotificationSeen: false,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -361,6 +371,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setShopNotificationVisible: (visible: boolean) => set({ shopNotificationVisible: visible }),
   setAuthNotificationSeen: (seen: boolean) => set({ authNotificationSeen: seen }),
   setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
+  setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
+  setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
@@ -595,6 +607,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       shopNotificationVisible: false,
       authNotificationSeen: false,
       authNotificationVisible: false,
+      mysteriousNoteShopNotificationSeen: false,
+      mysteriousNoteDonateNotificationSeen: false,
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
       idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
@@ -645,6 +659,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
         shopNotificationVisible: savedState.shopNotificationVisible !== undefined ? savedState.shopNotificationVisible : false,
         authNotificationSeen: savedState.authNotificationSeen !== undefined ? savedState.authNotificationSeen : false,
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
+        mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
+        mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state

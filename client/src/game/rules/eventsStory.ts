@@ -61,9 +61,9 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 800 && // 3 hours in seconds
+      state.playTime >= 10800 && // 3 hours in seconds
       state.buildings.darkEstate >= 1 &&
-      // !state.story.seen.mysteriousNoteReceived &&
+      !state.story.seen.mysteriousNoteReceived &&
       !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
     triggerType: "time",
     timeProbability: 0.05,
@@ -74,40 +74,6 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: false,
     choices: [
-      {
-        id: "open_shop",
-        label: "Visit the shop",
-        effect: (state: GameState) => {
-          // This will be handled specially in EventDialog to open shop
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                mysteriousNoteReceived: true,
-              },
-            },
-            _openShop: true,
-          };
-        },
-      },
-      {
-        id: "open_donation",
-        label: "Visit donation page",
-        effect: (state: GameState) => {
-          // This will be handled specially in EventDialog to open donation URL
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                mysteriousNoteReceived: true,
-              },
-            },
-            _openDonation: true,
-          };
-        },
-      },
       {
         id: "throw_away",
         label: "Throw away",
