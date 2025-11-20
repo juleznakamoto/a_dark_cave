@@ -3,6 +3,8 @@ import { shopItems } from "@shared/shopItems";
 import {
   getActionBonuses,
   getAllActionBonuses,
+  getTotalMadness,
+  getTotalKnowledge,
 } from "./effectsCalculation";
 import { capitalizeWords } from "@/lib/utils";
 import {
