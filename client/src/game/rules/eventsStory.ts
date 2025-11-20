@@ -57,6 +57,82 @@ export const storyEvents: Record<string, GameEvent> = {
   },
 
   wizardArrives: {
+
+
+  mysteriousNote: {
+    id: "mysteriousNote",
+    condition: (state: GameState) =>
+      state.playTime >= 10800 && // 3 hours in seconds
+      state.buildings.darkEstate >= 1 &&
+      !state.story.seen.mysteriousNoteReceived &&
+      // Check if player has bought nothing from shop (excluding free items)
+      Object.entries(state.activatedPurchases || {}).every(([key]) => {
+        // Free items that don't count: boost_mode
+        return key === 'boost_mode';
+      }),
+    triggerType: "time",
+    timeProbability: 5,
+    title: "A Mysterious Note",
+    message:
+      "As dusk settles, you notice a slip of paper resting on the doorstep of your estate. Someone has written a message in a careful, strangely elegant hand: \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "open_shop",
+        label: "Visit the shop",
+        effect: (state: GameState) => {
+          // This will be handled specially in EventDialog to open shop
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousNoteReceived: true,
+              },
+            },
+            _openShop: true,
+          };
+        },
+      },
+      {
+        id: "open_donation",
+        label: "Visit donation page",
+        effect: (state: GameState) => {
+          // This will be handled specially in EventDialog to open donation URL
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousNoteReceived: true,
+              },
+            },
+            _openDonation: true,
+          };
+        },
+      },
+      {
+        id: "throw_away",
+        label: "Throw away",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousNoteReceived: true,
+              },
+            },
+            _logMessage:
+              "You crumple the note and let it fall from your fingers. You understand the words, yet you cannot make any sense of them. As the paper drifts away, you catch something carried on the wind, faint and distant. It sounds like soft, lonely weeping fading into the night.",
+          };
+        },
+      },
+    ],
+  },
+
     id: "wizardArrives",
     condition: (state: GameState) =>
       state.buildings.bastion >= 1 && !state.story.seen.wizardArrives,

@@ -182,6 +182,32 @@ export default function EventDialog({
       return;
     }
 
+    // Handle special actions for mysterious note event
+    if (eventId === "mysteriousNote") {
+      const choice = eventChoices.find((c) => c.id === choiceId);
+      if (choice) {
+        const result = choice.effect(gameState);
+        
+        // Handle shop opening
+        if ((result as any)._openShop) {
+          fallbackExecutedRef.current = true;
+          applyEventChoice(choiceId, eventId);
+          onClose();
+          gameState.setShopDialogOpen(true);
+          return;
+        }
+        
+        // Handle donation page opening
+        if ((result as any)._openDonation) {
+          fallbackExecutedRef.current = true;
+          applyEventChoice(choiceId, eventId);
+          onClose();
+          window.open("https://buymeacoffee.com/julianbudev", "_blank");
+          return;
+        }
+      }
+    }
+
     // For non-merchant events, process normally
     fallbackExecutedRef.current = true;
     applyEventChoice(choiceId, eventId);
