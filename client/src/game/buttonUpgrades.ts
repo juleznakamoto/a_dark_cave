@@ -23,7 +23,7 @@ export interface UpgradeLevel {
   label?: string; // Optional label for display
 }
 
-export const MAX_UPGRADE_LEVEL = 0;
+export const MAX_UPGRADE_LEVEL =   10;
 
 // Default upgrade levels (for most actions)
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
@@ -31,73 +31,73 @@ export const UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 1, clicksRequired: 25, bonus: 10},
   { level: 2, clicksRequired: 50, bonus: 20},
   { level: 3, clicksRequired: 100, bonus: 30},
-  { level: 4, clicksRequired: 200, bonus: 40},
-  { level: 5, clicksRequired: 400, bonus: 50},
-  { level: 6, clicksRequired: 800, bonus: 60},
-  { level: 7, clicksRequired: 1600, bonus: 70},
-  { level: 8, clicksRequired: 3200, bonus: 80},
-  { level: 9, clicksRequired: 6400, bonus: 90},
-  { level: 10, clicksRequired: 12800, bonus: 100},
+  { level: 4, clicksRequired: 250, bonus: 40},
+  { level: 5, clicksRequired: 450, bonus: 50},
+  { level: 6, clicksRequired: 700, bonus: 60},
+  { level: 7, clicksRequired: 1000, bonus: 70},
+  { level: 8, clicksRequired: 1350, bonus: 80},
+  { level: 9, clicksRequired: 1750, bonus: 90},
+  { level: 10, clicksRequired: 2200, bonus: 100},
 ];
 
 // Mining upgrade levels (faster progression)
 export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 5, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 15, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 30, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 60, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 120, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 240, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 450, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 900, bonus: 40, label: "" },
-  { level: 9, clicksRequired: 1800, bonus: 45, label: "" },
-  { level: 10, clicksRequired: 3600, bonus: 50, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 10, bonus: 10},
+  { level: 2, clicksRequired: 25, bonus: 20},
+  { level: 3, clicksRequired: 45, bonus: 30},
+  { level: 4, clicksRequired: 70, bonus: 40},
+  { level: 5, clicksRequired: 100, bonus: 50},
+  { level: 6, clicksRequired: 135, bonus: 60},
+  { level: 7, clicksRequired: 175, bonus: 70},
+  { level: 8, clicksRequired: 220, bonus: 80},
+  { level: 9, clicksRequired: 270, bonus: 90},
+  { level: 10, clicksRequired: 325, bonus: 100},
 ];
 
 // Hunt upgrade levels
 export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 8, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 20, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 40, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 80, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 160, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 320, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 600, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 1200, bonus: 40, label: "" },
-  { level: 9, clicksRequired: 2400, bonus: 45, label: "" },
-  { level: 10, clicksRequired: 4800, bonus: 50, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 15, bonus: 10},
+  { level: 2, clicksRequired: 30, bonus: 20},
+  { level: 3, clicksRequired: 60, bonus: 30},
+  { level: 4, clicksRequired: 135, bonus: 40},
+  { level: 5, clicksRequired: 1, bonus: 50},
+  { level: 6, clicksRequired: 1, bonus: 60},
+  { level: 7, clicksRequired: 1, bonus: 70},
+  { level: 8, clicksRequired: 1, bonus: 80},
+  { level: 9, clicksRequired: 1, bonus: 90},
+  { level: 10, clicksRequired: 1, bonus: 100},
 ];
 
 // Chop wood upgrade levels
 export const CHOP_WOOD_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 8, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 20, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 40, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 80, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 160, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 320, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 600, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 1200, bonus: 40, label: "" },
-  { level: 9, clicksRequired: 2400, bonus: 45, label: "" },
-  { level: 10, clicksRequired: 4800, bonus: 50, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 25, bonus: 10},
+  { level: 2, clicksRequired: 50, bonus: 20},
+  { level: 3, clicksRequired: 100, bonus: 30},
+  { level: 4, clicksRequired: 250, bonus: 40},
+  { level: 5, clicksRequired: 450, bonus: 50},
+  { level: 6, clicksRequired: 700, bonus: 60},
+  { level: 7, clicksRequired: 1000, bonus: 70},
+  { level: 8, clicksRequired: 1350, bonus: 80},
+  { level: 9, clicksRequired: 1750, bonus: 90},
+  { level: 10, clicksRequired: 2200, bonus: 100},
 ];
 
 // Cave explore upgrade levels
 export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
-  { level: 0, clicksRequired: 0, bonus: 0, label: "" },
-  { level: 1, clicksRequired: 25, bonus: 5, label: "" },
-  { level: 2, clicksRequired: 25, bonus: 10, label: "" },
-  { level: 3, clicksRequired: 60, bonus: 15, label: "" },
-  { level: 4, clicksRequired: 120, bonus: 20, label: "" },
-  { level: 5, clicksRequired: 250, bonus: 25, label: "" },
-  { level: 6, clicksRequired: 500, bonus: 30, label: "" },
-  { level: 7, clicksRequired: 900, bonus: 35, label: "" },
-  { level: 8, clicksRequired: 1800, bonus: 40, label: "" },
-  { level: 9, clicksRequired: 3600, bonus: 45, label: "" },
-  { level: 10, clicksRequired: 7200, bonus: 50, label: "" },
+  { level: 0, clicksRequired: 0, bonus: 0},
+  { level: 1, clicksRequired: 10, bonus: 5},
+  { level: 2, clicksRequired: 21, bonus: 10},
+  { level: 3, clicksRequired: 33, bonus: 15},
+  { level: 4, clicksRequired: 63, bonus: 20},
+  { level: 5, clicksRequired: 1, bonus: 25},
+  { level: 6, clicksRequired: 60, bonus: 30},
+  { level: 7, clicksRequired: 70, bonus: 35},
+  { level: 8, clicksRequired: 80, bonus: 40},
+  { level: 9, clicksRequired: 90, bonus: 45},
+  { level: 10, clicksRequired: 100, bonus: 50},
 ];
 
 // Get the appropriate upgrade levels for a given key
