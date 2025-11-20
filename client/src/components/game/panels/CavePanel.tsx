@@ -207,7 +207,7 @@ export default function CavePanel() {
       );
 
       return upgradeKey ? (
-        <div key={actionId} className="relative inline-block" style={{ overflow: 'visible' }}>
+        <div key={actionId} className="relative inline-block">
           {button}
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
@@ -231,7 +231,7 @@ export default function CavePanel() {
     );
 
     return upgradeKey ? (
-      <div key={actionId} className="relative inline-block" style={{ overflow: 'visible' }}>
+      <div key={actionId} className="relative inline-block">
         {button}
         <ButtonLevelBadge upgradeKey={upgradeKey} />
       </div>
