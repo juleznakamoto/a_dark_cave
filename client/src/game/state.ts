@@ -15,6 +15,7 @@ import { calculateBastionStats } from "@/game/bastionStats";
 import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
+import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
 
 // Types
 interface GameStore extends GameState {
@@ -430,6 +431,33 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return;
 
     const result = executeGameAction(actionId, state);
+
+    // Track button usage and check for level up
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    if (upgradeKey) {
+      const upgradeResult = incrementButtonUsage(upgradeKey, state);
+      
+      // Add button upgrade state update
+      if (!result.stateUpdates.buttonUpgrades) {
+        result.stateUpdates.buttonUpgrades = {} as any;
+      }
+      result.stateUpdates.buttonUpgrades[upgradeKey] = upgradeResult.updatedUpgrade;
+      
+      // Add level up log entry if applicable
+      if (upgradeResult.levelUpMessage) {
+        const levelUpLog: LogEntry = {
+          id: `levelup_${upgradeKey}_${Date.now()}`,
+          message: upgradeResult.levelUpMessage,
+          timestamp: Date.now(),
+          type: "system",
+        };
+        
+        if (!result.logEntries) {
+          result.logEntries = [];
+        }
+        result.logEntries.push(levelUpLog);
+      }
+    }
 
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
