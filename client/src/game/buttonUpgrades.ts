@@ -3,7 +3,7 @@ import { GameState } from "@shared/schema";
 
 // Define upgrade thresholds and bonuses
 export const UPGRADE_LEVELS = [
-  { clicks: 10, bonus: 0.05, label: "slightly better" },
+  { clicks: 5, bonus: 0.05, label: "slightly better" },
   { clicks: 25, bonus: 0.10, label: "better" },
   { clicks: 50, bonus: 0.15, label: "much better" },
   { clicks: 100, bonus: 0.20, label: "significantly better" },
