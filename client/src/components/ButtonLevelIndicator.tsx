@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { useGameStore } from '@/game/state';
 import { Tooltip, TooltipContent, TooltipTrigger, TooltipProvider } from '@/components/ui/tooltip';
-import { ButtonLevelKey, getButtonLevel, getButtonLevelTooltip } from '@/game/buttonLevels';
+import { ButtonLevelKey, getButtonLevel, getButtonLevelTooltip, getClicksForLevel } from '@/game/buttonLevels';
 import { useMobileTooltip } from '@/hooks/useMobileTooltip';
 
 interface ButtonLevelIndicatorProps {

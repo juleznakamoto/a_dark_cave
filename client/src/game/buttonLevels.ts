@@ -1,8 +1,7 @@
-
 import { GameState } from "@shared/schema";
 import { LogEntry } from "./rules/events";
 
-export type ButtonLevelKey = 
+export type ButtonLevelKey =
   | 'caveExplore'
   | 'mineStone'
   | 'mineIron'
@@ -88,7 +87,7 @@ export function getClicksNeeded(state: GameState, buttonKey: ButtonLevelKey): nu
   const currentLevel = getButtonLevel(state, buttonKey);
   const currentClicks = getButtonClicks(state, buttonKey);
   const nextLevelClicks = getClicksForNextLevel(currentLevel);
-  
+
   if (nextLevelClicks === null) return null;
   return Math.max(0, nextLevelClicks - currentClicks);
 }
@@ -99,27 +98,27 @@ export function checkLevelUp(
 ): { leveledUp: boolean; newLevel: number; logEntry?: LogEntry } {
   const currentLevel = getButtonLevel(state, buttonKey);
   const currentClicks = getButtonClicks(state, buttonKey);
-  
+
   if (currentLevel >= MAX_LEVEL) {
     return { leveledUp: false, newLevel: currentLevel };
   }
-  
+
   const requiredClicks = LEVEL_REQUIREMENTS[currentLevel];
-  
+
   if (currentClicks >= requiredClicks) {
     const newLevel = currentLevel + 1;
     const bonusPercent = Math.round(newLevel * BONUS_PER_LEVEL * 100);
-    
+
     const logEntry: LogEntry = {
       id: `level-up-${buttonKey}-${Date.now()}`,
       message: `You got better at ${BUTTON_DISPLAY_NAMES[buttonKey]}! Level ${newLevel} reached (+${bonusPercent}% resource bonus).`,
       timestamp: Date.now(),
       type: 'system',
     };
-    
+
     return { leveledUp: true, newLevel, logEntry };
   }
-  
+
   return { leveledUp: false, newLevel: currentLevel };
 }
 
@@ -128,14 +127,14 @@ export function incrementButtonClick(
   actionId: string
 ): { stateUpdates: Partial<GameState>; logEntry?: LogEntry } {
   const buttonKey = getButtonLevelKey(actionId);
-  
+
   if (!buttonKey) {
     return { stateUpdates: {} };
   }
-  
+
   const currentClicks = getButtonClicks(state, buttonKey);
   const newClicks = currentClicks + 1;
-  
+
   const updatedButtonLevels = {
     ...state.buttonLevels,
     [buttonKey]: {
@@ -143,22 +142,22 @@ export function incrementButtonClick(
       clicks: newClicks,
     },
   };
-  
+
   // Create a temporary state to check for level up
   const tempState = {
     ...state,
     buttonLevels: updatedButtonLevels,
   };
-  
+
   const { leveledUp, newLevel, logEntry } = checkLevelUp(tempState, buttonKey);
-  
+
   if (leveledUp) {
     updatedButtonLevels[buttonKey] = {
       clicks: newClicks,
       level: newLevel,
     };
   }
-  
+
   return {
     stateUpdates: { buttonLevels: updatedButtonLevels },
     logEntry,
@@ -170,10 +169,10 @@ export function getButtonLevelTooltip(state: GameState, buttonKey: ButtonLevelKe
   const clicks = getButtonClicks(state, buttonKey);
   const bonus = Math.round((getButtonBonus(state, buttonKey) - 1) * 100);
   const clicksNeeded = getClicksNeeded(state, buttonKey);
-  
+
   if (level >= MAX_LEVEL) {
     return `Level ${level} (MAX)\n+${bonus}% Bonus\n${clicks} total clicks`;
   }
-  
+
   return `Level ${level}\n+${bonus}% Bonus\n${clicks} clicks\n${clicksNeeded} more needed`;
 }

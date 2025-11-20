@@ -21,7 +21,7 @@ const ButtonLevelIndicator = ({ buttonKey, actionId }: { buttonKey: string, acti
   const maxLevel = 8; // Define your max level here
   const isMaxLevel = currentLevel >= maxLevel;
 
-  const clicksForNextLevel = getClicksForLevel(buttonKey);
+  const clicksForNextLevel = getClicksForLevel(currentLevel + 1); // Corrected function call
   const currentClicks = useGameStore()[`${buttonKey}Clicks`] || 0;
   const bonus = getLevelBonus(buttonKey);
 
@@ -232,7 +232,7 @@ export default function CavePanel() {
         const currentLevel = state[buttonKey] || 0;
         const maxLevel = 8; // Ensure this matches ButtonLevelIndicator
         if (currentLevel < maxLevel) {
-          const clicksForNextLevel = getClicksForLevel(buttonKey);
+          const clicksForNextLevel = getClicksForLevel(currentLevel + 1); // Corrected function call
           const currentClicks = state[`${buttonKey}Clicks`] || 0;
           if (currentClicks + 1 >= clicksForNextLevel) {
             executeAction(actionId); // Execute the action first
