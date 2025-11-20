@@ -359,6 +359,34 @@ export const getAllActionBonuses = (
     }
   });
 
+  // Define cave exploration actions to group together
+  const caveExploreActions = [
+    "caveExplore",
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+  ];
+
+  // Merge all cave exploration bonuses into a single "Cave Explore" entry
+  let caveExploreBonus = { multiplier: 1, flatBonus: 0 };
+  caveExploreActions.forEach((actionId) => {
+    const bonus = bonusMap.get(actionId);
+    if (bonus) {
+      // Sum up multipliers and flat bonuses
+      caveExploreBonus.multiplier += bonus.multiplier - 1;
+      caveExploreBonus.flatBonus += bonus.flatBonus;
+      bonusMap.delete(actionId); // Remove individual cave actions
+    }
+  });
+
+  // Add the merged cave explore bonus if it exists
+  if (caveExploreBonus.multiplier > 1 || caveExploreBonus.flatBonus > 0) {
+    bonusMap.set("caveExplore", caveExploreBonus);
+  }
+
   // Convert to array and format
   return Array.from(bonusMap.entries())
     .filter(([actionId]) => actionId !== "steelForger" && actionId !== "hunter") // Exclude forge and hunter from bonus display
