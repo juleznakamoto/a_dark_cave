@@ -1,6 +1,6 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { SHOP_ITEMS } from "@shared/shop";
+import { SHOP_ITEMS } from "@shared/shopItems";
 
 export const storyEvents: Record<string, GameEvent> = {
   portalDiscovered: {
