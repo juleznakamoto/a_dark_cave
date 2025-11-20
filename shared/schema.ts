@@ -235,59 +235,12 @@ export const gameStateSchema = z.object({
       ashfire_dust_maker: z.number().min(0).default(0),
     })
     .default({}),
-  story: z.object({
-    seen: z.record(z.boolean()).default({}),
-  }).default({ seen: {} }),
-
-  // Button upgrade levels tracking
-  buttonLevels: z.object({
-    caveExplore: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineStone: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineIron: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineCoal: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineSulfur: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineObsidian: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineAdamant: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    hunt: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    chopWood: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-  }).default({
-    caveExplore: { clicks: 0, level: 0 },
-    mineStone: { clicks: 0, level: 0 },
-    mineIron: { clicks: 0, level: 0 },
-    mineCoal: { clicks: 0, level: 0 },
-    mineSulfur: { clicks: 0, level: 0 },
-    mineObsidian: { clicks: 0, level: 0 },
-    mineAdamant: { clicks: 0, level: 0 },
-    hunt: { clicks: 0, level: 0 },
-    chopWood: { clicks: 0, level: 0 },
-  }),
+  story: z
+    .object({
+      seen: z.record(z.boolean()).default({}),
+      animalsSacrificeLevel: z.number().default(0),
+    })
+    .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),
   damagedBuildings: z
     .object({
@@ -428,6 +381,54 @@ export const gameStateSchema = z.object({
   }).default({
     lengthLevel: 0,
     intensityLevel: 0,
+  }),
+  buttonUpgrades: z.object({
+    caveExplore: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineStone: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineIron: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineCoal: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineSulfur: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineObsidian: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    mineAdamant: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    hunt: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+    chopWood: z.object({
+      clicks: z.number().default(0),
+      level: z.number().default(0),
+    }).default({ clicks: 0, level: 0 }),
+  }).default({
+    caveExplore: { clicks: 0, level: 0 },
+    mineStone: { clicks: 0, level: 0 },
+    mineIron: { clicks: 0, level: 0 },
+    mineCoal: { clicks: 0, level: 0 },
+    mineSulfur: { clicks: 0, level: 0 },
+    mineObsidian: { clicks: 0, level: 0 },
+    mineAdamant: { clicks: 0, level: 0 },
+    hunt: { clicks: 0, level: 0 },
+    chopWood: { clicks: 0, level: 0 },
   }),
 });
 

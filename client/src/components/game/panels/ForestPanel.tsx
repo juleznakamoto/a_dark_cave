@@ -1,11 +1,9 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction, getActionCostBreakdown } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
 import { getResourceGainTooltip } from '@/game/rules/tooltips';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import ButtonLevelIndicator from '@/components/ButtonLevelIndicator';
-import { getButtonLevelKey } from '@/game/buttonLevels';
 
 export default function ForestPanel() {
   const { executeAction, buildings } = useGameStore();
@@ -104,8 +102,6 @@ export default function ForestPanel() {
       }
     }
 
-    const buttonKey = getButtonLevelKey(actionId);
-
     if (showCost || resourceGainTooltip || isAnimalsSacrifice || isHumansSacrifice) {
       let tooltipContent;
 
@@ -147,27 +143,6 @@ export default function ForestPanel() {
       }
 
       return (
-        <div className="relative inline-block">
-          <CooldownButton
-            key={actionId}
-            onClick={() => executeAction(actionId)}
-            cooldownMs={action.cooldown * 1000}
-            data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
-            size="xs"
-            disabled={!canExecute}
-            variant="outline"
-            className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
-            tooltip={tooltipContent}
-          >
-            {displayLabel}
-          </CooldownButton>
-          {buttonKey && <ButtonLevelIndicator buttonKey={buttonKey} actionId={actionId} />}
-        </div>
-      );
-    }
-
-    return (
-      <div className="relative inline-block">
         <CooldownButton
           key={actionId}
           onClick={() => executeAction(actionId)}
@@ -177,11 +152,26 @@ export default function ForestPanel() {
           disabled={!canExecute}
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
+          tooltip={tooltipContent}
         >
           {displayLabel}
         </CooldownButton>
-        {buttonKey && <ButtonLevelIndicator buttonKey={buttonKey} actionId={actionId} />}
-      </div>
+      );
+    }
+
+    return (
+      <CooldownButton
+        key={actionId}
+        onClick={() => executeAction(actionId)}
+        cooldownMs={action.cooldown * 1000}
+        data-testid={`button-${actionId.replace(/([A-Z])/g, '-$1').toLowerCase()}`}
+        size="xs"
+        disabled={!canExecute}
+        variant="outline"
+        className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? 'w-fit' : ''}`}
+      >
+        {displayLabel}
+      </CooldownButton>
     );
   };
 

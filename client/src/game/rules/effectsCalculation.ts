@@ -7,7 +7,6 @@ import {
   ActionBonuses,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
-import { getButtonLevelKey, getButtonBonus } from "@/game/buttonLevels";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -212,27 +211,20 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to get action bonuses from pre-calculated effects in state
-export function getActionBonuses(
+export const getActionBonuses = (
   actionId: string,
   state: GameState,
-): ActionBonuses {
-  const totalEffects = state.effects || calculateTotalEffects(state);
-
-  const bonuses: ActionBonuses = {
-    resourceMultiplier: 1,
-    resourceBonus: {},
-    cooldownReduction: 0,
-    caveExploreMultiplier: 1,
-  };
-
-  // Apply button level bonus
-  const buttonKey = getButtonLevelKey(actionId);
-  if (buttonKey) {
-    const buttonBonus = getButtonBonus(state, buttonKey);
-    bonuses.resourceMultiplier *= buttonBonus;
-  }
-
+): {
+  resourceMultiplier: number;
+  resourceBonus: Record<string, number>;
+  cooldownReduction: number;
+  caveExploreMultiplier: number;
+} => {
   const activeEffects = getActiveEffects(state);
+  let resourceMultiplier = 1;
+  let cooldownReduction = 0;
+  let caveExploreMultiplier = 1;
+  const resourceBonus: Record<string, number> = {};
 
   activeEffects.forEach((effect) => {
     // Check if this effect has bonuses for the specific action
@@ -240,14 +232,14 @@ export function getActionBonuses(
       const bonus = effect.bonuses.actionBonuses[actionId];
       if (bonus.resourceMultiplier) {
         // Additive: sum the bonus percentages
-        bonuses.resourceMultiplier += bonus.resourceMultiplier - 1;
+        resourceMultiplier += bonus.resourceMultiplier - 1;
       }
       if (bonus.cooldownReduction) {
-        bonuses.cooldownReduction += bonus.cooldownReduction;
+        cooldownReduction += bonus.cooldownReduction;
       }
       if (bonus.resourceBonus) {
         Object.entries(bonus.resourceBonus).forEach(([resource, amount]) => {
-          bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + amount;
+          resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
         });
       }
     }
@@ -258,15 +250,15 @@ export function getActionBonuses(
         const mineBonus = effect.bonuses.actionBonuses.mining;
         if (mineBonus.resourceMultiplier) {
           // Additive: sum the bonus percentages
-          bonuses.resourceMultiplier += mineBonus.resourceMultiplier - 1;
+          resourceMultiplier += mineBonus.resourceMultiplier - 1;
         }
         if (mineBonus.cooldownReduction) {
-          bonuses.cooldownReduction += mineBonus.cooldownReduction;
+          cooldownReduction += mineBonus.cooldownReduction;
         }
         if (mineBonus.resourceBonus) {
           Object.entries(mineBonus.resourceBonus).forEach(
             ([resource, amount]) => {
-              bonuses.resourceBonus[resource] = (bonuses.resourceBonus[resource] || 0) + amount;
+              resourceBonus[resource] = (resourceBonus[resource] || 0) + amount;
             },
           );
         }
@@ -285,13 +277,18 @@ export function getActionBonuses(
     if (caveExploreActions.includes(actionId)) {
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
         // Additive: sum the bonus percentages
-        bonuses.caveExploreMultiplier +=
+        caveExploreMultiplier +=
           effect.bonuses.generalBonuses.caveExploreMultiplier - 1;
       }
     }
   });
 
-  return bonuses;
+  return {
+    resourceMultiplier,
+    resourceBonus,
+    cooldownReduction,
+    caveExploreMultiplier,
+  };
 };
 
 // SSOT: Calculate all action bonuses for display and internal use

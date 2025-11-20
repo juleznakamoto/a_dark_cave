@@ -11,12 +11,6 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
-import ButtonLevelIndicator from "@/components/ButtonLevelIndicator";
-import { getButtonLevelKey } from "@/game/buttonLevels";
-
-import ButtonLevelIndicator from "@/components/ButtonLevelIndicator";
-import { getButtonLevelKey } from "@/game/buttonLevels";
-
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -158,6 +152,7 @@ export default function CavePanel() {
     const isBlastPortal = actionId === 'blastPortal';
     const handleClick = () => {
       if (isBlastPortal) {
+        // Capture button position before it's potentially removed
         const buttonElement = blastPortalRef.current;
         if (buttonElement) {
           const rect = buttonElement.getBoundingClientRect();
@@ -173,8 +168,10 @@ export default function CavePanel() {
       let tooltipContent;
 
       if (resourceGainTooltip) {
+        // Mine actions: show gains and costs (getResourceGainTooltip handles both)
         tooltipContent = resourceGainTooltip;
       } else if (showCost) {
+        // Other actions with costs
         const costBreakdown = getActionCostBreakdown(actionId, state);
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
@@ -187,31 +184,7 @@ export default function CavePanel() {
         );
       }
 
-      const buttonKey = getButtonLevelKey(actionId);
       return (
-        <div className="relative inline-block">
-          <CooldownButton
-            key={actionId}
-            ref={isBlastPortal ? blastPortalRef : undefined}
-            onClick={handleClick}
-            cooldownMs={action.cooldown * 1000}
-            data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-            size="xs"
-            disabled={!canExecute}
-            variant="outline"
-            className="hover:bg-transparent hover:text-foreground"
-            tooltip={tooltipContent}
-          >
-            {label}
-          </CooldownButton>
-          {buttonKey && <ButtonLevelIndicator buttonKey={buttonKey} actionId={actionId} />}
-        </div>
-      );
-    }
-
-    const buttonKey = getButtonLevelKey(actionId);
-    return (
-      <div className="relative inline-block">
         <CooldownButton
           key={actionId}
           ref={isBlastPortal ? blastPortalRef : undefined}
@@ -222,11 +195,27 @@ export default function CavePanel() {
           disabled={!canExecute}
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
+          tooltip={tooltipContent}
         >
           {label}
         </CooldownButton>
-        {buttonKey && <ButtonLevelIndicator buttonKey={buttonKey} actionId={actionId} />}
-      </div>
+      );
+    }
+
+    return (
+      <CooldownButton
+        key={actionId}
+        ref={isBlastPortal ? blastPortalRef : undefined}
+        onClick={handleClick}
+        cooldownMs={action.cooldown * 1000}
+        data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
+        size="xs"
+        disabled={!canExecute}
+        variant="outline"
+        className="hover:bg-transparent hover:text-foreground"
+      >
+        {label}
+      </CooldownButton>
     );
   };
 
@@ -235,6 +224,7 @@ export default function CavePanel() {
       {explosionEffect.ExplosionEffectRenderer()}
       <div className="space-y-4 pb-4">
         {actionGroups.map((group, groupIndex) => {
+        // Handle groups with subGroups (like Craft)
         if (group.subGroups) {
           const hasAnyVisibleActions = group.subGroups.some((subGroup) =>
             subGroup.actions.some((action) => {
@@ -276,10 +266,13 @@ export default function CavePanel() {
           );
         }
 
+        // Handle regular groups (like Explore, Mine)
         const visibleActions = group.actions.filter((action) => {
+          // Handle custom show conditions
           if (action.showWhen !== undefined) {
             return action.showWhen;
           }
+          // Use standard shouldShowAction for others
           return shouldShowAction(action.id, state);
         });
 

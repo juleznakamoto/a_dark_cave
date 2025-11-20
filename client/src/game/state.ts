@@ -152,7 +152,6 @@ const mergeStateUpdates = (
     relics: { ...prevState.relics, ...stateUpdates.relics },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations }, // Merge cooldownDurations
-    buttonLevels: { ...prevState.buttonLevels, ...stateUpdates.buttonLevels }, // Merge buttonLevels
     story: stateUpdates.story
       ? {
           ...prevState.story,
@@ -234,17 +233,6 @@ const defaultGameState: GameState = {
     integrity: 0,
   },
   hoveredTooltips: {},
-  buttonLevels: {
-    caveExplore: { clicks: 0, level: 0 },
-    mineStone: { clicks: 0, level: 0 },
-    mineIron: { clicks: 0, level: 0 },
-    mineCoal: { clicks: 0, level: 0 },
-    mineSulfur: { clicks: 0, level: 0 },
-    mineObsidian: { clicks: 0, level: 0 },
-    mineAdamant: { clicks: 0, level: 0 },
-    hunt: { clicks: 0, level: 0 },
-    chopWood: { clicks: 0, level: 0 },
-  },
   feastState: {
     isActive: false,
     endTime: 0,
@@ -651,7 +639,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         cooldowns: savedState.cooldowns || {},
         cooldownDurations: savedState.cooldownDurations || {},
-        buttonLevels: savedState.buttonLevels || defaultGameState.buttonLevels,
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,
