@@ -166,7 +166,7 @@ export const getResourceGainTooltip = (
   };
 
   return (
-    <div className="text-xs whitespace-nowrap">
+    <div className="text-xs">
       {gains.map((gain, index) => (
         <div key={`gain-${index}`}>
           {gain.min === gain.max

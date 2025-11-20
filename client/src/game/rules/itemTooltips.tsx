@@ -16,10 +16,10 @@ export function renderItemTooltip(
   if (!effect) return null;
 
   return (
-    <div className="text-xs whitespace-pre-line">
+    <div className="text-xs">
       {effect.name && <div className="font-bold mb-1">{effect.name}</div>}
       {effect.description && (
-        <div className="text-gray-400 mb-1 max-w-xs whitespace-normal text-wrap">
+        <div className="text-gray-400 mb-1">
           {effect.description}
         </div>
       )}
