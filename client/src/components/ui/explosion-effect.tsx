@@ -217,7 +217,7 @@ export function useExplosionEffect() {
 
       const angle = Math.atan2(-1, 0);
       const distance = (Math.random() * 4 + 1) * 10;
-      const duration = Math.random() * 800 + 500;
+      const duration = Math.random() * 800 + 1000;
 
       return {
         id: fireIdRef.current++,
@@ -237,9 +237,9 @@ export function useExplosionEffect() {
       () => ({
         id: idRef.current++,
         angle: Math.random() * Math.PI * 2,
-        distance: Math.random() * 1000 + 200,
+        distance: Math.random() * 1200 + 200,
         color: colors[Math.floor(Math.random() * colors.length)],
-        lifetime: 1.5 + Math.random() * 3.5,
+        lifetime: 1.5 + Math.random() * 4,
         size: Math.random() * 6 + 1,
         createdAt: Date.now(),
       }),
