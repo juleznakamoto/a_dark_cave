@@ -446,10 +446,3 @@ function capitalizeWords(str: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
-
-// Placeholder functions for getTotalMadness and getTotalKnowledge if they are not defined elsewhere
-declare function getTotalMadness(state: GameState): number;
-declare function getTotalKnowledge(state: GameState): number;
-
-// Placeholder for gameActions if not defined elsewhere
-declare const gameActions: Record<string, any>;
