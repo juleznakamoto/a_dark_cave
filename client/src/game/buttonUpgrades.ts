@@ -23,7 +23,7 @@ export interface UpgradeLevel {
   label?: string; // Optional label for display
 }
 
-export const MAX_UPGRADE_LEVEL = 10;
+export const MAX_UPGRADE_LEVEL = 0;
 
 // Default upgrade levels (for most actions)
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
