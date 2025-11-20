@@ -1,5 +1,9 @@
 import { GameState } from "@shared/schema";
-import { getActionBonuses, getTotalMadness } from "./effectsCalculation";
+import { shopItems } from "@shared/shopItems";
+import {
+  getActionBonuses,
+  getAllActionBonuses,
+} from "./effectsCalculation";
 import { capitalizeWords } from "@/lib/utils";
 import {
   ACTION_TO_UPGRADE_KEY,
@@ -7,6 +11,19 @@ import {
   UPGRADE_KEY_NAMES,
 } from "@/game/buttonUpgrades";
 import { gameActions } from "./index";
+
+// Helper to check if an action is a cave exploration action
+const isCaveExploreAction = (actionId: string): boolean => {
+  const caveExploreActions = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+  ];
+  return caveExploreActions.includes(actionId);
+};
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -87,15 +104,7 @@ export const getResourceGainTooltip = (
     });
   } else {
     // Check if this is a cave exploration action
-    const caveExploreActions = [
-      "exploreCave",
-      "ventureDeeper",
-      "descendFurther",
-      "exploreRuins",
-      "exploreTemple",
-      "exploreCitadel",
-    ];
-    const isCaveExploreAction = caveExploreActions.includes(actionId);
+    const isCaveAction = isCaveExploreAction(actionId);
 
     // Parse effects for resource gains (normal actions)
     Object.entries(action.effects).forEach(([key, value]) => {
@@ -121,7 +130,7 @@ export const getResourceGainTooltip = (
             }
 
             // Apply cave exploration multiplier for cave explore actions
-            if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
+            if (isCaveAction && bonuses.caveExploreMultiplier > 1) {
               min = Math.floor(min * bonuses.caveExploreMultiplier);
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
@@ -142,7 +151,7 @@ export const getResourceGainTooltip = (
           }
 
           // Apply cave exploration multiplier for cave explore actions
-          if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
+          if (isCaveAction && bonuses.caveExploreMultiplier > 1) {
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
@@ -208,7 +217,7 @@ export const getResourceGainTooltip = (
   });
 
   // Add cave explore multiplier info if applicable
-  if (isCaveExploreAction && caveExploreMultiplier > 1) {
+  if (isCaveAction && caveExploreMultiplier > 1) {
     tooltipLines.push(
       <div key="cave-explore-bonus" className="text-muted-foreground">
         Cave Explore: +{Math.round((caveExploreMultiplier - 1) * 100)}%
