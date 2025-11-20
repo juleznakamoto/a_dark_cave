@@ -1,6 +1,5 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
-import { SHOP_ITEMS } from "@shared/shopItems";
 
 export const storyEvents: Record<string, GameEvent> = {
   portalDiscovered: {
@@ -62,16 +61,10 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 800 && // 3 hours in seconds
+      state.playTime >= 10800 && // 3 hours in seconds
       state.buildings.darkEstate >= 1 &&
-      !state.story.seen.mysteriousNoteReceived
-      &&
-      // Check if player has bought nothing from shop (excluding free items with price 0)
-      Object.entries(state.activatedPurchases || {}).every(([key]) => {
-        const item = SHOP_ITEMS[key];
-        // Only count as "no purchases" if all activated items are free (price === 0)
-        return !item || item.price === 0;})
-    ,
+      !state.story.seen.mysteriousNoteReceived &&
+      !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
     triggerType: "time",
     timeProbability: 0.05,
     title: "A Mysterious Note",

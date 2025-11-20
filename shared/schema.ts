@@ -363,6 +363,7 @@ export const gameStateSchema = z.object({
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
   playTime: z.number().default(0), // Track total play time in milliseconds
   isNewGame: z.boolean().default(false), // Track if the current game is a new game
+  hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   idleModeState: z.object({
     isActive: z.boolean().default(false),
     startTime: z.number().default(0),

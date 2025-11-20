@@ -113,7 +113,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
         } catch (error) {
           console.error('Exception saving purchase to Supabase:', error);
         }
-        
+
         onSuccess();
       }
       setIsProcessing(false);
@@ -425,12 +425,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       type: "system",
     });
 
-    // Mark as activated in game state
+    // Mark item as activated and set non-free purchase flag if applicable
     useGameStore.setState((state) => ({
       activatedPurchases: {
         ...state.activatedPurchases,
-        [purchaseId]: true,
+        [itemId]: true,
       },
+      hasMadeNonFreePurchase: state.hasMadeNonFreePurchase || item.price > 0,
     }));
   };
 
