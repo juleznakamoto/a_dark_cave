@@ -286,6 +286,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Add to purchased items list
     setPurchasedItems((prev) => [...prev, selectedItem!]);
 
+    // Set hasMadeNonFreePurchase flag if this is a paid item
+    if (item.price > 0) {
+      useGameStore.setState({ hasMadeNonFreePurchase: true });
+    }
+
     // If this item has feast activations (feast or bundle), track it individually
     if (item.rewards.feastActivations) {
       const purchaseId = `feast-purchase-${Date.now()}`;
