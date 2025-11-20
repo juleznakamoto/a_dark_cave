@@ -1,4 +1,5 @@
 import { useGameStore } from "@/game/state";
+import { Progress } from "@/components/ui/progress";
 
 export default function AttackWavesChart() {
   const { story } = useGameStore();
@@ -32,35 +33,20 @@ export default function AttackWavesChart() {
   }
 
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between items-center">
-        <h3 className="text-xs font-bold text-foreground">Attack Waves</h3>
+    <div className="space-y-1">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-foreground">
+          Attack Waves
+        </span>
         <span className="text-xs text-muted-foreground">
-          {currentWaveIndex === -1
-            ? "All Waves defeated"
-            : `Current Wave: ${currentWave} / ${totalWaves}`}
+          {currentWave}/{totalWaves}
         </span>
       </div>
-      <div className="relative h-3 overflow-hidden rounded-full bg-gray-900">
-        {/* Completed waves - normal red */}
-        <div
-          className="absolute h-full bg-red-900 transition-all duration-300"
-          style={{ width: `${completedPercentage}%` }}
-        />
-        {/* Current wave - dark red */}
-        {currentWaveIndex !== -1 && (
-          <div
-            className="absolute h-full bg-red-950 transition-all duration-300"
-            style={{
-              left: currentWaveIndex === -1 ? "0%" : `${completedPercentage}%`,
-              width:
-                currentWaveIndex === -1
-                  ? "100%"
-                  : `${currentWavePercentage - completedPercentage}%`,
-            }}
-          />
-        )}
-      </div>
+      <Progress
+        value={currentWavePercentage}
+        className="h-2"
+        segments={5}
+      />
     </div>
   );
 }
