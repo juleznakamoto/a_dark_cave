@@ -182,7 +182,7 @@ export default function EstatePanel() {
 
   return (
     <ScrollArea className="h-full w-full">
-      <div className="space-y-2 pb-2">
+      <div className="space-y-2 mt-3 pb-2">
         {/* Sleep Mode Section */}
         <div className="space-y-2">
           <h3 className="text-xs font-bold text-foreground">Sleep</h3>

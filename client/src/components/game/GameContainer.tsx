@@ -186,7 +186,7 @@ export default function GameContainer() {
         {/* Right Content Area with Horizontal Tabs and Actions - Below for mobile, right for desktop */}
         <section className="flex-1 md:pl-0 flex flex-col min-w-0 min-h-0 overflow-hidden">
           {/* Horizontal Game Tabs */}
-          <nav className="border-t border-border pl-2 md:pl-4 mb-2 flex-shrink-0">
+          <nav className="border-t border-border pl-2 md:pl-4 flex-shrink-0">
             {useLimelightNav ? (
               // Alternative LimelightNav design
               <LimelightNav
