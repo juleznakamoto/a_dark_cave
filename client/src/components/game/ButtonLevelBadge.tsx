@@ -55,7 +55,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
               <div className="flex justify-between gap-2">
                 <span className="text-gray-400 dark:text-gray-500">Level:</span>
                 <span className="font-semibold">
-                  {info.level} - {info.label}
+                  {info.level}
                 </span>
               </div>
               <div className="flex justify-between gap-2">
@@ -76,7 +76,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                     </div>
                     <div className="flex justify-between gap-2">
                       <span className="text-gray-400 dark:text-gray-500 text-xs">
-                        {info.nextLevel.label}
+                        Level {info.level + 1}
                       </span>
                       <span className="text-green-400 dark:text-green-300 text-xs">
                         +{info.nextLevel.bonus}%
