@@ -1,7 +1,12 @@
 import { GameState } from "@shared/schema";
 
 export type UpgradeKey = 
-  | "caveExplore"
+  | "exploreCave"
+  | "ventureDeeper"
+  | "descendFurther"
+  | "exploreRuins"
+  | "exploreTemple"
+  | "exploreCitadel"
   | "mineStone"
   | "mineIron"
   | "mineCoal"
@@ -20,6 +25,7 @@ export interface UpgradeLevel {
 
 export const MAX_UPGRADE_LEVEL = 8;
 
+// Default upgrade levels (for most actions)
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 0, clicksRequired: 0, bonus: 0, label: "Novice" },
   { level: 1, clicksRequired: 10, bonus: 5, label: "Apprentice" },
@@ -32,8 +38,35 @@ export const UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 8, clicksRequired: 1500, bonus: 40, label: "Mythic" },
 ];
 
+// Mining upgrade levels (faster progression)
+export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
+  { level: 0, clicksRequired: 0, bonus: 0, label: "Novice" },
+  { level: 1, clicksRequired: 5, bonus: 5, label: "Apprentice" },
+  { level: 2, clicksRequired: 15, bonus: 10, label: "Skilled" },
+  { level: 3, clicksRequired: 30, bonus: 15, label: "Adept" },
+  { level: 4, clicksRequired: 60, bonus: 20, label: "Expert" },
+  { level: 5, clicksRequired: 120, bonus: 25, label: "Master" },
+  { level: 6, clicksRequired: 240, bonus: 30, label: "Grandmaster" },
+  { level: 7, clicksRequired: 450, bonus: 35, label: "Legend" },
+  { level: 8, clicksRequired: 900, bonus: 40, label: "Mythic" },
+];
+
+// Get the appropriate upgrade levels for a given key
+export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
+  const mineKeys: UpgradeKey[] = ["mineStone", "mineIron", "mineCoal", "mineSulfur", "mineObsidian", "mineAdamant"];
+  if (mineKeys.includes(key)) {
+    return MINE_UPGRADE_LEVELS;
+  }
+  return UPGRADE_LEVELS;
+}
+
 export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
-  caveExplore: "Cave Exploration",
+  exploreCave: "Cave Exploration",
+  ventureDeeper: "Deep Venturing",
+  descendFurther: "Deep Descent",
+  exploreRuins: "Ruins Exploration",
+  exploreTemple: "Temple Exploration",
+  exploreCitadel: "Citadel Exploration",
   mineStone: "Stone Mining",
   mineIron: "Iron Mining",
   mineCoal: "Coal Mining",
@@ -46,12 +79,12 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
 
 // Map action IDs to upgrade keys
 export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
-  exploreCave: "caveExplore",
-  ventureDeeper: "caveExplore",
-  descendFurther: "caveExplore",
-  exploreRuins: "caveExplore",
-  exploreTemple: "caveExplore",
-  exploreCitadel: "caveExplore",
+  exploreCave: "exploreCave",
+  ventureDeeper: "ventureDeeper",
+  descendFurther: "descendFurther",
+  exploreRuins: "exploreRuins",
+  exploreTemple: "exploreTemple",
+  exploreCitadel: "exploreCitadel",
   mineStone: "mineStone",
   mineIron: "mineIron",
   mineCoal: "mineCoal",
@@ -81,7 +114,8 @@ export function getUpgradeClicks(key: UpgradeKey, state: GameState): number {
  */
 export function getUpgradeBonus(key: UpgradeKey, state: GameState): number {
   const level = getUpgradeLevel(key, state);
-  return UPGRADE_LEVELS[level]?.bonus || 0;
+  const upgradeLevels = getUpgradeLevelsForKey(key);
+  return upgradeLevels[level]?.bonus || 0;
 }
 
 /**
@@ -98,8 +132,9 @@ export function getUpgradeBonusMultiplier(key: UpgradeKey, state: GameState): nu
 export function getButtonUpgradeInfo(key: UpgradeKey, upgrade: { clicks: number; level: number }) {
   const currentLevel = upgrade.level;
   const currentClicks = upgrade.clicks;
-  const currentLevelInfo = UPGRADE_LEVELS[currentLevel];
-  const nextLevelInfo = UPGRADE_LEVELS[currentLevel + 1];
+  const upgradeLevels = getUpgradeLevelsForKey(key);
+  const currentLevelInfo = upgradeLevels[currentLevel];
+  const nextLevelInfo = upgradeLevels[currentLevel + 1];
   
   const clicksNeeded = nextLevelInfo ? nextLevelInfo.clicksRequired - currentClicks : 0;
   const isMaxLevel = currentLevel >= MAX_UPGRADE_LEVEL;
@@ -129,7 +164,8 @@ export function checkLevelUp(
     return null;
   }
   
-  const nextLevelInfo = UPGRADE_LEVELS[currentLevel + 1];
+  const upgradeLevels = getUpgradeLevelsForKey(key);
+  const nextLevelInfo = upgradeLevels[currentLevel + 1];
   if (!nextLevelInfo) {
     return null;
   }
