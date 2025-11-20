@@ -1,6 +1,7 @@
 import { GameState } from "@shared/game/schema";
 import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
+import { incrementButtonClick } from "@/game/buttonLevels";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -176,6 +177,15 @@ export function executeGameAction(
     logEntries: [],
     delayedEffects: [],
   };
+
+  // Track button clicks and check for level-ups
+  const { stateUpdates: buttonLevelUpdates, logEntry: levelUpLog } = incrementButtonClick(state, actionId);
+  if (Object.keys(buttonLevelUpdates).length > 0) {
+    Object.assign(result.stateUpdates, buttonLevelUpdates);
+  }
+  if (levelUpLog) {
+    result.logEntries!.push(levelUpLog);
+  }
 
   // Route to appropriate handler based on action ID
   switch (actionId) {

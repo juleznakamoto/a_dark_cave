@@ -7,6 +7,7 @@ import {
   ActionBonuses,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
+import { getButtonLevelKey, getButtonBonus } from "@/game/buttonLevels";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -211,20 +212,25 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
 };
 
 // Helper function to get action bonuses from pre-calculated effects in state
-export const getActionBonuses = (
+export function getActionBonuses(
   actionId: string,
   state: GameState,
-): {
-  resourceMultiplier: number;
-  resourceBonus: Record<string, number>;
-  cooldownReduction: number;
-  caveExploreMultiplier: number;
-} => {
-  const activeEffects = getActiveEffects(state);
-  let resourceMultiplier = 1;
-  let cooldownReduction = 0;
-  let caveExploreMultiplier = 1;
-  const resourceBonus: Record<string, number> = {};
+): ActionBonuses {
+  const totalEffects = state.effects || calculateTotalEffects(state);
+
+  const bonuses: ActionBonuses = {
+    resourceMultiplier: 1,
+    resourceBonus: {},
+    cooldownReduction: 0,
+    caveExploreMultiplier: 1,
+  };
+
+  // Apply button level bonus
+  const buttonKey = getButtonLevelKey(actionId);
+  if (buttonKey) {
+    const buttonBonus = getButtonBonus(state, buttonKey);
+    bonuses.resourceMultiplier *= buttonBonus;
+  }
 
   activeEffects.forEach((effect) => {
     // Check if this effect has bonuses for the specific action
