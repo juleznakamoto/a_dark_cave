@@ -47,6 +47,8 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
 // Map action IDs to upgrade keys
 export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
   exploreCave: "caveExplore",
+  ventureDeeper: "caveExplore",
+  descendFurther: "caveExplore",
   exploreRuins: "caveExplore",
   exploreTemple: "caveExplore",
   exploreCitadel: "caveExplore",
