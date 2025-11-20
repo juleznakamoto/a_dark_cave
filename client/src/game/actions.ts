@@ -135,6 +135,8 @@ import {
   handleTradeGoldForAdamant,
   handleTradeGoldForTorch,
   handleTradeSilverForGold,
+  handleTradeGoldForEmberBomb,
+  handleTradeGoldForAshfireBomb,
 } from "@/game/rules/forestTradeActions";
 
 import {
