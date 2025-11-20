@@ -164,7 +164,7 @@ export default function ForestPanel() {
       );
 
       return upgradeKey ? (
-        <div key={actionId} className="relative inline-block">
+        <div key={actionId} className="relative inline-block" style={{ overflow: 'visible' }}>
           {button}
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
@@ -187,7 +187,7 @@ export default function ForestPanel() {
     );
 
     return upgradeKey ? (
-      <div key={actionId} className="relative inline-block">
+      <div key={actionId} className="relative inline-block" style={{ overflow: 'visible' }}>
         {button}
         <ButtonLevelBadge upgradeKey={upgradeKey} />
       </div>
