@@ -91,13 +91,13 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 1, clicksRequired: 10, bonus: 5},
   { level: 2, clicksRequired: 21, bonus: 10},
   { level: 3, clicksRequired: 33, bonus: 15},
-  { level: 4, clicksRequired: 63, bonus: 20},
-  { level: 5, clicksRequired: 87, bonus: 25},
-  { level: 6, clicksRequired: 112, bonus: 30},
-  { level: 7, clicksRequired: 138, bonus: 35},
-  { level: 8, clicksRequired: 165, bonus: 40},
-  { level: 9, clicksRequired: 193, bonus: 45},
-  { level: 10, clicksRequired: 222, bonus: 50},
+  { level: 4, clicksRequired: 43, bonus: 20},
+  { level: 5, clicksRequired: 57, bonus: 25},
+  { level: 6, clicksRequired: 72, bonus: 30},
+  { level: 7, clicksRequired: 88, bonus: 35},
+  { level: 8, clicksRequired: 105, bonus: 40},
+  { level: 9, clicksRequired: 123, bonus: 45},
+  { level: 10, clicksRequired: 142, bonus: 50},
 ];
 
 // Get the appropriate upgrade levels for a given key
