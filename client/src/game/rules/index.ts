@@ -28,6 +28,10 @@ import {
   getTotalCraftingCostReduction as getTotalCraftingCostReductionCalc,
   getTotalBuildingCostReduction as getTotalBuildingCostReductionCalc,
 } from "./effectsCalculation";
+import {
+  ACTION_TO_UPGRADE_KEY,
+  getUpgradeBonusMultiplier,
+} from "../buttonUpgrades";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
@@ -783,26 +787,30 @@ export const applyActionEffects = (
 
   // Apply action bonuses and multipliers from tools, weapons, and relics
   if (updates.resources) {
-    // Apply fixed resource bonuses
-    if (
-      actionBonuses.resourceBonus &&
-      Object.keys(actionBonuses.resourceBonus).length > 0
-    ) {
+    const actionBonuses = getActionBonusesCalc(actionId, state);
+
+    // Apply flat resource bonuses
+    if (actionBonuses.resourceBonus) {
       Object.entries(actionBonuses.resourceBonus).forEach(
         ([resource, bonus]) => {
-          if (typeof bonus === "number") {
-            const before = updates.resources![resource] || 0;
-            updates.resources![resource] = before + bonus;
+          if (updates.resources![resource] !== undefined) {
+            updates.resources![resource] += bonus;
           }
         },
       );
     }
 
     // Apply resource multipliers (like 300% bonus from adamant axe)
-    if (
-      actionBonuses.resourceMultiplier &&
-      actionBonuses.resourceMultiplier !== 1
-    ) {
+    let totalMultiplier = actionBonuses.resourceMultiplier || 1;
+
+    // Add button upgrade bonus multiplier
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    if (upgradeKey) {
+      const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
+      totalMultiplier = totalMultiplier * upgradeMultiplier;
+    }
+
+    if (totalMultiplier !== 1) {
       Object.keys(updates.resources).forEach((resource) => {
         const currentAmount = updates.resources![resource] || 0;
         const originalAmount =
@@ -811,7 +819,7 @@ export const applyActionEffects = (
 
         if (baseGain > 0) {
           const bonusAmount = Math.floor(
-            baseGain * (actionBonuses.resourceMultiplier - 1),
+            baseGain * (totalMultiplier - 1),
           );
           const finalAmount = currentAmount + bonusAmount;
           updates.resources![resource] = finalAmount;

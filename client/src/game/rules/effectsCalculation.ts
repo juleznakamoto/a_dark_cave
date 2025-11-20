@@ -342,6 +342,23 @@ export const getAllActionBonuses = (
     }
   });
 
+  // Add button upgrade bonuses
+  const { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } = require("../buttonUpgrades");
+  Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
+    if (upgradeKey) {
+      const bonus = getUpgradeBonus(upgradeKey, state);
+      if (bonus > 0) {
+        const existing = bonusMap.get(actionId) || {
+          multiplier: 1,
+          flatBonus: 0,
+        };
+        // Button upgrades are percentage bonuses, convert to multiplier
+        existing.multiplier += bonus / 100;
+        bonusMap.set(actionId, existing);
+      }
+    }
+  });
+
   // Convert to array and format
   return Array.from(bonusMap.entries())
     .filter(([actionId]) => actionId !== "steelForger" && actionId !== "hunter") // Exclude forge and hunter from bonus display
