@@ -119,23 +119,6 @@ export function handleHunt(
 ): ActionResult {
   const effectUpdates = applyActionEffects("hunt", state);
 
-  // Apply button upgrade bonus
-  const { getButtonUpgradeBonus } = require('@/game/buttonUpgrades');
-  const buttonUpgradeBonus = getButtonUpgradeBonus('hunt', state);
-
-  if (buttonUpgradeBonus > 0 && effectUpdates.resources) {
-    // Apply bonus to food, bones, and leather from hunt
-    const huntResources = ['food', 'bones', 'leather'];
-    huntResources.forEach(resource => {
-      if (effectUpdates.resources[resource]) {
-        const existingAmount = state.resources[resource] || 0;
-        const addedAmount = effectUpdates.resources[resource] - existingAmount;
-        const bonusAmount = Math.floor(addedAmount * (1 + buttonUpgradeBonus));
-        effectUpdates.resources[resource] = existingAmount + bonusAmount;
-      }
-    });
-  }
-
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
     effectUpdates.logMessages.forEach((message: string | any) => {

@@ -1,7 +1,7 @@
-import { GameState } from "@shared/schema";
-import { getActionBonuses } from "./effectsCalculation";
-import { capitalizeWords } from "@/lib/utils";
-import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo, UPGRADE_KEY_NAMES } from "@/game/buttonUpgrades";
+import { GameState } from "../state";
+import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
+import { gameActions } from "./index";
+import { getTotalMadness } from "./effectsCalculation";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -21,16 +21,6 @@ export const getResourceGainTooltip = (
   if (!action?.effects) return null;
 
   const bonuses = getActionBonuses(actionId, state);
-  const multiplier = bonuses.resourceMultiplier;
-  const flatBonus = bonuses.resourceBonus;
-  const caveExploreMultiplier = bonuses.caveExploreMultiplier;
-
-  // Get upgrade info
-  const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-  const upgradeInfo = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]) : null;
-  const buttonUpgradeBonus = upgradeInfo ? upgradeInfo.bonus : 0;
-
-
   const gains: Array<{ resource: string; min: number; max: number }> = [];
   const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> =
     [];
@@ -123,12 +113,6 @@ export const getResourceGainTooltip = (
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
 
-            // Apply button upgrade bonus
-            if (buttonUpgradeBonus > 0) {
-              min = Math.floor(min * (1 + buttonUpgradeBonus));
-              max = Math.floor(max * (1 + buttonUpgradeBonus));
-            }
-
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
@@ -149,11 +133,6 @@ export const getResourceGainTooltip = (
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
-          // Apply button upgrade bonus
-          if (buttonUpgradeBonus > 0) {
-            amount = Math.floor(amount * (1 + buttonUpgradeBonus));
-          }
-
           gains.push({ resource, min: amount, max: amount });
         }
       }
@@ -166,7 +145,8 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] || 0) >= value;
+              (state.resources[resource as keyof typeof state.resources] ||
+                0) >= value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
@@ -185,86 +165,28 @@ export const getResourceGainTooltip = (
       .join(" ");
   };
 
-  const tooltipLines: React.ReactNode[] = [];
-
-  gains.forEach((gain, index) => {
-    tooltipLines.push(
-      <div key={`gain-${index}`}>
-        {gain.min === gain.max
-          ? `+${gain.min} ${formatResourceName(gain.resource)}`
-          : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
-      </div>
-    );
-  });
-
-  if (gains.length > 0 && costs.length > 0) {
-    tooltipLines.push(
-      <div key="cost-divider" className="border-t border-border my-1" />
-    );
-  }
-
-  costs.forEach((cost, index) => {
-    tooltipLines.push(
-      <div
-        key={`cost-${index}`}
-        className={cost.hasEnough ? "" : "text-muted-foreground"}
-      >
-        -{cost.amount} {formatResourceName(cost.resource)}
-      </div>
-    );
-  });
-
-  // Add cave explore multiplier info if applicable
-  if (isCaveExploreAction && caveExploreMultiplier > 1) {
-    tooltipLines.push(
-      <div key="cave-explore-bonus" className="text-muted-foreground">
-        Cave Explore: +{Math.round((caveExploreMultiplier - 1) * 100)}%
-      </div>
-    );
-  }
-
-  // Add upgrade info if applicable
-  if (upgradeInfo && upgradeInfo.level > 0) {
-    tooltipLines.push(
-      <div key="upgrade-level" className="border-t border-border my-1" />
-    );
-    tooltipLines.push(
-      <div key="upgrade-bonus" className="text-muted-foreground">
-        Level {upgradeInfo.level}: +{Math.round(upgradeInfo.bonus * 100)}%
-      </div>
-    );
-    if (upgradeInfo.clicksToNext !== null) {
-      tooltipLines.push(
-        <div key="upgrade-progress" className="text-muted-foreground text-[10px]">
-          {upgradeInfo.clicksToNext} clicks to level {upgradeInfo.level + 1}
+  return (
+    <div className="text-xs">
+      {gains.map((gain, index) => (
+        <div key={`gain-${index}`}>
+          {gain.min === gain.max
+            ? `+${gain.min} ${formatResourceName(gain.resource)}`
+            : `+${gain.min}-${gain.max} ${formatResourceName(gain.resource)}`}
         </div>
-      );
-    }
-  }
-
-  // Show bonuses section
-  {(multiplier > 1 || flatBonus > 0 || caveExploreMultiplier > 1 || buttonUpgradeBonus > 0) && (
-    <>
-      <div className="border-t border-border my-1" />
-      <div className="text-muted-foreground">
-        {multiplier > 1 && (
-          <div>+{Math.round((multiplier - 1) * 100)}% multiplier</div>
-        )}
-        {flatBonus > 0 && <div>+{flatBonus} flat bonus</div>}
-        {caveExploreMultiplier > 1 && (
-          <div>
-            +{Math.round((caveExploreMultiplier - 1) * 100)}% cave bonus
-          </div>
-        )}
-        {buttonUpgradeBonus > 0 && (
-          <div>+{Math.round(buttonUpgradeBonus * 100)}% level bonus</div>
-        )}
-      </div>
-    </>
-  )}
-
-
-  return <div className="text-xs whitespace-nowrap">{tooltipLines}</div>;
+      ))}
+      {gains.length > 0 && costs.length > 0 && (
+        <div className="border-t border-border my-1" />
+      )}
+      {costs.map((cost, index) => (
+        <div
+          key={`cost-${index}`}
+          className={cost.hasEnough ? "" : "text-muted-foreground"}
+        >
+          -{cost.amount} {formatResourceName(cost.resource)}
+        </div>
+      ))}
+    </div>
+  );
 };
 
 // Action button tooltips (for cost breakdowns)

@@ -8,7 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo } from "@/game/buttonUpgrades";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -96,13 +95,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
-  // Get upgrade level for this button
-  const state = useGameStore();
-  const actionId = testId?.replace("button-", "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "";
-  const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-  const upgradeInfo = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]) : null;
-  const upgradeLevel = upgradeInfo?.level || 0;
-
   const button = (
     <Button
       ref={ref}
@@ -118,42 +110,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     >
       {/* Button content */}
       <span className="relative">{children}</span>
-
-      {/* Level indicator with tooltip */}
-      {upgradeLevel > 0 && upgradeInfo && (
-        <TooltipProvider>
-          <Tooltip delayDuration={300}>
-            <TooltipTrigger asChild>
-              <span 
-                className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground cursor-help z-10"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  if (mobileTooltip.isMobile) {
-                    mobileTooltip.handleTooltipClick(`${buttonId}-level`, e);
-                  }
-                }}
-              >
-                {upgradeLevel}
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>
-              <div className="text-xs whitespace-nowrap">
-                <div className="font-bold">Level {upgradeLevel}/8</div>
-                <div>Bonus: +{Math.round(upgradeInfo.bonus * 100)}%</div>
-                <div>Clicks: {state.buttonUpgrades[upgradeKey]}</div>
-                {upgradeInfo.nextLevelClicks !== null && (
-                  <div className="text-muted-foreground">
-                    Next: {upgradeInfo.clicksToNext} more clicks
-                  </div>
-                )}
-                {upgradeInfo.nextLevelClicks === null && (
-                  <div className="text-muted-foreground">Max level!</div>
-                )}
-              </div>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
-      )}
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
