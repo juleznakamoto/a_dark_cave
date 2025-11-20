@@ -9,6 +9,19 @@ import {
 import { villageBuildActions } from "./villageBuildActions";
 import { getButtonUpgradeBonus } from "@/game/buttonUpgrades";
 
+// Helper to check if an action is a cave exploration action
+const isCaveExploreAction = (actionId: string): boolean => {
+  const caveExploreActions = [
+    "exploreCave",
+    "ventureDeeper",
+    "descendFurther",
+    "exploreRuins",
+    "exploreTemple",
+    "exploreCitadel",
+  ];
+  return caveExploreActions.includes(actionId);
+};
+
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
   "stone_axe",
@@ -273,15 +286,7 @@ export const getActionBonuses = (
     }
 
     // Add cave exploration multiplier for cave explore actions
-    const caveExploreActions = [
-      "exploreCave",
-      "ventureDeeper",
-      "descendFurther",
-      "exploreRuins",
-      "exploreTemple",
-      "exploreCitadel",
-    ];
-    if (caveExploreActions.includes(actionId)) {
+    if (isCaveExploreAction(actionId)) {
       if (effect.bonuses.generalBonuses?.caveExploreMultiplier) {
         // Additive: sum the bonus percentages
         caveExploreMultiplier +=
