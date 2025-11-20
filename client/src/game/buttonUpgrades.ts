@@ -1,7 +1,7 @@
 
 import { GameState } from "@shared/schema";
 
-// Define upgrade thresholds and bonuses
+// Define upgrade thresholds and bonuses (8 levels)
 export const UPGRADE_LEVELS = [
   { clicks: 10, bonus: 0.05, label: "slightly better" },
   { clicks: 25, bonus: 0.10, label: "better" },
@@ -10,6 +10,7 @@ export const UPGRADE_LEVELS = [
   { clicks: 200, bonus: 0.25, label: "exceptionally better" },
   { clicks: 400, bonus: 0.30, label: "masterful" },
   { clicks: 800, bonus: 0.35, label: "legendary" },
+  { clicks: 1600, bonus: 0.40, label: "transcendent" },
 ];
 
 // Map actions to upgrade keys

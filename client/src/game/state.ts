@@ -443,6 +443,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
     )
       return;
 
+    // Track button clicks for upgrades
+    const { ACTION_TO_UPGRADE_KEY, checkLevelUp, UPGRADE_KEY_NAMES } = require('@/game/buttonUpgrades');
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+    let levelUpInfo = null;
+    
+    if (upgradeKey) {
+      const oldClicks = state.buttonUpgrades[upgradeKey] || 0;
+      const newClicks = oldClicks + 1;
+      
+      // Check for level up
+      levelUpInfo = checkLevelUp(upgradeKey, oldClicks, newClicks);
+      
+      // Update clicks in state
+      set((prevState) => ({
+        buttonUpgrades: {
+          ...prevState.buttonUpgrades,
+          [upgradeKey]: newClicks,
+        },
+      }));
+    }
+
     const result = executeGameAction(actionId, state);
 
     // Store initial cooldown duration if it's a new cooldown
@@ -496,11 +517,27 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       }
 
+      // Add level-up message if applicable
+      let logEntries = result.logEntries || [];
+      if (levelUpInfo && levelUpInfo.leveledUp) {
+        const { UPGRADE_KEY_NAMES } = require('@/game/buttonUpgrades');
+        const actionName = UPGRADE_KEY_NAMES[upgradeKey] || actionId;
+        logEntries = [
+          ...logEntries,
+          {
+            id: `level-up-${actionId}-${Date.now()}`,
+            message: `You got ${levelUpInfo.label} at ${actionName}! (Level ${levelUpInfo.newLevel}, +${Math.round(levelUpInfo.bonus * 100)}% bonus)`,
+            timestamp: Date.now(),
+            type: 'system' as const,
+          },
+        ];
+      }
+
       const newState = {
         ...prevState,
         ...mergedUpdates,
-        log: result.logEntries
-          ? [...prevState.log, ...result.logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
+        log: logEntries.length > 0
+          ? [...prevState.log, ...logEntries].slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES)
           : prevState.log,
       };
 

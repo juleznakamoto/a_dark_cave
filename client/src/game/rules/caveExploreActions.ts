@@ -10,6 +10,8 @@ function applyCaveExplorationBonuses(
   effectUpdates: any,
 ): void {
   const bonuses = getActionBonuses(actionId, state);
+  const { getButtonUpgradeBonus } = require('@/game/buttonUpgrades');
+  const buttonUpgradeBonus = getButtonUpgradeBonus(actionId, state);
 
   // Define which resources can benefit from bonuses in cave exploration
   const caveResources = [
@@ -38,6 +40,11 @@ function applyCaveExplorationBonuses(
           // Apply cave explore multiplier
           if (bonuses.caveExploreMultiplier > 1) {
             actuallyAddedAmount = Math.floor(actuallyAddedAmount * bonuses.caveExploreMultiplier);
+          }
+          
+          // Apply button upgrade bonus
+          if (buttonUpgradeBonus > 0) {
+            actuallyAddedAmount = Math.floor(actuallyAddedAmount * (1 + buttonUpgradeBonus));
           }
 
           effectUpdates.resources[resource] = existingAmount + actuallyAddedAmount;
@@ -444,6 +451,17 @@ export function handleChopWood(
   result: ActionResult,
 ): ActionResult {
   const effectUpdates = applyActionEffects("chopWood", state);
+  
+  // Apply button upgrade bonus to wood gain
+  const { getButtonUpgradeBonus } = require('@/game/buttonUpgrades');
+  const buttonUpgradeBonus = getButtonUpgradeBonus("chopWood", state);
+  
+  if (buttonUpgradeBonus > 0 && effectUpdates.resources?.wood) {
+    const existingWood = state.resources.wood || 0;
+    const addedWood = effectUpdates.resources.wood - existingWood;
+    const bonusWood = Math.floor(addedWood * (1 + buttonUpgradeBonus));
+    effectUpdates.resources.wood = existingWood + bonusWood;
+  }
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {

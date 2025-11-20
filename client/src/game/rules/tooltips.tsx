@@ -28,6 +28,8 @@ export const getResourceGainTooltip = (
   // Get upgrade info
   const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
   const upgradeInfo = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]) : null;
+  const buttonUpgradeBonus = upgradeInfo ? upgradeInfo.bonus : 0;
+
 
   const gains: Array<{ resource: string; min: number; max: number }> = [];
   const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> =
@@ -121,6 +123,12 @@ export const getResourceGainTooltip = (
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
 
+            // Apply button upgrade bonus
+            if (buttonUpgradeBonus > 0) {
+              min = Math.floor(min * (1 + buttonUpgradeBonus));
+              max = Math.floor(max * (1 + buttonUpgradeBonus));
+            }
+
             gains.push({ resource, min, max });
           }
         } else if (typeof value === "number") {
@@ -141,6 +149,11 @@ export const getResourceGainTooltip = (
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
+          // Apply button upgrade bonus
+          if (buttonUpgradeBonus > 0) {
+            amount = Math.floor(amount * (1 + buttonUpgradeBonus));
+          }
+
           gains.push({ resource, min: amount, max: amount });
         }
       }
@@ -153,8 +166,7 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] ||
-                0) >= value;
+              (state.resources[resource as keyof typeof state.resources] || 0) >= value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
@@ -229,6 +241,27 @@ export const getResourceGainTooltip = (
       );
     }
   }
+
+  // Show bonuses section
+  if (multiplier > 1 || flatBonus > 0 || caveExploreMultiplier > 1 || buttonUpgradeBonus > 0) && (
+    <>
+      <div className="border-t border-border my-1" />
+      <div className="text-muted-foreground">
+        {multiplier > 1 && (
+          <div>+{Math.round((multiplier - 1) * 100)}% multiplier</div>
+        )}
+        {flatBonus > 0 && <div>+{flatBonus} flat bonus</div>}
+        {caveExploreMultiplier > 1 && (
+          <div>
+            +{Math.round((caveExploreMultiplier - 1) * 100)}% cave bonus
+          </div>
+        )}
+        {buttonUpgradeBonus > 0 && (
+          <div>+{Math.round(buttonUpgradeBonus * 100)}% level bonus</div>
+        )}
+      </div>
+    </>
+  )}
 
 
   return <div className="text-xs whitespace-nowrap">{tooltipLines}</div>;
@@ -413,3 +446,10 @@ function capitalizeWords(str: string): string {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 }
+
+// Placeholder functions for getTotalMadness and getTotalKnowledge if they are not defined elsewhere
+declare function getTotalMadness(state: GameState): number;
+declare function getTotalKnowledge(state: GameState): number;
+
+// Placeholder for gameActions if not defined elsewhere
+declare const gameActions: Record<string, any>;

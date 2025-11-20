@@ -107,9 +107,24 @@ export const caveMineActions: Record<string, Action> = {
   },
 };
 
+// Helper function to apply button upgrade bonus to mining resources
+function applyMiningUpgradeBonus(actionId: string, state: GameState, effectUpdates: any, resourceKey: string): void {
+  const { getButtonUpgradeBonus } = require('@/game/buttonUpgrades');
+  const buttonUpgradeBonus = getButtonUpgradeBonus(actionId, state);
+  
+  if (buttonUpgradeBonus > 0 && effectUpdates.resources?.[resourceKey]) {
+    const existingAmount = state.resources[resourceKey] || 0;
+    const addedAmount = effectUpdates.resources[resourceKey] - existingAmount;
+    const bonusAmount = Math.floor(addedAmount * (1 + buttonUpgradeBonus));
+    effectUpdates.resources[resourceKey] = existingAmount + bonusAmount;
+  }
+}
+
 // Action handlers
 export function handleMineStone(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineStone', state);
+  
+  applyMiningUpgradeBonus('mineStone', state, effectUpdates, 'stone');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -121,7 +136,6 @@ export function handleMineStone(state: GameState, result: ActionResult): ActionR
         type: 'system',
       });
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -131,6 +145,8 @@ export function handleMineStone(state: GameState, result: ActionResult): ActionR
 
 export function handleMineIron(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineIron', state);
+  
+  applyMiningUpgradeBonus('mineIron', state, effectUpdates, 'iron');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -142,7 +158,6 @@ export function handleMineIron(state: GameState, result: ActionResult): ActionRe
         type: 'system',
       });
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -152,6 +167,8 @@ export function handleMineIron(state: GameState, result: ActionResult): ActionRe
 
 export function handleMineCoal(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineCoal', state);
+  
+  applyMiningUpgradeBonus('mineCoal', state, effectUpdates, 'coal');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -163,7 +180,6 @@ export function handleMineCoal(state: GameState, result: ActionResult): ActionRe
         type: 'system',
       });
     });
-    // Remove logMessages from state updates as it's not part of the game state
     delete effectUpdates.logMessages;
   }
 
@@ -173,6 +189,8 @@ export function handleMineCoal(state: GameState, result: ActionResult): ActionRe
 
 export function handleMineSulfur(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineSulfur', state);
+  
+  applyMiningUpgradeBonus('mineSulfur', state, effectUpdates, 'sulfur');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -193,6 +211,8 @@ export function handleMineSulfur(state: GameState, result: ActionResult): Action
 
 export function handleMineObsidian(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineObsidian', state);
+  
+  applyMiningUpgradeBonus('mineObsidian', state, effectUpdates, 'obsidian');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
@@ -213,6 +233,8 @@ export function handleMineObsidian(state: GameState, result: ActionResult): Acti
 
 export function handleMineAdamant(state: GameState, result: ActionResult): ActionResult {
   const effectUpdates = applyActionEffects('mineAdamant', state);
+  
+  applyMiningUpgradeBonus('mineAdamant', state, effectUpdates, 'adamant');
 
   // Handle any log messages from probability effects
   if (effectUpdates.logMessages) {
