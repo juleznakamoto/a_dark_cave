@@ -395,7 +395,17 @@ export const gameStateSchema = z.object({
     lengthLevel: 0,
     intensityLevel: 0,
   }),
-  buttonUpgrades: buttonUpgradesSchema,
+  buttonUpgrades: buttonUpgradesSchema.default({
+    caveExplore: 0,
+    chopWood: 0,
+    hunt: 0,
+    mineStone: 0,
+    mineIron: 0,
+    mineCoal: 0,
+    mineSulfur: 0,
+    mineObsidian: 0,
+    mineAdamant: 0,
+  }),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
