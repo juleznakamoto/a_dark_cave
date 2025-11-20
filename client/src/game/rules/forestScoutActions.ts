@@ -262,6 +262,7 @@ export function handleCastleRuins(
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
       gold: (state.resources.gold || 0) + 50,
+      food: (state.resources.food || 0) - 2500
     };
 
     result.logEntries!.push({
@@ -336,6 +337,7 @@ export function handleHillGrave(
       ...state.resources,
       silver: (state.resources.silver || 0) + 150,
       gold: (state.resources.gold || 0) + 100,
+      food: (state.resources.food || 0) - 5000
     };
 
     result.stateUpdates.relics = {
@@ -402,10 +404,9 @@ export function handleSunkenTemple(
     // Deduct cost and add rewards
     result.stateUpdates.resources = {
       ...state.resources,
-      food: state.resources.food - 100,
-      bloodstone: (state.resources.bloodstone || 0) + 5,
       silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 150,
+      food: (state.resources.food || 0) - 5000
     };
 
     result.stateUpdates.relics = {
