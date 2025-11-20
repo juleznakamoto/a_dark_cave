@@ -399,9 +399,13 @@ export function handleSunkenTemple(
 
   if (rand < successChance) {
     // Success: Find bloodstone
+    // Deduct cost and add rewards
     result.stateUpdates.resources = {
       ...state.resources,
-      gold: (state.resources.gold || 0) + 200,
+      food: state.resources.food - 100,
+      bloodstone: (state.resources.bloodstone || 0) + 5,
+      silver: (state.resources.silver || 0) + 200,
+      gold: (state.resources.gold || 0) + 150,
     };
 
     result.stateUpdates.relics = {
