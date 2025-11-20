@@ -1271,18 +1271,18 @@ export const choiceEvents: Record<string, GameEvent> = {
   masterArcher: {
     id: "masterArcher",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 6 &&
+      state.buildings.stoneHut >= 5 &&
       state.resources.food >= 2500 &&
       !state.story.seen.masterArcherEvent &&
       !state.blessings.sharp_aim,
     triggerType: "resource",
-    timeProbability: 15,
+    timeProbability: 0.020,
     title: "The Master Archer",
     message:
-      "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
+      "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers to improve their hunting skills. If you accept, he'll stay and get to work.",
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "acceptArcherHelp",
@@ -1310,7 +1310,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The master archer begins training your hunters immediately. Within days, their aim improves dramatically, and hunts yield more food than before.",
+              "The master archer takes the payment and begins training your hunters immediately.",
           };
         },
       },
@@ -1327,7 +1327,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest.",
+              "The archer nods understandingly. 'I'll return, in case you change your mind,' he says before disappearing into the forest.",
           };
         },
       },
