@@ -235,12 +235,6 @@ html, body {
   animation: new-item-pulse 0.5s ease-in-out infinite;
 }
 
-/* Button container with level badge */
-.button-with-badge {
-  position: relative;
-  overflow: visible !important;
-}
-
 /* Button glow animation */
 @keyframes button-glow {
 
