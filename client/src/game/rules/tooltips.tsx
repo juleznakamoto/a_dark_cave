@@ -402,14 +402,3 @@ export const eventChoiceCostTooltip = {
       .join("\n");
   },
 };
-
-// Helper function to capitalize the first letter of each word in a string
-// Assuming this function is defined elsewhere and available in scope.
-// If not, it would need to be added. For example:
-function capitalizeWords(str: string): string {
-  return str
-    .toLowerCase()
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-}
