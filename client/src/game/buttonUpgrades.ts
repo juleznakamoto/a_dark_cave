@@ -122,12 +122,12 @@ export function getUpgradeLevelsForKey(key: UpgradeKey): UpgradeLevel[] {
 }
 
 export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
-  exploreCave: "Cave Exploration",
-  ventureDeeper: "Deep Venturing",
-  descendFurther: "Deep Descent",
-  exploreRuins: "Ruins Exploration",
-  exploreTemple: "Temple Exploration",
-  exploreCitadel: "Citadel Exploration",
+  exploreCave: "Cave Exploring",
+  ventureDeeper: "Cave Exploring",
+  descendFurther: "Cave Exploring",
+  exploreRuins: "Cave Exploring",
+  exploreTemple: "Cave Exploring",
+  exploreCitadel: "Cave Exploring",
   mineStone: "Stone Mining",
   mineIron: "Iron Mining",
   mineCoal: "Coal Mining",
