@@ -371,7 +371,7 @@ export default function EstatePanel() {
         <div className="space-y-2 pt-1">
           <h3 className="text-xs font-bold text-foreground">Cube</h3>
 
-          <div className="grid grid-cols-6 gap-5 w-40 h-12">
+          <div className="grid grid-cols-6 gap-5 w-40 h-12 gap-y-3">
             {completedCubeEvents.map((event) => (
               <TooltipProvider key={event.id}>
                 <Tooltip open={cubeTooltip.isTooltipOpen(`cube-${event.id}`)}>

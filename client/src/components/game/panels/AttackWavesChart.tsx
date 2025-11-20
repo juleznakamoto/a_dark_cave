@@ -14,7 +14,7 @@ export default function AttackWavesChart() {
 
   // Find current wave (first incomplete wave, or 5 if all complete)
   const currentWaveIndex = waves.findIndex((wave) => !wave.completed);
-  const currentWave = currentWaveIndex === -1 ? 5 : currentWaveIndex + 1;
+  const currentWave = currentWaveIndex === -1 ? 5 : currentWaveIndex ;
   const totalWaves = 5;
 
   // Calculate completed waves percentage (dark red)
@@ -23,7 +23,7 @@ export default function AttackWavesChart() {
 
   // Calculate current wave percentage (normal red) - only if not all complete
   const currentWavePercentage =
-    currentWaveIndex === -1 ? 0 : ((completedWaves + 1) / totalWaves) * 100;
+    currentWaveIndex === -1 ? 0 : ((completedWaves ) / totalWaves) * 100;
 
   // Only show if bastion exists
   const shouldShowChart = story?.seen?.hasBastion || false;
