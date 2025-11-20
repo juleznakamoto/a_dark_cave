@@ -232,6 +232,8 @@ export function getActionBonuses(
     bonuses.resourceMultiplier *= buttonBonus;
   }
 
+  const activeEffects = getActiveEffects(state);
+
   activeEffects.forEach((effect) => {
     // Check if this effect has bonuses for the specific action
     if (effect.bonuses.actionBonuses?.[actionId]) {
