@@ -203,6 +203,19 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply Sharp Aim blessing bonus to hunter production
+  if (state && jobId === "hunter") {
+    baseProduction.forEach((prod) => {
+      if (prod.resource === "food" && prod.baseAmount > 0) {
+        let bonusFood = 0;
+        if (state.blessings?.sharp_aim) {
+          bonusFood = 5; // +5 food per hunter
+        }
+        prod.totalAmount += bonusFood * count;
+      }
+    });
+  }
+
   // Apply Flame's Touch blessing bonus to steel production
   if (state && jobId === "steel_forger") {
     baseProduction.forEach((prod) => {
