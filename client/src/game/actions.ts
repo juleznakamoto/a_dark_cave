@@ -407,6 +407,10 @@ export function executeGameAction(
       return handleBoneTotems(state, result);
     case "leatherTotems":
       return handleLeatherTotems(state, result);
+    case "animals":
+      return handleAnimals(state, result);
+      case "humans":
+      return handleHumans(state, result);
 
     // Forest Trade Actions
     case "tradeGoldForFood":
