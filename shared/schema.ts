@@ -14,6 +14,19 @@ export const logEntrySchema = z.object({
     .optional(),
 });
 
+// Define button upgrades schema
+export const buttonUpgradesSchema = z.object({
+  caveExplore: z.number().default(0), // Combined for all cave exploration actions
+  chopWood: z.number().default(0), // Combined for chopWood and gather wood
+  hunt: z.number().default(0),
+  mineStone: z.number().default(0),
+  mineIron: z.number().default(0),
+  mineCoal: z.number().default(0),
+  mineSulfur: z.number().default(0),
+  mineObsidian: z.number().default(0),
+  mineAdamant: z.number().default(0),
+});
+
 // Game state schema for A Dark Cave
 export const gameStateSchema = z.object({
   resources: z
@@ -382,9 +395,11 @@ export const gameStateSchema = z.object({
     lengthLevel: 0,
     intensityLevel: 0,
   }),
+  buttonUpgrades: buttonUpgradesSchema,
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;
+export type ButtonUpgrades = z.infer<typeof buttonUpgradesSchema>;
 
 // Action schema for game rules
 export const actionSchema = z.object({

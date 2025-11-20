@@ -226,6 +226,13 @@ export const getActionBonuses = (
   let caveExploreMultiplier = 1;
   const resourceBonus: Record<string, number> = {};
 
+  // Add button upgrade bonus
+  const { getButtonUpgradeBonus } = require("@/game/buttonUpgrades");
+  const upgradeBonus = getButtonUpgradeBonus(actionId, state);
+  if (upgradeBonus > 0) {
+    resourceMultiplier += upgradeBonus;
+  }
+
   activeEffects.forEach((effect) => {
     // Check if this effect has bonuses for the specific action
     if (effect.bonuses.actionBonuses?.[actionId]) {

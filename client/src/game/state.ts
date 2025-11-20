@@ -165,6 +165,7 @@ const mergeStateUpdates = (
     isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
     showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
     playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
+    buttonUpgrades: stateUpdates.buttonUpgrades || prevState.buttonUpgrades, // Merge buttonUpgrades
   };
 
   if (
@@ -277,6 +278,19 @@ const defaultGameState: GameState = {
   // Cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
+
+  // Button upgrades
+  buttonUpgrades: {
+    caveExplore: 0,
+    chopWood: 0,
+    hunt: 0,
+    mineStone: 0,
+    mineIron: 0,
+    mineCoal: 0,
+    mineSulfur: 0,
+    mineObsidian: 0,
+    mineAdamant: 0,
+  },
 };
 
 // State management utilities
@@ -664,6 +678,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
+        buttonUpgrades: savedState.buttonUpgrades || defaultGameState.buttonUpgrades, // Load button upgrades
       };
 
       set(loadedState);

@@ -8,6 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo } from "@/game/buttonUpgrades";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -95,6 +96,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const buttonId = testId || `button-${Math.random()}`;
 
+  // Get upgrade level for this button
+  const state = useGameStore();
+  const actionId = testId?.replace("button-", "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "";
+  const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+  const upgradeLevel = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]).level : 0;
+
   const button = (
     <Button
       ref={ref}
@@ -110,6 +117,13 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     >
       {/* Button content */}
       <span className="relative">{children}</span>
+
+      {/* Level indicator */}
+      {upgradeLevel > 0 && (
+        <span className="absolute top-0 right-0 -mt-1 -mr-1 flex h-4 w-4 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-primary-foreground">
+          {upgradeLevel}
+        </span>
+      )}
 
       {/* Cooldown progress overlay */}
       {isCoolingDown && (
