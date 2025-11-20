@@ -1243,7 +1243,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTraps",
     label: "Traps",
     description: "Traps around the village weakening all attackers",
-    tooltipEffects: [""],
+    tooltipEffects: ["+10% chance to win against attacking foes"],
     building: true,
     show_when: {
       1: {
