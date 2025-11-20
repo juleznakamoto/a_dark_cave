@@ -243,7 +243,7 @@ export const getResourceGainTooltip = (
   }
 
   // Show bonuses section
-  if (multiplier > 1 || flatBonus > 0 || caveExploreMultiplier > 1 || buttonUpgradeBonus > 0) && (
+  {(multiplier > 1 || flatBonus > 0 || caveExploreMultiplier > 1 || buttonUpgradeBonus > 0) && (
     <>
       <div className="border-t border-border my-1" />
       <div className="text-muted-foreground">
