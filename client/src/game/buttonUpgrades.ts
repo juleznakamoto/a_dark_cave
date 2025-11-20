@@ -29,7 +29,7 @@ export const MAX_UPGRADE_LEVEL = 8;
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 0, clicksRequired: 0, bonus: 0, label: "Novice" },
   { level: 1, clicksRequired: 10, bonus: 5, label: "Apprentice" },
-  { level: 2, clicksRequired: 25, bonus: 10, label: "Skilled" },
+  { level: 2, clicksRequired: 16, bonus: 10, label: "Skilled" },
   { level: 3, clicksRequired: 50, bonus: 15, label: "Adept" },
   { level: 4, clicksRequired: 100, bonus: 20, label: "Expert" },
   { level: 5, clicksRequired: 200, bonus: 25, label: "Master" },
