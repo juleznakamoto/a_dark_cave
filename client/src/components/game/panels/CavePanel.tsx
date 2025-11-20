@@ -11,80 +11,11 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
-import { Badge } from "@/components/ui/badge";
+import ButtonLevelIndicator from "@/components/ButtonLevelIndicator";
+import { getButtonLevelKey } from "@/game/buttonLevels";
 
-// Placeholder for ButtonLevelIndicator component
-const ButtonLevelIndicator = ({ buttonKey, actionId }: { buttonKey: string, actionId: string }) => {
-  const { [buttonKey]: level, incrementActionCount, getNextLevelCost, getLevelBonus, getClicksForLevel } = useGameStore();
-
-  const currentLevel = level || 0;
-  const maxLevel = 8; // Define your max level here
-  const isMaxLevel = currentLevel >= maxLevel;
-
-  const clicksForNextLevel = getClicksForLevel(currentLevel + 1); // Corrected function call
-  const currentClicks = useGameStore()[`${buttonKey}Clicks`] || 0;
-  const bonus = getLevelBonus(buttonKey);
-
-  const handleClick = () => {
-    incrementActionCount(buttonKey);
-  };
-
-  // Tooltip content
-  const tooltipContent = (
-    <div className="text-xs whitespace-nowrap">
-      <p>Level: {currentLevel} {isMaxLevel ? "(Max)" : ""}</p>
-      <p>Bonus: {bonus.toFixed(1)}%</p>
-      <p>Clicks: {currentClicks}</p>
-      {!isMaxLevel && (
-        <p>Next Level: {clicksForNextLevel - currentClicks} clicks needed</p>
-      )}
-    </div>
-  );
-
-  return (
-    <div
-      className="absolute top-0 right-0 -mt-2 -mr-2 cursor-pointer z-10"
-      onClick={handleClick}
-      {...mobileTooltip({ content: tooltipContent })}
-    >
-      {!isMaxLevel && currentLevel > 0 && (
-        <Badge variant="secondary" className="h-5 w-5 flex items-center justify-center p-0 text-xs">
-          {currentLevel}
-        </Badge>
-      )}
-      {currentLevel === 0 && !isMaxLevel && (
-        <Badge variant="outline" className="h-5 w-5 flex items-center justify-center p-0 text-xs">
-          1
-        </Badge>
-      )}
-       {isMaxLevel && (
-        <Badge className="h-5 w-5 flex items-center justify-center p-0 text-xs bg-green-500">
-          {maxLevel}
-        </Badge>
-      )}
-    </div>
-  );
-};
-
-const getButtonLevelKey = (actionId: string): string | null => {
-  // Cave Explore Actions
-  if (['exploreCave', 'ventureDeeper', 'descendFurther', 'exploreRuins', 'exploreTemple', 'exploreCitadel'].includes(actionId)) {
-    return 'caveLevel';
-  }
-  // Mine Actions
-  if (actionId.startsWith('mine')) {
-    return `mine${actionId.charAt(4).toUpperCase()}${actionId.slice(5)}Level`;
-  }
-  // Hunt Action
-  if (actionId === 'hunt') { // Assuming you have a 'hunt' actionId
-    return 'huntLevel';
-  }
-  // Chop Wood Action
-  if (actionId === 'chopWood') {
-    return 'chopWoodLevel';
-  }
-  return null;
-};
+import ButtonLevelIndicator from "@/components/ButtonLevelIndicator";
+import { getButtonLevelKey } from "@/game/buttonLevels";
 
 
 export default function CavePanel() {
@@ -226,33 +157,6 @@ export default function CavePanel() {
     // Special handling for blastPortal button
     const isBlastPortal = actionId === 'blastPortal';
     const handleClick = () => {
-      // Leveling up logic
-      const buttonKey = getButtonLevelKey(actionId);
-      if (buttonKey) {
-        const currentLevel = state[buttonKey] || 0;
-        const maxLevel = 8; // Ensure this matches ButtonLevelIndicator
-        if (currentLevel < maxLevel) {
-          const clicksForNextLevel = getClicksForLevel(currentLevel + 1); // Corrected function call
-          const currentClicks = state[`${buttonKey}Clicks`] || 0;
-          if (currentClicks + 1 >= clicksForNextLevel) {
-            executeAction(actionId); // Execute the action first
-            // Use a slight delay to ensure the UI updates before triggering level up message
-            setTimeout(() => {
-              useGameStore.setState(prevState => ({
-                [buttonKey]: currentLevel + 1,
-                [`${buttonKey}Clicks`]: 0, // Reset clicks for the next level
-              }));
-              // Add event log message
-              const eventLog = state.eventLog || [];
-              useGameStore.setState({
-                eventLog: [...eventLog, `You got better at ${label}! (Level ${currentLevel + 1})`]
-              });
-            }, 50); // Small delay
-            return;
-          }
-        }
-      }
-      // Original action execution
       if (isBlastPortal) {
         const buttonElement = blastPortalRef.current;
         if (buttonElement) {
@@ -263,11 +167,6 @@ export default function CavePanel() {
         }
       }
       executeAction(actionId);
-       // Increment click count after action execution
-      if (buttonKey) {
-        const currentClicks = state[`${buttonKey}Clicks`] || 0;
-        useGameStore.setState({ [`${buttonKey}Clicks`]: currentClicks + 1 });
-      }
     };
 
     if (showCost || resourceGainTooltip) {

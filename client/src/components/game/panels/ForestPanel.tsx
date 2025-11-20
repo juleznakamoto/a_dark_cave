@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '@/game/state';
-import { gameActions, shouldShowAction, canExecuteAction, getCostText, getActionCostBreakdown } from '@/game/rules';
+import { gameActions, shouldShowAction, canExecuteAction, getActionCostBreakdown } from '@/game/rules';
 import { getResourceGainTooltip } from '@/game/rules/tooltips';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
