@@ -4,6 +4,8 @@ import { gameActions, shouldShowAction, canExecuteAction, getCostText, getAction
 import { getResourceGainTooltip } from '@/game/rules/tooltips';
 import CooldownButton from '@/components/CooldownButton';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { ButtonLevelBadge } from '@/components/game/ButtonLevelBadge';
+import { ACTION_TO_UPGRADE_KEY } from '@/game/buttonUpgrades';
 
 export default function ForestPanel() {
   const { executeAction, buildings } = useGameStore();
@@ -102,6 +104,9 @@ export default function ForestPanel() {
       }
     }
 
+    // Check if this action has upgrade tracking
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+
     if (showCost || resourceGainTooltip || isAnimalsSacrifice || isHumansSacrifice) {
       let tooltipContent;
 
@@ -142,7 +147,7 @@ export default function ForestPanel() {
         );
       }
 
-      return (
+      const button = (
         <CooldownButton
           key={actionId}
           onClick={() => executeAction(actionId)}
@@ -157,9 +162,16 @@ export default function ForestPanel() {
           {displayLabel}
         </CooldownButton>
       );
+
+      return upgradeKey ? (
+        <div key={actionId} className="relative inline-block">
+          {button}
+          <ButtonLevelBadge upgradeKey={upgradeKey} />
+        </div>
+      ) : button;
     }
 
-    return (
+    const button = (
       <CooldownButton
         key={actionId}
         onClick={() => executeAction(actionId)}
@@ -173,6 +185,13 @@ export default function ForestPanel() {
         {displayLabel}
       </CooldownButton>
     );
+
+    return upgradeKey ? (
+      <div key={actionId} className="relative inline-block">
+        {button}
+        <ButtonLevelBadge upgradeKey={upgradeKey} />
+      </div>
+    ) : button;
   };
 
   return (

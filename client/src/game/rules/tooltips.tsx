@@ -1,7 +1,8 @@
-import { GameState } from "../state";
+import { GameState } from "@shared/schema";
 import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
+import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo } from "@/game/buttonUpgrades";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;

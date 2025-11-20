@@ -11,6 +11,8 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
+import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
+import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -164,6 +166,9 @@ export default function CavePanel() {
       executeAction(actionId);
     };
 
+    // Check if this action has upgrade tracking
+    const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
+
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
 
@@ -184,7 +189,7 @@ export default function CavePanel() {
         );
       }
 
-      return (
+      const button = (
         <CooldownButton
           key={actionId}
           ref={isBlastPortal ? blastPortalRef : undefined}
@@ -200,9 +205,16 @@ export default function CavePanel() {
           {label}
         </CooldownButton>
       );
+
+      return upgradeKey ? (
+        <div key={actionId} className="relative inline-block">
+          {button}
+          <ButtonLevelBadge upgradeKey={upgradeKey} />
+        </div>
+      ) : button;
     }
 
-    return (
+    const button = (
       <CooldownButton
         key={actionId}
         ref={isBlastPortal ? blastPortalRef : undefined}
@@ -217,6 +229,13 @@ export default function CavePanel() {
         {label}
       </CooldownButton>
     );
+
+    return upgradeKey ? (
+      <div key={actionId} className="relative inline-block">
+        {button}
+        <ButtonLevelBadge upgradeKey={upgradeKey} />
+      </div>
+    ) : button;
   };
 
   return (
