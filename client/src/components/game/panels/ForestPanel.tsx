@@ -164,7 +164,7 @@ export default function ForestPanel() {
       );
 
       return upgradeKey ? (
-        <div key={actionId} className="relative inline-block">
+        <div key={actionId} className="relative inline-flex">
           {button}
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
@@ -187,7 +187,7 @@ export default function ForestPanel() {
     );
 
     return upgradeKey ? (
-      <div key={actionId} className="relative inline-block">
+      <div key={actionId} className="relative inline-flex">
         {button}
         <ButtonLevelBadge upgradeKey={upgradeKey} />
       </div>
@@ -209,7 +209,7 @@ export default function ForestPanel() {
             {group.title && (
               <h3 className="text-xs font-bold text-foreground">{group.title}</h3>
             )}
-            <div className="flex flex-wrap gap-x-2 gap-y-1">
+            <div className="flex flex-wrap gap-x-2 gap-y-1 overflow-visible">
               {visibleActions.map((action, index) => (
                 <div key={action.id} className="contents">
                   {renderButton(action.id, action.label)}

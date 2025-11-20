@@ -207,7 +207,7 @@ export default function CavePanel() {
       );
 
       return upgradeKey ? (
-        <div key={actionId} className="relative inline-block">
+        <div key={actionId} className="relative inline-flex">
           {button}
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
@@ -231,7 +231,7 @@ export default function CavePanel() {
     );
 
     return upgradeKey ? (
-      <div key={actionId} className="relative inline-block">
+      <div key={actionId} className="relative inline-flex">
         {button}
         <ButtonLevelBadge upgradeKey={upgradeKey} />
       </div>
@@ -304,7 +304,7 @@ export default function CavePanel() {
                 {group.title}
               </h3>
             )}
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2 overflow-visible">
               {visibleActions.map((action) =>
                 renderButton(action.id, action.label),
               )}
