@@ -182,6 +182,7 @@ export const caveExploreActions: Record<string, Action> = {
       },
     },
     cooldown: 6,
+    upgrade_key: "chopWood",
   },
 
   exploreCave: {
@@ -205,6 +206,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.caveExplored": true,
     },
     cooldown: 10,
+    upgrade_key: "exploreCave",
   },
 
   ventureDeeper: {
@@ -228,6 +230,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.venturedDeeper": true,
     },
     cooldown: 20,
+    upgrade_key: "ventureDeeper",
   },
 
   descendFurther: {
@@ -251,6 +254,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.descendedFurther": true,
     },
     cooldown: 30,
+    upgrade_key: "descendFurther",
   },
 
   exploreRuins: {
@@ -273,6 +277,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.exploredRuins": true,
     },
     cooldown: 40,
+    upgrade_key: "exploreRuins",
   },
 
   exploreTemple: {
@@ -296,6 +301,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.exploredTemple": true,
     },
     cooldown: 50,
+    upgrade_key: "exploreTemple",
   },
 
   exploreCitadel: {
@@ -318,6 +324,7 @@ export const caveExploreActions: Record<string, Action> = {
       "story.seen.exploredCitadel": true,
     },
     cooldown: 60,
+    upgrade_key: "exploreCitadel",
   },
 
   lowChamber: {

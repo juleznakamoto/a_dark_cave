@@ -18,6 +18,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasMinedStone": true,
     },
     cooldown: 15,
+    upgrade_key: "mineStone",
   },
 
   mineIron: {
@@ -35,6 +36,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasIron": true,
     },
     cooldown: 20,
+    upgrade_key: "mineIron",
   },
 
   mineCoal: {
@@ -52,6 +54,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasCoal": true,
     },
     cooldown: 20,
+    upgrade_key: "mineCoal",
   },
 
   mineSulfur: {
@@ -70,6 +73,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasSulfur": true,
     },
     cooldown: 20,
+    upgrade_key: "mineSulfur",
   },
 
   mineObsidian: {
@@ -87,6 +91,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasObsidian": true,
     },
     cooldown: 25,
+    upgrade_key: "mineObsidian",
   },
 
   mineAdamant: {
@@ -104,6 +109,7 @@ export const caveMineActions: Record<string, Action> = {
       "story.seen.hasAdamant": true,
     },
     cooldown: 30,
+    upgrade_key: "mineAdamant",
   },
 };
 
