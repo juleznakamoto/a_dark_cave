@@ -98,7 +98,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   // Get upgrade level for this button
   const state = useGameStore();
-  const actionId = testId?.replace("button-", "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "";
   const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
   const upgradeLevel = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]).level : 0;
 
