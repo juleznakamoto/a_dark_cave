@@ -61,13 +61,13 @@ export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 1, clicksRequired: 15, bonus: 10},
   { level: 2, clicksRequired: 30, bonus: 20},
   { level: 3, clicksRequired: 60, bonus: 30},
-  { level: 4, clicksRequired: 135, bonus: 40},
-  { level: 5, clicksRequired: 1, bonus: 50},
-  { level: 6, clicksRequired: 1, bonus: 60},
-  { level: 7, clicksRequired: 1, bonus: 70},
-  { level: 8, clicksRequired: 1, bonus: 80},
-  { level: 9, clicksRequired: 1, bonus: 90},
-  { level: 10, clicksRequired: 1, bonus: 100},
+  { level: 4, clicksRequired: 105, bonus: 40},
+  { level: 5, clicksRequired: 165, bonus: 50},
+  { level: 6, clicksRequired: 230, bonus: 60},
+  { level: 7, clicksRequired: 320, bonus: 70},
+  { level: 8, clicksRequired: 425, bonus: 80},
+  { level: 9, clicksRequired: 530, bonus: 90},
+  { level: 10, clicksRequired: 650, bonus: 100},
 ];
 
 // Chop wood upgrade levels
@@ -92,12 +92,12 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 2, clicksRequired: 21, bonus: 10},
   { level: 3, clicksRequired: 33, bonus: 15},
   { level: 4, clicksRequired: 63, bonus: 20},
-  { level: 5, clicksRequired: 1, bonus: 25},
-  { level: 6, clicksRequired: 60, bonus: 30},
-  { level: 7, clicksRequired: 70, bonus: 35},
-  { level: 8, clicksRequired: 80, bonus: 40},
-  { level: 9, clicksRequired: 90, bonus: 45},
-  { level: 10, clicksRequired: 100, bonus: 50},
+  { level: 5, clicksRequired: 87, bonus: 25},
+  { level: 6, clicksRequired: 112, bonus: 30},
+  { level: 7, clicksRequired: 138, bonus: 35},
+  { level: 8, clicksRequired: 165, bonus: 40},
+  { level: 9, clicksRequired: 193, bonus: 45},
+  { level: 10, clicksRequired: 222, bonus: 50},
 ];
 
 // Get the appropriate upgrade levels for a given key
