@@ -264,7 +264,7 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 50,
     },
     effects: {
-      "resources.obsidian": "random(5,10)",
+      "resources.obsidian": "random(1,10)",
       "resources.adamant": "random(1,5)",
       "resources.silver": "random(5,25)",
       "resources.gold": "random(1,5)",
@@ -286,8 +286,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 250,
     },
     effects: {
-      "resources.obsidian": "random(10,15)",
-      "resources.adamant": "random(5,10)",
+      "resources.obsidian": "random(5,15)",
+      "resources.adamant": "random(1,10)",
       "resources.moonstone": "random(1,3)",
       "resources.silver": "random(5,30)",
       "resources.gold": "random(1,10)",
@@ -308,8 +308,8 @@ export const caveExploreActions: Record<string, Action> = {
       "resources.food": 500,
     },
     effects: {
-      "resources.obsidian": "random(15,20)",
-      "resources.adamant": "random(10,15)",
+      "resources.obsidian": "random(5,20)",
+      "resources.adamant": "random(5,15)",
       "resources.moonstone": "random(1,5)",
       "resources.silver": "random(10,40)",
       "resources.gold": "random(5,10)",

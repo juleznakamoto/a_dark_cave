@@ -17,8 +17,8 @@ const FOURTH_WAVE_MESSAGE =
 const FIFTH_WAVE_MESSAGE =
   "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.";
 
-const VICTORY_MESSAGE = (goldReward: number) =>
-  `Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours! You claim ${goldReward} gold from the fallen creatures.`;
+const VICTORY_MESSAGE = (silverReward: number) =>
+  `Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours! You claim ${silverReward} silver from the fallen creatures.`;
 
 function createDefeatMessage(
   casualties: number,
@@ -147,7 +147,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 50,
+              silver: state.resources.silver + 200,
             },
             story: {
               ...state.story,
@@ -156,7 +156,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 firstWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(50),
+            _logMessage: VICTORY_MESSAGE(200),
           }),
           onDefeat: () => handleDefeat(state, 1, 5),
         },
@@ -198,7 +198,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 75,
+              silver: state.resources.silver + 300,
             },
             story: {
               ...state.story,
@@ -207,7 +207,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(75),
+            _logMessage: VICTORY_MESSAGE(300),
           }),
           onDefeat: () => handleDefeat(state, 2, 10),
         },
@@ -251,7 +251,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 100,
+              silver: state.resources.silver + 400,
             },
             story: {
               ...state.story,
@@ -260,7 +260,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(100),
+            _logMessage: VICTORY_MESSAGE(400),
           }),
           onDefeat: () => handleDefeat(state, 3, 15),
         },
@@ -304,7 +304,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 150,
+              silver: state.resources.silver + 500,
             },
             story: {
               ...state.story,
@@ -313,7 +313,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(150),
+            _logMessage: VICTORY_MESSAGE(500),
           }),
           onDefeat: () => handleDefeat(state, 4, 20),
         },
@@ -350,7 +350,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           onVictory: () => ({
             resources: {
               ...state.resources,
-              gold: state.resources.gold + 200,
+              silver: state.resources.silver + 1000,
             },
             story: {
               ...state.story,
@@ -360,7 +360,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 200 gold from the fallen creatures.",
+              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 1000 silver from the fallen creatures.",
           }),
           onDefeat: () => handleDefeat(state, 5, 25),
         },
