@@ -344,7 +344,7 @@ export const getAllActionBonuses = (
 
   // Convert to array and format
   return Array.from(bonusMap.entries())
-    .filter(([actionId]) => actionId !== "steelForger") // Exclude forge from bonus display
+    .filter(([actionId]) => actionId !== "steelForger" && actionId !== "hunter") // Exclude forge and hunter from bonus display
     .map(([actionId, bonus]) => {
       const percentBonus = Math.round((bonus.multiplier - 1) * 100);
       const label =
