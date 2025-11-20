@@ -1,12 +1,12 @@
 import { GameState } from "@shared/schema";
 import { shopItems } from "@shared/shopItems";
+import { capitalizeWords } from "@/lib/utils";
 import {
   getActionBonuses,
   getAllActionBonuses,
   getTotalMadness,
   getTotalKnowledge,
 } from "./effectsCalculation";
-import { capitalizeWords } from "@/lib/utils";
 import {
   ACTION_TO_UPGRADE_KEY,
   getButtonUpgradeInfo,
