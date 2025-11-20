@@ -7,6 +7,7 @@ import {
   ActionBonuses,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
+import { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } from "../buttonUpgrades";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -343,7 +344,6 @@ export const getAllActionBonuses = (
   });
 
   // Add button upgrade bonuses
-  const { ACTION_TO_UPGRADE_KEY, getUpgradeBonus } = require("../buttonUpgrades");
   Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
     if (upgradeKey) {
       const bonus = getUpgradeBonus(upgradeKey, state);
