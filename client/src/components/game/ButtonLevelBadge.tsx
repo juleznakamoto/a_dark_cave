@@ -36,7 +36,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
           }}
         >
           <div
-            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-gradient-to-br from-amber-500 to-orange-600 dark:from-amber-400 dark:to-orange-500 text-white dark:text-gray-900 rounded-full text-[10px] font-medium shadow-lg border border-amber-300 dark:border-amber-600 cursor-help z-1"
+            className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-gradient-to-br from-gray-800 to-gray-900 dark:from-amber-400 rounded-full text-[10px] font-medium shadow-lg border border-gray-400 cursor-help z-1"
             data-testid={`level-badge-${upgradeKey}`}
           >
             {info.level}
