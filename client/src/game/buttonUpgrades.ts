@@ -23,7 +23,7 @@ export interface UpgradeLevel {
   label?: string; // Optional label for display
 }
 
-export const MAX_UPGRADE_LEVEL = 8;
+export const MAX_UPGRADE_LEVEL = 10;
 
 // Default upgrade levels (for most actions)
 export const UPGRADE_LEVELS: UpgradeLevel[] = [
@@ -35,7 +35,9 @@ export const UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 5, clicksRequired: 400, bonus: 50},
   { level: 6, clicksRequired: 800, bonus: 60},
   { level: 7, clicksRequired: 1600, bonus: 70},
-  { level: 8, clicksRequired: 3200, bonus: 40},
+  { level: 8, clicksRequired: 3200, bonus: 80},
+  { level: 9, clicksRequired: 6400, bonus: 90},
+  { level: 10, clicksRequired: 12800, bonus: 100},
 ];
 
 // Mining upgrade levels (faster progression)
@@ -49,6 +51,8 @@ export const MINE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 6, clicksRequired: 240, bonus: 30, label: "" },
   { level: 7, clicksRequired: 450, bonus: 35, label: "" },
   { level: 8, clicksRequired: 900, bonus: 40, label: "" },
+  { level: 9, clicksRequired: 1800, bonus: 45, label: "" },
+  { level: 10, clicksRequired: 3600, bonus: 50, label: "" },
 ];
 
 // Hunt upgrade levels
@@ -62,6 +66,8 @@ export const HUNT_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 6, clicksRequired: 320, bonus: 30, label: "" },
   { level: 7, clicksRequired: 600, bonus: 35, label: "" },
   { level: 8, clicksRequired: 1200, bonus: 40, label: "" },
+  { level: 9, clicksRequired: 2400, bonus: 45, label: "" },
+  { level: 10, clicksRequired: 4800, bonus: 50, label: "" },
 ];
 
 // Chop wood upgrade levels
@@ -75,6 +81,8 @@ export const CHOP_WOOD_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 6, clicksRequired: 320, bonus: 30, label: "" },
   { level: 7, clicksRequired: 600, bonus: 35, label: "" },
   { level: 8, clicksRequired: 1200, bonus: 40, label: "" },
+  { level: 9, clicksRequired: 2400, bonus: 45, label: "" },
+  { level: 10, clicksRequired: 4800, bonus: 50, label: "" },
 ];
 
 // Cave explore upgrade levels
@@ -88,6 +96,8 @@ export const CAVE_EXPLORE_UPGRADE_LEVELS: UpgradeLevel[] = [
   { level: 6, clicksRequired: 500, bonus: 30, label: "" },
   { level: 7, clicksRequired: 900, bonus: 35, label: "" },
   { level: 8, clicksRequired: 1800, bonus: 40, label: "" },
+  { level: 9, clicksRequired: 3600, bonus: 45, label: "" },
+  { level: 10, clicksRequired: 7200, bonus: 50, label: "" },
 ];
 
 // Get the appropriate upgrade levels for a given key

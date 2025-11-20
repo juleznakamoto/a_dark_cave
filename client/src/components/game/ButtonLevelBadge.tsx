@@ -41,7 +41,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
             className="absolute -top-[7px] right-[-7px] flex items-center justify-center w-4 h-4 bg-red-900 rounded-full text-[10px] font-medium cursor-pointer z-1 opacity-70 hover:opacity-100 transition-opacity"
             data-testid={`level-badge-${upgradeKey}`}
           >
-            {info.level}
+            ⤉
           </div>
         </TooltipTrigger>
         <TooltipContent
