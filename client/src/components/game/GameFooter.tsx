@@ -170,8 +170,9 @@ export default function GameFooter() {
                 className="px-1 py-1 text-xs hover relative"
               >
                 Sign In/Up
-                {/* Force show for testing */}
-                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                {authNotificationVisible && !authNotificationSeen && (
+                  <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                )}
               </Button>
             )}
 
@@ -197,8 +198,10 @@ export default function GameFooter() {
               className="px-1 py-1 text-xs hover relative"
             >
               Shop
-              {/* Force show for testing */}
-              <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              {((shopNotificationVisible && !shopNotificationSeen) || 
+                (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen)) && (
+                <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              )}
             </Button>
             <Button
               variant="ghost"
@@ -212,8 +215,9 @@ export default function GameFooter() {
               className="px-1 py-1 text-xs hover relative"
             >
               Donate
-              {/* Force show for testing */}
-              <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              {story.seen.mysteriousNoteReceived && !mysteriousNoteDonateNotificationSeen && (
+                <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              )}
             </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (

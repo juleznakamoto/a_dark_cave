@@ -61,18 +61,18 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 800 && // 3 hours in seconds
+      state.playTime >= 10800 && // 3 hours in seconds
       state.buildings.darkEstate >= 1 &&
-      // !state.story.seen.mysteriousNoteReceived &&
+      !state.story.seen.mysteriousNoteReceived &&
       !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "A Mysterious Note",
     message:
       "As dusk settles, you find a slip of paper on the doorstep of your estate. Someone has written a message in a careful, strangely elegant hand: \n \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
     triggered: false,
     priority: 5,
-    repeatable: true,
+    repeatable: false,
     choices: [
       {
         id: "throw_away",
