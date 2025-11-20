@@ -171,7 +171,7 @@ export default function GameFooter() {
               >
                 Sign In/Up
                 {/* Force show for testing */}
-                <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               </Button>
             )}
 
@@ -198,7 +198,7 @@ export default function GameFooter() {
             >
               Shop
               {/* Force show for testing */}
-              <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
             </Button>
             <Button
               variant="ghost"
@@ -213,7 +213,7 @@ export default function GameFooter() {
             >
               Donate
               {/* Force show for testing */}
-              <span className="absolute -top-[-4px] -right-[-4px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
             </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (
