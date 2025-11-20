@@ -174,6 +174,7 @@ export const gameStateSchema = z.object({
       ravens_mark_enhanced: z.boolean().default(false),
       ashen_embrace_enhanced: z.boolean().default(false),
       forests_grace: z.boolean().default(false),
+      sharp_aim: z.boolean().default(false),
     })
     .default({}),
   buildings: z
