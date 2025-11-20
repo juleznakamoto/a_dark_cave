@@ -58,7 +58,6 @@ interface GameStore extends GameState {
   // Notification state for mysterious note
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
-  hasMadeNonFreePurchase: boolean; // Track if player has made any non-free shop purchase
 
   // Auth state
   isUserSignedIn: boolean;
@@ -267,7 +266,6 @@ const defaultGameState: GameState = {
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
-  hasMadeNonFreePurchase: false,
 
   // Auth state
   isUserSignedIn: false,
@@ -363,7 +361,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
-  hasMadeNonFreePurchase: false,
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -612,7 +609,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       authNotificationVisible: false,
       mysteriousNoteShopNotificationSeen: false,
       mysteriousNoteDonateNotificationSeen: false,
-      hasMadeNonFreePurchase: false,
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
       idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
@@ -665,7 +661,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
         mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
-        hasMadeNonFreePurchase: savedState.hasMadeNonFreePurchase !== undefined ? savedState.hasMadeNonFreePurchase : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
