@@ -219,8 +219,7 @@ export const getResourceGainTooltip = (
   });
 
   // Add cave explore multiplier info if applicable
-  const isCaveAction = isCaveExploreAction(actionId)
-  if (isCaveAction && caveExploreMultiplier > 1) {
+  if (isCaveExploreAction(actionId) && caveExploreMultiplier > 1) {
     tooltipLines.push(
       <div key="cave-explore-bonus" className="text-muted-foreground">
         Cave Explore: +{Math.round((caveExploreMultiplier - 1) * 100)}%
