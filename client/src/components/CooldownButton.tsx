@@ -98,6 +98,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   // Get upgrade level for this button
   const state = useGameStore();
+  const actionId = testId?.replace("button-", "").replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "";
   const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
   const upgradeLevel = upgradeKey ? getButtonUpgradeInfo(upgradeKey, state.buttonUpgrades[upgradeKey]).level : 0;
 
@@ -143,76 +144,59 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     return <div className="relative inline-block">{button}</div>;
   }
 
-  // Check for level up
-  useEffect(() => {
-    if (actionId && isUpgradableAction(actionId)) {
-      const currentClicks = gameState.buttonUpgrades[actionId as keyof typeof gameState.buttonUpgrades] || 0;
-      const levelUpInfo = checkLevelUp(actionId as any, currentClicks - 1, currentClicks);
-
-      if (levelUpInfo?.leveledUp) {
-        // Show level up notification
-        setShowLevelUp(true);
-        setLevelUpInfo(levelUpInfo);
-
-        // Hide after 3 seconds
-        setTimeout(() => {
-          setShowLevelUp(false);
-        }, 3000);
-      }
-    }
-  }, [actionId, gameState.buttonUpgrades]);
-
-  // Get current upgrade info for badge display
-  const upgradeInfo = actionId && isUpgradableAction(actionId)
-    ? getButtonUpgradeInfo(
-        actionId as keyof typeof gameState.buttonUpgrades,
-        gameState.buttonUpgrades[actionId as keyof typeof gameState.buttonUpgrades] || 0
-      )
-    : null;
-
   return (
-    <TooltipProvider>
-      <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={300}>
-        <TooltipTrigger asChild>
-          <div className="relative inline-block">
-            {/* Upgrade Level Badge */}
-            {upgradeInfo && upgradeInfo.level > 0 && (
-              <div className="absolute -top-1.5 -right-1.5 z-10 flex items-center justify-center w-5 h-5 text-[10px] font-bold text-white bg-blue-600 border-2 border-background rounded-full">
-                {upgradeInfo.level}
-              </div>
-            )}
-            <Button
-              ref={ref}
-              onClick={handleClick}
-              disabled={isButtonDisabled}
-              variant={variant}
-              size={size}
-              className={`relative overflow-hidden transition-all duration-200 select-none ${
-                isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
-              } ${className}`}
-              data-testid={testId}
-              {...props}
-            >
-              {/* Button content */}
-              <span className="relative">{children}</span>
+    <div
+      className="relative inline-block"
+      onClick={mobileTooltip.isMobile ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) return;
 
-              {/* Cooldown progress overlay */}
-              {isCoolingDown && (
-                <div
-                  className="absolute inset-0 bg-white/15"
-                  style={{
-                    width: `${overlayWidth}%`,
-                    left: 0,
-                    transition: isFirstRenderRef.current ? "none" : "width 0.3s ease-out",
-                  }}
-                />
-              )}
-            </Button>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>{tooltip}</TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
+        // Only show tooltip if button is disabled
+        if (isButtonDisabled) {
+          e.stopPropagation();
+          mobileTooltip.handleWrapperClick(buttonId, isButtonDisabled, isCoolingDown, e);
+        }
+      } : undefined}
+      onMouseDown={mobileTooltip.isMobile ? (e) => {
+        // Start hold timer for tooltip (will show for both active and inactive buttons if held)
+        mobileTooltip.handleMouseDown(buttonId, isButtonDisabled, isCoolingDown, e);
+      } : undefined}
+      onMouseUp={mobileTooltip.isMobile ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        mobileTooltip.handleMouseUp(buttonId, isButtonDisabled, onClick, e);
+      } : undefined}
+      onTouchStart={mobileTooltip.isMobile ? (e) => {
+        // Start hold timer for tooltip (will show for both active and inactive buttons if held)
+        mobileTooltip.handleTouchStart(buttonId, isButtonDisabled, isCoolingDown, e);
+      } : undefined}
+      onTouchEnd={mobileTooltip.isMobile ? (e) => {
+        // Don't show tooltip if action was just executed
+        if (actionExecutedRef.current) {
+          e.preventDefault();
+          e.stopPropagation();
+          return;
+        }
+
+        mobileTooltip.handleTouchEnd(buttonId, isButtonDisabled, onClick, e);
+      } : undefined}
+    >
+      <TooltipProvider>
+        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={300}>
+          <TooltipTrigger asChild>
+            <span className="inline-block">
+              {button}
+            </span>
+          </TooltipTrigger>
+          <TooltipContent>{tooltip}</TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 });
 

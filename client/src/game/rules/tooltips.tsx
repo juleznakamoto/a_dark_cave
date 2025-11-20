@@ -1,31 +1,7 @@
 import { GameState } from "@shared/schema";
-import { shopItems } from "@shared/shopItems";
+import { getActionBonuses } from "./effectsCalculation";
 import { capitalizeWords } from "@/lib/utils";
-import {
-  getActionBonuses,
-  getAllActionBonuses,
-  getTotalMadness,
-  getTotalKnowledge,
-} from "./effectsCalculation";
-import {
-  ACTION_TO_UPGRADE_KEY,
-  getButtonUpgradeInfo,
-  UPGRADE_KEY_NAMES,
-} from "@/game/buttonUpgrades";
-import { gameActions } from "./index";
-
-// Helper to check if an action is a cave exploration action
-const isCaveExploreAction = (actionId: string): boolean => {
-  const caveExploreActions = [
-    "exploreCave",
-    "ventureDeeper",
-    "descendFurther",
-    "exploreRuins",
-    "exploreTemple",
-    "exploreCitadel",
-  ];
-  return caveExploreActions.includes(actionId);
-};
+import { ACTION_TO_UPGRADE_KEY, getButtonUpgradeInfo, UPGRADE_KEY_NAMES } from "@/game/buttonUpgrades";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
@@ -106,7 +82,15 @@ export const getResourceGainTooltip = (
     });
   } else {
     // Check if this is a cave exploration action
-    const isCaveAction = isCaveExploreAction(actionId);
+    const caveExploreActions = [
+      "exploreCave",
+      "ventureDeeper",
+      "descendFurther",
+      "exploreRuins",
+      "exploreTemple",
+      "exploreCitadel",
+    ];
+    const isCaveExploreAction = caveExploreActions.includes(actionId);
 
     // Parse effects for resource gains (normal actions)
     Object.entries(action.effects).forEach(([key, value]) => {
@@ -132,7 +116,7 @@ export const getResourceGainTooltip = (
             }
 
             // Apply cave exploration multiplier for cave explore actions
-            if (isCaveAction && bonuses.caveExploreMultiplier > 1) {
+            if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
               min = Math.floor(min * bonuses.caveExploreMultiplier);
               max = Math.floor(max * bonuses.caveExploreMultiplier);
             }
@@ -153,7 +137,7 @@ export const getResourceGainTooltip = (
           }
 
           // Apply cave exploration multiplier for cave explore actions
-          if (isCaveAction && bonuses.caveExploreMultiplier > 1) {
+          if (isCaveExploreAction && bonuses.caveExploreMultiplier > 1) {
             amount = Math.floor(amount * bonuses.caveExploreMultiplier);
           }
 
@@ -169,8 +153,8 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] || 0) >=
-              value;
+              (state.resources[resource as keyof typeof state.resources] ||
+                0) >= value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
@@ -219,7 +203,7 @@ export const getResourceGainTooltip = (
   });
 
   // Add cave explore multiplier info if applicable
-  if (isCaveExploreAction(actionId) && caveExploreMultiplier > 1) {
+  if (isCaveExploreAction && caveExploreMultiplier > 1) {
     tooltipLines.push(
       <div key="cave-explore-bonus" className="text-muted-foreground">
         Cave Explore: +{Math.round((caveExploreMultiplier - 1) * 100)}%
@@ -418,3 +402,14 @@ export const eventChoiceCostTooltip = {
       .join("\n");
   },
 };
+
+// Helper function to capitalize the first letter of each word in a string
+// Assuming this function is defined elsewhere and available in scope.
+// If not, it would need to be added. For example:
+function capitalizeWords(str: string): string {
+  return str
+    .toLowerCase()
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+}
