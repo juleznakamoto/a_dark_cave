@@ -251,9 +251,9 @@ export function useExplosionEffect() {
     // Clean up old particles
     setTimeout(() => {
       const now = Date.now();
-      setFireParticles((prev) => prev.filter((p) => now - p.createdAt < 3000));
-      setParticles((prev) => prev.filter((p) => now - p.createdAt < 3000));
-    }, 3000);
+      setFireParticles((prev) => prev.filter((p) => now - p.createdAt < 5000));
+      setParticles((prev) => prev.filter((p) => now - p.createdAt < 5000));
+    }, 5000);
   };
 
   return {
