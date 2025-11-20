@@ -171,31 +171,31 @@ export const recurringEvents: Record<string, GameEvent> = {
     },
   },
 
-  fireStorm: {
-    id: "fireStorm",
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 5,
-    triggerType: "resource",
-    timeProbability: 80,
-    repeatable: false,
-    message:
-      "A fire sweeps through the village in the night, bringing death and destruction.",
-    triggered: false,
-    priority: 2,
-    effect: (state: GameState) => {
-      const hutsDestroyed = 1;
-      const villagersKilled = hutsDestroyed;
+  // fireStorm: {
+  //   id: "fireStorm",
+  //   condition: (state: GameState) =>
+  //     state.buildings.woodenHut >= 6 && state.buildings.stoneHut <= 5,
+  //   triggerType: "resource",
+  //   timeProbability: 80,
+  //   repeatable: false,
+  //   message:
+  //     "A fire sweeps through the village in the night, bringing death and destruction.",
+  //   triggered: false,
+  //   priority: 2,
+  //   effect: (state: GameState) => {
+  //     const hutsDestroyed = 1;
+  //     const villagersKilled = hutsDestroyed;
 
-      // Use the centralized killVillagers function
-      const deathResult = killVillagers(state, villagersKilled);
+  //     // Use the centralized killVillagers function
+  //     const deathResult = killVillagers(state, villagersKilled);
 
-      return {
-        ...deathResult,
-        buildings: {
-          ...state.buildings,
-          woodenHut: Math.max(0, state.buildings.woodenHut - hutsDestroyed),
-        },
-      };
-    },
-  },
+  //     return {
+  //       ...deathResult,
+  //       buildings: {
+  //         ...state.buildings,
+  //         woodenHut: Math.max(0, state.buildings.woodenHut - hutsDestroyed),
+  //       },
+  //     };
+  //   },
+  // },
 };

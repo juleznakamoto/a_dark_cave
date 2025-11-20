@@ -56,13 +56,12 @@ export const storyEvents: Record<string, GameEvent> = {
     }),
   },
 
-  wizardArrives: {
 
 
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 10800 && // 3 hours in seconds
+      state.playTime >= 800 && // 3 hours in seconds
       state.buildings.darkEstate >= 1 &&
       !state.story.seen.mysteriousNoteReceived &&
       // Check if player has bought nothing from shop (excluding free items)
@@ -71,7 +70,7 @@ export const storyEvents: Record<string, GameEvent> = {
         return key === 'boost_mode';
       }),
     triggerType: "time",
-    timeProbability: 5,
+    timeProbability: 0.05,
     title: "A Mysterious Note",
     message:
       "As dusk settles, you notice a slip of paper resting on the doorstep of your estate. Someone has written a message in a careful, strangely elegant hand: \"I hope you're enjoying your time here. If you do, please consider supporting the journey ahead, either by visiting the shop or donating. Your help keeps this world alive and free to enjoy. Thank you!\"",
@@ -132,6 +131,8 @@ export const storyEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  wizardArrives: {
 
     id: "wizardArrives",
     condition: (state: GameState) =>

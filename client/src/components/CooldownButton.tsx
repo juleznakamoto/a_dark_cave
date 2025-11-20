@@ -173,7 +173,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } : undefined}
     >
       <TooltipProvider>
-        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={0}>
+        <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(buttonId) : undefined} delayDuration={300}>
           <TooltipTrigger asChild>
             <span className="inline-block">
               {button}
