@@ -7,6 +7,7 @@ import {
   ActionBonuses,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
+import { getButtonUpgradeBonus } from "@/game/buttonUpgrades";
 
 // Tool hierarchy definitions
 const AXE_HIERARCHY = [
@@ -227,7 +228,6 @@ export const getActionBonuses = (
   const resourceBonus: Record<string, number> = {};
 
   // Add button upgrade bonus
-  const { getButtonUpgradeBonus } = require("@/game/buttonUpgrades");
   const upgradeBonus = getButtonUpgradeBonus(actionId, state);
   if (upgradeBonus > 0) {
     resourceMultiplier += upgradeBonus;
