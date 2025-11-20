@@ -1268,6 +1268,72 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  masterArcher: {
+    id: "masterArcher",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 6 &&
+      state.resources.food >= 2500 &&
+      !state.story.seen.masterArcherEvent &&
+      !state.blessings.sharp_aim,
+    triggerType: "resource",
+    timeProbability: 15,
+    title: "The Master Archer",
+    message:
+      "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "acceptArcherHelp",
+        label: "Pay 2500 food",
+        cost: "2500 food",
+        effect: (state: GameState) => {
+          if (state.resources.food < 2500) {
+            return {};
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              food: Math.max(0, state.resources.food - 2500),
+            },
+            blessings: {
+              ...state.blessings,
+              sharp_aim: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                masterArcherEvent: true,
+              },
+            },
+            _logMessage:
+              "The master archer begins training your hunters immediately. Within days, their aim improves dramatically, and hunts yield more food than before.",
+          };
+        },
+      },
+      {
+        id: "refuseArcherHelp",
+        label: "Refuse his offer",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                masterArcherEvent: true,
+              },
+            },
+            _logMessage:
+              "The archer nods understandingly. 'I'll return in case you change your mind,' he says before disappearing into the forest.",
+          };
+        },
+      },
+    ],
+  },
+
   mysteriousWoman: {
     id: "mysteriousWoman",
     condition: (state: GameState) =>

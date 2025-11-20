@@ -998,6 +998,21 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 
+  sharp_aim: {
+    id: "sharp_aim",
+    name: "Sharp Aim",
+    description: "Your hunters' aim is improved",
+    bonuses: {
+      actionBonuses: {
+        hunter: {
+          resourceBonus: {
+            food: 5,
+          },
+        },
+      },
+    },
+  },
+
   // Enhanced blessings
   dagons_gift_enhanced: {
     id: "dagons_gift_enhanced",
