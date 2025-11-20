@@ -109,6 +109,11 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             if (error) {
               console.error('Error saving purchase to Supabase:', error);
             }
+
+            // Set hasMadeNonFreePurchase flag if this is a paid item
+            if (item.price > 0) {
+              useGameStore.setState({ hasMadeNonFreePurchase: true });
+            }
           }
         } catch (error) {
           console.error('Exception saving purchase to Supabase:', error);
@@ -244,6 +249,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Add to purchased items list
         setPurchasedItems((prev) => [...prev, itemId]);
+
+        // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
+        if (item.price > 0) {
+          useGameStore.setState({ hasMadeNonFreePurchase: true });
+        }
 
         // Show success message
         gameState.addLogEntry({
