@@ -1,12 +1,12 @@
 import { GameState } from "@shared/schema";
-import { getActionBonuses } from "./effectsCalculation";
+import { getActionBonuses, getTotalMadness } from "./effectsCalculation";
 import { capitalizeWords } from "@/lib/utils";
 import {
   ACTION_TO_UPGRADE_KEY,
   getButtonUpgradeInfo,
   UPGRADE_KEY_NAMES,
 } from "@/game/buttonUpgrades";
-import { getTotalMadness } from "@/game/rules/effectsCalculation";
+import { gameActions } from "./index";
 
 export interface TooltipConfig {
   getContent: (state: GameState) => React.ReactNode | string;
