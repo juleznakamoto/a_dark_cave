@@ -86,23 +86,31 @@ import { createServer } from "http";
   });
 
   app.post("/api/payment/create-checkout-session", async (req, res) => {
+    console.log('📍 Checkpoint session endpoint hit');
+    console.log('📍 Headers:', req.headers);
+    console.log('📍 Body:', req.body);
+    
     try {
       const { itemId } = req.body;
       
       if (!itemId) {
+        console.log('❌ No itemId provided');
         return res.status(400).json({ error: 'Item ID is required' });
       }
       
-      console.log('Creating checkout session for itemId:', itemId);
+      console.log('✅ Creating checkout session for itemId:', itemId);
       const result = await createCheckoutSession(itemId);
       
       if (!result || !result.url) {
+        console.log('❌ No URL in result:', result);
         return res.status(500).json({ error: 'Failed to create checkout session' });
       }
       
+      console.log('✅ Checkout session created successfully:', result.url);
+      res.setHeader('Content-Type', 'application/json');
       res.json(result);
     } catch (error: any) {
-      console.error('Error creating checkout session:', error);
+      console.error('❌ Error creating checkout session:', error);
       res.status(500).json({ error: error.message || 'Internal server error' });
     }
   });
