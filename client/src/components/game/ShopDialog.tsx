@@ -556,7 +556,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {item.description}
                         </p>
                       </CardContent>
-                      <CardFooter className="flex-col gap-2 pt-4">
+                      <CardFooter className="flex-col gap-2">
                         <Button
                           onClick={() => handlePurchaseClick(item.id)}
                           disabled={
