@@ -8,7 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { getActionCostBreakdown } from "@/game/rules";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -28,26 +27,6 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
 }
 
-// Helper function to extract resource IDs from action costs using existing game rules
-const extractResourcesFromAction = (actionId: string, state: any): string[] => {
-  const costBreakdown = getActionCostBreakdown(actionId, state);
-  const resources: string[] = [];
-
-  // Extract resource names from the cost breakdown text
-  // The text format is like "-5 Wood", "-10 Stone", etc.
-  costBreakdown.forEach(({ text }) => {
-    const match = text.match(/-\d+\s+(.+)/);
-    if (match) {
-      const resourceName = match[1];
-      // Convert "Bone Totem" back to "bone_totem" for state key
-      const resourceKey = resourceName.toLowerCase().replace(/\s+/g, '_');
-      resources.push(resourceKey);
-    }
-  });
-
-  return [...new Set(resources)]; // Remove duplicates
-};
-
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   function CooldownButton(
     {
@@ -64,7 +43,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, cooldownDurations, setHoveredResourceCosts, gameState } = useGameStore();
+  const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -100,20 +79,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const actionExecutedRef = useRef<boolean>(false);
 
-  // Extract resources from action definition (only if gameState is available)
-  const hoveredResources = gameState ? extractResourcesFromAction(actionId, gameState) : [];
-
-
-  const handleMouseEnter = () => {
-    if (hoveredResources.length > 0) {
-      setHoveredResourceCosts(hoveredResources);
-    }
-  };
-
-  const handleMouseLeave = () => {
-    setHoveredResourceCosts([]);
-  };
-
   const handleClick = (e: React.MouseEvent) => {
     if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
@@ -141,8 +106,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
       } ${className}`}
       data-testid={testId}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
       {...props}
     >
       {/* Button content */}

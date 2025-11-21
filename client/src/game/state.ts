@@ -100,7 +100,6 @@ interface GameStore extends GameState {
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
-  setHoveredResourceCosts: (resourceIds: string[]) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
@@ -246,7 +245,6 @@ const defaultGameState: GameState = {
     integrity: 0,
   },
   hoveredTooltips: {},
-  hoveredResourceCosts: [],
   feastState: {
     isActive: false,
     endTime: 0,
@@ -413,10 +411,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [tooltipId]: value,
       },
     }));
-  },
-
-  setHoveredResourceCosts: (resourceIds: string[]) => {
-    set({ hoveredResourceCosts: resourceIds });
   },
 
   initialize: (initialState?: Partial<GameState>) => {
