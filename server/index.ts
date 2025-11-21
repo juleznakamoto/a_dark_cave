@@ -63,6 +63,14 @@ import { createServer } from "http";
 (async () => {
   const server = createServer(app);
 
+  // Log all incoming requests to debug routing
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api/payment')) {
+      console.log(`🔵 Incoming request: ${req.method} ${req.path}`);
+    }
+    next();
+  });
+
   // Payment endpoints - MUST be defined before Vite middleware
   app.post("/api/payment/create-intent", async (req, res) => {
     try {

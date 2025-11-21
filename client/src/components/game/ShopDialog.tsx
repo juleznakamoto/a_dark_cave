@@ -169,49 +169,6 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
       </Button>
-
-      <div className="pt-3 border-t mt-3">
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          onClick={async (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            try {
-              const response = await fetch("/api/payment/create-checkout-session", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ itemId }),
-              });
-
-              const contentType = response.headers.get("content-type");
-              if (!contentType || !contentType.includes("application/json")) {
-                throw new Error("Server did not return JSON. Check server logs.");
-              }
-
-              if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
-              }
-
-              const data = await response.json();
-              if (data.url) {
-                window.location.href = data.url;
-              } else {
-                throw new Error("No checkout URL received");
-              }
-            } catch (error) {
-              console.error("Error creating checkout session:", error);
-              setErrorMessage(error instanceof Error ? error.message : "Failed to create checkout session. Please try again.");
-            }
-          }}
-          className="w-full text-xs"
-        >
-          Checkout with Stripe
-        </Button>
-      </div>
     </form>
   );
 }
@@ -627,8 +584,49 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {!item.canPurchaseMultipleTimes &&
                           purchasedItems.includes(item.id)
                             ? "Already Purchased"
-                            : "Purchase"}
+                            : "Purchase with Card"}
                         </Button>
+                        
+                        {item.price > 0 && currentUser && (item.canPurchaseMultipleTimes || !purchasedItems.includes(item.id)) && (
+                          <Button
+                            onClick={async () => {
+                              try {
+                                console.log('🔴 CLIENT: Starting Stripe Checkout for', item.id);
+                                const response = await fetch("/api/payment/create-checkout-session", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ itemId: item.id }),
+                                });
+
+                                console.log('🔴 CLIENT: Response status:', response.status);
+                                console.log('🔴 CLIENT: Response headers:', Object.fromEntries(response.headers.entries()));
+
+                                const text = await response.text();
+                                console.log('🔴 CLIENT: Response body (raw):', text);
+
+                                const data = JSON.parse(text);
+                                if (data.url) {
+                                  window.location.href = data.url;
+                                } else {
+                                  throw new Error("No checkout URL received");
+                                }
+                              } catch (error) {
+                                console.error("🔴 CLIENT: Error:", error);
+                                gameState.addLogEntry({
+                                  id: `checkout-error-${Date.now()}`,
+                                  message: `Failed to create checkout session. Please try again.`,
+                                  timestamp: Date.now(),
+                                  type: "system",
+                                });
+                              }
+                            }}
+                            variant="outline"
+                            size="sm"
+                            className="w-full"
+                          >
+                            Checkout with Stripe
+                          </Button>
+                        )}
                       </CardFooter>
                     </Card>
                   ))}
