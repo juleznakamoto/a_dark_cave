@@ -63,7 +63,6 @@ export default function SidePanelSection({
   const isInitialRender = useRef(true);
   const gameState = useGameStore((state) => state);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
-  const hoveredResourceCosts = useGameStore((state) => state.hoveredResourceCosts || []);
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
@@ -300,8 +299,6 @@ export default function SidePanelSection({
       </span>
     );
 
-    const isResourceHovered = title === "Resources" && hoveredResourceCosts.includes(item.id);
-
     const itemContent = (
       <div
         data-testid={item.testId}
@@ -332,9 +329,7 @@ export default function SidePanelSection({
                   ? "text-red-800 font-bold"
                   : isMadness
                     ? madnessClasses
-                    : isResourceHovered
-                      ? "font-bold"
-                      : ""
+                    : ""
             }`}
           >
             {displayValue}

@@ -60,9 +60,6 @@ interface GameStore extends GameState {
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
 
-  // Hovered resource costs
-  hoveredResourceCosts: string[];
-
   // Auth state
   isUserSignedIn: boolean;
 
@@ -103,7 +100,6 @@ interface GameStore extends GameState {
   ) => void;
   setFlag: (flag: keyof GameState["flags"], value: boolean) => void;
   setHoveredTooltip: (tooltipId: string, value: boolean) => void;
-  setHoveredResourceCosts: (resources: string[]) => void;
   initialize: (state: GameState) => void;
   restartGame: () => void;
   loadGame: () => Promise<void>;
@@ -283,9 +279,6 @@ const defaultGameState: GameState = {
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
 
-  // Hovered resource costs
-  hoveredResourceCosts: [],
-
   // Auth state
   isUserSignedIn: false,
 
@@ -343,7 +336,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
   log: [],
-  hoveredResourceCosts: [],
   eventDialog: {
     isOpen: false,
     currentEvent: null,
@@ -419,10 +411,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         [tooltipId]: value,
       },
     }));
-  },
-
-  setHoveredResourceCosts: (resources: string[]) => {
-    set({ hoveredResourceCosts: resources });
   },
 
   initialize: (initialState?: Partial<GameState>) => {

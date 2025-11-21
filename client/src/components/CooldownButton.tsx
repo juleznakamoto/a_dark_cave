@@ -8,7 +8,6 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { gameActions } from "@/game/actions";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -28,42 +27,6 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
 }
 
-// Helper function to extract resource IDs from action costs
-const extractResourcesFromAction = (actionId: string): string[] => {
-  const action = gameActions[actionId];
-  if (!action?.cost) return [];
-
-  const resources: string[] = [];
-
-  // Handle action costs - extract resource keys
-  const processCosts = (costs: any) => {
-    if (!costs || typeof costs !== 'object') return;
-
-    for (const [path, _value] of Object.entries(costs)) {
-      if (path.startsWith('resources.')) {
-        const resourceId = path.split('.')[1];
-        resources.push(resourceId);
-      }
-    }
-  };
-
-  // Check if costs are tiered (numbered keys)
-  const costKeys = Object.keys(action.cost);
-  const hasTieredCost = costKeys.length > 0 && costKeys.every(key => !isNaN(Number(key)));
-
-  if (hasTieredCost) {
-    // Process all tiers
-    costKeys.forEach(tierKey => {
-      processCosts(action.cost[tierKey]);
-    });
-  } else {
-    // Process direct costs
-    processCosts(action.cost);
-  }
-
-  return [...new Set(resources)]; // Remove duplicates
-};
-
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   function CooldownButton(
     {
@@ -81,7 +44,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     ref
   ) {
   const { cooldowns, cooldownDurations } = useGameStore();
-  const setHoveredResourceCosts = useGameStore((state) => state.setHoveredResourceCosts);
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -132,23 +94,6 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const isButtonDisabled = disabled || isCoolingDown;
 
   const buttonId = testId || `button-${Math.random()}`;
-
-  // Extract resources from action definition
-  const hoveredResources = extractResourcesFromAction(actionId);
-
-  // Update store when hovering over button with resources
-  useEffect(() => {
-    if (hoveredResources.length > 0) {
-      setHoveredResourceCosts(hoveredResources);
-    } else {
-      setHoveredResourceCosts([]);
-    }
-
-    // Cleanup function to clear hovered costs when component unmounts or resources change
-    return () => {
-      setHoveredResourceCosts([]);
-    };
-  }, [hoveredResources, setHoveredResourceCosts]);
 
   const button = (
     <Button
