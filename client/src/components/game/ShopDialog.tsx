@@ -188,6 +188,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     id: string;
     email: string;
   } | null>(null);
+  const [showCheckoutChoice, setShowCheckoutChoice] = useState(false);
+  const [pendingItemId, setPendingItemId] = useState<string | null>(null);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
 
@@ -231,7 +233,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
   }, [isOpen]);
 
-  const handlePurchaseClick = async (itemId: string, useHostedCheckout = false) => {
+  const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
     // For free items, skip payment but save to Supabase
@@ -284,12 +286,22 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
+    // For paid items, show checkout choice modal
+    setPendingItemId(itemId);
+    setShowCheckoutChoice(true);
+  };
+
+  const handleCheckoutChoice = async (useHostedCheckout: boolean) => {
+    if (!pendingItemId) return;
+
+    setShowCheckoutChoice(false);
+
     // For paid items with hosted checkout, redirect to Stripe Checkout
     if (useHostedCheckout) {
       const response = await fetch("/api/payment/create-checkout-session", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
+        body: JSON.stringify({ itemId: pendingItemId }),
       });
 
       const { url } = await response.json();
@@ -303,12 +315,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemId }),
+      body: JSON.stringify({ itemId: pendingItemId }),
     });
 
     const { clientSecret } = await response.json();
     setClientSecret(clientSecret);
-    setSelectedItem(itemId);
+    setSelectedItem(pendingItemId);
+    setPendingItemId(null);
   };
 
   const handlePurchaseSuccess = async () => {
@@ -573,7 +586,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardContent>
                       <CardFooter className="flex-col gap-2">
                         <Button
-                          onClick={() => handlePurchaseClick(item.id, false)}
+                          onClick={() => handlePurchaseClick(item.id)}
                           disabled={
                             !currentUser ||
                             (!item.canPurchaseMultipleTimes &&
@@ -586,15 +599,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             ? "Already Purchased"
                             : "Purchase"}
                         </Button>
-                        {item.price > 0 && currentUser && (item.canPurchaseMultipleTimes || !purchasedItems.includes(item.id)) && (
-                          <Button
-                            onClick={() => handlePurchaseClick(item.id, true)}
-                            variant="outline"
-                            className="w-full"
-                          >
-                            Checkout with Stripe
-                          </Button>
-                        )}
                       </CardFooter>
                     </Card>
                   ))}
@@ -748,6 +752,45 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             <ScrollBar orientation="vertical" />
           </ScrollArea>
         ) : null}
+
+        {showCheckoutChoice && pendingItemId && (
+          <Dialog open={showCheckoutChoice} onOpenChange={() => setShowCheckoutChoice(false)}>
+            <DialogContent className="max-w-md">
+              <DialogHeader>
+                <DialogTitle>Choose Checkout Method</DialogTitle>
+                <DialogDescription>
+                  Select how you'd like to complete your purchase
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-3 pt-4">
+                <Button
+                  onClick={() => handleCheckoutChoice(false)}
+                  className="w-full"
+                  variant="default"
+                >
+                  Embedded Checkout
+                </Button>
+                <Button
+                  onClick={() => handleCheckoutChoice(true)}
+                  className="w-full"
+                  variant="outline"
+                >
+                  Checkout with Stripe
+                </Button>
+                <Button
+                  onClick={() => {
+                    setShowCheckoutChoice(false);
+                    setPendingItemId(null);
+                  }}
+                  className="w-full"
+                  variant="ghost"
+                >
+                  Cancel
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
+        )}
       </DialogContent>
     </Dialog>
   );
