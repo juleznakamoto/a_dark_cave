@@ -63,15 +63,7 @@ import { createServer } from "http";
 (async () => {
   const server = createServer(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
-
-  // Payment endpoints
+  // Payment endpoints - MUST be defined before Vite middleware
   app.post("/api/payment/create-intent", async (req, res) => {
     try {
       const { itemId } = req.body;
@@ -133,6 +125,15 @@ import { createServer } from "http";
   } else {
     serveStatic(app);
   }
+
+  // Error handler - MUST be after all routes
+  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
+    const status = err.status || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+
+    res.status(status).json({ message });
+    throw err;
+  });
 
   // ALWAYS serve the app on the port specified in the environment variable PORT
   // Other ports are firewalled. Default to 5000 if not specified.
