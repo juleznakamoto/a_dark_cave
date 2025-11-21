@@ -100,8 +100,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const actionExecutedRef = useRef<boolean>(false);
 
-  // Extract resources from action definition
-  const hoveredResources = extractResourcesFromAction(actionId, gameState);
+  // Extract resources from action definition (only if gameState is available)
+  const hoveredResources = gameState ? extractResourcesFromAction(actionId, gameState) : [];
 
 
   const handleMouseEnter = () => {
