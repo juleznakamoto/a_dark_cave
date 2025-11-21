@@ -175,7 +175,10 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
           type="button"
           variant="outline"
           size="sm"
-          onClick={async () => {
+          onClick={async (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
             try {
               const response = await fetch("/api/payment/create-checkout-session", {
                 method: "POST",
@@ -183,8 +186,14 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
                 body: JSON.stringify({ itemId }),
               });
 
+              const contentType = response.headers.get("content-type");
+              if (!contentType || !contentType.includes("application/json")) {
+                throw new Error("Server did not return JSON. Check server logs.");
+              }
+
               if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+                const errorData = await response.json();
+                throw new Error(errorData.error || `HTTP error! status: ${response.status}`);
               }
 
               const data = await response.json();
@@ -195,7 +204,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
               }
             } catch (error) {
               console.error("Error creating checkout session:", error);
-              setErrorMessage("Failed to create checkout session. Please try again.");
+              setErrorMessage(error instanceof Error ? error.message : "Failed to create checkout session. Please try again.");
             }
           }}
           className="w-full text-xs"
