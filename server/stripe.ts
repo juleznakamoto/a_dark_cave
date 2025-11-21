@@ -5,6 +5,10 @@ const stripeSecretKey = process.env.NODE_ENV === 'production'
   ? process.env.STRIPE_SECRET_KEY_PROD 
   : process.env.STRIPE_SECRET_KEY_DEV;
 
+if (!stripeSecretKey) {
+  console.error('⚠️ STRIPE SECRET KEY NOT CONFIGURED - Payment features will not work');
+}
+
 const stripe = new Stripe(stripeSecretKey || '', {
   apiVersion: '2024-12-18.acacia',
 });
