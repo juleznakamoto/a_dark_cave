@@ -484,7 +484,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && !currentUser && (
-          <div className="bg-red-950 text-gray-100 px-4 py-3 rounded-md mb-4 text-center">
+          <div className="bg-red-900 text-gray-100 px-4 py-3 rounded-md text-center">
             Sign in or create an account to purchase items.
           </div>
         )}
@@ -497,7 +497,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsList>
 
             <TabsContent value="shop" className="mt-4">
-              <ScrollArea className={!currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"}>
+              <ScrollArea className={!currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"}>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
