@@ -107,7 +107,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     originalPrice: 1999,
     price: 999, // 9.99 €
     rewards: {
-      resources: { gold: 10000 },
+      resources: { gold: 20000 },
     },
     canPurchaseMultipleTimes: true,
     category: "resource",
@@ -133,11 +133,11 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-orange-600",
   },
 
-  great_feast_5: {
-    id: "great_feast_5",
-    name: "5 Great Feasts",
-    description: "Boost village production by 4x for 1 hour (5 times)",
-    originalPrice: 499,
+  great_feast_3: {
+    id: "great_feast_3",
+    name: "3 Great Feasts",
+    description: "Boost village production by 4x for 1 hour (3 times)",
+    originalPrice: 599,
     price: 299, // 2.99 €
     rewards: {
       feastActivations: 5,
@@ -145,7 +145,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     canPurchaseMultipleTimes: true,
     category: "feast",
     activationMessage: "A Great Feast has begun!",
-    symbol: "✦✦✦✦✦",
+    symbol: "✦✦✦",
     symbolColor: "text-orange-600",
   },
 
