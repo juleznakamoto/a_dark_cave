@@ -590,7 +590,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                   <div className="pr-4">
                     <p className="text-sm text-muted-foreground mb-4">
                       Activate your purchases to receive rewards. Each purchase
-                      can only be activated once per game.
+                      can be activated once per game.
                     </p>
                     <div className="space-y-2">
                       {/* Show individual feast purchases and bundles */}
