@@ -242,6 +242,7 @@ export const gameStateSchema = z.object({
     })
     .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),
+  hoveredResourceCosts: z.array(z.string()).default([]),
   damagedBuildings: z
     .object({
       bastion: z.boolean().default(false),

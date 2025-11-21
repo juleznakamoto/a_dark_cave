@@ -9,6 +9,11 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 
+// Assume extractResourcesFromAction is defined elsewhere and returns an array of resource IDs
+// Example: const extractResourcesFromAction = (actionId: string) => { ... return ['torch', 'food']; };
+// Assume setHoveredResourceCosts is a function from useGameStore to update the state
+// Example: const { setHoveredResourceCosts } = useGameStore();
+
 interface CooldownButtonProps {
   children: React.ReactNode;
   onClick: () => void;
@@ -43,7 +48,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, cooldownDurations } = useGameStore();
+  const { cooldowns, cooldownDurations, setHoveredResourceCosts } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -79,6 +84,19 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const actionExecutedRef = useRef<boolean>(false);
 
+  // Extract resources from action definition
+  const hoveredResources = typeof extractResourcesFromAction === 'function' ? extractResourcesFromAction(actionId) : [];
+
+  const handleMouseEnter = () => {
+    if (hoveredResources.length > 0) {
+      setHoveredResourceCosts(hoveredResources);
+    }
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredResourceCosts([]);
+  };
+
   const handleClick = (e: React.MouseEvent) => {
     if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
@@ -106,6 +124,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
       } ${className}`}
       data-testid={testId}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
       {...props}
     >
       {/* Button content */}

@@ -210,6 +210,7 @@ export default function SidePanelSection({
     const isAnimated = animatedItems.has(item.id);
     const isDecreaseAnimated = decreaseAnimatedItems.has(item.id);
     const displayValue = formatValue(item.value);
+    const isHovered = hoveredTooltips[item.id];
 
     // Handle mobile tooltip click - also mark as hovered to stop pulse
     const handleMobileTooltipClick = (id: string, e: React.MouseEvent) => {
@@ -322,15 +323,12 @@ export default function SidePanelSection({
           "Schematics",
         ].includes(title) && (
           <span
-            className={`font-mono ${
-              isAnimated
-                ? "text-green-800 font-bold"
-                : isDecreaseAnimated
-                  ? "text-red-800 font-bold"
-                  : isMadness
-                    ? madnessClasses
-                    : ""
-            }`}
+            className={cn(
+              "font-mono transition-all duration-300",
+              isAnimated && "text-green-400 scale-110",
+              isDecreaseAnimated && "text-red-400 scale-90",
+              isHovered && "font-bold"
+            )}
           >
             {displayValue}
           </span>
@@ -424,30 +422,24 @@ export default function SidePanelSection({
                 "Stats",
               ].includes(title) && (
                 <span
-                  className={`font-mono ${
-                    isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : ""
-                  }`}
+                  className={cn(
+                    "font-mono transition-all duration-300",
+                    isAnimated && "text-green-400 scale-110",
+                    isDecreaseAnimated && "text-red-400 scale-90",
+                    isHovered && "font-bold"
+                  )}
                 >
                   {displayValue}
                 </span>
               )}
               {title === "Stats" && (
                 <span
-                  className={`font-mono ${
-                    isAnimated
-                      ? "text-green-800 font-bold"
-                      : isDecreaseAnimated
-                        ? "text-red-800 font-bold"
-                        : isMadness
-                          ? madnessClasses
-                          : ""
-                  }`}
+                  className={cn(
+                    "font-mono transition-all duration-300",
+                    isAnimated && "text-green-400 scale-110",
+                    isDecreaseAnimated && "text-red-400 scale-90",
+                    isHovered && "font-bold"
+                  )}
                 >
                   {displayValue}
                 </span>
