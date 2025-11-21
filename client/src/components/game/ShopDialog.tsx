@@ -526,7 +526,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <DialogTitle>Shop</DialogTitle>
           <DialogDescription className="text-muted-foreground text-sm">
             All items are optional, and the game can be completed without any purchases. All in-game purchases are currently 50 % off during the Beta phase.
-          </DialogDescription>c
+          </DialogDescription>
         </DialogHeader>
 
         {isLoading && (
