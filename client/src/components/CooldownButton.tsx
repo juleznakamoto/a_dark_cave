@@ -8,11 +8,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-
-// Assume extractResourcesFromAction is defined elsewhere and returns an array of resource IDs
-// Example: const extractResourcesFromAction = (actionId: string) => { ... return ['torch', 'food']; };
-// Assume setHoveredResourceCosts is a function from useGameStore to update the state
-// Example: const { setHoveredResourceCosts } = useGameStore();
+import { getActionCostBreakdown } from "@/game/rules";
 
 interface CooldownButtonProps {
   children: React.ReactNode;
@@ -32,6 +28,26 @@ interface CooldownButtonProps {
   tooltip?: React.ReactNode;
 }
 
+// Helper function to extract resource IDs from action costs using existing game rules
+const extractResourcesFromAction = (actionId: string, state: any): string[] => {
+  const costBreakdown = getActionCostBreakdown(actionId, state);
+  const resources: string[] = [];
+
+  // Extract resource names from the cost breakdown text
+  // The text format is like "-5 Wood", "-10 Stone", etc.
+  costBreakdown.forEach(({ text }) => {
+    const match = text.match(/-\d+\s+(.+)/);
+    if (match) {
+      const resourceName = match[1];
+      // Convert "Bone Totem" back to "bone_totem" for state key
+      const resourceKey = resourceName.toLowerCase().replace(/\s+/g, '_');
+      resources.push(resourceKey);
+    }
+  });
+
+  return [...new Set(resources)]; // Remove duplicates
+};
+
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   function CooldownButton(
     {
@@ -48,7 +64,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     },
     ref
   ) {
-  const { cooldowns, cooldownDurations, setHoveredResourceCosts } = useGameStore();
+  const { cooldowns, cooldownDurations, setHoveredResourceCosts, gameState } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
 
@@ -85,7 +101,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const actionExecutedRef = useRef<boolean>(false);
 
   // Extract resources from action definition
-  const hoveredResources = typeof extractResourcesFromAction === 'function' ? extractResourcesFromAction(actionId) : [];
+  const hoveredResources = extractResourcesFromAction(actionId, gameState);
+
 
   const handleMouseEnter = () => {
     if (hoveredResources.length > 0) {
