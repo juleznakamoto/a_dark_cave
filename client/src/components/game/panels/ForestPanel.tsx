@@ -121,7 +121,13 @@ export default function ForestPanel() {
         const resourceKey = Object.keys(effects)[0];
         const amount = effects[resourceKey];
         const resourceName = resourceKey.split(".")[1];
-        displayLabel = `Buy ${amount} ${resourceName.charAt(0).toUpperCase() + resourceName.slice(1)}`;
+        // Replace underscores with spaces and capitalize
+        const formattedName = resourceName
+          .replace(/_/g, ' ')
+          .split(' ')
+          .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ');
+        displayLabel = `Buy ${amount} ${formattedName}`;
       }
     }
 
