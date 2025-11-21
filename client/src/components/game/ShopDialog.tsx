@@ -609,15 +609,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             ? "Already Purchased"
                             : "Purchase"}
                         </Button>
-                        {item.price > 0 && currentUser && (item.canPurchaseMultipleTimes || !purchasedItems.includes(item.id)) && (
-                          <Button
-                            onClick={() => handlePurchaseClick(item.id, true)}
-                            variant="outline"
-                            className="w-full"
-                          >
-                            Checkout with Stripe
-                          </Button>
-                        )}
                       </CardFooter>
                     </Card>
                   ))}
