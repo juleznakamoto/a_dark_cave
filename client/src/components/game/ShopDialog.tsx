@@ -169,6 +169,18 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
       </Button>
+
+      <div className="pt-3 border-t mt-3">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={() => handlePurchaseClick(itemId, true)}
+          className="w-full text-xs"
+        >
+          Checkout with Stripe
+        </Button>
+      </div>
     </form>
   );
 }
