@@ -96,9 +96,11 @@ import { createServer } from "http";
   app.post("/api/payment/create-checkout-session", async (req, res) => {
     try {
       const { itemId } = req.body;
+      console.log('Creating checkout session for itemId:', itemId);
       const result = await createCheckoutSession(itemId);
       res.json(result);
     } catch (error: any) {
+      console.error('Error creating checkout session:', error);
       res.status(400).json({ error: error.message });
     }
   });

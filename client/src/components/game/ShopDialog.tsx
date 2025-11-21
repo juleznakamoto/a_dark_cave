@@ -176,15 +176,26 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
           variant="outline"
           size="sm"
           onClick={async () => {
-            const response = await fetch("/api/payment/create-checkout-session", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ itemId }),
-            });
+            try {
+              const response = await fetch("/api/payment/create-checkout-session", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ itemId }),
+              });
 
-            const { url } = await response.json();
-            if (url) {
-              window.location.href = url;
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              const data = await response.json();
+              if (data.url) {
+                window.location.href = data.url;
+              } else {
+                throw new Error("No checkout URL received");
+              }
+            } catch (error) {
+              console.error("Error creating checkout session:", error);
+              setErrorMessage("Failed to create checkout session. Please try again.");
             }
           }}
           className="w-full text-xs"
