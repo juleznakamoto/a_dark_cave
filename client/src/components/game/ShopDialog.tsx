@@ -188,6 +188,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     id: string;
     email: string;
   } | null>(null);
+  const [isAuthDialogOpen, setIsAuthDialogOpen] = useState(false);
   const gameState = useGameStore();
   const activatedPurchases = gameState.activatedPurchases || {};
 
@@ -461,6 +462,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     return `${(cents / 100).toFixed(2)} €`;
   };
 
+  const handleAuthSuccess = async () => {
+    const user = await getCurrentUser();
+    setCurrentUser(user);
+    await loadPurchasedItems();
+    setIsAuthDialogOpen(false);
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-4xl max-h-[80vh]">
@@ -484,10 +492,19 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         )}
 
         {!isLoading && !currentUser && (
-          <div className="bg-red-900 text-gray-100 px-4 py-3 rounded-md text-center">
+          <div 
+            className="bg-red-900 text-gray-100 px-4 py-3 rounded-md text-center cursor-pointer hover:bg-red-800 transition-colors"
+            onClick={() => setIsAuthDialogOpen(true)}
+          >
             Sign in or create an account to purchase items.
           </div>
         )}
+
+        <AuthDialog
+          isOpen={isAuthDialogOpen}
+          onClose={() => setIsAuthDialogOpen(false)}
+          onAuthSuccess={handleAuthSuccess}
+        />
 
         {!isLoading && !clientSecret ? (
           <Tabs defaultValue="shop" className="w-full">
