@@ -169,6 +169,29 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
       </Button>
+
+      <div className="pt-3 border-t mt-3">
+        <Button
+          type="button"
+          variant="outline"
+          size="sm"
+          onClick={async () => {
+            const response = await fetch("/api/payment/create-checkout-session", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ itemId }),
+            });
+
+            const { url } = await response.json();
+            if (url) {
+              window.location.href = url;
+            }
+          }}
+          className="w-full text-xs"
+        >
+          Checkout with Stripe
+        </Button>
+      </div>
     </form>
   );
 }
