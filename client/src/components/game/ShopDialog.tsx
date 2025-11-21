@@ -231,7 +231,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
   }, [isOpen]);
 
-  const handlePurchaseClick = async (itemId: string, useHostedCheckout = false) => {
+  const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
     // For free items, skip payment but save to Supabase
@@ -284,31 +284,36 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
-    // For paid items with hosted checkout, redirect to Stripe Checkout
-    if (useHostedCheckout) {
-      const response = await fetch("/api/payment/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
-      });
+    // For paid items, show payment options dialog
+    setSelectedItem(itemId);
+  };
 
-      const { url } = await response.json();
-      if (url) {
-        window.location.href = url;
-      }
-      return;
-    }
+  const handleUseEmbeddedCheckout = async () => {
+    if (!selectedItem) return;
 
-    // For paid items with embedded checkout, create payment intent
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ itemId }),
+      body: JSON.stringify({ itemId: selectedItem }),
     });
 
     const { clientSecret } = await response.json();
     setClientSecret(clientSecret);
-    setSelectedItem(itemId);
+  };
+
+  const handleUseStripeCheckout = async () => {
+    if (!selectedItem) return;
+
+    const response = await fetch("/api/payment/create-checkout-session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ itemId: selectedItem }),
+    });
+
+    const { url } = await response.json();
+    if (url) {
+      window.location.href = url;
+    }
   };
 
   const handlePurchaseSuccess = async () => {
@@ -504,7 +509,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           </div>
         )}
 
-        {!isLoading && !clientSecret ? (
+        {!isLoading && !clientSecret && !selectedItem ? (
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
@@ -573,7 +578,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardContent>
                       <CardFooter className="flex-col gap-2">
                         <Button
-                          onClick={() => handlePurchaseClick(item.id, false)}
+                          onClick={() => handlePurchaseClick(item.id)}
                           disabled={
                             !currentUser ||
                             (!item.canPurchaseMultipleTimes &&
@@ -586,15 +591,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             ? "Already Purchased"
                             : "Purchase"}
                         </Button>
-                        {item.price > 0 && currentUser && (item.canPurchaseMultipleTimes || !purchasedItems.includes(item.id)) && (
-                          <Button
-                            onClick={() => handlePurchaseClick(item.id, true)}
-                            variant="outline"
-                            className="w-full"
-                          >
-                            Checkout with Stripe
-                          </Button>
-                        )}
                       </CardFooter>
                     </Card>
                   ))}
@@ -725,6 +721,45 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </ScrollArea>
             </TabsContent>
           </Tabs>
+        ) : selectedItem && !clientSecret ? (
+          <div className="mt-4 space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">
+                Purchase: {SHOP_ITEMS[selectedItem]?.name}
+              </h3>
+              <p className="text-sm text-muted-foreground mb-4">
+                {SHOP_ITEMS[selectedItem]?.description}
+              </p>
+              <p className="text-md font-semibold">
+                Price: {formatPrice(SHOP_ITEMS[selectedItem]?.price || 0)}
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium">Choose payment method:</p>
+              <Button
+                onClick={handleUseEmbeddedCheckout}
+                className="w-full"
+              >
+                Pay with Card (Embedded)
+              </Button>
+              <Button
+                onClick={handleUseStripeCheckout}
+                variant="outline"
+                className="w-full"
+              >
+                Checkout with Stripe
+              </Button>
+            </div>
+
+            <Button
+              variant="outline"
+              onClick={() => setSelectedItem(null)}
+              className="w-full"
+            >
+              Cancel
+            </Button>
+          </div>
         ) : clientSecret ? (
           <ScrollArea className="max-h-[calc(80vh-80px)]">
             <div className="mt-4">
@@ -739,7 +774,10 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               </Elements>
               <Button
                 variant="outline"
-                onClick={() => setClientSecret(null)}
+                onClick={() => {
+                  setClientSecret(null);
+                  setSelectedItem(null);
+                }}
                 className="w-full mt-4"
               >
                 Cancel
