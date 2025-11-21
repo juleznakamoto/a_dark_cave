@@ -497,7 +497,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsList>
 
             <TabsContent value="shop" className="mt-4">
-              <ScrollArea className="h-[calc(80vh-180px)]">
+              <ScrollArea className={!currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"}>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
@@ -580,7 +580,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsContent>
 
             <TabsContent value="purchases" className="mt-4">
-              <ScrollArea className="h-[calc(80vh-180px)]">
+              <ScrollArea className={!currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"}>
                 {purchasedItems.length === 0 &&
                 Object.keys(gameState.feastPurchases || {}).length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
