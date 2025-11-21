@@ -100,6 +100,22 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-yellow-600",
   },
 
+  gold_20000: {
+    id: "gold_20000",
+    name: "20000 Gold",
+    description: "Unholy amounts of gold",
+    originalPrice: 1999,
+    price: 999, // 9.99 €
+    rewards: {
+      resources: { gold: 10000 },
+    },
+    canPurchaseMultipleTimes: true,
+    category: "resource",
+    activationMessage: "20000 Gold have been added to your inventory.",
+    symbol: "◉◉◉◉",
+    symbolColor: "text-yellow-600",
+  },
+
   great_feast_1: {
     id: "great_feast_1",
     name: "1 Great Feast",

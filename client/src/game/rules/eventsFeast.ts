@@ -5,6 +5,8 @@ interface FeastConfig {
   level: number;
   woodenHuts?: number;
   stoneHuts?: number;
+  secondWaveVictory?: number;
+  fourthWaveVictory?: number
   foodCost: number;
 }
 
@@ -15,10 +17,13 @@ const feastConfigs: FeastConfig[] = [
   { level: 4, woodenHuts: 2, foodCost: 1500 },
   { level: 5, stoneHuts: 5, foodCost: 2000 },
   { level: 6, stoneHuts: 8, foodCost: 2500 },
+  { level: 7, stoneHuts: 10, foodCost: 5000 },
+  { level: 8, secondWaveVictory: 1, foodCost: 5000 },
+  { level: 9, fourthWaveVictory: 1, foodCost: 5000 },
 ];
 
 function createFeastEvent(config: FeastConfig): GameEvent {
-  const { level, woodenHuts, stoneHuts, foodCost } = config;
+  const { level, woodenHuts, stoneHuts, secondWaveVictory, fourthWaveVictory, foodCost } = config;
   const eventId = `feast${level}`;
 
   return {
@@ -30,7 +35,10 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       }
 
       // No feast events can trigger while a Great Feast is active
-      if (state.greatFeastState?.isActive && state.greatFeastState.endTime > Date.now()) {
+      if (
+        state.greatFeastState?.isActive &&
+        state.greatFeastState.endTime > Date.now()
+      ) {
         return false;
       }
 
@@ -51,6 +59,13 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       if (stoneHuts !== undefined) {
         return state.buildings.stoneHut >= stoneHuts;
       }
+      if (secondWaveVictory !== undefined) {
+        return state.story.seen.secondWaveVictory == true;
+      }
+      if (fourthWaveVictory !== undefined) {
+        return state.story.seen.fourthWaveVictory == true;
+      }
+
       return false;
     },
     triggerType: "resource",
@@ -65,7 +80,9 @@ function createFeastEvent(config: FeastConfig): GameEvent {
         id: "makeFeast",
         label: `Hold feast`,
         cost: `${foodCost} food`,
-        effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
+        effect: (
+          state: GameState,
+        ): Partial<GameState> & { _logMessage?: string } => {
           if (state.resources.food < foodCost) {
             return {
               _logMessage: "You don't have enough food for the feast.",
@@ -96,9 +113,12 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       {
         id: "noFeast",
         label: "Hold no feast",
-        effect: (state: GameState): Partial<GameState> & { _logMessage?: string } => {
+        effect: (
+          state: GameState,
+        ): Partial<GameState> & { _logMessage?: string } => {
           return {
-            _logMessage: "You decline the feast proposal. The villagers accept your decision, though some look disappointed.",
+            _logMessage:
+              "You decline the feast proposal. The villagers accept your decision, though some look disappointed.",
           };
         },
       },
@@ -108,7 +128,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
 
 // Generate all feast events
 export const feastEvents: Record<string, GameEvent> = {};
-feastConfigs.forEach(config => {
+feastConfigs.forEach((config) => {
   const event = createFeastEvent(config);
   feastEvents[event.id] = event;
 });

@@ -322,7 +322,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 2500,
         "resources.stone": 2500,
-        "resources.iron": 500,
+        "resources.steel": 1000,
       },
     },
     effects: {
@@ -354,9 +354,9 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 5000,
+        "resources.wood": 7500,
         "resources.stone": 5000,
-        "resources.steel": 5000,
+        "resources.steel": 2500,
       },
     },
     effects: {
@@ -392,7 +392,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2500,
+        "resources.wood": 5000,
         "resources.stone": 2500,
       },
     },
@@ -428,6 +428,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 5000,
         "resources.stone": 2500,
+        "resources.iron": 1000,
       },
     },
     effects: {
@@ -580,8 +581,8 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2500,
-        "resources.stone": 1500,
+        "resources.wood": 5000,
+        "resources.stone": 2500,
         "resources.steel": 1000,
       },
     },
@@ -615,9 +616,9 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 1000,
-        "resources.stone": 750,
-        "resources.bones": 500,
-        "resources.silver": 25,
+        "resources.stone": 1000,
+        "resources.bones": 1000,
+        "resources.silver": 100,
       },
     },
     effects: {
@@ -647,10 +648,10 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 2500,
-        "resources.stone": 1000,
-        "resources.gold": 50,
-        "resources.obsidian": 50,
+        "resources.wood": 5000,
+        "resources.stone": 2500,
+        "resources.obsidian": 250,
+        "resources.gold": 100,
       },
     },
     effects: {
@@ -680,9 +681,9 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.stone": 5000,
+        "resources.stone": 7500,
+        "resources.obsidian":1000,
         "resources.gold": 250,
-        "resources.obsidian": 500,
       },
     },
     effects: {
@@ -714,9 +715,9 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 10000,
-        "resources.gold": 250,
         "resources.adamant": 500,
-        "resources.moonstone": 50,
+        "resources.moonstone": 100,
+        "resources.gold": 500,
       },
     },
     effects: {
@@ -745,8 +746,9 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.stone": 2500,
-        "resources.steel": 500,
+        "resources.wood": 5000,
+        "resources.stone": 5000,
+        "resources.steel": 1000,
       },
     },
     effects: {
@@ -801,7 +803,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
-        "resources.wood": 1000,
+        "resources.wood": 1500,
         "resources.stone": 1000,
       },
     },
@@ -894,7 +896,7 @@ export const villageBuildActions: Record<string, Action> = {
       1: {
         "resources.wood": 5000,
         "resources.stone": 2500,
-        "resources.steel": 500,
+        "resources.iron": 1000,
       },
       2: {
         "resources.wood": 7500,
@@ -968,8 +970,8 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.iron": 2500,
       },
       3: {
-        "resources.stone": 5000,
-        "resources.iron": 1000
+        "resources.stone":7500,
+        "resources.iron": 2500,
       },
       4: {
         "resources.stone": 7500,
@@ -1147,10 +1149,10 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cost: {
       1: {
+        "resources.wood": 5000,
         "resources.stone": 10000,
-        "resources.wood": 5000 ,
         "resources.steel": 5000,
-        "resources.adamant": 2000,
+        "resources.adamant": 2500,
       },
     },
     effects: {
@@ -1243,7 +1245,9 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildTraps",
     label: "Traps",
     description: "Traps around the village weakening all attackers",
-    tooltipEffects: ["+10% chance to win against attacking foes and less villagers killed"],
+    tooltipEffects: [
+      "+10% chance to win against attacking foes and less villagers killed",
+    ],
     building: true,
     show_when: {
       1: {
@@ -1640,7 +1644,7 @@ export function handleBuildMasterworkFoundry(
     "buildMasterworkFoundry",
     "masterworkFoundry",
   );
-  
+
   // Add masterwork foundry completion message
   if (state.buildings.masterworkFoundry === 0) {
     masterworkFoundryResult.logEntries!.push({
