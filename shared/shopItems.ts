@@ -120,7 +120,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     id: "great_feast_1",
     name: "1 Great Feast",
     description:
-      "Boost the village production by 4x for 60 minutes",
+      "Boost village production by 4x for 1 hour",
     originalPrice: 299,
     price: 149, // 1.49 €
     rewards: {
@@ -136,7 +136,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_5: {
     id: "great_feast_5",
     name: "5 Great Feasts",
-    description: "Boost the village production by 4x for 60 minutes (5 times)",
+    description: "Boost village production by 4x for 1 hour (5 times)",
     originalPrice: 499,
     price: 299, // 2.99 €
     rewards: {

@@ -107,7 +107,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             });
 
             if (error) {
-              console.error('Error saving purchase to Supabase:', error);
+              console.error("Error saving purchase to Supabase:", error);
             }
 
             // Set hasMadeNonFreePurchase flag if this is a paid item
@@ -116,7 +116,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             }
           }
         } catch (error) {
-          console.error('Exception saving purchase to Supabase:', error);
+          console.error("Exception saving purchase to Supabase:", error);
         }
 
         onSuccess();
@@ -131,14 +131,24 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
 
       <div className="flex items-center justify-center gap-1 text-xs text-muted-foreground">
         <span>Powered by</span>
-        <svg className="h-4" viewBox="0 0 60 25" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
-          <path d="M59.64 14.28h-8.06c.19 1.93 1.6 2.55 3.2 2.55 1.64 0 2.96-.37 4.05-.95v3.32a8.33 8.33 0 0 1-4.56 1.1c-4.01 0-6.83-2.5-6.83-7.48 0-4.19 2.39-7.52 6.3-7.52 3.92 0 5.96 3.28 5.96 7.5 0 .4-.04 1.26-.06 1.48zm-5.92-5.62c-1.03 0-2.17.73-2.17 2.58h4.25c0-1.85-1.07-2.58-2.08-2.58zM40.95 20.3c-1.44 0-2.32-.6-2.9-1.04l-.02 4.63-4.12.87V5.57h3.76l.08 1.02a4.7 4.7 0 0 1 3.23-1.29c2.9 0 5.62 2.6 5.62 7.4 0 5.23-2.7 7.6-5.65 7.6zM40 8.95c-.95 0-1.54.34-1.97.81l.02 6.12c.4.44.98.78 1.95.78 1.52 0 2.54-1.65 2.54-3.87 0-2.15-1.04-3.84-2.54-3.84zM28.24 5.57h4.13v14.44h-4.13V5.57zm0-4.7L32.37 0v3.36l-4.13.88V.88zm-4.32 9.35v9.79H19.8V5.57h3.7l.12 1.22c1-1.77 3.07-1.41 3.62-1.22v3.79c-.52-.17-2.29-.43-3.32.86zm-8.55 4.72c0 2.43 2.6 1.68 3.12 1.46v3.36c-.55.3-1.54.54-2.89.54a4.15 4.15 0 0 1-4.27-4.24l.01-13.17 4.02-.86v3.54h3.14V9.1h-3.13v5.85zm-4.91.7c0 2.97-2.31 4.66-5.73 4.66a11.2 11.2 0 0 1-4.46-.93v-3.93c1.38.75 3.1 1.31 4.46 1.31.92 0 1.53-.24 1.53-1C6.26 13.77 0 14.51 0 9.95 0 7.04 2.28 5.3 5.62 5.3c1.36 0 2.72.2 4.09.75v3.88a9.23 9.23 0 0 0-4.1-1.06c-.86 0-1.44.25-1.44.9 0 1.85 6.29.97 6.29 5.88z" fillRule="evenodd"/>
+        <svg
+          className="h-4"
+          viewBox="0 0 60 25"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="currentColor"
+        >
+          <path
+            d="M59.64 14.28h-8.06c.19 1.93 1.6 2.55 3.2 2.55 1.64 0 2.96-.37 4.05-.95v3.32a8.33 8.33 0 0 1-4.56 1.1c-4.01 0-6.83-2.5-6.83-7.48 0-4.19 2.39-7.52 6.3-7.52 3.92 0 5.96 3.28 5.96 7.5 0 .4-.04 1.26-.06 1.48zm-5.92-5.62c-1.03 0-2.17.73-2.17 2.58h4.25c0-1.85-1.07-2.58-2.08-2.58zM40.95 20.3c-1.44 0-2.32-.6-2.9-1.04l-.02 4.63-4.12.87V5.57h3.76l.08 1.02a4.7 4.7 0 0 1 3.23-1.29c2.9 0 5.62 2.6 5.62 7.4 0 5.23-2.7 7.6-5.65 7.6zM40 8.95c-.95 0-1.54.34-1.97.81l.02 6.12c.4.44.98.78 1.95.78 1.52 0 2.54-1.65 2.54-3.87 0-2.15-1.04-3.84-2.54-3.84zM28.24 5.57h4.13v14.44h-4.13V5.57zm0-4.7L32.37 0v3.36l-4.13.88V.88zm-4.32 9.35v9.79H19.8V5.57h3.7l.12 1.22c1-1.77 3.07-1.41 3.62-1.22v3.79c-.52-.17-2.29-.43-3.32.86zm-8.55 4.72c0 2.43 2.6 1.68 3.12 1.46v3.36c-.55.3-1.54.54-2.89.54a4.15 4.15 0 0 1-4.27-4.24l.01-13.17 4.02-.86v3.54h3.14V9.1h-3.13v5.85zm-4.91.7c0 2.97-2.31 4.66-5.73 4.66a11.2 11.2 0 0 1-4.46-.93v-3.93c1.38.75 3.1 1.31 4.46 1.31.92 0 1.53-.24 1.53-1C6.26 13.77 0 14.51 0 9.95 0 7.04 2.28 5.3 5.62 5.3c1.36 0 2.72.2 4.09.75v3.88a9.23 9.23 0 0 0-4.1-1.06c-.86 0-1.44.25-1.44.9 0 1.85 6.29.97 6.29 5.88z"
+            fillRule="evenodd"
+          />
         </svg>
       </div>
 
       <div className="space-y-2 border-t pt-4 mt-4">
         <p className="text-[10px] text-muted-foreground">
-          By completing this purchase, you agree that the delivery of the digital item begins immediately and acknowledge that you thereby lose your right of withdrawal. For more information, please see our{" "}
+          By completing this purchase, you agree that the delivery of the
+          digital item begins immediately and acknowledge that you thereby lose
+          your right of withdrawal. For more information, please see our{" "}
           <a
             href="/terms"
             target="_blank"
@@ -210,7 +220,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       console.error("Error loading purchased items:", error);
     }
   };
-
 
   useEffect(() => {
     const loadData = async () => {
@@ -359,8 +368,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         id: `toggle-cruel-mode-${Date.now()}`,
         message: isCurrentlyActivated
           ? "Cruel Mode deactivated. New games will use normal difficulty."
-          : (item.activationMessage ||
-            "Cruel Mode activated! Start a new game to experience the ultimate challenge."),
+          : item.activationMessage ||
+            "Cruel Mode activated! Start a new game to experience the ultimate challenge.",
         timestamp: Date.now(),
         type: "system",
       });
@@ -467,7 +476,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         <DialogHeader>
           <DialogTitle>Shop</DialogTitle>
           <DialogDescription className="text-muted-foreground text-sm">
-            All items are optional, and the game can be completed without any purchases. All in-game purchases are currently 50 % off during the Beta phase.
+            All items are optional, and the game can be completed without any
+            purchases. All in-game purchases are currently 50 % off during the
+            Beta phase.
           </DialogDescription>
         </DialogHeader>
 
@@ -493,64 +504,80 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           <Tabs defaultValue="shop" className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="shop">For Sale</TabsTrigger>
-              <TabsTrigger value="purchases" disabled={!currentUser}>Purchases</TabsTrigger>
+              <TabsTrigger value="purchases" disabled={!currentUser}>
+                Purchases
+              </TabsTrigger>
             </TabsList>
 
             <TabsContent value="shop" className="mt-4">
-              <ScrollArea className={!currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"}>
+              <ScrollArea
+                className={
+                  !currentUser ? "h-[calc(80vh-260px)]" : "h-[calc(80vh-180px)]"
+                }
+              >
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS).map((item) => (
                     <Card key={item.id} className="flex flex-col">
-                      <CardHeader>
+                      <CardHeader className="pb-3">
                         <div className="flex items-center gap-2">
                           <CardTitle className="text-md flex items-center gap-2">
                             {item.name}
                             {item.symbol && (
-                              <span className="text-lg" style={{ color: tailwindToHex(item.symbolColor.replace('text-', '')) }}>
+                              <span
+                                className="text-lg"
+                                style={{
+                                  color: tailwindToHex(
+                                    item.symbolColor.replace("text-", ""),
+                                  ),
+                                }}
+                              >
                                 {item.symbol}
                               </span>
                             )}
                           </CardTitle>
-                            {(item.rewards.weapons ||
-                              item.rewards.tools ||
-                              item.rewards.blessings) && (
-                              <TooltipProvider>
-                                <Tooltip>
-                                  <TooltipTrigger asChild>
-                                    <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
-                                  </TooltipTrigger>
-                                  <TooltipContent>
-                                    <div className="space-y-2">
-                                      {item.rewards.weapons?.map((weapon) => (
-                                        <div key={weapon}>
-                                          {renderItemTooltip(weapon, "weapon")}
-                                        </div>
-                                      ))}
-                                      {item.rewards.tools?.map((tool) => (
-                                        <div key={tool}>
-                                          {renderItemTooltip(tool, "tool")}
-                                        </div>
-                                      ))}
-                                      {item.rewards.blessings?.map((blessing) => (
-                                        <div key={blessing}>
-                                          {renderItemTooltip(blessing, "blessing")}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  </TooltipContent>
-                                </Tooltip>
-                              </TooltipProvider>
-                            )}
-                          </div>
-                          <CardDescription className="text-bold">
-                            {item.originalPrice && (
-                              <span className="line-through text-muted-foreground mr-2">
-                                {formatPrice(item.originalPrice)}
-                              </span>
-                            )}
-                            {formatPrice(item.price)}
-                          </CardDescription>
-                        </CardHeader>
+                          {(item.rewards.weapons ||
+                            item.rewards.tools ||
+                            item.rewards.blessings) && (
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <Info className="w-4 h-4 text-muted-foreground cursor-pointer flex-shrink-0" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <div className="space-y-2">
+                                    {item.rewards.weapons?.map((weapon) => (
+                                      <div key={weapon}>
+                                        {renderItemTooltip(weapon, "weapon")}
+                                      </div>
+                                    ))}
+                                    {item.rewards.tools?.map((tool) => (
+                                      <div key={tool}>
+                                        {renderItemTooltip(tool, "tool")}
+                                      </div>
+                                    ))}
+                                    {item.rewards.blessings?.map((blessing) => (
+                                      <div key={blessing}>
+                                        {renderItemTooltip(
+                                          blessing,
+                                          "blessing",
+                                        )}
+                                      </div>
+                                    ))}
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          )}
+                        </div>
+                        <CardDescription className="text-bold">
+                          {item.originalPrice && (
+                            <span className="line-through text-muted-foreground mr-2">
+                              {formatPrice(item.originalPrice)}
+                            </span>
+                          )}
+                          {formatPrice(item.price)}
+                        </CardDescription>
+                      </CardHeader>
                       <CardContent className="flex-1">
                         <p className="text-sm text-muted-foreground">
                           {item.description}
@@ -580,7 +607,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
             </TabsContent>
 
             <TabsContent value="purchases" className="mt-4">
-              <ScrollArea className={!currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"}>
+              <ScrollArea
+                className={
+                  !currentUser ? "h-[calc(80vh-250px)]" : "h-[calc(80vh-180px)]"
+                }
+              >
                 {purchasedItems.length === 0 &&
                 Object.keys(gameState.feastPurchases || {}).length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
@@ -647,17 +678,16 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
                       {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
-                        .filter(
-                          (itemId) => {
-                            const item = SHOP_ITEMS[itemId];
-                            return item && !item.rewards.feastActivations;
-                          }
-                        )
+                        .filter((itemId) => {
+                          const item = SHOP_ITEMS[itemId];
+                          return item && !item.rewards.feastActivations;
+                        })
                         .map((itemId) => {
                           const item = SHOP_ITEMS[itemId];
                           if (!item) return null;
 
-                          const isActivated = activatedPurchases[itemId] || false;
+                          const isActivated =
+                            activatedPurchases[itemId] || false;
                           const isCruelModeItem = itemId === "cruel_mode";
 
                           return (
@@ -686,10 +716,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
                               >
-                                {isCruelModeItem 
-                                  ? (isActivated ? "Deactivate" : "Activate")
-                                  : (isActivated ? "Activated" : "Activate")
-                                }
+                                {isCruelModeItem
+                                  ? isActivated
+                                    ? "Deactivate"
+                                    : "Activate"
+                                  : isActivated
+                                    ? "Activated"
+                                    : "Activate"}
                               </Button>
                             </div>
                           );
