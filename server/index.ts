@@ -1,16 +1,16 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
-import { createPaymentIntent, verifyPayment } from "./stripe";
+import { createPaymentIntent, verifyPayment, createCheckoutSession, verifyCheckoutSession } from "./stripe";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
   const isDev = process.env.NODE_ENV === 'development';
   return {
-    supabaseUrl: isDev 
-      ? process.env.VITE_SUPABASE_URL_DEV 
+    supabaseUrl: isDev
+      ? process.env.VITE_SUPABASE_URL_DEV
       : process.env.VITE_SUPABASE_URL_PROD,
-    supabaseAnonKey: isDev 
-      ? process.env.VITE_SUPABASE_ANON_KEY_DEV 
+    supabaseAnonKey: isDev
+      ? process.env.VITE_SUPABASE_ANON_KEY_DEV
       : process.env.VITE_SUPABASE_ANON_KEY_PROD
   };
 };
@@ -71,6 +71,7 @@ import { createServer } from "http";
     throw err;
   });
 
+  // Payment endpoints
   app.post("/api/payment/create-intent", async (req, res) => {
     try {
       const { itemId } = req.body;
@@ -86,6 +87,26 @@ import { createServer } from "http";
     try {
       const { paymentIntentId } = req.body;
       const result = await verifyPayment(paymentIntentId);
+      res.json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/payment/create-checkout-session", async (req, res) => {
+    try {
+      const { itemId } = req.body;
+      const result = await createCheckoutSession(itemId);
+      res.json(result);
+    } catch (error: any) {
+      res.status(400).json({ error: error.message });
+    }
+  });
+
+  app.post("/api/payment/verify-checkout-session", async (req, res) => {
+    try {
+      const { sessionId } = req.body;
+      const result = await verifyCheckoutSession(sessionId);
       res.json(result);
     } catch (error: any) {
       res.status(400).json({ error: error.message });
