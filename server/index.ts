@@ -1,6 +1,6 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
-import { createPaymentIntent, verifyPayment, createCheckoutSession, verifyCheckoutSession } from "./stripe";
+import { createPaymentIntent, verifyPayment } from "./stripe";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
@@ -85,47 +85,7 @@ import { createServer } from "http";
     }
   });
 
-  app.post("/api/payment/create-checkout-session", async (req, res) => {
-    console.log('📍 Checkpoint session endpoint hit');
-    console.log('📍 Headers:', req.headers);
-    console.log('📍 Body:', req.body);
-    
-    try {
-      const { itemId } = req.body;
-      
-      if (!itemId) {
-        console.log('❌ No itemId provided');
-        return res.status(400).json({ error: 'Item ID is required' });
-      }
-      
-      console.log('✅ Creating checkout session for itemId:', itemId);
-      const result = await createCheckoutSession(itemId);
-      
-      if (!result || !result.url) {
-        console.log('❌ No URL in result:', result);
-        return res.status(500).json({ error: 'Failed to create checkout session' });
-      }
-      
-      console.log('✅ Checkout session created successfully:', result.url);
-      res.setHeader('Content-Type', 'application/json');
-      res.json(result);
-    } catch (error: any) {
-      console.error('❌ Error creating checkout session:', error);
-      res.status(500).json({ error: error.message || 'Internal server error' });
-    }
-  });
-
-  app.post("/api/payment/verify-checkout-session", async (req, res) => {
-    try {
-      const { sessionId } = req.body;
-      const result = await verifyCheckoutSession(sessionId);
-      res.json(result);
-    } catch (error: any) {
-      res.status(400).json({ error: error.message });
-    }
-  });
-
-  // importantly only setup vite in development and after
+  // Importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
   if (app.get("env") === "development") {

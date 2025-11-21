@@ -243,7 +243,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
   }, [isOpen]);
 
-  const handlePurchaseClick = async (itemId: string, useHostedCheckout = false) => {
+  const handlePurchaseClick = async (itemId: string) => {
     const item = SHOP_ITEMS[itemId];
 
     // For free items, skip payment but save to Supabase
@@ -296,22 +296,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       return;
     }
 
-    // For paid items with hosted checkout, redirect to Stripe Checkout
-    if (useHostedCheckout) {
-      const response = await fetch("/api/payment/create-checkout-session", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
-      });
-
-      const { url } = await response.json();
-      if (url) {
-        window.location.href = url;
-      }
-      return;
-    }
-
-    // For paid items with embedded checkout, create payment intent
+    // For paid items, create payment intent for embedded checkout
     const response = await fetch("/api/payment/create-intent", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -585,7 +570,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       </CardContent>
                       <CardFooter className="flex-col gap-2">
                         <Button
-                          onClick={() => handlePurchaseClick(item.id, false)}
+                          onClick={() => handlePurchaseClick(item.id)}
                           disabled={
                             !currentUser ||
                             (!item.canPurchaseMultipleTimes &&
