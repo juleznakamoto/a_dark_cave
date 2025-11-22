@@ -320,7 +320,6 @@ export default function SidePanelSection({
           "Fortifications",
           "Blessings",
           "Schematics",
-          "Books",
         ].includes(title) && (
           <span
             className={`font-mono ${
