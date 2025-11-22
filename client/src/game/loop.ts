@@ -599,10 +599,12 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    // Add accumulated play time to the save
-    await saveGame(gameState, state.playTime);
+    // If this is a new game, save playTime as the current session time only
+    // Otherwise, save the accumulated playTime
+    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+    await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
-    useGameStore.setState({ lastSaved: now });
+    useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
     console.error("Auto save failed:", error);
   }
@@ -771,9 +773,12 @@ export async function manualSave() {
   const gameState: GameState = buildGameState(state);
 
   try {
-    await saveGame(gameState, state.playTime);
+    // If this is a new game, save playTime as 0 to reset the counter
+    // Otherwise, save the accumulated playTime
+    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+    await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
-    useGameStore.setState({ lastSaved: now });
+    useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
     console.error("[SAVE] Manual save failed:", error);
     throw error;
