@@ -49,7 +49,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
         await signUp(email, password);
         toast({
           title: 'Account created',
-          description: 'Please check your email to verify your account.',
+          description: 'Please check your email to verify your account. Also look in spam folder.',
         });
         onAuthSuccess();
         onClose();
@@ -58,7 +58,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
         await resetPassword(email);
         toast({
           title: 'Password reset email sent',
-          description: 'Check your email for a link to reset your password.',
+          description: 'Check your email for a link to reset your password. Also look in spam folder.',
         });
         setMode('signin');
       }
