@@ -361,8 +361,8 @@ export const getAllActionBonuses = (
     }
   });
 
-  // Add button upgrade bonuses (only if book_of_improvement is owned)
-  if (state.books?.book_of_improvement) {
+  // Add button upgrade bonuses (only if book_of_ascension is owned)
+  if (state.books?.book_of_ascension) {
     Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
       if (upgradeKey) {
         const bonus = getUpgradeBonus(upgradeKey, state);

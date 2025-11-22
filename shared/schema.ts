@@ -179,7 +179,7 @@ export const gameStateSchema = z.object({
     .default({}),
   books: z
     .object({
-      book_of_improvement: z.boolean().default(false),
+      book_of_ascension: z.boolean().default(false),
     })
     .default({}),
   buildings: z

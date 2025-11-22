@@ -117,7 +117,7 @@
     }
   ],
   "books": {
-    "book_of_improvement": false
+    "book_of_ascension": false
   },
   "flags": {
     "hasTraps": false,
@@ -295,7 +295,7 @@
           "resourceMultiplier": 1.5
         }
       },
-      "book_of_improvement": {}
+      "book_of_ascension": {}
     },
     "resource_bonus": {},
     "madness_reduction": {},

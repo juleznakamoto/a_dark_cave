@@ -166,7 +166,7 @@ export function buildGameState(state: any): GameState {
 
   // Ensure books exists
   if (!gameState.books) {
-    gameState.books = { book_of_improvement: false };
+    gameState.books = { book_of_ascension: false };
   }
 
   return gameState as GameState;

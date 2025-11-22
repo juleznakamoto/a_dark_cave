@@ -16,7 +16,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   const buttonUpgrade = useGameStore(
     (state) => state.buttonUpgrades[upgradeKey],
   );
-  const hasBook = useGameStore((state) => state.books?.book_of_improvement);
+  const hasBook = useGameStore((state) => state.books?.book_of_ascension);
   const [isOpen, setIsOpen] = useState(false);
 
   if (!hasBook || !buttonUpgrade || buttonUpgrade.level === 0) {

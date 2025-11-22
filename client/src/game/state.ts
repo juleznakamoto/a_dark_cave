@@ -248,7 +248,7 @@ const defaultGameState: GameState = {
   },
   hoveredTooltips: {},
   books: {
-    book_of_improvement: false,
+    book_of_ascension: false,
   },
   feastState: {
     isActive: false,
@@ -421,17 +421,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   initialize: (initialState?: Partial<GameState>) => {
     let stateToSet = initialState ? { ...defaultGameState, ...initialState } : defaultGameState;
     
-    // Backwards compatibility: Add book_of_improvement if player has any button upgrade clicks
+    // Backwards compatibility: Add book_of_ascension if player has any button upgrade clicks
     if (stateToSet.buttonUpgrades) {
       const hasAnyClicks = Object.values(stateToSet.buttonUpgrades).some(
         (upgrade: any) => upgrade && upgrade.clicks > 0
       );
       
-      if (hasAnyClicks && !stateToSet.books?.book_of_improvement) {
+      if (hasAnyClicks && !stateToSet.books?.book_of_ascension) {
         if (!stateToSet.books) {
           stateToSet.books = {};
         }
-        stateToSet.books.book_of_improvement = true;
+        stateToSet.books.book_of_ascension = true;
       }
     }
     
@@ -460,9 +460,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const result = executeGameAction(actionId, state);
 
-    // Track button usage and check for level up (only if book_of_improvement is owned)
+    // Track button usage and check for level up (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-    if (upgradeKey && state.books?.book_of_improvement) {
+    if (upgradeKey && state.books?.book_of_ascension) {
       const upgradeResult = incrementButtonUsage(upgradeKey, state);
       
       // Add button upgrade state update
@@ -692,16 +692,16 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentBoostMode = get().boostMode;
 
     if (savedState) {
-      // Backwards compatibility: Add book_of_improvement if player has any button upgrade clicks
+      // Backwards compatibility: Add book_of_ascension if player has any button upgrade clicks
       const hasAnyClicks = savedState.buttonUpgrades && Object.values(savedState.buttonUpgrades).some(
         (upgrade: any) => upgrade && upgrade.clicks > 0
       );
       
-      if (hasAnyClicks && !savedState.books?.book_of_improvement) {
+      if (hasAnyClicks && !savedState.books?.book_of_ascension) {
         if (!savedState.books) {
           savedState.books = {};
         }
-        savedState.books.book_of_improvement = true;
+        savedState.books.book_of_ascension = true;
       }
       const loadedState = {
         ...savedState,

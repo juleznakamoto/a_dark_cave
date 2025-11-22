@@ -804,9 +804,9 @@ export const applyActionEffects = (
     // Apply resource multipliers (like 300% bonus from adamant axe)
     let totalMultiplier = actionBonuses.resourceMultiplier || 1;
 
-    // Add button upgrade bonus multiplier (only if book_of_improvement is owned)
+    // Add button upgrade bonus multiplier (only if book_of_ascension is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-    if (upgradeKey && state.books?.book_of_improvement) {
+    if (upgradeKey && state.books?.book_of_ascension) {
       const upgradeMultiplier = getUpgradeBonusMultiplier(upgradeKey, state);
       totalMultiplier = totalMultiplier * upgradeMultiplier;
     }

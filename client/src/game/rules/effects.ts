@@ -1077,9 +1077,9 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 };
 
 export const bookEffects: Record<string, EffectDefinition> = {
-  book_of_improvement: {
-    id: "book_of_improvement",
-    name: "Book of Improvement",
+  book_of_ascension: {
+    id: "book_of_ascension",
+    name: "Book of Ascension",
     description: "A book on ascending the self. Grants the ability to improve at tasks through practice.",
     bonuses: {
       generalBonuses: {},
