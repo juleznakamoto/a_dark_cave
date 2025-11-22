@@ -421,6 +421,7 @@ export default function SidePanelSection({
                 "Fortifications",
                 "Blessings",
                 "Schematics",
+                "Books",
                 "Stats",
               ].includes(title) && (
                 <span
