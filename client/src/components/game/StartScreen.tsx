@@ -98,6 +98,7 @@ export default function StartScreen() {
           onClick={handleLightFire}
           className={`bg-transparent border-none text-white hover:bg-transparent text-lg px-8 py-4 fire-hover z-[99999] ${!isAnimationComplete ? 'animate-fade-in-button' : 'button-interactive'}`}
           data-testid="button-light-fire"
+          button_id="light-fire"
         >
           Light Fire
         </ParticleButton>

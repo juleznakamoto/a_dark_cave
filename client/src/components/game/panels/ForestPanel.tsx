@@ -192,7 +192,7 @@ export default function ForestPanel() {
           onClick={() => executeAction(actionId)}
           cooldownMs={action.cooldown * 1000}
           data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
-          data-analytics-id={actionId}
+          button_id={actionId}
           size="xs"
           disabled={!canExecute}
           variant="outline"

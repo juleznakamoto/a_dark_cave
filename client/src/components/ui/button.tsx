@@ -45,12 +45,12 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const Comp = asChild ? Slot : "button"
     
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-      // Track analytics if data-analytics-id is provided
-      const analyticsId = (e.currentTarget as HTMLButtonElement).getAttribute('data-analytics-id');
-      if (analyticsId) {
+      // Track analytics if button_id is provided
+      const buttonId = (e.currentTarget as HTMLButtonElement).getAttribute('button_id');
+      if (buttonId) {
         // Lazy import to avoid circular dependencies
         import('@/game/state').then(({ useGameStore }) => {
-          useGameStore.getState().trackButtonClick(analyticsId);
+          useGameStore.getState().trackButtonClick(buttonId);
         });
       }
       

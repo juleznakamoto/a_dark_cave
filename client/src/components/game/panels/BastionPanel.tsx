@@ -182,6 +182,7 @@ export default function BastionPanel() {
                         variant="outline"
                         size="xs"
                         className="hover:bg-transparent hover:text-foreground"
+                        button_id="repair-bastion"
                       >
                         Bastion
                       </Button>
@@ -231,6 +232,7 @@ export default function BastionPanel() {
                         variant="outline"
                         size="xs"
                         className="hover:bg-transparent hover:text-foreground"
+                        button_id="repair-watchtower"
                       >
                         {getBuildingLabel(
                           "watchtower",
@@ -281,7 +283,7 @@ export default function BastionPanel() {
                         variant="outline"
                         size="xs"
                         className="hover:bg-transparent hover:text-foreground"
-                        data-analytics-id="repair-palisades"
+                        button_id="repair-palisades"
                       >
                         {getBuildingLabel(
                           "palisades",

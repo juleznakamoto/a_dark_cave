@@ -24,7 +24,7 @@ interface CooldownButtonProps {
     | "link";
   size?: "default" | "sm" | "xs" | "lg" | "icon";
   "data-testid"?: string;
-  "data-analytics-id"?: string;
+  button_id?: string;
   tooltip?: React.ReactNode;
 }
 
@@ -85,7 +85,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     if (!isCoolingDown) {
       actionExecutedRef.current = true;
       
-      // Note: Button component now handles tracking via data-analytics-id
+      // Note: Button component now handles tracking via button_id
       
       onClick();
       // Reset the flag after a short delay
@@ -110,7 +110,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
       } ${className}`}
       data-testid={testId}
-      data-analytics-id={props["data-analytics-id"] || actionId}
+      button_id={props.button_id || actionId}
       {...props}
     >
       {/* Button content */}

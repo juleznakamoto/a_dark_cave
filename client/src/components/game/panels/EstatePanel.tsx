@@ -189,7 +189,7 @@ export default function EstatePanel() {
                     size="xs"
                     variant="outline"
                     className="hover:bg-transparent hover:text-foreground"
-                    data-analytics-id="activate-sleep-mode"
+                    button_id="activate-sleep-mode"
                   >
                     Sleep
                   </Button>
@@ -247,7 +247,7 @@ export default function EstatePanel() {
                           size="xs"
                           variant="outline"
                           className="hover:bg-transparent hover:text-foreground"
-                          data-analytics-id="upgrade-sleep-length"
+                          button_id="upgrade-sleep-length"
                         >
                           Improve
                         </Button>
@@ -313,7 +313,7 @@ export default function EstatePanel() {
                           size="xs"
                           variant="outline"
                           className="hover:bg-transparent hover:text-foreground"
-                          data-analytics-id="upgrade-sleep-intensity"
+                          button_id="upgrade-sleep-intensity"
                         >
                           Improve
                         </Button>
@@ -355,6 +355,7 @@ export default function EstatePanel() {
                     <button
                       onClick={(e) => {
                         cubeTooltip.handleTooltipClick(`cube-${event.id}`, e);
+                        useGameStore.getState().trackButtonClick(`cube-${event.id}`);
                         handleCubeClick(event);
                       }}
                       className="w-6 h-6 bg-neutral-900 border border-neutral-800 rounded-md flex items-center justify-center hover:bg-neutral-800 hover:border-neutral-500 transition-all cursor-pointer group relative"
