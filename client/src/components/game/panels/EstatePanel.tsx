@@ -18,11 +18,11 @@ import { Progress } from "@/components/ui/progress";
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
   { level: 0, hours: 2, cost: 0, currency: null },
-  { level: 1, hours: 4, cost: 250, currency: "silver" },
-  { level: 2, hours: 6, cost: 500, currency: "silver" },
-  { level: 3, hours: 10, cost: 1000, currency: "silver" },
-  { level: 4, hours: 16, cost: 2500, currency: "silver" },
-  { level: 5, hours: 24, cost: 5000, currency: "silver" },
+  { level: 1, hours: 4, cost: 50, currency: "gold" },
+  { level: 2, hours: 6, cost: 250, currency: "gold" },
+  { level: 3, hours: 10, cost: 500, currency: "gold" },
+  { level: 4, hours: 16, cost: 1000, currency: "gold" },
+  { level: 5, hours: 24, cost: 2500, currency: "gold" },
 ];
 
 const SLEEP_INTENSITY_UPGRADES = [
@@ -48,25 +48,6 @@ export default function EstatePanel() {
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-
-  const handleTooltipHover = (itemId: string) => {
-    if (mobileTooltip.isMobile) return;
-
-    const existingTimer = hoverTimersRef.current.get(itemId);
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-    }
-
-    // Set a timer to mark as hovered after 500ms
-    const timer = setTimeout(() => {
-      if (!hoveredTooltips[itemId]) {
-        setHoveredTooltip(itemId, true);
-      }
-      hoverTimersRef.current.delete(itemId);
-    }, 500);
-
-    hoverTimersRef.current.set(itemId, timer);
-  };
 
   // Get all cube events that have been triggered
   const completedCubeEvents = Object.entries(cubeEvents)
@@ -131,7 +112,7 @@ export default function EstatePanel() {
     if (currentLevel >= 5) return;
 
     const nextUpgrade = SLEEP_LENGTH_UPGRADES[currentLevel + 1];
-    if (resources.silver >= nextUpgrade.cost) {
+    if (resources.gold >= nextUpgrade.cost) {
       useGameStore.setState({
         sleepUpgrades: {
           ...sleepUpgrades,
@@ -139,7 +120,7 @@ export default function EstatePanel() {
         },
         resources: {
           ...resources,
-          silver: resources.silver - nextUpgrade.cost,
+          gold: resources.gold - nextUpgrade.cost,
         },
       });
     }
