@@ -39,10 +39,12 @@ export default function EndScreen() {
           primary: {
             text: "⛤ Cruel Mode ⛤",
             onClick: handleCruelMode,
+            buttonId: "end-screen-cruel-mode",
           },
           secondary: {
             text: "Close",
             onClick: handleMainMenu,
+            buttonId: "end-screen-close",
           },
         }}
       />

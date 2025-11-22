@@ -10,7 +10,7 @@ interface HeroProps {
     line1: string;
     line2: string;
   };
-  subtitle1: string; 
+  subtitle1: string;
   subtitle2: string;
   subtitle3: string;
 
@@ -18,10 +18,12 @@ interface HeroProps {
     primary?: {
       text: string;
       onClick?: () => void;
+      buttonId?: string;
     };
     secondary?: {
       text: string;
       onClick?: () => void;
+      buttonId?: string;
     };
   };
   className?: string;
@@ -531,6 +533,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.primary && (
                 <button
                   onClick={buttons.primary.onClick}
+                  button_id={buttons.primary.buttonId}
                   className="px-6 py-3 bg-gradient-to-r from-red-800 to-red-800 hover:from-red-700 hover:to-red-700 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-red-500/25"
                 >
                   {buttons.primary.text}
@@ -539,6 +542,7 @@ const Hero: React.FC<HeroProps> = ({
               {buttons.secondary && (
                 <button
                   onClick={buttons.secondary.onClick}
+                  button_id={buttons.secondary.buttonId}
                   className="px-6 py-3 bg-orange-500/10 hover:bg-red-500/20 border border-red-300/30 hover:border-red-300/50 text-slate-200 rounded-md font-semibold text-lg transition-all duration-300 hover:scale-105 backdrop-blur-sm"
                 >
                   {buttons.secondary.text}
