@@ -61,7 +61,7 @@ export const storyEvents: Record<string, GameEvent> = {
   mysteriousNote: {
     id: "mysteriousNote",
     condition: (state: GameState) =>
-      state.playTime >= 10800 && // 3 hours in seconds
+      state.playTime >= 3 * 60 * 60 * 1000 && // 3 hours in milliseconds
       state.buildings.darkEstate >= 1 &&
       !state.story.seen.mysteriousNoteReceived &&
       !state.hasMadeNonFreePurchase, // Only show if player hasn't made any non-free purchases
