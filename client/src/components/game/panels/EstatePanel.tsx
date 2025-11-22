@@ -255,8 +255,8 @@ export default function EstatePanel() {
                       <div className="text-xs whitespace-nowrap">
                         <div>+{nextLengthUpgrade.hours - currentLengthUpgrade.hours}h</div>
                         <div className="border-t border-border my-1" />
-                        <div className={resources.silver >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
-                          -{nextLengthUpgrade.cost} Silver
+                        <div className={resources.gold >= nextLengthUpgrade.cost ? "" : "text-muted-foreground"}>
+                          -{nextLengthUpgrade.cost} Gold
                         </div>
                       </div>
                     </TooltipContent>
