@@ -651,6 +651,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
       idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
+      sleepUpgrades: { lengthLevel: 0, intensityLevel: 0 }, // Reset sleep upgrades
     };
 
     set(resetState);
