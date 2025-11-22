@@ -83,6 +83,12 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     if (disabled && !isCoolingDown) return;
     if (!isCoolingDown) {
       actionExecutedRef.current = true;
+      
+      // Track button click for analytics
+      if (actionId && actionId !== "unknown") {
+        useGameStore.getState().trackButtonClick(actionId);
+      }
+      
       onClick();
       // Reset the flag after a short delay
       setTimeout(() => {

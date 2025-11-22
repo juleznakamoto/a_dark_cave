@@ -87,7 +87,12 @@ export async function updatePassword(newPassword: string) {
   return data;
 }
 
-export async function saveGameToSupabase(gameState: GameState, playTime: number = 0, isNewGame: boolean = false): Promise<void> {
+export async function saveGameToSupabase(
+  gameState: GameState, 
+  playTime: number = 0, 
+  isNewGame: boolean = false,
+  clickAnalytics: Record<string, number> | null = null
+): Promise<void> {
   const user = await getCurrentUser();
   if (!user) throw new Error('Not authenticated');
 
@@ -133,6 +138,28 @@ export async function saveGameToSupabase(gameState: GameState, playTime: number 
     });
 
   if (error) throw error;
+
+  // Save click analytics if present (fire-and-forget, don't block on errors)
+  if (clickAnalytics && Object.keys(clickAnalytics).length > 0) {
+    try {
+      const { error: analyticsError } = await supabase
+        .from('button_clicks')
+        .insert({
+          user_id: user.id,
+          timestamp: new Date().toISOString(),
+          clicks: clickAnalytics,
+        });
+
+      if (analyticsError && import.meta.env.DEV) {
+        console.warn('Failed to save click analytics:', analyticsError);
+      }
+    } catch (analyticsException) {
+      // Silently fail analytics - it's not critical
+      if (import.meta.env.DEV) {
+        console.debug('Analytics save failed:', analyticsException);
+      }
+    }
+  }
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {

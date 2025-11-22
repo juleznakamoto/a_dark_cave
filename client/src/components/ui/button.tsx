@@ -41,12 +41,30 @@ export interface ButtonProps
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  ({ className, variant, size, asChild = false, onClick, ...props }, ref) => {
     const Comp = asChild ? Slot : "button"
+    
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      // Track analytics if data-analytics-id is provided
+      const analyticsId = (e.currentTarget as HTMLButtonElement).getAttribute('data-analytics-id');
+      if (analyticsId) {
+        // Lazy import to avoid circular dependencies
+        import('@/game/state').then(({ useGameStore }) => {
+          useGameStore.getState().trackButtonClick(analyticsId);
+        });
+      }
+      
+      // Call original onClick
+      if (onClick) {
+        onClick(e);
+      }
+    };
+    
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        onClick={handleClick}
         {...props}
       />
     )

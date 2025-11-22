@@ -686,6 +686,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
     get().addLogEntry(initialLogEntry);
   },
 
+  trackButtonClick: (buttonId: string) => {
+    set((state) => ({
+      clickAnalytics: {
+        ...state.clickAnalytics,
+        [buttonId]: (state.clickAnalytics[buttonId] || 0) + 1,
+      },
+    }));
+  },
+
+  getAndResetClickAnalytics: () => {
+    const clicks = get().clickAnalytics;
+    // Only return if there are clicks to report
+    if (Object.keys(clicks).length === 0) {
+      return null;
+    }
+    // Reset the analytics
+    set({ clickAnalytics: {} });
+    return clicks;
+  },
+
   loadGame: async () => {
     const { loadGame: loadFromIDB } = await import('@/game/save');
     const savedState = await loadFromIDB();
