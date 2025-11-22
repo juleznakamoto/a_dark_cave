@@ -361,21 +361,23 @@ export const getAllActionBonuses = (
     }
   });
 
-  // Add button upgrade bonuses
-  Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
-    if (upgradeKey) {
-      const bonus = getUpgradeBonus(upgradeKey, state);
-      if (bonus > 0) {
-        const existing = bonusMap.get(actionId) || {
-          multiplier: 1,
-          flatBonus: 0,
-        };
-        // Button upgrades are percentage bonuses, convert to multiplier
-        existing.multiplier += bonus / 100;
-        bonusMap.set(actionId, existing);
+  // Add button upgrade bonuses (only if book_of_improvement is owned)
+  if (state.books?.book_of_improvement) {
+    Object.entries(ACTION_TO_UPGRADE_KEY).forEach(([actionId, upgradeKey]) => {
+      if (upgradeKey) {
+        const bonus = getUpgradeBonus(upgradeKey, state);
+        if (bonus > 0) {
+          const existing = bonusMap.get(actionId) || {
+            multiplier: 1,
+            flatBonus: 0,
+          };
+          // Button upgrades are percentage bonuses, convert to multiplier
+          existing.multiplier += bonus / 100;
+          bonusMap.set(actionId, existing);
+        }
       }
-    }
-  });
+    });
+  }
 
   // Define cave exploration actions to group together
   const caveExploreActions = [

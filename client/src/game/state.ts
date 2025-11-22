@@ -448,9 +448,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const result = executeGameAction(actionId, state);
 
-    // Track button usage and check for level up
+    // Track button usage and check for level up (only if book_of_improvement is owned)
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
-    if (upgradeKey) {
+    if (upgradeKey && state.books?.book_of_improvement) {
       const upgradeResult = incrementButtonUsage(upgradeKey, state);
       
       // Add button upgrade state update
