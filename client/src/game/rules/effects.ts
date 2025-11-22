@@ -1080,7 +1080,7 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_improvement: {
     id: "book_of_improvement",
     name: "Book of Improvement",
-    description: "A book about self-improvement. Unlocks the ability to improve at tasks through practice.",
+    description: "A book on ascending the self. Grants the ability to improve at tasks through practice.",
     bonuses: {
       generalBonuses: {},
       actionBonuses: {},

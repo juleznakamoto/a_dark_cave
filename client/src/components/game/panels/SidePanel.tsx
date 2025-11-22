@@ -60,8 +60,8 @@ export default function SidePanel() {
 
   // Dynamically generate resource items from state (in schema order)
   const resourceItems = resourceOrder
-    .filter(key => (resources[key as keyof typeof resources] ?? 0) > 0)
-    .map(key => ({
+    .filter((key) => (resources[key as keyof typeof resources] ?? 0) > 0)
+    .map((key) => ({
       id: key,
       label: capitalizeWords(key),
       value: resources[key as keyof typeof resources] ?? 0,
@@ -156,7 +156,6 @@ export default function SidePanel() {
               {bookEffects[key].description}
             </div>
           )}
-          <div className="text-gray-400">Helps you to get better at things over time.</div>
         </div>
       ) : undefined,
     }));
@@ -229,10 +228,12 @@ export default function SidePanel() {
 
   // Dynamically generate building items from state (in schema order)
   const buildingItems = buildingOrder
-    .filter(key => {
+    .filter((key) => {
       const value = buildings[key as keyof typeof buildings];
       // Filter out fortification buildings from the buildings section
-      if (["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)) {
+      if (
+        ["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)
+      ) {
         return false;
       }
       // Hide blacksmith when Grand Blacksmith is built
@@ -240,7 +241,10 @@ export default function SidePanel() {
         return false;
       }
       // Hide Trade Post when Grand Bazaar or Merchants Guild is built
-      if (key === "tradePost" && (buildings.grandBazaar > 0 || buildings.merchantsGuild > 0)) {
+      if (
+        key === "tradePost" &&
+        (buildings.grandBazaar > 0 || buildings.merchantsGuild > 0)
+      ) {
         return false;
       }
       // Hide Grand Bazaar when Merchants Guild is built
@@ -252,7 +256,10 @@ export default function SidePanel() {
         return false;
       }
       // Hide foundry when Prime Foundry or Masterwork Foundry is built
-      if (key === "foundry" && (buildings.primeFoundry > 0 || buildings.masterworkFoundry > 0)) {
+      if (
+        key === "foundry" &&
+        (buildings.primeFoundry > 0 || buildings.masterworkFoundry > 0)
+      ) {
         return false;
       }
       // Hide Prime Foundry when Masterwork Foundry is built
@@ -261,7 +268,7 @@ export default function SidePanel() {
       }
       return (value ?? 0) > 0;
     })
-    .map(key => {
+    .map((key) => {
       const value = buildings[key as keyof typeof buildings];
       // Get the action definition to access the label
       const actionId = `build${key.charAt(0).toUpperCase() + key.slice(1)}`;
@@ -289,15 +296,16 @@ export default function SidePanel() {
         tooltipParts.push(
           <div key="description" className="text-muted-foreground mb-2">
             {buildAction.description}
-          </div>
+          </div>,
         );
       }
 
       // Check if manual tooltipEffects exist
       const tooltipEffects = buildAction?.tooltipEffects;
-      const effectsArray = typeof tooltipEffects === 'function' 
-        ? tooltipEffects(gameState) 
-        : tooltipEffects;
+      const effectsArray =
+        typeof tooltipEffects === "function"
+          ? tooltipEffects(gameState)
+          : tooltipEffects;
       const hasManualTooltip = effectsArray && effectsArray.length > 0;
 
       if (hasManualTooltip) {
@@ -305,32 +313,40 @@ export default function SidePanel() {
         tooltipParts.push(
           <div key="effects">
             {effectsArray.map((effect, idx) => (
-              <div key={idx}>
-                {effect}
-              </div>
+              <div key={idx}>{effect}</div>
             ))}
-          </div>
+          </div>,
         );
       } else {
         // Auto-generate effects from statsEffects and productionEffects
         const effectsList: string[] = [];
 
         if (buildAction?.statsEffects) {
-          Object.entries(buildAction.statsEffects).forEach(([stat, statValue]) => {
-            // Apply 50% reduction and round down if damaged
-            let finalValue = isDamaged ? Math.floor(statValue * 0.5) : statValue;
+          Object.entries(buildAction.statsEffects).forEach(
+            ([stat, statValue]) => {
+              // Apply 50% reduction and round down if damaged
+              let finalValue = isDamaged
+                ? Math.floor(statValue * 0.5)
+                : statValue;
 
-            effectsList.push(`${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`);
-          });
+              effectsList.push(
+                `${finalValue > 0 ? "+" : ""}${finalValue} ${capitalizeWords(stat)}`,
+              );
+            },
+          );
         }
 
         // Special handling for production effects
         if (buildAction?.productionEffects) {
-          Object.entries(buildAction.productionEffects).forEach(([jobType, production]) => {
-            Object.entries(production).forEach(([resource, amount]) => {
-              effectsList.push(`+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`);
-            });
-          });
+          Object.entries(buildAction.productionEffects).forEach(
+            ([jobType, production]) => {
+              Object.entries(production).forEach(([resource, amount]) => {
+                effectsList.push(
+                  `+${amount} ${capitalizeWords(resource)} (${capitalizeWords(jobType)})`,
+                );
+              });
+            },
+          );
         }
 
         // Special handling for fortification buildings (bastion, watchtower, palisades)
@@ -349,7 +365,8 @@ export default function SidePanel() {
           const attack =
             currentStats.attackFromFortifications -
             statsWithoutBastion.attackFromFortifications;
-          const integrity = currentStats.integrity - statsWithoutBastion.integrity;
+          const integrity =
+            currentStats.integrity - statsWithoutBastion.integrity;
 
           effectsList.push(`${defense > 0 ? "+" : ""}${defense} Defense`);
           effectsList.push(`${attack > 0 ? "+" : ""}${attack} Attack`);
@@ -401,15 +418,12 @@ export default function SidePanel() {
           tooltipParts.push(
             <div key="effects">
               {effectsList.map((effect, idx) => (
-                <div key={idx}>
-                  {effect}
-                </div>
+                <div key={idx}>{effect}</div>
               ))}
-            </div>
+            </div>,
           );
         }
       }
-
 
       // Combine tooltip parts
       if (tooltipParts.length > 0) {
@@ -421,9 +435,11 @@ export default function SidePanel() {
                 {buildAction.description}
               </div>
             )}
-            {tooltipParts.filter(part => part.key !== "description").map((part, idx) => (
-              <div key={idx}>{part}</div>
-            ))}
+            {tooltipParts
+              .filter((part) => part.key !== "description")
+              .map((part, idx) => (
+                <div key={idx}>{part}</div>
+              ))}
           </div>
         );
       }
@@ -486,8 +502,8 @@ export default function SidePanel() {
 
   // Dynamically generate villager items from state (in schema order)
   const populationItems = villagerOrder
-    .filter(key => (villagers[key as keyof typeof villagers] ?? 0) > 0)
-    .map(key => ({
+    .filter((key) => (villagers[key as keyof typeof villagers] ?? 0) > 0)
+    .map((key) => ({
       id: key,
       label: capitalizeWords(key),
       value: villagers[key as keyof typeof villagers] ?? 0,
@@ -507,7 +523,11 @@ export default function SidePanel() {
   const hasClerksHut = buildings.clerksHut > 0;
 
   // Only show stats if at least one is > 0
-  const hasAnyStats = totalLuck > 0 || totalStrength > 0 || totalKnowledge > 0 || totalMadness > 0;
+  const hasAnyStats =
+    totalLuck > 0 ||
+    totalStrength > 0 ||
+    totalKnowledge > 0 ||
+    totalMadness > 0;
 
   if (hasAnyStats) {
     // Always show luck
@@ -519,7 +539,9 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "☆" : undefined,
       iconColor: hasScriptorium ? "text-green-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Bends fate in your favor</span> : undefined,
+      tooltip: hasClerksHut ? (
+        <span className="text-gray-400">Bends fate in your favor</span>
+      ) : undefined,
     });
 
     // Always show strength
@@ -531,7 +553,11 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "⬡" : undefined,
       iconColor: hasScriptorium ? "text-red-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Helps where words reach their limit</span> : undefined,
+      tooltip: hasClerksHut ? (
+        <span className="text-gray-400">
+          Helps where words reach their limit
+        </span>
+      ) : undefined,
     });
 
     // Always show knowledge
@@ -543,21 +569,28 @@ export default function SidePanel() {
       visible: true,
       icon: hasScriptorium ? "✧" : undefined,
       iconColor: hasScriptorium ? "text-blue-300/80" : undefined,
-      tooltip: hasClerksHut ? <span className="text-gray-400">Influences things where cleverness helps</span> : undefined,
+      tooltip: hasClerksHut ? (
+        <span className="text-gray-400">
+          Influences things where cleverness helps
+        </span>
+      ) : undefined,
     });
 
     // Always show madness (show 0 if below 0)
     const displayMadness = Math.max(0, totalMadness);
-    
+
     // Build combined madness tooltip
     let madnessTooltipContent: React.ReactNode = undefined;
     if (hasClerksHut) {
-      const itemMadness = totalMadness - (gameState.stats.madnessFromEvents || 0);
+      const itemMadness =
+        totalMadness - (gameState.stats.madnessFromEvents || 0);
       const eventMadness = gameState.stats.madnessFromEvents || 0;
-      
+
       madnessTooltipContent = (
         <>
-          <div className="text-gray-400">Leads thoughts into dangerous paths</div>
+          <div className="text-gray-400">
+            Leads thoughts into dangerous paths
+          </div>
           {totalMadness > 0 && (
             <div className="text-gray-400 mt-1 pt-1 border-t border-border">
               <div>{itemMadness} from Items/Buildings</div>
@@ -567,7 +600,7 @@ export default function SidePanel() {
         </>
       );
     }
-    
+
     statsItems.push({
       id: "madness",
       label: "Madness",
@@ -584,7 +617,9 @@ export default function SidePanel() {
   const fortificationItems = Object.entries(buildings)
     .map(([key, value]) => {
       // Only include fortification buildings
-      if (!["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)) {
+      if (
+        !["bastion", "watchtower", "palisades", "fortifiedMoat"].includes(key)
+      ) {
         return null;
       }
 
@@ -812,10 +847,10 @@ export default function SidePanel() {
   const craftingCostReduction = getTotalCraftingCostReduction(gameState);
   if (craftingCostReduction > 0) {
     bonusItems.push({
-      id: 'craftingCostReduction',
-      label: 'Crafting Discount',
+      id: "craftingCostReduction",
+      label: "Crafting Discount",
       value: `-${Math.round(craftingCostReduction * 100)}%`,
-      testId: 'bonus-crafting-cost-reduction',
+      testId: "bonus-crafting-cost-reduction",
       visible: true,
     });
   }
@@ -824,10 +859,10 @@ export default function SidePanel() {
   const buildingCostReduction = getTotalBuildingCostReduction(gameState);
   if (buildingCostReduction > 0) {
     bonusItems.push({
-      id: 'buildingCostReduction',
-      label: 'Building Discount',
+      id: "buildingCostReduction",
+      label: "Building Discount",
       value: `-${Math.round(buildingCostReduction * 100)}%`,
-      testId: 'bonus-building-cost-reduction',
+      testId: "bonus-building-cost-reduction",
       visible: true,
     });
   }
@@ -847,8 +882,10 @@ export default function SidePanel() {
       case "village":
         return ["resources", "buildings", "population"].includes(sectionName);
       case "forest":
-        return ["resources", "relics", "blessings", "bonuses"].includes(sectionName);
-        case "estate":
+        return ["resources", "relics", "blessings", "bonuses"].includes(
+          sectionName,
+        );
+      case "estate":
         return ["resources", "books"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
@@ -960,9 +997,7 @@ export default function SidePanel() {
           {bookItems.length > 0 && shouldShowSection("books") && (
             <SidePanelSection title="Books" items={bookItems} />
           )}
-
         </div>
-
       </div>
       <ScrollBar orientation="vertical" />
     </ScrollArea>
