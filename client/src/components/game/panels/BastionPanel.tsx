@@ -281,6 +281,7 @@ export default function BastionPanel() {
                         variant="outline"
                         size="xs"
                         className="hover:bg-transparent hover:text-foreground"
+                        data-analytics-id="repair-palisades"
                       >
                         {getBuildingLabel(
                           "palisades",

@@ -189,6 +189,7 @@ export default function EstatePanel() {
                     size="xs"
                     variant="outline"
                     className="hover:bg-transparent hover:text-foreground"
+                    data-analytics-id="activate-sleep-mode"
                   >
                     Sleep
                   </Button>
@@ -246,6 +247,7 @@ export default function EstatePanel() {
                           size="xs"
                           variant="outline"
                           className="hover:bg-transparent hover:text-foreground"
+                          data-analytics-id="upgrade-sleep-length"
                         >
                           Improve
                         </Button>
@@ -311,6 +313,7 @@ export default function EstatePanel() {
                           size="xs"
                           variant="outline"
                           className="hover:bg-transparent hover:text-foreground"
+                          data-analytics-id="upgrade-sleep-intensity"
                         >
                           Improve
                         </Button>

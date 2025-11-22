@@ -228,6 +228,7 @@ export default function VillagePanel() {
         onClick={() => executeAction(actionId)}
         cooldownMs={action.cooldown * 1000}
         data-testid={`button-${actionId.replace(/([A-Z])/g, "-$1").toLowerCase()}`}
+        data-analytics-id={actionId}
         disabled={!canExecute}
         size="xs"
         variant="outline"
@@ -325,6 +326,7 @@ export default function VillagePanel() {
             variant="ghost"
             size="xs"
             className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            data-analytics-id={`unassign-${jobId}`}
           >
             -
           </Button>
@@ -346,6 +348,7 @@ export default function VillagePanel() {
             variant="ghost"
             size="xs"
             className="h-5 w-5 flex items-center justify-center no-hover text-lg text-center"
+            data-analytics-id={`assign-${jobId}`}
           >
             +
           </Button>

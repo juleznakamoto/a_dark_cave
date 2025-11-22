@@ -24,6 +24,7 @@ interface CooldownButtonProps {
     | "link";
   size?: "default" | "sm" | "xs" | "lg" | "icon";
   "data-testid"?: string;
+  "data-analytics-id"?: string;
   tooltip?: React.ReactNode;
 }
 
@@ -84,10 +85,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
     if (!isCoolingDown) {
       actionExecutedRef.current = true;
       
-      // Track button click for analytics
-      if (actionId && actionId !== "unknown") {
-        useGameStore.getState().trackButtonClick(actionId);
-      }
+      // Note: Button component now handles tracking via data-analytics-id
       
       onClick();
       // Reset the flag after a short delay
@@ -112,6 +110,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
         isCoolingDown ? "opacity-60 cursor-not-allowed" : ""
       } ${className}`}
       data-testid={testId}
+      data-analytics-id={props["data-analytics-id"] || actionId}
       {...props}
     >
       {/* Button content */}
