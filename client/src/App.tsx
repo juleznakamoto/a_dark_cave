@@ -13,6 +13,7 @@ import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import Withdrawal from "@/pages/withdrawal";
 import ExplosionTest from "@/pages/explosion-test";
+import AdminDashboard from '@/pages/admin/dashboard';
 
 
 const isDev = import.meta.env.DEV;
@@ -28,6 +29,7 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/withdrawal" component={Withdrawal} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       {isDev && <Route path="/explosion-test" component={ExplosionTest} />}
       <Route component={NotFound} />
     </Switch>
