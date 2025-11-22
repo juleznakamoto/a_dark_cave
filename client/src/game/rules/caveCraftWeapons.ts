@@ -300,7 +300,7 @@ export function handleCraftCrudeBow(
     result.logEntries!.push({
       id: `forest-unlocked-${Date.now()}`,
       message:
-        "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to hunt.",
+        "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
       timestamp: Date.now(),
       type: "system",
     });

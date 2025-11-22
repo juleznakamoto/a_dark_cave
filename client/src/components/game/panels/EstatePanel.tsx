@@ -18,19 +18,19 @@ import { Progress } from "@/components/ui/progress";
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
   { level: 0, hours: 2, cost: 0, currency: null },
-  { level: 1, hours: 4, cost: 50, currency: "gold" },
-  { level: 2, hours: 6, cost: 250, currency: "gold" },
-  { level: 3, hours: 10, cost: 500, currency: "gold" },
-  { level: 4, hours: 16, cost: 1000, currency: "gold" },
-  { level: 5, hours: 24, cost: 2500, currency: "gold" },
+  { level: 1, hours: 4, cost: 250, currency: "gold" },
+  { level: 2, hours: 6, cost: 500, currency: "gold" },
+  { level: 3, hours: 8, cost: 750, currency: "gold" },
+  { level: 4, hours: 10, cost: 1000, currency: "gold" },
+  { level: 5, hours: 12, cost: 1250, currency: "gold" },
 ];
 
 const SLEEP_INTENSITY_UPGRADES = [
   { level: 0, percentage: 10, cost: 0, currency: null },
-  { level: 1, percentage: 12.5, cost: 50, currency: "gold" },
-  { level: 2, percentage: 15, cost: 250, currency: "gold" },
-  { level: 3, percentage: 17.5, cost: 500, currency: "gold" },
-  { level: 4, percentage: 20, cost: 1000, currency: "gold" },
+  { level: 1, percentage: 12.5, cost: 250, currency: "gold" },
+  { level: 2, percentage: 15, cost: 500, currency: "gold" },
+  { level: 3, percentage: 17.5, cost: 1000, currency: "gold" },
+  { level: 4, percentage: 20, cost: 1500, currency: "gold" },
   { level: 5, percentage: 25, cost: 2500, currency: "gold" },
 ];
 
