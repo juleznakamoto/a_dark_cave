@@ -106,45 +106,36 @@ export default function EstatePanel() {
     setIdleModeDialog(true);
   };
 
-  // Handle sleep length upgrade
-  const handleSleepLengthUpgrade = () => {
-    const currentLevel = sleepUpgrades.lengthLevel;
+  // Generic upgrade handler
+  const handleUpgrade = (
+    upgradeType: 'length' | 'intensity',
+    upgrades: typeof SLEEP_LENGTH_UPGRADES | typeof SLEEP_INTENSITY_UPGRADES,
+    levelKey: 'lengthLevel' | 'intensityLevel',
+    currency: 'gold' | 'silver'
+  ) => {
+    const currentLevel = sleepUpgrades[levelKey];
     if (currentLevel >= 5) return;
 
-    const nextUpgrade = SLEEP_LENGTH_UPGRADES[currentLevel + 1];
-    if (resources.gold >= nextUpgrade.cost) {
+    const nextUpgrade = upgrades[currentLevel + 1];
+    if (resources[currency] >= nextUpgrade.cost) {
       useGameStore.setState({
         sleepUpgrades: {
           ...sleepUpgrades,
-          lengthLevel: currentLevel + 1,
+          [levelKey]: currentLevel + 1,
         },
         resources: {
           ...resources,
-          gold: resources.gold - nextUpgrade.cost,
+          [currency]: resources[currency] - nextUpgrade.cost,
         },
       });
     }
   };
 
-  // Handle sleep intensity upgrade
-  const handleSleepIntensityUpgrade = () => {
-    const currentLevel = sleepUpgrades.intensityLevel;
-    if (currentLevel >= 5) return;
+  const handleSleepLengthUpgrade = () => 
+    handleUpgrade('length', SLEEP_LENGTH_UPGRADES, 'lengthLevel', 'gold');
 
-    const nextUpgrade = SLEEP_INTENSITY_UPGRADES[currentLevel + 1];
-    if (resources.gold >= nextUpgrade.cost) {
-      useGameStore.setState({
-        sleepUpgrades: {
-          ...sleepUpgrades,
-          intensityLevel: currentLevel + 1,
-        },
-        resources: {
-          ...resources,
-          gold: resources.gold - nextUpgrade.cost,
-        },
-      });
-    }
-  };
+  const handleSleepIntensityUpgrade = () => 
+    handleUpgrade('intensity', SLEEP_INTENSITY_UPGRADES, 'intensityLevel', 'gold');
 
   const currentLengthUpgrade = SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel];
   const nextLengthUpgrade =
