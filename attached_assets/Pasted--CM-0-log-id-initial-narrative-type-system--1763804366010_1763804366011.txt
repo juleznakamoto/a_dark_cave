@@ -1,0 +1,566 @@
+{
+  "CM": 0,
+  "log": [
+    {
+      "id": "initial-narrative",
+      "type": "system",
+      "message": "A dark cave. The air is cold and damp. You barely see the shapes around you.",
+      "timestamp": 1763803515806
+    },
+    {
+      "id": "fire-lit-1763803521513",
+      "type": "system",
+      "message": "The fire crackles softly, casting dancing shadows on the cave walls. The warmth is comforting.",
+      "timestamp": 1763803521513
+    },
+    {
+      "id": "first-wood-gather-1763803527778",
+      "type": "system",
+      "message": "Some wood lies scattered near the cave's entrance. It might prove useful.",
+      "timestamp": 1763803527778
+    },
+    {
+      "id": "explore-cave-1763803529950",
+      "type": "system",
+      "message": "The torchlight illuminates the cave walls. In the flickering light, you notice a path leading deeper into the caves.",
+      "timestamp": 1763803529950
+    },
+    {
+      "id": "village-unlocked-1763803533523",
+      "type": "system",
+      "message": "Outside the cave a clearing opens. This could be the start of something great.",
+      "timestamp": 1763803533523
+    },
+    {
+      "id": "first-hut-built-1763803537129",
+      "type": "system",
+      "message": "The first wooden hut stands complete, the village begins to take shape.",
+      "timestamp": 1763803537129
+    },
+    {
+      "id": "blacksmith-built-1763803538216",
+      "type": "system",
+      "message": "The blacksmith's forge comes alive. The heart of industry now beats in the village.",
+      "timestamp": 1763803538216
+    },
+    {
+      "id": "stranger-approaches-1763803634803",
+      "type": "system",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1763803634803
+    },
+    {
+      "id": "forest-unlocked-1763803639305",
+      "type": "system",
+      "message": "The village is encircled by a dense, dark forest. Danger lingers in the air, though it may also be a good place to chop wood and hunt.",
+      "timestamp": 1763803639305
+    },
+    {
+      "id": "stranger-approaches-1763803669082",
+      "type": "system",
+      "message": "A wanderer appears and becomes part of the community.",
+      "timestamp": 1763803669082
+    },
+    {
+      "id": "venture-deeper-1763803673384",
+      "type": "system",
+      "message": "The air grows colder as you descend the path deeper into the cave. The walls around you seem unnaturally smooth, as if shaped by someone.",
+      "timestamp": 1763803673384
+    },
+    {
+      "id": "probability-effect-1763803684941-0.5384232145740434",
+      "type": "system",
+      "message": "In the cave you find a leather belt stained with ancient blood.",
+      "timestamp": 1763803684941
+    },
+    {
+      "id": "levelup_ventureDeeper_1763803686334",
+      "type": "system",
+      "message": "Your mastery of Cave Exploring deepens.",
+      "timestamp": 1763803686334
+    },
+    {
+      "id": "foundry-complete-1763804234732",
+      "type": "system",
+      "message": "The foundry roars to life as fire and heat fuse raw materials.",
+      "timestamp": 1763804234732
+    },
+    {
+      "id": "trade-post-built-1763804235420",
+      "type": "system",
+      "message": "A trade post is built near the forest attracting tradesman who look to sell their goods for gold.",
+      "timestamp": 1763804235420
+    },
+    {
+      "id": "clerks-hut-built-1763804236046",
+      "type": "system",
+      "message": "A clerks hut is erected, its occupant ready to track the flow of  resources with meticulous care.",
+      "timestamp": 1763804236046
+    },
+    {
+      "id": "descend-further-1763804326943",
+      "type": "system",
+      "message": "With the lantern casting a steady glow, you descend even deeper. Suddenly your feet touch manmade stone steps, worn by time.",
+      "timestamp": 1763804326943
+    },
+    {
+      "id": "stranger-approaches-1763804329122",
+      "type": "system",
+      "message": "A traveler arrives and decides to stay.",
+      "timestamp": 1763804329122
+    },
+    {
+      "id": "tannery-built-1763804330124",
+      "type": "system",
+      "message": "The tannery is complete. The smell of curing leather fills the air as craftsmen begin their work.",
+      "timestamp": 1763804330124
+    }
+  ],
+  "books": {
+    "book_of_improvement": false
+  },
+  "flags": {
+    "hasTraps": false,
+    "gameStarted": true,
+    "caveExplored": true,
+    "exploredRuins": false,
+    "portalBlasted": false,
+    "exploredTemple": false,
+    "forestUnlocked": true,
+    "venturedDeeper": true,
+    "bastionUnlocked": false,
+    "exploredCitadel": false,
+    "firstWolfAttack": false,
+    "villageUnlocked": true,
+    "descendedFurther": true,
+    "monolithUnlocked": false,
+    "starvationActive": true,
+    "lowChamberExplored": false,
+    "occultistChamberExplored": false
+  },
+  "stats": {
+    "luck": 0,
+    "madness": 0,
+    "strength": 0,
+    "knowledge": 0,
+    "madnessFromEvents": 0
+  },
+  "story": {
+    "seen": {
+      "fireLit": true,
+      "hasFood": true,
+      "hasWood": true,
+      "hasStone": true,
+      "hasHunted": true,
+      "hasIronAxe": true,
+      "hasTannery": true,
+      "hasStoneAxe": true,
+      "caveExplored": true,
+      "hasClerksHut": true,
+      "hasTradePost": true,
+      "hasVillagers": true,
+      "hasBlacksmith": true,
+      "hasMinedStone": true,
+      "hasIronLantern": true,
+      "hasIronPickaxe": true,
+      "venturedDeeper": true,
+      "foundryComplete": true,
+      "hasStonePickaxe": true,
+      "actionBuildCabin": true,
+      "actionCraftTorch": true,
+      "descendedFurther": true,
+      "firstWoodGathered": true,
+      "actionBuildTannery": true,
+      "actionCraftIronAxe": true,
+      "actionCraftCrudeBow": true,
+      "actionCraftStoneAxe": true,
+      "actionBuildClerksHut": true,
+      "actionBuildTradePost": true,
+      "actionBuildWoodenHut": true,
+      "actionCraftIronSword": true,
+      "actionBuildBlacksmith": true,
+      "actionBuildShallowPit": true,
+      "actionCraftHuntsmanBow": true,
+      "actionCraftIronLantern": true,
+      "actionCraftIronPickaxe": true,
+      "actionCraftStonePickaxe": true
+    }
+  },
+  "tools": {
+    "lantern": false,
+    "iron_axe": true,
+    "steel_axe": false,
+    "stone_axe": true,
+    "giant_trap": false,
+    "adamant_axe": false,
+    "iron_lantern": true,
+    "iron_pickaxe": true,
+    "obsidian_axe": false,
+    "occultist_map": false,
+    "steel_lantern": false,
+    "steel_pickaxe": false,
+    "stone_pickaxe": true,
+    "adamant_lantern": false,
+    "adamant_pickaxe": false,
+    "reinforced_rope": false,
+    "natharit_pickaxe": false,
+    "obsidian_lantern": false,
+    "obsidian_pickaxe": false,
+    "blacksmith_hammer": false,
+    "mastermason_chisel": false
+  },
+  "events": {
+    "log": [],
+    "active": [],
+    "cube01": true,
+    "cube02": false,
+    "cube03": false,
+    "cube04": false,
+    "cube05": false,
+    "cube06": false,
+    "cube07": false,
+    "cube08": false,
+    "cube09": false,
+    "cube10": false,
+    "cube11": false,
+    "cube13": false,
+    "cube14a": false,
+    "cube14b": false,
+    "cube14c": false,
+    "cube14d": false,
+    "cube15a": false,
+    "cube15b": false,
+    "available": [],
+    "shadowsMove": false,
+    "bloodInWater": false,
+    "facesInWalls": false,
+    "skinCrawling": false,
+    "creatureInHut": false,
+    "monolithDemand": false,
+    "villagerStares": false,
+    "wrongVillagers": false,
+    "whisperingVoices": false,
+    "wrongReflections": false,
+    "villagersStareAtSky": false,
+    "humanSacrificeDemand": false,
+    "slaughteredCreatures": false,
+    "communicatedWithCreatures": false,
+    "encounteredCreaturesChoice": false
+  },
+  "relics": {
+    "bone_dice": false,
+    "bloodstone": false,
+    "frostglass": false,
+    "ravens_orb": false,
+    "elder_scroll": false,
+    "shadow_flute": false,
+    "unnamed_book": false,
+    "wooden_figure": false,
+    "ancient_scrolls": false,
+    "whispering_cube": true,
+    "blackened_mirror": false,
+    "occultist_grimoire": false
+  },
+  "effects": {
+    "statBonuses": {
+      "luck": 0,
+      "madness": 0,
+      "strength": 8,
+      "knowledge": 2
+    },
+    "actionBonuses": {
+      "iron_axe": {
+        "chopWood": {
+          "cooldownReduction": 0.5,
+          "resourceMultiplier": 2
+        },
+        "buildTorch": {
+          "cooldownReduction": 0.5
+        }
+      },
+      "huntsman_bow": {
+        "hunt": {
+          "resourceMultiplier": 1.5
+        }
+      },
+      "iron_lantern": {
+        "mining": {
+          "cooldownReduction": 1,
+          "resourceMultiplier": 1.25
+        }
+      },
+      "iron_pickaxe": {
+        "mining": {
+          "cooldownReduction": 1,
+          "resourceMultiplier": 1.5
+        }
+      },
+      "book_of_improvement": {}
+    },
+    "resource_bonus": {},
+    "madness_reduction": {},
+    "probability_bonus": {},
+    "cooldown_reduction": {
+      "mining": 2,
+      "chopWood": 0.5,
+      "buildTorch": 0.5
+    },
+    "resource_multiplier": {
+      "hunt": 1.5,
+      "mining": 1.75,
+      "chopWood": 2
+    }
+  },
+  "weapons": {
+    "war_bow": false,
+    "arbalest": false,
+    "long_bow": false,
+    "crude_bow": true,
+    "iron_sword": true,
+    "master_bow": false,
+    "steel_sword": false,
+    "ashen_dagger": false,
+    "compound_bow": false,
+    "huntsman_bow": true,
+    "adamant_sword": false,
+    "nightshade_bow": false,
+    "nordic_war_axe": false,
+    "obsidian_sword": false,
+    "bloodstone_staff": false,
+    "frostglass_sword": false
+  },
+  "clothing": {
+    "red_mask": false,
+    "ebony_ring": false,
+    "alphas_hide": false,
+    "hunter_cloak": false,
+    "bone_necklace": false,
+    "cracked_crown": false,
+    "explorer_pack": false,
+    "grenadier_bag": false,
+    "moon_bracelet": false,
+    "black_bear_fur": false,
+    "loggers_gloves": false,
+    "highpriest_robe": false,
+    "ring_of_clarity": false,
+    "ring_of_drowned": false,
+    "muttering_amulet": false,
+    "tarnished_amulet": false,
+    "bloodstained_belt": true,
+    "ravenfeather_mantle": false
+  },
+  "playTime": 775482.8000000238,
+  "blessings": {
+    "sharp_aim": false,
+    "dagons_gift": false,
+    "ravens_mark": false,
+    "flames_touch": false,
+    "ashen_embrace": false,
+    "forests_grace": false,
+    "dagons_gift_enhanced": false,
+    "ravens_mark_enhanced": false,
+    "flames_touch_enhanced": false,
+    "ashen_embrace_enhanced": false
+  },
+  "boostMode": false,
+  "buildings": {
+    "altar": 0,
+    "cabin": 1,
+    "traps": 0,
+    "quarry": 0,
+    "shrine": 0,
+    "temple": 0,
+    "bastion": 0,
+    "deepPit": 0,
+    "foundry": 1,
+    "sanctum": 0,
+    "tannery": 1,
+    "furTents": 0,
+    "stoneHut": 0,
+    "clerksHut": 1,
+    "longhouse": 0,
+    "palisades": 0,
+    "tradePost": 1,
+    "woodenHut": 6,
+    "blacksmith": 1,
+    "darkEstate": 0,
+    "greatCabin": 0,
+    "shallowPit": 1,
+    "timberMill": 0,
+    "watchtower": 0,
+    "grandBazaar": 0,
+    "scriptorium": 0,
+    "wizardTower": 0,
+    "deepeningPit": 0,
+    "primeFoundry": 0,
+    "alchemistHall": 0,
+    "blackMonolith": 0,
+    "bottomlessPit": 0,
+    "fortifiedMoat": 0,
+    "masterTannery": 0,
+    "merchantsGuild": 0,
+    "grandBlacksmith": 0,
+    "masterworkFoundry": 0
+  },
+  "cruelMode": false,
+  "isNewGame": false,
+  "lastSaved": 1763804331553,
+  "resources": {
+    "fur": 2400,
+    "coal": 10454,
+    "food": 3903,
+    "gold": 0,
+    "iron": 9824,
+    "wood": 592,
+    "bones": 2100,
+    "steel": 0,
+    "stone": 14906,
+    "torch": 125,
+    "silver": 420,
+    "sulfur": 8505,
+    "adamant": 0,
+    "leather": 0,
+    "obsidian": 560,
+    "moonstone": 0,
+    "bone_totem": 0,
+    "ember_bomb": 0,
+    "ashfire_bomb": 0,
+    "ashfire_dust": 0,
+    "black_powder": 0,
+    "leather_totem": 0
+  },
+  "villagers": {
+    "free": 3,
+    "hunter": 0,
+    "tanner": 0,
+    "gatherer": 0,
+    "coal_miner": 0,
+    "iron_miner": 0,
+    "powder_maker": 0,
+    "steel_forger": 0,
+    "sulfur_miner": 0,
+    "adamant_miner": 0,
+    "obsidian_miner": 0,
+    "moonstone_miner": 0,
+    "ashfire_dust_maker": 0
+  },
+  "curseState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "feastState": {
+    "endTime": 0,
+    "isActive": false,
+    "lastAcceptedLevel": 0
+  },
+  "schematics": {
+    "arbalest_schematic": false,
+    "bloodstone_bow_schematic": false,
+    "nightshade_bow_schematic": false
+  },
+  "bastion_stats": {
+    "attack": 8,
+    "defense": 0,
+    "integrity": 0,
+    "attackFromStrength": 8,
+    "attackFromFortifications": 0
+  },
+  "idleModeState": {
+    "isActive": false,
+    "startTime": 0,
+    "needsDisplay": false
+  },
+  "sleepUpgrades": {
+    "lengthLevel": 0,
+    "intensityLevel": 0
+  },
+  "buttonUpgrades": {
+    "hunt": {
+      "level": 0,
+      "clicks": 2
+    },
+    "chopWood": {
+      "level": 0,
+      "clicks": 4
+    },
+    "mineCoal": {
+      "level": 0,
+      "clicks": 0
+    },
+    "mineIron": {
+      "level": 0,
+      "clicks": 0
+    },
+    "mineStone": {
+      "level": 0,
+      "clicks": 9
+    },
+    "mineSulfur": {
+      "level": 0,
+      "clicks": 0
+    },
+    "caveExplore": {
+      "level": 0,
+      "clicks": 0
+    },
+    "exploreCave": {
+      "level": 0,
+      "clicks": 2
+    },
+    "mineAdamant": {
+      "level": 0,
+      "clicks": 0
+    },
+    "mineObsidian": {
+      "level": 0,
+      "clicks": 0
+    },
+    "ventureDeeper": {
+      "level": 1,
+      "clicks": 10
+    }
+  },
+  "eventCooldowns": {
+    "cube01": 1763804312379,
+    "cubeDiscovery": 1763804301296
+  },
+  "feastPurchases": {
+    "feast-purchase-1763588871337": {
+      "itemId": "basic_bundle",
+      "purchasedAt": 1763588871337,
+      "totalActivations": 1,
+      "activationsRemaining": 0
+    }
+  },
+  "isUserSignedIn": true,
+  "greatFeastState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "hoveredTooltips": {},
+  "templeDedicated": false,
+  "triggeredEvents": {},
+  "damagedBuildings": {
+    "bastion": false,
+    "palisades": false,
+    "watchtower": false
+  },
+  "miningBoostState": {
+    "endTime": 0,
+    "isActive": false
+  },
+  "total_population": 12,
+  "templeDedicatedTo": "",
+  "activatedPurchases": {
+    "gold_1000": true,
+    "basic_bundle": true
+  },
+  "current_population": 3,
+  "authNotificationSeen": false,
+  "shopNotificationSeen": false,
+  "greatFeastActivations": 0,
+  "hasMadeNonFreePurchase": false,
+  "authNotificationVisible": false,
+  "mysteriousNoteShopNotificationSeen": false,
+  "mysteriousNoteDonateNotificationSeen": false
+}
