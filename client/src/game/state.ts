@@ -419,11 +419,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   initialize: (initialState?: Partial<GameState>) => {
-    if (initialState) {
-      set({ ...defaultGameState, ...initialState });
-    } else {
-      set(defaultGameState);
+    let stateToSet = initialState ? { ...defaultGameState, ...initialState } : defaultGameState;
+    
+    // Backwards compatibility: Add book_of_improvement if player has any button upgrade clicks
+    if (stateToSet.buttonUpgrades) {
+      const hasAnyClicks = Object.values(stateToSet.buttonUpgrades).some(
+        (upgrade: any) => upgrade && upgrade.clicks > 0
+      );
+      
+      if (hasAnyClicks && !stateToSet.books?.book_of_improvement) {
+        if (!stateToSet.books) {
+          stateToSet.books = {};
+        }
+        stateToSet.books.book_of_improvement = true;
+      }
     }
+    
+    set(stateToSet);
     StateManager.scheduleEffectsUpdate(get);
   },
 
