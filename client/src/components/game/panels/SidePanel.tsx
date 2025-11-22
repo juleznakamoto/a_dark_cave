@@ -849,7 +849,7 @@ export default function SidePanel() {
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(sectionName);
         case "estate":
-        return ["resources", "buildings", "population", "books"].includes(sectionName);
+        return ["resources", "books"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
 
