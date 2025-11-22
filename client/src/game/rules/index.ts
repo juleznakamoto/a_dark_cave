@@ -695,9 +695,10 @@ export const applyActionEffects = (
                 baseDecisionTime: event.baseDecisionTime,
                 fallbackChoice: event.fallbackChoice,
               } as any); // Asserting as any to bypass strict type checking for logMessages array
-              // Skip applying the default effect if it's a triggered event
-              continue;
             }
+            // IMPORTANT: Skip applying the item value for all choice events
+            // The event choice handler will apply the item if player chooses to take it
+            continue;
           }
 
           if (
