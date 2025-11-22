@@ -14,7 +14,8 @@ export type UpgradeKey =
   | "mineObsidian"
   | "mineAdamant"
   | "hunt"
-  | "chopWood";
+  | "chopWood"
+  | "caveExplore";
 
 export interface UpgradeLevel {
   level: number;
@@ -136,6 +137,7 @@ export const UPGRADE_LABELS: Record<UpgradeKey, string> = {
   mineAdamant: "Adamant Mining",
   hunt: "Hunting",
   chopWood: "Woodcutting",
+  caveExplore: "Cave Exploring",
 };
 
 // Map action IDs to upgrade keys
@@ -154,6 +156,7 @@ export const ACTION_TO_UPGRADE_KEY: Record<string, UpgradeKey | undefined> = {
   mineAdamant: "mineAdamant",
   hunt: "hunt",
   chopWood: "chopWood",
+  caveExplore: "caveExplore",
 };
 
 /**

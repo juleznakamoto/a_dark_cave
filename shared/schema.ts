@@ -177,6 +177,11 @@ export const gameStateSchema = z.object({
       sharp_aim: z.boolean().default(false),
     })
     .default({}),
+  books: z
+    .object({
+      book_of_improvement: z.boolean().default(false),
+    })
+    .default({}),
   buildings: z
     .object({
       woodenHut: z.number().default(0),

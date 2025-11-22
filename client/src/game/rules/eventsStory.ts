@@ -94,6 +94,45 @@ export const storyEvents: Record<string, GameEvent> = {
     ],
   },
 
+  mysteriousBook: {
+    id: "mysteriousBook",
+    condition: (state: GameState) =>
+      state.buildings.darkEstate >= 1 &&
+      !state.story.seen.mysteriousBookReceived &&
+      !state.books.book_of_improvement,
+    triggerType: "time",
+    timeProbability: 15,
+    title: "A Quiet Knock",
+    message:
+      "One late evening, you hear a quiet knock on the door of the estate. As you open it, nobody is there. On the doorstep lies something wrapped in old leather.",
+    triggered: false,
+    priority: 5,
+    repeatable: false,
+    choices: [
+      {
+        id: "unpack_it",
+        label: "Unpack it",
+        effect: (state: GameState) => {
+          return {
+            books: {
+              ...state.books,
+              book_of_improvement: true,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                mysteriousBookReceived: true,
+              },
+            },
+            _logMessage:
+              "It is a very old, torn book with perfectly written letters. The cover is no longer visible. As you carefully turn the pages, you realize it teaches how to improve oneself at things.",
+          };
+        },
+      },
+    ],
+  },
+
   wizardArrives: {
 
     id: "wizardArrives",

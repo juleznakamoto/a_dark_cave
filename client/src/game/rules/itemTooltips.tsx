@@ -1,17 +1,19 @@
 
-import { weaponEffects, toolEffects, clothingEffects } from "./effects";
+import { weaponEffects, toolEffects, clothingEffects, bookEffects } from "./effects";
 import { capitalizeWords } from "@/lib/utils";
 
 export function renderItemTooltip(
   itemId: string,
-  itemType: "weapon" | "tool" | "blessing"
+  itemType: "weapon" | "tool" | "blessing" | "book"
 ) {
   const effect =
     itemType === "weapon"
       ? weaponEffects[itemId]
       : itemType === "tool"
         ? toolEffects[itemId]
-        : clothingEffects[itemId];
+        : itemType === "book"
+          ? bookEffects[itemId]
+          : clothingEffects[itemId];
 
   if (!effect) return null;
 

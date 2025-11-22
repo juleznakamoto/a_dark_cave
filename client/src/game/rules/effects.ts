@@ -1075,3 +1075,20 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     },
   },
 };
+
+export const bookEffects: Record<string, EffectDefinition> = {
+  book_of_improvement: {
+    id: "book_of_improvement",
+    name: "Book of Improvement",
+    description: "A book about self-improvement.",
+    bonuses: {
+      generalBonuses: {
+        caveExploreMultiplier: 1.15,
+        mining: 1.15,
+        chopWood: 1.15,
+        hunt: 1.15,
+      },
+      actionBonuses: {},
+    },
+  },
+};

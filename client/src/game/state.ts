@@ -151,6 +151,7 @@ const mergeStateUpdates = (
     villagers: { ...prevState.villagers, ...stateUpdates.villagers },
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
+    books: { ...prevState.books, ...stateUpdates.books },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     buttonUpgrades: stateUpdates.buttonUpgrades
@@ -183,7 +184,8 @@ const mergeStateUpdates = (
     stateUpdates.tools ||
     stateUpdates.weapons ||
     stateUpdates.clothing ||
-    stateUpdates.relics
+    stateUpdates.relics ||
+    stateUpdates.books
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -245,6 +247,9 @@ const defaultGameState: GameState = {
     integrity: 0,
   },
   hoveredTooltips: {},
+  books: {
+    book_of_improvement: false,
+  },
   feastState: {
     isActive: false,
     endTime: 0,
@@ -546,7 +551,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.tools ||
       result.stateUpdates.weapons ||
       result.stateUpdates.clothing ||
-      result.stateUpdates.relics
+      result.stateUpdates.relics ||
+      result.stateUpdates.books
     ) {
       StateManager.scheduleEffectsUpdate(get);
     }
@@ -674,6 +680,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentBoostMode = get().boostMode;
 
     if (savedState) {
+      // Backwards compatibility: Add book_of_improvement if player has any button upgrade clicks
+      const hasAnyClicks = savedState.buttonUpgrades && Object.values(savedState.buttonUpgrades).some(
+        (upgrade: any) => upgrade && upgrade.clicks > 0
+      );
+      
+      if (hasAnyClicks && !savedState.books?.book_of_improvement) {
+        if (!savedState.books) {
+          savedState.books = {};
+        }
+        savedState.books.book_of_improvement = true;
+      }
       const loadedState = {
         ...savedState,
         activeTab: "cave",

@@ -3,7 +3,8 @@ import {
   toolEffects,
   weaponEffects,
   clothingEffects,
-  EffectDefinition,
+  bookEffects,
+  ItemEffect,
   ActionBonuses,
 } from "./effects";
 import { villageBuildActions } from "./villageBuildActions";
@@ -205,6 +206,13 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
     }
     if (clothingEffects[toolKey]) {
       activeEffects.push(clothingEffects[toolKey]);
+    }
+  });
+
+  // Check book effects
+  Object.keys(state.books || {}).forEach((bookKey) => {
+    if (bookEffects[bookKey]) {
+      activeEffects.push(bookEffects[bookKey]);
     }
   });
 
@@ -746,4 +754,19 @@ export const getCooldownReduction = (
   });
 
   return totalReduction;
+};
+
+// Helper function to get the best book
+export const getBestBook = (state: GameState): string | null => {
+  if (!state.books) return null;
+
+  // Assuming books don't have a strict hierarchy and any owned book is considered.
+  // If there's a hierarchy, it would need to be defined similar to tool/weapon hierarchies.
+  const ownedBooks = Object.entries(state.books)
+    .filter(([_, owned]) => owned)
+    .map(([id]) => id);
+
+  // For now, just return the first owned book found.
+  // If a specific book provides a unique bonus, more complex logic might be needed.
+  return ownedBooks.length > 0 ? ownedBooks[0] : null;
 };

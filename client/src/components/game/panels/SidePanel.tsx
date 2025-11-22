@@ -16,6 +16,7 @@ import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
+import { bookEffects } from "@/game/rules/effects";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
 import { gameStateSchema } from "@shared/schema";
@@ -136,6 +137,28 @@ export default function SidePanel() {
       value: 1,
       testId: `relic-${key}`,
       visible: true,
+    }));
+
+  // Dynamically generate book items from state
+  const bookItems = Object.entries(gameState.books || {})
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: bookEffects[key]?.name || capitalizeWords(key),
+      value: 1,
+      testId: `book-${key}`,
+      visible: true,
+      tooltip: bookEffects[key] ? (
+        <div>
+          <div className="font-bold">{bookEffects[key].name}</div>
+          {bookEffects[key].description && (
+            <div className="text-gray-400 mb-1">
+              {bookEffects[key].description}
+            </div>
+          )}
+          <div className="text-gray-400">Helps you to get better at things over time.</div>
+        </div>
+      ) : undefined,
     }));
 
   // Dynamically generate schematic items from state
@@ -826,7 +849,7 @@ export default function SidePanel() {
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(sectionName);
         case "estate":
-        return ["resources", "buildings", "population"].includes(sectionName);
+        return ["resources", "buildings", "population", "books"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
 
@@ -933,6 +956,9 @@ export default function SidePanel() {
           )}
           {bonusItems.length > 0 && shouldShowSection("bonuses") && (
             <SidePanelSection title="Bonuses" items={bonusItems} />
+          )}
+          {bookItems.length > 0 && shouldShowSection("books") && (
+            <SidePanelSection title="Books" items={bookItems} />
           )}
 
         </div>
