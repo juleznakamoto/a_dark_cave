@@ -142,7 +142,7 @@ export default function EstatePanel() {
     SLEEP_LENGTH_UPGRADES[sleepUpgrades.lengthLevel + 1];
   const canUpgradeLength =
     sleepUpgrades.lengthLevel < 5 &&
-    resources.silver >= (nextLengthUpgrade?.cost || 0);
+    resources.gold >= (nextLengthUpgrade?.cost || 0);
 
   const currentIntensityUpgrade =
     SLEEP_INTENSITY_UPGRADES[sleepUpgrades.intensityLevel];
