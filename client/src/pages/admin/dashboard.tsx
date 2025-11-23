@@ -117,6 +117,7 @@ export default function AdminDashboard() {
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('30d');
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
+  const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -423,6 +424,62 @@ export default function AdminDashboard() {
       }
     });
     return Array.from(buttonNames);
+  };
+
+  const getClickTypesByTimestamp = () => {
+    let filteredClicks = clickData;
+
+    if (selectedUser !== 'all') {
+      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    }
+
+    // Collect all timestamp entries with their click data by type
+    const timeSeriesData: Array<{ timestamp: Date; clicks: Record<string, number> }> = [];
+
+    filteredClicks.forEach(entry => {
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(entry.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
+      );
+
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
+          try {
+            const clickDate = new Date(timestamp);
+            if (!isNaN(clickDate.getTime())) {
+              timeSeriesData.push({
+                timestamp: clickDate,
+                clicks: clicksAtTime as Record<string, number>
+              });
+            }
+          } catch (e) {
+            console.warn('Failed to parse timestamp:', timestamp, e);
+          }
+        });
+      }
+    });
+
+    // Sort by timestamp
+    timeSeriesData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+
+    // Format for chart display
+    return timeSeriesData.map(item => {
+      const formattedTime = format(item.timestamp, 'HH:mm:ss');
+      const filteredClicks: Record<string, number> = {};
+      
+      // Only include selected click types
+      Object.entries(item.clicks).forEach(([button, count]) => {
+        if (selectedClickTypes.size === 0 || selectedClickTypes.has(button)) {
+          filteredClicks[button] = count;
+        }
+      });
+
+      return {
+        time: formattedTime,
+        ...filteredClicks,
+      };
+    });
   };
 
   const getButtonClicksOverPlaytime = () => {
@@ -846,6 +903,59 @@ export default function AdminDashboard() {
                       strokeWidth={2}
                       dot={{ r: 4 }}
                     />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Individual Click Types Over Time</CardTitle>
+                <CardDescription>
+                  Click counts by type at each timestamp {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4 mb-4 flex-wrap">
+                  {getAllButtonNames().map(buttonName => (
+                    <label key={buttonName} className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={selectedClickTypes.has(buttonName)}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedClickTypes);
+                          if (e.target.checked) {
+                            newSet.add(buttonName);
+                          } else {
+                            newSet.delete(buttonName);
+                          }
+                          setSelectedClickTypes(newSet);
+                        }}
+                        className="cursor-pointer"
+                      />
+                      <span className="text-sm">{buttonName}</span>
+                    </label>
+                  ))}
+                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getClickTypesByTimestamp()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    {Object.keys(getClickTypesByTimestamp()[0] || {})
+                      .filter(key => key !== 'time')
+                      .map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                        />
+                      ))}
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
