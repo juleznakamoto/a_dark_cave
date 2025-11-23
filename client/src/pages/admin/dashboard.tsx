@@ -16,10 +16,22 @@ import {
   PieChart,
   Pie,
   Cell,
+  AreaChart,
+  Area,
 } from 'recharts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  subDays, 
+  subMonths, 
+  startOfDay, 
+  endOfDay, 
+  format, 
+  differenceInDays,
+  isWithinInterval,
+  parseISO
+} from 'date-fns';
 
 interface ButtonClickData {
   timestamp: string;
@@ -31,6 +43,7 @@ interface GameSaveData {
   user_id: string;
   game_state: any;
   updated_at: string;
+  created_at: string;
 }
 
 interface PurchaseData {
@@ -92,10 +105,10 @@ export default function AdminDashboard() {
     
     if (clicks) setClickData(clicks);
 
-    // Load game saves
+    // Load game saves with created_at
     const { data: saves } = await supabase
       .from('game_saves')
-      .select('user_id, game_state, updated_at');
+      .select('user_id, game_state, updated_at, created_at');
     
     if (saves) setGameSaves(saves);
 
@@ -119,6 +132,128 @@ export default function AdminDashboard() {
     }));
 
     setUsers(userList);
+  };
+
+  // Active Users Calculations
+  const getActiveUsers = (days: number) => {
+    const now = new Date();
+    const cutoffDate = subDays(now, days);
+    
+    const activeUserIds = new Set<string>();
+    
+    // Check button clicks
+    clickData.forEach(entry => {
+      const entryDate = parseISO(entry.timestamp);
+      if (entryDate >= cutoffDate) {
+        activeUserIds.add(entry.user_id);
+      }
+    });
+    
+    // Check game saves (updated_at indicates activity)
+    gameSaves.forEach(save => {
+      const saveDate = parseISO(save.updated_at);
+      if (saveDate >= cutoffDate) {
+        activeUserIds.add(save.user_id);
+      }
+    });
+    
+    return activeUserIds.size;
+  };
+
+  const getDailyActiveUsers = () => getActiveUsers(1);
+  const getWeeklyActiveUsers = () => getActiveUsers(7);
+  const getMonthlyActiveUsers = () => getActiveUsers(30);
+
+  // Playtime Calculations
+  const getAveragePlaytime = () => {
+    const playtimes = gameSaves
+      .map(save => save.game_state?.playTime || 0)
+      .filter(time => time > 0);
+    
+    if (playtimes.length === 0) return 0;
+    
+    const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
+    return Math.round(avgMs / 1000 / 60); // Convert to minutes
+  };
+
+  const getAveragePlaytimeToCompletion = () => {
+    const completedGames = gameSaves.filter(save => save.game_state?.showEndScreen === true);
+    
+    if (completedGames.length === 0) return 0;
+    
+    const playtimes = completedGames
+      .map(save => save.game_state?.playTime || 0)
+      .filter(time => time > 0);
+    
+    if (playtimes.length === 0) return 0;
+    
+    const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
+    return Math.round(avgMs / 1000 / 60); // Convert to minutes
+  };
+
+  // Retention metrics
+  const getUserRetention = () => {
+    const data: { day: string; users: number }[] = [];
+    
+    for (let i = 30; i >= 0; i--) {
+      const date = subDays(new Date(), i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+      
+      const activeUserIds = new Set<string>();
+      
+      clickData.forEach(entry => {
+        const entryDate = parseISO(entry.timestamp);
+        if (isWithinInterval(entryDate, { start: dayStart, end: dayEnd })) {
+          activeUserIds.add(entry.user_id);
+        }
+      });
+      
+      gameSaves.forEach(save => {
+        const saveDate = parseISO(save.updated_at);
+        if (isWithinInterval(saveDate, { start: dayStart, end: dayEnd })) {
+          activeUserIds.add(save.user_id);
+        }
+      });
+      
+      data.push({
+        day: format(date, 'MMM dd'),
+        users: activeUserIds.size,
+      });
+    }
+    
+    return data;
+  };
+
+  // Session length distribution
+  const getSessionLengthDistribution = () => {
+    const sessions = gameSaves
+      .map(save => save.game_state?.playTime || 0)
+      .filter(time => time > 0);
+    
+    const distribution = {
+      '0-30 min': 0,
+      '30-60 min': 0,
+      '1-2 hours': 0,
+      '2-5 hours': 0,
+      '5-10 hours': 0,
+      '10+ hours': 0,
+    };
+    
+    sessions.forEach(timeMs => {
+      const minutes = timeMs / 1000 / 60;
+      if (minutes < 30) distribution['0-30 min']++;
+      else if (minutes < 60) distribution['30-60 min']++;
+      else if (minutes < 120) distribution['1-2 hours']++;
+      else if (minutes < 300) distribution['2-5 hours']++;
+      else if (minutes < 600) distribution['5-10 hours']++;
+      else distribution['10+ hours']++;
+    });
+    
+    return Object.entries(distribution).map(([range, count]) => ({
+      range,
+      count,
+    }));
   };
 
   // Process data for charts
@@ -191,6 +326,30 @@ export default function AdminDashboard() {
     return purchases.reduce((sum, p) => sum + p.price_paid, 0);
   };
 
+  const getConversionRate = () => {
+    const totalUsers = gameSaves.length;
+    const payingUsers = new Set(purchases.map(p => p.user_id)).size;
+    
+    if (totalUsers === 0) return 0;
+    return Math.round((payingUsers / totalUsers) * 100);
+  };
+
+  const getARPU = () => {
+    const totalUsers = gameSaves.length;
+    if (totalUsers === 0) return 0;
+    
+    const totalRevenue = getTotalRevenue();
+    return (totalRevenue / 100 / totalUsers).toFixed(2);
+  };
+
+  const formatTime = (minutes: number) => {
+    const hours = Math.floor(minutes / 60);
+    const mins = minutes % 60;
+    
+    if (hours === 0) return `${mins}m`;
+    return `${hours}h ${mins}m`;
+  };
+
   if (loading) {
     return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
   }
@@ -221,12 +380,186 @@ export default function AdminDashboard() {
           </Select>
         </div>
 
-        <Tabs defaultValue="clicks" className="space-y-4">
+        <Tabs defaultValue="overview" className="space-y-4">
           <TabsList>
+            <TabsTrigger value="overview">Overview</TabsTrigger>
+            <TabsTrigger value="engagement">Engagement</TabsTrigger>
             <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
             <TabsTrigger value="completion">Game Progress</TabsTrigger>
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="overview" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>DAU</CardTitle>
+                  <CardDescription>Daily Active Users</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getDailyActiveUsers()}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>WAU</CardTitle>
+                  <CardDescription>Weekly Active Users</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getWeeklyActiveUsers()}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>MAU</CardTitle>
+                  <CardDescription>Monthly Active Users</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getMonthlyActiveUsers()}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Total Users</CardTitle>
+                  <CardDescription>All registered players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{gameSaves.length}</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Avg Playtime</CardTitle>
+                  <CardDescription>All players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{formatTime(getAveragePlaytime())}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Avg Time to Complete</CardTitle>
+                  <CardDescription>Completed games only</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{formatTime(getAveragePlaytimeToCompletion())}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Completion Rate</CardTitle>
+                  <CardDescription>% of players who finished</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">
+                    {gameSaves.length > 0 
+                      ? Math.round((gameSaves.filter(s => s.game_state?.showEndScreen).length / gameSaves.length) * 100)
+                      : 0}%
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Conversion Rate</CardTitle>
+                  <CardDescription>% who made a purchase</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getConversionRate()}%</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>ARPU</CardTitle>
+                  <CardDescription>Average Revenue Per User</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">€{getARPU()}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Total Revenue</CardTitle>
+                  <CardDescription>All time</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
+                <CardDescription>User activity over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <AreaChart data={getUserRetention()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="engagement" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Session Length Distribution</CardTitle>
+                <CardDescription>How long players engage with the game</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getSessionLengthDistribution()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="range" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Average Playtime</CardTitle>
+                  <CardDescription>All players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-6xl font-bold text-center py-8">{formatTime(getAveragePlaytime())}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Average Time to Complete</CardTitle>
+                  <CardDescription>Completed games only</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-6xl font-bold text-center py-8">{formatTime(getAveragePlaytimeToCompletion())}</p>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
           <TabsContent value="clicks" className="space-y-4">
             <Card>
