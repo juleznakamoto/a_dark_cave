@@ -128,13 +128,29 @@ export async function saveGameToSupabase(
   }
 
   // Call the combined save function - single database call
+  // Ensure clickAnalytics is either a valid object with data or null
+  const analyticsParam = clickAnalytics && Object.keys(clickAnalytics).length > 0 
+    ? clickAnalytics 
+    : null;
+
+  if (import.meta.env.DEV) {
+    console.log('Saving to Supabase:', {
+      hasClickAnalytics: !!analyticsParam,
+      clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
+      gameStateSize: JSON.stringify(sanitizedState).length
+    });
+  }
+
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
     p_game_state: sanitizedState,
-    p_click_analytics: clickAnalytics || null
+    p_click_analytics: analyticsParam
   });
 
-  if (error) throw error;
+  if (error) {
+    console.error('Failed to save game to Supabase:', error);
+    throw error;
+  }
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {
