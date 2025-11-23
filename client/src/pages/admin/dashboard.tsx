@@ -359,14 +359,11 @@ export default function AdminDashboard() {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
     }
 
-    // Aggregate clicks by time buckets (every 10 minutes)
-    const timeBuckets = new Map<number, Record<string, number>>();
-    let maxBucket = 0;
+    // Collect all timestamp entries with their clicks
+    const timeSeriesData: Array<{ timestamp: Date; clicks: Record<string, number> }> = [];
 
     filteredClicks.forEach(entry => {
       const userId = entry.user_id;
-
-      // Find the corresponding game save to get start time
       const userSave = gameSaves.find(save => save.user_id === userId);
       const gameStartTime = userSave?.game_state?.startTime;
 
@@ -377,67 +374,41 @@ export default function AdminDashboard() {
 
       if (isTimestampFormat && gameStartTime) {
         // New format: { "timestamp": { "button": count } }
-        // Process each timestamp entry and calculate playtime
         Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
           try {
             const clickDate = new Date(timestamp);
-
             if (!isNaN(clickDate.getTime())) {
-              // Calculate playtime based on time elapsed since game start
-              const timeSinceStart = clickDate.getTime() - gameStartTime;
-              const playtimeMinutes = Math.max(0, Math.round(timeSinceStart / 1000 / 60));
-
-              // Put into 10-minute buckets
-              const bucket = Math.floor(playtimeMinutes / 10) * 10;
-              maxBucket = Math.max(maxBucket, bucket);
-
-              if (!timeBuckets.has(bucket)) {
-                timeBuckets.set(bucket, {});
-              }
-
-              const bucketData = timeBuckets.get(bucket)!;
-              Object.entries(clicksAtTime).forEach(([button, count]) => {
-                if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-                  bucketData[button] = (bucketData[button] || 0) + (count as number);
-                }
+              timeSeriesData.push({
+                timestamp: clickDate,
+                clicks: clicksAtTime as Record<string, number>
               });
             }
           } catch (e) {
             console.warn('Failed to parse timestamp:', timestamp, e);
           }
         });
-      } else if (!isTimestampFormat) {
-        // Old format: { "button": count } - use current playtime
-        const currentPlaytime = userSave?.game_state?.playTime || 0;
-        const playtimeMinutes = Math.round(currentPlaytime / 1000 / 60);
-        const bucket = Math.floor(playtimeMinutes / 10) * 10;
-        maxBucket = Math.max(maxBucket, bucket);
-
-        if (!timeBuckets.has(bucket)) {
-          timeBuckets.set(bucket, {});
-        }
-
-        const bucketData = timeBuckets.get(bucket)!;
-        Object.entries(entry.clicks).forEach(([button, count]) => {
-          if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-            bucketData[button] = (bucketData[button] || 0) + (count as number);
-          }
-        });
       }
     });
 
-    // Create array with all buckets from 0 to max playtime
-    const result: Array<{ date: string; [key: string]: any }> = [];
+    // Sort by timestamp
+    timeSeriesData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 10) {
-      const bucketData = timeBuckets.get(bucket) || {};
-      result.push({
-        date: `${bucket}m`,
-        ...bucketData,
+    // Format for chart display
+    return timeSeriesData.map(item => {
+      const formattedTime = format(item.timestamp, 'HH:mm:ss');
+      const filteredClicks: Record<string, number> = {};
+      
+      Object.entries(item.clicks).forEach(([button, count]) => {
+        if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+          filteredClicks[button] = count;
+        }
       });
-    }
 
-    return result;
+      return {
+        date: formattedTime,
+        ...filteredClicks,
+      };
+    });
   };
 
   const getAllButtonNames = (): string[] => {
@@ -470,48 +441,57 @@ export default function AdminDashboard() {
 
     // Aggregate clicks by playtime buckets (every 10 minutes)
     const playtimeBuckets = new Map<number, Record<string, number>>();
+    let maxBucket = 0;
 
     filteredClicks.forEach(entry => {
       const userId = entry.user_id;
-
-      // Find the corresponding game save to get current playtime
       const userSave = gameSaves.find(save => save.user_id === userId);
-      const currentPlaytime = userSave?.game_state?.playTime || 0;
-      const playtimeMinutes = Math.round(currentPlaytime / 1000 / 60);
+      const gameStartTime = userSave?.game_state?.startTime;
 
       // Check if clicks is in new timestamp format
       const isTimestampFormat = Object.keys(entry.clicks).some(key => 
-        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
       );
 
-      if (isTimestampFormat) {
+      if (isTimestampFormat && gameStartTime) {
         // New format: { "timestamp": { "button": count } }
-        // Process each timestamp entry
         Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
-          const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
+          try {
+            const clickDate = new Date(timestamp);
+            if (!isNaN(clickDate.getTime())) {
+              // Calculate playtime based on time elapsed since game start
+              const timeSinceStart = clickDate.getTime() - gameStartTime;
+              const playtimeMinutes = Math.max(0, Math.round(timeSinceStart / 1000 / 60));
+              const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
+              maxBucket = Math.max(maxBucket, bucket);
 
-          if (!playtimeBuckets.has(bucket)) {
-            playtimeBuckets.set(bucket, {});
-          }
+              if (!playtimeBuckets.has(bucket)) {
+                playtimeBuckets.set(bucket, {});
+              }
 
-          const bucketData = playtimeBuckets.get(bucket)!;
-
-          Object.entries(clicksAtTime).forEach(([button, count]) => {
-            if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-              bucketData[button] = (bucketData[button] || 0) + (count as number);
+              const bucketData = playtimeBuckets.get(bucket)!;
+              Object.entries(clicksAtTime).forEach(([button, count]) => {
+                if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+                  bucketData[button] = (bucketData[button] || 0) + (count as number);
+                }
+              });
             }
-          });
+          } catch (e) {
+            console.warn('Failed to parse timestamp:', timestamp, e);
+          }
         });
-      } else {
-        // Old format: { "button": count }
-        const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
+      } else if (!isTimestampFormat) {
+        // Old format: { "button": count } - use current playtime
+        const currentPlaytime = userSave?.game_state?.playTime || 0;
+        const playtimeMinutes = Math.round(currentPlaytime / 1000 / 60);
+        const bucket = Math.floor(playtimeMinutes / 10) * 10;
+        maxBucket = Math.max(maxBucket, bucket);
 
         if (!playtimeBuckets.has(bucket)) {
           playtimeBuckets.set(bucket, {});
         }
 
         const bucketData = playtimeBuckets.get(bucket)!;
-
         Object.entries(entry.clicks).forEach(([button, count]) => {
           if (selectedButtons.size === 0 || selectedButtons.has(button)) {
             bucketData[button] = (bucketData[button] || 0) + (count as number);
@@ -520,13 +500,17 @@ export default function AdminDashboard() {
       }
     });
 
-    // Convert to array and sort by playtime
-    return Array.from(playtimeBuckets.entries())
-      .map(([playtime, clicks]) => ({
-        playtime: `${playtime}m`,
-        ...clicks,
-      }))
-      .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
+    // Create array with all buckets from 0 to max playtime
+    const result: Array<{ playtime: string; [key: string]: any }> = [];
+    for (let bucket = 0; bucket <= maxBucket; bucket += 10) {
+      const bucketData = playtimeBuckets.get(bucket) || {};
+      result.push({
+        playtime: `${bucket}m`,
+        ...bucketData,
+      });
+    }
+
+    return result;
   };
 
 
