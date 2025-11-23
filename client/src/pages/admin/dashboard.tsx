@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
 import {
@@ -33,10 +33,36 @@ import {
   parseISO
 } from 'date-fns';
 
+// Mock useQuery for standalone execution if not in a React Query context
+const useQuery = (options) => {
+  const { queryKey, queryFn } = options;
+  const [data, setData] = useState(null);
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const result = await queryFn();
+        setData(result);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [queryKey, queryFn]); // Re-fetch if queryKey or queryFn changes
+
+  return { data, error, isLoading };
+};
+
+
 interface ButtonClickData {
-  timestamp: string;
-  clicks: Record<string, number>;
   user_id: string;
+  clicks: Record<string, number>;
 }
 
 interface GameSaveData {
@@ -60,6 +86,22 @@ const getAdminEmails = (): string[] => {
   return adminEmailsEnv.split(',').map(email => email.trim()).filter(Boolean);
 };
 
+// Dummy ChartContainer, ChartTooltip, ChartLegend, ChartTooltipContent, ChartLegendContent for standalone execution
+const ChartContainer = ({ children, config, className }) => <div className={className}>{children}</div>;
+const ChartTooltip = ({ content }) => <div>{content}</div>;
+const ChartLegend = ({ content }) => <div>{content}</div>;
+const ChartTooltipContent = () => <div>Tooltip Content</div>;
+const ChartLegendContent = () => <div>Legend Content</div>;
+const Button = ({ children, variant, size, onClick }) => <button onClick={onClick}>{children}</button>;
+
+// Dummy buttonClicksChartConfig
+const buttonClicksChartConfig = {
+  mine: { label: 'Mine', color: 'hsl(var(--chart-1))' },
+  hunt: { label: 'Hunt', color: 'hsl(var(--chart-2))' },
+  chopWood: { label: 'Chop Wood', color: 'hsl(var(--chart-3))' },
+  caveExplore: { label: 'Cave Explore', color: 'hsl(var(--chart-4))' },
+};
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -74,7 +116,7 @@ export default function AdminDashboard() {
   // Filter states
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('30d');
   const [selectedUser, setSelectedUser] = useState<string>('all');
-  const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
+  const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
 
   useEffect(() => {
     checkAdminAccess();
@@ -110,7 +152,7 @@ export default function AdminDashboard() {
     const { data: clicks } = await supabase
       .from('button_clicks')
       .select('*')
-      .order('timestamp', { ascending: true });
+      .order('timestamp', { ascending: true }); // Keep order for potential future use, though not used in current chart logic
 
     if (clicks) setClickData(clicks);
 
@@ -130,10 +172,10 @@ export default function AdminDashboard() {
     if (purchaseData) setPurchases(purchaseData);
 
     // Load unique users
-    const uniqueUserIds = new Set([
-      ...clicks?.map(c => c.user_id) || [],
-      ...saves?.map(s => s.user_id) || [],
-    ]);
+    const uniqueUserIds = new Set<string>();
+    if (clicks) clicks.forEach(c => uniqueUserIds.add(c.user_id));
+    if (saves) saves.forEach(s => uniqueUserIds.add(s.user_id));
+    if (purchaseData) purchaseData.forEach(p => uniqueUserIds.add(p.user_id));
 
     const userList = Array.from(uniqueUserIds).map(id => ({
       id,
@@ -152,6 +194,7 @@ export default function AdminDashboard() {
 
     // Check button clicks
     clickData.forEach(entry => {
+      // Assuming timestamp is stored and can be parsed
       const entryDate = parseISO(entry.timestamp);
       if (entryDate >= cutoffDate) {
         activeUserIds.add(entry.user_id);
@@ -294,7 +337,7 @@ export default function AdminDashboard() {
       const existing = timeSeriesMap.get(date) || {};
 
       Object.entries(entry.clicks).forEach(([button, count]) => {
-        if (selectedButtons.length === 0 || selectedButtons.includes(button)) {
+        if (selectedButtons.size === 0 || selectedButtons.has(button)) {
           existing[button] = (existing[button] || 0) + count;
         }
       });
@@ -325,17 +368,17 @@ export default function AdminDashboard() {
 
     // Group clicks by user and calculate cumulative playtime
     const userClicksMap = new Map<string, Array<{ playtime: number; clicks: Record<string, number> }>>();
-    
+
     filteredClicks.forEach(entry => {
       const userId = entry.user_id;
       if (!userClicksMap.has(userId)) {
         userClicksMap.set(userId, []);
       }
-      
+
       // Find the corresponding game save to get playtime at that timestamp
       const userSave = gameSaves.find(save => save.user_id === userId);
       const playtime = userSave?.game_state?.playTime || 0;
-      
+
       userClicksMap.get(userId)!.push({
         playtime: Math.round(playtime / 1000 / 60), // Convert to minutes
         clicks: entry.clicks
@@ -344,19 +387,19 @@ export default function AdminDashboard() {
 
     // Aggregate clicks across all users by playtime buckets (every 10 minutes)
     const playtimeBuckets = new Map<number, Record<string, number>>();
-    
+
     userClicksMap.forEach(userClicks => {
       userClicks.forEach(entry => {
         const bucket = Math.floor(entry.playtime / 10) * 10; // 10-minute buckets
-        
+
         if (!playtimeBuckets.has(bucket)) {
           playtimeBuckets.set(bucket, {});
         }
-        
+
         const bucketData = playtimeBuckets.get(bucket)!;
-        
+
         Object.entries(entry.clicks).forEach(([button, count]) => {
-          if (selectedButtons.length === 0 || selectedButtons.includes(button)) {
+          if (selectedButtons.size === 0 || selectedButtons.has(button)) {
             bucketData[button] = (bucketData[button] || 0) + count;
           }
         });
@@ -457,6 +500,29 @@ export default function AdminDashboard() {
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
   const MAX_LINES_IN_CHART = 5;
+
+  // Process clicks data for the chart - show total clicks per button across all users
+  const buttonClicksChartData = useMemo(() => {
+    if (!clicksData) return [];
+
+    // Aggregate total clicks per button across all users
+    const totalClicks: Record<string, number> = {};
+
+    clicksData.forEach(record => {
+      Object.entries(record.clicks).forEach(([button, count]) => {
+        totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+      });
+    });
+
+    // Convert to array format for the chart
+    return Object.entries(totalClicks)
+      .map(([button, clicks]) => ({
+        button,
+        clicks
+      }))
+      .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
+  }, [clicksData]);
+
 
   return (
     <div className="h-screen bg-background overflow-hidden">
@@ -691,7 +757,7 @@ export default function AdminDashboard() {
                     <Tooltip />
                     <Legend />
                     {Object.keys(getButtonClicksOverTime()[0] || {})
-                      .filter(key => key !== 'date')
+                      .filter(key => key !== 'date' && (selectedButtons.size === 0 || selectedButtons.has(key)))
                       .slice(0, MAX_LINES_IN_CHART)
                       .map((key, index) => (
                         <Line
@@ -748,7 +814,10 @@ export default function AdminDashboard() {
                       ))}
                     </SelectContent>
                   </Select>
-                  <Select onValueChange={(value: string) => setSelectedButtons(value === 'all' ? [] : [value])} defaultValue="all">
+                  <Select onValueChange={(value: string) => {
+                    const newSelectedButtons = new Set<string>(['all'].includes(value) ? [] : [value]);
+                    setSelectedButtons(newSelectedButtons);
+                  }} defaultValue={selectedButtons.size === 0 ? 'all' : Array.from(selectedButtons)[0]}>
                     <SelectTrigger className="w-[200px]">
                       <SelectValue placeholder="Select button" />
                     </SelectTrigger>
@@ -769,19 +838,39 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(getButtonClicksOverPlaytime()[0] || {})
-                      .filter(key => key !== 'playtime')
-                      .slice(0, MAX_LINES_IN_CHART)
-                      .map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                        />
-                      ))}
+                    {Array.from(selectedButtons).slice(0, MAX_LINES_IN_CHART).map((key, index) => (
+                      <Line
+                        key={key}
+                        type="monotone"
+                        dataKey={key}
+                        stroke={COLORS[index % COLORS.length]}
+                      />
+                    ))}
                   </LineChart>
                 </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Total Button Clicks</CardTitle>
+                <CardDescription>
+                  Cumulative clicks for each button type across all players
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ChartContainer config={buttonClicksChartConfig} className="h-[400px]">
+                  <BarChart data={buttonClicksChartData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis
+                      dataKey="button"
+                      label={{ value: 'Button Type', position: 'insideBottom', offset: -5 }}
+                    />
+                    <YAxis label={{ value: 'Total Clicks', angle: -90, position: 'insideLeft' }} />
+                    <ChartTooltip content={<ChartTooltipContent />} />
+                    <Bar dataKey="clicks" fill="hsl(var(--chart-1))" radius={[8, 8, 0, 0]} />
+                  </BarChart>
+                </ChartContainer>
               </CardContent>
             </Card>
           </TabsContent>
