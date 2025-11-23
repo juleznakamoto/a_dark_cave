@@ -80,6 +80,7 @@ export default function CubeDialog({
             size="sm"
             className="px-8 border-2 border-gray-700 rounded-lg hover:bg-black/0 hover:text-gray-100 hover:border-gray-400"
             disabled={fallbackExecutedRef.current}
+            button_id={`cube-close-${event?.id || 'unknown'}`}
           >
             {eventChoices[0]?.label || "Close"}
           </Button>

@@ -109,6 +109,7 @@ export default function MerchantDialog({
                     variant="outline"
                     className={`w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}`}
                     disabled={isDisabled}
+                    button_id={`merchant-${choice.id}`}
                   >
                     <span className="block text-left leading-tight">
                       {isPurchased ? `✓ ${choice.label}` : choice.label}
@@ -158,6 +159,7 @@ export default function MerchantDialog({
                   (timeRemaining !== null && timeRemaining <= 0) ||
                   fallbackExecutedRef.current
                 }
+                button_id="merchant-say-goodbye"
               >
                 Say Goodbye
               </Button>

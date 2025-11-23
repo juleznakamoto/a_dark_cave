@@ -176,6 +176,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
         type="submit"
         disabled={!stripe || isProcessing}
         className="w-full"
+        button_id="shop-complete-purchase"
       >
         {isProcessing ? "Processing..." : "Complete Purchase"}
       </Button>
@@ -592,6 +593,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               purchasedItems.includes(item.id))
                           }
                           className="w-full"
+                          button_id={`shop-purchase-${item.id}`}
                         >
                           {!item.canPurchaseMultipleTimes &&
                           purchasedItems.includes(item.id)
@@ -668,6 +670,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                     ? "bg-green-900/50 text-white border-green-600"
                                     : ""
                                 }
+                                button_id={`shop-activate-${purchase.itemId}`}
                               >
                                 {isGreatFeastActive ? "Active" : "Activate"}
                               </Button>
@@ -715,6 +718,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 disabled={!isCruelModeItem && isActivated}
                                 size="sm"
                                 variant={isActivated ? "outline" : "default"}
+                                button_id={`shop-activate-${itemId}`}
                               >
                                 {isCruelModeItem
                                   ? isActivated
@@ -750,6 +754,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                 variant="outline"
                 onClick={() => setClientSecret(null)}
                 className="w-full mt-4"
+                button_id="shop-cancel-payment"
               >
                 Cancel
               </Button>

@@ -341,6 +341,7 @@ export default function CombatDialog({
                 onClick={handleStartFight}
                 className="w-full"
                 variant="outline"
+                button_id="combat-start-fight"
               >
                 Start Fight
               </Button>
@@ -462,6 +463,7 @@ export default function CombatDialog({
                                     variant="outline"
                                     size="sm"
                                     className="text-xs w-full"
+                                    button_id={`combat-use-${item.id}`}
                                   >
                                     {item.name}
                                   </Button>
@@ -488,6 +490,7 @@ export default function CombatDialog({
                     onClick={handleEndFight}
                     className="w-full"
                     variant="outline"
+                    button_id="combat-end-fight"
                   >
                     End Fight
                   </Button>
@@ -500,6 +503,7 @@ export default function CombatDialog({
                     }
                     className="w-full"
                     variant="outline"
+                    button_id="combat-fight"
                   >
                     {isProcessingRound ? "Fighting..." : "Fight"}
                   </Button>

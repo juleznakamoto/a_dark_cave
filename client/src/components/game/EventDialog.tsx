@@ -316,6 +316,7 @@ export default function EventDialog({
                   variant="outline"
                   className="w-full text-left justify-between"
                   disabled={isDisabled}
+                  button_id={`event-choice-${choice.id}`}
                 >
                   <span>{labelText}</span>
                   {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
