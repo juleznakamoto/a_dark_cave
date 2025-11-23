@@ -102,6 +102,12 @@ const buttonClicksChartConfig = {
   caveExplore: { label: 'Cave Explore', color: 'hsl(var(--chart-4))' },
 };
 
+// Helper function to clean button names by removing timestamp/random suffixes
+const cleanButtonName = (buttonName: string): string => {
+  // Remove patterns like _1763918279318_0.004097622888011188
+  return buttonName.replace(/_\d+_[\d.]+$/, '');
+};
+
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
@@ -142,13 +148,15 @@ export default function AdminDashboard() {
         // New format: { "timestamp": { "button": count } }
         Object.values(record.clicks).forEach((timestampClicks: any) => {
           Object.entries(timestampClicks).forEach(([button, count]) => {
-            totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+            const cleanButton = cleanButtonName(button);
+            totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
           });
         });
       } else {
         // Old format: { "button": count }
         Object.entries(record.clicks).forEach(([button, count]) => {
-          totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+          const cleanButton = cleanButtonName(button);
+          totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
         });
       }
     });
@@ -435,11 +443,15 @@ export default function AdminDashboard() {
       if (isTimestampFormat) {
         // New format: { "timestamp": { "button": count } }
         Object.values(entry.clicks).forEach((timestampClicks: any) => {
-          Object.keys(timestampClicks).forEach(button => buttonNames.add(button));
+          Object.keys(timestampClicks).forEach(button => {
+            buttonNames.add(cleanButtonName(button));
+          });
         });
       } else {
         // Old format: { "button": count }
-        Object.keys(entry.clicks).forEach(button => buttonNames.add(button));
+        Object.keys(entry.clicks).forEach(button => {
+          buttonNames.add(cleanButtonName(button));
+        });
       }
     });
     return Array.from(buttonNames);
@@ -501,8 +513,9 @@ export default function AdminDashboard() {
 
       const bucketData = buckets.get(bucket)!;
       Object.entries(item.clicks).forEach(([button, count]) => {
-        if (selectedClickTypes.size === 0 || selectedClickTypes.has(button)) {
-          bucketData[button] = (bucketData[button] || 0) + count;
+        const cleanButton = cleanButtonName(button);
+        if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
+          bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
         }
       });
     });
@@ -561,8 +574,9 @@ export default function AdminDashboard() {
 
               const bucketData = playtimeBuckets.get(bucket)!;
               Object.entries(clicksAtTime).forEach(([button, count]) => {
-                if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-                  bucketData[button] = (bucketData[button] || 0) + (count as number);
+                const cleanButton = cleanButtonName(button);
+                if (selectedButtons.size === 0 || selectedButtons.has(cleanButton)) {
+                  bucketData[cleanButton] = (bucketData[cleanButton] || 0) + (count as number);
                 }
               });
             }
@@ -583,8 +597,9 @@ export default function AdminDashboard() {
 
         const bucketData = playtimeBuckets.get(bucket)!;
         Object.entries(entry.clicks).forEach(([button, count]) => {
-          if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-            bucketData[button] = (bucketData[button] || 0) + (count as number);
+          const cleanButton = cleanButtonName(button);
+          if (selectedButtons.size === 0 || selectedButtons.has(cleanButton)) {
+            bucketData[cleanButton] = (bucketData[cleanButton] || 0) + (count as number);
           }
         });
       }
@@ -621,13 +636,15 @@ export default function AdminDashboard() {
         // New format: { "timestamp": { "button": count } }
         Object.values(entry.clicks).forEach((timestampClicks: any) => {
           Object.entries(timestampClicks).forEach(([button, count]) => {
-            totals[button] = (totals[button] || 0) + (count as number);
+            const cleanButton = cleanButtonName(button);
+            totals[cleanButton] = (totals[cleanButton] || 0) + (count as number);
           });
         });
       } else {
         // Old format: { "button": count }
         Object.entries(entry.clicks).forEach(([button, count]) => {
-          totals[button] = (totals[button] || 0) + (count as number);
+          const cleanButton = cleanButtonName(button);
+          totals[cleanButton] = (totals[cleanButton] || 0) + (count as number);
         });
       }
     });
