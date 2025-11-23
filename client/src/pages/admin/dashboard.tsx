@@ -69,6 +69,7 @@ export default function AdminDashboard() {
   const [clickData, setClickData] = useState<ButtonClickData[]>([]);
   const [gameSaves, setGameSaves] = useState<GameSaveData[]>([]);
   const [purchases, setPurchases] = useState<PurchaseData[]>([]);
+  const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
 
   // Filter states
   const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('30d');
@@ -313,6 +314,62 @@ export default function AdminDashboard() {
       Object.keys(entry.clicks).forEach(button => buttonNames.add(button));
     });
     return Array.from(buttonNames);
+  };
+
+  const getButtonClicksOverPlaytime = () => {
+    let filteredClicks = clickData;
+
+    if (selectedUser !== 'all') {
+      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    }
+
+    // Group clicks by user and calculate cumulative playtime
+    const userClicksMap = new Map<string, Array<{ playtime: number; clicks: Record<string, number> }>>();
+    
+    filteredClicks.forEach(entry => {
+      const userId = entry.user_id;
+      if (!userClicksMap.has(userId)) {
+        userClicksMap.set(userId, []);
+      }
+      
+      // Find the corresponding game save to get playtime at that timestamp
+      const userSave = gameSaves.find(save => save.user_id === userId);
+      const playtime = userSave?.game_state?.playTime || 0;
+      
+      userClicksMap.get(userId)!.push({
+        playtime: Math.round(playtime / 1000 / 60), // Convert to minutes
+        clicks: entry.clicks
+      });
+    });
+
+    // Aggregate clicks across all users by playtime buckets (every 10 minutes)
+    const playtimeBuckets = new Map<number, Record<string, number>>();
+    
+    userClicksMap.forEach(userClicks => {
+      userClicks.forEach(entry => {
+        const bucket = Math.floor(entry.playtime / 10) * 10; // 10-minute buckets
+        
+        if (!playtimeBuckets.has(bucket)) {
+          playtimeBuckets.set(bucket, {});
+        }
+        
+        const bucketData = playtimeBuckets.get(bucket)!;
+        
+        Object.entries(entry.clicks).forEach(([button, count]) => {
+          if (selectedButtons.length === 0 || selectedButtons.includes(button)) {
+            bucketData[button] = (bucketData[button] || 0) + count;
+          }
+        });
+      });
+    });
+
+    // Convert to array and sort by playtime
+    return Array.from(playtimeBuckets.entries())
+      .map(([playtime, clicks]) => ({
+        playtime: `${playtime}m`,
+        ...clicks,
+      }))
+      .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
   };
 
 
@@ -706,14 +763,14 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonClicksOverTime()}>
+                  <LineChart data={getButtonClicksOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" type="category" />
+                    <XAxis dataKey="playtime" />
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(getButtonClicksOverTime()[0] || {})
-                      .filter(key => key !== 'date')
+                    {Object.keys(getButtonClicksOverPlaytime()[0] || {})
+                      .filter(key => key !== 'playtime')
                       .slice(0, MAX_LINES_IN_CHART)
                       .map((key, index) => (
                         <Line
