@@ -122,10 +122,16 @@ export default function AdminDashboard() {
   const buttonClicksChartData = useMemo(() => {
     if (!clickData) return [];
 
-    // Aggregate total clicks per button across all users
+    // Filter by selected user
+    let filteredClicks = clickData;
+    if (selectedUser !== 'all') {
+      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    }
+
+    // Aggregate total clicks per button
     const totalClicks: Record<string, number> = {};
 
-    clickData.forEach(record => {
+    filteredClicks.forEach(record => {
       // Check if clicks is in new timestamp format
       const isTimestampFormat = Object.keys(record.clicks).some(key => 
         key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
@@ -153,7 +159,7 @@ export default function AdminDashboard() {
         clicks
       }))
       .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
-  }, [clickData]);
+  }, [clickData, selectedUser]);
 
   useEffect(() => {
     checkAdminAccess();
