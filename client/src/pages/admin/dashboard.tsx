@@ -642,7 +642,6 @@ export default function AdminDashboard() {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="engagement">Engagement</TabsTrigger>
             <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
-            <TabsTrigger value="playtime">Playtime Analysis</TabsTrigger>
             <TabsTrigger value="completion">Game Progress</TabsTrigger>
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
           </TabsList>
@@ -918,94 +917,6 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
-
-          <TabsContent value="playtime" className="space-y-4">
-            <Card>
-              <CardHeader>
-                <CardTitle>Button Clicks Over Playtime</CardTitle>
-                <CardDescription>
-                  Aggregated button clicks in 15-minute intervals {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex gap-4 mb-4">
-                  <Select value={selectedUser} onValueChange={setSelectedUser}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select user" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Users</SelectItem>
-                      {users.map(user => (
-                        <SelectItem key={user.id} value={user.id}>
-                          {user.email}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <Select onValueChange={(value: string) => {
-                    const newSelectedButtons = new Set<string>(['all'].includes(value) ? [] : [value]);
-                    setSelectedButtons(newSelectedButtons);
-                  }} defaultValue={selectedButtons.size === 0 ? 'all' : Array.from(selectedButtons)[0]}>
-                    <SelectTrigger className="w-[200px]">
-                      <SelectValue placeholder="Select button" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Buttons</SelectItem>
-                      {getAllButtonNames().map(buttonName => (
-                        <SelectItem key={buttonName} value={buttonName}>
-                          {buttonName}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonClicksOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="playtime" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    {Object.keys(getButtonClicksOverPlaytime()[0] || {})
-                      .filter(key => key !== 'playtime' && (selectedButtons.size === 0 || selectedButtons.has(key)))
-                      .slice(0, MAX_LINES_IN_CHART)
-                      .map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Total Button Clicks</CardTitle>
-                <CardDescription>
-                  Cumulative clicks for each button type across all players
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ChartContainer config={buttonClicksChartConfig} className="h-[400px]">
-                  <BarChart data={buttonClicksChartData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey="button"
-                      label={{ value: 'Button Type', position: 'insideBottom', offset: -5 }}
-                    />
-                    <YAxis label={{ value: 'Total Clicks', angle: -90, position: 'insideLeft' }} />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="clicks" fill="hsl(var(--chart-1))" radius={[8, 8, 0, 0]} />
-                  </BarChart>
-                </ChartContainer>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
 
           <TabsContent value="completion" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
