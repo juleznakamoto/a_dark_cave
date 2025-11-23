@@ -503,12 +503,12 @@ export default function AdminDashboard() {
 
   // Process clicks data for the chart - show total clicks per button across all users
   const buttonClicksChartData = useMemo(() => {
-    if (!clicksData) return [];
+    if (!clickData) return [];
 
     // Aggregate total clicks per button across all users
     const totalClicks: Record<string, number> = {};
 
-    clicksData.forEach(record => {
+    clickData.forEach(record => {
       Object.entries(record.clicks).forEach(([button, count]) => {
         totalClicks[button] = (totalClicks[button] || 0) + (count as number);
       });
@@ -521,7 +521,7 @@ export default function AdminDashboard() {
         clicks
       }))
       .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
-  }, [clicksData]);
+  }, [clickData]);
 
 
   return (
