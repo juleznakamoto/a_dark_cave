@@ -54,7 +54,11 @@ interface PurchaseData {
   purchased_at: string;
 }
 
-const ADMIN_EMAILS = ['your-admin-email@example.com']; // Update with actual admin emails
+// Admin emails from environment variable (comma-separated)
+const getAdminEmails = (): string[] => {
+  const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || '';
+  return adminEmailsEnv.split(',').map(email => email.trim()).filter(Boolean);
+};
 
 export default function AdminDashboard() {
   const [, setLocation] = useLocation();
@@ -78,8 +82,9 @@ export default function AdminDashboard() {
     try {
       const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
+      const adminEmails = getAdminEmails();
 
-      if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
+      if (!user || !adminEmails.includes(user.email || '')) {
         setLocation('/');
         return;
       }
