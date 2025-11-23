@@ -1,4 +1,3 @@
-
 -- Create a function that saves both game state and click analytics atomically
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
@@ -11,10 +10,8 @@ SECURITY DEFINER
 AS $$
 DECLARE
   v_existing_clicks JSONB;
-  v_merged_clicks JSONB;
-  v_button TEXT;
-  v_new_count INTEGER;
-  v_existing_count INTEGER;
+  v_updated_clicks JSONB;
+  v_current_timestamp TEXT;
 BEGIN
   -- Save or update the game state
   INSERT INTO game_saves (user_id, game_state, updated_at)
@@ -23,37 +20,29 @@ BEGIN
   DO UPDATE SET 
     game_state = EXCLUDED.game_state,
     updated_at = EXCLUDED.updated_at;
-  
-  -- Save/update click analytics if provided (append to existing clicks)
+
+  -- Save/update click analytics if provided (append with timestamp)
   IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
     -- Get existing clicks for this user
     SELECT clicks INTO v_existing_clicks
     FROM button_clicks
     WHERE user_id = p_user_id;
-    
-    -- If user has existing clicks, merge them
+
+    -- Create timestamp key (ISO 8601 format)
+    v_current_timestamp := to_char(NOW(), 'YYYY-MM-DD"T"HH24:MI:SS"Z"');
+
+    -- If user has existing clicks, append new timestamp
     IF v_existing_clicks IS NOT NULL THEN
-      v_merged_clicks := v_existing_clicks;
-      
-      -- Loop through new clicks and add to existing
-      FOR v_button IN SELECT jsonb_object_keys(p_click_analytics)
-      LOOP
-        v_new_count := (p_click_analytics->>v_button)::INTEGER;
-        v_existing_count := COALESCE((v_existing_clicks->>v_button)::INTEGER, 0);
-        v_merged_clicks := jsonb_set(
-          v_merged_clicks,
-          ARRAY[v_button],
-          to_jsonb(v_existing_count + v_new_count)
-        );
-      END LOOP;
+      -- Add new timestamp with clicks to existing data
+      v_updated_clicks := v_existing_clicks || jsonb_build_object(v_current_timestamp, p_click_analytics);
     ELSE
-      -- No existing clicks, use new clicks as-is
-      v_merged_clicks := p_click_analytics;
+      -- No existing clicks, create new object with timestamp
+      v_updated_clicks := jsonb_build_object(v_current_timestamp, p_click_analytics);
     END IF;
-    
-    -- Upsert the merged clicks (without updated_at since column may not exist)
+
+    -- Upsert the clicks with timestamp
     INSERT INTO button_clicks (user_id, timestamp, clicks)
-    VALUES (p_user_id, NOW(), v_merged_clicks)
+    VALUES (p_user_id, NOW(), v_updated_clicks)
     ON CONFLICT (user_id)
     DO UPDATE SET
       clicks = EXCLUDED.clicks,
