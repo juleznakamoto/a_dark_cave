@@ -118,6 +118,28 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
 
+  // Process clicks data for the chart - moved here before any early returns
+  const buttonClicksChartData = useMemo(() => {
+    if (!clickData) return [];
+
+    // Aggregate total clicks per button across all users
+    const totalClicks: Record<string, number> = {};
+
+    clickData.forEach(record => {
+      Object.entries(record.clicks).forEach(([button, count]) => {
+        totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+      });
+    });
+
+    // Convert to array format for the chart
+    return Object.entries(totalClicks)
+      .map(([button, clicks]) => ({
+        button,
+        clicks
+      }))
+      .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
+  }, [clickData]);
+
   useEffect(() => {
     checkAdminAccess();
   }, []);
@@ -500,29 +522,6 @@ export default function AdminDashboard() {
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
   const MAX_LINES_IN_CHART = 5;
-
-  // Process clicks data for the chart - show total clicks per button across all users
-  const buttonClicksChartData = useMemo(() => {
-    if (!clickData) return [];
-
-    // Aggregate total clicks per button across all users
-    const totalClicks: Record<string, number> = {};
-
-    clickData.forEach(record => {
-      Object.entries(record.clicks).forEach(([button, count]) => {
-        totalClicks[button] = (totalClicks[button] || 0) + (count as number);
-      });
-    });
-
-    // Convert to array format for the chart
-    return Object.entries(totalClicks)
-      .map(([button, clicks]) => ({
-        button,
-        clicks
-      }))
-      .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
-  }, [clickData]);
-
 
   return (
     <div className="h-screen bg-background overflow-hidden">
