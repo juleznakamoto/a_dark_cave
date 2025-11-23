@@ -2,11 +2,12 @@
 -- Create the button_clicks table for analytics (one row per user)
 CREATE TABLE IF NOT EXISTS button_clicks (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL UNIQUE,
+  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   timestamp TIMESTAMPTZ NOT NULL,
   clicks JSONB NOT NULL,
   created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW()
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id)
 );
 
 -- Enable Row Level Security
