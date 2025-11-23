@@ -141,10 +141,23 @@ export async function saveGameToSupabase(
     });
   }
 
+  // If click analytics is explicitly null (new game), delete the click data
+  if (clickAnalytics === null) {
+    const { error: deleteError } = await supabase
+      .from('button_clicks')
+      .delete()
+      .eq('user_id', user.id);
+
+    if (deleteError) {
+      console.error('Error deleting click analytics:', deleteError);
+      // It's important to still attempt to save the game state even if analytics deletion fails
+    }
+  }
+
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
     p_game_state: sanitizedState,
-    p_click_analytics: analyticsParam
+    p_click_analytics: clickAnalytics === null ? null : (analyticsParam)
   });
 
   if (error) {

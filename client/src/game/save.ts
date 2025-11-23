@@ -58,7 +58,8 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         const { useGameStore } = await import('./state');
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
         
-        await saveGameToSupabase(sanitizedState, playTime, isNewGame, clickData);
+        // If this is a new game, we should clear click data (pass null to indicate deletion)
+        await saveGameToSupabase(sanitizedState, playTime, isNewGame, isNewGame ? null : clickData);
       }
     } catch (cloudError) {
       // Silently fail cloud save - local save is what matters
