@@ -442,31 +442,43 @@ export default function AdminDashboard() {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
     }
 
-    // Group clicks by user and calculate cumulative playtime
-    const userClicksMap = new Map<string, Array<{ playtime: number; clicks: Record<string, number> }>>();
+    // Aggregate clicks by playtime buckets across all users (every 10 minutes)
+    const playtimeBuckets = new Map<number, Record<string, number>>();
 
     filteredClicks.forEach(entry => {
       const userId = entry.user_id;
-      if (!userClicksMap.has(userId)) {
-        userClicksMap.set(userId, []);
-      }
-
-      // Find the corresponding game save to get playtime at that timestamp
+      
+      // Find the corresponding game save to get current playtime
       const userSave = gameSaves.find(save => save.user_id === userId);
-      const playtime = userSave?.game_state?.playTime || 0;
+      const currentPlaytime = userSave?.game_state?.playTime || 0;
+      const playtimeMinutes = Math.round(currentPlaytime / 1000 / 60);
 
-      userClicksMap.get(userId)!.push({
-        playtime: Math.round(playtime / 1000 / 60), // Convert to minutes
-        clicks: entry.clicks
-      });
-    });
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(entry.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      );
 
-    // Aggregate clicks across all users by playtime buckets (every 10 minutes)
-    const playtimeBuckets = new Map<number, Record<string, number>>();
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        // Process each timestamp entry
+        Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
+          const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
 
-    userClicksMap.forEach(userClicks => {
-      userClicks.forEach(entry => {
-        const bucket = Math.floor(entry.playtime / 10) * 10; // 10-minute buckets
+          if (!playtimeBuckets.has(bucket)) {
+            playtimeBuckets.set(bucket, {});
+          }
+
+          const bucketData = playtimeBuckets.get(bucket)!;
+
+          Object.entries(clicksAtTime).forEach(([button, count]) => {
+            if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+              bucketData[button] = (bucketData[button] || 0) + (count as number);
+            }
+          });
+        });
+      } else {
+        // Old format: { "button": count }
+        const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
 
         if (!playtimeBuckets.has(bucket)) {
           playtimeBuckets.set(bucket, {});
@@ -476,10 +488,10 @@ export default function AdminDashboard() {
 
         Object.entries(entry.clicks).forEach(([button, count]) => {
           if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-            bucketData[button] = (bucketData[button] || 0) + count;
+            bucketData[button] = (bucketData[button] || 0) + (count as number);
           }
         });
-      });
+      }
     });
 
     // Convert to array and sort by playtime
