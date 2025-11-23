@@ -234,7 +234,6 @@ export function checkLevelUp(
   }
 
   if (currentClicks >= nextLevelInfo.clicksRequired) {
-    console.log(`[BUTTON_UPGRADE] Level up! ${key}: ${currentLevel} -> ${currentLevel + 1} (${currentClicks} clicks)`);
     return currentLevel + 1;
   }
 
@@ -256,13 +255,9 @@ export function incrementButtonUsage(
   const newClicks = current.clicks + 1;
   const newLevel = checkLevelUp(key, newClicks, current.level);
 
-  console.log(`[BUTTON_UPGRADE] ${key} clicked: ${current.clicks} -> ${newClicks}, level: ${current.level}`);
-
   if (newLevel !== null) {
     const upgradeName = UPGRADE_LABELS[key];
     const message = `Your mastery of ${upgradeName} deepens.`;
-
-    console.log(`[BUTTON_UPGRADE] ${message}`);
 
     return {
       updatedUpgrade: { clicks: newClicks, level: newLevel },
