@@ -11,7 +11,6 @@ AS $$
 DECLARE
   v_existing_clicks JSONB;
   v_updated_clicks JSONB;
-  v_current_timestamp TEXT;
 BEGIN
   -- Save or update the game state
   INSERT INTO game_saves (user_id, game_state, updated_at)
@@ -21,23 +20,31 @@ BEGIN
     game_state = EXCLUDED.game_state,
     updated_at = EXCLUDED.updated_at;
 
-  -- Save/update click analytics if provided (append with timestamp)
+  -- Save/update click analytics if provided (append with playtime)
   IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
     -- Get existing clicks for this user
     SELECT clicks INTO v_existing_clicks
     FROM button_clicks
     WHERE user_id = p_user_id;
 
-    -- Create timestamp key (ISO 8601 format)
-    v_current_timestamp := to_char(NOW(), 'YYYY-MM-DD"T"HH24:MI:SS"Z"');
+    -- Get playtime from game state (in milliseconds, convert to minutes)
+    DECLARE
+      v_playtime_ms NUMERIC;
+      v_playtime_minutes INTEGER;
+      v_playtime_key TEXT;
+    BEGIN
+      v_playtime_ms := (p_game_state->>'playTime')::NUMERIC;
+      v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
+      v_playtime_key := v_playtime_minutes || 'm';
+    END;
 
-    -- If user has existing clicks, append new timestamp
+    -- If user has existing clicks, append new playtime entry
     IF v_existing_clicks IS NOT NULL THEN
-      -- Add new timestamp with clicks to existing data
-      v_updated_clicks := v_existing_clicks || jsonb_build_object(v_current_timestamp, p_click_analytics);
+      -- Add new playtime with clicks to existing data
+      v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
     ELSE
-      -- No existing clicks, create new object with timestamp
-      v_updated_clicks := jsonb_build_object(v_current_timestamp, p_click_analytics);
+      -- No existing clicks, create new object with playtime
+      v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
     END IF;
 
     -- Upsert the clicks with timestamp
