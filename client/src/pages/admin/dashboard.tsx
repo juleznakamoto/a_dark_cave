@@ -519,7 +519,7 @@ export default function AdminDashboard() {
               // Calculate playtime based on time elapsed since game start
               const timeSinceStart = clickDate.getTime() - gameStartTime;
               const playtimeMinutes = Math.max(0, Math.round(timeSinceStart / 1000 / 60));
-              const bucket = Math.floor(playtimeMinutes / 10) * 10; // 10-minute buckets
+              const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
               maxBucket = Math.max(maxBucket, bucket);
 
               if (!playtimeBuckets.has(bucket)) {
@@ -541,7 +541,7 @@ export default function AdminDashboard() {
         // Old format: { "button": count } - use current playtime
         const currentPlaytime = userSave?.game_state?.playTime || 0;
         const playtimeMinutes = Math.round(currentPlaytime / 1000 / 60);
-        const bucket = Math.floor(playtimeMinutes / 10) * 10;
+        const bucket = Math.floor(playtimeMinutes / 15) * 15;
         maxBucket = Math.max(maxBucket, bucket);
 
         if (!playtimeBuckets.has(bucket)) {
@@ -559,7 +559,7 @@ export default function AdminDashboard() {
 
     // Create array with all buckets from 0 to max playtime
     const result: Array<{ playtime: string; [key: string]: any }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket += 10) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
       const bucketData = playtimeBuckets.get(bucket) || {};
       result.push({
         playtime: `${bucket}m`,
@@ -992,7 +992,7 @@ export default function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Button Clicks Over Playtime</CardTitle>
                 <CardDescription>
-                  Aggregated button clicks over playtime {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Aggregated button clicks in 15-minute intervals {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
