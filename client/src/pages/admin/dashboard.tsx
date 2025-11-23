@@ -394,15 +394,34 @@ export default function AdminDashboard() {
     // Sort by timestamp
     timeSeriesData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
-    // Format for chart display
-    return timeSeriesData.map(item => {
-      const formattedTime = format(item.timestamp, 'HH:mm:ss');
-      
-      return {
-        time: formattedTime,
-        clicks: item.totalClicks,
-      };
+    if (timeSeriesData.length === 0) return [];
+
+    // Get first timestamp to calculate elapsed time
+    const firstTimestamp = timeSeriesData[0].timestamp.getTime();
+
+    // Aggregate into 15-minute buckets
+    const buckets = new Map<number, number>();
+
+    timeSeriesData.forEach(item => {
+      const elapsedMs = item.timestamp.getTime() - firstTimestamp;
+      const elapsedMinutes = Math.floor(elapsedMs / 1000 / 60);
+      const bucket = Math.floor(elapsedMinutes / 15) * 15; // 15-minute buckets
+
+      buckets.set(bucket, (buckets.get(bucket) || 0) + item.totalClicks);
     });
+
+    // Convert to array and format for chart display
+    const maxBucket = Math.max(...Array.from(buckets.keys()));
+    const result: Array<{ time: string; clicks: number }> = [];
+
+    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
+      result.push({
+        time: `${bucket}m`,
+        clicks: buckets.get(bucket) || 0,
+      });
+    }
+
+    return result;
   };
 
   const getAllButtonNames = (): string[] => {
@@ -463,30 +482,44 @@ export default function AdminDashboard() {
     // Sort by timestamp
     timeSeriesData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
-    // Get first timestamp to calculate elapsed time
-    const firstTimestamp = timeSeriesData.length > 0 ? timeSeriesData[0].timestamp.getTime() : 0;
+    if (timeSeriesData.length === 0) return [];
 
-    // Format for chart display with elapsed time
-    return timeSeriesData.map(item => {
+    // Get first timestamp to calculate elapsed time
+    const firstTimestamp = timeSeriesData[0].timestamp.getTime();
+
+    // Aggregate into 15-minute buckets
+    const buckets = new Map<number, Record<string, number>>();
+
+    timeSeriesData.forEach(item => {
       const elapsedMs = item.timestamp.getTime() - firstTimestamp;
       const elapsedMinutes = Math.floor(elapsedMs / 1000 / 60);
-      const elapsedSeconds = Math.floor((elapsedMs / 1000) % 60);
-      const formattedTime = `${elapsedMinutes}:${elapsedSeconds.toString().padStart(2, '0')}`;
-      
-      const filteredClicks: Record<string, number> = {};
-      
-      // Only include selected click types
+      const bucket = Math.floor(elapsedMinutes / 15) * 15; // 15-minute buckets
+
+      if (!buckets.has(bucket)) {
+        buckets.set(bucket, {});
+      }
+
+      const bucketData = buckets.get(bucket)!;
       Object.entries(item.clicks).forEach(([button, count]) => {
         if (selectedClickTypes.size === 0 || selectedClickTypes.has(button)) {
-          filteredClicks[button] = count;
+          bucketData[button] = (bucketData[button] || 0) + count;
         }
       });
-
-      return {
-        time: formattedTime,
-        ...filteredClicks,
-      };
     });
+
+    // Convert to array and format for chart display
+    const maxBucket = Math.max(...Array.from(buckets.keys()));
+    const result: Array<{ time: string; [key: string]: any }> = [];
+
+    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
+      const bucketData = buckets.get(bucket) || {};
+      result.push({
+        time: `${bucket}m`,
+        ...bucketData,
+      });
+    }
+
+    return result;
   };
 
   const getButtonClicksOverPlaytime = () => {
@@ -892,14 +925,14 @@ export default function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Button Clicks Over Time</CardTitle>
                 <CardDescription>
-                  Total button clicks at each timestamp {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Total button clicks in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getButtonClicksOverTime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottom', offset: -5 }} />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
                     <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
@@ -919,7 +952,7 @@ export default function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Individual Click Types Over Playtime</CardTitle>
                 <CardDescription>
-                  Click counts by type over playtime (time elapsed since start) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Click counts by type in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -947,7 +980,7 @@ export default function AdminDashboard() {
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getClickTypesByTimestamp()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime (mm:ss)', position: 'insideBottom', offset: -5 }} />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
                     <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
