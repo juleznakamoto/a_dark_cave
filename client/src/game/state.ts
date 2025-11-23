@@ -772,6 +772,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
         startTime: Date.now(), // Set start time for new game
+        isNewGame: true, // Mark as new game to start tracking
       };
 
       set(newGameState);
