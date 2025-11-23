@@ -21,6 +21,7 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import {
   subDays,
   subMonths,
@@ -81,20 +82,21 @@ export default function AdminDashboard() {
     try {
       const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
-      // Removed email check as per user request
-      // const adminEmails = getAdminEmails();
-      // if (!user || !adminEmails.includes(user.email || '')) {
-      //   setLocation('/');
-      //   return;
-      // }
+      const adminEmails = getAdminEmails();
+
+      if (!user || !adminEmails.includes(user.email || '')) {
+        setLoading(false);
+        setLocation('/');
+        return;
+      }
 
       setIsAuthorized(true);
-      await loadData(); // Renamed function call
+      await loadData();
+      setLoading(false);
     } catch (error) {
       console.error('Auth check failed:', error);
-      setLocation('/');
-    } finally {
       setLoading(false);
+      setLocation('/');
     }
   };
 
@@ -371,8 +373,10 @@ export default function AdminDashboard() {
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
 
   return (
-    <div className="min-h-screen bg-background p-8">
-      <div className="max-w-7xl mx-auto space-y-8">
+    <div className="h-screen bg-background overflow-hidden">
+      <div className="max-w-7xl mx-auto h-full p-8">
+        <ScrollArea className="h-full">
+          <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <Select value={selectedUser} onValueChange={setSelectedUser}>
@@ -746,6 +750,9 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
         </Tabs>
+          </div>
+          <ScrollBar orientation="vertical" />
+        </ScrollArea>
       </div>
     </div>
   );
