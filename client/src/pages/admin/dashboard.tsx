@@ -71,8 +71,9 @@ export default function AdminDashboard() {
   const [purchases, setPurchases] = useState<PurchaseData[]>([]);
 
   // Filter states
+  const [timeRange, setTimeRange] = useState<'7d' | '30d' | 'all'>('30d');
   const [selectedUser, setSelectedUser] = useState<string>('all');
-  const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
+  const [selectedButtons, setSelectedButtons] = useState<string[]>([]);
 
   useEffect(() => {
     checkAdminAccess();
@@ -265,18 +266,36 @@ export default function AdminDashboard() {
 
   // Process data for charts
   const getButtonClicksOverTime = () => {
-    const filtered = selectedUser === 'all'
-      ? clickData
-      : clickData.filter(d => d.user_id === selectedUser);
+    let filteredClicks = clickData;
+
+    if (selectedUser !== 'all') {
+      filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    }
+
+    // Filter by time range
+    const now = new Date();
+    let startDate = new Date();
+    if (timeRange === '7d') {
+      startDate = subDays(now, 7);
+    } else if (timeRange === '30d') {
+      startDate = subDays(now, 30);
+    } else { // 'all'
+      // Use the earliest timestamp in the data if available
+      startDate = clickData.length > 0 ? parseISO(clickData[0].timestamp) : new Date(0);
+    }
+
+    const filteredByTime = filteredClicks.filter(d => parseISO(d.timestamp) >= startDate);
 
     const timeSeriesMap = new Map<string, Record<string, number>>();
 
-    filtered.forEach(entry => {
+    filteredByTime.forEach(entry => {
       const date = new Date(entry.timestamp).toLocaleDateString();
       const existing = timeSeriesMap.get(date) || {};
 
       Object.entries(entry.clicks).forEach(([button, count]) => {
-        existing[button] = (existing[button] || 0) + count;
+        if (selectedButtons.length === 0 || selectedButtons.includes(button)) {
+          existing[button] = (existing[button] || 0) + count;
+        }
       });
 
       timeSeriesMap.set(date, existing);
@@ -287,6 +306,15 @@ export default function AdminDashboard() {
       ...clicks,
     }));
   };
+
+  const getAllButtonNames = (): string[] => {
+    const buttonNames = new Set<string>();
+    clickData.forEach(entry => {
+      Object.keys(entry.clicks).forEach(button => buttonNames.add(button));
+    });
+    return Array.from(buttonNames);
+  };
+
 
   const getTotalClicksByButton = () => {
     const filtered = selectedUser === 'all'
@@ -371,6 +399,7 @@ export default function AdminDashboard() {
   }
 
   const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088FE', '#00C49F'];
+  const MAX_LINES_IN_CHART = 5;
 
   return (
     <div className="h-screen bg-background overflow-hidden">
@@ -379,19 +408,31 @@ export default function AdminDashboard() {
           <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-          <Select value={selectedUser} onValueChange={setSelectedUser}>
-            <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Select user" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Users</SelectItem>
-              {users.map(user => (
-                <SelectItem key={user.id} value={user.id}>
-                  {user.email}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <div className="flex gap-4">
+            <Select value={selectedUser} onValueChange={setSelectedUser}>
+              <SelectTrigger className="w-[200px]">
+                <SelectValue placeholder="Select user" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Users</SelectItem>
+                {users.map(user => (
+                  <SelectItem key={user.id} value={user.id}>
+                    {user.email}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={timeRange} onValueChange={(value: '7d' | '30d' | 'all') => setTimeRange(value)}>
+              <SelectTrigger className="w-[120px]">
+                <SelectValue placeholder="Time Range" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="7d">Last 7 Days</SelectItem>
+                <SelectItem value="30d">Last 30 Days</SelectItem>
+                <SelectItem value="all">All Time</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-4">
@@ -399,6 +440,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="engagement">Engagement</TabsTrigger>
             <TabsTrigger value="clicks">Button Clicks</TabsTrigger>
+            <TabsTrigger value="playtime">Playtime Analysis</TabsTrigger>
             <TabsTrigger value="completion">Game Progress</TabsTrigger>
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
           </TabsList>
@@ -593,7 +635,7 @@ export default function AdminDashboard() {
                     <Legend />
                     {Object.keys(getButtonClicksOverTime()[0] || {})
                       .filter(key => key !== 'date')
-                      .slice(0, 5)
+                      .slice(0, MAX_LINES_IN_CHART)
                       .map((key, index) => (
                         <Line
                           key={key}
@@ -625,6 +667,68 @@ export default function AdminDashboard() {
               </CardContent>
             </Card>
           </TabsContent>
+
+          <TabsContent value="playtime" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Button Clicks Over Playtime</CardTitle>
+                <CardDescription>
+                  Aggregated button clicks over playtime {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex gap-4 mb-4">
+                  <Select value={selectedUser} onValueChange={setSelectedUser}>
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Select user" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Users</SelectItem>
+                      {users.map(user => (
+                        <SelectItem key={user.id} value={user.id}>
+                          {user.email}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <Select onValueChange={(value: string) => setSelectedButtons(value === 'all' ? [] : [value])} defaultValue="all">
+                    <SelectTrigger className="w-[200px]">
+                      <SelectValue placeholder="Select button" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">All Buttons</SelectItem>
+                      {getAllButtonNames().map(buttonName => (
+                        <SelectItem key={buttonName} value={buttonName}>
+                          {buttonName}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getButtonClicksOverTime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" type="category" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    {Object.keys(getButtonClicksOverTime()[0] || {})
+                      .filter(key => key !== 'date')
+                      .slice(0, MAX_LINES_IN_CHART)
+                      .map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                        />
+                      ))}
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
 
           <TabsContent value="completion" className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
