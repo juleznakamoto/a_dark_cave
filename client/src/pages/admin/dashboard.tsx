@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
 import {
   LineChart,
@@ -57,7 +57,7 @@ interface PurchaseData {
 const ADMIN_EMAILS = ['your-admin-email@example.com']; // Update with actual admin emails
 
 export default function AdminDashboard() {
-  const navigate = useNavigate();
+  const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
   
@@ -80,7 +80,7 @@ export default function AdminDashboard() {
       const { data: { user } } = await supabase.auth.getUser();
 
       if (!user || !ADMIN_EMAILS.includes(user.email || '')) {
-        navigate('/');
+        setLocation('/');
         return;
       }
 
@@ -88,7 +88,7 @@ export default function AdminDashboard() {
       await loadDashboardData();
     } catch (error) {
       console.error('Auth check failed:', error);
-      navigate('/');
+      setLocation('/');
     } finally {
       setLoading(false);
     }
