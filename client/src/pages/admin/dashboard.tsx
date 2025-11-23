@@ -359,7 +359,7 @@ export default function AdminDashboard() {
     return Array.from(buttonNames);
   };
 
-  const getButtonClicksOverPlaytime = () => {
+  const getButtonClicksOverPlaytime = useMemo(() => {
     let filteredClicks = clickData;
 
     if (selectedUser !== 'all') {
@@ -413,7 +413,7 @@ export default function AdminDashboard() {
         ...clicks,
       }))
       .sort((a, b) => parseInt(a.playtime) - parseInt(b.playtime));
-  };
+  }, [clickData, selectedUser, gameSaves, selectedButtons]);
 
 
   const getTotalClicksByButton = () => {
@@ -832,7 +832,7 @@ export default function AdminDashboard() {
                   </Select>
                 </div>
                 <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getButtonClicksOverPlaytime()}>
+                  <LineChart data={getButtonClicksOverPlaytime}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis dataKey="playtime" />
                     <YAxis />
