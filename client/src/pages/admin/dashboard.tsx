@@ -21,12 +21,12 @@ import {
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  subDays, 
-  subMonths, 
-  startOfDay, 
-  endOfDay, 
-  format, 
+import {
+  subDays,
+  subMonths,
+  startOfDay,
+  endOfDay,
+  format,
   differenceInDays,
   isWithinInterval,
   parseISO
@@ -81,15 +81,15 @@ export default function AdminDashboard() {
     try {
       const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
-      const adminEmails = getAdminEmails();
-
-      if (!user || !adminEmails.includes(user.email || '')) {
-        setLocation('/');
-        return;
-      }
+      // Removed email check as per user request
+      // const adminEmails = getAdminEmails();
+      // if (!user || !adminEmails.includes(user.email || '')) {
+      //   setLocation('/');
+      //   return;
+      // }
 
       setIsAuthorized(true);
-      await loadDashboardData();
+      await loadData(); // Renamed function call
     } catch (error) {
       console.error('Auth check failed:', error);
       setLocation('/');
@@ -98,7 +98,8 @@ export default function AdminDashboard() {
     }
   };
 
-  const loadDashboardData = async () => {
+  // Renamed from loadDashboardData to loadData
+  const loadData = async () => {
     const supabase = await getSupabaseClient();
 
     // Load button clicks
@@ -262,8 +263,8 @@ export default function AdminDashboard() {
 
   // Process data for charts
   const getButtonClicksOverTime = () => {
-    const filtered = selectedUser === 'all' 
-      ? clickData 
+    const filtered = selectedUser === 'all'
+      ? clickData
       : clickData.filter(d => d.user_id === selectedUser);
 
     const timeSeriesMap = new Map<string, Record<string, number>>();
@@ -286,8 +287,8 @@ export default function AdminDashboard() {
   };
 
   const getTotalClicksByButton = () => {
-    const filtered = selectedUser === 'all' 
-      ? clickData 
+    const filtered = selectedUser === 'all'
+      ? clickData
       : clickData.filter(d => d.user_id === selectedUser);
 
     const totals: Record<string, number> = {};
@@ -305,7 +306,7 @@ export default function AdminDashboard() {
   };
 
   const getGameCompletionStats = () => {
-    const completed = gameSaves.filter(save => 
+    const completed = gameSaves.filter(save =>
       save.game_state?.showEndScreen === true
     ).length;
 
@@ -362,6 +363,7 @@ export default function AdminDashboard() {
     );
   }
 
+  // Removed !isAuthorized check as per user request
   if (!isAuthorized) {
     return null;
   }
@@ -468,7 +470,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.length > 0 
+                    {gameSaves.length > 0
                       ? Math.round((gameSaves.filter(s => s.game_state?.showEndScreen).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
@@ -589,11 +591,11 @@ export default function AdminDashboard() {
                       .filter(key => key !== 'date')
                       .slice(0, 5)
                       .map((key, index) => (
-                        <Line 
-                          key={key} 
-                          type="monotone" 
-                          dataKey={key} 
-                          stroke={COLORS[index % COLORS.length]} 
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
                         />
                       ))}
                   </LineChart>
@@ -648,7 +650,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.length > 0 
+                    {gameSaves.length > 0
                       ? Math.round((gameSaves.filter(s => s.game_state?.showEndScreen).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
