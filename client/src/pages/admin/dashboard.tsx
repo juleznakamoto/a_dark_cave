@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
@@ -64,12 +63,12 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
-  
+
   // Data states
   const [clickData, setClickData] = useState<ButtonClickData[]>([]);
   const [gameSaves, setGameSaves] = useState<GameSaveData[]>([]);
   const [purchases, setPurchases] = useState<PurchaseData[]>([]);
-  
+
   // Filter states
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [users, setUsers] = useState<Array<{ id: string; email: string }>>([]);
@@ -107,14 +106,14 @@ export default function AdminDashboard() {
       .from('button_clicks')
       .select('*')
       .order('timestamp', { ascending: true });
-    
+
     if (clicks) setClickData(clicks);
 
     // Load game saves with created_at
     const { data: saves } = await supabase
       .from('game_saves')
       .select('user_id, game_state, updated_at, created_at');
-    
+
     if (saves) setGameSaves(saves);
 
     // Load purchases
@@ -122,7 +121,7 @@ export default function AdminDashboard() {
       .from('purchases')
       .select('*')
       .order('purchased_at', { ascending: false });
-    
+
     if (purchaseData) setPurchases(purchaseData);
 
     // Load unique users
@@ -143,9 +142,9 @@ export default function AdminDashboard() {
   const getActiveUsers = (days: number) => {
     const now = new Date();
     const cutoffDate = subDays(now, days);
-    
+
     const activeUserIds = new Set<string>();
-    
+
     // Check button clicks
     clickData.forEach(entry => {
       const entryDate = parseISO(entry.timestamp);
@@ -153,7 +152,7 @@ export default function AdminDashboard() {
         activeUserIds.add(entry.user_id);
       }
     });
-    
+
     // Check game saves (updated_at indicates activity)
     gameSaves.forEach(save => {
       const saveDate = parseISO(save.updated_at);
@@ -161,7 +160,7 @@ export default function AdminDashboard() {
         activeUserIds.add(save.user_id);
       }
     });
-    
+
     return activeUserIds.size;
   };
 
@@ -174,24 +173,24 @@ export default function AdminDashboard() {
     const playtimes = gameSaves
       .map(save => save.game_state?.playTime || 0)
       .filter(time => time > 0);
-    
+
     if (playtimes.length === 0) return 0;
-    
+
     const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
     return Math.round(avgMs / 1000 / 60); // Convert to minutes
   };
 
   const getAveragePlaytimeToCompletion = () => {
     const completedGames = gameSaves.filter(save => save.game_state?.showEndScreen === true);
-    
+
     if (completedGames.length === 0) return 0;
-    
+
     const playtimes = completedGames
       .map(save => save.game_state?.playTime || 0)
       .filter(time => time > 0);
-    
+
     if (playtimes.length === 0) return 0;
-    
+
     const avgMs = playtimes.reduce((sum, time) => sum + time, 0) / playtimes.length;
     return Math.round(avgMs / 1000 / 60); // Convert to minutes
   };
@@ -199,34 +198,34 @@ export default function AdminDashboard() {
   // Retention metrics
   const getUserRetention = () => {
     const data: { day: string; users: number }[] = [];
-    
+
     for (let i = 30; i >= 0; i--) {
       const date = subDays(new Date(), i);
       const dayStart = startOfDay(date);
       const dayEnd = endOfDay(date);
-      
+
       const activeUserIds = new Set<string>();
-      
+
       clickData.forEach(entry => {
         const entryDate = parseISO(entry.timestamp);
         if (isWithinInterval(entryDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(entry.user_id);
         }
       });
-      
+
       gameSaves.forEach(save => {
         const saveDate = parseISO(save.updated_at);
         if (isWithinInterval(saveDate, { start: dayStart, end: dayEnd })) {
           activeUserIds.add(save.user_id);
         }
       });
-      
+
       data.push({
         day: format(date, 'MMM dd'),
         users: activeUserIds.size,
       });
     }
-    
+
     return data;
   };
 
@@ -235,7 +234,7 @@ export default function AdminDashboard() {
     const sessions = gameSaves
       .map(save => save.game_state?.playTime || 0)
       .filter(time => time > 0);
-    
+
     const distribution = {
       '0-30 min': 0,
       '30-60 min': 0,
@@ -244,7 +243,7 @@ export default function AdminDashboard() {
       '5-10 hours': 0,
       '10+ hours': 0,
     };
-    
+
     sessions.forEach(timeMs => {
       const minutes = timeMs / 1000 / 60;
       if (minutes < 30) distribution['0-30 min']++;
@@ -254,7 +253,7 @@ export default function AdminDashboard() {
       else if (minutes < 600) distribution['5-10 hours']++;
       else distribution['10+ hours']++;
     });
-    
+
     return Object.entries(distribution).map(([range, count]) => ({
       range,
       count,
@@ -272,7 +271,7 @@ export default function AdminDashboard() {
     filtered.forEach(entry => {
       const date = new Date(entry.timestamp).toLocaleDateString();
       const existing = timeSeriesMap.get(date) || {};
-      
+
       Object.entries(entry.clicks).forEach(([button, count]) => {
         existing[button] = (existing[button] || 0) + count;
       });
@@ -334,7 +333,7 @@ export default function AdminDashboard() {
   const getConversionRate = () => {
     const totalUsers = gameSaves.length;
     const payingUsers = new Set(purchases.map(p => p.user_id)).size;
-    
+
     if (totalUsers === 0) return 0;
     return Math.round((payingUsers / totalUsers) * 100);
   };
@@ -342,7 +341,7 @@ export default function AdminDashboard() {
   const getARPU = () => {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
-    
+
     const totalRevenue = getTotalRevenue();
     return (totalRevenue / 100 / totalUsers).toFixed(2);
   };
@@ -350,13 +349,17 @@ export default function AdminDashboard() {
   const formatTime = (minutes: number) => {
     const hours = Math.floor(minutes / 60);
     const mins = minutes % 60;
-    
+
     if (hours === 0) return `${mins}m`;
     return `${hours}h ${mins}m`;
   };
 
   if (loading) {
-    return <div className="flex items-center justify-center min-h-screen">Loading...</div>;
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-background">
+        <div className="text-foreground">Loading...</div>
+      </div>
+    );
   }
 
   if (!isAuthorized) {
