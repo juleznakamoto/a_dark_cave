@@ -359,28 +359,28 @@ export default function AdminDashboard() {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
     }
 
-    // Collect all timestamp entries with their clicks
-    const timeSeriesData: Array<{ timestamp: Date; clicks: Record<string, number> }> = [];
+    // Collect all timestamp entries with their total clicks
+    const timeSeriesData: Array<{ timestamp: Date; totalClicks: number; buttons: Record<string, number> }> = [];
 
     filteredClicks.forEach(entry => {
-      const userId = entry.user_id;
-      const userSave = gameSaves.find(save => save.user_id === userId);
-      const gameStartTime = userSave?.game_state?.startTime;
-
       // Check if clicks is in new timestamp format
       const isTimestampFormat = Object.keys(entry.clicks).some(key => 
         key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
       );
 
-      if (isTimestampFormat && gameStartTime) {
+      if (isTimestampFormat) {
         // New format: { "timestamp": { "button": count } }
         Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
           try {
             const clickDate = new Date(timestamp);
             if (!isNaN(clickDate.getTime())) {
+              // Calculate total clicks at this timestamp
+              const totalClicks = Object.values(clicksAtTime as Record<string, number>).reduce((sum, count) => sum + count, 0);
+              
               timeSeriesData.push({
                 timestamp: clickDate,
-                clicks: clicksAtTime as Record<string, number>
+                totalClicks,
+                buttons: clicksAtTime as Record<string, number>
               });
             }
           } catch (e) {
@@ -396,17 +396,10 @@ export default function AdminDashboard() {
     // Format for chart display
     return timeSeriesData.map(item => {
       const formattedTime = format(item.timestamp, 'HH:mm:ss');
-      const filteredClicks: Record<string, number> = {};
       
-      Object.entries(item.clicks).forEach(([button, count]) => {
-        if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-          filteredClicks[button] = count;
-        }
-      });
-
       return {
-        date: formattedTime,
-        ...filteredClicks,
+        time: formattedTime,
+        clicks: item.totalClicks,
       };
     });
   };
@@ -833,30 +826,26 @@ export default function AdminDashboard() {
           <TabsContent value="clicks" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Button Clicks Over Playtime</CardTitle>
+                <CardTitle>Button Clicks Over Time</CardTitle>
                 <CardDescription>
-                  Button clicks aggregated by playtime progression {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Total button clicks at each timestamp {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getButtonClicksOverTime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
+                    <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(getButtonClicksOverTime()[0] || {})
-                      .filter(key => key !== 'date' && (selectedButtons.size === 0 || selectedButtons.has(key)))
-                      .slice(0, MAX_LINES_IN_CHART)
-                      .map((key, index) => (
-                        <Line
-                          key={key}
-                          type="monotone"
-                          dataKey={key}
-                          stroke={COLORS[index % COLORS.length]}
-                        />
-                      ))}
+                    <Line
+                      type="monotone"
+                      dataKey="clicks"
+                      stroke="#8884d8"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
