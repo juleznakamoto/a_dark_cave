@@ -126,9 +126,24 @@ export default function AdminDashboard() {
     const totalClicks: Record<string, number> = {};
 
     clickData.forEach(record => {
-      Object.entries(record.clicks).forEach(([button, count]) => {
-        totalClicks[button] = (totalClicks[button] || 0) + (count as number);
-      });
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(record.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      );
+
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        Object.values(record.clicks).forEach((timestampClicks: any) => {
+          Object.entries(timestampClicks).forEach(([button, count]) => {
+            totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+          });
+        });
+      } else {
+        // Old format: { "button": count }
+        Object.entries(record.clicks).forEach(([button, count]) => {
+          totalClicks[button] = (totalClicks[button] || 0) + (count as number);
+        });
+      }
     });
 
     // Convert to array format for the chart
@@ -346,25 +361,51 @@ export default function AdminDashboard() {
     } else if (timeRange === '30d') {
       startDate = subDays(now, 30);
     } else { // 'all'
-      // Use the earliest timestamp in the data if available
-      startDate = clickData.length > 0 ? parseISO(clickData[0].timestamp) : new Date(0);
+      startDate = new Date(0);
     }
-
-    const filteredByTime = filteredClicks.filter(d => parseISO(d.timestamp) >= startDate);
 
     const timeSeriesMap = new Map<string, Record<string, number>>();
 
-    filteredByTime.forEach(entry => {
-      const date = new Date(entry.timestamp).toLocaleDateString();
-      const existing = timeSeriesMap.get(date) || {};
+    filteredClicks.forEach(entry => {
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(entry.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      );
 
-      Object.entries(entry.clicks).forEach(([button, count]) => {
-        if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-          existing[button] = (existing[button] || 0) + count;
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
+          const clickDate = parseISO(timestamp);
+          
+          if (clickDate >= startDate) {
+            const date = clickDate.toLocaleDateString();
+            const existing = timeSeriesMap.get(date) || {};
+
+            Object.entries(clicksAtTime).forEach(([button, count]) => {
+              if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+                existing[button] = (existing[button] || 0) + (count as number);
+              }
+            });
+
+            timeSeriesMap.set(date, existing);
+          }
+        });
+      } else {
+        // Old format: { "button": count }
+        const entryDate = parseISO(entry.timestamp);
+        if (entryDate >= startDate) {
+          const date = entryDate.toLocaleDateString();
+          const existing = timeSeriesMap.get(date) || {};
+
+          Object.entries(entry.clicks).forEach(([button, count]) => {
+            if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+              existing[button] = (existing[button] || 0) + (count as number);
+            }
+          });
+
+          timeSeriesMap.set(date, existing);
         }
-      });
-
-      timeSeriesMap.set(date, existing);
+      }
     });
 
     return Array.from(timeSeriesMap.entries()).map(([date, clicks]) => ({
@@ -376,7 +417,20 @@ export default function AdminDashboard() {
   const getAllButtonNames = (): string[] => {
     const buttonNames = new Set<string>();
     clickData.forEach(entry => {
-      Object.keys(entry.clicks).forEach(button => buttonNames.add(button));
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(entry.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      );
+
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        Object.values(entry.clicks).forEach((timestampClicks: any) => {
+          Object.keys(timestampClicks).forEach(button => buttonNames.add(button));
+        });
+      } else {
+        // Old format: { "button": count }
+        Object.keys(entry.clicks).forEach(button => buttonNames.add(button));
+      }
     });
     return Array.from(buttonNames);
   };
@@ -446,9 +500,24 @@ export default function AdminDashboard() {
     const totals: Record<string, number> = {};
 
     filtered.forEach(entry => {
-      Object.entries(entry.clicks).forEach(([button, count]) => {
-        totals[button] = (totals[button] || 0) + count;
-      });
+      // Check if clicks is in new timestamp format
+      const isTimestampFormat = Object.keys(entry.clicks).some(key => 
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+      );
+
+      if (isTimestampFormat) {
+        // New format: { "timestamp": { "button": count } }
+        Object.values(entry.clicks).forEach((timestampClicks: any) => {
+          Object.entries(timestampClicks).forEach(([button, count]) => {
+            totals[button] = (totals[button] || 0) + (count as number);
+          });
+        });
+      } else {
+        // Old format: { "button": count }
+        Object.entries(entry.clicks).forEach(([button, count]) => {
+          totals[button] = (totals[button] || 0) + (count as number);
+        });
+      }
     });
 
     return Object.entries(totals)
