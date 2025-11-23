@@ -66,6 +66,7 @@ interface GameStore extends GameState {
   // Play time tracking
   playTime: number;
   isNewGame: boolean; // Track if this is a newly started game
+  startTime: number; // Timestamp when the current game was started
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -290,6 +291,7 @@ const defaultGameState: GameState = {
   // Play time tracking
   playTime: 0,
   isNewGame: false,
+  startTime: 0,
 
   // Cooldown management
   cooldowns: {},
@@ -668,6 +670,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       mysteriousNoteDonateNotificationSeen: false,
       playTime: 0, // Reset play time
       isNewGame: true, // Mark as a new game
+      startTime: Date.now(), // Set the start time for this new game
       idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
       sleepUpgrades: { lengthLevel: 0, intensityLevel: 0 }, // Reset sleep upgrades
     };
@@ -752,6 +755,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
         playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
         isNewGame: false, // Clear the new game flag when loading
+        startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
       };
 
@@ -767,6 +771,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         boostMode: currentBoostMode, // Preserve boost mode flag
         effects: calculateTotalEffects(defaultGameState),
         bastion_stats: calculateBastionStats(defaultGameState),
+        startTime: Date.now(), // Set start time for new game
       };
 
       set(newGameState);

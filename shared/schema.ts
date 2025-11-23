@@ -368,8 +368,9 @@ export const gameStateSchema = z.object({
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
-  playTime: z.number().default(0), // Track total play time in milliseconds
-  isNewGame: z.boolean().default(false), // Track if the current game is a new game
+  playTime: z.number().default(0),
+  isNewGame: z.boolean().default(false),
+  startTime: z.number().default(0), // Timestamp when the current game was started
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   idleModeState: z.object({
     isActive: z.boolean().default(false),
