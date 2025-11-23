@@ -367,7 +367,7 @@ export default function AdminDashboard() {
           if (!isNaN(playtimeMinutes)) {
             // Calculate total clicks at this playtime
             const totalClicks = Object.values(clicksAtTime as Record<string, number>).reduce((sum, count) => sum + count, 0);
-            
+
             // Aggregate into 15-minute buckets
             const bucket = Math.floor(playtimeMinutes / 15) * 15;
             playtimeData.set(bucket, (playtimeData.get(bucket) || 0) + totalClicks);
@@ -424,7 +424,7 @@ export default function AdminDashboard() {
           // Extract playtime from key like "45m"
           const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
           if (!isNaN(playtimeMinutes)) {
-            const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
+            const bucket = Math.floor(playtimeMinutes / 5) * 5; // 5-minute buckets
 
             if (!buckets.has(bucket)) {
               buckets.set(bucket, {});
@@ -450,7 +450,7 @@ export default function AdminDashboard() {
     const maxBucket = Math.max(...Array.from(buckets.keys()));
     const result: Array<{ time: string; [key: string]: any }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 5) {
       const bucketData = buckets.get(bucket) || {};
       result.push({
         time: `${bucket}m`,
