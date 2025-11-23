@@ -375,19 +375,40 @@ export default function AdminDashboard() {
     filteredClicks.forEach(entry => {
       // Check if clicks is in new timestamp format
       const isTimestampFormat = Object.keys(entry.clicks).some(key => 
-        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}Z$/)
+        key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
       );
 
       if (isTimestampFormat) {
         // New format: { "timestamp": { "button": count } }
         Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
-          const clickDate = parseISO(timestamp);
-          
-          if (clickDate >= startDate) {
-            const date = clickDate.toLocaleDateString();
+          try {
+            const clickDate = new Date(timestamp);
+            
+            if (clickDate >= startDate && !isNaN(clickDate.getTime())) {
+              const date = clickDate.toLocaleDateString();
+              const existing = timeSeriesMap.get(date) || {};
+
+              Object.entries(clicksAtTime).forEach(([button, count]) => {
+                if (selectedButtons.size === 0 || selectedButtons.has(button)) {
+                  existing[button] = (existing[button] || 0) + (count as number);
+                }
+              });
+
+              timeSeriesMap.set(date, existing);
+            }
+          } catch (e) {
+            console.warn('Failed to parse timestamp:', timestamp, e);
+          }
+        });
+      } else {
+        // Old format: { "button": count }
+        try {
+          const entryDate = new Date(entry.timestamp);
+          if (entryDate >= startDate && !isNaN(entryDate.getTime())) {
+            const date = entryDate.toLocaleDateString();
             const existing = timeSeriesMap.get(date) || {};
 
-            Object.entries(clicksAtTime).forEach(([button, count]) => {
+            Object.entries(entry.clicks).forEach(([button, count]) => {
               if (selectedButtons.size === 0 || selectedButtons.has(button)) {
                 existing[button] = (existing[button] || 0) + (count as number);
               }
@@ -395,29 +416,19 @@ export default function AdminDashboard() {
 
             timeSeriesMap.set(date, existing);
           }
-        });
-      } else {
-        // Old format: { "button": count }
-        const entryDate = parseISO(entry.timestamp);
-        if (entryDate >= startDate) {
-          const date = entryDate.toLocaleDateString();
-          const existing = timeSeriesMap.get(date) || {};
-
-          Object.entries(entry.clicks).forEach(([button, count]) => {
-            if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-              existing[button] = (existing[button] || 0) + (count as number);
-            }
-          });
-
-          timeSeriesMap.set(date, existing);
+        } catch (e) {
+          console.warn('Failed to parse timestamp:', entry.timestamp, e);
         }
       }
     });
 
-    return Array.from(timeSeriesMap.entries()).map(([date, clicks]) => ({
-      date,
-      ...clicks,
-    }));
+    // Sort by date
+    return Array.from(timeSeriesMap.entries())
+      .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
+      .map(([date, clicks]) => ({
+        date,
+        ...clicks,
+      }));
   };
 
   const getAllButtonNames = (): string[] => {
