@@ -88,8 +88,8 @@ export async function updatePassword(newPassword: string) {
 }
 
 export async function saveGameToSupabase(
-  gameState: GameState, 
-  playTime: number = 0, 
+  gameState: GameState,
+  playTime: number = 0,
   isNewGame: boolean = false,
   clickAnalytics: Record<string, number> | null = null
 ): Promise<void> {
@@ -127,38 +127,42 @@ export async function saveGameToSupabase(
     }
   }
 
-  const { error } = await supabase
-    .from('game_saves')
-    .upsert({
-      user_id: user.id,
-      game_state: sanitizedState,
-      updated_at: new Date().toISOString(),
-    }, {
-      onConflict: 'user_id'
-    });
+  // Prepare operations to run in parallel
+  const operations = [
+    // Save or update the game state
+    supabase
+      .from('game_saves')
+      .upsert({
+        user_id: user.id,
+        game_state: sanitizedState,
+        updated_at: new Date().toISOString(),
+      }, {
+        onConflict: 'user_id'
+      })
+  ];
 
-  if (error) throw error;
-
-  // Save click analytics if present (fire-and-forget, don't block on errors)
+  // Add click analytics operation if provided
   if (clickAnalytics && Object.keys(clickAnalytics).length > 0) {
-    try {
-      const { error: analyticsError } = await supabase
+    operations.push(
+      supabase
         .from('button_clicks')
         .insert({
           user_id: user.id,
           timestamp: new Date().toISOString(),
           clicks: clickAnalytics,
-        });
+        })
+    );
+  }
 
-      if (analyticsError && import.meta.env.DEV) {
-        console.warn('Failed to save click analytics:', analyticsError);
-      }
-    } catch (analyticsException) {
-      // Silently fail analytics - it's not critical
-      if (import.meta.env.DEV) {
-        console.debug('Analytics save failed:', analyticsException);
-      }
-    }
+  // Execute all operations in parallel
+  const results = await Promise.all(operations);
+
+  // Check for errors
+  const saveError = results[0].error;
+  if (saveError) throw saveError;
+
+  if (results.length > 1 && results[1].error) {
+    console.warn('Failed to save click analytics:', results[1].error);
   }
 }
 
