@@ -838,14 +838,17 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Legend />
-                    {Array.from(selectedButtons).slice(0, MAX_LINES_IN_CHART).map((key, index) => (
-                      <Line
-                        key={key}
-                        type="monotone"
-                        dataKey={key}
-                        stroke={COLORS[index % COLORS.length]}
-                      />
-                    ))}
+                    {Object.keys(getButtonClicksOverPlaytime[0] || {})
+                      .filter(key => key !== 'playtime' && (selectedButtons.size === 0 || selectedButtons.has(key)))
+                      .slice(0, MAX_LINES_IN_CHART)
+                      .map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                        />
+                      ))}
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
