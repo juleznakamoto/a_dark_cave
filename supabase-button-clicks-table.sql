@@ -11,15 +11,15 @@ CREATE TABLE IF NOT EXISTS button_clicks (
 -- Enable Row Level Security
 ALTER TABLE button_clicks ENABLE ROW LEVEL SECURITY;
 
--- Create policies (only service role can write for analytics integrity)
+-- Create policies
 CREATE POLICY "Users can view their own click data"
   ON button_clicks FOR SELECT
   USING (auth.uid() = user_id);
 
--- Service role only for inserts to prevent tampering
-CREATE POLICY "Service role can insert click data"
+-- Allow authenticated users to insert their own click data
+CREATE POLICY "Users can insert their own click data"
   ON button_clicks FOR INSERT
-  WITH CHECK (auth.role() = 'service_role');
+  WITH CHECK (auth.uid() = user_id);
 
 -- Create index for efficient queries
 CREATE INDEX IF NOT EXISTS button_clicks_user_id_idx ON button_clicks(user_id);
