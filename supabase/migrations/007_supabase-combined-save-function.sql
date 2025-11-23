@@ -20,8 +20,11 @@ BEGIN
     game_state = EXCLUDED.game_state,
     updated_at = EXCLUDED.updated_at;
 
-  -- Save/update click analytics if provided (append with playtime)
-  IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
+  -- Handle click analytics
+  IF p_click_analytics IS NULL THEN
+    -- Delete existing clicks when starting a new game
+    DELETE FROM button_clicks WHERE user_id = p_user_id;
+  ELSIF p_click_analytics != '{}'::jsonb THEN
     -- Get existing clicks for this user
     SELECT clicks INTO v_existing_clicks
     FROM button_clicks
