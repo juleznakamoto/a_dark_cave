@@ -161,8 +161,9 @@ export async function saveGameToSupabase(
   const saveError = results[0].error;
   if (saveError) throw saveError;
 
-  if (results.length > 1 && results[1].error) {
-    console.warn('Failed to save click analytics:', results[1].error);
+  // Silently ignore analytics errors - they're not critical
+  if (results.length > 1 && results[1].error && import.meta.env.DEV) {
+    console.debug('Failed to save click analytics:', results[1].error);
   }
 }
 
