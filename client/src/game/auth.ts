@@ -127,44 +127,14 @@ export async function saveGameToSupabase(
     }
   }
 
-  // Prepare operations to run in parallel
-  const operations = [
-    // Save or update the game state
-    supabase
-      .from('game_saves')
-      .upsert({
-        user_id: user.id,
-        game_state: sanitizedState,
-        updated_at: new Date().toISOString(),
-      }, {
-        onConflict: 'user_id'
-      })
-  ];
+  // Call the combined save function - single database call
+  const { error } = await supabase.rpc('save_game_with_analytics', {
+    p_user_id: user.id,
+    p_game_state: sanitizedState,
+    p_click_analytics: clickAnalytics || null
+  });
 
-  // Add click analytics operation if provided
-  if (clickAnalytics && Object.keys(clickAnalytics).length > 0) {
-    operations.push(
-      supabase
-        .from('button_clicks')
-        .insert({
-          user_id: user.id,
-          timestamp: new Date().toISOString(),
-          clicks: clickAnalytics,
-        })
-    );
-  }
-
-  // Execute all operations in parallel
-  const results = await Promise.all(operations);
-
-  // Check for errors
-  const saveError = results[0].error;
-  if (saveError) throw saveError;
-
-  // Silently ignore analytics errors - they're not critical
-  if (results.length > 1 && results[1].error && import.meta.env.DEV) {
-    console.debug('Failed to save click analytics:', results[1].error);
-  }
+  if (error) throw error;
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {
