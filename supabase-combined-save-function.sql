@@ -51,14 +51,13 @@ BEGIN
       v_merged_clicks := p_click_analytics;
     END IF;
     
-    -- Upsert the merged clicks
-    INSERT INTO button_clicks (user_id, timestamp, clicks, updated_at)
-    VALUES (p_user_id, NOW(), v_merged_clicks, NOW())
+    -- Upsert the merged clicks (without updated_at since column may not exist)
+    INSERT INTO button_clicks (user_id, timestamp, clicks)
+    VALUES (p_user_id, NOW(), v_merged_clicks)
     ON CONFLICT (user_id)
     DO UPDATE SET
       clicks = EXCLUDED.clicks,
-      timestamp = EXCLUDED.timestamp,
-      updated_at = EXCLUDED.updated_at;
+      timestamp = EXCLUDED.timestamp;
   END IF;
 END;
 $$;
