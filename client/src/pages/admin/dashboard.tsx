@@ -463,9 +463,16 @@ export default function AdminDashboard() {
     // Sort by timestamp
     timeSeriesData.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
 
-    // Format for chart display
+    // Get first timestamp to calculate elapsed time
+    const firstTimestamp = timeSeriesData.length > 0 ? timeSeriesData[0].timestamp.getTime() : 0;
+
+    // Format for chart display with elapsed time
     return timeSeriesData.map(item => {
-      const formattedTime = format(item.timestamp, 'HH:mm:ss');
+      const elapsedMs = item.timestamp.getTime() - firstTimestamp;
+      const elapsedMinutes = Math.floor(elapsedMs / 1000 / 60);
+      const elapsedSeconds = Math.floor((elapsedMs / 1000) % 60);
+      const formattedTime = `${elapsedMinutes}:${elapsedSeconds.toString().padStart(2, '0')}`;
+      
       const filteredClicks: Record<string, number> = {};
       
       // Only include selected click types
@@ -910,9 +917,9 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Individual Click Types Over Time</CardTitle>
+                <CardTitle>Individual Click Types Over Playtime</CardTitle>
                 <CardDescription>
-                  Click counts by type at each timestamp {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Click counts by type over playtime (time elapsed since start) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -940,7 +947,7 @@ export default function AdminDashboard() {
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getClickTypesByTimestamp()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Time', position: 'insideBottom', offset: -5 }} />
+                    <XAxis dataKey="time" label={{ value: 'Playtime (mm:ss)', position: 'insideBottom', offset: -5 }} />
                     <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
