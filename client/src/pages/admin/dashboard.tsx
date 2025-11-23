@@ -57,10 +57,7 @@ interface PurchaseData {
 // Admin emails from environment variable (comma-separated)
 const getAdminEmails = (): string[] => {
   const adminEmailsEnv = import.meta.env.VITE_ADMIN_EMAILS || '';
-  console.log('[ADMIN] Raw VITE_ADMIN_EMAILS:', adminEmailsEnv);
-  const emails = adminEmailsEnv.split(',').map(email => email.trim()).filter(Boolean);
-  console.log('[ADMIN] Parsed admin emails:', emails);
-  return emails;
+  return adminEmailsEnv.split(',').map(email => email.trim()).filter(Boolean);
 };
 
 export default function AdminDashboard() {
@@ -83,48 +80,21 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
-      console.log('[ADMIN] Starting admin access check...');
-      
       const supabase = await getSupabaseClient();
-      console.log('[ADMIN] Supabase client obtained');
-      
-      const { data: { user }, error: userError } = await supabase.auth.getUser();
-      console.log('[ADMIN] User data:', user);
-      console.log('[ADMIN] User error:', userError);
-      
-      if (userError) {
-        console.error('[ADMIN] Error fetching user:', userError);
-        setLoading(false);
-        setLocation('/');
-        return;
-      }
-
+      const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
-      console.log('[ADMIN] Admin emails from env:', adminEmails);
-      console.log('[ADMIN] User email:', user?.email);
-      console.log('[ADMIN] Email match check:', adminEmails.includes(user?.email || ''));
 
-      if (!user) {
-        console.log('[ADMIN] No user found, redirecting to home');
+      if (!user || !adminEmails.includes(user.email || '')) {
         setLoading(false);
         setLocation('/');
         return;
       }
 
-      if (!adminEmails.includes(user.email || '')) {
-        console.log('[ADMIN] User email not in admin list, redirecting to home');
-        setLoading(false);
-        setLocation('/');
-        return;
-      }
-
-      console.log('[ADMIN] Access granted, loading dashboard data...');
       setIsAuthorized(true);
       await loadData();
       setLoading(false);
-      console.log('[ADMIN] Dashboard loaded successfully');
     } catch (error) {
-      console.error('[ADMIN] Auth check failed with exception:', error);
+      console.error('Auth check failed:', error);
       setLoading(false);
       setLocation('/');
     }
