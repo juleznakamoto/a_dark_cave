@@ -359,20 +359,13 @@ export default function AdminDashboard() {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
     }
 
-    // Filter by time range
-    const now = new Date();
-    let startDate = new Date();
-    if (timeRange === '7d') {
-      startDate = subDays(now, 7);
-    } else if (timeRange === '30d') {
-      startDate = subDays(now, 30);
-    } else { // 'all'
-      startDate = new Date(0);
-    }
-
-    const timeSeriesMap = new Map<string, Record<string, number>>();
+    // Collect all timestamps with their playtime
+    const timestampData: Array<{ playtime: number; clicks: Record<string, number> }> = [];
 
     filteredClicks.forEach(entry => {
+      const userId = entry.user_id;
+      const userSave = gameSaves.find(save => save.user_id === userId);
+      
       // Check if clicks is in new timestamp format
       const isTimestampFormat = Object.keys(entry.clicks).some(key => 
         key.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}/)
@@ -380,53 +373,61 @@ export default function AdminDashboard() {
 
       if (isTimestampFormat) {
         // New format: { "timestamp": { "button": count } }
-        Object.entries(entry.clicks).forEach(([timestamp, clicksAtTime]: [string, any]) => {
+        // Sort timestamps to process them in order
+        const sortedTimestamps = Object.entries(entry.clicks).sort(([a], [b]) => 
+          new Date(a).getTime() - new Date(b).getTime()
+        );
+
+        sortedTimestamps.forEach(([timestamp, clicksAtTime]: [string, any], index) => {
           try {
             const clickDate = new Date(timestamp);
             
-            if (clickDate >= startDate && !isNaN(clickDate.getTime())) {
-              const date = clickDate.toLocaleDateString();
-              const existing = timeSeriesMap.get(date) || {};
+            if (!isNaN(clickDate.getTime())) {
+              // Estimate playtime: 15 seconds per timestamp index
+              const estimatedPlaytimeMs = index * 15 * 1000;
+              const playtimeMinutes = Math.round(estimatedPlaytimeMs / 1000 / 60);
 
+              const clicksObj: Record<string, number> = {};
               Object.entries(clicksAtTime).forEach(([button, count]) => {
                 if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-                  existing[button] = (existing[button] || 0) + (count as number);
+                  clicksObj[button] = count as number;
                 }
               });
 
-              timeSeriesMap.set(date, existing);
+              timestampData.push({
+                playtime: playtimeMinutes,
+                clicks: clicksObj,
+              });
             }
           } catch (e) {
             console.warn('Failed to parse timestamp:', timestamp, e);
           }
         });
-      } else {
-        // Old format: { "button": count }
-        try {
-          const entryDate = new Date(entry.timestamp);
-          if (entryDate >= startDate && !isNaN(entryDate.getTime())) {
-            const date = entryDate.toLocaleDateString();
-            const existing = timeSeriesMap.get(date) || {};
-
-            Object.entries(entry.clicks).forEach(([button, count]) => {
-              if (selectedButtons.size === 0 || selectedButtons.has(button)) {
-                existing[button] = (existing[button] || 0) + (count as number);
-              }
-            });
-
-            timeSeriesMap.set(date, existing);
-          }
-        } catch (e) {
-          console.warn('Failed to parse timestamp:', entry.timestamp, e);
-        }
       }
     });
 
-    // Sort by date
-    return Array.from(timeSeriesMap.entries())
-      .sort((a, b) => new Date(a[0]).getTime() - new Date(b[0]).getTime())
-      .map(([date, clicks]) => ({
-        date,
+    // Group by playtime buckets (every 5 minutes)
+    const bucketSize = 5;
+    const playtimeBuckets = new Map<number, Record<string, number>>();
+
+    timestampData.forEach(({ playtime, clicks }) => {
+      const bucket = Math.floor(playtime / bucketSize) * bucketSize;
+      
+      if (!playtimeBuckets.has(bucket)) {
+        playtimeBuckets.set(bucket, {});
+      }
+
+      const bucketData = playtimeBuckets.get(bucket)!;
+      Object.entries(clicks).forEach(([button, count]) => {
+        bucketData[button] = (bucketData[button] || 0) + count;
+      });
+    });
+
+    // Convert to array and sort by playtime
+    return Array.from(playtimeBuckets.entries())
+      .sort((a, b) => a[0] - b[0])
+      .map(([playtime, clicks]) => ({
+        date: `${playtime}m`,
         ...clicks,
       }));
   };
@@ -840,9 +841,9 @@ export default function AdminDashboard() {
           <TabsContent value="clicks" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Button Clicks Over Time</CardTitle>
+                <CardTitle>Button Clicks Over Playtime</CardTitle>
                 <CardDescription>
-                  Daily aggregated button clicks {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Button clicks aggregated by playtime progression {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
