@@ -35,21 +35,14 @@ export default function StartScreen() {
     // Start preloading background music immediately
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
 
-    // Wait for mouse movement before playing wind sound
-    let windStarted = false;
-    const handleMouseMove = async () => {
-      if (!windStarted) {
-        windStarted = true;
-        await audioManager.playLoopingSound('wind', 0.3);
-        document.removeEventListener('mousemove', handleMouseMove);
-      }
-    };
-
-    document.addEventListener('mousemove', handleMouseMove);
+    // Start wind sound after 3 seconds
+    const windTimer = setTimeout(() => {
+      audioManager.playLoopingSound('wind', 0.3);
+    }, 3000);
 
     return () => {
       clearTimeout(animationTimer);
-      document.removeEventListener('mousemove', handleMouseMove);
+      clearTimeout(windTimer);
       // Stop wind sound when component unmounts
       audioManager.stopLoopingSound('wind');
     };
