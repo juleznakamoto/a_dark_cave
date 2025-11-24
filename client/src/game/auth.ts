@@ -148,7 +148,7 @@ export async function saveGameToSupabase(
 
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
-    p_game_state: finalState,
+    p_game_state_diff: sanitizedDiff,
     p_click_analytics: clickAnalytics === null ? null : (analyticsParam)
   });
 
