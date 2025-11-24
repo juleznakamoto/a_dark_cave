@@ -458,14 +458,22 @@ export default function AdminDashboard() {
 
     // Collect all unique button names in the data
     const allButtonsInData = new Set<string>();
+    const huntClicksFound: any[] = [];
     filteredClicks.forEach(entry => {
       Object.values(entry.clicks).forEach((playtimeClicks: any) => {
         Object.keys(playtimeClicks).forEach(button => {
-          allButtonsInData.add(cleanButtonName(button));
+          const cleanButton = cleanButtonName(button);
+          allButtonsInData.add(cleanButton);
+          // Track hunt clicks specifically
+          if (cleanButton === 'hunt') {
+            huntClicksFound.push({ playtime: Object.keys(entry.clicks), clicks: playtimeClicks[button] });
+          }
         });
       });
     });
     console.log('   All button names in data:', Array.from(allButtonsInData));
+    console.log('   🎯 Hunt clicks found:', huntClicksFound);
+    console.log('   🎯 Total hunt click entries:', huntClicksFound.length);
 
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
