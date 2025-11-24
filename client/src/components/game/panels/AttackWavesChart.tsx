@@ -62,7 +62,7 @@ export default function AttackWavesChart() {
 
   const handleProvoke = (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
-    if (timer && !timer.defeated) {
+    if (timer && !timer.defeated && timeRemaining[waveId] > 0) {
       useGameStore.setState((state) => ({
         attackWaveTimers: {
           ...state.attackWaveTimers,
