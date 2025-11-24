@@ -191,56 +191,53 @@ export default function AdminDashboard() {
     }
   };
 
+  // Helper to get environment-specific Supabase client
+  const getAdminSupabaseClient = async (env: 'prod' | 'dev') => {
+    let supabaseUrl: string;
+    let supabaseAnonKey: string;
+
+    if (env === 'prod') {
+      // Check if we're running in production mode
+      if (import.meta.env.PROD) {
+        // In production build, fetch config from server
+        const response = await fetch('/api/config');
+        if (!response.ok) {
+          throw new Error('Failed to load production Supabase config');
+        }
+        const config = await response.json();
+        supabaseUrl = config.supabaseUrl;
+        supabaseAnonKey = config.supabaseAnonKey;
+      } else {
+        // In dev mode but viewing prod data
+        supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
+        supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
+      }
+    } else {
+      // Viewing dev data
+      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
+      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+    }
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error(`Missing Supabase credentials for ${env} environment`);
+    }
+
+    const { createClient } = await import('@supabase/supabase-js');
+    return createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        autoRefreshToken: false,
+        storageKey: `admin-${env}-auth` // Use unique storage key per environment
+      }
+    });
+  };
+
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
-      // Get Supabase config for the selected environment
-      let supabaseUrl: string;
-      let supabaseAnonKey: string;
-
-      if (environment === 'prod') {
-        // Check if we're running in production mode
-        if (import.meta.env.PROD) {
-          // In production build, fetch config from server
-          const response = await fetch('/api/config');
-          if (!response.ok) {
-            console.error('Failed to load production Supabase config');
-            return;
-          }
-          const config = await response.json();
-          supabaseUrl = config.supabaseUrl;
-          supabaseAnonKey = config.supabaseAnonKey;
-        } else {
-          // In dev mode but viewing prod data
-          supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
-          supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
-        }
-      } else {
-        // Viewing dev data
-        supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
-        supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
-      }
-
-      console.log(`Loading data from ${environment.toUpperCase()} environment`, { 
-        supabaseUrl,
-        hasKey: !!supabaseAnonKey 
-      });
-
-      if (!supabaseUrl || !supabaseAnonKey) {
-        console.error(`Missing Supabase credentials for ${environment} environment`, {
-          supabaseUrl: !!supabaseUrl,
-          supabaseAnonKey: !!supabaseAnonKey
-        });
-        return;
-      }
-
-      const { createClient } = await import('@supabase/supabase-js');
-      const supabase = createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false
-        }
-      });
+      console.log(`Loading data from ${environment.toUpperCase()} environment`);
+      
+      const supabase = await getAdminSupabaseClient(environment);
       
       console.log('Supabase client created for', environment);
 
