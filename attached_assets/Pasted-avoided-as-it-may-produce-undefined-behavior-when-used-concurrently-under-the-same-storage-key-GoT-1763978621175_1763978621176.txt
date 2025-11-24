@@ -1,0 +1,66 @@
+avoided as it may produce undefined behavior when used concurrently under the same storage key.
+_GoTrueClient @ @supabase_supabase-js.js?v=48c13b38:7774
+SupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10094
+_initSupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10260
+SupabaseClient @ @supabase_supabase-js.js?v=48c13b38:10136
+createClient @ @supabase_supabase-js.js?v=48c13b38:10302
+loadData @ dashboard.tsx:222
+await in loadData
+checkAdminAccess @ dashboard.tsx:185
+await in checkAdminAccess
+(anonymous) @ dashboard.tsx:162
+commitHookEffectListMount @ chunk-276SZO74.js?v=48c13b38:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=48c13b38:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=48c13b38:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=48c13b38:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=48c13b38:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=48c13b38:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=48c13b38:19447
+commitRootImpl @ chunk-276SZO74.js?v=48c13b38:19416
+commitRoot @ chunk-276SZO74.js?v=48c13b38:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=48c13b38:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=48c13b38:9119
+flushSync @ chunk-276SZO74.js?v=48c13b38:18959
+scheduleRefresh @ chunk-276SZO74.js?v=48c13b38:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ dashboard.tsx?t=1763978547515:1892
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this warning
+dashboard.tsx:224 Loading data from DEV environment {supabaseUrl: 'https://epmegaduehlztjqoeqih.supabase.co'}
+dashboard.tsx:231 Connection test: {testData: Array(1), testError: null}testData: [{…}]testError: null[[Prototype]]: Object
+dashboard.tsx:243 Clicks loaded successfully: 0 records
+dashboard.tsx:231 Connection test: {testData: Array(1), testError: null}testData: Array(1)0: {count: 0}length: 1[[Prototype]]: Array(0)testError: null[[Prototype]]: Object
+dashboard.tsx:256 Saves loaded successfully: 0 records
+dashboard.tsx:243 Clicks loaded successfully: 0 records
+dashboard.tsx:270 Purchases loaded successfully: 0 records
+dashboard.tsx:277 Raw data loaded:
+dashboard.tsx:278 - Clicks records: 0
+dashboard.tsx:279 - Saves records: 0
+dashboard.tsx:280 - Purchase records: 0
+dashboard.tsx:288 - Unique users from clicks: 0
+dashboard.tsx:297 - Unique users from saves: 0 (new: 0 total)
+dashboard.tsx:306 - Unique users from purchases: 0 (new: 0 total)
+dashboard.tsx:309 Total unique user IDs found: 0
+dashboard.tsx:310 User IDs: []
+dashboard.tsx:256 Saves loaded successfully: 0 records
+dashboard.tsx:270 Purchases loaded successfully: 0 records
+dashboard.tsx:277 Raw data loaded:
+dashboard.tsx:278 - Clicks records: 0
+dashboard.tsx:279 - Saves records: 0
+dashboard.tsx:280 - Purchase records: 0
+dashboard.tsx:288 - Unique users from clicks: 0
+dashboard.tsx:297 - Unique users from saves: 0 (new: 0 total)
+dashboard.tsx:306 - Unique users from purchases: 0 (new: 0 total)
+dashboard.tsx:309 Total unique user IDs found: 0
+dashboard.tsx:310 User IDs: []
