@@ -124,7 +124,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
-  const [environment, setEnvironment] = useState<'dev' | 'prod'>('dev');
+  const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -166,7 +166,7 @@ export default function AdminDashboard() {
   // Reload data when environment changes
   useEffect(() => {
     if (isAuthorized) {
-      console.log(`🔄 Environment changed to ${environment.toUpperCase()}, reloading data...`);
+      console.log(`🔄 Environment effect triggered. Current environment: ${environment.toUpperCase()}`);
       setLoading(true);
       loadData().finally(() => setLoading(false));
     }
