@@ -148,7 +148,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.5,
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
     triggered: false,
@@ -247,7 +247,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.5,
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,
@@ -344,7 +344,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.5,
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
     triggered: false,
@@ -434,7 +434,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.5,
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
@@ -524,7 +524,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 1,
+    timeProbability: 0.5,
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
     triggered: false,
