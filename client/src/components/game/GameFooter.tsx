@@ -174,7 +174,7 @@ export default function GameFooter() {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-52 text-xs">
+          <DropdownMenuContent align="end" className="w-50 text-xs">
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
@@ -205,10 +205,10 @@ export default function GameFooter() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="ml-2 text-muted-foreground cursor-pointer text-xs">ⓘ</span>
+                      <span className="ml-2 text-muted-foreground cursor-pointer">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
-                      <p className="text-[10px]">
+                      <p className="text-xs">
                         You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 250 gold!
                       </p>
                     </TooltipContent>
@@ -260,7 +260,7 @@ export default function GameFooter() {
               className="px-1 py-1 text-xs hover relative"
             >
               Shop
-              {((shopNotificationVisible && !shopNotificationSeen) || 
+              {((shopNotificationVisible && !shopNotificationSeen) ||
                 (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen)) && (
                 <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
