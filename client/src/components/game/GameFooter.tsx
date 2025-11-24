@@ -209,7 +209,7 @@ export default function GameFooter() {
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
-                        You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 100 gold!
+                        You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 100 gold! {gameState.referralCount || 0}/10 invited
                       </p>
                     </TooltipContent>
                   </Tooltip>
