@@ -65,9 +65,6 @@ CREATE POLICY "Users can insert their own purchases"
   ON purchases FOR INSERT
   WITH CHECK (auth.uid() = user_id);
 
--- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
-
 -- Drop the existing function to allow parameter name change
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 
@@ -148,3 +145,6 @@ BEGIN
   END IF;
 END;
 $$;
+
+-- Grant execute permission to authenticated users
+GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
