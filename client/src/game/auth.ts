@@ -100,9 +100,9 @@ export async function signUp(email: string, password: string, referralCode?: str
             .from('game_saves')
             .select('game_state')
             .eq('user_id', data.user.id)
-            .single();
+            .maybeSingle();
 
-          if (newUserFetchError && newUserFetchError.code !== 'PGRST116') {
+          if (newUserFetchError) {
             console.error('[REFERRAL] Error fetching new user data:', newUserFetchError);
           }
 
