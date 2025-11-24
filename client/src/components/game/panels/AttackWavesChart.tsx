@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 export default function AttackWavesChart() {
   const { story, attackWaveTimers, flags } = useGameStore();
   const [timeRemaining, setTimeRemaining] = useState<Record<string, number>>({});
+  const [provoked, setProvoked] = useState<Record<string, boolean>>({});
 
   const waves = [
     { 
@@ -62,7 +63,8 @@ export default function AttackWavesChart() {
 
   const handleProvoke = (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
-    if (timer && !timer.defeated && timeRemaining[waveId] > 0) {
+    if (timer && !timer.defeated && timeRemaining[waveId] > 0 && !provoked[waveId]) {
+      setProvoked((prev) => ({ ...prev, [waveId]: true }));
       useGameStore.setState((state) => ({
         attackWaveTimers: {
           ...state.attackWaveTimers,
@@ -135,6 +137,7 @@ export default function AttackWavesChart() {
               size="xs"
               className="w-19 hover:bg-transparent hover:text-foreground"
               button_id="provoke-attack"
+              disabled={provoked[activeWave.id] || timeRemaining[activeWave.id] <= 0}
             >
               Provoke
             </Button>
