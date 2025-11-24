@@ -159,26 +159,37 @@ export default function AdminDashboard() {
   }, [clickData, selectedUser]);
 
   useEffect(() => {
+    console.log('🚀 AdminDashboard component mounted - starting auth check...');
     checkAdminAccess();
   }, []);
 
   const checkAdminAccess = async () => {
     try {
+      console.log('🔐 Checking admin access...');
+      console.log('   Getting regular Supabase client (this creates the FIRST GoTrueClient)...');
       const supabase = await getSupabaseClient();
+      console.log('   Regular client obtained, checking user...');
+      
       const { data: { user } } = await supabase.auth.getUser();
+      console.log('   User:', user?.email || 'not logged in');
+      
       const adminEmails = getAdminEmails();
+      console.log('   Admin emails:', adminEmails);
 
       if (!user || !adminEmails.includes(user.email || '')) {
+        console.log('❌ User not authorized, redirecting to home...');
         setLoading(false);
         setLocation('/');
         return;
       }
 
+      console.log('✅ User is authorized admin');
       setIsAuthorized(true);
+      console.log('📊 Loading dashboard data (this will create SECOND GoTrueClient)...');
       await loadData();
       setLoading(false);
     } catch (error) {
-      console.error('Auth check failed:', error);
+      console.error('❌ Auth check failed:', error);
       setLoading(false);
       setLocation('/');
     }
@@ -191,6 +202,7 @@ export default function AdminDashboard() {
     let adminClient;
     
     try {
+      console.log('🔍 Step 1: Fetching admin config from server...');
       const response = await fetch('/api/admin/config');
       if (!response.ok) {
         const errorText = await response.text();
@@ -199,17 +211,24 @@ export default function AdminDashboard() {
       }
       const config = await response.json();
       
-      console.log('Admin config received:', {
+      console.log('✅ Step 2: Admin config received:', {
         hasUrl: !!config.supabaseUrl,
         hasKey: !!config.supabaseServiceKey,
-        urlPrefix: config.supabaseUrl?.substring(0, 20)
+        urlPrefix: config.supabaseUrl?.substring(0, 20),
+        keyPrefix: config.supabaseServiceKey?.substring(0, 10)
       });
       
       if (!config.supabaseUrl || !config.supabaseServiceKey) {
         throw new Error('Admin config missing required fields');
       }
       
-      console.log('Creating admin Supabase client with service role...');
+      console.log('🔧 Step 3: About to create admin Supabase client...');
+      console.log('   - URL:', config.supabaseUrl);
+      console.log('   - Service key (first 30 chars):', config.supabaseServiceKey.substring(0, 30) + '...');
+      console.log('   - Auth config: { persistSession: false, autoRefreshToken: false }');
+      console.log('⚠️  NOTE: This will create a NEW GoTrueClient instance (causes the warning)');
+      console.log('   The warning occurs because the main app already has a client');
+      
       adminClient = createClient(config.supabaseUrl, config.supabaseServiceKey, {
         auth: {
           persistSession: false,
@@ -225,10 +244,13 @@ export default function AdminDashboard() {
         },
       });
       
-      console.log('Admin client created successfully');
+      console.log('✅ Step 4: Admin client created successfully');
+      console.log('   The "Multiple GoTrueClient instances" warning above is expected');
+      console.log('   because we need a separate client with service role permissions');
     } catch (error) {
-      console.error('Failed to create admin client:', error);
+      console.error('❌ Failed to create admin client:', error);
       // Fallback to regular client (will only show current user's data)
+      console.log('⚠️  Falling back to regular client...');
       adminClient = await getSupabaseClient();
       console.warn('Using regular client - will only see current user data');
     }
