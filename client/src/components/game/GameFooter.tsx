@@ -45,6 +45,7 @@ export default function GameFooter() {
     story,
     mysteriousNoteShopNotificationSeen,
     mysteriousNoteDonateNotificationSeen,
+    gameState, // Assuming gameState is accessible here and contains referralCount
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
