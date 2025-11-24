@@ -237,6 +237,7 @@ export default function AdminDashboard() {
         global: {
           headers: {
             apikey: config.supabaseServiceKey,
+            Authorization: `Bearer ${config.supabaseServiceKey}`,
           },
         },
         db: {
