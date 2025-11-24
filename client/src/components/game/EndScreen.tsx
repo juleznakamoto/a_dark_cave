@@ -1,11 +1,15 @@
 import Hero from "@/components/ui/animated-shader-hero";
 import { deleteSave } from "@/game/save";
 import { useGameStore } from "@/game/state";
+import { audioManager } from "@/lib/audio";
 
 export default function EndScreen() {
   const { setShopDialogOpen, setShowEndScreen } = useGameStore();
 
   const handlePlayAgain = () => {
+    // Stop all sounds including background music
+    audioManager.stopAllSounds();
+    
     // Delete save and reload the page to start fresh
     deleteSave();
     window.location.reload();
