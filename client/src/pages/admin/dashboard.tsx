@@ -982,9 +982,19 @@ export default function AdminDashboard() {
                     <Legend />
                     {(() => {
                       const chartData = getClickTypesByTimestamp();
-                      const dataKeys = Object.keys(chartData[0] || {}).filter(key => key !== 'time');
+                      // Collect all unique keys across all data points, not just the first one
+                      const allKeys = new Set<string>();
+                      chartData.forEach(dataPoint => {
+                        Object.keys(dataPoint).forEach(key => {
+                          if (key !== 'time') {
+                            allKeys.add(key);
+                          }
+                        });
+                      });
+                      const dataKeys = Array.from(allKeys);
                       console.log('📈 Chart rendering with data keys:', dataKeys);
                       console.log('📈 Sample data point:', chartData[0]);
+                      console.log('📈 All data points checked:', chartData.length);
                       return dataKeys.map((key, index) => (
                         <Line
                           key={key}
