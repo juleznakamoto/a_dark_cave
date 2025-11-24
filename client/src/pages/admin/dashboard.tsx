@@ -166,9 +166,10 @@ export default function AdminDashboard() {
   // Reload data when environment changes
   useEffect(() => {
     if (isAuthorized) {
-      loadData();
+      setLoading(true);
+      loadData().finally(() => setLoading(false));
     }
-  }, [environment, isAuthorized]);
+  }, [environment]);
 
   const checkAdminAccess = async () => {
     try {
