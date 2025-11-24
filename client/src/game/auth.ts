@@ -17,25 +17,55 @@ export async function signUp(email: string, password: string, referralCode?: str
 
   // If signup successful and referral code provided, process referral
   if (data.user && referralCode) {
+    console.log('[REFERRAL] Processing referral for new user:', {
+      newUserId: data.user.id,
+      referralCode: referralCode,
+      timestamp: new Date().toISOString()
+    });
+
     try {
       // Verify referrer exists and hasn't exceeded limit
+      console.log('[REFERRAL] Fetching referrer data for code:', referralCode);
       const { data: referrerData, error: referrerError } = await supabase
         .from('game_saves')
         .select('game_state')
         .eq('user_id', referralCode)
         .single();
 
+      if (referrerError) {
+        console.error('[REFERRAL] Error fetching referrer data:', {
+          error: referrerError,
+          code: referrerError.code,
+          message: referrerError.message
+        });
+      }
+
       if (!referrerError && referrerData) {
         const referralCount = referrerData.game_state?.referralCount || 0;
+        console.log('[REFERRAL] Referrer found:', {
+          referrerId: referralCode,
+          currentReferralCount: referralCount,
+          hasReachedLimit: referralCount >= 10
+        });
 
         if (referralCount < 10) {
           // Add 100 gold to referrer's game state
           const referrerState = referrerData.game_state;
+          const oldGold = referrerState.resources?.gold || 0;
+          const newGold = oldGold + 100;
+
+          console.log('[REFERRAL] Updating referrer gold:', {
+            referrerId: referralCode,
+            oldGold,
+            newGold,
+            goldAdded: 100
+          });
+
           const updatedReferrerState = {
             ...referrerState,
             resources: {
               ...referrerState.resources,
-              gold: (referrerState.resources?.gold || 0) + 100,
+              gold: newGold,
             },
             referralCount: referralCount + 1,
             log: [
@@ -49,25 +79,49 @@ export async function signUp(email: string, password: string, referralCode?: str
             ].slice(-100), // Keep last 100 log entries
           };
 
-          await supabase.from('game_saves').upsert({
+          const { error: referrerUpdateError } = await supabase.from('game_saves').upsert({
             user_id: referralCode,
             game_state: updatedReferrerState,
             updated_at: new Date().toISOString(),
           });
 
+          if (referrerUpdateError) {
+            console.error('[REFERRAL] Error updating referrer game state:', referrerUpdateError);
+          } else {
+            console.log('[REFERRAL] Successfully updated referrer game state:', {
+              referrerId: referralCode,
+              newReferralCount: referralCount + 1
+            });
+          }
+
           // Add 100 gold to new user's game state (or create initial state)
-          const { data: newUserData } = await supabase
+          console.log('[REFERRAL] Fetching new user game state:', data.user.id);
+          const { data: newUserData, error: newUserFetchError } = await supabase
             .from('game_saves')
             .select('game_state')
             .eq('user_id', data.user.id)
             .single();
 
+          if (newUserFetchError && newUserFetchError.code !== 'PGRST116') {
+            console.error('[REFERRAL] Error fetching new user data:', newUserFetchError);
+          }
+
           const newUserState = newUserData?.game_state || {};
+          const oldNewUserGold = newUserState.resources?.gold || 0;
+          const newNewUserGold = oldNewUserGold + 100;
+
+          console.log('[REFERRAL] Updating new user gold:', {
+            newUserId: data.user.id,
+            oldGold: oldNewUserGold,
+            newGold: newNewUserGold,
+            goldAdded: 100
+          });
+
           const updatedNewUserState = {
             ...newUserState,
             resources: {
               ...(newUserState.resources || {}),
-              gold: ((newUserState.resources?.gold || 0) + 100),
+              gold: newNewUserGold,
             },
             referralCode: referralCode,
             log: [
@@ -81,16 +135,51 @@ export async function signUp(email: string, password: string, referralCode?: str
             ].slice(-100), // Keep last 100 log entries
           };
 
-          await supabase.from('game_saves').upsert({
+          const { error: newUserUpdateError } = await supabase.from('game_saves').upsert({
             user_id: data.user.id,
             game_state: updatedNewUserState,
             updated_at: new Date().toISOString(),
           });
+
+          if (newUserUpdateError) {
+            console.error('[REFERRAL] Error updating new user game state:', newUserUpdateError);
+          } else {
+            console.log('[REFERRAL] Successfully updated new user game state');
+          }
+
+          console.log('[REFERRAL] Referral process completed successfully:', {
+            referrerId: referralCode,
+            newUserId: data.user.id,
+            referrerGoldAdded: 100,
+            newUserGoldAdded: 100,
+            newReferralCount: referralCount + 1
+          });
+        } else {
+          console.warn('[REFERRAL] Referrer has reached maximum referral limit:', {
+            referrerId: referralCode,
+            referralCount: referralCount,
+            limit: 10
+          });
         }
+      } else {
+        console.warn('[REFERRAL] Referrer not found or error occurred:', {
+          referralCode: referralCode,
+          hasError: !!referrerError
+        });
       }
     } catch (referralError) {
-      console.error('Error processing referral:', referralError);
+      console.error('[REFERRAL] Unhandled error processing referral:', {
+        error: referralError,
+        referralCode: referralCode,
+        newUserId: data.user.id,
+        errorMessage: referralError instanceof Error ? referralError.message : 'Unknown error',
+        errorStack: referralError instanceof Error ? referralError.stack : undefined
+      });
       // Don't fail signup if referral processing fails
+    }
+  } else {
+    if (data.user && !referralCode) {
+      console.log('[REFERRAL] New user signup without referral code:', data.user.id);
     }
   }
 
