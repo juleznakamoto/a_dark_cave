@@ -179,8 +179,15 @@ export default function AdminDashboard() {
       }
 
       setIsAuthorized(true);
-      await loadData();
       setLoading(false);
+      
+      // Load data after setting authorized state
+      try {
+        await loadData();
+      } catch (dataError) {
+        console.error('Data loading failed:', dataError);
+        alert('Failed to load dashboard data. Check console for details.');
+      }
     } catch (error) {
       console.error('Auth check failed:', error);
       setLoading(false);
@@ -249,44 +256,47 @@ export default function AdminDashboard() {
 
       // Load button clicks
       const { data: clicks, error: clicksError } = await supabase
-      .from('button_clicks')
-      .select('user_id, clicks, timestamp')
-      .order('timestamp', { ascending: true });
+        .from('button_clicks')
+        .select('user_id, clicks, timestamp')
+        .order('timestamp', { ascending: true });
 
-    if (clicksError) {
-      console.error('Error loading clicks:', clicksError);
-      console.error('Error details:', JSON.stringify(clicksError, null, 2));
-    } else {
-      console.log('Clicks loaded successfully:', clicks?.length, 'records');
-    }
-    if (clicks) setClickData(clicks);
+      if (clicksError) {
+        console.error('Error loading clicks:', clicksError);
+        console.error('Error details:', JSON.stringify(clicksError, null, 2));
+        throw clicksError;
+      } else {
+        console.log('Clicks loaded successfully:', clicks?.length, 'records');
+        if (clicks) setClickData(clicks);
+      }
 
     // Load game saves with created_at
-    const { data: saves, error: savesError } = await supabase
-      .from('game_saves')
-      .select('user_id, game_state, updated_at, created_at');
+      const { data: saves, error: savesError } = await supabase
+        .from('game_saves')
+        .select('user_id, game_state, updated_at, created_at');
 
-    if (savesError) {
-      console.error('Error loading saves:', savesError);
-      console.error('Error details:', JSON.stringify(savesError, null, 2));
-    } else {
-      console.log('Saves loaded successfully:', saves?.length, 'records');
-    }
-    if (saves) setGameSaves(saves);
+      if (savesError) {
+        console.error('Error loading saves:', savesError);
+        console.error('Error details:', JSON.stringify(savesError, null, 2));
+        throw savesError;
+      } else {
+        console.log('Saves loaded successfully:', saves?.length, 'records');
+        if (saves) setGameSaves(saves);
+      }
 
     // Load purchases
-    const { data: purchaseData, error: purchasesError } = await supabase
-      .from('purchases')
-      .select('*')
-      .order('purchased_at', { ascending: false });
+      const { data: purchaseData, error: purchasesError } = await supabase
+        .from('purchases')
+        .select('*')
+        .order('purchased_at', { ascending: false });
 
-    if (purchasesError) {
-      console.error('Error loading purchases:', purchasesError);
-      console.error('Error details:', JSON.stringify(purchasesError, null, 2));
-    } else {
-      console.log('Purchases loaded successfully:', purchaseData?.length, 'records');
-    }
-    if (purchaseData) setPurchases(purchaseData);
+      if (purchasesError) {
+        console.error('Error loading purchases:', purchasesError);
+        console.error('Error details:', JSON.stringify(purchasesError, null, 2));
+        throw purchasesError;
+      } else {
+        console.log('Purchases loaded successfully:', purchaseData?.length, 'records');
+        if (purchaseData) setPurchases(purchaseData);
+      }
 
       // Load unique users from all tables
       const uniqueUserIds = new Set<string>();
