@@ -35,22 +35,22 @@ export default function StartScreen() {
     // Start preloading background music immediately
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
 
-    // Start wind sound after 3 seconds
+    // Start wind sound after 3 seconds with 1 second fade-in
     const windTimer = setTimeout(() => {
-      audioManager.playLoopingSound('wind', 0.3);
+      audioManager.playLoopingSound('wind', 0.3, false, 1);
     }, 3000);
 
     return () => {
       clearTimeout(animationTimer);
       clearTimeout(windTimer);
-      // Stop wind sound when component unmounts
+      // Stop wind sound when component unmounts (no fade-out on unmount)
       audioManager.stopLoopingSound('wind');
     };
   }, [setBoostMode]);
 
   const handleLightFire = () => {
-    // Stop wind sound
-    audioManager.stopLoopingSound('wind');
+    // Stop wind sound with 2 second fade-out
+    audioManager.stopLoopingSound('wind', 2);
     
     // Start background music
     audioManager.startBackgroundMusic(0.3);

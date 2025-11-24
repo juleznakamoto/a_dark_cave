@@ -129,7 +129,7 @@ export class AudioManager {
     }
   }
 
-  async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false): Promise<void> {
+  async playLoopingSound(name: string, volume: number = 1, isMuted: boolean = false, fadeInDuration: number = 0): Promise<void> {
     // Don't play if muted globally or if specific sound is muted
     if (this.isMutedGlobally || isMuted) return;
 
@@ -157,28 +157,64 @@ export class AudioManager {
 
       source.buffer = audioBuffer;
       source.loop = true;
-      gainNode.gain.value = Math.max(0, Math.min(1, volume));
+
+      // Set initial volume based on fade-in
+      if (fadeInDuration > 0) {
+        gainNode.gain.value = 0;
+        gainNode.gain.linearRampToValueAtTime(
+          Math.max(0, Math.min(1, volume)),
+          this.audioContext.currentTime + fadeInDuration
+        );
+      } else {
+        gainNode.gain.value = Math.max(0, Math.min(1, volume));
+      }
 
       source.connect(gainNode);
       gainNode.connect(this.audioContext.destination);
 
       source.start();
       this.loopingSources.set(name, source);
+      this.loopingSources.set(`${name}_gain`, gainNode as any);
     } catch (error) {
       console.warn(`Failed to play looping sound ${name}:`, error);
     }
   }
 
-  stopLoopingSound(name: string): void {
+  stopLoopingSound(name: string, fadeOutDuration: number = 0): void {
     const source = this.loopingSources.get(name);
+    const gainNode = this.loopingSources.get(`${name}_gain`) as any as GainNode;
+    
     if (source) {
       try {
-        source.stop();
-        source.disconnect();
+        if (fadeOutDuration > 0 && gainNode && this.audioContext) {
+          // Fade out
+          gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + fadeOutDuration);
+          
+          // Stop after fade out completes
+          setTimeout(() => {
+            try {
+              source.stop();
+              source.disconnect();
+              if (gainNode) gainNode.disconnect();
+            } catch (error) {
+              // Ignore errors if already stopped
+            }
+            this.loopingSources.delete(name);
+            this.loopingSources.delete(`${name}_gain`);
+          }, fadeOutDuration * 1000);
+        } else {
+          // Stop immediately
+          source.stop();
+          source.disconnect();
+          if (gainNode) gainNode.disconnect();
+          this.loopingSources.delete(name);
+          this.loopingSources.delete(`${name}_gain`);
+        }
       } catch (error) {
         // Ignore errors if already stopped
+        this.loopingSources.delete(name);
+        this.loopingSources.delete(`${name}_gain`);
       }
-      this.loopingSources.delete(name);
     }
   }
 
