@@ -69,7 +69,8 @@ CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
   p_game_state_diff JSONB,
-  p_click_analytics JSONB DEFAULT NULL
+  p_click_analytics JSONB DEFAULT NULL,
+  p_clear_clicks BOOLEAN DEFAULT FALSE
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -106,10 +107,10 @@ BEGIN
     updated_at = EXCLUDED.updated_at;
 
   -- Handle click analytics
-  IF p_click_analytics IS NULL THEN
-    -- Delete existing clicks when starting a new game
+  IF p_clear_clicks THEN
+    -- Explicitly clear clicks (e.g., for new game)
     DELETE FROM button_clicks WHERE user_id = p_user_id;
-  ELSIF p_click_analytics != '{}'::jsonb THEN
+  ELSIF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
     -- Get existing clicks for this user
     SELECT clicks INTO v_existing_clicks
     FROM button_clicks

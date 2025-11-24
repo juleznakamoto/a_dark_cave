@@ -19,7 +19,7 @@ export async function signUp(email: string, password: string) {
 
 export async function signIn(email: string, password: string) {
   const supabase = await getSupabaseClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.signInWithPassword({
     email,
     password,
   });
@@ -88,16 +88,17 @@ export async function updatePassword(newPassword: string) {
 }
 
 export async function saveGameToSupabase(
-  gameStateDiff: Partial<GameState>,
-  playTime: number = 0,
+  stateDiff: Partial<GameState>,
+  playTime?: number,
   isNewGame: boolean = false,
-  clickAnalytics: Record<string, number> | null = null
+  clickData: Record<string, number> | null = null,
+  clearClicks: boolean = false
 ): Promise<void> {
   const user = await getCurrentUser();
   if (!user) throw new Error('Not authenticated');
 
   // Deep clone and sanitize the diff to remove non-serializable data
-  const sanitizedDiff = JSON.parse(JSON.stringify(gameStateDiff));
+  const sanitizedDiff = JSON.parse(JSON.stringify(stateDiff));
 
   const supabase = await getSupabaseClient();
 
@@ -123,7 +124,7 @@ export async function saveGameToSupabase(
       }
       return; // Don't overwrite
     }
-    
+
     // Merge diff into existing state
     finalState = { ...existingSave.game_state, ...sanitizedDiff };
   } else {
@@ -133,8 +134,8 @@ export async function saveGameToSupabase(
 
   // Call the combined save function - single database call
   // Ensure clickAnalytics is either a valid object with data or null
-  const analyticsParam = clickAnalytics && Object.keys(clickAnalytics).length > 0 
-    ? clickAnalytics 
+  const analyticsParam = clickData && Object.keys(clickData).length > 0 
+    ? clickData 
     : null;
 
   if (import.meta.env.DEV) {
@@ -149,7 +150,8 @@ export async function saveGameToSupabase(
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
     p_game_state_diff: sanitizedDiff,
-    p_click_analytics: clickAnalytics === null ? null : (analyticsParam)
+    p_click_analytics: analyticsParam,
+    p_clear_clicks: clearClicks,
   });
 
   if (error) {
