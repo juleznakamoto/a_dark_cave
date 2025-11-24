@@ -291,16 +291,18 @@ export default function EventDialog({
 
               // Check if player can afford the cost
               if (costText) {
-                if (costText.includes('food')) {
-                  const foodCost = parseInt(costText.match(/\d+/)?.[0] || '0');
-                  if (gameState.resources.food < foodCost) {
-                    isDisabled = true;
-                  }
-                }
-                if (costText.includes('gold')) {
-                  const goldCost = parseInt(costText.match(/\d+/)?.[0] || '0');
-                  if (gameState.resources.gold < goldCost) {
-                    isDisabled = true;
+                // Check all possible resources
+                const resourceKeys = Object.keys(gameState.resources) as Array<keyof typeof gameState.resources>;
+                for (const resourceKey of resourceKeys) {
+                  if (costText.includes(resourceKey)) {
+                    const match = costText.match(new RegExp(`(\\d+)\\s*${resourceKey}`));
+                    if (match) {
+                      const cost = parseInt(match[1]);
+                      if (gameState.resources[resourceKey] < cost) {
+                        isDisabled = true;
+                        break;
+                      }
+                    }
                   }
                 }
               }
