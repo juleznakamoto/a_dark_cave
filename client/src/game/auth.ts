@@ -79,13 +79,24 @@ export async function processReferralAfterConfirmation(): Promise<void> {
       return;
     }
 
-    if (!referrerData) {
-      console.warn('[REFERRAL] Referrer not found:', referralCode);
+    if (!referrerData || !referrerData.game_state) {
+      console.warn('[REFERRAL] Referrer game save not found or empty:', {
+        referralCode,
+        hasData: !!referrerData,
+        message: 'Referrer needs to start playing before referral can be processed'
+      });
       return;
     }
 
-    const referralCount = referrerData.game_state?.referralCount || 0;
-    console.log('[REFERRAL] Referrer found:', {
+    console.log('[REFERRAL] Referrer game save found:', {
+      referralCode,
+      hasGameState: !!referrerData.game_state
+    });
+
+    const referrerState = referrerData.game_state;
+    const referralCount = referrerState.referralCount || 0;
+    
+    console.log('[REFERRAL] Referrer details:', {
       referrerId: referralCode,
       currentReferralCount: referralCount,
       hasReachedLimit: referralCount >= 10
@@ -97,7 +108,6 @@ export async function processReferralAfterConfirmation(): Promise<void> {
     }
 
     // Add 100 gold to referrer's game state
-    const referrerState = referrerData.game_state;
     const oldGold = referrerState.resources?.gold || 0;
     const newGold = oldGold + 100;
 
