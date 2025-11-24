@@ -221,23 +221,41 @@ export default function AdminDashboard() {
 
     // Load unique users from all tables
     const uniqueUserIds = new Set<string>();
+    
+    console.log('Raw data loaded:');
+    console.log('- Clicks records:', clicks?.length || 0);
+    console.log('- Saves records:', saves?.length || 0);
+    console.log('- Purchase records:', purchaseData?.length || 0);
+    
     if (clicks) {
       clicks.forEach(c => {
-        if (c.user_id) uniqueUserIds.add(c.user_id);
+        if (c.user_id) {
+          uniqueUserIds.add(c.user_id);
+        }
       });
+      console.log('- Unique users from clicks:', uniqueUserIds.size);
     }
     if (saves) {
+      const beforeSize = uniqueUserIds.size;
       saves.forEach(s => {
-        if (s.user_id) uniqueUserIds.add(s.user_id);
+        if (s.user_id) {
+          uniqueUserIds.add(s.user_id);
+        }
       });
+      console.log('- Unique users from saves:', uniqueUserIds.size - beforeSize, '(new:', uniqueUserIds.size, 'total)');
     }
     if (purchaseData) {
+      const beforeSize = uniqueUserIds.size;
       purchaseData.forEach(p => {
-        if (p.user_id) uniqueUserIds.add(p.user_id);
+        if (p.user_id) {
+          uniqueUserIds.add(p.user_id);
+        }
       });
+      console.log('- Unique users from purchases:', uniqueUserIds.size - beforeSize, '(new:', uniqueUserIds.size, 'total)');
     }
 
-    console.log('Unique user IDs found:', uniqueUserIds.size);
+    console.log('Total unique user IDs found:', uniqueUserIds.size);
+    console.log('User IDs:', Array.from(uniqueUserIds));
 
     const userList = Array.from(uniqueUserIds).map(id => ({
       id,
