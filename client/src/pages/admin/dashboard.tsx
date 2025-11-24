@@ -1,6 +1,6 @@
+
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
-import { createClient, SupabaseClient } from '@supabase/supabase-js';
 import {
   LineChart,
   Line,
@@ -80,15 +80,14 @@ export default function AdminDashboard() {
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore']));
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set());
 
-  // Single admin Supabase client instance
-  const [adminClient, setAdminClient] = useState<SupabaseClient | null>(null);
-
   useEffect(() => {
     initializeAdminDashboard();
   }, []);
 
   const initializeAdminDashboard = async () => {
     try {
+      console.log('Initializing admin dashboard...');
+      
       // Step 1: Check authentication using main app client
       const { getSupabaseClient } = await import('@/lib/supabase');
       const mainClient = await getSupabaseClient();
@@ -105,7 +104,7 @@ export default function AdminDashboard() {
       console.log('User authorized:', user.email);
       setIsAuthorized(true);
 
-      // Step 2: Create dedicated read-only admin client
+      // Step 2: Get database credentials
       let supabaseUrl: string;
       let supabaseAnonKey: string;
 
@@ -117,41 +116,21 @@ export default function AdminDashboard() {
         const config = await response.json();
         supabaseUrl = config.supabaseUrl;
         supabaseAnonKey = config.supabaseAnonKey;
-        console.log('Using production database');
+        console.log('Loaded production credentials from server');
       } else {
-        // In dev, use production credentials for admin dashboard
         supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
         supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
-        console.log('Using production database (from dev env)');
+        console.log('Loaded production credentials from env');
       }
 
       if (!supabaseUrl || !supabaseAnonKey) {
         throw new Error('Missing database credentials');
       }
 
-      console.log('Creating admin client for:', supabaseUrl.substring(0, 30) + '...');
+      console.log('Database URL:', supabaseUrl.substring(0, 30) + '...');
 
-      // Create a completely isolated client with no auth
-      const client = createClient(supabaseUrl, supabaseAnonKey, {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-          detectSessionInUrl: false,
-        },
-        db: {
-          schema: 'public'
-        },
-        global: {
-          headers: {
-            'x-client-info': 'admin-dashboard'
-          }
-        }
-      });
-
-      setAdminClient(client);
-
-      // Step 3: Load data
-      await loadDashboardData(client);
+      // Step 3: Load data using direct REST API calls
+      await loadDashboardData(supabaseUrl, supabaseAnonKey);
 
       setLoading(false);
     } catch (error) {
@@ -161,56 +140,62 @@ export default function AdminDashboard() {
     }
   };
 
-  const loadDashboardData = async (client: SupabaseClient) => {
+  const loadDashboardData = async (supabaseUrl: string, apiKey: string) => {
     try {
-      console.log('Loading dashboard data...');
+      console.log('Loading dashboard data via REST API...');
 
-      // Test connection
-      const { count: testCount, error: testError } = await client
-        .from('game_saves')
-        .select('*', { count: 'exact', head: true });
-
-      if (testError) {
-        console.error('Connection test failed:', testError);
-        throw testError;
-      }
-      console.log('Database connected. Total saves:', testCount);
+      const headers = {
+        'apikey': apiKey,
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
+        'Prefer': 'return=representation'
+      };
 
       // Load button clicks
-      const { data: clicks, error: clicksError } = await client
-        .from('button_clicks')
-        .select('user_id, clicks, timestamp')
-        .order('timestamp', { ascending: true });
+      const clicksResponse = await fetch(
+        `${supabaseUrl}/rest/v1/button_clicks?select=user_id,clicks,timestamp&order=timestamp.asc`,
+        { headers }
+      );
 
-      if (clicksError) {
-        console.error('Error loading clicks:', clicksError);
-        throw clicksError;
+      if (!clicksResponse.ok) {
+        const errorText = await clicksResponse.text();
+        console.error('Clicks fetch failed:', clicksResponse.status, errorText);
+        throw new Error(`Failed to load clicks: ${clicksResponse.status}`);
       }
+
+      const clicks = await clicksResponse.json();
       console.log('Loaded clicks:', clicks?.length || 0);
       if (clicks) setClickData(clicks);
 
       // Load game saves
-      const { data: saves, error: savesError } = await client
-        .from('game_saves')
-        .select('user_id, game_state, updated_at, created_at');
+      const savesResponse = await fetch(
+        `${supabaseUrl}/rest/v1/game_saves?select=user_id,game_state,updated_at,created_at`,
+        { headers }
+      );
 
-      if (savesError) {
-        console.error('Error loading saves:', savesError);
-        throw savesError;
+      if (!savesResponse.ok) {
+        const errorText = await savesResponse.text();
+        console.error('Saves fetch failed:', savesResponse.status, errorText);
+        throw new Error(`Failed to load saves: ${savesResponse.status}`);
       }
+
+      const saves = await savesResponse.json();
       console.log('Loaded saves:', saves?.length || 0);
       if (saves) setGameSaves(saves);
 
       // Load purchases
-      const { data: purchaseData, error: purchasesError } = await client
-        .from('purchases')
-        .select('*')
-        .order('purchased_at', { ascending: false });
+      const purchasesResponse = await fetch(
+        `${supabaseUrl}/rest/v1/purchases?select=*&order=purchased_at.desc`,
+        { headers }
+      );
 
-      if (purchasesError) {
-        console.error('Error loading purchases:', purchasesError);
-        throw purchasesError;
+      if (!purchasesResponse.ok) {
+        const errorText = await purchasesResponse.text();
+        console.error('Purchases fetch failed:', purchasesResponse.status, errorText);
+        throw new Error(`Failed to load purchases: ${purchasesResponse.status}`);
       }
+
+      const purchaseData = await purchasesResponse.json();
       console.log('Loaded purchases:', purchaseData?.length || 0);
       if (purchaseData) setPurchases(purchaseData);
 
