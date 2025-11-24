@@ -33,14 +33,15 @@ app.get('/api/admin/config', (req, res) => {
   
   const supabaseUrl = isDev
     ? process.env.VITE_SUPABASE_URL_DEV
-    : process.env.SUPABASE_URL;
+    : process.env.VITE_SUPABASE_URL_PROD;
     
   const supabaseServiceKey = isDev
     ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
-    : process.env.SUPABASE_SERVICE_ROLE_KEY;
+    : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
 
   if (!supabaseUrl || !supabaseServiceKey) {
     log('⚠️ Supabase service role config not found in environment variables');
+    log(`isDev: ${isDev}, url: ${supabaseUrl ? 'present' : 'missing'}, key: ${supabaseServiceKey ? 'present' : 'missing'}`);
     return res.status(500).json({ error: 'Admin configuration not available' });
   }
 
