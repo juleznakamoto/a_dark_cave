@@ -123,10 +123,20 @@ BEGIN
     v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
     v_playtime_key := v_playtime_bucket || 'm';
 
-    -- If user has existing clicks, append new playtime entry
+    -- If user has existing clicks, merge new playtime entry
     IF v_existing_clicks IS NOT NULL THEN
-      -- Add new playtime with clicks to existing data
-      v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
+      -- Check if this playtime bucket already exists
+      IF v_existing_clicks ? v_playtime_key THEN
+        -- Merge the new click data with existing data for this playtime bucket
+        v_updated_clicks := jsonb_set(
+          v_existing_clicks,
+          ARRAY[v_playtime_key],
+          (v_existing_clicks->v_playtime_key) || p_click_analytics
+        );
+      ELSE
+        -- Add new playtime bucket to existing data
+        v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
+      END IF;
     ELSE
       -- No existing clicks, create new object with playtime
       v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
