@@ -230,7 +230,9 @@ export default function AdminDashboard() {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
-        detectSessionInUrl: false
+        detectSessionInUrl: false,
+        storage: undefined as any, // Disable storage completely
+        storageKey: `admin-readonly-${Date.now()}` // Unique key per instance
       },
       global: {
         headers: {
@@ -252,7 +254,10 @@ export default function AdminDashboard() {
 
       const supabase = await getAdminSupabaseClient();
 
-      console.log('Supabase client created');
+      // Log which database we're actually connected to
+      const { data: testQuery } = await supabase.from('game_saves').select('count');
+      console.log('Supabase client created and connected to database');
+      console.log('Database connection test query result:', testQuery);
 
       // Load button clicks
       const { data: clicks, error: clicksError } = await supabase
