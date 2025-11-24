@@ -383,6 +383,47 @@ export default function AdminDashboard() {
     }));
   };
 
+  // Daily sign-ups (last 30 days)
+  const getDailySignups = () => {
+    const data: { day: string; signups: number }[] = [];
+
+    for (let i = 30; i >= 0; i--) {
+      const date = subDays(new Date(), i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const signupsCount = gameSaves.filter(save => {
+        const createdDate = parseISO(save.created_at);
+        return isWithinInterval(createdDate, { start: dayStart, end: dayEnd });
+      }).length;
+
+      data.push({
+        day: format(date, 'MMM dd'),
+        signups: signupsCount,
+      });
+    }
+
+    return data;
+  };
+
+  // Buyers per 100 users
+  const getBuyersPerHundred = () => {
+    const totalUsers = gameSaves.length;
+    if (totalUsers === 0) return 0;
+
+    // Get unique users who made non-free purchases
+    const buyersSet = new Set<string>();
+    purchases.forEach(purchase => {
+      // Assuming non-free items have price > 0
+      if (purchase.price_paid > 0) {
+        buyersSet.add(purchase.user_id);
+      }
+    });
+
+    const buyers = buyersSet.size;
+    return ((buyers / totalUsers) * 100).toFixed(1);
+  };
+
   // Process data for charts
   const getButtonClicksOverTime = () => {
     let filteredClicks = clickData;
@@ -823,7 +864,7 @@ export default function AdminDashboard() {
               </Card>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Card>
                 <CardHeader>
                   <CardTitle>Conversion Rate</CardTitle>
@@ -831,6 +872,16 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">{getConversionRate()}%</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Buyers per 100</CardTitle>
+                  <CardDescription>Non-free purchases</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getBuyersPerHundred()}</p>
                 </CardContent>
               </Card>
 
@@ -855,23 +906,43 @@ export default function AdminDashboard() {
               </Card>
             </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
-                <CardDescription>User activity over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={300}>
-                  <AreaChart data={getUserRetention()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="day" />
-                    <YAxis />
-                    <Tooltip />
-                    <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
-                  </AreaChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Daily Active Users (Last 30 Days)</CardTitle>
+                  <CardDescription>User activity over time</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={getUserRetention()}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="users" stroke="#8884d8" fill="#8884d8" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Daily Sign-ups (Last 30 Days)</CardTitle>
+                  <CardDescription>New user registrations</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <ResponsiveContainer width="100%" height={300}>
+                    <AreaChart data={getDailySignups()}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="day" />
+                      <YAxis />
+                      <Tooltip />
+                      <Area type="monotone" dataKey="signups" stroke="#82ca9d" fill="#82ca9d" />
+                    </AreaChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
           <TabsContent value="engagement" className="space-y-4">
