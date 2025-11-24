@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { setupVite, serveStatic, log } from "./vite";
 import { createPaymentIntent, verifyPayment } from "./stripe";
+import { processReferral } from "./referral";
 
 // Supabase config endpoint for production
 const getSupabaseConfig = () => {
@@ -129,6 +130,20 @@ import { createServer } from "http";
 
 (async () => {
   const server = createServer(app);
+
+  // Referral endpoint - MUST be defined before Vite middleware
+  app.post("/api/referral/process", async (req, res) => {
+    try {
+      const { newUserId, referralCode } = req.body;
+      if (!newUserId || !referralCode) {
+        return res.status(400).json({ error: 'Missing required parameters' });
+      }
+      const result = await processReferral(newUserId, referralCode);
+      res.json(result);
+    } catch (error: any) {
+      res.status(500).json({ error: error.message });
+    }
+  });
 
   // Payment endpoints - MUST be defined before Vite middleware
   app.post("/api/payment/create-intent", async (req, res) => {
