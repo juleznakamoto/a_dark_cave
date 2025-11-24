@@ -166,15 +166,15 @@ export default function GameFooter() {
             <Button
               variant="ghost"
               size="xs"
-              className="px-2 py-1 text-xs hover relative bg-background/80 backdrop-blur-sm border border-border"
+              className="px-2 py-1 text-xs hover relative bg-background/80 opacity-70 hover:opacity-100 backdrop-blur-sm border border-border"
             >
               Account
               {authNotificationVisible && !authNotificationSeen && !currentUser && (
-                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 text-xs bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuContent align="end" className="w-48">
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
