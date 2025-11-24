@@ -137,6 +137,7 @@ import {
   handleTradeSilverForGold,
   handleTradeGoldForEmberBomb,
   handleTradeGoldForAshfireBomb,
+  handleTradeGoldForLeather,
 } from "@/game/rules/forestTradeActions";
 
 import {
@@ -421,6 +422,8 @@ export function executeGameAction(
       return handleTradeGoldForWood(state, result);
     case "tradeGoldForStone":
       return handleTradeGoldForStone(state, result);
+    case "tradeGoldForLeather":
+      return handleTradeGoldForLeather(state, result);
     case "tradeGoldForSteel":
       return handleTradeGoldForSteel(state, result);
     case "tradeGoldForObsidian":
