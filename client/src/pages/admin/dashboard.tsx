@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
-import { getSupabaseClient } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import {
   LineChart,
   Line,
@@ -102,6 +102,21 @@ const buttonClicksChartConfig = {
   caveExplore: { label: 'Cave Explore', color: 'hsl(var(--chart-4))' },
 };
 
+// Production Supabase client
+const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL_PROD,
+  import.meta.env.VITE_SUPABASE_ANON_KEY_PROD,
+  {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: false,
+      flowType: 'pkce',
+      storageKey: 'admin-dashboard-prod'
+    }
+  }
+);
+
 // Helper function to clean button names by removing timestamp/random suffixes
 const cleanButtonName = (buttonName: string): string => {
   // Remove patterns like _1763918279318_0.004097622888011188
@@ -163,7 +178,6 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
-      const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
@@ -185,8 +199,6 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = await getSupabaseClient();
-
     // Load button clicks
     const { data: clicks } = await supabase
       .from('button_clicks')
