@@ -27,35 +27,35 @@ export async function signUp(email: string, password: string, referralCode?: str
 
       if (!referrerError && referrerData) {
         const referralCount = referrerData.game_state?.referralCount || 0;
-        
+
         if (referralCount < 10) {
-          // Add 250 gold to referrer's game state
+          // Add 100 gold to referrer's game state
           const referrerState = referrerData.game_state;
           const updatedReferrerState = {
             ...referrerState,
             resources: {
               ...referrerState.resources,
-              gold: (referrerState.resources?.gold || 0) + 250,
+              gold: (referrerState.resources?.gold || 0) + 100,
             },
             referralCount: referralCount + 1,
             log: [
               ...(referrerState.log || []),
               {
                 id: `referral-bonus-${Date.now()}`,
-                message: "A friend joined using your invite link! You received 250 Gold as a reward.",
+                message: "A friend joined using your invite link! You received 100 Gold as a reward.",
                 timestamp: Date.now(),
                 type: "system",
               }
             ].slice(-100), // Keep last 100 log entries
           };
-          
+
           await supabase.from('game_saves').upsert({
             user_id: referralCode,
             game_state: updatedReferrerState,
             updated_at: new Date().toISOString(),
           });
 
-          // Add 250 gold to new user's game state (or create initial state)
+          // Add 100 gold to new user's game state (or create initial state)
           const { data: newUserData } = await supabase
             .from('game_saves')
             .select('game_state')
@@ -67,14 +67,14 @@ export async function signUp(email: string, password: string, referralCode?: str
             ...newUserState,
             resources: {
               ...(newUserState.resources || {}),
-              gold: ((newUserState.resources?.gold || 0) + 250),
+              gold: ((newUserState.resources?.gold || 0) + 100),
             },
             referralCode: referralCode,
             log: [
               ...(newUserState.log || []),
               {
                 id: `referral-bonus-new-${Date.now()}`,
-                message: "Welcome! You received 250 Gold as a referral bonus for joining through an invite link.",
+                message: "Welcome! You received 100 Gold as a referral bonus for joining through an invite link.",
                 timestamp: Date.now(),
                 type: "system",
               }
