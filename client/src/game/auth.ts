@@ -30,7 +30,7 @@ export async function signUp(email: string, password: string, referralCode?: str
         .from('game_saves')
         .select('game_state')
         .eq('user_id', referralCode)
-        .single();
+        .maybeSingle();
 
       if (referrerError) {
         console.error('[REFERRAL] Error fetching referrer data:', {
