@@ -1,4 +1,3 @@
-
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
@@ -14,8 +13,7 @@ import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import Withdrawal from "@/pages/withdrawal";
 import ExplosionTest from "@/pages/explosion-test";
-import AdminDashboardDev from '@/pages/admin/dashboard-dev';
-import AdminDashboardProd from '@/pages/admin/dashboard-prod';
+import AdminDashboard from '@/pages/admin/dashboard';
 
 
 const isDev = import.meta.env.DEV;
@@ -31,8 +29,7 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/withdrawal" component={Withdrawal} />
-      <Route path="/admin/dashboard/dev" component={AdminDashboardDev} />
-      <Route path="/admin/dashboard/prod" component={AdminDashboardProd} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       {isDev && <Route path="/explosion-test" component={ExplosionTest} />}
       <Route component={NotFound} />
     </Switch>
