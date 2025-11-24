@@ -22,7 +22,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
-import { createClient } from '@supabase/supabase-js';
 import {
   subDays,
   subMonths,
@@ -109,11 +108,7 @@ const cleanButtonName = (buttonName: string): string => {
   return buttonName.replace(/_\d+_[\d.]+$/, '');
 };
 
-interface AdminDashboardProps {
-  environment: 'dev' | 'prod';
-}
-
-export default function AdminDashboard({ environment = 'prod' }: AdminDashboardProps) {
+export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -162,37 +157,13 @@ export default function AdminDashboard({ environment = 'prod' }: AdminDashboardP
       .sort((a, b) => b.clicks - a.clicks); // Sort by most clicked
   }, [clickData, selectedUser]);
 
-  // Create environment-specific Supabase client with unique storage key
-  const getEnvironmentSupabaseClient = () => {
-    const supabaseUrl = environment === 'dev' 
-      ? import.meta.env.VITE_SUPABASE_URL_DEV 
-      : import.meta.env.VITE_SUPABASE_URL_PROD;
-    const supabaseAnonKey = environment === 'dev'
-      ? import.meta.env.VITE_SUPABASE_ANON_KEY_DEV
-      : import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
-
-    if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error(`Supabase configuration is missing for ${environment} environment.`);
-    }
-
-    return createClient(supabaseUrl, supabaseAnonKey, {
-      auth: {
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: false,
-        flowType: 'pkce',
-        storageKey: `a-dark-cave-admin-dashboard-${environment}`
-      }
-    });
-  };
-
   useEffect(() => {
     checkAdminAccess();
   }, []);
 
   const checkAdminAccess = async () => {
     try {
-      const supabase = getEnvironmentSupabaseClient();
+      const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
@@ -214,7 +185,7 @@ export default function AdminDashboard({ environment = 'prod' }: AdminDashboardP
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = getEnvironmentSupabaseClient();
+    const supabase = await getSupabaseClient();
 
     // Load button clicks
     const { data: clicks } = await supabase
@@ -638,16 +609,7 @@ export default function AdminDashboard({ environment = 'prod' }: AdminDashboardP
         <ScrollArea className="h-full">
           <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${
-              environment === 'dev' 
-                ? 'bg-yellow-500/20 text-yellow-500' 
-                : 'bg-green-500/20 text-green-500'
-            }`}>
-              {environment.toUpperCase()}
-            </span>
-          </div>
+          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <div className="flex gap-4">
             <Select value={selectedUser} onValueChange={setSelectedUser}>
               <SelectTrigger className="w-[200px]">
