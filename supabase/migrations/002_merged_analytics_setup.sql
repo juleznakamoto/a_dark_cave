@@ -72,6 +72,10 @@ AS $$
 DECLARE
   v_existing_clicks JSONB;
   v_updated_clicks JSONB;
+  v_playtime_ms NUMERIC;
+  v_playtime_minutes INTEGER;
+  v_playtime_bucket INTEGER;
+  v_playtime_key TEXT;
 BEGIN
   -- Save or update the game state
   INSERT INTO game_saves (user_id, game_state, updated_at)
@@ -92,18 +96,11 @@ BEGIN
     WHERE user_id = p_user_id;
 
     -- Get playtime from game state (in milliseconds, convert to 5-minute buckets)
-    DECLARE
-      v_playtime_ms NUMERIC;
-      v_playtime_minutes INTEGER;
-      v_playtime_bucket INTEGER;
-      v_playtime_key TEXT;
-    BEGIN
-      v_playtime_ms := (p_game_state->>'playTime')::NUMERIC;
-      v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
-      -- Round down to nearest 5-minute bucket
-      v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
-      v_playtime_key := v_playtime_bucket || 'm';
-    END;
+    v_playtime_ms := (p_game_state->>'playTime')::NUMERIC;
+    v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
+    -- Round down to nearest 5-minute bucket
+    v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
+    v_playtime_key := v_playtime_bucket || 'm';
 
     -- If user has existing clicks, append new playtime entry
     IF v_existing_clicks IS NOT NULL THEN
