@@ -1,4 +1,3 @@
-
 import { useGameStore } from "@/game/state";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
@@ -46,7 +45,7 @@ export default function AttackWavesChart() {
     const interval = setInterval(() => {
       const now = Date.now();
       const newTimeRemaining: Record<string, number> = {};
-      
+
       Object.entries(attackWaveTimers || {}).forEach(([waveId, timer]) => {
         if (!timer.defeated && timer.startTime > 0) {
           const elapsed = now - timer.startTime;
@@ -54,7 +53,7 @@ export default function AttackWavesChart() {
           newTimeRemaining[waveId] = remaining;
         }
       });
-      
+
       setTimeRemaining(newTimeRemaining);
     }, 1000);
 
@@ -116,7 +115,7 @@ export default function AttackWavesChart() {
         className="h-2"
         segments={5}
       />
-      
+
       {activeWave && (
         <div className="space-y-2 pt-2">
           <div className="flex items-center justify-between">
@@ -132,10 +131,10 @@ export default function AttackWavesChart() {
           {attackWaveTimers?.[activeWave.id] && (
             <Button
               onClick={() => handleProvoke(activeWave.id)}
-              variant="destructive"
+              variant="outline"
               size="xs"
-              className="w-full"
-              disabled={timeRemaining[activeWave.id] <= 0}
+              className="w-full hover:bg-transparent hover:text-foreground"
+              button_id="provoke-attack"
             >
               Provoke
             </Button>
