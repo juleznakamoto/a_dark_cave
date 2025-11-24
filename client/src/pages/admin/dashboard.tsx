@@ -246,6 +246,19 @@ export default function AdminDashboard() {
       });
       
       console.log('✅ Step 4: Admin client created successfully');
+      console.log('   Testing client headers...');
+      console.log('   Client URL:', (adminClient as any).supabaseUrl);
+      console.log('   Client Key (first 30):', (adminClient as any).supabaseKey?.substring(0, 30) + '...');
+      
+      // Log what headers will actually be sent
+      const testHeaders = {
+        ...(adminClient as any).headers,
+        apikey: config.supabaseServiceKey,
+        Authorization: `Bearer ${config.supabaseServiceKey}`,
+      };
+      console.log('   Headers that will be sent:', Object.keys(testHeaders));
+      console.log('   Authorization header present:', !!testHeaders.Authorization);
+      console.log('   apikey header present:', !!testHeaders.apikey);
       console.log('   The "Multiple GoTrueClient instances" warning above is expected');
       console.log('   because we need a separate client with service role permissions');
     } catch (error) {
