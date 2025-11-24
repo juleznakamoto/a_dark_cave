@@ -1497,7 +1497,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "payGold",
         label: "Pay 250 gold",
         cost: "250 gold",
-        canAfford: (state: GameState) => state.resources.gold >= 250,
         effect: (state: GameState) => {
           if (state.resources.gold < 250) {
             return {
@@ -1527,7 +1526,6 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "paySilver",
         label: "Pay 1000 silver",
         cost: "1000 silver",
-        canAfford: (state: GameState) => state.resources.silver >= 1000,
         effect: (state: GameState) => {
           if (state.resources.silver < 1000) {
             return {
