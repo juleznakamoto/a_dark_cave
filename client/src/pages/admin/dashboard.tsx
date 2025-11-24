@@ -188,33 +188,56 @@ export default function AdminDashboard() {
     const supabase = await getSupabaseClient();
 
     // Load button clicks
-    const { data: clicks } = await supabase
+    const { data: clicks, error: clicksError } = await supabase
       .from('button_clicks')
-      .select('*')
-      .order('timestamp', { ascending: true }); // Keep order for potential future use, though not used in current chart logic
+      .select('user_id, clicks, timestamp')
+      .order('timestamp', { ascending: true });
 
+    if (clicksError) {
+      console.error('Error loading clicks:', clicksError);
+    }
     if (clicks) setClickData(clicks);
 
     // Load game saves with created_at
-    const { data: saves } = await supabase
+    const { data: saves, error: savesError } = await supabase
       .from('game_saves')
       .select('user_id, game_state, updated_at, created_at');
 
+    if (savesError) {
+      console.error('Error loading saves:', savesError);
+    }
     if (saves) setGameSaves(saves);
 
     // Load purchases
-    const { data: purchaseData } = await supabase
+    const { data: purchaseData, error: purchasesError } = await supabase
       .from('purchases')
       .select('*')
       .order('purchased_at', { ascending: false });
 
+    if (purchasesError) {
+      console.error('Error loading purchases:', purchasesError);
+    }
     if (purchaseData) setPurchases(purchaseData);
 
-    // Load unique users
+    // Load unique users from all tables
     const uniqueUserIds = new Set<string>();
-    if (clicks) clicks.forEach(c => uniqueUserIds.add(c.user_id));
-    if (saves) saves.forEach(s => uniqueUserIds.add(s.user_id));
-    if (purchaseData) purchaseData.forEach(p => uniqueUserIds.add(p.user_id));
+    if (clicks) {
+      clicks.forEach(c => {
+        if (c.user_id) uniqueUserIds.add(c.user_id);
+      });
+    }
+    if (saves) {
+      saves.forEach(s => {
+        if (s.user_id) uniqueUserIds.add(s.user_id);
+      });
+    }
+    if (purchaseData) {
+      purchaseData.forEach(p => {
+        if (p.user_id) uniqueUserIds.add(p.user_id);
+      });
+    }
+
+    console.log('Unique user IDs found:', uniqueUserIds.size);
 
     const userList = Array.from(uniqueUserIds).map(id => ({
       id,
