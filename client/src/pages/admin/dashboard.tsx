@@ -214,8 +214,15 @@ export default function AdminDashboard() {
         auth: {
           persistSession: false,
           autoRefreshToken: false,
-          storageKey: 'admin-supabase-auth', // Separate storage key to avoid conflicts
-        }
+        },
+        global: {
+          headers: {
+            apikey: config.supabaseServiceKey,
+          },
+        },
+        db: {
+          schema: 'public',
+        },
       });
       
       console.log('Admin client created successfully');
