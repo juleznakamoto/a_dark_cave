@@ -174,7 +174,7 @@ export default function GameFooter() {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48 text-xs">
+          <DropdownMenuContent align="end" className="w-52 text-xs">
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
@@ -205,7 +205,7 @@ export default function GameFooter() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="ml-2 text-muted-foreground cursor-pointer">ⓘ</span>
+                      <span className="ml-2 text-muted-foreground cursor-pointer text-xs">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-[10px]">
