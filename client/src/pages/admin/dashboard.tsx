@@ -124,6 +124,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
+  const [environment, setEnvironment] = useState<'prod' | 'dev'>('prod');
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -161,6 +162,13 @@ export default function AdminDashboard() {
     checkAdminAccess();
   }, []);
 
+  // Reload data when environment changes
+  useEffect(() => {
+    if (isAuthorized) {
+      loadData();
+    }
+  }, [environment]);
+
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
@@ -185,7 +193,21 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = await getSupabaseClient();
+    // Get Supabase client for the selected environment
+    const config = environment === 'prod' 
+      ? {
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL_PROD,
+          supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_PROD
+        }
+      : {
+          supabaseUrl: import.meta.env.VITE_SUPABASE_URL_DEV,
+          supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_DEV
+        };
+
+    const { createClient } = await import('@supabase/supabase-js');
+    const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+    
+    console.log(`Loading data from ${environment.toUpperCase()} environment`);
 
     // Load button clicks
     const { data: clicks, error: clicksError } = await supabase
@@ -650,7 +672,18 @@ export default function AdminDashboard() {
         <ScrollArea className="h-full">
           <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
-          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+          <div className="flex items-center gap-4">
+            <h1 className="text-4xl font-bold">Admin Dashboard</h1>
+            <Select value={environment} onValueChange={(value: 'prod' | 'dev') => setEnvironment(value)}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Environment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="prod">🟢 Production</SelectItem>
+                <SelectItem value="dev">🔵 Development</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
           <div className="flex gap-4">
             <Select value={selectedUser} onValueChange={setSelectedUser}>
               <SelectTrigger className="w-[200px]">
