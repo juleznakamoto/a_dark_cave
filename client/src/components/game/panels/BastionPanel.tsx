@@ -37,14 +37,9 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources, waves } = useGameStore();
+  const { buildings, story, resources } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
-
-  // Calculate active wave immediately to prevent "soon" flicker
-  const activeWave = React.useMemo(() => {
-    return waves?.find(wave => !wave.completed && wave.conditionMet);
-  }, [waves]);
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
