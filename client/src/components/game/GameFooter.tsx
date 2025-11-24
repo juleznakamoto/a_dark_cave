@@ -205,7 +205,7 @@ export default function GameFooter() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="ml-2 text-muted-foreground cursor-help">ⓘ</span>
+                      <span className="ml-2 text-muted-foreground cursor-pointer">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-[10px]">
