@@ -1,4 +1,5 @@
 
+
 -- Drop existing policies if they exist (to allow re-running migration)
 DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
 DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
@@ -67,9 +68,10 @@ CREATE POLICY "Users can insert their own purchases"
   WITH CHECK (auth.uid() = user_id);
 
 -- Create a function that saves both game state and click analytics atomically
+-- Now handles state diffs by merging with existing state
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
-  p_game_state JSONB,
+  p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL
 )
 RETURNS void
@@ -77,6 +79,8 @@ LANGUAGE plpgsql
 SECURITY DEFINER
 AS $$
 DECLARE
+  v_existing_state JSONB;
+  v_merged_state JSONB;
   v_existing_clicks JSONB;
   v_updated_clicks JSONB;
   v_playtime_ms NUMERIC;
@@ -84,9 +88,21 @@ DECLARE
   v_playtime_bucket INTEGER;
   v_playtime_key TEXT;
 BEGIN
-  -- Save or update the game state
+  -- Get existing game state
+  SELECT game_state INTO v_existing_state
+  FROM game_saves
+  WHERE user_id = p_user_id;
+
+  -- Merge the diff with existing state (deep merge for JSONB)
+  IF v_existing_state IS NOT NULL THEN
+    v_merged_state := v_existing_state || p_game_state_diff;
+  ELSE
+    v_merged_state := p_game_state_diff;
+  END IF;
+
+  -- Save or update the game state with merged data
   INSERT INTO game_saves (user_id, game_state, updated_at)
-  VALUES (p_user_id, p_game_state, NOW())
+  VALUES (p_user_id, v_merged_state, NOW())
   ON CONFLICT (user_id) 
   DO UPDATE SET 
     game_state = EXCLUDED.game_state,
@@ -102,8 +118,8 @@ BEGIN
     FROM button_clicks
     WHERE user_id = p_user_id;
 
-    -- Get playtime from game state (in milliseconds, convert to 5-minute buckets)
-    v_playtime_ms := (p_game_state->>'playTime')::NUMERIC;
+    -- Get playtime from merged game state (in milliseconds, convert to 5-minute buckets)
+    v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;
     v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60 / 60);
     -- Round down to nearest 5-minute bucket
     v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
@@ -131,3 +147,4 @@ $$;
 
 -- Grant execute permission to authenticated users
 GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
+
