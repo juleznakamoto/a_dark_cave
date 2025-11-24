@@ -193,21 +193,35 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    // Get Supabase client for the selected environment
-    const config = environment === 'prod' 
-      ? {
-          supabaseUrl: import.meta.env.VITE_SUPABASE_URL_PROD,
-          supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_PROD
-        }
-      : {
-          supabaseUrl: import.meta.env.VITE_SUPABASE_URL_DEV,
-          supabaseAnonKey: import.meta.env.VITE_SUPABASE_ANON_KEY_DEV
-        };
+    // Get Supabase config for the selected environment
+    let supabaseUrl: string;
+    let supabaseAnonKey: string;
+
+    if (environment === 'prod') {
+      // In production mode, fetch config from server
+      const response = await fetch('/api/config');
+      if (!response.ok) {
+        console.error('Failed to load production Supabase config');
+        return;
+      }
+      const config = await response.json();
+      supabaseUrl = config.supabaseUrl;
+      supabaseAnonKey = config.supabaseAnonKey;
+    } else {
+      // In development mode, use dev environment variables
+      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
+      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+    }
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      console.error(`Missing Supabase credentials for ${environment} environment`);
+      return;
+    }
 
     const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(config.supabaseUrl, config.supabaseAnonKey);
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
     
-    console.log(`Loading data from ${environment.toUpperCase()} environment`);
+    console.log(`Loading data from ${environment.toUpperCase()} environment`, { supabaseUrl });
 
     // Load button clicks
     const { data: clicks, error: clicksError } = await supabase
