@@ -1,4 +1,11 @@
 
+-- Drop existing policies if they exist (to allow re-running migration)
+DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
+DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
+DROP POLICY IF EXISTS "Users can update their own click data" ON button_clicks;
+DROP POLICY IF EXISTS "Users can view their own purchases" ON purchases;
+DROP POLICY IF EXISTS "Users can insert their own purchases" ON purchases;
+
 -- Create the button_clicks table for analytics (one row per user)
 CREATE TABLE IF NOT EXISTS button_clicks (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
