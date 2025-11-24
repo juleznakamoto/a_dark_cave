@@ -174,7 +174,7 @@ export default function GameFooter() {
               )}
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-48">
+          <DropdownMenuContent align="end" className="w-48 text-xs">
             {currentUser ? (
               <>
                 <DropdownMenuItem onClick={handleSignOut}>
