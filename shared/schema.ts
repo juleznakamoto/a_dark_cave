@@ -35,8 +35,11 @@ export const gameStateSchema = z.object({
       moonstone: z.number().min(0).default(0),
       black_powder: z.number().min(0).default(0),
       ember_bomb: z.number().min(0).default(0),
+      ashfire_dust: z.number().min(0).default(0),
       ashfire_bomb: z.number().min(0).default(0),
-      void_bomb: z.number().default(0),
+      torch: z.number().min(0).default(0),
+      silver: z.number().min(0).default(0),
+      gold: z.number().min(0).default(0),
     })
     .default({}),
   stats: z
@@ -241,11 +244,6 @@ export const gameStateSchema = z.object({
     .object({
       seen: z.record(z.boolean()).default({}),
       animalsSacrificeLevel: z.number().default(0),
-      hasEmberBomb: z.boolean().default(false),
-      hasAshfireBomb: z.boolean().default(false),
-      hasVoidBomb: z.boolean().default(false),
-      wanderingAlchemistEvent: z.boolean().default(false),
-      canCraftVoidBomb: z.boolean().default(false),
     })
     .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),

@@ -1,3 +1,4 @@
+
 import { weaponEffects, toolEffects, clothingEffects, bookEffects } from "./effects";
 import { capitalizeWords } from "@/lib/utils";
 
@@ -121,18 +122,6 @@ export function renderItemTooltip(
             </div>
           )
         )}
-      {itemId === "ashfire_bomb" && (
-        <div>
-          A devastating explosive imbued with otherworldly fire. Deals 25 damage
-          and can be used in combat.
-        </div>
-      )}
-      {itemId === "void_bomb" && (
-        <div>
-          A weapon of extreme power that tears reality itself. Deals 40 damage
-          and can be used in combat. Requires ashfire dust, black powder, and obsidian to craft.
-        </div>
-      )}
     </div>
   );
 }
