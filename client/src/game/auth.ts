@@ -8,7 +8,7 @@ export interface AuthUser {
 
 export async function signUp(email: string, password: string, referralCode?: string) {
   const supabase = await getSupabaseClient();
-  
+
   // Store referral code in user metadata - will be processed after email confirmation
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -38,7 +38,7 @@ export async function processReferralAfterConfirmation(): Promise<void> {
   if (!user) return;
 
   const supabase = await getSupabaseClient();
-  
+
   // Get user metadata
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser?.user_metadata?.referral_code) {
@@ -72,15 +72,23 @@ export async function processReferralAfterConfirmation(): Promise<void> {
       .from('game_saves')
       .select('game_state')
       .eq('user_id', referralCode)
-      .maybeSingle();
+      .single();
 
     if (referrerError) {
+      // PGRST116 means no rows found
+      if (referrerError.code === 'PGRST116') {
+        console.warn('[REFERRAL] Referrer has not created a game save yet:', {
+          referralCode,
+          message: 'Referral will be processed when both users have game saves'
+        });
+        return;
+      }
       console.error('[REFERRAL] Error fetching referrer data:', referrerError);
       return;
     }
 
-    if (!referrerData || !referrerData.game_state) {
-      console.warn('[REFERRAL] Referrer game save not found or empty:', {
+    if (!referrerData?.game_state) {
+      console.warn('[REFERRAL] Referrer game save has no game_state:', {
         referralCode,
         hasData: !!referrerData,
         message: 'Referrer needs to start playing before referral can be processed'
@@ -95,7 +103,7 @@ export async function processReferralAfterConfirmation(): Promise<void> {
 
     const referrerState = referrerData.game_state;
     const referralCount = referrerState.referralCount || 0;
-    
+
     console.log('[REFERRAL] Referrer details:', {
       referrerId: referralCode,
       currentReferralCount: referralCount,
@@ -325,8 +333,8 @@ export async function saveGameToSupabase(
 
   // Call the combined save function - single database call
   // Ensure clickAnalytics is either a valid object with data or null
-  const analyticsParam = clickData && Object.keys(clickData).length > 0 
-    ? clickData 
+  const analyticsParam = clickData && Object.keys(clickData).length > 0
+    ? clickData
     : null;
 
   if (import.meta.env.DEV) {
