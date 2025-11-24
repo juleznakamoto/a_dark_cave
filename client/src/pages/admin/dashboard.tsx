@@ -201,6 +201,7 @@ export default function AdminDashboard() {
   const loadData = async () => {
     try {
       console.log(`📡 Fetching data from ${environment.toUpperCase()} environment...`);
+      console.log(`   Request URL: /api/admin/data?env=${environment}`);
       const response = await fetch(`/api/admin/data?env=${environment}`);
       
       if (!response.ok) {

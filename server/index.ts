@@ -54,6 +54,7 @@ const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
 app.get('/api/admin/data', async (req, res) => {
   try {
     const env = req.query.env as 'dev' | 'prod' || 'dev';
+    log(`📊 Admin data request received with env parameter: '${req.query.env}' (using: ${env})`);
     const adminClient = getAdminClient(env);
 
     log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
