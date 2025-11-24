@@ -127,7 +127,7 @@ function getInheritedItems(actionId: string) {
       const adjustedProbability =
         i === currentIndex
           ? item.probability
-          : item.probability + 0.005 * (currentIndex - i);
+          : item.probability + 0.0025 * (currentIndex - i);
 
       // Determine the category (relics or clothing) based on the item's category
       const category = item.category || "relics";

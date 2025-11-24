@@ -209,7 +209,7 @@ export default function BastionPanel() {
             className="w-full hover:bg-transparent hover:text-foreground"
             button_id={`provoke-${activeWave.id}`}
           >
-            Provoke (30s)
+            Provoke
           </Button>
         </div>
       )}
