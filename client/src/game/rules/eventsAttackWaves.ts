@@ -116,10 +116,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.flags.portalBlasted &&
       state.story.seen.hasBastion &&
-      !state.story.seen.firstWaveVictory,
+      !state.story.seen.firstWaveVictory &&
+      state.attackWaveTimers.firstWave === 0 &&
+      !state.story.seen.firstWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.firstWaveTriggered ? 10 : 5;
+      return 100; // Always trigger when timer reaches 0
     },
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
@@ -156,6 +158,11 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 firstWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              firstWave: 0,
+              secondWave: 10 * 60 * 1000, // 10 minutes
+            },
             _logMessage: VICTORY_MESSAGE(200),
           }),
           onDefeat: () => handleDefeat(state, 1, 5),
@@ -167,10 +174,13 @@ export const attackWaveEvents: Record<string, GameEvent> = {
   secondWave: {
     id: "secondWave",
     condition: (state: GameState) =>
-      state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory,
+      state.story.seen.firstWaveVictory &&
+      !state.story.seen.secondWaveVictory &&
+      state.attackWaveTimers.secondWave === 0 &&
+      !state.story.seen.secondWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.secondWaveTriggered ? 10 : 5;
+      return 100; // Always trigger when timer reaches 0
     },
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
@@ -207,6 +217,11 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              secondWave: 0,
+              thirdWave: 10 * 60 * 1000, // 10 minutes
+            },
             _logMessage: VICTORY_MESSAGE(300),
           }),
           onDefeat: () => handleDefeat(state, 2, 10),
@@ -220,10 +235,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.wizardDecryptsScrolls &&
       state.story.seen.secondWaveVictory &&
-      !state.story.seen.thirdWaveVictory,
+      !state.story.seen.thirdWaveVictory &&
+      state.attackWaveTimers.thirdWave === 0 &&
+      !state.story.seen.thirdWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.thirdWaveTriggered ? 10 : 5;
+      return 100; // Always trigger when timer reaches 0
     },
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
@@ -260,6 +277,11 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              thirdWave: 0,
+              fourthWave: 10 * 60 * 1000, // 10 minutes
+            },
             _logMessage: VICTORY_MESSAGE(400),
           }),
           onDefeat: () => handleDefeat(state, 3, 15),
@@ -273,10 +295,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.weapons.frostglass_sword &&
       state.story.seen.thirdWaveVictory &&
-      !state.story.seen.fourthWaveVictory,
+      !state.story.seen.fourthWaveVictory &&
+      state.attackWaveTimers.fourthWave === 0 &&
+      !state.story.seen.fourthWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.fourthWaveTriggered ? 10 : 5;
+      return 100; // Always trigger when timer reaches 0
     },
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
@@ -313,6 +337,11 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              fourthWave: 0,
+              fifthWave: 10 * 60 * 1000, // 10 minutes
+            },
             _logMessage: VICTORY_MESSAGE(500),
           }),
           onDefeat: () => handleDefeat(state, 4, 20),
@@ -326,10 +355,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
-      !state.story.seen.fifthWaveVictory,
+      !state.story.seen.fifthWaveVictory &&
+      state.attackWaveTimers.fifthWave === 0 &&
+      !state.story.seen.fifthWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.fifthWaveTriggered ? 10 : 5;
+      return 100; // Always trigger when timer reaches 0
     },
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
