@@ -127,12 +127,33 @@ BEGIN
     IF v_existing_clicks IS NOT NULL THEN
       -- Check if this playtime bucket already exists
       IF v_existing_clicks ? v_playtime_key THEN
-        -- Merge the new click data with existing data for this playtime bucket
-        v_updated_clicks := jsonb_set(
-          v_existing_clicks,
-          ARRAY[v_playtime_key],
-          (v_existing_clicks->v_playtime_key) || p_click_analytics
-        );
+        -- Sum the click counts for each action
+        DECLARE
+          v_existing_bucket JSONB;
+          v_merged_bucket JSONB;
+          v_key TEXT;
+          v_existing_count INTEGER;
+          v_new_count INTEGER;
+        BEGIN
+          v_existing_bucket := v_existing_clicks->v_playtime_key;
+          v_merged_bucket := '{}'::jsonb;
+          
+          -- Add all keys from existing bucket
+          FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
+            v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
+            v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
+            v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
+          END LOOP;
+          
+          -- Add any new keys from p_click_analytics that weren't in existing
+          FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
+            IF NOT (v_existing_bucket ? v_key) THEN
+              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
+            END IF;
+          END LOOP;
+          
+          v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
+        END;
       ELSE
         -- Add new playtime bucket to existing data
         v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
