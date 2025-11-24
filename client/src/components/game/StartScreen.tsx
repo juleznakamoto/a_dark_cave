@@ -28,17 +28,30 @@ export default function StartScreen() {
       window.history.replaceState({}, '', '/');
     }
 
-    const timer = setTimeout(() => {
+    const animationTimer = setTimeout(() => {
       setIsAnimationComplete(true);
     }, 5000); // 2s delay + 3s animation
 
     // Start preloading background music immediately
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
 
-    return () => clearTimeout(timer);
+    // Start wind sound after 3 seconds
+    const windTimer = setTimeout(() => {
+      audioManager.playLoopingSound('wind', 0.3);
+    }, 3000);
+
+    return () => {
+      clearTimeout(animationTimer);
+      clearTimeout(windTimer);
+      // Stop wind sound when component unmounts
+      audioManager.stopLoopingSound('wind');
+    };
   }, [setBoostMode]);
 
   const handleLightFire = () => {
+    // Stop wind sound
+    audioManager.stopLoopingSound('wind');
+    
     // Start background music
     audioManager.startBackgroundMusic(0.3);
 

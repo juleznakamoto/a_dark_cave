@@ -206,6 +206,7 @@ export class AudioManager {
     this.soundUrls.set('whisperingCube', '/sounds/whispering_cube.wav');
     this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
     this.soundUrls.set('explosion', '/sounds/explosion.wav');
+    this.soundUrls.set('wind', '/sounds/wind.wav');
     if (import.meta.env.DEV) {
       console.log('Sound URLs registered for lazy loading');
     }
