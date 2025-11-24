@@ -72,6 +72,15 @@ interface GameStore extends GameState {
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
 
+  // Attack wave timers
+  attackWaveTimers: {
+    firstWave?: number;
+    secondWave?: number;
+    thirdWave?: number;
+    fourthWave?: number;
+    fifthWave?: number;
+  };
+
   // Population helpers
   current_population: number;
   total_population: number;
