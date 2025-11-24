@@ -88,7 +88,7 @@ export async function updatePassword(newPassword: string) {
 }
 
 export async function saveGameToSupabase(
-  gameState: GameState,
+  gameStateDiff: Partial<GameState>,
   playTime: number = 0,
   isNewGame: boolean = false,
   clickAnalytics: Record<string, number> | null = null
@@ -96,8 +96,8 @@ export async function saveGameToSupabase(
   const user = await getCurrentUser();
   if (!user) throw new Error('Not authenticated');
 
-  // Deep clone and sanitize the game state to remove non-serializable data
-  const sanitizedState = JSON.parse(JSON.stringify(gameState));
+  // Deep clone and sanitize the diff to remove non-serializable data
+  const sanitizedDiff = JSON.parse(JSON.stringify(gameStateDiff));
 
   const supabase = await getSupabaseClient();
 
@@ -108,10 +108,8 @@ export async function saveGameToSupabase(
     .eq('user_id', user.id)
     .single();
 
-  // Only allow overwriting if:
-  // 1. No existing save exists, OR
-  // 2. New save has higher playtime, OR
-  // 3. This is a new game (player explicitly restarted)
+  // Merge diff with existing state
+  let finalState: any;
   if (existingSave?.game_state) {
     const existingPlayTime = existingSave.game_state.playTime || 0;
 
@@ -125,6 +123,12 @@ export async function saveGameToSupabase(
       }
       return; // Don't overwrite
     }
+    
+    // Merge diff into existing state
+    finalState = { ...existingSave.game_state, ...sanitizedDiff };
+  } else {
+    // No existing save, use diff as complete state
+    finalState = sanitizedDiff;
   }
 
   // Call the combined save function - single database call
@@ -137,13 +141,14 @@ export async function saveGameToSupabase(
     console.log('Saving to Supabase:', {
       hasClickAnalytics: !!analyticsParam,
       clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
-      gameStateSize: JSON.stringify(sanitizedState).length
+      diffSize: JSON.stringify(sanitizedDiff).length,
+      finalStateSize: JSON.stringify(finalState).length
     });
   }
 
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
-    p_game_state: sanitizedState,
+    p_game_state: finalState,
     p_click_analytics: clickAnalytics === null ? null : (analyticsParam)
   });
 

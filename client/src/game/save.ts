@@ -8,17 +8,64 @@ interface GameDB extends DBSchema {
     key: string;
     value: SaveData;
   };
+  lastCloudState: {
+    key: string;
+    value: GameState;
+  };
 }
 
 const DB_NAME = 'ADarkCaveDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const SAVE_KEY = 'mainSave';
+const LAST_CLOUD_STATE_KEY = 'lastCloudState';
+
+// Calculate diff between two states
+function calculateStateDiff(oldState: GameState | null, newState: GameState): Partial<GameState> {
+  if (!oldState) return newState; // First save, send everything
+
+  const diff: any = {};
+  
+  // Helper to check if values are different
+  const isDifferent = (a: any, b: any): boolean => {
+    if (typeof a !== typeof b) return true;
+    if (a === b) return false;
+    if (a === null || b === null) return true;
+    if (typeof a === 'object') {
+      return JSON.stringify(a) !== JSON.stringify(b);
+    }
+    return true;
+  };
+
+  // Compare all top-level properties
+  for (const key in newState) {
+    const newValue = newState[key as keyof GameState];
+    const oldValue = oldState[key as keyof GameState];
+    
+    if (isDifferent(oldValue, newValue)) {
+      diff[key] = newValue;
+    }
+  }
+
+  return diff;
+}
+
+// Merge diff into existing state
+function mergeStateDiff(baseState: GameState, diff: Partial<GameState>): GameState {
+  return { ...baseState, ...diff };
+}
 
 async function getDB() {
   try {
     const db = await openDB<GameDB>(DB_NAME, DB_VERSION, {
-      upgrade(db) {
-        db.createObjectStore('saves');
+      upgrade(db, oldVersion) {
+        if (oldVersion < 1) {
+          db.createObjectStore('saves');
+        }
+        if (oldVersion < 2) {
+          if (!db.objectStoreNames.contains('lastCloudState')) {
+            db.createObjectStore('lastCloudState');
+          }
+        }
       },
     });
     return db;
@@ -58,8 +105,15 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         const { useGameStore } = await import('./state');
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
         
-        // Always send click data (never null unless it's actually empty)
-        await saveGameToSupabase(sanitizedState, playTime, isNewGame, clickData);
+        // Get last cloud state for diff calculation
+        const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
+        const stateDiff = calculateStateDiff(lastCloudState || null, sanitizedState);
+        
+        // Save diff to Supabase
+        await saveGameToSupabase(stateDiff, playTime, isNewGame, clickData);
+        
+        // Update last cloud state
+        await db.put('lastCloudState', sanitizedState, LAST_CLOUD_STATE_KEY);
       }
     } catch (cloudError) {
       // Silently fail cloud save - local save is what matters
@@ -104,13 +158,17 @@ export async function loadGame(): Promise<GameState | null> {
               timestamp: Date.now(),
               playTime: cloudPlayTime,
             }, SAVE_KEY);
+            // Store as last cloud state
+            await db.put('lastCloudState', cloudSave, LAST_CLOUD_STATE_KEY);
             return cloudSave;
           } else {
             if (import.meta.env.DEV) {
               console.log('Using local save (longer play time), syncing to cloud');
             }
-            // Local has longer play time, sync it to cloud
+            // Local has longer play time, sync it to cloud (full state on first sync)
+            await db.delete('lastCloudState', LAST_CLOUD_STATE_KEY); // Force full sync
             await saveGameToSupabase(localSave.gameState);
+            await db.put('lastCloudState', localSave.gameState, LAST_CLOUD_STATE_KEY);
             return localSave.gameState;
           }
         } else if (cloudSave) {
@@ -123,6 +181,7 @@ export async function loadGame(): Promise<GameState | null> {
             timestamp: Date.now(),
             playTime: cloudSave.playTime || 0,
           }, SAVE_KEY);
+          await db.put('lastCloudState', cloudSave, LAST_CLOUD_STATE_KEY);
           return cloudSave;
         } else if (localSave) {
           // Only local save exists, sync to cloud
@@ -130,6 +189,7 @@ export async function loadGame(): Promise<GameState | null> {
             console.log('Local save found, syncing to cloud');
           }
           await saveGameToSupabase(localSave.gameState);
+          await db.put('lastCloudState', localSave.gameState, LAST_CLOUD_STATE_KEY);
           return localSave.gameState;
         }
       } catch (cloudError) {
