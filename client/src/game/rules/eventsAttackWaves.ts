@@ -266,8 +266,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           enemy: {
             name: "Pack of pale creatures",
             attack: Math.ceil(Math.random() * 10) + 25 + state.CM * 5,
-            maxHealth: 250 + state.CM * 50,
-            currentHealth: 250 + state.CM * 50,
+            maxHealth: 300 + state.CM * 50,
+            currentHealth: 300 + state.CM * 50,
           },
           eventTitle: "The Second Wave",
           eventMessage: SECOND_WAVE_MESSAGE,
@@ -356,8 +356,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           enemy: {
             name: "Horde of pale creatures",
             attack: Math.ceil(Math.random() * 10) + 35 + state.CM * 10,
-            maxHealth: 300 + state.CM * 100,
-            currentHealth: 300 + state.CM * 100,
+            maxHealth: 350 + state.CM * 100,
+            currentHealth: 350 + state.CM * 100,
           },
           eventTitle: "The Third Wave",
           eventMessage: THIRD_WAVE_MESSAGE,
@@ -446,8 +446,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
           enemy: {
             name: "Legion of pale creatures",
             attack: Math.ceil(Math.random() * 10) + 45 + state.CM * 15,
-            maxHealth: 350 + state.CM * 150,
-            currentHealth: 350 + state.CM * 150,
+            maxHealth: 400 + state.CM * 150,
+            currentHealth: 400 + state.CM * 150,
           },
           eventTitle: "The Fourth Wave",
           eventMessage: FOURTH_WAVE_MESSAGE,

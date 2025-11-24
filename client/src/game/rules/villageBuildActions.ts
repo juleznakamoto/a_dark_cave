@@ -682,7 +682,7 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.stone": 7500,
-        "resources.obsidian":1000,
+        "resources.obsidian": 1000,
         "resources.gold": 250,
       },
     },
@@ -970,7 +970,7 @@ export const villageBuildActions: Record<string, Action> = {
         "resources.iron": 2500,
       },
       3: {
-        "resources.stone":7500,
+        "resources.stone": 7500,
         "resources.iron": 2500,
       },
       4: {
@@ -1203,7 +1203,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Frostglass Crafting"],
+    tooltipEffects: ["Unlocks Frostglass Crafting", "10 % Craft Discount"],
     building: true,
     show_when: {
       1: {
