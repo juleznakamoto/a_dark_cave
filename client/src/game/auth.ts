@@ -24,14 +24,14 @@ export async function signUp(email: string, password: string, referralCode?: str
 
   if (data.user && referralCode) {
     console.log('[REFERRAL] Stored referral code in user metadata:', {
-       newUserId: data.user.id,
-        referralCode: referralCode,
-        message: 'Referral will be processed after email confirmation'
-      });
-      }
+      newUserId: data.user.id,
+      referralCode: referralCode,
+      message: 'Referral will be processed after email confirmation'
+    });
+  }
 
-      return data;
-      }
+  return data;
+}
 
 export async function processReferralAfterConfirmation(): Promise<void> {
   const user = await getCurrentUser();
@@ -196,15 +196,6 @@ export async function processReferralAfterConfirmation(): Promise<void> {
   } catch (error) {
     console.error('[REFERRAL] Error processing referral:', error);
   }
-}
-
-      newUserId: data.user.id,
-      referralCode: referralCode,
-      message: 'Referral will be processed after email confirmation'
-    });
-  }
-
-  return data;
 }
 
 export async function signIn(email: string, password: string) {
