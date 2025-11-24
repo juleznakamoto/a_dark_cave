@@ -87,15 +87,15 @@ export default function AttackWavesChart() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
-  // Find current active wave (first incomplete wave with condition met)
-  const activeWave = waves.find(wave => !wave.completed && wave.conditionMet);
-
   // Only show if bastion exists
   const shouldShowChart = story?.seen?.hasBastion || false;
 
   if (!shouldShowChart) {
     return null;
   }
+
+  // Find current active wave (first incomplete wave with condition met)
+  const activeWave = waves.find(wave => !wave.completed && wave.conditionMet);
 
   // Find current wave index for progress bar
   const currentWaveIndex = waves.findIndex((wave) => !wave.completed);
