@@ -117,7 +117,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.flags.portalBlasted &&
       state.story.seen.hasBastion &&
       !state.story.seen.firstWaveVictory &&
-      state.attackWaveTimers.firstWave === 0 &&
+      state.attackWaveTimers.firstWave <= 0 &&
+      state.attackWaveTimers.firstWave !== undefined &&
       !state.story.seen.firstWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
@@ -176,7 +177,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.firstWaveVictory &&
       !state.story.seen.secondWaveVictory &&
-      state.attackWaveTimers.secondWave === 0 &&
+      state.attackWaveTimers.secondWave <= 0 &&
+      state.attackWaveTimers.secondWave !== undefined &&
       !state.story.seen.secondWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
@@ -236,7 +238,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.story.seen.wizardDecryptsScrolls &&
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory &&
-      state.attackWaveTimers.thirdWave === 0 &&
+      state.attackWaveTimers.thirdWave <= 0 &&
+      state.attackWaveTimers.thirdWave !== undefined &&
       !state.story.seen.thirdWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
@@ -296,7 +299,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.weapons.frostglass_sword &&
       state.story.seen.thirdWaveVictory &&
       !state.story.seen.fourthWaveVictory &&
-      state.attackWaveTimers.fourthWave === 0 &&
+      state.attackWaveTimers.fourthWave <= 0 &&
+      state.attackWaveTimers.fourthWave !== undefined &&
       !state.story.seen.fourthWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
@@ -356,7 +360,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory &&
-      state.attackWaveTimers.fifthWave === 0 &&
+      state.attackWaveTimers.fifthWave <= 0 &&
+      state.attackWaveTimers.fifthWave !== undefined &&
       !state.story.seen.fifthWaveTriggered,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
