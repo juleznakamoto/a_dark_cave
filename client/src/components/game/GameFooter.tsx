@@ -159,6 +159,66 @@ export default function GameFooter() {
         isOpen={shopDialogOpen}
         onClose={() => setShopDialogOpen(false)}
       />
+      {/* Account Dropdown - Absolute positioned in upper right */}
+      <div className="fixed top-2 right-2 z-30">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              variant="ghost"
+              size="xs"
+              className="px-2 py-1 text-xs hover relative bg-background/80 backdrop-blur-sm border border-border"
+            >
+              Account
+              {authNotificationVisible && !authNotificationSeen && !currentUser && (
+                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+              )}
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-56">
+            {currentUser ? (
+              <>
+                <DropdownMenuItem onClick={handleSignOut}>
+                  Sign Out
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            ) : (
+              <>
+                <DropdownMenuItem
+                  onClick={() => {
+                    handleSetAuthDialogOpen(true);
+                    setAuthNotificationSeen(true);
+                  }}
+                >
+                  Sign In/Up
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+              </>
+            )}
+            <DropdownMenuItem onClick={handleRestartGame}>
+              New Game
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={handleCopyInviteLink}>
+              <div className="flex items-center justify-between w-full">
+                <span>Invite Friends (+250 Gold)</span>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <span className="ml-2 text-muted-foreground cursor-help">ⓘ</span>
+                    </TooltipTrigger>
+                    <TooltipContent className="max-w-xs">
+                      <p className="text-xs">
+                        You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 250 gold!
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">
@@ -278,63 +338,6 @@ export default function GameFooter() {
             >
               Imprint
             </a>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button
-                  variant="ghost"
-                  size="xs"
-                  className="px-2 py-1 text-xs hover relative"
-                >
-                  Account
-                  {authNotificationVisible && !authNotificationSeen && !currentUser && (
-                    <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
-                  )}
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                {currentUser ? (
-                  <>
-                    <DropdownMenuItem onClick={handleSignOut}>
-                      Sign Out
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                  </>
-                ) : (
-                  <>
-                    <DropdownMenuItem
-                      onClick={() => {
-                        handleSetAuthDialogOpen(true);
-                        setAuthNotificationSeen(true);
-                      }}
-                    >
-                      Sign In/Up
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                  </>
-                )}
-                <DropdownMenuItem onClick={handleRestartGame}>
-                  New Game
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={handleCopyInviteLink}>
-                  <div className="flex items-center justify-between w-full">
-                    <span>Invite Friends (+250 Gold)</span>
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <span className="ml-2 text-muted-foreground cursor-help">ⓘ</span>
-                        </TooltipTrigger>
-                        <TooltipContent className="max-w-xs">
-                          <p className="text-xs">
-                            You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 250 gold!
-                          </p>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  </div>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
         </div>
       </footer>
