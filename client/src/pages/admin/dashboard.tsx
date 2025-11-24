@@ -193,17 +193,32 @@ export default function AdminDashboard() {
     try {
       const response = await fetch('/api/admin/config');
       if (!response.ok) {
-        throw new Error('Failed to fetch admin config');
+        const errorText = await response.text();
+        console.error('Admin config fetch failed:', response.status, errorText);
+        throw new Error(`Failed to fetch admin config: ${response.status}`);
       }
       const config = await response.json();
+      
+      console.log('Admin config received:', {
+        hasUrl: !!config.supabaseUrl,
+        hasKey: !!config.supabaseServiceKey,
+        urlPrefix: config.supabaseUrl?.substring(0, 20)
+      });
+      
+      if (!config.supabaseUrl || !config.supabaseServiceKey) {
+        throw new Error('Admin config missing required fields');
+      }
       
       console.log('Creating admin Supabase client with service role...');
       adminClient = createClient(config.supabaseUrl, config.supabaseServiceKey, {
         auth: {
           persistSession: false,
           autoRefreshToken: false,
+          storageKey: 'admin-supabase-auth', // Separate storage key to avoid conflicts
         }
       });
+      
+      console.log('Admin client created successfully');
     } catch (error) {
       console.error('Failed to create admin client:', error);
       // Fallback to regular client (will only show current user's data)
