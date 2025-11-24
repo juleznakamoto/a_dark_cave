@@ -187,39 +187,109 @@ export default function AdminDashboard() {
   const loadData = async () => {
     const supabase = await getSupabaseClient();
 
+    console.log('=== STARTING DATA LOAD FROM SUPABASE ===');
+
     // Load button clicks
-    const { data: clicks } = await supabase
+    console.log('Loading button_clicks...');
+    const { data: clicks, error: clicksError } = await supabase
       .from('button_clicks')
       .select('*')
       .order('timestamp', { ascending: true }); // Keep order for potential future use, though not used in current chart logic
 
+    console.log('Button clicks result:', {
+      count: clicks?.length || 0,
+      error: clicksError,
+      data: clicks,
+      uniqueUsers: clicks ? [...new Set(clicks.map(c => c.user_id))] : []
+    });
+
     if (clicks) setClickData(clicks);
 
     // Load game saves with created_at
-    const { data: saves } = await supabase
+    console.log('Loading game_saves...');
+    const { data: saves, error: savesError } = await supabase
       .from('game_saves')
       .select('user_id, game_state, updated_at, created_at');
+
+    console.log('Game saves result:', {
+      count: saves?.length || 0,
+      error: savesError,
+      data: saves,
+      uniqueUsers: saves ? [...new Set(saves.map(s => s.user_id))] : []
+    });
 
     if (saves) setGameSaves(saves);
 
     // Load purchases
-    const { data: purchaseData } = await supabase
+    console.log('Loading purchases...');
+    const { data: purchaseData, error: purchasesError } = await supabase
       .from('purchases')
       .select('*')
       .order('purchased_at', { ascending: false });
 
+    console.log('Purchases result:', {
+      count: purchaseData?.length || 0,
+      error: purchasesError,
+      data: purchaseData,
+      uniqueUsers: purchaseData ? [...new Set(purchaseData.map(p => p.user_id))] : []
+    });
+
     if (purchaseData) setPurchases(purchaseData);
 
-    // Load unique users
+    // Load all users from game_saves (this includes all users who have ever signed up)
+    console.log('Loading all user_ids from game_saves...');
+    const { data: allSaves, error: allSavesError } = await supabase
+      .from('game_saves')
+      .select('user_id');
+
+    console.log('All saves (user_id only) result:', {
+      count: allSaves?.length || 0,
+      error: allSavesError,
+      data: allSaves,
+      uniqueUsers: allSaves ? [...new Set(allSaves.map(s => s.user_id))] : []
+    });
+
     const uniqueUserIds = new Set<string>();
-    if (clicks) clicks.forEach(c => uniqueUserIds.add(c.user_id));
-    if (saves) saves.forEach(s => uniqueUserIds.add(s.user_id));
-    if (purchaseData) purchaseData.forEach(p => uniqueUserIds.add(p.user_id));
+
+    // Add users from game saves (primary source)
+    if (allSaves) {
+      console.log('Adding users from game saves...');
+      allSaves.forEach(s => {
+        console.log('  - Adding user from game_saves:', s.user_id);
+        uniqueUserIds.add(s.user_id);
+      });
+    }
+
+    // Also add users from clicks and purchases to ensure we don't miss anyone
+    if (clicks) {
+      console.log('Adding users from button clicks...');
+      clicks.forEach(c => {
+        if (!uniqueUserIds.has(c.user_id)) {
+          console.log('  - Adding NEW user from clicks:', c.user_id);
+        }
+        uniqueUserIds.add(c.user_id);
+      });
+    }
+    if (purchaseData) {
+      console.log('Adding users from purchases...');
+      purchaseData.forEach(p => {
+        if (!uniqueUserIds.has(p.user_id)) {
+          console.log('  - Adding NEW user from purchases:', p.user_id);
+        }
+        uniqueUserIds.add(p.user_id);
+      });
+    }
+
+    console.log('Final unique user IDs:', Array.from(uniqueUserIds));
+    console.log('Total unique users:', uniqueUserIds.size);
 
     const userList = Array.from(uniqueUserIds).map(id => ({
       id,
       email: id.substring(0, 8) + '...', // Truncated for privacy
     }));
+
+    console.log('User list to display:', userList);
+    console.log('=== DATA LOAD COMPLETE ===');
 
     setUsers(userList);
   };
