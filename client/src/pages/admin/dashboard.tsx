@@ -227,7 +227,12 @@ export default function AdminDashboard() {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
-        storageKey: `admin-${env}-auth` // Use unique storage key per environment
+        detectSessionInUrl: false
+      },
+      global: {
+        headers: {
+          'x-admin-client': 'true'
+        }
       }
     });
   };
