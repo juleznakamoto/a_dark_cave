@@ -31,6 +31,9 @@ app.get('/api/config', (req, res) => {
 app.get('/api/admin/config', (req, res) => {
   const isDev = process.env.NODE_ENV === 'development';
   
+  log(`🔧 Admin config request - isDev: ${isDev}`);
+  log(`📋 Available env vars: ${Object.keys(process.env).filter(k => k.includes('SUPABASE')).join(', ')}`);
+  
   const supabaseUrl = isDev
     ? process.env.VITE_SUPABASE_URL_DEV
     : process.env.VITE_SUPABASE_URL_PROD;
@@ -39,9 +42,12 @@ app.get('/api/admin/config', (req, res) => {
     ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
     : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
 
+  log(`🔑 URL: ${supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'MISSING'}`);
+  log(`🔑 Service key: ${supabaseServiceKey ? supabaseServiceKey.substring(0, 20) + '...' : 'MISSING'}`);
+
   if (!supabaseUrl || !supabaseServiceKey) {
     log('⚠️ Supabase service role config not found in environment variables');
-    log(`isDev: ${isDev}, url: ${supabaseUrl ? 'present' : 'missing'}, key: ${supabaseServiceKey ? 'present' : 'missing'}`);
+    log(`   Looking for: ${isDev ? 'SUPABASE_SERVICE_ROLE_KEY_DEV' : 'SUPABASE_SERVICE_ROLE_KEY_PROD'}`);
     return res.status(500).json({ error: 'Admin configuration not available' });
   }
 
