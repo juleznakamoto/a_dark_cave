@@ -35,16 +35,35 @@ export default function StartScreen() {
     // Start preloading background music immediately
     audioManager.loadSound('backgroundMusic', '/sounds/background_music.wav');
 
-    // Start wind sound after 3 seconds with 1 second fade-in
-    const windTimer = setTimeout(() => {
-      audioManager.playLoopingSound('wind', 0.3, false, 1);
-    }, 3000);
+    // Wait for user gesture before playing wind sound
+    let windTimer: NodeJS.Timeout;
+    const handleUserGesture = () => {
+      // Start wind sound after 3 seconds with 1 second fade-in
+      windTimer = setTimeout(() => {
+        audioManager.playLoopingSound('wind', 0.3, false, 1);
+      }, 3000);
+      
+      // Remove listeners after first interaction
+      document.removeEventListener('click', handleUserGesture);
+      document.removeEventListener('keydown', handleUserGesture);
+      document.removeEventListener('touchstart', handleUserGesture);
+    };
+
+    // Listen for user gestures
+    document.addEventListener('click', handleUserGesture);
+    document.addEventListener('keydown', handleUserGesture);
+    document.addEventListener('touchstart', handleUserGesture);
 
     return () => {
       clearTimeout(animationTimer);
       clearTimeout(windTimer);
       // Stop wind sound when component unmounts (no fade-out on unmount)
       audioManager.stopLoopingSound('wind');
+      
+      // Clean up event listeners
+      document.removeEventListener('click', handleUserGesture);
+      document.removeEventListener('keydown', handleUserGesture);
+      document.removeEventListener('touchstart', handleUserGesture);
     };
   }, [setBoostMode]);
 
