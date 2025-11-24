@@ -29,53 +29,63 @@ export async function signUp(email: string, password: string, referralCode?: str
         const referralCount = referrerData.game_state?.referralCount || 0;
         
         if (referralCount < 10) {
-          // Add referral bonus for new user
-          await supabase.from('purchases').insert({
-            user_id: data.user.id,
-            item_id: 'referral_bonus_250_gold',
-            price: 0,
-            created_at: new Date().toISOString(),
-          });
-
-          // Add referral bonus for referrer
-          await supabase.from('purchases').insert({
-            user_id: referralCode,
-            item_id: 'referral_bonus_250_gold',
-            price: 0,
-            created_at: new Date().toISOString(),
-          });
-
-          // Update referrer's referral count
-          const updatedState = {
-            ...referrerData.game_state,
+          // Add 250 gold to referrer's game state
+          const referrerState = referrerData.game_state;
+          const updatedReferrerState = {
+            ...referrerState,
+            resources: {
+              ...referrerState.resources,
+              gold: (referrerState.resources?.gold || 0) + 250,
+            },
             referralCount: referralCount + 1,
+            log: [
+              ...(referrerState.log || []),
+              {
+                id: `referral-bonus-${Date.now()}`,
+                message: "A friend joined using your invite link! You received 250 Gold as a reward.",
+                timestamp: Date.now(),
+                type: "system",
+              }
+            ].slice(-100), // Keep last 100 log entries
           };
           
           await supabase.from('game_saves').upsert({
             user_id: referralCode,
-            game_state: updatedState,
+            game_state: updatedReferrerState,
             updated_at: new Date().toISOString(),
           });
 
-          // Store referral code in new user's state
+          // Add 250 gold to new user's game state (or create initial state)
           const { data: newUserData } = await supabase
             .from('game_saves')
             .select('game_state')
             .eq('user_id', data.user.id)
             .single();
 
-          if (newUserData) {
-            const newUserState = {
-              ...newUserData.game_state,
-              referralCode: referralCode,
-            };
+          const newUserState = newUserData?.game_state || {};
+          const updatedNewUserState = {
+            ...newUserState,
+            resources: {
+              ...(newUserState.resources || {}),
+              gold: ((newUserState.resources?.gold || 0) + 250),
+            },
+            referralCode: referralCode,
+            log: [
+              ...(newUserState.log || []),
+              {
+                id: `referral-bonus-new-${Date.now()}`,
+                message: "Welcome! You received 250 Gold as a referral bonus for joining through an invite link.",
+                timestamp: Date.now(),
+                type: "system",
+              }
+            ].slice(-100), // Keep last 100 log entries
+          };
 
-            await supabase.from('game_saves').upsert({
-              user_id: data.user.id,
-              game_state: newUserState,
-              updated_at: new Date().toISOString(),
-            });
-          }
+          await supabase.from('game_saves').upsert({
+            user_id: data.user.id,
+            game_state: updatedNewUserState,
+            updated_at: new Date().toISOString(),
+          });
         }
       }
     } catch (referralError) {

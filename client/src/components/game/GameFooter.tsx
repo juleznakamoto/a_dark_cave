@@ -259,7 +259,25 @@ export default function GameFooter() {
               </TooltipProvider>
             )}
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex-1 flex justify-end gap-2 items-center">
+            <a
+              href="mailto:support@a-dark-cave.com"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
+            >
+              Feedback
+            </a>
+            <a
+              href="/privacy"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
+            >
+              Privacy
+            </a>
+            <a
+              href="/imprint"
+              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
+            >
+              Imprint
+            </a>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -317,24 +335,6 @@ export default function GameFooter() {
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
-            <a
-              href="mailto:support@a-dark-cave.com"
-              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
-            >
-              Feedback
-            </a>
-            <a
-              href="/privacy"
-              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
-            >
-              Privacy
-            </a>
-            <a
-              href="/imprint"
-              className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
-            >
-              Imprint
-            </a>
           </div>
         </div>
       </footer>
