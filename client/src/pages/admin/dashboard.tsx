@@ -166,6 +166,7 @@ export default function AdminDashboard() {
   // Reload data when environment changes
   useEffect(() => {
     if (isAuthorized) {
+      console.log(`🔄 Environment changed to ${environment.toUpperCase()}, reloading data...`);
       setLoading(true);
       loadData().finally(() => setLoading(false));
     }
@@ -173,16 +174,19 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
+      console.log('🔐 Checking admin access...');
       const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
       if (!user || !adminEmails.includes(user.email || '')) {
+        console.log('❌ Access denied');
         setLoading(false);
         setLocation('/');
         return;
       }
 
+      console.log('✅ Access granted for:', user.email);
       setIsAuthorized(true);
       await loadData();
       setLoading(false);
@@ -196,6 +200,7 @@ export default function AdminDashboard() {
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
+      console.log(`📡 Fetching data from ${environment.toUpperCase()} environment...`);
       const response = await fetch(`/api/admin/data?env=${environment}`);
       
       if (!response.ok) {
@@ -205,11 +210,34 @@ export default function AdminDashboard() {
       }
       
       const data = await response.json();
+      console.log('📦 Received data:', {
+        clicks: data.clicks?.length || 0,
+        saves: data.saves?.length || 0,
+        purchases: data.purchases?.length || 0
+      });
+
+      // Log sample click data structure
+      if (data.clicks && data.clicks.length > 0) {
+        console.log('🔍 Sample click data structure:', {
+          firstRecord: data.clicks[0],
+          clicksKeys: Object.keys(data.clicks[0].clicks || {}),
+          samplePlaytimeEntry: Object.entries(data.clicks[0].clicks || {})[0]
+        });
+      }
 
       // Set the data
-      if (data.clicks) setClickData(data.clicks);
-      if (data.saves) setGameSaves(data.saves);
-      if (data.purchases) setPurchases(data.purchases);
+      if (data.clicks) {
+        setClickData(data.clicks);
+        console.log('✅ Click data set:', data.clicks.length, 'records');
+      }
+      if (data.saves) {
+        setGameSaves(data.saves);
+        console.log('✅ Game saves set:', data.saves.length, 'records');
+      }
+      if (data.purchases) {
+        setPurchases(data.purchases);
+        console.log('✅ Purchases set:', data.purchases.length, 'records');
+      }
 
       // Collect all unique user IDs
       const uniqueUserIds = new Set<string>();
@@ -225,6 +253,7 @@ export default function AdminDashboard() {
       }));
 
       setUsers(userList);
+      console.log('✅ Users set:', userList.length, 'users');
     } catch (error) {
       console.error('Failed to load admin data:', error);
     }
@@ -414,17 +443,27 @@ export default function AdminDashboard() {
   };
 
   const getClickTypesByTimestamp = () => {
+    console.log('📊 Processing click types by timestamp...');
+    console.log('   Click data records:', clickData.length);
+    console.log('   Selected user:', selectedUser);
+    console.log('   Selected click types:', Array.from(selectedClickTypes));
+
     let filteredClicks = clickData;
 
     if (selectedUser !== 'all') {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+      console.log('   Filtered to user:', filteredClicks.length, 'records');
     }
 
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
 
-    filteredClicks.forEach(entry => {
+    filteredClicks.forEach((entry, index) => {
+      if (index === 0) {
+        console.log('   First entry clicks structure:', entry.clicks);
+      }
+      
       // Format: { "playtime_minutes": { "button": count } }
       Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
         try {
@@ -453,7 +492,13 @@ export default function AdminDashboard() {
       });
     });
 
-    if (buckets.size === 0) return [];
+    console.log('   Buckets created:', buckets.size);
+    console.log('   Max bucket:', maxBucket);
+
+    if (buckets.size === 0) {
+      console.log('   ⚠️ No buckets created, returning empty array');
+      return [];
+    }
 
     // Convert to array and format for chart display
     const result: Array<{ time: string; [key: string]: any }> = [];
@@ -465,6 +510,10 @@ export default function AdminDashboard() {
         ...bucketData,
       });
     }
+
+    console.log('   Result array length:', result.length);
+    console.log('   Sample result entry:', result[0]);
+    console.log('   Result keys:', result.length > 0 ? Object.keys(result[0]) : []);
 
     return result;
   };
