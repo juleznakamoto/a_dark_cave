@@ -515,14 +515,9 @@ export function handleTradeGoldForEmberBomb(
   return handleTradeAction("tradeGoldForEmberBomb", state, result);
 }
 
-export function handleTradeGoldForAshfireBomb(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForAshfireBomb', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
-}
-
-export function handleTradeGoldForLeather(state: GameState, result: ActionResult): ActionResult {
-  const effectUpdates = applyActionEffects('tradeGoldForLeather', state);
-  Object.assign(result.stateUpdates, effectUpdates);
-  return result;
+export function handleTradeGoldForAshfireBomb(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForAshfireBomb", state, result);
 }
