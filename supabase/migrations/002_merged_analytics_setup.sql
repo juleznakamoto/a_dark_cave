@@ -104,7 +104,7 @@ BEGIN
 
     -- Get playtime from game state (in milliseconds, convert to 5-minute buckets)
     v_playtime_ms := (p_game_state->>'playTime')::NUMERIC;
-    v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
+    v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60 / 60);
     -- Round down to nearest 5-minute bucket
     v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
     v_playtime_key := v_playtime_bucket || 'm';
