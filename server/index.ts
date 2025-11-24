@@ -30,17 +30,16 @@ app.get('/api/config', (req, res) => {
 // Server-side Supabase admin client (bypasses RLS)
 import { createClient } from '@supabase/supabase-js';
 
-const getAdminClient = () => {
-  const isDev = process.env.NODE_ENV === 'development';
-  const supabaseUrl = isDev
+const getAdminClient = (env: 'dev' | 'prod' = 'dev') => {
+  const supabaseUrl = env === 'dev'
     ? process.env.VITE_SUPABASE_URL_DEV
     : process.env.VITE_SUPABASE_URL_PROD;
-  const supabaseServiceKey = isDev
+  const supabaseServiceKey = env === 'dev'
     ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
     : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
 
   if (!supabaseUrl || !supabaseServiceKey) {
-    throw new Error('Supabase admin config not available');
+    throw new Error(`Supabase admin config not available for ${env} environment`);
   }
 
   return createClient(supabaseUrl, supabaseServiceKey, {
@@ -54,9 +53,10 @@ const getAdminClient = () => {
 // API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
 app.get('/api/admin/data', async (req, res) => {
   try {
-    const adminClient = getAdminClient();
+    const env = req.query.env as 'dev' | 'prod' || 'dev';
+    const adminClient = getAdminClient(env);
 
-    log('📊 Fetching admin dashboard data...');
+    log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
 
     // Fetch all data in parallel
     const [clicksResult, savesResult, purchasesResult] = await Promise.all([

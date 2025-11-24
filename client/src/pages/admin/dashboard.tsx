@@ -124,6 +124,7 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
+  const [environment, setEnvironment] = useState<'dev' | 'prod'>('dev');
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -162,6 +163,13 @@ export default function AdminDashboard() {
     checkAdminAccess();
   }, []);
 
+  // Reload data when environment changes
+  useEffect(() => {
+    if (isAuthorized) {
+      loadData();
+    }
+  }, [environment, isAuthorized]);
+
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
@@ -187,7 +195,7 @@ export default function AdminDashboard() {
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
-      const response = await fetch('/api/admin/data');
+      const response = await fetch(`/api/admin/data?env=${environment}`);
       
       if (!response.ok) {
         const errorText = await response.text();
@@ -610,6 +618,15 @@ export default function AdminDashboard() {
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <div className="flex gap-4">
+            <Select value={environment} onValueChange={(value: 'dev' | 'prod') => setEnvironment(value)}>
+              <SelectTrigger className="w-[140px]">
+                <SelectValue placeholder="Environment" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="dev">Development</SelectItem>
+                <SelectItem value="prod">Production</SelectItem>
+              </SelectContent>
+            </Select>
             <Select value={selectedUser} onValueChange={setSelectedUser}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="Select user" />
