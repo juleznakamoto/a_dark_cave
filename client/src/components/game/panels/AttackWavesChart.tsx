@@ -73,7 +73,7 @@ export default function AttackWavesChart() {
           },
         },
       }));
-      
+
       // Trigger immediate save to persist provoked state
       const { manualSave } = await import('@/game/loop');
       await manualSave();
@@ -91,7 +91,7 @@ export default function AttackWavesChart() {
   const getTimeRemaining = (waveId: string): number => {
     const timer = attackWaveTimers?.[waveId];
     if (!timer || timer.defeated || timer.startTime <= 0) return 0;
-    
+
     const elapsed = Date.now() - timer.startTime;
     return Math.max(0, timer.duration - elapsed);
   };
@@ -111,8 +111,8 @@ export default function AttackWavesChart() {
   const currentWave = currentWaveIndex === -1 ? 5 : currentWaveIndex;
   const totalWaves = 5;
   const completedWaves = currentWaveIndex === -1 ? 5 : currentWaveIndex;
-  const completedPercentage = (completedWaves / totalWaves) * 100;
-  const currentWavePercentage = currentWaveIndex === -1 ? 0 : ((completedWaves) / totalWaves) * 100;
+  const allWavesCompleted = currentWaveIndex === -1;
+  const currentWavePercentage = allWavesCompleted ? 100 : ((completedWaves) / totalWaves) * 100;
 
   return (
     <div className="space-y-3">
