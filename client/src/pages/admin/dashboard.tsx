@@ -193,45 +193,59 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    // Get Supabase config for the selected environment
-    let supabaseUrl: string;
-    let supabaseAnonKey: string;
+    try {
+      // Get Supabase config for the selected environment
+      let supabaseUrl: string;
+      let supabaseAnonKey: string;
 
-    if (environment === 'prod') {
-      // In production mode, fetch config from server
-      const response = await fetch('/api/config');
-      if (!response.ok) {
-        console.error('Failed to load production Supabase config');
+      if (environment === 'prod') {
+        // Check if we're running in production mode
+        if (import.meta.env.PROD) {
+          // In production build, fetch config from server
+          const response = await fetch('/api/config');
+          if (!response.ok) {
+            console.error('Failed to load production Supabase config');
+            return;
+          }
+          const config = await response.json();
+          supabaseUrl = config.supabaseUrl;
+          supabaseAnonKey = config.supabaseAnonKey;
+        } else {
+          // In dev mode but viewing prod data
+          supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
+          supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
+        }
+      } else {
+        // Viewing dev data
+        supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
+        supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+      }
+
+      console.log(`Loading data from ${environment.toUpperCase()} environment`, { 
+        supabaseUrl,
+        hasKey: !!supabaseAnonKey 
+      });
+
+      if (!supabaseUrl || !supabaseAnonKey) {
+        console.error(`Missing Supabase credentials for ${environment} environment`, {
+          supabaseUrl: !!supabaseUrl,
+          supabaseAnonKey: !!supabaseAnonKey
+        });
         return;
       }
-      const config = await response.json();
-      supabaseUrl = config.supabaseUrl;
-      supabaseAnonKey = config.supabaseAnonKey;
-    } else {
-      // In development mode, use dev environment variables
-      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
-      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
-    }
 
-    if (!supabaseUrl || !supabaseAnonKey) {
-      console.error(`Missing Supabase credentials for ${environment} environment`);
-      return;
-    }
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false
+        }
+      });
+      
+      console.log('Supabase client created for', environment);
 
-    const { createClient } = await import('@supabase/supabase-js');
-    const supabase = createClient(supabaseUrl, supabaseAnonKey);
-    
-    console.log(`Loading data from ${environment.toUpperCase()} environment`, { supabaseUrl });
-
-    // Test connection first
-    const { data: testData, error: testError } = await supabase
-      .from('button_clicks')
-      .select('count');
-    
-    console.log('Connection test:', { testData, testError });
-
-    // Load button clicks
-    const { data: clicks, error: clicksError } = await supabase
+      // Load button clicks
+      const { data: clicks, error: clicksError } = await supabase
       .from('button_clicks')
       .select('user_id, clicks, timestamp')
       .order('timestamp', { ascending: true });
@@ -271,8 +285,8 @@ export default function AdminDashboard() {
     }
     if (purchaseData) setPurchases(purchaseData);
 
-    // Load unique users from all tables
-    const uniqueUserIds = new Set<string>();
+      // Load unique users from all tables
+      const uniqueUserIds = new Set<string>();
     
     console.log('Raw data loaded:');
     console.log('- Clicks records:', clicks?.length || 0);
@@ -309,12 +323,15 @@ export default function AdminDashboard() {
     console.log('Total unique user IDs found:', uniqueUserIds.size);
     console.log('User IDs:', Array.from(uniqueUserIds));
 
-    const userList = Array.from(uniqueUserIds).map(id => ({
-      id,
-      email: id.substring(0, 8) + '...', // Truncated for privacy
-    }));
+      const userList = Array.from(uniqueUserIds).map(id => ({
+        id,
+        email: id.substring(0, 8) + '...', // Truncated for privacy
+      }));
 
-    setUsers(userList);
+      setUsers(userList);
+    } catch (error) {
+      console.error('Error loading data:', error);
+    }
   };
 
   // Active Users Calculations
