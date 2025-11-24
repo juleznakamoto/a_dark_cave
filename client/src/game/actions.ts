@@ -54,6 +54,7 @@ import {
   handleCraftLeatherTotems5,
   handleCraftEmberBomb,
   handleCraftAshfireBomb,
+  handleCraftVoidBomb, // Import the new handler
 } from "@/game/rules/caveCraftResources";
 
 import {
@@ -278,6 +279,8 @@ export function executeGameAction(
       return handleCraftEmberBomb(state, result);
     case "craftAshfireBomb":
       return handleCraftAshfireBomb(state, result);
+    case 'craftVoidBomb':
+      return handleCraftVoidBomb(state, result);
     case "craftIronSword":
       return handleCraftIronSword(state, result);
     case "craftSteelSword":

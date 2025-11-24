@@ -109,7 +109,8 @@ export default function CombatDialog({
 
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
-  const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
+  const MAX_ASHFIRE_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
+  const MAX_VOID_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
   const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow; // Assuming inventory holds bow count
 
   const emberBombsUsed = usedItemsInCombat.filter(
@@ -118,29 +119,18 @@ export default function CombatDialog({
   const ashfireBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ashfire_bomb",
   ).length;
+  const voidBombsUsedInCombat = usedItemsInCombat.filter(
+    (id) => id === "void_bomb",
+  ).length;
   const poisonArrowsUsedInCombat = usedItemsInCombat.filter(
     (id) => id === "poison_arrows",
   ).length;
 
   const combatItems: CombatItem[] = [
-    {
-      id: "ember_bomb",
-      name: "Ember Bomb",
-      damage: 10,
-      available:
-        gameState.resources.ember_bomb > 0 &&
-        emberBombsUsed < MAX_EMBER_BOMBS &&
-        !usedItemsInRound.has("ember_bomb"),
-    },
-    {
-      id: "ashfire_bomb",
-      name: "Ashfire Bomb",
-      damage: 25,
-      available:
-        gameState.resources.ashfire_bomb > 0 &&
-        ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
-        !usedItemsInRound.has("ashfire_bomb"),
-    },
+    { id: "ember_bomb", name: "Ember Bomb", damage: 10 },
+    { id: "ashfire_bomb", name: "Ashfire Bomb", damage: 25 },
+    { id: "void_bomb", name: "Void Bomb", damage: 40 },
+    { id: "poison_arrows", name: "Poison Arrows", damage: 15 },
   ];
 
   // Add Poison Arrows if Nightshade Bow is owned and not used yet in combat
@@ -193,6 +183,27 @@ export default function CombatDialog({
         setEnemyDamageIndicator({ amount: 0, visible: false });
       }, 3000);
     }
+
+      if (item.id === "ember_bomb") {
+        if (emberBombsUsed >= MAX_EMBER_BOMBS) {
+          return;
+        }
+        // setEmberBombsUsedInCombat((prev) => prev + 1); // This state is updated in setUsedItemsInCombat
+      }
+
+      if (item.id === "ashfire_bomb") {
+        if (ashfireBombsUsed >= MAX_ASHFIRE_BOMBS) {
+          return;
+        }
+        // setAshfireBombsUsedInCombat((prev) => prev + 1); // This state is updated in setUsedItemsInCombat
+      }
+
+      if (item.id === "void_bomb") {
+        if (voidBombsUsedInCombat >= MAX_VOID_BOMBS) {
+          return;
+        }
+        // setVoidBombsUsedInCombat((prev) => prev + 1); // This state is updated in setUsedItemsInCombat
+      }
 
 
     // Check if enemy is defeated by bombs
@@ -306,6 +317,17 @@ export default function CombatDialog({
       setIsProcessingRound(false);
     }
   };
+
+  // Reset state when dialog opens
+  useEffect(() => {
+    if (isOpen) {
+      setEmberBombsUsedInCombat(0);
+      setAshfireBombsUsedInCombat(0);
+      setVoidBombsUsedInCombat(0);
+      setPoisonArrowsUsedInCombat(0);
+    }
+  }, [isOpen]);
+
 
   if (!enemy) return null;
 
@@ -421,7 +443,7 @@ export default function CombatDialog({
 
               {/* Combat Items */}
               {combatItems.some((item) =>
-                item.id === "ember_bomb" || item.id === "ashfire_bomb"
+                item.id === "ember_bomb" || item.id === "ashfire_bomb" || item.id === "void_bomb"
                   ? gameState.resources[
                       item.id as keyof typeof gameState.resources
                     ] > 0
@@ -444,11 +466,27 @@ export default function CombatDialog({
                       .map((item) => {
                         const tooltipConfig = combatItemTooltips[item.id];
                         const tooltipContent = tooltipConfig ? tooltipConfig.getContent(gameState) : '';
-                        const availabilityText = item.id === "poison_arrows" 
+                        const availabilityText = item.id === "poison_arrows"
                           ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
                           : item.id === "ember_bomb"
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                            : `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`;
+                            : item.id === "ashfire_bomb"
+                              ? `Available: ${MAX_ASHFIRE_BOMBS - ashfireBombsUsed}/${MAX_ASHFIRE_BOMBS}`
+                              : `Available: ${MAX_VOID_BOMBS - voidBombsUsedInCombat}/${MAX_VOID_BOMBS}`;
+
+                        const isDisabled =
+                          (item.id === "ember_bomb" &&
+                            (emberBombsUsed >= MAX_EMBER_BOMBS ||
+                              gameState.resources.ember_bomb === 0)) ||
+                          (item.id === "ashfire_bomb" &&
+                            (ashfireBombsUsed >= MAX_ASHFIRE_BOMBS ||
+                              gameState.resources.ashfire_bomb === 0)) ||
+                          (item.id === "void_bomb" &&
+                            (voidBombsUsedInCombat >= MAX_VOID_BOMBS ||
+                              gameState.resources.void_bomb === 0)) ||
+                          (item.id === "poison_arrows" &&
+                            poisonArrowsUsedInCombat >= 1);
+
 
                         return (
                           <TooltipProvider key={item.id}>
@@ -458,7 +496,7 @@ export default function CombatDialog({
                                   <Button
                                     onClick={() => handleUseItem(item)}
                                     disabled={
-                                      !item.available || isProcessingRound
+                                      !item.available || isDisabled || isProcessingRound
                                     }
                                     variant="outline"
                                     size="sm"

@@ -145,8 +145,8 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             const hasEnough =
-              (state.resources[resource as keyof typeof state.resources] ||
-                0) >= value;
+              (state.resources[resource as keyof typeof state.resources] || 0) >=
+              value;
             costs.push({ resource, amount: value, hasEnough });
           }
         }
@@ -308,29 +308,53 @@ export const miningBoostTooltip: TooltipConfig = {
 };
 
 // Combat item tooltips
-export const combatItemTooltips: Record<string, TooltipConfig> = {
+export const combatItemTooltips: Record<
+  string,
+  { getContent: (gameState: GameState) => React.ReactNode }
+> = {
   ember_bomb: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 10;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+    getContent: (gameState: GameState) => {
+      const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
+      return (
+        <span>
+          Deals 15 damage. Max {MAX_EMBER_BOMBS} per combat.
+          {gameState.clothing.grenadier_bag && (
+            <span className="block text-green-400 text-xs mt-1">
+              ✓ Grenadier Bag equipped (+1 use)
+            </span>
+          )}
+        </span>
+      );
     },
   },
   ashfire_bomb: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 25;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+    getContent: (gameState: GameState) => {
+      const MAX_ASHFIRE_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
+      return (
+        <span>
+          Deals 25 damage. Max {MAX_ASHFIRE_BOMBS} per combat.
+          {gameState.clothing.grenadier_bag && (
+            <span className="block text-green-400 text-xs mt-1">
+              ✓ Grenadier Bag equipped (+1 use)
+            </span>
+          )}
+        </span>
+      );
     },
   },
-  poison_arrows: {
-    getContent: (state) => {
-      const knowledge = getTotalKnowledge(state) || 0;
-      const baseDamage = 15;
-      const knowledgeBonus = Math.floor(knowledge / 5);
-      return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus} per round`;
+  void_bomb: {
+    getContent: (gameState: GameState) => {
+      const MAX_VOID_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
+      return (
+        <span>
+          Deals 40 damage. Max {MAX_VOID_BOMBS} per combat.
+          {gameState.clothing.grenadier_bag && (
+            <span className="block text-green-400 text-xs mt-1">
+              ✓ Grenadier Bag equipped (+1 use)
+            </span>
+          )}
+        </span>
+      );
     },
   },
 };
