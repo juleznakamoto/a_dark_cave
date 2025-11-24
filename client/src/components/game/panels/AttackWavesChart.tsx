@@ -143,7 +143,7 @@ export default function AttackWavesChart() {
           )}
         </div>
       ) : currentWave < totalWaves && (
-        <div className="pt-2">
+        <div>
           <span className="text-xs italic text-muted-foreground">
             It is calm, for now...
           </span>
