@@ -123,26 +123,24 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
       // Check if timer exists and has expired
       const timer = state.attackWaveTimers?.firstWave;
-      if (!timer || timer.defeated) {
+      if (!timer) {
         // Initialize timer if conditions just met
-        if (!timer) {
-          const now = Date.now();
-          const duration = 10 * 60 * 1000; // 10 minutes
-          setTimeout(() => {
-            useGameStore.setState((s) => ({
-              attackWaveTimers: {
-                ...s.attackWaveTimers,
-                firstWave: {
-                  startTime: now,
-                  duration: duration,
-                  defeated: false,
-                },
-              },
-            }));
-          }, 0);
-        }
+        const now = Date.now();
+        const duration = 10 * 60 * 1000; // 10 minutes
+        useGameStore.setState((s) => ({
+          attackWaveTimers: {
+            ...s.attackWaveTimers,
+            firstWave: {
+              startTime: now,
+              duration: duration,
+              defeated: false,
+            },
+          },
+        }));
         return false;
       }
+
+      if (timer.defeated) return false;
 
       // Check if timer has expired
       const elapsed = Date.now() - timer.startTime;
@@ -221,25 +219,23 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       if (!baseCondition) return false;
 
       const timer = state.attackWaveTimers?.secondWave;
-      if (!timer || timer.defeated) {
-        if (!timer) {
-          const now = Date.now();
-          const duration = 10 * 60 * 1000;
-          setTimeout(() => {
-            useGameStore.setState((s) => ({
-              attackWaveTimers: {
-                ...s.attackWaveTimers,
-                secondWave: {
-                  startTime: now,
-                  duration: duration,
-                  defeated: false,
-                },
-              },
-            }));
-          }, 0);
-        }
+      if (!timer) {
+        const now = Date.now();
+        const duration = 10 * 60 * 1000;
+        useGameStore.setState((s) => ({
+          attackWaveTimers: {
+            ...s.attackWaveTimers,
+            secondWave: {
+              startTime: now,
+              duration: duration,
+              defeated: false,
+            },
+          },
+        }));
         return false;
       }
+
+      if (timer.defeated) return false;
 
       const elapsed = Date.now() - timer.startTime;
       return elapsed >= timer.duration;
@@ -319,25 +315,23 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       if (!baseCondition) return false;
 
       const timer = state.attackWaveTimers?.thirdWave;
-      if (!timer || timer.defeated) {
-        if (!timer) {
-          const now = Date.now();
-          const duration = 10 * 60 * 1000;
-          setTimeout(() => {
-            useGameStore.setState((s) => ({
-              attackWaveTimers: {
-                ...s.attackWaveTimers,
-                thirdWave: {
-                  startTime: now,
-                  duration: duration,
-                  defeated: false,
-                },
-              },
-            }));
-          }, 0);
-        }
+      if (!timer) {
+        const now = Date.now();
+        const duration = 10 * 60 * 1000;
+        useGameStore.setState((s) => ({
+          attackWaveTimers: {
+            ...s.attackWaveTimers,
+            thirdWave: {
+              startTime: now,
+              duration: duration,
+              defeated: false,
+            },
+          },
+        }));
         return false;
       }
+
+      if (timer.defeated) return false;
 
       const elapsed = Date.now() - timer.startTime;
       return elapsed >= timer.duration;
@@ -410,25 +404,23 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       if (!baseCondition) return false;
 
       const timer = state.attackWaveTimers?.fourthWave;
-      if (!timer || timer.defeated) {
-        if (!timer) {
-          const now = Date.now();
-          const duration = 10 * 60 * 1000;
-          setTimeout(() => {
-            useGameStore.setState((s) => ({
-              attackWaveTimers: {
-                ...s.attackWaveTimers,
-                fourthWave: {
-                  startTime: now,
-                  duration: duration,
-                  defeated: false,
-                },
-              },
-            }));
-          }, 0);
-        }
+      if (!timer) {
+        const now = Date.now();
+        const duration = 10 * 60 * 1000;
+        useGameStore.setState((s) => ({
+          attackWaveTimers: {
+            ...s.attackWaveTimers,
+            fourthWave: {
+              startTime: now,
+              duration: duration,
+              defeated: false,
+            },
+          },
+        }));
         return false;
       }
+
+      if (timer.defeated) return false;
 
       const elapsed = Date.now() - timer.startTime;
       return elapsed >= timer.duration;
@@ -501,25 +493,23 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       if (!baseCondition) return false;
 
       const timer = state.attackWaveTimers?.fifthWave;
-      if (!timer || timer.defeated) {
-        if (!timer) {
-          const now = Date.now();
-          const duration = 10 * 60 * 1000;
-          setTimeout(() => {
-            useGameStore.setState((s) => ({
-              attackWaveTimers: {
-                ...s.attackWaveTimers,
-                fifthWave: {
-                  startTime: now,
-                  duration: duration,
-                  defeated: false,
-                },
-              },
-            }));
-          }, 0);
-        }
+      if (!timer) {
+        const now = Date.now();
+        const duration = 10 * 60 * 1000;
+        useGameStore.setState((s) => ({
+          attackWaveTimers: {
+            ...s.attackWaveTimers,
+            fifthWave: {
+              startTime: now,
+              duration: duration,
+              defeated: false,
+            },
+          },
+        }));
         return false;
       }
+
+      if (timer.defeated) return false;
 
       const elapsed = Date.now() - timer.startTime;
       return elapsed >= timer.duration;
