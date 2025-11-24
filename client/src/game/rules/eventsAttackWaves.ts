@@ -117,9 +117,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.flags.portalBlasted &&
       state.story.seen.hasBastion &&
       !state.story.seen.firstWaveVictory &&
-      state.attackWaveTimers.firstWave <= 0 &&
       state.attackWaveTimers.firstWave !== undefined &&
-      !state.story.seen.firstWaveTriggered,
+      state.attackWaveTimers.firstWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
@@ -131,13 +130,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            firstWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
@@ -177,9 +169,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.story.seen.firstWaveVictory &&
       !state.story.seen.secondWaveVictory &&
-      state.attackWaveTimers.secondWave <= 0 &&
       state.attackWaveTimers.secondWave !== undefined &&
-      !state.story.seen.secondWaveTriggered,
+      state.attackWaveTimers.secondWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
@@ -191,13 +182,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            secondWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
@@ -238,9 +222,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.story.seen.wizardDecryptsScrolls &&
       state.story.seen.secondWaveVictory &&
       !state.story.seen.thirdWaveVictory &&
-      state.attackWaveTimers.thirdWave <= 0 &&
       state.attackWaveTimers.thirdWave !== undefined &&
-      !state.story.seen.thirdWaveTriggered,
+      state.attackWaveTimers.thirdWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
@@ -252,13 +235,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            thirdWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
@@ -299,9 +275,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.weapons.frostglass_sword &&
       state.story.seen.thirdWaveVictory &&
       !state.story.seen.fourthWaveVictory &&
-      state.attackWaveTimers.fourthWave <= 0 &&
       state.attackWaveTimers.fourthWave !== undefined &&
-      !state.story.seen.fourthWaveTriggered,
+      state.attackWaveTimers.fourthWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
@@ -313,13 +288,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            fourthWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
@@ -360,9 +328,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       state.weapons.bloodstone_staff &&
       state.story.seen.fourthWaveVictory &&
       !state.story.seen.fifthWaveVictory &&
-      state.attackWaveTimers.fifthWave <= 0 &&
       state.attackWaveTimers.fifthWave !== undefined &&
-      !state.story.seen.fifthWaveTriggered,
+      state.attackWaveTimers.fifthWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
