@@ -206,6 +206,9 @@ export function startGameLoop() {
           handleFreezingCheck();
           handleMadnessCheck();
           handleStrangerApproach();
+          
+          // Check for events (including attack waves)
+          currentState.checkEvents();
         } else {
           console.log('[GAME LOOP] Production SKIPPED - idle mode is active');
         }
@@ -300,6 +303,19 @@ function processTick() {
     console.log("[LOOP] Events changed, triggering autosave");
     // Manually call autosave to persist events changes
     handleAutoSave();
+  }
+  
+  // Log attack wave timer status for debugging
+  if (import.meta.env.DEV && state.attackWaveTimers?.firstWave) {
+    const timer = state.attackWaveTimers.firstWave;
+    const elapsed = Date.now() - timer.startTime;
+    if (elapsed >= timer.duration && !timer.defeated) {
+      console.log('[LOOP] First wave timer expired but not defeated:', {
+        elapsed,
+        duration: timer.duration,
+        defeated: timer.defeated,
+      });
+    }
   }
 }
 

@@ -144,7 +144,19 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
       // Check if timer has expired
       const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
+      const hasExpired = elapsed >= timer.duration;
+      
+      // Debug logging
+      if (import.meta.env.DEV && hasExpired) {
+        console.log('[FIRST WAVE] Timer expired, triggering attack:', {
+          elapsed,
+          duration: timer.duration,
+          startTime: timer.startTime,
+          now: Date.now(),
+        });
+      }
+      
+      return hasExpired;
     },
     triggerType: "resource",
     timeProbability: 10,
