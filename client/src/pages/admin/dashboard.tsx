@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
-import { getSupabaseClient } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import {
   LineChart,
   Line,
@@ -102,6 +102,26 @@ const buttonClicksChartConfig = {
   caveExplore: { label: 'Cave Explore', color: 'hsl(var(--chart-4))' },
 };
 
+// Get production Supabase client
+const getProductionSupabaseClient = () => {
+  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
+  const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    throw new Error('Production Supabase configuration is missing');
+  }
+
+  return createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: false,
+      flowType: 'pkce',
+      storageKey: 'a-dark-cave-admin-dashboard-prod'
+    }
+  });
+};
+
 // Helper function to clean button names by removing timestamp/random suffixes
 const cleanButtonName = (buttonName: string): string => {
   // Remove patterns like _1763918279318_0.004097622888011188
@@ -163,7 +183,7 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
-      const supabase = await getSupabaseClient();
+      const supabase = getProductionSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
@@ -185,7 +205,7 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = await getSupabaseClient();
+    const supabase = getProductionSupabaseClient();
 
     // Load button clicks
     const { data: clicks } = await supabase
