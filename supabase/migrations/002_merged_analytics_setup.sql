@@ -1,5 +1,3 @@
-
-
 -- Drop existing policies if they exist (to allow re-running migration)
 DROP POLICY IF EXISTS "Users can view their own click data" ON button_clicks;
 DROP POLICY IF EXISTS "Users can insert their own click data" ON button_clicks;
@@ -66,6 +64,12 @@ CREATE POLICY "Users can view their own purchases"
 CREATE POLICY "Users can insert their own purchases"
   ON purchases FOR INSERT
   WITH CHECK (auth.uid() = user_id);
+
+-- Grant execute permission to authenticated users
+GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
+
+-- Drop the existing function to allow parameter name change
+DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 
 -- Create a function that saves both game state and click analytics atomically
 -- Now handles state diffs by merging with existing state
@@ -144,7 +148,3 @@ BEGIN
   END IF;
 END;
 $$;
-
--- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
-
