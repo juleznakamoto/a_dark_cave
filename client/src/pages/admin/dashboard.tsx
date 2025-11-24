@@ -458,17 +458,18 @@ export default function AdminDashboard() {
 
     // Collect all unique button names in the data
     const allButtonsInData = new Set<string>();
-    const huntClickDetails: any[] = [];
+    const miningClickDetails: any[] = [];
     filteredClicks.forEach(entry => {
       Object.entries(entry.clicks).forEach(([playtimeKey, playtimeClicks]: [string, any]) => {
         Object.keys(playtimeClicks).forEach(button => {
           const cleanButton = cleanButtonName(button);
           allButtonsInData.add(cleanButton);
-          // Track hunt clicks specifically with their playtime
-          if (cleanButton === 'hunt') {
-            huntClickDetails.push({ 
+          // Track mining clicks (mineStone, mineIron, etc.)
+          if (cleanButton.startsWith('mine')) {
+            miningClickDetails.push({ 
               playtimeKey, 
               rawButton: button,
+              cleanButton: cleanButton,
               clicks: playtimeClicks[button],
               bucket: Math.floor(parseInt(playtimeKey.replace('m', '')) / 15) * 15
             });
@@ -477,11 +478,12 @@ export default function AdminDashboard() {
       });
     });
     console.log('   All button names in data:', Array.from(allButtonsInData));
-    console.log('   🎯 Hunt click details:', huntClickDetails);
-    console.log('   🎯 Hunt clicks by bucket:', huntClickDetails.reduce((acc, item) => {
-      acc[item.bucket] = (acc[item.bucket] || 0) + item.clicks;
+    console.log('   ⛏️ Mining click details:', miningClickDetails);
+    console.log('   ⛏️ Mining clicks by type:', miningClickDetails.reduce((acc, item) => {
+      if (!acc[item.cleanButton]) acc[item.cleanButton] = { raw: item.rawButton, total: 0 };
+      acc[item.cleanButton].total += item.clicks;
       return acc;
-    }, {} as Record<number, number>));
+    }, {} as Record<string, any>));
 
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
