@@ -22,6 +22,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
+import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 import {
   subDays,
   subMonths,
@@ -32,6 +34,7 @@ import {
   isWithinInterval,
   parseISO
 } from 'date-fns';
+import { createClient } from '@supabase/supabase-js';
 
 // Mock useQuery for standalone execution if not in a React Query context
 const useQuery = (options) => {
@@ -112,6 +115,7 @@ export default function AdminDashboard() {
   const [, setLocation] = useLocation();
   const [isAuthorized, setIsAuthorized] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
 
   // Data states
   const [clickData, setClickData] = useState<ButtonClickData[]>([]);
@@ -161,6 +165,12 @@ export default function AdminDashboard() {
     checkAdminAccess();
   }, []);
 
+  useEffect(() => {
+    if (isAuthorized) {
+      loadData();
+    }
+  }, [environment]);
+
   const checkAdminAccess = async () => {
     try {
       const supabase = await getSupabaseClient();
@@ -183,9 +193,33 @@ export default function AdminDashboard() {
     }
   };
 
+  // Create environment-specific Supabase client
+  const getEnvironmentSupabaseClient = () => {
+    const supabaseUrl = environment === 'dev' 
+      ? import.meta.env.VITE_SUPABASE_URL_DEV 
+      : import.meta.env.VITE_SUPABASE_URL_PROD;
+    const supabaseAnonKey = environment === 'dev'
+      ? import.meta.env.VITE_SUPABASE_ANON_KEY_DEV
+      : import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
+
+    if (!supabaseUrl || !supabaseAnonKey) {
+      throw new Error(`Supabase configuration is missing for ${environment} environment.`);
+    }
+
+    return createClient(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        autoRefreshToken: true,
+        persistSession: true,
+        detectSessionInUrl: true,
+        flowType: 'pkce',
+        storageKey: `a-dark-cave-auth-${environment}`
+      }
+    });
+  };
+
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = await getSupabaseClient();
+    const supabase = getEnvironmentSupabaseClient();
 
     // Load button clicks
     const { data: clicks } = await supabase
@@ -610,7 +644,17 @@ export default function AdminDashboard() {
           <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
           <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-          <div className="flex gap-4">
+          <div className="flex gap-4 items-center">
+            <div className="flex items-center space-x-2">
+              <Label htmlFor="environment-toggle" className="text-sm font-medium">
+                {environment === 'dev' ? 'DEV' : 'PROD'}
+              </Label>
+              <Switch
+                id="environment-toggle"
+                checked={environment === 'prod'}
+                onCheckedChange={(checked) => setEnvironment(checked ? 'prod' : 'dev')}
+              />
+            </div>
             <Select value={selectedUser} onValueChange={setSelectedUser}>
               <SelectTrigger className="w-[200px]">
                 <SelectValue placeholder="Select user" />
