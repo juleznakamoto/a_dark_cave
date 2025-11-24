@@ -907,13 +907,13 @@ export const villageBuildActions: Record<string, Action> = {
       3: {
         "resources.wood": 10000,
         "resources.stone": 7500,
-        "resources.steel": 2000,
+        "resources.steel": 1500,
         "resources.obsidian": 500,
       },
       4: {
         "resources.wood": 15000,
         "resources.stone": 10000,
-        "resources.steel": 3000,
+        "resources.steel": 2500,
         "resources.obsidian": 1000,
         "resources.adamant": 500,
       },
@@ -1150,8 +1150,8 @@ export const villageBuildActions: Record<string, Action> = {
     cost: {
       1: {
         "resources.wood": 5000,
-        "resources.stone": 10000,
-        "resources.steel": 5000,
+        "resources.stone": 5000,
+        "resources.steel": 2500,
         "resources.adamant": 2500,
       },
     },
