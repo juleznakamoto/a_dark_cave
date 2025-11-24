@@ -456,6 +456,17 @@ export default function AdminDashboard() {
       console.log('   Filtered to user:', filteredClicks.length, 'records');
     }
 
+    // Collect all unique button names in the data
+    const allButtonsInData = new Set<string>();
+    filteredClicks.forEach(entry => {
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.keys(playtimeClicks).forEach(button => {
+          allButtonsInData.add(cleanButtonName(button));
+        });
+      });
+    });
+    console.log('   All button names in data:', Array.from(allButtonsInData));
+
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
