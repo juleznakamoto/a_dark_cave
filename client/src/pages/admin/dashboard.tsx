@@ -458,22 +458,30 @@ export default function AdminDashboard() {
 
     // Collect all unique button names in the data
     const allButtonsInData = new Set<string>();
-    const huntClicksFound: any[] = [];
+    const huntClickDetails: any[] = [];
     filteredClicks.forEach(entry => {
-      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+      Object.entries(entry.clicks).forEach(([playtimeKey, playtimeClicks]: [string, any]) => {
         Object.keys(playtimeClicks).forEach(button => {
           const cleanButton = cleanButtonName(button);
           allButtonsInData.add(cleanButton);
-          // Track hunt clicks specifically
+          // Track hunt clicks specifically with their playtime
           if (cleanButton === 'hunt') {
-            huntClicksFound.push({ playtime: Object.keys(entry.clicks), clicks: playtimeClicks[button] });
+            huntClickDetails.push({ 
+              playtimeKey, 
+              rawButton: button,
+              clicks: playtimeClicks[button],
+              bucket: Math.floor(parseInt(playtimeKey.replace('m', '')) / 15) * 15
+            });
           }
         });
       });
     });
     console.log('   All button names in data:', Array.from(allButtonsInData));
-    console.log('   🎯 Hunt clicks found:', huntClicksFound);
-    console.log('   🎯 Total hunt click entries:', huntClicksFound.length);
+    console.log('   🎯 Hunt click details:', huntClickDetails);
+    console.log('   🎯 Hunt clicks by bucket:', huntClickDetails.reduce((acc, item) => {
+      acc[item.bucket] = (acc[item.bucket] || 0) + item.clicks;
+      return acc;
+    }, {} as Record<number, number>));
 
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
