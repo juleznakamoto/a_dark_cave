@@ -343,16 +343,19 @@ export const gameStateSchema = z.object({
     .default({}),
 
   activatedPurchases: z.record(z.boolean()).default({}),
-  feastPurchases: z.record(
-    z.object({
-      itemId: z.string(),
-      activationsRemaining: z.number(),
-      totalActivations: z.number(),
-      purchasedAt: z.number(),
-    }),
-  ).default({}),
+  feastPurchases: z.record(z.object({
+    itemId: z.string(),
+    activationsRemaining: z.number(),
+    totalActivations: z.number(),
+    purchasedAt: z.number(),
+  })).default({}),
   cruelMode: z.boolean().default(false),
   CM: z.number().default(0),
+  attackWaveTimers: z.record(z.object({
+    startTime: z.number(),
+    duration: z.number(), // Duration in milliseconds
+    defeated: z.boolean(),
+  })).default({}),
   curseState: z
     .object({
       isActive: z.boolean().default(false),

@@ -268,6 +268,7 @@ const defaultGameState: GameState = {
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }
   cruelMode: false,
   CM: 0,
+  attackWaveTimers: {},
   loopProgress: 0,
   isGameLoopActive: false,
   isPaused: false,

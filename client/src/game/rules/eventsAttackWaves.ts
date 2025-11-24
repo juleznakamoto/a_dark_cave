@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { useGameStore } from "@/game/state";
 
 const FIRST_WAVE_MESSAGE =
   "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
@@ -113,14 +114,42 @@ function handleDefeat(
 export const attackWaveEvents: Record<string, GameEvent> = {
   firstWave: {
     id: "firstWave",
-    condition: (state: GameState) =>
-      state.flags.portalBlasted &&
-      state.story.seen.hasBastion &&
-      !state.story.seen.firstWaveVictory,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => {
-      return state.story.seen.firstWaveTriggered ? 10 : 5;
+    condition: (state: GameState) => {
+      const baseCondition = state.flags.portalBlasted &&
+        state.story.seen.hasBastion &&
+        !state.story.seen.firstWaveVictory;
+      
+      if (!baseCondition) return false;
+
+      // Check if timer exists and has expired
+      const timer = state.attackWaveTimers?.firstWave;
+      if (!timer || timer.defeated) {
+        // Initialize timer if conditions just met
+        if (!timer) {
+          const now = Date.now();
+          const duration = 10 * 60 * 1000; // 10 minutes
+          setTimeout(() => {
+            useGameStore.setState((s) => ({
+              attackWaveTimers: {
+                ...s.attackWaveTimers,
+                firstWave: {
+                  startTime: now,
+                  duration: duration,
+                  defeated: false,
+                },
+              },
+            }));
+          }, 0);
+        }
+        return false;
+      }
+
+      // Check if timer has expired
+      const elapsed = Date.now() - timer.startTime;
+      return elapsed >= timer.duration;
     },
+    triggerType: "resource",
+    timeProbability: 10,
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
     triggered: false,
@@ -156,9 +185,29 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 firstWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              firstWave: {
+                ...state.attackWaveTimers.firstWave,
+                defeated: true,
+              },
+            },
             _logMessage: VICTORY_MESSAGE(200),
           }),
-          onDefeat: () => handleDefeat(state, 1, 5),
+          onDefeat: () => {
+            const defeatResult = handleDefeat(state, 1, 5);
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                firstWave: {
+                  startTime: Date.now(),
+                  duration: 20 * 60 * 1000, // 20 minutes on defeat
+                  defeated: false,
+                },
+              },
+            };
+          },
         },
       };
     },
@@ -166,12 +215,37 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
   secondWave: {
     id: "secondWave",
-    condition: (state: GameState) =>
-      state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => {
-      return state.story.seen.secondWaveTriggered ? 10 : 5;
+    condition: (state: GameState) => {
+      const baseCondition = state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory;
+      
+      if (!baseCondition) return false;
+
+      const timer = state.attackWaveTimers?.secondWave;
+      if (!timer || timer.defeated) {
+        if (!timer) {
+          const now = Date.now();
+          const duration = 10 * 60 * 1000;
+          setTimeout(() => {
+            useGameStore.setState((s) => ({
+              attackWaveTimers: {
+                ...s.attackWaveTimers,
+                secondWave: {
+                  startTime: now,
+                  duration: duration,
+                  defeated: false,
+                },
+              },
+            }));
+          }, 0);
+        }
+        return false;
+      }
+
+      const elapsed = Date.now() - timer.startTime;
+      return elapsed >= timer.duration;
     },
+    triggerType: "resource",
+    timeProbability: 10,
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,
@@ -207,9 +281,29 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 secondWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              secondWave: {
+                ...state.attackWaveTimers.secondWave,
+                defeated: true,
+              },
+            },
             _logMessage: VICTORY_MESSAGE(300),
           }),
-          onDefeat: () => handleDefeat(state, 2, 10),
+          onDefeat: () => {
+            const defeatResult = handleDefeat(state, 2, 10);
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                secondWave: {
+                  startTime: Date.now(),
+                  duration: 20 * 60 * 1000,
+                  defeated: false,
+                },
+              },
+            };
+          },
         },
       };
     },
@@ -217,14 +311,39 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
   thirdWave: {
     id: "thirdWave",
-    condition: (state: GameState) =>
-      state.story.seen.wizardDecryptsScrolls &&
-      state.story.seen.secondWaveVictory &&
-      !state.story.seen.thirdWaveVictory,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => {
-      return state.story.seen.thirdWaveTriggered ? 10 : 5;
+    condition: (state: GameState) => {
+      const baseCondition = state.story.seen.wizardDecryptsScrolls &&
+        state.story.seen.secondWaveVictory &&
+        !state.story.seen.thirdWaveVictory;
+      
+      if (!baseCondition) return false;
+
+      const timer = state.attackWaveTimers?.thirdWave;
+      if (!timer || timer.defeated) {
+        if (!timer) {
+          const now = Date.now();
+          const duration = 10 * 60 * 1000;
+          setTimeout(() => {
+            useGameStore.setState((s) => ({
+              attackWaveTimers: {
+                ...s.attackWaveTimers,
+                thirdWave: {
+                  startTime: now,
+                  duration: duration,
+                  defeated: false,
+                },
+              },
+            }));
+          }, 0);
+        }
+        return false;
+      }
+
+      const elapsed = Date.now() - timer.startTime;
+      return elapsed >= timer.duration;
     },
+    triggerType: "resource",
+    timeProbability: 10,
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
     triggered: false,
@@ -232,13 +351,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            thirdWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
@@ -260,9 +372,29 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 thirdWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              thirdWave: {
+                ...state.attackWaveTimers.thirdWave,
+                defeated: true,
+              },
+            },
             _logMessage: VICTORY_MESSAGE(400),
           }),
-          onDefeat: () => handleDefeat(state, 3, 15),
+          onDefeat: () => {
+            const defeatResult = handleDefeat(state, 3, 15);
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                thirdWave: {
+                  startTime: Date.now(),
+                  duration: 20 * 60 * 1000,
+                  defeated: false,
+                },
+              },
+            };
+          },
         },
       };
     },
@@ -270,14 +402,39 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
   fourthWave: {
     id: "fourthWave",
-    condition: (state: GameState) =>
-      state.weapons.frostglass_sword &&
-      state.story.seen.thirdWaveVictory &&
-      !state.story.seen.fourthWaveVictory,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => {
-      return state.story.seen.fourthWaveTriggered ? 10 : 5;
+    condition: (state: GameState) => {
+      const baseCondition = state.weapons.frostglass_sword &&
+        state.story.seen.thirdWaveVictory &&
+        !state.story.seen.fourthWaveVictory;
+      
+      if (!baseCondition) return false;
+
+      const timer = state.attackWaveTimers?.fourthWave;
+      if (!timer || timer.defeated) {
+        if (!timer) {
+          const now = Date.now();
+          const duration = 10 * 60 * 1000;
+          setTimeout(() => {
+            useGameStore.setState((s) => ({
+              attackWaveTimers: {
+                ...s.attackWaveTimers,
+                fourthWave: {
+                  startTime: now,
+                  duration: duration,
+                  defeated: false,
+                },
+              },
+            }));
+          }, 0);
+        }
+        return false;
+      }
+
+      const elapsed = Date.now() - timer.startTime;
+      return elapsed >= timer.duration;
     },
+    triggerType: "resource",
+    timeProbability: 10,
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
@@ -285,13 +442,6 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            fourthWaveTriggered: true,
-          },
-        },
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
@@ -313,9 +463,29 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fourthWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              fourthWave: {
+                ...state.attackWaveTimers.fourthWave,
+                defeated: true,
+              },
+            },
             _logMessage: VICTORY_MESSAGE(500),
           }),
-          onDefeat: () => handleDefeat(state, 4, 20),
+          onDefeat: () => {
+            const defeatResult = handleDefeat(state, 4, 20);
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                fourthWave: {
+                  startTime: Date.now(),
+                  duration: 20 * 60 * 1000,
+                  defeated: false,
+                },
+              },
+            };
+          },
         },
       };
     },
@@ -323,14 +493,39 @@ export const attackWaveEvents: Record<string, GameEvent> = {
 
   fifthWave: {
     id: "fifthWave",
-    condition: (state: GameState) =>
-      state.weapons.bloodstone_staff &&
-      state.story.seen.fourthWaveVictory &&
-      !state.story.seen.fifthWaveVictory,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => {
-      return state.story.seen.fifthWaveTriggered ? 10 : 5;
+    condition: (state: GameState) => {
+      const baseCondition = state.weapons.bloodstone_staff &&
+        state.story.seen.fourthWaveVictory &&
+        !state.story.seen.fifthWaveVictory;
+      
+      if (!baseCondition) return false;
+
+      const timer = state.attackWaveTimers?.fifthWave;
+      if (!timer || timer.defeated) {
+        if (!timer) {
+          const now = Date.now();
+          const duration = 10 * 60 * 1000;
+          setTimeout(() => {
+            useGameStore.setState((s) => ({
+              attackWaveTimers: {
+                ...s.attackWaveTimers,
+                fifthWave: {
+                  startTime: now,
+                  duration: duration,
+                  defeated: false,
+                },
+              },
+            }));
+          }, 0);
+        }
+        return false;
+      }
+
+      const elapsed = Date.now() - timer.startTime;
+      return elapsed >= timer.duration;
     },
+    triggerType: "resource",
+    timeProbability: 10,
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
     triggered: false,
@@ -359,10 +554,30 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 fifthWaveVictory: true,
               },
             },
+            attackWaveTimers: {
+              ...state.attackWaveTimers,
+              fifthWave: {
+                ...state.attackWaveTimers.fifthWave,
+                defeated: true,
+              },
+            },
             _logMessage:
               "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 1000 silver from the fallen creatures.",
           }),
-          onDefeat: () => handleDefeat(state, 5, 25),
+          onDefeat: () => {
+            const defeatResult = handleDefeat(state, 5, 25);
+            return {
+              ...defeatResult,
+              attackWaveTimers: {
+                ...state.attackWaveTimers,
+                fifthWave: {
+                  startTime: Date.now(),
+                  duration: 20 * 60 * 1000,
+                  defeated: false,
+                },
+              },
+            };
+          },
         },
       };
     },

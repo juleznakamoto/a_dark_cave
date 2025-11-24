@@ -275,6 +275,28 @@ function processTick() {
     });
   }
 
+  // Check attack wave timers
+  const now = Date.now();
+  const updatedTimers = { ...state.attackWaveTimers };
+  let shouldTriggerEvent = false;
+  let eventToTrigger: string | null = null;
+
+  Object.entries(updatedTimers).forEach(([waveId, timer]) => {
+    if (!timer.defeated && timer.startTime > 0) {
+      const elapsed = now - timer.startTime;
+      if (elapsed >= timer.duration && !shouldTriggerEvent) {
+        // Timer expired, trigger the wave event
+        shouldTriggerEvent = true;
+        eventToTrigger = waveId;
+      }
+    }
+  });
+
+  if (shouldTriggerEvent && eventToTrigger) {
+    // Trigger the event through the event system
+    state.checkEvents();
+  }
+
   // Check if mining boost has expired
   if (
     state.miningBoostState?.isActive &&
