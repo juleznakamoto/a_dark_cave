@@ -72,7 +72,7 @@ export async function processReferralAfterConfirmation(): Promise<void> {
       .from('game_saves')
       .select('game_state')
       .eq('user_id', referralCode)
-      .single();
+      .maybeSingle();
 
     if (referrerError) {
       // PGRST116 means no rows found
