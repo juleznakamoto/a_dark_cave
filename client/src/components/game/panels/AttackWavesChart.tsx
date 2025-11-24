@@ -87,6 +87,15 @@ export default function AttackWavesChart() {
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
   };
 
+  // Helper to calculate remaining time synchronously
+  const getTimeRemaining = (waveId: string): number => {
+    const timer = attackWaveTimers?.[waveId];
+    if (!timer || timer.defeated || timer.startTime <= 0) return 0;
+    
+    const elapsed = Date.now() - timer.startTime;
+    return Math.max(0, timer.duration - elapsed);
+  };
+
   // Find current active wave (first incomplete wave with condition met)
   const activeWave = waves.find(wave => !wave.completed && wave.conditionMet);
 
@@ -129,7 +138,7 @@ export default function AttackWavesChart() {
             </span>
             <span className="text-xs text-muted-foreground">
               {attackWaveTimers?.[activeWave.id] 
-                ? formatTime(timeRemaining[activeWave.id] || 0)
+                ? formatTime(getTimeRemaining(activeWave.id))
                 : "Preparing..."}
             </span>
           </div>
@@ -140,7 +149,7 @@ export default function AttackWavesChart() {
               size="xs"
               className="w-19 hover:bg-transparent hover:text-foreground"
               button_id="provoke-attack"
-              disabled={attackWaveTimers[activeWave.id]?.provoked || timeRemaining[activeWave.id] <= 0}
+              disabled={attackWaveTimers[activeWave.id]?.provoked || getTimeRemaining(activeWave.id) <= 0}
             >
               Provoke
             </Button>
