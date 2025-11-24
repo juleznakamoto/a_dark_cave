@@ -1,7 +1,7 @@
 import { openDB, DBSchema } from 'idb';
 import { GameState, SaveData } from '@shared/schema';
 import { buildGameState } from './stateHelpers';
-import { saveGameToSupabase, loadGameFromSupabase, getCurrentUser } from './auth';
+import { saveGameToSupabase, loadGameFromSupabase, getCurrentUser, processReferralAfterConfirmation } from './auth';
 
 interface GameDB extends DBSchema {
   saves: {
@@ -24,7 +24,7 @@ function calculateStateDiff(oldState: GameState | null, newState: GameState): Pa
   if (!oldState) return newState; // First save, send everything
 
   const diff: any = {};
-  
+
   // Helper to check if values are different
   const isDifferent = (a: any, b: any): boolean => {
     if (typeof a !== typeof b) return true;
@@ -40,7 +40,7 @@ function calculateStateDiff(oldState: GameState | null, newState: GameState): Pa
   for (const key in newState) {
     const newValue = newState[key as keyof GameState];
     const oldValue = oldState[key as keyof GameState];
-    
+
     if (isDifferent(oldValue, newValue)) {
       diff[key] = newValue;
     }
@@ -81,7 +81,7 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
-    
+
     // Add timestamp to track save recency
     const now = Date.now();
     sanitizedState.lastSaved = now;
@@ -100,18 +100,18 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
       const user = await getCurrentUser();
       if (user) {
         const isNewGame = gameState.isNewGame || false;
-        
+
         // Get and reset click analytics
         const { useGameStore } = await import('./state');
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
-        
+
         // Get last cloud state for diff calculation
         const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
         const stateDiff = calculateStateDiff(lastCloudState || null, sanitizedState);
-        
+
         // Save diff to Supabase
         await saveGameToSupabase(stateDiff, playTime, isNewGame, clickData);
-        
+
         // Update last cloud state
         await db.put('lastCloudState', sanitizedState, LAST_CLOUD_STATE_KEY);
       }
@@ -127,9 +127,12 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
 export async function loadGame(): Promise<GameState | null> {
   try {
+    // Process referral if user just confirmed email
+    await processReferralAfterConfirmation();
+
     const db = await getDB();
     const localSave = await db.get('saves', SAVE_KEY);
-    
+
     // Check if user is authenticated
     const user = await getCurrentUser();
 
@@ -137,16 +140,16 @@ export async function loadGame(): Promise<GameState | null> {
       // Try to load from cloud
       try {
         const cloudSave = await loadGameFromSupabase();
-        
+
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = localSave.playTime || 0;
-          
+
           if (import.meta.env.DEV) {
             console.log('Comparing saves - Cloud playTime:', cloudPlayTime, 'Local playTime:', localPlayTime);
           }
-          
+
           // Use whichever has longer play time
           if (cloudPlayTime > localPlayTime) {
             if (import.meta.env.DEV) {

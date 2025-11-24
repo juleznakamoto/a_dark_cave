@@ -8,181 +8,193 @@ export interface AuthUser {
 
 export async function signUp(email: string, password: string, referralCode?: string) {
   const supabase = await getSupabaseClient();
+  
+  // Store referral code in user metadata - will be processed after email confirmation
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
+    options: referralCode ? {
+      data: {
+        referral_code: referralCode,
+      }
+    } : undefined,
   });
 
   if (error) throw error;
 
-  // If signup successful and referral code provided, process referral
   if (data.user && referralCode) {
-    console.log('[REFERRAL] Processing referral for new user:', {
-      newUserId: data.user.id,
-      referralCode: referralCode,
-      timestamp: new Date().toISOString()
+    console.log('[REFERRAL] Stored referral code in user metadata:', {
+
+
+export async function processReferralAfterConfirmation(): Promise<void> {
+  const user = await getCurrentUser();
+  if (!user) return;
+
+  const supabase = await getSupabaseClient();
+  
+  // Get user metadata
+  const { data: { user: authUser } } = await supabase.auth.getUser();
+  if (!authUser?.user_metadata?.referral_code) {
+    return; // No referral code to process
+  }
+
+  const referralCode = authUser.user_metadata.referral_code;
+
+  // Check if referral has already been processed
+  const { data: existingSave } = await supabase
+    .from('game_saves')
+    .select('game_state')
+    .eq('user_id', user.id)
+    .maybeSingle();
+
+  if (existingSave?.game_state?.referralProcessed) {
+    console.log('[REFERRAL] Referral already processed for user:', user.id);
+    return; // Already processed
+  }
+
+  console.log('[REFERRAL] Processing referral after email confirmation:', {
+    newUserId: user.id,
+    referralCode: referralCode,
+    timestamp: new Date().toISOString()
+  });
+
+  try {
+    // Verify referrer exists and hasn't exceeded limit
+    console.log('[REFERRAL] Fetching referrer data for code:', referralCode);
+    const { data: referrerData, error: referrerError } = await supabase
+      .from('game_saves')
+      .select('game_state')
+      .eq('user_id', referralCode)
+      .maybeSingle();
+
+    if (referrerError) {
+      console.error('[REFERRAL] Error fetching referrer data:', referrerError);
+      return;
+    }
+
+    if (!referrerData) {
+      console.warn('[REFERRAL] Referrer not found:', referralCode);
+      return;
+    }
+
+    const referralCount = referrerData.game_state?.referralCount || 0;
+    console.log('[REFERRAL] Referrer found:', {
+      referrerId: referralCode,
+      currentReferralCount: referralCount,
+      hasReachedLimit: referralCount >= 10
     });
 
-    try {
-      // Verify referrer exists and hasn't exceeded limit
-      console.log('[REFERRAL] Fetching referrer data for code:', referralCode);
-      const { data: referrerData, error: referrerError } = await supabase
-        .from('game_saves')
-        .select('game_state')
-        .eq('user_id', referralCode)
-        .maybeSingle();
+    if (referralCount >= 10) {
+      console.warn('[REFERRAL] Referrer has reached maximum referral limit');
+      return;
+    }
 
-      if (referrerError) {
-        console.error('[REFERRAL] Error fetching referrer data:', {
-          error: referrerError,
-          code: referrerError.code,
-          message: referrerError.message
-        });
-      }
+    // Add 100 gold to referrer's game state
+    const referrerState = referrerData.game_state;
+    const oldGold = referrerState.resources?.gold || 0;
+    const newGold = oldGold + 100;
 
-      if (!referrerError && referrerData) {
-        const referralCount = referrerData.game_state?.referralCount || 0;
-        console.log('[REFERRAL] Referrer found:', {
-          referrerId: referralCode,
-          currentReferralCount: referralCount,
-          hasReachedLimit: referralCount >= 10
-        });
-
-        if (referralCount < 10) {
-          // Add 100 gold to referrer's game state
-          const referrerState = referrerData.game_state;
-          const oldGold = referrerState.resources?.gold || 0;
-          const newGold = oldGold + 100;
-
-          console.log('[REFERRAL] Updating referrer gold:', {
-            referrerId: referralCode,
-            oldGold,
-            newGold,
-            goldAdded: 100
-          });
-
-          const updatedReferrerState = {
-            ...referrerState,
-            resources: {
-              ...referrerState.resources,
-              gold: newGold,
-            },
-            referralCount: referralCount + 1,
-            log: [
-              ...(referrerState.log || []),
-              {
-                id: `referral-bonus-${Date.now()}`,
-                message: "A friend joined using your invite link! You received 100 Gold as a reward.",
-                timestamp: Date.now(),
-                type: "system",
-              }
-            ].slice(-100), // Keep last 100 log entries
-          };
-
-          const { error: referrerUpdateError } = await supabase.from('game_saves').upsert({
-            user_id: referralCode,
-            game_state: updatedReferrerState,
-            updated_at: new Date().toISOString(),
-          });
-
-          if (referrerUpdateError) {
-            console.error('[REFERRAL] Error updating referrer game state:', referrerUpdateError);
-          } else {
-            console.log('[REFERRAL] Successfully updated referrer game state:', {
-              referrerId: referralCode,
-              newReferralCount: referralCount + 1
-            });
-          }
-
-          // Create initial game save for new user with referral bonus
-          console.log('[REFERRAL] Creating initial game save for new user:', data.user.id);
-
-          // Create a minimal initial game state with the referral bonus
-          const initialGameState = {
-            resources: {
-              gold: 100, // Referral bonus
-              wood: 0,
-              stone: 0,
-              food: 0,
-            },
-            referralCode: referralCode,
-            log: [
-              {
-                id: `referral-bonus-new-${Date.now()}`,
-                message: "Welcome! You received 100 Gold as a referral bonus for joining through an invite link.",
-                timestamp: Date.now(),
-                type: "system",
-              }
-            ],
-            flags: {},
-            stats: {},
-            buildings: {},
-            villagers: {},
-            tools: {},
-            weapons: {},
-            clothing: {},
-            relics: {},
-            blessings: {},
-            schematics: {},
-            books: {},
-            story: { seen: {} },
-            events: {},
-            current_population: 0,
-            total_population: 0,
-            playTime: 0,
-            isNewGame: true,
-            startTime: Date.now(),
-          };
-
-          console.log('[REFERRAL] Initial game state created with 100 gold bonus');
-
-          const { error: newUserUpdateError } = await supabase.from('game_saves').insert({
-            user_id: data.user.id,
-            game_state: initialGameState,
-            created_at: new Date().toISOString(),
-            updated_at: new Date().toISOString(),
-          });
-
-          if (newUserUpdateError) {
-            console.error('[REFERRAL] Error creating new user game save:', newUserUpdateError);
-          } else {
-            console.log('[REFERRAL] Successfully created initial game save for new user');
-          }
-
-          console.log('[REFERRAL] Referral process completed successfully:', {
-            referrerId: referralCode,
-            newUserId: data.user.id,
-            referrerGoldAdded: 100,
-            newUserGoldAdded: 100,
-            newReferralCount: referralCount + 1
-          });
-        } else {
-          console.warn('[REFERRAL] Referrer has reached maximum referral limit:', {
-            referrerId: referralCode,
-            referralCount: referralCount,
-            limit: 10
-          });
+    const updatedReferrerState = {
+      ...referrerState,
+      resources: {
+        ...referrerState.resources,
+        gold: newGold,
+      },
+      referralCount: referralCount + 1,
+      log: [
+        ...(referrerState.log || []),
+        {
+          id: `referral-bonus-${Date.now()}`,
+          message: "A friend joined using your invite link! You received 100 Gold as a reward.",
+          timestamp: Date.now(),
+          type: "system",
         }
-      } else {
-        console.warn('[REFERRAL] Referrer not found or error occurred:', {
-          referralCode: referralCode,
-          hasError: !!referrerError
-        });
-      }
-    } catch (referralError) {
-      console.error('[REFERRAL] Unhandled error processing referral:', {
-        error: referralError,
-        referralCode: referralCode,
-        newUserId: data.user.id,
-        errorMessage: referralError instanceof Error ? referralError.message : 'Unknown error',
-        errorStack: referralError instanceof Error ? referralError.stack : undefined
-      });
-      // Don't fail signup if referral processing fails
+      ].slice(-100),
+    };
+
+    const { error: referrerUpdateError } = await supabase.from('game_saves').upsert({
+      user_id: referralCode,
+      game_state: updatedReferrerState,
+      updated_at: new Date().toISOString(),
+    });
+
+    if (referrerUpdateError) {
+      console.error('[REFERRAL] Error updating referrer game state:', referrerUpdateError);
+      return;
     }
-  } else {
-    if (data.user && !referralCode) {
-      console.log('[REFERRAL] New user signup without referral code:', data.user.id);
+
+    console.log('[REFERRAL] Successfully updated referrer game state');
+
+    // Create or update new user's game save with referral bonus
+    const initialGameState = existingSave?.game_state || {
+      resources: { gold: 0, wood: 0, stone: 0, food: 0 },
+      flags: {},
+      stats: {},
+      buildings: {},
+      villagers: {},
+      tools: {},
+      weapons: {},
+      clothing: {},
+      relics: {},
+      blessings: {},
+      schematics: {},
+      books: {},
+      story: { seen: {} },
+      events: {},
+      current_population: 0,
+      total_population: 0,
+      playTime: 0,
+      isNewGame: true,
+      startTime: Date.now(),
+    };
+
+    const updatedUserState = {
+      ...initialGameState,
+      resources: {
+        ...initialGameState.resources,
+        gold: (initialGameState.resources?.gold || 0) + 100,
+      },
+      referralCode: referralCode,
+      referralProcessed: true,
+      log: [
+        ...(initialGameState.log || []),
+        {
+          id: `referral-bonus-new-${Date.now()}`,
+          message: "Welcome! You received 100 Gold as a referral bonus for joining through an invite link.",
+          timestamp: Date.now(),
+          type: "system",
+        }
+      ].slice(-100),
+    };
+
+    const { error: newUserUpdateError } = await supabase.from('game_saves').upsert({
+      user_id: user.id,
+      game_state: updatedUserState,
+      updated_at: new Date().toISOString(),
+    });
+
+    if (newUserUpdateError) {
+      console.error('[REFERRAL] Error updating new user game save:', newUserUpdateError);
+      return;
     }
+
+    console.log('[REFERRAL] Referral processing completed successfully:', {
+      referrerId: referralCode,
+      newUserId: user.id,
+      referrerGoldAdded: 100,
+      newUserGoldAdded: 100,
+      newReferralCount: referralCount + 1
+    });
+
+  } catch (error) {
+    console.error('[REFERRAL] Error processing referral:', error);
+  }
+}
+
+      newUserId: data.user.id,
+      referralCode: referralCode,
+      message: 'Referral will be processed after email confirmation'
+    });
   }
 
   return data;
