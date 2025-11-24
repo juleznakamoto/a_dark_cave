@@ -38,10 +38,10 @@ export default function StartScreen() {
     // Wait for user gesture before playing wind sound
     let windTimer: NodeJS.Timeout;
     const handleUserGesture = () => {
-      // Start wind sound after 3 seconds with 1 second fade-in
+      // Start wind sound after 2 seconds with 1 second fade-in
       windTimer = setTimeout(() => {
-        audioManager.playLoopingSound('wind', 0.3, false, 1);
-      }, 3000);
+        audioManager.playLoopingSound('wind', 0.2, false, 1);
+      }, 2000);
       
       // Remove listeners after first interaction
       document.removeEventListener('click', handleUserGesture);
