@@ -60,7 +60,7 @@ export default function AttackWavesChart() {
     return () => clearInterval(interval);
   }, [attackWaveTimers]);
 
-  const handleProvoke = (waveId: string) => {
+  const handleProvoke = async (waveId: string) => {
     const timer = attackWaveTimers?.[waveId];
     if (timer && !timer.defeated && timeRemaining[waveId] > 0 && !timer.provoked) {
       useGameStore.setState((state) => ({
@@ -73,6 +73,10 @@ export default function AttackWavesChart() {
           },
         },
       }));
+      
+      // Trigger immediate save to persist provoked state
+      const { manualSave } = await import('@/game/loop');
+      await manualSave();
     }
   };
 

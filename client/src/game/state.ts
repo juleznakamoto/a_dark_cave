@@ -732,6 +732,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         activeTab: "cave",
         cooldowns: savedState.cooldowns || {},
         cooldownDurations: savedState.cooldownDurations || {},
+        attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
         devMode: import.meta.env.DEV,

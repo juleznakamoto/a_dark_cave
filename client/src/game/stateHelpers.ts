@@ -118,7 +118,7 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
   // If more deaths are needed, kill from other villager types randomly
   if (remainingDeaths > 0) {
     const villagerTypes = Object.keys(updatedVillagers).filter(type => type !== 'free') as Array<keyof typeof updatedVillagers>;
-    
+
     // Create a pool of non-free villagers
     const villagerPool: string[] = [];
     villagerTypes.forEach(type => {
@@ -152,22 +152,52 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
  * Filters out functions and Zustand-specific properties
  */
 export function buildGameState(state: any): GameState {
-  // Get all keys from the schema
-  const schemaKeys = Object.keys(gameStateSchema.shape);
-
-  // Build the state object dynamically
-  const gameState: Partial<GameState> = {};
-
-  for (const key of schemaKeys) {
-    if (key in state) {
-      gameState[key as keyof GameState] = state[key as keyof typeof state];
-    }
-  }
-
-  // Ensure books exists
-  if (!gameState.books) {
-    gameState.books = { book_of_ascension: false };
-  }
-
-  return gameState as GameState;
+  return {
+    resources: state.resources,
+    weapons: state.weapons,
+    tools: state.tools,
+    buildings: state.buildings,
+    flags: state.flags,
+    villagers: state.villagers,
+    clothing: state.clothing,
+    relics: state.relics,
+    books: state.books,
+    story: state.story,
+    effects: state.effects,
+    bastion_stats: state.bastion_stats,
+    events: state.events,
+    log: state.log,
+    hoveredTooltips: state.hoveredTooltips,
+    feastState: state.feastState,
+    greatFeastState: state.greatFeastState,
+    curseState: state.curseState,
+    miningBoostState: state.miningBoostState,
+    activatedPurchases: state.activatedPurchases,
+    feastPurchases: state.feastPurchases,
+    cruelMode: state.cruelMode,
+    CM: state.CM,
+    blessings: state.blessings,
+    buttonUpgrades: state.buttonUpgrades,
+    clickAnalytics: state.clickAnalytics || {},
+    cooldowns: state.cooldowns || {},
+    cooldownDurations: state.cooldownDurations || {},
+    attackWaveTimers: state.attackWaveTimers || {},
+    loopProgress: state.loopProgress || 0,
+    isGameLoopActive: state.isGameLoopActive || false,
+    isPaused: state.isPaused || false,
+    showEndScreen: state.showEndScreen || false,
+    isMuted: state.isMuted || false,
+    shopNotificationSeen: state.shopNotificationSeen || false,
+    shopNotificationVisible: state.shopNotificationVisible || false,
+    authNotificationSeen: state.authNotificationSeen || false,
+    authNotificationVisible: state.authNotificationVisible || false,
+    mysteriousNoteShopNotificationSeen: state.mysteriousNoteShopNotificationSeen || false,
+    mysteriousNoteDonateNotificationSeen: state.mysteriousNoteDonateNotificationSeen || false,
+    isUserSignedIn: state.isUserSignedIn || false,
+    playTime: state.playTime || 0,
+    isNewGame: state.isNewGame || false,
+    startTime: state.startTime || 0,
+    idleModeState: state.idleModeState || { isActive: false, startTime: 0, needsDisplay: false },
+    sleepUpgrades: state.sleepUpgrades || { lengthLevel: 0, intensityLevel: 0 },
+  };
 }
