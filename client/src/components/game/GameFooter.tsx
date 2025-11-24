@@ -208,7 +208,7 @@ export default function GameFooter() {
                       <span className="ml-2 text-muted-foreground cursor-help">ⓘ</span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
-                      <p className="text-xs">
+                      <p className="text-[10px]">
                         You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 250 gold!
                       </p>
                     </TooltipContent>
@@ -246,7 +246,7 @@ export default function GameFooter() {
               />
             </Button>
 
-            
+
             <Button
               variant="ghost"
               size="xs"
