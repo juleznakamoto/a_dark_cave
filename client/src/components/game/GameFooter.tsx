@@ -13,6 +13,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 
 export default function GameFooter() {
@@ -46,6 +53,7 @@ export default function GameFooter() {
     id: string;
     email: string;
   } | null>(null);
+  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
   const { toast } = useToast();
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -119,6 +127,32 @@ export default function GameFooter() {
     audioManager.globalMute(newMutedState);
   };
 
+  const handleCopyInviteLink = async () => {
+    if (!currentUser) {
+      toast({
+        title: "Sign in required",
+        description: "You need to sign in to get your invite link.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
+    try {
+      await navigator.clipboard.writeText(inviteLink);
+      toast({
+        title: "Invite link copied!",
+        description: "Share it with your friends to earn 250 gold each.",
+      });
+    } catch (error) {
+      toast({
+        title: "Failed to copy",
+        description: "Please copy the link manually: " + inviteLink,
+        variant: "destructive",
+      });
+    }
+  };
+
   return (
     <>
       <ShopDialog
@@ -152,41 +186,7 @@ export default function GameFooter() {
               />
             </Button>
 
-            {currentUser ? (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={handleSignOut}
-                className="px-1 py-1 text-xs hover"
-              >
-                Sign Out
-              </Button>
-            ) : (
-              <Button
-                variant="ghost"
-                size="xs"
-                onClick={() => {
-                  handleSetAuthDialogOpen(true);
-                  setAuthNotificationSeen(true);
-                }}
-                className="px-1 py-1 text-xs hover relative"
-              >
-                Sign In/Up
-                {authNotificationVisible && !authNotificationSeen && (
-                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
-                )}
-              </Button>
-            )}
-
-            <Button
-              variant="ghost"
-              size="xs"
-              onClick={handleRestartGame}
-              data-testid="button-restart-game"
-              className="px-1 py-1 text-xs hover"
-            >
-              New
-            </Button>
+            
             <Button
               variant="ghost"
               size="xs"
@@ -260,6 +260,63 @@ export default function GameFooter() {
             )}
           </div>
           <div className="flex gap-2 items-center">
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button
+                  variant="ghost"
+                  size="xs"
+                  className="px-2 py-1 text-xs hover relative"
+                >
+                  Account
+                  {authNotificationVisible && !authNotificationSeen && !currentUser && (
+                    <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                  )}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-56">
+                {currentUser ? (
+                  <>
+                    <DropdownMenuItem onClick={handleSignOut}>
+                      Sign Out
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                ) : (
+                  <>
+                    <DropdownMenuItem
+                      onClick={() => {
+                        handleSetAuthDialogOpen(true);
+                        setAuthNotificationSeen(true);
+                      }}
+                    >
+                      Sign In/Up
+                    </DropdownMenuItem>
+                    <DropdownMenuSeparator />
+                  </>
+                )}
+                <DropdownMenuItem onClick={handleRestartGame}>
+                  New Game
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleCopyInviteLink}>
+                  <div className="flex items-center justify-between w-full">
+                    <span>Invite Friends (+250 Gold)</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <span className="ml-2 text-muted-foreground cursor-help">ⓘ</span>
+                        </TooltipTrigger>
+                        <TooltipContent className="max-w-xs">
+                          <p className="text-xs">
+                            You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 250 gold!
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
             <a
               href="mailto:support@a-dark-cave.com"
               className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"

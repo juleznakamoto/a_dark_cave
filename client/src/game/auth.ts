@@ -6,7 +6,7 @@ export interface AuthUser {
   email: string;
 }
 
-export async function signUp(email: string, password: string) {
+export async function signUp(email: string, password: string, referralCode?: string) {
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase.auth.signUp({
     email,
@@ -14,6 +14,76 @@ export async function signUp(email: string, password: string) {
   });
 
   if (error) throw error;
+
+  // If signup successful and referral code provided, process referral
+  if (data.user && referralCode) {
+    try {
+      // Verify referrer exists and hasn't exceeded limit
+      const { data: referrerData, error: referrerError } = await supabase
+        .from('game_saves')
+        .select('game_state')
+        .eq('user_id', referralCode)
+        .single();
+
+      if (!referrerError && referrerData) {
+        const referralCount = referrerData.game_state?.referralCount || 0;
+        
+        if (referralCount < 10) {
+          // Add referral bonus for new user
+          await supabase.from('purchases').insert({
+            user_id: data.user.id,
+            item_id: 'referral_bonus_250_gold',
+            price: 0,
+            created_at: new Date().toISOString(),
+          });
+
+          // Add referral bonus for referrer
+          await supabase.from('purchases').insert({
+            user_id: referralCode,
+            item_id: 'referral_bonus_250_gold',
+            price: 0,
+            created_at: new Date().toISOString(),
+          });
+
+          // Update referrer's referral count
+          const updatedState = {
+            ...referrerData.game_state,
+            referralCount: referralCount + 1,
+          };
+          
+          await supabase.from('game_saves').upsert({
+            user_id: referralCode,
+            game_state: updatedState,
+            updated_at: new Date().toISOString(),
+          });
+
+          // Store referral code in new user's state
+          const { data: newUserData } = await supabase
+            .from('game_saves')
+            .select('game_state')
+            .eq('user_id', data.user.id)
+            .single();
+
+          if (newUserData) {
+            const newUserState = {
+              ...newUserData.game_state,
+              referralCode: referralCode,
+            };
+
+            await supabase.from('game_saves').upsert({
+              user_id: data.user.id,
+              game_state: newUserState,
+              updated_at: new Date().toISOString(),
+            });
+          }
+        }
+      }
+    } catch (referralError) {
+      console.error('Error processing referral:', referralError);
+      // Don't fail signup if referral processing fails
+    }
+  }
+
   return data;
 }
 

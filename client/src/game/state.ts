@@ -68,6 +68,9 @@ interface GameStore extends GameState {
   isNewGame: boolean; // Track if this is a newly started game
   startTime: number; // Timestamp when the current game was started
 
+  // Referral tracking
+  referralCount: number;
+
   // Cooldown management
   cooldowns: Record<string, number>;
   cooldownDurations: Record<string, number>; // Track initial duration for each cooldown
@@ -179,6 +182,7 @@ const mergeStateUpdates = (
     isPaused: stateUpdates.isPaused !== undefined ? stateUpdates.isPaused : prevState.isPaused, // Merge isPaused
     showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
     playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
+    referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
   };
 
   if (
@@ -293,6 +297,9 @@ const defaultGameState: GameState = {
   playTime: 0,
   isNewGame: false,
   startTime: 0,
+
+  // Referral tracking
+  referralCount: 0,
 
   // Cooldown management
   cooldowns: {},
@@ -423,13 +430,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   initialize: (initialState?: Partial<GameState>) => {
     let stateToSet = initialState ? { ...defaultGameState, ...initialState } : defaultGameState;
-    
+
     // Backwards compatibility: Add book_of_ascension if player has any button upgrade clicks
     if (stateToSet.buttonUpgrades) {
       const hasAnyClicks = Object.values(stateToSet.buttonUpgrades).some(
         (upgrade: any) => upgrade && upgrade.clicks > 0
       );
-      
+
       if (hasAnyClicks && !stateToSet.books?.book_of_ascension) {
         if (!stateToSet.books) {
           stateToSet.books = {};
@@ -437,7 +444,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         stateToSet.books.book_of_ascension = true;
       }
     }
-    
+
     set(stateToSet);
     StateManager.scheduleEffectsUpdate(get);
   },
@@ -467,13 +474,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
     if (upgradeKey && state.books?.book_of_ascension) {
       const upgradeResult = incrementButtonUsage(upgradeKey, state);
-      
+
       // Add button upgrade state update
       if (!result.stateUpdates.buttonUpgrades) {
         result.stateUpdates.buttonUpgrades = {} as any;
       }
       result.stateUpdates.buttonUpgrades[upgradeKey] = upgradeResult.updatedUpgrade;
-      
+
       // Add level up log entry if applicable
       if (upgradeResult.levelUpMessage) {
         const levelUpLog: LogEntry = {
@@ -482,7 +489,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           timestamp: Date.now(),
           type: "system",
         };
-        
+
         if (!result.logEntries) {
           result.logEntries = [];
         }
@@ -720,7 +727,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const hasAnyClicks = savedState.buttonUpgrades && Object.values(savedState.buttonUpgrades).some(
         (upgrade: any) => upgrade && upgrade.clicks > 0
       );
-      
+
       if (hasAnyClicks && !savedState.books?.book_of_ascension) {
         if (!savedState.books) {
           savedState.books = {};
@@ -759,6 +766,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isNewGame: false, // Clear the new game flag when loading
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
+        referralCount: savedState.referralCount !== undefined ? savedState.referralCount : 0, // Load referral count
       };
 
       set(loadedState);

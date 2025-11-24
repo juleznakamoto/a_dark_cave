@@ -22,6 +22,12 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { toast } = useToast();
 
+  // Get referral code from URL
+  const getReferralCode = () => {
+    const params = new URLSearchParams(window.location.search);
+    return params.get('ref');
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -46,7 +52,8 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
         onAuthSuccess();
         onClose();
       } else if (mode === 'signup') {
-        await signUp(email, password);
+        const referralCode = getReferralCode();
+        await signUp(email, password, referralCode || undefined);
         toast({
           title: 'Account created',
           description: 'Please check your email to verify your account. Also look in spam folder.',
