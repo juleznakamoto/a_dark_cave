@@ -107,7 +107,7 @@ export const recurringEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message: [
-      "Villagers find steel bars at the village's edge.",
+      "Villagers found steel bars at the village's edge.",
       "Someone has left gleaming steel ingots at the edge of the village.",
     ],
     triggered: false,
