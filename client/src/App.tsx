@@ -29,7 +29,9 @@ function Router() {
       <Route path="/privacy" component={Privacy} />
       <Route path="/terms" component={Terms} />
       <Route path="/withdrawal" component={Withdrawal} />
-      <Route path="/admin/dashboard" component={AdminDashboard} />
+      <Route path="/admin/dashboard/dev" component={() => <AdminDashboard environment="dev" />} />
+      <Route path="/admin/dashboard/prod" component={() => <AdminDashboard environment="prod" />} />
+      <Route path="/admin/dashboard" component={() => <AdminDashboard environment="prod" />} />
       {isDev && <Route path="/explosion-test" component={ExplosionTest} />}
       <Route component={NotFound} />
     </Switch>
