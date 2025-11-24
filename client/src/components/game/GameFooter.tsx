@@ -102,6 +102,8 @@ export default function GameFooter() {
         "Restarting the game will delete your current progress. Are you sure to restart?",
       )
     ) {
+      // Stop all sounds before restarting
+      audioManager.stopAllSounds();
       await deleteSave();
       restartGame();
     }
