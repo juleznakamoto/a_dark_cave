@@ -124,10 +124,9 @@ export default function AdminDashboard() {
   const [selectedUser, setSelectedUser] = useState<string>('all');
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
-  const [environment, setEnvironment] = useState<'prod' | 'dev'>('prod');
 
-  // Use a ref to store the Supabase client for the admin dashboard to ensure a single instance per environment
-  const adminSupabaseClientRef = useRef<{ prod: any; dev: any } | null>(null);
+  // Use a ref to store the Supabase client for the admin dashboard to ensure a single instance
+  const adminSupabaseClientRef = useRef<any>(null);
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -165,12 +164,7 @@ export default function AdminDashboard() {
     checkAdminAccess();
   }, []);
 
-  // Reload data when environment changes
-  useEffect(() => {
-    if (isAuthorized) {
-      loadData();
-    }
-  }, [environment]);
+  
 
   const checkAdminAccess = async () => {
     try {
@@ -194,40 +188,34 @@ export default function AdminDashboard() {
     }
   };
 
-  // Helper to get environment-specific Supabase client
-  const getAdminSupabaseClient = async (env: 'prod' | 'dev') => {
+  // Helper to get Supabase client for production
+  const getAdminSupabaseClient = async () => {
     // Return cached client if available
-    if (adminSupabaseClientRef.current && adminSupabaseClientRef.current[env]) {
-      return adminSupabaseClientRef.current[env];
+    if (adminSupabaseClientRef.current) {
+      return adminSupabaseClientRef.current;
     }
 
     let supabaseUrl: string;
     let supabaseAnonKey: string;
 
-    if (env === 'prod') {
-      // Check if we're running in production mode
-      if (import.meta.env.PROD) {
-        // In production build, fetch config from server
-        const response = await fetch('/api/config');
-        if (!response.ok) {
-          throw new Error('Failed to load production Supabase config');
-        }
-        const config = await response.json();
-        supabaseUrl = config.supabaseUrl;
-        supabaseAnonKey = config.supabaseAnonKey;
-      } else {
-        // In dev mode but viewing prod data
-        supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
-        supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
+    // Check if we're running in production mode
+    if (import.meta.env.PROD) {
+      // In production build, fetch config from server
+      const response = await fetch('/api/config');
+      if (!response.ok) {
+        throw new Error('Failed to load production Supabase config');
       }
+      const config = await response.json();
+      supabaseUrl = config.supabaseUrl;
+      supabaseAnonKey = config.supabaseAnonKey;
     } else {
-      // Viewing dev data
-      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_DEV;
-      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_DEV;
+      // In dev mode, use production credentials
+      supabaseUrl = import.meta.env.VITE_SUPABASE_URL_PROD;
+      supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY_PROD;
     }
 
     if (!supabaseUrl || !supabaseAnonKey) {
-      throw new Error(`Missing Supabase credentials for ${env} environment`);
+      throw new Error('Missing Supabase credentials');
     }
 
     const { createClient } = await import('@supabase/supabase-js');
@@ -245,10 +233,7 @@ export default function AdminDashboard() {
     });
 
     // Cache the client
-    if (!adminSupabaseClientRef.current) {
-      adminSupabaseClientRef.current = { prod: null, dev: null };
-    }
-    adminSupabaseClientRef.current[env] = client;
+    adminSupabaseClientRef.current = client;
 
     return client;
   };
@@ -256,11 +241,11 @@ export default function AdminDashboard() {
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
-      console.log(`Loading data from ${environment.toUpperCase()} environment`);
+      console.log('Loading data from production environment');
 
-      const supabase = await getAdminSupabaseClient(environment);
+      const supabase = await getAdminSupabaseClient();
 
-      console.log('Supabase client created for', environment);
+      console.log('Supabase client created');
 
       // Load button clicks
       const { data: clicks, error: clicksError } = await supabase
@@ -737,18 +722,7 @@ export default function AdminDashboard() {
         <ScrollArea className="h-full">
           <div className="space-y-8 pr-4">
         <div className="flex justify-between items-center">
-          <div className="flex items-center gap-4">
-            <h1 className="text-4xl font-bold">Admin Dashboard</h1>
-            <Select value={environment} onValueChange={(value: 'prod' | 'dev') => setEnvironment(value)}>
-              <SelectTrigger className="w-[140px]">
-                <SelectValue placeholder="Environment" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="prod">🟢 Production</SelectItem>
-                <SelectItem value="dev">🔵 Development</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+          <h1 className="text-4xl font-bold">Admin Dashboard</h1>
           <div className="flex gap-4">
             <Select value={selectedUser} onValueChange={setSelectedUser}>
               <SelectTrigger className="w-[200px]">
