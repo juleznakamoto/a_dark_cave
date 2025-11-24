@@ -94,57 +94,59 @@ export async function signUp(email: string, password: string, referralCode?: str
             });
           }
 
-          // Add 100 gold to new user's game state (or create initial state)
-          console.log('[REFERRAL] Fetching new user game state:', data.user.id);
-          const { data: newUserData, error: newUserFetchError } = await supabase
-            .from('game_saves')
-            .select('game_state')
-            .eq('user_id', data.user.id)
-            .maybeSingle();
+          // Create initial game save for new user with referral bonus
+          console.log('[REFERRAL] Creating initial game save for new user:', data.user.id);
 
-          if (newUserFetchError) {
-            console.error('[REFERRAL] Error fetching new user data:', newUserFetchError);
-          }
-
-          const newUserState = newUserData?.game_state || {};
-          const oldNewUserGold = newUserState.resources?.gold || 0;
-          const newNewUserGold = oldNewUserGold + 100;
-
-          console.log('[REFERRAL] Updating new user gold:', {
-            newUserId: data.user.id,
-            oldGold: oldNewUserGold,
-            newGold: newNewUserGold,
-            goldAdded: 100
-          });
-
-          const updatedNewUserState = {
-            ...newUserState,
+          // Create a minimal initial game state with the referral bonus
+          const initialGameState = {
             resources: {
-              ...(newUserState.resources || {}),
-              gold: newNewUserGold,
+              gold: 100, // Referral bonus
+              wood: 0,
+              stone: 0,
+              food: 0,
             },
             referralCode: referralCode,
             log: [
-              ...(newUserState.log || []),
               {
                 id: `referral-bonus-new-${Date.now()}`,
                 message: "Welcome! You received 100 Gold as a referral bonus for joining through an invite link.",
                 timestamp: Date.now(),
                 type: "system",
               }
-            ].slice(-100), // Keep last 100 log entries
+            ],
+            flags: {},
+            stats: {},
+            buildings: {},
+            villagers: {},
+            tools: {},
+            weapons: {},
+            clothing: {},
+            relics: {},
+            blessings: {},
+            schematics: {},
+            books: {},
+            story: { seen: {} },
+            events: {},
+            current_population: 0,
+            total_population: 0,
+            playTime: 0,
+            isNewGame: true,
+            startTime: Date.now(),
           };
 
-          const { error: newUserUpdateError } = await supabase.from('game_saves').upsert({
+          console.log('[REFERRAL] Initial game state created with 100 gold bonus');
+
+          const { error: newUserUpdateError } = await supabase.from('game_saves').insert({
             user_id: data.user.id,
-            game_state: updatedNewUserState,
+            game_state: initialGameState,
+            created_at: new Date().toISOString(),
             updated_at: new Date().toISOString(),
           });
 
           if (newUserUpdateError) {
-            console.error('[REFERRAL] Error updating new user game state:', newUserUpdateError);
+            console.error('[REFERRAL] Error creating new user game save:', newUserUpdateError);
           } else {
-            console.log('[REFERRAL] Successfully updated new user game state');
+            console.log('[REFERRAL] Successfully created initial game save for new user');
           }
 
           console.log('[REFERRAL] Referral process completed successfully:', {
