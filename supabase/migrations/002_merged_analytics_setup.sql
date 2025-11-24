@@ -137,7 +137,7 @@ BEGIN
     VALUES (p_user_id, NOW(), v_updated_clicks)
     ON CONFLICT (user_id)
     DO UPDATE SET
-      clicks = EXCLUDED.clicks,
+      clicks = button_clicks.clicks || jsonb_build_object(v_playtime_key, p_click_analytics),
       timestamp = EXCLUDED.timestamp;
   END IF;
 END;
