@@ -223,6 +223,13 @@ export default function AdminDashboard() {
     
     console.log(`Loading data from ${environment.toUpperCase()} environment`, { supabaseUrl });
 
+    // Test connection first
+    const { data: testData, error: testError } = await supabase
+      .from('button_clicks')
+      .select('count');
+    
+    console.log('Connection test:', { testData, testError });
+
     // Load button clicks
     const { data: clicks, error: clicksError } = await supabase
       .from('button_clicks')
@@ -231,6 +238,9 @@ export default function AdminDashboard() {
 
     if (clicksError) {
       console.error('Error loading clicks:', clicksError);
+      console.error('Error details:', JSON.stringify(clicksError, null, 2));
+    } else {
+      console.log('Clicks loaded successfully:', clicks?.length, 'records');
     }
     if (clicks) setClickData(clicks);
 
@@ -241,6 +251,9 @@ export default function AdminDashboard() {
 
     if (savesError) {
       console.error('Error loading saves:', savesError);
+      console.error('Error details:', JSON.stringify(savesError, null, 2));
+    } else {
+      console.log('Saves loaded successfully:', saves?.length, 'records');
     }
     if (saves) setGameSaves(saves);
 
@@ -252,6 +265,9 @@ export default function AdminDashboard() {
 
     if (purchasesError) {
       console.error('Error loading purchases:', purchasesError);
+      console.error('Error details:', JSON.stringify(purchasesError, null, 2));
+    } else {
+      console.log('Purchases loaded successfully:', purchaseData?.length, 'records');
     }
     if (purchaseData) setPurchases(purchaseData);
 
