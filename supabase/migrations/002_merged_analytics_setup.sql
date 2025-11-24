@@ -123,4 +123,4 @@ END;
 $$;
 
 -- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION save_game_with_analytics TO authenticated;
+GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB) TO authenticated;
