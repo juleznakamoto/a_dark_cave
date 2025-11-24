@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState, useMemo, useRef } from 'react';
 import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
 import {
@@ -126,6 +126,9 @@ export default function AdminDashboard() {
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
   const [environment, setEnvironment] = useState<'prod' | 'dev'>('prod');
 
+  // Use a ref to store the Supabase client for the admin dashboard to ensure a single instance per environment
+  const adminSupabaseClientRef = useRef<{ prod: any; dev: any } | null>(null);
+
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
     if (!clickData) return [];
@@ -193,6 +196,11 @@ export default function AdminDashboard() {
 
   // Helper to get environment-specific Supabase client
   const getAdminSupabaseClient = async (env: 'prod' | 'dev') => {
+    // Return cached client if available
+    if (adminSupabaseClientRef.current && adminSupabaseClientRef.current[env]) {
+      return adminSupabaseClientRef.current[env];
+    }
+
     let supabaseUrl: string;
     let supabaseAnonKey: string;
 
@@ -223,7 +231,7 @@ export default function AdminDashboard() {
     }
 
     const { createClient } = await import('@supabase/supabase-js');
-    return createClient(supabaseUrl, supabaseAnonKey, {
+    const client = createClient(supabaseUrl, supabaseAnonKey, {
       auth: {
         persistSession: false,
         autoRefreshToken: false,
@@ -235,15 +243,23 @@ export default function AdminDashboard() {
         }
       }
     });
+
+    // Cache the client
+    if (!adminSupabaseClientRef.current) {
+      adminSupabaseClientRef.current = { prod: null, dev: null };
+    }
+    adminSupabaseClientRef.current[env] = client;
+
+    return client;
   };
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
       console.log(`Loading data from ${environment.toUpperCase()} environment`);
-      
+
       const supabase = await getAdminSupabaseClient(environment);
-      
+
       console.log('Supabase client created for', environment);
 
       // Load button clicks
@@ -289,12 +305,12 @@ export default function AdminDashboard() {
 
       // Load unique users from all tables
       const uniqueUserIds = new Set<string>();
-    
+
     console.log('Raw data loaded:');
     console.log('- Clicks records:', clicks?.length || 0);
     console.log('- Saves records:', saves?.length || 0);
     console.log('- Purchase records:', purchaseData?.length || 0);
-    
+
     if (clicks) {
       clicks.forEach(c => {
         if (c.user_id) {
@@ -546,7 +562,7 @@ export default function AdminDashboard() {
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
               if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
-                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
+                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + (count as number);
               }
             });
           }
@@ -602,7 +618,7 @@ export default function AdminDashboard() {
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
               if (selectedButtons.size === 0 || selectedButtons.has(cleanButton)) {
-                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
+                bucketData[cleanButton] = (bucketData[cleanButton] || 0) + (count as number);
               }
             });
           }
