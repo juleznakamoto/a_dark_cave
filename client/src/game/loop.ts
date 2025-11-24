@@ -242,24 +242,6 @@ function processTick() {
   // Tick down cooldowns
   state.tickCooldowns();
 
-  // Tick down attack wave timers
-  const updatedTimers = { ...state.attackWaveTimers };
-  let timersChanged = false;
-  
-  Object.keys(updatedTimers).forEach((key) => {
-    if (updatedTimers[key as keyof typeof updatedTimers] > 0) {
-      updatedTimers[key as keyof typeof updatedTimers] = Math.max(
-        0,
-        updatedTimers[key as keyof typeof updatedTimers] - 200
-      );
-      timersChanged = true;
-    }
-  });
-
-  if (timersChanged) {
-    useGameStore.setState({ attackWaveTimers: updatedTimers });
-  }
-
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
     useGameStore.setState({

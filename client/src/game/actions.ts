@@ -206,13 +206,7 @@ export function executeGameAction(
     case "occultistChamber":
       return handleoccultistChamber(state, result);
     case "blastPortal":
-      const blastResult = handleBlastPortal(state, result);
-      // Initialize first wave timer (10 minutes)
-      if (!blastResult.stateUpdates.attackWaveTimers) {
-        blastResult.stateUpdates.attackWaveTimers = { ...state.attackWaveTimers };
-      }
-      blastResult.stateUpdates.attackWaveTimers.firstWave = 10 * 60 * 1000;
-      return blastResult;
+      return handleBlastPortal(state, result);
     case "encounterBeyondPortal":
       return handleEncounterBeyondPortal(state, result);
 
