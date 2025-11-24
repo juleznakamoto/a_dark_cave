@@ -1,6 +1,7 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
+import { createClient } from '@supabase/supabase-js';
 import {
   LineChart,
   Line,
@@ -185,13 +186,36 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    const supabase = await getSupabaseClient();
+    // For admin dashboard, we need to fetch the service role key from the server
+    // This bypasses RLS and allows us to see all users' data
+    let adminClient;
+    
+    try {
+      const response = await fetch('/api/admin/config');
+      if (!response.ok) {
+        throw new Error('Failed to fetch admin config');
+      }
+      const config = await response.json();
+      
+      console.log('Creating admin Supabase client with service role...');
+      adminClient = createClient(config.supabaseUrl, config.supabaseServiceKey, {
+        auth: {
+          persistSession: false,
+          autoRefreshToken: false,
+        }
+      });
+    } catch (error) {
+      console.error('Failed to create admin client:', error);
+      // Fallback to regular client (will only show current user's data)
+      adminClient = await getSupabaseClient();
+      console.warn('Using regular client - will only see current user data');
+    }
 
     console.log('=== STARTING DATA LOAD FROM SUPABASE ===');
 
     // Load button clicks
     console.log('Loading button_clicks...');
-    const { data: clicks, error: clicksError } = await supabase
+    const { data: clicks, error: clicksError } = await adminClient
       .from('button_clicks')
       .select('*')
       .order('timestamp', { ascending: true }); // Keep order for potential future use, though not used in current chart logic
@@ -207,7 +231,7 @@ export default function AdminDashboard() {
 
     // Load game saves with created_at
     console.log('Loading game_saves...');
-    const { data: saves, error: savesError } = await supabase
+    const { data: saves, error: savesError } = await adminClient
       .from('game_saves')
       .select('user_id, game_state, updated_at, created_at');
 
@@ -222,7 +246,7 @@ export default function AdminDashboard() {
 
     // Load purchases
     console.log('Loading purchases...');
-    const { data: purchaseData, error: purchasesError } = await supabase
+    const { data: purchaseData, error: purchasesError } = await adminClient
       .from('purchases')
       .select('*')
       .order('purchased_at', { ascending: false });
@@ -238,7 +262,7 @@ export default function AdminDashboard() {
 
     // Load all users from game_saves (this includes all users who have ever signed up)
     console.log('Loading all user_ids from game_saves...');
-    const { data: allSaves, error: allSavesError } = await supabase
+    const { data: allSaves, error: allSavesError } = await adminClient
       .from('game_saves')
       .select('user_id');
 

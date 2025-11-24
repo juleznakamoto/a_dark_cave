@@ -26,6 +26,29 @@ app.get('/api/config', (req, res) => {
   }
   res.json(config);
 });
+
+// API endpoint to provide admin Supabase config (service role key)
+app.get('/api/admin/config', (req, res) => {
+  const isDev = process.env.NODE_ENV === 'development';
+  
+  const supabaseUrl = isDev
+    ? process.env.VITE_SUPABASE_URL_DEV
+    : process.env.SUPABASE_URL;
+    
+  const supabaseServiceKey = isDev
+    ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
+    : process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!supabaseUrl || !supabaseServiceKey) {
+    log('⚠️ Supabase service role config not found in environment variables');
+    return res.status(500).json({ error: 'Admin configuration not available' });
+  }
+
+  res.json({
+    supabaseUrl,
+    supabaseServiceKey
+  });
+});
 app.use(express.json());
 
 app.use((req, res, next) => {
