@@ -1,7 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useLocation } from 'wouter';
 import { getSupabaseClient } from '@/lib/supabase';
-import { createClient } from '@supabase/supabase-js';
 import {
   LineChart,
   Line,
@@ -197,183 +196,48 @@ export default function AdminDashboard() {
 
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
-    // For admin dashboard, we need to fetch the service role key from the server
-    // This bypasses RLS and allows us to see all users' data
-    let adminClient;
-    
     try {
-      console.log('🔍 Step 1: Fetching admin config from server...');
-      const response = await fetch('/api/admin/config');
+      console.log('🔍 Fetching admin data from server...');
+      const response = await fetch('/api/admin/data');
+      
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Admin config fetch failed:', response.status, errorText);
-        throw new Error(`Failed to fetch admin config: ${response.status}`);
-      }
-      const config = await response.json();
-      
-      console.log('✅ Step 2: Admin config received:', {
-        hasUrl: !!config.supabaseUrl,
-        hasKey: !!config.supabaseServiceKey,
-        urlPrefix: config.supabaseUrl?.substring(0, 20),
-        keyPrefix: config.supabaseServiceKey?.substring(0, 10)
-      });
-      
-      if (!config.supabaseUrl || !config.supabaseServiceKey) {
-        throw new Error('Admin config missing required fields');
+        console.error('❌ Admin data fetch failed:', response.status, errorText);
+        throw new Error(`Failed to fetch admin data: ${response.status}`);
       }
       
-      console.log('🔧 Step 3: About to create admin Supabase client...');
-      console.log('   - URL:', config.supabaseUrl);
-      console.log('   - Service key (first 30 chars):', config.supabaseServiceKey.substring(0, 30) + '...');
-      console.log('   - Auth config: { persistSession: false, autoRefreshToken: false }');
-      console.log('⚠️  NOTE: This will create a NEW GoTrueClient instance (causes the warning)');
-      console.log('   The warning occurs because the main app already has a client');
+      const data = await response.json();
       
-      adminClient = createClient(config.supabaseUrl, config.supabaseServiceKey, {
-        auth: {
-          persistSession: false,
-          autoRefreshToken: false,
-        },
-        global: {
-          headers: {
-            apikey: config.supabaseServiceKey,
-            Authorization: `Bearer ${config.supabaseServiceKey}`,
-          },
-        },
-        db: {
-          schema: 'public',
-        },
+      console.log('✅ Admin data received:', {
+        clicks: data.clicks?.length || 0,
+        saves: data.saves?.length || 0,
+        purchases: data.purchases?.length || 0
       });
-      
-      console.log('✅ Step 4: Admin client created successfully');
-      console.log('   Testing client headers...');
-      console.log('   Client URL:', (adminClient as any).supabaseUrl);
-      console.log('   Client Key (first 30):', (adminClient as any).supabaseKey?.substring(0, 30) + '...');
-      
-      // Log what headers will actually be sent
-      const testHeaders = {
-        ...(adminClient as any).headers,
-        apikey: config.supabaseServiceKey,
-        Authorization: `Bearer ${config.supabaseServiceKey}`,
-      };
-      console.log('   Headers that will be sent:', Object.keys(testHeaders));
-      console.log('   Authorization header present:', !!testHeaders.Authorization);
-      console.log('   apikey header present:', !!testHeaders.apikey);
-      console.log('   The "Multiple GoTrueClient instances" warning above is expected');
-      console.log('   because we need a separate client with service role permissions');
+
+      // Set the data
+      if (data.clicks) setClickData(data.clicks);
+      if (data.saves) setGameSaves(data.saves);
+      if (data.purchases) setPurchases(data.purchases);
+
+    // Collect all unique user IDs
+      const uniqueUserIds = new Set<string>();
+
+      // Add users from all sources
+      data.saves?.forEach((s: any) => uniqueUserIds.add(s.user_id));
+      data.clicks?.forEach((c: any) => uniqueUserIds.add(c.user_id));
+      data.purchases?.forEach((p: any) => uniqueUserIds.add(p.user_id));
+
+      console.log('Total unique users:', uniqueUserIds.size);
+
+      const userList = Array.from(uniqueUserIds).map(id => ({
+        id,
+        email: id.substring(0, 8) + '...', // Truncated for privacy
+      }));
+
+      setUsers(userList);
     } catch (error) {
-      console.error('❌ Failed to create admin client:', error);
-      // Fallback to regular client (will only show current user's data)
-      console.log('⚠️  Falling back to regular client...');
-      adminClient = await getSupabaseClient();
-      console.warn('Using regular client - will only see current user data');
+      console.error('❌ Failed to load admin data:', error);
     }
-
-    console.log('=== STARTING DATA LOAD FROM SUPABASE ===');
-
-    // Load button clicks
-    console.log('Loading button_clicks...');
-    const { data: clicks, error: clicksError } = await adminClient
-      .from('button_clicks')
-      .select('*')
-      .order('timestamp', { ascending: true }); // Keep order for potential future use, though not used in current chart logic
-
-    console.log('Button clicks result:', {
-      count: clicks?.length || 0,
-      error: clicksError,
-      data: clicks,
-      uniqueUsers: clicks ? [...new Set(clicks.map(c => c.user_id))] : []
-    });
-
-    if (clicks) setClickData(clicks);
-
-    // Load game saves with created_at
-    console.log('Loading game_saves...');
-    const { data: saves, error: savesError } = await adminClient
-      .from('game_saves')
-      .select('user_id, game_state, updated_at, created_at');
-
-    console.log('Game saves result:', {
-      count: saves?.length || 0,
-      error: savesError,
-      data: saves,
-      uniqueUsers: saves ? [...new Set(saves.map(s => s.user_id))] : []
-    });
-
-    if (saves) setGameSaves(saves);
-
-    // Load purchases
-    console.log('Loading purchases...');
-    const { data: purchaseData, error: purchasesError } = await adminClient
-      .from('purchases')
-      .select('*')
-      .order('purchased_at', { ascending: false });
-
-    console.log('Purchases result:', {
-      count: purchaseData?.length || 0,
-      error: purchasesError,
-      data: purchaseData,
-      uniqueUsers: purchaseData ? [...new Set(purchaseData.map(p => p.user_id))] : []
-    });
-
-    if (purchaseData) setPurchases(purchaseData);
-
-    // Load all users from game_saves (this includes all users who have ever signed up)
-    console.log('Loading all user_ids from game_saves...');
-    const { data: allSaves, error: allSavesError } = await adminClient
-      .from('game_saves')
-      .select('user_id');
-
-    console.log('All saves (user_id only) result:', {
-      count: allSaves?.length || 0,
-      error: allSavesError,
-      data: allSaves,
-      uniqueUsers: allSaves ? [...new Set(allSaves.map(s => s.user_id))] : []
-    });
-
-    const uniqueUserIds = new Set<string>();
-
-    // Add users from game saves (primary source)
-    if (allSaves) {
-      console.log('Adding users from game saves...');
-      allSaves.forEach(s => {
-        console.log('  - Adding user from game_saves:', s.user_id);
-        uniqueUserIds.add(s.user_id);
-      });
-    }
-
-    // Also add users from clicks and purchases to ensure we don't miss anyone
-    if (clicks) {
-      console.log('Adding users from button clicks...');
-      clicks.forEach(c => {
-        if (!uniqueUserIds.has(c.user_id)) {
-          console.log('  - Adding NEW user from clicks:', c.user_id);
-        }
-        uniqueUserIds.add(c.user_id);
-      });
-    }
-    if (purchaseData) {
-      console.log('Adding users from purchases...');
-      purchaseData.forEach(p => {
-        if (!uniqueUserIds.has(p.user_id)) {
-          console.log('  - Adding NEW user from purchases:', p.user_id);
-        }
-        uniqueUserIds.add(p.user_id);
-      });
-    }
-
-    console.log('Final unique user IDs:', Array.from(uniqueUserIds));
-    console.log('Total unique users:', uniqueUserIds.size);
-
-    const userList = Array.from(uniqueUserIds).map(id => ({
-      id,
-      email: id.substring(0, 8) + '...', // Truncated for privacy
-    }));
-
-    console.log('User list to display:', userList);
-    console.log('=== DATA LOAD COMPLETE ===');
-
-    setUsers(userList);
   };
 
   // Active Users Calculations

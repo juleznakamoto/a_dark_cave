@@ -27,34 +27,70 @@ app.get('/api/config', (req, res) => {
   res.json(config);
 });
 
-// API endpoint to provide admin Supabase config (service role key)
-app.get('/api/admin/config', (req, res) => {
+// Server-side Supabase admin client (bypasses RLS)
+import { createClient } from '@supabase/supabase-js';
+
+const getAdminClient = () => {
   const isDev = process.env.NODE_ENV === 'development';
-  
-  log(`🔧 Admin config request - isDev: ${isDev}`);
-  log(`📋 Available env vars: ${Object.keys(process.env).filter(k => k.includes('SUPABASE')).join(', ')}`);
-  
   const supabaseUrl = isDev
     ? process.env.VITE_SUPABASE_URL_DEV
     : process.env.VITE_SUPABASE_URL_PROD;
-    
   const supabaseServiceKey = isDev
     ? process.env.SUPABASE_SERVICE_ROLE_KEY_DEV
     : process.env.SUPABASE_SERVICE_ROLE_KEY_PROD;
 
-  log(`🔑 URL: ${supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'MISSING'}`);
-  log(`🔑 Service key: ${supabaseServiceKey ? supabaseServiceKey.substring(0, 20) + '...' : 'MISSING'}`);
-
   if (!supabaseUrl || !supabaseServiceKey) {
-    log('⚠️ Supabase service role config not found in environment variables');
-    log(`   Looking for: ${isDev ? 'SUPABASE_SERVICE_ROLE_KEY_DEV' : 'SUPABASE_SERVICE_ROLE_KEY_PROD'}`);
-    return res.status(500).json({ error: 'Admin configuration not available' });
+    throw new Error('Supabase admin config not available');
   }
 
-  res.json({
-    supabaseUrl,
-    supabaseServiceKey
+  return createClient(supabaseUrl, supabaseServiceKey, {
+    auth: {
+      autoRefreshToken: false,
+      persistSession: false
+    }
   });
+};
+
+// API endpoint to fetch admin dashboard data (server-side, bypasses RLS)
+app.get('/api/admin/data', async (req, res) => {
+  try {
+    const adminClient = getAdminClient();
+
+    log('📊 Fetching admin dashboard data...');
+
+    // Fetch all data in parallel
+    const [clicksResult, savesResult, purchasesResult] = await Promise.all([
+      adminClient.from('button_clicks').select('*').order('timestamp', { ascending: true }),
+      adminClient.from('game_saves').select('user_id, game_state, updated_at, created_at'),
+      adminClient.from('purchases').select('*').order('purchased_at', { ascending: false })
+    ]);
+
+    if (clicksResult.error) {
+      log('❌ Error fetching button_clicks:', clicksResult.error);
+      throw clicksResult.error;
+    }
+    if (savesResult.error) {
+      log('❌ Error fetching game_saves:', savesResult.error);
+      throw savesResult.error;
+    }
+    if (purchasesResult.error) {
+      log('❌ Error fetching purchases:', purchasesResult.error);
+      throw purchasesResult.error;
+    }
+
+    log(`✅ Fetched ${clicksResult.data.length} click records`);
+    log(`✅ Fetched ${savesResult.data.length} game saves`);
+    log(`✅ Fetched ${purchasesResult.data.length} purchases`);
+
+    res.json({
+      clicks: clicksResult.data,
+      saves: savesResult.data,
+      purchases: purchasesResult.data
+    });
+  } catch (error: any) {
+    log('❌ Admin data fetch failed:', error);
+    res.status(500).json({ error: error.message });
+  }
 });
 app.use(express.json());
 
