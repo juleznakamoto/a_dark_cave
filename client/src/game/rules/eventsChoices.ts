@@ -413,7 +413,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   hiddenLake: {
     id: "hiddenLake",
     condition: (state: GameState) =>
-      state.flags.forestUnlocked && 
+      state.flags.forestUnlocked &&
       state.buildings.woodenHut >= 4 &&
       !state.clothing.cracked_crown,
     triggerType: "resource",
@@ -734,7 +734,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const cost = state.story.seen.vikingBuilderEventForced ? 750 : 500;
-          
+
           if (state.resources.gold < cost) {
             return {
               _logMessage: "You don't have enough gold.",
@@ -1271,8 +1271,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   masterArcher: {
     id: "masterArcher",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 5 &&
-      !state.blessings.sharp_aim,
+      state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
     triggerType: "resource",
     timeProbability: 20,
     title: "The Master Archer",
@@ -1479,13 +1478,13 @@ export const choiceEvents: Record<string, GameEvent> = {
   wanderingAlchemist: {
     id: "wanderingAlchemist",
     condition: (state: GameState) =>
-      // state.cruelMode &&
-        //  state.story.seen.secondWaveVictory &&
-        // state.buildings.alchemistHall >= 1 &&
-        // state.story.seen.alchemistArrives &&
+      state.cruelMode &&
+      state.story.seen.secondWaveVictory &&
+      state.buildings.alchemistHall >= 1 &&
+      state.story.seen.alchemistArrives &&
       !state.story.seen.wanderingAlchemistEvent,
     triggerType: "resource",
-    timeProbability: 0.05,
+    timeProbability: 10,
     title: "The Wandering Alchemist",
     message:
       "A hooded figure in stained robes arrives at your village. 'I am an alchemist,' he says with an echoing voice. 'I can teach you to craft a bomb of extreme power, that tears reality itself. But knowledge has its price.'",
