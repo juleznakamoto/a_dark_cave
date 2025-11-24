@@ -44,6 +44,7 @@ export default function ForestPanel() {
         { id: "tradeGoldForFood", label: "Buy Food" },
         { id: "tradeGoldForWood", label: "Buy Wood" },
         { id: "tradeGoldForStone", label: "Buy Stone" },
+        { id: "tradeGoldForLeather", label: "Buy Leather" },
         { id: "tradeGoldForSteel", label: "Buy Steel" },
         { id: "tradeGoldForObsidian", label: "Buy Obsidian" },
         { id: "tradeGoldForAdamant", label: "Buy Adamant" },

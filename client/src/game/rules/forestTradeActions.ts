@@ -127,6 +127,47 @@ export const forestTradeActions: Record<string, Action> = {
     cooldown: 90,
   },
 
+  tradeGoldForLeather: {
+    id: "tradeGoldForLeather",
+    label: "Buy Leather",
+    show_when: {
+      1: {
+        "buildings.tradePost": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      2: {
+        "buildings.grandBazaar": 1,
+        "buildings.merchantsGuild": 0,
+      },
+      3: {
+        "buildings.merchantsGuild": 1,
+      },
+    },
+    cost: {
+      1: {
+        "resources.gold": 15,
+      },
+      2: {
+        "resources.gold": 30,
+      },
+      3: {
+        "resources.gold": 45,
+      },
+    },
+    effects: {
+      1: {
+        "resources.leather": 50,
+      },
+      2: {
+        "resources.leather": 100,
+      },
+      3: {
+        "resources.leather": 150,
+      },
+    },
+    cooldown: 90,
+  },
+
   tradeGoldForSteel: {
     id: "tradeGoldForSteel",
     label: "Buy Steel",
@@ -423,6 +464,13 @@ export function handleTradeGoldForStone(
   result: ActionResult,
 ): ActionResult {
   return handleTradeAction("tradeGoldForStone", state, result);
+}
+
+export function handleTradeGoldForLeather(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  return handleTradeAction("tradeGoldForLeather", state, result);
 }
 
 export function handleTradeGoldForSteel(
