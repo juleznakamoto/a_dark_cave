@@ -118,7 +118,7 @@ export default function AttackWavesChart() {
       />
       
       {activeWave && (
-        <div className="space-y-2 pt-2 border-t">
+        <div className="space-y-2 pt-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-medium text-foreground">
               {activeWave.name}
