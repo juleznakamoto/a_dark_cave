@@ -544,6 +544,8 @@ export default function AdminDashboard() {
     console.log('   Result array length:', result.length);
     console.log('   Sample result entry:', result[0]);
     console.log('   Result keys:', result.length > 0 ? Object.keys(result[0]) : []);
+    console.log('   All unique keys across all results:', Array.from(new Set(result.flatMap(r => Object.keys(r)))));
+    console.log('   Sample entries with data:', result.filter(r => Object.keys(r).length > 1).slice(0, 3));
 
     return result;
   };
@@ -978,9 +980,12 @@ export default function AdminDashboard() {
                     <YAxis label={{ value: 'Clicks', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    {Object.keys(getClickTypesByTimestamp()[0] || {})
-                      .filter(key => key !== 'time')
-                      .map((key, index) => (
+                    {(() => {
+                      const chartData = getClickTypesByTimestamp();
+                      const dataKeys = Object.keys(chartData[0] || {}).filter(key => key !== 'time');
+                      console.log('📈 Chart rendering with data keys:', dataKeys);
+                      console.log('📈 Sample data point:', chartData[0]);
+                      return dataKeys.map((key, index) => (
                         <Line
                           key={key}
                           type="monotone"
@@ -989,7 +994,8 @@ export default function AdminDashboard() {
                           strokeWidth={2}
                           dot={{ r: 3 }}
                         />
-                      ))}
+                      ));
+                    })()}
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
