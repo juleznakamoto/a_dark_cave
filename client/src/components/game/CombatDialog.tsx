@@ -110,6 +110,7 @@ export default function CombatDialog({
   // Available combat items with max limits
   const MAX_EMBER_BOMBS = gameState.clothing.grenadier_bag ? 4 : 3;
   const MAX_CINDERFLAME_BOMBS = gameState.clothing.grenadier_bag ? 3 : 2;
+  const MAX_VOID_BOMBS = gameState.clothing.grenadier_bag ? 2 : 1;
   const NIGHTSHADE_BOW_OWNED = gameState.weapons.nightshade_bow; // Assuming inventory holds bow count
 
   const emberBombsUsed = usedItemsInCombat.filter(
@@ -117,6 +118,9 @@ export default function CombatDialog({
   ).length;
   const ashfireBombsUsed = usedItemsInCombat.filter(
     (id) => id === "ashfire_bomb",
+  ).length;
+  const voidBombsUsed = usedItemsInCombat.filter(
+    (id) => id === "void_bomb",
   ).length;
   const poisonArrowsUsedInCombat = usedItemsInCombat.filter(
     (id) => id === "poison_arrows",
@@ -140,6 +144,15 @@ export default function CombatDialog({
         gameState.resources.ashfire_bomb > 0 &&
         ashfireBombsUsed < MAX_CINDERFLAME_BOMBS &&
         !usedItemsInRound.has("ashfire_bomb"),
+    },
+    {
+      id: "void_bomb",
+      name: "Void Bomb",
+      damage: 40,
+      available:
+        gameState.resources.void_bomb > 0 &&
+        voidBombsUsed < MAX_VOID_BOMBS &&
+        !usedItemsInRound.has("void_bomb"),
     },
   ];
 
@@ -448,7 +461,9 @@ export default function CombatDialog({
                           ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
                           : item.id === "ember_bomb"
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
-                            : `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`;
+                            : item.id === "ashfire_bomb"
+                              ? `Available: ${MAX_CINDERFLAME_BOMBS - ashfireBombsUsed}/${MAX_CINDERFLAME_BOMBS}`
+                              : `Available: ${MAX_VOID_BOMBS - voidBombsUsed}/${MAX_VOID_BOMBS}`;
 
                         return (
                           <TooltipProvider key={item.id}>

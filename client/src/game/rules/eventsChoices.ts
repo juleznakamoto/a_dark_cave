@@ -1475,4 +1475,97 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  wanderingAlchemist: {
+    id: "wanderingAlchemist",
+    condition: (state: GameState) =>
+      state.cruelMode &&
+      state.resources.ashfire_bomb >= 1 &&
+      !state.story.seen.wanderingAlchemistEvent,
+    triggerType: "resource",
+    timeProbability: 5,
+    title: "The Wandering Alchemist",
+    message:
+      "A hooded figure in stained robes arrives at your village. 'I am an alchemist,' he says with a voice that echoes unnaturally. 'I can teach you to craft a bomb of extreme power—a void bomb that tears reality itself. But knowledge has its price.'",
+    triggered: false,
+    priority: 4,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 250 gold",
+        cost: "250 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 250) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 250,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                wanderingAlchemistEvent: true,
+                canCraftVoidBomb: true,
+              },
+            },
+            _logMessage:
+              "The alchemist takes your gold and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+          };
+        },
+      },
+      {
+        id: "paySilver",
+        label: "Pay 1000 silver",
+        cost: "1000 silver",
+        effect: (state: GameState) => {
+          if (state.resources.silver < 1000) {
+            return {
+              _logMessage: "You don't have enough silver.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              silver: state.resources.silver - 1000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                wanderingAlchemistEvent: true,
+                canCraftVoidBomb: true,
+              },
+            },
+            _logMessage:
+              "The alchemist takes your silver and begins teaching you the dark art of void bomb creation. 'Use this power wisely,' he warns before vanishing into the shadows.",
+          };
+        },
+      },
+      {
+        id: "sendAway",
+        label: "Send away",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                wanderingAlchemistEvent: true,
+              },
+            },
+            _logMessage:
+              "You refuse the alchemist's offer. He nods knowingly, 'Perhaps you are not ready for such power,' and disappears into the night.",
+          };
+        },
+      },
+    ],
+  },
 };

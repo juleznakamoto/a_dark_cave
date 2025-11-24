@@ -325,6 +325,14 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
     },
   },
+  void_bomb: {
+    getContent: (state) => {
+      const knowledge = getTotalKnowledge(state) || 0;
+      const baseDamage = 40;
+      const knowledgeBonus = Math.floor(knowledge / 5);
+      return `Base Damage: ${baseDamage}\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus}`;
+    },
+  },
   poison_arrows: {
     getContent: (state) => {
       const knowledge = getTotalKnowledge(state) || 0;

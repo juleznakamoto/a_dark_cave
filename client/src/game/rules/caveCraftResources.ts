@@ -135,6 +135,25 @@ export const caveCraftResources: Record<string, Action> = {
     },
     cooldown: 30,
   },
+
+  craftVoidBomb: {
+    id: "craftVoidBomb",
+    label: "Void Bomb",
+    show_when: {
+      "buildings.alchemistHall": 1,
+      "story.seen.canCraftVoidBomb": true,
+    },
+    cost: {
+      "resources.ashfire_dust": 15,
+      "resources.black_powder": 50,
+      "resources.obsidian": 25,
+    },
+    effects: {
+      "resources.void_bomb": 1,
+      "story.seen.hasVoidBomb": true,
+    },
+    cooldown: 45,
+  },
 };
 
 // Action handlers
@@ -200,6 +219,23 @@ export function handleCraftAshfireBomb(state: GameState, result: ActionResult): 
     result.logEntries!.push({
       id: `ashfire-bomb-crafted-${Date.now()}`,
       message: "Using the mystical ashfire dust, you craft an extraordinary bomb that pulses with otherworldly fire. Its flames burn with colors not of this realm.",
+      timestamp: Date.now(),
+      type: 'system',
+    });
+  }
+
+  return result;
+}
+
+export function handleCraftVoidBomb(state: GameState, result: ActionResult): ActionResult {
+  const effectUpdates = applyActionEffects('craftVoidBomb', state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Only show message on first craft
+  if (!state.story.seen.hasVoidBomb) {
+    result.logEntries!.push({
+      id: `void-bomb-crafted-${Date.now()}`,
+      message: "Combining ashfire dust with obsidian and black powder, you create a weapon of terrifying power. The void bomb seems to distort space around it, reality itself recoiling from its presence.",
       timestamp: Date.now(),
       type: 'system',
     });
