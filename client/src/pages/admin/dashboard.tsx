@@ -304,7 +304,9 @@ export default function AdminDashboard() {
   };
 
   const getAveragePlaytimeToCompletion = () => {
-    const completedGames = gameSaves.filter(save => save.game_state?.showEndScreen === true);
+    const completedGames = gameSaves.filter(save => 
+      save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
+    );
 
     if (completedGames.length === 0) return 0;
 
@@ -669,7 +671,7 @@ export default function AdminDashboard() {
 
   const getGameCompletionStats = () => {
     const completed = gameSaves.filter(save =>
-      save.game_state?.showEndScreen === true
+      save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
     ).length;
 
     const total = gameSaves.length;
@@ -695,7 +697,10 @@ export default function AdminDashboard() {
 
   const getConversionRate = () => {
     const totalUsers = gameSaves.length;
-    const payingUsers = new Set(purchases.map(p => p.user_id)).size;
+    // Only count users who made non-free purchases (price_paid > 0)
+    const payingUsers = new Set(
+      purchases.filter(p => p.price_paid > 0).map(p => p.user_id)
+    ).size;
 
     if (totalUsers === 0) return 0;
     return Math.round((payingUsers / totalUsers) * 100);
@@ -857,7 +862,7 @@ export default function AdminDashboard() {
                 <CardContent>
                   <p className="text-4xl font-bold">
                     {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => s.game_state?.showEndScreen).length / gameSaves.length) * 100)
+                      ? Math.round((gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
                 </CardContent>
@@ -1118,7 +1123,7 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">
-                    {gameSaves.filter(s => s.game_state?.showEndScreen).length}
+                    {gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length}
                   </p>
                 </CardContent>
               </Card>
@@ -1130,7 +1135,7 @@ export default function AdminDashboard() {
                 <CardContent>
                   <p className="text-4xl font-bold">
                     {gameSaves.length > 0
-                      ? Math.round((gameSaves.filter(s => s.game_state?.showEndScreen).length / gameSaves.length) * 100)
+                      ? Math.round((gameSaves.filter(s => s.game_state?.events?.cube15a || s.game_state?.events?.cube15b).length / gameSaves.length) * 100)
                       : 0}%
                   </p>
                 </CardContent>
