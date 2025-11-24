@@ -164,31 +164,21 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
-      console.log('🔐 Checking admin access...');
-      console.log('   Getting regular Supabase client (this creates the FIRST GoTrueClient)...');
       const supabase = await getSupabaseClient();
-      console.log('   Regular client obtained, checking user...');
-      
       const { data: { user } } = await supabase.auth.getUser();
-      console.log('   User:', user?.email || 'not logged in');
-      
       const adminEmails = getAdminEmails();
-      console.log('   Admin emails:', adminEmails);
 
       if (!user || !adminEmails.includes(user.email || '')) {
-        console.log('❌ User not authorized, redirecting to home...');
         setLoading(false);
         setLocation('/');
         return;
       }
 
-      console.log('✅ User is authorized admin');
       setIsAuthorized(true);
-      console.log('📊 Loading dashboard data (this will create SECOND GoTrueClient)...');
       await loadData();
       setLoading(false);
     } catch (error) {
-      console.error('❌ Auth check failed:', error);
+      console.error('Auth check failed:', error);
       setLoading(false);
       setLocation('/');
     }
@@ -197,37 +187,28 @@ export default function AdminDashboard() {
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
-      console.log('🔍 Fetching admin data from server...');
       const response = await fetch('/api/admin/data');
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('❌ Admin data fetch failed:', response.status, errorText);
+        console.error('Admin data fetch failed:', response.status, errorText);
         throw new Error(`Failed to fetch admin data: ${response.status}`);
       }
       
       const data = await response.json();
-      
-      console.log('✅ Admin data received:', {
-        clicks: data.clicks?.length || 0,
-        saves: data.saves?.length || 0,
-        purchases: data.purchases?.length || 0
-      });
 
       // Set the data
       if (data.clicks) setClickData(data.clicks);
       if (data.saves) setGameSaves(data.saves);
       if (data.purchases) setPurchases(data.purchases);
 
-    // Collect all unique user IDs
+      // Collect all unique user IDs
       const uniqueUserIds = new Set<string>();
 
       // Add users from all sources
       data.saves?.forEach((s: any) => uniqueUserIds.add(s.user_id));
       data.clicks?.forEach((c: any) => uniqueUserIds.add(c.user_id));
       data.purchases?.forEach((p: any) => uniqueUserIds.add(p.user_id));
-
-      console.log('Total unique users:', uniqueUserIds.size);
 
       const userList = Array.from(uniqueUserIds).map(id => ({
         id,
@@ -236,7 +217,7 @@ export default function AdminDashboard() {
 
       setUsers(userList);
     } catch (error) {
-      console.error('❌ Failed to load admin data:', error);
+      console.error('Failed to load admin data:', error);
     }
   };
 
@@ -432,6 +413,7 @@ export default function AdminDashboard() {
 
     // Aggregate into 15-minute buckets
     const buckets = new Map<number, Record<string, number>>();
+    let maxBucket = 0;
 
     filteredClicks.forEach(entry => {
       // Format: { "playtime_minutes": { "button": count } }
@@ -440,7 +422,8 @@ export default function AdminDashboard() {
           // Extract playtime from key like "45m"
           const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
           if (!isNaN(playtimeMinutes)) {
-            const bucket = Math.floor(playtimeMinutes / 5) * 5; // 5-minute buckets
+            const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
+            maxBucket = Math.max(maxBucket, bucket);
 
             if (!buckets.has(bucket)) {
               buckets.set(bucket, {});
@@ -449,6 +432,7 @@ export default function AdminDashboard() {
             const bucketData = buckets.get(bucket)!;
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
+              // Only include if selectedClickTypes is empty (all) or contains this button
               if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
                 bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
               }
@@ -463,10 +447,9 @@ export default function AdminDashboard() {
     if (buckets.size === 0) return [];
 
     // Convert to array and format for chart display
-    const maxBucket = Math.max(...Array.from(buckets.keys()));
     const result: Array<{ time: string; [key: string]: any }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 5) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
       const bucketData = buckets.get(bucket) || {};
       result.push({
         time: `${bucket}m`,
