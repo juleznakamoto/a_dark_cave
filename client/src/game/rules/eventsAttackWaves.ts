@@ -134,6 +134,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               startTime: now,
               duration: duration,
               defeated: false,
+              provoked: false,
             },
           },
         }));
@@ -233,6 +234,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               startTime: now,
               duration: duration,
               defeated: false,
+              provoked: false,
             },
           },
         }));
@@ -329,6 +331,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               startTime: now,
               duration: duration,
               defeated: false,
+              provoked: false,
             },
           },
         }));
@@ -418,6 +421,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               startTime: now,
               duration: duration,
               defeated: false,
+              provoked: false,
             },
           },
         }));
@@ -507,6 +511,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               startTime: now,
               duration: duration,
               defeated: false,
+              provoked: false,
             },
           },
         }));

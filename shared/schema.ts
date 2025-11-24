@@ -355,6 +355,7 @@ export const gameStateSchema = z.object({
     startTime: z.number(),
     duration: z.number(), // Duration in milliseconds
     defeated: z.boolean(),
+    provoked: z.boolean().default(false),
   })).default({}),
   curseState: z
     .object({
