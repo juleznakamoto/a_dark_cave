@@ -381,10 +381,17 @@ export const caveExploreActions: Record<string, Action> = {
     cost: {
       "resources.ember_bomb": 10,
     },
-    effects: {
-      "resources.ember_bomb": -10,
-      "flags.portalBlasted": true,
-      "story.seen.portalBlasted": true,
+    effects: (state: GameState) => {
+      return {
+        flags: {
+          ...state.flags,
+          portalBlasted: true,
+        },
+        attackWaveTimers: {
+          ...state.attackWaveTimers,
+          firstWave: state.story.seen.hasBastion ? 10 * 60 * 1000 : undefined, // 10 minutes if bastion exists
+        },
+      };
     },
     cooldown: 1,
   },

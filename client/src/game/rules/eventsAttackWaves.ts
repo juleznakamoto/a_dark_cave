@@ -116,9 +116,9 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.flags.portalBlasted &&
       state.story.seen.hasBastion &&
-      !state.story.seen.firstWaveVictory ,
-      // state.attackWaveTimers.firstWave !== undefined &&
-      // state.attackWaveTimers.firstWave <= 0,
+      !state.story.seen.firstWaveVictory &&
+      state.attackWaveTimers.firstWave !== undefined &&
+      state.attackWaveTimers.firstWave <= 0,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return 100; // Always trigger when timer reaches 0
