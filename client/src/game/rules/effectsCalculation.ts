@@ -446,21 +446,21 @@ export const getAllActionBonuses = (
 // Helper function to calculate total luck
 export const getTotalLuck = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  const baseLuck = state.stats.luck || 0;
+  const baseLuck = state.stats?.luck || 0;
   return baseLuck + (effects.statBonuses?.luck || 0);
 };
 
 // Helper function to calculate total strength
 export const getTotalStrength = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  const baseStrength = state.stats.strength || 0;
+  const baseStrength = state.stats?.strength || 0;
   return baseStrength + (effects.statBonuses?.strength || 0);
 };
 
 // Helper function to calculate total knowledge
 export const getTotalKnowledge = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
-  let knowledge = state.stats.knowledge || 0;
+  let knowledge = state.stats?.knowledge || 0;
   return knowledge + (effects.statBonuses?.knowledge || 0);
 };
 
@@ -469,7 +469,7 @@ export const getTotalMadness = (state: GameState): number => {
   const effects = calculateTotalEffects(state);
   // Base madness already includes madnessFromEvents (they're added together when events trigger)
   // So we just use the base madness value
-  let totalMadness = state.stats.madness || 0;
+  let totalMadness = state.stats?.madness || 0;
 
   // Add madness from effects
   const effectMadness = effects.statBonuses?.madness || 0;
