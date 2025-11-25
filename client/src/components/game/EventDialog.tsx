@@ -312,6 +312,15 @@ export default function EventDialog({
                 ? choice.label(gameState)
                 : choice.label;
 
+              // Calculate success percentage if available
+              let successPercentage: string | null = null;
+              if (choice.success_chance !== undefined) {
+                const successChance = typeof choice.success_chance === 'function'
+                  ? choice.success_chance(gameState)
+                  : choice.success_chance;
+                successPercentage = `${Math.round(successChance * 100)}%`;
+              }
+
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -321,23 +330,30 @@ export default function EventDialog({
                   button_id={`event-choice-${choice.id}`}
                 >
                   <span>{labelText}</span>
-                  {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                    <div className="flex gap-1 ml-2">
-                      {choice.relevant_stats.map((stat) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`text-xs ${statInfo.color}`}
-                            title={stat}
-                          >
-                            {statInfo.icon}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  )}
+                  <div className="flex gap-2 items-center ml-2">
+                    {successPercentage && (
+                      <span className="text-xs text-muted-foreground">
+                        {successPercentage}
+                      </span>
+                    )}
+                    {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
+                      <div className="flex gap-1">
+                        {choice.relevant_stats.map((stat) => {
+                          const statInfo = statIcons[stat.toLowerCase()];
+                          if (!statInfo) return null;
+                          return (
+                            <span
+                              key={stat}
+                              className={`text-xs ${statInfo.color}`}
+                              title={stat}
+                            >
+                              {statInfo.icon}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
                 </Button>
               );
 
