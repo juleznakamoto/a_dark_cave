@@ -92,7 +92,8 @@ async function processReferralInBackground(): Promise<void> {
         return;
       }
 
-      if (result.success) {
+      // Stop retrying if already processed or successful
+      if (result.success || result.reason === 'already_processed') {
         // Load fresh state from Supabase and update game state directly
         try {
           const freshState = await loadGameFromSupabase();
@@ -125,9 +126,20 @@ async function processReferralInBackground(): Promise<void> {
         } catch (error) {
           console.error('Failed to update game state:', error);
         }
+        return; // Stop retrying after success or already_processed
+      }
+
+      // If we got here, retry with exponential backoff
+      attempts++;
+      if (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
       }
     } catch (error) {
       console.error('Failed to process referral after confirmation:', error);
+      attempts++;
+      if (attempts < maxAttempts) {
+        await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
+      }
     }
   }
 
@@ -224,7 +236,7 @@ export async function saveGameToSupabase(
     .from('game_saves')
     .select('game_state')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
   // Merge diff with existing state
   let finalState: any;
@@ -286,10 +298,9 @@ export async function loadGameFromSupabase(): Promise<GameState | null> {
     .from('game_saves')
     .select('game_state')
     .eq('user_id', user.id)
-    .single();
+    .maybeSingle();
 
   if (error) {
-    if (error.code === 'PGRST116') return null; // No save found
     throw error;
   }
 
