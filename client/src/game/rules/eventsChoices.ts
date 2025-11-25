@@ -34,16 +34,16 @@ export const choiceEvents: Record<string, GameEvent> = {
           return calculateSuccessChance(
             state,
             0.1,
-            { type: 'strength', multiplier: 0.01 },
-            { type: 'luck', multiplier: 0.005 }
+            { type: "strength", multiplier: 0.01 },
+            { type: "luck", multiplier: 0.005 },
           );
         },
         effect: (state: GameState) => {
           const mantleChance = calculateSuccessChance(
             state,
             0.1,
-            { type: 'strength', multiplier: 0.01 },
-            { type: 'luck', multiplier: 0.005 }
+            { type: "strength", multiplier: 0.01 },
+            { type: "luck", multiplier: 0.005 },
           );
 
           const rand = Math.random();
@@ -271,7 +271,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);
-          const successChance = 0.3 + knowledge - state.CM * 0.05;
+          const successChance = 0.3 + 0.01 * knowledge - state.CM * 0.05;
           const rand = Math.random();
 
           // Kill 4 villagers first
@@ -314,8 +314,10 @@ export const choiceEvents: Record<string, GameEvent> = {
       {
         id: "refuse",
         label: "Make no sacrifices",
+        relevant_stats: ["luck"],
         effect: (state: GameState) => {
-          const successChance = 0.1 - state.CM * 0.025;
+          const luck = getTotalLuck(state);
+          const successChance = 0.1 + 0.01 * luck - state.CM * 0.025;
           const nothingChance = 0.4 - state.CM * 0.05;
           const rand = Math.random();
 

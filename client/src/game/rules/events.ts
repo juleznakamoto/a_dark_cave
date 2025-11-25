@@ -51,7 +51,6 @@ export function calculateSuccessChance(
 }
 
 
-import { GameState } from "@shared/schema";
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
 import { merchantEvents, generateMerchantChoices } from "./eventsMerchant";
