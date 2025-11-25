@@ -741,6 +741,81 @@ export default function AdminDashboard() {
     return purchases.reduce((sum, p) => sum + p.price_paid, 0);
   };
 
+  // Player churn analysis - when did players stop playing?
+  const getPlayerChurnData = () => {
+    const now = new Date();
+    const churnThreshold = 72 * 60 * 60 * 1000; // 72 hours in milliseconds
+    
+    const churnedPlayers = gameSaves
+      .filter(save => {
+        const lastActivity = new Date(save.updated_at);
+        const timeSinceActivity = now.getTime() - lastActivity.getTime();
+        return timeSinceActivity >= churnThreshold;
+      })
+      .map(save => ({
+        userId: save.user_id.substring(0, 8) + '...',
+        lastActivity: new Date(save.updated_at),
+        daysSinceActivity: Math.floor((now.getTime() - new Date(save.updated_at).getTime()) / (1000 * 60 * 60 * 24)),
+        playTime: save.game_state?.playTime || 0,
+        completed: !!(save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+      }))
+      .sort((a, b) => b.lastActivity.getTime() - a.lastActivity.getTime());
+
+    return churnedPlayers;
+  };
+
+  const getChurnByPlaytimeBucket = () => {
+    const churnedPlayers = getPlayerChurnData();
+    
+    const buckets = {
+      '0-30 min': 0,
+      '30-60 min': 0,
+      '1-2 hours': 0,
+      '2-5 hours': 0,
+      '5-10 hours': 0,
+      '10+ hours': 0,
+    };
+
+    churnedPlayers.forEach(player => {
+      const minutes = player.playTime / 1000 / 60;
+      if (minutes < 30) buckets['0-30 min']++;
+      else if (minutes < 60) buckets['30-60 min']++;
+      else if (minutes < 120) buckets['1-2 hours']++;
+      else if (minutes < 300) buckets['2-5 hours']++;
+      else if (minutes < 600) buckets['5-10 hours']++;
+      else buckets['10+ hours']++;
+    });
+
+    return Object.entries(buckets).map(([range, count]) => ({
+      range,
+      count,
+    }));
+  };
+
+  const getChurnOverTime = () => {
+    const data: { day: string; churned: number }[] = [];
+
+    for (let i = 30; i >= 0; i--) {
+      const date = subDays(new Date(), i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+      const churnThreshold = subDays(new Date(), i + 3); // 72 hours before this day
+
+      const churnedCount = gameSaves.filter(save => {
+        const lastActivity = new Date(save.updated_at);
+        // Players who were last active between 72-96 hours ago from this day
+        return isWithinInterval(lastActivity, { start: startOfDay(churnThreshold), end: endOfDay(churnThreshold) });
+      }).length;
+
+      data.push({
+        day: format(date, 'MMM dd'),
+        churned: churnedCount,
+      });
+    }
+
+    return data;
+  };
+
   // Referral stats
   const getTotalReferrals = () => {
     let totalReferrals = 0;
@@ -891,6 +966,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="completion">Game Progress</TabsTrigger>
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
+            <TabsTrigger value="churn">Player Churn</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -1498,6 +1574,121 @@ export default function AdminDashboard() {
                     <Bar dataKey="count" fill="#ffc658" />
                   </BarChart>
                 </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="churn" className="space-y-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Churned Players</CardTitle>
+                  <CardDescription>Inactive for 72+ hours</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getPlayerChurnData().length}</p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {gameSaves.length > 0 
+                      ? Math.round((getPlayerChurnData().length / gameSaves.length) * 100)
+                      : 0}% of total players
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Completed Before Churning</CardTitle>
+                  <CardDescription>Churned players who finished</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">
+                    {getPlayerChurnData().filter(p => p.completed).length}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-2">
+                    {getPlayerChurnData().length > 0
+                      ? Math.round((getPlayerChurnData().filter(p => p.completed).length / getPlayerChurnData().length) * 100)
+                      : 0}% of churned players
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Avg Playtime Before Churn</CardTitle>
+                  <CardDescription>Among churned players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">
+                    {getPlayerChurnData().length > 0
+                      ? formatTime(Math.round(
+                          getPlayerChurnData().reduce((sum, p) => sum + (p.playTime / 1000 / 60), 0) / 
+                          getPlayerChurnData().length
+                        ))
+                      : '0m'}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Churn by Playtime</CardTitle>
+                <CardDescription>When did players stop playing based on how long they played?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getChurnByPlaytimeBucket()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="range" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#ff8042" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Daily Churn Events (Last 30 Days)</CardTitle>
+                <CardDescription>Number of players who stopped playing each day (72hr threshold)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <AreaChart data={getChurnOverTime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="churned" stroke="#ff8042" fill="#ff8042" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Recent Churned Players</CardTitle>
+                <CardDescription>Players who stopped playing (inactive for 72+ hours)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {getPlayerChurnData().slice(0, 50).map((player, index) => (
+                    <div key={index} className="flex justify-between items-center border-b pb-2">
+                      <div>
+                        <p className="font-medium">{player.userId}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Last active: {player.lastActivity.toLocaleString()}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Playtime: {formatTime(Math.round(player.playTime / 1000 / 60))} • 
+                          {player.completed ? ' Completed' : ' Incomplete'}
+                        </p>
+                      </div>
+                      <p className="font-bold text-red-500">{player.daysSinceActivity} days ago</p>
+                    </div>
+                  ))}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>
