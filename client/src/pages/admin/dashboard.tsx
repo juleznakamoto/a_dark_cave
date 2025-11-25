@@ -740,8 +740,9 @@ export default function AdminDashboard() {
     const cutoffDate = subDays(now, churnDays);
     const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
 
-    console.log('🔍 Getting churned players:', { 
+    console.log('🔍 Getting churned players START:', { 
       churnDays, 
+      now: now.toISOString(),
       cutoffDate: cutoffDate.toISOString(),
       clickDataLength: clickData.length,
       gameSavesLength: gameSaves.length 
@@ -750,12 +751,15 @@ export default function AdminDashboard() {
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-    console.log('📊 Users with clicks:', usersWithClicks.size);
+    console.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', Array.from(usersWithClicks).slice(0, 3));
 
     // Get the latest activity for each user from game saves (updated_at is most reliable)
     const userLastActivity = new Map<string, Date>();
 
-    gameSaves.forEach(save => {
+    gameSaves.forEach((save, index) => {
+      if (index < 3) {
+        console.log('📊 Sample save:', { user_id: save.user_id?.substring(0, 8), updated_at: save.updated_at });
+      }
       const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
@@ -763,13 +767,30 @@ export default function AdminDashboard() {
       }
     });
     console.log('📊 Total users with activity:', userLastActivity.size);
+    console.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
 
     // Find users who haven't been active since cutoff AND have click data
     let churnedCount = 0;
     let notChurnedCount = 0;
+    let debugSample = 0;
     userLastActivity.forEach((lastActivity, userId) => {
-      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
-        const daysSince = differenceInDays(now, lastActivity);
+      const hasClicks = usersWithClicks.has(userId);
+      const isBeforeCutoff = lastActivity < cutoffDate;
+      const daysSince = differenceInDays(now, lastActivity);
+      
+      if (debugSample < 5) {
+        console.log('📊 User check:', {
+          userId: userId.substring(0, 8),
+          lastActivity: lastActivity.toISOString(),
+          hasClicks,
+          isBeforeCutoff,
+          daysSince,
+          willChurn: isBeforeCutoff && hasClicks
+        });
+        debugSample++;
+      }
+
+      if (isBeforeCutoff && hasClicks) {
         churnedPlayers.push({
           userId: userId.substring(0, 8) + '...',
           lastActivity,
@@ -781,9 +802,10 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Churn analysis:', { 
+    console.log('📊 Churn analysis COMPLETE:', { 
       churnedCount, 
       notChurnedCount,
+      totalChurnedPlayers: churnedPlayers.length,
       firstChurned: churnedPlayers[0],
       lastChurned: churnedPlayers[churnedPlayers.length - 1]
     });
@@ -796,11 +818,16 @@ export default function AdminDashboard() {
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
     
-    console.log('🔍 Getting churned players last clicks');
+    console.log('🔍 Getting churned players last clicks START:', {
+      now: now.toISOString(),
+      cutoffDate: cutoffDate.toISOString(),
+      churnDays
+    });
     
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    console.log('📊 Users with clicks:', usersWithClicks.size);
     
     // Get churned user IDs based on game save activity
     const churnedUserIds = new Set<string>();
@@ -820,12 +847,20 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Churned user IDs for clicks:', churnedUserIds.size);
+    console.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
 
     // Collect all clicks from churned users with their playtime
     const allClicks: Array<{ userId: string; button: string; playtime: string; clicks: number }> = [];
 
-    clickData.forEach(entry => {
+    clickData.forEach((entry, index) => {
+      if (index < 3) {
+        console.log('📊 Sample click entry:', {
+          user_id: entry.user_id?.substring(0, 8),
+          isChurned: churnedUserIds.has(entry.user_id),
+          clicksKeys: Object.keys(entry.clicks).slice(0, 3)
+        });
+      }
+      
       if (churnedUserIds.has(entry.user_id)) {
         Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
           Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
@@ -841,7 +876,7 @@ export default function AdminDashboard() {
     });
 
     console.log('📊 Total clicks from churned users:', allClicks.length);
-    console.log('📊 Sample clicks:', allClicks.slice(0, 3));
+    console.log('📊 Sample clicks:', allClicks.slice(0, 5));
 
     // Sort by playtime (most recent first) and return last 20
     const sorted = allClicks
@@ -852,7 +887,7 @@ export default function AdminDashboard() {
       })
       .slice(0, 20);
 
-    console.log('📊 Returning', sorted.length, 'clicks');
+    console.log('📊 Returning last clicks:', sorted.length, 'Sample:', sorted.slice(0, 3));
     return sorted;
   };
 
