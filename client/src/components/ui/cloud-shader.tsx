@@ -1,5 +1,5 @@
 
-import { useRef, useEffect, useState } from 'react';
+import { useRef, useEffect } from 'react';
 
 // WebGL Renderer class
 class WebGLRenderer {
@@ -170,10 +170,9 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const animationFrameRef = useRef<number>();
-  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (!canvasRef.current || hasError) return;
+    if (!canvasRef.current) return;
 
     const canvas = canvasRef.current;
     // Reduce DPR further to save memory
@@ -182,35 +181,20 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 
-    try {
-      rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
-      if (rendererRef.current) {
-        rendererRef.current.setup();
-        rendererRef.current.init();
-      }
-    } catch (error) {
-      console.warn('Failed to initialize WebGL renderer:', error);
-      rendererRef.current = null;
-      setHasError(true);
-      return; // Exit gracefully - canvas will remain black
-    }
+    rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
+    rendererRef.current.setup();
+    rendererRef.current.init();
 
     let isActive = true;
     let frameCount = 0;
     const loop = (now: number) => {
       if (!isActive || !rendererRef.current) return;
-      try {
-        // Render every other frame to reduce GPU load
-        if (frameCount % 2 === 0) {
-          rendererRef.current.render(now);
-        }
-        frameCount++;
-        animationFrameRef.current = requestAnimationFrame(loop);
-      } catch (error) {
-        console.warn('Error in render loop:', error);
-        isActive = false;
-        setHasError(true);
+      // Render every other frame to reduce GPU load
+      if (frameCount % 2 === 0) {
+        rendererRef.current.render(now);
       }
+      frameCount++;
+      animationFrameRef.current = requestAnimationFrame(loop);
     };
 
     loop(0);
@@ -233,15 +217,11 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
         animationFrameRef.current = undefined;
       }
       if (rendererRef.current) {
-        try {
-          rendererRef.current.reset();
-        } catch (error) {
-          console.warn('Error resetting WebGL renderer:', error);
-        }
+        rendererRef.current.reset();
         rendererRef.current = null;
       }
     };
-  }, [hasError]);
+  }, []);
 
   return (
     <canvas
