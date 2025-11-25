@@ -129,6 +129,7 @@ export default function AdminDashboard() {
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
   const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
+  const [churnDays, setChurnDays] = useState<3 | 5 | 7>(3);
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -808,6 +809,107 @@ export default function AdminDashboard() {
     return Math.round((payingUsers / totalUsers) * 100);
   };
 
+  // Get churned players (haven't had activity in X days)
+  const getChurnedPlayers = () => {
+    const now = new Date();
+    const cutoffDate = subDays(now, churnDays);
+    const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
+
+    // Get the latest activity for each user
+    const userLastActivity = new Map<string, Date>();
+
+    // Check click data
+    clickData.forEach(entry => {
+      const activityDate = parseISO(entry.timestamp);
+      const existing = userLastActivity.get(entry.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(entry.user_id, activityDate);
+      }
+    });
+
+    // Check game saves
+    gameSaves.forEach(save => {
+      const activityDate = parseISO(save.updated_at);
+      const existing = userLastActivity.get(save.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(save.user_id, activityDate);
+      }
+    });
+
+    // Find users who haven't been active since cutoff
+    userLastActivity.forEach((lastActivity, userId) => {
+      if (lastActivity < cutoffDate) {
+        const daysSince = differenceInDays(now, lastActivity);
+        churnedPlayers.push({
+          userId: userId.substring(0, 8) + '...',
+          lastActivity,
+          daysSinceActivity: daysSince,
+        });
+      }
+    });
+
+    return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
+  };
+
+  // Get the last 20 clicks from churned players
+  const getChurnedPlayersLastClicks = () => {
+    const now = new Date();
+    const cutoffDate = subDays(now, churnDays);
+    
+    // Get churned user IDs
+    const churnedUserIds = new Set<string>();
+    const userLastActivity = new Map<string, Date>();
+
+    clickData.forEach(entry => {
+      const activityDate = parseISO(entry.timestamp);
+      const existing = userLastActivity.get(entry.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(entry.user_id, activityDate);
+      }
+    });
+
+    gameSaves.forEach(save => {
+      const activityDate = parseISO(save.updated_at);
+      const existing = userLastActivity.get(save.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(save.user_id, activityDate);
+      }
+    });
+
+    userLastActivity.forEach((lastActivity, userId) => {
+      if (lastActivity < cutoffDate) {
+        churnedUserIds.add(userId);
+      }
+    });
+
+    // Collect all clicks from churned users with their playtime
+    const allClicks: Array<{ userId: string; button: string; playtime: string; clicks: number }> = [];
+
+    clickData.forEach(entry => {
+      if (churnedUserIds.has(entry.user_id)) {
+        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
+          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
+            allClicks.push({
+              userId: entry.user_id.substring(0, 8) + '...',
+              button: cleanButtonName(button),
+              playtime: playtimeKey,
+              clicks: count,
+            });
+          });
+        });
+      }
+    });
+
+    // Sort by playtime (most recent first) and return last 20
+    return allClicks
+      .sort((a, b) => {
+        const aMinutes = parseInt(a.playtime.replace('m', ''));
+        const bMinutes = parseInt(b.playtime.replace('m', ''));
+        return bMinutes - aMinutes;
+      })
+      .slice(0, 20);
+  };
+
   const getARPU = () => {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
@@ -891,6 +993,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="completion">Game Progress</TabsTrigger>
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
+            <TabsTrigger value="churn">Churn</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -1496,6 +1599,165 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="count" fill="#ffc658" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="churn" className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <label className="text-sm font-medium">Churn definition (inactive for at least):</label>
+              <Select value={churnDays.toString()} onValueChange={(value) => setChurnDays(parseInt(value) as 3 | 5 | 7)}>
+                <SelectTrigger className="w-[120px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="3">3 days</SelectItem>
+                  <SelectItem value="5">5 days</SelectItem>
+                  <SelectItem value="7">7 days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Churned Players</CardTitle>
+                  <CardDescription>Players inactive for {churnDays}+ days</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getChurnedPlayers().length}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Churn Rate</CardTitle>
+                  <CardDescription>% of total players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">
+                    {gameSaves.length > 0
+                      ? Math.round((getChurnedPlayers().length / gameSaves.length) * 100)
+                      : 0}%
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Churned Players List</CardTitle>
+                <CardDescription>Players who stopped playing (sorted by inactivity)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {getChurnedPlayers().map((player, index) => (
+                    <div key={index} className="flex justify-between items-center border-b pb-2">
+                      <div>
+                        <p className="font-medium">{player.userId}</p>
+                        <p className="text-sm text-muted-foreground">
+                          Last activity: {format(player.lastActivity, 'MMM dd, yyyy HH:mm')}
+                        </p>
+                      </div>
+                      <p className="font-bold text-red-500">{player.daysSinceActivity} days ago</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Last 20 Clicks from Churned Players</CardTitle>
+                <CardDescription>What were churned players doing before they stopped?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2">
+                  {getChurnedPlayersLastClicks().map((click, index) => (
+                    <div key={index} className="flex justify-between items-center border-b pb-2">
+                      <div>
+                        <p className="font-medium">{click.button}</p>
+                        <p className="text-sm text-muted-foreground">
+                          User: {click.userId} | Playtime: {click.playtime}
+                        </p>
+                      </div>
+                      <p className="font-bold">{click.clicks} clicks</p>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Churn Point Distribution</CardTitle>
+                <CardDescription>At what playtime did churned players stop playing?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={(() => {
+                    const churnedUserIds = new Set<string>();
+                    const now = new Date();
+                    const cutoffDate = subDays(now, churnDays);
+                    
+                    const userLastActivity = new Map<string, Date>();
+                    clickData.forEach(entry => {
+                      const activityDate = parseISO(entry.timestamp);
+                      const existing = userLastActivity.get(entry.user_id);
+                      if (!existing || activityDate > existing) {
+                        userLastActivity.set(entry.user_id, activityDate);
+                      }
+                    });
+                    gameSaves.forEach(save => {
+                      const activityDate = parseISO(save.updated_at);
+                      const existing = userLastActivity.get(save.user_id);
+                      if (!existing || activityDate > existing) {
+                        userLastActivity.set(save.user_id, activityDate);
+                      }
+                    });
+                    userLastActivity.forEach((lastActivity, userId) => {
+                      if (lastActivity < cutoffDate) {
+                        churnedUserIds.add(userId);
+                      }
+                    });
+
+                    // Get max playtime for each churned user
+                    const userMaxPlaytime = new Map<string, number>();
+                    clickData.forEach(entry => {
+                      if (churnedUserIds.has(entry.user_id)) {
+                        Object.keys(entry.clicks).forEach(playtimeKey => {
+                          const minutes = parseInt(playtimeKey.replace('m', ''));
+                          const existing = userMaxPlaytime.get(entry.user_id) || 0;
+                          if (minutes > existing) {
+                            userMaxPlaytime.set(entry.user_id, minutes);
+                          }
+                        });
+                      }
+                    });
+
+                    // Group into buckets (30-minute intervals)
+                    const buckets: Record<string, number> = {};
+                    userMaxPlaytime.forEach((minutes) => {
+                      const bucket = Math.floor(minutes / 30) * 30;
+                      const label = `${bucket}-${bucket + 30}m`;
+                      buckets[label] = (buckets[label] || 0) + 1;
+                    });
+
+                    return Object.entries(buckets)
+                      .map(([range, count]) => ({ range, count }))
+                      .sort((a, b) => {
+                        const aStart = parseInt(a.range.split('-')[0]);
+                        const bStart = parseInt(b.range.split('-')[0]);
+                        return aStart - bStart;
+                      });
+                  })()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="range" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#ff8042" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
