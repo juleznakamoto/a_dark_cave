@@ -1365,7 +1365,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.pillarOfClarity": 0,
-        "story.seen.pilarOfClarityUnlocked": true,
+        "story.seen.pillarOfClarityUnlocked": true,
       },
     },
     cost: {

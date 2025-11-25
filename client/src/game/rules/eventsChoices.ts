@@ -1707,7 +1707,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               seen: {
                 ...state.story.seen,
                 youngWomanProtestEvent: true,
-                pilarOfClarityUnlocked: true,
+                pillarOfClarityUnlocked: true,
               },
             },
             _logMessage:
