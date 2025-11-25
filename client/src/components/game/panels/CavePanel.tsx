@@ -243,7 +243,7 @@ export default function CavePanel() {
   return (
     <ScrollArea className="h-full w-full">
       {explosionEffect.ExplosionEffectRenderer()}
-      <div className="space-y-4 mt-3 pb-4">
+      <div className="space-y-4 mt-2">
         {actionGroups.map((group, groupIndex) => {
         // Handle groups with subGroups (like Craft)
         if (group.subGroups) {

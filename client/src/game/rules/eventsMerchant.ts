@@ -346,7 +346,7 @@ const toolTrades = [
     label: "Book of War",
     give: "book",
     giveItem: "book_of_war",
-    condition: (state: GameState) => state.buildings.scriptorium >= 1 && !state.books.book_of_war,
+    condition: (state: GameState) => state.story.seen.firstWolfAttack && state.buildings.scriptorium >= 1 && !state.books.book_of_war,
     costs: [{ resource: "gold", amounts: [500] }],
     message:
       "You purchase the Book of War. The merchant nods gravely: 'Military knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
