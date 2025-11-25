@@ -62,7 +62,7 @@ async function processReferralInBackground(): Promise<void> {
   }
 
   // Wait a bit for server to be fully ready (especially in dev with HMR)
-  await new Promise(resolve => setTimeout(resolve, 2000));alls');
+  await new Promise(resolve => setTimeout(resolve, 2000));
 
   // Add retry logic with longer delays for dev environment
   let attempts = 0;
