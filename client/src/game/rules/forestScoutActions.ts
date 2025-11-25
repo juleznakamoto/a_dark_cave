@@ -7,6 +7,7 @@ import {
   getTotalKnowledge,
 } from "@/game/rules/effectsCalculation";
 import { killVillagers } from "@/game/stateHelpers";
+import { calculateSuccessChance } from "./events";
 
 export const forestScoutActions: Record<string, Action> = {
   hunt: {
@@ -150,7 +151,7 @@ export function handleLayTrap(
 
   // Calculate success based on luck
   const luck = getTotalLuck(state);
-  const successChance = 0.25 + luck * 0.01 - state.CM * 0.05;
+  const successChance = calculateSuccessChance(state, "layTrap");
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -239,8 +240,7 @@ export function handleCastleRuins(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.CM*0.05; // 10% base + (strength + knowledge)/2%
-
+  const successChance = calculateSuccessChance(state, "castleRuins");
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -328,7 +328,7 @@ export function handleHillGrave(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.15 + ((strength + knowledge) / 2) * 0.01-state.CM*0.05; // 15% base + (strength + knowledge)/2%
+  const successChance = calculateSuccessChance(state, "hillGrave");
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -396,7 +396,7 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = 0.1 + ((strength + knowledge) / 2) * 0.01-state.CM*0.05; // 10% base + (strength + knowledge)/2%
+  const successChance = calculateSuccessChance(state, "sunkenTemple");
   const rand = Math.random();
 
   if (rand < successChance) {

@@ -26,14 +26,16 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           let victoryChance;
           const traps = state.buildings.traps;
-          const strength = getTotalStrength(state);
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
           } else {
             // Check for victory: 15% base chance + 1% per strength point
             // Traps increase victory chance by 10%
-            victoryChance =
-              0.15 + strength * 0.01 + traps * 0.1 - state.CM * 0.05;
+            victoryChance = calculateSuccessChance(
+              state,
+              0.15 + traps * 0.1,
+              { type: 'strength', multiplier: 0.01 }
+            );
           }
 
           if (Math.random() < victoryChance) {
@@ -229,11 +231,13 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
-          const strength = getTotalStrength(state);
 
           // Check for victory: 10% base chance + 1% per strength point
-          const victoryChance =
-            0.1 + strength * 0.01 + traps * 0.1 - state.CM * 0.05;
+          const victoryChance = calculateSuccessChance(
+            state,
+            0.1 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
+          );
 
           if (Math.random() < victoryChance) {
             // Victory - minimal losses
