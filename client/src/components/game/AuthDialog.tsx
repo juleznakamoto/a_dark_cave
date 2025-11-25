@@ -15,18 +15,19 @@ interface AuthDialogProps {
 }
 
 export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialogProps) {
-  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>('signin');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [acceptedTerms, setAcceptedTerms] = useState(false);
-  const { toast } = useToast();
-
   // Get referral code from URL
   const getReferralCode = () => {
     const params = new URLSearchParams(window.location.search);
     return params.get('ref');
   };
+  
+  // Default to signup if there's a referral code, otherwise signin
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(getReferralCode() ? 'signup' : 'signin');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

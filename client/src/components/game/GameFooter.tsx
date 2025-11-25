@@ -66,6 +66,15 @@ export default function GameFooter() {
 
   useEffect(() => {
     checkAuth();
+    
+    // Check if there's a referral code in URL
+    const params = new URLSearchParams(window.location.search);
+    const hasReferralCode = params.has('ref');
+    
+    // If there's a referral code and user is not signed in, activate the notification
+    if (hasReferralCode && !currentUser) {
+      setAuthNotificationSeen(false);
+    }
   }, []);
 
   const checkAuth = async () => {
