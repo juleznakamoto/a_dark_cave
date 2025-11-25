@@ -125,11 +125,9 @@ async function processReferralInBackground(): Promise<void> {
               playTime: freshState.playTime || 0,
             }, 'mainSave');
             await db.put('lastCloudState', freshState, 'lastCloudState');
-            
-            console.log('[REFERRAL] ✓ Game state updated successfully without reload!');
+          } catch (error) {
+            console.error('[REFERRAL] Failed to update game state:', error);
           }
-        } catch (error) {
-          console.error('[REFERRAL] Failed to update game state:', error);
         }
       } else {
         console.warn('[REFERRAL] Processing skipped:', result.reason);
