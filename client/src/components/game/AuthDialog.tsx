@@ -50,7 +50,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           description: 'Your game will now sync across devices.',
         });
         onAuthSuccess();
-        // Let parent handle closing
+        onClose();
       } else if (mode === 'signup') {
         const referralCode = getReferralCode();
         await signUp(email, password, referralCode || undefined);
@@ -59,7 +59,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           description: 'Please check your email to verify your account. Also look in spam folder.',
         });
         onAuthSuccess();
-        // Let parent handle closing
+        onClose();
       } else if (mode === 'reset') {
         const { resetPassword } = await import('@/game/auth');
         await resetPassword(email);

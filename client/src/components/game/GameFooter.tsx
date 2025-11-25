@@ -82,15 +82,8 @@ export default function GameFooter() {
     const user = await getCurrentUser();
     setCurrentUser(user);
     setIsUserSignedIn(!!user);
-    
-    // Close auth dialog first
-    handleSetAuthDialogOpen(false);
-    
-    // Small delay to allow dialog to close before reloading
-    setTimeout(async () => {
-      // Reload game to get cloud save
-      await loadGame();
-    }, 100);
+    // Reload game to get cloud save
+    await loadGame();
   };
 
   const handleSignOut = async () => {
