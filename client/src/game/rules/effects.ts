@@ -1086,4 +1086,13 @@ export const bookEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
+  book_of_war: {
+    id: "book_of_war",
+    name: "Book of War",
+    description: "A book full of military knowledge from a long gone kingdom in the far east. Unlocks knowledge about the outcome of events.",
+    bonuses: {
+      generalBonuses: {},
+      actionBonuses: {},
+    },
+  },
 };

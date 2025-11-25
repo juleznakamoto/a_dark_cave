@@ -341,6 +341,16 @@ const toolTrades = [
     message:
       "You purchase the nightshade bow schematic. The merchant grins darkly: 'This bow's design is cruel. Its arrows will poison your enemies.'",
   },
+  {
+    id: "trade_book_of_war",
+    label: "Book of War",
+    give: "book",
+    giveItem: "book_of_war",
+    condition: (state: GameState) => state.buildings.scriptorium >= 1 && !state.books.book_of_war,
+    costs: [{ resource: "gold", amounts: [500] }],
+    message:
+      "You purchase the Book of War. The merchant nods gravely: 'Military knowledge from a long gone kingdom in the far east. With this, you will better understand the outcomes of your choices.'",
+  },
 ];
 
 // Function to generate fresh merchant choices
@@ -396,7 +406,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       if (!trade.condition(state)) {
         return false;
       }
-      // Don't offer tools/weapons/relics/schematics that the player already owns
+      // Don't offer tools/weapons/relics/schematics/books that the player already owns
       if (
         trade.give === "tool" &&
         state.tools[trade.giveItem as keyof typeof state.tools]
@@ -418,6 +428,12 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       if (
         trade.give === "schematic" &&
         state.schematics[trade.giveItem as keyof typeof state.schematics]
+      ) {
+        return false;
+      }
+      if (
+        trade.give === "book" &&
+        state.books[trade.giveItem as keyof typeof state.books]
       ) {
         return false;
       }
@@ -467,6 +483,11 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
             } else if (trade.give === "schematic") {
               result.schematics = {
                 ...state.schematics,
+                [trade.giveItem]: true,
+              };
+            } else if (trade.give === "book") {
+              result.books = {
+                ...state.books,
                 [trade.giveItem]: true,
               };
             }

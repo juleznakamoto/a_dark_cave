@@ -258,6 +258,7 @@ const defaultGameState: GameState = {
   hoveredTooltips: {},
   books: {
     book_of_ascension: false,
+    book_of_war: false,
   },
   feastState: {
     isActive: false,

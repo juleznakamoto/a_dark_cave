@@ -312,9 +312,9 @@ export default function EventDialog({
                 ? choice.label(gameState)
                 : choice.label;
 
-              // Calculate success percentage if available
+              // Calculate success percentage if available and book_of_war is owned
               let successPercentage: string | null = null;
-              if (choice.success_chance !== undefined) {
+              if (choice.success_chance !== undefined && gameState.books?.book_of_war) {
                 const successChance = typeof choice.success_chance === 'function'
                   ? choice.success_chance(gameState)
                   : choice.success_chance;
