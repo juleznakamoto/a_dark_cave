@@ -210,9 +210,6 @@ export default function GameFooter() {
                     <TooltipTrigger asChild>
                       <span className="ml-2 text-muted-foreground cursor-pointer">
                         ⓘ{" "}
-                        {referralCount > 0 && (
-                          <span className="text-xs">({referralCount}/10)</span>
-                        )}
                       </span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">

@@ -1,0 +1,31 @@
+
+﻿
+chunk-276SZO74.js?v=950742a6:21551 Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+audio.ts:236 Registering sounds for lazy loading...
+audio.ts:247 Sound URLs registered for lazy loading
+auth.ts:55 [REFERRAL] No referral code in user metadata
+auth.ts:362 [SUPABASE] 📥 Raw data from Supabase: 
+{hasData: true, dataKeys: Array(1), gameStateKeys: Array(69), referrals: Array(1), referralCount: 10, …}
+save.ts:224 [LOAD] 🌐 Raw cloud save data: 
+{hasCloudSaveData: true, cloudSaveDataKeys: Array(69), cloudReferrals: Array(1), cloudReferralCount: 10}
+save.ts:235 [LOAD] 💾 Last cloud state from IndexedDB: 
+{hasLastCloudState: true, lastCloudReferrals: undefined, lastCloudReferralCount: undefined}
+save.ts:244 [LOAD] 🔀 Merged cloud save: 
+{hasCloudSave: true, cloudSaveReferrals: Array(1), cloudSaveReferralCount: 10}
+save.ts:255 [LOAD] Comparing saves: 
+{cloudPlayTime: 93562171.89997554, localPlayTime: 93562171.89997554, cloudGold: 162221, localGold: 162221}
+save.ts:276 [LOAD] ✓ Using local save (longer play time), merging referrals from cloud
+save.ts:279 [LOAD] 📊 Cloud referral data: 
+{cloudReferrals: Array(1), cloudReferralCount: 10, unclaimedCount: 1}
+save.ts:286 [LOAD] 📊 Local referral data: 
+{localReferrals: undefined, localReferralCount: undefined, unclaimedCount: 0}
+save.ts:300 [LOAD] ✅ Merged referral data into local state: 
+{mergedReferrals: Array(1), mergedReferralCount: 10, unclaimedCount: 1}
+save.ts:83 [REFERRAL] 🔍 Processing unclaimed referrals: 
+{hasUser: true, hasReferrals: true, referralCount: 1, unclaimedCount: 1, currentGold: 162221}
+save.ts:104 [REFERRAL] 💰 Processing unclaimed referral: 
+{userId: 'eaa2e469', timestamp: 1764057092669}
+save.ts:135 [REFERRAL] ✅ Processed unclaimed referrals: 
+{goldGained: 100, oldGold: 162221, newGold: 162321, claimedCount: 1, updatedReferrals: Array(1)}
+auth.ts:325 Saving to Supabase: 
+{hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 16794, finalStateSize: 19237}
