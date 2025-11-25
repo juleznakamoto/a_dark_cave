@@ -21,6 +21,7 @@ import {
   DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useIsMobile } from "@/hooks/useIsMobile";
 
 export default function GameFooter() {
   const {
@@ -48,6 +49,7 @@ export default function GameFooter() {
     referralCount,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
+  const isMobile = useIsMobile();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -66,11 +68,11 @@ export default function GameFooter() {
 
   useEffect(() => {
     checkAuth();
-    
+
     // Check if there's a referral code in URL
     const params = new URLSearchParams(window.location.search);
     const hasReferralCode = params.has('ref');
-    
+
     // If there's a referral code and user is not signed in, activate the notification
     if (hasReferralCode && !currentUser) {
       setAuthNotificationSeen(false);
@@ -81,11 +83,11 @@ export default function GameFooter() {
     const user = await getCurrentUser();
     setCurrentUser(user);
     setIsUserSignedIn(!!user);
-    
+
     // Check if there's a referral code in URL after we know the auth state
     const params = new URLSearchParams(window.location.search);
     const hasReferralCode = params.has('ref');
-    
+
     // If there's a referral code and user is not signed in, activate the notification
     if (hasReferralCode && !user) {
       setAuthNotificationSeen(false);
@@ -258,9 +260,20 @@ export default function GameFooter() {
               <div className="flex items-center justify-between w-full">
                 <span>Invite Friends (+100 Gold)</span>
                 <TooltipProvider>
-                  <Tooltip>
+                  <Tooltip
+                    open={
+                      isMobile
+                        ? isTooltipOpen("referral-info")
+                        : undefined
+                    }
+                  >
                     <TooltipTrigger asChild>
-                      <span className="ml-2 text-muted-foreground cursor-pointer">
+                      <span
+                        className="ml-2 text-muted-foreground cursor-pointer"
+                        onClick={(e) =>
+                          isMobile && handleTooltipClick("referral-info", e)
+                        }
+                      >
                         ⓘ{" "}
                       </span>
                     </TooltipTrigger>
