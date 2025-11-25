@@ -9,7 +9,7 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.woodenHut || 0;
       const totalPopulation = count * 2;
-      return count > 0 ? [`+${totalPopulation} Max Population (${count} huts)`] : ["+2 Max Population"];
+      return count > 0 ? [`+${totalPopulation} Max Population`] : ["+2 Max Population"];
     },
     building: true,
     show_when: {
@@ -202,7 +202,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
     description: "Deeper pit reaching further earth resources",
-    tooltipEffects: ["Unlocks Sulfur Miners"],
+    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners"],
     building: true,
     show_when: {
       1: {
@@ -230,7 +230,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepPit",
     label: "Deep Pit",
     description: "Very deep pit exposing valuable mineral veins",
-    tooltipEffects: ["Unlocks Obsidian Miners"],
+    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners", "Unlocks Obsidian Miners"],
     building: true,
     show_when: {
       1: {
@@ -258,7 +258,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBottomlessPit",
     label: "Bottomless Pit",
     description: "Extremely deep pit reaching the rarest materials",
-    tooltipEffects: ["Unlocks Adamant Miners", "Unlocks Moonstone Miners"],
+    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners", "Unlocks Obsidian Miners", "Unlocks Adamant Miners", "Unlocks Moonstone Miners"],
     building: true,
     show_when: {
       1: {
@@ -313,7 +313,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPrimeFoundry",
     label: "Prime Foundry",
     description: "Advanced foundry with improved steel production",
-    tooltipEffects: ["+1 Steel (Steel Forger)"],
+    tooltipEffects: ["Unlocks Steel Forgers", "+1 Steel (Steel Forger)"],
     building: true,
     show_when: {
       1: {
@@ -347,7 +347,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
     description: "Masterwork foundry with superior steel production",
-    tooltipEffects: ["+1 Steel (Steel Forger)"],
+    tooltipEffects: ["Unlocks Steel Forgers","+2 Steel (Steel Forger)"],
     building: true,
     show_when: {
       1: {
@@ -382,6 +382,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Great Cabin",
     description: "Expanded hunting lodge increasing hunter output",
     tooltipEffects: [
+      "Unlocks Hunters",
       "+5 Food (Hunter)",
       "+1 Fur (Hunter)",
       "+1 Bones (Hunter)",
@@ -574,7 +575,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterTannery",
     label: "Master Tannery",
     description: "Advanced tannery improving leather production",
-    tooltipEffects: ["+1 Leather (Tanner)"],
+    tooltipEffects: ["Unlocks Tanners", "+1 Leather (Tanner)"],
     building: true,
     show_when: {
       1: {
@@ -1010,7 +1011,7 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.stoneHut || 0;
       const totalPopulation = count * 4;
-      return count > 0 ? [`+${totalPopulation} Max Population (${count} huts)`] : ["+4 Max Population"];
+      return count > 0 ? [`+${totalPopulation} Max Population`] : ["+4 Max Population"];
     },
     building: true,
     show_when: {
@@ -1215,7 +1216,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGrandBlacksmith",
     label: "Grand Blacksmith",
     description: "Advanced blacksmith capable of creating the finest products",
-    tooltipEffects: ["Unlocks Frostglass Crafting", "10 % Craft Discount"],
+    tooltipEffects: ["Unlocks Advanced Crafting", "10 % Craft Discount"],
     building: true,
     show_when: {
       1: {
