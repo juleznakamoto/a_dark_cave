@@ -71,6 +71,7 @@ interface GameStore extends GameState {
   // Referral tracking
   referralCount: number;
   referredUsers: string[];
+  referrals: GameState["referrals"]; // Added to store referral details
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -184,6 +185,8 @@ const mergeStateUpdates = (
     showEndScreen: stateUpdates.showEndScreen !== undefined ? stateUpdates.showEndScreen : prevState.showEndScreen, // Merge showEndScreen
     playTime: stateUpdates.playTime !== undefined ? stateUpdates.playTime : prevState.playTime, // Merge playTime
     referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
+    referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
+    referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
   };
 
   if (
@@ -302,6 +305,7 @@ const defaultGameState: GameState = {
   // Referral tracking
   referralCount: 0,
   referredUsers: [],
+  referrals: [], // Initialize referrals array
 
   // Cooldown management
   cooldowns: {},
@@ -650,6 +654,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentFeastPurchases = get().feastPurchases || {};
     const currentReferralCount = get().referralCount || 0;
     const currentReferredUsers = get().referredUsers || [];
+    const currentReferrals = get().referrals || []; // Get current referrals
 
     // Check if Cruel Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
@@ -662,12 +667,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       log: [],
       devMode: import.meta.env.DEV,
       boostMode: currentBoostMode,
+      referralCount: currentReferralCount,
+      referredUsers: currentReferredUsers,
+      referrals: currentReferrals, // Preserve referrals on restart
       cruelMode: cruelModeActivated,
       CM: cruelModeActivated ? 1 : 0,
       activatedPurchases: currentActivatedPurchases,
       feastPurchases: currentFeastPurchases,
-      referralCount: currentReferralCount,
-      referredUsers: currentReferredUsers,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
       // Ensure loop state is reset
@@ -774,6 +780,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referralCount: savedState.referralCount !== undefined ? savedState.referralCount : 0, // Load referral count
         referredUsers: savedState.referredUsers || [], // Load referred users list
+        referrals: savedState.referrals || [], // Load referrals list
       };
 
       set(loadedState);

@@ -77,36 +77,28 @@ export async function processReferral(newUserId: string, referralCode: string) {
     return { success: false, reason: 'already_referred' };
   }
 
-  // Update referrer's game state
-  const oldGold = referrerState.resources?.gold || 0;
-  const newGold = oldGold + 100;
-  console.log('[REFERRAL] 💰 REFERRER Gold Update:', {
-    referrerId: referralCode.substring(0, 8),
-    oldGold,
-    newGold,
-    difference: 100
-  });
+  // Update referrer's game state - add unclaimed referral
+  const referrals = referrerState.referrals || [];
   
   const updatedReferrerState = {
     ...referrerState,
-    resources: {
-      ...referrerState.resources,
-      gold: newGold,
-    },
     referralCount: referralCount + 1,
     referredUsers: [...referredUsers, newUserId],
-    log: [
-      ...(referrerState.log || []),
+    referrals: [
+      ...referrals,
       {
-        id: `referral-bonus-${Date.now()}`,
-        message: "A friend joined using your invite link! You received 100 Gold as a reward.",
+        userId: newUserId,
+        claimed: false,
         timestamp: Date.now(),
-        type: "system",
       }
-    ].slice(-100),
+    ],
   };
   
-  console.log('[REFERRAL] 📦 Updated referrer state resources:', updatedReferrerState.resources);
+  console.log('[REFERRAL] 📦 Added unclaimed referral for referrer:', {
+    referrerId: referralCode.substring(0, 8),
+    newReferralCount: referralCount + 1,
+    unclaimedCount: updatedReferrerState.referrals.filter(r => !r.claimed).length,
+  });
 
   console.log('[REFERRAL] 💾 Updating referrer in database...');
   const { error: referrerUpdateError } = await adminClient

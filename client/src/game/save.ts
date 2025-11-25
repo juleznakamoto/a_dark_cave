@@ -75,6 +75,63 @@ async function getDB() {
   }
 }
 
+// Helper function to process unclaimed referrals
+async function processUnclaimedReferrals(gameState: GameState): Promise<GameState> {
+  const { useGameStore } = await import('./state');
+  const currentUser = await getCurrentUser(); // Assuming this is needed to identify the current user
+
+  // If no user or no referredUsers, return gameState as is
+  if (!currentUser || !gameState.referredUsers || gameState.referredUsers.length === 0) {
+    return gameState;
+  }
+
+  let updatedGameState = { ...gameState };
+  let goldGained = 0;
+  let logEntriesAdded: any[] = [];
+
+  // Iterate over referred users and check if referral is claimed
+  for (const referredUser of updatedGameState.referredUsers) {
+    // Check if the referral is not yet processed for this user
+    const isReferralProcessed = referredUser.processed || false;
+
+    if (!isReferralProcessed) {
+      // Process the referral: add gold and log entry
+      goldGained += 100;
+      logEntriesAdded.push({
+        id: Date.now().toString() + Math.random().toString(36).substring(7),
+        timestamp: Date.now(),
+        message: `Friend ${referredUser.name || 'a friend'} joined using your invite link! +100 Gold`,
+        type: 'referral',
+      });
+
+      // Mark this referral as processed
+      referredUser.processed = true;
+    }
+  }
+
+  // Update game state if any changes were made
+  if (goldGained > 0) {
+    updatedGameState.resources = {
+      ...updatedGameState.resources,
+      gold: (updatedGameState.resources?.gold || 0) + goldGained,
+    };
+    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100); // Keep log size limited
+    updatedGameState.referredUsers = updatedGameState.referredUsers; // referredUsers array is already updated in place
+
+    // Update the store as well
+    useGameStore.setState({
+      resources: updatedGameState.resources,
+      log: updatedGameState.log,
+      referredUsers: updatedGameState.referredUsers,
+    });
+
+    console.log('[REFERRAL] Processed unclaimed referrals. Gained:', { goldGained, count: logEntriesAdded.length });
+  }
+
+  return updatedGameState;
+}
+
+
 export async function saveGame(gameState: GameState, playTime: number = 0): Promise<void> {
   try {
     const db = await getDB();
@@ -139,7 +196,9 @@ export async function loadGame(): Promise<GameState | null> {
     if (user) {
       // Try to load from cloud
       try {
-        const cloudSave = await loadGameFromSupabase();
+        const cloudSaveData = await loadGameFromSupabase();
+        // Ensure we have a valid GameState object from cloudSaveData
+        const cloudSave = cloudSaveData ? cloudSaveData.gameState : null;
 
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
@@ -151,55 +210,60 @@ export async function loadGame(): Promise<GameState | null> {
             localPlayTime,
             cloudGold: cloudSave.resources?.gold,
             localGold: localSave.gameState.resources?.gold,
-            cloudReferralProcessed: cloudSave.referralProcessed,
-            localReferralProcessed: localSave.gameState.referralProcessed,
+            cloudReferralProcessed: cloudSave.referralProcessed, // This might be outdated, relying on referredUsers processing now
+            localReferralProcessed: localSave.gameState.referralProcessed, // This might be outdated, relying on referredUsers processing now
           });
 
           // Use whichever has longer play time
           if (cloudPlayTime > localPlayTime) {
             console.log('[LOAD] ✓ Using cloud save (longer play time)');
+            const processedState = await processUnclaimedReferrals(cloudSave);
             // Update local with cloud save
             await db.put('saves', {
-              gameState: cloudSave,
+              gameState: processedState,
               timestamp: Date.now(),
               playTime: cloudPlayTime,
             }, SAVE_KEY);
             // Store as last cloud state
-            await db.put('lastCloudState', cloudSave, LAST_CLOUD_STATE_KEY);
-            return cloudSave;
+            await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+            return processedState;
           } else {
             if (import.meta.env.DEV) {
               console.log('Using local save (longer play time), syncing to cloud');
             }
             // Local has longer play time, sync it to cloud (full state on first sync)
+            // First, process any unclaimed referrals in the local save
+            const processedLocalState = await processUnclaimedReferrals(localSave.gameState);
             await db.delete('lastCloudState', LAST_CLOUD_STATE_KEY); // Force full sync
-            await saveGameToSupabase(localSave.gameState);
-            await db.put('lastCloudState', localSave.gameState, LAST_CLOUD_STATE_KEY);
-            return localSave.gameState;
+            await saveGameToSupabase(processedLocalState);
+            await db.put('lastCloudState', processedLocalState, LAST_CLOUD_STATE_KEY);
+            return processedLocalState;
           }
         } else if (cloudSave) {
           // Only cloud save exists
           console.log('[LOAD] ✓ Using cloud save (no local save):', {
             gold: cloudSave.resources?.gold,
-            referralProcessed: cloudSave.referralProcessed,
+            referralProcessed: cloudSave.referralProcessed, // Outdated
             hasLog: cloudSave.log?.length > 0,
           });
+          const processedState = await processUnclaimedReferrals(cloudSave);
           await db.put('saves', {
-            gameState: cloudSave,
+            gameState: processedState,
             timestamp: Date.now(),
-            playTime: cloudSave.playTime || 0,
+            playTime: processedState.playTime || 0,
           }, SAVE_KEY);
-          await db.put('lastCloudState', cloudSave, LAST_CLOUD_STATE_KEY);
-          return cloudSave;
+          await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+          return processedState;
         } else if (localSave) {
           // Only local save exists, sync to cloud
           console.log('[LOAD] ✓ Using local save, syncing to cloud:', {
             gold: localSave.gameState.resources?.gold,
-            referralProcessed: localSave.gameState.referralProcessed,
+            referralProcessed: localSave.gameState.referralProcessed, // Outdated
           });
-          await saveGameToSupabase(localSave.gameState);
-          await db.put('lastCloudState', localSave.gameState, LAST_CLOUD_STATE_KEY);
-          return localSave.gameState;
+          const processedState = await processUnclaimedReferrals(localSave.gameState);
+          await saveGameToSupabase(processedState);
+          await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+          return processedState;
         }
       } catch (cloudError) {
         console.error('Failed to load from cloud:', cloudError);
@@ -208,13 +272,15 @@ export async function loadGame(): Promise<GameState | null> {
           if (import.meta.env.DEV) {
             console.log('Using local save (cloud error)');
           }
-          return localSave.gameState;
+          const processedState = await processUnclaimedReferrals(localSave.gameState);
+          return processedState;
         }
       }
     } else {
       // Not authenticated, use local save only
       if (localSave) {
-        return localSave.gameState;
+        const processedState = await processUnclaimedReferrals(localSave.gameState);
+        return processedState;
       }
     }
 

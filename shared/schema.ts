@@ -380,6 +380,11 @@ export const gameStateSchema = z.object({
   referralCode: z.string().optional(), // Store the referral code used during signup
   referralCount: z.number().default(0), // Track how many friends have signed up using this user's referral
   referredUsers: z.array(z.string()).default([]), // Track user IDs of referred friends
+  referrals: z.array(z.object({
+    userId: z.string(),
+    claimed: z.boolean().default(false),
+    timestamp: z.number(),
+  })).default([]), // Track referrals with claim status
   idleModeState: z.object({
     isActive: z.boolean().default(false),
     startTime: z.number().default(0),
