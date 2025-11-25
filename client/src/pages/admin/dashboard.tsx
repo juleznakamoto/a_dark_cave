@@ -686,7 +686,7 @@ export default function AdminDashboard() {
 
   const getPurchaseStats = () => {
     const stats = purchases
-      .filter(purchase => purchase.item_name !== '100 Gold Free Gift')
+      .filter(purchase => purchase.item_name !== '100 Gold (Free Gift)')
       .reduce((acc, purchase) => {
         acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
         return acc;
