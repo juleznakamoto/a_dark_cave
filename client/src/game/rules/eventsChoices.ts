@@ -260,6 +260,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "sacrifice",
         label: (state: GameState) => `Sacrifice ${state.CM ? 8 : 4} villagers`,
         relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          return 0.3 + 0.01 * knowledge - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);
           const successChance = 0.3 + knowledge - state.CM * 0.05;
@@ -434,6 +438,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "investigate",
         label: "Investigate lake",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const strength = state.stats.strength || 0;
+          return 0.25 + 0.01 * strength - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const strength = state.stats.strength || 0;
           const successChance = 0.25 + strength * 0.01 - state.CM * 0.05; // 25% + 1% per strength point
@@ -674,6 +682,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "forceHim",
         label: "Force him",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          return 0.3 + 0.01 * strength - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const successChance = 0.3 + strength * 0.01 - state.CM * 0.05; // 30% base + 1% per strength point
@@ -1036,6 +1048,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "freeSlaves",
         label: "Try freeing the slaves",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          return 0.5 + 0.01 * strength - state.CM * 0.1;
+        },
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const successChance = 0.5 + strength * 0.01 - state.CM * 0.1;
@@ -1158,6 +1174,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "doNotPay",
         label: "Refuse to pay",
         relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          const luck = getTotalLuck(state);
+          return 0.15 + 0.015 * luck - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const luck = getTotalLuck(state);
           const avoidCurseChance = 0.15 + luck * 0.015 - state.CM * 0.05;
