@@ -1861,38 +1861,12 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const stoneHutResult = handleBuildingConstruction(
+  return handleBuildingConstruction(
     state,
     result,
     "buildStoneHut",
     "stoneHut",
   );
-
-  // Add city message when 5th stone hut is built
-  if (state.buildings.stoneHut === 5 && !state.story.seen.villageBecomesCity) {
-    stoneHutResult.logEntries!.push({
-      id: `village-becomes-city-${Date.now()}`,
-      message:
-        "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
-      timestamp: Date.now(),
-      type: "system",
-    });
-
-    stoneHutResult.stateUpdates = {
-      ...stoneHutResult.stateUpdates,
-      story: {
-        ...state.story,
-        ...(stoneHutResult.stateUpdates.story || {}),
-        seen: {
-          ...state.story.seen,
-          ...(stoneHutResult.stateUpdates.story?.seen || {}),
-          villageBecomesCity: true,
-        },
-      },
-    };
-  }
-
-  return stoneHutResult;
 }
 
 export function handleBuildLonghouse(
