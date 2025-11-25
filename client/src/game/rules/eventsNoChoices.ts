@@ -7,10 +7,11 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "villageBecomesCity",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.flags.hasCity,
-    triggerType: "resource",
+    triggerType: "time",
     message: "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
     triggered: false,
     priority: 10,
+    timeProbability: 0.5,
     repeatable: false,
     effect: (state: GameState) => ({
       flags: {
@@ -31,10 +32,11 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.palisades >= 2 &&
       state.buildings.watchtower >= 2 &&
       !state.flags.hasFortress,
-    triggerType: "resource",
+    triggerType: "time",
     message: "Your bastion has been fortified into a mighty fortress!",
     triggered: false,
     priority: 10,
+    timeProbability: 0.5,
     repeatable: false,
     effect: (state: GameState) => ({
       flags: {
