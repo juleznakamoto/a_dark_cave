@@ -170,9 +170,11 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative bg-background/80 opacity-70 hover:opacity-100 backdrop-blur-sm border border-border"
             >
               Account
-              {authNotificationVisible && !authNotificationSeen && !currentUser && (
-                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 text-xs bg-red-900 rounded-full shop-notification-pulse" />
-              )}
+              {authNotificationVisible &&
+                !authNotificationSeen &&
+                !currentUser && (
+                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 text-xs bg-red-900 rounded-full shop-notification-pulse" />
+                )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-50 text-xs">
@@ -207,21 +209,18 @@ export default function GameFooter() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <span className="ml-2 text-muted-foreground cursor-pointer">
-                        ⓘ {referralCount > 0 && <span className="text-xs">({referralCount}/10)</span>}
+                        ⓘ{" "}
+                        {referralCount > 0 && (
+                          <span className="text-xs">({referralCount}/10)</span>
+                        )}
                       </span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
-                        Share your invite link to earn 100 gold for each friend who signs up (max 10 friends).
+                        Share your invite link to earn 100 gold for each friend
+                        who signs up ({referralCount || 0}/10 invited).
                         <br />
                         <br />
-                        <strong>Friends invited: {referralCount || 0}/10</strong>
-                        {referralCount > 0 && (
-                          <>
-                            <br />
-                            <span className="text-muted-foreground">Total earned: {(referralCount || 0) * 100} gold</span>
-                          </>
-                        )}
                       </p>
                     </TooltipContent>
                   </Tooltip>
@@ -258,22 +257,27 @@ export default function GameFooter() {
               />
             </Button>
 
-
             <Button
               variant="ghost"
               size="xs"
               onClick={() => {
                 setShopDialogOpen(true);
                 setShopNotificationSeen(true);
-                if (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen) {
-                  useGameStore.setState({ mysteriousNoteShopNotificationSeen: true });
+                if (
+                  story.seen.mysteriousNoteReceived &&
+                  !mysteriousNoteShopNotificationSeen
+                ) {
+                  useGameStore.setState({
+                    mysteriousNoteShopNotificationSeen: true,
+                  });
                 }
               }}
               className="px-1 py-1 text-xs hover relative"
             >
               Shop
               {((shopNotificationVisible && !shopNotificationSeen) ||
-                (story.seen.mysteriousNoteReceived && !mysteriousNoteShopNotificationSeen)) && (
+                (story.seen.mysteriousNoteReceived &&
+                  !mysteriousNoteShopNotificationSeen)) && (
                 <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
               )}
             </Button>
@@ -282,16 +286,22 @@ export default function GameFooter() {
               size="xs"
               onClick={() => {
                 handleOfferTribute();
-                if (story.seen.mysteriousNoteReceived && !mysteriousNoteDonateNotificationSeen) {
-                  useGameStore.setState({ mysteriousNoteDonateNotificationSeen: true });
+                if (
+                  story.seen.mysteriousNoteReceived &&
+                  !mysteriousNoteDonateNotificationSeen
+                ) {
+                  useGameStore.setState({
+                    mysteriousNoteDonateNotificationSeen: true,
+                  });
                 }
               }}
               className="px-1 py-1 text-xs hover relative"
             >
               Donate
-              {story.seen.mysteriousNoteReceived && !mysteriousNoteDonateNotificationSeen && (
-                <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
-              )}
+              {story.seen.mysteriousNoteReceived &&
+                !mysteriousNoteDonateNotificationSeen && (
+                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 bg-red-600 rounded-full shop-notification-pulse" />
+                )}
             </Button>
             {/* Added button to trigger end screen */}
             {import.meta.env.DEV && (
