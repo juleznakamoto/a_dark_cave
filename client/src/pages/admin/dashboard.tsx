@@ -752,9 +752,10 @@ export default function AdminDashboard() {
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
     
-    const clickUserSamples = Array.from(usersWithClicks).slice(0, 3);
+    const clickUserSamples = Array.from(usersWithClicks).slice(0, 5);
     console.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
     console.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
+    console.log('📊 Full click user list:', Array.from(usersWithClicks));
 
     // Get the latest activity for each user from game saves
     // Build a map with FULL user IDs (since clicks have full IDs)
@@ -774,6 +775,15 @@ export default function AdminDashboard() {
     console.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
     console.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
     console.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
+    
+    const allSaveUserIds = gameSaves.map(s => s.user_id);
+    console.log('📊 First 10 game save user IDs:', allSaveUserIds.slice(0, 10));
+    
+    // Check for overlap
+    const clickUsersArray = Array.from(usersWithClicks);
+    const overlappingUsers = clickUsersArray.filter(id => allSaveUserIds.includes(id));
+    console.log('📊 OVERLAP CHECK - Users in BOTH clicks and saves:', overlappingUsers.length);
+    console.log('📊 OVERLAP CHECK - Sample overlapping IDs:', overlappingUsers.slice(0, 5));
 
     console.log('📊 Total users with activity:', userLastActivity.size);
     console.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
