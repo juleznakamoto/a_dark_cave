@@ -266,6 +266,10 @@ export default function SidePanel() {
       if (key === "primeFoundry" && buildings.masterworkFoundry > 0) {
         return false;
       }
+      // Hide Black Monolith when Pillar of Clarity is built
+      if (key === "blackMonolith" && buildings.pillarOfClarity > 0) {
+        return false;
+      }
       return (value ?? 0) > 0;
     })
     .map((key) => {

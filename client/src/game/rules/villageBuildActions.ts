@@ -1330,25 +1330,54 @@ export const villageBuildActions: Record<string, Action> = {
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
-    description: "Place to retreat to away from the chaos",
-    tooltipEffects: ["Unlocks Estate tab"],
+    description: "Secluded estate providing refuge from the world",
+    tooltipEffects: ["+20 Max Madness", "-10 Madness (One Time)"],
     building: true,
     show_when: {
       1: {
-        "buildings.woodenHut": 6,
         "buildings.darkEstate": 0,
+        "story.seen.darkEstateUnlocked": true,
       },
     },
     cost: {
       1: {
-        "resources.wood": 2500,
-        "resources.stone": 1000,
+        "resources.wood": 5000,
+        "resources.stone": 5000,
+        "resources.gold": 1000,
       },
     },
     effects: {
       1: {
         "buildings.darkEstate": 1,
-        "story.seen.hasDarkEstate": true,
+        "stats.madness": -10,
+        "stats.maxMadness": 20,
+      },
+    },
+    cooldown: 60,
+  },
+
+  buildPillarOfClarity: {
+    id: "buildPillarOfClarity",
+    label: "Pillar of Clarity",
+    description: "Pure white obelisk that cleanses darkness from minds",
+    tooltipEffects: ["-40 Madness (One Time)"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.pillarOfClarity": 0,
+        "story.seen.pilarOfClarityUnlocked": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.moonstone": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.pillarOfClarity": 1,
+        "stats.madness": -40,
+        "buildings.blackMonolith": 0,
       },
     },
     cooldown: 60,
@@ -1431,6 +1460,17 @@ function handleBuildingConstruction(
         ...result.stateUpdates.story.seen,
         [storyKey]: effect as boolean,
       };
+    } else if (path.startsWith("stats.")) {
+      const stat = path.split(".")[1] as keyof GameState["stats"];
+      const currentStatValue = state.stats[stat] || 0;
+      const newStatValue = currentStatValue + (effect as number);
+
+      if (!result.stateUpdates.stats) {
+        result.stateUpdates.stats = {
+          ...state.stats,
+        };
+      }
+      result.stateUpdates.stats[stat] = newStatValue;
     }
   }
 

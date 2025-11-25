@@ -109,6 +109,7 @@ import {
   handleBuildBlackMonolith, // Import the new handler
   handleBuildMasterworkFoundry, // Import the new handler
   handleBuildDarkEstate, // Import the new handler
+  handleBuildPillarOfClarity, // Import the new handler
 } from "./rules/villageBuildActions";
 
 import {
