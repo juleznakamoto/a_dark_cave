@@ -173,6 +173,13 @@ export default function EventDialog({
             }
           });
         }
+        if (result.books) {
+          Object.entries(result.books).forEach(([book, value]) => {
+            if (value) {
+              gameState.books[book as keyof typeof gameState.books] = true;
+            }
+          });
+        }
 
         // Don't add _logMessage to the log - it's only for dialog feedback
         // The message will be shown in the dialog UI instead
