@@ -23,6 +23,19 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         id: "defendVillage",
         label: "Defend village",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps;
+          
+          if (!state.story.seen.firstWolfAttack) {
+            return 0;
+          }
+          
+          return calculateSuccessChance(
+            state,
+            0.15 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
+          );
+        },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
@@ -141,6 +154,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         id: "hideAndWait",
         label: "Hide",
         relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps * 0.1;
+          return calculateSuccessChance(
+            state,
+            0.65 - traps * 0.05,
+            { type: 'luck', multiplier: 0.02 }
+          );
+        },
         effect: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
           const luck = getTotalLuck(state);
@@ -231,6 +252,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         id: "fightCannibals",
         label: "Defend village",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps;
+          return calculateSuccessChance(
+            state,
+            0.1 + traps * 0.1,
+            { type: 'strength', multiplier: 0.01 }
+          );
+        },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const strength = getTotalStrength(state);
@@ -346,6 +375,14 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         id: "hideFromCannibals",
         label: "Hide",
         relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          const traps = state.buildings.traps;
+          return calculateSuccessChance(
+            state,
+            0.7 - traps * 0.05,
+            { type: 'luck', multiplier: 0.01 }
+          );
+        },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
           const luck = getTotalLuck(state);
