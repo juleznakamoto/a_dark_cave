@@ -1860,7 +1860,7 @@ export function handleBuildStoneHut(
     stoneHutResult.logEntries!.push({
       id: `village-becomes-city-${Date.now()}`,
       message:
-        "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke",
+        "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
       timestamp: Date.now(),
       type: "system",
     });
