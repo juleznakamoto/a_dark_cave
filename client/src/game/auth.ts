@@ -42,13 +42,17 @@ export async function processReferralAfterConfirmation(): Promise<void> {
 
 async function processReferralInBackground(): Promise<void> {
   const user = await getCurrentUser();
-  if (!user) return;
+  if (!user) {
+    console.log('[REFERRAL] No authenticated user, skipping referral processing');
+    return;
+  }
 
   const supabase = await getSupabaseClient();
 
   // Get user metadata
   const { data: { user: authUser } } = await supabase.auth.getUser();
   if (!authUser?.user_metadata?.referral_code) {
+    console.log('[REFERRAL] No referral code in user metadata');
     return; // No referral code to process
   }
 
@@ -66,11 +70,15 @@ async function processReferralInBackground(): Promise<void> {
     return; // Already processed
   }
 
-  console.log('[REFERRAL] Processing referral via server API:', {
-    newUserId: user.id,
-    referralCode: referralCode,
+  console.log('[REFERRAL] Starting referral processing:', {
+    newUserId: user.id.substring(0, 8) + '...',
+    referralCode: referralCode.substring(0, 8) + '...',
     timestamp: new Date().toISOString()
   });
+
+  // Wait a bit for server to be fully ready (especially in dev with HMR)
+  await new Promise(resolve => setTimeout(resolve, 2000));
+  console.log('[REFERRAL] Initial delay complete, starting API calls');
 
   // Add retry logic with longer delays for dev environment
   let attempts = 0;
@@ -92,18 +100,22 @@ async function processReferralInBackground(): Promise<void> {
       });
 
       console.log(`[REFERRAL] Response status: ${response.status}`);
-      console.log(`[REFERRAL] Response headers:`, Object.fromEntries(response.headers.entries()));
-
-      // Check if we got HTML instead of JSON (server not ready)
       const contentType = response.headers.get('content-type');
+      console.log(`[REFERRAL] Content-Type: ${contentType}`);
+
+      // Check if we got HTML instead of JSON (server not ready or Vite middleware caught it)
       if (!contentType || !contentType.includes('application/json')) {
         const textResponse = await response.text();
-        console.log(`[REFERRAL] Non-JSON response received:`, textResponse.substring(0, 500));
-        throw new Error('Server returned non-JSON response');
+        console.error(`[REFERRAL] ❌ Server returned HTML instead of JSON. This likely means:`);
+        console.error(`  1. The Express route is not being matched`);
+        console.error(`  2. Vite's SPA fallback is catching the request`);
+        console.error(`  3. Server is still starting up (HMR)`);
+        console.log(`[REFERRAL] First 200 chars of response:`, textResponse.substring(0, 200));
+        throw new Error(`Server returned ${contentType || 'HTML'} instead of JSON - API route not matched`);
       }
 
       const result = await response.json();
-      console.log(`[REFERRAL] Parsed JSON response:`, result);
+      console.log(`[REFERRAL] ✓ Parsed JSON response:`, result);
 
       if (!response.ok) {
         console.error('[REFERRAL] Server error:', result.error);
