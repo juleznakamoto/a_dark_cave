@@ -41,9 +41,9 @@ export default function LogPanel() {
   }, [recentEntries]);
 
   return (
-    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden relative">
+    <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
       <ScrollArea className="h-full w-full">
-        <div className="px-3">
+        <div className="px-3 relative">
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
               let opacity = "";
@@ -86,11 +86,11 @@ export default function LogPanel() {
               );
             })}
           </div>
+          {/* Gradient overlay at bottom of content area */}
+          <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
         </div>
         <ScrollBar orientation="vertical" />
       </ScrollArea>
-      {/* Gradient overlay fixed at bottom of viewport */}
-      <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
     </div>
   );
 }
