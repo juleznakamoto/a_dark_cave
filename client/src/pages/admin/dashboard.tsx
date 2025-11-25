@@ -447,8 +447,8 @@ export default function AdminDashboard() {
             // Calculate total clicks at this playtime
             const totalClicks = Object.values(clicksAtTime as Record<string, number>).reduce((sum, count) => sum + count, 0);
 
-            // Aggregate into 15-minute buckets
-            const bucket = Math.floor(playtimeMinutes / 15) * 15;
+            // Aggregate into 1-hour (60-minute) buckets
+            const bucket = Math.floor(playtimeMinutes / 60) * 60;
             playtimeData.set(bucket, (playtimeData.get(bucket) || 0) + totalClicks);
           }
         } catch (e) {
@@ -463,9 +463,10 @@ export default function AdminDashboard() {
     const maxBucket = Math.max(...Array.from(playtimeData.keys()));
     const result: Array<{ time: string; clicks: number }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const hours = bucket / 60;
       result.push({
-        time: `${bucket}m`,
+        time: hours === 0 ? '0h' : `${hours}h`,
         clicks: playtimeData.get(bucket) || 0,
       });
     }
@@ -514,7 +515,7 @@ export default function AdminDashboard() {
               rawButton: button,
               cleanButton: cleanButton,
               clicks: playtimeClicks[button],
-              bucket: Math.floor(parseInt(playtimeKey.replace('m', '')) / 15) * 15
+              bucket: Math.floor(parseInt(playtimeKey.replace('m', '')) / 60) * 60
             });
           }
         });
@@ -528,7 +529,7 @@ export default function AdminDashboard() {
       return acc;
     }, {} as Record<string, any>));
 
-    // Aggregate into 15-minute buckets
+    // Aggregate into 1-hour (60-minute) buckets
     const buckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
 
@@ -543,7 +544,7 @@ export default function AdminDashboard() {
           // Extract playtime from key like "45m"
           const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
           if (!isNaN(playtimeMinutes)) {
-            const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
+            const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
             maxBucket = Math.max(maxBucket, bucket);
 
             if (!buckets.has(bucket)) {
@@ -576,10 +577,11 @@ export default function AdminDashboard() {
     // Convert to array and format for chart display
     const result: Array<{ time: string; [key: string]: any }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const bucketData = buckets.get(bucket) || {};
+      const hours = bucket / 60;
       result.push({
-        time: `${bucket}m`,
+        time: hours === 0 ? '0h' : `${hours}h`,
         ...bucketData,
       });
     }
@@ -683,10 +685,12 @@ export default function AdminDashboard() {
   };
 
   const getPurchaseStats = () => {
-    const stats = purchases.reduce((acc, purchase) => {
-      acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
-      return acc;
-    }, {} as Record<string, number>);
+    const stats = purchases
+      .filter(purchase => purchase.item_name !== '100 Gold Free Gift')
+      .reduce((acc, purchase) => {
+        acc[purchase.item_name] = (acc[purchase.item_name] || 0) + 1;
+        return acc;
+      }, {} as Record<string, number>);
 
     return Object.entries(stats).map(([name, count]) => ({ name, count }));
   };
