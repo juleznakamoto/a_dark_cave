@@ -1108,7 +1108,9 @@ export default function AdminDashboard() {
                   onChange={(e) => setShowCompletedOnly(e.target.checked)}
                   className="cursor-pointer w-4 h-4"
                 />
-                <span className="text-sm font-medium">Show only players who completed the game</span>
+                <span className="text-sm font-medium">
+                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                </span>
               </label>
             </div>
             <Card>
