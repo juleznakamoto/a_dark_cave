@@ -63,8 +63,8 @@ export async function processReferral(newUserId: string, referralCode: string) {
   }
 
   const referrerState = referrerSave.game_state;
-  const referralCount = referrerState.referralCount || 0;
-  const referredUsers = referrerState.referredUsers || [];
+  const referrals = referrerState.referrals || [];
+  const referralCount = referrals.length;
 
   if (referralCount >= 10) {
     console.warn('[REFERRAL] Referrer reached limit');
@@ -72,18 +72,14 @@ export async function processReferral(newUserId: string, referralCode: string) {
   }
 
   // Check if this user was already referred
-  if (referredUsers.includes(newUserId)) {
+  if (referrals.some(r => r.userId === newUserId)) {
     console.warn('[REFERRAL] User already referred');
     return { success: false, reason: 'already_referred' };
   }
 
   // Update referrer's game state - add unclaimed referral
-  const referrals = referrerState.referrals || [];
-  
   const updatedReferrerState = {
     ...referrerState,
-    referralCount: referralCount + 1,
-    referredUsers: [...referredUsers, newUserId],
     referrals: [
       ...referrals,
       {
@@ -96,7 +92,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   
   console.log('[REFERRAL] 📦 Added unclaimed referral for referrer:', {
     referrerId: referralCode.substring(0, 8),
-    newReferralCount: referralCount + 1,
+    totalReferrals: updatedReferrerState.referrals.length,
     unclaimedCount: updatedReferrerState.referrals.filter(r => !r.claimed).length,
   });
 
@@ -189,7 +185,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   console.log('[REFERRAL] Success!', {
     referrerId: referralCode,
     newUserId,
-    newReferralCount: referralCount + 1
+    totalReferrals: updatedReferrerState.referrals.length
   });
 
   return { success: true };

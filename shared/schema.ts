@@ -378,8 +378,6 @@ export const gameStateSchema = z.object({
   startTime: z.number().default(0), // Timestamp when the current game was started
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   referralCode: z.string().optional(), // Store the referral code used during signup
-  referralCount: z.number().default(0), // Track how many friends have signed up using this user's referral
-  referredUsers: z.array(z.string()).default([]), // Track user IDs of referred friends
   referrals: z.array(z.object({
     userId: z.string(),
     claimed: z.boolean().default(false),

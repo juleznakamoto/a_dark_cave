@@ -652,9 +652,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentBoostMode = get().boostMode;
     const currentActivatedPurchases = get().activatedPurchases || {};
     const currentFeastPurchases = get().feastPurchases || {};
-    const currentReferralCount = get().referralCount || 0;
-    const currentReferredUsers = get().referredUsers || [];
-    const currentReferrals = get().referrals || []; // Get current referrals
+    const currentReferrals = get().referrals || [];
 
     // Check if Cruel Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
@@ -778,8 +776,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isNewGame: false, // Clear the new game flag when loading
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
-        referralCount: savedState.referralCount !== undefined ? savedState.referralCount : 0, // Load referral count
-        referredUsers: savedState.referredUsers || [], // Load referred users list
         referrals: savedState.referrals || [], // Load referrals list
       };
 
