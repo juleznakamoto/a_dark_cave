@@ -386,19 +386,3 @@ html, body {
 .shop-notification-pulse {
   animation: shop-notification-pulse 1s ease-in-out infinite;
 }
-
-/* Referral notification dot pulsating animation */
-@keyframes referral-pulse {
-  0% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
-  }
-  100% {
-    opacity: 0.7;
-    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0);
-  }
-}
-
-.referral-pulse {
-  animation: referral-pulse 1s ease-in-out infinite;
-}

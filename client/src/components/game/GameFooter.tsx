@@ -56,7 +56,6 @@ export default function GameFooter() {
     email: string;
   } | null>(null);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
-  const [hasReferralParam, setHasReferralParam] = useState(false);
   const { toast } = useToast();
   // Trigger glow animation when pause state changes
   useEffect(() => {
@@ -67,9 +66,6 @@ export default function GameFooter() {
 
   useEffect(() => {
     checkAuth();
-    // Check if URL has referral parameter
-    const params = new URLSearchParams(window.location.search);
-    setHasReferralParam(!!params.get('ref'));
   }, []);
 
   const checkAuth = async () => {
@@ -84,11 +80,6 @@ export default function GameFooter() {
     if (isOpen) {
       setAccountDropdownOpen(false);
     }
-  };
-
-  // Determine if should default to signup based on referral parameter
-  const getDefaultAuthMode = () => {
-    return hasReferralParam ? 'signup' : 'signin';
   };
 
   const handleAuthSuccess = async () => {
@@ -206,13 +197,10 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative bg-background/80  text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
-              {hasReferralParam && !currentUser && (
-                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-blue-500 rounded-full referral-pulse !opacity-100" />
-              )}
-              {authNotificationVisible &&
-                !authNotificationSeen &&
-                !currentUser &&
-                !hasReferralParam && (
+              {(hasReferralParam ||
+                (authNotificationVisible &&
+                  !authNotificationSeen)) &&
+                !currentUser && (
                   <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
                 )}
             </Button>
@@ -405,7 +393,6 @@ export default function GameFooter() {
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
-        defaultMode={getDefaultAuthMode() as 'signin' | 'signup'}
       />
     </>
   );

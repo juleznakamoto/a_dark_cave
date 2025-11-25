@@ -23,11 +23,7 @@ void main(){gl_Position=position;}`;
     this.canvas = canvas;
     this.scale = scale;
     this.shaderSource = shaderSource;
-    const gl = canvas.getContext('webgl2');
-    if (!gl) {
-      throw new Error('WebGL2 not supported');
-    }
-    this.gl = gl;
+    this.gl = canvas.getContext('webgl2')!;
     this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
   }
 
@@ -191,7 +187,7 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
       rendererRef.current.init();
     } catch (error) {
       console.warn('Failed to initialize WebGL renderer:', error);
-      return; // Exit if WebGL2 is not supported
+      return; // Exit gracefully if WebGL2 not supported
     }
 
     let isActive = true;
