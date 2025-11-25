@@ -258,7 +258,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
                   >
-                    Bastion
+                    {buildings.fortifiedMoat >= 1 && buildings.palisades >= 2 && buildings.watchtower >= 2 ? "Fortress" : "Bastion"}
                   </button>
                 )}
               </div>
