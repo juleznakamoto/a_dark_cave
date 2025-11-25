@@ -1,0 +1,34 @@
+ Users with clicks: 131 Sample IDs: (3) ['901829a1-bf74-4a81-9a5c-88ba1dc9d1e8', 'cfcf3751-28fe-4663-b113-45af9d7c3a63', '67351ed0-5b3a-41b4-b806-05f48ba44ca7']
+dashboard.tsx:761 📊 Sample save: {user_id: '592d30b3', updated_at: '2025-11-18T14:40:30.665+00:00'}
+dashboard.tsx:761 📊 Sample save: {user_id: 'f9b5b213', updated_at: '2025-11-21T11:59:19.176+00:00'}
+dashboard.tsx:761 📊 Sample save: {user_id: '237e83d5', updated_at: '2025-11-10T19:36:24.857+00:00'}
+dashboard.tsx:769 📊 Total users with activity: 753
+dashboard.tsx:770 📊 Sample activity dates: (3) [{…}, {…}, {…}]
+dashboard.tsx:782 📊 User check: {userId: '592d30b3', lastActivity: '2025-11-18T14:40:30.665Z', hasClicks: false, isBeforeCutoff: true, daysSince: 6, …}
+dashboard.tsx:782 📊 User check: {userId: 'f9b5b213', lastActivity: '2025-11-21T11:59:19.176Z', hasClicks: false, isBeforeCutoff: false, daysSince: 4, …}
+dashboard.tsx:782 📊 User check: {userId: '237e83d5', lastActivity: '2025-11-10T19:36:24.857Z', hasClicks: false, isBeforeCutoff: true, daysSince: 14, …}
+dashboard.tsx:782 📊 User check: {userId: 'ff24c218', lastActivity: '2025-11-16T06:51:16.494Z', hasClicks: false, isBeforeCutoff: true, daysSince: 9, …}
+dashboard.tsx:782 📊 User check: {userId: 'de668b05', lastActivity: '2025-11-13T12:12:05.071Z', hasClicks: false, isBeforeCutoff: true, daysSince: 12, …}
+dashboard.tsx:805 📊 Churn analysis COMPLETE: {churnedCount: 0, notChurnedCount: 753, totalChurnedPlayers: 0, firstChurned: undefined, lastChurned: undefined}
+dashboard.tsx:743 🔍 Getting churned players START: {churnDays: 5, now: '2025-11-25T14:40:08.515Z', cutoffDate: '2025-11-20T14:40:08.515Z', clickDataLength: 131, gameSavesLength: 753}
+dashboard.tsx:754 📊 Users with clicks: 131 Sample IDs: (3) ['901829a1-bf74-4a81-9a5c-88ba1dc9d1e8', 'cfcf3751-28fe-4663-b113-45af9d7c3a63', '67351ed0-5b3a-41b4-b806-05f48ba44ca7']
+dashboard.tsx:761 📊 Sample save: {user_id: '592d30b3', updated_at: '2025-11-18T14:40:30.665+00:00'}
+dashboard.tsx:761 📊 Sample save: {user_id: 'f9b5b213', updated_at: '2025-11-21T11:59:19.176+00:00'}
+dashboard.tsx:761 📊 Sample save: {user_id: '237e83d5', updated_at: '2025-11-10T19:36:24.857+00:00'}
+dashboard.tsx:769 📊 Total users with activity: 753
+dashboard.tsx:770 📊 Sample activity dates: (3) [{…}, {…}, {…}]
+dashboard.tsx:782 📊 User check: {userId: '592d30b3', lastActivity: '2025-11-18T14:40:30.665Z', hasClicks: false, isBeforeCutoff: true, daysSince: 6, …}
+dashboard.tsx:782 📊 User check: {userId: 'f9b5b213', lastActivity: '2025-11-21T11:59:19.176Z', hasClicks: false, isBeforeCutoff: false, daysSince: 4, …}
+dashboard.tsx:782 📊 User check: {userId: '237e83d5', lastActivity: '2025-11-10T19:36:24.857Z', hasClicks: false, isBeforeCutoff: true, daysSince: 14, …}
+dashboard.tsx:782 📊 User check: {userId: 'ff24c218', lastActivity: '2025-11-16T06:51:16.494Z', hasClicks: false, isBeforeCutoff: true, daysSince: 9, …}
+dashboard.tsx:782 📊 User check: {userId: 'de668b05', lastActivity: '2025-11-13T12:12:05.071Z', hasClicks: false, isBeforeCutoff: true, daysSince: 12, …}
+dashboard.tsx:805 📊 Churn analysis COMPLETE: {churnedCount: 0, notChurnedCount: 753, totalChurnedPlayers: 0, firstChurned: undefined, lastChurned: undefined}
+dashboard.tsx:821 🔍 Getting churned players last clicks START: {now: '2025-11-25T14:40:08.518Z', cutoffDate: '2025-11-20T14:40:08.518Z', churnDays: 5}
+dashboard.tsx:830 📊 Users with clicks: 131
+dashboard.tsx:850 📊 Churned user IDs for clicks: 0 Sample: []
+dashboard.tsx:857 📊 Sample click entry: {user_id: '901829a1', isChurned: false, clicksKeys: Array(1)}
+dashboard.tsx:857 📊 Sample click entry: {user_id: 'cfcf3751', isChurned: false, clicksKeys: Array(1)}
+dashboard.tsx:857 📊 Sample click entry: {user_id: '67351ed0', isChurned: false, clicksKeys: Array(3)}
+dashboard.tsx:878 📊 Total clicks from churned users: 0
+dashboard.tsx:879 📊 Sample clicks: []
+dashboard.tsx:890 📊 Returning last clicks: 0 Sample: []
