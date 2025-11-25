@@ -844,9 +844,9 @@ export default function AdminDashboard() {
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
   };
 
-  // Get the last 20 clicks from churned players
+  // Get the top 20 most clicked buttons from churned players
   const getChurnedPlayersLastClicks = () => {
-    console.log('🔍 Getting churned players last clicks START:', {
+    console.log('🔍 Getting churned players top clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -881,38 +881,31 @@ export default function AdminDashboard() {
 
     console.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
 
-    // Collect all clicks from churned users with their playtime
-    const allClicks: Array<{ userId: string; button: string; playtime: string; clicks: number }> = [];
+    // Aggregate all clicks from churned users by button
+    const buttonTotals: Record<string, number> = {};
 
     clickData.forEach(entry => {
       if (churnedUserIds.has(entry.user_id)) {
         Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
           Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-            allClicks.push({
-              userId: entry.user_id.substring(0, 8) + '...',
-              button: cleanButtonName(button),
-              playtime: playtimeKey,
-              clicks: count,
-            });
+            const cleanButton = cleanButtonName(button);
+            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
           });
         });
       }
     });
 
-    console.log('📊 Total clicks from churned users:', allClicks.length);
+    console.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
 
-    // Sort by playtime (most recent first) and return last 20
-    const sorted = allClicks
-      .sort((a, b) => {
-        const aMinutes = parseInt(a.playtime.replace('m', ''));
-        const bMinutes = parseInt(b.playtime.replace('m', ''));
-        return bMinutes - aMinutes;
-      })
+    // Convert to array and sort by click count, take top 20
+    const topClicks = Object.entries(buttonTotals)
+      .map(([button, clicks]) => ({ button, clicks }))
+      .sort((a, b) => b.clicks - a.clicks)
       .slice(0, 20);
 
-    console.log('📊 Returning top 20 clicks:', sorted.length);
+    console.log('📊 Returning top 20 clicked buttons:', topClicks.length);
     
-    return sorted;
+    return topClicks;
   };
 
   const getARPU = () => {
@@ -1676,27 +1669,19 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Last 20 Clicks from Churned Players</CardTitle>
-                <CardDescription>What were churned players doing before they stopped?</CardDescription>
+                <CardTitle>Top 20 Buttons Clicked by Churned Players</CardTitle>
+                <CardDescription>What actions did churned players perform the most?</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2">
-                  {getChurnedPlayersLastClicks().length > 0 ? (
-                    getChurnedPlayersLastClicks().map((click, index) => (
-                      <div key={index} className="flex justify-between items-center border-b pb-2">
-                        <div>
-                          <p className="font-medium">{click.button}</p>
-                          <p className="text-sm text-muted-foreground">
-                            User: {click.userId} | Playtime: {click.playtime}
-                          </p>
-                        </div>
-                        <p className="font-bold">{click.clicks} clicks</p>
-                      </div>
-                    ))
-                  ) : (
-                    <p className="text-muted-foreground">No churned player clicks found</p>
-                  )}
-                </div>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getChurnedPlayersLastClicks()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="clicks" fill="#ff8042" />
+                  </BarChart>
+                </ResponsiveContainer>
               </CardContent>
             </Card>
 
