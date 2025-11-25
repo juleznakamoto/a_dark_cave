@@ -104,8 +104,11 @@ const buttonClicksChartConfig = {
 
 // Helper function to clean button names by removing timestamp suffixes
 const cleanButtonName = (buttonId: string): string => {
-  // Remove timestamp suffixes (e.g., "-1764039531673" or "_1764039531673")
-  return buttonId.replace(/[-_]\d{13,}$/, '');
+  // Remove timestamp suffixes and random number suffixes from merchant trades
+  // Patterns: _1764039531673_0.6389963990042614 or _1764039531673 or -1764039531673
+  return buttonId
+    .replace(/_\d{13,}_[\d.]+$/, '') // Remove _timestamp_randomNumber
+    .replace(/[-_]\d{13,}$/, '');     // Remove -timestamp or _timestamp
 };
 
 export default function AdminDashboard() {
