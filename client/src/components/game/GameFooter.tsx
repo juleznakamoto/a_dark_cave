@@ -138,6 +138,16 @@ export default function GameFooter() {
       return;
     }
 
+    // Check if user has reached the referral limit
+    if ((referralCount || 0) >= 10) {
+      toast({
+        title: "Referral limit reached",
+        description: "You have already invited 10 friends. For collaboration requests, click on Feedback.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
     try {
       await navigator.clipboard.writeText(inviteLink);
