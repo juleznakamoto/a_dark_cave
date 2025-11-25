@@ -164,30 +164,40 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
-          let success_chance;
-          success_chance = calculateSuccessChance(
-              state,
-              0.15 + traps * 0.1,
-              { type: 'luck', multiplier: 0.02 }
-            );
+          const success_chance = calculateSuccessChance(
+            state,
+            0.15 + traps * 0.1,
+            { type: 'luck', multiplier: 0.02 }
+          );
+
+          let villagerDeaths = 0;
+          let foodLoss = 0;
+          let deathResult = {};
+
           if (Math.random() < success_chance) {
-            // nothing happens
-            let villagerDeaths = 0;
-            let foodLoss = 0;
-            return 
+            // Success - wolves leave without causing damage
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  firstWolfAttack: true,
+                },
+              },
+              _logMessage:
+                "The villagers huddle in their huts as the wolves prowl outside. By dawn, the wolves have departed without finding anyone, leaving only scratches and terror behind.",
+            };
           } else {
             const luck = getTotalLuck(state);
             const casualtyChance =
               Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
 
-            let villagerDeaths = 0;
-            let foodLoss = Math.min(
+            foodLoss = Math.min(
               state.resources.food,
               (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25 +
                 25 +
                 state.CM * 2,
             );
-            let hutDestroyed = false;
 
             // Determine villager casualties
             const maxPotentialDeaths = Math.min(
@@ -201,9 +211,9 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             }
 
             // Apply deaths to villagers
-            const deathResult = killVillagers(state, villagerDeaths);
+            deathResult = killVillagers(state, villagerDeaths);
           }
-          
+
           // Construct result message
           let message =
             "The villagers huddle in their huts as the wolves prowl outside. ";
@@ -226,12 +236,6 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: Math.max(0, state.resources.food - foodLoss),
             },
-            buildings: hutDestroyed
-              ? {
-                  ...state.buildings,
-                  woodenHut: Math.max(0, state.buildings.woodenHut - 1),
-                }
-              : state.buildings,
             story: {
               ...state.story,
               seen: {
