@@ -185,7 +185,7 @@ export default function GameFooter() {
               {true &&
                 !false &&
                 !false && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse opacity-100" />
+                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
                 )}
             </Button>
           </DropdownMenuTrigger>
