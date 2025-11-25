@@ -1,0 +1,100 @@
+[STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:514 [STATE] Action: exploreCave {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+loop.ts:200 [GAME LOOP] Normal production running - idle mode is NOT active
+auth.ts:137 Saving to Supabase: {hasClickAnalytics: true, clickAnalyticsKeys: Array(7), gameStateSize: 7773}
+@supabase_supabase-js.js?v=48c13b38:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=48c13b38:5633
+(anonymous) @ @supabase_supabase-js.js?v=48c13b38:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=48c13b38:94Understand this error
+auth.ts:164 Failed to save game to Supabase: {code: '42703', details: null, hint: null, message: 'column "v_playtime_key" does not exist'}
+saveGameToSupabase @ auth.ts:164
+await in saveGameToSupabase
+saveGame @ save.ts:62
+await in saveGame
+handleAutoSave @ loop.ts:605
+tick @ loop.ts:119Understand this error
+audio.ts:45 Loading sound: backgroundMusic from /sounds/background_music.wav
+audio.ts:55 Successfully loaded sound: backgroundMusic
+loop.ts:200 [GAME LOOP] Normal production running - idle mode is NOT active
+state.ts:514 [STATE] Action: lightFire {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+IdleModeDialog.tsx:149 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+auth.ts:137 Saving to Supabase: {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), gameStateSize: 6216}
+state.ts:514 [STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+state.ts:514 [STATE] Action: craftTorch {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+loop.ts:200 [GAME LOOP] Normal production running - idle mode is NOT active
+auth.ts:137 Saving to Supabase: {hasClickAnalytics: true, clickAnalyticsKeys: Array(3), gameStateSize: 6690}
+@supabase_supabase-js.js?v=48c13b38:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=48c13b38:5633
+(anonymous) @ @supabase_supabase-js.js?v=48c13b38:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=48c13b38:94Understand this error
+auth.ts:164 Failed to save game to Supabase: {code: '42703', details: null, hint: null, message: 'column "v_playtime_key" does not exist'}
+saveGameToSupabase @ auth.ts:164
+await in saveGameToSupabase
+saveGame @ save.ts:62
+await in saveGame
+handleAutoSave @ loop.ts:605
+tick @ loop.ts:119
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:220
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:220
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60
+requestAnimationFrame
+tick @ loop.ts:60Understand this error
+state.ts:514 [STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+state.ts:514 [STATE] Action: exploreCave {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}

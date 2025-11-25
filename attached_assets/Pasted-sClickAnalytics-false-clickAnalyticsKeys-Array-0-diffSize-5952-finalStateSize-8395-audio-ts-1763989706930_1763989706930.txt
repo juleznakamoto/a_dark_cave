@@ -1,0 +1,197 @@
+sClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 5952, finalStateSize: 8395}
+audio.ts:66 Loading all sounds after user gesture...
+7The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:27 The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. https://developer.chrome.com/blog/autoplay/#web_audio
+initAudioContext @ audio.ts:27
+loadActualSound @ audio.ts:79
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+auth.ts:142 Saving to Supabase: {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 89, finalStateSize: 8395}
+loop.ts:202 [GAME LOOP] Normal production running - idle mode is NOT active
+state.ts:515 [STATE] Action: lightFire {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+IdleModeDialog.tsx:149 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+audio.ts:151 Sound backgroundMusic not found
+playLoopingSound @ audio.ts:151
+await in playLoopingSound
+startBackgroundMusic @ audio.ts:255
+handleLightFire @ StartScreen.tsx:56
+handleClick @ particle-button.tsx:239
+handleClick @ button.tsx:59
+callCallback2 @ chunk-276SZO74.js?v=4072e8ad:3674
+invokeGuardedCallbackDev @ chunk-276SZO74.js?v=4072e8ad:3699
+invokeGuardedCallback @ chunk-276SZO74.js?v=4072e8ad:3733
+invokeGuardedCallbackAndCatchFirstError @ chunk-276SZO74.js?v=4072e8ad:3736
+executeDispatch @ chunk-276SZO74.js?v=4072e8ad:7014
+processDispatchQueueItemsInOrder @ chunk-276SZO74.js?v=4072e8ad:7034
+processDispatchQueue @ chunk-276SZO74.js?v=4072e8ad:7043
+dispatchEventsForPlugins @ chunk-276SZO74.js?v=4072e8ad:7051
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:7174
+batchedUpdates$1 @ chunk-276SZO74.js?v=4072e8ad:18913
+batchedUpdates @ chunk-276SZO74.js?v=4072e8ad:3579
+dispatchEventForPluginEventSystem @ chunk-276SZO74.js?v=4072e8ad:7173
+dispatchEventWithEnableCapturePhaseSelectiveHydrationWithoutDiscreteEventReplay @ chunk-276SZO74.js?v=4072e8ad:5478
+dispatchEvent @ chunk-276SZO74.js?v=4072e8ad:5472
+dispatchDiscreteEvent @ chunk-276SZO74.js?v=4072e8ad:5449Understand this warning
+audio.ts:90 Successfully loaded sound: newVillager
+audio.ts:90 Successfully loaded sound: eventMadness
+audio.ts:90 Successfully loaded sound: event
+audio.ts:90 Successfully loaded sound: whisperingCube
+audio.ts:90 Successfully loaded sound: explosion
+audio.ts:93 Failed to load sound wind from /sounds/wind.wav: EncodingError: Unable to decode audio data
+loadActualSound @ audio.ts:93
+await in loadActualSound
+(anonymous) @ audio.ts:69
+loadAllSounds @ audio.ts:68
+playLoopingSound @ audio.ts:143
+(anonymous) @ StartScreen.tsx:40
+setTimeout
+(anonymous) @ StartScreen.tsx:39
+commitHookEffectListMount @ chunk-276SZO74.js?v=4072e8ad:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=4072e8ad:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=4072e8ad:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=4072e8ad:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=4072e8ad:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=4072e8ad:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=4072e8ad:19447
+(anonymous) @ chunk-276SZO74.js?v=4072e8ad:19328
+workLoop @ chunk-276SZO74.js?v=4072e8ad:197
+flushWork @ chunk-276SZO74.js?v=4072e8ad:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=4072e8ad:384Understand this warning
+audio.ts:90 Successfully loaded sound: backgroundMusic
+audio.ts:73 Finished loading all sounds
+audio.ts:151 Sound wind not found

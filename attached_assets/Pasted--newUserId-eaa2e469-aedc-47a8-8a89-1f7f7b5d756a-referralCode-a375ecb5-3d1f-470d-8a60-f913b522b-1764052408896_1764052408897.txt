@@ -1,0 +1,123 @@
+{newUserId: 'eaa2e469-aedc-47a8-8a89-1f7f7b5d756a', referralCode: 'a375ecb5-3d1f-470d-8a60-f913b522bedc', timestamp: '2025-11-25T06:32:24.589Z'}
+save.ts:150 Comparing saves - Cloud playTime: 24343080.199999996 Local playTime: 24343080.199999996
+save.ts:169 Using local save (longer play time), syncing to cloud
+auth.ts:121 [REFERRAL] Attempt 1 failed, retrying in 2000ms...
+processReferralInBackground @ auth.ts:121
+await in processReferralInBackground
+processReferralAfterConfirmation @ auth.ts:38
+loadGame @ save.ts:131
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-276SZO74.js?v=950742a6:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=950742a6:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=950742a6:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=950742a6:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=950742a6:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=950742a6:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=950742a6:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+commitRootImpl @ chunk-276SZO74.js?v=950742a6:19432
+commitRoot @ chunk-276SZO74.js?v=950742a6:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=950742a6:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18718
+workLoop @ chunk-276SZO74.js?v=950742a6:197
+flushWork @ chunk-276SZO74.js?v=950742a6:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=950742a6:384Understand this warning
+auth.ts:249 Saving to Supabase: {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 5616, finalStateSize: 5616}
+auth.ts:121 [REFERRAL] Attempt 2 failed, retrying in 4000ms...
+processReferralInBackground @ auth.ts:121
+await in processReferralInBackground
+processReferralAfterConfirmation @ auth.ts:38
+loadGame @ save.ts:131
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-276SZO74.js?v=950742a6:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=950742a6:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=950742a6:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=950742a6:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=950742a6:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=950742a6:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=950742a6:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+commitRootImpl @ chunk-276SZO74.js?v=950742a6:19432
+commitRoot @ chunk-276SZO74.js?v=950742a6:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=950742a6:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18718
+workLoop @ chunk-276SZO74.js?v=950742a6:197
+flushWork @ chunk-276SZO74.js?v=950742a6:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=950742a6:384Understand this warning
+auth.ts:121 [REFERRAL] Attempt 3 failed, retrying in 8000ms...
+processReferralInBackground @ auth.ts:121
+await in processReferralInBackground
+processReferralAfterConfirmation @ auth.ts:38
+loadGame @ save.ts:131
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-276SZO74.js?v=950742a6:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=950742a6:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=950742a6:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=950742a6:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=950742a6:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=950742a6:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=950742a6:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+commitRootImpl @ chunk-276SZO74.js?v=950742a6:19432
+commitRoot @ chunk-276SZO74.js?v=950742a6:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=950742a6:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18718
+workLoop @ chunk-276SZO74.js?v=950742a6:197
+flushWork @ chunk-276SZO74.js?v=950742a6:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=950742a6:384Understand this warning
+auth.ts:249 Saving to Supabase: {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 90, finalStateSize: 5616}
+auth.ts:121 [REFERRAL] Attempt 4 failed, retrying in 10000ms...
+processReferralInBackground @ auth.ts:121
+await in processReferralInBackground
+processReferralAfterConfirmation @ auth.ts:38
+loadGame @ save.ts:131
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-276SZO74.js?v=950742a6:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=950742a6:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=950742a6:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=950742a6:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=950742a6:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=950742a6:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=950742a6:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+commitRootImpl @ chunk-276SZO74.js?v=950742a6:19432
+commitRoot @ chunk-276SZO74.js?v=950742a6:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=950742a6:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18718
+workLoop @ chunk-276SZO74.js?v=950742a6:197
+flushWork @ chunk-276SZO74.js?v=950742a6:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=950742a6:384Understand this warning
+loop.ts:202 [GAME LOOP] Normal production running - idle mode is NOT active
+auth.ts:117 [REFERRAL] All retry attempts failed: Error: Server returned non-JSON response
+    at processReferralInBackground (auth.ts:95:15)
+processReferralInBackground @ auth.ts:117
+await in processReferralInBackground
+processReferralAfterConfirmation @ auth.ts:38
+loadGame @ save.ts:131
+initializeGame @ game.tsx:19
+(anonymous) @ game.tsx:36
+commitHookEffectListMount @ chunk-276SZO74.js?v=950742a6:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=950742a6:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=950742a6:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=950742a6:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=950742a6:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=950742a6:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=950742a6:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+commitRootImpl @ chunk-276SZO74.js?v=950742a6:19432
+commitRoot @ chunk-276SZO74.js?v=950742a6:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=950742a6:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18718
+workLoop @ chunk-276SZO74.js?v=950742a6:197
+flushWork @ chunk-276SZO74.js?v=950742a6:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=950742a6:384Understand this error
+loop.ts:202 [GAME LOOP] Normal production running - idle mode is NOT active

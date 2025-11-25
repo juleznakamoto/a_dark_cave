@@ -136,22 +136,34 @@ import { createServer } from "http";
   // CRITICAL: All API routes MUST be defined before Vite middleware
   // Referral endpoint
   app.post("/api/referral/process", async (req, res) => {
+    const timestamp = new Date().toISOString();
+    log(`[REFERRAL API ${timestamp}] ========== REQUEST START ==========`);
+    log(`[REFERRAL API] Headers: ${JSON.stringify(req.headers)}`);
+    log(`[REFERRAL API] Body type: ${typeof req.body}`);
+    log(`[REFERRAL API] Body: ${JSON.stringify(req.body)}`);
+    
     try {
       const { newUserId, referralCode } = req.body || {};
       
       if (!newUserId || !referralCode) {
+        log(`[REFERRAL API] ❌ Missing parameters - userId: ${!!newUserId}, code: ${!!referralCode}`);
         return res.status(400).json({ 
           error: 'Missing required parameters',
           received: { newUserId: !!newUserId, referralCode: !!referralCode }
         });
       }
       
+      log(`[REFERRAL API] ✓ Processing referral for user ${newUserId.substring(0, 8)}...`);
       const result = await processReferral(newUserId, referralCode);
+      log(`[REFERRAL API] ✓ Result: ${JSON.stringify(result)}`);
+      log(`[REFERRAL API] ========== REQUEST END (SUCCESS) ==========`);
       
       // Ensure we send JSON with correct content-type
       res.setHeader('Content-Type', 'application/json');
       res.json(result);
     } catch (error: any) {
+      log(`[REFERRAL API] ❌ Error: ${error.message}`);
+      log(`[REFERRAL API] ========== REQUEST END (ERROR) ==========`);
       res.status(500).json({ error: error.message });
     }
   });

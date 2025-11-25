@@ -1,0 +1,22 @@
+> rest-express@1.0.0 dev
+6:46:14 AM [express] serving on port 5000s
+Browserslist: browsers data (caniuse-lite) is 13 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+6:46:26 AM [express] [REFERRAL API 2025-11-25T06:46:26.005Z] ========== REQUEST START ==========
+6:46:26 AM [express] [REFERRAL API] Headers: {"host":"2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev","user-agent":"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36","content-length":"106","accept":"*/*","accept-encoding":"gzip, deflate, br, zstd","accept-language":"de-DE,de;q=0.9","content-type":"application/json","cookie":"__stripe_mid=c29193f4-26d5-4300-a2bc-c3cbe204be5e73676d; __stripe_sid=8ba82aab-6c72-46f0-983c-86651ace323cd0b65d","dnt":"1","origin":"https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev","referer":"https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/","sec-ch-ua":"\"Chromium\";v=\"142\", \"Google Chrome\";v=\"142\", \"Not_A Brand\";v=\"99\"","sec-ch-ua-mobile":"?0","sec-ch-ua-platform":"\"Windows\"","sec-fetch-dest":"empty","sec-fetch-mode":"cors","sec-fetch-site":"same-origin","x-forwarded-for":"92.208.76.152, 10.81.3.55","x-forwarded-proto":"https","x-replit-user-bio":"","x-replit-user-id":"","x-replit-user-name":"","x-replit-user-profile-image":"","x-replit-user-roles":"","x-replit-user-teams":"","x-replit-user-url":""}
+6:46:26 AM [express] [REFERRAL API] Body type: object
+6:46:26 AM [express] [REFERRAL API] Body: {"newUserId":"eaa2e469-aedc-47a8-8a89-1f7f7b5d756a","referralCode":"a375ecb5-3d1f-470d-8a60-f913b522bedc"}
+6:46:26 AM [express] [REFERRAL API] ✓ Processing referral for user eaa2e469...
+[REFERRAL] Server-side processing: {
+  newUserId: 'eaa2e469-aedc-47a8-8a89-1f7f7b5d756a',
+  referralCode: 'a375ecb5-3d1f-470d-8a60-f913b522bedc'
+}
+[REFERRAL] Success! {
+  referrerId: 'a375ecb5-3d1f-470d-8a60-f913b522bedc',
+  newUserId: 'eaa2e469-aedc-47a8-8a89-1f7f7b5d756a',
+  newReferralCount: 1
+}
+6:46:27 AM [express] [REFERRAL API] ✓ Result: {"success":true}
+6:46:27 AM [express] [REFERRAL API] ========== REQUEST END (SUCCESS) ==========
+6:46:27 AM [express] POST /api/referral/process 200 in 1356ms :: {"success":true}

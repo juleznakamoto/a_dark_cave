@@ -1,0 +1,182 @@
+{
+  "event_message": "GET | 401 | 92.208.76.152 | 9a3881e37d8d2ba4 | https://epmegaduehlztjqoeqih.supabase.co/rest/v1/game_saves?select=user_id | Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+  "id": "12e47dd7-4d4e-433b-a271-58f174320486",
+  "metadata": [
+    {
+      "load_balancer_experimental_routing": null,
+      "load_balancer_geo_aware_info": [],
+      "load_balancer_redirect_identifier": null,
+      "logflare_worker": [
+        {
+          "worker_id": "73PWU6"
+        }
+      ],
+      "request": [
+        {
+          "cf": [
+            {
+              "asOrganization": "Vodafone GmbH",
+              "asn": 3209,
+              "botManagement": [
+                {
+                  "corporateProxy": false,
+                  "detectionIds": [],
+                  "ja3Hash": "72f817d9d67554a987b26f4da128fd8d",
+                  "ja4": "q13d0312h3_55b375c5d22e_5a06198afb93",
+                  "ja4Signals": [
+                    {
+                      "browser_ratio_1h": 0.92763668298721,
+                      "cache_ratio_1h": 0.30760100483894,
+                      "h2h3_ratio_1h": 1,
+                      "heuristic_ratio_1h": 0.0011678752489388,
+                      "ips_quantile_1h": 0.99998807907104,
+                      "ips_rank_1h": 10,
+                      "paths_rank_1h": 8,
+                      "reqs_quantile_1h": 0.99998807907104,
+                      "reqs_rank_1h": 10,
+                      "uas_rank_1h": 28
+                    }
+                  ],
+                  "jsDetection": [
+                    {
+                      "passed": false
+                    }
+                  ],
+                  "score": 99,
+                  "staticResource": false,
+                  "verifiedBot": false
+                }
+              ],
+              "city": "Döbeln",
+              "clientAcceptEncoding": "gzip, deflate, br",
+              "clientTcpRtt": null,
+              "clientTrustScore": 99,
+              "colo": "FRA",
+              "continent": "EU",
+              "country": "DE",
+              "edgeRequestKeepAliveStatus": 1,
+              "httpProtocol": "HTTP/3",
+              "isEUCountry": null,
+              "latitude": "51.12210",
+              "longitude": "13.11027",
+              "metroCode": null,
+              "postalCode": "04720",
+              "region": "Saxony",
+              "regionCode": "SN",
+              "requestPriority": null,
+              "timezone": "Europe/Berlin",
+              "tlsCipher": "AEAD-AES128-GCM-SHA256",
+              "tlsClientAuth": [
+                {
+                  "certPresented": "0",
+                  "certRevoked": "0",
+                  "certVerified": "NONE"
+                }
+              ],
+              "tlsClientCiphersSha1": "3HTt3+R/6BL3zeALJDSq0pR1yOQ=",
+              "tlsClientExtensionsSha1": "gfXqlQJ5i2D9MTdT1zkfCZotAHM=",
+              "tlsClientExtensionsSha1Le": "5KRBuX/P2M++CHP/meQzCjms1l4=",
+              "tlsClientHelloLength": "2019",
+              "tlsClientRandom": "PEBbUZ9M7xFMaXq+i4RFfsDBF4xpRbVNPtYliHcGfd4=",
+              "tlsExportedAuthenticator": [
+                {
+                  "clientFinished": "3ef03f05b2343719e37265f0fa90bd33bf2d8987969d9cde5ccd763b8c2a53cb",
+                  "clientHandshake": "f1a9260e2f74e789ace7101ec7af5ada04b8aa8cb79adcc006cb504635fc6acd",
+                  "serverFinished": "222071fc80521e4b138c43c3083d91dc439f01a783873b2656ec59f7adb806a9",
+                  "serverHandshake": "1e39414197252f04838387b74725489c28cf732c667ec716f8bf5395ab4e8b79"
+                }
+              ],
+              "tlsVersion": "TLSv1.3",
+              "verifiedBotCategory": null
+            }
+          ],
+          "headers": [
+            {
+              "accept": "*/*",
+              "cf_cache_status": null,
+              "cf_connecting_ip": "92.208.76.152",
+              "cf_ipcountry": "DE",
+              "cf_ray": "9a3881e37d8d2ba4",
+              "content_length": null,
+              "content_location": null,
+              "content_range": null,
+              "content_type": null,
+              "date": null,
+              "host": "epmegaduehlztjqoeqih.supabase.co",
+              "prefer": null,
+              "range": null,
+              "referer": "https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/",
+              "sb_gateway_mode": null,
+              "sb_gateway_version": null,
+              "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36",
+              "x_client_info": "supabase-js-web/2.78.0",
+              "x_forwarded_host": null,
+              "x_forwarded_proto": "https",
+              "x_forwarded_user_agent": null,
+              "x_kong_proxy_latency": null,
+              "x_kong_upstream_latency": null,
+              "x_real_ip": "92.208.76.152"
+            }
+          ],
+          "host": "epmegaduehlztjqoeqih.supabase.co",
+          "method": "GET",
+          "path": "/rest/v1/game_saves",
+          "port": null,
+          "protocol": "https:",
+          "sb": [
+            {
+              "apikey": [
+                {
+                  "apikey": [
+                    {
+                      "error": null,
+                      "hash": "yKGgyF9ulifemrNx3FQyOFEy5CGjv2FvURnfYo8cGnc",
+                      "prefix": "sb_secret_ylM2G"
+                    }
+                  ],
+                  "authorization": [
+                    {
+                      "error": null,
+                      "hash": "yKGgyF9ulifemrNx3FQyOFEy5CGjv2FvURnfYo8cGnc",
+                      "prefix": "sb_secret_ylM2G"
+                    }
+                  ]
+                }
+              ],
+              "auth_user": null,
+              "jwt": []
+            }
+          ],
+          "search": "?select=user_id",
+          "url": "https://epmegaduehlztjqoeqih.supabase.co/rest/v1/game_saves?select=user_id"
+        }
+      ],
+      "response": [
+        {
+          "headers": [
+            {
+              "cf_cache_status": null,
+              "cf_ray": null,
+              "content_length": null,
+              "content_location": null,
+              "content_range": null,
+              "content_type": "application/json;charset=UTF-8",
+              "date": null,
+              "proxy_status": null,
+              "sb_gateway_mode": null,
+              "sb_gateway_version": null,
+              "sb_request_id": "019ab596-6a3a-7eaf-971b-91083552c364",
+              "transfer_encoding": null,
+              "x_kong_proxy_latency": null,
+              "x_kong_upstream_latency": null,
+              "x_sb_error_code": null
+            }
+          ],
+          "origin_time": 4,
+          "status_code": 401
+        }
+      ]
+    }
+  ],
+  "timestamp": 1763983125050000
+}

@@ -1,0 +1,26 @@
+GameFooter.tsx:212 Uncaught ReferenceError: gameState is not defined
+    at GameFooter (GameFooter.tsx:212:152)
+
+GameFooter.tsx:212 Uncaught ReferenceError: gameState is not defined
+    at GameFooter (GameFooter.tsx:212:152)
+@react-refresh:267 The above error occurred in the <GameFooter> component:
+
+    at GameFooter (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameFooter.tsx?t=1764012004758:65:7)
+    at div
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1764011710155:57:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1764011710155:27:26)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=950742a6:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=950742a6:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=950742a6:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=950742a6:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=950742a6:2805:3)
+    at App
+
+Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://reactjs.org/link/error-boundaries to learn more about error boundaries.
+GameFooter.tsx:212 Uncaught (in promise) ReferenceError: gameState is not defined
+    at GameFooter (GameFooter.tsx:212:152)

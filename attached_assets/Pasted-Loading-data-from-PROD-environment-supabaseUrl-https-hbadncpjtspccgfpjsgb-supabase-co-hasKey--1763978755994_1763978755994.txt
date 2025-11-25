@@ -1,0 +1,76 @@
+Loading data from PROD environment {supabaseUrl: 'https://hbadncpjtspccgfpjsgb.supabase.co', hasKey: true}
+dashboard.tsx:238 Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+_GoTrueClient @ @supabase_supabase-js.js?v=48c13b38:7774
+SupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10094
+_initSupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10260
+SupabaseClient @ @supabase_supabase-js.js?v=48c13b38:10136
+createClient @ @supabase_supabase-js.js?v=48c13b38:10302
+loadData @ dashboard.tsx:238
+await in loadData
+checkAdminAccess @ dashboard.tsx:185
+await in checkAdminAccess
+(anonymous) @ dashboard.tsx:162
+commitHookEffectListMount @ chunk-276SZO74.js?v=48c13b38:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=48c13b38:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=48c13b38:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=48c13b38:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=48c13b38:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=48c13b38:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=48c13b38:19447
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=48c13b38:18868
+flushSyncCallbacks @ chunk-276SZO74.js?v=48c13b38:9119
+commitRootImpl @ chunk-276SZO74.js?v=48c13b38:19432
+commitRoot @ chunk-276SZO74.js?v=48c13b38:19277
+finishConcurrentRender @ chunk-276SZO74.js?v=48c13b38:18805
+performConcurrentWorkOnRoot @ chunk-276SZO74.js?v=48c13b38:18718
+workLoop @ chunk-276SZO74.js?v=48c13b38:197
+flushWork @ chunk-276SZO74.js?v=48c13b38:176
+performWorkUntilDeadline @ chunk-276SZO74.js?v=48c13b38:384Understand this warning
+dashboard.tsx:245 Supabase client created for prod
+dashboard.tsx:257 Clicks loaded successfully: 0 records
+dashboard.tsx:270 Saves loaded successfully: 0 records
+dashboard.tsx:284 Purchases loaded successfully: 0 records
+dashboard.tsx:291 Raw data loaded:
+dashboard.tsx:292 - Clicks records: 0
+dashboard.tsx:293 - Saves records: 0
+dashboard.tsx:294 - Purchase records: 0
+dashboard.tsx:302 - Unique users from clicks: 0
+dashboard.tsx:311 - Unique users from saves: 0 (new: 0 total)
+dashboard.tsx:320 - Unique users from purchases: 0 (new: 0 total)
+dashboard.tsx:323 Total unique user IDs found: 0
+dashboard.tsx:324 User IDs: []
+dashboard.tsx:224 Loading data from DEV environment {supabaseUrl: 'https://epmegaduehlztjqoeqih.supabase.co', hasKey: true}
+dashboard.tsx:238 Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.
+_GoTrueClient @ @supabase_supabase-js.js?v=48c13b38:7774
+SupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10094
+_initSupabaseAuthClient @ @supabase_supabase-js.js?v=48c13b38:10260
+SupabaseClient @ @supabase_supabase-js.js?v=48c13b38:10136
+createClient @ @supabase_supabase-js.js?v=48c13b38:10302
+loadData @ dashboard.tsx:238
+await in loadData
+(anonymous) @ dashboard.tsx:168
+commitHookEffectListMount @ chunk-276SZO74.js?v=48c13b38:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=48c13b38:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=48c13b38:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=48c13b38:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=48c13b38:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=48c13b38:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=48c13b38:19447
+commitRootImpl @ chunk-276SZO74.js?v=48c13b38:19416
+commitRoot @ chunk-276SZO74.js?v=48c13b38:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=48c13b38:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=48c13b38:9119
+(anonymous) @ chunk-276SZO74.js?v=48c13b38:18627Understand this warning
+dashboard.tsx:245 Supabase client created for dev
+dashboard.tsx:257 Clicks loaded successfully: 0 records
+dashboard.tsx:270 Saves loaded successfully: 0 records
+dashboard.tsx:284 Purchases loaded successfully: 0 records
+dashboard.tsx:291 Raw data loaded:
+dashboard.tsx:292 - Clicks records: 0
+dashboard.tsx:293 - Saves records: 0
+dashboard.tsx:294 - Purchase records: 0
+dashboard.tsx:302 - Unique users from clicks: 0
+dashboard.tsx:311 - Unique users from saves: 0 (new: 0 total)
+dashboard.tsx:320 - Unique users from purchases: 0 (new: 0 total)
+dashboard.tsx:323 Total unique user IDs found: 0
+dashboard.tsx:324 User IDs: []
