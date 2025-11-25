@@ -225,7 +225,7 @@ export default function GameFooter() {
                 <DropdownMenuItem
                   onClick={() => {
                     setAuthDialogMode(hasReferralCode ? 'signup' : 'signin');
-                    setIsAuthDialogOpen(true);
+                    handleSetAuthDialogOpen(true);
                     setAuthNotificationSeen(true);
                   }}
                 >
@@ -397,8 +397,8 @@ export default function GameFooter() {
         </div>
       </footer>
       <AuthDialog
-        isOpen={isAuthDialogOpen}
-        onClose={() => setIsAuthDialogOpen(false)}
+        isOpen={authDialogOpen}
+        onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
         initialMode={authDialogMode}
       />
