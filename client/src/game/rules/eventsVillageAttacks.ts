@@ -396,7 +396,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           return calculateSuccessChance(
             state,
-            0.7 - traps * 0.05,
+            0.05 + traps * 0.1,
             { type: 'luck', multiplier: 0.01 }
           );
         },
@@ -404,7 +404,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps;
           const success_chance = calculateSuccessChance(
             state,
-            0.7 - traps * 0.05,
+            0.05 + traps * 0.1,
             { type: 'luck', multiplier: 0.01 }
           );
 
