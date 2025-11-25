@@ -181,20 +181,33 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 
-    rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
-    rendererRef.current.setup();
-    rendererRef.current.init();
+    try {
+      rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
+      if (rendererRef.current) {
+        rendererRef.current.setup();
+        rendererRef.current.init();
+      }
+    } catch (error) {
+      console.warn('Failed to initialize WebGL renderer:', error);
+      rendererRef.current = null;
+      return; // Exit gracefully if WebGL not supported
+    }
 
     let isActive = true;
     let frameCount = 0;
     const loop = (now: number) => {
       if (!isActive || !rendererRef.current) return;
-      // Render every other frame to reduce GPU load
-      if (frameCount % 2 === 0) {
-        rendererRef.current.render(now);
+      try {
+        // Render every other frame to reduce GPU load
+        if (frameCount % 2 === 0) {
+          rendererRef.current.render(now);
+        }
+        frameCount++;
+        animationFrameRef.current = requestAnimationFrame(loop);
+      } catch (error) {
+        console.warn('Error in render loop:', error);
+        isActive = false;
       }
-      frameCount++;
-      animationFrameRef.current = requestAnimationFrame(loop);
     };
 
     loop(0);

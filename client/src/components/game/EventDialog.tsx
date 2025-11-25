@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
-import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
+import {
+  getTotalKnowledge,
+  getTotalStrength,
+  getTotalLuck,
+  getTotalMadness,
+} from "@/game/rules/effectsCalculation";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
 import {
   Dialog,
@@ -51,6 +56,42 @@ export default function EventDialog({
   const startTimeRef = useRef<number>(0);
   const fallbackExecutedRef = useRef(false);
   const [purchasedItems, setPurchasedItems] = useState<Set<string>>(new Set());
+
+  // Helper function to calculate success chance based on relevant stats
+  const calculateSuccessChance = (
+    relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[]
+  ): number => {
+    if (!relevant_stats || relevant_stats.length === 0) return 0;
+
+    let successChance = 0.5; // Base 50% chance
+    let statCount = 0;
+
+    relevant_stats.forEach((stat) => {
+      let statValue = 0;
+      switch (stat) {
+        case "strength":
+          statValue = getTotalStrength(gameState);
+          break;
+        case "knowledge":
+          statValue = getTotalKnowledge(gameState);
+          break;
+        case "luck":
+          statValue = getTotalLuck(gameState);
+          break;
+        case "madness":
+          statValue = getTotalMadness(gameState);
+          break;
+      }
+      successChance += statValue * 0.01;
+      statCount++;
+    });
+
+    // Average the success chance
+    successChance = successChance / (statCount + 1);
+
+    // Clamp between 5% and 95%
+    return Math.max(0.05, Math.min(0.95, successChance));
+  };
 
   // Reset purchased items when dialog opens
   useEffect(() => {
@@ -312,6 +353,11 @@ export default function EventDialog({
                 ? choice.label(gameState)
                 : choice.label;
 
+              const successChance = hasScriptorium
+                ? calculateSuccessChance(choice.relevant_stats)
+                : 0;
+              const successPercentage = Math.round(successChance * 100);
+
               const buttonContent = (
                 <Button
                   onClick={() => handleChoice(choice.id)}
@@ -322,20 +368,25 @@ export default function EventDialog({
                 >
                   <span>{labelText}</span>
                   {hasScriptorium && choice.relevant_stats && choice.relevant_stats.length > 0 && (
-                    <div className="flex gap-1 ml-2">
-                      {choice.relevant_stats.map((stat) => {
-                        const statInfo = statIcons[stat.toLowerCase()];
-                        if (!statInfo) return null;
-                        return (
-                          <span
-                            key={stat}
-                            className={`text-xs ${statInfo.color}`}
-                            title={stat}
-                          >
-                            {statInfo.icon}
-                          </span>
-                        );
-                      })}
+                    <div className="flex gap-2 items-center ml-2">
+                      <span className="text-xs text-green-300 font-semibold">
+                        {successPercentage}%
+                      </span>
+                      <div className="flex gap-1">
+                        {choice.relevant_stats.map((stat) => {
+                          const statInfo = statIcons[stat.toLowerCase()];
+                          if (!statInfo) return null;
+                          return (
+                            <span
+                              key={stat}
+                              className={`text-xs ${statInfo.color}`}
+                              title={stat}
+                            >
+                              {statInfo.icon}
+                            </span>
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
                 </Button>

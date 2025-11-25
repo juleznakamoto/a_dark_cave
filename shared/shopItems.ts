@@ -3,6 +3,7 @@ export interface ShopItemRewards {
   tools?: string[];
   weapons?: string[];
   blessings?: string[];
+  books?: string[];
   feastActivations?: number;
 }
 
@@ -191,4 +192,21 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   //   category: 'tool',
   //   activationMessage: 'Activated Adamant Axe! Rewards have been added to your inventory.',
   // },
+
+  book_of_war: {
+    id: "book_of_war",
+    name: "Book of War",
+    description:
+      "Ancient military strategies and combat tactics. Increases your combat effectiveness in battles.",
+    price: 50000, // 500 gold
+    rewards: {
+      books: ["book_of_war"],
+    },
+    canPurchaseMultipleTimes: false,
+    category: "blessing",
+    activationMessage:
+      "The Book of War has been added to your collection. Your combat knowledge grows.",
+    symbol: "⚔",
+    symbolColor: "text-orange-700",
+  },
 };
