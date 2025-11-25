@@ -129,7 +129,7 @@ export default function AdminDashboard() {
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
   const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
   const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
-  const [churnDays, setChurnDays] = useState<3 | 5 | 7>(3);
+  const [churnDays, setChurnDays] = useState<1 | 3 | 5 | 7>(3);
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -1613,11 +1613,12 @@ export default function AdminDashboard() {
           <TabsContent value="churn" className="space-y-4">
             <div className="flex items-center gap-4 mb-4">
               <label className="text-sm font-medium">Churn definition (inactive for at least):</label>
-              <Select value={churnDays.toString()} onValueChange={(value) => setChurnDays(parseInt(value) as 3 | 5 | 7)}>
+              <Select value={churnDays.toString()} onValueChange={(value) => setChurnDays(parseInt(value) as 1 | 3 | 5 | 7)}>
                 <SelectTrigger className="w-[120px]">
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
+                  <SelectItem value="1">1 day</SelectItem>
                   <SelectItem value="3">3 days</SelectItem>
                   <SelectItem value="5">5 days</SelectItem>
                   <SelectItem value="7">7 days</SelectItem>
