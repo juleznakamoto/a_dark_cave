@@ -42,7 +42,6 @@ export interface EventChoice {
   label: string | ((state: GameState) => string);
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
-  successChance?: number | ((state: GameState) => number); // Success probability (0-1)
   effect: (state: GameState) => Partial<GameState>;
   cooldown?: number; // Cooldown in seconds for choice buttons
 }
@@ -64,7 +63,6 @@ export interface LogEntry {
     type: 'glow' | 'pulse';
     duration: number; // in seconds
   };
-  successChances?: Record<string, number>; // Store calculated success chances for each choice
 }
 
 // Merge all events from separate files

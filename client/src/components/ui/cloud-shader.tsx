@@ -1,5 +1,5 @@
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 
 // WebGL Renderer class
 class WebGLRenderer {
@@ -170,9 +170,10 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rendererRef = useRef<WebGLRenderer | null>(null);
   const animationFrameRef = useRef<number>();
+  const [hasError, setHasError] = useState(false);
 
   useEffect(() => {
-    if (!canvasRef.current) return;
+    if (!canvasRef.current || hasError) return;
 
     const canvas = canvasRef.current;
     // Reduce DPR further to save memory
@@ -190,7 +191,8 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     } catch (error) {
       console.warn('Failed to initialize WebGL renderer:', error);
       rendererRef.current = null;
-      return; // Exit gracefully if WebGL not supported
+      setHasError(true);
+      return; // Exit gracefully - canvas will remain black
     }
 
     let isActive = true;
@@ -207,6 +209,7 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
       } catch (error) {
         console.warn('Error in render loop:', error);
         isActive = false;
+        setHasError(true);
       }
     };
 
@@ -230,11 +233,15 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
         animationFrameRef.current = undefined;
       }
       if (rendererRef.current) {
-        rendererRef.current.reset();
+        try {
+          rendererRef.current.reset();
+        } catch (error) {
+          console.warn('Error resetting WebGL renderer:', error);
+        }
         rendererRef.current = null;
       }
     };
-  }, []);
+  }, [hasError]);
 
   return (
     <canvas

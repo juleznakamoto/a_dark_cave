@@ -1086,13 +1086,4 @@ export const bookEffects: Record<string, EffectDefinition> = {
       actionBonuses: {},
     },
   },
-  book_of_war: {
-    id: "book_of_war",
-    name: "Book of War",
-    description: "Ancient military strategies and combat tactics. Grants increased combat effectiveness.",
-    bonuses: {
-      generalBonuses: {},
-      actionBonuses: {},
-    },
-  },
 };
