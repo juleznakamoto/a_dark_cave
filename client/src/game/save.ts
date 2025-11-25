@@ -209,7 +209,7 @@ export async function loadGame(): Promise<GameState | null> {
             localGold: localSave.gameState.resources?.gold,
           });
 
-          // Use whichever has longer play time
+          // Use whichever has longer play time, but always merge referrals from cloud
           if (cloudPlayTime > localPlayTime) {
             console.log('[LOAD] ✓ Using cloud save (longer play time)');
             const processedState = await processUnclaimedReferrals(cloudSave);
@@ -224,11 +224,20 @@ export async function loadGame(): Promise<GameState | null> {
             return processedState;
           } else {
             if (import.meta.env.DEV) {
-              console.log('Using local save (longer play time), syncing to cloud');
+              console.log('Using local save (longer play time), merging referrals from cloud');
             }
-            // Local has longer play time, sync it to cloud (full state on first sync)
-            // First, process any unclaimed referrals in the local save
-            const processedLocalState = await processUnclaimedReferrals(localSave.gameState);
+            // Local has longer play time, but merge referrals from cloud
+            const mergedState = {
+              ...localSave.gameState,
+              // Always use referrals from cloud (they're the source of truth)
+              referrals: cloudSave.referrals || localSave.gameState.referrals,
+              referralCount: cloudSave.referralCount !== undefined ? cloudSave.referralCount : localSave.gameState.referralCount,
+            };
+            
+            // Process any unclaimed referrals
+            const processedLocalState = await processUnclaimedReferrals(mergedState);
+            
+            // Sync merged state to cloud
             await db.delete('lastCloudState', LAST_CLOUD_STATE_KEY); // Force full sync
             await saveGameToSupabase(processedLocalState);
             await db.put('lastCloudState', processedLocalState, LAST_CLOUD_STATE_KEY);
