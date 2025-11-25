@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import {
@@ -31,14 +31,20 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Investigate",
         relevant_stats: ["luck", "strength"],
         success_chance: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const luck = getTotalLuck(state);
-          return 0.1 + 0.01 * strength + 0.005 * luck - state.CM * 0.05;
+          return calculateSuccessChance(
+            state,
+            0.1,
+            { type: 'strength', multiplier: 0.01 },
+            { type: 'luck', multiplier: 0.005 }
+          );
         },
         effect: (state: GameState) => {
-          const strength = getTotalStrength(state);
-          const luck = getTotalLuck(state);
-          const mantleChance = 0.1 + 0.01 * strength + 0.005 * luck - state.CM * 0.05;
+          const mantleChance = calculateSuccessChance(
+            state,
+            0.1,
+            { type: 'strength', multiplier: 0.01 },
+            { type: 'luck', multiplier: 0.005 }
+          );
 
           const rand = Math.random();
           if (rand < mantleChance) {

@@ -1,3 +1,56 @@
+
+import { GameState } from "@shared/schema";
+import {
+  getTotalStrength,
+  getTotalLuck,
+  getTotalKnowledge,
+} from "./effectsCalculation";
+
+/**
+ * Helper function to calculate success chance for event choices
+ * @param state - Current game state
+ * @param baseChance - Base success probability (0-1)
+ * @param stat0 - First stat type and its multiplier (e.g., { type: 'strength', multiplier: 0.01 })
+ * @param stat1 - Second stat type and its multiplier (optional)
+ * @param cmMultiplier - Cruel mode multiplier (default: -0.05)
+ * @returns Calculated success chance (0-1)
+ */
+export function calculateSuccessChance(
+  state: GameState,
+  baseChance: number,
+  stat0?: { type: 'strength' | 'knowledge' | 'luck'; multiplier: number },
+  stat1?: { type: 'strength' | 'knowledge' | 'luck'; multiplier: number },
+  cmMultiplier: number = -0.05
+): number {
+  let chance = baseChance;
+
+  // Add first stat bonus
+  if (stat0) {
+    const statValue = stat0.type === 'strength' 
+      ? getTotalStrength(state)
+      : stat0.type === 'knowledge'
+      ? getTotalKnowledge(state)
+      : getTotalLuck(state);
+    chance += statValue * stat0.multiplier;
+  }
+
+  // Add second stat bonus
+  if (stat1) {
+    const statValue = stat1.type === 'strength'
+      ? getTotalStrength(state)
+      : stat1.type === 'knowledge'
+      ? getTotalKnowledge(state)
+      : getTotalLuck(state);
+    chance += statValue * stat1.multiplier;
+  }
+
+  // Apply cruel mode modifier
+  chance += state.CM * cmMultiplier;
+
+  return chance;
+}
+
+
 import { GameState } from "@shared/schema";
 import { storyEvents } from "./eventsStory";
 import { choiceEvents } from "./eventsChoices";
