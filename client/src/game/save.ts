@@ -111,7 +111,7 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
       logEntriesAdded.push({
         id: `referral-claimed-${referral.userId}-${Date.now()}`,
         timestamp: Date.now(),
-        message: `A friend joined using your invite link! +100 Gold`,
+        message: `You invited someone new to this world! +100 Gold`,
         type: 'system',
       });
 
