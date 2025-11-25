@@ -38,7 +38,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
-          const mantleChance = 0.1 + 0.01 * strength + 0.005 * luck - state.CM * 0.05;
+          const mantleChance = success_chance;
 
           const rand = Math.random();
           if (rand < mantleChance) {
