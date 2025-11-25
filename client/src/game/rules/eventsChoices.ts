@@ -30,6 +30,11 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "investigate",
         label: "Investigate",
         relevant_stats: ["luck", "strength"],
+        success_chance: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          const luck = getTotalLuck(state);
+          return 0.1 + 0.01 * strength + 0.005 * luck - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const luck = getTotalLuck(state);
@@ -465,6 +470,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "avoidLake",
         label: "Avoid lake",
         relevant_stats: ["luck"],
+        success_chance: (state: GameState) => {
+          const luck = state.stats.luck || 0;
+          return 0.2 + 0.01 * luck - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const luck = state.stats.luck || 0;
           const successChance = 0.2 + luck * 0.01 - state.CM * 0.05;
@@ -1189,6 +1198,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "attackHer",
         label: "Attack witch",
         relevant_stats: ["strength"],
+        success_chance: (state: GameState) => {
+          const strength = getTotalStrength(state);
+          return 0.1 + 0.01 * strength - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const strength = getTotalStrength(state);
           const successChance = 0.1 + strength * 0.01 - state.CM * 0.05;
@@ -1229,6 +1242,10 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "threatenHer",
         label: "Threaten witch",
         relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          const knowledge = getTotalKnowledge(state);
+          return 0.1 + 0.01 * knowledge - state.CM * 0.05;
+        },
         effect: (state: GameState) => {
           const knowledge = getTotalKnowledge(state);
           const successChance = 0.1 + knowledge * 0.01 - state.CM * 0.05;

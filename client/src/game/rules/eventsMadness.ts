@@ -303,6 +303,9 @@ export const madnessEvents: Record<string, GameEvent> = {
       {
         id: "keep_scratching",
         label: "Keep scratching",
+        success_chance: (state: GameState) => {
+          return 0.0; // This choice always has negative consequences
+        },
         effect: (state: GameState) => {
           const killedVillagers =
             Math.floor(Math.random() * 4) + 3 + state.CM * 2; // 3-6 villagers

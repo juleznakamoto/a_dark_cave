@@ -41,6 +41,7 @@ export interface EventChoice {
   id: string;
   label: string | ((state: GameState) => string);
   relevant_stats?: ("strength" | "knowledge" | "luck" | "madness")[];
+  success_chance?: number | ((state: GameState) => number); // Success probability for this choice
   cost?: string | ((state: GameState) => string); // Optional cost information for hover display
   effect: (state: GameState) => Partial<GameState>;
   cooldown?: number; // Cooldown in seconds for choice buttons
