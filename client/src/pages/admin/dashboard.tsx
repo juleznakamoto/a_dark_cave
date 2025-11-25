@@ -815,6 +815,10 @@ export default function AdminDashboard() {
     const cutoffDate = subDays(now, churnDays);
     const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
 
+    // Get users with click data
+    const usersWithClicks = new Set<string>();
+    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+
     // Get the latest activity for each user
     const userLastActivity = new Map<string, Date>();
 
@@ -836,9 +840,9 @@ export default function AdminDashboard() {
       }
     });
 
-    // Find users who haven't been active since cutoff
+    // Find users who haven't been active since cutoff AND have click data
     userLastActivity.forEach((lastActivity, userId) => {
-      if (lastActivity < cutoffDate) {
+      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
         const daysSince = differenceInDays(now, lastActivity);
         churnedPlayers.push({
           userId: userId.substring(0, 8) + '...',
@@ -1675,17 +1679,21 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {getChurnedPlayersLastClicks().map((click, index) => (
-                    <div key={index} className="flex justify-between items-center border-b pb-2">
-                      <div>
-                        <p className="font-medium">{click.button}</p>
-                        <p className="text-sm text-muted-foreground">
-                          User: {click.userId} | Playtime: {click.playtime}
-                        </p>
+                  {getChurnedPlayersLastClicks().length > 0 ? (
+                    getChurnedPlayersLastClicks().map((click, index) => (
+                      <div key={index} className="flex justify-between items-center border-b pb-2">
+                        <div>
+                          <p className="font-medium">{click.button}</p>
+                          <p className="text-sm text-muted-foreground">
+                            User: {click.userId} | Playtime: {click.playtime}
+                          </p>
+                        </div>
+                        <p className="font-bold">{click.clicks} clicks</p>
                       </div>
-                      <p className="font-bold">{click.clicks} clicks</p>
-                    </div>
-                  ))}
+                    ))
+                  ) : (
+                    <p className="text-muted-foreground">No churned player clicks found</p>
+                  )}
                 </div>
               </CardContent>
             </Card>
@@ -1701,6 +1709,10 @@ export default function AdminDashboard() {
                     const churnedUserIds = new Set<string>();
                     const now = new Date();
                     const cutoffDate = subDays(now, churnDays);
+                    
+                    // Get users with click data
+                    const usersWithClicks = new Set<string>();
+                    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
                     
                     const userLastActivity = new Map<string, Date>();
                     clickData.forEach(entry => {
@@ -1718,7 +1730,7 @@ export default function AdminDashboard() {
                       }
                     });
                     userLastActivity.forEach((lastActivity, userId) => {
-                      if (lastActivity < cutoffDate) {
+                      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
                         churnedUserIds.add(userId);
                       }
                     });
@@ -1729,9 +1741,11 @@ export default function AdminDashboard() {
                       if (churnedUserIds.has(entry.user_id)) {
                         Object.keys(entry.clicks).forEach(playtimeKey => {
                           const minutes = parseInt(playtimeKey.replace('m', ''));
-                          const existing = userMaxPlaytime.get(entry.user_id) || 0;
-                          if (minutes > existing) {
-                            userMaxPlaytime.set(entry.user_id, minutes);
+                          if (!isNaN(minutes)) {
+                            const existing = userMaxPlaytime.get(entry.user_id) || 0;
+                            if (minutes > existing) {
+                              userMaxPlaytime.set(entry.user_id, minutes);
+                            }
                           }
                         });
                       }
