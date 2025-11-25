@@ -8,9 +8,19 @@ export default function LogPanel() {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
+  const topRef = useRef<HTMLDivElement>(null);
+  const prevLogLengthRef = useRef(log.length);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
+
+  // Auto-scroll to top when new entries are added
+  useEffect(() => {
+    if (log.length > prevLogLengthRef.current && topRef.current) {
+      topRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+    prevLogLengthRef.current = log.length;
+  }, [log.length]);
 
   useEffect(() => {
     // Check for new entries with visual effects
@@ -44,6 +54,7 @@ export default function LogPanel() {
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
       <ScrollArea className="h-full w-full">
         <div className="px-3 relative">
+          <div ref={topRef} />
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
               let opacity = "";
