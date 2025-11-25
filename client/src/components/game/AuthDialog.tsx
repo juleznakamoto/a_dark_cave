@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,10 +12,11 @@ interface AuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onAuthSuccess: () => void;
+  defaultMode?: 'signin' | 'signup' | 'reset';
 }
 
-export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialogProps) {
-  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>('signin');
+export default function AuthDialog({ isOpen, onClose, onAuthSuccess, defaultMode = 'signin' }: AuthDialogProps) {
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(defaultMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,11 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
     const params = new URLSearchParams(window.location.search);
     return params.get('ref');
   };
+
+  // Reset mode when defaultMode changes (e.g., when dialog opens with different defaultMode)
+  useEffect(() => {
+    setMode(defaultMode);
+  }, [isOpen, defaultMode]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
