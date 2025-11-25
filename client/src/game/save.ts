@@ -78,10 +78,10 @@ async function getDB() {
 // Helper function to process unclaimed referrals
 async function processUnclaimedReferrals(gameState: GameState): Promise<GameState> {
   const { useGameStore } = await import('./state');
-  const currentUser = await getCurrentUser(); // Assuming this is needed to identify the current user
+  const currentUser = await getCurrentUser();
 
-  // If no user or no referredUsers, return gameState as is
-  if (!currentUser || !gameState.referredUsers || gameState.referredUsers.length === 0) {
+  // If no user or no referrals, return gameState as is
+  if (!currentUser || !gameState.referrals || gameState.referrals.length === 0) {
     return gameState;
   }
 
@@ -89,40 +89,37 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
   let goldGained = 0;
   let logEntriesAdded: any[] = [];
 
-  // Iterate over referred users and check if referral is claimed
-  for (const referredUser of updatedGameState.referredUsers) {
-    // Check if the referral is not yet processed for this user
-    const isReferralProcessed = referredUser.processed || false;
-
-    if (!isReferralProcessed) {
-      // Process the referral: add gold and log entry
+  // Process unclaimed referrals
+  const updatedReferrals = updatedGameState.referrals.map(referral => {
+    if (!referral.claimed) {
+      // Claim this referral
       goldGained += 100;
       logEntriesAdded.push({
-        id: Date.now().toString() + Math.random().toString(36).substring(7),
+        id: `referral-claimed-${referral.userId}-${Date.now()}`,
         timestamp: Date.now(),
-        message: `Friend ${referredUser.name || 'a friend'} joined using your invite link! +100 Gold`,
-        type: 'referral',
+        message: `A friend joined using your invite link! +100 Gold`,
+        type: 'system',
       });
 
-      // Mark this referral as processed
-      referredUser.processed = true;
+      return { ...referral, claimed: true };
     }
-  }
+    return referral;
+  });
 
-  // Update game state if any changes were made
+  // Update game state if any referrals were claimed
   if (goldGained > 0) {
+    updatedGameState.referrals = updatedReferrals;
     updatedGameState.resources = {
       ...updatedGameState.resources,
       gold: (updatedGameState.resources?.gold || 0) + goldGained,
     };
-    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100); // Keep log size limited
-    updatedGameState.referredUsers = updatedGameState.referredUsers; // referredUsers array is already updated in place
+    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100);
 
     // Update the store as well
     useGameStore.setState({
       resources: updatedGameState.resources,
       log: updatedGameState.log,
-      referredUsers: updatedGameState.referredUsers,
+      referrals: updatedGameState.referrals,
     });
 
     console.log('[REFERRAL] Processed unclaimed referrals. Gained:', { goldGained, count: logEntriesAdded.length });
@@ -210,8 +207,6 @@ export async function loadGame(): Promise<GameState | null> {
             localPlayTime,
             cloudGold: cloudSave.resources?.gold,
             localGold: localSave.gameState.resources?.gold,
-            cloudReferralProcessed: cloudSave.referralProcessed, // This might be outdated, relying on referredUsers processing now
-            localReferralProcessed: localSave.gameState.referralProcessed, // This might be outdated, relying on referredUsers processing now
           });
 
           // Use whichever has longer play time
@@ -243,7 +238,6 @@ export async function loadGame(): Promise<GameState | null> {
           // Only cloud save exists
           console.log('[LOAD] ✓ Using cloud save (no local save):', {
             gold: cloudSave.resources?.gold,
-            referralProcessed: cloudSave.referralProcessed, // Outdated
             hasLog: cloudSave.log?.length > 0,
           });
           const processedState = await processUnclaimedReferrals(cloudSave);
@@ -258,7 +252,6 @@ export async function loadGame(): Promise<GameState | null> {
           // Only local save exists, sync to cloud
           console.log('[LOAD] ✓ Using local save, syncing to cloud:', {
             gold: localSave.gameState.resources?.gold,
-            referralProcessed: localSave.gameState.referralProcessed, // Outdated
           });
           const processedState = await processUnclaimedReferrals(localSave.gameState);
           await saveGameToSupabase(processedState);
