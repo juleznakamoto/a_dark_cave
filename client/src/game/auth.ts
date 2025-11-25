@@ -132,12 +132,24 @@ async function processReferralInBackground(): Promise<void> {
 
       if (result.success) {
         console.log('[REFERRAL] ✓ Referral successfully processed on server!');
-        console.log('[REFERRAL] Reloading page to apply referral rewards...');
+        console.log('[REFERRAL] Clearing local cache and forcing cloud load...');
         
-        // Force a full page reload after a short delay to ensure DB writes are complete
+        // Clear local IndexedDB cache to force loading from Supabase
+        const { openDB } = await import('idb');
+        try {
+          const db = await openDB('ADarkCaveDB', 2);
+          await db.delete('saves', 'mainSave');
+          await db.delete('lastCloudState', 'lastCloudState');
+          console.log('[REFERRAL] ✓ Local cache cleared');
+        } catch (error) {
+          console.error('[REFERRAL] Failed to clear local cache:', error);
+        }
+        
+        // Wait for DB writes to complete, then reload
         setTimeout(() => {
+          console.log('[REFERRAL] Reloading to load from cloud with referral rewards...');
           window.location.reload();
-        }, 1000);
+        }, 1500);
       } else {
         console.warn('[REFERRAL] Processing skipped:', result.reason);
       }

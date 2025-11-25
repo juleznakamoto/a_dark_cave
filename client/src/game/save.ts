@@ -146,15 +146,18 @@ export async function loadGame(): Promise<GameState | null> {
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = localSave.playTime || 0;
 
-          if (import.meta.env.DEV) {
-            console.log('Comparing saves - Cloud playTime:', cloudPlayTime, 'Local playTime:', localPlayTime);
-          }
+          console.log('[LOAD] Comparing saves:', {
+            cloudPlayTime,
+            localPlayTime,
+            cloudGold: cloudSave.resources?.gold,
+            localGold: localSave.gameState.resources?.gold,
+            cloudReferralProcessed: cloudSave.referralProcessed,
+            localReferralProcessed: localSave.gameState.referralProcessed,
+          });
 
           // Use whichever has longer play time
           if (cloudPlayTime > localPlayTime) {
-            if (import.meta.env.DEV) {
-              console.log('Using cloud save (longer play time)');
-            }
+            console.log('[LOAD] ✓ Using cloud save (longer play time)');
             // Update local with cloud save
             await db.put('saves', {
               gameState: cloudSave,
@@ -176,9 +179,11 @@ export async function loadGame(): Promise<GameState | null> {
           }
         } else if (cloudSave) {
           // Only cloud save exists
-          if (import.meta.env.DEV) {
-            console.log('Game State loaded from cloud (no local save)');
-          }
+          console.log('[LOAD] ✓ Using cloud save (no local save):', {
+            gold: cloudSave.resources?.gold,
+            referralProcessed: cloudSave.referralProcessed,
+            hasLog: cloudSave.log?.length > 0,
+          });
           await db.put('saves', {
             gameState: cloudSave,
             timestamp: Date.now(),
@@ -188,9 +193,10 @@ export async function loadGame(): Promise<GameState | null> {
           return cloudSave;
         } else if (localSave) {
           // Only local save exists, sync to cloud
-          if (import.meta.env.DEV) {
-            console.log('Local save found, syncing to cloud');
-          }
+          console.log('[LOAD] ✓ Using local save, syncing to cloud:', {
+            gold: localSave.gameState.resources?.gold,
+            referralProcessed: localSave.gameState.referralProcessed,
+          });
           await saveGameToSupabase(localSave.gameState);
           await db.put('lastCloudState', localSave.gameState, LAST_CLOUD_STATE_KEY);
           return localSave.gameState;
