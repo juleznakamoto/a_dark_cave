@@ -6,7 +6,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildWoodenHut",
     label: "Wooden Hut",
     description: "Simple wooden hut providing basic shelter",
-    tooltipEffects: ["+2 Max Population"],
+    tooltipEffects: (state: GameState) => {
+      const count = state.buildings.woodenHut || 0;
+      const totalPopulation = count * 2;
+      return count > 0 ? [`+${totalPopulation} Max Population (${count} huts)`] : ["+2 Max Population"];
+    },
     building: true,
     show_when: {
       1: {
@@ -1003,7 +1007,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildStoneHut",
     label: "Stone Hut",
     description: "Durable stone dwelling providing superior shelter",
-    tooltipEffects: ["+4 Population"],
+    tooltipEffects: (state: GameState) => {
+      const count = state.buildings.stoneHut || 0;
+      const totalPopulation = count * 4;
+      return count > 0 ? [`+${totalPopulation} Max Population (${count} huts)`] : ["+4 Max Population"];
+    },
     building: true,
     show_when: {
       1: {
@@ -1167,7 +1175,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildLonghouse",
     label: "Longhouse",
     description: "Massive nordic communal hall housing many villagers",
-    tooltipEffects: ["+8 Population"],
+    tooltipEffects: (state: GameState) => {
+      const count = state.buildings.longhouse || 0;
+      const totalPopulation = count * 8;
+      return count > 0 ? [`+${totalPopulation} Max Population (${count} longhouses)`] : ["+8 Max Population"];
+    },
     building: true,
     show_when: {
       1: {
