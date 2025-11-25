@@ -65,8 +65,16 @@ async function processReferralInBackground(): Promise<void> {
     .eq('user_id', user.id)
     .maybeSingle();
 
+  console.log('[REFERRAL] 🔍 Checking if already processed:', {
+    userId: user.id.substring(0, 8),
+    hasSave: !!existingSave,
+    hasGameState: !!existingSave?.game_state,
+    referralProcessed: existingSave?.game_state?.referralProcessed,
+    currentGold: existingSave?.game_state?.resources?.gold
+  });
+
   if (existingSave?.game_state?.referralProcessed) {
-    console.log('[REFERRAL] Referral already processed for user:', user.id);
+    console.log('[REFERRAL] ⏭️ Referral already processed for user, skipping');
     return; // Already processed
   }
 

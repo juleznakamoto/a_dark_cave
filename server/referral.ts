@@ -79,11 +79,19 @@ export async function processReferral(newUserId: string, referralCode: string) {
 
   // Update referrer's game state
   const oldGold = referrerState.resources?.gold || 0;
+  const newGold = oldGold + 100;
+  console.log('[REFERRAL] 💰 REFERRER Gold Update:', {
+    referrerId: referralCode.substring(0, 8),
+    oldGold,
+    newGold,
+    difference: 100
+  });
+  
   const updatedReferrerState = {
     ...referrerState,
     resources: {
       ...referrerState.resources,
-      gold: oldGold + 100,
+      gold: newGold,
     },
     referralCount: referralCount + 1,
     referredUsers: [...referredUsers, newUserId],
@@ -97,7 +105,10 @@ export async function processReferral(newUserId: string, referralCode: string) {
       }
     ].slice(-100),
   };
+  
+  console.log('[REFERRAL] 📦 Updated referrer state resources:', updatedReferrerState.resources);
 
+  console.log('[REFERRAL] 💾 Updating referrer in database...');
   const { error: referrerUpdateError } = await adminClient
     .from('game_saves')
     .update({
@@ -107,9 +118,10 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .eq('user_id', referralCode);
 
   if (referrerUpdateError) {
-    console.error('[REFERRAL] Error updating referrer:', referrerUpdateError);
+    console.error('[REFERRAL] ❌ Error updating referrer:', referrerUpdateError);
     return { success: false, reason: 'referrer_update_error' };
   }
+  console.log('[REFERRAL] ✅ Referrer updated in database successfully');
 
   // Update new user's game state
   const initialGameState = newUserSave?.game_state || {
@@ -134,11 +146,20 @@ export async function processReferral(newUserId: string, referralCode: string) {
     startTime: Date.now(),
   };
 
+  const oldNewUserGold = initialGameState.resources?.gold || 0;
+  const newNewUserGold = oldNewUserGold + 100;
+  console.log('[REFERRAL] 💰 NEW USER Gold Update:', {
+    newUserId: newUserId.substring(0, 8),
+    oldGold: oldNewUserGold,
+    newGold: newNewUserGold,
+    difference: 100
+  });
+
   const updatedUserState = {
     ...initialGameState,
     resources: {
       ...initialGameState.resources,
-      gold: (initialGameState.resources?.gold || 0) + 100,
+      gold: newNewUserGold,
     },
     referralCode: referralCode,
     referralProcessed: true,
@@ -152,8 +173,11 @@ export async function processReferral(newUserId: string, referralCode: string) {
       }
     ].slice(-100),
   };
+  
+  console.log('[REFERRAL] 📦 Updated new user state resources:', updatedUserState.resources);
 
   // Use upsert for new user since they might not have a save yet
+  console.log('[REFERRAL] 💾 Upserting new user in database...');
   const { error: newUserUpdateError } = await adminClient
     .from('game_saves')
     .upsert({
@@ -165,9 +189,10 @@ export async function processReferral(newUserId: string, referralCode: string) {
     });
 
   if (newUserUpdateError) {
-    console.error('[REFERRAL] Error updating new user:', newUserUpdateError);
+    console.error('[REFERRAL] ❌ Error updating new user:', newUserUpdateError);
     return { success: false, reason: 'new_user_update_error' };
   }
+  console.log('[REFERRAL] ✅ New user upserted in database successfully');
 
   console.log('[REFERRAL] Success!', {
     referrerId: referralCode,
