@@ -103,6 +103,10 @@ const buttonClicksChartConfig = {
 };
 
 // Helper function to clean button names by removing timestamp/random suffixes
+const cleanButtonName = (buttonId: string): string => {
+  // Remove timestamp suffixes (e.g., "-1764039531673")
+  return buttonId.replace(/-\d{13,}$/, '');
+};
 const cleanButtonName = (buttonName: string): string => {
   // Remove patterns like _1763918279318_0.004097622888011188
   return buttonName.replace(/_\d+_[\d.]+$/, '');
