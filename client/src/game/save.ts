@@ -220,10 +220,31 @@ export async function loadGame(): Promise<GameState | null> {
       try {
         const cloudSaveData = await loadGameFromSupabase();
         
+        console.log('[LOAD] 🌐 Raw cloud save data:', {
+          hasCloudSaveData: !!cloudSaveData,
+          cloudSaveDataKeys: cloudSaveData ? Object.keys(cloudSaveData) : [],
+          cloudGameState: cloudSaveData?.gameState,
+          cloudReferrals: cloudSaveData?.gameState?.referrals,
+          cloudReferralCount: cloudSaveData?.gameState?.referralCount,
+        });
+        
         // The cloud save is stored as diffs, so we need to reconstruct the full state
         // If we have a last cloud state, merge the diff into it
         const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
+        
+        console.log('[LOAD] 💾 Last cloud state from IndexedDB:', {
+          hasLastCloudState: !!lastCloudState,
+          lastCloudReferrals: lastCloudState?.referrals,
+          lastCloudReferralCount: lastCloudState?.referralCount,
+        });
+        
         const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData.gameState) : cloudSaveData.gameState) : null;
+        
+        console.log('[LOAD] 🔀 Merged cloud save:', {
+          hasCloudSave: !!cloudSave,
+          cloudSaveReferrals: cloudSave?.referrals,
+          cloudSaveReferralCount: cloudSave?.referralCount,
+        });
 
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {

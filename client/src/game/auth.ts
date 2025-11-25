@@ -359,5 +359,15 @@ export async function loadGameFromSupabase(): Promise<GameState | null> {
     throw error;
   }
 
+  console.log('[SUPABASE] 📥 Raw data from Supabase:', {
+    hasData: !!data,
+    dataKeys: data ? Object.keys(data) : [],
+    gameStateKeys: data?.game_state ? Object.keys(data.game_state) : [],
+    referrals: data?.game_state?.referrals,
+    referralCount: data?.game_state?.referralCount,
+    hasReferrals: !!data?.game_state?.referrals,
+    referralLength: data?.game_state?.referrals?.length || 0,
+  });
+
   return data?.game_state || null;
 }
