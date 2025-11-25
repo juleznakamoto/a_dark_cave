@@ -1,11 +1,7 @@
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
-import {
-  getTotalStrength,
-  getTotalLuck,
-  getTotalKnowledge,
-} from "./effectsCalculation";
+import { getTotalStrength } from "./effectsCalculation";
 import { getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
 
@@ -266,18 +262,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: (state: GameState) => `Sacrifice ${state.CM ? 8 : 4} villagers`,
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.3,
-            { type: 'knowledge', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.3, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.3,
-            { type: 'knowledge', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.3, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
           const rand = Math.random();
 
           // Kill 4 villagers first
@@ -325,9 +319,9 @@ export const choiceEvents: Record<string, GameEvent> = {
           const successChance = calculateSuccessChance(
             state,
             0.1,
-            { type: 'luck', multiplier: 0.01 },
+            { type: "luck", multiplier: 0.01 },
             undefined,
-            -0.025
+            -0.025,
           );
           const nothingChance = 0.4 - state.CM * 0.05;
           const rand = Math.random();
@@ -457,18 +451,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Investigate lake",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.25,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.2, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.25,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.2, {
+            type: "strength",
+            multiplier: 0.01,
+          });
           const fleeChance = 0.2 - state.CM * 0.05;
           const rand = Math.random();
 
@@ -503,18 +495,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Avoid lake",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.2,
-            { type: 'luck', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.2, {
+            type: "luck",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.2,
-            { type: 'luck', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.2, {
+            type: "luck",
+            multiplier: 0.01,
+          });
           const rand = Math.random();
 
           if (rand < successChance) {
@@ -713,18 +703,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Force him",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.3,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.2, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.3,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.2, {
+            type: "strength",
+            multiplier: 0.01,
+          });
 
           if (Math.random() < successChance) {
             // Success: get knowledge without paying
@@ -1211,18 +1199,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Refuse to pay",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.15,
-            { type: 'luck', multiplier: 0.015 }
-          );
+          return calculateSuccessChance(state, 0.25, {
+            type: "luck",
+            multiplier: 0.015,
+          });
         },
         effect: (state: GameState) => {
-          const avoidCurseChance = calculateSuccessChance(
-            state,
-            0.15,
-            { type: 'luck', multiplier: 0.015 }
-          );
+          const avoidCurseChance = calculateSuccessChance(state, 0.25, {
+            type: "luck",
+            multiplier: 0.015,
+          });
 
           if (Math.random() < avoidCurseChance) {
             return {
@@ -1261,18 +1247,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Attack witch",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.1,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.15, {
+            type: "strength",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.1,
-            { type: 'strength', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.15, {
+            type: "strength",
+            multiplier: 0.01,
+          });
 
           if (Math.random() < successChance) {
             return {
@@ -1311,18 +1295,16 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Threaten witch",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(
-            state,
-            0.1,
-            { type: 'knowledge', multiplier: 0.01 }
-          );
+          return calculateSuccessChance(state, 0.2, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(
-            state,
-            0.1,
-            { type: 'knowledge', multiplier: 0.01 }
-          );
+          const successChance = calculateSuccessChance(state, 0.2, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
 
           if (Math.random() < successChance) {
             return {

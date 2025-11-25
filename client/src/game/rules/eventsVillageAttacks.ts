@@ -158,39 +158,52 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           const traps = state.buildings.traps * 0.1;
           return calculateSuccessChance(
             state,
-            0.65 - traps * 0.05,
+            0.15 + traps * 0.1,
             { type: 'luck', multiplier: 0.02 }
           );
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps * 0.1;
-          const luck = getTotalLuck(state);
-          const casualtyChance =
-            Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
+          let success_chance;
+          success_chance = calculateSuccessChance(
+              state,
+              0.15 + traps * 0.1,
+              { type: 'luck', multiplier: 0.02 }
+            );
+          if (Math.random() < success_chance) {
+            // nothing happens
+            let villagerDeaths = 0;
+            let foodLoss = 0;
+            return 
+          } else {
+            const luck = getTotalLuck(state);
+            const casualtyChance =
+              Math.max(0.1, 0.35 - luck * 0.02) - traps * 0.05 + state.CM * 0.05;
 
-          let villagerDeaths = 0;
-          let foodLoss = Math.min(
-            state.resources.food,
-            (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25 +
-              25 +
-              state.CM * 2,
-          );
-          let hutDestroyed = false;
+            let villagerDeaths = 0;
+            let foodLoss = Math.min(
+              state.resources.food,
+              (state.buildings.woodenHut + Math.floor(Math.random() * 16)) * 25 +
+                25 +
+                state.CM * 2,
+            );
+            let hutDestroyed = false;
 
-          // Determine villager casualties
-          const maxPotentialDeaths = Math.min(
-            2 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
-            state.current_population,
-          );
-          for (let i = 0; i < maxPotentialDeaths; i++) {
-            if (Math.random() < casualtyChance) {
-              villagerDeaths++;
+            // Determine villager casualties
+            const maxPotentialDeaths = Math.min(
+              2 + state.buildings.woodenHut / 2 - traps * 1 + state.CM * 2,
+              state.current_population,
+            );
+            for (let i = 0; i < maxPotentialDeaths; i++) {
+              if (Math.random() < casualtyChance) {
+                villagerDeaths++;
+              }
             }
+
+            // Apply deaths to villagers
+            const deathResult = killVillagers(state, villagerDeaths);
           }
-
-          // Apply deaths to villagers
-          const deathResult = killVillagers(state, villagerDeaths);
-
+          
           // Construct result message
           let message =
             "The villagers huddle in their huts as the wolves prowl outside. ";
