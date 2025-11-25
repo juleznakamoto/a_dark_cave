@@ -590,12 +590,6 @@ export default function AdminDashboard() {
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
               
-              // Apply event type filters
-              if (selectedClickTypes.has('filter:cube') && cleanButton.startsWith('cube-')) return;
-              if (selectedClickTypes.has('filter:merchant') && cleanButton.startsWith('merchant-trade')) return;
-              if (selectedClickTypes.has('filter:assign') && (cleanButton.startsWith('assign') || cleanButton.startsWith('unassign'))) return;
-              if (selectedClickTypes.has('filter:choice') && (cleanButton.includes('_choice_') || cleanButton.includes('-choice-'))) return;
-              
               // Only include if selectedClickTypes is empty (all) or contains this button
               if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
                 bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
