@@ -330,7 +330,7 @@ export default function EventDialog({
                   button_id={`event-choice-${choice.id}`}
                 >
                   <span>{labelText}</span>
-                  <div className="flex gap-2 items-center ml-2">
+                  <div className="flex gap-1 items-center ml-2">
                     {successPercentage && (
                       <span className="text-xs text-muted-foreground">
                         {successPercentage}

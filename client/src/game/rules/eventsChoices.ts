@@ -495,13 +495,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Avoid lake",
         relevant_stats: ["luck"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
+          return calculateSuccessChance(state, 0.4, {
             type: "luck",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.2, {
+          const successChance = calculateSuccessChance(state, 0.4, {
             type: "luck",
             multiplier: 0.01,
           });
@@ -703,13 +703,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Force him",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.2, {
+          return calculateSuccessChance(state, 0.15, {
             type: "strength",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.2, {
+          const successChance = calculateSuccessChance(state, 0.15, {
             type: "strength",
             multiplier: 0.01,
           });
@@ -1070,7 +1070,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
       {
         id: "freeSlaves",
-        label: "Try freeing the slaves",
+        label: "Try to free slaves",
         relevant_stats: ["strength"],
         success_chance: (state: GameState) => {
           const strength = getTotalStrength(state);
@@ -1154,24 +1154,24 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "witchsCurse",
     condition: (state: GameState) =>
       state.buildings.woodenHut >= 7 &&
-      state.resources.gold >= 25 &&
+      state.resources.gold >= 50 &&
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
     triggerType: "resource",
     timeProbability: 45,
     title: "The Witch's Curse",
     message:
-      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 20 gold, or I shall curse you with misfortune.'",
+      "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 gold, or I shall curse you with misfortune.'",
     triggered: false,
     priority: 4,
     repeatable: false,
     choices: [
       {
         id: "payGold",
-        label: "Pay 25 gold",
-        cost: "25 gold",
+        label: "Pay 50 gold",
+        cost: "50 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 25) {
+          if (state.resources.gold < 50) {
             return {
               _logMessage: "You don't have enough gold to pay her.",
             };
@@ -1180,7 +1180,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold - 25,
+              gold: state.resources.gold - 50,
             },
             story: {
               ...state.story,
