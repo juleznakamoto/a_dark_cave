@@ -182,10 +182,10 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative bg-background/80 opacity-70 hover:opacity-100 backdrop-blur-sm border border-border"
             >
               Account
-              {authNotificationVisible &&
-                !authNotificationSeen &&
-                !currentUser && (
-                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse" />
+              {true &&
+                !false &&
+                !false && (
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse opacity-100" />
                 )}
             </Button>
           </DropdownMenuTrigger>
