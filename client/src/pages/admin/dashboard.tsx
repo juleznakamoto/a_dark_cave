@@ -254,21 +254,17 @@ export default function AdminDashboard() {
         console.log('✅ Purchases set:', data.purchases.length, 'records');
       }
 
-      // Collect all unique user IDs
-      const uniqueUserIds = new Set<string>();
+      // Collect unique user IDs only from users who have click data
+      const userIdsWithClicks = new Set<string>();
+      data.clicks?.forEach((c: any) => userIdsWithClicks.add(c.user_id));
 
-      // Add users from all sources
-      data.saves?.forEach((s: any) => uniqueUserIds.add(s.user_id));
-      data.clicks?.forEach((c: any) => uniqueUserIds.add(c.user_id));
-      data.purchases?.forEach((p: any) => uniqueUserIds.add(p.user_id));
-
-      const userList = Array.from(uniqueUserIds).map(id => ({
+      const userList = Array.from(userIdsWithClicks).map(id => ({
         id,
         email: id.substring(0, 8) + '...', // Truncated for privacy
       }));
 
       setUsers(userList);
-      console.log('✅ Users set:', userList.length, 'users');
+      console.log('✅ Users set:', userList.length, 'users (with click data only)');
     } catch (error) {
       console.error('Failed to load admin data:', error);
     }
