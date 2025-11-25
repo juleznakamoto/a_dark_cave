@@ -174,14 +174,12 @@ export default function AdminDashboard() {
   }, [clickData, selectedUser]);
 
   useEffect(() => {
-    console.log('🚀 AdminDashboard component mounted - starting auth check...');
     checkAdminAccess();
   }, []);
 
   // Reload data when environment changes
   useEffect(() => {
     if (isAuthorized) {
-      console.log(`🔄 Environment effect triggered. Current environment: ${environment.toUpperCase()}`);
       setLoading(true);
       loadData().finally(() => setLoading(false));
     }
@@ -189,19 +187,16 @@ export default function AdminDashboard() {
 
   const checkAdminAccess = async () => {
     try {
-      console.log('🔐 Checking admin access...');
       const supabase = await getSupabaseClient();
       const { data: { user } } = await supabase.auth.getUser();
       const adminEmails = getAdminEmails();
 
       if (!user || !adminEmails.includes(user.email || '')) {
-        console.log('❌ Access denied');
         setLoading(false);
         setLocation('/');
         return;
       }
 
-      console.log('✅ Access granted for:', user.email);
       setIsAuthorized(true);
       await loadData();
       setLoading(false);
@@ -215,8 +210,6 @@ export default function AdminDashboard() {
   // Renamed from loadDashboardData to loadData
   const loadData = async () => {
     try {
-      console.log(`📡 Fetching data from ${environment.toUpperCase()} environment...`);
-      console.log(`   Request URL: /api/admin/data?env=${environment}`);
       const response = await fetch(`/api/admin/data?env=${environment}`);
       
       if (!response.ok) {
@@ -226,33 +219,16 @@ export default function AdminDashboard() {
       }
       
       const data = await response.json();
-      console.log('📦 Received data:', {
-        clicks: data.clicks?.length || 0,
-        saves: data.saves?.length || 0,
-        purchases: data.purchases?.length || 0
-      });
-
-      // Log sample click data structure
-      if (data.clicks && data.clicks.length > 0) {
-        console.log('🔍 Sample click data structure:', {
-          firstRecord: data.clicks[0],
-          clicksKeys: Object.keys(data.clicks[0].clicks || {}),
-          samplePlaytimeEntry: Object.entries(data.clicks[0].clicks || {})[0]
-        });
-      }
 
       // Set the data
       if (data.clicks) {
         setClickData(data.clicks);
-        console.log('✅ Click data set:', data.clicks.length, 'records');
       }
       if (data.saves) {
         setGameSaves(data.saves);
-        console.log('✅ Game saves set:', data.saves.length, 'records');
       }
       if (data.purchases) {
         setPurchases(data.purchases);
-        console.log('✅ Purchases set:', data.purchases.length, 'records');
       }
 
       // Collect unique user IDs only from users who have click data
@@ -261,11 +237,10 @@ export default function AdminDashboard() {
 
       const userList = Array.from(userIdsWithClicks).map(id => ({
         id,
-        email: id.substring(0, 8) + '...', // Truncated for privacy
+        email: id.substring(0, 8) + '...',
       }));
 
       setUsers(userList);
-      console.log('✅ Users set:', userList.length, 'users (with click data only)');
     } catch (error) {
       console.error('Failed to load admin data:', error);
     }
@@ -509,16 +484,10 @@ export default function AdminDashboard() {
   };
 
   const getClickTypesByTimestamp = () => {
-    console.log('📊 Processing click types by timestamp...');
-    console.log('   Click data records:', clickData.length);
-    console.log('   Selected user:', selectedUser);
-    console.log('   Selected click types:', Array.from(selectedClickTypes));
-
     let filteredClicks = clickData;
 
     if (selectedUser !== 'all') {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
-      console.log('   Filtered to user:', filteredClicks.length, 'records');
     }
 
     // Filter by completed players if toggle is on
@@ -529,47 +498,13 @@ export default function AdminDashboard() {
           .map(save => save.user_id)
       );
       filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
-      console.log('   Filtered to completed players:', filteredClicks.length, 'records');
     }
-
-    // Collect all unique button names in the data
-    const allButtonsInData = new Set<string>();
-    const miningClickDetails: any[] = [];
-    filteredClicks.forEach(entry => {
-      Object.entries(entry.clicks).forEach(([playtimeKey, playtimeClicks]: [string, any]) => {
-        Object.keys(playtimeClicks).forEach(button => {
-          const cleanButton = cleanButtonName(button);
-          allButtonsInData.add(cleanButton);
-          // Track mining clicks (mineStone, mineIron, etc.)
-          if (cleanButton.startsWith('mine')) {
-            miningClickDetails.push({ 
-              playtimeKey, 
-              rawButton: button,
-              cleanButton: cleanButton,
-              clicks: playtimeClicks[button],
-              bucket: Math.floor(parseInt(playtimeKey.replace('m', '')) / 60) * 60
-            });
-          }
-        });
-      });
-    });
-    console.log('   All button names in data:', Array.from(allButtonsInData));
-    console.log('   ⛏️ Mining click details:', miningClickDetails);
-    console.log('   ⛏️ Mining clicks by type:', miningClickDetails.reduce((acc, item) => {
-      if (!acc[item.cleanButton]) acc[item.cleanButton] = { raw: item.rawButton, total: 0 };
-      acc[item.cleanButton].total += item.clicks;
-      return acc;
-    }, {} as Record<string, any>));
 
     // Aggregate into 1-hour (60-minute) buckets
     const buckets = new Map<number, Record<string, number>>();
     let maxBucket = 0;
 
-    filteredClicks.forEach((entry, index) => {
-      if (index === 0) {
-        console.log('   First entry clicks structure:', entry.clicks);
-      }
-      
+    filteredClicks.forEach((entry) => {
       // Format: { "playtime_minutes": { "button": count } }
       Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
         try {
@@ -599,11 +534,7 @@ export default function AdminDashboard() {
       });
     });
 
-    console.log('   Buckets created:', buckets.size);
-    console.log('   Max bucket:', maxBucket);
-
     if (buckets.size === 0) {
-      console.log('   ⚠️ No buckets created, returning empty array');
       return [];
     }
 
@@ -618,12 +549,6 @@ export default function AdminDashboard() {
         ...bucketData,
       });
     }
-
-    console.log('   Result array length:', result.length);
-    console.log('   Sample result entry:', result[0]);
-    console.log('   Result keys:', result.length > 0 ? Object.keys(result[0]) : []);
-    console.log('   All unique keys across all results:', Array.from(new Set(result.flatMap(r => Object.keys(r)))));
-    console.log('   Sample entries with data:', result.filter(r => Object.keys(r).length > 1).slice(0, 3));
 
     return result;
   };
@@ -815,9 +740,17 @@ export default function AdminDashboard() {
     const cutoffDate = subDays(now, churnDays);
     const churnedPlayers: Array<{ userId: string; lastActivity: Date; daysSinceActivity: number }> = [];
 
+    console.log('🔍 Getting churned players:', { 
+      churnDays, 
+      cutoffDate: cutoffDate.toISOString(),
+      clickDataLength: clickData.length,
+      gameSavesLength: gameSaves.length 
+    });
+
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    console.log('📊 Users with clicks:', usersWithClicks.size);
 
     // Get the latest activity for each user from game saves (updated_at is most reliable)
     const userLastActivity = new Map<string, Date>();
@@ -829,8 +762,11 @@ export default function AdminDashboard() {
         userLastActivity.set(save.user_id, activityDate);
       }
     });
+    console.log('📊 Total users with activity:', userLastActivity.size);
 
     // Find users who haven't been active since cutoff AND have click data
+    let churnedCount = 0;
+    let notChurnedCount = 0;
     userLastActivity.forEach((lastActivity, userId) => {
       if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
         const daysSince = differenceInDays(now, lastActivity);
@@ -839,7 +775,17 @@ export default function AdminDashboard() {
           lastActivity,
           daysSinceActivity: daysSince,
         });
+        churnedCount++;
+      } else {
+        notChurnedCount++;
       }
+    });
+
+    console.log('📊 Churn analysis:', { 
+      churnedCount, 
+      notChurnedCount,
+      firstChurned: churnedPlayers[0],
+      lastChurned: churnedPlayers[churnedPlayers.length - 1]
     });
 
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
@@ -849,6 +795,8 @@ export default function AdminDashboard() {
   const getChurnedPlayersLastClicks = () => {
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
+    
+    console.log('🔍 Getting churned players last clicks');
     
     // Get users with click data
     const usersWithClicks = new Set<string>();
@@ -872,6 +820,8 @@ export default function AdminDashboard() {
       }
     });
 
+    console.log('📊 Churned user IDs for clicks:', churnedUserIds.size);
+
     // Collect all clicks from churned users with their playtime
     const allClicks: Array<{ userId: string; button: string; playtime: string; clicks: number }> = [];
 
@@ -890,14 +840,20 @@ export default function AdminDashboard() {
       }
     });
 
+    console.log('📊 Total clicks from churned users:', allClicks.length);
+    console.log('📊 Sample clicks:', allClicks.slice(0, 3));
+
     // Sort by playtime (most recent first) and return last 20
-    return allClicks
+    const sorted = allClicks
       .sort((a, b) => {
         const aMinutes = parseInt(a.playtime.replace('m', ''));
         const bMinutes = parseInt(b.playtime.replace('m', ''));
         return bMinutes - aMinutes;
       })
       .slice(0, 20);
+
+    console.log('📊 Returning', sorted.length, 'clicks');
+    return sorted;
   };
 
   const getARPU = () => {
