@@ -25,11 +25,8 @@ const getSupabaseAdmin = () => {
 export async function processReferral(newUserId: string, referralCode: string) {
   const adminClient = getSupabaseAdmin();
 
-  console.log('[REFERRAL] Server-side processing:', { newUserId, referralCode });
-
   // Prevent self-referral
   if (newUserId === referralCode) {
-    console.warn('[REFERRAL] Self-referral attempt blocked');
     return { success: false, reason: 'self_referral' };
   }
 
@@ -41,7 +38,6 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .maybeSingle();
 
   if (newUserSave?.game_state?.referralProcessed) {
-    console.log('[REFERRAL] Already processed for this user');
     return { success: false, reason: 'already_processed' };
   }
 
@@ -53,12 +49,10 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .maybeSingle();
 
   if (referrerError) {
-    console.error('[REFERRAL] Error fetching referrer:', referrerError);
     return { success: false, reason: 'referrer_fetch_error' };
   }
 
   if (!referrerSave || !referrerSave.game_state) {
-    console.warn('[REFERRAL] Referrer has no game save yet');
     return { success: false, reason: 'referrer_no_save' };
   }
 
@@ -67,13 +61,11 @@ export async function processReferral(newUserId: string, referralCode: string) {
   const referralCount = referrals.length;
 
   if (referralCount >= 10) {
-    console.warn('[REFERRAL] Referrer reached limit');
     return { success: false, reason: 'referrer_limit_reached' };
   }
 
   // Check if this user was already referred
   if (referrals.some(r => r.userId === newUserId)) {
-    console.warn('[REFERRAL] User already referred');
     return { success: false, reason: 'already_referred' };
   }
 
@@ -89,14 +81,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       }
     ],
   };
-  
-  console.log('[REFERRAL] 📦 Added unclaimed referral for referrer:', {
-    referrerId: referralCode.substring(0, 8),
-    totalReferrals: updatedReferrerState.referrals.length,
-    unclaimedCount: updatedReferrerState.referrals.filter(r => !r.claimed).length,
-  });
 
-  console.log('[REFERRAL] 💾 Updating referrer in database...');
   const { error: referrerUpdateError } = await adminClient
     .from('game_saves')
     .update({
@@ -106,10 +91,8 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .eq('user_id', referralCode);
 
   if (referrerUpdateError) {
-    console.error('[REFERRAL] ❌ Error updating referrer:', referrerUpdateError);
     return { success: false, reason: 'referrer_update_error' };
   }
-  console.log('[REFERRAL] ✅ Referrer updated in database successfully');
 
   // Update new user's game state
   const initialGameState = newUserSave?.game_state || {
@@ -136,12 +119,6 @@ export async function processReferral(newUserId: string, referralCode: string) {
 
   const oldNewUserGold = initialGameState.resources?.gold || 0;
   const newNewUserGold = oldNewUserGold + 100;
-  console.log('[REFERRAL] 💰 NEW USER Gold Update:', {
-    newUserId: newUserId.substring(0, 8),
-    oldGold: oldNewUserGold,
-    newGold: newNewUserGold,
-    difference: 100
-  });
 
   const updatedUserState = {
     ...initialGameState,
@@ -161,11 +138,8 @@ export async function processReferral(newUserId: string, referralCode: string) {
       }
     ].slice(-100),
   };
-  
-  console.log('[REFERRAL] 📦 Updated new user state resources:', updatedUserState.resources);
 
   // Use upsert for new user since they might not have a save yet
-  console.log('[REFERRAL] 💾 Upserting new user in database...');
   const { error: newUserUpdateError } = await adminClient
     .from('game_saves')
     .upsert({
@@ -177,16 +151,8 @@ export async function processReferral(newUserId: string, referralCode: string) {
     });
 
   if (newUserUpdateError) {
-    console.error('[REFERRAL] ❌ Error updating new user:', newUserUpdateError);
     return { success: false, reason: 'new_user_update_error' };
   }
-  console.log('[REFERRAL] ✅ New user upserted in database successfully');
-
-  console.log('[REFERRAL] Success!', {
-    referrerId: referralCode,
-    newUserId,
-    totalReferrals: updatedReferrerState.referrals.length
-  });
 
   return { success: true };
 }
