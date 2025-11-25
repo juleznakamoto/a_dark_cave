@@ -89,6 +89,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     show_when: {
       "flags.humanSacrificeUnlocked": true,
       "!story.seen.humansSacrificeMaxed": true,
+      "buildings.blackMonolith": 1,
     },
     cost: {
       // Cost is dynamically calculated and checked in handleHumans

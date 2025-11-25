@@ -2274,3 +2274,28 @@ export function handleBuildDarkEstate(
 
   return estateResult;
 }
+
+export function handleBuildPillarOfClarity(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const pillarOfClarityResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildPillarOfClarity",
+    "pillarOfClarity",
+  );
+
+  // Add pillar of clarity completion message
+  if (state.buildings.pillarOfClarity === 0) {
+    pillarOfClarityResult.logEntries!.push({
+      id: `pillar-of-clarity-built-${Date.now()}`,
+      message:
+        "The Pillar of Clarity rises, a shimmering obelisk that seems to hum with ancient power. Its presence brings a sense of calm and focus to those nearby.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return pillarOfClarityResult;
+}

@@ -392,6 +392,8 @@ export function executeGameAction(
       return handleBuildBlackMonolith(state, result);
     case "buildDarkEstate":
       return handleBuildDarkEstate(state, result);
+    case "buildPillarOfClarity":
+      return handleBuildPillarOfClarity(state, result);
 
     // Forest Scout Actions
     case "hunt":
