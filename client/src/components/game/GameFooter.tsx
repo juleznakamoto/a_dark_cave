@@ -197,9 +197,8 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative bg-background/80  text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
-              {(hasReferralParam ||
-                (authNotificationVisible &&
-                  !authNotificationSeen)) &&
+              {authNotificationVisible &&
+                !authNotificationSeen &&
                 !currentUser && (
                   <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
                 )}

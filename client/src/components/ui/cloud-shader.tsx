@@ -181,14 +181,9 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
     canvas.width = window.innerWidth * dpr;
     canvas.height = window.innerHeight * dpr;
 
-    try {
-      rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
-      rendererRef.current.setup();
-      rendererRef.current.init();
-    } catch (error) {
-      console.warn('Failed to initialize WebGL renderer:', error);
-      return; // Exit gracefully if WebGL2 not supported
-    }
+    rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
+    rendererRef.current.setup();
+    rendererRef.current.init();
 
     let isActive = true;
     let frameCount = 0;
