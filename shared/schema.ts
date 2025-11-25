@@ -73,6 +73,8 @@ export const gameStateSchema = z.object({
       hasTraps: z.boolean().default(false),
       monolithUnlocked: z.boolean().default(false),
       humanSacrificeUnlocked: z.boolean().default(false),
+      hasCity: z.boolean().default(false),
+      hasFortress: z.boolean().default(false),
     })
     .default({}),
   schematics: z
