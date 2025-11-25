@@ -819,21 +819,11 @@ export default function AdminDashboard() {
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
 
-    // Get the latest activity for each user
+    // Get the latest activity for each user from game saves (updated_at is most reliable)
     const userLastActivity = new Map<string, Date>();
 
-    // Check click data
-    clickData.forEach(entry => {
-      const activityDate = parseISO(entry.timestamp);
-      const existing = userLastActivity.get(entry.user_id);
-      if (!existing || activityDate > existing) {
-        userLastActivity.set(entry.user_id, activityDate);
-      }
-    });
-
-    // Check game saves
     gameSaves.forEach(save => {
-      const activityDate = parseISO(save.updated_at);
+      const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
@@ -860,20 +850,16 @@ export default function AdminDashboard() {
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
     
-    // Get churned user IDs
+    // Get users with click data
+    const usersWithClicks = new Set<string>();
+    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    
+    // Get churned user IDs based on game save activity
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
-    clickData.forEach(entry => {
-      const activityDate = parseISO(entry.timestamp);
-      const existing = userLastActivity.get(entry.user_id);
-      if (!existing || activityDate > existing) {
-        userLastActivity.set(entry.user_id, activityDate);
-      }
-    });
-
     gameSaves.forEach(save => {
-      const activityDate = parseISO(save.updated_at);
+      const activityDate = new Date(save.updated_at);
       const existing = userLastActivity.get(save.user_id);
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
@@ -881,7 +867,7 @@ export default function AdminDashboard() {
     });
 
     userLastActivity.forEach((lastActivity, userId) => {
-      if (lastActivity < cutoffDate) {
+      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
         churnedUserIds.add(userId);
       }
     });
@@ -1706,7 +1692,6 @@ export default function AdminDashboard() {
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <BarChart data={(() => {
-                    const churnedUserIds = new Set<string>();
                     const now = new Date();
                     const cutoffDate = subDays(now, churnDays);
                     
@@ -1714,21 +1699,17 @@ export default function AdminDashboard() {
                     const usersWithClicks = new Set<string>();
                     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
                     
+                    const churnedUserIds = new Set<string>();
                     const userLastActivity = new Map<string, Date>();
-                    clickData.forEach(entry => {
-                      const activityDate = parseISO(entry.timestamp);
-                      const existing = userLastActivity.get(entry.user_id);
-                      if (!existing || activityDate > existing) {
-                        userLastActivity.set(entry.user_id, activityDate);
-                      }
-                    });
+                    
                     gameSaves.forEach(save => {
-                      const activityDate = parseISO(save.updated_at);
+                      const activityDate = new Date(save.updated_at);
                       const existing = userLastActivity.get(save.user_id);
                       if (!existing || activityDate > existing) {
                         userLastActivity.set(save.user_id, activityDate);
                       }
                     });
+                    
                     userLastActivity.forEach((lastActivity, userId) => {
                       if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
                         churnedUserIds.add(userId);
