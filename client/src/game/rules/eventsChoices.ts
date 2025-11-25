@@ -1153,7 +1153,7 @@ export const choiceEvents: Record<string, GameEvent> = {
   witchsCurse: {
     id: "witchsCurse",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 7 &&
+      state.buildings.woodenHut >= 8 &&
       state.resources.gold >= 50 &&
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
