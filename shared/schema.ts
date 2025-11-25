@@ -247,6 +247,7 @@ export const gameStateSchema = z.object({
     .object({
       seen: z.record(z.boolean()).default({}),
       animalsSacrificeLevel: z.number().default(0),
+      humansSacrificeLevel: z.number().default(0),
     })
     .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),

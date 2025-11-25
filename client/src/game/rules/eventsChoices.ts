@@ -1652,7 +1652,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 2,
     title: "The Young Woman's Plea",
     message:
-      "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop! We are not animals!'",
+      "A young woman approaches you with tears streaming down her face. 'Both my parents were sacrificed to that cursed monolith,' she cries. 'This barbaric behavior has to stop!'",
     triggered: false,
     priority: 5,
     repeatable: false,
@@ -1689,7 +1689,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You drag the young woman to the Black Monolith and sacrifice her. The villagers are outraged by your brutality. 20 horrified villagers pack their belongings and flee the village in disgust.",
+              "Shortly after the sacrifice is carried out at the Black Monolith, 20 horrified villagers pack their belongings and flee the village in disgust.",
           };
         },
       },
@@ -1711,7 +1711,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You agree with the young woman and end the practice of human sacrifice. She proposes destroying the Black Monolith and building a pure white obelisk in its place - a Pillar of Clarity that will cleanse the darkness from your people's minds.",
+              "You agree to end the practice of human sacrifice. The woman proposes destroying the Black Monolith and building a pure white obelisk in its place cleansing the darkness from the people's minds.",
           };
         },
       },
