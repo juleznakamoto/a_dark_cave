@@ -80,8 +80,17 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
   const { useGameStore } = await import('./state');
   const currentUser = await getCurrentUser();
 
+  console.log('[REFERRAL] 🔍 Processing unclaimed referrals:', {
+    hasUser: !!currentUser,
+    hasReferrals: !!gameState.referrals,
+    referralCount: gameState.referrals?.length || 0,
+    unclaimedCount: gameState.referrals?.filter(r => !r.claimed).length || 0,
+    currentGold: gameState.resources?.gold || 0,
+  });
+
   // If no user or no referrals, return gameState as is
   if (!currentUser || !gameState.referrals || gameState.referrals.length === 0) {
+    console.log('[REFERRAL] ⏭️ No referrals to process');
     return gameState;
   }
 
@@ -92,6 +101,11 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
   // Process unclaimed referrals
   const updatedReferrals = updatedGameState.referrals.map(referral => {
     if (!referral.claimed) {
+      console.log('[REFERRAL] 💰 Processing unclaimed referral:', {
+        userId: referral.userId.substring(0, 8),
+        timestamp: referral.timestamp,
+      });
+      
       // Claim this referral
       goldGained += 100;
       logEntriesAdded.push({
@@ -108,12 +122,23 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
 
   // Update game state if any referrals were claimed
   if (goldGained > 0) {
+    const oldGold = updatedGameState.resources?.gold || 0;
+    const newGold = oldGold + goldGained;
+    
     updatedGameState.referrals = updatedReferrals;
     updatedGameState.resources = {
       ...updatedGameState.resources,
-      gold: (updatedGameState.resources?.gold || 0) + goldGained,
+      gold: newGold,
     };
     updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100);
+
+    console.log('[REFERRAL] ✅ Processed unclaimed referrals:', {
+      goldGained,
+      oldGold,
+      newGold,
+      claimedCount: logEntriesAdded.length,
+      updatedReferrals: updatedReferrals.map(r => ({ userId: r.userId.substring(0, 8), claimed: r.claimed })),
+    });
 
     // Update the store as well
     useGameStore.setState({
@@ -121,8 +146,8 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
       log: updatedGameState.log,
       referrals: updatedGameState.referrals,
     });
-
-    console.log('[REFERRAL] Processed unclaimed referrals. Gained:', { goldGained, count: logEntriesAdded.length });
+  } else {
+    console.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
   }
 
   return updatedGameState;
@@ -223,9 +248,22 @@ export async function loadGame(): Promise<GameState | null> {
             await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
             return processedState;
           } else {
-            if (import.meta.env.DEV) {
-              console.log('Using local save (longer play time), merging referrals from cloud');
-            }
+            console.log('[LOAD] ✓ Using local save (longer play time), merging referrals from cloud');
+            
+            // Log referral data from cloud
+            console.log('[LOAD] 📊 Cloud referral data:', {
+              cloudReferrals: cloudSave.referrals,
+              cloudReferralCount: cloudSave.referralCount,
+              unclaimedCount: cloudSave.referrals?.filter(r => !r.claimed).length || 0,
+            });
+            
+            // Log referral data from local
+            console.log('[LOAD] 📊 Local referral data:', {
+              localReferrals: localSave.gameState.referrals,
+              localReferralCount: localSave.gameState.referralCount,
+              unclaimedCount: localSave.gameState.referrals?.filter(r => !r.claimed).length || 0,
+            });
+            
             // Local has longer play time, but merge referrals from cloud
             const mergedState = {
               ...localSave.gameState,
@@ -233,6 +271,12 @@ export async function loadGame(): Promise<GameState | null> {
               referrals: cloudSave.referrals || localSave.gameState.referrals,
               referralCount: cloudSave.referralCount !== undefined ? cloudSave.referralCount : localSave.gameState.referralCount,
             };
+            
+            console.log('[LOAD] ✅ Merged referral data into local state:', {
+              mergedReferrals: mergedState.referrals,
+              mergedReferralCount: mergedState.referralCount,
+              unclaimedCount: mergedState.referrals?.filter(r => !r.claimed).length || 0,
+            });
             
             // Process any unclaimed referrals
             const processedLocalState = await processUnclaimedReferrals(mergedState);
