@@ -1340,6 +1340,33 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 60,
   },
 
+  buildPillarOfClarity: {
+    id: "buildPillarOfClarity",
+    label: "Pillar of Clarity",
+    description: "Pure white obelisk that cleanses darkness from minds",
+    tooltipEffects: ["-40 Madness"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.pillarOfClarity": 0,
+        "story.seen.pillarOfClarityUnlocked": true,
+      },
+    },
+    cost: {
+      1: {
+        "resources.moonstone": 500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.pillarOfClarity": 1,
+        "stats.madness": -40,
+        "buildings.blackMonolith": 0,
+      },
+    },
+    cooldown: 60,
+  },
+  
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
@@ -1364,33 +1391,6 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.darkEstate": 1,
         "stats.madness": -10,
         "stats.maxMadness": 20,
-      },
-    },
-    cooldown: 60,
-  },
-
-  buildPillarOfClarity: {
-    id: "buildPillarOfClarity",
-    label: "Pillar of Clarity",
-    description: "Pure white obelisk that cleanses darkness from minds",
-    tooltipEffects: ["-40 Madness"],
-    building: true,
-    show_when: {
-      1: {
-        "buildings.pillarOfClarity": 0,
-        "story.seen.pillarOfClarityUnlocked": true,
-      },
-    },
-    cost: {
-      1: {
-        "resources.moonstone": 500,
-      },
-    },
-    effects: {
-      1: {
-        "buildings.pillarOfClarity": 1,
-        "stats.madness": -40,
-        "buildings.blackMonolith": 0,
       },
     },
     cooldown: 60,
