@@ -752,7 +752,9 @@ export default function AdminDashboard() {
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
     
-    console.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', Array.from(usersWithClicks).slice(0, 3));
+    const clickUserSamples = Array.from(usersWithClicks).slice(0, 3);
+    console.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
+    console.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
 
     // Get the latest activity for each user from game saves
     // Build a map with FULL user IDs (since clicks have full IDs)
@@ -767,9 +769,11 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Sample save:', { user_id: gameSaves[0]?.user_id, updated_at: gameSaves[0]?.updated_at });
-    console.log('📊 Sample save:', { user_id: gameSaves[1]?.user_id, updated_at: gameSaves[1]?.updated_at });
-    console.log('📊 Sample save:', { user_id: gameSaves[2]?.user_id, updated_at: gameSaves[2]?.updated_at });
+    const saveSamples = [gameSaves[0], gameSaves[1], gameSaves[2]];
+    console.log('📊 Sample save:', { user_id: saveSamples[0]?.user_id, updated_at: saveSamples[0]?.updated_at });
+    console.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
+    console.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
+    console.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
 
     console.log('📊 Total users with activity:', userLastActivity.size);
     console.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
@@ -779,6 +783,7 @@ export default function AdminDashboard() {
     let notChurnedCount = 0;
     
     userLastActivity.forEach((lastActivity, userId) => {
+      // userId is the FULL UUID from game_saves
       const hasClicks = usersWithClicks.has(userId);
       const isBeforeCutoff = lastActivity < cutoffDate;
       const daysSince = differenceInDays(now, lastActivity);
@@ -786,12 +791,14 @@ export default function AdminDashboard() {
       // Log first 5 checks to see what's happening
       if (churnedCount + notChurnedCount < 5) {
         console.log('📊 User check:', {
-          userId: userId.substring(0, 8),
+          userIdFull: userId,
+          userIdShort: userId.substring(0, 8),
           lastActivity: lastActivity.toISOString(),
           hasClicks,
           isBeforeCutoff,
           daysSince,
-          willBeChurned: isBeforeCutoff && hasClicks
+          willBeChurned: isBeforeCutoff && hasClicks,
+          clickUserSample: Array.from(usersWithClicks).slice(0, 2)
         });
       }
 
