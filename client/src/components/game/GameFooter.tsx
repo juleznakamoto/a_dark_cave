@@ -206,7 +206,12 @@ export default function GameFooter() {
       <div className="fixed top-2 right-2 z-30 pointer-events-auto">
         <DropdownMenu
           open={accountDropdownOpen}
-          onOpenChange={setAccountDropdownOpen}
+          onOpenChange={(open) => {
+            setAccountDropdownOpen(open);
+            if (open) {
+              setAuthNotificationSeen(true);
+            }
+          }}
           modal={false}
         >
           <DropdownMenuTrigger asChild>
