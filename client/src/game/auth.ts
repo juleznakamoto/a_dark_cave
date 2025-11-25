@@ -127,8 +127,8 @@ async function processReferralInBackground(): Promise<void> {
         
         // Force reload the game state from cloud to get the referral bonuses
         try {
-          const { loadGameFromSupabase } = await import('./save');
-          const cloudState = await loadGameFromSupabase();
+          const saveModule = await import('./save');
+          const cloudState = await saveModule.loadGameFromSupabase();
           
           if (cloudState) {
             console.log('[REFERRAL] ✓ Reloaded game state with referral bonuses');
