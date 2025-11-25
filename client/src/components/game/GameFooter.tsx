@@ -50,6 +50,7 @@ export default function GameFooter() {
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
+  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -88,6 +89,7 @@ export default function GameFooter() {
 
   const handleSignOut = async () => {
     try {
+      setAccountDropdownOpen(false);
       await signOut();
       setCurrentUser(null);
       setIsUserSignedIn(false);
@@ -172,7 +174,7 @@ export default function GameFooter() {
       />
       {/* Account Dropdown - Absolute positioned in upper right */}
       <div className="fixed top-2 right-2 z-30">
-        <DropdownMenu>
+        <DropdownMenu open={accountDropdownOpen} onOpenChange={setAccountDropdownOpen}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
@@ -199,6 +201,7 @@ export default function GameFooter() {
               <>
                 <DropdownMenuItem
                   onClick={() => {
+                    setAccountDropdownOpen(false);
                     handleSetAuthDialogOpen(true);
                     setAuthNotificationSeen(true);
                   }}
