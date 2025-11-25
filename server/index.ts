@@ -134,14 +134,19 @@ import { createServer } from "http";
   // CRITICAL: All API routes MUST be defined before Vite middleware
   // Referral endpoint
   app.post("/api/referral/process", async (req, res) => {
+    log(`[REFERRAL API] Request received - Body: ${JSON.stringify(req.body)}`);
     try {
       const { newUserId, referralCode } = req.body;
       if (!newUserId || !referralCode) {
+        log(`[REFERRAL API] Missing parameters - userId: ${!!newUserId}, code: ${!!referralCode}`);
         return res.status(400).json({ error: 'Missing required parameters' });
       }
+      log(`[REFERRAL API] Processing referral for user ${newUserId}`);
       const result = await processReferral(newUserId, referralCode);
+      log(`[REFERRAL API] Result: ${JSON.stringify(result)}`);
       res.json(result);
     } catch (error: any) {
+      log(`[REFERRAL API] Error: ${error.message}`);
       res.status(500).json({ error: error.message });
     }
   });
