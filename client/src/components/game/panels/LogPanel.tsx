@@ -8,22 +8,9 @@ export default function LogPanel() {
   const { log } = useGameStore();
   const [activeEffects, setActiveEffects] = useState<Set<string>>(new Set());
   const timersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const prevLogLengthRef = useRef(log.length);
 
   // Get only the last entries and reverse them so latest is at top
   const recentEntries = log.slice(-GAME_CONSTANTS.LOG_MAX_ENTRIES).reverse();
-
-  // Scroll to top when new entries are added
-  useEffect(() => {
-    if (log.length > prevLogLengthRef.current) {
-      const viewport = scrollAreaRef.current?.querySelector('[data-radix-scroll-area-viewport]');
-      if (viewport) {
-        viewport.scrollTop = 0;
-      }
-    }
-    prevLogLengthRef.current = log.length;
-  }, [log.length]);
 
   useEffect(() => {
     // Check for new entries with visual effects
@@ -55,7 +42,7 @@ export default function LogPanel() {
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
-      <ScrollArea ref={scrollAreaRef} className="h-full w-full [&>div:last-child]:hidden">
+      <ScrollArea className="h-full w-full">
         <div className="px-3 relative">
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
@@ -102,6 +89,7 @@ export default function LogPanel() {
           {/* Gradient overlay at bottom of content area */}
           <div className="absolute bottom-0 left-0 right-0 h-12 pointer-events-none bg-gradient-to-t from-background to-transparent"></div>
         </div>
+        <ScrollBar orientation="vertical" />
       </ScrollArea>
     </div>
   );
