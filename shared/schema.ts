@@ -72,6 +72,7 @@ export const gameStateSchema = z.object({
       firstWolfAttack: z.boolean().default(false),
       hasTraps: z.boolean().default(false),
       monolithUnlocked: z.boolean().default(false),
+      humanSacrificeUnlocked: z.boolean().default(false),
     })
     .default({}),
   schematics: z
