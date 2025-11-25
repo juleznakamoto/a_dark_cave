@@ -35,8 +35,6 @@ export default function GameContainer() {
     devMode,
     authDialogOpen, // Added authDialogOpen to state
     shopDialogOpen, // Added shopDialogOpen to state
-    addLogEntry, // Added addLogEntry to state
-    setFlag, // Added setFlag to state
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -90,21 +88,6 @@ export default function GameContainer() {
       stopGameLoop();
     }
   }, [showEndScreen]);
-
-  // Check if Bastion has become Fortress and add log message
-  React.useEffect(() => {
-    const isFortress = buildings.fortifiedMoat >= 1 && buildings.palisades >= 2 && buildings.watchtower >= 2;
-    if (isFortress && !flags.hasFortress) {
-      addLogEntry({
-        id: `fortress-upgrade-${Date.now()}`,
-        message: "Your bastion has been fortified into a mighty fortress!",
-        timestamp: Date.now(),
-        type: "system",
-      });
-      setFlag("hasFortress", true);
-    }
-  }, [buildings.fortifiedMoat, buildings.palisades, buildings.watchtower, flags.hasFortress, addLogEntry, setFlag]);
-
 
   // Determine whether to use LimelightNav (always call this hook)
   const useLimelightNav = relics.odd_bracelet;
@@ -275,7 +258,7 @@ export default function GameContainer() {
                     onClick={() => setActiveTab("bastion")}
                     data-testid="tab-bastion"
                   >
-                    {buildings.fortifiedMoat >= 1 && buildings.palisades >= 2 && buildings.watchtower >= 2 ? "Fortress" : "Bastion"}
+                    {flags.hasFortress ? "Fortress" : "Bastion"}
                   </button>
                 )}
               </div>

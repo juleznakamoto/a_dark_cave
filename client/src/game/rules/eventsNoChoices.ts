@@ -3,6 +3,51 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const noChoiceEvents: Record<string, GameEvent> = {
+  villageBecomesCity: {
+    id: "villageBecomesCity",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 5 && !state.flags.hasCity,
+    triggerType: "resource",
+    message: "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
+    triggered: false,
+    priority: 10,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      flags: {
+        ...state.flags,
+        hasCity: true,
+      },
+      story: {
+        ...state.story,
+        seen: { ...state.story.seen, villageBecomesCity: true },
+      },
+    }),
+  },
+
+  bastionBecomesFortress: {
+    id: "bastionBecomesFortress",
+    condition: (state: GameState) =>
+      state.buildings.fortifiedMoat >= 1 &&
+      state.buildings.palisades >= 2 &&
+      state.buildings.watchtower >= 2 &&
+      !state.flags.hasFortress,
+    triggerType: "resource",
+    message: "Your bastion has been fortified into a mighty fortress!",
+    triggered: false,
+    priority: 10,
+    repeatable: false,
+    effect: (state: GameState) => ({
+      flags: {
+        ...state.flags,
+        hasFortress: true,
+      },
+      story: {
+        ...state.story,
+        seen: { ...state.story.seen, bastionBecomesFortress: true },
+      },
+    }),
+  },
+
   findElderScroll: {
     id: "findElderScroll",
     condition: (state: GameState) =>
