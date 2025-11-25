@@ -78,6 +78,8 @@ async function processReferralInBackground(): Promise<void> {
   
   while (attempts < maxAttempts) {
     try {
+      console.log(`[REFERRAL] Attempt ${attempts + 1}: Fetching /api/referral/process...`);
+      
       const response = await fetch('/api/referral/process', {
         method: 'POST',
         headers: {
@@ -89,13 +91,19 @@ async function processReferralInBackground(): Promise<void> {
         }),
       });
 
+      console.log(`[REFERRAL] Response status: ${response.status}`);
+      console.log(`[REFERRAL] Response headers:`, Object.fromEntries(response.headers.entries()));
+
       // Check if we got HTML instead of JSON (server not ready)
       const contentType = response.headers.get('content-type');
       if (!contentType || !contentType.includes('application/json')) {
+        const textResponse = await response.text();
+        console.log(`[REFERRAL] Non-JSON response received:`, textResponse.substring(0, 500));
         throw new Error('Server returned non-JSON response');
       }
 
       const result = await response.json();
+      console.log(`[REFERRAL] Parsed JSON response:`, result);
 
       if (!response.ok) {
         console.error('[REFERRAL] Server error:', result.error);
@@ -113,6 +121,7 @@ async function processReferralInBackground(): Promise<void> {
       return;
     } catch (fetchError) {
       attempts++;
+      console.error(`[REFERRAL] Attempt ${attempts} error:`, fetchError);
       if (attempts >= maxAttempts) {
         console.error('[REFERRAL] All retry attempts failed:', fetchError);
         return;
