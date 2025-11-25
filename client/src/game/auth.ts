@@ -132,24 +132,54 @@ async function processReferralInBackground(): Promise<void> {
 
       if (result.success) {
         console.log('[REFERRAL] ✓ Referral successfully processed on server!');
-        console.log('[REFERRAL] Clearing local cache and forcing cloud load...');
         
-        // Clear local IndexedDB cache to force loading from Supabase
-        const { openDB } = await import('idb');
+        // Load fresh state from Supabase and update game state directly
         try {
-          const db = await openDB('ADarkCaveDB', 2);
-          await db.delete('saves', 'mainSave');
-          await db.delete('lastCloudState', 'lastCloudState');
-          console.log('[REFERRAL] ✓ Local cache cleared');
+          const freshState = await loadGameFromSupabase();
+          if (freshState) {
+            console.log('[REFERRAL] ✓ Loaded fresh state from cloud:', {
+              gold: freshState.resources?.gold,
+              referralProcessed: freshState.referralProcessed,
+            });
+            
+            // Update the game state directly
+            const { useGameStore } = await import('./state');
+            const currentState = useGameStore.getState();
+            
+            // Merge the fresh state while preserving UI state
+            useGameStore.setState({
+              ...freshState,
+              // Preserve UI-only state
+              activeTab: currentState.activeTab,
+              hoveredTooltips: currentState.hoveredTooltips,
+              isGameLoopActive: currentState.isGameLoopActive,
+              isPaused: currentState.isPaused,
+              loopProgress: currentState.loopProgress,
+            });
+            
+            // Add log entry to show the bonus
+            if (freshState.log && freshState.log.length > 0) {
+              const lastLog = freshState.log[freshState.log.length - 1];
+              if (lastLog.message.includes('referral bonus')) {
+                console.log('[REFERRAL] ✓ Referral bonus log found');
+              }
+            }
+            
+            // Also update local IndexedDB
+            const { openDB } = await import('idb');
+            const db = await openDB('ADarkCaveDB', 2);
+            await db.put('saves', {
+              gameState: freshState,
+              timestamp: Date.now(),
+              playTime: freshState.playTime || 0,
+            }, 'mainSave');
+            await db.put('lastCloudState', freshState, 'lastCloudState');
+            
+            console.log('[REFERRAL] ✓ Game state updated successfully without reload!');
+          }
         } catch (error) {
-          console.error('[REFERRAL] Failed to clear local cache:', error);
+          console.error('[REFERRAL] Failed to update game state:', error);
         }
-        
-        // Wait for DB writes to complete, then reload
-        setTimeout(() => {
-          console.log('[REFERRAL] Reloading to load from cloud with referral rewards...');
-          window.location.reload();
-        }, 1500);
       } else {
         console.warn('[REFERRAL] Processing skipped:', result.reason);
       }
