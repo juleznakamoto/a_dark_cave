@@ -908,6 +908,71 @@ export default function AdminDashboard() {
     return topClicks;
   };
 
+  // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
+  const getChurnedPlayersFirstTimeClicks = () => {
+    console.log('🔍 Getting churned players first-time clicks START:', {
+      now: new Date().toISOString(),
+      cutoffDate: subDays(new Date(), churnDays).toISOString(),
+      churnDays
+    });
+
+    const now = new Date();
+    const cutoffDate = subDays(now, churnDays);
+    
+    // Get users with click data
+    const usersWithClicks = new Set<string>();
+    clickData.forEach(entry => usersWithClicks.add(entry.user_id));
+    
+    // Get churned user IDs based on game save activity
+    const churnedUserIds = new Set<string>();
+    const userLastActivity = new Map<string, Date>();
+
+    gameSaves.forEach(save => {
+      const activityDate = new Date(save.updated_at);
+      const existing = userLastActivity.get(save.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(save.user_id, activityDate);
+      }
+    });
+
+    userLastActivity.forEach((lastActivity, userId) => {
+      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
+        churnedUserIds.add(userId);
+      }
+    });
+
+    console.log('📊 Churned user IDs for first-time clicks:', churnedUserIds.size);
+
+    // Count buttons that were clicked exactly once across all churned players
+    const buttonFirstTimeCount: Record<string, number> = {};
+
+    clickData.forEach(entry => {
+      if (churnedUserIds.has(entry.user_id)) {
+        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
+          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
+            const cleanButton = cleanButtonName(button);
+            // Only count if this button was clicked exactly once at this playtime
+            if (count === 1) {
+              buttonFirstTimeCount[cleanButton] = (buttonFirstTimeCount[cleanButton] || 0) + 1;
+            }
+          });
+        });
+      }
+    });
+
+    console.log('📊 Total buttons with single clicks by churned users:', Object.keys(buttonFirstTimeCount).length);
+
+    // Convert to array and sort by count, take top 20
+    const topFirstTimeClicks = Object.entries(buttonFirstTimeCount)
+      .map(([button, count]) => ({ button, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 20);
+
+    console.log('📊 Returning top 20 first-time clicked buttons:', topFirstTimeClicks.length);
+    
+    return topFirstTimeClicks;
+  };
+
   const getARPU = () => {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
@@ -1680,6 +1745,24 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="clicks" fill="#ff8042" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Top 20 First-Time Clicks by Churned Players</CardTitle>
+                <CardDescription>Buttons clicked exactly once (count = 1) - what did churned players try just once?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getChurnedPlayersFirstTimeClicks()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="count" fill="#9333ea" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
