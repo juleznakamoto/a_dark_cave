@@ -123,8 +123,36 @@ async function processReferralInBackground(): Promise<void> {
       }
 
       if (result.success) {
-        console.log('[REFERRAL] Successfully processed on server - reload game to see rewards');
-        // Optionally trigger a game reload here to show the rewards immediately
+        console.log('[REFERRAL] Successfully processed on server - reloading game state...');
+        
+        // Force reload the game state from cloud to get the referral bonuses
+        try {
+          const { loadGameFromSupabase } = await import('./save');
+          const cloudState = await loadGameFromSupabase();
+          
+          if (cloudState) {
+            console.log('[REFERRAL] ✓ Reloaded game state with referral bonuses');
+            
+            // Update the game store with the new state
+            const { useGameStore } = await import('./state');
+            useGameStore.setState({ ...cloudState });
+            
+            // Also update local IndexedDB to match
+            const { openDB } = await import('idb');
+            const db = await openDB('ADarkCaveDB', 2);
+            await db.put('saves', {
+              gameState: cloudState,
+              timestamp: Date.now(),
+              playTime: cloudState.playTime || 0,
+            }, 'mainSave');
+            await db.put('lastCloudState', cloudState, 'lastCloudState');
+            
+            console.log('[REFERRAL] ✓ Game state synchronized - referral rewards are now active!');
+          }
+        } catch (reloadError) {
+          console.error('[REFERRAL] Failed to reload game state:', reloadError);
+          console.log('[REFERRAL] Please refresh the page to see your referral rewards');
+        }
       } else {
         console.warn('[REFERRAL] Processing skipped:', result.reason);
       }
