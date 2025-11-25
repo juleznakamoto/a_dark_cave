@@ -263,16 +263,20 @@ export default function GameFooter() {
                   <Tooltip
                     open={
                       isMobile
-                        ? isTooltipOpen("referral-info")
+                        ? mobileTooltip.isTooltipOpen("referral-info")
                         : undefined
                     }
                   >
                     <TooltipTrigger asChild>
                       <span
                         className="ml-2 text-muted-foreground cursor-pointer"
-                        onClick={(e) =>
-                          isMobile && handleTooltipClick("referral-info", e)
-                        }
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          if (isMobile) {
+                            mobileTooltip.handleTooltipClick("referral-info", e);
+                          }
+                        }}
                       >
                         ⓘ{" "}
                       </span>
