@@ -789,12 +789,22 @@ export default function AdminDashboard() {
     console.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
 
     // Find users who haven't been active since cutoff AND have click data
+    // ONLY iterate through users who have clicks
     let churnedCount = 0;
     let notChurnedCount = 0;
     
-    userLastActivity.forEach((lastActivity, userId) => {
-      // userId is the FULL UUID from game_saves
-      const hasClicks = usersWithClicks.has(userId);
+    console.log('📊 Starting churn check for', usersWithClicks.size, 'users with clicks');
+    
+    usersWithClicks.forEach((userId) => {
+      // Get last activity for this user (if they have any game saves)
+      const lastActivity = userLastActivity.get(userId);
+      
+      if (!lastActivity) {
+        // User has clicks but no game save - skip them
+        console.log('⚠️ User has clicks but no game save:', userId.substring(0, 8));
+        return;
+      }
+      
       const isBeforeCutoff = lastActivity < cutoffDate;
       const daysSince = differenceInDays(now, lastActivity);
 
@@ -804,15 +814,14 @@ export default function AdminDashboard() {
           userIdFull: userId,
           userIdShort: userId.substring(0, 8),
           lastActivity: lastActivity.toISOString(),
-          hasClicks,
+          hasClicks: true, // We know they have clicks since we're iterating usersWithClicks
           isBeforeCutoff,
           daysSince,
-          willBeChurned: isBeforeCutoff && hasClicks,
-          clickUserSample: Array.from(usersWithClicks).slice(0, 2)
+          willBeChurned: isBeforeCutoff
         });
       }
 
-      if (isBeforeCutoff && hasClicks) {
+      if (isBeforeCutoff) {
         churnedCount++;
         churnedPlayers.push({
           userId: userId.substring(0, 8) + '...',
