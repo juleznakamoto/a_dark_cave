@@ -70,6 +70,7 @@ interface GameStore extends GameState {
 
   // Referral tracking
   referralCount: number;
+  referredUsers: string[];
 
   // Cooldown management
   cooldowns: Record<string, number>;
@@ -300,6 +301,7 @@ const defaultGameState: GameState = {
 
   // Referral tracking
   referralCount: 0,
+  referredUsers: [],
 
   // Cooldown management
   cooldowns: {},
@@ -646,6 +648,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentBoostMode = get().boostMode;
     const currentActivatedPurchases = get().activatedPurchases || {};
     const currentFeastPurchases = get().feastPurchases || {};
+    const currentReferralCount = get().referralCount || 0;
+    const currentReferredUsers = get().referredUsers || [];
 
     // Check if Cruel Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
@@ -662,6 +666,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       CM: cruelModeActivated ? 1 : 0,
       activatedPurchases: currentActivatedPurchases,
       feastPurchases: currentFeastPurchases,
+      referralCount: currentReferralCount,
+      referredUsers: currentReferredUsers,
       effects: calculateTotalEffects(defaultGameState),
       bastion_stats: calculateBastionStats(defaultGameState),
       // Ensure loop state is reset
@@ -767,6 +773,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referralCount: savedState.referralCount !== undefined ? savedState.referralCount : 0, // Load referral count
+        referredUsers: savedState.referredUsers || [], // Load referred users list
       };
 
       set(loadedState);

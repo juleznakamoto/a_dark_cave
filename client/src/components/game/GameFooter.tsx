@@ -206,11 +206,15 @@ export default function GameFooter() {
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
-                      <span className="ml-2 text-muted-foreground cursor-pointer">ⓘ</span>
+                      <span className="ml-2 text-muted-foreground cursor-pointer">
+                        ⓘ {referralCount > 0 && <span className="text-xs">({referralCount}/10)</span>}
+                      </span>
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
-                        You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 100 gold! {referralCount || 0}/10 invited
+                        You can invite up to 10 friends. Each time a friend signs up using your link, both you and your friend will receive 100 gold!
+                        <br />
+                        <strong>{referralCount || 0}/10 friends invited</strong>
                       </p>
                     </TooltipContent>
                   </Tooltip>

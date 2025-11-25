@@ -124,7 +124,20 @@ async function processReferralInBackground(): Promise<void> {
 
       if (result.success) {
         console.log('[REFERRAL] ✓ Referral successfully processed on server!');
-        console.log('[REFERRAL] Please refresh the page to see your referral rewards (100 Gold bonus)');
+        
+        // Reload the game state from cloud to get the updated gold and referral data
+        try {
+          const cloudState = await loadGameFromSupabase();
+          if (cloudState) {
+            console.log('[REFERRAL] ✓ Reloaded game state with referral bonuses');
+            
+            // Force a full page reload to ensure all state is updated
+            window.location.reload();
+          }
+        } catch (reloadError) {
+          console.error('[REFERRAL] Failed to reload game state:', reloadError);
+          console.log('[REFERRAL] Please refresh the page to see your referral rewards (100 Gold bonus)');
+        }
       } else {
         console.warn('[REFERRAL] Processing skipped:', result.reason);
       }

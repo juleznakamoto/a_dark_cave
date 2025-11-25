@@ -64,10 +64,17 @@ export async function processReferral(newUserId: string, referralCode: string) {
 
   const referrerState = referrerSave.game_state;
   const referralCount = referrerState.referralCount || 0;
+  const referredUsers = referrerState.referredUsers || [];
 
   if (referralCount >= 10) {
     console.warn('[REFERRAL] Referrer reached limit');
     return { success: false, reason: 'referrer_limit_reached' };
+  }
+
+  // Check if this user was already referred
+  if (referredUsers.includes(newUserId)) {
+    console.warn('[REFERRAL] User already referred');
+    return { success: false, reason: 'already_referred' };
   }
 
   // Update referrer's game state
@@ -79,6 +86,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       gold: oldGold + 100,
     },
     referralCount: referralCount + 1,
+    referredUsers: [...referredUsers, newUserId],
     log: [
       ...(referrerState.log || []),
       {
