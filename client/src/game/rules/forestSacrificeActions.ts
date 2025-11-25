@@ -79,7 +79,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       // This will be dynamically applied
       madness: -1,
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 
   humans: {
@@ -98,7 +98,7 @@ export const forestSacrificeActions: Record<string, Action> = {
       // This will be dynamically applied
       madness: -2,
     },
-    cooldown: 60,
+    cooldown: 90,
   },
 };
 
