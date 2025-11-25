@@ -116,8 +116,8 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
       ...updatedGameState.resources,
       gold: newGold,
     };
-    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100); })),
-    });
+    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100);
+    }
 
     // Update the store as well
     useGameStore.setState({
@@ -125,8 +125,6 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
       log: updatedGameState.log,
       referrals: updatedGameState.referrals,
     });
-  } else {
-    console.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
   }
 
   return updatedGameState;
