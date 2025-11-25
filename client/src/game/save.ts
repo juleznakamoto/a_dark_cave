@@ -218,14 +218,14 @@ export async function loadGame(): Promise<GameState | null> {
     if (user) {
       // Try to load from cloud
       try {
+        // loadGameFromSupabase() returns GameState directly, not { gameState: GameState }
         const cloudSaveData = await loadGameFromSupabase();
         
         console.log('[LOAD] 🌐 Raw cloud save data:', {
           hasCloudSaveData: !!cloudSaveData,
           cloudSaveDataKeys: cloudSaveData ? Object.keys(cloudSaveData) : [],
-          cloudGameState: cloudSaveData?.gameState,
-          cloudReferrals: cloudSaveData?.gameState?.referrals,
-          cloudReferralCount: cloudSaveData?.gameState?.referralCount,
+          cloudReferrals: cloudSaveData?.referrals,
+          cloudReferralCount: cloudSaveData?.referralCount,
         });
         
         // The cloud save is stored as diffs, so we need to reconstruct the full state
@@ -238,7 +238,8 @@ export async function loadGame(): Promise<GameState | null> {
           lastCloudReferralCount: lastCloudState?.referralCount,
         });
         
-        const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData.gameState) : cloudSaveData.gameState) : null;
+        // cloudSaveData IS the GameState, not wrapped
+        const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData) : cloudSaveData) : null;
         
         console.log('[LOAD] 🔀 Merged cloud save:', {
           hasCloudSave: !!cloudSave,
