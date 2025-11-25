@@ -1,4 +1,4 @@
-import { GameEvent } from "./events";
+import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength, getTotalLuck } from "./effectsCalculation";
@@ -24,8 +24,10 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         label: "Defend village",
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
-          let victoryChance;
           const traps = state.buildings.traps;
+          const strength = getTotalStrength(state);
+          
+          let victoryChance;
           if (!state.story.seen.firstWolfAttack) {
             victoryChance = 0;
           } else {
@@ -231,6 +233,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         relevant_stats: ["strength"],
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
+          const strength = getTotalStrength(state);
 
           // Check for victory: 10% base chance + 1% per strength point
           const victoryChance = calculateSuccessChance(

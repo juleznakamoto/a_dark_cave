@@ -151,7 +151,11 @@ export function handleLayTrap(
 
   // Calculate success based on luck
   const luck = getTotalLuck(state);
-  const successChance = calculateSuccessChance(state, "layTrap");
+  const successChance = calculateSuccessChance(
+    state,
+    0.2,
+    { type: 'luck', multiplier: 0.01 }
+  );
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -240,7 +244,12 @@ export function handleCastleRuins(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = calculateSuccessChance(state, "castleRuins");
+  const successChance = calculateSuccessChance(
+    state,
+    0.15,
+    { type: 'strength', multiplier: 0.01 },
+    { type: 'knowledge', multiplier: 0.01 }
+  );
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -328,7 +337,12 @@ export function handleHillGrave(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = calculateSuccessChance(state, "hillGrave");
+  const successChance = calculateSuccessChance(
+    state,
+    0.2,
+    { type: 'strength', multiplier: 0.01 },
+    { type: 'knowledge', multiplier: 0.01 }
+  );
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -396,7 +410,12 @@ export function handleSunkenTemple(
   // Calculate success based on strength and knowledge
   const strength = getTotalStrength(state);
   const knowledge = getTotalKnowledge(state);
-  const successChance = calculateSuccessChance(state, "sunkenTemple");
+  const successChance = calculateSuccessChance(
+    state,
+    0.25,
+    { type: 'strength', multiplier: 0.01 },
+    { type: 'knowledge', multiplier: 0.01 }
+  );
   const rand = Math.random();
 
   if (rand < successChance) {
