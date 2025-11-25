@@ -50,23 +50,13 @@ export default function GameFooter() {
   const mobileTooltip = useMobileTooltip();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
   const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [authDialogMode, setAuthDialogMode] = useState<'signin' | 'signup'>('signin');
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
   } | null>(null);
   const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
-  const [hasReferralCode, setHasReferralCode] = useState(false);
   const { toast } = useToast();
-
-  // Check for referral code in URL
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const refCode = params.get('ref');
-    setHasReferralCode(!!refCode);
-  }, []);
-
   // Trigger glow animation when pause state changes
   useEffect(() => {
     setGlowingButton("pause");
@@ -207,9 +197,11 @@ export default function GameFooter() {
               className="px-2 py-1 text-xs hover relative bg-background/80  text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
-              {(!authNotificationSeen || (hasReferralCode && !currentUser)) && (
-                <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
-              )}
+              {authNotificationVisible &&
+                !authNotificationSeen &&
+                !currentUser && (
+                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
+                )}
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-50 text-xs">
@@ -224,7 +216,7 @@ export default function GameFooter() {
               <>
                 <DropdownMenuItem
                   onClick={() => {
-                    setAuthDialogMode(hasReferralCode ? 'signup' : 'signin');
+                    setAccountDropdownOpen(false);
                     handleSetAuthDialogOpen(true);
                     setAuthNotificationSeen(true);
                   }}
@@ -400,7 +392,6 @@ export default function GameFooter() {
         isOpen={authDialogOpen}
         onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
-        initialMode={authDialogMode}
       />
     </>
   );

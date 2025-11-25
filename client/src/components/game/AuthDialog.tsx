@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -12,23 +12,15 @@ interface AuthDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onAuthSuccess: () => void;
-  initialMode?: 'signin' | 'signup';
 }
 
-export default function AuthDialog({ isOpen, onClose, onAuthSuccess, initialMode = 'signin' }: AuthDialogProps) {
-  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>(initialMode);
+export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialogProps) {
+  const [mode, setMode] = useState<'signin' | 'signup' | 'reset'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { toast } = useToast();
-
-  // Reset mode when initialMode changes
-  useEffect(() => {
-    if (isOpen) {
-      setMode(initialMode);
-    }
-  }, [isOpen, initialMode]);
 
   // Get referral code from URL
   const getReferralCode = () => {
