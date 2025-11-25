@@ -65,7 +65,7 @@ async function processReferralInBackground(): Promise<void> {
   // Add retry logic with longer delays for dev environment
   let attempts = 0;
   const maxAttempts = 5;
-  
+
   while (attempts < maxAttempts) {
     try {
       const response = await fetch('/api/referral/process', {
@@ -100,7 +100,7 @@ async function processReferralInBackground(): Promise<void> {
             // Update the game state directly
             const { useGameStore } = await import('./state');
             const currentState = useGameStore.getState();
-            
+
             // Merge the fresh state while preserving UI state
             useGameStore.setState({
               ...freshState,
@@ -111,7 +111,7 @@ async function processReferralInBackground(): Promise<void> {
               isPaused: currentState.isPaused,
               loopProgress: currentState.loopProgress,
             });
-            
+
             // Also update local IndexedDB
             const { openDB } = await import('idb');
             const db = await openDB('ADarkCaveDB', 2);
@@ -123,21 +123,15 @@ async function processReferralInBackground(): Promise<void> {
             await db.put('lastCloudState', freshState, 'lastCloudState');
           }
         } catch (error) {
-          // Silent failure
+          console.error('Failed to update game state:', error);
         }
       }
-      
-      // Success - exit retry loop
-      return;
-    } catch (fetchError) {
-      attempts++;
-      if (attempts >= maxAttempts) {
-        return;
-      }
-      const delay = Math.min(1000 * Math.pow(2, attempts), 10000); // Exponential backoff, max 10s
-      await new Promise(resolve => setTimeout(resolve, delay));
+    } catch (error) {
+      console.error('Failed to process referral after confirmation:', error);
     }
   }
+
+  const isNewGame = gameState.isNewGame || false;
 }
 
 export async function signIn(email: string, password: string) {
