@@ -34,6 +34,13 @@ export async function signUp(email: string, password: string, referralCode?: str
 }
 
 export async function processReferralAfterConfirmation(): Promise<void> {
+  // Don't await - process in background without blocking game load
+  processReferralInBackground().catch(error => {
+    console.error('[REFERRAL] Background processing failed:', error);
+  });
+}
+
+async function processReferralInBackground(): Promise<void> {
   const user = await getCurrentUser();
   if (!user) return;
 
@@ -65,58 +72,55 @@ export async function processReferralAfterConfirmation(): Promise<void> {
     timestamp: new Date().toISOString()
   });
 
-  try {
-    // Call server-side API to process referral (bypasses RLS)
-    // Add retry logic for dev environment timing issues
-    let attempts = 0;
-    const maxAttempts = 3;
-    
-    while (attempts < maxAttempts) {
-      try {
-        const response = await fetch('/api/referral/process', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            newUserId: user.id,
-            referralCode: referralCode,
-          }),
-        });
+  // Add retry logic with longer delays for dev environment
+  let attempts = 0;
+  const maxAttempts = 5;
+  
+  while (attempts < maxAttempts) {
+    try {
+      const response = await fetch('/api/referral/process', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          newUserId: user.id,
+          referralCode: referralCode,
+        }),
+      });
 
-        // Check if we got HTML instead of JSON (server not ready)
-        const contentType = response.headers.get('content-type');
-        if (!contentType || !contentType.includes('application/json')) {
-          throw new Error('Server returned non-JSON response, retrying...');
-        }
-
-        const result = await response.json();
-
-        if (!response.ok) {
-          console.error('[REFERRAL] Server error:', result.error);
-          return;
-        }
-
-        if (result.success) {
-          console.log('[REFERRAL] Successfully processed on server');
-        } else {
-          console.warn('[REFERRAL] Processing skipped:', result.reason);
-        }
-        
-        // Success - exit retry loop
-        return;
-      } catch (fetchError) {
-        attempts++;
-        if (attempts >= maxAttempts) {
-          throw fetchError;
-        }
-        console.warn(`[REFERRAL] Attempt ${attempts} failed, retrying...`, fetchError);
-        // Wait before retrying (exponential backoff)
-        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      // Check if we got HTML instead of JSON (server not ready)
+      const contentType = response.headers.get('content-type');
+      if (!contentType || !contentType.includes('application/json')) {
+        throw new Error('Server returned non-JSON response');
       }
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        console.error('[REFERRAL] Server error:', result.error);
+        return;
+      }
+
+      if (result.success) {
+        console.log('[REFERRAL] Successfully processed on server - reload game to see rewards');
+        // Optionally trigger a game reload here to show the rewards immediately
+      } else {
+        console.warn('[REFERRAL] Processing skipped:', result.reason);
+      }
+      
+      // Success - exit retry loop
+      return;
+    } catch (fetchError) {
+      attempts++;
+      if (attempts >= maxAttempts) {
+        console.error('[REFERRAL] All retry attempts failed:', fetchError);
+        return;
+      }
+      const delay = Math.min(1000 * Math.pow(2, attempts), 10000); // Exponential backoff, max 10s
+      console.warn(`[REFERRAL] Attempt ${attempts} failed, retrying in ${delay}ms...`);
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-  } catch (error) {
-    console.error('[REFERRAL] Error calling referral API after retries:', error);
   }
 }
 
