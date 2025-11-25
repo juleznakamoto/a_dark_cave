@@ -458,7 +458,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const cost = Math.ceil(costOption.amounts[0] * (1 - discount));
 
       return {
-        id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
+        id: `${trade.id}`
         label: `${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
