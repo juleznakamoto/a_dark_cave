@@ -55,7 +55,7 @@ export default function LogPanel() {
 
   return (
     <div className="h-[18vh] min-h-[6rem] pt-2 overflow-hidden">
-      <ScrollArea ref={scrollAreaRef} className="h-full w-full">
+      <ScrollArea ref={scrollAreaRef} className="h-full w-full [&>div:last-child]:hidden">
         <div className="px-3 relative">
           <div className="space-y-1 text-xs">
             {recentEntries.map((entry: LogEntry, index: number) => {
