@@ -131,7 +131,8 @@ import { createServer } from "http";
 (async () => {
   const server = createServer(app);
 
-  // Referral endpoint - MUST be defined before Vite middleware
+  // CRITICAL: All API routes MUST be defined before Vite middleware
+  // Referral endpoint
   app.post("/api/referral/process", async (req, res) => {
     try {
       const { newUserId, referralCode } = req.body;
@@ -145,7 +146,7 @@ import { createServer } from "http";
     }
   });
 
-  // Payment endpoints - MUST be defined before Vite middleware
+  // Payment endpoints
   app.post("/api/payment/create-intent", async (req, res) => {
     try {
       const { itemId } = req.body;
@@ -167,9 +168,7 @@ import { createServer } from "http";
     }
   });
 
-  // Importantly only setup vite in development and after
-  // setting up all the other routes so the catch-all route
-  // doesn't interfere with the other routes
+  // Setup Vite middleware AFTER all API routes to prevent catch-all interference
   if (app.get("env") === "development") {
     await setupVite(app, server);
   } else {
