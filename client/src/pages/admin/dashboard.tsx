@@ -125,6 +125,7 @@ export default function AdminDashboard() {
   const [selectedButtons, setSelectedButtons] = useState<Set<string>>(new Set(['mine', 'hunt', 'chopWood', 'caveExplore'])); // Initialize with all buttons
   const [selectedClickTypes, setSelectedClickTypes] = useState<Set<string>>(new Set()); // For individual click type chart
   const [environment, setEnvironment] = useState<'dev' | 'prod'>('prod');
+  const [showCompletedOnly, setShowCompletedOnly] = useState<boolean>(false);
 
   // Process clicks data for the chart - moved here before any early returns
   const buttonClicksChartData = useMemo(() => {
@@ -134,6 +135,16 @@ export default function AdminDashboard() {
     let filteredClicks = clickData;
     if (selectedUser !== 'all') {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
     }
 
     // Aggregate total clicks per button
@@ -434,6 +445,16 @@ export default function AdminDashboard() {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
     }
 
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+    }
+
     // Collect all playtime entries with their total clicks
     const playtimeData = new Map<number, number>();
 
@@ -498,6 +519,17 @@ export default function AdminDashboard() {
     if (selectedUser !== 'all') {
       filteredClicks = clickData.filter(d => d.user_id === selectedUser);
       console.log('   Filtered to user:', filteredClicks.length, 'records');
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filteredClicks = filteredClicks.filter(d => completedUserIds.has(d.user_id));
+      console.log('   Filtered to completed players:', filteredClicks.length, 'records');
     }
 
     // Collect all unique button names in the data
@@ -649,9 +681,19 @@ export default function AdminDashboard() {
 
 
   const getTotalClicksByButton = () => {
-    const filtered = selectedUser === 'all'
+    let filtered = selectedUser === 'all'
       ? clickData
       : clickData.filter(d => d.user_id === selectedUser);
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filtered = filtered.filter(d => completedUserIds.has(d.user_id));
+    }
 
     const totals: Record<string, number> = {};
 
@@ -997,11 +1039,22 @@ export default function AdminDashboard() {
           </TabsContent>
 
           <TabsContent value="clicks" className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showCompletedOnly}
+                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                  className="cursor-pointer w-4 h-4"
+                />
+                <span className="text-sm font-medium">Show only players who completed the game</span>
+              </label>
+            </div>
             <Card>
               <CardHeader>
                 <CardTitle>Button Clicks Over Time</CardTitle>
                 <CardDescription>
-                  Total button clicks in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Total button clicks in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -1028,7 +1081,7 @@ export default function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Individual Click Types Over Playtime</CardTitle>
                 <CardDescription>
-                  Click counts by type in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : 'across all users'}
+                  Click counts by type in 15-minute intervals (time elapsed since first click) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
