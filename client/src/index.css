@@ -138,6 +138,16 @@ html, body {
     background-color: hsl(0, 0%, 0%) !important;
     color: hsl(200, 6.6667%, 91.1765%) !important;
   }
+
+  /* Hide all scrollbars while keeping scroll functionality */
+  * {
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+
+  *::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
 }
 
 /* Allow text selection on legal pages */
