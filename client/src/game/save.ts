@@ -219,8 +219,11 @@ export async function loadGame(): Promise<GameState | null> {
       // Try to load from cloud
       try {
         const cloudSaveData = await loadGameFromSupabase();
-        // Ensure we have a valid GameState object from cloudSaveData
-        const cloudSave = cloudSaveData ? cloudSaveData.gameState : null;
+        
+        // The cloud save is stored as diffs, so we need to reconstruct the full state
+        // If we have a last cloud state, merge the diff into it
+        const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
+        const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData.gameState) : cloudSaveData.gameState) : null;
 
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
