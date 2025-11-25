@@ -402,40 +402,57 @@ export const villageAttackEvents: Record<string, GameEvent> = {
         },
         effect: (state: GameState) => {
           const traps = state.buildings.traps;
-          const luck = getTotalLuck(state);
-          // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
-          const casualtyChance =
-            Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.CM * 0.05;
+          const success_chance = calculateSuccessChance(
+            state,
+            0.7 - traps * 0.05,
+            { type: 'luck', multiplier: 0.01 }
+          );
 
           let totalLost = 0;
+          let silverLoss = 0;
+          let foodLoss = 0;
+          let deathResult = {};
 
-          // Fewer potential casualties when hiding
-          const maxPotentialCasualties = Math.min(
-            4 +
-              Math.floor(state.buildings.woodenHut / 2) -
-              traps * 2 +
-              state.CM * 2,
-            state.current_population,
-          );
+          if (Math.random() < success_chance) {
+            // Success - cannibals leave without causing major damage
+            return {
+              _logMessage:
+                "The villagers hide in terror as the cannibals search the village. By dawn, the cannibals have left without finding anyone.",
+            };
+          } else {
+            const luck = getTotalLuck(state);
+            // Base 30% casualty chance, reduced by 1% per luck point, minimum 10%
+            const casualtyChance =
+              Math.max(0.1, 0.3 - luck * 0.01) - traps * 0.05 + state.CM * 0.05;
 
-          for (let i = 0; i < maxPotentialCasualties; i++) {
-            if (Math.random() < casualtyChance) {
-              totalLost++;
+            // Fewer potential casualties when hiding
+            const maxPotentialCasualties = Math.min(
+              4 +
+                Math.floor(state.buildings.woodenHut / 2) -
+                traps * 2 +
+                state.CM * 2,
+              state.current_population,
+            );
+
+            for (let i = 0; i < maxPotentialCasualties; i++) {
+              if (Math.random() < casualtyChance) {
+                totalLost++;
+              }
             }
+
+            // Higher resource losses when not defending
+            silverLoss = Math.min(
+              state.resources.silver,
+              Math.floor(Math.random() * 4) * 50 + 50 + state.CM * 200,
+            );
+            foodLoss = Math.min(
+              state.resources.food,
+              Math.floor(Math.random() * 6) * 100 + 100 + state.CM * 500,
+            );
+
+            // Apply deaths to villagers
+            deathResult = killVillagers(state, totalLost);
           }
-
-          // Higher resource losses when not defending
-          const silverLoss = Math.min(
-            state.resources.silver,
-            Math.floor(Math.random() * 4) * 50 + 50 + state.CM * 200,
-          );
-          const foodLoss = Math.min(
-            state.resources.food,
-            Math.floor(Math.random() * 6) * 100 + 100 + state.CM * 500,
-          );
-
-          // Apply deaths to villagers
-          const deathResult = killVillagers(state, totalLost);
 
           // Construct result message
           let message =
