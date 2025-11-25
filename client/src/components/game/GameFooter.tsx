@@ -77,6 +77,9 @@ export default function GameFooter() {
   const handleSetAuthDialogOpen = (isOpen: boolean) => {
     setAuthDialogOpen(isOpen);
     setGameAuthDialogOpen(isOpen);
+    if (isOpen) {
+      setAccountDropdownOpen(false);
+    }
   };
 
   const handleAuthSuccess = async () => {
@@ -86,6 +89,13 @@ export default function GameFooter() {
     // Reload game to get cloud save
     await loadGame();
   };
+
+  // Close dropdown when shop dialog opens
+  useEffect(() => {
+    if (shopDialogOpen) {
+      setAccountDropdownOpen(false);
+    }
+  }, [shopDialogOpen]);
 
   const handleSignOut = async () => {
     try {
@@ -173,8 +183,8 @@ export default function GameFooter() {
         onClose={() => setShopDialogOpen(false)}
       />
       {/* Account Dropdown - Absolute positioned in upper right */}
-      <div className="fixed top-2 right-2 z-30">
-        <DropdownMenu open={accountDropdownOpen} onOpenChange={setAccountDropdownOpen}>
+      <div className="fixed top-2 right-2 z-30 pointer-events-auto">
+        <DropdownMenu open={accountDropdownOpen} onOpenChange={setAccountDropdownOpen} modal={false}>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
