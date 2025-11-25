@@ -878,9 +878,10 @@ export default function SidePanel() {
           "clothing",
           "stats",
           "schematics",
+          "books",
         ].includes(sectionName);
       case "village":
-        return ["resources", "buildings", "population"].includes(sectionName);
+        return ["resources", "buildings", "population", "books"].includes(sectionName);
       case "forest":
         return ["resources", "relics", "blessings", "bonuses"].includes(
           sectionName,
