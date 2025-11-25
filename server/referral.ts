@@ -80,6 +80,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
         timestamp: Date.now(),
       }
     ],
+    referralCount: referrals.length + 1,
   };
 
   const { error: referrerUpdateError } = await adminClient
