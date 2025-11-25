@@ -1360,7 +1360,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildPillarOfClarity",
     label: "Pillar of Clarity",
     description: "Pure white obelisk that cleanses darkness from minds",
-    tooltipEffects: ["-40 Madness (One Time)"],
+    tooltipEffects: ["-40 Madness"],
     building: true,
     show_when: {
       1: {
