@@ -185,7 +185,7 @@ export default function GameFooter() {
               {authNotificationVisible &&
                 !authNotificationSeen &&
                 !currentUser && (
-                  <span className="absolute -top-[-4px] -right-[-0px] w-1 h-1 text-xs bg-red-900 rounded-full shop-notification-pulse" />
+                  <span className="absolute -top-1 -right-1 w-2 h-2 bg-red-600 rounded-full shop-notification-pulse" />
                 )}
             </Button>
           </DropdownMenuTrigger>
