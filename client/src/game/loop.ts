@@ -208,7 +208,7 @@ export function startGameLoop() {
           handleFreezingCheck();
           handleMadnessCheck();
           handleStrangerApproach();
-          
+
           // Check for events (including attack waves)
           currentState.checkEvents();
         } else {
@@ -229,15 +229,17 @@ export function startGameLoop() {
 }
 
 export function stopGameLoop() {
+  console.log('[LOOP] Stopping game loop');
+
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    useGameStore.setState({ isGameLoopActive: false });
   }
   if (loopProgressTimeoutId) {
     clearTimeout(loopProgressTimeoutId);
     loopProgressTimeoutId = null;
   }
+
   StateManager.clearUpdateTimer();
 }
 
