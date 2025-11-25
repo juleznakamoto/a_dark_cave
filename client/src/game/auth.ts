@@ -67,31 +67,56 @@ export async function processReferralAfterConfirmation(): Promise<void> {
 
   try {
     // Call server-side API to process referral (bypasses RLS)
-    const response = await fetch('/api/referral/process', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        newUserId: user.id,
-        referralCode: referralCode,
-      }),
-    });
+    // Add retry logic for dev environment timing issues
+    let attempts = 0;
+    const maxAttempts = 3;
+    
+    while (attempts < maxAttempts) {
+      try {
+        const response = await fetch('/api/referral/process', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            newUserId: user.id,
+            referralCode: referralCode,
+          }),
+        });
 
-    const result = await response.json();
+        // Check if we got HTML instead of JSON (server not ready)
+        const contentType = response.headers.get('content-type');
+        if (!contentType || !contentType.includes('application/json')) {
+          throw new Error('Server returned non-JSON response, retrying...');
+        }
 
-    if (!response.ok) {
-      console.error('[REFERRAL] Server error:', result.error);
-      return;
-    }
+        const result = await response.json();
 
-    if (result.success) {
-      console.log('[REFERRAL] Successfully processed on server');
-    } else {
-      console.warn('[REFERRAL] Processing skipped:', result.reason);
+        if (!response.ok) {
+          console.error('[REFERRAL] Server error:', result.error);
+          return;
+        }
+
+        if (result.success) {
+          console.log('[REFERRAL] Successfully processed on server');
+        } else {
+          console.warn('[REFERRAL] Processing skipped:', result.reason);
+        }
+        
+        // Success - exit retry loop
+        return;
+      } catch (fetchError) {
+        attempts++;
+        if (attempts >= maxAttempts) {
+          throw fetchError;
+        }
+        console.warn(`[REFERRAL] Attempt ${attempts} failed, retrying...`, fetchError);
+        // Wait before retrying (exponential backoff)
+        await new Promise(resolve => setTimeout(resolve, 1000 * attempts));
+      }
     }
   } catch (error) {
-    console.error('[REFERRAL] Error calling referral API:', error);
+    console.error('[REFERRAL] Error calling referral API after retries:', error);
   }
 }
 
