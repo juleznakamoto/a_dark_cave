@@ -109,6 +109,7 @@ export default function VillagePanel() {
         { id: "buildWizardTower", label: "Wizard Tower" },
         { id: "buildGrandBlacksmith", label: "Grand Blacksmith" },
         { id: "buildDarkEstate", label: "Dark Estate" },
+        { id: "buildPillarOfClarity", label: "Pillar of Clarity" },
         { id: "buildTraps", label: "Traps" },
         { id: "buildBastion", label: "Bastion" },
         { id: "buildWatchtower", label: "Watchtower" },
