@@ -179,13 +179,13 @@ export default function GameFooter() {
             <Button
               variant="ghost"
               size="xs"
-              className="px-2 py-1 text-xs hover relative bg-background/80 opacity-70 hover:opacity-100 backdrop-blur-sm border border-border"
+              className="px-2 py-1 text-xs hover relative bg-background/80 backdrop-blur-sm border border-border"
             >
-              Account
+              Profile
               {true &&
                 !false &&
                 !false && (
-                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
+                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100"/>
                 )}
             </Button>
           </DropdownMenuTrigger>
