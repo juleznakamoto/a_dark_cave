@@ -653,6 +653,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const currentActivatedPurchases = get().activatedPurchases || {};
     const currentFeastPurchases = get().feastPurchases || {};
     const currentReferrals = get().referrals || [];
+    const currentReferralCount = get().referralCount || 0;
+    const currentReferredUsers = get().referredUsers || [];
 
     // Check if Cruel Mode was activated
     const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
