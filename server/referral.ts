@@ -27,6 +27,12 @@ export async function processReferral(newUserId: string, referralCode: string) {
 
   console.log('[REFERRAL] Server-side processing:', { newUserId, referralCode });
 
+  // Prevent self-referral
+  if (newUserId === referralCode) {
+    console.warn('[REFERRAL] Self-referral attempt blocked');
+    return { success: false, reason: 'self_referral' };
+  }
+
   // Check if referral has already been processed
   const { data: newUserSave } = await adminClient
     .from('game_saves')
@@ -35,7 +41,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
     .maybeSingle();
 
   if (newUserSave?.game_state?.referralProcessed) {
-    console.log('[REFERRAL] Already processed');
+    console.log('[REFERRAL] Already processed for this user');
     return { success: false, reason: 'already_processed' };
   }
 
@@ -86,11 +92,11 @@ export async function processReferral(newUserId: string, referralCode: string) {
 
   const { error: referrerUpdateError } = await adminClient
     .from('game_saves')
-    .upsert({
-      user_id: referralCode,
+    .update({
       game_state: updatedReferrerState,
       updated_at: new Date().toISOString(),
-    });
+    })
+    .eq('user_id', referralCode);
 
   if (referrerUpdateError) {
     console.error('[REFERRAL] Error updating referrer:', referrerUpdateError);
@@ -139,12 +145,15 @@ export async function processReferral(newUserId: string, referralCode: string) {
     ].slice(-100),
   };
 
+  // Use upsert for new user since they might not have a save yet
   const { error: newUserUpdateError } = await adminClient
     .from('game_saves')
     .upsert({
       user_id: newUserId,
       game_state: updatedUserState,
       updated_at: new Date().toISOString(),
+    }, {
+      onConflict: 'user_id'
     });
 
   if (newUserUpdateError) {
