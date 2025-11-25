@@ -589,6 +589,13 @@ export default function AdminDashboard() {
             const bucketData = buckets.get(bucket)!;
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
+              
+              // Apply event type filters
+              if (selectedClickTypes.has('filter:cube') && cleanButton.startsWith('cube-')) return;
+              if (selectedClickTypes.has('filter:merchant') && cleanButton.startsWith('merchant-trade')) return;
+              if (selectedClickTypes.has('filter:assign') && (cleanButton.startsWith('assign') || cleanButton.startsWith('unassign'))) return;
+              if (selectedClickTypes.has('filter:choice') && (cleanButton.includes('_choice_') || cleanButton.includes('-choice-'))) return;
+              
               // Only include if selectedClickTypes is empty (all) or contains this button
               if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
                 bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
@@ -1145,8 +1152,88 @@ export default function AdminDashboard() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="mb-4 space-y-2">
+                  <div className="flex gap-4 flex-wrap">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!selectedClickTypes.has('filter:cube')}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedClickTypes);
+                          if (!e.target.checked) {
+                            newSet.add('filter:cube');
+                          } else {
+                            newSet.delete('filter:cube');
+                          }
+                          setSelectedClickTypes(newSet);
+                        }}
+                        className="cursor-pointer w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">Show Cube Events</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!selectedClickTypes.has('filter:merchant')}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedClickTypes);
+                          if (!e.target.checked) {
+                            newSet.add('filter:merchant');
+                          } else {
+                            newSet.delete('filter:merchant');
+                          }
+                          setSelectedClickTypes(newSet);
+                        }}
+                        className="cursor-pointer w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">Show Merchant Trades</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!selectedClickTypes.has('filter:assign')}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedClickTypes);
+                          if (!e.target.checked) {
+                            newSet.add('filter:assign');
+                          } else {
+                            newSet.delete('filter:assign');
+                          }
+                          setSelectedClickTypes(newSet);
+                        }}
+                        className="cursor-pointer w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">Show Assign/Unassign Events</span>
+                    </label>
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={!selectedClickTypes.has('filter:choice')}
+                        onChange={(e) => {
+                          const newSet = new Set(selectedClickTypes);
+                          if (!e.target.checked) {
+                            newSet.add('filter:choice');
+                          } else {
+                            newSet.delete('filter:choice');
+                          }
+                          setSelectedClickTypes(newSet);
+                        }}
+                        className="cursor-pointer w-4 h-4"
+                      />
+                      <span className="text-sm font-medium">Show Event Choices</span>
+                    </label>
+                  </div>
+                </div>
                 <div className="flex gap-4 mb-4 flex-wrap">
-                  {getAllButtonNames().map(buttonName => (
+                  {getAllButtonNames()
+                    .filter(buttonName => {
+                      if (selectedClickTypes.has('filter:cube') && buttonName.startsWith('cube-')) return false;
+                      if (selectedClickTypes.has('filter:merchant') && buttonName.startsWith('merchant-trade')) return false;
+                      if (selectedClickTypes.has('filter:assign') && (buttonName.startsWith('assign') || buttonName.startsWith('unassign'))) return false;
+                      if (selectedClickTypes.has('filter:choice') && (buttonName.includes('_choice_') || buttonName.includes('-choice-'))) return false;
+                      return true;
+                    })
+                    .map(buttonName => (
                     <label key={buttonName} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
