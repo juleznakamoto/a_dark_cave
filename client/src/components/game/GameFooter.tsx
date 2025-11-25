@@ -154,7 +154,8 @@ export default function GameFooter() {
     if ((referralCount || 0) >= 10) {
       toast({
         title: "Referral limit reached",
-        description: "You have already invited 10 friends. For collaboration requests, click on Feedback.",
+        description:
+          "You have already invited 10 friends. For collaboration requests, click on Feedback.",
         variant: "destructive",
       });
       return;
@@ -184,18 +185,22 @@ export default function GameFooter() {
       />
       {/* Account Dropdown - Absolute positioned in upper right */}
       <div className="fixed top-2 right-2 z-30 pointer-events-auto">
-        <DropdownMenu open={accountDropdownOpen} onOpenChange={setAccountDropdownOpen} modal={false}>
+        <DropdownMenu
+          open={accountDropdownOpen}
+          onOpenChange={setAccountDropdownOpen}
+          modal={false}
+        >
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
               size="xs"
-              className="px-2 py-1 text-xs hover relative bg-background/80 backdrop-blur-sm border border-border"
+              className="px-2 py-1 text-xs hover relative bg-background/80  text-neutral-300 backdrop-blur-sm border border-border"
             >
               Profile
-              {true &&
-                !false &&
-                !false && (
-                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100"/>
+              {authNotificationVisible &&
+                !authNotificationSeen &&
+                !currentUser && (
+                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
                 )}
             </Button>
           </DropdownMenuTrigger>
@@ -331,7 +336,7 @@ export default function GameFooter() {
                 onClick={() => setShowEndScreen(true)}
                 className="px-1 py-1 text-xs hover"
               >
-                End Screen
+                E S
               </Button>
             )}
             {cruelMode && (
