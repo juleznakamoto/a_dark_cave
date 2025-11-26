@@ -19,7 +19,10 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useMobileButtonTooltip, useMobileTooltip } from "@/hooks/useMobileTooltip";
+import {
+  useMobileButtonTooltip,
+  useMobileTooltip,
+} from "@/hooks/useMobileTooltip";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -78,12 +81,18 @@ export default function MerchantDialog({
             {event.title || "Strange Encounter"}
             {hasBookOfWar && discount > 0 && (
               <TooltipProvider>
-                <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
+                <Tooltip
+                  open={discountTooltip.isTooltipOpen("merchant-discount")}
+                >
                   <TooltipTrigger asChild>
                     <span
-                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block ml-1"
-                      style={{ fontSize: '16px' }}
-                      onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
+                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block mb-[1px] text-[20px]"
+                      onClick={(e) =>
+                        discountTooltip.handleTooltipClick(
+                          "merchant-discount",
+                          e,
+                        )
+                      }
                     >
                       ✧
                     </span>
@@ -108,8 +117,7 @@ export default function MerchantDialog({
             {eventChoices
               .filter(
                 (choice) =>
-                  choice.id.startsWith("trade_") &&
-                  choice.id !== "say_goodbye",
+                  choice.id.startsWith("trade_") && choice.id !== "say_goodbye",
               )
               .map((choice) => {
                 // Check if choice can be afforded (for merchant trades)
@@ -117,29 +125,35 @@ export default function MerchantDialog({
                 const canAfford = Object.keys(testResult).length > 0;
 
                 // Evaluate label if it's a function
-                const labelText = typeof choice.label === 'function'
-                  ? choice.label(gameState)
-                  : choice.label;
+                const labelText =
+                  typeof choice.label === "function"
+                    ? choice.label(gameState)
+                    : choice.label;
 
                 // Evaluate cost if it's a function
-                const costText = typeof choice.cost === 'function'
-                  ? choice.cost(gameState)
-                  : choice.cost;
+                const costText =
+                  typeof choice.cost === "function"
+                    ? choice.cost(gameState)
+                    : choice.cost;
 
                 const isPurchased = purchasedItems.has(choice.id);
-                const isDisabled = (timeRemaining !== null && timeRemaining <= 0) ||
-                                   fallbackExecutedRef.current ||
-                                   isPurchased ||
-                                   !canAfford;
-
+                const isDisabled =
+                  (timeRemaining !== null && timeRemaining <= 0) ||
+                  fallbackExecutedRef.current ||
+                  isPurchased ||
+                  !canAfford;
 
                 const buttonContent = (
                   <Button
                     key={choice.id}
-                    onClick={!mobileTooltip.isMobile ? (e) => {
-                      e.stopPropagation();
-                      onChoice(choice.id);
-                    } : undefined}
+                    onClick={
+                      !mobileTooltip.isMobile
+                        ? (e) => {
+                            e.stopPropagation();
+                            onChoice(choice.id);
+                          }
+                        : undefined
+                    }
                     variant="outline"
                     className={`w-full justify-center text-xs h-10 ${isPurchased ? "opacity-30" : ""}`}
                     disabled={isDisabled}
@@ -158,11 +172,58 @@ export default function MerchantDialog({
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                         <TooltipTrigger asChild>
                           <div
-                            onClick={(e) => mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e)}
-                            onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
-                            onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
-                            onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart(choice.id, isDisabled, false, e) : undefined}
-                            onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
+                            onClick={(e) =>
+                              mobileTooltip.handleWrapperClick(
+                                choice.id,
+                                isDisabled,
+                                false,
+                                e,
+                              )
+                            }
+                            onMouseDown={
+                              mobileTooltip.isMobile
+                                ? (e) =>
+                                    mobileTooltip.handleMouseDown(
+                                      choice.id,
+                                      isDisabled,
+                                      false,
+                                      e,
+                                    )
+                                : undefined
+                            }
+                            onMouseUp={
+                              mobileTooltip.isMobile
+                                ? (e) =>
+                                    mobileTooltip.handleMouseUp(
+                                      choice.id,
+                                      isDisabled,
+                                      () => onChoice(choice.id),
+                                      e,
+                                    )
+                                : undefined
+                            }
+                            onTouchStart={
+                              mobileTooltip.isMobile
+                                ? (e) =>
+                                    mobileTooltip.handleTouchStart(
+                                      choice.id,
+                                      isDisabled,
+                                      false,
+                                      e,
+                                    )
+                                : undefined
+                            }
+                            onTouchEnd={
+                              mobileTooltip.isMobile
+                                ? (e) =>
+                                    mobileTooltip.handleTouchEnd(
+                                      choice.id,
+                                      isDisabled,
+                                      () => onChoice(choice.id),
+                                      e,
+                                    )
+                                : undefined
+                            }
                           >
                             {buttonContent}
                           </div>
@@ -205,10 +266,7 @@ export default function MerchantDialog({
         {event.isTimedChoice && timeRemaining !== null && (
           <div className="mt-4 space-y-2">
             <div className="flex justify-between text-sm text-muted-foreground"></div>
-            <Progress
-              value={progress}
-              className="h-2 timer-progress"
-            />
+            <Progress value={progress} className="h-2 timer-progress" />
           </div>
         )}
       </DialogPrimitive.Content>
