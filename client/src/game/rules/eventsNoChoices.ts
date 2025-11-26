@@ -11,7 +11,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     message: "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
     triggered: false,
     priority: 10,
-    timeProbability: 0.5,
+    timeProbability: 0.01,
     repeatable: false,
     effect: (state: GameState) => ({
       flags: {
@@ -29,14 +29,14 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     id: "bastionBecomesFortress",
     condition: (state: GameState) =>
       state.buildings.fortifiedMoat >= 1 &&
-      state.buildings.palisades >= 2 &&
-      state.buildings.watchtower >= 2 &&
+      state.buildings.palisades >= 3 &&
+      state.buildings.watchtower >= 3 &&
       !state.flags.hasFortress,
     triggerType: "time",
-    message: "Your bastion has been fortified into a mighty fortress!",
+    message: "Your bastion has grown into a mighty fortress of stone and steel.",
     triggered: false,
     priority: 10,
-    timeProbability: 0.5,
+    timeProbability: 0.01,
     repeatable: false,
     effect: (state: GameState) => ({
       flags: {
