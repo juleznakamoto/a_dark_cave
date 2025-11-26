@@ -1,7 +1,7 @@
 
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useGameStore } from "@/game/state";
-import { useToast } from "@/hooks/use-toast";
+import { LogEntry } from "@/game/rules/events";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -23,17 +23,18 @@ const SOCIAL_PLATFORMS = [
 ];
 
 export default function SocialMediaRewards() {
-  const { social_media_rewards, resources, updateResource } = useGameStore();
-  const { toast } = useToast();
+  const { social_media_rewards, updateResource, addLogEntry } = useGameStore();
 
-  const handleSocialFollow = (platformId: string, url: string, reward: number) => {
+  const handleSocialFollow = (platformId: string, url: string, reward: number, platformName: string) => {
     // Check if already claimed
     if (social_media_rewards[platformId]?.claimed) {
-      toast({
-        title: "Already claimed",
-        description: "You've already claimed this reward!",
-        variant: "destructive",
-      });
+      const alreadyClaimedLog: LogEntry = {
+        id: `social-reward-already-claimed-${platformId}-${Date.now()}`,
+        message: "You've already claimed this reward!",
+        timestamp: Date.now(),
+        type: "system",
+      };
+      addLogEntry(alreadyClaimedLog);
       return;
     }
 
@@ -43,7 +44,7 @@ export default function SocialMediaRewards() {
     // Award the gold
     updateResource("gold", reward);
 
-    // Mark as claimed
+    // Mark as claimed and persist in state
     useGameStore.setState((state) => ({
       social_media_rewards: {
         ...state.social_media_rewards,
@@ -54,10 +55,18 @@ export default function SocialMediaRewards() {
       },
     }));
 
-    toast({
-      title: "Reward claimed!",
-      description: `You received ${reward} Gold for following us!`,
-    });
+    // Add reward message to event log
+    const rewardLog: LogEntry = {
+      id: `social-reward-claimed-${platformId}-${Date.now()}`,
+      message: `You received ${reward} Gold for following us on ${platformName}!`,
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    };
+    addLogEntry(rewardLog);
   };
 
   return (
@@ -68,7 +77,7 @@ export default function SocialMediaRewards() {
         return (
           <DropdownMenuItem
             key={platform.id}
-            onClick={() => handleSocialFollow(platform.id, platform.url, platform.reward)}
+            onClick={() => handleSocialFollow(platform.id, platform.url, platform.reward, platform.name)}
             disabled={isClaimed}
             className={isClaimed ? "opacity-50 cursor-not-allowed" : ""}
           >
