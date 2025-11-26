@@ -509,6 +509,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
+      console.log(`[executeAction] Setting cooldown for ${actionId}:`, {
+        initialDuration,
+        initialDurationSeconds: initialDuration / 1000,
+        resultStateUpdates: result.stateUpdates.cooldowns,
+      });
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
@@ -624,7 +629,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setCooldown: (action: string, duration: number) => {
     set((state) => {
-      const endTime = Date.now() + duration;
+      const now = Date.now();
+      const endTime = now + duration;
+      console.log(`[setCooldown] ${action}:`, {
+        duration,
+        now,
+        endTime,
+        endTimeReadable: new Date(endTime).toISOString(),
+        willExpireIn: duration / 1000 + 's',
+      });
       const newState = {
         cooldowns: { ...state.cooldowns, [action]: endTime },
         cooldownDurations: { ...state.cooldownDurations, [action]: duration },
@@ -640,10 +653,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const newCooldownDurations = { ...state.cooldownDurations };
 
       for (const key in newCooldowns) {
+        const endTime = newCooldowns[key];
+        const remaining = endTime - now;
+        
         // If cooldown has expired, remove it
-        if (newCooldowns[key] <= now) {
+        if (endTime <= now) {
+          console.log(`[tickCooldowns] Removing expired cooldown: ${key}`, {
+            endTime,
+            now,
+            wasExpiredBy: -remaining + 'ms',
+          });
           delete newCooldowns[key];
           delete newCooldownDurations[key];
+        } else {
+          console.log(`[tickCooldowns] ${key} still active:`, {
+            remaining: remaining / 1000 + 's',
+            endTime,
+            now,
+          });
         }
       }
       return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations };

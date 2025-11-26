@@ -61,6 +61,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const currentCooldown = Math.max(0, cooldownEndTime - now);
   const isCoolingDown = currentCooldown > 0;
 
+  // Log cooldown state for debugging
+  if (cooldownEndTime > 0 || isCoolingDown) {
+    console.log(`[CooldownButton] ${actionId} render:`, {
+      cooldownEndTime,
+      initialCooldown,
+      now,
+      currentCooldown,
+      isCoolingDown,
+      remainingSeconds: currentCooldown / 1000,
+    });
+  }
+
   // Track first render for transition
   useEffect(() => {
     if (isCoolingDown) {
