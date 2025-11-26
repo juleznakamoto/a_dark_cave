@@ -154,13 +154,13 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.0,
-        { type: "strength", multiplier: 0.00 },
-        { type: "knowledge", multiplier: 0.00 },
+        0.15,
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 900,
+    cooldown: 90,
   },
 };
 
