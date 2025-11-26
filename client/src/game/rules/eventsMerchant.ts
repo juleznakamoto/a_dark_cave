@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
@@ -911,14 +910,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   if (knowledge >= 50) discount = 0.25;
 
   console.log('[MERCHANT] Total buy trades:', buyTrades.length);
-  
+
   // Check which buy trades pass the condition
   const filteredBuyTrades = buyTrades.filter((trade) => {
     const passes = trade.condition(state);
     console.log('[MERCHANT] Buy trade', trade.id, 'condition:', passes);
     return passes;
   });
-  
+
   console.log('[MERCHANT] Filtered buy trades:', filteredBuyTrades.length);
 
   // Select 3 buy trades
@@ -939,7 +938,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: trade.id,
-        label: trade.label,
+        label: `Buy ${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
@@ -957,14 +956,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     });
 
   console.log('[MERCHANT] Total sell trades:', sellTrades.length);
-  
+
   // Check which sell trades pass the condition
   const filteredSellTrades = sellTrades.filter((trade) => {
     const passes = trade.condition(state);
     console.log('[MERCHANT] Sell trade', trade.id, 'condition:', passes);
     return passes;
   });
-  
+
   console.log('[MERCHANT] Filtered sell trades:', filteredSellTrades.length);
 
   // Select 3 sell trades
@@ -977,15 +976,24 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
       const reward = Math.ceil(rewardOption.amount * (1 + discount));
 
+      // Format reward resource name
+      const rewardResourceName = rewardOption.resource
+        .replace(/_/g, ' ')
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+
       console.log('[MERCHANT] Created sell trade:', {
         id: trade.id,
         label: trade.label,
+        take: trade.take,
+        rewardResource: rewardOption.resource,
         cost: `${trade.takeAmount} ${trade.take}`,
       });
 
       return {
         id: trade.id,
-        label: trade.label,
+        label: `Buy ${reward} ${rewardResourceName}`,
         cost: `${trade.takeAmount} ${trade.take}`,
         effect: (state: GameState) => {
           if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
@@ -1003,7 +1011,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     });
 
   console.log('[MERCHANT] Total tool trades:', toolTrades.length);
-  
+
   // Check which tool trades pass filters
   const filteredToolTrades = toolTrades.filter((trade) => {
     const conditionPasses = trade.condition(state);
@@ -1012,16 +1020,16 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       (trade.give === "weapon" && state.weapons[trade.giveItem as keyof typeof state.weapons]) ||
       (trade.give === "schematic" && state.schematics[trade.giveItem as keyof typeof state.schematics]) ||
       (trade.give === "book" && state.books[trade.giveItem as keyof typeof state.books]);
-    
+
     console.log('[MERCHANT] Tool trade', trade.id, {
       conditionPasses,
       alreadyOwned,
       passes: conditionPasses && !alreadyOwned,
     });
-    
+
     return conditionPasses && !alreadyOwned;
   });
-  
+
   console.log('[MERCHANT] Filtered tool trades:', filteredToolTrades.length);
 
   // Select 1 tool trade
@@ -1040,7 +1048,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: trade.id,
-        label: trade.label,
+        label: `Buy ${trade.label}`,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
