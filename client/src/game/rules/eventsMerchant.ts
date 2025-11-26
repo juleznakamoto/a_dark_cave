@@ -965,14 +965,14 @@ function selectTrades(
       primaryResource = trade.take;
       primaryAmount = trade.takeAmount;
       validOptions = trade.rewards.filter((r: any) => r.resource !== trade.take);
-      
-      // Filter out silver/gold if we've already used them (sell trades only)
-      validOptions = validOptions.filter((r: any) => {
-        if (r.resource === 'silver' && usedRewardTypes.has('silver')) return false;
-        if (r.resource === 'gold' && usedRewardTypes.has('gold')) return false;
-        return true;
-      });
     }
+    
+    // Filter out silver/gold if we've already used them
+    validOptions = validOptions.filter((option: any) => {
+      if (option.resource === 'silver' && usedRewardTypes.has('silver')) return false;
+      if (option.resource === 'gold' && usedRewardTypes.has('gold')) return false;
+      return true;
+    });
 
     // Skip this trade if no valid options remain
     if (validOptions.length === 0) continue;
@@ -990,18 +990,16 @@ function selectTrades(
     
     usedResourcePairs.add(resourcePair);
 
-    // Track silver and gold usage (sell trades only)
-    if (!isBuyTrade) {
-      if (secondaryResource === 'silver') usedRewardTypes.add('silver');
-      if (secondaryResource === 'gold') usedRewardTypes.add('gold');
-    }
+    // Track silver and gold usage
+    if (secondaryResource === 'silver') usedRewardTypes.add('silver');
+    if (secondaryResource === 'gold') usedRewardTypes.add('gold');
 
     // Calculate the secondary amount with discount
     let rawAmount = Math.ceil(selectedOption.amount * (isBuyTrade ? (1 - discount) : (1 + discount)));
     
-    // Apply 25% reduction for silver and gold rewards (sell trades only)
+    // Apply 25% reduction for silver and gold rewards
     if (!isBuyTrade && (secondaryResource === 'silver' || secondaryResource === 'gold')) {
-      rawAmount = Math.ceil(rawAmount * 0.25);
+      rawAmount = Math.ceil(rawAmount * 0.75);
     }
     
     secondaryAmount = roundCost(rawAmount);
