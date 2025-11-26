@@ -2,6 +2,20 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 
+// Round cost according to specified rules
+function roundCost(cost: number): number {
+  if (cost < 100) {
+    // Round down to next 5-multiple
+    return Math.floor(cost / 5) * 5;
+  } else if (cost < 1000) {
+    // Round down to next 10-multiple
+    return Math.floor(cost / 10) * 10;
+  } else {
+    // Round down to next 50-multiple
+    return Math.floor(cost / 50) * 50;
+  }
+}
+
 // Define trade configurations based on progression tiers
 const buyTrades = [
   // Early tier (woodenHuts >= 4 && <= 9)
@@ -928,7 +942,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       // Filter out cost options that are the same as the resource being bought
       const validCosts = trade.costs.filter(c => c.resource !== trade.give);
       const costOption = validCosts[Math.floor(Math.random() * validCosts.length)];
-      const cost = Math.ceil(costOption.amount * (1 - discount));
+      const rawCost = Math.ceil(costOption.amount * (1 - discount));
+      const cost = roundCost(rawCost);
 
       console.log('[MERCHANT] Created buy trade:', {
         id: trade.id,
@@ -974,7 +989,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       // Filter out reward options that are the same as the resource being sold
       const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
       const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
-      const reward = Math.ceil(rewardOption.amount * (1 + discount));
+      const rawReward = Math.ceil(rewardOption.amount * (1 + discount));
+      const reward = roundCost(rawReward);
 
       // Format take resource name for display
       const takeResourceName = trade.take
@@ -1038,7 +1054,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     .slice(0, 1)
     .map((trade) => {
       const costOption = trade.costs[0];
-      const cost = Math.ceil(costOption.amounts[0] * (1 - discount));
+      const rawCost = Math.ceil(costOption.amounts[0] * (1 - discount));
+      const cost = roundCost(rawCost);
 
       console.log('[MERCHANT] Created tool trade:', {
         id: trade.id,
