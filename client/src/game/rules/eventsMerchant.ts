@@ -1320,13 +1320,15 @@ function selectTrades(
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
 ): EventChoice[] {
-  const shuffled = trades.sort(() => Math.random() - 0.5);
+  const shuffled = [...trades].sort(() => Math.random() - 0.5);
   const selected: EventChoice[] = [];
-  let tradeIndex = 0;
+  let attempts = 0;
+  const maxAttempts = shuffled.length * 3; // Allow multiple passes
 
-  while (selected.length < numTrades && tradeIndex < shuffled.length) {
+  while (selected.length < numTrades && attempts < maxAttempts) {
+    const tradeIndex = attempts % shuffled.length;
     const trade = shuffled[tradeIndex];
-    tradeIndex++;
+    attempts++;
 
     // Define buyResource and sellResource at the beginning
     let buyResource: string;
