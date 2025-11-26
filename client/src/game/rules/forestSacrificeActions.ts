@@ -68,6 +68,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     tooltipEffects: ["-1 Madness"],
     show_when: {
       "buildings.blackMonolith": 1,
+      "buildings.pillarOfClarity": 0,
       "!story.seen.animalsSacrificeMaxed": true,
     },
     cost: {
@@ -88,6 +89,7 @@ export const forestSacrificeActions: Record<string, Action> = {
     tooltipEffects: ["-2 Madness"],
     show_when: {
       "flags.humanSacrificeUnlocked": true,
+      "buildings.pillarOfClarity": 0,
       "!story.seen.humansSacrificeMaxed": true,
       "buildings.blackMonolith": 1,
     },
