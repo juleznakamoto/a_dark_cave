@@ -895,6 +895,11 @@ const toolTrades = [
 
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
+  console.log('[MERCHANT] Generating merchant choices', {
+    woodenHuts: state.buildings.woodenHut,
+    stoneHuts: state.buildings.stoneHut,
+  });
+
   const knowledge = getTotalKnowledge(state);
 
   // Calculate stepped discount: 5% per 10 knowledge, max 25%
@@ -905,14 +910,30 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   if (knowledge >= 40) discount = 0.2;
   if (knowledge >= 50) discount = 0.25;
 
+  console.log('[MERCHANT] Total buy trades:', buyTrades.length);
+  
+  // Check which buy trades pass the condition
+  const filteredBuyTrades = buyTrades.filter((trade) => {
+    const passes = trade.condition(state);
+    console.log('[MERCHANT] Buy trade', trade.id, 'condition:', passes);
+    return passes;
+  });
+  
+  console.log('[MERCHANT] Filtered buy trades:', filteredBuyTrades.length);
+
   // Select 3 buy trades
-  const availableBuyTrades = buyTrades
-    .filter((trade) => trade.condition(state))
+  const availableBuyTrades = filteredBuyTrades
     .sort(() => Math.random() - 0.5)
     .slice(0, 3)
     .map((trade) => {
       const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
       const cost = Math.ceil(costOption.amount * (1 - discount));
+
+      console.log('[MERCHANT] Created buy trade:', {
+        id: trade.id,
+        label: trade.label,
+        cost: `${cost} ${costOption.resource}`,
+      });
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`,
@@ -933,14 +954,30 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
+  console.log('[MERCHANT] Total sell trades:', sellTrades.length);
+  
+  // Check which sell trades pass the condition
+  const filteredSellTrades = sellTrades.filter((trade) => {
+    const passes = trade.condition(state);
+    console.log('[MERCHANT] Sell trade', trade.id, 'condition:', passes);
+    return passes;
+  });
+  
+  console.log('[MERCHANT] Filtered sell trades:', filteredSellTrades.length);
+
   // Select 2 sell trades
-  const availableSellTrades = sellTrades
-    .filter((trade) => trade.condition(state))
+  const availableSellTrades = filteredSellTrades
     .sort(() => Math.random() - 0.5)
     .slice(0, 2)
     .map((trade) => {
       const rewardOption = trade.rewards[Math.floor(Math.random() * trade.rewards.length)];
       const reward = Math.ceil(rewardOption.amount * (1 + discount));
+
+      console.log('[MERCHANT] Created sell trade:', {
+        id: trade.id,
+        label: trade.label,
+        cost: `${trade.takeAmount} ${trade.take}`,
+      });
 
       return {
         id: `${trade.id}_${Date.now()}_${Math.random()}`,
@@ -961,21 +998,41 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
+  console.log('[MERCHANT] Total tool trades:', toolTrades.length);
+  
+  // Check which tool trades pass filters
+  const filteredToolTrades = toolTrades.filter((trade) => {
+    const conditionPasses = trade.condition(state);
+    const alreadyOwned = 
+      (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) ||
+      (trade.give === "weapon" && state.weapons[trade.giveItem as keyof typeof state.weapons]) ||
+      (trade.give === "schematic" && state.schematics[trade.giveItem as keyof typeof state.schematics]) ||
+      (trade.give === "book" && state.books[trade.giveItem as keyof typeof state.books]);
+    
+    console.log('[MERCHANT] Tool trade', trade.id, {
+      conditionPasses,
+      alreadyOwned,
+      passes: conditionPasses && !alreadyOwned,
+    });
+    
+    return conditionPasses && !alreadyOwned;
+  });
+  
+  console.log('[MERCHANT] Filtered tool trades:', filteredToolTrades.length);
+
   // Select 1 tool trade
-  const availableToolTrades = toolTrades
-    .filter((trade) => {
-      if (!trade.condition(state)) return false;
-      if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) return false;
-      if (trade.give === "weapon" && state.weapons[trade.giveItem as keyof typeof state.weapons]) return false;
-      if (trade.give === "schematic" && state.schematics[trade.giveItem as keyof typeof state.schematics]) return false;
-      if (trade.give === "book" && state.books[trade.giveItem as keyof typeof state.books]) return false;
-      return true;
-    })
+  const availableToolTrades = filteredToolTrades
     .sort(() => Math.random() - 0.5)
     .slice(0, 1)
     .map((trade) => {
       const costOption = trade.costs[0];
       const cost = Math.ceil(costOption.amounts[0] * (1 - discount));
+
+      console.log('[MERCHANT] Created tool trade:', {
+        id: trade.id,
+        label: trade.label,
+        cost: `${cost} ${costOption.resource}`,
+      });
 
       return {
         id: trade.id,
@@ -1008,7 +1065,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
-  return [
+  const finalChoices = [
     ...availableBuyTrades,
     ...availableSellTrades,
     ...availableToolTrades,
@@ -1022,6 +1079,10 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       },
     },
   ];
+
+  console.log('[MERCHANT] Final choices generated:', finalChoices.length, finalChoices.map(c => ({ id: c.id, label: c.label })));
+
+  return finalChoices;
 }
 
 export const merchantEvents: Record<string, GameEvent> = {
