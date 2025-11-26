@@ -1435,8 +1435,9 @@ function selectTrades(
     //  Apply Knowledge Discount
     sellAmount = Math.ceil(sellAmount * (1 - discount));
 
-    // Round number
-    sellAmount = roundCost(sellAmount);
+    // Round numbers
+    sellAmount = roundCost(sellAmount, "up");
+    buyAmount = roundCost(buyAmount, "down");
 
     // Format resource names for display
     const formatResourceName = (res: string) =>
