@@ -89,7 +89,7 @@ export default function MerchantDialog({
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs whitespace-nowrap">
-                      {discount}% Discount
+                      {discount}% Discount due to Knowledge
                     </div>
                   </TooltipContent>
                 </Tooltip>
