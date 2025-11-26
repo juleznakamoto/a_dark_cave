@@ -495,6 +495,7 @@ export const actionSchema = z.object({
   statsEffects: z.record(z.string(), z.number()).optional(),
   unlocks: z.array(z.string()).optional(),
   craftingCostReduction: z.number().optional(),
+  success_chance: z.function().args(z.any()).returns(z.number()).optional(),
   cooldown: z.number().optional(),
 });
 
