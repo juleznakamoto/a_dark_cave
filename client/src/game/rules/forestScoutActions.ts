@@ -203,7 +203,6 @@ export function handleLayTrap(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on luck
-  const luck = getTotalLuck(state);
   const successChance = calculateSuccessChance(
     state,
     0.2,
@@ -295,8 +294,6 @@ export function handleCastleRuins(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = getTotalStrength(state);
-  const knowledge = getTotalKnowledge(state);
   const successChance = calculateSuccessChance(
     state,
     0.15,
@@ -388,8 +385,6 @@ export function handleHillGrave(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = getTotalStrength(state);
-  const knowledge = getTotalKnowledge(state);
   const successChance = calculateSuccessChance(
     state,
     0.2,
@@ -461,8 +456,6 @@ export function handleSunkenTemple(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = getTotalStrength(state);
-  const knowledge = getTotalKnowledge(state);
   const successChance = calculateSuccessChance(
     state,
     0.25,
@@ -616,38 +609,3 @@ export function handleDamagedTower(
 
   return result;
 }
-
-// Add the new wizard event and weapon craft action
-export const additionalActions: Record<string, Action> = {
-  wizardSaysBloodstoneStaff: {
-    id: "wizardSaysBloodstoneStaff",
-    label: "Wizard says: 'No, we can craft the Bloodstone Staff!'",
-    show_when: {
-      "story.seen.sunkenTempleExplored": true,
-      "!story.seen.wizardSaidBloodstoneStaff": true,
-    },
-    cost: {},
-    effects: {
-      "story.seen.wizardSaidBloodstoneStaff": true,
-    },
-    cooldown: 0,
-  },
-  craftBloodstoneStaff: {
-    id: "craftBloodstoneStaff",
-    label: "Craft Bloodstone Staff",
-    show_when: {
-      "story.seen.wizardSaidBloodstoneStaff": true,
-      "resources.bloodstone": ">= 50",
-      "resources.wood": ">= 1000",
-    },
-    cost: {
-      "resources.bloodstone": 50,
-      "resources.wood": 2500,
-    },
-    effects: {
-      "story.seen.bloodstoneStaffCrafted": true,
-      "weapons.bloodstone_staff": true,
-    },
-    cooldown: 60,
-  },
-};
