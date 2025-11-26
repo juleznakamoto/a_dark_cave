@@ -1653,7 +1653,8 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
     title: "Drained Bodies",
     message: (state: GameState) => {
-      const deaths = [2, 4, 6, 8][Math.floor(Math.random() * 4)];
+      // Get the deaths from the event's pre-calculated value
+      const deaths = (state as any)._eventDeaths || [2, 4, 6, 8][Math.floor(Math.random() * 4)];
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
       
       if (isFirstTime) {
@@ -1666,9 +1667,19 @@ export const choiceEvents: Record<string, GameEvent> = {
     priority: 4,
     repeatable: true,
     effect: (state: GameState) => {
-      // Kill villagers immediately when event triggers
+      // Calculate deaths once and store for message to use
       const deaths = [2, 4, 6, 8][Math.floor(Math.random() * 4)];
-      return killVillagers(state, deaths);
+      (state as any)._eventDeaths = deaths;
+      
+      // Kill villagers immediately when event triggers
+      const result = killVillagers(state, deaths);
+      
+      // Clean up temp storage after a delay
+      setTimeout(() => {
+        delete (state as any)._eventDeaths;
+      }, 100);
+      
+      return result;
     },
     choices: [
       {
