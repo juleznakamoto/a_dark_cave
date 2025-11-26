@@ -1,11 +1,6 @@
 import { Action, GameState } from "@shared/schema";
 import { ActionResult } from "@/game/actions";
 import { applyActionEffects } from "@/game/rules";
-import {
-  getTotalLuck,
-  getTotalStrength,
-  getTotalKnowledge,
-} from "@/game/rules/effectsCalculation";
 import { killVillagers } from "@/game/stateHelpers";
 import { calculateSuccessChance } from "./events";
 
