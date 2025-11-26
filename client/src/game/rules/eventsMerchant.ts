@@ -960,10 +960,20 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
   console.log('[MERCHANT] Filtered buy trades:', filteredBuyTrades.length);
 
-  // Select 3 buy trades
+  // Determine number of buy trades based on buildings
+  let numBuyTrades = 2; // Default: 2 buy trades
+  if (state.buildings.grandBazaar >= 1) {
+    numBuyTrades = 3; // Grand Bazaar: 3 buy trades
+  } else if (state.buildings.tradePost >= 1) {
+    numBuyTrades = 2; // Trade Post: 2 buy trades
+  } else if (state.buildings.merchantsGuild >= 1) {
+    numBuyTrades = 3; // Merchant's Guild: 3 buy trades
+  }
+
+  // Select buy trades based on progression
   const availableBuyTrades = filteredBuyTrades
     .sort(() => Math.random() - 0.5)
-    .slice(0, 3)
+    .slice(0, numBuyTrades)
     .map((trade) => {
       // Filter out cost options that are the same as the resource being bought
       const validCosts = trade.costs.filter(c => c.resource !== trade.give);
@@ -1007,10 +1017,18 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
   console.log('[MERCHANT] Filtered sell trades:', filteredSellTrades.length);
 
-  // Select 3 sell trades
+  // Determine number of sell trades based on buildings
+  let numSellTrades = 1; // Default: 1 sell trade
+  if (state.buildings.merchantsGuild >= 1) {
+    numSellTrades = 3; // Merchant's Guild: 3 sell trades
+  } else if (state.buildings.grandBazaar >= 1 || state.buildings.tradePost >= 1) {
+    numSellTrades = 2; // Trade Post or Grand Bazaar: 2 sell trades
+  }
+
+  // Select sell trades based on progression
   const availableSellTrades = filteredSellTrades
     .sort(() => Math.random() - 0.5)
-    .slice(0, 3)
+    .slice(0, numSellTrades)
     .map((trade) => {
       // Filter out reward options that are the same as the resource being sold
       const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
