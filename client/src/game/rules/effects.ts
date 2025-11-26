@@ -333,7 +333,12 @@ export const toolEffects: Record<string, EffectDefinition> = {
     description: "The necromancer's cursed tool, unnaturally efficient at harvesting",
     bonuses: {
       actionBonuses: {
-        
+        hunter: {
+          resourceBonus: {
+            fur: 1,
+            bones: 1,
+          },
+        },
       },
     },
   },
