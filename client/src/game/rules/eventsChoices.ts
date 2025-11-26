@@ -1643,6 +1643,54 @@ export const choiceEvents: Record<string, GameEvent> = {
     ],
   },
 
+  bloodDrainedVillagers: {
+    id: "bloodDrainedVillagers",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 7 &&
+      !state.story.seen.damagedTowerExplored,
+    triggerType: "resource",
+    timeProbability: (state: GameState) => 
+      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
+    title: "Drained Bodies",
+    message: (state: GameState) => {
+      const deaths = [2, 4, 6][Math.floor(Math.random() * 3)];
+      const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
+      
+      if (isFirstTime) {
+        return `One morning, ${deaths} villagers are found dead in their beds. Their bodies are pale, as if all blood was drained from them. Small puncture marks cover their skin. The remaining villagers whisper in fear about a damaged tower some hunters spotted in the forest, claiming they heard strange sounds coming from within.`;
+      } else {
+        return `Again, ${deaths} more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The whispers about the damaged tower in the forest grow louder and more urgent.`;
+      }
+    },
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    choices: [
+      {
+        id: "acknowledge",
+        label: "Investigate the tower",
+        effect: (state: GameState) => {
+          const deaths = [2, 4, 6][Math.floor(Math.random() * 3)];
+          const deathResult = killVillagers(state, deaths);
+          
+          return {
+            ...deathResult,
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                bloodDrainedVillagersFirstTime: true,
+                damagedTowerUnlocked: true,
+              },
+            },
+            _logMessage:
+              "You decide to investigate. The damaged tower in the forest may hold answers to these horrific deaths.",
+          };
+        },
+      },
+    ],
+  },
+
   youngWomanProtest: {
     id: "youngWomanProtest",
     condition: (state: GameState) =>

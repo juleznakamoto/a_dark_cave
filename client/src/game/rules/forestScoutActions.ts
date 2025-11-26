@@ -141,6 +141,28 @@ export const forestScoutActions: Record<string, Action> = {
     },
     cooldown: 45,
   },
+
+  damagedTower: {
+    id: "damagedTower",
+    label: "Damaged Tower",
+    show_when: {
+      "story.seen.damagedTowerUnlocked": true,
+      "!story.seen.damagedTowerExplored": true,
+    },
+    cost: {
+      "resources.food": 2500,
+    },
+    effects: {},
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.15,
+        { type: 'strength', multiplier: 0.01 },
+        { type: 'knowledge', multiplier: 0.01 }
+      );
+    },
+    cooldown: 45,
+  },
 };
 
 // Action handlers
@@ -501,6 +523,95 @@ export function handleSunkenTemple(
         duration: 3,
       },
     });
+  }
+
+  return result;
+}
+
+export function handleDamagedTower(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const effectUpdates = applyActionEffects("damagedTower", state);
+  Object.assign(result.stateUpdates, effectUpdates);
+
+  // Calculate success based on strength and knowledge
+  const strength = getTotalStrength(state);
+  const knowledge = getTotalKnowledge(state);
+  const successChance = calculateSuccessChance(
+    state,
+    0.15,
+    { type: 'strength', multiplier: 0.01 },
+    { type: 'knowledge', multiplier: 0.01 }
+  );
+  const rand = Math.random();
+
+  if (rand < successChance) {
+    // Success: Discover the necromancer's plot
+    result.stateUpdates.resources = {
+      ...state.resources,
+      silver: (state.resources.silver || 0) + 100,
+      gold: (state.resources.gold || 0) + 50,
+      food: (state.resources.food || 0) - 2500
+    };
+
+    // Set flag to mark tower as explored
+    result.stateUpdates.story = {
+      ...state.story,
+      seen: {
+        ...state.story.seen,
+        damagedTowerExplored: true,
+      },
+    };
+
+    result.logEntries!.push({
+      id: `damaged-tower-success-${Date.now()}`,
+      message:
+        "Your expedition reaches the damaged tower deep in the forest. Inside, you find a necromancer's follower surrounded by vials of blood and crude syringes. He was harvesting villagers' blood for dark experiments. Your men put an end to his vile work. The mysterious deaths will cease.",
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    });
+  } else {
+    // Failure: Necromancer's follower attacks
+    const failureRand = Math.random();
+
+    if (failureRand < 0.5 - state.CM * 0.1) {
+      // Scenario 1: Minor casualties (1-4 deaths)
+      const villagerDeaths = Math.floor(Math.random() * 4) + 1 + state.CM * 2; // 1-4 deaths
+      const deathResult = killVillagers(state, villagerDeaths);
+      Object.assign(result.stateUpdates, deathResult);
+
+      result.logEntries!.push({
+        id: `damaged-tower-minor-failure-${Date.now()}`,
+        message: `Your expedition finds the damaged tower, but the necromancer's follower is prepared. He unleashes dark magic and animated corpses. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} before the rest retreat in terror.`,
+        timestamp: Date.now(),
+        type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
+      });
+    } else {
+      // Scenario 2: Major casualties (5-10 deaths)
+      const villagerDeaths = Math.floor(Math.random() * 6) + 5 + state.CM * 4; // 5-10 deaths
+      const deathResult = killVillagers(state, villagerDeaths);
+      Object.assign(result.stateUpdates, deathResult);
+
+      result.logEntries!.push({
+        id: `damaged-tower-major-failure-${Date.now()}`,
+        message: `Shortly after entering the tower, your expedition is ambushed by the necromancer's follower and his undead servants. The battle is brutal and one-sided. ${villagerDeaths} villagers are slaughtered before the survivors manage to escape into the forest.`,
+        timestamp: Date.now(),
+        type: "system",
+        visualEffect: {
+          type: "glow",
+          duration: 3,
+        },
+      });
+    }
   }
 
   return result;
