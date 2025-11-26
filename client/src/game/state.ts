@@ -652,50 +652,44 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   restartGame: () => {
-    const currentBoostMode = get().boostMode;
-    const currentActivatedPurchases = get().activatedPurchases || {};
-    const currentFeastPurchases = get().feastPurchases || {};
-    const currentReferrals = get().referrals || [];
-    const currentReferralCount = get().referralCount || 0;
-    const currentReferredUsers = get().referredUsers || [];
+    const state = get();
+    
+    // Preserve these across game restarts
+    const preserved = {
+      // Purchases and boosts that persist
+      boostMode: state.boostMode,
+      activatedPurchases: state.activatedPurchases || {},
+      feastPurchases: state.feastPurchases || {},
+      
+      // Referral system (persists forever)
+      referrals: state.referrals || [],
+      referralCount: state.referralCount || 0,
+      referredUsers: state.referredUsers || [],
+      
+      // Social media rewards (persist forever)
+      social_media_rewards: state.social_media_rewards || {},
+      
+      // Cruel mode status
+      cruelMode: state.activatedPurchases?.['cruel_mode'] || false,
+      CM: (state.activatedPurchases?.['cruel_mode'] || false) ? 1 : 0,
+    };
 
-    // Check if Cruel Mode was activated
-    const cruelModeActivated = currentActivatedPurchases['cruel_mode'] || false;
-
+    // Reset everything else to default
     const resetState = {
       ...defaultGameState,
+      ...preserved,
+      
+      // UI state
       activeTab: "cave",
-      cooldowns: {},
-      cooldownDurations: {},
-      log: [],
       devMode: import.meta.env.DEV,
-      boostMode: currentBoostMode,
-      referralCount: currentReferralCount,
-      referredUsers: currentReferredUsers,
-      referrals: currentReferrals, // Preserve referrals on restart
-      cruelMode: cruelModeActivated,
-      CM: cruelModeActivated ? 1 : 0,
-      activatedPurchases: currentActivatedPurchases,
-      feastPurchases: currentFeastPurchases,
-      effects: calculateTotalEffects(defaultGameState),
+      
+      // Recalculate derived state
+      effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
-      // Ensure loop state is reset
-      loopProgress: 0,
-      isGameLoopActive: false,
-      isPaused: false, // Reset pause state
-      showEndScreen: false, // Reset showEndScreen
-      isMuted: false,
-      shopNotificationSeen: false,
-      shopNotificationVisible: false,
-      authNotificationSeen: false,
-      authNotificationVisible: false,
-      mysteriousNoteShopNotificationSeen: false,
-      mysteriousNoteDonateNotificationSeen: false,
-      playTime: 0, // Reset play time
-      isNewGame: true, // Mark as a new game
-      startTime: Date.now(), // Set the start time for this new game
-      idleModeState: { isActive: false, startTime: 0, needsDisplay: false }, // Reset idle mode state
-      sleepUpgrades: { lengthLevel: 0, intensityLevel: 0 }, // Reset sleep upgrades
+      
+      // Mark as new game
+      isNewGame: true,
+      startTime: Date.now(),
     };
 
     set(resetState);
@@ -703,7 +697,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     const initialLogEntry: LogEntry = {
       id: "initial-narrative",
-      message: cruelModeActivated
+      message: preserved.cruelMode
         ? "A dark cave. The air is cold and damp. You barely see the shapes around you."
         : "A dark cave. The air is cold and damp. You barely see the shapes around you.",
       timestamp: Date.now(),
