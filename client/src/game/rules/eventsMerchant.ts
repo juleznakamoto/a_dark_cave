@@ -1323,7 +1323,7 @@ function selectTrades(
   const shuffled = [...trades].sort(() => Math.random() - 0.5);
   const selected: EventChoice[] = [];
   let attempts = 0;
-  const maxAttempts = shuffled.length * 3; // Allow multiple passes
+  const maxAttempts = shuffled.length * 5; // Allow multiple passes
 
   while (selected.length < numTrades && attempts < maxAttempts) {
     const tradeIndex = attempts % shuffled.length;
