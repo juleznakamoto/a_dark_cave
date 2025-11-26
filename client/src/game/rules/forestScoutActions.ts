@@ -198,12 +198,9 @@ export function handleLayTrap(
   const effectUpdates = applyActionEffects("layTrap", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Calculate success based on luck
-  const successChance = calculateSuccessChance(
-    state,
-    0.2,
-    { type: 'luck', multiplier: 0.01 }
-  );
+  // Get success chance from action definition
+  const action = forestScoutActions.layTrap;
+  const successChance = action.success_chance ? action.success_chance(state) : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -289,13 +286,9 @@ export function handleCastleRuins(
   const effectUpdates = applyActionEffects("castleRuins", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Calculate success based on strength and knowledge
-  const successChance = calculateSuccessChance(
-    state,
-    0.15,
-    { type: 'strength', multiplier: 0.01 },
-    { type: 'knowledge', multiplier: 0.01 }
-  );
+  // Get success chance from action definition
+  const action = forestScoutActions.castleRuins;
+  const successChance = action.success_chance ? action.success_chance(state) : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -380,13 +373,9 @@ export function handleHillGrave(
   const effectUpdates = applyActionEffects("hillGrave", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Calculate success based on strength and knowledge
-  const successChance = calculateSuccessChance(
-    state,
-    0.2,
-    { type: 'strength', multiplier: 0.01 },
-    { type: 'knowledge', multiplier: 0.01 }
-  );
+  // Get success chance from action definition
+  const action = forestScoutActions.hillGrave;
+  const successChance = action.success_chance ? action.success_chance(state) : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -451,13 +440,9 @@ export function handleSunkenTemple(
   const effectUpdates = applyActionEffects("sunkenTemple", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Calculate success based on strength and knowledge
-  const successChance = calculateSuccessChance(
-    state,
-    0.25,
-    { type: 'strength', multiplier: 0.01 },
-    { type: 'knowledge', multiplier: 0.01 }
-  );
+  // Get success chance from action definition
+  const action = forestScoutActions.sunkenTemple;
+  const successChance = action.success_chance ? action.success_chance(state) : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -524,13 +509,9 @@ export function handleDamagedTower(
   const effectUpdates = applyActionEffects("damagedTower", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
-  // Calculate success based on strength and knowledge
-  const successChance = calculateSuccessChance(
-    state,
-    0.15,
-    { type: 'strength', multiplier: 0.01 },
-    { type: 'knowledge', multiplier: 0.01 }
-  );
+  // Get success chance from action definition
+  const action = forestScoutActions.damagedTower;
+  const successChance = action.success_chance ? action.success_chance(state) : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
