@@ -103,7 +103,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.15,
+        0.1,
         { type: 'strength', multiplier: 0.005 },
         { type: 'knowledge', multiplier: 0.005 }
       );
@@ -128,7 +128,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.1,
+        0.0,
         { type: 'strength', multiplier: 0.005 },
         { type: 'knowledge', multiplier: 0.005 }
       );
@@ -151,7 +151,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.2,
+        0.15,
         { type: 'strength', multiplier: 0.005 },
         { type: 'knowledge', multiplier: 0.005 }
       );
@@ -393,7 +393,7 @@ export function handleHillGrave(
     // Success: Find frostglass
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 150,
+      silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 100,
       food: (state.resources.food || 0) - 5000
     };
@@ -465,7 +465,7 @@ export function handleSunkenTemple(
     // Deduct cost and add rewards
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 200,
+      silver: (state.resources.silver || 0) + 300,
       gold: (state.resources.gold || 0) + 150,
       food: (state.resources.food || 0) - 5000
     };
@@ -537,8 +537,8 @@ export function handleDamagedTower(
     // Success: Discover the necromancer's plot
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 100,
-      gold: (state.resources.gold || 0) + 50,
+      silver: (state.resources.silver || 0) + 200,
+      gold: (state.resources.gold || 0) + 100,
       food: (state.resources.food || 0) - 2500
     };
 
