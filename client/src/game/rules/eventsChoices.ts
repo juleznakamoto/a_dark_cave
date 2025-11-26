@@ -1667,7 +1667,15 @@ export const choiceEvents: Record<string, GameEvent> = {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
       const deaths = isFirstTime ? 6 : 8;
       const result = killVillagers(state, deaths);
-      return result;
+      
+      const message = isFirstTime
+        ? `6 villagers are found dead in their beds, pale and drained of all blood. Small punctures cover their skin.`
+        : `8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks.`;
+      
+      return {
+        ...result,
+        _logMessage: message,
+      };
     },
     choices: [
       {
