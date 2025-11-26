@@ -1453,10 +1453,10 @@ function selectTrades(
     const sellFormatted = formatResourceName(sellResource);
 
     // Create label and cost
+    // Buy trade: label = what you get (from trade.label), cost = what you pay
+    // Sell trade: label = what you get (buyAmount buyResource), cost = what you pay (sellAmount sellResource)
     const label = isBuyTrade ? trade.label : `${buyAmount} ${buyFormatted}`;
-    const cost = isBuyTrade
-      ? `${sellAmount} ${sellFormatted}`
-      : `${sellAmount} ${sellFormatted}`;
+    const cost = `${sellAmount} ${sellFormatted}`;
 
     console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
       id: trade.id,
