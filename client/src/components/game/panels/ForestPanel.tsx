@@ -5,6 +5,7 @@ import {
   shouldShowAction,
   canExecuteAction,
   getActionCostBreakdown,
+  calculateSuccessChance,
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
@@ -65,7 +66,19 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith("trade");
 
-    // Check if this is chopWood, hunt, or sacrifice action
+    // Check if this action is a forest scout action
+    const isForestScoutAction = [
+      "layTrap",
+      "damagedTower",
+      "castleRuins",
+      "hillGrave",
+      "sunkenTemple",
+    ].includes(actionId);
+    const successPercentage = isForestScoutAction
+      ? calculateSuccessChance(actionId, state)
+      : null;
+
+    // Check if this action is chopWood, hunt, or sacrifice action
     const isChopWood = actionId === "chopWood";
     const isHunt = actionId === "hunt";
     const isSacrificeAction =
@@ -136,54 +149,35 @@ export default function ForestPanel() {
     // Check if this action has upgrade tracking
     const upgradeKey = ACTION_TO_UPGRADE_KEY[actionId];
 
-    if (
-      showCost ||
-      resourceGainTooltip ||
-      isAnimalsSacrifice ||
-      isHumansSacrifice
-    ) {
+    if (showCost || resourceGainTooltip || successPercentage) {
       let tooltipContent;
 
       if (resourceGainTooltip) {
-        // chopWood or hunt: show resource gains only
+        // For actions with resource gains (chopWood, hunt, sacrifice)
         tooltipContent = resourceGainTooltip;
-      } else if (
-        (isAnimalsSacrifice || isHumansSacrifice) &&
-        action.tooltipEffects
-      ) {
-        // Animals/Humans sacrifice: show madness effect
-        const costBreakdown = getActionCostBreakdown(actionId, state);
+      } else if (showCost || successPercentage) {
+        // For actions with costs and/or success chance
+        const costBreakdown = showCost ? getActionCostBreakdown(actionId, state) : [];
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
-            {action.tooltipEffects.map((effect, index) => (
-              <div key={`effect-${index}`}>{effect}</div>
+            {costBreakdown.map((cost, index) => (
+              <div
+                key={index}
+                className={`${
+                  cost.satisfied ? "text-foreground" : "text-muted-foreground"
+                }`}
+              >
+                {cost.text}
+              </div>
             ))}
-            {costBreakdown.length > 0 && (
-              <div className="border-t border-border my-1" />
+            {successPercentage && (
+              <>
+                {costBreakdown.length > 0 && <div className="border-t border-border my-1" />}
+                <div className="text-foreground">
+                  Success Chance: {successPercentage}
+                </div>
+              </>
             )}
-            {costBreakdown.map((costItem, index) => (
-              <div
-                key={index}
-                className={costItem.satisfied ? "" : "text-muted-foreground"}
-              >
-                {costItem.text}
-              </div>
-            ))}
-          </div>
-        );
-      } else {
-        // Other actions with costs
-        const costBreakdown = getActionCostBreakdown(actionId, state);
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap">
-            {costBreakdown.map((costItem, index) => (
-              <div
-                key={index}
-                className={costItem.satisfied ? "" : "text-muted-foreground"}
-              >
-                {costItem.text}
-              </div>
-            ))}
           </div>
         );
       }
