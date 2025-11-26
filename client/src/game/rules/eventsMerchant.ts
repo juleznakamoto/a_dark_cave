@@ -976,8 +976,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
       const reward = Math.ceil(rewardOption.amount * (1 + discount));
 
-      // Format reward resource name
-      const rewardResourceName = rewardOption.resource
+      // Format take resource name for display
+      const takeResourceName = trade.take
         .replace(/_/g, ' ')
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
@@ -993,8 +993,8 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: trade.id,
-        label: `Buy ${reward} ${rewardResourceName}`,
-        cost: `${trade.takeAmount} ${trade.take}`,
+        label: `Sell ${trade.takeAmount} ${takeResourceName}`,
+        cost: `${reward} ${rewardOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
             return {
