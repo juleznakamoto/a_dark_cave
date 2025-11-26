@@ -1320,15 +1320,14 @@ function selectTrades(
   usedRewardTypes: Set<string>,
   isBuyTrade: boolean,
 ): EventChoice[] {
-  const shuffled = [...trades].sort(() => Math.random() - 0.5);
   const selected: EventChoice[] = [];
-  let attempts = 0;
-  const maxAttempts = shuffled.length * 5; // Allow multiple passes
+  const availableTrades = [...trades];
 
-  while (selected.length < numTrades && attempts < maxAttempts) {
-    const tradeIndex = attempts % shuffled.length;
-    const trade = shuffled[tradeIndex];
-    attempts++;
+  // Shuffle the available trades
+  availableTrades.sort(() => Math.random() - 0.5);
+
+  for (const trade of availableTrades) {
+    if (selected.length >= numTrades) break;
 
     // Define buyResource and sellResource at the beginning
     let buyResource: string;
@@ -1367,32 +1366,45 @@ function selectTrades(
     // Skip this trade if no valid options remain
     if (validOptions.length === 0) continue;
 
-    const selectedOption =
-      validOptions[Math.floor(Math.random() * validOptions.length)];
+    // Try each valid option to find one that doesn't conflict
+    let foundValidOption = false;
+    const shuffledOptions = [...validOptions].sort(() => Math.random() - 0.5);
 
-    if (isBuyTrade) {
-      sellResource = selectedOption.resource;
-      sellAmount = selectedOption.amount;
-    } else {
-      buyResource = selectedOption.resource;
-      buyAmount = selectedOption.amount;
+    for (const selectedOption of shuffledOptions) {
+      let testBuyResource = buyResource;
+      let testSellResource = sellResource;
+
+      if (isBuyTrade) {
+        testSellResource = selectedOption.resource;
+      } else {
+        testBuyResource = selectedOption.resource;
+      }
+
+      // Create a unique key for this resource pair (sorted to catch both directions)
+      const resourcePair = [testBuyResource, testSellResource].sort().join("-");
+
+      // Check if this pair is already used
+      if (!usedResourcePairs.has(resourcePair)) {
+        // Found a valid option!
+        buyResource = testBuyResource;
+        sellResource = testSellResource;
+        buyAmount = isBuyTrade ? trade.giveAmount : selectedOption.amount;
+        sellAmount = isBuyTrade ? selectedOption.amount : trade.takeAmount;
+
+        usedResourcePairs.add(resourcePair);
+
+        // Track silver and gold usage
+        if (buyResource === "silver" || buyResource === "gold")
+          usedRewardTypes.add(buyResource);
+        if (sellResource === "silver" || sellResource === "gold")
+          usedRewardTypes.add(sellResource);
+
+        foundValidOption = true;
+        break;
+      }
     }
 
-    // Create a unique key for this resource pair (sorted to catch both directions)
-    const resourcePair = [buyResource, sellResource].sort().join("-");
-
-    // Skip if we've already selected a trade with these resources
-    if (usedResourcePairs.has(resourcePair)) {
-      continue;
-    }
-
-    usedResourcePairs.add(resourcePair);
-
-    // Track silver and gold usage
-    if (buyResource === "silver" || buyResource === "gold")
-      usedRewardTypes.add(buyResource);
-    if (sellResource === "silver" || sellResource === "gold")
-      usedRewardTypes.add(sellResource);
+    if (!foundValidOption) continue;
 
     // Apply rounding to amounts
     buyAmount = roundCost(buyAmount);
@@ -1430,7 +1442,7 @@ function selectTrades(
       id: trade.id,
       label,
       cost,
-      resourcePair,
+      resourcePair: [buyResource, sellResource].sort().join("-"),
     });
 
     selected.push({
@@ -1452,6 +1464,7 @@ function selectTrades(
     });
   }
 
+  console.log(`[MERCHANT] Selected ${selected.length} ${isBuyTrade ? 'buy' : 'sell'} trades out of ${numTrades} requested`);
   return selected;
 }
 
