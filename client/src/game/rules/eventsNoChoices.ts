@@ -5,8 +5,7 @@ import { killVillagers } from "@/game/stateHelpers";
 export const noChoiceEvents: Record<string, GameEvent> = {
   bloodDrainedVillagers: {
     id: "bloodDrainedVillagers",
-    condition: (state: GameState) => state.buildings.stoneHut >= 7 
-      && !state.story.seen.damagedTowerExplored,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7  && !state.story.seen.damagedTowerExplored,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,

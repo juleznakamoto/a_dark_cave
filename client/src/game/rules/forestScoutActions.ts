@@ -642,7 +642,7 @@ export const additionalActions: Record<string, Action> = {
     },
     cost: {
       "resources.bloodstone": 50,
-      "resources.wood": 1000,
+      "resources.wood": 2500,
     },
     effects: {
       "story.seen.bloodstoneStaffCrafted": true,

@@ -237,7 +237,7 @@ export const caveCraftWeapons: Record<string, Action> = {
     },
     cost: {
       "resources.bloodstone": true,
-      "resources.wood": 1000,
+      "resources.wood": 2500,
     },
     effects: {
       "weapons.bloodstone_staff": true,
