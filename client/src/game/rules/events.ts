@@ -203,10 +203,15 @@ export class EventManager {
           eventChoices = generateMerchantChoices(state);
         }
 
-        // Select random message if message is an array
-        const message = Array.isArray(event.message)
-          ? event.message[Math.floor(Math.random() * event.message.length)]
-          : event.message;
+        // Select random message if message is an array, or evaluate if it's a function
+        let message: string;
+        if (typeof event.message === 'function') {
+          message = event.message(state);
+        } else if (Array.isArray(event.message)) {
+          message = event.message[Math.floor(Math.random() * event.message.length)];
+        } else {
+          message = event.message;
+        }
 
         const logEntry: LogEntry = {
           id: `${event.id}-${Date.now()}`,
