@@ -1335,6 +1335,20 @@ function selectTrades(
     let sellAmount: number;
     let validOptions: any[];
 
+    if (isBuyTrade) {
+      // Buy trade: give is what user receives (buys), costs are what user pays (sells)
+      buyResource = trade.give;
+      buyAmount = trade.giveAmount;
+      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
+    } else {
+      // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
+      sellResource = trade.take;
+      sellAmount = trade.takeAmount;
+      validOptions = trade.rewards.filter(
+        (r: any) => r.resource !== trade.take,
+      );
+    }
+
     // Filter out silver/gold if we've already used them
     validOptions = validOptions.filter((option: any) => {
       if (option.resource === "silver" && usedRewardTypes.has("silver"))
@@ -1351,21 +1365,11 @@ function selectTrades(
       validOptions[Math.floor(Math.random() * validOptions.length)];
 
     if (isBuyTrade) {
-      // Buy trade: give is what user receives (buys), costs are what user pays (sells)
-      buyResource = trade.give;
-      buyAmount = trade.giveAmount;
       sellResource = selectedOption.resource;
       sellAmount = selectedOption.amount;
-      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
     } else {
-      // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
-      sellResource = trade.take;
-      sellAmount = trade.takeAmount;
       buyResource = selectedOption.resource;
-      buyAmount = selectedOption.amount);
-      validOptions = trade.rewards.filter(
-        (r: any) => r.resource !== trade.take,
-      );
+      buyAmount = selectedOption.amount;
     }
 
     // Create a unique key for this resource pair (sorted to catch both directions)
