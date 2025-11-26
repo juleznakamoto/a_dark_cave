@@ -81,7 +81,8 @@ export default function MerchantDialog({
                 <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
                     <span
-                      className="text-blue-300/80 cursor-pointer text-base hover:text-blue-300 transition-colors inline-block ml-1"
+                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block ml-1"
+                      style={{ fontSize: '16px' }}
                       onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
                     >
                       ✧
