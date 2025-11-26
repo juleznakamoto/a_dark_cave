@@ -160,7 +160,7 @@ export const forestScoutActions: Record<string, Action> = {
       );
     },
     relevant_stats: ["strength", "knowledge"],
-    cooldown: 90,
+    cooldown: 900,
   },
 };
 
