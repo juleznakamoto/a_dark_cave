@@ -93,17 +93,20 @@ export default function SocialMediaRewards() {
       {SOCIAL_PLATFORMS.map((platform) => {
         // Subscribe to this specific platform's claimed status
         const isClaimed = useGameStore((state) => state.social_media_rewards[platform.id]?.claimed ?? false);
+        
+        // Button is only active (enabled) if NOT claimed
+        const isActive = !isClaimed;
 
         return (
           <DropdownMenuItem
             key={platform.id}
             onClick={() => handleSocialFollow(platform.id, platform.url, platform.reward, platform.name)}
-            disabled={isClaimed}
-            className={isClaimed ? "opacity-50 cursor-not-allowed" : ""}
+            disabled={!isActive}
+            className={!isActive ? "opacity-50 cursor-not-allowed" : ""}
           >
             <div className="flex items-center justify-between w-full">
               <span>
-                Follow {platform.icon} <span className={isClaimed ? "" : "font-semibold"}>+{platform.reward} Gold</span>
+                Follow {platform.icon} <span className={isActive ? "font-semibold" : ""}>+{platform.reward} Gold</span>
               </span>
               {isClaimed && <span className="text-xs text-muted-foreground ml-2">✓ Claimed</span>}
             </div>
