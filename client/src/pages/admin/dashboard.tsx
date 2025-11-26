@@ -432,21 +432,21 @@ export default function AdminDashboard() {
       };
     });
 
-    // Group into 30-minute buckets
+    // Group into 1-hour buckets
     const buckets = new Map<number, number>();
     let maxBucket = 0;
 
     purchasesWithPlaytime.forEach(({ playtimeMinutes }) => {
-      const bucket = Math.floor(playtimeMinutes / 30) * 30;
-      maxBucket = Math.max(maxBucket, bucket);
-      buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
+      const bucketHours = Math.floor(playtimeMinutes / 60);
+      maxBucket = Math.max(maxBucket, bucketHours);
+      buckets.set(bucketHours, (buckets.get(bucketHours) || 0) + 1);
     });
 
     // Create array with all buckets
     const result: Array<{ playtime: string; purchases: number }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket += 30) {
+    for (let bucket = 0; bucket <= maxBucket; bucket++) {
       result.push({
-        playtime: `${bucket}m`,
+        playtime: bucket === 0 ? '0h' : `${bucket}h`,
         purchases: buckets.get(bucket) || 0,
       });
     }
@@ -1635,17 +1635,18 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Purchases by Playtime</CardTitle>
-                <CardDescription>When do players make purchases? (30-minute intervals, excluding free items)</CardDescription>
+                <CardDescription>When do players make purchases? (hourly intervals, excluding free items)</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={getPurchasesByPlaytime()}>
+                  <LineChart data={getPurchasesByPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="playtime" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <XAxis dataKey="playtime" label={{ value: 'Playtime (hours)', position: 'insideBottom', offset: -5 }} />
                     <YAxis label={{ value: 'Purchases', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey="purchases" fill="#82ca9d" />
-                  </BarChart>
+                    <Legend />
+                    <Line type="monotone" dataKey="purchases" stroke="#82ca9d" strokeWidth={2} dot={{ r: 4 }} />
+                  </LineChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
