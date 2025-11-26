@@ -117,7 +117,7 @@ export default function MerchantDialog({
             {eventChoices
               .filter(
                 (choice) =>
-                  choice.id.startsWith("trade_") && choice.id !== "say_goodbye",
+                  choice.id !== "say_goodbye",
               )
               .map((choice) => {
                 // Check if choice can be afforded (for merchant trades)

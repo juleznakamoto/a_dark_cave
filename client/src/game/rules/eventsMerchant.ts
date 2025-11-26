@@ -936,7 +936,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       });
 
       return {
-        id: `${trade.id}_${Date.now()}_${Math.random()}`,
+        id: trade.id,
         label: trade.label,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
@@ -980,7 +980,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       });
 
       return {
-        id: `${trade.id}_${Date.now()}_${Math.random()}`,
+        id: trade.id,
         label: trade.label,
         cost: `${trade.takeAmount} ${trade.take}`,
         effect: (state: GameState) => {
