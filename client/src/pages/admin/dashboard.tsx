@@ -1033,6 +1033,70 @@ export default function AdminDashboard() {
     return topFirstTimeClicks;
   };
 
+  // Get sleep upgrade levels over playtime
+  const getSleepUpgradesOverPlaytime = () => {
+    let filteredSaves = gameSaves;
+
+    if (selectedUser !== 'all') {
+      filteredSaves = gameSaves.filter(s => s.user_id === selectedUser);
+    }
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
+    }
+
+    // Aggregate into 1-hour (60-minute) buckets
+    const buckets = new Map<number, { lengthSum: number; intensitySum: number; count: number }>();
+    let maxBucket = 0;
+
+    filteredSaves.forEach(save => {
+      const playtimeMinutes = Math.floor((save.game_state?.playTime || 0) / 1000 / 60);
+      if (playtimeMinutes === 0) return;
+
+      const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
+      maxBucket = Math.max(maxBucket, bucket);
+
+      if (!buckets.has(bucket)) {
+        buckets.set(bucket, { lengthSum: 0, intensitySum: 0, count: 0 });
+      }
+
+      const bucketData = buckets.get(bucket)!;
+      const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
+      const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
+
+      bucketData.lengthSum += lengthLevel;
+      bucketData.intensitySum += intensityLevel;
+      bucketData.count += 1;
+    });
+
+    if (buckets.size === 0) {
+      return [];
+    }
+
+    // Convert to array and calculate averages
+    const result: Array<{ time: string; lengthLevel: number; intensityLevel: number }> = [];
+
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const bucketData = buckets.get(bucket);
+      if (bucketData && bucketData.count > 0) {
+        const hours = bucket / 60;
+        result.push({
+          time: hours === 0 ? '0h' : `${hours}h`,
+          lengthLevel: Number((bucketData.lengthSum / bucketData.count).toFixed(2)),
+          intensityLevel: Number((bucketData.intensitySum / bucketData.count).toFixed(2)),
+        });
+      }
+    }
+
+    return result;
+  };
+
   const getARPU = () => {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
@@ -1117,6 +1181,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="purchases">Purchases</TabsTrigger>
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="churn">Churn</TabsTrigger>
+            <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -1939,6 +2004,102 @@ export default function AdminDashboard() {
                 </ResponsiveContainer>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="sleep" className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showCompletedOnly}
+                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                  className="cursor-pointer w-4 h-4"
+                />
+                <span className="text-sm font-medium">
+                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                </span>
+              </label>
+            </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Sleep Upgrade Levels Over Playtime</CardTitle>
+                <CardDescription>
+                  Average sleep upgrade levels at different playtime milestones (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getSleepUpgradesOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis 
+                      label={{ value: 'Upgrade Level', angle: -90, position: 'insideLeft' }}
+                      domain={[0, 5]}
+                      ticks={[0, 1, 2, 3, 4, 5]}
+                    />
+                    <Tooltip />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="lengthLevel"
+                      stroke="#8884d8"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
+                      name="Sleep Length"
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="intensityLevel"
+                      stroke="#82ca9d"
+                      strokeWidth={2}
+                      dot={{ r: 4 }}
+                      name="Sleep Intensity"
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Average Sleep Length Level</CardTitle>
+                  <CardDescription>All players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold text-center py-8">
+                    {gameSaves.length > 0
+                      ? (
+                          gameSaves.reduce(
+                            (sum, save) => sum + (save.game_state?.sleepUpgrades?.lengthLevel || 0),
+                            0
+                          ) / gameSaves.length
+                        ).toFixed(2)
+                      : '0.00'}
+                  </p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Average Sleep Intensity Level</CardTitle>
+                  <CardDescription>All players</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold text-center py-8">
+                    {gameSaves.length > 0
+                      ? (
+                          gameSaves.reduce(
+                            (sum, save) => sum + (save.game_state?.sleepUpgrades?.intensityLevel || 0),
+                            0
+                          ) / gameSaves.length
+                        ).toFixed(2)
+                      : '0.00'}
+                  </p>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
           </div>
