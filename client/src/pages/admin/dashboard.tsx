@@ -394,6 +394,29 @@ export default function AdminDashboard() {
     return data;
   };
 
+  // Daily purchases (last 30 days)
+  const getDailyPurchases = () => {
+    const data: { day: string; purchases: number }[] = [];
+
+    for (let i = 30; i >= 0; i--) {
+      const date = subDays(new Date(), i);
+      const dayStart = startOfDay(date);
+      const dayEnd = endOfDay(date);
+
+      const purchasesCount = purchases.filter(purchase => {
+        const purchaseDate = parseISO(purchase.purchased_at);
+        return isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
+      }).length;
+
+      data.push({
+        day: format(date, 'MMM dd'),
+        purchases: purchasesCount,
+      });
+    }
+
+    return data;
+  };
+
   // Buyers per 100 users
   const getBuyersPerHundred = () => {
     const totalUsers = gameSaves.length;
@@ -1552,6 +1575,24 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Daily Purchases (Last 30 Days)</CardTitle>
+                <CardDescription>Purchase activity over time</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <AreaChart data={getDailyPurchases()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="day" />
+                    <YAxis />
+                    <Tooltip />
+                    <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
 
             <Card>
               <CardHeader>
