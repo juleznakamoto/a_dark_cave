@@ -1,4 +1,3 @@
-
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
@@ -25,13 +24,17 @@ const SOCIAL_PLATFORMS = [
 ];
 
 export default function SocialMediaRewards() {
+  // Subscribe to the entire social_media_rewards object to ensure re-renders
   const social_media_rewards = useGameStore((state) => state.social_media_rewards);
   const updateResource = useGameStore((state) => state.updateResource);
   const addLogEntry = useGameStore((state) => state.addLogEntry);
 
   const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
+    // Check claim status from the subscribed state
+    const currentRewards = social_media_rewards;
+
     // Check if already claimed
-    if (social_media_rewards[platformId]?.claimed) {
+    if (currentRewards[platformId]?.claimed) {
       const alreadyClaimedLog: LogEntry = {
         id: `social-reward-already-claimed-${platformId}-${Date.now()}`,
         message: "You've already claimed this reward!",
@@ -45,7 +48,7 @@ export default function SocialMediaRewards() {
     // Open the social media link
     window.open(url, "_blank");
 
-    // Mark as claimed and persist in state
+    // Mark as claimed and persist in state - create completely new object reference
     useGameStore.setState((state) => ({
       social_media_rewards: {
         ...state.social_media_rewards,
@@ -91,7 +94,7 @@ export default function SocialMediaRewards() {
     <>
       {SOCIAL_PLATFORMS.map((platform) => {
         const isClaimed = social_media_rewards[platform.id]?.claimed;
-        
+
         return (
           <DropdownMenuItem
             key={platform.id}
