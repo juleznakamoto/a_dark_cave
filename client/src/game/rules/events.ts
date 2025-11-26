@@ -70,7 +70,7 @@ export interface GameEvent {
   condition: (state: GameState) => boolean;
   triggerType: "time" | "resource" | "random" | "action";
   title?: string;
-  message: string | string[]; // Support array of messages for random selection
+  message: string | string[] | ((state: GameState) => string); // Support array of messages for random selection or function
   choices?: EventChoice[];
   triggered: boolean;
   repeatable?: boolean;
