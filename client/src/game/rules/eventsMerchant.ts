@@ -1041,7 +1041,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   if (state.buildings.merchantsGuild >= 1) {
     numSellTrades = 3; // Merchant's Guild: 3 sell trades
   } else if (state.buildings.grandBazaar >= 1 || state.buildings.tradePost >= 1) {
-    numSellTrades = 2; // Trade Post or Grand Bazaar: 2 sell trades
+    numSellTrades = 3; // Trade Post or Grand Bazaar: 3 sell trades
   }
 
   // Select sell trades based on progression, avoiding conflicts with buy trades
@@ -1091,7 +1091,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     
     // Apply 75% reduction for silver and gold rewards
     if (rewardOption.resource === 'silver' || rewardOption.resource === 'gold') {
-      rawReward = Math.ceil(rawReward * 0.75);
+      rawReward = Math.ceil(rawReward * 0.25);
     }
     
     const reward = roundCost(rawReward);
