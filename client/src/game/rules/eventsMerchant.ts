@@ -1384,8 +1384,11 @@ function selectTrades(
     );
 
     // Apply 75% reduction for silver and gold (both buy and sell trades)
+    if (isBuyTrade) { 
     if (secondaryResource === "silver" || secondaryResource === "gold") {
       rawAmount = Math.ceil(rawAmount * 0.75);
+    }} else{
+      
     }
 
     secondaryAmount = roundCost(rawAmount);
