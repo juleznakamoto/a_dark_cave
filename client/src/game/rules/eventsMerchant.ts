@@ -1328,17 +1328,18 @@ function selectTrades(
     const trade = shuffled[tradeIndex];
     tradeIndex++;
 
+    // Reverse buy/sell logic only at the beginning
     let primaryResource: string;
-    let secondaryResource: string;
     let primaryAmount: number;
-    let secondaryAmount: number;
     let validOptions: any[];
+    let discountMultiplier: number;
 
     if (isBuyTrade) {
       // Buy trade: give is what user receives, costs are what user pays
       primaryResource = trade.give;
       primaryAmount = trade.giveAmount;
       validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
+      discountMultiplier = 1 - discount;
     } else {
       // Sell trade: take is what user pays, rewards are what user receives
       primaryResource = trade.take;
@@ -1346,7 +1347,10 @@ function selectTrades(
       validOptions = trade.rewards.filter(
         (r: any) => r.resource !== trade.take,
       );
+      discountMultiplier = 1 + discount;
     }
+
+    // From here on, the function is the same for both buy and sell
 
     // Filter out silver/gold if we've already used them
     validOptions = validOptions.filter((option: any) => {
@@ -1362,7 +1366,7 @@ function selectTrades(
 
     const selectedOption =
       validOptions[Math.floor(Math.random() * validOptions.length)];
-    secondaryResource = selectedOption.resource;
+    const secondaryResource = selectedOption.resource;
 
     // Create a unique key for this resource pair (sorted to catch both directions)
     const resourcePair = [primaryResource, secondaryResource].sort().join("-");
@@ -1379,19 +1383,10 @@ function selectTrades(
     if (secondaryResource === "gold") usedRewardTypes.add("gold");
 
     // Calculate the secondary amount with discount
-    let rawAmount = Math.ceil(
-      selectedOption.amount * (isBuyTrade ? 1 - discount : 1 + discount),
-    );
+    let rawAmount = Math.ceil(selectedOption.amount * discountMultiplier);
 
-    // Apply 75% reduction for silver and gold (both buy and sell trades)
-    if (isBuyTrade) { 
-    if (secondaryResource === "silver" || secondaryResource === "gold") {
-      rawAmount = Math.ceil(rawAmount * 0.75);
-    }} else{
-      
-    }
-
-    secondaryAmount = roundCost(rawAmount);
+    // Apply 75% reduction if player receives silver or gold
+    const secondaryAmount = roundCost(rawAmount);
 
     // Format resource names for display
     const formatResourceName = (res: string) =>
@@ -1403,6 +1398,7 @@ function selectTrades(
 
     const primaryFormatted = formatResourceName(primaryResource);
 
+    // Determine what the player gives and receives
     let label: string;
     let cost: string;
     let giveRes: string;
@@ -1411,7 +1407,7 @@ function selectTrades(
     let takeAmount: number;
 
     if (isBuyTrade) {
-      // Buy trade: button shows what user gets, cost shows what user pays
+      // Buy trade: player receives primary, pays secondary
       label = trade.label;
       cost = `${secondaryAmount} ${secondaryResource}`;
       giveRes = primaryResource;
@@ -1419,13 +1415,18 @@ function selectTrades(
       giveAmount = primaryAmount;
       takeAmount = secondaryAmount;
     } else {
-      // Sell trade: button shows what user gets, cost shows what user pays
+      // Sell trade: player receives secondary, pays primary
       label = `${secondaryAmount} ${secondaryResource}`;
       cost = `${primaryAmount} ${primaryFormatted}`;
       giveRes = secondaryResource;
       takeRes = primaryResource;
       giveAmount = secondaryAmount;
       takeAmount = primaryAmount;
+    }
+
+    // Apply 75% reduction if player receives gold or silver
+    if (giveRes === "silver" || giveRes === "gold") {
+      giveAmount = Math.ceil(giveAmount * 0.75);
     }
 
     console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
