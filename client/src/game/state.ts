@@ -187,6 +187,7 @@ const mergeStateUpdates = (
     referralCount: stateUpdates.referralCount !== undefined ? stateUpdates.referralCount : prevState.referralCount, // Merge referralCount
     referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
     referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
+    social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
   };
 
   if (
@@ -307,6 +308,7 @@ const defaultGameState: GameState = {
   referralCount: 0,
   referredUsers: [],
   referrals: [], // Initialize referrals array
+  social_media_rewards: {}, // Initialize social_media_rewards
 
   // Cooldown management
   cooldowns: {},
@@ -780,6 +782,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referrals: savedState.referrals || [], // Load referrals list
+        social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
       };
 
       set(loadedState);

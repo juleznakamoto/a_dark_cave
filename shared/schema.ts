@@ -389,6 +389,10 @@ export const gameStateSchema = z.object({
     claimed: z.boolean().default(false),
     timestamp: z.number(),
   })).default([]), // Track referrals with claim status
+  social_media_rewards: z.record(z.object({
+    claimed: z.boolean().default(false),
+    timestamp: z.number().optional(),
+  })).default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
   idleModeState: z.object({
     isActive: z.boolean().default(false),
     startTime: z.number().default(0),
