@@ -224,6 +224,9 @@ export function handleLayTrap(
       villagerDeaths = Math.floor(Math.random() * 4) + 3 + state.CM * 2; // 3-6 deaths
     }
 
+    // Cap deaths to current population
+    villagerDeaths = Math.min(villagerDeaths, state.current_population);
+
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
     result.stateUpdates.clothing = {
@@ -336,7 +339,8 @@ export function handleCastleRuins(
     const failureRand = Math.random();
 
     if (failureRand < 0.5 - state.CM * 0.1) {
-      const villagerDeaths = Math.floor(Math.random() * 4) + 1 + state.CM * 2;
+      let villagerDeaths = Math.floor(Math.random() * 4) + 1 + state.CM * 2;
+      villagerDeaths = Math.min(villagerDeaths, state.current_population);
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -351,7 +355,8 @@ export function handleCastleRuins(
         },
       });
     } else {
-      const villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
+      let villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
+      villagerDeaths = Math.min(villagerDeaths, state.current_population);
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -420,7 +425,8 @@ export function handleHillGrave(
       },
     });
   } else {
-    const villagerDeaths = Math.floor(Math.random() * 10) + 3 + state.CM * 4;
+    let villagerDeaths = Math.floor(Math.random() * 10) + 3 + state.CM * 4;
+    villagerDeaths = Math.min(villagerDeaths, state.current_population);
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -490,7 +496,8 @@ export function handleSunkenTemple(
       },
     });
   } else {
-    const villagerDeaths = Math.floor(Math.random() * 12) + 4 + state.CM * 4;
+    let villagerDeaths = Math.floor(Math.random() * 12) + 4 + state.CM * 4;
+    villagerDeaths = Math.min(villagerDeaths, state.current_population);
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -553,7 +560,8 @@ export function handleDamagedTower(
       },
     });
   } else {
-    const villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
+    let villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
+    villagerDeaths = Math.min(villagerDeaths, state.current_population);
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
