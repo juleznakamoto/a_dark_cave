@@ -623,18 +623,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
-    const endTime = Date.now() + duration;
-    
-    // Save to localStorage immediately
-    try {
-      const cooldownData = localStorage.getItem('cooldowns');
-      const cooldowns = cooldownData ? JSON.parse(cooldownData) : {};
-      cooldowns[action] = endTime;
-      localStorage.setItem('cooldowns', JSON.stringify(cooldowns));
-    } catch (error) {
-      console.error('Failed to save cooldown to localStorage:', error);
-    }
-
     set((state) => {
       const newState = {
         cooldowns: { ...state.cooldowns, [action]: duration },
@@ -654,21 +642,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
           newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
         }
 
-        // If cooldown has reached 0, reset its duration as well and clean up localStorage
+        // If cooldown has reached 0, reset its duration as well
         if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
           delete newCooldownDurations[key];
-          
-          // Remove from localStorage
-          try {
-            const cooldownData = localStorage.getItem('cooldowns');
-            if (cooldownData) {
-              const cooldowns = JSON.parse(cooldownData);
-              delete cooldowns[key];
-              localStorage.setItem('cooldowns', JSON.stringify(cooldowns));
-            }
-          } catch (error) {
-            console.error('Failed to clean up cooldown from localStorage:', error);
-          }
         }
       }
       return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
@@ -677,13 +653,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const state = get();
-    
-    // Clear localStorage cooldowns on restart
-    try {
-      localStorage.removeItem('cooldowns');
-    } catch (error) {
-      console.error('Failed to clear cooldowns from localStorage:', error);
-    }
     
     // Preserve these across game restarts
     const preserved = {
@@ -762,34 +731,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const savedState = await loadFromIDB();
     const currentBoostMode = get().boostMode;
 
-    // Load cooldowns from localStorage
-    let cooldownsFromStorage: Record<string, number> = {};
-    let cooldownDurationsFromStorage: Record<string, number> = {};
-    try {
-      const cooldownData = localStorage.getItem('cooldowns');
-      if (cooldownData) {
-        const storedCooldowns = JSON.parse(cooldownData);
-        const now = Date.now();
-        
-        // Convert end times to remaining durations
-        for (const [actionId, endTime] of Object.entries(storedCooldowns)) {
-          const remaining = (endTime as number) - now;
-          if (remaining > 0) {
-            cooldownsFromStorage[actionId] = remaining;
-            cooldownDurationsFromStorage[actionId] = remaining;
-          }
-        }
-        
-        // Clean up expired cooldowns from localStorage
-        const activeCooldowns = Object.fromEntries(
-          Object.entries(storedCooldowns).filter(([_, endTime]) => (endTime as number) > now)
-        );
-        localStorage.setItem('cooldowns', JSON.stringify(activeCooldowns));
-      }
-    } catch (error) {
-      console.error('Failed to load cooldowns from localStorage:', error);
-    }
-
     if (savedState) {
       // Backwards compatibility: Add book_of_ascension if player has any button upgrade clicks
       const hasAnyClicks = savedState.buttonUpgrades && Object.values(savedState.buttonUpgrades).some(
@@ -805,8 +746,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const loadedState = {
         ...savedState,
         activeTab: "cave",
-        cooldowns: cooldownsFromStorage, // Use localStorage cooldowns instead
-        cooldownDurations: cooldownDurationsFromStorage, // Use localStorage durations instead
+        cooldowns: savedState.cooldowns || {},
+        cooldownDurations: savedState.cooldownDurations || {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -843,8 +784,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const newGameState = {
         ...defaultGameState,
         activeTab: "cave",
-        cooldowns: cooldownsFromStorage, // Use localStorage cooldowns
-        cooldownDurations: cooldownDurationsFromStorage, // Use localStorage durations
+        cooldowns: {},
+        cooldownDurations: {},
         log: [],
         devMode: import.meta.env.DEV,
         boostMode: currentBoostMode, // Preserve boost mode flag
