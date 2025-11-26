@@ -77,8 +77,8 @@ export default function MerchantDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold flex items-center gap-2">
-            {event.title || "Strange Encounter"}
+          <DialogTitle className="text-lg font-semibold flex items-center justify-between">
+            <span>{event.title || "Strange Encounter"}</span>
             {hasBookOfWar && discount > 0 && (
               <TooltipProvider>
                 <Tooltip
@@ -86,7 +86,8 @@ export default function MerchantDialog({
                 >
                   <TooltipTrigger asChild>
                     <span
-                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block mb-[1px] text-[20px]"
+                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block"
+                      style={{ fontSize: '20px' }}
                       onClick={(e) =>
                         discountTooltip.handleTooltipClick(
                           "merchant-discount",
