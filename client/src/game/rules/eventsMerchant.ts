@@ -1053,7 +1053,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
 
       return {
         id: trade.id,
-        label: `Sell ${trade.takeAmount} ${takeResourceName}`,
+        label: `${trade.takeAmount} ${takeResourceName}`,
         cost: `${reward} ${rewardOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
