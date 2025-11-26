@@ -150,22 +150,6 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
     const now = Date.now();
     sanitizedState.lastSaved = now;
 
-    console.log(`[SAVE] Saving game state:`, {
-      timestamp: now,
-      playTime,
-      hasCooldowns: !!sanitizedState.cooldowns,
-      cooldownsCount: sanitizedState.cooldowns ? Object.keys(sanitizedState.cooldowns).length : 0,
-      cooldowns: sanitizedState.cooldowns,
-      hasCooldownDurations: !!sanitizedState.cooldownDurations,
-      cooldownDurationsCount: sanitizedState.cooldownDurations ? Object.keys(sanitizedState.cooldownDurations).length : 0,
-      cooldownDurations: sanitizedState.cooldownDurations,
-      cooldownDetails: Object.keys(sanitizedState.cooldowns || {}).map(key => ({
-        action: key,
-        remaining: sanitizedState.cooldowns[key],
-        duration: sanitizedState.cooldownDurations?.[key]
-      }))
-    });
-
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
@@ -208,28 +192,11 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
 export async function loadGame(): Promise<GameState | null> {
   try {
-    console.log(`[LOAD] Starting game load process...`);
-    
     // Process referral if user just confirmed email
     await processReferralAfterConfirmation();
 
     const db = await getDB();
     const localSave = await db.get('saves', SAVE_KEY);
-    
-    console.log(`[LOAD] Local save retrieved:`, {
-      hasLocalSave: !!localSave,
-      timestamp: localSave?.timestamp,
-      playTime: localSave?.playTime,
-      hasCooldowns: !!localSave?.gameState?.cooldowns,
-      cooldowns: localSave?.gameState?.cooldowns,
-      hasCooldownDurations: !!localSave?.gameState?.cooldownDurations,
-      cooldownDurations: localSave?.gameState?.cooldownDurations,
-      cooldownDetails: Object.keys(localSave?.gameState?.cooldowns || {}).map(key => ({
-        action: key,
-        remaining: localSave?.gameState?.cooldowns[key],
-        duration: localSave?.gameState?.cooldownDurations?.[key]
-      }))
-    });
 
     // Check if user is authenticated
     const user = await getCurrentUser();
@@ -240,12 +207,6 @@ export async function loadGame(): Promise<GameState | null> {
         const cloudSaveData = await loadGameFromSupabase();
         const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
         const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData) : cloudSaveData) : null;
-        
-        console.log(`[LOAD] Cloud save processed:`, {
-          hasCloudSave: !!cloudSave,
-          hasCooldownDurations: !!cloudSave?.cooldownDurations,
-          cooldownDurations: cloudSave?.cooldownDurations
-        });
 
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
@@ -317,15 +278,10 @@ export async function loadGame(): Promise<GameState | null> {
           cooldownDurations: localSave.gameState.cooldownDurations || {},
         };
         const processedState = await processUnclaimedReferrals(stateWithDefaults);
-        console.log(`[LOAD] Returning local state (no auth):`, {
-          hasCooldownDurations: !!processedState.cooldownDurations,
-          cooldownDurations: processedState.cooldownDurations
-        });
         return processedState;
       }
     }
 
-    console.log(`[LOAD] No save found, returning null`);
     return null;
   } catch (error) {
     console.error('Failed to load game:', error);

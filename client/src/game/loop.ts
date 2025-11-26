@@ -605,17 +605,6 @@ async function handleAutoSave() {
   const state = useGameStore.getState();
   const gameState: GameState = buildGameState(state);
 
-  // Log cooldown state before saving
-  console.log('[AUTOSAVE] Current cooldown state:', {
-    cooldowns: state.cooldowns,
-    cooldownDurations: state.cooldownDurations,
-    cooldownDetails: Object.keys(state.cooldowns || {}).map(key => ({
-      action: key,
-      remaining: state.cooldowns[key],
-      duration: state.cooldownDurations?.[key]
-    }))
-  });
-
   try {
     // If this is a new game, save playTime as the current session time only
     // Otherwise, save the accumulated playTime
