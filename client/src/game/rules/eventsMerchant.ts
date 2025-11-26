@@ -926,7 +926,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     .sort(() => Math.random() - 0.5)
     .slice(0, 3)
     .map((trade) => {
-      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      // Filter out cost options that are the same as the resource being bought
+      const validCosts = trade.costs.filter(c => c.resource !== trade.give);
+      const costOption = validCosts[Math.floor(Math.random() * validCosts.length)];
       const cost = Math.ceil(costOption.amount * (1 - discount));
 
       console.log('[MERCHANT] Created buy trade:', {
@@ -970,7 +972,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     .sort(() => Math.random() - 0.5)
     .slice(0, 3)
     .map((trade) => {
-      const rewardOption = trade.rewards[Math.floor(Math.random() * trade.rewards.length)];
+      // Filter out reward options that are the same as the resource being sold
+      const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
+      const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
       const reward = Math.ceil(rewardOption.amount * (1 + discount));
 
       console.log('[MERCHANT] Created sell trade:', {
