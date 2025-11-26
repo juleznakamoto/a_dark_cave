@@ -77,43 +77,39 @@ export default function MerchantDialog({
           <DialogTitle className="text-lg font-semibold flex items-center gap-2">
             {event.title || "Strange Encounter"}
             {hasBookOfWar && discount > 0 && (
-              <div
-                className="inline-block ml-1"
-                onClick={discountTooltip.isMobile ? (e) => {
-                  e.stopPropagation();
-                  discountTooltip.handleWrapperClick('merchant-discount', false, false, e);
-                } : undefined}
-                onMouseDown={discountTooltip.isMobile ? (e) => {
-                  discountTooltip.handleMouseDown('merchant-discount', false, false, e);
-                } : undefined}
-                onMouseUp={discountTooltip.isMobile ? (e) => {
-                  discountTooltip.handleMouseUp('merchant-discount', false, () => {}, e);
-                } : undefined}
-                onTouchStart={discountTooltip.isMobile ? (e) => {
-                  discountTooltip.handleTouchStart('merchant-discount', false, false, e);
-                } : undefined}
-                onTouchEnd={discountTooltip.isMobile ? (e) => {
-                  discountTooltip.handleTouchEnd('merchant-discount', false, () => {}, e);
-                } : undefined}
-              >
-                <TooltipProvider>
-                  <Tooltip open={discountTooltip.isMobile ? discountTooltip.isTooltipOpen('merchant-discount') : undefined}>
-                    <TooltipTrigger asChild>
-                      <span
-                        className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block"
-                        style={{ fontSize: '16px' }}
-                      >
-                        ✧
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        {discount}% Discount due to Knowledge
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
+              <TooltipProvider>
+                <Tooltip open={discountTooltip.isMobile ? discountTooltip.isTooltipOpen('merchant-discount') : undefined}>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block ml-1"
+                      style={{ fontSize: '16px', lineHeight: '16px', width: '16px', height: '16px' }}
+                      onClick={discountTooltip.isMobile ? (e) => {
+                        e.stopPropagation();
+                        discountTooltip.handleWrapperClick('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseDown={discountTooltip.isMobile ? (e) => {
+                        discountTooltip.handleMouseDown('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseUp={discountTooltip.isMobile ? (e) => {
+                        discountTooltip.handleMouseUp('merchant-discount', false, () => {}, e);
+                      } : undefined}
+                      onTouchStart={discountTooltip.isMobile ? (e) => {
+                        discountTooltip.handleTouchStart('merchant-discount', false, false, e);
+                      } : undefined}
+                      onTouchEnd={discountTooltip.isMobile ? (e) => {
+                        discountTooltip.handleTouchEnd('merchant-discount', false, () => {}, e);
+                      } : undefined}
+                    >
+                      ✧
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      {discount}% Discount due to Knowledge
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
             )}
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-400 mt-2">
