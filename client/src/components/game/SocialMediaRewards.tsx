@@ -24,14 +24,12 @@ const SOCIAL_PLATFORMS = [
 ];
 
 export default function SocialMediaRewards() {
-  // Subscribe to the entire social_media_rewards object to ensure re-renders
-  const social_media_rewards = useGameStore((state) => state.social_media_rewards);
   const updateResource = useGameStore((state) => state.updateResource);
   const addLogEntry = useGameStore((state) => state.addLogEntry);
 
   const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
-    // Check claim status from the subscribed state
-    const currentRewards = social_media_rewards;
+    // Get fresh state to check claim status
+    const currentRewards = useGameStore.getState().social_media_rewards;
 
     // Check if already claimed
     if (currentRewards[platformId]?.claimed) {
@@ -93,7 +91,8 @@ export default function SocialMediaRewards() {
   return (
     <>
       {SOCIAL_PLATFORMS.map((platform) => {
-        const isClaimed = social_media_rewards[platform.id]?.claimed;
+        // Subscribe to this specific platform's claimed status
+        const isClaimed = useGameStore((state) => state.social_media_rewards[platform.id]?.claimed ?? false);
 
         return (
           <DropdownMenuItem
