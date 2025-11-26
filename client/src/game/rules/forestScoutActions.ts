@@ -154,9 +154,9 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.15,
-        { type: "strength", multiplier: 0.005 },
-        { type: "knowledge", multiplier: 0.005 },
+        0.0,
+        { type: "strength", multiplier: 0.00 },
+        { type: "knowledge", multiplier: 0.00 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
