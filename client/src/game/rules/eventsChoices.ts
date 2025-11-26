@@ -1653,7 +1653,11 @@ export const choiceEvents: Record<string, GameEvent> = {
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
     title: "Drained Bodies",
     message: (state: GameState) => {
+      // Store deaths in a temporary state field so we can use the same value in the effect
       const deaths = [2, 4, 6, 8][Math.floor(Math.random() * 4)];
+      // Store this value in a way that the effect can access it
+      (state as any)._eventDeaths = deaths;
+      
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
       
       if (isFirstTime) {
@@ -1670,9 +1674,13 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acknowledge",
         label: "Investigate the tower",
         effect: (state: GameState) => {
-          // Calculate deaths the same way as in the message
-          const deaths = [2, 4, 6, 8][Math.floor(Math.random() * 4)];
+          // Use the deaths value that was calculated during message generation
+          const deaths = (state as any)._eventDeaths || [2, 4, 6, 8][Math.floor(Math.random() * 4)];
           const deathResult = killVillagers(state, deaths);
+          
+          // Clean up temporary field
+          const cleanState = { ...state };
+          delete (cleanState as any)._eventDeaths;
           
           return {
             ...deathResult,
