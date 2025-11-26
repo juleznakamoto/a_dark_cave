@@ -72,7 +72,7 @@ export default function GameFooter() {
 
     // Check if there's a referral code in URL
     const params = new URLSearchParams(window.location.search);
-    const hasReferralCode = params.has('ref');
+    const hasReferralCode = params.has("ref");
 
     // If there's a referral code and user is not signed in, activate the notification
     if (hasReferralCode && !currentUser) {
@@ -87,7 +87,7 @@ export default function GameFooter() {
 
     // Check if there's a referral code in URL after we know the auth state
     const params = new URLSearchParams(window.location.search);
-    const hasReferralCode = params.has('ref');
+    const hasReferralCode = params.has("ref");
 
     // If there's a referral code and user is not signed in, activate the notification
     if (hasReferralCode && !user) {
@@ -259,7 +259,8 @@ export default function GameFooter() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleCopyInviteLink}>
               <div className="flex items-center justify-between w-full">
-                <span>Invite Friends </span><span className="font-semibold">+100 Gold</span>
+                <span>Invite Friends&nbsp;</span>
+                <span className="font-semibold">+100 Gold</span>
                 <TooltipProvider>
                   <Tooltip
                     open={
@@ -275,7 +276,10 @@ export default function GameFooter() {
                           e.stopPropagation();
                           e.preventDefault();
                           if (isMobile) {
-                            mobileTooltip.handleTooltipClick("referral-info", e);
+                            mobileTooltip.handleTooltipClick(
+                              "referral-info",
+                              e,
+                            );
                           }
                         }}
                       >
@@ -286,7 +290,6 @@ export default function GameFooter() {
                       <p className="text-xs">
                         Share your invite link to earn 100 gold for each friend
                         who signs up ({referralCount || 0}/10 invited).
-                        <br />
                         <br />
                       </p>
                     </TooltipContent>

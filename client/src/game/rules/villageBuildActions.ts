@@ -1371,7 +1371,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDarkEstate",
     label: "Dark Estate",
     description: "Secluded estate providing refuge from the world",
-    tooltipEffects: ["+20 Max Madness", "-10 Madness (One Time)"],
+    tooltipEffects: [],
     building: true,
     show_when: {
       1: {
@@ -1389,8 +1389,6 @@ export const villageBuildActions: Record<string, Action> = {
     effects: {
       1: {
         "buildings.darkEstate": 1,
-        "stats.madness": -10,
-        "stats.maxMadness": 20,
       },
     },
     cooldown: 60,
