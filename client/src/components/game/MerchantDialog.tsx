@@ -78,11 +78,27 @@ export default function MerchantDialog({
             {event.title || "Strange Encounter"}
             {hasBookOfWar && discount > 0 && (
               <TooltipProvider>
-                <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
+                <Tooltip open={mobileTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
                     <span
-                      className="text-blue-300/80 cursor-pointer text-base hover:text-blue-300 transition-colors inline-block ml-1"
-                      onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
+                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block ml-1"
+                      style={{ fontSize: '16px' }}
+                      onClick={!mobileTooltip.isMobile ? (e) => {
+                        e.stopPropagation();
+                        mobileTooltip.handleWrapperClick('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseDown={mobileTooltip.isMobile ? (e) => {
+                        mobileTooltip.handleMouseDown('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseUp={mobileTooltip.isMobile ? (e) => {
+                        mobileTooltip.handleMouseUp('merchant-discount', false, () => {}, e);
+                      } : undefined}
+                      onTouchStart={mobileTooltip.isMobile ? (e) => {
+                        mobileTooltip.handleTouchStart('merchant-discount', false, false, e);
+                      } : undefined}
+                      onTouchEnd={mobileTooltip.isMobile ? (e) => {
+                        mobileTooltip.handleTouchEnd('merchant-discount', false, () => {}, e);
+                      } : undefined}
                     >
                       ✧
                     </span>
