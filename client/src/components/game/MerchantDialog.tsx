@@ -79,8 +79,9 @@ export default function MerchantDialog({
               <TooltipProvider>
                 <Tooltip open={mobileTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
-                    <span
-                      className="text-blue-300/80 cursor-help text-base"
+                    <button
+                      type="button"
+                      className="text-blue-300/80 cursor-pointer text-xl sm:text-base p-1 -m-1 hover:text-blue-300 transition-colors touch-manipulation"
                       onClick={mobileTooltip.isMobile ? (e) => {
                         e.stopPropagation();
                         mobileTooltip.handleWrapperClick('merchant-discount', false, false, e);
@@ -91,7 +92,7 @@ export default function MerchantDialog({
                       onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd('merchant-discount', false, () => {}, e) : undefined}
                     >
                       ✧
-                    </span>
+                    </button>
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs whitespace-nowrap">
@@ -122,18 +123,18 @@ export default function MerchantDialog({
                 const canAfford = Object.keys(testResult).length > 0;
 
                 // Evaluate label if it's a function
-                const labelText = typeof choice.label === 'function' 
-                  ? choice.label(gameState) 
+                const labelText = typeof choice.label === 'function'
+                  ? choice.label(gameState)
                   : choice.label;
 
                 // Evaluate cost if it's a function
-                const costText = typeof choice.cost === 'function' 
-                  ? choice.cost(gameState) 
+                const costText = typeof choice.cost === 'function'
+                  ? choice.cost(gameState)
                   : choice.cost;
 
                 const isPurchased = purchasedItems.has(choice.id);
-                const isDisabled = (timeRemaining !== null && timeRemaining <= 0) || 
-                                   fallbackExecutedRef.current || 
+                const isDisabled = (timeRemaining !== null && timeRemaining <= 0) ||
+                                   fallbackExecutedRef.current ||
                                    isPurchased ||
                                    !canAfford;
 
@@ -162,7 +163,7 @@ export default function MerchantDialog({
                     <TooltipProvider key={choice.id}>
                       <Tooltip open={mobileTooltip.isTooltipOpen(choice.id)}>
                         <TooltipTrigger asChild>
-                          <div 
+                          <div
                             onClick={(e) => mobileTooltip.handleWrapperClick(choice.id, isDisabled, false, e)}
                             onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown(choice.id, isDisabled, false, e) : undefined}
                             onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp(choice.id, isDisabled, () => onChoice(choice.id), e) : undefined}
