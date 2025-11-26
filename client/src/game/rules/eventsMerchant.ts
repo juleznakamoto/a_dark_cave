@@ -1047,12 +1047,24 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   // Select sell trades based on progression, avoiding conflicts with buy trades
   const shuffledSellTrades = filteredSellTrades.sort(() => Math.random() - 0.5);
   const selectedSellTrades = [];
+  const usedRewardTypes = new Set<string>();
 
   for (const trade of shuffledSellTrades) {
     if (selectedSellTrades.length >= numSellTrades) break;
 
     // Filter out reward options that are the same as the resource being sold
-    const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
+    let validRewards = trade.rewards.filter(r => r.resource !== trade.take);
+    
+    // Filter out silver/gold if we've already used them
+    validRewards = validRewards.filter(r => {
+      if (r.resource === 'silver' && usedRewardTypes.has('silver')) return false;
+      if (r.resource === 'gold' && usedRewardTypes.has('gold')) return false;
+      return true;
+    });
+    
+    // Skip this trade if no valid rewards remain
+    if (validRewards.length === 0) continue;
+    
     const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
     
     // Create a unique key for this resource pair (sorted to catch both directions)
@@ -1065,11 +1077,19 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     
     usedResourcePairs.add(resourcePair);
     
+    // Track silver and gold usage
+    if (rewardOption.resource === 'silver') {
+      usedRewardTypes.add('silver');
+    }
+    if (rewardOption.resource === 'gold') {
+      usedRewardTypes.add('gold');
+    }
+    
     let rawReward = Math.ceil(rewardOption.amount * (1 + discount));
     
     // Apply 75% reduction for silver and gold rewards
     if (rewardOption.resource === 'silver' || rewardOption.resource === 'gold') {
-      rawReward = Math.ceil(rawReward * 0.2 5);
+      rawReward = Math.ceil(rawReward * 0.75);
     }
     
     const reward = roundCost(rawReward);
