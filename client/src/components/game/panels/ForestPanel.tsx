@@ -195,7 +195,32 @@ export default function ForestPanel() {
                 {costBreakdown.length > 0 && (
                   <div className="border-t border-border my-1" />
                 )}
-                <div>Success Chance: {successPercentage}</div>
+                <div className="flex items-center gap-1">
+                  <span>{successPercentage}</span>
+                  {action.success_chance && (
+                    <div className="flex gap-1">
+                      {/* Show stat symbols based on the success_chance function parameters */}
+                      {actionId === "layTrap" && (
+                        <>
+                          <span className="text-red-300/80">⬡</span>
+                          <span className="text-green-300/80">☆</span>
+                        </>
+                      )}
+                      {actionId === "damagedTower" && (
+                        <>
+                          <span className="text-blue-300/80">✧</span>
+                          <span className="text-green-300/80">☆</span>
+                        </>
+                      )}
+                      {(actionId === "castleRuins" || actionId === "hillGrave" || actionId === "sunkenTemple") && (
+                        <>
+                          <span className="text-red-300/80">⬡</span>
+                          <span className="text-blue-300/80">✧</span>
+                        </>
+                      )}
+                    </div>
+                  )}
+                </div>
               </>
             )}
           </div>
