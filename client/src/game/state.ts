@@ -628,11 +628,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
+    console.log(`[COOLDOWN] setCooldown called for ${action}:`, {
+      duration,
+      willTriggerImmediateSave: duration > 5,
+      timestamp: Date.now()
+    });
+
     set((state) => {
       const newState = {
         cooldowns: { ...state.cooldowns, [action]: duration },
         cooldownDurations: { ...state.cooldownDurations, [action]: duration },
       };
+      
+      console.log(`[COOLDOWN] State updated for ${action}:`, {
+        newCooldowns: newState.cooldowns,
+        newCooldownDurations: newState.cooldownDurations
+      });
       
       return newState;
     });
@@ -640,15 +651,32 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Only save immediately for cooldowns >5 seconds
     // Shorter cooldowns will be saved by the 15-second auto-save
     if (duration > 5) {
+      console.log(`[COOLDOWN] Triggering immediate save for ${action} (duration: ${duration}s)`);
       setTimeout(async () => {
         try {
           const { saveGame } = await import('@/game/save');
           const currentState = get();
+          
+          console.log(`[COOLDOWN] About to save for ${action}:`, {
+            cooldowns: currentState.cooldowns,
+            cooldownDurations: currentState.cooldownDurations,
+            playTime: currentState.playTime,
+            timestamp: Date.now()
+          });
+          
           await saveGame(currentState, currentState.playTime);
+          
+          console.log(`[COOLDOWN] Successfully saved after ${action} clicked`, {
+            savedCooldowns: currentState.cooldowns,
+            savedCooldownDurations: currentState.cooldownDurations,
+            timestamp: Date.now()
+          });
         } catch (error) {
           console.error(`[COOLDOWN] Failed to save cooldowns for ${action}:`, error);
         }
       }, 0);
+    } else {
+      console.log(`[COOLDOWN] Skipping immediate save for ${action} (duration: ${duration}s <= 5s threshold)`);
     }
   },
 
