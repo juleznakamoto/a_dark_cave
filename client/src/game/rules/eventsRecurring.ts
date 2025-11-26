@@ -174,7 +174,7 @@ export const recurringEvents: Record<string, GameEvent> = {
   fireStorm: {
     id: "fireStorm",
     condition: (state: GameState) => {
-      const fireStormCount = state.story.seen.fireStormCount || 0;
+      const fireStormCount = (state.story.seen.fireStormCount as number) || 0;
       const maxOccurrences = state.cruelMode ? 3 : 1;
       
       return state.buildings.woodenHut >= 6 && 
@@ -192,7 +192,7 @@ export const recurringEvents: Record<string, GameEvent> = {
       // Use the centralized killVillagers function
       const deathResult = killVillagers(state, 2);
       
-      const currentCount = state.story.seen.fireStormCount || 0;
+      const currentCount = (state.story.seen.fireStormCount as number) || 0;
 
       return {
         ...deathResult,
