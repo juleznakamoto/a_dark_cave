@@ -965,10 +965,10 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   
   console.log('[MERCHANT] Filtered sell trades:', filteredSellTrades.length);
 
-  // Select 2 sell trades
+  // Select 3 sell trades
   const availableSellTrades = filteredSellTrades
     .sort(() => Math.random() - 0.5)
-    .slice(0, 2)
+    .slice(0, 3)
     .map((trade) => {
       const rewardOption = trade.rewards[Math.floor(Math.random() * trade.rewards.length)];
       const reward = Math.ceil(rewardOption.amount * (1 + discount));
