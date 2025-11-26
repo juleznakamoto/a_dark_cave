@@ -197,27 +197,18 @@ export default function ForestPanel() {
                 )}
                 <div className="flex items-center gap-1">
                   <span>{successPercentage}</span>
-                  {action.success_chance && (
+                  {action.success_chance && action.relevant_stats && (
                     <div className="flex gap-1">
-                      {/* Show stat symbols based on the success_chance function parameters */}
-                      {actionId === "layTrap" && (
-                        <>
-                          <span className="text-red-300/80">⬡</span>
-                          <span className="text-green-300/80">☆</span>
-                        </>
-                      )}
-                      {actionId === "damagedTower" && (
-                        <>
-                          <span className="text-blue-300/80">✧</span>
-                          <span className="text-green-300/80">☆</span>
-                        </>
-                      )}
-                      {(actionId === "castleRuins" || actionId === "hillGrave" || actionId === "sunkenTemple") && (
-                        <>
-                          <span className="text-red-300/80">⬡</span>
-                          <span className="text-blue-300/80">✧</span>
-                        </>
-                      )}
+                      {action.relevant_stats.map((stat) => {
+                        if (stat === "strength") {
+                          return <span key={stat} className="text-red-300/80">⬡</span>;
+                        } else if (stat === "knowledge") {
+                          return <span key={stat} className="text-blue-300/80">✧</span>;
+                        } else if (stat === "luck") {
+                          return <span key={stat} className="text-green-300/80">☆</span>;
+                        }
+                        return null;
+                      })}
                     </div>
                   )}
                 </div>
