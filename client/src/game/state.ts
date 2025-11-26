@@ -507,8 +507,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Store initial cooldown duration if it's a new cooldown
+    let shouldTriggerImmediateSave = false;
+    let cooldownDuration = 0;
+    
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
+      cooldownDuration = initialDuration;
+      
       console.log(`[COOLDOWN] Storing initial cooldown duration for ${actionId}:`, {
         initialDuration,
         timestamp: Date.now()
@@ -520,14 +525,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
           [actionId]: initialDuration,
         },
       }));
+      
+      // Mark for immediate save if cooldown > 5 seconds
+      shouldTriggerImmediateSave = initialDuration > 5;
     }
-
 
     // Apply dev mode cooldown multiplier (0.1x)
     if (state.devMode && result.stateUpdates.cooldowns) {
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+        // Update the cooldown duration for immediate save check
+        if (key === actionId) {
+          cooldownDuration = updatedCooldowns[key];
+        }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
@@ -625,6 +636,34 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Handle delayed effects
     StateManager.handleDelayedEffects(result.delayedEffects);
+
+    // Trigger immediate save for long cooldowns (>5 seconds)
+    if (shouldTriggerImmediateSave) {
+      console.log(`[COOLDOWN] Triggering immediate save for ${actionId} (duration: ${cooldownDuration}s)`);
+      setTimeout(async () => {
+        try {
+          const { saveGame } = await import('@/game/save');
+          const currentState = get();
+          
+          console.log(`[COOLDOWN] About to save for ${actionId}:`, {
+            cooldowns: currentState.cooldowns,
+            cooldownDurations: currentState.cooldownDurations,
+            playTime: currentState.playTime,
+            timestamp: Date.now()
+          });
+          
+          await saveGame(currentState, currentState.playTime);
+          
+          console.log(`[COOLDOWN] Successfully saved after ${actionId} clicked`, {
+            savedCooldowns: currentState.cooldowns,
+            savedCooldownDurations: currentState.cooldownDurations,
+            timestamp: Date.now()
+          });
+        } catch (error) {
+          console.error(`[COOLDOWN] Failed to save cooldowns for ${actionId}:`, error);
+        }
+      }, 0);
+    }
   },
 
   setCooldown: (action: string, duration: number) => {
