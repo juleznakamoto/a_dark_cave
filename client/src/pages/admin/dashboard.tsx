@@ -1033,8 +1033,8 @@ export default function AdminDashboard() {
     return topFirstTimeClicks;
   };
 
-  // Get sleep upgrade levels over playtime
-  const getSleepUpgradesOverPlaytime = () => {
+  // Get sleep upgrade levels distribution
+  const getSleepUpgradesDistribution = () => {
     let filteredSaves = gameSaves;
 
     if (selectedUser !== 'all') {
@@ -1051,46 +1051,31 @@ export default function AdminDashboard() {
       filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
     }
 
-    // Aggregate into 15-minute buckets for more granularity
-    const buckets = new Map<number, { lengthSum: number; intensitySum: number; count: number }>();
-    let maxBucket = 0;
+    // Count users at each level (0-5)
+    const lengthLevelCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const intensityLevelCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
 
     filteredSaves.forEach(save => {
-      const playtimeMinutes = Math.floor((save.game_state?.playTime || 0) / 1000 / 60);
-      if (playtimeMinutes === 0) return;
-
-      const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
-      maxBucket = Math.max(maxBucket, bucket);
-
-      if (!buckets.has(bucket)) {
-        buckets.set(bucket, { lengthSum: 0, intensitySum: 0, count: 0 });
-      }
-
-      const bucketData = buckets.get(bucket)!;
       const lengthLevel = save.game_state?.sleepUpgrades?.lengthLevel || 0;
       const intensityLevel = save.game_state?.sleepUpgrades?.intensityLevel || 0;
 
-      bucketData.lengthSum += lengthLevel;
-      bucketData.intensitySum += intensityLevel;
-      bucketData.count += 1;
+      if (lengthLevel >= 0 && lengthLevel <= 5) {
+        lengthLevelCounts[lengthLevel]++;
+      }
+      if (intensityLevel >= 0 && intensityLevel <= 5) {
+        intensityLevelCounts[intensityLevel]++;
+      }
     });
 
-    if (buckets.size === 0) {
-      return [];
-    }
+    // Convert to array format for chart
+    const result: Array<{ level: string; lengthUsers: number; intensityUsers: number }> = [];
 
-    // Convert to array and calculate averages
-    const result: Array<{ time: string; lengthLevel: number; intensityLevel: number }> = [];
-
-    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
-      const bucketData = buckets.get(bucket);
-      if (bucketData && bucketData.count > 0) {
-        result.push({
-          time: `${bucket}m`,
-          lengthLevel: Number((bucketData.lengthSum / bucketData.count).toFixed(2)),
-          intensityLevel: Number((bucketData.intensitySum / bucketData.count).toFixed(2)),
-        });
-      }
+    for (let level = 0; level <= 5; level++) {
+      result.push({
+        level: `Level ${level}`,
+        lengthUsers: lengthLevelCounts[level],
+        intensityUsers: intensityLevelCounts[level],
+      });
     }
 
     return result;
@@ -2022,46 +2007,35 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Sleep Upgrade Levels Over Playtime</CardTitle>
+                <CardTitle>Sleep Upgrade Levels Distribution</CardTitle>
                 <CardDescription>
-                  Average SLEEP_LENGTH_UPGRADES and SLEEP_INTENSITY_UPGRADES levels at different playtime milestones (15-minute intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                  Number of users at each SLEEP_LENGTH_UPGRADES and SLEEP_INTENSITY_UPGRADES level {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getSleepUpgradesOverPlaytime()}>
+                  <BarChart data={getSleepUpgradesDistribution()}>
                     <CartesianGrid strokeDasharray="3 3" />
                     <XAxis 
-                      dataKey="time" 
-                      label={{ value: 'Playtime (minutes)', position: 'insideBottom', offset: -5 }} 
-                      angle={-45}
-                      textAnchor="end"
-                      height={80}
+                      dataKey="level" 
+                      label={{ value: 'Upgrade Level', position: 'insideBottom', offset: -5 }} 
                     />
                     <YAxis 
-                      label={{ value: 'Upgrade Level', angle: -90, position: 'insideLeft' }}
-                      domain={[0, 5]}
-                      ticks={[0, 1, 2, 3, 4, 5]}
+                      label={{ value: 'Number of Users', angle: -90, position: 'insideLeft' }}
                     />
                     <Tooltip />
                     <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="lengthLevel"
-                      stroke="#8884d8"
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                      name="Sleep Length Level"
+                    <Bar
+                      dataKey="lengthUsers"
+                      fill="#8884d8"
+                      name="Sleep Length Users"
                     />
-                    <Line
-                      type="monotone"
-                      dataKey="intensityLevel"
-                      stroke="#82ca9d"
-                      strokeWidth={2}
-                      dot={{ r: 3 }}
-                      name="Sleep Intensity Level"
+                    <Bar
+                      dataKey="intensityUsers"
+                      fill="#82ca9d"
+                      name="Sleep Intensity Users"
                     />
-                  </LineChart>
+                  </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
