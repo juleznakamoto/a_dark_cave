@@ -79,9 +79,9 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.15,
-        { type: 'strength', multiplier: 0.01 },
-        { type: 'knowledge', multiplier: 0.01 }
+        0.2,
+        { type: 'strength', multiplier: 0.005 },
+        { type: 'knowledge', multiplier: 0.005 }
       );
     },
     cooldown: 45,
@@ -101,9 +101,9 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.2,
-        { type: 'strength', multiplier: 0.01 },
-        { type: 'knowledge', multiplier: 0.01 }
+        0.15,
+        { type: 'strength', multiplier: 0.005 },
+        { type: 'knowledge', multiplier: 0.005 }
       );
     },
     cooldown: 45,
@@ -125,9 +125,9 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.25,
-        { type: 'strength', multiplier: 0.01 },
-        { type: 'knowledge', multiplier: 0.01 }
+        0.1,
+        { type: 'strength', multiplier: 0.005 },
+        { type: 'knowledge', multiplier: 0.005 }
       );
     },
     cooldown: 45,
@@ -147,9 +147,9 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(
         state,
-        0.15,
-        { type: 'strength', multiplier: 0.01 },
-        { type: 'knowledge', multiplier: 0.01 }
+        0.2,
+        { type: 'strength', multiplier: 0.005 },
+        { type: 'knowledge', multiplier: 0.005 }
       );
     },
     cooldown: 90,
