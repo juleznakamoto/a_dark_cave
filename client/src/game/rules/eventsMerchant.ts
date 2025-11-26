@@ -1506,7 +1506,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     true,
   );
 
-  // Filter sell trades
+  // Filter sell trades (use separate resource pair tracking)
   console.log("[MERCHANT] Total sell trades:", sellTrades.length);
   const filteredSellTrades = sellTrades.filter((trade) => {
     const passes = trade.condition(state);
@@ -1515,12 +1515,15 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   });
   console.log("[MERCHANT] Filtered sell trades:", filteredSellTrades.length);
 
+  const sellUsedResourcePairs = new Set<string>();
+  const sellUsedRewardTypes = new Set<string>();
+
   const availableSellTrades = selectTrades(
     filteredSellTrades,
     numSellTrades,
     discount,
-    usedResourcePairs,
-    usedRewardTypes,
+    sellUsedResourcePairs,
+    sellUsedRewardTypes,
     false,
   );
 
