@@ -47,7 +47,8 @@ export function calculateSuccessChance(
   // Apply cruel mode modifier
   chance += state.CM * cmMultiplier;
 
-  return chance;
+  // Cap at 100% (1.0)
+  return Math.min(chance, 1.0);
 }
 
 
