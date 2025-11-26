@@ -1675,7 +1675,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Investigate the tower",
         effect: (state: GameState) => {
           // Use the deaths value that was calculated during message generation
-          const deaths = (state as any)._eventDeaths || [2, 4, 6, 8][Math.floor(Math.random() * 4)];
+          const deaths = (state as any)._eventDeaths;
           const deathResult = killVillagers(state, deaths);
           
           // Clean up temporary field
