@@ -19,7 +19,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useMobileButtonTooltip, useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 
 interface MerchantDialogProps {
   event: LogEntry;
@@ -45,7 +45,6 @@ export default function MerchantDialog({
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
-  const discountTooltip = useMobileTooltip();
 
   // Calculate discount based on knowledge
   const knowledge = getTotalKnowledge(gameState);
@@ -78,12 +77,19 @@ export default function MerchantDialog({
             {event.title || "Strange Encounter"}
             {hasBookOfWar && discount > 0 && (
               <TooltipProvider>
-                <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
+                <Tooltip open={mobileTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
                     <button
                       type="button"
                       className="text-blue-300/80 cursor-pointer text-xl sm:text-base p-1 -m-1 hover:text-blue-300 transition-colors touch-manipulation"
-                      onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
+                      onClick={mobileTooltip.isMobile ? (e) => {
+                        e.stopPropagation();
+                        mobileTooltip.handleWrapperClick('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown('merchant-discount', false, false, e) : undefined}
+                      onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp('merchant-discount', false, () => {}, e) : undefined}
+                      onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart('merchant-discount', false, false, e) : undefined}
+                      onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd('merchant-discount', false, () => {}, e) : undefined}
                     >
                       ✧
                     </button>
