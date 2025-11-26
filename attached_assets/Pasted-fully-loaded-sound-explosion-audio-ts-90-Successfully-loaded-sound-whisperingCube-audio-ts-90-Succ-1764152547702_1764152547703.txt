@@ -1,0 +1,24 @@
+fully loaded sound: explosion
+audio.ts:90 Successfully loaded sound: whisperingCube
+audio.ts:90 Successfully loaded sound: wind
+audio.ts:90 Successfully loaded sound: backgroundMusic
+audio.ts:73 Finished loading all sounds
+state.ts:512 [COOLDOWN] Storing initial cooldown duration for damagedTower: {initialDuration: 900, timestamp: 1764152534084}
+state.ts:536 [STATE] Action: damagedTower {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 90, initialCooldown: 900, percentage: '10.0%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '90.00', to: '89.80', remaining: '89.80'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 89.8, initialCooldown: 900, percentage: '10.0%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '89.80', to: '89.60', remaining: '89.60'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 89.6, initialCooldown: 900, percentage: '10.0%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '89.60', to: '89.40', remaining: '89.40'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 89.39999999999999, initialCooldown: 900, percentage: '9.9%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '89.40', to: '89.20', remaining: '89.20'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 89.19999999999999, initialCooldown: 900, percentage: '9.9%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '89.20', to: '89.00', remaining: '89.00'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 88.99999999999999, initialCooldown: 900, percentage: '9.9%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '89.00', to: '88.80', remaining: '88.80'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 88.79999999999998, initialCooldown: 900, percentage: '9.9%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '88.80', to: '88.60', remaining: '88.60'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 88.59999999999998, initialCooldown: 900, percentage: '9.8%'}
+state.ts:686 [COOLDOWN] Tick for damagedTower: {from: '88.60', to: '88.40', remaining: '88.40'}
+CooldownButton.tsx:65 [COOLDOWN-BUTTON] damagedTower is cooling down: {currentCooldown: 88.39999999999998, initialCooldown: 90
