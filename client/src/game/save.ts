@@ -141,6 +141,17 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
     const now = Date.now();
     sanitizedState.lastSaved = now;
 
+    console.log(`[SAVE] Saving game state:`, {
+      timestamp: now,
+      playTime,
+      hasCooldowns: !!sanitizedState.cooldowns,
+      cooldownsCount: sanitizedState.cooldowns ? Object.keys(sanitizedState.cooldowns).length : 0,
+      cooldowns: sanitizedState.cooldowns,
+      hasCooldownDurations: !!sanitizedState.cooldownDurations,
+      cooldownDurationsCount: sanitizedState.cooldownDurations ? Object.keys(sanitizedState.cooldownDurations).length : 0,
+      cooldownDurations: sanitizedState.cooldownDurations
+    });
+
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
@@ -149,6 +160,7 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
     // Save locally first (most important)
     await db.put('saves', saveData, SAVE_KEY);
+    console.log(`[SAVE] Successfully saved to IndexedDB`);
 
     // Try to save to cloud if user is authenticated (optional enhancement)
     try {
@@ -182,11 +194,22 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
 export async function loadGame(): Promise<GameState | null> {
   try {
+    console.log(`[LOAD] Starting game load process...`);
+    
     // Process referral if user just confirmed email
     await processReferralAfterConfirmation();
 
     const db = await getDB();
     const localSave = await db.get('saves', SAVE_KEY);
+    
+    console.log(`[LOAD] Local save retrieved:`, {
+      hasLocalSave: !!localSave,
+      timestamp: localSave?.timestamp,
+      playTime: localSave?.playTime,
+      hasCooldowns: !!localSave?.gameState?.cooldowns,
+      cooldowns: localSave?.gameState?.cooldowns,
+      cooldownDurations: localSave?.gameState?.cooldownDurations
+    });
 
     // Check if user is authenticated
     const user = await getCurrentUser();

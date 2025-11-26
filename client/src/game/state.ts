@@ -509,6 +509,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
+      console.log(`[COOLDOWN] Storing initial cooldown duration for ${actionId}:`, {
+        initialDuration,
+        timestamp: Date.now()
+      });
+      
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
@@ -623,30 +628,79 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setCooldown: (action: string, duration: number) => {
+    console.log(`[COOLDOWN] Setting cooldown for ${action}:`, {
+      duration,
+      timestamp: Date.now()
+    });
+    
     set((state) => {
       const newState = {
         cooldowns: { ...state.cooldowns, [action]: duration },
         cooldownDurations: { ...state.cooldownDurations, [action]: duration }, // Also set initial duration
       };
+      
+      console.log(`[COOLDOWN] Updated state:`, {
+        action,
+        cooldowns: newState.cooldowns,
+        cooldownDurations: newState.cooldownDurations
+      });
+      
       return newState;
     });
+
+    // Immediately save cooldowns to local storage after setting
+    setTimeout(async () => {
+      try {
+        const { saveGame } = await import('@/game/save');
+        const currentState = get();
+        console.log(`[COOLDOWN] Saving cooldowns immediately for ${action}:`, {
+          cooldowns: currentState.cooldowns,
+          cooldownDurations: currentState.cooldownDurations
+        });
+        await saveGame(currentState, currentState.playTime);
+        console.log(`[COOLDOWN] Successfully saved cooldowns for ${action}`);
+      } catch (error) {
+        console.error(`[COOLDOWN] Failed to save cooldowns for ${action}:`, error);
+      }
+    }, 0);
   },
 
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
       const newCooldownDurations = { ...state.cooldownDurations }; // Copy durations
+      const activeCooldowns: string[] = [];
 
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
+          const oldValue = newCooldowns[key];
           newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
+          
+          if (newCooldowns[key] > 0) {
+            activeCooldowns.push(key);
+          }
+          
+          // Log significant cooldown changes (every second)
+          if (Math.floor(oldValue * 10) !== Math.floor(newCooldowns[key] * 10)) {
+            console.log(`[COOLDOWN] Tick for ${key}:`, {
+              from: oldValue.toFixed(2),
+              to: newCooldowns[key].toFixed(2),
+              remaining: newCooldowns[key].toFixed(2)
+            });
+          }
         }
 
         // If cooldown has reached 0, reset its duration as well
         if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
+          console.log(`[COOLDOWN] Cooldown completed for ${key}, clearing duration`);
           delete newCooldownDurations[key];
         }
       }
+      
+      if (activeCooldowns.length > 0 && Math.random() < 0.1) { // Log occasionally to avoid spam
+        console.log(`[COOLDOWN] Active cooldowns:`, activeCooldowns);
+      }
+      
       return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
     });
   },
@@ -743,6 +797,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
         savedState.books.book_of_ascension = true;
       }
+      console.log(`[COOLDOWN] Loading saved game state:`, {
+        hasCooldowns: !!savedState.cooldowns,
+        cooldownsCount: savedState.cooldowns ? Object.keys(savedState.cooldowns).length : 0,
+        cooldowns: savedState.cooldowns,
+        hasCooldownDurations: !!savedState.cooldownDurations,
+        cooldownDurationsCount: savedState.cooldownDurations ? Object.keys(savedState.cooldownDurations).length : 0,
+        cooldownDurations: savedState.cooldownDurations,
+        savedAt: savedState.lastSaved,
+        timestamp: Date.now()
+      });
+
       const loadedState = {
         ...savedState,
         activeTab: "cave",

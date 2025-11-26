@@ -59,6 +59,17 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const initialCooldown = cooldownDurations[actionId] || 0;
   const isCoolingDown = currentCooldown > 0;
 
+  // Log cooldown state on mount and when it changes
+  useEffect(() => {
+    if (isCoolingDown) {
+      console.log(`[COOLDOWN-BUTTON] ${actionId} is cooling down:`, {
+        currentCooldown,
+        initialCooldown,
+        percentage: initialCooldown > 0 ? (currentCooldown / initialCooldown * 100).toFixed(1) + '%' : '0%'
+      });
+    }
+  }, [actionId, currentCooldown, initialCooldown, isCoolingDown]);
+
   // Track first render for transition
   useEffect(() => {
     if (isCoolingDown) {
