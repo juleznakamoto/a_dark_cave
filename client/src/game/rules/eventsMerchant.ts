@@ -932,6 +932,140 @@ const toolTrades = [
   },
 ];
 
+// Helper function to select trades (used for both buy and sell)
+function selectTrades(
+  trades: any[],
+  numTrades: number,
+  discount: number,
+  usedResourcePairs: Set<string>,
+  usedRewardTypes: Set<string>,
+  isBuyTrade: boolean
+): EventChoice[] {
+  const shuffled = trades.sort(() => Math.random() - 0.5);
+  const selected: EventChoice[] = [];
+  let tradeIndex = 0;
+
+  while (selected.length < numTrades && tradeIndex < shuffled.length) {
+    const trade = shuffled[tradeIndex];
+    tradeIndex++;
+
+    let primaryResource: string;
+    let secondaryResource: string;
+    let primaryAmount: number;
+    let secondaryAmount: number;
+    let validOptions: any[];
+
+    if (isBuyTrade) {
+      // Buy trade: give is what user receives, costs are what user pays
+      primaryResource = trade.give;
+      primaryAmount = trade.giveAmount;
+      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
+    } else {
+      // Sell trade: take is what user pays, rewards are what user receives
+      primaryResource = trade.take;
+      primaryAmount = trade.takeAmount;
+      validOptions = trade.rewards.filter((r: any) => r.resource !== trade.take);
+      
+      // Filter out silver/gold if we've already used them (sell trades only)
+      validOptions = validOptions.filter((r: any) => {
+        if (r.resource === 'silver' && usedRewardTypes.has('silver')) return false;
+        if (r.resource === 'gold' && usedRewardTypes.has('gold')) return false;
+        return true;
+      });
+    }
+
+    // Skip this trade if no valid options remain
+    if (validOptions.length === 0) continue;
+
+    const selectedOption = validOptions[Math.floor(Math.random() * validOptions.length)];
+    secondaryResource = selectedOption.resource;
+    
+    // Create a unique key for this resource pair (sorted to catch both directions)
+    const resourcePair = [primaryResource, secondaryResource].sort().join('-');
+    
+    // Skip if we've already selected a trade with these resources
+    if (usedResourcePairs.has(resourcePair)) {
+      continue;
+    }
+    
+    usedResourcePairs.add(resourcePair);
+
+    // Track silver and gold usage (sell trades only)
+    if (!isBuyTrade) {
+      if (secondaryResource === 'silver') usedRewardTypes.add('silver');
+      if (secondaryResource === 'gold') usedRewardTypes.add('gold');
+    }
+
+    // Calculate the secondary amount with discount
+    let rawAmount = Math.ceil(selectedOption.amount * (isBuyTrade ? (1 - discount) : (1 + discount)));
+    
+    // Apply 25% reduction for silver and gold rewards (sell trades only)
+    if (!isBuyTrade && (secondaryResource === 'silver' || secondaryResource === 'gold')) {
+      rawAmount = Math.ceil(rawAmount * 0.25);
+    }
+    
+    secondaryAmount = roundCost(rawAmount);
+
+    // Format resource names for display
+    const formatResourceName = (res: string) => 
+      res.replace(/_/g, ' ').split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+
+    const primaryFormatted = formatResourceName(primaryResource);
+    
+    let label: string;
+    let cost: string;
+    let giveRes: string;
+    let takeRes: string;
+    let giveAmount: number;
+    let takeAmount: number;
+
+    if (isBuyTrade) {
+      // Buy trade: button shows what user gets, cost shows what user pays
+      label = trade.label;
+      cost = `${secondaryAmount} ${secondaryResource}`;
+      giveRes = primaryResource;
+      takeRes = secondaryResource;
+      giveAmount = primaryAmount;
+      takeAmount = secondaryAmount;
+    } else {
+      // Sell trade: button shows what user gets, cost shows what user pays
+      label = `${secondaryAmount} ${secondaryResource}`;
+      cost = `${primaryAmount} ${primaryFormatted}`;
+      giveRes = secondaryResource;
+      takeRes = primaryResource;
+      giveAmount = secondaryAmount;
+      takeAmount = primaryAmount;
+    }
+
+    console.log(`[MERCHANT] Created ${isBuyTrade ? 'buy' : 'sell'} trade:`, {
+      id: trade.id,
+      label,
+      cost,
+      resourcePair,
+    });
+
+    selected.push({
+      id: trade.id,
+      label,
+      cost,
+      effect: (state: GameState) => {
+        if ((state.resources[takeRes] || 0) >= takeAmount) {
+          return {
+            resources: {
+              ...state.resources,
+              [takeRes]: (state.resources[takeRes] || 0) - takeAmount,
+              [giveRes]: (state.resources[giveRes] || 0) + giveAmount,
+            },
+          };
+        }
+        return {};
+      },
+    });
+  }
+
+  return selected;
+}
+
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
   console.log('[MERCHANT] Generating merchant choices', {
@@ -949,15 +1083,17 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   if (knowledge >= 40) discount = 0.2;
   if (knowledge >= 50) discount = 0.25;
 
-  console.log('[MERCHANT] Total buy trades:', buyTrades.length);
+  // Shared resource pair tracking
+  const usedResourcePairs = new Set<string>();
+  const usedRewardTypes = new Set<string>();
 
-  // Check which buy trades pass the condition
+  // Filter buy trades
+  console.log('[MERCHANT] Total buy trades:', buyTrades.length);
   const filteredBuyTrades = buyTrades.filter((trade) => {
     const passes = trade.condition(state);
     console.log('[MERCHANT] Buy trade', trade.id, 'condition:', passes);
     return passes;
   });
-
   console.log('[MERCHANT] Filtered buy trades:', filteredBuyTrades.length);
 
   // Determine number of buy trades based on buildings
@@ -970,70 +1106,22 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     numBuyTrades = 3; // Merchant's Guild: 3 buy trades
   }
 
-  // Select buy trades based on progression
-  const shuffledBuyTrades = filteredBuyTrades.sort(() => Math.random() - 0.5);
-  const selectedBuyTrades = [];
-  const usedResourcePairs = new Set<string>();
+  const availableBuyTrades = selectTrades(
+    filteredBuyTrades,
+    numBuyTrades,
+    discount,
+    usedResourcePairs,
+    usedRewardTypes,
+    true
+  );
 
-  for (const trade of shuffledBuyTrades) {
-    if (selectedBuyTrades.length >= numBuyTrades) break;
-
-    // Filter out cost options that are the same as the resource being bought
-    const validCosts = trade.costs.filter(c => c.resource !== trade.give);
-    const costOption = validCosts[Math.floor(Math.random() * validCosts.length)];
-    
-    // Create a unique key for this resource pair (sorted to catch both directions)
-    const resourcePair = [trade.give, costOption.resource].sort().join('-');
-    
-    // Skip if we've already selected a trade with these resources
-    if (usedResourcePairs.has(resourcePair)) {
-      continue;
-    }
-    
-    usedResourcePairs.add(resourcePair);
-    
-    const rawCost = Math.ceil(costOption.amount * (1 - discount));
-    const cost = roundCost(rawCost);
-
-    console.log('[MERCHANT] Created buy trade:', {
-      id: trade.id,
-      label: trade.label,
-      cost: `${cost} ${costOption.resource}`,
-      resourcePair,
-    });
-
-    selectedBuyTrades.push({
-      id: trade.id,
-      label: `${trade.label}`,
-      cost: `${cost} ${costOption.resource}`,
-      costResource: costOption.resource,
-      giveResource: trade.give,
-      effect: (state: GameState) => {
-        if ((state.resources[costOption.resource] || 0) >= cost) {
-          return {
-            resources: {
-              ...state.resources,
-              [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-              [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
-            },
-          };
-        }
-        return {};
-      },
-    });
-  }
-
-  const availableBuyTrades = selectedBuyTrades;
-
+  // Filter sell trades
   console.log('[MERCHANT] Total sell trades:', sellTrades.length);
-
-  // Check which sell trades pass the condition
   const filteredSellTrades = sellTrades.filter((trade) => {
     const passes = trade.condition(state);
     console.log('[MERCHANT] Sell trade', trade.id, 'condition:', passes);
     return passes;
   });
-
   console.log('[MERCHANT] Filtered sell trades:', filteredSellTrades.length);
 
   // Determine number of sell trades based on buildings
@@ -1044,94 +1132,14 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     numSellTrades = 3; // Trade Post or Grand Bazaar: 3 sell trades
   }
 
-  // Select sell trades based on progression, avoiding conflicts with buy trades
-  const shuffledSellTrades = filteredSellTrades.sort(() => Math.random() - 0.5);
-  const selectedSellTrades = [];
-  const usedRewardTypes = new Set<string>();
-  let tradeIndex = 0;
-
-  while (selectedSellTrades.length < numSellTrades && tradeIndex < shuffledSellTrades.length) {
-    const trade = shuffledSellTrades[tradeIndex];
-    tradeIndex++;
-
-    // Filter out reward options that are the same as the resource being sold
-    let validRewards = trade.rewards.filter(r => r.resource !== trade.take);
-    
-    // Filter out silver/gold if we've already used them
-    validRewards = validRewards.filter(r => {
-      if (r.resource === 'silver' && usedRewardTypes.has('silver')) return false;
-      if (r.resource === 'gold' && usedRewardTypes.has('gold')) return false;
-      return true;
-    });
-    
-    // Skip this trade if no valid rewards remain
-    if (validRewards.length === 0) continue;
-    
-    const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
-    
-    // Create a unique key for this resource pair (sorted to catch both directions)
-    const resourcePair = [trade.take, rewardOption.resource].sort().join('-');
-    
-    // Skip if we've already selected a trade with these resources (from buy or sell)
-    if (usedResourcePairs.has(resourcePair)) {
-      continue;
-    }
-    
-    usedResourcePairs.add(resourcePair);
-    
-    // Track silver and gold usage
-    if (rewardOption.resource === 'silver') {
-      usedRewardTypes.add('silver');
-    }
-    if (rewardOption.resource === 'gold') {
-      usedRewardTypes.add('gold');
-    }
-    
-    let rawReward = Math.ceil(rewardOption.amount * (1 + discount));
-    
-    // Apply 75% reduction for silver and gold rewards
-    if (rewardOption.resource === 'silver' || rewardOption.resource === 'gold') {
-      rawReward = Math.ceil(rawReward * 0.25);
-    }
-    
-    const reward = roundCost(rawReward);
-
-    // Format take resource name for display
-    const takeResourceName = trade.take
-      .replace(/_/g, ' ')
-      .split(' ')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(' ');
-
-    console.log('[MERCHANT] Created sell trade:', {
-      id: trade.id,
-      label: trade.label,
-      take: trade.take,
-      rewardResource: rewardOption.resource,
-      cost: `${trade.takeAmount} ${trade.take}`,
-      resourcePair,
-    });
-
-    selectedSellTrades.push({
-      id: trade.id,
-      label: `${reward} ${rewardOption.resource}`,
-      cost: `${trade.takeAmount} ${takeResourceName}`,
-      effect: (state: GameState) => {
-        if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
-          return {
-            resources: {
-              ...state.resources,
-              [trade.take]: (state.resources[trade.take] || 0) - trade.takeAmount,
-              [rewardOption.resource]: (state.resources[rewardOption.resource] || 0) + reward,
-            },
-          };
-        }
-        return {};
-      },
-    });
-  }
-
-  const availableSellTrades = selectedSellTrades;
+  const availableSellTrades = selectTrades(
+    filteredSellTrades,
+    numSellTrades,
+    discount,
+    usedResourcePairs,
+    usedRewardTypes,
+    false
+  );
 
   console.log('[MERCHANT] Total tool trades:', toolTrades.length);
 
