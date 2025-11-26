@@ -232,6 +232,15 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply Bone Saw tool bonus to hunter production
+  if (state && jobId === "hunter" && state.tools?.bone_saw) {
+    baseProduction.forEach((prod) => {
+      if (prod.resource === "fur" || prod.resource === "bones") {
+        prod.totalAmount += 1 * count; // +1 fur and +1 bones per hunter
+      }
+    });
+  }
+
   if (isGreatFeast) {
     baseProduction.forEach((prod) => {
       prod.totalAmount = Math.ceil(prod.totalAmount * 4.0);
