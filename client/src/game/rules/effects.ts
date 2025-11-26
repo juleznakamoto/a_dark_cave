@@ -332,7 +332,9 @@ export const toolEffects: Record<string, EffectDefinition> = {
     name: "Bone Saw",
     description: "The necromancer's cursed tool, unnaturally efficient at harvesting",
     bonuses: {
-      actionBonuses: {},
+      actionBonuses: {
+        
+      },
     },
   },
 };
