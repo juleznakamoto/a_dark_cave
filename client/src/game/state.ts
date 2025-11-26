@@ -508,7 +508,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
-      const initialDuration = result.stateUpdates.cooldowns[actionId];
+      let initialDuration = result.stateUpdates.cooldowns[actionId];
+
+      // Apply dev mode cooldown multiplier (0.1x) to duration FIRST
+      if (state.devMode) {
+        initialDuration = initialDuration * 0.1;
+      }
+
       const now = Date.now();
       const endTime = now + initialDuration;
 
@@ -518,7 +524,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         now,
         endTime,
         endTimeReadable: new Date(endTime).toISOString(),
-        resultStateUpdates: result.stateUpdates.cooldowns,
+        devMode: state.devMode,
       });
 
       // Convert duration to end timestamp BEFORE merging
@@ -531,16 +537,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           [actionId]: initialDuration,
         },
       }));
-    }
-
-
-    // Apply dev mode cooldown multiplier (0.1x)
-    if (state.devMode && result.stateUpdates.cooldowns) {
-      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
-      for (const key in updatedCooldowns) {
-        updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
-      }
-      result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
     if (import.meta.env.DEV) {
