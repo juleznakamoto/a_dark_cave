@@ -508,35 +508,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
-      let initialDuration = result.stateUpdates.cooldowns[actionId];
-
-      // Apply dev mode cooldown multiplier (0.1x) to duration FIRST
-      if (state.devMode) {
-        initialDuration = initialDuration * 0.1;
-      }
-
-      const now = Date.now();
-      const endTime = now + initialDuration;
-
-      console.log(`[executeAction] Setting cooldown for ${actionId}:`, {
-        initialDuration,
-        initialDurationSeconds: initialDuration / 1000,
-        now,
-        endTime,
-        endTimeReadable: new Date(endTime).toISOString(),
-        devMode: state.devMode,
-      });
-
-      // Convert duration to end timestamp BEFORE merging
-      result.stateUpdates.cooldowns[actionId] = endTime;
-
-      // Store the initial duration for animation purposes
+      const initialDuration = result.stateUpdates.cooldowns[actionId];
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
           [actionId]: initialDuration,
         },
       }));
+    }
+
+
+    // Apply dev mode cooldown multiplier (0.1x)
+    if (state.devMode && result.stateUpdates.cooldowns) {
+      const updatedCooldowns = { ...result.stateUpdates.cooldowns };
+      for (const key in updatedCooldowns) {
+        updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
+      }
+      result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
     if (import.meta.env.DEV) {
@@ -636,18 +624,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setCooldown: (action: string, duration: number) => {
     set((state) => {
-      const now = Date.now();
-      const endTime = now + duration;
-      console.log(`[setCooldown] ${action}:`, {
-        duration,
-        now,
-        endTime,
-        endTimeReadable: new Date(endTime).toISOString(),
-        willExpireIn: duration / 1000 + 's',
-      });
       const newState = {
-        cooldowns: { ...state.cooldowns, [action]: endTime },
-        cooldownDurations: { ...state.cooldownDurations, [action]: duration },
+        cooldowns: { ...state.cooldowns, [action]: duration },
+        cooldownDurations: { ...state.cooldownDurations, [action]: duration }, // Also set initial duration
       };
       return newState;
     });
@@ -655,53 +634,41 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   tickCooldowns: () => {
     set((state) => {
-      const now = Date.now();
       const newCooldowns = { ...state.cooldowns };
-      const newCooldownDurations = { ...state.cooldownDurations };
+      const newCooldownDurations = { ...state.cooldownDurations }; // Copy durations
 
       for (const key in newCooldowns) {
-        const endTime = newCooldowns[key];
-        const remaining = endTime - now;
+        if (newCooldowns[key] > 0) {
+          newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
+        }
 
-        // If cooldown has expired, remove it
-        if (endTime <= now) {
-          console.log(`[tickCooldowns] Removing expired cooldown: ${key}`, {
-            endTime,
-            now,
-            wasExpiredBy: -remaining + 'ms',
-          });
-          delete newCooldowns[key];
+        // If cooldown has reached 0, reset its duration as well
+        if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
           delete newCooldownDurations[key];
-        } else {
-          console.log(`[tickCooldowns] ${key} still active:`, {
-            remaining: remaining / 1000 + 's',
-            endTime,
-            now,
-          });
         }
       }
-      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations };
+      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
     });
   },
 
   restartGame: () => {
     const state = get();
-
+    
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       activatedPurchases: state.activatedPurchases || {},
       feastPurchases: state.feastPurchases || {},
-
+      
       // Referral system (persists forever)
       referrals: state.referrals || [],
       referralCount: state.referralCount || 0,
       referredUsers: state.referredUsers || [],
-
+      
       // Social media rewards (persist forever)
       social_media_rewards: state.social_media_rewards || {},
-
+      
       // Cruel mode status
       cruelMode: state.activatedPurchases?.['cruel_mode'] || false,
       CM: (state.activatedPurchases?.['cruel_mode'] || false) ? 1 : 0,
@@ -711,15 +678,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resetState = {
       ...defaultGameState,
       ...preserved,
-
+      
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
-
+      
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
-
+      
       // Mark as new game
       isNewGame: true,
       startTime: Date.now(),

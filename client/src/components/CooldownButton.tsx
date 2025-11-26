@@ -54,24 +54,10 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       ?.replace("button-", "")
       .replace(/-([a-z])/g, (_, letter) => letter.toUpperCase()) || "unknown";
 
-  // Get current cooldown from game state (stored as end timestamp)
-  const cooldownEndTime = cooldowns[actionId] || 0;
+  // Get current cooldown from game state
+  const currentCooldown = cooldowns[actionId] || 0;
   const initialCooldown = cooldownDurations[actionId] || 0;
-  const now = Date.now();
-  const currentCooldown = Math.max(0, cooldownEndTime - now);
   const isCoolingDown = currentCooldown > 0;
-
-  // Log cooldown state for debugging
-  if (cooldownEndTime > 0 || isCoolingDown) {
-    console.log(`[CooldownButton] ${actionId} render:`, {
-      cooldownEndTime,
-      initialCooldown,
-      now,
-      currentCooldown,
-      isCoolingDown,
-      remainingSeconds: currentCooldown / 1000,
-    });
-  }
 
   // Track first render for transition
   useEffect(() => {

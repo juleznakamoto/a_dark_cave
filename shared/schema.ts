@@ -459,9 +459,6 @@ export const gameStateSchema = z.object({
   }),
   // Analytics: Track button clicks since last save (not persisted to local storage)
   clickAnalytics: z.record(z.number()).default({}),
-  // Cooldowns: Store end timestamps (Date.now() + duration) for each action
-  cooldowns: z.record(z.number()).default({}),
-  cooldownDurations: z.record(z.number()).default({}),
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

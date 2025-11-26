@@ -451,8 +451,8 @@ export function executeGameAction(
   }
 }
 
-// Helper function to get action cooldown from game rules (converts seconds to milliseconds)
+// Helper function to get action cooldown from game rules
 function getActionCooldown(actionId: string): number {
   const action = gameActions[actionId];
-  return (action?.cooldown || 0) * 1000; // Convert seconds to milliseconds
+  return action?.cooldown || 0;
 }
