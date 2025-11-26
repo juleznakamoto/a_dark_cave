@@ -160,7 +160,7 @@ export default function MerchantDialog({
                     button_id={`merchant-${choice.id}`}
                   >
                     <span className="block text-left leading-tight">
-                      {isPurchased ? `✓ ${choice.label}` : choice.label}
+                      {isPurchased ? `✓ ${labelText}` : labelText}
                     </span>
                   </Button>
                 );
@@ -230,7 +230,7 @@ export default function MerchantDialog({
                         </TooltipTrigger>
                         <TooltipContent>
                           <div className="text-xs whitespace-nowrap">
-                            {eventChoiceCostTooltip.getContent(choice.cost)}
+                            {eventChoiceCostTooltip.getContent(costText)}
                           </div>
                         </TooltipContent>
                       </Tooltip>
