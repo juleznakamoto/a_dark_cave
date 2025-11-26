@@ -136,7 +136,7 @@ export default function SocialMediaRewards() {
               <span>
                 Follow {platform.icon} <span className={isActive ? "font-semibold" : ""}>+{platform.reward} Gold</span>
               </span>
-              {isClaimed && <span className="text-xs text-muted-foreground ml-2">✓ Claimed</span>}
+              {isClaimed && <span className="text-xs text-muted-foreground ml-2">✓</span>}
             </div>
           </DropdownMenuItem>
         );
