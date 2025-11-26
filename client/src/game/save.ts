@@ -111,12 +111,15 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
     const oldGold = updatedGameState.resources?.gold || 0;
     const newGold = oldGold + goldGained;
     
-    updatedGameState.referrals = updatedReferrals;
-    updatedGameState.resources = {
-      ...updatedGameState.resources,
-      gold: newGold,
+    updatedGameState = {
+      ...updatedGameState,
+      referrals: updatedReferrals,
+      resources: {
+        ...updatedGameState.resources,
+        gold: newGold,
+      },
+      log: [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100),
     };
-    updatedGameState.log = [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100);
 
     // Update the store as well
     useGameStore.setState({
@@ -136,6 +139,11 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
 
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
+
+    // Ensure cooldownDurations is always present
+    if (!sanitizedState.cooldownDurations) {
+      sanitizedState.cooldownDurations = {};
+    }
 
     // Add timestamp to track save recency
     const now = Date.now();
@@ -220,6 +228,12 @@ export async function loadGame(): Promise<GameState | null> {
         const cloudSaveData = await loadGameFromSupabase();
         const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
         const cloudSave = cloudSaveData ? (lastCloudState ? mergeStateDiff(lastCloudState, cloudSaveData) : cloudSaveData) : null;
+        
+        console.log(`[LOAD] Cloud save processed:`, {
+          hasCloudSave: !!cloudSave,
+          hasCooldownDurations: !!cloudSave?.cooldownDurations,
+          cooldownDurations: cloudSave?.cooldownDurations
+        });
 
         // Compare play times and use the save with longer play time
         if (cloudSave && localSave) {
@@ -242,6 +256,8 @@ export async function loadGame(): Promise<GameState | null> {
               ...localSave.gameState,
               referrals: cloudSave.referrals || localSave.gameState.referrals,
               referralCount: cloudSave.referralCount !== undefined ? cloudSave.referralCount : localSave.gameState.referralCount,
+              cooldowns: localSave.gameState.cooldowns || {},
+              cooldownDurations: localSave.gameState.cooldownDurations || {},
             };
             
             const processedLocalState = await processUnclaimedReferrals(mergedState);
@@ -281,10 +297,15 @@ export async function loadGame(): Promise<GameState | null> {
       // Not authenticated, use local save only
       if (localSave) {
         const processedState = await processUnclaimedReferrals(localSave.gameState);
+        console.log(`[LOAD] Returning local state (no auth):`, {
+          hasCooldownDurations: !!processedState.cooldownDurations,
+          cooldownDurations: processedState.cooldownDurations
+        });
         return processedState;
       }
     }
 
+    console.log(`[LOAD] No save found, returning null`);
     return null;
   } catch (error) {
     console.error('Failed to load game:', error);
