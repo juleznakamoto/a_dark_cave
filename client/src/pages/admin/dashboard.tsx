@@ -405,7 +405,7 @@ export default function AdminDashboard() {
 
       const purchasesCount = purchases.filter(purchase => {
         const purchaseDate = parseISO(purchase.purchased_at);
-        return isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
+        return purchase.price_paid > 0 && isWithinInterval(purchaseDate, { start: dayStart, end: dayEnd });
       }).length;
 
       data.push({
@@ -415,6 +415,43 @@ export default function AdminDashboard() {
     }
 
     return data;
+  };
+
+  // Purchases by playtime
+  const getPurchasesByPlaytime = () => {
+    // Filter out free purchases
+    const paidPurchases = purchases.filter(p => p.price_paid > 0);
+    
+    // Get playtime for each purchase by matching user_id to game saves
+    const purchasesWithPlaytime = paidPurchases.map(purchase => {
+      const userSave = gameSaves.find(save => save.user_id === purchase.user_id);
+      const playtimeMinutes = userSave ? Math.round((userSave.game_state?.playTime || 0) / 1000 / 60) : 0;
+      return {
+        playtimeMinutes,
+        purchase
+      };
+    });
+
+    // Group into 30-minute buckets
+    const buckets = new Map<number, number>();
+    let maxBucket = 0;
+
+    purchasesWithPlaytime.forEach(({ playtimeMinutes }) => {
+      const bucket = Math.floor(playtimeMinutes / 30) * 30;
+      maxBucket = Math.max(maxBucket, bucket);
+      buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
+    });
+
+    // Create array with all buckets
+    const result: Array<{ playtime: string; purchases: number }> = [];
+    for (let bucket = 0; bucket <= maxBucket; bucket += 30) {
+      result.push({
+        playtime: `${bucket}m`,
+        purchases: buckets.get(bucket) || 0,
+      });
+    }
+
+    return result;
   };
 
   // Buyers per 100 users
@@ -687,7 +724,7 @@ export default function AdminDashboard() {
   };
 
   const getTotalRevenue = () => {
-    return purchases.reduce((sum, p) => sum + p.price_paid, 0);
+    return purchases.filter(p => p.price_paid > 0).reduce((sum, p) => sum + p.price_paid, 0);
   };
 
   // Referral stats
@@ -1569,9 +1606,10 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Total Purchases</CardTitle>
+                  <CardDescription>Excluding free items</CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <p className="text-4xl font-bold">{purchases.length}</p>
+                  <p className="text-4xl font-bold">{purchases.filter(p => p.price_paid > 0).length}</p>
                 </CardContent>
               </Card>
             </div>
@@ -1590,6 +1628,24 @@ export default function AdminDashboard() {
                     <Tooltip />
                     <Area type="monotone" dataKey="purchases" stroke="#82ca9d" fill="#82ca9d" />
                   </AreaChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Purchases by Playtime</CardTitle>
+                <CardDescription>When do players make purchases? (30-minute intervals, excluding free items)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getPurchasesByPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="playtime" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Purchases', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Bar dataKey="purchases" fill="#82ca9d" />
+                  </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
