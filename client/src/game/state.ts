@@ -634,9 +634,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
     });
     
     set((state) => {
+      // Replace the old duration value with the new one
       const newState = {
         cooldowns: { ...state.cooldowns, [action]: duration },
-        cooldownDurations: { ...state.cooldownDurations, [action]: duration }, // Also set initial duration
+        cooldownDurations: { ...state.cooldownDurations, [action]: duration },
       };
       
       console.log(`[COOLDOWN] Updated state:`, {
@@ -668,7 +669,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   tickCooldowns: () => {
     set((state) => {
       const newCooldowns = { ...state.cooldowns };
-      const newCooldownDurations = { ...state.cooldownDurations }; // Copy durations
+      // Don't copy cooldownDurations - we'll keep them persistent
       const activeCooldowns: string[] = [];
 
       for (const key in newCooldowns) {
@@ -689,19 +690,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
             });
           }
         }
-
-        // If cooldown has reached 0, reset its duration as well
-        if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
-          console.log(`[COOLDOWN] Cooldown completed for ${key}, clearing duration`);
-          delete newCooldownDurations[key];
-        }
       }
       
       if (activeCooldowns.length > 0 && Math.random() < 0.1) { // Log occasionally to avoid spam
         console.log(`[COOLDOWN] Active cooldowns:`, activeCooldowns);
       }
       
-      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
+      // Only update cooldowns, keep cooldownDurations intact for UI reference
+      return { cooldowns: newCooldowns };
     });
   },
 
