@@ -1383,12 +1383,9 @@ function selectTrades(
       selectedOption.amount * (isBuyTrade ? 1 - discount : 1 + discount),
     );
 
-    // Apply 25% reduction for silver and gold rewards
-    if (
-      !isBuyTrade &&
-      (secondaryResource === "silver" || secondaryResource === "gold")
-    ) {
-      rawAmount = Math.ceil(rawAmount * 0.25);
+    // Apply 75% reduction for silver and gold (both buy and sell trades)
+    if (secondaryResource === "silver" || secondaryResource === "gold") {
+      rawAmount = Math.ceil(rawAmount * 0.75);
     }
 
     secondaryAmount = roundCost(rawAmount);
