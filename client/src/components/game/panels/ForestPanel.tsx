@@ -24,7 +24,7 @@ export default function ForestPanel() {
         { id: "chopWood", label: "Chop Wood" },
         { id: "hunt", label: "Hunt" },
         { id: "layTrap", label: "Lay Trap" },
-        { id: "damagedTower", label: "Damaged Tower" },
+        { id: "collapsedTower", label: "Collapsed Tower" },
         { id: "castleRuins", label: "Castle Ruins" },
         { id: "hillGrave", label: "Hill Grave" },
         { id: "sunkenTemple", label: "Sunken Temple" },

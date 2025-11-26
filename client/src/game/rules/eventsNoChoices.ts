@@ -5,7 +5,7 @@ import { killVillagers } from "@/game/stateHelpers";
 export const noChoiceEvents: Record<string, GameEvent> = {
   bloodDrainedVillagers: {
     id: "bloodDrainedVillagers",
-    condition: (state: GameState) => state.buildings.stoneHut >= 7  && !state.story.seen.damagedTowerExplored,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7  && !state.story.seen.collapsedTowerExplored,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
       state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
@@ -14,9 +14,9 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
 
       if (isFirstTime) {
-        return `One morning, 6 villagers are found dead in their beds, pale and drained of all blood. Small punctures cover their skin. Some villagers suspect this could be connected to the damaged tower in the forest where hunters heard strange sounds.`;
+        return `One morning, 6 villagers are found dead in their beds, pale and drained of all blood. Small punctures cover their skin. Some villagers suspect this could be connected to the Collapsed Tower in the forest where hunters heard strange sounds.`;
       } else {
-        return `Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the damaged tower grow louder.`;
+        return `Again, 8 more villagers are discovered dead at dawn, their bodies drained of blood, covered in the same mysterious marks. The demands that something be done about what dwells in the Collapsed Tower grow louder.`;
       }
     },
     triggered: false,
@@ -38,7 +38,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
           seen: {
             ...state.story.seen,
             bloodDrainedVillagersFirstTime: true,
-            damagedTowerUnlocked: true,
+            collapsedTowerUnlocked: true,
           },
         },
       };

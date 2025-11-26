@@ -118,7 +118,7 @@ import {
   handleCastleRuins,
   handleHillGrave,
   handleSunkenTemple,
-  handleDamagedTower,
+  handlecollapsedTower,
 } from "@/game/rules/forestScoutActions";
 
 import {
@@ -408,8 +408,8 @@ export function executeGameAction(
       return handleHillGrave(state, result);
     case "sunkenTemple":
       return handleSunkenTemple(state, result);
-    case "damagedTower":
-      return handleDamagedTower(state, result);
+    case "collapsedTower":
+      return handlecollapsedTower(state, result);
 
     // Forest Sacrifice Actions
     case "boneTotems":

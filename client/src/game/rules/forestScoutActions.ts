@@ -140,12 +140,12 @@ export const forestScoutActions: Record<string, Action> = {
     cooldown: 45,
   },
 
-  damagedTower: {
-    id: "damagedTower",
-    label: "Damaged Tower",
+  collapsedTower: {
+    id: "collapsedTower",
+    label: "Collapsed Tower",
     show_when: {
-      "story.seen.damagedTowerUnlocked": true,
-      "!story.seen.damagedTowerExplored": true,
+      "story.seen.collapsedTowerUnlocked": true,
+      "!story.seen.collapsedTowerExplored": true,
     },
     cost: {
       "resources.food": 2500,
@@ -509,15 +509,15 @@ export function handleSunkenTemple(
   return result;
 }
 
-export function handleDamagedTower(
+export function handlecollapsedTower(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  const effectUpdates = applyActionEffects("damagedTower", state);
+  const effectUpdates = applyActionEffects("collapsedTower", state);
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Get success chance from action definition
-  const action = forestScoutActions.damagedTower;
+  const action = forestScoutActions.collapsedTower;
   const successChance = action.success_chance
     ? action.success_chance(state)
     : 0;
@@ -537,12 +537,12 @@ export function handleDamagedTower(
       ...state.story,
       seen: {
         ...state.story.seen,
-        damagedTowerExplored: true,
+        collapsedTowerExplored: true,
       },
     };
 
     result.logEntries!.push({
-      id: `damaged-tower-success-${Date.now()}`,
+      id: `collapsed-tower-success-${Date.now()}`,
       message:
         "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. The mysterious deaths will cease.",
       timestamp: Date.now(),
@@ -558,8 +558,8 @@ export function handleDamagedTower(
     Object.assign(result.stateUpdates, deathResult);
 
     result.logEntries!.push({
-      id: `damaged-tower-minor-failure-${Date.now()}`,
-      message: `Your expedition reaches the damaged tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${villagerDeaths} villagers fall before the rest flee to safety.`,
+      id: `collapsed-tower-minor-failure-${Date.now()}`,
+      message: `Your expedition reaches the Collapsed Tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${villagerDeaths} villagers fall before the rest flee to safety.`,
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
