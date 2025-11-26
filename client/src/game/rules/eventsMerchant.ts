@@ -31,7 +31,7 @@ const PRICES = {
 function roundCost(cost: number, direction: "up" | "down" = "down"): number {
   cost = cost * 1.1;
   const roundFn = direction === "up" ? Math.ceil : Math.floor;
-  
+
   if (cost < 100) {
     // Round to next 5-multiple
     return roundFn(cost / 5) * 5;
@@ -345,7 +345,7 @@ const sellTrades = [
       }, // 10 steel
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.food) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.food) / PRICES.silver),
       }, // 16 silver
       { resource: "gold", amount: Math.round(100 * PRICES.food) }, // 4 gold
     ],
@@ -380,7 +380,7 @@ const sellTrades = [
       }, // ~6 steel
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.bones) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.bones) / PRICES.silver),
       }, // 10 silver
       { resource: "gold", amount: Math.round(50 * PRICES.bones) }, // ~2 gold
     ],
@@ -409,7 +409,7 @@ const sellTrades = [
       }, // ~6 steel
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.fur) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.fur) / PRICES.silver),
       }, // 10 silver
       { resource: "gold", amount: Math.round(50 * PRICES.fur) }, // ~2 gold
     ],
@@ -440,7 +440,7 @@ const sellTrades = [
       }, // 10 steel
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.wood) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.wood) / PRICES.silver),
       }, // 16 silver
       { resource: "gold", amount: Math.round(100 * PRICES.wood) }, // 4 gold
     ],
@@ -471,7 +471,7 @@ const sellTrades = [
       }, // 15 steel
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.stone) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.stone) / PRICES.silver),
       }, // 24 silver
       { resource: "gold", amount: Math.round(100 * PRICES.stone) }, // 6 gold
     ],
@@ -506,7 +506,7 @@ const sellTrades = [
       }, // ~7 steel
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.iron) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.iron) / PRICES.silver),
       }, // 12 silver
       { resource: "gold", amount: Math.round(50 * PRICES.iron) }, // 3 gold
     ],
@@ -539,7 +539,7 @@ const sellTrades = [
       }, // 25 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.food) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.food) / PRICES.silver),
       }, // 40 silver
       { resource: "gold", amount: Math.round(250 * PRICES.food) }, // 10 gold
     ],
@@ -574,7 +574,7 @@ const sellTrades = [
       }, // ~12 steel
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.bones) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.bones) / PRICES.silver),
       }, // 20 silver
       { resource: "gold", amount: Math.round(100 * PRICES.bones) }, // 5 gold
     ],
@@ -609,7 +609,7 @@ const sellTrades = [
       }, // ~12 steel
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.fur) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.fur) / PRICES.silver),
       }, // 20 silver
       { resource: "gold", amount: Math.round(100 * PRICES.fur) }, // 5 gold
     ],
@@ -640,7 +640,7 @@ const sellTrades = [
       }, // 25 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.wood) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.wood) / PRICES.silver),
       }, // 40 silver
       { resource: "gold", amount: Math.round(250 * PRICES.wood) }, // 10 gold
     ],
@@ -671,7 +671,7 @@ const sellTrades = [
       }, // ~37 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.stone) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.stone) / PRICES.silver),
       }, // 60 silver
       { resource: "gold", amount: Math.round(250 * PRICES.stone) }, // 15 gold
     ],
@@ -706,7 +706,7 @@ const sellTrades = [
       }, // ~37 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.iron) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.iron) / PRICES.silver),
       }, // 60 silver
       { resource: "gold", amount: Math.round(250 * PRICES.iron) }, // 15 gold
     ],
@@ -741,7 +741,7 @@ const sellTrades = [
       }, // ~37 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.coal) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.coal) / PRICES.silver),
       }, // 60 silver
       { resource: "gold", amount: Math.round(250 * PRICES.coal) }, // 15 gold
     ],
@@ -776,7 +776,7 @@ const sellTrades = [
       }, // 50 steel
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.sulfur) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.sulfur) / PRICES.silver),
       }, // 80 silver
       { resource: "gold", amount: Math.round(250 * PRICES.sulfur) }, // 20 gold
     ],
@@ -807,7 +807,7 @@ const sellTrades = [
       }, // ~37 steel
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.leather) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.leather) / PRICES.silver),
       }, // 60 silver
       { resource: "gold", amount: Math.round(50 * PRICES.leather) }, // 15 gold
     ],
@@ -838,7 +838,7 @@ const sellTrades = [
       }, // ~133 leather
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.steel) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.steel) / PRICES.silver),
       }, // 160 silver
       { resource: "gold", amount: Math.round(100 * PRICES.steel) }, // 40 gold
     ],
@@ -855,7 +855,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.food) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.food) / PRICES.silver),
       }, // 80 silver
       { resource: "gold", amount: Math.round(500 * PRICES.food) }, // 20 gold
     ],
@@ -870,7 +870,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.bones) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.bones) / PRICES.silver),
       }, // 50 silver
       { resource: "gold", amount: Math.round(250 * PRICES.bones) }, // ~12 gold
     ],
@@ -885,7 +885,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.fur) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.fur) / PRICES.silver),
       }, // 50 silver
       { resource: "gold", amount: Math.round(250 * PRICES.fur) }, // ~12 gold
     ],
@@ -900,7 +900,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.wood) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.wood) / PRICES.silver),
       }, // 80 silver
       { resource: "gold", amount: Math.round(500 * PRICES.wood) }, // 20 gold
     ],
@@ -915,7 +915,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.stone) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.stone) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.stone) }, // 30 gold
     ],
@@ -930,7 +930,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.iron) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.iron) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.iron) }, // 30 gold
     ],
@@ -945,7 +945,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.coal) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.coal) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.coal) }, // 30 gold
     ],
@@ -960,7 +960,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.sulfur) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.sulfur) / PRICES.silver),
       }, // 160 silver
       { resource: "gold", amount: Math.round(500 * PRICES.sulfur) }, // 40 gold
     ],
@@ -975,7 +975,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.obsidian) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.obsidian) / PRICES.silver),
       }, // 200 silver
       { resource: "gold", amount: Math.round(50 * PRICES.obsidian) }, // 50 gold
     ],
@@ -990,7 +990,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.adamant) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.adamant) / PRICES.silver),
       }, // 240 silver
       { resource: "gold", amount: Math.round(50 * PRICES.adamant) }, // 60 gold
     ],
@@ -1005,7 +1005,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((50 * PRICES.moonstone) / PRICES.silver) * 4),
+        amount: Math.round((50 * PRICES.moonstone) / PRICES.silver),
       }, // 400 silver
       { resource: "gold", amount: Math.round(50 * PRICES.moonstone) }, // 100 gold
     ],
@@ -1020,7 +1020,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.leather) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.leather) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(100 * PRICES.leather) }, // 30 gold
     ],
@@ -1035,7 +1035,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.steel) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.steel) / PRICES.silver),
       }, // 400 silver
       { resource: "gold", amount: Math.round(250 * PRICES.steel) }, // 100 gold
     ],
@@ -1051,7 +1051,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.food) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.food) / PRICES.silver),
       }, // 80 silver
       { resource: "gold", amount: Math.round(500 * PRICES.food) }, // 20 gold
     ],
@@ -1065,7 +1065,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.bones) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.bones) / PRICES.silver),
       }, // 50 silver
       { resource: "gold", amount: Math.round(250 * PRICES.bones) }, // ~12 gold
     ],
@@ -1079,7 +1079,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.fur) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.fur) / PRICES.silver),
       }, // 50 silver
       { resource: "gold", amount: Math.round(250 * PRICES.fur) }, // ~12 gold
     ],
@@ -1093,7 +1093,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.wood) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.wood) / PRICES.silver),
       }, // 80 silver
       { resource: "gold", amount: Math.round(500 * PRICES.wood) }, // 20 gold
     ],
@@ -1107,7 +1107,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.stone) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.stone) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.stone) }, // 30 gold
     ],
@@ -1121,7 +1121,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.iron) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.iron) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.iron) }, // 30 gold
     ],
@@ -1135,7 +1135,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.coal) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.coal) / PRICES.silver),
       }, // 120 silver
       { resource: "gold", amount: Math.round(500 * PRICES.coal) }, // 30 gold
     ],
@@ -1149,7 +1149,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((500 * PRICES.sulfur) / PRICES.silver) * 4),
+        amount: Math.round((500 * PRICES.sulfur) / PRICES.silver),
       }, // 160 silver
       { resource: "gold", amount: Math.round(500 * PRICES.sulfur) }, // 40 gold
     ],
@@ -1163,7 +1163,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.obsidian) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.obsidian) / PRICES.silver),
       }, // 400 silver
       { resource: "gold", amount: Math.round(100 * PRICES.obsidian) }, // 100 gold
     ],
@@ -1177,7 +1177,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.adamant) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.adamant) / PRICES.silver),
       }, // 480 silver
       { resource: "gold", amount: Math.round(100 * PRICES.adamant) }, // 120 gold
     ],
@@ -1191,7 +1191,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((100 * PRICES.moonstone) / PRICES.silver) * 4),
+        amount: Math.round((100 * PRICES.moonstone) / PRICES.silver),
       }, // 800 silver
       { resource: "gold", amount: Math.round(100 * PRICES.moonstone) }, // 200 gold
     ],
@@ -1205,7 +1205,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.leather) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.leather) / PRICES.silver),
       }, // 300 silver
       { resource: "gold", amount: Math.round(250 * PRICES.leather) }, // 75 gold
     ],
@@ -1219,7 +1219,7 @@ const sellTrades = [
     rewards: [
       {
         resource: "silver",
-        amount: Math.round(((250 * PRICES.steel) / PRICES.silver) * 4),
+        amount: Math.round((250 * PRICES.steel) / PRICES.silver),
       }, // 400 silver
       { resource: "gold", amount: Math.round(250 * PRICES.steel) }, // 100 gold
     ],
@@ -1401,7 +1401,10 @@ function selectTrades(
         sellAmount = isBuyTrade ? selectedOption.amount : trade.takeAmount;
 
         // Check if this buy resource is gold or silver and if we've reached the limit
-        if (isBuyTrade && (buyResource === "gold" || buyResource === "silver")) {
+        if (
+          isBuyTrade &&
+          (buyResource === "gold" || buyResource === "silver")
+        ) {
           if (goldSilverBuyCount >= MAX_GOLD_SILVER_BUY) {
             continue; // Skip this option if limit is reached
           }
@@ -1425,21 +1428,17 @@ function selectTrades(
 
     if (!foundValidOption) continue;
 
-    // Apply rounding to amounts
-    buyAmount = roundCost(buyAmount);
-    sellAmount = roundCost(sellAmount);
-
     // Apply 75% reduction if player receives gold or silver
     if (buyResource === "silver" || buyResource === "gold") {
-      buyAmount = Math.ceil(buyAmount * 0.25);
+      buyAmount = Math.ceil(buyAmount * 0.5);
     }
 
     //  Apply Knowledge Discount
     sellAmount = Math.ceil(sellAmount * (1 - discount));
 
     // Round numbers
-    sellAmount = roundCost(sellAmount, "down");
     buyAmount = roundCost(buyAmount, "up");
+    sellAmount = roundCost(sellAmount, "down");
 
     // Format resource names for display
     const formatResourceName = (res: string) =>
@@ -1455,7 +1454,7 @@ function selectTrades(
     // Create label and cost
     // Buy trade: label = what you get (from trade.label), cost = what you pay
     // Sell trade: label = what you get (buyAmount buyResource), cost = what you pay (sellAmount sellResource)
-    const label = isBuyTrade ? trade.label : `${buyAmount} ${buyFormatted}`;
+    const label = `+${buyAmount} ${buyFormatted}`;
     const cost = `${sellAmount} ${sellFormatted}`;
 
     console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
@@ -1484,7 +1483,9 @@ function selectTrades(
     });
   }
 
-  console.log(`[MERCHANT] Selected ${selected.length} ${isBuyTrade ? 'buy' : 'sell'} trades out of ${numTrades} requested`);
+  console.log(
+    `[MERCHANT] Selected ${selected.length} ${isBuyTrade ? "buy" : "sell"} trades out of ${numTrades} requested`,
+  );
   return selected;
 }
 
@@ -1668,7 +1669,11 @@ export const merchantEvents: Record<string, GameEvent> = {
     id: "merchant",
     condition: (state: GameState) => state.buildings.woodenHut >= 4,
     triggerType: "resource",
-    timeProbability: 0.1,
+    timeProbability: (state: GameState) =>
+      10 +
+      1 * state.buildings.tradePost || 0 +
+      2 * state.buildings.grandBazaar || 0 +
+      2 * state.buildings.merchantsGuild || 0,
     title: "The Traveling Merchant",
     message:
       "A weathered merchant arrives, his cart overflowing with wares. His eyes glint with avarice as he murmurs 'I have rare items for sale'.",

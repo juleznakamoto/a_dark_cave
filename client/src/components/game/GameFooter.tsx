@@ -259,7 +259,7 @@ export default function GameFooter() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleCopyInviteLink}>
               <div className="flex items-center justify-between w-full">
-                <span>Invite Friends&nbsp;</span>
+                <span>Invite&nbsp;</span>
                 <span className="font-semibold">+100 Gold</span>
                 <TooltipProvider>
                   <Tooltip

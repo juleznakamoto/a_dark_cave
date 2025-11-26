@@ -1147,7 +1147,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildWizardTower",
     label: "Wizard Tower",
     description: "Mystical tower where the wizard conducts arcane research",
-    tooltipEffects: ["Unlocks Wizard Actions"],
+    tooltipEffects: ["Unlocks Wizard Story"],
     building: true,
     show_when: {
       1: {
