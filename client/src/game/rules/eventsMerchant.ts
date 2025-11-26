@@ -1397,32 +1397,15 @@ function selectTrades(
         .join(" ");
 
     const primaryFormatted = formatResourceName(primaryResource);
+    const secondaryFormatted = formatResourceName(secondaryResource);
 
-    // Determine what the player gives and receives
-    let label: string;
-    let cost: string;
-    let giveRes: string;
-    let takeRes: string;
-    let giveAmount: number;
-    let takeAmount: number;
-
-    if (isBuyTrade) {
-      // Buy trade: player receives primary, pays secondary
-      label = trade.label;
-      cost = `${secondaryAmount} ${secondaryResource}`;
-      giveRes = primaryResource;
-      takeRes = secondaryResource;
-      giveAmount = primaryAmount;
-      takeAmount = secondaryAmount;
-    } else {
-      // Sell trade: player receives secondary, pays primary
-      label = `${secondaryAmount} ${secondaryResource}`;
-      cost = `${primaryAmount} ${primaryFormatted}`;
-      giveRes = secondaryResource;
-      takeRes = primaryResource;
-      giveAmount = secondaryAmount;
-      takeAmount = primaryAmount;
-    }
+    // Determine what the player gives and receives based on trade type
+    const label = isBuyTrade ? trade.label : `${secondaryAmount} ${secondaryFormatted}`;
+    const cost = isBuyTrade ? `${secondaryAmount} ${secondaryFormatted}` : `${primaryAmount} ${primaryFormatted}`;
+    const giveRes = isBuyTrade ? primaryResource : secondaryResource;
+    const takeRes = isBuyTrade ? secondaryResource : primaryResource;
+    let giveAmount = isBuyTrade ? primaryAmount : secondaryAmount;
+    const takeAmount = isBuyTrade ? secondaryAmount : primaryAmount;
 
     // Apply 75% reduction if player receives gold or silver
     if (giveRes === "silver" || giveRes === "gold") {
