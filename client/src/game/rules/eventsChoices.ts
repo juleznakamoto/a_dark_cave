@@ -1684,7 +1684,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "acknowledge",
-        label: "Investigate the tower",
+        label: "Close",
         effect: (state: GameState) => {
           return {
             story: {
@@ -1695,8 +1695,6 @@ export const choiceEvents: Record<string, GameEvent> = {
                 damagedTowerUnlocked: true,
               },
             },
-            _logMessage:
-              "You decide to investigate. The damaged tower in the forest may hold answers to these horrific deaths.",
           };
         },
       },
