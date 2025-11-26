@@ -4,6 +4,7 @@ import { getTotalKnowledge } from "./effectsCalculation";
 
 // Round cost according to specified rules
 function roundCost(cost: number): number {
+  cost = cost * 1.10;
   if (cost < 100) {
     // Round down to next 5-multiple
     return Math.floor(cost / 5) * 5;
