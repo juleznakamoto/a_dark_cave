@@ -45,7 +45,7 @@ export default function MerchantDialog({
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
-  const discountTooltip = useMobileButtonTooltip();
+  const discountTooltip = useMobileTooltip();
 
   // Calculate discount based on knowledge
   const knowledge = getTotalKnowledge(gameState);
@@ -78,27 +78,11 @@ export default function MerchantDialog({
             {event.title || "Strange Encounter"}
             {hasBookOfWar && discount > 0 && (
               <TooltipProvider>
-                <Tooltip open={discountTooltip.isMobile ? discountTooltip.isTooltipOpen('merchant-discount') : undefined}>
+                <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
                     <span
-                      className="text-blue-300/80 cursor-pointer hover:text-blue-300 transition-colors inline-block ml-1"
-                      style={{ fontSize: '16px', lineHeight: '16px', width: '16px', height: '16px' }}
-                      onClick={discountTooltip.isMobile ? (e) => {
-                        e.stopPropagation();
-                        discountTooltip.handleWrapperClick('merchant-discount', false, false, e);
-                      } : undefined}
-                      onMouseDown={discountTooltip.isMobile ? (e) => {
-                        discountTooltip.handleMouseDown('merchant-discount', false, false, e);
-                      } : undefined}
-                      onMouseUp={discountTooltip.isMobile ? (e) => {
-                        discountTooltip.handleMouseUp('merchant-discount', false, () => {}, e);
-                      } : undefined}
-                      onTouchStart={discountTooltip.isMobile ? (e) => {
-                        discountTooltip.handleTouchStart('merchant-discount', false, false, e);
-                      } : undefined}
-                      onTouchEnd={discountTooltip.isMobile ? (e) => {
-                        discountTooltip.handleTouchEnd('merchant-discount', false, () => {}, e);
-                      } : undefined}
+                      className="text-blue-300/80 cursor-pointer text-base hover:text-blue-300 transition-colors inline-block ml-1"
+                      onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
                     >
                       ✧
                     </span>
