@@ -280,7 +280,7 @@ export const forestTradeActions: Record<string, Action> = {
         "resources.gold": 120,
       },
       3: {
-        "resources.gold": 240,
+        "resources.gold": 300,
       },
     },
     effects: {
