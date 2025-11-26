@@ -1,0 +1,62 @@
+requested
+eventsMerchant.ts:1525 [MERCHANT] Total sell trades: 42
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_food_100_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_bones_50_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_fur_50_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_wood_100_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_stone_100_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_iron_50_early condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_food_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_bones_100_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_fur_100_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_wood_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_stone_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_iron_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_coal_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_sulfur_250_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_leather_50_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_steel_100_mid1 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_food_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_bones_250_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_fur_250_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_wood_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_stone_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_iron_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_coal_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_sulfur_500_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_obsidian_50_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_adamant_50_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_moonstone_50_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_leather_100_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_steel_250_mid2 condition: false
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_food_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_bones_250_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_fur_250_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_wood_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_stone_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_iron_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_coal_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_sulfur_500_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_obsidian_100_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_adamant_100_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_moonstone_100_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_leather_250_end condition: true
+eventsMerchant.ts:1528 [MERCHANT] Sell trade sell_steel_250_end condition: true
+eventsMerchant.ts:1531 [MERCHANT] Filtered sell trades: 13
+eventsMerchant.ts:1441 [MERCHANT] Created sell trade: {id: 'sell_sulfur_500_end', label: '10 Gold', cost: '450 Sulfur', resourcePair: 'gold-sulfur'}
+eventsMerchant.ts:1441 [MERCHANT] Created sell trade: {id: 'sell_moonstone_100_end', label: '650 Silver', cost: '90 Moonstone', resourcePair: 'moonstone-silver'}
+eventsMerchant.ts:1467 [MERCHANT] Selected 2 sell trades out of 3 requested
+eventsMerchant.ts:1545 [MERCHANT] Total tool trades: 8
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_reinforced_rope {conditionPasses: true, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_occultist_map {conditionPasses: true, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_giant_trap {conditionPasses: true, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_arbalest_schematic {conditionPasses: true, alreadyOwned: false, passes: true}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_compound_bow {conditionPasses: true, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_natharit_pickaxe {conditionPasses: true, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_nightshade_bow_schematic {conditionPasses: true, alreadyOwned: false, passes: true}
+eventsMerchant.ts:1560 [MERCHANT] Tool trade trade_book_of_war {conditionPasses: false, alreadyOwned: true, passes: false}
+eventsMerchant.ts:1569 [MERCHANT] Filtered tool trades: 2
+eventsMerchant.ts:1580 [MERCHANT] Created tool trade: {id: 'trade_arbalest_schematic', label: 'Arbalest Schematic', cost: '410 gold'}
+eventsMerchant.ts:1637 [MERCHANT] Final choices generated: 7 (7) [{…}, {…}, {…}, {…}, {…}, {…}, {…}]
+audio.ts:66 Loading all sounds after user gesture...
+7The AudioContext was not allowed to start. It must be resumed (or created) after a user gesture on the page. <URL>Understand this warning
