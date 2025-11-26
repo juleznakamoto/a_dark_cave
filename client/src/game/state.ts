@@ -779,10 +779,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
       };
 
-      console.log('[STATE LOAD] Loading saved game state');
-      console.log('[STATE LOAD] social_media_rewards from save:', savedState.social_media_rewards);
-      console.log('[STATE LOAD] social_media_rewards to be set:', loadedState.social_media_rewards);
-
       set(loadedState);
     } else {
       const newGameState = {
