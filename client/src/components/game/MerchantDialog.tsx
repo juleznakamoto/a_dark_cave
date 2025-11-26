@@ -2,6 +2,7 @@ import React from "react";
 import { LogEntry } from "@/game/rules/events";
 import { GameState } from "@shared/schema";
 import { eventChoiceCostTooltip } from "@/game/rules/tooltips";
+import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
   DialogHeader,
@@ -40,9 +41,21 @@ export default function MerchantDialog({
   purchasedItems,
   fallbackExecutedRef,
   onChoice,
+  hasScriptorium,
 }: MerchantDialogProps) {
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
+
+  // Calculate discount based on knowledge
+  const knowledge = getTotalKnowledge(gameState);
+  let discount = 0;
+  if (knowledge >= 10) discount = 5;
+  if (knowledge >= 20) discount = 10;
+  if (knowledge >= 30) discount = 15;
+  if (knowledge >= 40) discount = 20;
+  if (knowledge >= 50) discount = 25;
+
+  const hasBookOfWar = gameState.books?.book_of_war;
 
   return (
     <DialogPortal>
@@ -60,8 +73,34 @@ export default function MerchantDialog({
         onInteractOutside={(e) => e.preventDefault()}
       >
         <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">
+          <DialogTitle className="text-lg font-semibold flex items-center gap-2">
             {event.title || "Strange Encounter"}
+            {hasBookOfWar && discount > 0 && (
+              <TooltipProvider>
+                <Tooltip open={mobileTooltip.isTooltipOpen('merchant-discount')}>
+                  <TooltipTrigger asChild>
+                    <span
+                      className="text-blue-300/80 cursor-help text-base"
+                      onClick={mobileTooltip.isMobile ? (e) => {
+                        e.stopPropagation();
+                        mobileTooltip.handleWrapperClick('merchant-discount', false, false, e);
+                      } : undefined}
+                      onMouseDown={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseDown('merchant-discount', false, false, e) : undefined}
+                      onMouseUp={mobileTooltip.isMobile ? (e) => mobileTooltip.handleMouseUp('merchant-discount', false, () => {}, e) : undefined}
+                      onTouchStart={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchStart('merchant-discount', false, false, e) : undefined}
+                      onTouchEnd={mobileTooltip.isMobile ? (e) => mobileTooltip.handleTouchEnd('merchant-discount', false, () => {}, e) : undefined}
+                    >
+                      ✧
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      {discount}% Discount
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
           </DialogTitle>
           <DialogDescription className="text-sm text-gray-400 mt-2">
             {event.message}
