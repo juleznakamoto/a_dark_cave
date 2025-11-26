@@ -80,13 +80,12 @@ export default function MerchantDialog({
               <TooltipProvider>
                 <Tooltip open={discountTooltip.isTooltipOpen('merchant-discount')}>
                   <TooltipTrigger asChild>
-                    <button
-                      type="button"
-                      className="text-blue-300/80 cursor-pointer text-xl sm:text-base p-1 -m-1 hover:text-blue-300 transition-colors touch-manipulation"
+                    <span
+                      className="text-blue-300/80 cursor-pointer text-base hover:text-blue-300 transition-colors inline-block ml-1"
                       onClick={(e) => discountTooltip.handleTooltipClick('merchant-discount', e)}
                     >
                       ✧
-                    </button>
+                    </span>
                   </TooltipTrigger>
                   <TooltipContent>
                     <div className="text-xs whitespace-nowrap">
