@@ -3,7 +3,7 @@ import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 
 // Resource prices in gold per unit
-const RESOURCE_PRICES = {
+const PRICES = {
   food: 0.04,
   bones: 0.05,
   fur: 0.05,
@@ -52,10 +52,10 @@ const buyTrades = [
     giveAmount: 500,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "wood", amount: 500 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood }, // 20 gold worth
-      { resource: "stone", amount: 500 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone }, // 30 gold worth
-      { resource: "silver", amount: 500 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver }, // 80 silver
-      { resource: "gold", amount: 500 * RESOURCE_PRICES.food }, // 20 gold
+      { resource: "wood", amount: 500 * PRICES.food / PRICES.wood }, // 20 gold worth
+      { resource: "stone", amount: 500 * PRICES.food / PRICES.stone }, // 30 gold worth
+      { resource: "silver", amount: 500 * PRICES.food / PRICES.silver }, // 80 silver
+      { resource: "gold", amount: 500 * PRICES.food }, // 20 gold
     ],
   },
   {
@@ -65,10 +65,10 @@ const buyTrades = [
     giveAmount: 500,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "food", amount: 500 * RESOURCE_PRICES.wood / RESOURCE_PRICES.food }, // 20 gold worth
-      { resource: "stone", amount: 500 * RESOURCE_PRICES.wood / RESOURCE_PRICES.stone }, // 30 gold worth
-      { resource: "silver", amount: 500 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver }, // 80 silver
-      { resource: "gold", amount: 500 * RESOURCE_PRICES.wood }, // 20 gold
+      { resource: "food", amount: 500 * PRICES.wood / PRICES.food }, // 20 gold worth
+      { resource: "stone", amount: 500 * PRICES.wood / PRICES.stone }, // 30 gold worth
+      { resource: "silver", amount: 500 * PRICES.wood / PRICES.silver }, // 80 silver
+      { resource: "gold", amount: 500 * PRICES.wood }, // 20 gold
     ],
   },
   {
@@ -78,12 +78,12 @@ const buyTrades = [
     giveAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "wood", amount: 50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.wood }, // 15 gold worth
-      { resource: "stone", amount: 50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.stone }, // ~250 stone
-      { resource: "food", amount: 50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.food }, // 375 food
-      { resource: "steel", amount: 50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.steel }, // ~37.5 steel
-      { resource: "silver", amount: 50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver }, // 60 silver
-      { resource: "gold", amount: 50 * RESOURCE_PRICES.leather }, // 15 gold
+      { resource: "wood", amount: 50 * PRICES.leather / PRICES.wood }, // 15 gold worth
+      { resource: "stone", amount: 50 * PRICES.leather / PRICES.stone }, // ~250 stone
+      { resource: "food", amount: 50 * PRICES.leather / PRICES.food }, // 375 food
+      { resource: "steel", amount: 50 * PRICES.leather / PRICES.steel }, // ~37.5 steel
+      { resource: "silver", amount: 50 * PRICES.leather / PRICES.silver }, // 60 silver
+      { resource: "gold", amount: 50 * PRICES.leather }, // 15 gold
     ],
   },
   {
@@ -93,12 +93,12 @@ const buyTrades = [
     giveAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "wood", amount: 50 * RESOURCE_PRICES.steel / RESOURCE_PRICES.wood }, // 500 wood
-      { resource: "stone", amount: 50 * RESOURCE_PRICES.steel / RESOURCE_PRICES.stone }, // ~333 stone
-      { resource: "food", amount: 50 * RESOURCE_PRICES.steel / RESOURCE_PRICES.food }, // 500 food
-      { resource: "leather", amount: 50 * RESOURCE_PRICES.steel / RESOURCE_PRICES.leather }, // ~66 leather
-      { resource: "silver", amount: 50 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver }, // 80 silver
-      { resource: "gold", amount: 50 * RESOURCE_PRICES.steel }, // 20 gold
+      { resource: "wood", amount: 50 * PRICES.steel / PRICES.wood }, // 500 wood
+      { resource: "stone", amount: 50 * PRICES.steel / PRICES.stone }, // ~333 stone
+      { resource: "food", amount: 50 * PRICES.steel / PRICES.food }, // 500 food
+      { resource: "leather", amount: 50 * PRICES.steel / PRICES.leather }, // ~66 leather
+      { resource: "silver", amount: 50 * PRICES.steel / PRICES.silver }, // 80 silver
+      { resource: "gold", amount: 50 * PRICES.steel }, // 20 gold
     ],
   },
 
@@ -110,11 +110,11 @@ const buyTrades = [
     giveAmount: 1000,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "wood", amount: 1000 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood }, // 40 gold worth
-      { resource: "stone", amount: 1000 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone }, // 60 gold worth
-      { resource: "steel", amount: 1000 * RESOURCE_PRICES.food / RESOURCE_PRICES.steel }, // 100 steel
-      { resource: "silver", amount: 1000 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver }, // 160 silver
-      { resource: "gold", amount: 1000 * RESOURCE_PRICES.food }, // 40 gold
+      { resource: "wood", amount: 1000 * PRICES.food / PRICES.wood }, // 40 gold worth
+      { resource: "stone", amount: 1000 * PRICES.food / PRICES.stone }, // 60 gold worth
+      { resource: "steel", amount: 1000 * PRICES.food / PRICES.steel }, // 100 steel
+      { resource: "silver", amount: 1000 * PRICES.food / PRICES.silver }, // 160 silver
+      { resource: "gold", amount: 1000 * PRICES.food }, // 40 gold
     ],
   },
   {
@@ -124,11 +124,11 @@ const buyTrades = [
     giveAmount: 1000,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "food", amount: 1000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.food }, // 40 gold worth
-      { resource: "stone", amount: 1000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.stone }, // 60 gold worth
-      { resource: "steel", amount: 1000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.steel }, // 100 steel
-      { resource: "silver", amount: 1000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver }, // 160 silver
-      { resource: "gold", amount: 1000 * RESOURCE_PRICES.wood }, // 40 gold
+      { resource: "food", amount: 1000 * PRICES.wood / PRICES.food }, // 40 gold worth
+      { resource: "stone", amount: 1000 * PRICES.wood / PRICES.stone }, // 60 gold worth
+      { resource: "steel", amount: 1000 * PRICES.wood / PRICES.steel }, // 100 steel
+      { resource: "silver", amount: 1000 * PRICES.wood / PRICES.silver }, // 160 silver
+      { resource: "gold", amount: 1000 * PRICES.wood }, // 40 gold
     ],
   },
   {
@@ -138,11 +138,11 @@ const buyTrades = [
     giveAmount: 500,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "wood", amount: 500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.wood }, // 750 wood
-      { resource: "food", amount: 500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.food }, // 750 food
-      { resource: "steel", amount: 500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.steel }, // 75 steel
-      { resource: "silver", amount: 500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver }, // 120 silver
-      { resource: "gold", amount: 500 * RESOURCE_PRICES.stone }, // 30 gold
+      { resource: "wood", amount: 500 * PRICES.stone / PRICES.wood }, // 750 wood
+      { resource: "food", amount: 500 * PRICES.stone / PRICES.food }, // 750 food
+      { resource: "steel", amount: 500 * PRICES.stone / PRICES.steel }, // 75 steel
+      { resource: "silver", amount: 500 * PRICES.stone / PRICES.silver }, // 120 silver
+      { resource: "gold", amount: 500 * PRICES.stone }, // 30 gold
     ],
   },
   {
@@ -152,12 +152,12 @@ const buyTrades = [
     giveAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "wood", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.wood }, // 750 wood
-      { resource: "stone", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.stone }, // 500 stone
-      { resource: "food", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.food }, // 750 food
-      { resource: "steel", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.steel }, // 75 steel
-      { resource: "silver", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver }, // 120 silver
-      { resource: "gold", amount: 100 * RESOURCE_PRICES.leather }, // 30 gold
+      { resource: "wood", amount: 100 * PRICES.leather / PRICES.wood }, // 750 wood
+      { resource: "stone", amount: 100 * PRICES.leather / PRICES.stone }, // 500 stone
+      { resource: "food", amount: 100 * PRICES.leather / PRICES.food }, // 750 food
+      { resource: "steel", amount: 100 * PRICES.leather / PRICES.steel }, // 75 steel
+      { resource: "silver", amount: 100 * PRICES.leather / PRICES.silver }, // 120 silver
+      { resource: "gold", amount: 100 * PRICES.leather }, // 30 gold
     ],
   },
   {
@@ -167,12 +167,12 @@ const buyTrades = [
     giveAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "wood", amount: 100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.wood }, // 1000 wood
-      { resource: "stone", amount: 100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.stone }, // ~666 stone
-      { resource: "food", amount: 100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.food }, // 1000 food
-      { resource: "leather", amount: 100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.leather }, // ~133 leather
-      { resource: "silver", amount: 100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver }, // 160 silver
-      { resource: "gold", amount: 100 * RESOURCE_PRICES.steel }, // 40 gold
+      { resource: "wood", amount: 100 * PRICES.steel / PRICES.wood }, // 1000 wood
+      { resource: "stone", amount: 100 * PRICES.steel / PRICES.stone }, // ~666 stone
+      { resource: "food", amount: 100 * PRICES.steel / PRICES.food }, // 1000 food
+      { resource: "leather", amount: 100 * PRICES.steel / PRICES.leather }, // ~133 leather
+      { resource: "silver", amount: 100 * PRICES.steel / PRICES.silver }, // 160 silver
+      { resource: "gold", amount: 100 * PRICES.steel }, // 40 gold
     ],
   },
 
@@ -184,12 +184,12 @@ const buyTrades = [
     giveAmount: 2000,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "wood", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood }, // 80 gold worth
-      { resource: "stone", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone }, // 120 gold worth
-      { resource: "leather", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.leather }, // ~266 leather
-      { resource: "steel", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.steel }, // 200 steel
-      { resource: "silver", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver }, // 320 silver
-      { resource: "gold", amount: 2000 * RESOURCE_PRICES.food }, // 80 gold
+      { resource: "wood", amount: 2000 * PRICES.food / PRICES.wood }, // 80 gold worth
+      { resource: "stone", amount: 2000 * PRICES.food / PRICES.stone }, // 120 gold worth
+      { resource: "leather", amount: 2000 * PRICES.food / PRICES.leather }, // ~266 leather
+      { resource: "steel", amount: 2000 * PRICES.food / PRICES.steel }, // 200 steel
+      { resource: "silver", amount: 2000 * PRICES.food / PRICES.silver }, // 320 silver
+      { resource: "gold", amount: 2000 * PRICES.food }, // 80 gold
     ],
   },
   {
@@ -199,12 +199,12 @@ const buyTrades = [
     giveAmount: 2000,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "food", amount: 2000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.food }, // 80 gold worth
-      { resource: "stone", amount: 2000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.stone }, // 120 gold worth
-      { resource: "leather", amount: 2000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.leather }, // ~266 leather
-      { resource: "steel", amount: 2000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.steel }, // 200 steel
-      { resource: "silver", amount: 2000 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver }, // 320 silver
-      { resource: "gold", amount: 2000 * RESOURCE_PRICES.wood }, // 80 gold
+      { resource: "food", amount: 2000 * PRICES.wood / PRICES.food }, // 80 gold worth
+      { resource: "stone", amount: 2000 * PRICES.wood / PRICES.stone }, // 120 gold worth
+      { resource: "leather", amount: 2000 * PRICES.wood / PRICES.leather }, // ~266 leather
+      { resource: "steel", amount: 2000 * PRICES.wood / PRICES.steel }, // 200 steel
+      { resource: "silver", amount: 2000 * PRICES.wood / PRICES.silver }, // 320 silver
+      { resource: "gold", amount: 2000 * PRICES.wood }, // 80 gold
     ],
   },
   {
@@ -214,12 +214,12 @@ const buyTrades = [
     giveAmount: 1000,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "wood", amount: 1000 * RESOURCE_PRICES.stone / RESOURCE_PRICES.wood }, // 1500 wood
-      { resource: "food", amount: 1000 * RESOURCE_PRICES.stone / RESOURCE_PRICES.food }, // 1500 food
-      { resource: "leather", amount: 1000 * RESOURCE_PRICES.stone / RESOURCE_PRICES.leather }, // 200 leather
-      { resource: "steel", amount: 1000 * RESOURCE_PRICES.stone / RESOURCE_PRICES.steel }, // 150 steel
-      { resource: "silver", amount: 1000 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver }, // 240 silver
-      { resource: "gold", amount: 1000 * RESOURCE_PRICES.stone }, // 60 gold
+      { resource: "wood", amount: 1000 * PRICES.stone / PRICES.wood }, // 1500 wood
+      { resource: "food", amount: 1000 * PRICES.stone / PRICES.food }, // 1500 food
+      { resource: "leather", amount: 1000 * PRICES.stone / PRICES.leather }, // 200 leather
+      { resource: "steel", amount: 1000 * PRICES.stone / PRICES.steel }, // 150 steel
+      { resource: "silver", amount: 1000 * PRICES.stone / PRICES.silver }, // 240 silver
+      { resource: "gold", amount: 1000 * PRICES.stone }, // 60 gold
     ],
   },
   {
@@ -229,12 +229,12 @@ const buyTrades = [
     giveAmount: 100,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "wood", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.wood }, // 750 wood
-      { resource: "stone", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.stone }, // 500 stone
-      { resource: "food", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.food }, // 750 food
-      { resource: "steel", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.steel }, // 75 steel
-      { resource: "silver", amount: 100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver }, // 120 silver
-      { resource: "gold", amount: 100 * RESOURCE_PRICES.leather }, // 30 gold
+      { resource: "wood", amount: 100 * PRICES.leather / PRICES.wood }, // 750 wood
+      { resource: "stone", amount: 100 * PRICES.leather / PRICES.stone }, // 500 stone
+      { resource: "food", amount: 100 * PRICES.leather / PRICES.food }, // 750 food
+      { resource: "steel", amount: 100 * PRICES.leather / PRICES.steel }, // 75 steel
+      { resource: "silver", amount: 100 * PRICES.leather / PRICES.silver }, // 120 silver
+      { resource: "gold", amount: 100 * PRICES.leather }, // 30 gold
     ],
   },
   {
@@ -244,12 +244,12 @@ const buyTrades = [
     giveAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "wood", amount: 250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.wood }, // 2500 wood
-      { resource: "stone", amount: 250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.stone }, // ~1666 stone
-      { resource: "food", amount: 250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.food }, // 2500 food
-      { resource: "leather", amount: 250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.leather }, // ~333 leather
-      { resource: "silver", amount: 250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver }, // 400 silver
-      { resource: "gold", amount: 250 * RESOURCE_PRICES.steel }, // 100 gold
+      { resource: "wood", amount: 250 * PRICES.steel / PRICES.wood }, // 2500 wood
+      { resource: "stone", amount: 250 * PRICES.steel / PRICES.stone }, // ~1666 stone
+      { resource: "food", amount: 250 * PRICES.steel / PRICES.food }, // 2500 food
+      { resource: "leather", amount: 250 * PRICES.steel / PRICES.leather }, // ~333 leather
+      { resource: "silver", amount: 250 * PRICES.steel / PRICES.silver }, // 400 silver
+      { resource: "gold", amount: 250 * PRICES.steel }, // 100 gold
     ],
   },
 
@@ -261,12 +261,12 @@ const buyTrades = [
     giveAmount: 2000,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     costs: [
-      { resource: "wood", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood }, // 80 gold worth
-      { resource: "stone", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone }, // 120 gold worth
-      { resource: "leather", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.leather }, // ~266 leather
-      { resource: "steel", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.steel }, // 200 steel
-      { resource: "silver", amount: 2000 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver }, // 320 silver
-      { resource: "gold", amount: 2000 * RESOURCE_PRICES.food }, // 80 gold
+      { resource: "wood", amount: 2000 * PRICES.food / PRICES.wood }, // 80 gold worth
+      { resource: "stone", amount: 2000 * PRICES.food / PRICES.stone }, // 120 gold worth
+      { resource: "leather", amount: 2000 * PRICES.food / PRICES.leather }, // ~266 leather
+      { resource: "steel", amount: 2000 * PRICES.food / PRICES.steel }, // 200 steel
+      { resource: "silver", amount: 2000 * PRICES.food / PRICES.silver }, // 320 silver
+      { resource: "gold", amount: 2000 * PRICES.food }, // 80 gold
     ],
   },
   {
@@ -276,12 +276,12 @@ const buyTrades = [
     giveAmount: 2500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     costs: [
-      { resource: "wood", amount: 2500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.wood }, // 3750 wood
-      { resource: "food", amount: 2500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.food }, // 3750 food
-      { resource: "leather", amount: 2500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.leather }, // 500 leather
-      { resource: "steel", amount: 2500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.steel }, // 375 steel
-      { resource: "silver", amount: 2500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver }, // 600 silver
-      { resource: "gold", amount: 2500 * RESOURCE_PRICES.stone }, // 150 gold
+      { resource: "wood", amount: 2500 * PRICES.stone / PRICES.wood }, // 3750 wood
+      { resource: "food", amount: 2500 * PRICES.stone / PRICES.food }, // 3750 food
+      { resource: "leather", amount: 2500 * PRICES.stone / PRICES.leather }, // 500 leather
+      { resource: "steel", amount: 2500 * PRICES.stone / PRICES.steel }, // 375 steel
+      { resource: "silver", amount: 2500 * PRICES.stone / PRICES.silver }, // 600 silver
+      { resource: "gold", amount: 2500 * PRICES.stone }, // 150 gold
     ],
   },
   {
@@ -291,12 +291,12 @@ const buyTrades = [
     giveAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     costs: [
-      { resource: "wood", amount: 500 * RESOURCE_PRICES.steel / RESOURCE_PRICES.wood }, // 5000 wood
-      { resource: "stone", amount: 500 * RESOURCE_PRICES.steel / RESOURCE_PRICES.stone }, // ~3333 stone
-      { resource: "food", amount: 500 * RESOURCE_PRICES.steel / RESOURCE_PRICES.food }, // 5000 food
-      { resource: "leather", amount: 500 * RESOURCE_PRICES.steel / RESOURCE_PRICES.leather }, // ~666 leather
-      { resource: "silver", amount: 500 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver }, // 800 silver
-      { resource: "gold", amount: 500 * RESOURCE_PRICES.steel }, // 200 gold
+      { resource: "wood", amount: 500 * PRICES.steel / PRICES.wood }, // 5000 wood
+      { resource: "stone", amount: 500 * PRICES.steel / PRICES.stone }, // ~3333 stone
+      { resource: "food", amount: 500 * PRICES.steel / PRICES.food }, // 5000 food
+      { resource: "leather", amount: 500 * PRICES.steel / PRICES.leather }, // ~666 leather
+      { resource: "silver", amount: 500 * PRICES.steel / PRICES.silver }, // 800 silver
+      { resource: "gold", amount: 500 * PRICES.steel }, // 200 gold
     ],
   },
 ];
@@ -310,12 +310,12 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "wood", amount: Math.round(100 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood) }, // 100 wood
-      { resource: "stone", amount: Math.round(100 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone) }, // ~66 stone
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.food / RESOURCE_PRICES.leather) }, // ~13 leather
-      { resource: "steel", amount: Math.round(100 * RESOURCE_PRICES.food / RESOURCE_PRICES.steel) }, // 10 steel
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver * 4) }, // 16 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.food) }, // 4 gold
+      { resource: "wood", amount: Math.round(100 * PRICES.food / PRICES.wood) }, // 100 wood
+      { resource: "stone", amount: Math.round(100 * PRICES.food / PRICES.stone) }, // ~66 stone
+      { resource: "leather", amount: Math.round(100 * PRICES.food / PRICES.leather) }, // ~13 leather
+      { resource: "steel", amount: Math.round(100 * PRICES.food / PRICES.steel) }, // 10 steel
+      { resource: "silver", amount: Math.round(100 * PRICES.food / PRICES.silver * 4) }, // 16 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.food) }, // 4 gold
     ],
   },
   {
@@ -325,13 +325,13 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "wood", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.wood) }, // ~62 wood
-      { resource: "stone", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.stone) }, // ~41 stone
-      { resource: "food", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.food) }, // ~62 food
-      { resource: "leather", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.leather) }, // ~8 leather
-      { resource: "steel", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.steel) }, // ~6 steel
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.bones / RESOURCE_PRICES.silver * 4) }, // 10 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.bones) }, // ~2 gold
+      { resource: "wood", amount: Math.round(50 * PRICES.bones / PRICES.wood) }, // ~62 wood
+      { resource: "stone", amount: Math.round(50 * PRICES.bones / PRICES.stone) }, // ~41 stone
+      { resource: "food", amount: Math.round(50 * PRICES.bones / PRICES.food) }, // ~62 food
+      { resource: "leather", amount: Math.round(50 * PRICES.bones / PRICES.leather) }, // ~8 leather
+      { resource: "steel", amount: Math.round(50 * PRICES.bones / PRICES.steel) }, // ~6 steel
+      { resource: "silver", amount: Math.round(50 * PRICES.bones / PRICES.silver * 4) }, // 10 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.bones) }, // ~2 gold
     ],
   },
   {
@@ -341,13 +341,13 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "wood", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.wood) }, // ~62 wood
-      { resource: "stone", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.stone) }, // ~41 stone
-      { resource: "food", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.food) }, // ~62 food
-      { resource: "leather", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.leather) }, // ~8 leather
-      { resource: "steel", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.steel) }, // ~6 steel
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.fur / RESOURCE_PRICES.silver * 4) }, // 10 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.fur) }, // ~2 gold
+      { resource: "wood", amount: Math.round(50 * PRICES.fur / PRICES.wood) }, // ~62 wood
+      { resource: "stone", amount: Math.round(50 * PRICES.fur / PRICES.stone) }, // ~41 stone
+      { resource: "food", amount: Math.round(50 * PRICES.fur / PRICES.food) }, // ~62 food
+      { resource: "leather", amount: Math.round(50 * PRICES.fur / PRICES.leather) }, // ~8 leather
+      { resource: "steel", amount: Math.round(50 * PRICES.fur / PRICES.steel) }, // ~6 steel
+      { resource: "silver", amount: Math.round(50 * PRICES.fur / PRICES.silver * 4) }, // 10 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.fur) }, // ~2 gold
     ],
   },
   {
@@ -357,12 +357,12 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "food", amount: Math.round(100 * RESOURCE_PRICES.wood / RESOURCE_PRICES.food) }, // 100 food
-      { resource: "stone", amount: Math.round(100 * RESOURCE_PRICES.wood / RESOURCE_PRICES.stone) }, // ~66 stone
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.wood / RESOURCE_PRICES.leather) }, // ~13 leather
-      { resource: "steel", amount: Math.round(100 * RESOURCE_PRICES.wood / RESOURCE_PRICES.steel) }, // 10 steel
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver * 4) }, // 16 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.wood) }, // 4 gold
+      { resource: "food", amount: Math.round(100 * PRICES.wood / PRICES.food) }, // 100 food
+      { resource: "stone", amount: Math.round(100 * PRICES.wood / PRICES.stone) }, // ~66 stone
+      { resource: "leather", amount: Math.round(100 * PRICES.wood / PRICES.leather) }, // ~13 leather
+      { resource: "steel", amount: Math.round(100 * PRICES.wood / PRICES.steel) }, // 10 steel
+      { resource: "silver", amount: Math.round(100 * PRICES.wood / PRICES.silver * 4) }, // 16 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.wood) }, // 4 gold
     ],
   },
   {
@@ -372,12 +372,12 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "wood", amount: Math.round(100 * RESOURCE_PRICES.stone / RESOURCE_PRICES.wood) }, // 150 wood
-      { resource: "food", amount: Math.round(100 * RESOURCE_PRICES.stone / RESOURCE_PRICES.food) }, // 150 food
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.stone / RESOURCE_PRICES.leather) }, // 20 leather
-      { resource: "steel", amount: Math.round(100 * RESOURCE_PRICES.stone / RESOURCE_PRICES.steel) }, // 15 steel
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver * 4) }, // 24 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.stone) }, // 6 gold
+      { resource: "wood", amount: Math.round(100 * PRICES.stone / PRICES.wood) }, // 150 wood
+      { resource: "food", amount: Math.round(100 * PRICES.stone / PRICES.food) }, // 150 food
+      { resource: "leather", amount: Math.round(100 * PRICES.stone / PRICES.leather) }, // 20 leather
+      { resource: "steel", amount: Math.round(100 * PRICES.stone / PRICES.steel) }, // 15 steel
+      { resource: "silver", amount: Math.round(100 * PRICES.stone / PRICES.silver * 4) }, // 24 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.stone) }, // 6 gold
     ],
   },
   {
@@ -387,13 +387,13 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     rewards: [
-      { resource: "wood", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.wood) }, // 75 wood
-      { resource: "stone", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.stone) }, // 50 stone
-      { resource: "food", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.food) }, // 75 food
-      { resource: "leather", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.leather) }, // 10 leather
-      { resource: "steel", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.steel) }, // ~7 steel
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.iron / RESOURCE_PRICES.silver * 4) }, // 12 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.iron) }, // 3 gold
+      { resource: "wood", amount: Math.round(50 * PRICES.iron / PRICES.wood) }, // 75 wood
+      { resource: "stone", amount: Math.round(50 * PRICES.iron / PRICES.stone) }, // 50 stone
+      { resource: "food", amount: Math.round(50 * PRICES.iron / PRICES.food) }, // 75 food
+      { resource: "leather", amount: Math.round(50 * PRICES.iron / PRICES.leather) }, // 10 leather
+      { resource: "steel", amount: Math.round(50 * PRICES.iron / PRICES.steel) }, // ~7 steel
+      { resource: "silver", amount: Math.round(50 * PRICES.iron / PRICES.silver * 4) }, // 12 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.iron) }, // 3 gold
     ],
   },
 
@@ -405,12 +405,12 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(250 * RESOURCE_PRICES.food / RESOURCE_PRICES.wood) }, // 250 wood
-      { resource: "stone", amount: Math.round(250 * RESOURCE_PRICES.food / RESOURCE_PRICES.stone) }, // ~166 stone
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.food / RESOURCE_PRICES.leather) }, // ~33 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.food / RESOURCE_PRICES.steel) }, // 25 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver * 4) }, // 40 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.food) }, // 10 gold
+      { resource: "wood", amount: Math.round(250 * PRICES.food / PRICES.wood) }, // 250 wood
+      { resource: "stone", amount: Math.round(250 * PRICES.food / PRICES.stone) }, // ~166 stone
+      { resource: "leather", amount: Math.round(250 * PRICES.food / PRICES.leather) }, // ~33 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.food / PRICES.steel) }, // 25 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.food / PRICES.silver * 4) }, // 40 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.food) }, // 10 gold
     ],
   },
   {
@@ -420,13 +420,13 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.wood) }, // 125 wood
-      { resource: "stone", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.stone) }, // ~83 stone
-      { resource: "food", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.food) }, // 125 food
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.leather) }, // ~16 leather
-      { resource: "steel", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.steel) }, // ~12 steel
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.bones / RESOURCE_PRICES.silver * 4) }, // 20 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.bones) }, // 5 gold
+      { resource: "wood", amount: Math.round(100 * PRICES.bones / PRICES.wood) }, // 125 wood
+      { resource: "stone", amount: Math.round(100 * PRICES.bones / PRICES.stone) }, // ~83 stone
+      { resource: "food", amount: Math.round(100 * PRICES.bones / PRICES.food) }, // 125 food
+      { resource: "leather", amount: Math.round(100 * PRICES.bones / PRICES.leather) }, // ~16 leather
+      { resource: "steel", amount: Math.round(100 * PRICES.bones / PRICES.steel) }, // ~12 steel
+      { resource: "silver", amount: Math.round(100 * PRICES.bones / PRICES.silver * 4) }, // 20 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.bones) }, // 5 gold
     ],
   },
   {
@@ -436,13 +436,13 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.wood) }, // 125 wood
-      { resource: "stone", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.stone) }, // ~83 stone
-      { resource: "food", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.food) }, // 125 food
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.leather) }, // ~16 leather
-      { resource: "steel", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.steel) }, // ~12 steel
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.fur / RESOURCE_PRICES.silver * 4) }, // 20 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.fur) }, // 5 gold
+      { resource: "wood", amount: Math.round(100 * PRICES.fur / PRICES.wood) }, // 125 wood
+      { resource: "stone", amount: Math.round(100 * PRICES.fur / PRICES.stone) }, // ~83 stone
+      { resource: "food", amount: Math.round(100 * PRICES.fur / PRICES.food) }, // 125 food
+      { resource: "leather", amount: Math.round(100 * PRICES.fur / PRICES.leather) }, // ~16 leather
+      { resource: "steel", amount: Math.round(100 * PRICES.fur / PRICES.steel) }, // ~12 steel
+      { resource: "silver", amount: Math.round(100 * PRICES.fur / PRICES.silver * 4) }, // 20 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.fur) }, // 5 gold
     ],
   },
   {
@@ -452,12 +452,12 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "food", amount: Math.round(250 * RESOURCE_PRICES.wood / RESOURCE_PRICES.food) }, // 250 food
-      { resource: "stone", amount: Math.round(250 * RESOURCE_PRICES.wood / RESOURCE_PRICES.stone) }, // ~166 stone
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.wood / RESOURCE_PRICES.leather) }, // ~33 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.wood / RESOURCE_PRICES.steel) }, // 25 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver * 4) }, // 40 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.wood) }, // 10 gold
+      { resource: "food", amount: Math.round(250 * PRICES.wood / PRICES.food) }, // 250 food
+      { resource: "stone", amount: Math.round(250 * PRICES.wood / PRICES.stone) }, // ~166 stone
+      { resource: "leather", amount: Math.round(250 * PRICES.wood / PRICES.leather) }, // ~33 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.wood / PRICES.steel) }, // 25 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.wood / PRICES.silver * 4) }, // 40 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.wood) }, // 10 gold
     ],
   },
   {
@@ -467,12 +467,12 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(250 * RESOURCE_PRICES.stone / RESOURCE_PRICES.wood) }, // 375 wood
-      { resource: "food", amount: Math.round(250 * RESOURCE_PRICES.stone / RESOURCE_PRICES.food) }, // 375 food
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.stone / RESOURCE_PRICES.leather) }, // 50 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.stone / RESOURCE_PRICES.steel) }, // ~37 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver * 4) }, // 60 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.stone) }, // 15 gold
+      { resource: "wood", amount: Math.round(250 * PRICES.stone / PRICES.wood) }, // 375 wood
+      { resource: "food", amount: Math.round(250 * PRICES.stone / PRICES.food) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * PRICES.stone / PRICES.leather) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.stone / PRICES.steel) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.stone / PRICES.silver * 4) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.stone) }, // 15 gold
     ],
   },
   {
@@ -482,13 +482,13 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.wood) }, // 375 wood
-      { resource: "stone", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.stone) }, // 250 stone
-      { resource: "food", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.food) }, // 375 food
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.leather) }, // 50 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.steel) }, // ~37 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.iron / RESOURCE_PRICES.silver * 4) }, // 60 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.iron) }, // 15 gold
+      { resource: "wood", amount: Math.round(250 * PRICES.iron / PRICES.wood) }, // 375 wood
+      { resource: "stone", amount: Math.round(250 * PRICES.iron / PRICES.stone) }, // 250 stone
+      { resource: "food", amount: Math.round(250 * PRICES.iron / PRICES.food) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * PRICES.iron / PRICES.leather) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.iron / PRICES.steel) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.iron / PRICES.silver * 4) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.iron) }, // 15 gold
     ],
   },
   {
@@ -498,13 +498,13 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.wood) }, // 375 wood
-      { resource: "stone", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.stone) }, // 250 stone
-      { resource: "food", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.food) }, // 375 food
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.leather) }, // 50 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.steel) }, // ~37 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.coal / RESOURCE_PRICES.silver * 4) }, // 60 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.coal) }, // 15 gold
+      { resource: "wood", amount: Math.round(250 * PRICES.coal / PRICES.wood) }, // 375 wood
+      { resource: "stone", amount: Math.round(250 * PRICES.coal / PRICES.stone) }, // 250 stone
+      { resource: "food", amount: Math.round(250 * PRICES.coal / PRICES.food) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * PRICES.coal / PRICES.leather) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.coal / PRICES.steel) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.coal / PRICES.silver * 4) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.coal) }, // 15 gold
     ],
   },
   {
@@ -514,13 +514,13 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.wood) }, // 500 wood
-      { resource: "stone", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.stone) }, // ~333 stone
-      { resource: "food", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.food) }, // 500 food
-      { resource: "leather", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.leather) }, // ~66 leather
-      { resource: "steel", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.steel) }, // 50 steel
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.silver * 4) }, // 80 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.sulfur) }, // 20 gold
+      { resource: "wood", amount: Math.round(250 * PRICES.sulfur / PRICES.wood) }, // 500 wood
+      { resource: "stone", amount: Math.round(250 * PRICES.sulfur / PRICES.stone) }, // ~333 stone
+      { resource: "food", amount: Math.round(250 * PRICES.sulfur / PRICES.food) }, // 500 food
+      { resource: "leather", amount: Math.round(250 * PRICES.sulfur / PRICES.leather) }, // ~66 leather
+      { resource: "steel", amount: Math.round(250 * PRICES.sulfur / PRICES.steel) }, // 50 steel
+      { resource: "silver", amount: Math.round(250 * PRICES.sulfur / PRICES.silver * 4) }, // 80 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.sulfur) }, // 20 gold
     ],
   },
   {
@@ -530,12 +530,12 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.wood) }, // 375 wood
-      { resource: "stone", amount: Math.round(50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.stone) }, // 250 stone
-      { resource: "food", amount: Math.round(50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.food) }, // 375 food
-      { resource: "steel", amount: Math.round(50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.steel) }, // ~37 steel
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver * 4) }, // 60 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.leather) }, // 15 gold
+      { resource: "wood", amount: Math.round(50 * PRICES.leather / PRICES.wood) }, // 375 wood
+      { resource: "stone", amount: Math.round(50 * PRICES.leather / PRICES.stone) }, // 250 stone
+      { resource: "food", amount: Math.round(50 * PRICES.leather / PRICES.food) }, // 375 food
+      { resource: "steel", amount: Math.round(50 * PRICES.leather / PRICES.steel) }, // ~37 steel
+      { resource: "silver", amount: Math.round(50 * PRICES.leather / PRICES.silver * 4) }, // 60 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.leather) }, // 15 gold
     ],
   },
   {
@@ -545,12 +545,12 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     rewards: [
-      { resource: "wood", amount: Math.round(100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.wood) }, // 1000 wood
-      { resource: "stone", amount: Math.round(100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.stone) }, // ~666 stone
-      { resource: "food", amount: Math.round(100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.food) }, // 1000 food
-      { resource: "leather", amount: Math.round(100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.leather) }, // ~133 leather
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver * 4) }, // 160 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.steel) }, // 40 gold
+      { resource: "wood", amount: Math.round(100 * PRICES.steel / PRICES.wood) }, // 1000 wood
+      { resource: "stone", amount: Math.round(100 * PRICES.steel / PRICES.stone) }, // ~666 stone
+      { resource: "food", amount: Math.round(100 * PRICES.steel / PRICES.food) }, // 1000 food
+      { resource: "leather", amount: Math.round(100 * PRICES.steel / PRICES.leather) }, // ~133 leather
+      { resource: "silver", amount: Math.round(100 * PRICES.steel / PRICES.silver * 4) }, // 160 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.steel) }, // 40 gold
     ],
   },
 
@@ -562,8 +562,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver * 4) }, // 80 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.food) }, // 20 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.food / PRICES.silver * 4) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.food) }, // 20 gold
     ],
   },
   {
@@ -573,8 +573,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.bones / RESOURCE_PRICES.silver * 4) }, // 50 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.bones) }, // ~12 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.bones / PRICES.silver * 4) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.bones) }, // ~12 gold
     ],
   },
   {
@@ -584,8 +584,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.fur / RESOURCE_PRICES.silver * 4) }, // 50 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.fur) }, // ~12 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.fur / PRICES.silver * 4) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.fur) }, // ~12 gold
     ],
   },
   {
@@ -595,8 +595,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver * 4) }, // 80 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.wood) }, // 20 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.wood / PRICES.silver * 4) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.wood) }, // 20 gold
     ],
   },
   {
@@ -606,8 +606,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.stone) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.stone / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.stone) }, // 30 gold
     ],
   },
   {
@@ -617,8 +617,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.iron / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.iron) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.iron / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.iron) }, // 30 gold
     ],
   },
   {
@@ -628,8 +628,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.coal / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.coal) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.coal / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.coal) }, // 30 gold
     ],
   },
   {
@@ -639,8 +639,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.silver * 4) }, // 160 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.sulfur) }, // 40 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.sulfur / PRICES.silver * 4) }, // 160 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.sulfur) }, // 40 gold
     ],
   },
   {
@@ -650,8 +650,8 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.obsidian / RESOURCE_PRICES.silver * 4) }, // 200 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.obsidian) }, // 50 gold
+      { resource: "silver", amount: Math.round(50 * PRICES.obsidian / PRICES.silver * 4) }, // 200 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.obsidian) }, // 50 gold
     ],
   },
   {
@@ -661,8 +661,8 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.adamant / RESOURCE_PRICES.silver * 4) }, // 240 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.adamant) }, // 60 gold
+      { resource: "silver", amount: Math.round(50 * PRICES.adamant / PRICES.silver * 4) }, // 240 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.adamant) }, // 60 gold
     ],
   },
   {
@@ -672,8 +672,8 @@ const sellTrades = [
     takeAmount: 50,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(50 * RESOURCE_PRICES.moonstone / RESOURCE_PRICES.silver * 4) }, // 400 silver
-      { resource: "gold", amount: Math.round(50 * RESOURCE_PRICES.moonstone) }, // 100 gold
+      { resource: "silver", amount: Math.round(50 * PRICES.moonstone / PRICES.silver * 4) }, // 400 silver
+      { resource: "gold", amount: Math.round(50 * PRICES.moonstone) }, // 100 gold
     ],
   },
   {
@@ -683,8 +683,8 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.leather) }, // 30 gold
+      { resource: "silver", amount: Math.round(100 * PRICES.leather / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.leather) }, // 30 gold
     ],
   },
   {
@@ -694,8 +694,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver * 4) }, // 400 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.steel) }, // 100 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.steel / PRICES.silver * 4) }, // 400 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.steel) }, // 100 gold
     ],
   },
 
@@ -707,8 +707,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.food / RESOURCE_PRICES.silver * 4) }, // 80 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.food) }, // 20 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.food / PRICES.silver * 4) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.food) }, // 20 gold
     ],
   },
   {
@@ -718,8 +718,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.bones / RESOURCE_PRICES.silver * 4) }, // 50 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.bones) }, // ~12 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.bones / PRICES.silver * 4) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.bones) }, // ~12 gold
     ],
   },
   {
@@ -729,8 +729,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.fur / RESOURCE_PRICES.silver * 4) }, // 50 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.fur) }, // ~12 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.fur / PRICES.silver * 4) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.fur) }, // ~12 gold
     ],
   },
   {
@@ -740,8 +740,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.wood / RESOURCE_PRICES.silver * 4) }, // 80 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.wood) }, // 20 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.wood / PRICES.silver * 4) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.wood) }, // 20 gold
     ],
   },
   {
@@ -751,8 +751,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.stone / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.stone) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.stone / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.stone) }, // 30 gold
     ],
   },
   {
@@ -762,8 +762,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.iron / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.iron) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.iron / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.iron) }, // 30 gold
     ],
   },
   {
@@ -773,8 +773,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.coal / RESOURCE_PRICES.silver * 4) }, // 120 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.coal) }, // 30 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.coal / PRICES.silver * 4) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.coal) }, // 30 gold
     ],
   },
   {
@@ -784,8 +784,8 @@ const sellTrades = [
     takeAmount: 500,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(500 * RESOURCE_PRICES.sulfur / RESOURCE_PRICES.silver * 4) }, // 160 silver
-      { resource: "gold", amount: Math.round(500 * RESOURCE_PRICES.sulfur) }, // 40 gold
+      { resource: "silver", amount: Math.round(500 * PRICES.sulfur / PRICES.silver * 4) }, // 160 silver
+      { resource: "gold", amount: Math.round(500 * PRICES.sulfur) }, // 40 gold
     ],
   },
   {
@@ -795,8 +795,8 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.obsidian / RESOURCE_PRICES.silver * 4) }, // 400 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.obsidian) }, // 100 gold
+      { resource: "silver", amount: Math.round(100 * PRICES.obsidian / PRICES.silver * 4) }, // 400 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.obsidian) }, // 100 gold
     ],
   },
   {
@@ -806,8 +806,8 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.adamant / RESOURCE_PRICES.silver * 4) }, // 480 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.adamant) }, // 120 gold
+      { resource: "silver", amount: Math.round(100 * PRICES.adamant / PRICES.silver * 4) }, // 480 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.adamant) }, // 120 gold
     ],
   },
   {
@@ -817,8 +817,8 @@ const sellTrades = [
     takeAmount: 100,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(100 * RESOURCE_PRICES.moonstone / RESOURCE_PRICES.silver * 4) }, // 800 silver
-      { resource: "gold", amount: Math.round(100 * RESOURCE_PRICES.moonstone) }, // 200 gold
+      { resource: "silver", amount: Math.round(100 * PRICES.moonstone / PRICES.silver * 4) }, // 800 silver
+      { resource: "gold", amount: Math.round(100 * PRICES.moonstone) }, // 200 gold
     ],
   },
   {
@@ -828,8 +828,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.leather / RESOURCE_PRICES.silver * 4) }, // 300 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.leather) }, // 75 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.leather / PRICES.silver * 4) }, // 300 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.leather) }, // 75 gold
     ],
   },
   {
@@ -839,8 +839,8 @@ const sellTrades = [
     takeAmount: 250,
     condition: (state: GameState) => state.buildings.stoneHut >= 7,
     rewards: [
-      { resource: "silver", amount: Math.round(250 * RESOURCE_PRICES.steel / RESOURCE_PRICES.silver * 4) }, // 400 silver
-      { resource: "gold", amount: Math.round(250 * RESOURCE_PRICES.steel) }, // 100 gold
+      { resource: "silver", amount: Math.round(250 * PRICES.steel / PRICES.silver * 4) }, // 400 silver
+      { resource: "gold", amount: Math.round(250 * PRICES.steel) }, // 100 gold
     ],
   },
 ];
