@@ -7,10 +7,11 @@ export const noChoiceEvents: Record<string, GameEvent> = {
   bloodDrainedVillagers: {
     id: "bloodDrainedVillagers",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 7 && !state.story.seen.damagedTowerExplored,
+      state.buildings.stoneHut >= 7,
+      // !state.story.seen.damagedTowerExplored,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
+      state.story.seen.bloodDrainedVillagersFirstTime ? 0.030 : 0.045,
     title: "Drained Bodies",
     message: (state: GameState) => {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
