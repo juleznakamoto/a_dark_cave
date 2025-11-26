@@ -971,40 +971,59 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   }
 
   // Select buy trades based on progression
-  const availableBuyTrades = filteredBuyTrades
-    .sort(() => Math.random() - 0.5)
-    .slice(0, numBuyTrades)
-    .map((trade) => {
-      // Filter out cost options that are the same as the resource being bought
-      const validCosts = trade.costs.filter(c => c.resource !== trade.give);
-      const costOption = validCosts[Math.floor(Math.random() * validCosts.length)];
-      const rawCost = Math.ceil(costOption.amount * (1 - discount));
-      const cost = roundCost(rawCost);
+  const shuffledBuyTrades = filteredBuyTrades.sort(() => Math.random() - 0.5);
+  const selectedBuyTrades = [];
+  const usedResourcePairs = new Set<string>();
 
-      console.log('[MERCHANT] Created buy trade:', {
-        id: trade.id,
-        label: trade.label,
-        cost: `${cost} ${costOption.resource}`,
-      });
+  for (const trade of shuffledBuyTrades) {
+    if (selectedBuyTrades.length >= numBuyTrades) break;
 
-      return {
-        id: trade.id,
-        label: `${trade.label}`,
-        cost: `${cost} ${costOption.resource}`,
-        effect: (state: GameState) => {
-          if ((state.resources[costOption.resource] || 0) >= cost) {
-            return {
-              resources: {
-                ...state.resources,
-                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
-                [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
-              },
-            };
-          }
-          return {};
-        },
-      };
+    // Filter out cost options that are the same as the resource being bought
+    const validCosts = trade.costs.filter(c => c.resource !== trade.give);
+    const costOption = validCosts[Math.floor(Math.random() * validCosts.length)];
+    
+    // Create a unique key for this resource pair (sorted to catch both directions)
+    const resourcePair = [trade.give, costOption.resource].sort().join('-');
+    
+    // Skip if we've already selected a trade with these resources
+    if (usedResourcePairs.has(resourcePair)) {
+      continue;
+    }
+    
+    usedResourcePairs.add(resourcePair);
+    
+    const rawCost = Math.ceil(costOption.amount * (1 - discount));
+    const cost = roundCost(rawCost);
+
+    console.log('[MERCHANT] Created buy trade:', {
+      id: trade.id,
+      label: trade.label,
+      cost: `${cost} ${costOption.resource}`,
+      resourcePair,
     });
+
+    selectedBuyTrades.push({
+      id: trade.id,
+      label: `${trade.label}`,
+      cost: `${cost} ${costOption.resource}`,
+      costResource: costOption.resource,
+      giveResource: trade.give,
+      effect: (state: GameState) => {
+        if ((state.resources[costOption.resource] || 0) >= cost) {
+          return {
+            resources: {
+              ...state.resources,
+              [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+              [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
+            },
+          };
+        }
+        return {};
+      },
+    });
+  }
+
+  const availableBuyTrades = selectedBuyTrades;
 
   console.log('[MERCHANT] Total sell trades:', sellTrades.length);
 
@@ -1025,50 +1044,66 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     numSellTrades = 2; // Trade Post or Grand Bazaar: 2 sell trades
   }
 
-  // Select sell trades based on progression
-  const availableSellTrades = filteredSellTrades
-    .sort(() => Math.random() - 0.5)
-    .slice(0, numSellTrades)
-    .map((trade) => {
-      // Filter out reward options that are the same as the resource being sold
-      const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
-      const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
-      const rawReward = Math.ceil(rewardOption.amount * (1 + discount));
-      const reward = roundCost(rawReward);
+  // Select sell trades based on progression, avoiding conflicts with buy trades
+  const shuffledSellTrades = filteredSellTrades.sort(() => Math.random() - 0.5);
+  const selectedSellTrades = [];
 
-      // Format take resource name for display
-      const takeResourceName = trade.take
-        .replace(/_/g, ' ')
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+  for (const trade of shuffledSellTrades) {
+    if (selectedSellTrades.length >= numSellTrades) break;
 
-      console.log('[MERCHANT] Created sell trade:', {
-        id: trade.id,
-        label: trade.label,
-        take: trade.take,
-        rewardResource: rewardOption.resource,
-        cost: `${trade.takeAmount} ${trade.take}`,
-      });
+    // Filter out reward options that are the same as the resource being sold
+    const validRewards = trade.rewards.filter(r => r.resource !== trade.take);
+    const rewardOption = validRewards[Math.floor(Math.random() * validRewards.length)];
+    
+    // Create a unique key for this resource pair (sorted to catch both directions)
+    const resourcePair = [trade.take, rewardOption.resource].sort().join('-');
+    
+    // Skip if we've already selected a trade with these resources (from buy or sell)
+    if (usedResourcePairs.has(resourcePair)) {
+      continue;
+    }
+    
+    usedResourcePairs.add(resourcePair);
+    
+    const rawReward = Math.ceil(rewardOption.amount * (1 + discount));
+    const reward = roundCost(rawReward);
 
-      return {
-        id: trade.id,
-        label: `${reward} ${rewardOption.resource}`,
-        cost: `${trade.takeAmount} ${takeResourceName}`,
-        effect: (state: GameState) => {
-          if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
-            return {
-              resources: {
-                ...state.resources,
-                [trade.take]: (state.resources[trade.take] || 0) - trade.takeAmount,
-                [rewardOption.resource]: (state.resources[rewardOption.resource] || 0) + reward,
-              },
-            };
-          }
-          return {};
-        },
-      };
+    // Format take resource name for display
+    const takeResourceName = trade.take
+      .replace(/_/g, ' ')
+      .split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(' ');
+
+    console.log('[MERCHANT] Created sell trade:', {
+      id: trade.id,
+      label: trade.label,
+      take: trade.take,
+      rewardResource: rewardOption.resource,
+      cost: `${trade.takeAmount} ${trade.take}`,
+      resourcePair,
     });
+
+    selectedSellTrades.push({
+      id: trade.id,
+      label: `${reward} ${rewardOption.resource}`,
+      cost: `${trade.takeAmount} ${takeResourceName}`,
+      effect: (state: GameState) => {
+        if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
+          return {
+            resources: {
+              ...state.resources,
+              [trade.take]: (state.resources[trade.take] || 0) - trade.takeAmount,
+              [rewardOption.resource]: (state.resources[rewardOption.resource] || 0) + reward,
+            },
+          };
+        }
+        return {};
+      },
+    });
+  }
+
+  const availableSellTrades = selectedSellTrades;
 
   console.log('[MERCHANT] Total tool trades:', toolTrades.length);
 
