@@ -1,4 +1,3 @@
-
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
@@ -6,11 +5,11 @@ import { killVillagers } from "@/game/stateHelpers";
 export const noChoiceEvents: Record<string, GameEvent> = {
   bloodDrainedVillagers: {
     id: "bloodDrainedVillagers",
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 7,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7 
+      && !state.story.seen.damagedTowerExplored,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.bloodDrainedVillagersFirstTime ? 0.030 : 0.045,
+      state.story.seen.bloodDrainedVillagersFirstTime ? 30 : 45,
     title: "Drained Bodies",
     message: (state: GameState) => {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
@@ -23,12 +22,16 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     },
     triggered: false,
     priority: 4,
+    visualEffect: {
+      type: "glow",
+      duration: 2,
+    },
     repeatable: true,
     effect: (state: GameState) => {
       const isFirstTime = !state.story.seen.bloodDrainedVillagersFirstTime;
       const deaths = isFirstTime ? 6 : 8;
       const result = killVillagers(state, deaths);
-      
+
       return {
         ...result,
         story: {
@@ -48,7 +51,8 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.flags.hasCity,
     triggerType: "time",
-    message: "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
+    message:
+      "The village has grown into a city. What began as a small settlement now stands as a thriving center of stone and smoke.",
     triggered: false,
     priority: 10,
     timeProbability: 0.01,
@@ -73,7 +77,8 @@ export const noChoiceEvents: Record<string, GameEvent> = {
       state.buildings.watchtower >= 3 &&
       !state.flags.hasFortress,
     triggerType: "time",
-    message: "Your bastion has grown into a mighty fortress of stone and steel.",
+    message:
+      "Your bastion has grown into a mighty fortress of stone and steel.",
     triggered: false,
     priority: 10,
     timeProbability: 0.01,
@@ -93,8 +98,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
   findElderScroll: {
     id: "findElderScroll",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 6 &&
-      !state.relics.elder_scroll,
+      state.buildings.woodenHut >= 6 && !state.relics.elder_scroll,
     triggerType: "time",
     timeProbability: 45,
     message:
