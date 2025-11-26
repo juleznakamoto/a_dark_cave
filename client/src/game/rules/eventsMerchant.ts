@@ -1438,8 +1438,8 @@ function selectTrades(
     sellAmount = Math.ceil(sellAmount * (1 - discount));
 
     // Round numbers
-    sellAmount = roundCost(sellAmount, "up");
-    buyAmount = roundCost(buyAmount, "down");
+    sellAmount = roundCost(sellAmount, "down");
+    buyAmount = roundCost(buyAmount, "up");
 
     // Format resource names for display
     const formatResourceName = (res: string) =>
