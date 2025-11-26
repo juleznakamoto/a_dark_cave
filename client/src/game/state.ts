@@ -509,11 +509,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Store initial cooldown duration if it's a new cooldown
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
+      const now = Date.now();
+      const endTime = now + initialDuration;
+
       console.log(`[executeAction] Setting cooldown for ${actionId}:`, {
         initialDuration,
         initialDurationSeconds: initialDuration / 1000,
+        now,
+        endTime,
+        endTimeReadable: new Date(endTime).toISOString(),
         resultStateUpdates: result.stateUpdates.cooldowns,
       });
+
+      // Convert duration to end timestamp BEFORE merging
+      result.stateUpdates.cooldowns[actionId] = endTime;
+
+      // Store the initial duration for animation purposes
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
@@ -655,7 +666,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       for (const key in newCooldowns) {
         const endTime = newCooldowns[key];
         const remaining = endTime - now;
-        
+
         // If cooldown has expired, remove it
         if (endTime <= now) {
           console.log(`[tickCooldowns] Removing expired cooldown: ${key}`, {
@@ -679,22 +690,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const state = get();
-    
+
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       activatedPurchases: state.activatedPurchases || {},
       feastPurchases: state.feastPurchases || {},
-      
+
       // Referral system (persists forever)
       referrals: state.referrals || [],
       referralCount: state.referralCount || 0,
       referredUsers: state.referredUsers || [],
-      
+
       // Social media rewards (persist forever)
       social_media_rewards: state.social_media_rewards || {},
-      
+
       // Cruel mode status
       cruelMode: state.activatedPurchases?.['cruel_mode'] || false,
       CM: (state.activatedPurchases?.['cruel_mode'] || false) ? 1 : 0,
@@ -704,15 +715,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resetState = {
       ...defaultGameState,
       ...preserved,
-      
+
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
-      
+
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
-      
+
       // Mark as new game
       isNewGame: true,
       startTime: Date.now(),
