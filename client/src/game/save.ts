@@ -119,6 +119,7 @@ async function processUnclaimedReferrals(gameState: GameState): Promise<GameStat
         gold: newGold,
       },
       log: [...(updatedGameState.log || []), ...logEntriesAdded].slice(-100),
+      cooldownDurations: updatedGameState.cooldownDurations || {},
     };
 
     // Update the store as well
@@ -216,6 +217,7 @@ export async function loadGame(): Promise<GameState | null> {
       playTime: localSave?.playTime,
       hasCooldowns: !!localSave?.gameState?.cooldowns,
       cooldowns: localSave?.gameState?.cooldowns,
+      hasCooldownDurations: !!localSave?.gameState?.cooldownDurations,
       cooldownDurations: localSave?.gameState?.cooldownDurations
     });
 
@@ -280,7 +282,11 @@ export async function loadGame(): Promise<GameState | null> {
           return processedState;
         } else if (localSave) {
           // Only local save exists, sync to cloud
-          const processedState = await processUnclaimedReferrals(localSave.gameState);
+          const stateWithDefaults = {
+            ...localSave.gameState,
+            cooldownDurations: localSave.gameState.cooldownDurations || {},
+          };
+          const processedState = await processUnclaimedReferrals(stateWithDefaults);
           await saveGameToSupabase(processedState);
           await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
           return processedState;
@@ -296,7 +302,11 @@ export async function loadGame(): Promise<GameState | null> {
     } else {
       // Not authenticated, use local save only
       if (localSave) {
-        const processedState = await processUnclaimedReferrals(localSave.gameState);
+        const stateWithDefaults = {
+          ...localSave.gameState,
+          cooldownDurations: localSave.gameState.cooldownDurations || {},
+        };
+        const processedState = await processUnclaimedReferrals(stateWithDefaults);
         console.log(`[LOAD] Returning local state (no auth):`, {
           hasCooldownDurations: !!processedState.cooldownDurations,
           cooldownDurations: processedState.cooldownDurations
