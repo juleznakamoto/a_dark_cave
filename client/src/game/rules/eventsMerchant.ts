@@ -1065,7 +1065,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     
     usedResourcePairs.add(resourcePair);
     
-    const rawReward = Math.ceil(rewardOption.amount * (1 + discount));
+    let rawReward = Math.ceil(rewardOption.amount * (1 + discount));
+    
+    // Apply 25% reduction for silver and gold rewards
+    if (rewardOption.resource === 'silver' || rewardOption.resource === 'gold') {
+      rawReward = Math.ceil(rawReward * 0.75);
+    }
+    
     const reward = roundCost(rawReward);
 
     // Format take resource name for display
