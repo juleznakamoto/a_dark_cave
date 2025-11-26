@@ -624,10 +624,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setCooldown: (action: string, duration: number) => {
     set((state) => {
-      const endTime = Date.now() + duration;
       const newState = {
-        cooldowns: { ...state.cooldowns, [action]: endTime },
-        cooldownDurations: { ...state.cooldownDurations, [action]: duration },
+        cooldowns: { ...state.cooldowns, [action]: duration },
+        cooldownDurations: { ...state.cooldownDurations, [action]: duration }, // Also set initial duration
       };
       return newState;
     });
@@ -635,19 +634,20 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   tickCooldowns: () => {
     set((state) => {
-      const now = Date.now();
       const newCooldowns = { ...state.cooldowns };
-      const newCooldownDurations = { ...state.cooldownDurations };
+      const newCooldownDurations = { ...state.cooldownDurations }; // Copy durations
 
       for (const key in newCooldowns) {
-        const endTime = newCooldowns[key];
-        if (endTime <= now) {
-          // Cooldown expired
-          delete newCooldowns[key];
+        if (newCooldowns[key] > 0) {
+          newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
+        }
+
+        // If cooldown has reached 0, reset its duration as well
+        if (newCooldowns[key] === 0 && newCooldownDurations[key]) {
           delete newCooldownDurations[key];
         }
       }
-      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations };
+      return { cooldowns: newCooldowns, cooldownDurations: newCooldownDurations }; // Return both updated states
     });
   },
 
