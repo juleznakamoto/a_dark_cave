@@ -28,17 +28,19 @@ const PRICES = {
 } as const;
 
 // Round cost according to specified rules
-function roundCost(cost: number): number {
+function roundCost(cost: number, direction: "up" | "down" = "down"): number {
   cost = cost * 1.1;
+  const roundFn = direction === "up" ? Math.ceil : Math.floor;
+  
   if (cost < 100) {
-    // Round down to next 5-multiple
-    return Math.floor(cost / 5) * 5;
+    // Round to next 5-multiple
+    return roundFn(cost / 5) * 5;
   } else if (cost < 1000) {
-    // Round down to next 10-multiple
-    return Math.floor(cost / 10) * 10;
+    // Round to next 10-multiple
+    return roundFn(cost / 10) * 10;
   } else {
-    // Round down to next 50-multiple
-    return Math.floor(cost / 50) * 50;
+    // Round to next 50-multiple
+    return roundFn(cost / 50) * 50;
   }
 }
 
