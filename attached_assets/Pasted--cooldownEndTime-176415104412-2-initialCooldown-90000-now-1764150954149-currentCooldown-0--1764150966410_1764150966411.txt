@@ -1,0 +1,53 @@
+
+{cooldownEndTime: 176415104412.2, initialCooldown: 90000, now: 1764150954149, currentCooldown: 0, isCoolingDown: false, …}
+CooldownButton.tsx:66 [CooldownButton] damagedTower render: 
+{cooldownEndTime: 176415104412.2, initialCooldown: 90000, now: 1764150954177, currentCooldown: 0, isCoolingDown: false, …}
+CooldownButton.tsx:66 [CooldownButton] damagedTower render: 
+{cooldownEndTime: 176415104412.2, initialCooldown: 90000, now: 1764150954235, currentCooldown: 0, isCoolingDown: false, …}
+state.ts:672 [tickCooldowns] Removing expired cooldown: damagedTower 
+{endTime: 176415104412.2, now: 1764150954250, wasExpiredBy: '1587735849837.8ms'}
+state.ts:515 [executeAction] Setting cooldown for damagedTower: 
+{initialDuration: 90000, initialDurationSeconds: 90, now: 1764150956135, endTime: 1764151046135, endTimeReadable: '2025-11-26T09:57:26.135Z', …}
+endTime
+: 
+1764151046135
+endTimeReadable
+: 
+"2025-11-26T09:57:26.135Z"
+initialDuration
+: 
+90000
+initialDurationSeconds
+: 
+90
+now
+: 
+1764150956135
+resultStateUpdates
+: 
+{damagedTower: 1764151046135}
+[[Prototype]]
+: 
+Object
+state.ts:547 [STATE] Action: damagedTower 
+{stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+CooldownButton.tsx:66 [CooldownButton] damagedTower render: 
+{cooldownEndTime: 176415104613.5, initialCooldown: 90000, now: 1764150956158, currentCooldown: 0, isCoolingDown: false, …}
+CooldownButton.tsx:66 [CooldownButton] damagedTower render: 
+{cooldownEndTime: 176415104613.5, initialCooldown: 90000, now: 1764150956185, currentCooldown: 0, isCoolingDown: false, …}
+CooldownButton.tsx:66 [CooldownButton] damagedTower render: 
+{cooldownEndTime: 176415104613.5, initialCooldown: 90000, now: 1764150956241, currentCooldown: 0, isCoolingDown: false, …}
+state.ts:672 [tickCooldowns] Removing expired cooldown: damagedTower 
+{endTime: 176415104613.5, now: 1764150956282, wasExpiredBy: '1587735851668.5ms'}
+endTime
+: 
+176415104613.5
+now
+: 
+1764150956282
+wasExpiredBy
+: 
+"1587735851668.5ms"
+[[Prototype]]
+: 
+Object
