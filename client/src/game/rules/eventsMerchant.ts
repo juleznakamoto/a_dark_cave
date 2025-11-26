@@ -14,7 +14,7 @@ const PRICES = {
   sulfur: 0.08,
   obsidian: 1,
   adamant: 1.2,
-  moonstone: 2,
+  moonstone: 1.5,
   leather: 0.3,
   steel: 0.4,
   torch: 0.3,
@@ -1067,9 +1067,9 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     
     let rawReward = Math.ceil(rewardOption.amount * (1 + discount));
     
-    // Apply 25% reduction for silver and gold rewards
+    // Apply 75% reduction for silver and gold rewards
     if (rewardOption.resource === 'silver' || rewardOption.resource === 'gold') {
-      rawReward = Math.ceil(rawReward * 0.75);
+      rawReward = Math.ceil(rawReward * 0.2 5);
     }
     
     const reward = roundCost(rawReward);
