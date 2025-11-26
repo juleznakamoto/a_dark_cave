@@ -2,6 +2,8 @@
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu";
 import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
+import { saveGame } from "@/game/save";
+import { buildGameState } from "@/game/stateHelpers";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -27,7 +29,7 @@ export default function SocialMediaRewards() {
   const updateResource = useGameStore((state) => state.updateResource);
   const addLogEntry = useGameStore((state) => state.addLogEntry);
 
-  const handleSocialFollow = (platformId: string, url: string, reward: number, platformName: string) => {
+  const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
     // Check if already claimed
     if (social_media_rewards[platformId]?.claimed) {
       const alreadyClaimedLog: LogEntry = {
@@ -69,6 +71,20 @@ export default function SocialMediaRewards() {
       },
     };
     addLogEntry(rewardLog);
+
+    // Immediately save the game state to persist the reward claim
+    try {
+      const currentState = useGameStore.getState();
+      const gameState = buildGameState(currentState);
+      const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
+      await saveGame(gameState, playTimeToSave);
+      useGameStore.setState({ 
+        lastSaved: new Date().toLocaleTimeString(),
+        isNewGame: false 
+      });
+    } catch (error) {
+      console.error("Failed to save social media reward claim:", error);
+    }
   };
 
   return (
