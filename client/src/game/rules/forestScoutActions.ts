@@ -60,7 +60,10 @@ export const forestScoutActions: Record<string, Action> = {
       "story.seen.trapLaid": true,
     },
     success_chance: (state: GameState) => {
-      return calculateSuccessChance(state, 0.2, { type: 'luck', multiplier: 0.01 });
+      return calculateSuccessChance(state, 0.2, {
+        type: "luck",
+        multiplier: 0.01,
+      });
     },
     relevant_stats: ["strength", "luck"],
     cooldown: 30,
@@ -81,8 +84,8 @@ export const forestScoutActions: Record<string, Action> = {
       return calculateSuccessChance(
         state,
         0.2,
-        { type: 'strength', multiplier: 0.005 },
-        { type: 'knowledge', multiplier: 0.005 }
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
@@ -104,8 +107,8 @@ export const forestScoutActions: Record<string, Action> = {
       return calculateSuccessChance(
         state,
         0.1,
-        { type: 'strength', multiplier: 0.005 },
-        { type: 'knowledge', multiplier: 0.005 }
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
@@ -129,8 +132,8 @@ export const forestScoutActions: Record<string, Action> = {
       return calculateSuccessChance(
         state,
         0.0,
-        { type: 'strength', multiplier: 0.005 },
-        { type: 'knowledge', multiplier: 0.005 }
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
@@ -152,8 +155,8 @@ export const forestScoutActions: Record<string, Action> = {
       return calculateSuccessChance(
         state,
         0.15,
-        { type: 'strength', multiplier: 0.005 },
-        { type: 'knowledge', multiplier: 0.005 }
+        { type: "strength", multiplier: 0.005 },
+        { type: "knowledge", multiplier: 0.005 },
       );
     },
     relevant_stats: ["strength", "knowledge"],
@@ -200,7 +203,9 @@ export function handleLayTrap(
 
   // Get success chance from action definition
   const action = forestScoutActions.layTrap;
-  const successChance = action.success_chance ? action.success_chance(state) : 0;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -213,10 +218,10 @@ export function handleLayTrap(
 
     if (fightRand < fightChance) {
       // Victory with minimal or no casualties (0-2 deaths)
-      villagerDeaths = Math.floor(Math.random() * 3)+state.CM*1; // 0-2 deaths
+      villagerDeaths = Math.floor(Math.random() * 3) + state.CM * 1; // 0-2 deaths
     } else {
       // Defeat with heavy casualties (3-6 deaths)
-      villagerDeaths = Math.floor(Math.random() * 4) + 3+state.CM*2; // 3-6 deaths
+      villagerDeaths = Math.floor(Math.random() * 4) + 3 + state.CM * 2; // 3-6 deaths
     }
 
     const deathResult = killVillagers(state, villagerDeaths);
@@ -288,7 +293,9 @@ export function handleCastleRuins(
 
   // Get success chance from action definition
   const action = forestScoutActions.castleRuins;
-  const successChance = action.success_chance ? action.success_chance(state) : 0;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -310,13 +317,13 @@ export function handleCastleRuins(
       ...state.resources,
       silver: (state.resources.silver || 0) + 100,
       gold: (state.resources.gold || 0) + 50,
-      food: (state.resources.food || 0) - 2500
+      food: (state.resources.food || 0) - 2500,
     };
 
     result.logEntries!.push({
       id: `castle-ruins-success-${Date.now()}`,
       message:
-        "The expedition to the necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
+        "The expedition to the dead necromancer's castle ruins proves successful! Deep within the you find the ancient scrolls wrapped in dark silk, revealing cryptic knowledge about how to defeat what was locked deep in the cave.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -328,9 +335,8 @@ export function handleCastleRuins(
     // Failure: Undead attack scenarios
     const failureRand = Math.random();
 
-    if (failureRand < 0.5-state.CM*0.1) {
-      // Scenario 1: Minor undead attack (1-4 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 4) + 1+state.CM*2; // 1-4 deaths
+    if (failureRand < 0.5 - state.CM * 0.1) {
+      const villagerDeaths = Math.floor(Math.random() * 4) + 1 + state.CM * 2;
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -345,8 +351,7 @@ export function handleCastleRuins(
         },
       });
     } else {
-      // Scenario 2: Major undead attack (5-10 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 6) + 5+state.CM*4; // 5-10 deaths
+      const villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
       const deathResult = killVillagers(state, villagerDeaths);
       Object.assign(result.stateUpdates, deathResult);
 
@@ -375,7 +380,9 @@ export function handleHillGrave(
 
   // Get success chance from action definition
   const action = forestScoutActions.hillGrave;
-  const successChance = action.success_chance ? action.success_chance(state) : 0;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -384,7 +391,7 @@ export function handleHillGrave(
       ...state.resources,
       silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 100,
-      food: (state.resources.food || 0) - 5000
+      food: (state.resources.food || 0) - 5000,
     };
 
     result.stateUpdates.relics = {
@@ -413,8 +420,7 @@ export function handleHillGrave(
       },
     });
   } else {
-    // Failure: Villagers die to traps (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.CM*3; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 10) + 3 + state.CM * 4;
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -442,7 +448,9 @@ export function handleSunkenTemple(
 
   // Get success chance from action definition
   const action = forestScoutActions.sunkenTemple;
-  const successChance = action.success_chance ? action.success_chance(state) : 0;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -452,7 +460,7 @@ export function handleSunkenTemple(
       ...state.resources,
       silver: (state.resources.silver || 0) + 300,
       gold: (state.resources.gold || 0) + 150,
-      food: (state.resources.food || 0) - 5000
+      food: (state.resources.food || 0) - 5000,
     };
 
     result.stateUpdates.relics = {
@@ -482,8 +490,7 @@ export function handleSunkenTemple(
       },
     });
   } else {
-    // Failure: Villagers die to swamp creatures (5-15 deaths)
-    const villagerDeaths = Math.floor(Math.random() * 11) + 5+state.CM*3; // 5-15 deaths
+    const villagerDeaths = Math.floor(Math.random() * 12) + 4 + state.CM * 4;
     const deathResult = killVillagers(state, villagerDeaths);
     Object.assign(result.stateUpdates, deathResult);
 
@@ -511,7 +518,9 @@ export function handleDamagedTower(
 
   // Get success chance from action definition
   const action = forestScoutActions.damagedTower;
-  const successChance = action.success_chance ? action.success_chance(state) : 0;
+  const successChance = action.success_chance
+    ? action.success_chance(state)
+    : 0;
   const rand = Math.random();
 
   if (rand < successChance) {
@@ -520,7 +529,7 @@ export function handleDamagedTower(
       ...state.resources,
       silver: (state.resources.silver || 0) + 200,
       gold: (state.resources.gold || 0) + 100,
-      food: (state.resources.food || 0) - 2500
+      food: (state.resources.food || 0) - 2500,
     };
 
     // Set flag to mark tower as explored
@@ -535,7 +544,7 @@ export function handleDamagedTower(
     result.logEntries!.push({
       id: `damaged-tower-success-${Date.now()}`,
       message:
-        "Your expedition reaches the damaged tower deep in the forest. Inside, you find a necromancer's follower surrounded by vials of blood and crude syringes. He was harvesting villagers' blood for dark experiments. Your men put an end to his vile work. The mysterious deaths will cease.",
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. The mysterious deaths will cease.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
@@ -544,43 +553,20 @@ export function handleDamagedTower(
       },
     });
   } else {
-    // Failure: Necromancer's follower attacks
-    const failureRand = Math.random();
+    const villagerDeaths = Math.floor(Math.random() * 8) + 2 + state.CM * 4;
+    const deathResult = killVillagers(state, villagerDeaths);
+    Object.assign(result.stateUpdates, deathResult);
 
-    if (failureRand < 0.5 - state.CM * 0.1) {
-      // Scenario 1: Minor casualties (1-4 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 4) + 1 + state.CM * 2; // 1-4 deaths
-      const deathResult = killVillagers(state, villagerDeaths);
-      Object.assign(result.stateUpdates, deathResult);
-
-      result.logEntries!.push({
-        id: `damaged-tower-minor-failure-${Date.now()}`,
-        message: `Your expedition finds the damaged tower, but the necromancer's follower is prepared. He unleashes dark magic and animated corpses. ${villagerDeaths} villager${villagerDeaths > 1 ? "s" : ""} fall${villagerDeaths === 1 ? "s" : ""} before the rest retreat in terror.`,
-        timestamp: Date.now(),
-        type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
-      });
-    } else {
-      // Scenario 2: Major casualties (5-10 deaths)
-      const villagerDeaths = Math.floor(Math.random() * 6) + 5 + state.CM * 4; // 5-10 deaths
-      const deathResult = killVillagers(state, villagerDeaths);
-      Object.assign(result.stateUpdates, deathResult);
-
-      result.logEntries!.push({
-        id: `damaged-tower-major-failure-${Date.now()}`,
-        message: `Shortly after entering the tower, your expedition is ambushed by the necromancer's follower and his undead servants. The battle is brutal and one-sided. ${villagerDeaths} villagers are slaughtered before the survivors manage to escape into the forest.`,
-        timestamp: Date.now(),
-        type: "system",
-        visualEffect: {
-          type: "glow",
-          duration: 3,
-        },
-      });
-    }
+    result.logEntries!.push({
+      id: `damaged-tower-minor-failure-${Date.now()}`,
+      message: `Your expedition reaches the damaged tower, but you are attacked by hooded figures outside. A tall man in a dark robe stands among them, commanding an aura of menace. ${villagerDeaths} villagers fall before the rest flee to safety.`,
+      timestamp: Date.now(),
+      type: "system",
+      visualEffect: {
+        type: "glow",
+        duration: 3,
+      },
+    });
   }
-
   return result;
 }
