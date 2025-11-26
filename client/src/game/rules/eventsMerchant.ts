@@ -1383,6 +1383,11 @@ function selectTrades(
       selectedOption.amount * (isBuyTrade ? 1 - discount : 1 + discount),
     );
 
+    // Apply 75% reduction for silver and gold (both buy and sell trades)
+    if (secondaryResource === "silver" || secondaryResource === "gold") {
+      rawAmount = Math.ceil(rawAmount * 0.75);
+    }
+
     secondaryAmount = roundCost(rawAmount);
 
     // Format resource names for display
@@ -1418,11 +1423,6 @@ function selectTrades(
       takeRes = primaryResource;
       giveAmount = secondaryAmount;
       takeAmount = primaryAmount;
-    }
-
-    // Apply 75% reduction if player receives gold or silver
-    if (giveRes === "silver" || giveRes === "gold") {
-      giveAmount = Math.ceil(giveAmount * 0.75);
     }
 
     console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
