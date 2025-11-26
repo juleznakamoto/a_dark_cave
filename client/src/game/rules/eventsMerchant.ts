@@ -1487,18 +1487,18 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   });
   console.log("[MERCHANT] Filtered buy trades:", filteredBuyTrades.length);
 
-  // Determine number of buy trades based on buildings
+  // Determine number of buy trades based on buildings (check highest tier first)
   let numBuyTrades = 2;
   let numSellTrades = 1;
-  if (state.buildings.tradePost >= 1) {
-    numBuyTrades = 2;
-    numSellTrades = 2;
+  if (state.buildings.merchantsGuild >= 1) {
+    numBuyTrades = 3;
+    numSellTrades = 3;
   } else if (state.buildings.grandBazaar >= 1) {
     numBuyTrades = 3;
     numSellTrades = 2;
-  } else if (state.buildings.merchantsGuild >= 1) {
-    numBuyTrades = 3;
-    numSellTrades = 3;
+  } else if (state.buildings.tradePost >= 1) {
+    numBuyTrades = 2;
+    numSellTrades = 2;
   }
 
   const availableBuyTrades = selectTrades(
