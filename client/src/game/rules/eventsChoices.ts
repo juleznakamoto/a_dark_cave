@@ -1670,6 +1670,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "acknowledge",
         label: "Investigate the tower",
         effect: (state: GameState) => {
+          // Calculate deaths the same way as in the message
+          const deaths = [2, 4, 6, 8][Math.floor(Math.random() * 4)];
           const deathResult = killVillagers(state, deaths);
           
           return {
