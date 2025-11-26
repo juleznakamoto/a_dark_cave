@@ -199,5 +199,9 @@ export function buildGameState(state: any): GameState {
     startTime: state.startTime || 0,
     idleModeState: state.idleModeState || { isActive: false, startTime: 0, needsDisplay: false },
     sleepUpgrades: state.sleepUpgrades || { lengthLevel: 0, intensityLevel: 0 },
+    referralCount: state.referralCount || 0,
+    referredUsers: state.referredUsers || [],
+    referrals: state.referrals || [],
+    social_media_rewards: state.social_media_rewards || {},
   };
 }
