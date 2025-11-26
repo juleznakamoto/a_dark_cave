@@ -59,6 +59,9 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "story.seen.trapLaid": true,
     },
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(state, 0.2, { type: 'luck', multiplier: 0.01 });
+    },
     cooldown: 20,
   },
 
@@ -73,6 +76,14 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.15,
+        { type: 'strength', multiplier: 0.01 },
+        { type: 'knowledge', multiplier: 0.01 }
+      );
+    },
     cooldown: 45,
   },
 
@@ -87,6 +98,14 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 5000,
     },
     effects: {},
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.2,
+        { type: 'strength', multiplier: 0.01 },
+        { type: 'knowledge', multiplier: 0.01 }
+      );
+    },
     cooldown: 45,
   },
 
@@ -103,6 +122,14 @@ export const forestScoutActions: Record<string, Action> = {
     effects: {
       "events.wizardSaysBloodstoneStaff": true,
     },
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.25,
+        { type: 'strength', multiplier: 0.01 },
+        { type: 'knowledge', multiplier: 0.01 }
+      );
+    },
     cooldown: 45,
   },
 
@@ -117,6 +144,14 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
+    success_chance: (state: GameState) => {
+      return calculateSuccessChance(
+        state,
+        0.15,
+        { type: 'strength', multiplier: 0.01 },
+        { type: 'knowledge', multiplier: 0.01 }
+      );
+    },
     cooldown: 90,
   },
 };

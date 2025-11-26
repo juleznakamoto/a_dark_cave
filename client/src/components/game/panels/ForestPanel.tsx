@@ -65,6 +65,11 @@ export default function ForestPanel() {
     const showCost = action.cost && Object.keys(action.cost).length > 0;
     const isTradeButton = actionId.startsWith("trade");
 
+    // Check if action has success chance (for forest scout actions)
+    const successPercentage = action.success_chance && state.books?.book_of_war
+      ? `${Math.round(action.success_chance(state) * 100)}%`
+      : null;
+
     // Check if this is chopWood, hunt, or sacrifice action
     const isChopWood = actionId === "chopWood";
     const isHunt = actionId === "hunt";
@@ -140,7 +145,8 @@ export default function ForestPanel() {
       showCost ||
       resourceGainTooltip ||
       isAnimalsSacrifice ||
-      isHumansSacrifice
+      isHumansSacrifice ||
+      successPercentage
     ) {
       let tooltipContent;
 
@@ -172,7 +178,7 @@ export default function ForestPanel() {
           </div>
         );
       } else {
-        // Other actions with costs
+        // Other actions with costs and/or success chance
         const costBreakdown = getActionCostBreakdown(actionId, state);
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
@@ -184,6 +190,14 @@ export default function ForestPanel() {
                 {costItem.text}
               </div>
             ))}
+            {successPercentage && (
+              <>
+                {costBreakdown.length > 0 && (
+                  <div className="border-t border-border my-1" />
+                )}
+                <div>Success Chance: {successPercentage}</div>
+              </>
+            )}
           </div>
         );
       }
