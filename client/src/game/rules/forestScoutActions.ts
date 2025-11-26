@@ -122,7 +122,7 @@ export const forestScoutActions: Record<string, Action> = {
       "resources.food": 2500,
     },
     effects: {},
-    cooldown: 45,
+    cooldown: 90,
   },
 };
 
@@ -490,8 +490,6 @@ export function handleDamagedTower(
   Object.assign(result.stateUpdates, effectUpdates);
 
   // Calculate success based on strength and knowledge
-  const strength = getTotalStrength(state);
-  const knowledge = getTotalKnowledge(state);
   const successChance = calculateSuccessChance(
     state,
     0.15,
