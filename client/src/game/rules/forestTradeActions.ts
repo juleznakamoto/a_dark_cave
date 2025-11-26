@@ -435,11 +435,12 @@ function handleTradeAction(
 
   const knowledge = getTotalKnowledge(state);
   const cooldownReduction = Math.min(0.5 * knowledge, 15);
-  const actualCooldown = Math.max(15, 30 - cooldownReduction);
+  const actualCooldownSeconds = Math.max(15, 30 - cooldownReduction);
+  const actualCooldownMs = actualCooldownSeconds * 1000; // Convert to milliseconds
 
   result.stateUpdates.cooldowns = {
     ...result.stateUpdates.cooldowns,
-    [actionId]: actualCooldown,
+    [actionId]: actualCooldownMs,
   };
 
   return result;
