@@ -100,6 +100,14 @@ export default function ItemProgressChart() {
         category: "tools",
         maxCount: 1,
       },
+      {
+        itemType: "bone_saw",
+        itemKeys: ["bone_saw"],
+        color: tailwindToHex("gray-400/80"),
+        label: "Bone Saw",
+        category: "tools",
+        maxCount: 1,
+      },
     ],
 
     // Second ring: Weapons

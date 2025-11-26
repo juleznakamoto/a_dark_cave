@@ -381,12 +381,15 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildGreatCabin",
     label: "Great Cabin",
     description: "Expanded hunting lodge increasing hunter output",
-    tooltipEffects: [
-      "Unlocks Hunters",
-      "+5 Food (Hunter)",
-      "+1 Fur (Hunter)",
-      "+1 Bones (Hunter)",
-    ],
+    tooltipEffects: (state: GameState) => {
+      const boneSawBonus = state.tools.bone_saw ? 1 : 0;
+      return [
+        "Unlocks Hunters",
+        "+5 Food (Hunter)",
+        `+${1 + boneSawBonus} Fur (Hunter)`,
+        `+${1 + boneSawBonus} Bones (Hunter)`,
+      ];
+    },
     building: true,
     show_when: {
       1: {

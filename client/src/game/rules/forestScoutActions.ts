@@ -532,6 +532,12 @@ export function handlecollapsedTower(
       food: (state.resources.food || 0) - 2500,
     };
 
+    // Give the bone saw tool
+    result.stateUpdates.tools = {
+      ...state.tools,
+      bone_saw: true,
+    };
+
     // Set flag to mark tower as explored
     result.stateUpdates.story = {
       ...state.story,
@@ -544,7 +550,7 @@ export function handlecollapsedTower(
     result.logEntries!.push({
       id: `collapsed-tower-success-${Date.now()}`,
       message:
-        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. The mysterious deaths will cease.",
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. Among his tools, you find his Bone Saw - a cursed implement that will serve your hunters well. The mysterious deaths will cease.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {

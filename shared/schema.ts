@@ -97,6 +97,7 @@ export const gameStateSchema = z.object({
       adamant_axe: z.boolean().default(false),
       adamant_pickaxe: z.boolean().default(false),
       natharit_pickaxe: z.boolean().default(false),
+      bone_saw: z.boolean().default(false),
       lantern: z.boolean().default(false),
       iron_lantern: z.boolean().default(false),
       steel_lantern: z.boolean().default(false),
