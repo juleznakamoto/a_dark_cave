@@ -23,7 +23,9 @@ const SOCIAL_PLATFORMS = [
 ];
 
 export default function SocialMediaRewards() {
-  const { social_media_rewards, updateResource, addLogEntry } = useGameStore();
+  const social_media_rewards = useGameStore((state) => state.social_media_rewards);
+  const updateResource = useGameStore((state) => state.updateResource);
+  const addLogEntry = useGameStore((state) => state.addLogEntry);
 
   const handleSocialFollow = (platformId: string, url: string, reward: number, platformName: string) => {
     // Check if already claimed
@@ -41,9 +43,6 @@ export default function SocialMediaRewards() {
     // Open the social media link
     window.open(url, "_blank");
 
-    // Award the gold
-    updateResource("gold", reward);
-
     // Mark as claimed and persist in state
     useGameStore.setState((state) => ({
       social_media_rewards: {
@@ -54,6 +53,9 @@ export default function SocialMediaRewards() {
         },
       },
     }));
+
+    // Award the gold
+    updateResource("gold", reward);
 
     // Add reward message to event log
     const rewardLog: LogEntry = {
