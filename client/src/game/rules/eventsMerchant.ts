@@ -1,287 +1,808 @@
+
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 
-// Define trade configurations
-const resourceTrades = [
-  //Buy Wood
+// Define trade configurations based on progression tiers
+const buyTrades = [
+  // Early tier (woodenHuts >= 4 && <= 9)
   {
-    id: "buy_wood_500",
-    label: "500 Wood",
-    give: "wood",
-    giveAmount: 500,
-    condition: (state: GameState) => state.buildings.woodenHut <= 8,
-    costs: [
-      { resource: "silver", amounts: [50] },
-      { resource: "iron", amounts: [100] },
-      { resource: "steel", amounts: [20] },
-      { resource: "food", amounts: [200] },
-    ],
-  },
-  {
-    id: "buy_wood_1000",
-    label: "1000 Wood",
-    give: "wood",
-    giveAmount: 1000,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 8,
-    costs: [
-      { resource: "gold", amounts: [20] },
-      { resource: "silver", amounts: [100] },
-      { resource: "iron", amounts: [200] },
-      { resource: "steel", amounts: [50] },
-      { resource: "food", amounts: [400] },
-    ],
-  },
-  {
-    id: "buy_wood_2500",
-    label: "2500 Wood",
-    give: "wood",
-    giveAmount: 2500,
-    condition: (state: GameState) => state.buildings.stoneHut >= 8,
-    costs: [
-      { resource: "silver", amounts: [200] },
-      { resource: "iron", amounts: [500] },
-      { resource: "steel", amounts: [150] },
-      { resource: "food", amounts: [800] },
-    ],
-  },
-  // Buy Food
-  {
-    id: "buy_food_500",
+    id: "buy_food_500_early",
     label: "500 Food",
     give: "food",
     giveAmount: 500,
-    condition: (state: GameState) => state.buildings.woodenHut <= 8,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "gold", amounts: [10] },
-      { resource: "silver", amounts: [20, 30] },
+      { resource: "wood", amount: 500 * 0.04 }, // 20 gold worth
+      { resource: "stone", amount: 500 * 0.06 }, // 30 gold worth
+      { resource: "silver", amount: 500 * 0.16 }, // 80 silver
+      { resource: "gold", amount: 500 * 0.04 }, // 20 gold
     ],
   },
   {
-    id: "buy_food_1000",
-    label: "1000 Food",
-    give: "food",
-    giveAmount: 1000,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 8,
+    id: "buy_wood_500_early",
+    label: "500 Wood",
+    give: "wood",
+    giveAmount: 500,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "gold", amounts: [20] },
-      { resource: "silver", amounts: [50, 60] },
+      { resource: "food", amount: 500 * 0.04 }, // 20 gold worth
+      { resource: "stone", amount: 500 * 0.06 }, // 30 gold worth
+      { resource: "silver", amount: 500 * 0.16 }, // 80 silver
+      { resource: "gold", amount: 500 * 0.04 }, // 20 gold
     ],
   },
-  // Buy Steel
   {
-    id: "buy_steel_50",
+    id: "buy_leather_50_early",
+    label: "50 Leather",
+    give: "leather",
+    giveAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    costs: [
+      { resource: "wood", amount: 50 * 0.3 }, // 15 gold worth
+      { resource: "stone", amount: 50 * 0.3 / 0.06 }, // ~250 stone
+      { resource: "food", amount: 50 * 0.3 / 0.04 }, // 375 food
+      { resource: "steel", amount: 50 * 0.3 / 0.4 }, // ~37.5 steel
+      { resource: "silver", amount: 50 * 1.2 }, // 60 silver
+      { resource: "gold", amount: 50 * 0.3 }, // 15 gold
+    ],
+  },
+  {
+    id: "buy_steel_50_early",
     label: "50 Steel",
     give: "steel",
     giveAmount: 50,
-    condition: (state: GameState) => state.buildings.woodenHut <= 6,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
     costs: [
-      { resource: "bones", amounts: [400, 500, 600] },
-      { resource: "wood", amounts: [500, 600] },
-      { resource: "fur", amounts: [300, 400, 500] },
-      { resource: "leather", amounts: [200, 300, 400] },
-      { resource: "stone", amounts: [500] },
-      { resource: "gold", amounts: [5] },
-      { resource: "silver", amounts: [20] },
-    ],
-  },
-  {
-    id: "trade_steel_100",
-    label: "100 Steel",
-    give: "steel",
-    giveAmount: 100,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && state.buildings.woodenHut <= 9,
-    costs: [
-      { resource: "wood", amounts: [750, 1000, 1250] },
-      { resource: "stone", amounts: [1000] },
-      { resource: "gold", amounts: [20] },
-      { resource: "silver", amounts: [100] },
-    ],
-  },
-  // Buy Obsidian
-  {
-    id: "buy_obsidian_50",
-    label: "50 Obsidian",
-    give: "obsidian",
-    giveAmount: 50,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && state.buildings.stoneHut <= 5,
-    costs: [
-      { resource: "wood", amounts: [1500, 1750, 2000] },
-      { resource: "silver", amounts: [20] },
-      { resource: "gold", amounts: [10] },
-    ],
-  },
-  {
-    id: "buy_obsidian_25",
-    label: "25 Obsidian",
-    give: "obsidian",
-    giveAmount: 25,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 10,
-    costs: [
-      { resource: "bones", amounts: [1000, 1250, 1500] },
-      { resource: "fur", amounts: [1000, 1250, 1500] },
-      { resource: "silver", amounts: [10] },
-      { resource: "stone", amounts: [1500] },
-    ],
-  },
-  // Buy Adamant
-  {
-    id: "buy_adamant_25",
-    label: "25 Adamant",
-    give: "adamant",
-    giveAmount: 25,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 8,
-    costs: [
-      { resource: "gold", amounts: [10, 15] },
-      { resource: "silver", amounts: [30] },
-      { resource: "steel", amounts: [100] },
-      { resource: "wood", amounts: [2500] },
-      { resource: "food", amounts: [500] },
-      { resource: "leather", amounts: [600, 700, 800] },
-    ],
-  },
-  // Buy Silver
-  {
-    id: "buy_silver_50",
-    label: "50 Silver",
-    give: "silver",
-    giveAmount: 50,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && state.buildings.stoneHut <= 6,
-    costs: [
-      { resource: "steel", amounts: [200] },
-      { resource: "wood", amounts: [2500] },
-      { resource: "stone", amounts: [1500] },
-      { resource: "fur", amounts: [2000] },
-      { resource: "food", amounts: [2500] },
-    ],
-  },
-  {
-    id: "buy_silver_100",
-    label: "100 Silver",
-    give: "silver",
-    giveAmount: 100,
-    condition: (state: GameState) => state.buildings.woodenHut >= 6,
-    costs: [
-      { resource: "steel", amounts: [500] },
-      { resource: "wood", amounts: [5000] },
-      { resource: "stone", amounts: [3000] },
-      { resource: "fur", amounts: [5000] },
-      { resource: "leather", amounts: [3500] },
-      { resource: "food", amounts: [5000] },
-      { resource: "obsidian", amounts: [100] },
-      { resource: "adamant", amounts: [20, 30] },
-    ],
-  },
-  {
-    id: "buy_silver_500",
-    label: "500 Silver",
-    give: "silver",
-    giveAmount: 500,
-    condition: (state: GameState) => state.buildings.woodenHut >= 7,
-    costs: [
-      { resource: "steel", amounts: [800, 1000] },
-      { resource: "wood", amounts: [7500, 10000] },
-      { resource: "stone", amounts: [5000, 6000] },
-      { resource: "fur", amounts: [9000, 10000] },
-      { resource: "leather", amounts: [6000, 7000] },
-      { resource: "food", amounts: [8000, 10000] },
-      { resource: "obsidian", amounts: [200, 250] },
-      { resource: "adamant", amounts: [40, 50, 60] },
-    ],
-  },
-  // Buy Gold
-  {
-    id: "buy_gold_25",
-    label: "25 Gold",
-    give: "gold",
-    giveAmount: 25,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 3 && state.buildings.stoneHut <= 6,
-    costs: [
-      { resource: "steel", amounts: [200] },
-      { resource: "wood", amounts: [2500] },
-      { resource: "stone", amounts: [1500] },
-      { resource: "fur", amounts: [2000] },
-      { resource: "food", amounts: [2500] },
-      { resource: "leather", amounts: [1200, 1300, 1400] },
+      { resource: "wood", amount: 50 * 0.4 / 0.04 }, // 500 wood
+      { resource: "stone", amount: 50 * 0.4 / 0.06 }, // ~333 stone
+      { resource: "food", amount: 50 * 0.4 / 0.04 }, // 500 food
+      { resource: "leather", amount: 50 * 0.4 / 0.3 }, // ~66 leather
+      { resource: "silver", amount: 50 * 1.6 }, // 80 silver
+      { resource: "gold", amount: 50 * 0.4 }, // 20 gold
     ],
   },
 
+  // Mid 1 tier (woodenHuts >= 7, stoneHuts <= 5)
   {
-    id: "buy_gold_50",
-    label: "50 Gold",
-    give: "gold",
-    giveAmount: 50,
-    condition: (state: GameState) => state.buildings.woodenHut >= 6,
+    id: "buy_food_1000_mid1",
+    label: "1000 Food",
+    give: "food",
+    giveAmount: 1000,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
     costs: [
-      { resource: "steel", amounts: [500] },
-      { resource: "wood", amounts: [5000] },
-      { resource: "stone", amounts: [3000] },
-      { resource: "fur", amounts: [5000] },
-      { resource: "leather", amounts: [3500] },
-      { resource: "food", amounts: [5000] },
-      { resource: "obsidian", amounts: [100] },
-      { resource: "adamant", amounts: [20] },
+      { resource: "wood", amount: 1000 * 0.04 }, // 40 gold worth
+      { resource: "stone", amount: 1000 * 0.06 }, // 60 gold worth
+      { resource: "steel", amount: 1000 * 0.04 / 0.4 }, // 100 steel
+      { resource: "silver", amount: 1000 * 0.16 }, // 160 silver
+      { resource: "gold", amount: 1000 * 0.04 }, // 40 gold
     ],
   },
-  // trade gold 100
   {
-    id: "buy_gold_250",
-    label: "250 Gold",
-    give: "gold",
+    id: "buy_wood_1000_mid1",
+    label: "1000 Wood",
+    give: "wood",
+    giveAmount: 1000,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    costs: [
+      { resource: "food", amount: 1000 * 0.04 }, // 40 gold worth
+      { resource: "stone", amount: 1000 * 0.06 }, // 60 gold worth
+      { resource: "steel", amount: 1000 * 0.04 / 0.4 }, // 100 steel
+      { resource: "silver", amount: 1000 * 0.16 }, // 160 silver
+      { resource: "gold", amount: 1000 * 0.04 }, // 40 gold
+    ],
+  },
+  {
+    id: "buy_stone_500_mid1",
+    label: "500 Stone",
+    give: "stone",
+    giveAmount: 500,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    costs: [
+      { resource: "wood", amount: 500 * 0.06 / 0.04 }, // 750 wood
+      { resource: "food", amount: 500 * 0.06 / 0.04 }, // 750 food
+      { resource: "steel", amount: 500 * 0.06 / 0.4 }, // 75 steel
+      { resource: "silver", amount: 500 * 0.24 }, // 120 silver
+      { resource: "gold", amount: 500 * 0.06 }, // 30 gold
+    ],
+  },
+  {
+    id: "buy_leather_100_mid1",
+    label: "100 Leather",
+    give: "leather",
+    giveAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    costs: [
+      { resource: "wood", amount: 100 * 0.3 / 0.04 }, // 750 wood
+      { resource: "stone", amount: 100 * 0.3 / 0.06 }, // 500 stone
+      { resource: "food", amount: 100 * 0.3 / 0.04 }, // 750 food
+      { resource: "steel", amount: 100 * 0.3 / 0.4 }, // 75 steel
+      { resource: "silver", amount: 100 * 1.2 }, // 120 silver
+      { resource: "gold", amount: 100 * 0.3 }, // 30 gold
+    ],
+  },
+  {
+    id: "buy_steel_100_mid1",
+    label: "100 Steel",
+    give: "steel",
+    giveAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    costs: [
+      { resource: "wood", amount: 100 * 0.4 / 0.04 }, // 1000 wood
+      { resource: "stone", amount: 100 * 0.4 / 0.06 }, // ~666 stone
+      { resource: "food", amount: 100 * 0.4 / 0.04 }, // 1000 food
+      { resource: "leather", amount: 100 * 0.4 / 0.3 }, // ~133 leather
+      { resource: "silver", amount: 100 * 1.6 }, // 160 silver
+      { resource: "gold", amount: 100 * 0.4 }, // 40 gold
+    ],
+  },
+
+  // Mid 2 tier (stoneHuts >= 3 && <= 8)
+  {
+    id: "buy_food_2000_mid2",
+    label: "2000 Food",
+    give: "food",
+    giveAmount: 2000,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    costs: [
+      { resource: "wood", amount: 2000 * 0.04 }, // 80 gold worth
+      { resource: "stone", amount: 2000 * 0.06 }, // 120 gold worth
+      { resource: "leather", amount: 2000 * 0.04 / 0.3 }, // ~266 leather
+      { resource: "steel", amount: 2000 * 0.04 / 0.4 }, // 200 steel
+      { resource: "silver", amount: 2000 * 0.16 }, // 320 silver
+      { resource: "gold", amount: 2000 * 0.04 }, // 80 gold
+    ],
+  },
+  {
+    id: "buy_wood_2000_mid2",
+    label: "2000 Wood",
+    give: "wood",
+    giveAmount: 2000,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    costs: [
+      { resource: "food", amount: 2000 * 0.04 }, // 80 gold worth
+      { resource: "stone", amount: 2000 * 0.06 }, // 120 gold worth
+      { resource: "leather", amount: 2000 * 0.04 / 0.3 }, // ~266 leather
+      { resource: "steel", amount: 2000 * 0.04 / 0.4 }, // 200 steel
+      { resource: "silver", amount: 2000 * 0.16 }, // 320 silver
+      { resource: "gold", amount: 2000 * 0.04 }, // 80 gold
+    ],
+  },
+  {
+    id: "buy_stone_1000_mid2",
+    label: "1000 Stone",
+    give: "stone",
+    giveAmount: 1000,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    costs: [
+      { resource: "wood", amount: 1000 * 0.06 / 0.04 }, // 1500 wood
+      { resource: "food", amount: 1000 * 0.06 / 0.04 }, // 1500 food
+      { resource: "leather", amount: 1000 * 0.06 / 0.3 }, // 200 leather
+      { resource: "steel", amount: 1000 * 0.06 / 0.4 }, // 150 steel
+      { resource: "silver", amount: 1000 * 0.24 }, // 240 silver
+      { resource: "gold", amount: 1000 * 0.06 }, // 60 gold
+    ],
+  },
+  {
+    id: "buy_leather_100_mid2",
+    label: "100 Leather",
+    give: "leather",
+    giveAmount: 100,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    costs: [
+      { resource: "wood", amount: 100 * 0.3 / 0.04 }, // 750 wood
+      { resource: "stone", amount: 100 * 0.3 / 0.06 }, // 500 stone
+      { resource: "food", amount: 100 * 0.3 / 0.04 }, // 750 food
+      { resource: "steel", amount: 100 * 0.3 / 0.4 }, // 75 steel
+      { resource: "silver", amount: 100 * 1.2 }, // 120 silver
+      { resource: "gold", amount: 100 * 0.3 }, // 30 gold
+    ],
+  },
+  {
+    id: "buy_steel_250_mid2",
+    label: "250 Steel",
+    give: "steel",
     giveAmount: 250,
-    condition: (state: GameState) => state.buildings.stoneHut >= 6,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
     costs: [
-      { resource: "steel", amounts: [800, 1000] },
-      { resource: "wood", amounts: [7500, 10000] },
-      { resource: "stone", amounts: [5000, 6000] },
-      { resource: "fur", amounts: [9000, 10000] },
-      { resource: "leather", amounts: [6000, 7000] },
-      { resource: "food", amounts: [8000, 10000] },
-      { resource: "obsidian", amounts: [200, 250] },
-      { resource: "adamant", amounts: [40, 50, 60] },
+      { resource: "wood", amount: 250 * 0.4 / 0.04 }, // 2500 wood
+      { resource: "stone", amount: 250 * 0.4 / 0.06 }, // ~1666 stone
+      { resource: "food", amount: 250 * 0.4 / 0.04 }, // 2500 food
+      { resource: "leather", amount: 250 * 0.4 / 0.3 }, // ~333 leather
+      { resource: "silver", amount: 250 * 1.6 }, // 400 silver
+      { resource: "gold", amount: 250 * 0.4 }, // 100 gold
+    ],
+  },
+
+  // End tier (stoneHuts >= 7)
+  {
+    id: "buy_food_2000_end",
+    label: "2000 Food",
+    give: "food",
+    giveAmount: 2000,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    costs: [
+      { resource: "wood", amount: 2000 * 0.04 }, // 80 gold worth
+      { resource: "stone", amount: 2000 * 0.06 }, // 120 gold worth
+      { resource: "leather", amount: 2000 * 0.04 / 0.3 }, // ~266 leather
+      { resource: "steel", amount: 2000 * 0.04 / 0.4 }, // 200 steel
+      { resource: "silver", amount: 2000 * 0.16 }, // 320 silver
+      { resource: "gold", amount: 2000 * 0.04 }, // 80 gold
     ],
   },
   {
-    id: "buy_gold_beginning",
-    label: "50 Gold",
-    give: "gold",
-    giveAmount: 50,
-    condition: (state: GameState) =>
-      state.buildings.woodenHut >= 5 && state.buildings.stoneHut <= 3,
+    id: "buy_stone_2500_end",
+    label: "2500 Stone",
+    give: "stone",
+    giveAmount: 2500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
     costs: [
-      { resource: "stone", amounts: [600, 800, 1000, 1200] },
-      { resource: "fur", amounts: [1200, 1500, 2000] },
-      { resource: "bones", amounts: [1300, 1600, 2000] },
-      { resource: "coal", amounts: [600, 800, 1000, 1200] },
-      { resource: "coal", amounts: [600, 800, 1000, 1200] },
-      { resource: "iron", amounts: [600, 800, 1000, 1200] },
-      { resource: "sulfur", amounts: [600, 800, 1000, 1200] },
+      { resource: "wood", amount: 2500 * 0.06 / 0.04 }, // 3750 wood
+      { resource: "food", amount: 2500 * 0.06 / 0.04 }, // 3750 food
+      { resource: "leather", amount: 2500 * 0.06 / 0.3 }, // 500 leather
+      { resource: "steel", amount: 2500 * 0.06 / 0.4 }, // 375 steel
+      { resource: "silver", amount: 2500 * 0.24 }, // 600 silver
+      { resource: "gold", amount: 2500 * 0.06 }, // 150 gold
     ],
   },
   {
-    id: "buy_gold_middle",
-    label: "50 Gold",
-    give: "gold",
-    giveAmount: 50,
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
-    costs: [{ resource: "fur", amounts: [1200, 1500, 2000] }],
+    id: "buy_steel_500_end",
+    label: "500 Steel",
+    give: "steel",
+    giveAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    costs: [
+      { resource: "wood", amount: 500 * 0.4 / 0.04 }, // 5000 wood
+      { resource: "stone", amount: 500 * 0.4 / 0.06 }, // ~3333 stone
+      { resource: "food", amount: 500 * 0.4 / 0.04 }, // 5000 food
+      { resource: "leather", amount: 500 * 0.4 / 0.3 }, // ~666 leather
+      { resource: "silver", amount: 500 * 1.6 }, // 800 silver
+      { resource: "gold", amount: 500 * 0.4 }, // 200 gold
+    ],
+  },
+];
+
+const sellTrades = [
+  // Early tier (woodenHuts >= 4 && <= 9)
+  {
+    id: "sell_food_100_early",
+    label: "Sell 100 Food",
+    take: "food",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "wood", amount: Math.round(100 * 0.04 / 0.04) }, // 100 wood
+      { resource: "stone", amount: Math.round(100 * 0.04 / 0.06) }, // ~66 stone
+      { resource: "leather", amount: Math.round(100 * 0.04 / 0.3) }, // ~13 leather
+      { resource: "steel", amount: Math.round(100 * 0.04 / 0.4) }, // 10 steel
+      { resource: "silver", amount: Math.round(100 * 0.16) }, // 16 silver
+      { resource: "gold", amount: Math.round(100 * 0.04) }, // 4 gold
+    ],
   },
   {
-    id: "buy_gold_end",
-    label: "50 Gold",
-    give: "gold",
-    giveAmount: 50,
-    condition: (state: GameState) => state.buildings.stoneHut >= 8,
-    costs: [{ resource: "fur", amounts: [1200, 1500, 2000] }],
+    id: "sell_bones_50_early",
+    label: "Sell 50 Bones",
+    take: "bones",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "wood", amount: Math.round(50 * 0.05 / 0.04) }, // ~62 wood
+      { resource: "stone", amount: Math.round(50 * 0.05 / 0.06) }, // ~41 stone
+      { resource: "food", amount: Math.round(50 * 0.05 / 0.04) }, // ~62 food
+      { resource: "leather", amount: Math.round(50 * 0.05 / 0.3) }, // ~8 leather
+      { resource: "steel", amount: Math.round(50 * 0.05 / 0.4) }, // ~6 steel
+      { resource: "silver", amount: Math.round(50 * 0.2) }, // 10 silver
+      { resource: "gold", amount: Math.round(50 * 0.05) }, // ~2 gold
+    ],
+  },
+  {
+    id: "sell_fur_50_early",
+    label: "Sell 50 Fur",
+    take: "fur",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "wood", amount: Math.round(50 * 0.05 / 0.04) }, // ~62 wood
+      { resource: "stone", amount: Math.round(50 * 0.05 / 0.06) }, // ~41 stone
+      { resource: "food", amount: Math.round(50 * 0.05 / 0.04) }, // ~62 food
+      { resource: "leather", amount: Math.round(50 * 0.05 / 0.3) }, // ~8 leather
+      { resource: "steel", amount: Math.round(50 * 0.05 / 0.4) }, // ~6 steel
+      { resource: "silver", amount: Math.round(50 * 0.2) }, // 10 silver
+      { resource: "gold", amount: Math.round(50 * 0.05) }, // ~2 gold
+    ],
+  },
+  {
+    id: "sell_wood_100_early",
+    label: "Sell 100 Wood",
+    take: "wood",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "food", amount: Math.round(100 * 0.04 / 0.04) }, // 100 food
+      { resource: "stone", amount: Math.round(100 * 0.04 / 0.06) }, // ~66 stone
+      { resource: "leather", amount: Math.round(100 * 0.04 / 0.3) }, // ~13 leather
+      { resource: "steel", amount: Math.round(100 * 0.04 / 0.4) }, // 10 steel
+      { resource: "silver", amount: Math.round(100 * 0.16) }, // 16 silver
+      { resource: "gold", amount: Math.round(100 * 0.04) }, // 4 gold
+    ],
+  },
+  {
+    id: "sell_stone_100_early",
+    label: "Sell 100 Stone",
+    take: "stone",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "wood", amount: Math.round(100 * 0.06 / 0.04) }, // 150 wood
+      { resource: "food", amount: Math.round(100 * 0.06 / 0.04) }, // 150 food
+      { resource: "leather", amount: Math.round(100 * 0.06 / 0.3) }, // 20 leather
+      { resource: "steel", amount: Math.round(100 * 0.06 / 0.4) }, // 15 steel
+      { resource: "silver", amount: Math.round(100 * 0.24) }, // 24 silver
+      { resource: "gold", amount: Math.round(100 * 0.06) }, // 6 gold
+    ],
+  },
+  {
+    id: "sell_iron_50_early",
+    label: "Sell 50 Iron",
+    take: "iron",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 4 && state.buildings.woodenHut <= 9,
+    rewards: [
+      { resource: "wood", amount: Math.round(50 * 0.06 / 0.04) }, // 75 wood
+      { resource: "stone", amount: Math.round(50 * 0.06 / 0.06) }, // 50 stone
+      { resource: "food", amount: Math.round(50 * 0.06 / 0.04) }, // 75 food
+      { resource: "leather", amount: Math.round(50 * 0.06 / 0.3) }, // 10 leather
+      { resource: "steel", amount: Math.round(50 * 0.06 / 0.4) }, // ~7 steel
+      { resource: "silver", amount: Math.round(50 * 0.24) }, // 12 silver
+      { resource: "gold", amount: Math.round(50 * 0.06) }, // 3 gold
+    ],
+  },
+
+  // Mid 1 tier (woodenHuts >= 7, stoneHuts <= 5)
+  {
+    id: "sell_food_250_mid1",
+    label: "Sell 250 Food",
+    take: "food",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(250 * 0.04 / 0.04) }, // 250 wood
+      { resource: "stone", amount: Math.round(250 * 0.04 / 0.06) }, // ~166 stone
+      { resource: "leather", amount: Math.round(250 * 0.04 / 0.3) }, // ~33 leather
+      { resource: "steel", amount: Math.round(250 * 0.04 / 0.4) }, // 25 steel
+      { resource: "silver", amount: Math.round(250 * 0.16) }, // 40 silver
+      { resource: "gold", amount: Math.round(250 * 0.04) }, // 10 gold
+    ],
+  },
+  {
+    id: "sell_bones_100_mid1",
+    label: "Sell 100 Bones",
+    take: "bones",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(100 * 0.05 / 0.04) }, // 125 wood
+      { resource: "stone", amount: Math.round(100 * 0.05 / 0.06) }, // ~83 stone
+      { resource: "food", amount: Math.round(100 * 0.05 / 0.04) }, // 125 food
+      { resource: "leather", amount: Math.round(100 * 0.05 / 0.3) }, // ~16 leather
+      { resource: "steel", amount: Math.round(100 * 0.05 / 0.4) }, // ~12 steel
+      { resource: "silver", amount: Math.round(100 * 0.2) }, // 20 silver
+      { resource: "gold", amount: Math.round(100 * 0.05) }, // 5 gold
+    ],
+  },
+  {
+    id: "sell_fur_100_mid1",
+    label: "Sell 100 Fur",
+    take: "fur",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(100 * 0.05 / 0.04) }, // 125 wood
+      { resource: "stone", amount: Math.round(100 * 0.05 / 0.06) }, // ~83 stone
+      { resource: "food", amount: Math.round(100 * 0.05 / 0.04) }, // 125 food
+      { resource: "leather", amount: Math.round(100 * 0.05 / 0.3) }, // ~16 leather
+      { resource: "steel", amount: Math.round(100 * 0.05 / 0.4) }, // ~12 steel
+      { resource: "silver", amount: Math.round(100 * 0.2) }, // 20 silver
+      { resource: "gold", amount: Math.round(100 * 0.05) }, // 5 gold
+    ],
+  },
+  {
+    id: "sell_wood_250_mid1",
+    label: "Sell 250 Wood",
+    take: "wood",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "food", amount: Math.round(250 * 0.04 / 0.04) }, // 250 food
+      { resource: "stone", amount: Math.round(250 * 0.04 / 0.06) }, // ~166 stone
+      { resource: "leather", amount: Math.round(250 * 0.04 / 0.3) }, // ~33 leather
+      { resource: "steel", amount: Math.round(250 * 0.04 / 0.4) }, // 25 steel
+      { resource: "silver", amount: Math.round(250 * 0.16) }, // 40 silver
+      { resource: "gold", amount: Math.round(250 * 0.04) }, // 10 gold
+    ],
+  },
+  {
+    id: "sell_stone_250_mid1",
+    label: "Sell 250 Stone",
+    take: "stone",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(250 * 0.06 / 0.04) }, // 375 wood
+      { resource: "food", amount: Math.round(250 * 0.06 / 0.04) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * 0.06 / 0.3) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * 0.06 / 0.4) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * 0.24) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * 0.06) }, // 15 gold
+    ],
+  },
+  {
+    id: "sell_iron_250_mid1",
+    label: "Sell 250 Iron",
+    take: "iron",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(250 * 0.06 / 0.04) }, // 375 wood
+      { resource: "stone", amount: Math.round(250 * 0.06 / 0.06) }, // 250 stone
+      { resource: "food", amount: Math.round(250 * 0.06 / 0.04) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * 0.06 / 0.3) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * 0.06 / 0.4) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * 0.24) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * 0.06) }, // 15 gold
+    ],
+  },
+  {
+    id: "sell_coal_250_mid1",
+    label: "Sell 250 Coal",
+    take: "coal",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(250 * 0.06 / 0.04) }, // 375 wood
+      { resource: "stone", amount: Math.round(250 * 0.06 / 0.06) }, // 250 stone
+      { resource: "food", amount: Math.round(250 * 0.06 / 0.04) }, // 375 food
+      { resource: "leather", amount: Math.round(250 * 0.06 / 0.3) }, // 50 leather
+      { resource: "steel", amount: Math.round(250 * 0.06 / 0.4) }, // ~37 steel
+      { resource: "silver", amount: Math.round(250 * 0.24) }, // 60 silver
+      { resource: "gold", amount: Math.round(250 * 0.06) }, // 15 gold
+    ],
+  },
+  {
+    id: "sell_sulfur_250_mid1",
+    label: "Sell 250 Sulfur",
+    take: "sulfur",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(250 * 0.08 / 0.04) }, // 500 wood
+      { resource: "stone", amount: Math.round(250 * 0.08 / 0.06) }, // ~333 stone
+      { resource: "food", amount: Math.round(250 * 0.08 / 0.04) }, // 500 food
+      { resource: "leather", amount: Math.round(250 * 0.08 / 0.3) }, // ~66 leather
+      { resource: "steel", amount: Math.round(250 * 0.08 / 0.4) }, // 50 steel
+      { resource: "silver", amount: Math.round(250 * 0.32) }, // 80 silver
+      { resource: "gold", amount: Math.round(250 * 0.08) }, // 20 gold
+    ],
+  },
+  {
+    id: "sell_leather_50_mid1",
+    label: "Sell 50 Leather",
+    take: "leather",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(50 * 0.3 / 0.04) }, // 375 wood
+      { resource: "stone", amount: Math.round(50 * 0.3 / 0.06) }, // 250 stone
+      { resource: "food", amount: Math.round(50 * 0.3 / 0.04) }, // 375 food
+      { resource: "steel", amount: Math.round(50 * 0.3 / 0.4) }, // ~37 steel
+      { resource: "silver", amount: Math.round(50 * 1.2) }, // 60 silver
+      { resource: "gold", amount: Math.round(50 * 0.3) }, // 15 gold
+    ],
+  },
+  {
+    id: "sell_steel_100_mid1",
+    label: "Sell 100 Steel",
+    take: "steel",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.woodenHut >= 7 && state.buildings.stoneHut <= 5,
+    rewards: [
+      { resource: "wood", amount: Math.round(100 * 0.4 / 0.04) }, // 1000 wood
+      { resource: "stone", amount: Math.round(100 * 0.4 / 0.06) }, // ~666 stone
+      { resource: "food", amount: Math.round(100 * 0.4 / 0.04) }, // 1000 food
+      { resource: "leather", amount: Math.round(100 * 0.4 / 0.3) }, // ~133 leather
+      { resource: "silver", amount: Math.round(100 * 1.6) }, // 160 silver
+      { resource: "gold", amount: Math.round(100 * 0.4) }, // 40 gold
+    ],
+  },
+
+  // Mid 2 tier (stoneHuts >= 3 && <= 8)
+  {
+    id: "sell_food_500_mid2",
+    label: "Sell 500 Food",
+    take: "food",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.16) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * 0.04) }, // 20 gold
+    ],
+  },
+  {
+    id: "sell_bones_250_mid2",
+    label: "Sell 250 Bones",
+    take: "bones",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 0.2) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * 0.05) }, // ~12 gold
+    ],
+  },
+  {
+    id: "sell_fur_250_mid2",
+    label: "Sell 250 Fur",
+    take: "fur",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 0.2) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * 0.05) }, // ~12 gold
+    ],
+  },
+  {
+    id: "sell_wood_500_mid2",
+    label: "Sell 500 Wood",
+    take: "wood",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.16) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * 0.04) }, // 20 gold
+    ],
+  },
+  {
+    id: "sell_stone_500_mid2",
+    label: "Sell 500 Stone",
+    take: "stone",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_iron_500_mid2",
+    label: "Sell 500 Iron",
+    take: "iron",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_coal_500_mid2",
+    label: "Sell 500 Coal",
+    take: "coal",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_sulfur_500_mid2",
+    label: "Sell 500 Sulfur",
+    take: "sulfur",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.32) }, // 160 silver
+      { resource: "gold", amount: Math.round(500 * 0.08) }, // 40 gold
+    ],
+  },
+  {
+    id: "sell_obsidian_50_mid2",
+    label: "Sell 50 Obsidian",
+    take: "obsidian",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(50 * 4) }, // 200 silver
+      { resource: "gold", amount: Math.round(50 * 1) }, // 50 gold
+    ],
+  },
+  {
+    id: "sell_adamant_50_mid2",
+    label: "Sell 50 Adamant",
+    take: "adamant",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(50 * 4.8) }, // 240 silver
+      { resource: "gold", amount: Math.round(50 * 1.2) }, // 60 gold
+    ],
+  },
+  {
+    id: "sell_moonstone_50_mid2",
+    label: "Sell 50 Moonstone",
+    take: "moonstone",
+    takeAmount: 50,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(50 * 8) }, // 400 silver
+      { resource: "gold", amount: Math.round(50 * 2) }, // 100 gold
+    ],
+  },
+  {
+    id: "sell_leather_100_mid2",
+    label: "Sell 100 Leather",
+    take: "leather",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(100 * 1.2) }, // 120 silver
+      { resource: "gold", amount: Math.round(100 * 0.3) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_steel_250_mid2",
+    label: "Sell 250 Steel",
+    take: "steel",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 3 && state.buildings.stoneHut <= 8,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 1.6) }, // 400 silver
+      { resource: "gold", amount: Math.round(250 * 0.4) }, // 100 gold
+    ],
+  },
+
+  // End tier (stoneHuts >= 7)
+  {
+    id: "sell_food_500_end",
+    label: "Sell 500 Food",
+    take: "food",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.16) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * 0.04) }, // 20 gold
+    ],
+  },
+  {
+    id: "sell_bones_250_end",
+    label: "Sell 250 Bones",
+    take: "bones",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 0.2) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * 0.05) }, // ~12 gold
+    ],
+  },
+  {
+    id: "sell_fur_250_end",
+    label: "Sell 250 Fur",
+    take: "fur",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 0.2) }, // 50 silver
+      { resource: "gold", amount: Math.round(250 * 0.05) }, // ~12 gold
+    ],
+  },
+  {
+    id: "sell_wood_500_end",
+    label: "Sell 500 Wood",
+    take: "wood",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.16) }, // 80 silver
+      { resource: "gold", amount: Math.round(500 * 0.04) }, // 20 gold
+    ],
+  },
+  {
+    id: "sell_stone_500_end",
+    label: "Sell 500 Stone",
+    take: "stone",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_iron_500_end",
+    label: "Sell 500 Iron",
+    take: "iron",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_coal_500_end",
+    label: "Sell 500 Coal",
+    take: "coal",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.24) }, // 120 silver
+      { resource: "gold", amount: Math.round(500 * 0.06) }, // 30 gold
+    ],
+  },
+  {
+    id: "sell_sulfur_500_end",
+    label: "Sell 500 Sulfur",
+    take: "sulfur",
+    takeAmount: 500,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(500 * 0.32) }, // 160 silver
+      { resource: "gold", amount: Math.round(500 * 0.08) }, // 40 gold
+    ],
+  },
+  {
+    id: "sell_obsidian_100_end",
+    label: "Sell 100 Obsidian",
+    take: "obsidian",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(100 * 4) }, // 400 silver
+      { resource: "gold", amount: Math.round(100 * 1) }, // 100 gold
+    ],
+  },
+  {
+    id: "sell_adamant_100_end",
+    label: "Sell 100 Adamant",
+    take: "adamant",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(100 * 4.8) }, // 480 silver
+      { resource: "gold", amount: Math.round(100 * 1.2) }, // 120 gold
+    ],
+  },
+  {
+    id: "sell_moonstone_100_end",
+    label: "Sell 100 Moonstone",
+    take: "moonstone",
+    takeAmount: 100,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(100 * 8) }, // 800 silver
+      { resource: "gold", amount: Math.round(100 * 2) }, // 200 gold
+    ],
+  },
+  {
+    id: "sell_leather_250_end",
+    label: "Sell 250 Leather",
+    take: "leather",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 1.2) }, // 300 silver
+      { resource: "gold", amount: Math.round(250 * 0.3) }, // 75 gold
+    ],
+  },
+  {
+    id: "sell_steel_250_end",
+    label: "Sell 250 Steel",
+    take: "steel",
+    takeAmount: 250,
+    condition: (state: GameState) => state.buildings.stoneHut >= 7,
+    rewards: [
+      { resource: "silver", amount: Math.round(250 * 1.6) }, // 400 silver
+      { resource: "gold", amount: Math.round(250 * 0.4) }, // 100 gold
+    ],
   },
 ];
 
@@ -374,43 +895,36 @@ const toolTrades = [
 
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
-  const availableResourceTrades = resourceTrades
-    .filter((trade) => trade.condition(state)) // Filter by condition
-    .sort(() => Math.random() - 0.5) // Shuffle
-    .slice(0, 4) // Take first 4
+  const knowledge = getTotalKnowledge(state);
+
+  // Calculate stepped discount: 5% per 10 knowledge, max 25%
+  let discount = 0;
+  if (knowledge >= 10) discount = 0.05;
+  if (knowledge >= 20) discount = 0.1;
+  if (knowledge >= 30) discount = 0.15;
+  if (knowledge >= 40) discount = 0.2;
+  if (knowledge >= 50) discount = 0.25;
+
+  // Select 3 buy trades
+  const availableBuyTrades = buyTrades
+    .filter((trade) => trade.condition(state))
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 3)
     .map((trade) => {
-      // Create a fresh choice with new random costs each time
-      const knowledge = getTotalKnowledge(state);
-      const costOption =
-        trade.costs[Math.floor(Math.random() * trade.costs.length)];
-      const baseCost =
-        costOption.amounts[
-          Math.floor(Math.random() * costOption.amounts.length)
-        ];
-
-      // Calculate stepped discount: 5% per 10 knowledge, max 25%
-      let discount = 0;
-      if (knowledge >= 10) discount = 0.05;
-      if (knowledge >= 20) discount = 0.1;
-      if (knowledge >= 30) discount = 0.15;
-      if (knowledge >= 40) discount = 0.2;
-      if (knowledge >= 50) discount = 0.25;
-
-      const cost = Math.ceil(baseCost * (1 - discount));
+      const costOption = trade.costs[Math.floor(Math.random() * trade.costs.length)];
+      const cost = Math.ceil(costOption.amount * (1 - discount));
 
       return {
-        id: `${trade.id}_${Date.now()}_${Math.random()}`, // Unique ID each time
-        label: `${trade.label}`,
+        id: `${trade.id}_${Date.now()}_${Math.random()}`,
+        label: trade.label,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
             return {
               resources: {
                 ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
-                [trade.give]:
-                  (state.resources[trade.give] || 0) + trade.giveAmount,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
+                [trade.give]: (state.resources[trade.give] || 0) + trade.giveAmount,
               },
             };
           }
@@ -419,96 +933,72 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       };
     });
 
+  // Select 2 sell trades
+  const availableSellTrades = sellTrades
+    .filter((trade) => trade.condition(state))
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 2)
+    .map((trade) => {
+      const rewardOption = trade.rewards[Math.floor(Math.random() * trade.rewards.length)];
+      const reward = Math.ceil(rewardOption.amount * (1 + discount));
+
+      return {
+        id: `${trade.id}_${Date.now()}_${Math.random()}`,
+        label: trade.label,
+        cost: `${trade.takeAmount} ${trade.take}`,
+        effect: (state: GameState) => {
+          if ((state.resources[trade.take] || 0) >= trade.takeAmount) {
+            return {
+              resources: {
+                ...state.resources,
+                [trade.take]: (state.resources[trade.take] || 0) - trade.takeAmount,
+                [rewardOption.resource]: (state.resources[rewardOption.resource] || 0) + reward,
+              },
+            };
+          }
+          return {};
+        },
+      };
+    });
+
+  // Select 1 tool trade
   const availableToolTrades = toolTrades
     .filter((trade) => {
-      // Check condition first
-      if (!trade.condition(state)) {
-        return false;
-      }
-      // Don't offer tools/weapons/relics/schematics/books that the player already owns
-      if (
-        trade.give === "tool" &&
-        state.tools[trade.giveItem as keyof typeof state.tools]
-      ) {
-        return false;
-      }
-      if (
-        trade.give === "weapon" &&
-        state.weapons[trade.giveItem as keyof typeof state.weapons]
-      ) {
-        return false;
-      }
-      if (
-        trade.give === "relic" &&
-        state.relics[trade.giveItem as keyof typeof state.relics]
-      ) {
-        return false;
-      }
-      if (
-        trade.give === "schematic" &&
-        state.schematics[trade.giveItem as keyof typeof state.schematics]
-      ) {
-        return false;
-      }
-      if (
-        trade.give === "book" &&
-        state.books[trade.giveItem as keyof typeof state.books]
-      ) {
-        return false;
-      }
+      if (!trade.condition(state)) return false;
+      if (trade.give === "tool" && state.tools[trade.giveItem as keyof typeof state.tools]) return false;
+      if (trade.give === "weapon" && state.weapons[trade.giveItem as keyof typeof state.weapons]) return false;
+      if (trade.give === "schematic" && state.schematics[trade.giveItem as keyof typeof state.schematics]) return false;
+      if (trade.give === "book" && state.books[trade.giveItem as keyof typeof state.books]) return false;
       return true;
     })
-    .sort(() => Math.random() - 0.5) // Shuffle
-    .slice(0, 1) // Take first 1
+    .sort(() => Math.random() - 0.5)
+    .slice(0, 1)
     .map((trade) => {
-      // Create a fresh choice with new random costs each time
-      const knowledge = getTotalKnowledge(state);
-      const costOption =
-        trade.costs[Math.floor(Math.random() * trade.costs.length)];
-
-      // Calculate stepped discount: 5% per 10 knowledge, max 25%
-      let discount = 0;
-      if (knowledge >= 10) discount = 0.05;
-      if (knowledge >= 20) discount = 0.1;
-      if (knowledge >= 30) discount = 0.15;
-      if (knowledge >= 40) discount = 0.2;
-      if (knowledge >= 50) discount = 0.25;
-
+      const costOption = trade.costs[0];
       const cost = Math.ceil(costOption.amounts[0] * (1 - discount));
 
       return {
-        id: `${trade.id}`,
-        label: `${trade.label}`,
+        id: trade.id,
+        label: trade.label,
         cost: `${cost} ${costOption.resource}`,
         effect: (state: GameState) => {
           if ((state.resources[costOption.resource] || 0) >= cost) {
             const result: any = {
               resources: {
                 ...state.resources,
-                [costOption.resource]:
-                  (state.resources[costOption.resource] || 0) - cost,
+                [costOption.resource]: (state.resources[costOption.resource] || 0) - cost,
               },
-              _logMessage: trade.message
-                .replace("${cost}", cost.toString())
-                .replace("${selectedCost.type}", costOption.resource),
+              _logMessage: trade.message,
             };
 
             if (trade.give === "tool") {
               result.tools = { ...state.tools, [trade.giveItem]: true };
             } else if (trade.give === "weapon") {
               result.weapons = { ...state.weapons, [trade.giveItem]: true };
-            } else if (trade.give === "relic") {
-              result.relics = { ...state.relics, [trade.giveItem]: true };
             } else if (trade.give === "schematic") {
-              result.schematics = {
-                ...state.schematics,
-                [trade.giveItem]: true,
-              };
+              result.schematics = { ...state.schematics, [trade.giveItem]: true };
             } else if (trade.give === "book") {
-              result.books = {
-                ...state.books,
-                [trade.giveItem]: true,
-              };
+              result.books = { ...state.books, [trade.giveItem]: true };
             }
 
             return result;
@@ -519,15 +1009,15 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     });
 
   return [
-    ...availableResourceTrades,
+    ...availableBuyTrades,
+    ...availableSellTrades,
     ...availableToolTrades,
     {
       id: "say_goodbye",
       label: "Say goodbye",
       effect: (state: GameState) => {
         return {
-          _logMessage:
-            "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
+          _logMessage: "You bid the merchant farewell. He tips his hat and mutters about the road ahead.",
         };
       },
     },
@@ -546,6 +1036,6 @@ export const merchantEvents: Record<string, GameEvent> = {
     triggered: false,
     priority: 3,
     repeatable: true,
-    choices: [], // Will be populated when event triggers
+    choices: [],
   },
 };
