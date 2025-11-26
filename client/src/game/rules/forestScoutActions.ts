@@ -62,7 +62,7 @@ export const forestScoutActions: Record<string, Action> = {
     success_chance: (state: GameState) => {
       return calculateSuccessChance(state, 0.2, { type: 'luck', multiplier: 0.01 });
     },
-    cooldown: 20,
+    cooldown: 30,
   },
 
   castleRuins: {
