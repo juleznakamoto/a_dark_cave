@@ -1323,6 +1323,10 @@ function selectTrades(
   const selected: EventChoice[] = [];
   const availableTrades = [...trades];
 
+  // Track how many trades have gold/silver as buy resource (what player receives)
+  let goldSilverBuyCount = 0;
+  const MAX_GOLD_SILVER_BUY = 3;
+
   // Shuffle the available trades
   availableTrades.sort(() => Math.random() - 0.5);
 
@@ -1354,14 +1358,17 @@ function selectTrades(
       );
     }
 
-    // Filter out silver/gold if we've already used them
-    validOptions = validOptions.filter((option: any) => {
-      if (option.resource === "silver" && usedRewardTypes.has("silver"))
-        return false;
-      if (option.resource === "gold" && usedRewardTypes.has("gold"))
-        return false;
-      return true;
-    });
+    // Filter out silver/gold if we've already used them (but only for buy trades)
+    // For sell trades, it's fine to have multiple trades rewarding gold/silver
+    if (isBuyTrade) {
+      validOptions = validOptions.filter((option: any) => {
+        if (option.resource === "silver" && usedRewardTypes.has("silver"))
+          return false;
+        if (option.resource === "gold" && usedRewardTypes.has("gold"))
+          return false;
+        return true;
+      });
+    }
 
     // Skip this trade if no valid options remain
     if (validOptions.length === 0) continue;
@@ -1391,13 +1398,23 @@ function selectTrades(
         buyAmount = isBuyTrade ? trade.giveAmount : selectedOption.amount;
         sellAmount = isBuyTrade ? selectedOption.amount : trade.takeAmount;
 
+        // Check if this buy resource is gold or silver and if we've reached the limit
+        if (isBuyTrade && (buyResource === "gold" || buyResource === "silver")) {
+          if (goldSilverBuyCount >= MAX_GOLD_SILVER_BUY) {
+            continue; // Skip this option if limit is reached
+          }
+          goldSilverBuyCount++; // Increment count for gold/silver buy trades
+        }
+
         usedResourcePairs.add(resourcePair);
 
-        // Track silver and gold usage
-        if (buyResource === "silver" || buyResource === "gold")
-          usedRewardTypes.add(buyResource);
-        if (sellResource === "silver" || sellResource === "gold")
-          usedRewardTypes.add(sellResource);
+        // Track silver and gold usage for buy trades only
+        if (isBuyTrade) {
+          if (buyResource === "silver" || buyResource === "gold")
+            usedRewardTypes.add(buyResource);
+          if (sellResource === "silver" || sellResource === "gold")
+            usedRewardTypes.add(sellResource);
+        }
 
         foundValidOption = true;
         break;
