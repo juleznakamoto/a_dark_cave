@@ -158,7 +158,12 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
       cooldowns: sanitizedState.cooldowns,
       hasCooldownDurations: !!sanitizedState.cooldownDurations,
       cooldownDurationsCount: sanitizedState.cooldownDurations ? Object.keys(sanitizedState.cooldownDurations).length : 0,
-      cooldownDurations: sanitizedState.cooldownDurations
+      cooldownDurations: sanitizedState.cooldownDurations,
+      cooldownDetails: Object.keys(sanitizedState.cooldowns || {}).map(key => ({
+        action: key,
+        remaining: sanitizedState.cooldowns[key],
+        duration: sanitizedState.cooldownDurations?.[key]
+      }))
     });
 
     const saveData: SaveData = {
@@ -218,7 +223,12 @@ export async function loadGame(): Promise<GameState | null> {
       hasCooldowns: !!localSave?.gameState?.cooldowns,
       cooldowns: localSave?.gameState?.cooldowns,
       hasCooldownDurations: !!localSave?.gameState?.cooldownDurations,
-      cooldownDurations: localSave?.gameState?.cooldownDurations
+      cooldownDurations: localSave?.gameState?.cooldownDurations,
+      cooldownDetails: Object.keys(localSave?.gameState?.cooldowns || {}).map(key => ({
+        action: key,
+        remaining: localSave?.gameState?.cooldowns[key],
+        duration: localSave?.gameState?.cooldownDurations?.[key]
+      }))
     });
 
     // Check if user is authenticated

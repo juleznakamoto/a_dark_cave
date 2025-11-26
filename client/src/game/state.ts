@@ -801,7 +801,12 @@ export const useGameStore = create<GameStore>((set, get) => ({
         cooldownDurationsCount: savedState.cooldownDurations ? Object.keys(savedState.cooldownDurations).length : 0,
         cooldownDurations: savedState.cooldownDurations,
         savedAt: savedState.lastSaved,
-        timestamp: Date.now()
+        timestamp: Date.now(),
+        cooldownDetails: Object.keys(savedState.cooldowns || {}).map(key => ({
+          action: key,
+          remaining: savedState.cooldowns[key],
+          duration: savedState.cooldownDurations?.[key]
+        }))
       });
 
       const loadedState = {
