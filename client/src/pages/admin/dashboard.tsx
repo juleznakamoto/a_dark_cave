@@ -1051,7 +1051,7 @@ export default function AdminDashboard() {
       filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
     }
 
-    // Aggregate into 1-hour (60-minute) buckets
+    // Aggregate into 15-minute buckets for more granularity
     const buckets = new Map<number, { lengthSum: number; intensitySum: number; count: number }>();
     let maxBucket = 0;
 
@@ -1059,7 +1059,7 @@ export default function AdminDashboard() {
       const playtimeMinutes = Math.floor((save.game_state?.playTime || 0) / 1000 / 60);
       if (playtimeMinutes === 0) return;
 
-      const bucket = Math.floor(playtimeMinutes / 60) * 60; // 1-hour buckets
+      const bucket = Math.floor(playtimeMinutes / 15) * 15; // 15-minute buckets
       maxBucket = Math.max(maxBucket, bucket);
 
       if (!buckets.has(bucket)) {
@@ -1082,12 +1082,11 @@ export default function AdminDashboard() {
     // Convert to array and calculate averages
     const result: Array<{ time: string; lengthLevel: number; intensityLevel: number }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+    for (let bucket = 0; bucket <= maxBucket; bucket += 15) {
       const bucketData = buckets.get(bucket);
       if (bucketData && bucketData.count > 0) {
-        const hours = bucket / 60;
         result.push({
-          time: hours === 0 ? '0h' : `${hours}h`,
+          time: `${bucket}m`,
           lengthLevel: Number((bucketData.lengthSum / bucketData.count).toFixed(2)),
           intensityLevel: Number((bucketData.intensitySum / bucketData.count).toFixed(2)),
         });
@@ -2025,14 +2024,20 @@ export default function AdminDashboard() {
               <CardHeader>
                 <CardTitle>Sleep Upgrade Levels Over Playtime</CardTitle>
                 <CardDescription>
-                  Average sleep upgrade levels at different playtime milestones (1-hour intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
+                  Average SLEEP_LENGTH_UPGRADES and SLEEP_INTENSITY_UPGRADES levels at different playtime milestones (15-minute intervals) {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getSleepUpgradesOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <XAxis 
+                      dataKey="time" 
+                      label={{ value: 'Playtime (minutes)', position: 'insideBottom', offset: -5 }} 
+                      angle={-45}
+                      textAnchor="end"
+                      height={80}
+                    />
                     <YAxis 
                       label={{ value: 'Upgrade Level', angle: -90, position: 'insideLeft' }}
                       domain={[0, 5]}
@@ -2045,16 +2050,16 @@ export default function AdminDashboard() {
                       dataKey="lengthLevel"
                       stroke="#8884d8"
                       strokeWidth={2}
-                      dot={{ r: 4 }}
-                      name="Sleep Length"
+                      dot={{ r: 3 }}
+                      name="Sleep Length Level"
                     />
                     <Line
                       type="monotone"
                       dataKey="intensityLevel"
                       stroke="#82ca9d"
                       strokeWidth={2}
-                      dot={{ r: 4 }}
-                      name="Sleep Intensity"
+                      dot={{ r: 3 }}
+                      name="Sleep Intensity Level"
                     />
                   </LineChart>
                 </ResponsiveContainer>
