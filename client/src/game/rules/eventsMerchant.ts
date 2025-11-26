@@ -1048,9 +1048,11 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   const shuffledSellTrades = filteredSellTrades.sort(() => Math.random() - 0.5);
   const selectedSellTrades = [];
   const usedRewardTypes = new Set<string>();
+  let tradeIndex = 0;
 
-  for (const trade of shuffledSellTrades) {
-    if (selectedSellTrades.length >= numSellTrades) break;
+  while (selectedSellTrades.length < numSellTrades && tradeIndex < shuffledSellTrades.length) {
+    const trade = shuffledSellTrades[tradeIndex];
+    tradeIndex++;
 
     // Filter out reward options that are the same as the resource being sold
     let validRewards = trade.rewards.filter(r => r.resource !== trade.take);
