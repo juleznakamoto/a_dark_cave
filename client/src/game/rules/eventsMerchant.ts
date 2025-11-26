@@ -1335,20 +1335,6 @@ function selectTrades(
     let sellAmount: number;
     let validOptions: any[];
 
-    if (isBuyTrade) {
-      // Buy trade: give is what user receives (buys), costs are what user pays (sells)
-      buyResource = trade.give;
-      buyAmount = trade.giveAmount;
-      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
-    } else {
-      // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
-      sellResource = trade.take;
-      sellAmount = trade.takeAmount;
-      validOptions = trade.rewards.filter(
-        (r: any) => r.resource !== trade.take,
-      );
-    }
-
     // Filter out silver/gold if we've already used them
     validOptions = validOptions.filter((option: any) => {
       if (option.resource === "silver" && usedRewardTypes.has("silver"))
@@ -1364,13 +1350,22 @@ function selectTrades(
     const selectedOption =
       validOptions[Math.floor(Math.random() * validOptions.length)];
 
-    // Complete the buyResource/sellResource definitions based on selectedOption
     if (isBuyTrade) {
+      // Buy trade: give is what user receives (buys), costs are what user pays (sells)
+      buyResource = trade.give;
+      buyAmount = trade.giveAmount;
       sellResource = selectedOption.resource;
-      sellAmount = Math.ceil(selectedOption.amount * (1 - discount));
+      sellAmount = selectedOption.amount;
+      validOptions = trade.costs.filter((c: any) => c.resource !== trade.give);
     } else {
+      // Sell trade: take is what user pays (sells), rewards are what user receives (buys)
+      sellResource = trade.take;
+      sellAmount = trade.takeAmount;
       buyResource = selectedOption.resource;
-      buyAmount = Math.ceil(selectedOption.amount * (1 + discount));
+      buyAmount = selectedOption.amount);
+      validOptions = trade.rewards.filter(
+        (r: any) => r.resource !== trade.take,
+      );
     }
 
     // Create a unique key for this resource pair (sorted to catch both directions)
@@ -1384,8 +1379,10 @@ function selectTrades(
     usedResourcePairs.add(resourcePair);
 
     // Track silver and gold usage
-    if (buyResource === "silver" || buyResource === "gold") usedRewardTypes.add(buyResource);
-    if (sellResource === "silver" || sellResource === "gold") usedRewardTypes.add(sellResource);
+    if (buyResource === "silver" || buyResource === "gold")
+      usedRewardTypes.add(buyResource);
+    if (sellResource === "silver" || sellResource === "gold")
+      usedRewardTypes.add(sellResource);
 
     // Apply rounding to amounts
     buyAmount = roundCost(buyAmount);
@@ -1393,8 +1390,14 @@ function selectTrades(
 
     // Apply 75% reduction if player receives gold or silver
     if (buyResource === "silver" || buyResource === "gold") {
-      buyAmount = Math.ceil(buyAmount * 0.75);
+      buyAmount = Math.ceil(buyAmount * 0.25);
     }
+
+    //  Apply Knowledge Discount
+    sellAmount = Math.ceil(sellAmount * (1 - discount));
+
+    // Round number
+    sellAmount = roundCost(sellAmount);
 
     // Format resource names for display
     const formatResourceName = (res: string) =>
@@ -1409,7 +1412,9 @@ function selectTrades(
 
     // Create label and cost
     const label = isBuyTrade ? trade.label : `${buyAmount} ${buyFormatted}`;
-    const cost = isBuyTrade ? `${sellAmount} ${sellFormatted}` : `${sellAmount} ${sellFormatted}`;
+    const cost = isBuyTrade
+      ? `${sellAmount} ${sellFormatted}`
+      : `${sellAmount} ${sellFormatted}`;
 
     console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
       id: trade.id,
