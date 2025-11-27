@@ -6,21 +6,21 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
     condition: (state: GameState) =>
-      state.buildings.woodenHut >= 9 &&
+      state.buildings.stoneHut >= 3 &&
       !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => 
-      state.story.seen.restlessKnightFailed ? 75 : 45,
+      state.story.seen.restlessKnightFailed ? 75 : 0.45,
     title: "The Restless Knight",
     message:
-      "A knight in worn armor arrives at your village. 'I have seen much of the world,' he says, his voice weathered by time. 'For some gold, I will share what I have learned in my travels.'",
+      "A knight in worn armor arrives at your village. 'I have seen much of the world,'' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
     triggered: false,
     priority: 3,
     repeatable: true,
     choices: [
       {
         id: "payGold",
-        label: "Pay 50 gold",
+        label: "Pay 50 Gold",
         cost: "50 gold",
         effect: (state: GameState) => {
           if (state.resources.gold < 50) {
@@ -42,7 +42,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The knight takes your gold and speaks: 'Far to the east, I found remains of a great stone structure. It seemed made by man, yet nature has reclaimed it. Vines cover ancient walls, and trees grow through what were once mighty halls. Whatever civilization built it is long gone, but the stones remember.'",
+              "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
           };
         },
       },
@@ -51,13 +51,13 @@ export const loreEvents: Record<string, GameEvent> = {
         label: "Convince him",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.25, {
+          return calculateSuccessChance(state, 0.2, {
             type: "knowledge",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.25, {
+          const successChance = calculateSuccessChance(state, 0.2, {
             type: "knowledge",
             multiplier: 0.01,
           });
@@ -72,7 +72,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your words intrigue the knight. He nods thoughtfully and speaks: 'You remind me of the scholars I met in distant lands. Very well, I will share this with you. Far to the east, I found remains of a great stone structure. It seemed made by man, yet nature has reclaimed it. Vines cover ancient walls, and trees grow through what were once mighty halls. Whatever civilization built it is long gone, but the stones remember.'",
+                "Your words intrigue the knight, he speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
             };
           } else {
             return {
