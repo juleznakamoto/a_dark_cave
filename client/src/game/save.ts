@@ -446,38 +446,33 @@ export async function loadGame(): Promise<GameState | null> {
               console.log("[LOAD] ✅ Using local save (identical playTime)");
             return processedLocalState;
           } else {
+            // This case means we're signing in and cloud has MORE playtime than local
+            // This is the NORMAL sign-in scenario - cloud has previous sessions
+            // DO NOT sync local to cloud in this case, use cloud save instead
             if (isDev)
               console.log(
-                "[LOAD] 💾 Using local save (longer playTime), syncing to cloud...",
+                "[LOAD] 🔐 Sign-in detected: Cloud save is newer, using cloud save",
               );
-            // Local has longer play time, but merge referrals from cloud
-            const mergedState = {
-              ...localSave.gameState,
-              referrals:
-                cloudSave.gameState.referrals || localSave.gameState.referrals,
-              referralCount:
-                cloudSave.gameState.referralCount !== undefined
-                  ? cloudSave.gameState.referralCount
-                  : localSave.gameState.referralCount,
-              cooldowns: localSave.gameState.cooldowns || {},
-              cooldownDurations: localSave.gameState.cooldownDurations || {},
-            };
-
-            const processedLocalState =
-              await processUnclaimedReferrals(mergedState);
-
-            // Sync merged state to cloud
-            if (isDev) console.log("[LOAD] 📤 Syncing local save to cloud...");
-            // Force full sync by clearing lastCloudState, then saveGame will handle it
-            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            await saveGame(processedLocalState, false, true); // Pass true to skip OCC check during this initial sync
+            const processedState = await processUnclaimedReferrals(
+              cloudSave.gameState,
+            );
+            // Save cloud state locally to sync them
+            await db.put(
+              "saves",
+              {
+                gameState: processedState,
+                timestamp: Date.now(),
+                playTime: cloudSave.playTime || 0,
+              },
+              SAVE_KEY,
+            );
             await db.put(
               "lastCloudState",
-              processedLocalState,
+              processedState,
               LAST_CLOUD_STATE_KEY,
             );
-            if (isDev) console.log("[LOAD] ✅ Local save synced to cloud");
-            return processedLocalState;
+            if (isDev) console.log("[LOAD] ✅ Cloud save loaded and synced locally");
+            return processedState;
           }
         } else if (cloudSave) {
           // Only cloud save exists
