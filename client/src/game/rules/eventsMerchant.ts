@@ -2,6 +2,8 @@ import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 
+const isDev = import.meta.env.DEV;
+
 // Resource prices in gold per unit
 const PRICES = {
   food: 0.04,
@@ -1457,7 +1459,7 @@ function selectTrades(
     const label = `+${buyAmount} ${buyFormatted}`;
     const cost = `${sellAmount} ${sellFormatted}`;
 
-    console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
+    if (isDev) console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
       id: trade.id,
       label,
       cost,

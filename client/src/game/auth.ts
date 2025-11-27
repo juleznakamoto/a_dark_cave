@@ -1,6 +1,8 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 
+const isDev = import.meta.env.DEV;
+
 export interface AuthUser {
   id: string;
   email: string;
@@ -165,12 +167,12 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
-  console.log('[AUTH] 🚪 Signing out user...');
+  if (isDev) console.log('[AUTH] 🚪 Signing out user...');
   
   const supabase = await getSupabaseClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
-    console.error('[AUTH] ❌ Sign out failed:', error);
+    if (isDev) console.error('[AUTH] ❌ Sign out failed:', error);
     throw error;
   }
 
