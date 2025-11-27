@@ -1,5 +1,6 @@
 
 import { useRef, useEffect } from 'react';
+import { logger } from '@/lib/logger';
 
 // WebGL Renderer class
 class WebGLRenderer {
