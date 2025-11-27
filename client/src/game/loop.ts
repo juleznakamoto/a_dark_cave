@@ -120,28 +120,27 @@ export function startGameLoop() {
         
         // Listen for auth state changes (fires when session is invalidated)
         const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
-          logger.log('[SESSION] 🔔 Auth state changed:', event);
+          logger.log('[SESSION] 🔔 Auth state changed:', event, 'has session:', !!session);
           
-          // If session was signed out or token refreshed elsewhere, handle it
-          if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
-            if (!session) {
-              logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
-              
-              // Delete local save when session is invalidated
-              try {
-                const { deleteSave } = await import('./save');
-                await deleteSave();
-                logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
-              } catch (deleteError) {
-                logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
-              }
-              
-              stopGameLoop();
-              useGameStore.setState({
-                inactivityDialogOpen: true,
-                inactivityReason: 'multitab',
-              });
+          // Only handle explicit sign-outs (when session becomes null)
+          // This happens when user logs in from another device/browser
+          if (event === 'SIGNED_OUT' && !session) {
+            logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
+            
+            // Delete local save when session is invalidated
+            try {
+              const { deleteSave } = await import('./save');
+              await deleteSave();
+              logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
+            } catch (deleteError) {
+              logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
             }
+            
+            stopGameLoop();
+            useGameStore.setState({
+              inactivityDialogOpen: true,
+              inactivityReason: 'multitab',
+            });
           }
         });
         
