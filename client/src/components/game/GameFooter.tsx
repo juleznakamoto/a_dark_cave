@@ -270,7 +270,7 @@ export default function GameFooter() {
                     className="w-3 h-3 opacity-90"
                   />
                 </div>
-                <span className="font-semibold">+250 Gold</span>
+                <span className="font-semibold">&nbsp;+250 Gold</span>
                 <TooltipProvider>
                   <Tooltip
                     open={
@@ -393,7 +393,7 @@ export default function GameFooter() {
                 onClick={() => setShowEndScreen(true)}
                 className="px-1 py-1 text-xs hover"
               >
-                E S
+                ES
               </Button>
             )}
             {cruelMode && (

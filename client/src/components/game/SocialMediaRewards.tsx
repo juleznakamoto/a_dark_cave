@@ -129,17 +129,17 @@ export default function SocialMediaRewards() {
             <div className="flex items-center justify-between w-full">
               <div className="flex items-center gap-1">
                 <span>
-                  Follow {platform.name}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <span className={isActive ? "font-semibold" : ""}>+{platform.reward} Gold</span>
-                {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
-                <img
+                  Follow&nbsp;
+                </span><img
                   src={platform.icon}
                   alt={platform.name}
-                  className="w-4 h-4"
+                  className="w-3 h-3"
                 />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">&nbsp;+{platform.reward} Gold</span>
+                {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
+                
               </div>
             </div>
           </DropdownMenuItem>
