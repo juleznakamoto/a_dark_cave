@@ -1,0 +1,38 @@
+NOT active
+loop.ts:693 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(20)}
+save.ts:161 [SAVE] Saving game state: {timestamp: 1764228974599, playTime: 3804722.3000000445, hasCooldowns: true, cooldownsCount: 20, cooldowns: {…}, …}
+save.ts:185 [SAVE] ✅ Successfully saved to IndexedDB
+save.ts:200 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 3804722.3000000445, isNewGame: false, hasClickData: false}
+auth.ts:261 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 3804722.3000000445, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(4), hasPlayTime: true}
+auth.ts:279 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 413, playTime: 3804722.3000000445, isNewGame: false, …}
+auth.ts:312 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+save.ts:211 [SAVE] ✅ Cloud save successful
+loop.ts:87 [INACTIVITY] User inactive for 118s
+loop.ts:246 [GAME LOOP] Normal production running - idle mode is NOT active
+loop.ts:693 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(20)}
+save.ts:161 [SAVE] Saving game state: {timestamp: 1764228989608, playTime: 3819739.0000000456, hasCooldowns: true, cooldownsCount: 20, cooldowns: {…}, …}
+save.ts:185 [SAVE] ✅ Successfully saved to IndexedDB
+save.ts:200 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 3819739.0000000456, isNewGame: false, hasClickData: false}
+auth.ts:261 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 3819739.0000000456, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(4), hasPlayTime: true}
+auth.ts:279 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 413, playTime: 3819739.0000000456, isNewGame: false, …}
+auth.ts:312 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+save.ts:211 [SAVE] ✅ Cloud save successful
+loop.ts:63 [INACTIVITY] User activity detected at 2025-11-27T07:36:30.437Z
+loop.ts:246 [GAME LOOP] Normal production running - idle mode is NOT active
+loop.ts:693 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(20)}
+save.ts:161 [SAVE] Saving game state: {timestamp: 1764229004691, playTime: 3834839.0000000494, hasCooldowns: true, cooldownsCount: 20, cooldowns: {…}, …}
+save.ts:185 [SAVE] ✅ Successfully saved to IndexedDB
+save.ts:200 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 3834839.0000000494, isNewGame: false, hasClickData: false}
+auth.ts:261 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 3834839.0000000494, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(4), hasPlayTime: true}
+auth.ts:279 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 414, playTime: 3834839.0000000494, isNewGame: false, …}
+auth.ts:312 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+save.ts:211 [SAVE] ✅ Cloud save successful
+loop.ts:246 [GAME LOOP] Normal production running - idle mode is NOT active
+loop.ts:693 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(20)}
+save.ts:161 [SAVE] Saving game state: {timestamp: 1764229019815, playTime: 3849964.000000053, hasCooldowns: true, cooldownsCount: 20, cooldowns: {…}, …}
+save.ts:185 [SAVE] ✅ Successfully saved to IndexedDB
+save.ts:200 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 3849964.000000053, isNewGame: false, hasClickData: false}
+auth.ts:261 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 3849964.000000053, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(4), hasPlayTime: true}
+auth.ts:279 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 413, playTime: 3849964.000000053, isNewGame: false, …}
+auth.ts:312 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+save.ts:211 [SAVE] ✅ Cloud save successful
