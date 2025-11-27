@@ -34,11 +34,6 @@ export default function InactivityDialog() {
               <>
                 <p>Your account was logged in from another device or browser.</p>
                 <p>To protect your save data, only one active session is allowed at a time.</p>
-                <p className="font-semibold mt-3">If this was you:</p>
-                <p className="ml-4">• Close the other session and reload this page</p>
-                <p className="font-semibold mt-2">If this wasn't you:</p>
-                <p className="ml-4">• Change your password immediately</p>
-                <p className="ml-4">• Then reload this page to continue</p>
               </>
             )}
             {isTimeout && (
