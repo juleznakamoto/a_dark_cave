@@ -261,7 +261,7 @@ export default function GameFooter() {
               <div className="flex items-center justify-between w-full">
                 <div className="flex items-center gap-1">
                   <img
-                    src="/person-add__1764275227762.png"
+                    src="/person-add.png"
                     alt=""
                     className="w-3 h-3 opacity-60"
                     style={{ filter: "invert(1)" }}

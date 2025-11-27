@@ -12,7 +12,7 @@ const SOCIAL_PLATFORMS = [
   {
     id: 'instagram',
     name: 'Instagram',
-    icon: '📷',
+    icon: '/camera.png',
     url: 'https://www.instagram.com/a_dark_cave/',
     reward: 100,
   },
@@ -20,7 +20,7 @@ const SOCIAL_PLATFORMS = [
   // {
   //   id: 'twitter',
   //   name: 'Twitter/X',
-  //   icon: '🐦',
+  //   icon: '/camera.png',
   //   url: 'https://twitter.com/a_dark_cave',
   //   reward: 100,
   // },
@@ -96,12 +96,12 @@ export default function SocialMediaRewards() {
       const currentState = useGameStore.getState();
       const gameState = buildGameState(currentState);
       const playTimeToSave = currentState.isNewGame ? 0 : currentState.playTime;
-      
+
       await saveGame(gameState, playTimeToSave);
-      
-      useGameStore.setState({ 
+
+      useGameStore.setState({
         lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false 
+        isNewGame: false
       });
     } catch (error) {
       logger.error("Failed to save social media reward claim:", error);
@@ -113,7 +113,7 @@ export default function SocialMediaRewards() {
       {SOCIAL_PLATFORMS.map((platform) => {
         // Subscribe to this specific platform's claimed status
         const isClaimed = useGameStore((state) => state.social_media_rewards[platform.id]?.claimed ?? false);
-        
+
         // Button is only active (enabled) if NOT claimed AND user is logged in
         const isActive = !isClaimed && !!currentUser;
 
@@ -135,7 +135,7 @@ export default function SocialMediaRewards() {
               <div className="flex items-center gap-2">
                 {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
                 <img
-                  src="/camera__1764275227760.png"
+                  src="/camera.png"
                   alt=""
                   className="w-3 h-3 opacity-60"
                   style={{ filter: "invert(1)" }}
