@@ -2,13 +2,13 @@ import { useEffect, useState } from "react";
 import GameContainer from "@/components/game/GameContainer";
 import { useGameStore } from "@/game/state";
 import { startGameLoop, stopGameLoop } from "@/game/loop";
-import { loadGame } from "@/game/save";
+import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
 import { logger } from "@/lib/logger";
 
 export default function Game() {
-  const { initialize } = useGameStore();
+  const { initialize, setState } = useGameStore(); // Added setState
   const { eventDialog, setEventDialog, combatDialog, setCombatDialog } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -16,15 +16,34 @@ export default function Game() {
 
   useEffect(() => {
     const initializeGame = async () => {
+      // Wait for auth to be ready first
+      const { getCurrentUser } = await import('@/game/auth');
+      const user = await getCurrentUser();
+
       // Load saved game or initialize with defaults
       const savedState = await loadGame();
       if (savedState) {
-        initialize(savedState);
+        // Set the loaded state
+        setState(savedState);
+        logger.log('[GAME] Game loaded from save');
 
-        // If game is already started (fire is lit), flag that music should start on user gesture
-        if (savedState.story?.seen?.fireLit) {
-          setShouldStartMusic(true);
+        // If user is logged in and has claimed referrals, save to cloud
+        if (user && savedState.referrals && savedState.referrals.some(r => r.claimed)) {
+          logger.log('[GAME] Detected claimed referrals - saving to cloud');
+          // Use setTimeout to ensure state is fully set before saving
+          setTimeout(async () => {
+            try {
+              await saveGame(savedState, false, false);
+              logger.log('[GAME] Successfully saved claimed referrals to cloud');
+            } catch (error) {
+              logger.error('[GAME] Failed to save claimed referrals:', error);
+            }
+          }, 1000);
         }
+      } else {
+        // If no saved state, initialize with defaults
+        initialize();
+        logger.log('[GAME] Game initialized with defaults');
       }
 
       // Mark as initialized
@@ -40,7 +59,7 @@ export default function Game() {
     return () => {
       stopGameLoop();
     };
-  }, [initialize]);
+  }, [initialize, setState]); // Added setState dependency
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {
@@ -50,10 +69,10 @@ export default function Game() {
       try {
         const { audioManager } = await import("@/lib/audio");
         const currentState = useGameStore.getState();
-        
+
         // Set the mute state before starting music
         audioManager.globalMute(currentState.isMuted);
-        
+
         // Only start music if not muted
         if (!currentState.isMuted) {
           await audioManager.startBackgroundMusic(0.125);
