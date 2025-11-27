@@ -1,5 +1,6 @@
 
 import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { logger } from '@/lib/logger';
 
 const isDev = import.meta.env.MODE === 'development';
 
@@ -34,9 +35,7 @@ async function initializeSupabase(): Promise<SupabaseClient> {
     }
 
     const config = await response.json();
-    if (import.meta.env.DEV) {
-      logger.log('Loaded Supabase config from server');
-    }
+    logger.log('Loaded Supabase config from server');
 
     return createClient(config.supabaseUrl, config.supabaseAnonKey, {
       auth: {
