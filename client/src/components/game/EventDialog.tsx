@@ -245,7 +245,6 @@ export default function EventDialog({
             // Empty handler - we don't want automatic closing
             // All closing should be handled explicitly through handleChoice
           }}
-          modal={true}
         >
           {isMerchantEvent ? (
             <MerchantDialog
@@ -260,10 +259,7 @@ export default function EventDialog({
               hasScriptorium={hasScriptorium}
             />
           ) : (
-            <DialogContent 
-              className="w-[95vw] sm:max-w-md [&>button]:hidden"
-              onOpenAutoFocus={(e) => e.preventDefault()}
-            >
+            <DialogContent className="w-[95vw] sm:max-w-md [&>button]:hidden">
           <DialogHeader>
             <div className="flex items-start justify-between">
               <DialogTitle className="text-lg font-semibold flex-1">
