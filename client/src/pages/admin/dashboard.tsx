@@ -919,9 +919,9 @@ export default function AdminDashboard() {
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
   };
 
-  // Get the top 20 most clicked buttons from churned players
+  // Get the top 20 LAST buttons clicked by churned players before they churned
   const getChurnedPlayersLastClicks = () => {
-    logger.log('🔍 Getting churned players top clicks START:', {
+    logger.log('🔍 Getting churned players last clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -954,33 +954,45 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
+    logger.log('📊 Churned user IDs for last clicks:', churnedUserIds.size);
 
-    // Aggregate all clicks from churned users by button
-    const buttonTotals: Record<string, number> = {};
+    // For each churned user, find their LAST button click
+    const lastButtonClicks: Record<string, number> = {};
 
     clickData.forEach(entry => {
       if (churnedUserIds.has(entry.user_id)) {
-        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-            const cleanButton = cleanButtonName(button);
-            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
-          });
+        // Get all playtime keys and sort to find the latest
+        const playtimeKeys = Object.keys(entry.clicks).sort((a, b) => {
+          const aMinutes = parseInt(a.replace('m', ''));
+          const bMinutes = parseInt(b.replace('m', ''));
+          return bMinutes - aMinutes; // Sort descending
         });
+
+        if (playtimeKeys.length > 0) {
+          const lastPlaytimeKey = playtimeKeys[0];
+          const lastClicks = entry.clicks[lastPlaytimeKey] as Record<string, number>;
+          
+          // Find the button with the highest timestamp (most recent)
+          // Since we don't have timestamps per button, we'll take all buttons from the last playtime bucket
+          Object.keys(lastClicks).forEach(button => {
+            const cleanButton = cleanButtonName(button);
+            lastButtonClicks[cleanButton] = (lastButtonClicks[cleanButton] || 0) + 1;
+          });
+        }
       }
     });
 
-    logger.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
+    logger.log('📊 Total unique last buttons by churned users:', Object.keys(lastButtonClicks).length);
 
-    // Convert to array and sort by click count, take top 20
-    const topClicks = Object.entries(buttonTotals)
-      .map(([button, clicks]) => ({ button, clicks }))
-      .sort((a, b) => b.clicks - a.clicks)
+    // Convert to array and sort by count, take top 20
+    const topLastClicks = Object.entries(lastButtonClicks)
+      .map(([button, count]) => ({ button, count }))
+      .sort((a, b) => b.count - a.count)
       .slice(0, 20);
 
-    logger.log('📊 Returning top 20 clicked buttons:', topClicks.length);
+    logger.log('📊 Returning top 20 last clicked buttons:', topLastClicks.length);
     
-    return topClicks;
+    return topLastClicks;
   };
 
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
@@ -1918,8 +1930,8 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Top 20 Buttons Clicked by Churned Players</CardTitle>
-                <CardDescription>What actions did churned players perform the most?</CardDescription>
+                <CardTitle>Top 20 Last Buttons Clicked by Churned Players</CardTitle>
+                <CardDescription>What were the last actions churned players performed before stopping?</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
@@ -1928,7 +1940,7 @@ export default function AdminDashboard() {
                     <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="clicks" fill="#ff8042" />
+                    <Bar dataKey="count" fill="#ff8042" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
