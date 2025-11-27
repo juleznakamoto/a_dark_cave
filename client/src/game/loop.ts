@@ -51,6 +51,9 @@ export function startGameLoop() {
     gameStartTime = now; // Set game start time only once
   }
 
+  // Get state at the beginning
+  const state = useGameStore.getState();
+
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
@@ -154,7 +157,6 @@ export function startGameLoop() {
 
 
   // Check if idle mode needs to be displayed (user left during idle mode)
-  const state = useGameStore.getState();
   if (state.idleModeState?.needsDisplay && state.idleModeState.startTime > 0) {
     // Open idle mode dialog to show accumulated resources
     setTimeout(() => {
