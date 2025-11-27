@@ -181,7 +181,7 @@ export function startGameLoop() {
       // Auto-save logic (skip if inactive or recently loaded)
       const timeSinceLoad = timestamp - lastGameLoadTime;
       const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
-      
+
       if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive && !skipAutoSaveAfterLoad) {
         lastAutoSave = timestamp;
         handleAutoSave();
@@ -728,13 +728,13 @@ function handleMadnessCheck() {
 
 async function handleAutoSave() {
   const state = useGameStore.getState();
-  
+
   logger.log("[AUTOSAVE] 📊 Raw state snapshot:", {
     statePlayTime: state.playTime,
     playTimeMinutes: (state.playTime / 1000 / 60).toFixed(2),
     isNewGame: state.isNewGame,
   });
-  
+
   const gameState: GameState = buildGameState(state);
 
   // Log cooldown state before saving
@@ -760,12 +760,46 @@ async function handleAutoSave() {
     // If this is a new game, save playTime as the current session time only
     // Otherwise, save the accumulated playTime
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
-    
+
     logger.log("[AUTOSAVE] 📊 Calling saveGame with:", {
       playTimeToSave,
       gameStateHasPlayTime: 'playTime' in gameState,
     });
-    
+
+    // OCC: Optimistic Concurrency Control
+    // Before autosaving, check if cloud has newer state (another device/tab is ahead)
+    if (state.user) {
+      // First, verify session is still valid (in case single-session enforcement logged us out)
+      const { getCurrentUser } = await import('./auth');
+      const currentUser = await getCurrentUser();
+
+      if (!currentUser) {
+        logger.log('[LOOP] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
+        stopGameLoop();
+        useGameStore.setState({
+          inactivityDialogOpen: true,
+          inactivityReason: 'multitab',
+        });
+        return;
+      }
+
+      const cloudSave = await loadGameFromSupabase();
+      if (cloudSave && cloudSave.playTime > playTimeToSave) {
+        logger.log(
+          `[AUTOSAVE] ⚠️ Cloud save is newer (cloud: ${cloudSave.playTime}, local: ${playTimeToSave}). Stopping local save.`,
+        );
+        // This is a crucial OCC check. If cloud save is newer, we must not overwrite it.
+        // The user will be notified and prompted to reload.
+        useGameStore.setState({
+          dialogs: {
+            ...state.dialogs,
+            outdatedSave: { isOpen: true, cloudSave },
+          },
+        });
+        return; // Stop the autosave process
+      }
+    }
+
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
