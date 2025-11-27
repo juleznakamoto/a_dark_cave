@@ -116,37 +116,40 @@ export function startGameLoop() {
   }
   const checkSession = async () => {
     const state = useGameStore.getState();
-    if (state.user) {
-      try {
-        logger.log('[SESSION] 🔍 Checking session validity (API call to Supabase)...');
-        // Force server-side validation by calling getUser() which makes an API request
-        const { getSupabaseClient } = await import('@/lib/supabase');
-        const supabase = await getSupabaseClient();
-        const { data: { user }, error } = await supabase.auth.getUser();
+    
+    // Check if user is signed in
+    if (!state.isUserSignedIn) {
+      return; // Not signed in, no need to check session
+    }
 
-        // If there's an error or no user, session is invalid
-        if (error || !user) {
-          logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
-            hasError: !!error,
-            errorMessage: error?.message,
-            hasUser: !!user,
-          });
-          stopGameLoop();
-          useGameStore.setState({
-            inactivityDialogOpen: true,
-            inactivityReason: 'multitab',
-          });
-        } else {
-          logger.log('[SESSION] ✅ Session still valid', {
-            userId: user.id.substring(0, 8) + '...',
-            email: user.email,
-          });
-        }
-      } catch (error) {
-        logger.error('[SESSION] ❌ Error checking session:', error);
+    try {
+      logger.log('[SESSION] 🔍 Checking session validity (API call to Supabase)...');
+      
+      // Force server-side validation by calling getUser() which makes an API request
+      const { getSupabaseClient } = await import('@/lib/supabase');
+      const supabase = await getSupabaseClient();
+      const { data: { user }, error } = await supabase.auth.getUser();
+
+      // If there's an error or no user, session is invalid
+      if (error || !user) {
+        logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
+          hasError: !!error,
+          errorMessage: error?.message,
+          hasUser: !!user,
+        });
+        stopGameLoop();
+        useGameStore.setState({
+          inactivityDialogOpen: true,
+          inactivityReason: 'multitab',
+        });
+      } else {
+        logger.log('[SESSION] ✅ Session still valid', {
+          userId: user.id.substring(0, 8) + '...',
+          email: user.email,
+        });
       }
-    } else {
-      logger.log('[SESSION] ⚠️ No user in state, skipping session check');
+    } catch (error) {
+      logger.error('[SESSION] ❌ Error checking session:', error);
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
