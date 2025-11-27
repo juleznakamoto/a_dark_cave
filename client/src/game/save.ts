@@ -324,19 +324,56 @@ export async function loadGame(): Promise<GameState | null> {
           cooldownDurations: cloudSave?.cooldownDurations
         });
 
-        // Always use cloud save when logged in
-        if (cloudSave) {
-          console.log('[LOAD] ☁️ Using cloud save (user authenticated)');
-          const processedState = await processUnclaimedReferrals(cloudSave);
-          await db.put('saves', {
-            gameState: processedState,
-            timestamp: Date.now(),
-            playTime: cloudSave.playTime || 0,
-          }, SAVE_KEY);
-          await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
-          console.log('[LOAD] ✅ Cloud save loaded and synced locally');
-          return processedState;
-        } else if (localSave) {
+        // OCC: Compare play times and use the save with longer play time
+        if (cloudSave && localSave) {
+          const cloudPlayTime = cloudSave.playTime || 0;
+          const localPlayTime = localSave.playTime || 0;
+
+          const timeDifference = localPlayTime - cloudPlayTime;
+          const MIN_TIME_AHEAD = 5000; // Local must be at least 5 seconds ahead
+
+          console.log('[LOAD] 🔍 OCC: Comparing local vs cloud save:', {
+            cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
+            localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
+            differenceSeconds: (timeDifference / 1000).toFixed(2),
+            minRequiredAheadSeconds: (MIN_TIME_AHEAD / 1000).toFixed(2),
+            winner: timeDifference >= MIN_TIME_AHEAD ? 'local' : 'cloud'
+          });
+
+          // Use whichever has longer play time, but always merge referrals from cloud
+          if (cloudPlayTime > localPlayTime) {
+            console.log('[LOAD] ☁️ Using cloud save (longer playTime)');
+            const processedState = await processUnclaimedReferrals(cloudSave);
+            await db.put('saves', {
+              gameState: processedState,
+              timestamp: Date.now(),
+              playTime: cloudPlayTime,
+            }, SAVE_KEY);
+            await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+            console.log('[LOAD] ✅ Cloud save loaded and synced locally');
+            return processedState;
+          } else {
+            console.log('[LOAD] 💾 Using local save (longer playTime), syncing to cloud...');
+            // Local has longer play time, but merge referrals from cloud
+            const mergedState = {
+              ...localSave.gameState,
+              referrals: cloudSave.referrals || localSave.gameState.referrals,
+              referralCount: cloudSave.referralCount !== undefined ? cloudSave.referralCount : localSave.gameState.referralCount,
+              cooldowns: localSave.gameState.cooldowns || {},
+              cooldownDurations: localSave.gameState.cooldownDurations || {},
+            };
+
+            const processedLocalState = await processUnclaimedReferrals(mergedState);
+
+            // Sync merged state to cloud
+            console.log('[LOAD] 📤 Syncing local save to cloud...');
+            await db.delete('lastCloudState', LAST_CLOUD_STATE_KEY); // Force full sync
+            await saveGameToSupabase(processedLocalState);
+            await db.put('lastCloudState', processedLocalState, LAST_CLOUD_STATE_KEY);
+            console.log('[LOAD] ✅ Local save synced to cloud');
+            return processedLocalState;
+          }
+        } else if (cloudSave) {
           // Only cloud save exists
           const processedState = await processUnclaimedReferrals(cloudSave);
           await db.put('saves', {
@@ -347,8 +384,7 @@ export async function loadGame(): Promise<GameState | null> {
           await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
           return processedState;
         } else if (localSave) {
-          // Only local save exists (first time logging in), sync to cloud
-          console.log('[LOAD] 💾 No cloud save found, syncing local save to cloud...');
+          // Only local save exists, sync to cloud
           const stateWithDefaults = {
             ...localSave.gameState,
             cooldownDurations: localSave.gameState.cooldownDurations || {},
