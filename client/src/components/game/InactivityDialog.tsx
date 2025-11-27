@@ -26,15 +26,19 @@ export default function InactivityDialog() {
       <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
           <DialogTitle className="leading-6">
-            {isMultiTab && 'Game stopped due another tab being active'}
+            {isMultiTab && 'Session Ended - Logged In Elsewhere'}
             {isTimeout && 'Game stopped due to inactivity'}
           </DialogTitle>
           <DialogDescription className="py-4 space-y-2">
             {isMultiTab && (
               <>
-                <p>This game is being played in another tab or on another device.</p>
-                <p>The game can only run in one place at a time to prevent save conflicts.</p>
-                <p className="font-semibold">Please close the other instance and click "Reload Page" to continue playing here.</p>
+                <p>Your account was logged in from another device or browser.</p>
+                <p>To protect your save data, only one active session is allowed at a time.</p>
+                <p className="font-semibold mt-3">If this was you:</p>
+                <p className="ml-4">• Close the other session and reload this page</p>
+                <p className="font-semibold mt-2">If this wasn't you:</p>
+                <p className="ml-4">• Change your password immediately</p>
+                <p className="ml-4">• Then reload this page to continue</p>
               </>
             )}
             {isTimeout && (
