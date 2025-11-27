@@ -259,7 +259,15 @@ export default function GameFooter() {
             <DropdownMenuSeparator />
             <DropdownMenuItem onClick={handleCopyInviteLink} disabled={!currentUser}>
               <div className="flex items-center justify-between w-full">
-                <span>Invite&nbsp;</span>
+                <div className="flex items-center gap-1">
+                  <img
+                    src="/person-add__1764275227762.png"
+                    alt=""
+                    className="w-3 h-3 opacity-60"
+                    style={{ filter: "invert(1)" }}
+                  />
+                  <span>Invite&nbsp;</span>
+                </div>
                 <span className="font-semibold">+250 Gold</span>
                 <TooltipProvider>
                   <Tooltip
