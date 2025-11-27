@@ -129,7 +129,7 @@ async function processUnclaimedReferrals(
       logEntriesAdded.push({
         id: `referral-claimed-${referral.userId}-${Date.now()}`,
         timestamp: Date.now(),
-        message: `You invited someone new to this world! +100 Gold`,
+        message: `You invited someone new to this world! +250 Gold`,
         type: "system",
       });
 

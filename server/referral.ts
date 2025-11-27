@@ -133,7 +133,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       ...(initialGameState.log || []),
       {
         id: `referral-bonus-new-${Date.now()}`,
-        message: "You were invited by someone to this world! +100 Gold",
+        message: "You were invited by someone to this world! +250 Gold",
         timestamp: Date.now(),
         type: "system",
       }
