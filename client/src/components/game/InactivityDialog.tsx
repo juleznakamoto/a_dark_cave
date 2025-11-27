@@ -19,11 +19,11 @@ export default function InactivityDialog() {
     <Dialog open={true} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
-          <DialogTitle>Game Stopped Due to Inactivity</DialogTitle>
+          <DialogTitle>Game Stopped - Another Tab is Active</DialogTitle>
           <DialogDescription className="py-4 space-y-2">
-            <p>You have been inactive for 15 minutes.</p>
-            <p>The game has been stopped and your progress has been saved.</p>
-            <p className="font-semibold">Please reload the page to continue playing.</p>
+            <p>You have this game open in multiple tabs.</p>
+            <p>The game can only run in one tab at a time to prevent conflicts.</p>
+            <p className="font-semibold">Please reload this page to continue playing here, or switch to the other tab.</p>
           </DialogDescription>
         </DialogHeader>
 
