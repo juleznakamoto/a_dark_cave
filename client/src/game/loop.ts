@@ -123,19 +123,20 @@ export function startGameLoop() {
     }
 
     try {
-      logger.log('[SESSION] 🔍 Checking session validity (API call to Supabase)...');
+      logger.log('[SESSION] 🔍 Checking session validity (server-side validation)...');
       
-      // Force server-side validation by calling getUser() which makes an API request
+      // Use getSession() which makes a server request to validate the JWT
+      // This will detect if the session was invalidated by another login
       const { getSupabaseClient } = await import('@/lib/supabase');
       const supabase = await getSupabaseClient();
-      const { data: { user }, error } = await supabase.auth.getUser();
+      const { data: { session }, error } = await supabase.auth.getSession();
 
-      // If there's an error or no user, session is invalid
-      if (error || !user) {
+      // If there's an error or no session, the token was invalidated
+      if (error || !session) {
         logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
           hasError: !!error,
           errorMessage: error?.message,
-          hasUser: !!user,
+          hasSession: !!session,
         });
         stopGameLoop();
         useGameStore.setState({
@@ -144,8 +145,9 @@ export function startGameLoop() {
         });
       } else {
         logger.log('[SESSION] ✅ Session still valid', {
-          userId: user.id.substring(0, 8) + '...',
-          email: user.email,
+          userId: session.user.id.substring(0, 8) + '...',
+          email: session.user.email,
+          expiresAt: new Date(session.expires_at! * 1000).toISOString(),
         });
       }
     } catch (error) {
