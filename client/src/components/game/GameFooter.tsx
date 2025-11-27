@@ -271,7 +271,7 @@ export default function GameFooter() {
                   >
                     <TooltipTrigger asChild>
                       <span
-                        className="ml-2 text-muted-foreground cursor-pointer"
+                        className="font-black ml-2 text-muted-foreground cursor-pointer"
                         onClick={(e) => {
                           e.stopPropagation();
                           e.preventDefault();
