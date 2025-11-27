@@ -43,9 +43,7 @@ export class AudioManager {
       await this.initAudioContext();
       if (!this.audioContext) return;
 
-      if (import.meta.env.DEV) {
-        logger.log(`Loading sound: ${name} from ${url}`);
-      }
+      logger.log(`Loading sound: ${name} from ${url}`);
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`);
@@ -53,9 +51,7 @@ export class AudioManager {
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
-      if (import.meta.env.DEV) {
-        logger.log(`Successfully loaded sound: ${name}`);
-      }
+      logger.log(`Successfully loaded sound: ${name}`);
     } catch (error) {
       logger.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
@@ -64,16 +60,12 @@ export class AudioManager {
   private async loadAllSounds(): Promise<void> {
     if (this.soundUrls.size === 0) return;
 
-    if (import.meta.env.DEV) {
-      logger.log('Loading all sounds after user gesture...');
-    }
+    logger.log('Loading all sounds after user gesture...');
     const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) =>
       this.loadActualSound(name, url)
     );
     await Promise.all(loadPromises);
-    if (import.meta.env.DEV) {
-      logger.log('Finished loading all sounds');
-    }
+    logger.log('Finished loading all sounds');
   }
 
   private async loadActualSound(name: string, url: string): Promise<void> {
@@ -88,9 +80,7 @@ export class AudioManager {
       const arrayBuffer = await response.arrayBuffer();
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
-      if (import.meta.env.DEV) {
-        logger.log(`Successfully loaded sound: ${name}`);
-      }
+      logger.log(`Successfully loaded sound: ${name}`);
     } catch (error) {
       logger.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
@@ -234,9 +224,7 @@ export class AudioManager {
   }
 
   async preloadSounds(): Promise<void> {
-    if (import.meta.env.DEV) {
-      logger.log('Registering sounds for lazy loading...');
-    }
+    logger.log('Registering sounds for lazy loading...');
     // Just register the sound URLs, don't load yet
     this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
     this.soundUrls.set('event', '/sounds/event.wav');
@@ -245,9 +233,7 @@ export class AudioManager {
     this.soundUrls.set('backgroundMusic', '/sounds/background_music.wav');
     this.soundUrls.set('explosion', '/sounds/explosion.wav');
     this.soundUrls.set('wind', '/sounds/wind.wav');
-    if (import.meta.env.DEV) {
-      logger.log('Sound URLs registered for lazy loading');
-    }
+    logger.log('Sound URLs registered for lazy loading');
   }
 
   async startBackgroundMusic(volume: number = 1): Promise<void> {
