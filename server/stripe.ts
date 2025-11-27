@@ -1,6 +1,8 @@
 import Stripe from 'stripe';
 import { SHOP_ITEMS, type ShopItem } from '../shared/shopItems';
 
+const logger = console;
+
 const stripeSecretKey = process.env.NODE_ENV === 'production' 
   ? process.env.STRIPE_SECRET_KEY_PROD 
   : process.env.STRIPE_SECRET_KEY_DEV;

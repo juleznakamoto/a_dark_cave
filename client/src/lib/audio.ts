@@ -1,3 +1,5 @@
+import { logger } from './logger';
+
 export class AudioManager {
   private static instance: AudioManager;
   private audioContext: AudioContext | null = null;
