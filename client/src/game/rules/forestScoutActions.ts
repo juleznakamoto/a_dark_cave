@@ -550,7 +550,7 @@ export function handlecollapsedTower(
     result.logEntries!.push({
       id: `collapsed-tower-success-${Date.now()}`,
       message:
-        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. Among his tools, you find his powerful bone saw. The mysterious deaths will cease.",
+        "Inside the tower you find a necromancer and his followers, surrounded by vials of blood and crude syringes. He was harvesting the villagers' blood for dark experiments. Your men put an end to his vile work. Among his tools, you find his powerful bone saw. The mysterious deaths will cease now.",
       timestamp: Date.now(),
       type: "system",
       visualEffect: {
