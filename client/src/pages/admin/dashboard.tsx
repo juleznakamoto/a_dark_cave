@@ -794,6 +794,20 @@ export default function AdminDashboard() {
     return Math.round((payingUsers / totalUsers) * 100);
   };
 
+  // Instagram follow tracking
+  const getInstagramFollowers = () => {
+    return gameSaves.filter(save => 
+      save.game_state?.social_media_rewards?.instagram?.claimed
+    ).length;
+  };
+
+  const getInstagramFollowRate = () => {
+    const totalUsers = gameSaves.length;
+    if (totalUsers === 0) return 0;
+    const followers = getInstagramFollowers();
+    return ((followers / totalUsers) * 100).toFixed(1);
+  };
+
   // Get churned players (haven't had activity in X days)
   const getChurnedPlayers = () => {
     console.log('🔍 Getting churned players START:', {
@@ -1285,6 +1299,28 @@ export default function AdminDashboard() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">€{(getTotalRevenue() / 100).toFixed(2)}</p>
+                </CardContent>
+              </Card>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Instagram Followers</CardTitle>
+                  <CardDescription>Users who clicked follow button</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getInstagramFollowers()}</p>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Instagram Follow Rate</CardTitle>
+                  <CardDescription>% of total users</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-4xl font-bold">{getInstagramFollowRate()}%</p>
                 </CardContent>
               </Card>
             </div>
