@@ -24,13 +24,13 @@ export default function BuildingProgressChart() {
   const startRadius = 12; // Inner radius of the first ring
   const ringSize = 3; // Thickness of each ring
   const spaceBetweenRings = 2.8; // Gap between rings
-  
+
   // Function to calculate padding angle based on ring index
   const getPaddingAngle = (ringIndex: number) => {
     // Inner rings have larger padding, outer rings have smaller
     return Math.max(2, 14 - ringIndex * 2);
   };
-  
+
   const backgroundColor = tailwindToHex("neutral-800");
   const getStartAngle = (paddingAngle: number) => 90 - paddingAngle / 2;
 
@@ -275,7 +275,7 @@ export default function BuildingProgressChart() {
         value: seg.maxCount,
         fill: "transparent",
       }));
-      
+
       // Create progress segments with calculated angles
       let currentEndAngle = startAngle;
       const progressSegments = segments.map((seg, index) => {
@@ -334,75 +334,74 @@ export default function BuildingProgressChart() {
     <div className="w-full h-20 w-26 flex flex-col items-center justify-center">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
-          {processedRings.map((ring, ringIndex) => (
-            <>
-              {/* Background ring */}
-              <Pie
-                key={`background-${ringIndex}`}
-                data={ring.backgroundSegments}
-                cx="50%"
-                cy="50%"
-                innerRadius={ring.innerRadius}
-                outerRadius={ring.outerRadius}
-                paddingAngle={ring.paddingAngle}
-                dataKey="value"
-                startAngle={ring.startAngle}
-                endAngle={-360 + ring.startAngle}
-                cornerRadius={5}
-                strokeWidth={0}
-                isAnimationActive={false}
-                style={{ outline: 'none' }}
-              >
-                {ring.backgroundSegments.map((entry, entryIndex) => (
-                  <Cell
-                    key={`bg-cell-${ringIndex}-${entryIndex}`}
-                    fill={entry.fill}
-                  />
-                ))}
-              </Pie>
-
-              {/* Progress segments */}
-              {ring.progressSegments.map((segment, segIndex) => (
-                <Pie
-                  key={`progress-${ringIndex}-${segIndex}`}
-                  data={[{ value: 1 }]}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={ring.innerRadius}
-                  outerRadius={ring.outerRadius}
-                  dataKey="value"
-                  startAngle={segment.startAngle}
-                  endAngle={segment.endAngle}
-                  cornerRadius={5}
-                  strokeWidth={segment.isFull ? 1 : 0}
-                  stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
-                  isAnimationActive={false}
-                  style={{ outline: 'none' }}
-                >
-                  <Cell fill={segment.fill} />
-                </Pie>
+          {processedRings.map((ring, ringIndex) => [
+            // Background ring
+            <Pie
+              key={`background-${ringIndex}`}
+              data={ring.backgroundSegments}
+              cx="50%"
+              cy="50%"
+              innerRadius={ring.innerRadius}
+              outerRadius={ring.outerRadius}
+              paddingAngle={ring.paddingAngle}
+              dataKey="value"
+              startAngle={ring.startAngle}
+              endAngle={-360 + ring.startAngle}
+              cornerRadius={5}
+              strokeWidth={0}
+              isAnimationActive={false}
+              style={{ outline: 'none' }}
+            >
+              {ring.backgroundSegments.map((entry, entryIndex) => (
+                <Cell
+                  key={`bg-cell-${ringIndex}-${entryIndex}`}
+                  fill={entry.fill}
+                />
               ))}
-              {/* Foreground ring */}
+            </Pie>,
+
+            // Progress segments
+            ...ring.progressSegments.map((segment, segIndex) => (
               <Pie
-                key={`foreground-${ringIndex}`}
-                data={ring.foregroundSegments}
+                key={`progress-${ringIndex}-${segIndex}`}
+                data={[{ value: 1 }]}
                 cx="50%"
                 cy="50%"
                 innerRadius={ring.innerRadius}
                 outerRadius={ring.outerRadius}
-                paddingAngle={ring.paddingAngle}
                 dataKey="value"
-                startAngle={ring.startAngle}
-                endAngle={-360 + ring.startAngle}
+                startAngle={segment.startAngle}
+                endAngle={segment.endAngle}
                 cornerRadius={5}
-                strokeWidth={0.25}
-                stroke={tailwindToHex("neutral-400")}
+                strokeWidth={segment.isFull ? 1 : 0}
+                stroke={segment.isFull ? tailwindToHex("blue-900") : undefined}
                 isAnimationActive={false}
                 style={{ outline: 'none' }}
               >
+                <Cell fill={segment.fill} />
               </Pie>
-            </>
-          ))}
+            )),
+
+            // Foreground ring
+            <Pie
+              key={`foreground-${ringIndex}`}
+              data={ring.foregroundSegments}
+              cx="50%"
+              cy="50%"
+              innerRadius={ring.innerRadius}
+              outerRadius={ring.outerRadius}
+              paddingAngle={ring.paddingAngle}
+              dataKey="value"
+              startAngle={ring.startAngle}
+              endAngle={-360 + ring.startAngle}
+              cornerRadius={5}
+              strokeWidth={0.25}
+              stroke={tailwindToHex("neutral-400")}
+              isAnimationActive={false}
+              style={{ outline: 'none' }}
+            >
+            </Pie>
+          ])}
         </PieChart>
       </ResponsiveContainer>
     </div>
