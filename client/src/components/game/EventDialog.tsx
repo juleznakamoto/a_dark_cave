@@ -245,6 +245,7 @@ export default function EventDialog({
             // Empty handler - we don't want automatic closing
             // All closing should be handled explicitly through handleChoice
           }}
+          modal={true}
         >
           {isMerchantEvent ? (
             <MerchantDialog
