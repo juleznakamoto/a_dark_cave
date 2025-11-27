@@ -9,6 +9,7 @@ import {
   getAllActionBonuses,
 } from "./rules/effectsCalculation";
 import { GAME_CONSTANTS } from "./constants";
+import { logger } from "@/lib/logger";
 
 let gameLoopId: number | null = null;
 let lastFrameTime = 0;
@@ -38,7 +39,7 @@ let isInactive = false;
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
-  console.log("[LOOP] Starting game loop");
+  logger.log("[LOOP] Starting game loop");
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
@@ -52,7 +53,7 @@ export function startGameLoop() {
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
-  console.log(
+  logger.log(
     "[INACTIVITY] Initialized activity tracking at",
     new Date(lastUserActivity).toISOString(),
   );
@@ -70,7 +71,7 @@ export function startGameLoop() {
     lastUserActivity = Date.now();
     if (Date.now() - previousActivity > 60000) {
       // Log only if more than 1 minute since last activity
-      console.log(
+      logger.log(
         "[INACTIVITY] User activity detected at",
         new Date(lastUserActivity).toISOString(),
       );
@@ -90,7 +91,7 @@ export function startGameLoop() {
     const timeSinceActivity = now - lastUserActivity;
 
     if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive) {
-      console.log("[INACTIVITY] ⚠️ INACTIVITY DETECTED!", {
+      logger.log("[INACTIVITY] ⚠️ INACTIVITY DETECTED!", {
         timeSinceActivity: Math.round(timeSinceActivity / 1000) + "s",
         lastActivity: new Date(lastUserActivity).toISOString(),
         threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + "s",
@@ -98,7 +99,7 @@ export function startGameLoop() {
       handleInactivity();
     } else if (timeSinceActivity > 60000) {
       // Log every minute after 1 minute of inactivity
-      console.log(
+      logger.log(
         "[INACTIVITY] User inactive for",
         Math.round(timeSinceActivity / 1000) + "s",
       );
@@ -260,7 +261,7 @@ export function startGameLoop() {
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
         if (!currentState.idleModeState?.isActive) {
-          console.log(
+          logger.log(
             "[GAME LOOP] Normal production running - idle mode is NOT active",
           );
           handleGathererProduction();
@@ -275,7 +276,7 @@ export function startGameLoop() {
           // Check for events (including attack waves)
           currentState.checkEvents();
         } else {
-          console.log("[GAME LOOP] Production SKIPPED - idle mode is active");
+          logger.log("[GAME LOOP] Production SKIPPED - idle mode is active");
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
@@ -292,21 +293,21 @@ export function startGameLoop() {
 }
 
 function handleInactivity() {
-  console.log("[INACTIVITY] 🛑 Stopping game due to inactivity");
+  logger.log("[INACTIVITY] 🛑 Stopping game due to inactivity");
   isInactive = true;
 
   // Stop the game loop
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    console.log("[INACTIVITY] Game loop stopped");
+    logger.log("[INACTIVITY] Game loop stopped");
   }
 
   // Stop inactivity checker
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    console.log("[INACTIVITY] Inactivity checker stopped");
+    logger.log("[INACTIVITY] Inactivity checker stopped");
   }
 
   // Set game loop to inactive
@@ -315,11 +316,11 @@ function handleInactivity() {
     inactivityDialogOpen: true,
     inactivityReason: "timeout",
   });
-  console.log("[INACTIVITY] Inactivity dialog opened");
+  logger.log("[INACTIVITY] Inactivity dialog opened");
 }
 
 export function stopGameLoop() {
-  console.log("[LOOP] Stopping game loop");
+  logger.log("[LOOP] Stopping game loop");
 
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
@@ -334,7 +335,7 @@ export function stopGameLoop() {
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    console.log("[LOOP] Inactivity checker cleared");
+    logger.log("[LOOP] Inactivity checker cleared");
   }
 
   // Remove activity listeners
@@ -414,7 +415,7 @@ function processTick() {
     (key) => state.events[key] !== prevEvents[key],
   );
   if (eventsChanged && import.meta.env.DEV) {
-    console.log("[LOOP] Events changed, triggering autosave");
+    logger.log("[LOOP] Events changed, triggering autosave");
     // Manually call autosave to persist events changes
     handleAutoSave();
   }
@@ -721,7 +722,7 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   // Log cooldown state before saving
-  console.log("[AUTOSAVE] Current cooldown state:", {
+  logger.log("[AUTOSAVE] Current cooldown state:", {
     cooldowns: state.cooldowns,
     cooldownDurations: state.cooldownDurations,
     cooldownDetails: Object.keys(state.cooldowns || {}).map((key) => ({
@@ -899,7 +900,7 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  console.log("[SAVE] Manual save initiated.");
+  logger.log("[SAVE] Manual save initiated.");
 
   const state = useGameStore.getState();
 

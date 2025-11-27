@@ -18,6 +18,7 @@ Preferred communication style: Simple, everyday language.
 - **UI Framework**: Tailwind CSS for utility-first styling with shadcn/ui components for consistent design system
 - **Routing**: Wouter for lightweight client-side routing
 - **Build System**: Vite with Hot Module Replacement for development efficiency
+- **Logging**: For logging use client/src/lib/logger.ts
 
 ### Game Engine Design
 - **Game Loop**: RequestAnimationFrame-based tick system running at 200ms intervals for consistent game progression
