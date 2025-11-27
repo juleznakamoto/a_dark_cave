@@ -1,0 +1,98 @@
+ Referral E2E Flow (2)
+     ✓ should handle complete referral flow: signup -> process -> claim 4ms
+     ✓ should prevent referral after user has already started playing 1ms
+ ✓ server/auth.test.ts (2 tests) 13ms
+   ✓ Authentication (2)
+     ✓ should prevent signup without email confirmation 11ms
+     ✓ should handle session expiry gracefully 1ms
+ ✓ server/referral.test.ts (6 tests) 9ms
+   ✓ Referral System (6)
+     ✓ should prevent self-referral 2ms
+     ✓ should prevent duplicate referral processing 1ms
+     ✓ should handle referrer not found 0ms
+     ✓ should enforce referral limit of 10 1ms
+     ✓ should prevent duplicate referral of same user 1ms
+     ✓ should successfully process valid referral 2ms
+ ✓ server/referral.integration.test.ts (4 tests) 921ms
+   ✓ Referral API Integration (4)
+     ✓ should return 400 when missing parameters 68ms
+     ✓ should return 400 when missing newUserId 5ms
+     ✓ should return 400 when missing referralCode 5ms
+     ✓ should return JSON content-type  838ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 4 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ client/src/game/loop.test.ts:55:38
+     53|     });
+     54| 
+     55|     expect(store.eventDialog.isOpen).toBe(true);
+       |                                      ^
+     56|     expect(store.isPaused || store.eventDialog.isOpen).toBe(true);
+     57|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should trigger events based on conditions
+TypeError: Cannot read properties of undefined (reading 'ancient_scrolls')
+ ❯ Object.condition client/src/game/rules/eventsStory.ts:194:20
+    192|     id: "wizardDecryptsScrolls",
+    193|     condition: (state: GameState) =>
+    194|       state.relics.ancient_scrolls &&
+       |                    ^
+    195|       state.buildings.wizardTower >= 1 &&
+    196|       !state.story.seen.wizardDecryptsScrolls,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:179:33
+ ❯ client/src/game/rules/events.test.ts:22:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should not trigger events with unmet conditions
+TypeError: Cannot read properties of undefined (reading 'ancient_scrolls')
+ ❯ Object.condition client/src/game/rules/eventsStory.ts:194:20
+    192|     id: "wizardDecryptsScrolls",
+    193|     condition: (state: GameState) =>
+    194|       state.relics.ancient_scrolls &&
+       |                    ^
+    195|       state.buildings.wizardTower >= 1 &&
+    196|       !state.story.seen.wizardDecryptsScrolls,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:179:33
+ ❯ client/src/game/rules/events.test.ts:31:44
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should apply event choice effects correctly
+AssertionError: expected undefined to be 150 // Object.is equality
+
+- Expected: 
+150
+
++ Received: 
+undefined
+
+ ❯ client/src/game/rules/events.test.ts:68:37
+     66|     );
+     67| 
+     68|     expect(changes.resources?.wood).toBe(initialWood + 50);
+       |                                     ^
+     69|   });
+     70| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯
+
+
+ Test Files  2 failed | 5 passed (7)
+      Tests  4 failed | 19 passed (23)
+   Start at  18:02:41
+   Duration  2.13s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
