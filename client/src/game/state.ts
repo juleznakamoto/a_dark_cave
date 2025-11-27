@@ -763,12 +763,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const savedState = await loadFromIDB();
     const currentBoostMode = get().boostMode;
 
-    logger.log("[STATE] 🔍 Received savedState from loadFromIDB:", {
-      hasSavedState: !!savedState,
-      playTimeInSavedState: savedState?.playTime,
-      playTimeMinutes: savedState?.playTime ? (savedState.playTime / 1000 / 60).toFixed(2) : 'N/A',
-    });
-
     if (savedState) {
       // Backwards compatibility: Add book_of_ascension if player has any button upgrade clicks
       const hasAnyClicks = savedState.buttonUpgrades && Object.values(savedState.buttonUpgrades).some(
@@ -816,11 +810,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
       };
-
-      logger.log("[STATE] 🔍 Setting state with playTime:", {
-        playTime: loadedState.playTime,
-        playTimeMinutes: (loadedState.playTime / 1000 / 60).toFixed(2),
-      });
 
       set(loadedState);
     } else {
