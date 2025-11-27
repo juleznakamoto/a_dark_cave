@@ -1500,7 +1500,7 @@ export function handleBuildWoodenHut(
   const actionEffects = action?.effects?.[level];
 
   if (!actionEffects) {
-    console.warn(`No effects found for buildWoodenHut at level ${level}`);
+    logger.warn(`No effects found for buildWoodenHut at level ${level}`);
     return result;
   }
 

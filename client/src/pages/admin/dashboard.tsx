@@ -201,7 +201,7 @@ export default function AdminDashboard() {
       await loadData();
       setLoading(false);
     } catch (error) {
-      console.error('Auth check failed:', error);
+      logger.error('Auth check failed:', error);
       setLoading(false);
       setLocation('/');
     }
@@ -214,7 +214,7 @@ export default function AdminDashboard() {
       
       if (!response.ok) {
         const errorText = await response.text();
-        console.error('Admin data fetch failed:', response.status, errorText);
+        logger.error('Admin data fetch failed:', response.status, errorText);
         throw new Error(`Failed to fetch admin data: ${response.status}`);
       }
       
@@ -242,7 +242,7 @@ export default function AdminDashboard() {
 
       setUsers(userList);
     } catch (error) {
-      console.error('Failed to load admin data:', error);
+      logger.error('Failed to load admin data:', error);
     }
   };
 
@@ -508,7 +508,7 @@ export default function AdminDashboard() {
             playtimeData.set(bucket, (playtimeData.get(bucket) || 0) + totalClicks);
           }
         } catch (e) {
-          console.warn('Failed to parse playtime:', playtimeKey, e);
+          logger.warn('Failed to parse playtime:', playtimeKey, e);
         }
       });
     });
@@ -589,7 +589,7 @@ export default function AdminDashboard() {
             });
           }
         } catch (e) {
-          console.warn('Failed to parse playtime:', playtimeKey, e);
+          logger.warn('Failed to parse playtime:', playtimeKey, e);
         }
       });
     });
@@ -647,7 +647,7 @@ export default function AdminDashboard() {
             });
           }
         } catch (e) {
-          console.warn('Failed to parse playtime:', playtimeKey, e);
+          logger.warn('Failed to parse playtime:', playtimeKey, e);
         }
       });
     });
@@ -810,7 +810,7 @@ export default function AdminDashboard() {
 
   // Get churned players (haven't had activity in X days)
   const getChurnedPlayers = () => {
-    console.log('🔍 Getting churned players START:', {
+    logger.log('🔍 Getting churned players START:', {
       churnDays,
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
@@ -827,9 +827,9 @@ export default function AdminDashboard() {
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
     
     const clickUserSamples = Array.from(usersWithClicks).slice(0, 5);
-    console.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
-    console.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
-    console.log('📊 Full click user list:', Array.from(usersWithClicks));
+    logger.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
+    logger.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
+    logger.log('📊 Full click user list:', Array.from(usersWithClicks));
 
     // Get the latest activity for each user from game saves
     // Build a map with FULL user IDs (since clicks have full IDs)
@@ -845,29 +845,29 @@ export default function AdminDashboard() {
     });
 
     const saveSamples = [gameSaves[0], gameSaves[1], gameSaves[2]];
-    console.log('📊 Sample save:', { user_id: saveSamples[0]?.user_id, updated_at: saveSamples[0]?.updated_at });
-    console.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
-    console.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
-    console.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
+    logger.log('📊 Sample save:', { user_id: saveSamples[0]?.user_id, updated_at: saveSamples[0]?.updated_at });
+    logger.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
+    logger.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
+    logger.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
     
     const allSaveUserIds = gameSaves.map(s => s.user_id);
-    console.log('📊 First 10 game save user IDs:', allSaveUserIds.slice(0, 10));
+    logger.log('📊 First 10 game save user IDs:', allSaveUserIds.slice(0, 10));
     
     // Check for overlap
     const clickUsersArray = Array.from(usersWithClicks);
     const overlappingUsers = clickUsersArray.filter(id => allSaveUserIds.includes(id));
-    console.log('📊 OVERLAP CHECK - Users in BOTH clicks and saves:', overlappingUsers.length);
-    console.log('📊 OVERLAP CHECK - Sample overlapping IDs:', overlappingUsers.slice(0, 5));
+    logger.log('📊 OVERLAP CHECK - Users in BOTH clicks and saves:', overlappingUsers.length);
+    logger.log('📊 OVERLAP CHECK - Sample overlapping IDs:', overlappingUsers.slice(0, 5));
 
-    console.log('📊 Total users with activity:', userLastActivity.size);
-    console.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
+    logger.log('📊 Total users with activity:', userLastActivity.size);
+    logger.log('📊 Sample activity dates:', Array.from(userLastActivity.entries()).slice(0, 3).map(([id, date]) => ({ id: id.substring(0, 8), date: date.toISOString() })));
 
     // Find users who haven't been active since cutoff AND have click data
     // ONLY iterate through users who have clicks
     let churnedCount = 0;
     let notChurnedCount = 0;
     
-    console.log('📊 Starting churn check for', usersWithClicks.size, 'users with clicks');
+    logger.log('📊 Starting churn check for', usersWithClicks.size, 'users with clicks');
     
     usersWithClicks.forEach((userId) => {
       // Get last activity for this user (if they have any game saves)
@@ -875,7 +875,7 @@ export default function AdminDashboard() {
       
       if (!lastActivity) {
         // User has clicks but no game save - skip them
-        console.log('⚠️ User has clicks but no game save:', userId.substring(0, 8));
+        logger.log('⚠️ User has clicks but no game save:', userId.substring(0, 8));
         return;
       }
       
@@ -884,7 +884,7 @@ export default function AdminDashboard() {
 
       // Log first 5 checks to see what's happening
       if (churnedCount + notChurnedCount < 5) {
-        console.log('📊 User check:', {
+        logger.log('📊 User check:', {
           userIdFull: userId,
           userIdShort: userId.substring(0, 8),
           lastActivity: lastActivity.toISOString(),
@@ -907,7 +907,7 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Churn analysis COMPLETE:', {
+    logger.log('📊 Churn analysis COMPLETE:', {
       churnedCount,
       notChurnedCount,
       totalChurnedPlayers: churnedPlayers.length,
@@ -920,7 +920,7 @@ export default function AdminDashboard() {
 
   // Get the top 20 most clicked buttons from churned players
   const getChurnedPlayersLastClicks = () => {
-    console.log('🔍 Getting churned players top clicks START:', {
+    logger.log('🔍 Getting churned players top clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -933,7 +933,7 @@ export default function AdminDashboard() {
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
     
-    console.log('📊 Users with clicks:', usersWithClicks.size);
+    logger.log('📊 Users with clicks:', usersWithClicks.size);
     
     // Get churned user IDs based on game save activity
     const churnedUserIds = new Set<string>();
@@ -953,7 +953,7 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
+    logger.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
 
     // Aggregate all clicks from churned users by button
     const buttonTotals: Record<string, number> = {};
@@ -969,7 +969,7 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
+    logger.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
 
     // Convert to array and sort by click count, take top 20
     const topClicks = Object.entries(buttonTotals)
@@ -977,14 +977,14 @@ export default function AdminDashboard() {
       .sort((a, b) => b.clicks - a.clicks)
       .slice(0, 20);
 
-    console.log('📊 Returning top 20 clicked buttons:', topClicks.length);
+    logger.log('📊 Returning top 20 clicked buttons:', topClicks.length);
     
     return topClicks;
   };
 
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
   const getChurnedPlayersFirstTimeClicks = () => {
-    console.log('🔍 Getting churned players first-time clicks START:', {
+    logger.log('🔍 Getting churned players first-time clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -1015,7 +1015,7 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Churned user IDs for first-time clicks:', churnedUserIds.size);
+    logger.log('📊 Churned user IDs for first-time clicks:', churnedUserIds.size);
 
     // Count buttons that were clicked exactly once across all churned players
     const buttonFirstTimeCount: Record<string, number> = {};
@@ -1034,7 +1034,7 @@ export default function AdminDashboard() {
       }
     });
 
-    console.log('📊 Total buttons with single clicks by churned users:', Object.keys(buttonFirstTimeCount).length);
+    logger.log('📊 Total buttons with single clicks by churned users:', Object.keys(buttonFirstTimeCount).length);
 
     // Convert to array and sort by count, take top 20
     const topFirstTimeClicks = Object.entries(buttonFirstTimeCount)
@@ -1042,7 +1042,7 @@ export default function AdminDashboard() {
       .sort((a, b) => b.count - a.count)
       .slice(0, 20);
 
-    console.log('📊 Returning top 20 first-time clicked buttons:', topFirstTimeClicks.length);
+    logger.log('📊 Returning top 20 first-time clicked buttons:', topFirstTimeClicks.length);
     
     return topFirstTimeClicks;
   };
@@ -1575,9 +1575,9 @@ export default function AdminDashboard() {
                         });
                       });
                       const dataKeys = Array.from(allKeys);
-                      console.log('📈 Chart rendering with data keys:', dataKeys);
-                      console.log('📈 Sample data point:', chartData[0]);
-                      console.log('📈 All data points checked:', chartData.length);
+                      logger.log('📈 Chart rendering with data keys:', dataKeys);
+                      logger.log('📈 Sample data point:', chartData[0]);
+                      logger.log('📈 All data points checked:', chartData.length);
                       return dataKeys.map((key, index) => (
                         <Line
                           key={key}

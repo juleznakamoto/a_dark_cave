@@ -446,7 +446,7 @@ export function executeGameAction(
       return handleTradeGoldForAshfireBomb(state, result);
 
     default:
-      console.warn(`No handler found for action: ${actionId}`);
+      logger.warn(`No handler found for action: ${actionId}`);
       return result;
   }
 }

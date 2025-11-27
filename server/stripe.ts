@@ -6,7 +6,7 @@ const stripeSecretKey = process.env.NODE_ENV === 'production'
   : process.env.STRIPE_SECRET_KEY_DEV;
 
 if (!stripeSecretKey) {
-  console.error('⚠️ STRIPE SECRET KEY NOT CONFIGURED - Payment features will not work');
+  logger.error('⚠️ STRIPE SECRET KEY NOT CONFIGURED - Payment features will not work');
 }
 
 const stripe = new Stripe(stripeSecretKey || '', {
@@ -28,7 +28,7 @@ export async function createPaymentIntent(itemId: string, clientPrice?: number) 
   
   // Optional: Log if client sent a different price (potential attack attempt)
   if (clientPrice !== undefined && clientPrice !== serverPrice) {
-    console.warn(`Price manipulation attempt detected for item ${itemId}. Client sent: ${clientPrice}, Server price: ${serverPrice}`);
+    logger.warn(`Price manipulation attempt detected for item ${itemId}. Client sent: ${clientPrice}, Server price: ${serverPrice}`);
   }
 
   const paymentIntent = await stripe.paymentIntents.create({
@@ -56,7 +56,7 @@ export async function verifyPayment(paymentIntentId: string) {
     
     // Verify the payment amount matches the server-side price
     if (item && paymentIntent.amount !== item.price) {
-      console.error(`Payment amount mismatch for item ${itemId}. Expected: ${item.price}, Got: ${paymentIntent.amount}`);
+      logger.error(`Payment amount mismatch for item ${itemId}. Expected: ${item.price}, Got: ${paymentIntent.amount}`);
       return { 
         success: false, 
         error: 'Payment amount verification failed' 

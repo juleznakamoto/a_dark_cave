@@ -107,7 +107,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             });
 
             if (error) {
-              console.error("Error saving purchase to Supabase:", error);
+              logger.error("Error saving purchase to Supabase:", error);
             }
 
             // Set hasMadeNonFreePurchase flag if this is a paid item
@@ -116,7 +116,7 @@ function CheckoutForm({ itemId, onSuccess }: CheckoutFormProps) {
             }
           }
         } catch (error) {
-          console.error("Exception saving purchase to Supabase:", error);
+          logger.error("Exception saving purchase to Supabase:", error);
         }
 
         onSuccess();
@@ -218,7 +218,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         setPurchasedItems(data.map((p) => p.item_id));
       }
     } catch (error) {
-      console.error("Error loading purchased items:", error);
+      logger.error("Error loading purchased items:", error);
     }
   };
 
@@ -283,7 +283,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         setShowSuccess(true);
         setTimeout(() => setShowSuccess(false), 10000);
       } catch (error) {
-        console.error("Error claiming free item:", error);
+        logger.error("Error claiming free item:", error);
         gameState.addLogEntry({
           id: `free-gift-error-${Date.now()}`,
           message: `Failed to claim ${item.name}. Please try again.`,

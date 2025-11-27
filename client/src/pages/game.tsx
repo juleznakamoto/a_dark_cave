@@ -64,7 +64,7 @@ export default function Game() {
         document.removeEventListener("keydown", handleUserGesture);
         document.removeEventListener("touchstart", handleUserGesture);
       } catch (error) {
-        console.warn("Failed to start background music:", error);
+        logger.warn("Failed to start background music:", error);
       }
     };
 

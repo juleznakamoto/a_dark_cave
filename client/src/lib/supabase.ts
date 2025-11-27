@@ -35,7 +35,7 @@ async function initializeSupabase(): Promise<SupabaseClient> {
 
     const config = await response.json();
     if (import.meta.env.DEV) {
-      console.log('Loaded Supabase config from server');
+      logger.log('Loaded Supabase config from server');
     }
 
     return createClient(config.supabaseUrl, config.supabaseAnonKey, {

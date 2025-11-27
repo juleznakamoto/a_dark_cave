@@ -740,7 +740,7 @@ async function handleAutoSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
-    console.error("Auto save failed:", error);
+    logger.error("Auto save failed:", error);
   }
 }
 
@@ -914,7 +914,7 @@ export async function manualSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
-    console.error("[SAVE] Manual save failed:", error);
+    logger.error("[SAVE] Manual save failed:", error);
     throw error;
   }
 }

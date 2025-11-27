@@ -909,7 +909,7 @@ export default function SidePanel() {
               title="Resources"
               items={resourceItems}
               onValueChange={(itemId, oldValue, newValue) => {
-                console.log(
+                logger.log(
                   `Resource ${itemId} increased from ${oldValue} to ${newValue}`,
                 );
               }}

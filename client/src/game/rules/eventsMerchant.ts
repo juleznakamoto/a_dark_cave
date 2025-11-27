@@ -1459,7 +1459,7 @@ function selectTrades(
     const label = `+${buyAmount} ${buyFormatted}`;
     const cost = `${sellAmount} ${sellFormatted}`;
 
-    if (isDev) console.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
+    logger.log(`[MERCHANT] Created ${isBuyTrade ? "buy" : "sell"} trade:`, {
       id: trade.id,
       label,
       cost,
@@ -1485,7 +1485,7 @@ function selectTrades(
     });
   }
 
-  console.log(
+  logger.log(
     `[MERCHANT] Selected ${selected.length} ${isBuyTrade ? "buy" : "sell"} trades out of ${numTrades} requested`,
   );
   return selected;
@@ -1493,7 +1493,7 @@ function selectTrades(
 
 // Function to generate fresh merchant choices
 export function generateMerchantChoices(state: GameState): EventChoice[] {
-  console.log("[MERCHANT] Generating merchant choices", {
+  logger.log("[MERCHANT] Generating merchant choices", {
     woodenHuts: state.buildings.woodenHut,
     stoneHuts: state.buildings.stoneHut,
   });
@@ -1513,13 +1513,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   const usedRewardTypes = new Set<string>();
 
   // Filter buy trades
-  console.log("[MERCHANT] Total buy trades:", buyTrades.length);
+  logger.log("[MERCHANT] Total buy trades:", buyTrades.length);
   const filteredBuyTrades = buyTrades.filter((trade) => {
     const passes = trade.condition(state);
-    console.log("[MERCHANT] Buy trade", trade.id, "condition:", passes);
+    logger.log("[MERCHANT] Buy trade", trade.id, "condition:", passes);
     return passes;
   });
-  console.log("[MERCHANT] Filtered buy trades:", filteredBuyTrades.length);
+  logger.log("[MERCHANT] Filtered buy trades:", filteredBuyTrades.length);
 
   // Determine number of buy trades based on buildings (check highest tier first)
   let numBuyTrades = 2;
@@ -1545,13 +1545,13 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
   );
 
   // Filter sell trades (use separate resource pair tracking)
-  console.log("[MERCHANT] Total sell trades:", sellTrades.length);
+  logger.log("[MERCHANT] Total sell trades:", sellTrades.length);
   const filteredSellTrades = sellTrades.filter((trade) => {
     const passes = trade.condition(state);
-    console.log("[MERCHANT] Sell trade", trade.id, "condition:", passes);
+    logger.log("[MERCHANT] Sell trade", trade.id, "condition:", passes);
     return passes;
   });
-  console.log("[MERCHANT] Filtered sell trades:", filteredSellTrades.length);
+  logger.log("[MERCHANT] Filtered sell trades:", filteredSellTrades.length);
 
   const sellUsedResourcePairs = new Set<string>();
   const sellUsedRewardTypes = new Set<string>();
@@ -1565,7 +1565,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     false,
   );
 
-  console.log("[MERCHANT] Total tool trades:", toolTrades.length);
+  logger.log("[MERCHANT] Total tool trades:", toolTrades.length);
 
   // Check which tool trades pass filters
   const filteredToolTrades = toolTrades.filter((trade) => {
@@ -1580,7 +1580,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       (trade.give === "book" &&
         state.books[trade.giveItem as keyof typeof state.books]);
 
-    console.log("[MERCHANT] Tool trade", trade.id, {
+    logger.log("[MERCHANT] Tool trade", trade.id, {
       conditionPasses,
       alreadyOwned,
       passes: conditionPasses && !alreadyOwned,
@@ -1589,7 +1589,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     return conditionPasses && !alreadyOwned;
   });
 
-  console.log("[MERCHANT] Filtered tool trades:", filteredToolTrades.length);
+  logger.log("[MERCHANT] Filtered tool trades:", filteredToolTrades.length);
 
   // Select 1 tool trade
   const availableToolTrades = filteredToolTrades
@@ -1600,7 +1600,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
       const rawCost = Math.ceil(costOption.amounts[0] * (1 - discount));
       const cost = roundCost(rawCost);
 
-      console.log("[MERCHANT] Created tool trade:", {
+      logger.log("[MERCHANT] Created tool trade:", {
         id: trade.id,
         label: trade.label,
         cost: `${cost} ${costOption.resource}`,
@@ -1657,7 +1657,7 @@ export function generateMerchantChoices(state: GameState): EventChoice[] {
     },
   ];
 
-  console.log(
+  logger.log(
     "[MERCHANT] Final choices generated:",
     finalChoices.length,
     finalChoices.map((c) => ({ id: c.id, label: c.label })),

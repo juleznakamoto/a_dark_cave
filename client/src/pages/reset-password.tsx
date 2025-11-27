@@ -26,7 +26,7 @@ export default function ResetPassword() {
       const handleAuthCallback = async () => {
         // In production, wait for Supabase config to load and be properly initialized
         if (!import.meta.env.DEV) {
-          console.log('Waiting for Supabase to initialize...');
+          logger.log('Waiting for Supabase to initialize...');
           // Wait up to 5 seconds for config to load
           let attempts = 0;
           while (attempts < 50) {
@@ -35,7 +35,7 @@ export default function ResetPassword() {
               const { data } = await supabase.auth.getSession();
               // Check if we got a valid response (not from placeholder client)
               if (data) {
-                console.log('Supabase client is ready');
+                logger.log('Supabase client is ready');
                 break;
               }
             } catch (e) {
@@ -55,7 +55,7 @@ export default function ResetPassword() {
         const accessToken = searchParams.get('access_token') || hashParams.get('access_token');
         const type = searchParams.get('type') || hashParams.get('type');
 
-        console.log('Reset password flow - type:', type, 'has token:', !!accessToken);
+        logger.log('Reset password flow - type:', type, 'has token:', !!accessToken);
 
         if (type === 'recovery' && accessToken) {
           // Exchange the access_token for a session
@@ -65,7 +65,7 @@ export default function ResetPassword() {
           });
 
           if (error) {
-            console.error('Session error:', error);
+            logger.error('Session error:', error);
             toast({
               title: 'Invalid or expired reset link',
               description: 'Please request a new password reset link.',

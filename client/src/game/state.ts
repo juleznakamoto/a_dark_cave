@@ -426,7 +426,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
     if (import.meta.env.DEV) {
-      console.log(`[STATE] Set Flag: ${flag} = ${value}`);
+      logger.log(`[STATE] Set Flag: ${flag} = ${value}`);
     }
 
     set((state) => updateFlag(state, flag, value));
@@ -467,7 +467,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const action = gameActions[actionId];
 
     if (actionId === "buildStoneHut") {
-      console.log("[executeAction] buildStoneHut clicked:", {
+      logger.log("[executeAction] buildStoneHut clicked:", {
         currentStoneHuts: state.buildings.stoneHut,
         currentStone: state.resources.stone,
         cooldown: state.cooldowns[actionId] || 0,
@@ -543,7 +543,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     if (import.meta.env.DEV) {
-      console.log(`[STATE] Action: ${actionId}`, {
+      logger.log(`[STATE] Action: ${actionId}`, {
         stateUpdates: result.stateUpdates,
         logEntries: result.logEntries,
         delayedEffects: result.delayedEffects,
@@ -553,7 +553,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Apply state updates
     set((prevState) => {
       if (actionId === "buildStoneHut") {
-        console.log("[executeAction] Before merge:", {
+        logger.log("[executeAction] Before merge:", {
           prevStateStoneHuts: prevState.buildings.stoneHut,
           prevStateStone: prevState.resources.stone,
           resultStateUpdates: result.stateUpdates,
@@ -565,7 +565,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const mergedUpdates = mergeStateUpdates(prevState, result.stateUpdates);
 
       if (actionId === "buildStoneHut") {
-        console.log("[executeAction] After mergeStateUpdates:", {
+        logger.log("[executeAction] After mergeStateUpdates:", {
           mergedUpdates,
           mergedBuildings: mergedUpdates.buildings,
           mergedResources: mergedUpdates.resources,
@@ -581,7 +581,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       if (actionId === "buildStoneHut") {
-        console.log("[executeAction] Final newState:", {
+        logger.log("[executeAction] Final newState:", {
           stoneHuts: newState.buildings.stoneHut,
           stone: newState.resources.stone,
           buildings: newState.buildings,
@@ -644,7 +644,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           const currentState = get();
           await saveGame(currentState, currentState.playTime);
         } catch (error) {
-          console.error(`Failed to save cooldowns for ${actionId}:`, error);
+          logger.error(`Failed to save cooldowns for ${actionId}:`, error);
         }
       }, 0);
     }
@@ -665,7 +665,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           const currentState = get();
           await saveGame(currentState, currentState.playTime);
         } catch (error) {
-          console.error(`Failed to save cooldowns for ${action}:`, error);
+          logger.error(`Failed to save cooldowns for ${action}:`, error);
         }
       }, 0);
     }

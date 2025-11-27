@@ -89,7 +89,7 @@ export default function SocialMediaRewards() {
         isNewGame: false 
       });
     } catch (error) {
-      console.error("Failed to save social media reward claim:", error);
+      logger.error("Failed to save social media reward claim:", error);
     }
   };
 

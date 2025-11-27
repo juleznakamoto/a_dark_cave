@@ -83,7 +83,7 @@ async function getDB() {
     });
     return db;
   } catch (error) {
-    if (isDev) console.error("Failed to open database:", error);
+    logger.error("Failed to open database:", error);
     throw error;
   }
 }
@@ -162,7 +162,7 @@ export async function saveGame(
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
     if (currentState.inactivityDialogOpen) {
-      if (isDev) console.log("[SAVE] ⚠️ Game is inactive - skipping save");
+      logger.log("[SAVE] ⚠️ Game is inactive - skipping save");
       return;
     }
 
@@ -239,7 +239,7 @@ export async function saveGame(
             const cloudPlayTimeSeconds = cloudSave.playTime || 0;
             const localPlayTimeSeconds = gameState.playTime || 0;
 
-            console.log("[SAVE] 🔍 OCC check - comparing playtimes:", {
+            logger.log("[SAVE] 🔍 OCC check - comparing playtimes:", {
               cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
               localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
               differenceMs: (
@@ -252,7 +252,7 @@ export async function saveGame(
 
             // If cloud has longer playtime, another instance is ahead
             if (cloudPlayTimeSeconds > localPlayTimeSeconds) {
-              console.warn("[SAVE] ⚠️ Detected newer save in cloud:", {
+              logger.warn("[SAVE] ⚠️ Detected newer save in cloud:", {
                 cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
                 localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
                 differenceMs: (
@@ -262,7 +262,7 @@ export async function saveGame(
                 localMinutes: (localPlayTimeSeconds / 1000 / 60).toFixed(2),
               });
 
-              console.log(
+              logger.log(
                 "[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...",
               );
 
@@ -297,7 +297,7 @@ export async function saveGame(
       logger.debug("[SAVE] Cloud save skipped:", cloudError);
     }
   } catch (error) {
-    if (isDev) console.error("[SAVE] ❌ Failed to save game locally:", error);
+    logger.error("[SAVE] ❌ Failed to save game locally:", error);
     throw error;
   }
 }
@@ -313,7 +313,7 @@ export async function loadGame(): Promise<GameState | null> {
     const localSave = await db.get("saves", SAVE_KEY);
 
     if (isDev) {
-      console.log(`[LOAD] 💾 Local save retrieved:`, {
+      logger.log(`[LOAD] 💾 Local save retrieved:`, {
         hasLocalSave: !!localSave,
         timestamp: localSave?.timestamp
           ? new Date(localSave.timestamp).toISOString()
@@ -369,7 +369,7 @@ export async function loadGame(): Promise<GameState | null> {
         }
 
         if (isDev) {
-          console.log(`[LOAD] Cloud save processed:`, {
+          logger.log(`[LOAD] Cloud save processed:`, {
             hasCloudSave: !!cloudSave,
             hasCooldownDurations: !!cloudSave?.gameState?.cooldownDurations,
             cooldownDurations: cloudSave?.gameState?.cooldownDurations,
@@ -381,7 +381,7 @@ export async function loadGame(): Promise<GameState | null> {
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = localSave.playTime || 0;
 
-          console.log("[LOAD] 🔍 OCC: Comparing local vs cloud save:", {
+          logger.log("[LOAD] 🔍 OCC: Comparing local vs cloud save:", {
             cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
             localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
             differenceSeconds: ((cloudPlayTime - localPlayTime) / 1000).toFixed(
@@ -398,7 +398,7 @@ export async function loadGame(): Promise<GameState | null> {
           // Use whichever has longer play time, but always merge referrals from cloud
           if (cloudPlayTime > localPlayTime) {
             if (isDev)
-              console.log("[LOAD] ☁️ Using cloud save (longer playTime)");
+              logger.log("[LOAD] ☁️ Using cloud save (longer playTime)");
             const processedState = await processUnclaimedReferrals(
               cloudSave.gameState,
             );
@@ -417,7 +417,7 @@ export async function loadGame(): Promise<GameState | null> {
             return processedState;
           } else if (localPlayTime === cloudPlayTime) {
             if (isDev)
-              console.log(
+              logger.log(
                 "[LOAD] ⚖️ Local and cloud have identical playTime - using local without sync",
               );
             // Merge referrals from cloud but don't attempt to sync
@@ -443,14 +443,14 @@ export async function loadGame(): Promise<GameState | null> {
               LAST_CLOUD_STATE_KEY,
             );
             if (isDev)
-              console.log("[LOAD] ✅ Using local save (identical playTime)");
+              logger.log("[LOAD] ✅ Using local save (identical playTime)");
             return processedLocalState;
           } else {
             // This case means we're signing in and cloud has MORE playtime than local
             // This is the NORMAL sign-in scenario - cloud has previous sessions
             // DO NOT sync local to cloud in this case, use cloud save instead
             if (isDev)
-              console.log(
+              logger.log(
                 "[LOAD] 🔐 Sign-in detected: Cloud save is newer, using cloud save",
               );
             const processedState = await processUnclaimedReferrals(
@@ -471,7 +471,7 @@ export async function loadGame(): Promise<GameState | null> {
               processedState,
               LAST_CLOUD_STATE_KEY,
             );
-            if (isDev) console.log("[LOAD] ✅ Cloud save loaded and synced locally");
+            logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
             return processedState;
           }
         } else if (cloudSave) {
@@ -512,7 +512,7 @@ export async function loadGame(): Promise<GameState | null> {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state
             if (syncError.message?.includes("OCC violation")) {
               if (isDev)
-                console.log(
+                logger.log(
                   "[LOAD] 📊 Cloud already has this save state - skipping sync",
                 );
               await db.put(
@@ -528,7 +528,7 @@ export async function loadGame(): Promise<GameState | null> {
           return processedState;
         }
       } catch (cloudError) {
-        if (isDev) console.error("Failed to load from cloud:", cloudError);
+        logger.error("Failed to load from cloud:", cloudError);
         // Fall back to local save if cloud fails
         if (localSave) {
           const processedState = await processUnclaimedReferrals(
@@ -547,7 +547,7 @@ export async function loadGame(): Promise<GameState | null> {
         const processedState =
           await processUnclaimedReferrals(stateWithDefaults);
         if (isDev) {
-          console.log(`[LOAD] Returning local state (no auth):`, {
+          logger.log(`[LOAD] Returning local state (no auth):`, {
             hasCooldownDurations: !!processedState.cooldownDurations,
             cooldownDurations: processedState.cooldownDurations,
           });
@@ -556,10 +556,10 @@ export async function loadGame(): Promise<GameState | null> {
       }
     }
 
-    if (isDev) console.log(`[LOAD] No save found, returning null`);
+    logger.log(`[LOAD] No save found, returning null`);
     return null;
   } catch (error) {
-    if (isDev) console.error("Failed to load game:", error);
+    logger.error("Failed to load game:", error);
     return null;
   }
 }
@@ -569,6 +569,6 @@ export async function deleteSave(): Promise<void> {
     const db = await getDB();
     await db.delete("saves", SAVE_KEY);
   } catch (error) {
-    if (isDev) console.error("Failed to delete save:", error);
+    logger.error("Failed to delete save:", error);
   }
 }

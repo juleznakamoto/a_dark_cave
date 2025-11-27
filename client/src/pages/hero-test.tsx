@@ -3,12 +3,12 @@ import Hero from "@/components/ui/animated-shader-hero";
 
 export default function HeroTest() {
   const handlePrimaryClick = () => {
-    console.log('Get Started clicked!');
+    logger.log('Get Started clicked!');
     alert('Get Started clicked! You can add your own logic here.');
   };
 
   const handleSecondaryClick = () => {
-    console.log('Explore Features clicked!');
+    logger.log('Explore Features clicked!');
     alert('Explore Features clicked! You can add your own logic here.');
   };
 

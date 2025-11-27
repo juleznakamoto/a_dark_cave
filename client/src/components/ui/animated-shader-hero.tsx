@@ -106,7 +106,7 @@ void main(){gl_Position=position;}`;
 
       if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
         const error = gl.getShaderInfoLog(shader);
-        console.error("Shader compilation error:", error);
+        logger.error("Shader compilation error:", error);
       }
     }
 
@@ -154,7 +154,7 @@ void main(){gl_Position=position;}`;
       gl.linkProgram(this.program);
 
       if (!gl.getProgramParameter(this.program, gl.LINK_STATUS)) {
-        console.error(gl.getProgramInfoLog(this.program));
+        logger.error(gl.getProgramInfoLog(this.program));
       }
     }
 

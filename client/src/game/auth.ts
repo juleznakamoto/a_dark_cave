@@ -30,7 +30,7 @@ export async function signUp(email: string, password: string, referralCode?: str
 export async function processReferralAfterConfirmation(): Promise<void> {
   // Don't await - process in background without blocking game load
   processReferralInBackground().catch(error => {
-    console.error('[REFERRAL] Background processing failed:', error);
+    logger.error('[REFERRAL] Background processing failed:', error);
   });
 }
 
@@ -126,7 +126,7 @@ async function processReferralInBackground(): Promise<void> {
             await db.put('lastCloudState', freshState, 'lastCloudState');
           }
         } catch (error) {
-          console.error('Failed to update game state:', error);
+          logger.error('Failed to update game state:', error);
         }
         return; // Stop retrying after success or already_processed
       }
@@ -137,7 +137,7 @@ async function processReferralInBackground(): Promise<void> {
         await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
       }
     } catch (error) {
-      console.error('Failed to process referral after confirmation:', error);
+      logger.error('Failed to process referral after confirmation:', error);
       attempts++;
       if (attempts < maxAttempts) {
         await new Promise(resolve => setTimeout(resolve, 1000 * Math.pow(2, attempts)));
@@ -167,37 +167,37 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
-  if (isDev) console.log('[AUTH] 🚪 Signing out user...');
+  logger.log('[AUTH] 🚪 Signing out user...');
   
   const supabase = await getSupabaseClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
-    if (isDev) console.error('[AUTH] ❌ Sign out failed:', error);
+    logger.error('[AUTH] ❌ Sign out failed:', error);
     throw error;
   }
 
-  console.log('[AUTH] ✅ User signed out from Supabase');
+  logger.log('[AUTH] ✅ User signed out from Supabase');
 
   // Delete local save from IndexedDB
   try {
     const { deleteSave } = await import('./save');
     await deleteSave();
-    console.log('[AUTH] 🗑️ Local save deleted from IndexedDB');
+    logger.log('[AUTH] 🗑️ Local save deleted from IndexedDB');
   } catch (deleteError) {
-    console.error('[AUTH] ⚠️ Failed to delete local save:', deleteError);
+    logger.error('[AUTH] ⚠️ Failed to delete local save:', deleteError);
   }
 
   // Stop the game loop
   try {
     const { stopGameLoop } = await import('./loop');
     stopGameLoop();
-    console.log('[AUTH] ⏹️ Game loop stopped');
+    logger.log('[AUTH] ⏹️ Game loop stopped');
   } catch (loopError) {
-    console.error('[AUTH] ⚠️ Failed to stop game loop:', loopError);
+    logger.error('[AUTH] ⚠️ Failed to stop game loop:', loopError);
   }
 
   // Reload to start screen
-  console.log('[AUTH] 🔄 Reloading to start screen...');
+  logger.log('[AUTH] 🔄 Reloading to start screen...');
   window.location.href = '/';
 }
 
@@ -222,7 +222,7 @@ export async function getCurrentUser(): Promise<AuthUser | null> {
       email: user.email || '',
     };
   } catch (error) {
-    console.warn('Failed to get current user:', error);
+    logger.warn('Failed to get current user:', error);
     return null;
   }
 }
@@ -256,11 +256,11 @@ export async function saveGameToSupabase(
 ): Promise<void> {
   const user = await getCurrentUser();
   if (!user) {
-    console.log('[SAVE CLOUD] ❌ Not authenticated');
+    logger.log('[SAVE CLOUD] ❌ Not authenticated');
     throw new Error('Not authenticated');
   }
 
-  console.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
+  logger.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
     playTime,
     isNewGame,
     userId: user.id.substring(0, 8) + '...',
@@ -278,7 +278,7 @@ export async function saveGameToSupabase(
     ? clickData
     : null;
 
-  console.log('[SAVE CLOUD] 💾 Calling database RPC with OCC validation...', {
+  logger.log('[SAVE CLOUD] 💾 Calling database RPC with OCC validation...', {
     hasClickAnalytics: !!analyticsParam,
     clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
     diffSize: JSON.stringify(sanitizedDiff).length,
@@ -303,15 +303,15 @@ export async function saveGameToSupabase(
   if (error) {
     // Check if it's an OCC violation
     if (error.message && error.message.includes('OCC violation')) {
-      console.warn('[SAVE CLOUD] ⚠️ OCC REJECTED by database:', error.message);
+      logger.warn('[SAVE CLOUD] ⚠️ OCC REJECTED by database:', error.message);
       throw new Error(`OCC violation: ${error.message}`);
     }
     
-    console.error('[SAVE CLOUD] ❌ Database write failed:', error);
+    logger.error('[SAVE CLOUD] ❌ Database write failed:', error);
     throw error;
   }
 
-  console.log('[SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database');
+  logger.log('[SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database');
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {

@@ -13,7 +13,7 @@ export default function InactivityDialog() {
   const { inactivityReason } = useGameStore();
 
   const handleReload = () => {
-    console.log('[INACTIVITY] User clicked reload button');
+    logger.log('[INACTIVITY] User clicked reload button');
     window.location.reload();
   };
 

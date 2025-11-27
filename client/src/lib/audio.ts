@@ -42,7 +42,7 @@ export class AudioManager {
       if (!this.audioContext) return;
 
       if (import.meta.env.DEV) {
-        console.log(`Loading sound: ${name} from ${url}`);
+        logger.log(`Loading sound: ${name} from ${url}`);
       }
       const response = await fetch(url);
       if (!response.ok) {
@@ -52,10 +52,10 @@ export class AudioManager {
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
       if (import.meta.env.DEV) {
-        console.log(`Successfully loaded sound: ${name}`);
+        logger.log(`Successfully loaded sound: ${name}`);
       }
     } catch (error) {
-      console.warn(`Failed to load sound ${name} from ${url}:`, error);
+      logger.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
   }
 
@@ -63,14 +63,14 @@ export class AudioManager {
     if (this.soundUrls.size === 0) return;
 
     if (import.meta.env.DEV) {
-      console.log('Loading all sounds after user gesture...');
+      logger.log('Loading all sounds after user gesture...');
     }
     const loadPromises = Array.from(this.soundUrls.entries()).map(([name, url]) =>
       this.loadActualSound(name, url)
     );
     await Promise.all(loadPromises);
     if (import.meta.env.DEV) {
-      console.log('Finished loading all sounds');
+      logger.log('Finished loading all sounds');
     }
   }
 
@@ -87,10 +87,10 @@ export class AudioManager {
       const audioBuffer = await this.audioContext.decodeAudioData(arrayBuffer);
       this.sounds.set(name, audioBuffer);
       if (import.meta.env.DEV) {
-        console.log(`Successfully loaded sound: ${name}`);
+        logger.log(`Successfully loaded sound: ${name}`);
       }
     } catch (error) {
-      console.warn(`Failed to load sound ${name} from ${url}:`, error);
+      logger.warn(`Failed to load sound ${name} from ${url}:`, error);
     }
   }
 
@@ -110,7 +110,7 @@ export class AudioManager {
 
       const audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        console.warn(`Sound ${name} not found`);
+        logger.warn(`Sound ${name} not found`);
         return;
       }
 
@@ -125,7 +125,7 @@ export class AudioManager {
 
       source.start();
     } catch (error) {
-      console.warn(`Failed to play sound ${name}:`, error);
+      logger.warn(`Failed to play sound ${name}:`, error);
     }
   }
 
@@ -148,7 +148,7 @@ export class AudioManager {
 
       const audioBuffer = this.sounds.get(name);
       if (!audioBuffer) {
-        console.warn(`Sound ${name} not found`);
+        logger.warn(`Sound ${name} not found`);
         return;
       }
 
@@ -176,7 +176,7 @@ export class AudioManager {
       this.loopingSources.set(name, source);
       this.loopingSources.set(`${name}_gain`, gainNode as any);
     } catch (error) {
-      console.warn(`Failed to play looping sound ${name}:`, error);
+      logger.warn(`Failed to play looping sound ${name}:`, error);
     }
   }
 
@@ -233,7 +233,7 @@ export class AudioManager {
 
   async preloadSounds(): Promise<void> {
     if (import.meta.env.DEV) {
-      console.log('Registering sounds for lazy loading...');
+      logger.log('Registering sounds for lazy loading...');
     }
     // Just register the sound URLs, don't load yet
     this.soundUrls.set('newVillager', '/sounds/new_villager.wav');
@@ -244,7 +244,7 @@ export class AudioManager {
     this.soundUrls.set('explosion', '/sounds/explosion.wav');
     this.soundUrls.set('wind', '/sounds/wind.wav');
     if (import.meta.env.DEV) {
-      console.log('Sound URLs registered for lazy loading');
+      logger.log('Sound URLs registered for lazy loading');
     }
   }
 
@@ -278,7 +278,7 @@ export class AudioManager {
     } else {
       // If unmuting, we might want to resume background music if it was playing
       this.resumeSounds().catch(error => {
-        console.warn('Failed to resume sounds after unmuting:', error);
+        logger.warn('Failed to resume sounds after unmuting:', error);
       });
     }
   }
@@ -287,5 +287,5 @@ export class AudioManager {
 // Initialize and preload sounds
 export const audioManager = AudioManager.getInstance();
 audioManager.preloadSounds().catch(error => {
-  console.warn('Failed to preload some sounds:', error);
+  logger.warn('Failed to preload some sounds:', error);
 });
