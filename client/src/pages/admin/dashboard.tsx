@@ -1971,7 +1971,7 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
-                  <BarChart data={(() => {
+                  <LineChart data={(() => {
                     const now = new Date();
                     const cutoffDate = subDays(now, churnDays);
                     
@@ -2012,28 +2012,35 @@ export default function AdminDashboard() {
                       }
                     });
 
-                    // Group into buckets (30-minute intervals)
-                    const buckets: Record<string, number> = {};
+                    // Group into 1-hour (60-minute) buckets
+                    const buckets = new Map<number, number>();
+                    let maxBucket = 0;
+                    
                     userMaxPlaytime.forEach((minutes) => {
-                      const bucket = Math.floor(minutes / 30) * 30;
-                      const label = `${bucket}-${bucket + 30}m`;
-                      buckets[label] = (buckets[label] || 0) + 1;
+                      const bucket = Math.floor(minutes / 60) * 60;
+                      maxBucket = Math.max(maxBucket, bucket);
+                      buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
                     });
 
-                    return Object.entries(buckets)
-                      .map(([range, count]) => ({ range, count }))
-                      .sort((a, b) => {
-                        const aStart = parseInt(a.range.split('-')[0]);
-                        const bStart = parseInt(b.range.split('-')[0]);
-                        return aStart - bStart;
+                    // Create array with all buckets from 0 to max
+                    const result: Array<{ time: string; count: number }> = [];
+                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+                      const hours = bucket / 60;
+                      result.push({
+                        time: hours === 0 ? '0h' : `${hours}h`,
+                        count: buckets.get(bucket) || 0,
                       });
+                    }
+
+                    return result;
                   })()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="range" angle={-45} textAnchor="end" height={100} />
-                    <YAxis />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Churned Players', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#ff8042" />
-                  </BarChart>
+                    <Legend />
+                    <Line type="monotone" dataKey="count" stroke="#ff8042" strokeWidth={2} dot={{ r: 4 }} name="Players" />
+                  </LineChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
