@@ -1,4 +1,4 @@
-import { openDB, DBSchema, IDBPDatabase } from "idb";
+import { openDB, DBSchema } from "idb";
 import { GameState, SaveData } from "@shared/schema";
 import {
   saveGameToSupabase,
