@@ -24,7 +24,12 @@ export default function CubeDialog({
   onChoice,
   fallbackExecutedRef,
 }: CubeDialogProps) {
-  const eventChoices = event?.choices || [];
+  // Guard against null/undefined event
+  if (!event) {
+    return null;
+  }
+
+  const eventChoices = event.choices || [];
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout | null = null;
@@ -66,10 +71,10 @@ export default function CubeDialog({
         <div className="absolute inset-0 -z-10 cube-dialog-glow pointer-events-none"></div>
         <DialogHeader className="flex-shrink-0">
           <DialogTitle className="text-lg font-semibold">
-            {event.title || "Strange Encounter"}
+            {event.title || "The Whispering Cube"}
           </DialogTitle>
           <DialogDescription className="text-sm text-muted-foreground mt-2">
-            {event.message}
+            {event.message || "The cube whispers ancient secrets..."}
           </DialogDescription>
         </DialogHeader>
 
