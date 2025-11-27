@@ -209,6 +209,15 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
           const cloudPlayTime = cloudSave.playTime || 0;
           const localPlayTime = playTime;
 
+          console.log('[SAVE] 🔍 OCC check - comparing playtimes:', {
+            cloudPlayTime,
+            cloudPlayTimeMinutes: Math.round(cloudPlayTime / 1000 / 60),
+            localPlayTime,
+            localPlayTimeMinutes: Math.round(localPlayTime / 1000 / 60),
+            difference: cloudPlayTime - localPlayTime,
+            differenceMinutes: Math.round((cloudPlayTime - localPlayTime) / 1000 / 60)
+          });
+
           if (cloudPlayTime > localPlayTime) {
             console.warn('[SAVE] ⚠️ Detected newer save in cloud:', {
               cloudPlayTime,
