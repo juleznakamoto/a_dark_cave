@@ -16,6 +16,7 @@ import { getMaxPopulation } from "@/game/population";
 import { audioManager } from "@/lib/audio";
 import { GAME_CONSTANTS } from "@/game/constants";
 import { ACTION_TO_UPGRADE_KEY, incrementButtonUsage } from "@/game/buttonUpgrades";
+import { logger } from "@/lib/logger";
 
 // Types
 interface GameStore extends GameState {
@@ -425,9 +426,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setFlag: (flag: keyof GameState["flags"], value: boolean) => {
-    if (import.meta.env.DEV) {
-      logger.log(`[STATE] Set Flag: ${flag} = ${value}`);
-    }
+    logger.log(`[STATE] Set Flag: ${flag} = ${value}`);
 
     set((state) => updateFlag(state, flag, value));
   },
@@ -542,13 +541,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
 
-    if (import.meta.env.DEV) {
-      logger.log(`[STATE] Action: ${actionId}`, {
-        stateUpdates: result.stateUpdates,
-        logEntries: result.logEntries,
-        delayedEffects: result.delayedEffects,
-      });
-    }
+    logger.log(`[STATE] Action: ${actionId}`, {
+      stateUpdates: result.stateUpdates,
+      logEntries: result.logEntries,
+      delayedEffects: result.delayedEffects,
+    });
 
     // Apply state updates
     set((prevState) => {
