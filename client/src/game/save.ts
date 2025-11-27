@@ -237,10 +237,7 @@ export async function saveGame(
           const cloudSave = await loadGameFromSupabase();
           if (cloudSave) {
             const cloudPlayTimeSeconds = cloudSave.playTime || 0;
-            // Get current playtime from store (may have been updated by loadGame)
-            const { useGameStore } = await import("./state");
-            const currentStorePlayTime = useGameStore.getState().playTime || 0;
-            const localPlayTimeSeconds = currentStorePlayTime;
+            const localPlayTimeSeconds = gameState.playTime || 0;
 
             logger.log("[SAVE] 🔍 OCC check - comparing playtimes:", {
               cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),

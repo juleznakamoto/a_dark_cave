@@ -733,10 +733,9 @@ async function handleAutoSave() {
   });
 
   try {
-    // Get the latest state again after building gameState, in case OCC updated it
-    const latestState = useGameStore.getState();
-    const playTimeToSave = latestState.isNewGame ? 0 : latestState.playTime;
-    
+    // If this is a new game, save playTime as the current session time only
+    // Otherwise, save the accumulated playTime
+    const playTimeToSave = state.isNewGame ? 0 : state.playTime;
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
