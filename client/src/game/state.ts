@@ -512,18 +512,18 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Store initial cooldown duration if it's a new cooldown
     let shouldTriggerImmediateSave = false;
     let cooldownDuration = 0;
-    
+
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
       cooldownDuration = initialDuration;
-      
+
       set((prevState) => ({
         cooldownDurations: {
           ...prevState.cooldownDurations,
           [actionId]: initialDuration,
         },
       }));
-      
+
       // Mark for immediate save if cooldown > 5 seconds
       shouldTriggerImmediateSave = initialDuration > 5;
     }
@@ -677,7 +677,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
           newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
         }
       }
-      
+
       // Only update cooldowns, keep cooldownDurations intact for UI reference
       return { cooldowns: newCooldowns };
     });
@@ -685,22 +685,22 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   restartGame: () => {
     const state = get();
-    
+
     // Preserve these across game restarts
     const preserved = {
       // Purchases and boosts that persist
       boostMode: state.boostMode,
       activatedPurchases: state.activatedPurchases || {},
       feastPurchases: state.feastPurchases || {},
-      
+
       // Referral system (persists forever)
       referrals: state.referrals || [],
       referralCount: state.referralCount || 0,
       referredUsers: state.referredUsers || [],
-      
+
       // Social media rewards (persist forever)
       social_media_rewards: state.social_media_rewards || {},
-      
+
       // Cruel mode status
       cruelMode: state.activatedPurchases?.['cruel_mode'] || false,
       CM: (state.activatedPurchases?.['cruel_mode'] || false) ? 1 : 0,
@@ -710,15 +710,15 @@ export const useGameStore = create<GameStore>((set, get) => ({
     const resetState = {
       ...defaultGameState,
       ...preserved,
-      
+
       // UI state
       activeTab: "cave",
       devMode: import.meta.env.DEV,
-      
+
       // Recalculate derived state
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
-      
+
       // Mark as new game
       isNewGame: true,
       startTime: Date.now(),
@@ -761,6 +761,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
   loadGame: async () => {
     const { loadGame: loadFromIDB } = await import('@/game/save');
     const savedState = await loadFromIDB();
+
+    logger.log('[STATE] 📊 loadGame received state from save.ts:', {
+      exists: !!savedState,
+      playTime: savedState?.playTime,
+      hasPlayTime: savedState ? 'playTime' in savedState : false,
+      allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
+    });
+
+    const set = get().setState;
+
+    // Get current boost mode before loading
     const currentBoostMode = get().boostMode;
 
     if (savedState) {

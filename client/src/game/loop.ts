@@ -732,10 +732,23 @@ async function handleAutoSave() {
     })),
   });
 
+  logger.log("[AUTOSAVE] 📊 State playTime values:", {
+    statePlayTime: state.playTime,
+    gameStatePlayTime: gameState.playTime,
+    isNewGame: state.isNewGame,
+    playTimeToSave: state.isNewGame ? 0 : state.playTime,
+  });
+
   try {
     // If this is a new game, save playTime as the current session time only
     // Otherwise, save the accumulated playTime
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
+    
+    logger.log("[AUTOSAVE] 📊 Calling saveGame with:", {
+      playTimeToSave,
+      gameStateHasPlayTime: 'playTime' in gameState,
+    });
+    
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
