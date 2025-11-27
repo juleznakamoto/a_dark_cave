@@ -46,6 +46,11 @@ export default function MerchantDialog({
   onChoice,
   hasScriptorium,
 }: MerchantDialogProps) {
+  // Guard against null event
+  if (!event) {
+    return null;
+  }
+  
   const eventChoices = event.choices || [];
   const mobileTooltip = useMobileButtonTooltip();
   const discountTooltip = useMobileTooltip();
