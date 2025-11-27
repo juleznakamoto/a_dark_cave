@@ -728,6 +728,13 @@ function handleMadnessCheck() {
 
 async function handleAutoSave() {
   const state = useGameStore.getState();
+  
+  logger.log("[AUTOSAVE] 📊 Raw state snapshot:", {
+    statePlayTime: state.playTime,
+    playTimeMinutes: (state.playTime / 1000 / 60).toFixed(2),
+    isNewGame: state.isNewGame,
+  });
+  
   const gameState: GameState = buildGameState(state);
 
   // Log cooldown state before saving
@@ -746,6 +753,7 @@ async function handleAutoSave() {
     gameStatePlayTime: gameState.playTime,
     isNewGame: state.isNewGame,
     playTimeToSave: state.isNewGame ? 0 : state.playTime,
+    playTimeMatch: state.playTime === gameState.playTime,
   });
 
   try {

@@ -788,6 +788,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         }
         savedState.books.book_of_ascension = true;
       }
+      // CRITICAL: Extract playTime FIRST before any processing
+      const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
+      
+      logger.log('[STATE] 📊 Setting Zustand state with playTime:', {
+        loadedPlayTime,
+        savedStatePlayTime: savedState.playTime,
+      });
+
       const loadedState = {
         ...savedState,
         activeTab: "cave",
@@ -816,7 +824,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         authNotificationVisible: savedState.authNotificationVisible !== undefined ? savedState.authNotificationVisible : false,
         mysteriousNoteShopNotificationSeen: savedState.mysteriousNoteShopNotificationSeen !== undefined ? savedState.mysteriousNoteShopNotificationSeen : false,
         mysteriousNoteDonateNotificationSeen: savedState.mysteriousNoteDonateNotificationSeen !== undefined ? savedState.mysteriousNoteDonateNotificationSeen : false,
-        playTime: savedState.playTime !== undefined ? savedState.playTime : 0, // Ensure playTime is loaded
+        playTime: loadedPlayTime, // CRITICAL: Use the extracted playTime value
         isNewGame: false, // Clear the new game flag when loading
         startTime: savedState.startTime !== undefined ? savedState.startTime : 0, // Ensure startTime is loaded
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
@@ -825,6 +833,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       set(loadedState);
+      
+      logger.log('[STATE] 📊 Zustand state after set:', {
+        statePlayTime: get().playTime,
+        loadedStatePlayTime: loadedState.playTime,
+      });
       StateManager.scheduleEffectsUpdate(get);
     } else {
       const newGameState = {
