@@ -15,7 +15,8 @@ describe('Event System', () => {
       events: {},
       log: [],
       story: { seen: {} },
-      relics: {}, // Add relics to prevent undefined errors
+      relics: {},
+      weapons: {}, // Add weapons to prevent undefined errors
     };
   });
 
