@@ -216,13 +216,13 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         console.warn('[SAVE] ⚠️ Cloud save rejected by OCC:', cloudError.message);
         console.log('[SAVE] 🛑 Another tab is actively playing - stopping this tab...');
         
-        // Stop game loop and show multi-tab dialog
+        // Stop game loop and show inactivity dialog
         const { stopGameLoop } = await import('./loop');
         stopGameLoop();
         
         useGameStore.setState({ 
           isGameLoopActive: false,
-          multiTabDialogOpen: true 
+          inactivityDialogOpen: true 
         });
       } else {
         console.debug('[SAVE] Cloud save skipped:', cloudError);

@@ -15,7 +15,6 @@ import IdleModeDialog from "./IdleModeDialog";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
 import InactivityDialog from "./InactivityDialog";
-import MultiTabDialog from "./MultiTabDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -40,7 +39,6 @@ export default function GameContainer() {
     authDialogOpen, // Added authDialogOpen to state
     shopDialogOpen, // Added shopDialogOpen to state
     inactivityDialogOpen, // Added inactivityDialogOpen to state
-    multiTabDialogOpen, // Added multiTabDialogOpen to state
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -307,7 +305,6 @@ export default function GameContainer() {
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
-      {multiTabDialogOpen && <MultiTabDialog />}
     </div>
   );
 }
