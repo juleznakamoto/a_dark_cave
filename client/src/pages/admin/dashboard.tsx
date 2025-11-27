@@ -700,6 +700,46 @@ export default function AdminDashboard() {
       .slice(0, 15); // Top 15 buttons
   };
 
+  const getAverageClicksByButton = () => {
+    let filtered = selectedUser === 'all'
+      ? clickData
+      : clickData.filter(d => d.user_id === selectedUser);
+
+    // Filter by completed players if toggle is on
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filtered = filtered.filter(d => completedUserIds.has(d.user_id));
+    }
+
+    const buttonStats: Record<string, { total: number; users: Set<string> }> = {};
+
+    filtered.forEach(entry => {
+      // Format: { "playtime": { "button": count } }
+      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
+        Object.entries(playtimeClicks).forEach(([button, count]) => {
+          const cleanButton = cleanButtonName(button);
+          if (!buttonStats[cleanButton]) {
+            buttonStats[cleanButton] = { total: 0, users: new Set() };
+          }
+          buttonStats[cleanButton].total += count as number;
+          buttonStats[cleanButton].users.add(entry.user_id);
+        });
+      });
+    });
+
+    return Object.entries(buttonStats)
+      .map(([button, stats]) => ({
+        button,
+        average: parseFloat((stats.total / stats.users.size).toFixed(2))
+      }))
+      .sort((a, b) => b.average - a.average)
+      .slice(0, 15); // Top 15 buttons by average
+  };
+
   const getGameCompletionStats = () => {
     const completed = gameSaves.filter(save =>
       save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
@@ -1608,6 +1648,24 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="total" fill="#8884d8" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Average Clicks per Button</CardTitle>
+                <CardDescription>Average clicks per user who clicked each button (top 15)</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getAverageClicksByButton()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="average" fill="#82ca9d" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
