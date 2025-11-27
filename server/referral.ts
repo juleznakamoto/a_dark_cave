@@ -119,7 +119,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   };
 
   const oldNewUserGold = initialGameState.resources?.gold || 0;
-  const newNewUserGold = oldNewUserGold + 250;
+  const newNewUserGold = oldNewUserGold + 100;
 
   const updatedUserState = {
     ...initialGameState,
@@ -133,7 +133,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       ...(initialGameState.log || []),
       {
         id: `referral-bonus-new-${Date.now()}`,
-        message: "You were invited by someone to this world! +250 Gold",
+        message: "You were invited by someone to this world! +100 Gold",
         timestamp: Date.now(),
         type: "system",
       }

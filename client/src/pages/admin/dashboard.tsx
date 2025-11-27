@@ -700,50 +700,6 @@ export default function AdminDashboard() {
       .slice(0, 15); // Top 15 buttons
   };
 
-  const getAverageClicksPerPlayer = () => {
-    let filtered = selectedUser === 'all'
-      ? clickData
-      : clickData.filter(d => d.user_id === selectedUser);
-
-    // Filter by completed players if toggle is on
-    if (showCompletedOnly) {
-      const completedUserIds = new Set(
-        gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
-          .map(save => save.user_id)
-      );
-      filtered = filtered.filter(d => completedUserIds.has(d.user_id));
-    }
-
-    // Track total clicks and player count per button
-    const buttonStats: Record<string, { total: number; players: Set<string> }> = {};
-
-    filtered.forEach(entry => {
-      // Format: { "playtime": { "button": count } }
-      Object.values(entry.clicks).forEach((playtimeClicks: any) => {
-        Object.entries(playtimeClicks).forEach(([button, count]) => {
-          const cleanButton = cleanButtonName(button);
-          if (!buttonStats[cleanButton]) {
-            buttonStats[cleanButton] = { total: 0, players: new Set() };
-          }
-          buttonStats[cleanButton].total += count as number;
-          buttonStats[cleanButton].players.add(entry.user_id);
-        });
-      });
-    });
-
-    // Calculate averages
-    return Object.entries(buttonStats)
-      .map(([button, stats]) => ({
-        button,
-        average: parseFloat((stats.total / stats.players.size).toFixed(2)),
-        totalClicks: stats.total,
-        playerCount: stats.players.size,
-      }))
-      .sort((a, b) => b.totalClicks - a.totalClicks) // Sort by total clicks to get top buttons
-      .slice(0, 30); // Top 30 buttons
-  };
-
   const getGameCompletionStats = () => {
     const completed = gameSaves.filter(save =>
       save.game_state?.events?.cube15a || save.game_state?.events?.cube15b
@@ -963,9 +919,9 @@ export default function AdminDashboard() {
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
   };
 
-  // Get the top 20 LAST buttons clicked by churned players before they churned
+  // Get the top 20 most clicked buttons from churned players
   const getChurnedPlayersLastClicks = () => {
-    logger.log('🔍 Getting churned players last clicks START:', {
+    logger.log('🔍 Getting churned players top clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -998,45 +954,33 @@ export default function AdminDashboard() {
       }
     });
 
-    logger.log('📊 Churned user IDs for last clicks:', churnedUserIds.size);
+    logger.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
 
-    // For each churned user, find their LAST button click
-    const lastButtonClicks: Record<string, number> = {};
+    // Aggregate all clicks from churned users by button
+    const buttonTotals: Record<string, number> = {};
 
     clickData.forEach(entry => {
       if (churnedUserIds.has(entry.user_id)) {
-        // Get all playtime keys and sort to find the latest
-        const playtimeKeys = Object.keys(entry.clicks).sort((a, b) => {
-          const aMinutes = parseInt(a.replace('m', ''));
-          const bMinutes = parseInt(b.replace('m', ''));
-          return bMinutes - aMinutes; // Sort descending
-        });
-
-        if (playtimeKeys.length > 0) {
-          const lastPlaytimeKey = playtimeKeys[0];
-          const lastClicks = entry.clicks[lastPlaytimeKey] as Record<string, number>;
-          
-          // Find the button with the highest timestamp (most recent)
-          // Since we don't have timestamps per button, we'll take all buttons from the last playtime bucket
-          Object.keys(lastClicks).forEach(button => {
+        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
+          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
             const cleanButton = cleanButtonName(button);
-            lastButtonClicks[cleanButton] = (lastButtonClicks[cleanButton] || 0) + 1;
+            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
           });
-        }
+        });
       }
     });
 
-    logger.log('📊 Total unique last buttons by churned users:', Object.keys(lastButtonClicks).length);
+    logger.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
 
-    // Convert to array and sort by count, take top 20
-    const topLastClicks = Object.entries(lastButtonClicks)
-      .map(([button, count]) => ({ button, count }))
-      .sort((a, b) => b.count - a.count)
+    // Convert to array and sort by click count, take top 20
+    const topClicks = Object.entries(buttonTotals)
+      .map(([button, clicks]) => ({ button, clicks }))
+      .sort((a, b) => b.clicks - a.clicks)
       .slice(0, 20);
 
-    logger.log('📊 Returning top 20 last clicked buttons:', topLastClicks.length);
+    logger.log('📊 Returning top 20 clicked buttons:', topClicks.length);
     
-    return topLastClicks;
+    return topClicks;
   };
 
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
@@ -1668,24 +1612,6 @@ export default function AdminDashboard() {
                 </ResponsiveContainer>
               </CardContent>
             </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Average Clicks per Player (Top 30 Buttons)</CardTitle>
-                <CardDescription>Average number of clicks per player for each button</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={500}>
-                  <BarChart data={getAverageClicksPerPlayer()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="button" angle={-45} textAnchor="end" height={120} />
-                    <YAxis label={{ value: 'Avg Clicks/Player', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Bar dataKey="average" fill="#82ca9d" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="completion" className="space-y-4">
@@ -1992,8 +1918,8 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Top 20 Last Buttons Clicked by Churned Players</CardTitle>
-                <CardDescription>What were the last actions churned players performed before stopping?</CardDescription>
+                <CardTitle>Top 20 Buttons Clicked by Churned Players</CardTitle>
+                <CardDescription>What actions did churned players perform the most?</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
@@ -2002,7 +1928,7 @@ export default function AdminDashboard() {
                     <XAxis dataKey="button" angle={-45} textAnchor="end" height={100} />
                     <YAxis />
                     <Tooltip />
-                    <Bar dataKey="count" fill="#ff8042" />
+                    <Bar dataKey="clicks" fill="#ff8042" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
@@ -2033,7 +1959,7 @@ export default function AdminDashboard() {
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={(() => {
+                  <BarChart data={(() => {
                     const now = new Date();
                     const cutoffDate = subDays(now, churnDays);
                     
@@ -2074,35 +2000,28 @@ export default function AdminDashboard() {
                       }
                     });
 
-                    // Group into 1-hour (60-minute) buckets
-                    const buckets = new Map<number, number>();
-                    let maxBucket = 0;
-                    
+                    // Group into buckets (30-minute intervals)
+                    const buckets: Record<string, number> = {};
                     userMaxPlaytime.forEach((minutes) => {
-                      const bucket = Math.floor(minutes / 60) * 60;
-                      maxBucket = Math.max(maxBucket, bucket);
-                      buckets.set(bucket, (buckets.get(bucket) || 0) + 1);
+                      const bucket = Math.floor(minutes / 30) * 30;
+                      const label = `${bucket}-${bucket + 30}m`;
+                      buckets[label] = (buckets[label] || 0) + 1;
                     });
 
-                    // Create array with all buckets from 0 to max
-                    const result: Array<{ time: string; count: number }> = [];
-                    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-                      const hours = bucket / 60;
-                      result.push({
-                        time: hours === 0 ? '0h' : `${hours}h`,
-                        count: buckets.get(bucket) || 0,
+                    return Object.entries(buckets)
+                      .map(([range, count]) => ({ range, count }))
+                      .sort((a, b) => {
+                        const aStart = parseInt(a.range.split('-')[0]);
+                        const bStart = parseInt(b.range.split('-')[0]);
+                        return aStart - bStart;
                       });
-                    }
-
-                    return result;
                   })()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Churned Players', angle: -90, position: 'insideLeft' }} />
+                    <XAxis dataKey="range" angle={-45} textAnchor="end" height={100} />
+                    <YAxis />
                     <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="count" stroke="#ff8042" strokeWidth={2} dot={{ r: 4 }} name="Players" />
-                  </LineChart>
+                    <Bar dataKey="count" fill="#ff8042" />
+                  </BarChart>
                 </ResponsiveContainer>
               </CardContent>
             </Card>
