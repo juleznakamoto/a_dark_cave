@@ -210,39 +210,13 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
           const localPlayTime = playTime;
 
           const timeDifference = localPlayTime - cloudPlayTime;
-          const MIN_TIME_AHEAD = 5000; // Local must be at least 5 seconds ahead
 
           console.log('[SAVE] 🔍 OCC check - comparing playtimes:', {
             cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
             localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
             differenceSeconds: (timeDifference / 1000).toFixed(2),
-            minRequiredAheadSeconds: (MIN_TIME_AHEAD / 1000).toFixed(2),
-            isAheadEnough: timeDifference >= MIN_TIME_AHEAD,
-            willStopTab: timeDifference < MIN_TIME_AHEAD
+            localIsNewer: localPlayTime >= cloudPlayTime
           });
-
-          // Enforce minimum time ahead requirement
-          if (timeDifference < MIN_TIME_AHEAD) {
-            console.warn('[SAVE] ⚠️ Local playTime not ahead enough - stopping this tab:', {
-              cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
-              localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
-              differenceSeconds: (timeDifference / 1000).toFixed(2),
-              requiredSeconds: (MIN_TIME_AHEAD / 1000).toFixed(2)
-            });
-            console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
-
-            // Stop game loop and show inactivity dialog
-            const { stopGameLoop } = await import('./loop');
-
-            useGameStore.setState({
-              isGameLoopActive: false,
-              inactivityDialogOpen: true,
-              inactivityReason: 'multitab'
-            });
-
-            stopGameLoop();
-            return; // Don't save
-          }
 
           if (cloudPlayTime > localPlayTime) {
             console.warn('[SAVE] ⚠️ Detected newer save in cloud:', {
@@ -330,14 +304,12 @@ export async function loadGame(): Promise<GameState | null> {
           const localPlayTime = localSave.playTime || 0;
 
           const timeDifference = localPlayTime - cloudPlayTime;
-          const MIN_TIME_AHEAD = 5000; // Local must be at least 5 seconds ahead
 
           console.log('[LOAD] 🔍 OCC: Comparing local vs cloud save:', {
             cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
             localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
             differenceSeconds: (timeDifference / 1000).toFixed(2),
-            minRequiredAheadSeconds: (MIN_TIME_AHEAD / 1000).toFixed(2),
-            winner: timeDifference >= MIN_TIME_AHEAD ? 'local' : 'cloud'
+            winner: cloudPlayTime > localPlayTime ? 'cloud' : (localPlayTime === cloudPlayTime ? 'equal' : 'local')
           });
 
           // Use whichever has longer play time, but always merge referrals from cloud
@@ -364,7 +336,7 @@ export async function loadGame(): Promise<GameState | null> {
             };
 
             const processedLocalState = await processUnclaimedReferrals(mergedState);
-            
+
             // Update lastCloudState so next save will be a diff
             await db.put('lastCloudState', processedLocalState, LAST_CLOUD_STATE_KEY);
             console.log('[LOAD] ✅ Using local save (identical playTime)');

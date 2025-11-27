@@ -177,7 +177,7 @@ export default function GameFooter() {
       toast({
         title: "Referral limit reached",
         description:
-          "You have already invited 10 friends. For collaboration requests, click on Feedback.",
+          "You have already invited 10 friends. For collaboration requests, click on Contact.",
         variant: "destructive",
       });
       return;
@@ -418,7 +418,7 @@ export default function GameFooter() {
               href="mailto:support@a-dark-cave.com"
               className="hover:text-foreground transition-colors opacity-35 hover:opacity-100"
             >
-              Feedback
+              Contact
             </a>
             <a
               href="/privacy"
