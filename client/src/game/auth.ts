@@ -261,7 +261,9 @@ export async function saveGameToSupabase(
   console.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
     playTime,
     isNewGame,
-    userId: user.id.substring(0, 8) + '...'
+    userId: user.id.substring(0, 8) + '...',
+    diffKeys: Object.keys(stateDiff),
+    hasPlayTime: 'playTime' in stateDiff
   });
 
   // Deep clone and sanitize the diff to remove non-serializable data
@@ -269,69 +271,26 @@ export async function saveGameToSupabase(
 
   const supabase = await getSupabaseClient();
 
-  // OCC Step 1: Read current state from database
-  const { data: existingSave, error: readError } = await supabase
-    .from('game_saves')
-    .select('game_state, updated_at')
-    .eq('user_id', user.id)
-    .maybeSingle();
-
-  if (readError) {
-    console.error('[SAVE CLOUD] ❌ Failed to read existing save:', readError);
-    throw readError;
-  }
-
-  console.log('[SAVE CLOUD] 📖 Read existing save:', {
-    hasExistingSave: !!existingSave,
-    existingPlayTime: existingSave?.game_state?.playTime || 0,
-    existingUpdatedAt: existingSave?.updated_at,
-    newPlayTime: playTime
-  });
-
-  // Merge diff with existing state
-  let finalState: any;
-  if (existingSave?.game_state) {
-    const existingPlayTime = existingSave.game_state.playTime || 0;
-
-    // OCC Step 2: Validate that our save is newer (has longer playTime)
-    if (!isNewGame && playTime !== undefined && playTime <= existingPlayTime) {
-      console.warn('[SAVE CLOUD] ⚠️ OCC REJECTED: Cloud save has equal or longer playTime', {
-        existingPlayTime,
-        currentPlayTime: playTime,
-        difference: existingPlayTime - playTime,
-        isNewGame
-      });
-      throw new Error(`Cloud save rejected: existing playTime (${existingPlayTime}ms) >= current playTime (${playTime}ms)`);
-    }
-
-    console.log('[SAVE CLOUD] ✅ OCC CHECK PASSED: Current playTime is longer', {
-      existingPlayTime,
-      currentPlayTime: playTime,
-      difference: playTime - existingPlayTime
-    });
-
-    // Merge diff into existing state
-    finalState = { ...existingSave.game_state, ...sanitizedDiff };
-  } else {
-    // No existing save, use diff as complete state
-    console.log('[SAVE CLOUD] 📝 No existing save, creating new one');
-    finalState = sanitizedDiff;
-  }
-
-  // Call the combined save function - single database call
   // Ensure clickAnalytics is either a valid object with data or null
   const analyticsParam = clickData && Object.keys(clickData).length > 0
     ? clickData
     : null;
 
-  console.log('[SAVE CLOUD] 💾 Writing to database...', {
+  console.log('[SAVE CLOUD] 💾 Calling database RPC with OCC validation...', {
     hasClickAnalytics: !!analyticsParam,
     clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
     diffSize: JSON.stringify(sanitizedDiff).length,
-    finalStateSize: JSON.stringify(finalState).length
+    playTime,
+    isNewGame,
+    clearClicks
   });
 
-  // OCC Step 3: Write with the playtime validation built into the RPC
+  // OCC: Single atomic database call - the RPC function handles:
+  // 1. Reading current state
+  // 2. Validating playTime is strictly greater
+  // 3. Merging diff with existing state
+  // 4. Writing merged state
+  // All in one transaction - prevents race conditions
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
     p_game_state_diff: sanitizedDiff,
@@ -340,11 +299,17 @@ export async function saveGameToSupabase(
   });
 
   if (error) {
+    // Check if it's an OCC violation
+    if (error.message && error.message.includes('OCC violation')) {
+      console.warn('[SAVE CLOUD] ⚠️ OCC REJECTED by database:', error.message);
+      throw new Error(`OCC violation: ${error.message}`);
+    }
+    
     console.error('[SAVE CLOUD] ❌ Database write failed:', error);
     throw error;
   }
 
-  console.log('[SAVE CLOUD] ✅ Cloud save completed successfully');
+  console.log('[SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database');
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {
