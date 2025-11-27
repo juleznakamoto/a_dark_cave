@@ -1,0 +1,77 @@
+{dialogOpen: false, isActive: false, idleModeState: {…}}
+index-C1Ino0fn.js:129 Sound backgroundMusic not found
+playLoopingSound @ index-C1Ino0fn.js:129
+await in playLoopingSound
+startBackgroundMusic @ index-C1Ino0fn.js:129
+resumeSounds @ index-C1Ino0fn.js:129
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574
+requestAnimationFrame
+o @ index-C1Ino0fn.js:574Understand this warning
+index-C1Ino0fn.js:255 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeSeconds: '93455.65', localPlayTimeSeconds: '14.70', differenceSeconds: '93440.94', winner: 'cloud'}
+index-C1Ino0fn.js:255 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 93455647.10000013, isNewGame: false, userId: '2aaa8da8...', diffKeys: Array(1), hasPlayTime: false}
+index-C1Ino0fn.js:255 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(1), diffSize: 27, playTime: 93455647.10000013, isNewGame: false, …}
+index-C1Ino0fn.js:255 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+index-C1Ino0fn.js:255 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '93455647.10', localPlayTimeMs: '93457788.70', differenceMs: '-2141.60', cloudMinutes: '1557.59', localMinutes: '1557.63', …}
+index-C1Ino0fn.js:255 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 93457788.70000012, isNewGame: false, userId: '2aaa8da8...', diffKeys: Array(3), hasPlayTime: true}
+index-C1Ino0fn.js:255 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 90, playTime: 93457788.70000012, isNewGame: false, …}
+index-C1Ino0fn.js:255 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
