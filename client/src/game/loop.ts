@@ -123,19 +123,20 @@ export function startGameLoop() {
     }
 
     try {
-      logger.log('[SESSION] 🔍 Checking session validity (server-side validation)...');
+      logger.log('[SESSION] 🔍 Forcing session refresh to validate with server...');
       
-      // Use getSession() which makes a server request to validate the JWT
-      // This will detect if the session was invalidated by another login
+      // Use refreshSession() to FORCE a server-side token exchange
+      // This is the ONLY way to detect if the session was revoked by single-session enforcement
       const { getSupabaseClient } = await import('@/lib/supabase');
       const supabase = await getSupabaseClient();
-      const { data: { session }, error } = await supabase.auth.getSession();
+      const { data: { session }, error } = await supabase.auth.refreshSession();
 
-      // If there's an error or no session, the token was invalidated
+      // If there's an error or no session, the token was invalidated server-side
       if (error || !session) {
         logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
           hasError: !!error,
           errorMessage: error?.message,
+          errorCode: error?.code,
           hasSession: !!session,
         });
         stopGameLoop();
@@ -144,14 +145,14 @@ export function startGameLoop() {
           inactivityReason: 'multitab',
         });
       } else {
-        logger.log('[SESSION] ✅ Session still valid', {
+        logger.log('[SESSION] ✅ Session refreshed and valid', {
           userId: session.user.id.substring(0, 8) + '...',
           email: session.user.email,
           expiresAt: new Date(session.expires_at! * 1000).toISOString(),
         });
       }
     } catch (error) {
-      logger.error('[SESSION] ❌ Error checking session:', error);
+      logger.error('[SESSION] ❌ Error refreshing session:', error);
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);

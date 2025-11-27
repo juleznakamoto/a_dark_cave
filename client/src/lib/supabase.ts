@@ -97,6 +97,10 @@ export const supabase = {
       const client = await getSupabaseClient();
       return client.auth.getSession();
     },
+    refreshSession: async () => {
+      const client = await getSupabaseClient();
+      return client.auth.refreshSession();
+    },
     verifyOtp: async (params: any) => {
       const client = await getSupabaseClient();
       return client.auth.verifyOtp(params);
