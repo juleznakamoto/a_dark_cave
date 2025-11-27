@@ -769,8 +769,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
     });
 
-    const set = get().setState;
-
     // Get current boost mode before loading
     const currentBoostMode = get().boostMode;
 
@@ -823,6 +821,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       set(loadedState);
+      StateManager.scheduleEffectsUpdate(get);
     } else {
       const newGameState = {
         ...defaultGameState,
