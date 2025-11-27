@@ -39,8 +39,8 @@ const DialogContent = React.forwardRef<
     <DialogOverlay />
     <DialogPrimitive.Content
       ref={ref}
-      onCloseAutoFocus={(e) => {
-        // Prevent focus issues when closing
+      onOpenAutoFocus={(e) => {
+        // Prevent auto-focus during animation
         e.preventDefault();
       }}
       className={cn(
