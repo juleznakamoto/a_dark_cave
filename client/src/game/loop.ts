@@ -23,6 +23,7 @@ const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milli
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
+const SESSION_CHECK_INTERVAL = 10000; // Check session every 10 seconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
@@ -34,6 +35,7 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
+let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session checking
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
@@ -106,6 +108,37 @@ export function startGameLoop() {
       );
     }
   }, 30000); // Check every 30 seconds
+
+  // Start session validation checker (every 10 seconds)
+  // This checks if the user's session is still valid (not invalidated by another login)
+  if (sessionCheckInterval) {
+    clearInterval(sessionCheckInterval);
+  }
+  const checkSession = async () => {
+    const state = useGameStore.getState();
+    if (state.user) {
+      try {
+        // Force server-side validation by calling getUser() which makes an API request
+        const { getSupabaseClient } = await import('@/lib/supabase');
+        const supabase = await getSupabaseClient();
+        const { data: { user }, error } = await supabase.auth.getUser();
+
+        // If there's an error or no user, session is invalid
+        if (error || !user) {
+          logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
+          stopGameLoop();
+          useGameStore.setState({
+            inactivityDialogOpen: true,
+            inactivityReason: 'multitab',
+          });
+        }
+      } catch (error) {
+        logger.error('[SESSION] Error checking session:', error);
+      }
+    }
+  };
+  sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
+
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -215,7 +248,7 @@ export function startGameLoop() {
         ) {
           lastShopNotificationTime = timestamp;
           if (state.shopNotificationSeen) {
-            useGameStore.setState({ shopNotificationSeen: false });
+            useGameStore.setState({ authNotificationSeen: false });
           }
         }
 
@@ -314,6 +347,13 @@ function handleInactivity() {
     logger.log("[INACTIVITY] Inactivity checker stopped");
   }
 
+  // Stop session checker
+  if (sessionCheckInterval) {
+    clearInterval(sessionCheckInterval);
+    sessionCheckInterval = null;
+    logger.log("[INACTIVITY] Session checker stopped");
+  }
+
   // Set game loop to inactive
   useGameStore.setState({
     isGameLoopActive: false,
@@ -345,6 +385,13 @@ export function stopGameLoop() {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
     logger.log("[LOOP] Inactivity checker cleared");
+  }
+
+  // Clean up session checker
+  if (sessionCheckInterval) {
+    clearInterval(sessionCheckInterval);
+    sessionCheckInterval = null;
+    logger.log("[LOOP] Session checker cleared");
   }
 
   // Remove activity listeners
@@ -576,7 +623,7 @@ function handleStarvationCheck() {
   const availableFood = state.resources.food;
 
   if (availableFood === 0) {
-    // 5% chance for each villager to die from starvation when food is 0
+    // 5% chance for each villager to die from starvation
     let starvationDeaths = 0;
     for (let i = 0; i < totalPopulation; i++) {
       if (Math.random() < 0.05 + state.CM * 0.025) {
@@ -981,4 +1028,17 @@ export async function manualSave() {
     logger.error("[SAVE] Manual save failed:", error);
     throw error;
   }
+}
+
+// Dummy function for loadGameFromSupabase if it's not defined elsewhere
+// In a real scenario, this would be imported or defined properly.
+async function loadGameFromSupabase() {
+  // Placeholder implementation
+  const state = useGameStore.getState();
+  if (state.user) {
+    // Simulate fetching game state from Supabase
+    // In a real app, this would involve actual Supabase calls
+    return { playTime: state.playTime, ...state.currentSaveData }; // Example return
+  }
+  return null;
 }
