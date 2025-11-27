@@ -4,6 +4,8 @@ import { LogEntry } from "@/game/rules/events";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
 import { logger } from "@/lib/logger";
+import { getCurrentUser } from "@/game/auth";
+import { useState, useEffect } from "react";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -27,6 +29,18 @@ const SOCIAL_PLATFORMS = [
 export default function SocialMediaRewards() {
   const updateResource = useGameStore((state) => state.updateResource);
   const addLogEntry = useGameStore((state) => state.addLogEntry);
+  const [currentUser, setCurrentUser] = useState<{
+    id: string;
+    email: string;
+  } | null>(null);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await getCurrentUser();
+      setCurrentUser(user);
+    };
+    checkAuth();
+  }, []);
 
   const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
     // Get fresh state to check claim status
@@ -100,8 +114,8 @@ export default function SocialMediaRewards() {
         // Subscribe to this specific platform's claimed status
         const isClaimed = useGameStore((state) => state.social_media_rewards[platform.id]?.claimed ?? false);
         
-        // Button is only active (enabled) if NOT claimed
-        const isActive = !isClaimed;
+        // Button is only active (enabled) if NOT claimed AND user is logged in
+        const isActive = !isClaimed && !!currentUser;
 
         return (
           <DropdownMenuItem
