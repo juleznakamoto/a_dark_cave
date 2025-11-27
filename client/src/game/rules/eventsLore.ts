@@ -110,15 +110,80 @@ export const loreEvents: Record<string, GameEvent> = {
     ],
   },
 
+  restlessKnightReturns: {
+    id: "restlessKnightReturns",
+    condition: (state: GameState) =>
+      state.buildings.stoneHut >= 6 &&
+      state.story.seen.restlessKnightFailed &&
+      !state.story.seen.restlessKnightSuccess &&
+      !state.story.seen.restlessKnightReturns,
+    triggerType: "resource",
+    timeProbability: (state: GameState) => 70,
+    title: "The Knight Returns",
+    message:
+      "The restless knight appears at your village once more. 'I have traveled far since we last met,' he says. 'My offer still stands - for some gold, I will share what I have seen in my journeys.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 50 Gold",
+        cost: "50 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 50) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 50,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                restlessKnightSuccess: true,
+                restlessKnightReturns: true,
+              },
+            },
+            _logMessage:
+              "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
+          };
+        },
+      },
+      {
+        id: "refuse",
+        label: "Do not pay",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                restlessKnightReturns: true,
+              },
+            },
+            _logMessage:
+              "You decline the knight's offer again. He sighs deeply. 'So be it. Our paths may not cross again,' he says before departing.",
+          };
+        },
+      },
+    ],
+  },
+
   restlessKnightMountains: {
     id: "restlessKnightMountains",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 4 &&
+      state.buildings.stoneHut >= 6 &&
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
     timeProbability: (state: GameState) => 60,
-    title: "The Knight Returns",
+    title: "The Knight Returns from the Mountains",
     message:
       "The restless knight returns from the mountains, his armor scratched and weathered. 'I found a monastery carved into the cliffs,' he says, eyes distant with memory. 'Scholars once gathered there, collecting ancient texts and artifacts in an attempt to learn about the past. From what they wrote, the people who lived on this earth before us were far more advanced than we can imagine.' He pauses. 'For a fair price, I can share what I learned there.'",
     triggered: false,
