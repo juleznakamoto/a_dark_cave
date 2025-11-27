@@ -23,7 +23,7 @@ const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milli
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
-const SESSION_CHECK_INTERVAL = 10000; // Check session every 10 seconds
+const SESSION_CHECK_INTERVAL = 60000; // Check session every 60 seconds
 
 let tickAccumulator = 0;
 let lastAutoSave = 0;
@@ -109,7 +109,7 @@ export function startGameLoop() {
     }
   }, 30000); // Check every 30 seconds
 
-  // Start session validation checker (every 10 seconds)
+  // Start session validation checker (every 60 seconds)
   // This checks if the user's session is still valid (not invalidated by another login)
   if (sessionCheckInterval) {
     clearInterval(sessionCheckInterval);
