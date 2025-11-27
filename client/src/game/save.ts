@@ -210,7 +210,7 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
           const localPlayTime = playTime;
 
           const timeDifference = localPlayTime - cloudPlayTime;
-          const MIN_TIME_AHEAD = 3000; // Local must be at least 3 seconds ahead
+          const MIN_TIME_AHEAD = 5000; // Local must be at least 5 seconds ahead
 
           console.log('[SAVE] 🔍 OCC check - comparing playtimes:', {
             cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
@@ -330,7 +330,7 @@ export async function loadGame(): Promise<GameState | null> {
           const localPlayTime = localSave.playTime || 0;
 
           const timeDifference = localPlayTime - cloudPlayTime;
-          const MIN_TIME_AHEAD = 3000; // Local must be at least 3 seconds ahead
+          const MIN_TIME_AHEAD = 5000; // Local must be at least 5 seconds ahead
 
           console.log('[LOAD] 🔍 OCC: Comparing local vs cloud save:', {
             cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
