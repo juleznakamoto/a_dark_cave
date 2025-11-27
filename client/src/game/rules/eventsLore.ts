@@ -6,11 +6,11 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 3 &&
+      state.buildings.stoneHut >= 4 &&
       !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => 
-      state.story.seen.restlessKnightFailed ? 60 : 45,
+      state.story.seen.restlessKnightFailed ? 60 : 15,
     title: "The Restless Knight",
     message:
       "A knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
