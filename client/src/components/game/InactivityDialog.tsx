@@ -1,4 +1,3 @@
-
 import React from 'react';
 import {
   Dialog,
@@ -32,14 +31,14 @@ export default function InactivityDialog() {
           <DialogDescription className="py-4 space-y-2">
             {isMultiTab && (
               <>
-                <p>You have this game open in multiple tabs.</p>
-                <p>The game can only run in one tab at a time to prevent conflicts.</p>
-                <p className="font-semibold">Please close the other tab and reload this page to continue playing here, or switch to the other tab.</p>
+                <p>This game is being played in another tab or on another device.</p>
+                <p>The game can only run in one place at a time to prevent save conflicts.</p>
+                <p className="font-semibold">Please close the other instance and click "Reload Page" to continue playing here.</p>
               </>
             )}
             {isTimeout && (
               <>
-                <p>You have been inactive for 10 minutes.</p>
+                <p>You have been inactive for 15 minutes.</p>
                 <p>To prevent bad events from happening the game has been stopped and your progress has been saved.</p>
                 <p className="font-semibold">Please reload the page to continue playing.</p>
               </>

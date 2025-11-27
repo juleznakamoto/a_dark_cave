@@ -203,6 +203,34 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
           hasClickData: !!clickData
         });
 
+        // Before saving, check if there's a newer save in the cloud
+        const cloudSave = await loadGameFromSupabase();
+        if (cloudSave) {
+          const cloudPlayTime = cloudSave.playTime || 0;
+          const localPlayTime = playTime;
+
+          if (cloudPlayTime > localPlayTime) {
+            console.warn('[SAVE] ⚠️ Detected newer save in cloud:', {
+              cloudPlayTime,
+              localPlayTime,
+              difference: cloudPlayTime - localPlayTime
+            });
+            console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
+
+            // Stop game loop and show inactivity dialog
+            const { stopGameLoop } = await import('./loop');
+            
+            useGameStore.setState({ 
+              isGameLoopActive: false,
+              inactivityDialogOpen: true,
+              inactivityReason: 'multitab'
+            });
+            
+            stopGameLoop();
+            return; // Don't save
+          }
+        }
+
         // Save diff to Supabase (includes OCC check)
         await saveGameToSupabase(stateDiff, playTime, isNewGame, clickData);
 
@@ -211,23 +239,7 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         console.log('[SAVE] ✅ Cloud save successful');
       }
     } catch (cloudError: any) {
-      // Log cloud save failures for debugging
-      if (cloudError?.message?.includes('playTime')) {
-        console.warn('[SAVE] ⚠️ Cloud save rejected by OCC:', cloudError.message);
-        console.log('[SAVE] 🛑 Another tab is actively playing - stopping this tab...');
-        
-        // Stop game loop and show inactivity dialog
-        const { stopGameLoop } = await import('./loop');
-        stopGameLoop();
-        
-        useGameStore.setState({ 
-          isGameLoopActive: false,
-          inactivityDialogOpen: true,
-          inactivityReason: 'multitab'
-        });
-      } else {
-        console.debug('[SAVE] Cloud save skipped:', cloudError);
-      }
+      console.debug('[SAVE] Cloud save skipped:', cloudError);
     }
   } catch (error) {
     console.error('[SAVE] ❌ Failed to save game locally:', error);
