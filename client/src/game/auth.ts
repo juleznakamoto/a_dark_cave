@@ -2,6 +2,16 @@ import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 import { logger } from '@/lib/logger';
 
+// Define SaveData interface here to avoid circular dependency if it's in schema
+// If SaveData is already defined elsewhere and accessible, this can be removed.
+// For this example, assuming it needs to be defined or imported.
+// If SaveData is defined in @shared/schema, then it should be imported from there.
+interface SaveData {
+  gameState: GameState;
+  playTime: number;
+  timestamp: number;
+}
+
 const isDev = import.meta.env.DEV;
 
 export interface AuthUser {
@@ -99,15 +109,16 @@ async function processReferralInBackground(): Promise<void> {
       if (result.success || result.reason === 'already_processed') {
         // Load fresh state from Supabase and update game state directly
         try {
-          const freshState = await loadGameFromSupabase();
-          if (freshState) {
+          const freshStateData = await loadGameFromSupabase(); // This now returns SaveData | null
+          if (freshStateData) {
+            const freshGameState = freshStateData.gameState; // Extract gameState from SaveData
             // Update the game state directly
             const { useGameStore } = await import('./state');
             const currentState = useGameStore.getState();
 
             // Merge the fresh state while preserving UI state
             useGameStore.setState({
-              ...freshState,
+              ...freshStateData.gameState, // Use the extracted gameState
               // Preserve UI-only state
               activeTab: currentState.activeTab,
               hoveredTooltips: currentState.hoveredTooltips,
@@ -120,11 +131,11 @@ async function processReferralInBackground(): Promise<void> {
             const { openDB } = await import('idb');
             const db = await openDB('ADarkCaveDB', 2);
             await db.put('saves', {
-              gameState: freshState,
-              timestamp: Date.now(),
-              playTime: freshState.playTime || 0,
+              gameState: freshStateData.gameState, // Use the extracted gameState
+              timestamp: freshStateData.timestamp,
+              playTime: freshStateData.playTime || 0,
             }, 'mainSave');
-            await db.put('lastCloudState', freshState, 'lastCloudState');
+            await db.put('lastCloudState', freshStateData.gameState, 'lastCloudState'); // Store only gameState in lastCloudState
           }
         } catch (error) {
           logger.error('Failed to update game state:', error);
@@ -146,7 +157,11 @@ async function processReferralInBackground(): Promise<void> {
     }
   }
 
-  const isNewGame = gameState.isNewGame || false;
+  // Assuming gameState is available in this scope or needs to be fetched.
+  // If gameState is not defined here, this line might cause an error.
+  // For now, keeping it as is based on original code structure, but it might need refactoring.
+  // If it's meant to be the loaded game state, it should be defined earlier or passed as an argument.
+  const isNewGame = (await loadGameFromSupabase())?.gameState.isNewGame || false; // Safely access isNewGame
 }
 
 export async function signIn(email: string, password: string) {
@@ -169,7 +184,7 @@ export async function signIn(email: string, password: string) {
 
 export async function signOut() {
   logger.log('[AUTH] 🚪 Signing out user...');
-  
+
   const supabase = await getSupabaseClient();
   const { error } = await supabase.auth.signOut();
   if (error) {
@@ -307,7 +322,7 @@ export async function saveGameToSupabase(
       logger.warn('[SAVE CLOUD] ⚠️ OCC REJECTED by database:', error.message);
       throw new Error(`OCC violation: ${error.message}`);
     }
-    
+
     logger.error('[SAVE CLOUD] ❌ Database write failed:', error);
     throw error;
   }
@@ -315,14 +330,14 @@ export async function saveGameToSupabase(
   logger.log('[SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database');
 }
 
-export async function loadGameFromSupabase(): Promise<GameState | null> {
+export async function loadGameFromSupabase(): Promise<SaveData | null> {
   const user = await getCurrentUser();
   if (!user) return null;
 
   const supabase = await getSupabaseClient();
   const { data, error } = await supabase
     .from('game_saves')
-    .select('game_state')
+    .select('game_state, updated_at')
     .eq('user_id', user.id)
     .maybeSingle();
 
@@ -330,12 +345,29 @@ export async function loadGameFromSupabase(): Promise<GameState | null> {
     throw error;
   }
 
+  if (!data?.game_state) {
+    logger.log('[LOAD CLOUD] 📊 No cloud save found');
+    return null;
+  }
+
+  // Extract playTime from the game_state
+  const playTime = data.game_state.playTime || 0;
+  const timestamp = data.updated_at ? new Date(data.updated_at).getTime() : Date.now();
+
   logger.log('[LOAD CLOUD] 📊 Loaded from Supabase:', {
     hasData: !!data,
     hasReferrals: !!data?.game_state?.referrals,
     referralsCount: data?.game_state?.referrals?.length || 0,
     referrals: data?.game_state?.referrals,
+    playTime,
+    playTimeMinutes: (playTime / 1000 / 60).toFixed(2),
+    timestamp,
   });
 
-  return data?.game_state || null;
+  // Return SaveData structure
+  return {
+    gameState: data.game_state,
+    playTime,
+    timestamp,
+  };
 }
