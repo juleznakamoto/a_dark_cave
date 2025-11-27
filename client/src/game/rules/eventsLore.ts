@@ -9,8 +9,9 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 &&
       !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
-    timeProbability: (state: GameState) => 
-      state.story.seen.restlessKnightFailed ? 60 : 15,
+    timeProbability: (state: GameState) => {
+      return state.story.seen.restlessKnightFailed ? 60 : 15;
+    },
     title: "The Restless Knight",
     message:
       "A knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
@@ -116,7 +117,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
-    timeProbability: 60,
+    timeProbability: (state: GameState) => 60,
     title: "The Knight Returns",
     message:
       "The restless knight returns from the mountains, his armor scratched and weathered. 'I found a monastery carved into the cliffs,' he says, eyes distant with memory. 'Scholars once gathered there, collecting ancient texts and artifacts in an attempt to learn about the past. From what they wrote, the people who lived on this earth before us were far more advanced than we can imagine.' He pauses. 'For a fair price, I can share what I learned there.'",
