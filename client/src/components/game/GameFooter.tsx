@@ -183,9 +183,7 @@ export default function GameFooter() {
       return;
     }
 
-    // Extract short ID (last part after final hyphen)
-    const shortId = currentUser.id.split('-').pop() || currentUser.id;
-    const inviteLink = `${window.location.origin}?ref=${shortId}`;
+    const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
     try {
       await navigator.clipboard.writeText(inviteLink);
       toast({

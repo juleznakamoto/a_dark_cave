@@ -12,31 +12,13 @@ export interface AuthUser {
 export async function signUp(email: string, password: string, referralCode?: string) {
   const supabase = await getSupabaseClient();
 
-  // If referral code is short (no hyphens), we need to look up the full user ID
-  let fullReferralCode = referralCode;
-  if (referralCode && !referralCode.includes('-')) {
-    // Look up the full user ID from game_saves where user_id ends with this short code
-    const { data: saves } = await supabase
-      .from('game_saves')
-      .select('user_id')
-      .like('user_id', `%${referralCode}`);
-    
-    if (saves && saves.length > 0) {
-      // Find the user_id that ends with the short code
-      const match = saves.find(s => s.user_id.endsWith(referralCode));
-      if (match) {
-        fullReferralCode = match.user_id;
-      }
-    }
-  }
-
   // Store referral code in user metadata - will be processed after email confirmation
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
-    options: fullReferralCode ? {
+    options: referralCode ? {
       data: {
-        referral_code: fullReferralCode,
+        referral_code: referralCode,
       }
     } : undefined,
   });
