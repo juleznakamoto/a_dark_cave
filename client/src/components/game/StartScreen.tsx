@@ -18,6 +18,7 @@ export default function StartScreen() {
   const isMobile = useIsMobile();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const mobileTooltip = useMobileTooltip();
+  const executedRef = useRef(false);
 
   useEffect(() => {
     // Check if we're on the /boost path and set the flag
@@ -42,7 +43,7 @@ export default function StartScreen() {
       windTimer = setTimeout(() => {
         audioManager.playLoopingSound('wind', 0.2, false, 1);
       }, 2000);
-      
+
       // Remove listeners after first interaction
       document.removeEventListener('click', handleUserGesture);
       document.removeEventListener('keydown', handleUserGesture);
@@ -59,7 +60,7 @@ export default function StartScreen() {
       clearTimeout(windTimer);
       // Stop wind sound when component unmounts (no fade-out on unmount)
       audioManager.stopLoopingSound('wind');
-      
+
       // Clean up event listeners
       document.removeEventListener('click', handleUserGesture);
       document.removeEventListener('keydown', handleUserGesture);
@@ -68,9 +69,15 @@ export default function StartScreen() {
   }, [setBoostMode]);
 
   const handleLightFire = () => {
+    // Prevent multiple executions
+    if (executedRef.current) {
+      return;
+    }
+    executedRef.current = true;
+
     // Stop wind sound with 2 second fade-out
     audioManager.stopLoopingSound('wind', 2);
-    
+
     // Start background music
     audioManager.startBackgroundMusic(0.3);
 
@@ -84,7 +91,7 @@ export default function StartScreen() {
         });
         buttonRef.current.dispatchEvent(mouseEnterEvent);
       }
-      
+
       // Wait 3 seconds, then start the game
       setTimeout(() => {
         executeAction('lightFire');
@@ -135,7 +142,7 @@ export default function StartScreen() {
           Light Fire
         </ParticleButton>
       </main>
-      
+
       {boostMode && (
         <TooltipProvider>
           <Tooltip open={mobileTooltip.isTooltipOpen('boost-indicator')}>
