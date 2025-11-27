@@ -1,0 +1,84 @@
+[LOAD] 🎮 Starting game load process...
+index-CXBLQVEp.js:255 [LOAD] 💾 Local save retrieved: {hasLocalSave: false, timestamp: 'none', playTime: undefined, playTimeMinutes: 0, hasCooldowns: false, …}
+index-CXBLQVEp.js:255 [LOAD] No save found, returning null
+index-CXBLQVEp.js:574 [LOOP] Starting game loop
+index-CXBLQVEp.js:574 [INACTIVITY] Initialized activity tracking at 2025-11-27T09:30:23.676Z
+index-CXBLQVEp.js:574 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+index-CXBLQVEp.js:255 [LOAD] 🎮 Starting game load process...
+index-CXBLQVEp.js:255 [LOAD] 💾 Local save retrieved: {hasLocalSave: false, timestamp: 'none', playTime: undefined, playTimeMinutes: 0, hasCooldowns: false, …}
+index-CXBLQVEp.js:574 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(1)}
+index-CXBLQVEp.js:255 [SAVE] Saving game state: {timestamp: 1764235841937, playTime: 8447.100000005961, hasCooldowns: true, cooldownsCount: 1, cooldowns: {…}, …}
+index-CXBLQVEp.js:255 [SAVE] ✅ Successfully saved to IndexedDB
+index-CXBLQVEp.js:255 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 8447.100000005961, isNewGame: false, hasClickData: true}
+index-CXBLQVEp.js:255 [LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+index-CXBLQVEp.js:255 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeSeconds: '93387.17', localPlayTimeSeconds: '8.45', differenceSeconds: '-93378.72', localIsNewer: false}
+index-CXBLQVEp.js:255 [SAVE] ⚠️ Detected newer save in cloud: {cloudPlayTimeSeconds: '93387.17', localPlayTimeSeconds: '8.45', differenceSeconds: '93378.72'}
+G0 @ index-CXBLQVEp.js:255
+await in G0
+l3e @ index-CXBLQVEp.js:574
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574
+requestAnimationFrame
+o @ index-CXBLQVEp.js:574Understand this warning
+index-CXBLQVEp.js:255 [SAVE] 🛑 Another tab/device is actively playing - stopping this tab...
+index-CXBLQVEp.js:574 [LOOP] Stopping game loop
+index-CXBLQVEp.js:574 [LOOP] Inactivity checker cleared
