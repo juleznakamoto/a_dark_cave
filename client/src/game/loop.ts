@@ -35,6 +35,7 @@ let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
 let isInactive = false;
+let lastGameLoadTime = 0; // Track when game was last loaded
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
@@ -177,8 +178,11 @@ export function startGameLoop() {
         processTick();
       }
 
-      // Auto-save logic (skip if inactive)
-      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive) {
+      // Auto-save logic (skip if inactive or recently loaded)
+      const timeSinceLoad = timestamp - lastGameLoadTime;
+      const skipAutoSaveAfterLoad = timeSinceLoad > 0 && timeSinceLoad < 30000; // Skip for 30s after load
+      
+      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive && !skipAutoSaveAfterLoad) {
         lastAutoSave = timestamp;
         handleAutoSave();
       }
@@ -317,6 +321,11 @@ function handleInactivity() {
     inactivityReason: "timeout",
   });
   logger.log("[INACTIVITY] Inactivity dialog opened");
+}
+
+export function setLastGameLoadTime(time: number) {
+  lastGameLoadTime = time;
+  logger.log("[LOOP] 🔄 Game loaded - skipping auto-save for 30 seconds");
 }
 
 export function stopGameLoop() {

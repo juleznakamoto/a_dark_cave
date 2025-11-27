@@ -768,6 +768,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasPlayTime: savedState ? 'playTime' in savedState : false,
       allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
     });
+    
+    // Notify game loop that we just loaded to skip auto-save for 30 seconds
+    const { setLastGameLoadTime } = await import('@/game/loop');
+    setLastGameLoadTime(performance.now());
 
     // Get current boost mode before loading
     const currentBoostMode = get().boostMode;
