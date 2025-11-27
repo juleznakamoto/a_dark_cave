@@ -10,7 +10,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 60 : 15;
+      return state.story.seen.restlessKnightFailed ? 45 : 30;
     },
     title: "The Restless Knight",
     message:
@@ -110,18 +110,17 @@ export const loreEvents: Record<string, GameEvent> = {
     ],
   },
 
-  restlessKnightReturns: {
-    id: "restlessKnightReturns",
+  restlessKnightMountains: {
+    id: "restlessKnightMountains",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 6 &&
-      state.story.seen.restlessKnightFailed &&
-      !state.story.seen.restlessKnightSuccess &&
-      !state.story.seen.restlessKnightReturns,
+      state.story.seen.restlessKnightSuccess &&
+      !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
-    timeProbability: (state: GameState) => 70,
-    title: "The Knight Returns",
+    timeProbability: (state: GameState) => state.story.seen.restlessKnightMountainsFailed ? 45 : 30,
+    title: "Return from the Mountains",
     message:
-      "The restless knight appears at your village once more. 'I have traveled far since we last met,' he says. 'My offer still stands - for some gold, I will share what I have seen in my journeys.'",
+      "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -146,79 +145,11 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                restlessKnightSuccess: true,
-                restlessKnightReturns: true,
-              },
-            },
-            _logMessage:
-              "The knight speaks: 'Beyond the eastern mountains lies a dead city of giant stone towers, almost touching the clouds. Empty windows stare across the land like countless eyes. Nature has climbed every wall and filled the streets with roots. No one has lived there for ages.'",
-          };
-        },
-      },
-      {
-        id: "refuse",
-        label: "Do not pay",
-        effect: (state: GameState) => {
-          return {
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                restlessKnightReturns: true,
-              },
-            },
-            _logMessage:
-              "You decline the knight's offer again. He sighs deeply. 'So be it. Our paths may not cross again,' he says before departing.",
-          };
-        },
-      },
-    ],
-  },
-
-  restlessKnightMountains: {
-    id: "restlessKnightMountains",
-    condition: (state: GameState) =>
-      state.buildings.stoneHut >= 6 &&
-      state.story.seen.restlessKnightSuccess &&
-      !state.story.seen.restlessKnightMountains,
-    triggerType: "resource",
-    timeProbability: (state: GameState) => 60,
-    title: "The Knight Returns from the Mountains",
-    message:
-      "The restless knight returns from the mountains, his armor scratched and weathered. 'I found a monastery carved into the cliffs,' he says, eyes distant with memory. 'Scholars once gathered there, collecting ancient texts and artifacts in an attempt to learn about the past. From what they wrote, the people who lived on this earth before us were far more advanced than we can imagine.' He pauses. 'For a fair price, I can share what I learned there.'",
-    triggered: false,
-    priority: 3,
-    repeatable: false,
-    choices: [
-      {
-        id: "payGold",
-        label: "Pay 75 Gold",
-        cost: "75 gold",
-        effect: (state: GameState) => {
-          if (state.resources.gold < 75) {
-            return {
-              _logMessage: "You don't have enough gold.",
-            };
-          }
-
-          return {
-            resources: {
-              ...state.resources,
-              gold: state.resources.gold - 75,
-            },
-            stats: {
-              ...state.stats,
-              knowledge: (state.stats.knowledge || 0) + 3,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
                 restlessKnightMountains: true,
               },
             },
             _logMessage:
-              "The knight shares his knowledge: 'The monastery's archives spoke of cities that touched the clouds, machines that moved without horses, and devices that could speak across vast distances. They built wonders we can barely comprehend, yet something brought their world to ruin. The scholars feared the same fate might befall us.' (+3 Knowledge)",
+            "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'"
           };
         },
       },
@@ -238,10 +169,6 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.resources,
               food: state.resources.food - 2500,
             },
-            stats: {
-              ...state.stats,
-              knowledge: (state.stats.knowledge || 0) + 3,
-            },
             story: {
               ...state.story,
               seen: {
@@ -250,7 +177,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The knight accepts your provisions gratefully and shares his knowledge: 'The monastery's archives spoke of cities that touched the clouds, machines that moved without horses, and devices that could speak across vast distances. They built wonders we can barely comprehend, yet something brought their world to ruin. The scholars feared the same fate might befall us.' (+3 Knowledge)",
+            "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
           };
         },
       },
