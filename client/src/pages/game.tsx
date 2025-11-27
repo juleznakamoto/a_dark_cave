@@ -5,6 +5,7 @@ import { startGameLoop, stopGameLoop } from "@/game/loop";
 import { loadGame } from "@/game/save";
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
+import { logger } from "@/lib/logger";
 
 export default function Game() {
   const { initialize } = useGameStore();
