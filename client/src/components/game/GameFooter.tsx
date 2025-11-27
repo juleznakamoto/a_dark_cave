@@ -257,7 +257,7 @@ export default function GameFooter() {
               New Game
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleCopyInviteLink}>
+            <DropdownMenuItem onClick={handleCopyInviteLink} disabled={!currentUser}>
               <div className="flex items-center justify-between w-full">
                 <span>Invite&nbsp;</span>
                 <span className="font-semibold">+250 Gold</span>
@@ -288,7 +288,7 @@ export default function GameFooter() {
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
-                        Share your invite link to earn 100 gold for each friend
+                        Share your invite link to earn 250 gold for each friend
                         who signs up ({referralCount || 0}/10 invited).
                         <br />
                       </p>
