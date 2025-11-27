@@ -3,6 +3,7 @@ import { useGameStore } from "@/game/state";
 import { LogEntry } from "@/game/rules/events";
 import { saveGame } from "@/game/save";
 import { buildGameState } from "@/game/stateHelpers";
+import { logger } from "@/lib/logger";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [

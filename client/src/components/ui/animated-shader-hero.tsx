@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from "react";
+import { logger } from "@/lib/logger";
 
 // Types for component props
 interface HeroProps {

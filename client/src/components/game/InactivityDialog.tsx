@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { useGameStore } from '@/game/state';
+import { logger } from '@/lib/logger';
 
 export default function InactivityDialog() {
   const { inactivityReason } = useGameStore();

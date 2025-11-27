@@ -6,6 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { logger } from "@/lib/logger";
 import { Button } from "@/components/ui/button";
 import {
   Card,

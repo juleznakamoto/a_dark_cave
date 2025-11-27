@@ -1,6 +1,7 @@
 import { GameState } from "@shared/game/schema";
 import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
+import { logger } from "@/lib/logger";
 // Import all handlers from the modular action files
 import {
   handleLightFire,

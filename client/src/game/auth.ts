@@ -1,5 +1,6 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
+import { logger } from '@/lib/logger';
 
 const isDev = import.meta.env.DEV;
 
