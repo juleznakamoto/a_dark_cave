@@ -214,6 +214,16 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
       // Log cloud save failures for debugging
       if (cloudError?.message?.includes('playTime')) {
         console.warn('[SAVE] ⚠️ Cloud save rejected by OCC:', cloudError.message);
+        console.log('[SAVE] 🛑 Another tab is actively playing - stopping this tab...');
+        
+        // Stop game loop and show inactivity dialog
+        const { stopGameLoop } = await import('./loop');
+        stopGameLoop();
+        
+        useGameStore.setState({ 
+          isGameLoopActive: false,
+          inactivityDialogOpen: true 
+        });
       } else {
         console.debug('[SAVE] Cloud save skipped:', cloudError);
       }
