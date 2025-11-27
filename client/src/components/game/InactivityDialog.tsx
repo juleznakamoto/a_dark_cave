@@ -32,12 +32,14 @@ export default function InactivityDialog() {
           <DialogDescription className="py-4 space-y-2">
             {isMultiTab && (
               <>
-                <p>Your account was logged in from another device or browser. To protect your save data, only one active session is allowed at a time.</p>
+                <p>Your account was logged in from another device or browser.</p>
+                <p>To protect your save data, only one active session is allowed at a time.</p>
               </>
             )}
             {isTimeout && (
               <>
-                <p>You have been inactive for 15 minutes. To prevent bad events from happening the game has been stopped and your progress has been saved.</p>
+                <p>You have been inactive for 15 minutes.</p>
+                <p>To prevent bad events from happening the game has been stopped and your progress has been saved.</p>
                 <p className="font-semibold">Please reload the page to continue playing.</p>
               </>
             )}
