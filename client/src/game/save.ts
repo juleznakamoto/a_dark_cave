@@ -222,7 +222,8 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         
         useGameStore.setState({ 
           isGameLoopActive: false,
-          inactivityDialogOpen: true 
+          inactivityDialogOpen: true,
+          inactivityReason: 'multitab'
         });
       } else {
         console.debug('[SAVE] Cloud save skipped:', cloudError);

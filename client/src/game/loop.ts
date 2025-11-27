@@ -293,7 +293,8 @@ function handleInactivity() {
   // Set game loop to inactive
   useGameStore.setState({ 
     isGameLoopActive: false,
-    inactivityDialogOpen: true 
+    inactivityDialogOpen: true,
+    inactivityReason: 'timeout'
   });
   console.log('[INACTIVITY] Inactivity dialog opened');
 }
