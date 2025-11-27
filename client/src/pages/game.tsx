@@ -8,7 +8,7 @@ import CombatDialog from "@/components/game/CombatDialog";
 import { logger } from "@/lib/logger";
 
 export default function Game() {
-  const { initialize, setState } = useGameStore(); // Added setState
+  const initialize = useGameStore((state) => state.initialize);
   const { eventDialog, setEventDialog, combatDialog, setCombatDialog } =
     useGameStore();
   const [isInitialized, setIsInitialized] = useState(false);
@@ -23,8 +23,8 @@ export default function Game() {
       // Load saved game or initialize with defaults
       const savedState = await loadGame();
       if (savedState) {
-        // Set the loaded state
-        setState(savedState);
+        // Set the loaded state using useGameStore.setState
+        useGameStore.setState(savedState);
         logger.log('[GAME] Game loaded from save');
 
         // If user is logged in and has claimed referrals, save to cloud
@@ -59,7 +59,7 @@ export default function Game() {
     return () => {
       stopGameLoop();
     };
-  }, [initialize, setState]); // Added setState dependency
+  }, [initialize]);
 
   // Start background music on first user interaction (required by browser autoplay policies)
   useEffect(() => {
