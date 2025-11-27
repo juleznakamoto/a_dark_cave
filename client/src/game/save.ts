@@ -214,25 +214,25 @@ export async function saveGame(gameState: GameState, isAutosave: boolean = false
               localIsNewer: localPlayTimeSeconds > cloudPlayTimeSeconds
             });
 
-            // If cloud has significantly longer playtime, another instance is ahead
-            if (cloudPlayTimeSeconds > localPlayTimeSeconds + 5) { // 5 second tolerance
-              console.warn('[SAVE] ⚠️ Detected newer or equal save in cloud:', {
-                cloudPlayTimeSeconds: cloudPlayTimeSeconds.toFixed(2),
-                localPlayTimeSeconds: localPlayTimeSeconds.toFixed(2),
-                differenceSeconds: (cloudPlayTimeSeconds - localPlayTimeSeconds).toFixed(2)
-              });
+            // // If cloud has significantly longer playtime, another instance is ahead
+            // if (cloudPlayTimeSeconds > localPlayTimeSeconds) {
+            //   console.warn('[SAVE] ⚠️ Detected newer or equal save in cloud:', {
+            //     cloudPlayTimeSeconds: cloudPlayTimeSeconds.toFixed(2),
+            //     localPlayTimeSeconds: localPlayTimeSeconds.toFixed(2),
+            //     differenceSeconds: (cloudPlayTimeSeconds - localPlayTimeSeconds).toFixed(2)
+            //   });
 
-              console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
+            //   console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
 
-              // Stop this game instance
-              const { stopGameLoop } = await import('./loop');
-              stopGameLoop();
+            //   // Stop this game instance
+            //   const { stopGameLoop } = await import('./loop');
+            //   stopGameLoop();
 
-              // Show user a message
-              alert('This game is being played in another tab or device. This tab will be paused to prevent conflicts.');
+            //   // Show user a message
+            //   alert('This game is being played in another tab or device. This tab will be paused to prevent conflicts.');
 
-              return; // Don't save
-            }
+            //   return; // Don't save
+            // }
           }
         }
 
