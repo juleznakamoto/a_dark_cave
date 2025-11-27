@@ -1,0 +1,197 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:7 Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: {exists: false, playTime: undefined, timestamp: undefined, gameStatePlayTime: undefined}
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: false, timestamp: 'none', playTime: undefined, playTimeMinutes: 0, hasCooldowns: false, …}
+logger.ts:7 [LOAD] No save found, returning null
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-27T12:52:53.563Z
+logger.ts:7 Loading all sounds after user gesture...
+logger.ts:7 Successfully loaded sound: event
+logger.ts:7 Successfully loaded sound: eventMadness
+logger.ts:7 Successfully loaded sound: newVillager
+logger.ts:7 Successfully loaded sound: explosion
+logger.ts:7 Successfully loaded sound: whisperingCube
+logger.ts:12 Sound wind not found
+warn @ logger.ts:12
+playLoopingSound @ audio.ts:143
+await in playLoopingSound
+(anonymous) @ StartScreen.tsx:43
+setTimeout
+handleUserGesture @ StartScreen.tsx:42Understand this warning
+logger.ts:7 Successfully loaded sound: backgroundMusic
+logger.ts:7 Successfully loaded sound: wind
+logger.ts:7 Finished loading all sounds
+logger.ts:7 [STATE] Action: lightFire {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(1)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 12091.900000011921, gameStatePlayTime: 12091.900000011921, isNewGame: false, playTimeToSave: 12091.900000011921}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 12091.900000011921, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247985661, playTime: 12091.900000011921, hasCooldowns: true, cooldownsCount: 1, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(2), delayedEffects: Array(0)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247986940, playTime: 13142.000000011922, hasCooldowns: true, cooldownsCount: 2, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(2)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 27183.60000001192, gameStatePlayTime: 27183.60000001192, isNewGame: false, playTimeToSave: 27183.60000001192}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 27183.60000001192, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764248000752, playTime: 27183.60000001192, hasCooldowns: true, cooldownsCount: 2, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764248001646, playTime: 27942.10000001192, hasCooldowns: true, cooldownsCount: 2, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [STATE] Action: craftTorch {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [STATE] Action: exploreCave {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764248004155, playTime: 30350.30000001192, hasCooldowns: true, cooldownsCount: 4, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [STATE] Action: chopWood {stateUpdates: {…}, logEntries: Array(0), delayedEffects: Array(0)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764248005406, playTime: 31675.40000001192, hasCooldowns: true, cooldownsCount: 4, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(4)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 39267.00000001192, gameStatePlayTime: 39267.00000001192, isNewGame: false, playTimeToSave: 39267.00000001192}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 39267.00000001192, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764248021563, playTime: 39267.00000001192, hasCooldowns: true, cooldownsCount: 4, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: {exists: true, playTime: 39267.00000001192, timestamp: 1764248021563, gameStatePlayTime: 39267.00000001192}
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-11-27T12:53:41.563Z', playTime: 39267.00000001192, playTimeMinutes: 1, hasCooldowns: true, …}
+logger.ts:7 [LOAD] 📊 Raw cloud save from Supabase: {exists: true, playTime: 11770362.899996806, timestamp: undefined, gameStatePlayTime: undefined}
+logger.ts:7 [LOAD] 📊 Merged cloud save with lastCloudState: {playTime: 11770362.899996806, gameStatePlayTime: 11770362.899996806}
+logger.ts:7 [LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeSeconds: '11770.36', localPlayTimeSeconds: '39.27', differenceSeconds: '11731.10', winner: 'cloud'}
+logger.ts:7 [LOAD] ☁️ Using cloud save (longer playTime)
+logger.ts:7 [LOAD] 📊 Before processUnclaimedReferrals: {gameStatePlayTime: 11770362.899996806, cloudPlayTime: 11770362.899996806}
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '11770362.90', localPlayTimeMs: '39267.00', differenceMs: '11731095.90', cloudMinutes: '196.17', localMinutes: '0.65', …}cloudMinutes: "196.17"cloudPlayTimeMs: "11770362.90"differenceMs: "11731095.90"localIsNewer: falselocalMinutes: "0.65"localPlayTimeMs: "39267.00"[[Prototype]]: Object
+logger.ts:12 [SAVE] ⚠️ Detected newer save in cloud: {cloudPlayTimeMs: '11770362.90', localPlayTimeMs: '39267.00', differenceMs: '11731095.90', cloudMinutes: '196.17', localMinutes: '0.65'}
+warn @ logger.ts:12
+saveGame @ save.ts:255
+await in saveGame
+handleAutoSave @ loop.ts:752
+tick @ loop.ts:183
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:154
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:154
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122Understand this warning
+logger.ts:7 [SAVE] 🛑 Another tab/device is actively playing - stopping this tab...
+logger.ts:7 [LOOP] Stopping game loop
+logger.ts:7 [LOOP] Inactivity checker cleared
+chunk-276SZO74.js?v=950742a6:521 Warning: validateDOMNesting(...): <p> cannot appear as a descendant of <p>.
+    at p
+    at p
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1228:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1506:13
+    at _c9 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx?t=1764242437656:185:12)
+    at div
+    at DialogHeader (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx?t=1764242437656:110:3)
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:267:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:296:7
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:522:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:499:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:612:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:631:5
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1458:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1381:58
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:988:11)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1372:64
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:864:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:841:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:954:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:970:22
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:988:11)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=950742a6:38:15)
+    at DialogPortal (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1334:11)
+    at _c3 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx?t=1764242437656:52:12)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=950742a6:38:15)
+    at Dialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=950742a6:1274:5)
+    at InactivityDialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/InactivityDialog.tsx?t=1764247247474:30:32)
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1764247247474:62:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1764247247474:28:26)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=950742a6:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=950742a6:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=950742a6:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=950742a6:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/@fs/home/runner/workspace/node_modules/.vite/deps/@tanstack_react-query.js?v=950742a6:2805:3)
+    at App
+printWarning @ chunk-276SZO74.js?v=950742a6:521
+error @ chunk-276SZO74.js?v=950742a6:505
+validateDOMNesting @ chunk-276SZO74.js?v=950742a6:8256
+createInstance @ chunk-276SZO74.js?v=950742a6:8328
+completeWork @ chunk-276SZO74.js?v=950742a6:16290
+completeUnitOfWork @ chunk-276SZO74.js?v=950742a6:19224
+performUnitOfWork @ chunk-276SZO74.js?v=950742a6:19206
+workLoopSync @ chunk-276SZO74.js?v=950742a6:19137
+renderRootSync @ chunk-276SZO74.js?v=950742a6:19116
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=950742a6:18874
+flushSyncCallbacks @ chunk-276SZO74.js?v=950742a6:9119
+(anonymous) @ chunk-276SZO74.js?v=950742a6:18627Understand this error
+logger.ts:7 [LOAD] 📊 After processUnclaimedReferrals: {processedStatePlayTime: 11770362.899996806, cloudPlayTime: 11770362.899996806}
+logger.ts:7 [LOAD] 📊 State being returned to Zustand: {playTime: 11770362.899996806, hasPlayTime: true, allKeys: Array(1)}
+logger.ts:7 [SAVE] ⚠️ Game is inactive - skipping save
+logger.ts:7 [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:7 [STATE] 📊 loadGame received state from save.ts: {exists: true, playTime: 11770362.899996806, hasPlayTime: true, allTimeKeys: Array(1)}

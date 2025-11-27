@@ -1,0 +1,74 @@
+Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: {exists: false, playTime: undefined, timestamp: undefined, gameStatePlayTime: undefined}
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: false, timestamp: 'none', playTime: undefined, playTimeMinutes: 0, hasCooldowns: false, …}
+logger.ts:7 [LOAD] No save found, returning null
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-27T12:43:49.016Z
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(0)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 12202.2, gameStatePlayTime: 12202.2, isNewGame: false, playTimeToSave: 12202.2}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 12202.2, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247441224, playTime: 12202.2, hasCooldowns: true, cooldownsCount: 0, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(0)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 27235.6, gameStatePlayTime: 27235.6, isNewGame: false, playTimeToSave: 27235.6}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 27235.6, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247456256, playTime: 27235.6, hasCooldowns: true, cooldownsCount: 0, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 Loading all sounds after user gesture...
+logger.ts:7 [STATE] Action: lightFire {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 Successfully loaded sound: newVillager
+logger.ts:7 Successfully loaded sound: event
+logger.ts:7 Successfully loaded sound: eventMadness
+logger.ts:7 Successfully loaded sound: explosion
+logger.ts:7 Successfully loaded sound: whisperingCube
+logger.ts:7 Successfully loaded sound: backgroundMusic
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <div.z-50 max-h-[var(--radix-dropdown-menu-content-available-height)] min-w-[8rem] overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 origin-[--radix-dropdown-menu-content-transform-origin] w-50 text-xs#radix-:r4:>
+Ancestor with aria-hidden: <div> <div data-radix-popper-content-wrapper dir=​"ltr" style=​"position:​ fixed;​ left:​ 0px;​ top:​ 0px;​ transform:​ translate(724px, 40px)​;​ min-width:​ max-content;​ will-change:​ transform;​ z-index:​ 50;​ --radix-popper-available-width:​ 868px;​ --radix-popper-available-height:​ 823.3333129882812px;​ --radix-popper-anchor-width:​ 54.375px;​ --radix-popper-anchor-height:​ 28px;​ --radix-popper-transform-origin:​ 100% 0px;​" data-aria-hidden=​"true" aria-hidden=​"true">​…​</div>​Understand this warning
+(index):1 Blocked aria-hidden on an element because its descendant retained focus. The focus must not be hidden from assistive technology users. Avoid using aria-hidden on a focused element or its ancestor. Consider using the inert attribute instead, which will also prevent focus. For more details, see the aria-hidden section of the WAI-ARIA specification at https://w3c.github.io/aria/#aria-hidden.
+Element with focus: <button.inline-flex items-center justify-center gap-2 whitespace-nowrap font-medium ring-offset-background transition-colors focus-visible:outline-none disabled:pointer-events-none disabled:opacity-50 select-none [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-7 rounded-md px-2 py-1 text-xs hover relative bg-background/80 text-neutral-300 backdrop-blur-sm border border-border#radix-:r3:>
+Ancestor with aria-hidden: <div#root> <div id=​"root" data-aria-hidden=​"true" aria-hidden=​"true">​…​</div>​Understand this warning
+logger.ts:7 Successfully loaded sound: wind
+logger.ts:7 Finished loading all sounds
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: {exists: true, playTime: 27235.6, timestamp: 1764247456256, gameStatePlayTime: 27235.6}
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-11-27T12:44:16.256Z', playTime: 27235.6, playTimeMinutes: 0, hasCooldowns: true, …}
+logger.ts:7 [LOAD] 📊 Raw cloud save from Supabase: {exists: true, playTime: 11508969.69999709, timestamp: undefined, gameStatePlayTime: undefined}
+logger.ts:7 [LOAD] 📊 Merged cloud save with lastCloudState: {playTime: 11508969.69999709, gameStatePlayTime: 11508969.69999709}
+logger.ts:7 [LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeSeconds: '11508.97', localPlayTimeSeconds: '27.24', differenceSeconds: '11481.73', winner: 'cloud'}
+logger.ts:7 [LOAD] ☁️ Using cloud save (longer playTime)
+logger.ts:7 [LOAD] 📊 Before processUnclaimedReferrals: {gameStatePlayTime: 11508969.69999709, cloudPlayTime: 11508969.69999709}
+logger.ts:7 [LOAD] 📊 After processUnclaimedReferrals: {processedStatePlayTime: 11508969.69999709, cloudPlayTime: 11508969.69999709}
+logger.ts:7 [LOAD] 📊 State being returned to Zustand: {playTime: 11508969.69999709, hasPlayTime: true, allKeys: Array(1)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247471328, playTime: 11508969.69999709, hasCooldowns: true, cooldownsCount: 38, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 📥 Local state synced with cloud (no cloud write needed)
+logger.ts:7 [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:7 [STATE] 📊 loadGame received state from save.ts: {exists: true, playTime: 11508969.69999709, hasPlayTime: true, allTimeKeys: Array(1)}
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(38)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 11509219.79999709, gameStatePlayTime: 11509219.79999709, isNewGame: false, playTimeToSave: 11509219.79999709}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 11509219.79999709, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247471584, playTime: 11509219.79999709, hasCooldowns: true, cooldownsCount: 38, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '11508969.70', localPlayTimeMs: '11509219.80', differenceMs: '-250.10', cloudMinutes: '191.82', localMinutes: '191.82', …}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 11509219.79999709, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(2), hasPlayTime: true}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 56, playTime: 11509219.79999709, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Cloud save successful
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(38)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 11524403.099997072, gameStatePlayTime: 11524403.099997072, isNewGame: false, playTimeToSave: 11524403.099997072}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 11524403.099997072, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764247486705, playTime: 11524403.099997072, hasCooldowns: true, cooldownsCount: 38, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '11509219.80', localPlayTimeMs: '11524403.10', differenceMs: '-15183.30', cloudMinutes: '191.82', localMinutes: '192.07', …}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 11524403.099997072, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(4), hasPlayTime: true}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 423, playTime: 11524403.099997072, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Cloud save successful
