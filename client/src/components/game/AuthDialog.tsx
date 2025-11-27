@@ -50,6 +50,11 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           title: 'Signed in successfully',
           description: 'Your game will now sync across devices.',
         });
+        
+        // Reload game from Supabase after sign-in
+        const { useGameStore } = await import('@/game/state');
+        await useGameStore.getState().loadGame();
+        
         onAuthSuccess();
         onClose();
       } else if (mode === 'signup') {
