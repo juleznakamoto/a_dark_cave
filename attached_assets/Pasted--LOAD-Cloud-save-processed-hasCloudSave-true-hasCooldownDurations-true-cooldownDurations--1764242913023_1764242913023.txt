@@ -1,0 +1,83 @@
+[LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeSeconds: '10566.45', localPlayTimeSeconds: '8531.55', differenceSeconds: '2034.90', winner: 'cloud'}
+logger.ts:7 [LOAD] ☁️ Using cloud save (longer playTime)
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764242804955, playTime: 10566445.199997589, hasCooldowns: true, cooldownsCount: 26, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 📥 Local state synced with cloud (no cloud write needed)
+logger.ts:7 [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-27T11:26:45.021Z
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(26)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764242816487, playTime: 8542697.299999353, hasCooldowns: true, cooldownsCount: 26, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '10581678.60', localPlayTimeMs: '8542964.00', differenceMs: '2038714.60', cloudMinutes: '176.36', localMinutes: '142.38', …}
+logger.ts:12 [SAVE] ⚠️ Detected newer save in cloud: {cloudPlayTimeMs: '10581678.60', localPlayTimeMs: '8542964.00', differenceMs: '2038714.60', cloudMinutes: '176.36', localMinutes: '142.38'}
+warn @ logger.ts:12
+saveGame @ save.ts?t=1764242778822:171
+await in saveGame
+handleAutoSave @ loop.ts?t=1764242778822:516
+tick @ loop.ts?t=1764242778822:138
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:207
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:207
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:207
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101
+requestAnimationFrame
+tick @ loop.ts?t=1764242778822:101Understand this warning
+logger.ts:7 [SAVE] 🛑 Another tab/device is actively playing - stopping this tab...
