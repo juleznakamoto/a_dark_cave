@@ -1,0 +1,286 @@
+{hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 1114, playTime: 3068490.8000000035, isNewGame: false, …}
+@supabase_supabase-js.js?v=950742a6:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=950742a6:5633
+(anonymous) @ @supabase_supabase-js.js?v=950742a6:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=950742a6:94Understand this error
+auth.ts:304 [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (3068490.8000000035) must be greater than existing playTime (3072290.899999994)
+saveGameToSupabase @ auth.ts:304
+await in saveGameToSupabase
+saveGame @ save.ts:207
+await in saveGame
+handleAutoSave @ loop.ts:707
+tick @ loop.ts:165
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104Understand this warning
+save.ts:216 [SAVE] ⚠️ Cloud save rejected by OCC: OCC violation: OCC violation: new playTime (3068490.8000000035) must be greater than existing playTime (3072290.899999994)
+saveGame @ save.ts:216
+await in saveGame
+handleAutoSave @ loop.ts:707
+tick @ loop.ts:165
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104Understand this warning
+loop.ts:246 [GAME LOOP] Normal production running - idle mode is NOT active
+loop.ts:693 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(20)}
+save.ts:161 [SAVE] Saving game state: {timestamp: 1764228239854, playTime: 3083665.800000011, hasCooldowns: true, cooldownsCount: 20, cooldowns: {…}, …}
+save.ts:185 [SAVE] ✅ Successfully saved to IndexedDB
+save.ts:200 [SAVE] 📤 Attempting cloud save with OCC check... {playTime: 3083665.800000011, isNewGame: false, hasClickData: false}
+auth.ts:261 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 3083665.800000011, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(5), hasPlayTime: true}
+auth.ts:279 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 1113, playTime: 3083665.800000011, isNewGame: false, …}
+@supabase_supabase-js.js?v=950742a6:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=950742a6:5633
+(anonymous) @ @supabase_supabase-js.js?v=950742a6:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=950742a6:94Understand this error
+auth.ts:304 [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (3083665.800000011) must be greater than existing playTime (3087490.899999994)
+saveGameToSupabase @ auth.ts:304
+await in saveGameToSupabase
+saveGame @ save.ts:207
+await in saveGame
+handleAutoSave @ loop.ts:707
+tick @ loop.ts:165
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104Understand this warning
+save.ts:216 [SAVE] ⚠️ Cloud save rejected by OCC: OCC violation: OCC violation: new playTime (3083665.800000011) must be greater than existing playTime (3087490.899999994)
+saveGame @ save.ts:216
+await in saveGame
+handleAutoSave @ loop.ts:707
+tick @ loop.ts:165
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:269
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104
+requestAnimationFrame
+tick @ loop.ts:104Understand this warning
