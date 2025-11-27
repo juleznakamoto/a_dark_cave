@@ -240,22 +240,28 @@ export async function saveGame(
             const localPlayTimeSeconds = gameState.playTime || 0;
 
             console.log("[SAVE] 🔍 OCC check - comparing playtimes:", {
-              cloudPlayTimeSeconds: cloudPlayTimeSeconds.toFixed(2),
-              localPlayTimeSeconds: localPlayTimeSeconds.toFixed(2),
-              differenceSeconds: (
+              cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
+              localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
+              differenceMs: (
                 cloudPlayTimeSeconds - localPlayTimeSeconds
               ).toFixed(2),
+              cloudMinutes: (cloudPlayTimeSeconds / 1000 / 60).toFixed(2),
+              localMinutes: (localPlayTimeSeconds / 1000 / 60).toFixed(2),
               localIsNewer: localPlayTimeSeconds > cloudPlayTimeSeconds,
             });
 
-            // If cloud has longer playtime, another instance is ahead
-            if (cloudPlayTimeSeconds > localPlayTimeSeconds) {
+            // If cloud has SIGNIFICANTLY longer playtime (+60 seconds = 60000ms), another instance is ahead
+            // Use a threshold to avoid false positives from referral processing or timing issues
+            const threshold = 60000; // 60 seconds in milliseconds
+            if (cloudPlayTimeSeconds > localPlayTimeSeconds + threshold) {
               console.warn("[SAVE] ⚠️ Detected newer save in cloud:", {
-                cloudPlayTimeSeconds: cloudPlayTimeSeconds.toFixed(2),
-                localPlayTimeSeconds: localPlayTimeSeconds.toFixed(2),
-                differenceSeconds: (
+                cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
+                localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
+                differenceMs: (
                   cloudPlayTimeSeconds - localPlayTimeSeconds
                 ).toFixed(2),
+                cloudMinutes: (cloudPlayTimeSeconds / 1000 / 60).toFixed(2),
+                localMinutes: (localPlayTimeSeconds / 1000 / 60).toFixed(2),
               });
 
               console.log(
