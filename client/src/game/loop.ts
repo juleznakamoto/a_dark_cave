@@ -23,8 +23,6 @@ const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milli
 const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
-const SESSION_CHECK_INTERVAL = 10000; // Check session every 10 seconds
-
 let tickAccumulator = 0;
 let lastAutoSave = 0;
 let lastProduction = 0;
@@ -35,7 +33,7 @@ let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
 let lastUserActivity = 0;
 let inactivityCheckInterval: NodeJS.Timeout | null = null;
-let sessionCheckInterval: NodeJS.Timeout | null = null; // Added for session checking
+let sessionListener: { subscription: { unsubscribe: () => void } } | null = null; // Event-driven session monitoring
 let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
@@ -109,63 +107,51 @@ export function startGameLoop() {
     }
   }, 30000); // Check every 30 seconds
 
-  // Start session validation checker (every 10 seconds)
-  // This checks if the user's session is still valid (not invalidated by another login)
-  if (sessionCheckInterval) {
-    clearInterval(sessionCheckInterval);
-  }
-  const checkSession = async () => {
-    const state = useGameStore.getState();
-    
-    // Check if user is signed in
-    if (!state.isUserSignedIn) {
-      return; // Not signed in, no need to check session
-    }
-
-    try {
-      logger.log('[SESSION] 🔍 Forcing session refresh to validate with server...');
-      
-      // Use refreshSession() to FORCE a server-side token exchange
-      // This is the ONLY way to detect if the session was revoked by single-session enforcement
-      const { getSupabaseClient } = await import('@/lib/supabase');
-      const supabase = await getSupabaseClient();
-      const { data: { session }, error } = await supabase.auth.refreshSession();
-
-      // If there's an error or no session, the token was invalidated server-side
-      if (error || !session) {
-        logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
-          hasError: !!error,
-          errorMessage: error?.message,
-          errorCode: error?.code,
-          hasSession: !!session,
+  // Set up event-driven session monitoring (only triggers on actual session changes)
+  // This is MUCH more efficient than polling - no network requests unless session changes
+  const state = useGameStore.getState();
+  if (state.isUserSignedIn) {
+    const setupSessionListener = async () => {
+      try {
+        const { getSupabaseClient } = await import('@/lib/supabase');
+        const supabase = await getSupabaseClient();
+        
+        // Listen for auth state changes (fires when session is invalidated)
+        const { data } = supabase.auth.onAuthStateChange(async (event, session) => {
+          logger.log('[SESSION] 🔔 Auth state changed:', event);
+          
+          // If session was signed out or token refreshed elsewhere, handle it
+          if (event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
+            if (!session) {
+              logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
+              
+              // Delete local save when session is invalidated
+              try {
+                const { deleteSave } = await import('./save');
+                await deleteSave();
+                logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
+              } catch (deleteError) {
+                logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
+              }
+              
+              stopGameLoop();
+              useGameStore.setState({
+                inactivityDialogOpen: true,
+                inactivityReason: 'multitab',
+              });
+            }
+          }
         });
         
-        // Delete local save when session is invalidated
-        try {
-          const { deleteSave } = await import('./save');
-          await deleteSave();
-          logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
-        } catch (deleteError) {
-          logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
-        }
-        
-        stopGameLoop();
-        useGameStore.setState({
-          inactivityDialogOpen: true,
-          inactivityReason: 'multitab',
-        });
-      } else {
-        logger.log('[SESSION] ✅ Session refreshed and valid', {
-          userId: session.user.id.substring(0, 8) + '...',
-          email: session.user.email,
-          expiresAt: new Date(session.expires_at! * 1000).toISOString(),
-        });
+        sessionListener = data;
+        logger.log('[SESSION] ✅ Event-driven session listener established');
+      } catch (error) {
+        logger.error('[SESSION] ❌ Failed to set up session listener:', error);
       }
-    } catch (error) {
-      logger.error('[SESSION] ❌ Error refreshing session:', error);
-    }
-  };
-  sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
+    };
+    
+    setupSessionListener();
+  }
 
 
   // Check if idle mode needs to be displayed (user left during idle mode)
@@ -375,11 +361,11 @@ function handleInactivity() {
     logger.log("[INACTIVITY] Inactivity checker stopped");
   }
 
-  // Stop session checker
-  if (sessionCheckInterval) {
-    clearInterval(sessionCheckInterval);
-    sessionCheckInterval = null;
-    logger.log("[INACTIVITY] Session checker stopped");
+  // Stop session listener
+  if (sessionListener) {
+    sessionListener.subscription.unsubscribe();
+    sessionListener = null;
+    logger.log("[INACTIVITY] Session listener stopped");
   }
 
   // Set game loop to inactive
@@ -415,11 +401,11 @@ export function stopGameLoop() {
     logger.log("[LOOP] Inactivity checker cleared");
   }
 
-  // Clean up session checker
-  if (sessionCheckInterval) {
-    clearInterval(sessionCheckInterval);
-    sessionCheckInterval = null;
-    logger.log("[LOOP] Session checker cleared");
+  // Clean up session listener
+  if (sessionListener) {
+    sessionListener.subscription.unsubscribe();
+    sessionListener = null;
+    logger.log("[LOOP] Session listener cleared");
   }
 
   // Remove activity listeners
