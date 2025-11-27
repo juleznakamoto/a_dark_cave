@@ -330,5 +330,12 @@ export async function loadGameFromSupabase(): Promise<GameState | null> {
     throw error;
   }
 
+  logger.log('[LOAD CLOUD] 📊 Loaded from Supabase:', {
+    hasData: !!data,
+    hasReferrals: !!data?.game_state?.referrals,
+    referralsCount: data?.game_state?.referrals?.length || 0,
+    referrals: data?.game_state?.referrals,
+  });
+
   return data?.game_state || null;
 }

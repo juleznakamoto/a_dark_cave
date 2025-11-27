@@ -95,12 +95,20 @@ async function processUnclaimedReferrals(
   const { useGameStore } = await import("./state");
   const currentUser = await getCurrentUser();
 
+  logger.log('[REFERRAL] 🔍 Processing unclaimed referrals...', {
+    hasUser: !!currentUser,
+    hasReferrals: !!gameState.referrals,
+    referralsCount: gameState.referrals?.length || 0,
+    referrals: gameState.referrals,
+  });
+
   // If no user or no referrals, return gameState as is
   if (
     !currentUser ||
     !gameState.referrals ||
     gameState.referrals.length === 0
   ) {
+    logger.log('[REFERRAL] ⏭️ Skipping - no user or no referrals');
     return gameState;
   }
 
@@ -111,6 +119,11 @@ async function processUnclaimedReferrals(
   // Process unclaimed referrals
   const updatedReferrals = updatedGameState.referrals.map((referral) => {
     if (!referral.claimed) {
+      logger.log('[REFERRAL] 💰 Claiming referral:', {
+        userId: referral.userId,
+        timestamp: referral.timestamp,
+      });
+      
       // Claim this referral
       goldGained += 100;
       logEntriesAdded.push({
@@ -130,6 +143,13 @@ async function processUnclaimedReferrals(
     const oldGold = updatedGameState.resources?.gold || 0;
     const newGold = oldGold + goldGained;
 
+    logger.log('[REFERRAL] ✅ Awarding gold:', {
+      oldGold,
+      goldGained,
+      newGold,
+      claimedCount: logEntriesAdded.length,
+    });
+
     updatedGameState = {
       ...updatedGameState,
       referrals: updatedReferrals,
@@ -147,6 +167,25 @@ async function processUnclaimedReferrals(
       log: updatedGameState.log,
       referrals: updatedGameState.referrals,
     });
+
+    // CRITICAL: Save the claimed referrals back to Supabase immediately
+    logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
+    try {
+      await saveGameToSupabase(
+        { 
+          referrals: updatedReferrals,
+          resources: updatedGameState.resources,
+          log: updatedGameState.log,
+        },
+        updatedGameState.playTime,
+        false
+      );
+      logger.log('[REFERRAL] ✅ Successfully saved claimed referrals to cloud');
+    } catch (error) {
+      logger.error('[REFERRAL] ❌ Failed to save claimed referrals to cloud:', error);
+    }
+  } else {
+    logger.log('[REFERRAL] ℹ️ No unclaimed referrals to process');
   }
 
   return updatedGameState;
