@@ -52,7 +52,9 @@ describe('Game Loop Production', () => {
       skipSound: true, // Skip sound to avoid window errors in tests
     });
 
-    expect(store.eventDialog.isOpen).toBe(true);
-    expect(store.isPaused || store.eventDialog.isOpen).toBe(true);
+    // Get fresh state after setting dialog
+    const updatedState = useGameStore.getState();
+    expect(updatedState.eventDialog.isOpen).toBe(true);
+    expect(updatedState.isPaused || updatedState.eventDialog.isOpen).toBe(true);
   });
 });
