@@ -145,8 +145,6 @@ async function processReferralInBackground(): Promise<void> {
       }
     }
   }
-
-  const isNewGame = gameState.isNewGame || false;
 }
 
 export async function signIn(email: string, password: string) {
