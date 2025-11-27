@@ -352,6 +352,23 @@ export async function loadGame(): Promise<GameState | null> {
             await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
             console.log('[LOAD] ✅ Cloud save loaded and synced locally');
             return processedState;
+          } else if (localPlayTime === cloudPlayTime) {
+            console.log('[LOAD] ⚖️ Local and cloud have identical playTime - using local without sync');
+            // Merge referrals from cloud but don't attempt to sync
+            const mergedState = {
+              ...localSave.gameState,
+              referrals: cloudSave.referrals || localSave.gameState.referrals,
+              referralCount: cloudSave.referralCount !== undefined ? cloudSave.referralCount : localSave.gameState.referralCount,
+              cooldowns: localSave.gameState.cooldowns || {},
+              cooldownDurations: localSave.gameState.cooldownDurations || {},
+            };
+
+            const processedLocalState = await processUnclaimedReferrals(mergedState);
+            
+            // Update lastCloudState so next save will be a diff
+            await db.put('lastCloudState', processedLocalState, LAST_CLOUD_STATE_KEY);
+            console.log('[LOAD] ✅ Using local save (identical playTime)');
+            return processedLocalState;
           } else {
             console.log('[LOAD] 💾 Using local save (longer playTime), syncing to cloud...');
             // Local has longer play time, but merge referrals from cloud
