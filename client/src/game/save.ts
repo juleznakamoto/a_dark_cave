@@ -130,6 +130,12 @@ async function processUnclaimedReferrals(
     const oldGold = updatedGameState.resources?.gold || 0;
     const newGold = oldGold + goldGained;
 
+    logger.log('[REFERRAL PROCESS] 💰 Updating game state with gold:', {
+      oldGold,
+      goldGained,
+      newGold
+    });
+
     updatedGameState = {
       ...updatedGameState,
       referrals: updatedReferrals,
@@ -147,6 +153,31 @@ async function processUnclaimedReferrals(
       log: updatedGameState.log,
       referrals: updatedGameState.referrals,
     });
+
+    logger.log('[REFERRAL PROCESS] 📝 Updated Zustand store');
+
+    // CRITICAL: Save the claimed referrals to Supabase immediately
+    // This ensures the cloud state reflects the claimed status
+    try {
+      const { saveGameToSupabase } = await import('./auth');
+      logger.log('[REFERRAL PROCESS] 💾 Saving to Supabase...');
+
+      await saveGameToSupabase(
+        {
+          referrals: updatedReferrals,
+          resources: updatedGameState.resources,
+          log: updatedGameState.log,
+        },
+        updatedGameState.playTime,
+        false
+      );
+
+      logger.log('[REFERRAL PROCESS] ✅ Successfully saved claimed referrals to cloud');
+    } catch (error) {
+      logger.error('[REFERRAL PROCESS] ❌ Failed to save claimed referrals to cloud:', error);
+    }
+  } else {
+    logger.log('[REFERRAL PROCESS] No unclaimed referrals found, no state update needed');
   }
 
   return updatedGameState;
@@ -391,171 +422,184 @@ export async function loadGame(): Promise<GameState | null> {
     const user = await getCurrentUser();
 
     if (user) {
-      // Try to load from cloud
-      try {
-        const cloudSaveData = await loadGameFromSupabase();
-        logger.log('[LOAD] 📊 Raw cloud save from Supabase:', {
-          exists: !!cloudSaveData,
-          playTime: cloudSaveData?.playTime,
-          timestamp: cloudSaveData?.timestamp,
-          gameStatePlayTime: cloudSaveData?.gameState?.playTime,
-        });
+      // Load from Supabase if user is logged in
+      if (user) {
+        logger.log("[LOAD] 📡 User authenticated, fetching cloud save...");
+        const cloudState = await loadGameFromSupabase();
 
-        const lastCloudState = await db.get(
-          "lastCloudState",
-          LAST_CLOUD_STATE_KEY,
-        );
+        if (cloudState) {
+          logger.log("[LOAD] ☁️ Cloud save found");
+          logger.log("[LOAD] 📋 Referrals from Supabase:", JSON.stringify(cloudState.referrals, null, 2));
+          let hasCloudSave = true; // Make sure this is declared
 
-        let cloudSave: SaveData | null = null;
-        if (cloudSaveData) {
-          // If lastCloudState exists, merge diff. Otherwise, use cloudSaveData directly.
-          if (lastCloudState) {
-            // Merge diffs for cloudSave, but only if cloudSaveData contains the actual game state, not just diffs
-            // For simplicity here, we assume cloudSaveData is the full state if it's a new load.
-            // A more robust solution might involve merging diffs if they were stored separately.
-            cloudSave = {
-              gameState: mergeStateDiff(
-                lastCloudState,
-                cloudSaveData.gameState,
-              ),
-              playTime: cloudSaveData.playTime,
-              timestamp: cloudSaveData.timestamp,
-            };
-            logger.log('[LOAD] 📊 Merged cloud save with lastCloudState:', {
-              playTime: cloudSave.playTime,
-              gameStatePlayTime: cloudSave.gameState?.playTime,
-            });
-          } else {
-            cloudSave = cloudSaveData;
-            logger.log('[LOAD] 📊 Using cloud save directly (no lastCloudState):', {
-              playTime: cloudSave.playTime,
-              gameStatePlayTime: cloudSave.gameState?.playTime,
+          // Process unclaimed referrals BEFORE merging states
+          logger.log("[LOAD] 🔄 Processing unclaimed referrals...");
+          const processedCloudState = await processUnclaimedReferrals(cloudState);
+          logger.log("[LOAD] ✅ Referrals processed, merging with local state");
+
+          // Now, proceed with OCC logic using processedCloudState
+          const lastCloudState = await db.get(
+            "lastCloudState",
+            LAST_CLOUD_STATE_KEY,
+          );
+
+          let cloudSave: SaveData | null = null;
+          if (processedCloudState) {
+            if (lastCloudState) {
+              cloudSave = {
+                gameState: mergeStateDiff(
+                  lastCloudState,
+                  processedCloudState,
+                ),
+                playTime: processedCloudState.playTime,
+                timestamp: processedCloudState.timestamp,
+              };
+              logger.log('[LOAD] 📊 Merged cloud save with lastCloudState:', {
+                playTime: cloudSave.playTime,
+                gameStatePlayTime: cloudSave.gameState?.playTime,
+              });
+            } else {
+              cloudSave = processedCloudState;
+              logger.log('[LOAD] 📊 Using processed cloud save directly (no lastCloudState):', {
+                playTime: cloudSave.playTime,
+                gameStatePlayTime: cloudSave.gameState?.playTime,
+              });
+            }
+          }
+
+          if (isDev) {
+            logger.log(`[LOAD] Cloud save processed:`, {
+              hasCloudSave: !!cloudSave,
+              hasCooldownDurations: !!cloudSave?.gameState?.cooldownDurations,
+              cooldownDurations: cloudSave?.gameState?.cooldownDurations,
             });
           }
-        }
 
-        if (isDev) {
-          logger.log(`[LOAD] Cloud save processed:`, {
-            hasCloudSave: !!cloudSave,
-            hasCooldownDurations: !!cloudSave?.gameState?.cooldownDurations,
-            cooldownDurations: cloudSave?.gameState?.cooldownDurations,
-          });
-        }
+          // OCC: Compare play times and use the save with longer play time
+          if (cloudSave && localSave) {
+            const cloudPlayTime = cloudSave.playTime || 0;
+            const localPlayTime = localSave.playTime || 0;
 
-        // OCC: Compare play times and use the save with longer play time
-        if (cloudSave && localSave) {
-          const cloudPlayTime = cloudSave.playTime || 0;
-          const localPlayTime = localSave.playTime || 0;
-
-          logger.log("[LOAD] 🔍 OCC: Comparing local vs cloud save:", {
-            cloudPlayTimeMs: cloudPlayTime.toFixed(2),
-            localPlayTimeMs: localPlayTime.toFixed(2),
-            cloudPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
-            localPlayTimeMinutes: (localPlayTime / 1000 / 60).toFixed(2),
-            differenceMs: (cloudPlayTime - localPlayTime).toFixed(2),
-            differenceMinutes: ((cloudPlayTime - localPlayTime) / 1000 / 60).toFixed(2),
-            winner:
-              cloudPlayTime > localPlayTime
-                ? "cloud"
-                : localPlayTime === cloudPlayTime
-                  ? "equal"
-                  : "local",
-          });
-
-          // Use whichever has longer play time, but always merge referrals from cloud
-          if (cloudPlayTime > localPlayTime) {
-            logger.log("[LOAD] ☁️ Using cloud save (longer playTime)");
-
-            logger.log('[LOAD] 📊 Before processUnclaimedReferrals:', {
-              gameStatePlayTime: cloudSave.gameState?.playTime,
-              cloudPlayTime: cloudPlayTime,
+            logger.log("[LOAD] 🔍 OCC: Comparing local vs cloud save:", {
+              cloudPlayTimeMs: cloudPlayTime.toFixed(2),
+              localPlayTimeMs: localPlayTime.toFixed(2),
               cloudPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
+              localPlayTimeMinutes: (localPlayTime / 1000 / 60).toFixed(2),
+              differenceMs: (cloudPlayTime - localPlayTime).toFixed(2),
+              differenceMinutes: ((cloudPlayTime - localPlayTime) / 1000 / 60).toFixed(2),
+              winner:
+                cloudPlayTime > localPlayTime
+                  ? "cloud"
+                  : localPlayTime === cloudPlayTime
+                    ? "equal"
+                    : "local",
             });
 
+            // Use whichever has longer play time, but always merge referrals from cloud
+            if (cloudPlayTime > localPlayTime) {
+              logger.log("[LOAD] ☁️ Using cloud save (longer playTime)");
+
+              logger.log('[LOAD] 📊 Before processUnclaimedReferrals:', {
+                gameStatePlayTime: cloudSave.gameState?.playTime,
+                cloudPlayTime: cloudPlayTime,
+                cloudPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
+              });
+
+              const stateToReturn = { ...processedCloudState, playTime: cloudPlayTime };
+
+              logger.log('[LOAD] 📊 State being returned to Zustand:', {
+                playTime: stateToReturn.playTime,
+                playTimeMinutes: (stateToReturn.playTime / 1000 / 60).toFixed(2),
+                hasPlayTime: 'playTime' in stateToReturn,
+                allPlayTimeKeys: Object.keys(stateToReturn).filter(k => k.includes('play') || k.includes('time')),
+              });
+
+              logger.log('[LOAD] 💾 About to save cloud state to IndexedDB...');
+              // Save to IndexedDB to keep it in sync - use skipOccCheck=true for initial load
+              await saveGame(stateToReturn, false, true);
+
+              // Verify what was saved
+              const verifyLocalSave = await db.get("saves", SAVE_KEY);
+              logger.log('[LOAD] ✅ Verified IndexedDB after cloud sync:', {
+                savedPlayTime: verifyLocalSave?.playTime,
+                savedPlayTimeMinutes: verifyLocalSave?.playTime ? (verifyLocalSave.playTime / 1000 / 60).toFixed(2) : 0,
+                savedGameStatePlayTime: verifyLocalSave?.gameState?.playTime,
+                expectedPlayTime: cloudPlayTime,
+                expectedPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
+                playTimesMatch: verifyLocalSave?.playTime === cloudPlayTime,
+              });
+
+              await db.put(
+                "lastCloudState",
+                processedCloudState,
+                LAST_CLOUD_STATE_KEY,
+              );
+              logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
+              return stateToReturn;
+            } else if (localPlayTime === cloudPlayTime) {
+              if (isDev)
+                logger.log(
+                  "[LOAD] ⚖️ Local and cloud have identical playTime - using local without sync",
+                );
+              // Merge referrals from cloud but don't attempt to sync
+              const mergedState = {
+                ...localSave.gameState,
+                referrals:
+                  cloudSave.gameState.referrals || localSave.gameState.referrals,
+                referralCount:
+                  cloudSave.gameState.referralCount !== undefined
+                    ? cloudSave.gameState.referralCount
+                    : localSave.gameState.referralCount,
+                cooldowns: localSave.gameState.cooldowns || {},
+                cooldownDurations: localSave.gameState.cooldownDurations || {},
+              };
+
+              const processedLocalState =
+                await processUnclaimedReferrals(mergedState);
+
+              // Update lastCloudState so next save will be a diff
+              await db.put(
+                "lastCloudState",
+                processedLocalState,
+                LAST_CLOUD_STATE_KEY,
+              );
+              if (isDev)
+                logger.log("[LOAD] ✅ Using local save (identical playTime)");
+              return processedLocalState;
+            } else {
+              // This case means we're signing in and cloud has MORE playtime than local
+              // This is the NORMAL sign-in scenario - cloud has previous sessions
+              // DO NOT sync local to cloud in this case, use cloud save instead
+              if (isDev)
+                logger.log(
+                  "[LOAD] 🔐 Sign-in detected: Cloud save is newer, using cloud save",
+                );
+              const processedState = await processUnclaimedReferrals(
+                cloudSave.gameState,
+              );
+              // Save cloud state locally to sync them
+              await db.put(
+                "saves",
+                {
+                  gameState: processedState,
+                  timestamp: Date.now(),
+                  playTime: cloudSave.playTime || 0,
+                },
+                SAVE_KEY,
+              );
+              await db.put(
+                "lastCloudState",
+                processedState,
+                LAST_CLOUD_STATE_KEY,
+              );
+              logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
+              return processedState;
+            }
+          } else if (cloudSave) {
+            // Only cloud save exists
             const processedState = await processUnclaimedReferrals(
               cloudSave.gameState,
             );
-
-            logger.log('[LOAD] 📊 After processUnclaimedReferrals:', {
-              processedStatePlayTime: processedState?.playTime,
-              processedStatePlayTimeMinutes: processedState?.playTime ? (processedState.playTime / 1000 / 60).toFixed(2) : 0,
-              cloudPlayTime: cloudPlayTime,
-              cloudPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
-            });
-
-            const stateToReturn = { ...processedState, playTime: cloudPlayTime };
-
-            logger.log('[LOAD] 📊 State being returned to Zustand:', {
-              playTime: stateToReturn.playTime,
-              playTimeMinutes: (stateToReturn.playTime / 1000 / 60).toFixed(2),
-              hasPlayTime: 'playTime' in stateToReturn,
-              allPlayTimeKeys: Object.keys(stateToReturn).filter(k => k.includes('play') || k.includes('time')),
-            });
-
-            logger.log('[LOAD] 💾 About to save cloud state to IndexedDB...');
-            // Save to IndexedDB to keep it in sync - use skipOccCheck=true for initial load
-            await saveGame(stateToReturn, false, true);
-
-            // Verify what was saved
-            const verifyLocalSave = await db.get("saves", SAVE_KEY);
-            logger.log('[LOAD] ✅ Verified IndexedDB after cloud sync:', {
-              savedPlayTime: verifyLocalSave?.playTime,
-              savedPlayTimeMinutes: verifyLocalSave?.playTime ? (verifyLocalSave.playTime / 1000 / 60).toFixed(2) : 0,
-              savedGameStatePlayTime: verifyLocalSave?.gameState?.playTime,
-              expectedPlayTime: cloudPlayTime,
-              expectedPlayTimeMinutes: (cloudPlayTime / 1000 / 60).toFixed(2),
-              playTimesMatch: verifyLocalSave?.playTime === cloudPlayTime,
-            });
-
-            await db.put(
-              "lastCloudState",
-              processedState,
-              LAST_CLOUD_STATE_KEY,
-            );
-            logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
-            return stateToReturn;
-          } else if (localPlayTime === cloudPlayTime) {
-            if (isDev)
-              logger.log(
-                "[LOAD] ⚖️ Local and cloud have identical playTime - using local without sync",
-              );
-            // Merge referrals from cloud but don't attempt to sync
-            const mergedState = {
-              ...localSave.gameState,
-              referrals:
-                cloudSave.gameState.referrals || localSave.gameState.referrals,
-              referralCount:
-                cloudSave.gameState.referralCount !== undefined
-                  ? cloudSave.gameState.referralCount
-                  : localSave.gameState.referralCount,
-              cooldowns: localSave.gameState.cooldowns || {},
-              cooldownDurations: localSave.gameState.cooldownDurations || {},
-            };
-
-            const processedLocalState =
-              await processUnclaimedReferrals(mergedState);
-
-            // Update lastCloudState so next save will be a diff
-            await db.put(
-              "lastCloudState",
-              processedLocalState,
-              LAST_CLOUD_STATE_KEY,
-            );
-            if (isDev)
-              logger.log("[LOAD] ✅ Using local save (identical playTime)");
-            return processedLocalState;
-          } else {
-            // This case means we're signing in and cloud has MORE playtime than local
-            // This is the NORMAL sign-in scenario - cloud has previous sessions
-            // DO NOT sync local to cloud in this case, use cloud save instead
-            if (isDev)
-              logger.log(
-                "[LOAD] 🔐 Sign-in detected: Cloud save is newer, using cloud save",
-              );
-            const processedState = await processUnclaimedReferrals(
-              cloudSave.gameState,
-            );
-            // Save cloud state locally to sync them
             await db.put(
               "saves",
               {
@@ -565,66 +609,45 @@ export async function loadGame(): Promise<GameState | null> {
               },
               SAVE_KEY,
             );
-            await db.put(
-              "lastCloudState",
-              processedState,
-              LAST_CLOUD_STATE_KEY,
-            );
-            logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
+            await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
             return processedState;
-          }
-        } else if (cloudSave) {
-          // Only cloud save exists
-          const processedState = await processUnclaimedReferrals(
-            cloudSave.gameState,
-          );
-          await db.put(
-            "saves",
-            {
-              gameState: processedState,
-              timestamp: Date.now(),
-              playTime: cloudSave.playTime || 0,
-            },
-            SAVE_KEY,
-          );
-          await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
-          return processedState;
-        } else if (localSave) {
-          // Only local save exists, sync to cloud
-          const stateWithDefaults = {
-            ...localSave.gameState,
-            cooldownDurations: localSave.gameState.cooldownDurations || {},
-          };
-          const processedState =
-            await processUnclaimedReferrals(stateWithDefaults);
+          } else if (localSave) {
+            // Only local save exists, sync to cloud
+            const stateWithDefaults = {
+              ...localSave.gameState,
+              cooldownDurations: localSave.gameState.cooldownDurations || {},
+            };
+            const processedState =
+              await processUnclaimedReferrals(stateWithDefaults);
 
-          try {
-            // Force full sync by clearing lastCloudState, then saveGame will handle it
-            await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            await saveGame(processedState, false, true); // Pass true to skip OCC check during this initial sync
-            await db.put(
-              "lastCloudState",
-              processedState,
-              LAST_CLOUD_STATE_KEY,
-            );
-          } catch (syncError: any) {
-            // If OCC violates due to equal playTimes, that's fine - cloud already has this state
-            if (syncError.message?.includes("OCC violation")) {
-              if (isDev)
-                logger.log(
-                  "[LOAD] 📊 Cloud already has this save state - skipping sync",
-                );
+            try {
+              // Force full sync by clearing lastCloudState, then saveGame will handle it
+              await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
+              await saveGame(processedState, false, true); // Pass true to skip OCC check during this initial sync
               await db.put(
                 "lastCloudState",
                 processedState,
                 LAST_CLOUD_STATE_KEY,
               );
-            } else {
-              throw syncError;
+            } catch (syncError: any) {
+              // If OCC violates due to equal playTimes, that's fine - cloud already has this state
+              if (syncError.message?.includes("OCC violation")) {
+                if (isDev)
+                  logger.log(
+                    "[LOAD] 📊 Cloud already has this save state - skipping sync",
+                  );
+                await db.put(
+                  "lastCloudState",
+                  processedState,
+                  LAST_CLOUD_STATE_KEY,
+                );
+              } else {
+                throw syncError;
+              }
             }
-          }
 
-          return processedState;
+            return processedState;
+          }
         }
       } catch (cloudError) {
         logger.error("Failed to load from cloud:", cloudError);
