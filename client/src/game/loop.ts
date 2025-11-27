@@ -109,7 +109,6 @@ export function startGameLoop() {
 
   // Set up event-driven session monitoring (only triggers on actual session changes)
   // This is MUCH more efficient than polling - no network requests unless session changes
-  const state = useGameStore.getState();
   if (state.isUserSignedIn) {
     const setupSessionListener = async () => {
       try {
