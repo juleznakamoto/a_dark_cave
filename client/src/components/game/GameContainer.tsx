@@ -14,7 +14,7 @@ import CombatDialog from "./CombatDialog";
 import IdleModeDialog from "./IdleModeDialog";
 import MerchantDialog from "./MerchantDialog";
 import CubeDialog from "./CubeDialog";
-import MultiTabDialog from './MultiTabDialog';
+import InactivityDialog from "./InactivityDialog";
 import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
@@ -304,7 +304,7 @@ export default function GameContainer() {
       <IdleModeDialog />
       <MerchantDialog />
       <CubeDialog />
-      {inactivityDialogOpen && <MultiTabDialog />}
+      {inactivityDialogOpen && <InactivityDialog />}
     </div>
   );
 }
