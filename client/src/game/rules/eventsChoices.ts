@@ -4,11 +4,11 @@ import { killVillagers } from "@/game/stateHelpers";
 import { getTotalStrength } from "./effectsCalculation";
 import { getMaxPopulation } from "@/game/population";
 import { woodcutterEvents } from "./eventsWoodcutter";
-import { restlessKnight } from "./eventsLore";
+import { loreEvents } from "./eventsLore";
 
 export const choiceEvents: Record<string, GameEvent> = {
   ...woodcutterEvents,
-  ...restlessKnight,
+  ...loreEvents,
   paleFigure: {
     id: "paleFigure",
     condition: (state: GameState) =>
