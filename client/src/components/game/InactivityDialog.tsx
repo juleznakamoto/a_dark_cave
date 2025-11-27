@@ -26,7 +26,7 @@ export default function InactivityDialog() {
       <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
           <DialogTitle className="leading-6">
-            {isMultiTab && 'Session Ended -  In Elsewhere'}
+            {isMultiTab && 'Another Login detected'}
             {isTimeout && 'Game stopped due to inactivity'}
           </DialogTitle>
           <DialogDescription className="py-4 space-y-2">
