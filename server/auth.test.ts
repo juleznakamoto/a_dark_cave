@@ -2,6 +2,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 
 vi.mock('@supabase/supabase-js');
+vi.mock('../client/src/lib/supabase', () => ({
+  getSupabaseClient: vi.fn(),
+}));
 
 describe('Authentication', () => {
   beforeEach(() => {
@@ -10,8 +13,6 @@ describe('Authentication', () => {
 
   it('should prevent signup without email confirmation', async () => {
     // Test that unconfirmed users cannot sign in
-    const { signIn } = await import('../client/src/game/auth');
-    
     const mockSupabase = {
       auth: {
         signInWithPassword: vi.fn().mockResolvedValue({
@@ -28,16 +29,15 @@ describe('Authentication', () => {
       },
     };
 
-    const { createClient } = await import('@supabase/supabase-js');
-    vi.mocked(createClient).mockReturnValue(mockSupabase as any);
+    const { getSupabaseClient } = await import('../client/src/lib/supabase');
+    vi.mocked(getSupabaseClient).mockResolvedValue(mockSupabase as any);
 
+    const { signIn } = await import('../client/src/game/auth');
     await expect(signIn('test@test.com', 'password')).rejects.toThrow('confirm your email');
   });
 
   it('should handle session expiry gracefully', async () => {
     // Test that expired sessions are detected and handled
-    const { getCurrentUser } = await import('../client/src/game/auth');
-    
     const mockSupabase = {
       auth: {
         getUser: vi.fn().mockResolvedValue({
@@ -47,9 +47,10 @@ describe('Authentication', () => {
       },
     };
 
-    const { createClient } = await import('@supabase/supabase-js');
-    vi.mocked(createClient).mockReturnValue(mockSupabase as any);
+    const { getSupabaseClient } = await import('../client/src/lib/supabase');
+    vi.mocked(getSupabaseClient).mockResolvedValue(mockSupabase as any);
 
+    const { getCurrentUser } = await import('../client/src/game/auth');
     const user = await getCurrentUser();
     expect(user).toBeNull();
   });

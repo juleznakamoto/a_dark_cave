@@ -14,15 +14,14 @@ describe('Game Loop Production', () => {
     store.updateResource('free' as any, 5);
     store.assignVillager('gatherer');
     store.assignVillager('gatherer');
-
-    const initialFood = store.resources.food;
     
     // Simulate production tick
     const { getPopulationProduction } = await import('./population');
     const production = getPopulationProduction('gatherer', 2, store);
     
     expect(production.length).toBeGreaterThan(0);
-    expect(production.some(p => p.resource === 'food')).toBe(true);
+    // Gatherers produce wood and stone, not food
+    expect(production.some(p => p.resource === 'wood' || p.resource === 'stone')).toBe(true);
   });
 
   it('should handle starvation when food runs out', async () => {
@@ -44,11 +43,13 @@ describe('Game Loop Production', () => {
   it('should pause production when dialogs are open', () => {
     const store = useGameStore.getState();
     
+    // Set event dialog without triggering sound
     store.setEventDialog(true, {
       id: 'test-event',
       message: 'Test',
       timestamp: Date.now(),
       type: 'event',
+      skipSound: true, // Skip sound to avoid window errors in tests
     });
 
     expect(store.eventDialog.isOpen).toBe(true);

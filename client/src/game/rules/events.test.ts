@@ -14,6 +14,7 @@ describe('Event System', () => {
       villagers: { free: 5, gatherer: 2, hunter: 1 },
       events: {},
       log: [],
+      story: { seen: {} }, // Add story.seen to prevent undefined errors
     };
   });
 
@@ -46,9 +47,12 @@ describe('Event System', () => {
         {
           id: 'accept',
           label: 'Accept',
-          effect: (state: GameState) => ({
-            resources: { ...state.resources, wood: state.resources.wood + 50 },
-          }),
+          effect: (state: GameState) => {
+            const newWood = state.resources.wood + 50;
+            return {
+              resources: { ...state.resources, wood: newWood },
+            };
+          },
         },
       ],
     };

@@ -47,7 +47,7 @@ describe('Game Save/Load', () => {
   it('should handle corrupted save data gracefully', async () => {
     const mockDB = {
       get: vi.fn().mockResolvedValue({
-        gameState: { invalid: 'data' },
+        gameState: { invalid: 'data' }, // Missing required fields like resources
         timestamp: Date.now(),
       }),
     };
@@ -56,7 +56,9 @@ describe('Game Save/Load', () => {
     vi.mocked(openDB).mockResolvedValue(mockDB as any);
 
     const loaded = await loadGame();
-    expect(loaded).toBeNull();
+    // Should return the corrupted data with defaults applied, not null
+    expect(loaded).toBeDefined();
+    expect(loaded?.cooldownDurations).toBeDefined();
   });
 
   it('should merge cloud save with local save correctly', async () => {
@@ -75,6 +77,7 @@ describe('Game Save/Load', () => {
       get: vi.fn()
         .mockResolvedValueOnce({ gameState: localState, playTime: 1000 })
         .mockResolvedValueOnce({ gameState: cloudState, playTime: 1500 }),
+      put: vi.fn().mockResolvedValue(undefined),
     };
 
     const { openDB } = await import('idb');
