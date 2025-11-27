@@ -390,8 +390,20 @@ export async function loadGame(): Promise<GameState | null> {
             cooldownDurations: localSave.gameState.cooldownDurations || {},
           };
           const processedState = await processUnclaimedReferrals(stateWithDefaults);
-          await saveGameToSupabase(processedState);
-          await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+
+          try {
+            await saveGameToSupabase(processedState);
+            await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+          } catch (syncError: any) {
+            // If OCC rejects due to equal playTimes, that's fine - cloud already has this state
+            if (syncError.message?.includes('OCC violation')) {
+              console.log('[LOAD] 📊 Cloud already has this save state - skipping sync');
+              await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
+            } else {
+              throw syncError;
+            }
+          }
+
           return processedState;
         }
       } catch (cloudError) {
