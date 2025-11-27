@@ -291,7 +291,7 @@ export async function saveGame(
             isNewGame,
             clickData,
           );
-          
+
           // Update last cloud state
           await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
           logger.log("[SAVE] ✅ Cloud save successful");
@@ -410,19 +410,22 @@ export async function loadGame(): Promise<GameState | null> {
             const processedState = await processUnclaimedReferrals(
               cloudSave.gameState,
             );
+
+            // IMPORTANT: Include playTime in the returned state
+            const stateWithPlayTime = {
+              ...processedState,
+              playTime: cloudPlayTime,
+            };
+
             // Save to IndexedDB to keep it in sync - use skipOccCheck=true for initial load
-            await saveGame(
-              { ...processedState, playTime: cloudPlayTime },
-              false,
-              true,
-            );
+            await saveGame(stateWithPlayTime, false, true);
             await db.put(
               "lastCloudState",
               processedState,
               LAST_CLOUD_STATE_KEY,
             );
             logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
-            return processedState;
+            return stateWithPlayTime;
           } else if (localPlayTime === cloudPlayTime) {
             if (isDev)
               logger.log(
@@ -464,13 +467,20 @@ export async function loadGame(): Promise<GameState | null> {
             const processedState = await processUnclaimedReferrals(
               cloudSave.gameState,
             );
+
+            // IMPORTANT: Include playTime in the returned state
+            const stateWithPlayTime = {
+              ...processedState,
+              playTime: cloudPlayTime,
+            };
+
             // Save cloud state locally to sync them
             await db.put(
               "saves",
               {
                 gameState: processedState,
                 timestamp: Date.now(),
-                playTime: cloudSave.playTime || 0,
+                playTime: cloudPlayTime || 0,
               },
               SAVE_KEY,
             );
@@ -480,7 +490,7 @@ export async function loadGame(): Promise<GameState | null> {
               LAST_CLOUD_STATE_KEY,
             );
             logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
-            return processedState;
+            return stateWithPlayTime;
           }
         } else if (cloudSave) {
           // Only cloud save exists
