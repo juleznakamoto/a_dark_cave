@@ -165,9 +165,38 @@ export async function signIn(email: string, password: string) {
 }
 
 export async function signOut() {
+  console.log('[AUTH] 🚪 Signing out user...');
+  
   const supabase = await getSupabaseClient();
   const { error } = await supabase.auth.signOut();
-  if (error) throw error;
+  if (error) {
+    console.error('[AUTH] ❌ Sign out failed:', error);
+    throw error;
+  }
+
+  console.log('[AUTH] ✅ User signed out from Supabase');
+
+  // Delete local save from IndexedDB
+  try {
+    const { deleteSave } = await import('./save');
+    await deleteSave();
+    console.log('[AUTH] 🗑️ Local save deleted from IndexedDB');
+  } catch (deleteError) {
+    console.error('[AUTH] ⚠️ Failed to delete local save:', deleteError);
+  }
+
+  // Stop the game loop
+  try {
+    const { stopGameLoop } = await import('./loop');
+    stopGameLoop();
+    console.log('[AUTH] ⏹️ Game loop stopped');
+  } catch (loopError) {
+    console.error('[AUTH] ⚠️ Failed to stop game loop:', loopError);
+  }
+
+  // Reload to start screen
+  console.log('[AUTH] 🔄 Reloading to start screen...');
+  window.location.href = '/';
 }
 
 export async function getCurrentUser(): Promise<AuthUser | null> {
@@ -224,40 +253,68 @@ export async function saveGameToSupabase(
   clearClicks: boolean = false
 ): Promise<void> {
   const user = await getCurrentUser();
-  if (!user) throw new Error('Not authenticated');
+  if (!user) {
+    console.log('[SAVE CLOUD] ❌ Not authenticated');
+    throw new Error('Not authenticated');
+  }
+
+  console.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
+    playTime,
+    isNewGame,
+    userId: user.id.substring(0, 8) + '...'
+  });
 
   // Deep clone and sanitize the diff to remove non-serializable data
   const sanitizedDiff = JSON.parse(JSON.stringify(stateDiff));
 
   const supabase = await getSupabaseClient();
 
-  // Check existing save's playtime before overwriting
-  const { data: existingSave } = await supabase
+  // OCC Step 1: Read current state from database
+  const { data: existingSave, error: readError } = await supabase
     .from('game_saves')
-    .select('game_state')
+    .select('game_state, updated_at')
     .eq('user_id', user.id)
     .maybeSingle();
+
+  if (readError) {
+    console.error('[SAVE CLOUD] ❌ Failed to read existing save:', readError);
+    throw readError;
+  }
+
+  console.log('[SAVE CLOUD] 📖 Read existing save:', {
+    hasExistingSave: !!existingSave,
+    existingPlayTime: existingSave?.game_state?.playTime || 0,
+    existingUpdatedAt: existingSave?.updated_at,
+    newPlayTime: playTime
+  });
 
   // Merge diff with existing state
   let finalState: any;
   if (existingSave?.game_state) {
     const existingPlayTime = existingSave.game_state.playTime || 0;
 
-    if (!isNewGame && playTime < existingPlayTime) {
-      if (import.meta.env.DEV) {
-        console.log('Skipping cloud save: existing save has higher playtime', {
-          existingPlayTime,
-          currentPlayTime: playTime,
-          isNewGame
-        });
-      }
-      return; // Don't overwrite
+    // OCC Step 2: Validate that our save is newer (has longer playTime)
+    if (!isNewGame && playTime !== undefined && playTime <= existingPlayTime) {
+      console.warn('[SAVE CLOUD] ⚠️ OCC REJECTED: Cloud save has equal or longer playTime', {
+        existingPlayTime,
+        currentPlayTime: playTime,
+        difference: existingPlayTime - playTime,
+        isNewGame
+      });
+      throw new Error(`Cloud save rejected: existing playTime (${existingPlayTime}ms) >= current playTime (${playTime}ms)`);
     }
+
+    console.log('[SAVE CLOUD] ✅ OCC CHECK PASSED: Current playTime is longer', {
+      existingPlayTime,
+      currentPlayTime: playTime,
+      difference: playTime - existingPlayTime
+    });
 
     // Merge diff into existing state
     finalState = { ...existingSave.game_state, ...sanitizedDiff };
   } else {
     // No existing save, use diff as complete state
+    console.log('[SAVE CLOUD] 📝 No existing save, creating new one');
     finalState = sanitizedDiff;
   }
 
@@ -267,15 +324,14 @@ export async function saveGameToSupabase(
     ? clickData
     : null;
 
-  if (import.meta.env.DEV) {
-    console.log('Saving to Supabase:', {
-      hasClickAnalytics: !!analyticsParam,
-      clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
-      diffSize: JSON.stringify(sanitizedDiff).length,
-      finalStateSize: JSON.stringify(finalState).length
-    });
-  }
+  console.log('[SAVE CLOUD] 💾 Writing to database...', {
+    hasClickAnalytics: !!analyticsParam,
+    clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
+    diffSize: JSON.stringify(sanitizedDiff).length,
+    finalStateSize: JSON.stringify(finalState).length
+  });
 
+  // OCC Step 3: Write with the playtime validation built into the RPC
   const { error } = await supabase.rpc('save_game_with_analytics', {
     p_user_id: user.id,
     p_game_state_diff: sanitizedDiff,
@@ -284,9 +340,11 @@ export async function saveGameToSupabase(
   });
 
   if (error) {
-    console.error('Failed to save game to Supabase:', error);
+    console.error('[SAVE CLOUD] ❌ Database write failed:', error);
     throw error;
   }
+
+  console.log('[SAVE CLOUD] ✅ Cloud save completed successfully');
 }
 
 export async function loadGameFromSupabase(): Promise<GameState | null> {

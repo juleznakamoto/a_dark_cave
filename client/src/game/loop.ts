@@ -19,6 +19,7 @@ const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in millise
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
+const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minutes in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 
@@ -30,10 +31,14 @@ let lastShopNotificationTime = 0;
 let lastAuthNotificationTime = 0;
 let loopProgressTimeoutId: NodeJS.Timeout | null = null;
 let lastRenderTime = 0;
+let lastUserActivity = 0;
+let inactivityCheckInterval: NodeJS.Timeout | null = null;
+let isInactive = false;
 
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
+  console.log('[LOOP] Starting game loop');
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
@@ -43,6 +48,45 @@ export function startGameLoop() {
   if (gameStartTime === 0) {
     gameStartTime = now; // Set game start time only once
   }
+
+  // Initialize inactivity tracking
+  lastUserActivity = Date.now();
+  isInactive = false;
+  console.log('[INACTIVITY] Initialized activity tracking at', new Date(lastUserActivity).toISOString());
+
+  // Set up activity listeners
+  const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+  const handleActivity = () => {
+    const previousActivity = lastUserActivity;
+    lastUserActivity = Date.now();
+    if (Date.now() - previousActivity > 60000) { // Log only if more than 1 minute since last activity
+      console.log('[INACTIVITY] User activity detected at', new Date(lastUserActivity).toISOString());
+    }
+  };
+
+  activityEvents.forEach(event => {
+    window.addEventListener(event, handleActivity, { passive: true });
+  });
+
+  // Start inactivity checker (every 30 seconds)
+  if (inactivityCheckInterval) {
+    clearInterval(inactivityCheckInterval);
+  }
+  inactivityCheckInterval = setInterval(() => {
+    const now = Date.now();
+    const timeSinceActivity = now - lastUserActivity;
+    
+    if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive) {
+      console.log('[INACTIVITY] ⚠️ INACTIVITY DETECTED!', {
+        timeSinceActivity: Math.round(timeSinceActivity / 1000) + 's',
+        lastActivity: new Date(lastUserActivity).toISOString(),
+        threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + 's'
+      });
+      handleInactivity();
+    } else if (timeSinceActivity > 60000) { // Log every minute after 1 minute of inactivity
+      console.log('[INACTIVITY] User inactive for', Math.round(timeSinceActivity / 1000) + 's');
+    }
+  }, 30000); // Check every 30 seconds
 
   // Check if idle mode needs to be displayed (user left during idle mode)
   const state = useGameStore.getState();
@@ -115,8 +159,8 @@ export function startGameLoop() {
         processTick();
       }
 
-      // Auto-save logic
-      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL) {
+      // Auto-save logic (skip if inactive)
+      if (timestamp - lastAutoSave >= AUTO_SAVE_INTERVAL && !isInactive) {
         lastAutoSave = timestamp;
         handleAutoSave();
       }
@@ -228,6 +272,32 @@ export function startGameLoop() {
   gameLoopId = requestAnimationFrame(tick);
 }
 
+function handleInactivity() {
+  console.log('[INACTIVITY] 🛑 Stopping game due to inactivity');
+  isInactive = true;
+
+  // Stop the game loop
+  if (gameLoopId) {
+    cancelAnimationFrame(gameLoopId);
+    gameLoopId = null;
+    console.log('[INACTIVITY] Game loop stopped');
+  }
+
+  // Stop inactivity checker
+  if (inactivityCheckInterval) {
+    clearInterval(inactivityCheckInterval);
+    inactivityCheckInterval = null;
+    console.log('[INACTIVITY] Inactivity checker stopped');
+  }
+
+  // Set game loop to inactive
+  useGameStore.setState({ 
+    isGameLoopActive: false,
+    inactivityDialogOpen: true 
+  });
+  console.log('[INACTIVITY] Inactivity dialog opened');
+}
+
 export function stopGameLoop() {
   console.log('[LOOP] Stopping game loop');
 
@@ -239,6 +309,20 @@ export function stopGameLoop() {
     clearTimeout(loopProgressTimeoutId);
     loopProgressTimeoutId = null;
   }
+
+  // Clean up inactivity checker
+  if (inactivityCheckInterval) {
+    clearInterval(inactivityCheckInterval);
+    inactivityCheckInterval = null;
+    console.log('[LOOP] Inactivity checker cleared');
+  }
+
+  // Remove activity listeners
+  const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+  const handleActivity = () => {}; // Dummy function for removal
+  activityEvents.forEach(event => {
+    window.removeEventListener(event, handleActivity);
+  });
 
   StateManager.clearUpdateTimer();
 }

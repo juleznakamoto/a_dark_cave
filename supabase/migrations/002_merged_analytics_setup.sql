@@ -66,6 +66,7 @@ CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
 
 -- Create a function that saves both game state and click analytics atomically
 -- Now handles state diffs by merging with existing state
+-- Implements Optimistic Concurrency Control (OCC) based on playTime
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
   p_game_state_diff JSONB,
@@ -85,11 +86,29 @@ DECLARE
   v_playtime_minutes INTEGER;
   v_playtime_bucket INTEGER;
   v_playtime_key TEXT;
+  v_existing_playtime NUMERIC;
+  v_new_playtime NUMERIC;
 BEGIN
   -- Get existing game state
   SELECT game_state INTO v_existing_state
   FROM game_saves
   WHERE user_id = p_user_id;
+
+  -- OCC: Validate playTime if both states exist
+  IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
+    v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
+    v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
+    
+    -- Reject save if new playTime is not strictly greater than existing
+    IF v_new_playtime <= v_existing_playtime THEN
+      RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+        v_new_playtime, v_existing_playtime;
+    END IF;
+    
+    -- Log successful OCC check (visible in Supabase logs)
+    RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
+      v_new_playtime, v_existing_playtime;
+  END IF;
 
   -- Merge the diff with existing state (deep merge for JSONB)
   IF v_existing_state IS NOT NULL THEN

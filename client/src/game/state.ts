@@ -47,6 +47,7 @@ interface GameStore extends GameState {
     startTime: number;
     needsDisplay: boolean; // Track if user needs to see results
   };
+  inactivityDialogOpen: boolean;
 
   // Notification state for shop
   shopNotificationSeen: boolean;
@@ -384,6 +385,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     startTime: 0,
     needsDisplay: false,
   },
+  inactivityDialogOpen: false,
   sleepUpgrades: {
     lengthLevel: 0,
     intensityLevel: 0,
