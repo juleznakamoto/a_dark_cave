@@ -1,0 +1,491 @@
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[SAVE] 🔵 Starting save operation: { isAutosave: 1000, inputPlayTime: 1000, inputPlayTimeMinutes: '0.02' }
+
+stderr | server/auth.test.ts > Authentication > should handle session expiry gracefully
+Failed to get current user: TypeError: Failed to parse URL from /api/config
+    at node:internal/deps/undici/undici:13510:13
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at initializeSupabase (/home/runner/workspace/client/src/lib/supabase.ts:32:22) {
+  [cause]: TypeError: Invalid URL
+      at new URL (node:internal/url:806:29)
+      at new Request (node:internal/deps/undici/undici:9586:25)
+      at fetch (node:internal/deps/undici/undici:10315:25)
+      at fetch (node:internal/deps/undici/undici:13508:10)
+      at fetch (node:internal/bootstrap/web/exposed-window-or-worker:72:12)
+      at initializeSupabase (/home/runner/workspace/client/src/lib/supabase.ts:32:28)
+      at getSupabaseClient (/home/runner/workspace/client/src/lib/supabase.ts:59:19)
+      at signIn (/home/runner/workspace/client/src/game/auth.ts:168:26)
+      at /home/runner/workspace/server/auth.test.ts:34:18
+      at processTicksAndRejections (node:internal/process/task_queues:95:5) {
+    code: 'ERR_INVALID_URL',
+    input: '/api/config'
+  }
+}
+
+ ❯ server/auth.test.ts (2 tests | 1 failed) 261ms
+   ❯ Authentication (2)
+     × should prevent signup without email confirmation 236ms
+     ✓ should handle session expiry gracefully 23ms
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+Registering sounds for lazy loading...
+Sound URLs registered for lazy loading
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[SAVE] 🔍 After sanitization: {
+  sanitizedPlayTime: 1000,
+  originalPlayTime: 1000,
+  playTimesMatch: true
+}
+[SAVE] 📦 Creating SaveData object: {
+  timestamp: 1764266474909,
+  playTime: 1000,
+  playTimeMinutes: '0.02',
+  gameStatePlayTime: 1000,
+  hasCooldowns: true,
+  cooldownsCount: 2
+}
+[SAVE] 💾 SaveData object created: {
+  saveDataPlayTime: 1000,
+  saveDataGameStatePlayTime: 1000,
+  saveDataTimestamp: 1764266474909
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[SAVE] ✅ Verified IndexedDB save: {
+  savedPlayTime: 1000,
+  savedGameStatePlayTime: 1000,
+  savedTimestamp: 1764266474700
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[LOAD] 🎮 Starting game load process...
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[LOAD] 📊 Raw local save from IndexedDB: {
+  exists: true,
+  playTime: 1000,
+  playTimeMinutes: '0.02',
+  timestamp: 1764266474700,
+  timestampDate: '2025-11-27T18:01:14.700Z',
+  gameStatePlayTime: 1000,
+  gameStatePlayTimeMinutes: '0.02'
+}
+[LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: '2025-11-27T18:01:14.700Z',
+  playTime: 1000,
+  playTimeMinutes: 0,
+  hasCooldowns: true,
+  cooldowns: { gatherWood: 5, buildHut: 10 },
+  hasCooldownDurations: true,
+  cooldownDurations: { gatherWood: 5, buildHut: 10 },
+  cooldownDetails: [
+    { action: 'gatherWood', remaining: 5, duration: 5 },
+    { action: 'buildHut', remaining: 10, duration: 10 }
+  ]
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: false,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+[REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should preserve cooldowns after save/load cycle
+[LOAD] Returning local state (no auth): {
+  hasCooldownDurations: true,
+  cooldownDurations: { gatherWood: 5, buildHut: 10 }
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+[LOAD] 🎮 Starting game load process...
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+[LOAD] 📊 Raw local save from IndexedDB: {
+  exists: true,
+  playTime: undefined,
+  playTimeMinutes: 0,
+  timestamp: 1764266474917,
+  timestampDate: '2025-11-27T18:01:14.917Z',
+  gameStatePlayTime: undefined,
+  gameStatePlayTimeMinutes: 0
+}
+[LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: '2025-11-27T18:01:14.917Z',
+  playTime: undefined,
+  playTimeMinutes: 0,
+  hasCooldowns: false,
+  cooldowns: undefined,
+  hasCooldownDurations: false,
+  cooldownDurations: undefined,
+  cooldownDetails: []
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+[REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: false,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+[REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+[LOAD] Returning local state (no auth): { hasCooldownDurations: true, cooldownDurations: {} }
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[LOAD] 🎮 Starting game load process...
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[LOAD] 📊 Raw local save from IndexedDB: {
+  exists: true,
+  playTime: 1000,
+  playTimeMinutes: '0.02',
+  timestamp: undefined,
+  timestampDate: 'none',
+  gameStatePlayTime: 1000,
+  gameStatePlayTimeMinutes: '0.02'
+}
+[LOAD] 💾 Local save retrieved: {
+  hasLocalSave: true,
+  timestamp: 'none',
+  playTime: 1000,
+  playTimeMinutes: 0,
+  hasCooldowns: false,
+  cooldowns: undefined,
+  hasCooldownDurations: false,
+  cooldownDurations: undefined,
+  cooldownDetails: []
+}
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[LOAD] 📊 Cloud save from Supabase: {
+  exists: true,
+  playTime: 1500,
+  playTimeMinutes: '0.03',
+  timestamp: 1764266474929
+}
+[LOAD] ☁️ Using cloud save (user authenticated)
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: true,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+[REFERRAL] ⏭️ Skipping - no user or no referrals
+
+stderr | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+Failed to load from cloud: TypeError: db.put is not a function
+    at Module.loadGame (/home/runner/workspace/client/src/game/save.ts:388:20)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+    at /home/runner/workspace/client/src/game/save.test.ts:91:20
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:20
+[LOAD] ⚠️ Using local save as fallback
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[LOAD] 📊 State being returned: { playTime: 1500, playTimeMinutes: '0.03' }
+
+stdout | client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+[REFERRAL] 🔍 Processing unclaimed referrals... {
+  hasUser: true,
+  hasReferrals: false,
+  referralsCount: 0,
+  referrals: undefined
+}
+[REFERRAL] ⏭️ Skipping - no user or no referrals
+
+ ❯ client/src/game/save.test.ts (3 tests | 2 failed) 246ms
+   ❯ Game Save/Load (3)
+     ✓ should preserve cooldowns after save/load cycle 218ms
+     × should handle corrupted save data gracefully 11ms
+     × should merge cloud save with local save correctly 14ms
+stdout | client/src/game/loop.test.ts
+Registering sounds for lazy loading...
+Sound URLs registered for lazy loading
+
+stdout | client/src/game/loop.test.ts > Game Loop Production > should handle starvation when food runs out
+[STATE] Set Flag: starvationActive = true
+
+stdout | client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+Loading all sounds after user gesture...
+
+stderr | client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+Failed to load sound newVillager from /sounds/new_villager.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound event from /sounds/event.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound eventMadness from /sounds/event_madness.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound whisperingCube from /sounds/whispering_cube.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound backgroundMusic from /sounds/background_music.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound explosion from /sounds/explosion.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+Failed to load sound wind from /sounds/wind.wav: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.loadActualSound (/home/runner/workspace/client/src/lib/audio.ts:73:18)
+    at /home/runner/workspace/client/src/lib/audio.ts:65:12
+    at Array.map (<anonymous>)
+    at AudioManager.loadAllSounds (/home/runner/workspace/client/src/lib/audio.ts:64:63)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:97:20)
+    at Object.setEventDialog (/home/runner/workspace/client/src/game/state.ts:1248:20)
+    at /home/runner/workspace/client/src/game/loop.test.ts:47:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:145:11
+    at file:///home/runner/workspace/node_modules/@vitest/runner/dist/index.js:919:26
+
+stdout | client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+Finished loading all sounds
+
+stderr | client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+Failed to play sound event: ReferenceError: window is not defined
+    at AudioManager.initAudioContext (/home/runner/workspace/client/src/lib/audio.ts:25:32)
+    at AudioManager.playSound (/home/runner/workspace/client/src/lib/audio.ts:100:18)
+    at processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+ ❯ client/src/game/loop.test.ts (3 tests | 2 failed) 43ms
+   ❯ Game Loop Production (3)
+     × should produce resources based on villager assignments 12ms
+     ✓ should handle starvation when food runs out 1ms
+     × should pause production when dialogs are open 27ms
+stdout | client/src/game/rules/events.test.ts
+Registering sounds for lazy loading...
+Sound URLs registered for lazy loading
+
+ ❯ client/src/game/rules/events.test.ts (3 tests | 3 failed) 17ms
+   ❯ Event System (3)
+     × should trigger events based on conditions 11ms
+     × should not trigger events with unmet conditions 1ms
+     × should apply event choice effects correctly 3ms
+ ✓ server/referral.test.ts (6 tests) 9ms
+   ✓ Referral System (6)
+     ✓ should prevent self-referral 3ms
+     ✓ should prevent duplicate referral processing 1ms
+     ✓ should handle referrer not found 1ms
+     ✓ should enforce referral limit of 10 1ms
+     ✓ should prevent duplicate referral of same user 1ms
+     ✓ should successfully process valid referral 1ms
+ ✓ server/referral.e2e.test.ts (2 tests) 22ms
+   ✓ Referral E2E Flow (2)
+     ✓ should handle complete referral flow: signup -> process -> claim 9ms
+     ✓ should prevent referral after user has already started playing 4ms
+ ✓ server/referral.integration.test.ts (4 tests) 984ms
+   ✓ Referral API Integration (4)
+     ✓ should return 400 when missing parameters 41ms
+     ✓ should return 400 when missing newUserId 7ms
+     ✓ should return 400 when missing referralCode 5ms
+     ✓ should return JSON content-type  924ms
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯ Failed Tests 8 ⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  client/src/game/save.test.ts > Game Save/Load > should handle corrupted save data gracefully
+AssertionError: expected { invalid: 'data', …(1) } to be null
+
+- Expected: 
+null
+
++ Received: 
+{
+  "cooldownDurations": {},
+  "invalid": "data",
+}
+
+ ❯ client/src/game/save.test.ts:59:20
+     57| 
+     58|     const loaded = await loadGame();
+     59|     expect(loaded).toBeNull();
+       |                    ^
+     60|   });
+     61| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/8]⎯
+
+ FAIL  client/src/game/save.test.ts > Game Save/Load > should merge cloud save with local save correctly
+AssertionError: expected 100 to be 150 // Object.is equality
+
+- Expected
++ Received
+
+- 150
++ 100
+
+ ❯ client/src/game/save.test.ts:92:36
+     90| 
+     91|     const loaded = await loadGame();
+     92|     expect(loaded?.resources.wood).toBe(150); // Cloud should win
+       |                                    ^
+     93|   });
+     94| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/8]⎯
+
+ FAIL  client/src/game/loop.test.ts > Game Loop Production > should produce resources based on villager assignments
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ client/src/game/loop.test.ts:25:57
+     23|     
+     24|     expect(production.length).toBeGreaterThan(0);
+     25|     expect(production.some(p => p.resource === 'food')).toBe(true);
+       |                                                         ^
+     26|   });
+     27| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/8]⎯
+
+ FAIL  client/src/game/loop.test.ts > Game Loop Production > should pause production when dialogs are open
+AssertionError: expected false to be true // Object.is equality
+
+- Expected
++ Received
+
+- true
++ false
+
+ ❯ client/src/game/loop.test.ts:54:38
+     52|     });
+     53| 
+     54|     expect(store.eventDialog.isOpen).toBe(true);
+       |                                      ^
+     55|     expect(store.isPaused || store.eventDialog.isOpen).toBe(true);
+     56|   });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/8]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should trigger events based on conditions
+TypeError: Cannot read properties of undefined (reading 'seen')
+ ❯ Object.condition client/src/game/rules/eventsStory.ts:32:19
+     30|     id: "alchemistArrives",
+     31|     condition: (state: GameState) =>
+     32|       state.story.seen.firstWaveVictory &&
+       |                   ^
+     33|       state.buildings.alchemistHall >= 1 &&
+     34|       !state.story.seen.alchemistArrives,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:179:33
+ ❯ client/src/game/rules/events.test.ts:21:58
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/8]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should not trigger events with unmet conditions
+TypeError: Cannot read properties of undefined (reading 'seen')
+ ❯ Object.condition client/src/game/rules/eventsStory.ts:32:19
+     30|     id: "alchemistArrives",
+     31|     condition: (state: GameState) =>
+     32|       state.story.seen.firstWaveVictory &&
+       |                   ^
+     33|       state.buildings.alchemistHall >= 1 &&
+     34|       !state.story.seen.alchemistArrives,
+ ❯ Function.checkEvents client/src/game/rules/events.ts:179:33
+ ❯ client/src/game/rules/events.test.ts:30:44
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[6/8]⎯
+
+ FAIL  client/src/game/rules/events.test.ts > Event System > should apply event choice effects correctly
+AssertionError: expected undefined to be 150 // Object.is equality
+
+- Expected: 
+150
+
++ Received: 
+undefined
+
+ ❯ client/src/game/rules/events.test.ts:64:37
+     62|     );
+     63| 
+     64|     expect(changes.resources?.wood).toBe(initialWood + 50);
+       |                                     ^
+     65|   });
+     66| });
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[7/8]⎯
+
+ FAIL  server/auth.test.ts > Authentication > should prevent signup without email confirmation
+AssertionError: expected [Function] to throw error including 'confirm your email' but got 'Failed to parse URL from /api/config'
+
+Expected: "confirm your email"
+Received: "Failed to parse URL from /api/config"
+
+ ❯ server/auth.test.ts:34:5
+     32|     vi.mocked(createClient).mockReturnValue(mockSupabase as any);
+     33| 
+     34|     await expect(signIn('test@test.com', 'password')).rejects.toThrow('confirm your em…
+       |     ^
+     35|   });
+     36| 
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[8/8]⎯
+
+
+ Test Files  4 failed | 3 passed (7)
+      Tests  8 failed | 15 passed (23)
+   Start at  18:01:14
+   Duration  2.43s
+
+ FAIL  Tests failed. Watching for file changes...
+       press h to show help, press q to quit
