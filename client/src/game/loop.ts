@@ -139,6 +139,16 @@ export function startGameLoop() {
           errorCode: error?.code,
           hasSession: !!session,
         });
+        
+        // Delete local save when session is invalidated
+        try {
+          const { deleteSave } = await import('./save');
+          await deleteSave();
+          logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
+        } catch (deleteError) {
+          logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
+        }
+        
         stopGameLoop();
         useGameStore.setState({
           inactivityDialogOpen: true,
