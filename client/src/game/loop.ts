@@ -19,7 +19,7 @@ const SHOP_NOTIFICATION_INITIAL_DELAY = 30 * 60 * 1000; // 30 minutes in millise
 const SHOP_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
 const AUTH_NOTIFICATION_INITIAL_DELAY = 15 * 60 * 1000; // 15 minutes in milliseconds
 const AUTH_NOTIFICATION_REPEAT_INTERVAL = 60 * 60 * 1000; // 60 minutes in milliseconds
-const INACTIVITY_TIMEOUT = 1 * 60 * 1000; // 1 minute in milliseconds
+const INACTIVITY_TIMEOUT = 15 * 60 * 1000; // 15 minute in milliseconds
 const TARGET_FPS = 4;
 const FRAME_DURATION = 1000 / TARGET_FPS; // 250ms per frame at 4 FPS
 
@@ -38,7 +38,7 @@ let isInactive = false;
 export function startGameLoop() {
   if (gameLoopId) return; // Already running
 
-  console.log('[LOOP] Starting game loop');
+  console.log("[LOOP] Starting game loop");
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
@@ -52,19 +52,32 @@ export function startGameLoop() {
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
-  console.log('[INACTIVITY] Initialized activity tracking at', new Date(lastUserActivity).toISOString());
+  console.log(
+    "[INACTIVITY] Initialized activity tracking at",
+    new Date(lastUserActivity).toISOString(),
+  );
 
   // Set up activity listeners
-  const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+  const activityEvents = [
+    "mousedown",
+    "keydown",
+    "touchstart",
+    "scroll",
+    "mousemove",
+  ];
   const handleActivity = () => {
     const previousActivity = lastUserActivity;
     lastUserActivity = Date.now();
-    if (Date.now() - previousActivity > 60000) { // Log only if more than 1 minute since last activity
-      console.log('[INACTIVITY] User activity detected at', new Date(lastUserActivity).toISOString());
+    if (Date.now() - previousActivity > 60000) {
+      // Log only if more than 1 minute since last activity
+      console.log(
+        "[INACTIVITY] User activity detected at",
+        new Date(lastUserActivity).toISOString(),
+      );
     }
   };
 
-  activityEvents.forEach(event => {
+  activityEvents.forEach((event) => {
     window.addEventListener(event, handleActivity, { passive: true });
   });
 
@@ -75,16 +88,20 @@ export function startGameLoop() {
   inactivityCheckInterval = setInterval(() => {
     const now = Date.now();
     const timeSinceActivity = now - lastUserActivity;
-    
+
     if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive) {
-      console.log('[INACTIVITY] ⚠️ INACTIVITY DETECTED!', {
-        timeSinceActivity: Math.round(timeSinceActivity / 1000) + 's',
+      console.log("[INACTIVITY] ⚠️ INACTIVITY DETECTED!", {
+        timeSinceActivity: Math.round(timeSinceActivity / 1000) + "s",
         lastActivity: new Date(lastUserActivity).toISOString(),
-        threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + 's'
+        threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + "s",
       });
       handleInactivity();
-    } else if (timeSinceActivity > 60000) { // Log every minute after 1 minute of inactivity
-      console.log('[INACTIVITY] User inactive for', Math.round(timeSinceActivity / 1000) + 's');
+    } else if (timeSinceActivity > 60000) {
+      // Log every minute after 1 minute of inactivity
+      console.log(
+        "[INACTIVITY] User inactive for",
+        Math.round(timeSinceActivity / 1000) + "s",
+      );
     }
   }, 30000); // Check every 30 seconds
 
@@ -243,7 +260,9 @@ export function startGameLoop() {
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
         if (!currentState.idleModeState?.isActive) {
-          console.log('[GAME LOOP] Normal production running - idle mode is NOT active');
+          console.log(
+            "[GAME LOOP] Normal production running - idle mode is NOT active",
+          );
           handleGathererProduction();
           handleHunterProduction();
           handleMinerProduction();
@@ -256,7 +275,7 @@ export function startGameLoop() {
           // Check for events (including attack waves)
           currentState.checkEvents();
         } else {
-          console.log('[GAME LOOP] Production SKIPPED - idle mode is active');
+          console.log("[GAME LOOP] Production SKIPPED - idle mode is active");
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
@@ -273,34 +292,34 @@ export function startGameLoop() {
 }
 
 function handleInactivity() {
-  console.log('[INACTIVITY] 🛑 Stopping game due to inactivity');
+  console.log("[INACTIVITY] 🛑 Stopping game due to inactivity");
   isInactive = true;
 
   // Stop the game loop
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    console.log('[INACTIVITY] Game loop stopped');
+    console.log("[INACTIVITY] Game loop stopped");
   }
 
   // Stop inactivity checker
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    console.log('[INACTIVITY] Inactivity checker stopped');
+    console.log("[INACTIVITY] Inactivity checker stopped");
   }
 
   // Set game loop to inactive
-  useGameStore.setState({ 
+  useGameStore.setState({
     isGameLoopActive: false,
     inactivityDialogOpen: true,
-    inactivityReason: 'timeout'
+    inactivityReason: "timeout",
   });
-  console.log('[INACTIVITY] Inactivity dialog opened');
+  console.log("[INACTIVITY] Inactivity dialog opened");
 }
 
 export function stopGameLoop() {
-  console.log('[LOOP] Stopping game loop');
+  console.log("[LOOP] Stopping game loop");
 
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId);
@@ -315,13 +334,19 @@ export function stopGameLoop() {
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    console.log('[LOOP] Inactivity checker cleared');
+    console.log("[LOOP] Inactivity checker cleared");
   }
 
   // Remove activity listeners
-  const activityEvents = ['mousedown', 'keydown', 'touchstart', 'scroll', 'mousemove'];
+  const activityEvents = [
+    "mousedown",
+    "keydown",
+    "touchstart",
+    "scroll",
+    "mousemove",
+  ];
   const handleActivity = () => {}; // Dummy function for removal
-  activityEvents.forEach(event => {
+  activityEvents.forEach((event) => {
     window.removeEventListener(event, handleActivity);
   });
 
@@ -455,7 +480,10 @@ function handleMinerProduction() {
     const canProduce = production.every((prod) => {
       if (prod.totalAmount < 0) {
         // Consumption - check if we have enough available
-        const available = availableResources[prod.resource as keyof typeof availableResources] || 0;
+        const available =
+          availableResources[
+            prod.resource as keyof typeof availableResources
+          ] || 0;
         return available >= Math.abs(prod.totalAmount);
       }
       return true; // Production is always allowed
@@ -466,7 +494,9 @@ function handleMinerProduction() {
       production.forEach((prod) => {
         // Update both the tracked available resources and the actual state
         availableResources[prod.resource as keyof typeof availableResources] =
-          (availableResources[prod.resource as keyof typeof availableResources] || 0) + prod.totalAmount;
+          (availableResources[
+            prod.resource as keyof typeof availableResources
+          ] || 0) + prod.totalAmount;
 
         state.updateResource(
           prod.resource as keyof typeof state.resources,
@@ -691,14 +721,14 @@ async function handleAutoSave() {
   const gameState: GameState = buildGameState(state);
 
   // Log cooldown state before saving
-  console.log('[AUTOSAVE] Current cooldown state:', {
+  console.log("[AUTOSAVE] Current cooldown state:", {
     cooldowns: state.cooldowns,
     cooldownDurations: state.cooldownDurations,
-    cooldownDetails: Object.keys(state.cooldowns || {}).map(key => ({
+    cooldownDetails: Object.keys(state.cooldowns || {}).map((key) => ({
       action: key,
       remaining: state.cooldowns[key],
-      duration: state.cooldownDurations?.[key]
-    }))
+      duration: state.cooldownDurations?.[key],
+    })),
   });
 
   try {
