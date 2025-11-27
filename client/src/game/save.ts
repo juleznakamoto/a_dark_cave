@@ -250,10 +250,8 @@ export async function saveGame(
               localIsNewer: localPlayTimeSeconds > cloudPlayTimeSeconds,
             });
 
-            // If cloud has SIGNIFICANTLY longer playtime (+60 seconds = 60000ms), another instance is ahead
-            // Use a threshold to avoid false positives from referral processing or timing issues
-            const threshold = 60000; // 60 seconds in milliseconds
-            if (cloudPlayTimeSeconds > localPlayTimeSeconds + threshold) {
+            // If cloud has longer playtime, another instance is ahead
+            if (cloudPlayTimeSeconds > localPlayTimeSeconds) {
               console.warn("[SAVE] ⚠️ Detected newer save in cloud:", {
                 cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
                 localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
