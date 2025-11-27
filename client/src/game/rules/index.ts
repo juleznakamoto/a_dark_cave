@@ -32,6 +32,7 @@ import {
   ACTION_TO_UPGRADE_KEY,
   getUpgradeBonusMultiplier,
 } from "../buttonUpgrades";
+import { logger } from "@/lib/logger";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {

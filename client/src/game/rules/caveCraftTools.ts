@@ -1,4 +1,5 @@
 import { Action, GameState } from "@shared/schema";
+import { logger } from "@/lib/logger";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./index";
 

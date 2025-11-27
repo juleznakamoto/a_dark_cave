@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { updatePassword } from '@/game/auth';
 import { getSupabaseClient } from "@/lib/supabase";
+import { logger } from '@/lib/logger';
 
 export default function ResetPassword() {
   const [, setLocation] = useLocation();

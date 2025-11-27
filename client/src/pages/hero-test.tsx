@@ -1,5 +1,5 @@
-
 import Hero from "@/components/ui/animated-shader-hero";
+import { logger } from "@/lib/logger";
 
 export default function HeroTest() {
   const handlePrimaryClick = () => {
@@ -35,7 +35,7 @@ export default function HeroTest() {
           }
         }}
       />
-      
+
       {/* Additional content below hero */}
       <div className="bg-gray-100 p-8">
         <div className="max-w-4xl mx-auto">
@@ -60,7 +60,7 @@ export default function HeroTest() {
       onClick: handlePrimaryClick
     },
     secondary: {
-      text: "Secondary CTA", 
+      text: "Secondary CTA",
       onClick: handleSecondaryClick
     }
   }}
@@ -68,7 +68,7 @@ export default function HeroTest() {
 />`}
             </pre>
           </div>
-          
+
           <div className="mt-8">
             <h3 className="text-xl font-semibold text-gray-800 mb-3">Features:</h3>
             <ul className="list-disc list-inside space-y-2 text-gray-600">
