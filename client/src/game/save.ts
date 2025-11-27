@@ -410,19 +410,28 @@ export async function loadGame(): Promise<GameState | null> {
             const processedState = await processUnclaimedReferrals(
               cloudSave.gameState,
             );
+            
+            // Create state WITH playTime included
+            const stateWithPlayTime = {
+              ...processedState,
+              playTime: cloudPlayTime,
+            };
+            
+            logger.log("[LOAD] 🔍 State being returned:", {
+              hasPlayTime: 'playTime' in stateWithPlayTime,
+              playTimeValue: stateWithPlayTime.playTime,
+              playTimeMinutes: (stateWithPlayTime.playTime / 1000 / 60).toFixed(2),
+            });
+            
             // Save to IndexedDB to keep it in sync - use skipOccCheck=true for initial load
-            await saveGame(
-              { ...processedState, playTime: cloudPlayTime },
-              false,
-              true,
-            );
+            await saveGame(stateWithPlayTime, false, true);
             await db.put(
               "lastCloudState",
               processedState,
               LAST_CLOUD_STATE_KEY,
             );
             logger.log("[LOAD] ✅ Cloud save loaded and synced locally");
-            return processedState;
+            return stateWithPlayTime;
           } else if (localPlayTime === cloudPlayTime) {
             if (isDev)
               logger.log(
