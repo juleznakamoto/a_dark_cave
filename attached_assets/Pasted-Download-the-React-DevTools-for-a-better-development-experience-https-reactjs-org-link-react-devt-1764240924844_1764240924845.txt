@@ -1,0 +1,101 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:7 Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: false, timestamp: 'none', playTime: undefined, playTimeMinutes: 0, hasCooldowns: false, …}
+logger.ts:7 [LOAD] No save found, returning null
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-27T10:54:51.222Z
+logger.ts:7 Loading all sounds after user gesture...
+logger.ts:7 [STATE] Action: lightFire {stateUpdates: {…}, logEntries: Array(1), delayedEffects: Array(0)}
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 Successfully loaded sound: newVillager
+logger.ts:7 Successfully loaded sound: event
+logger.ts:7 Successfully loaded sound: eventMadness
+logger.ts:7 Successfully loaded sound: explosion
+logger.ts:7 Successfully loaded sound: whisperingCube
+logger.ts:7 Successfully loaded sound: wind
+logger.ts:7 Successfully loaded sound: backgroundMusic
+logger.ts:7 Finished loading all sounds
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(1)}
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764240907708, playTime: 9302.700000000003, hasCooldowns: true, cooldownsCount: 1, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-11-27T10:55:07.708Z', playTime: 9302.700000000003, playTimeMinutes: 0, hasCooldowns: true, …}
+logger.ts:7 [LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeSeconds: '10178.78', localPlayTimeSeconds: '9.30', differenceSeconds: '10169.48', winner: 'cloud'}
+logger.ts:7 [LOAD] ☁️ Using cloud save (longer playTime)
+logger.ts:7 [SAVE] Saving game state: {timestamp: 1764240908431, playTime: 10178783.59999785, hasCooldowns: true, cooldownsCount: 30, cooldowns: {…}, …}
+logger.ts:7 [SAVE] ✅ Successfully saved to IndexedDB
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '10178783.60', localPlayTimeMs: '9302.70', differenceMs: '10169480.90', cloudMinutes: '169.65', localMinutes: '0.16', …}
+logger.ts:12 [SAVE] ⚠️ Detected newer save in cloud: {cloudPlayTimeMs: '10178783.60', localPlayTimeMs: '9302.70', differenceMs: '10169480.90', cloudMinutes: '169.65', localMinutes: '0.16'}
+warn @ logger.ts:12
+saveGame @ save.ts:255
+await in saveGame
+handleAutoSave @ loop.ts:739
+tick @ loop.ts:183
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:154
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:154
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:154
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122
+requestAnimationFrame
+tick @ loop.ts:122Understand this warning
+logger.ts:7 [SAVE] 🛑 Another tab/device is actively playing - stopping this tab...
+logger.ts:7 [LOOP] Stopping game loop
+logger.ts:7 [LOOP] Inactivity checker cleared
