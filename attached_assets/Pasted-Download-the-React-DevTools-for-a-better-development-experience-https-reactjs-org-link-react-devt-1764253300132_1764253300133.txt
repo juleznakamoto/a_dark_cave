@@ -1,0 +1,51 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:7 Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: {exists: true, playTime: 13271670.299996534, playTimeMinutes: '221.19', timestamp: 1764253248603, timestampDate: '2025-11-27T14:20:48.603Z', …}
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-11-27T14:20:48.603Z', playTime: 13271670.299996534, playTimeMinutes: 221, hasCooldowns: true, …}
+logger.ts:7 [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 6, referrals: Array(6)}
+logger.ts:7 [LOAD] 📊 Raw cloud save from Supabase: {exists: true, playTime: 13271670.299996534, timestamp: undefined, gameStatePlayTime: undefined}
+logger.ts:7 [LOAD] 📊 Merged cloud save with lastCloudState: {playTime: 13271670.299996534, gameStatePlayTime: 13271670.299996534}
+logger.ts:7 [LOAD] Cloud save processed: {hasCloudSave: true, hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [LOAD] 🔍 OCC: Comparing local vs cloud save: {cloudPlayTimeMs: '13271670.30', localPlayTimeMs: '13271670.30', cloudPlayTimeMinutes: '221.19', localPlayTimeMinutes: '221.19', differenceMs: '0.00', …}
+logger.ts:7 [LOAD] ⚖️ Local and cloud have identical playTime - using local without sync
+logger.ts:7 [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 5, referrals: Array(5)}hasReferrals: truehasUser: truereferrals: Array(5)0: {userId: 'eaa2e469-aedc-47a8-8a89-1f7f7b5d756a', claimed: true, timestamp: 1764057092669}1: {userId: '1bcc9461-a8df-4ce1-8fa6-a484c40469c5', claimed: true, timestamp: 1764058896485}2: {userId: 'd0551f11-d740-4370-85af-2086304ad1ab', claimed: true, timestamp: 1764064129374}3: {userId: '9de29f08-5c95-4287-93a0-0188231cf94c', claimed: true, timestamp: 1764065229612}4: {userId: 'd10c6bd2-165c-4f9a-aa7a-0d7cdad30cd7', claimed: true, timestamp: 1764066616869}length: 5[[Prototype]]: Array(0)referralsCount: 5[[Prototype]]: Object
+logger.ts:7 [REFERRAL] ℹ️ No unclaimed referrals to process
+logger.ts:7 [LOAD] ✅ Using local save (identical playTime)
+logger.ts:7 [GAME] Game loaded from save
+logger.ts:7 [GAME] Detected claimed referrals - saving to cloud
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-27T14:21:09.461Z
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 [SAVE] 🔵 Starting save operation: {isAutosave: false, skipOccCheck: false, inputPlayTime: 13271670.299996534, inputPlayTimeMinutes: '221.19'}
+logger.ts:7 [SAVE] 🔍 After sanitization: {sanitizedPlayTime: 13271670.299996534, originalPlayTime: 13271670.299996534, playTimesMatch: true}
+logger.ts:7 [SAVE] 📦 Creating SaveData object: {timestamp: 1764253270468, playTime: 13271670.299996534, playTimeMinutes: '221.19', gameStatePlayTime: 13271670.299996534, hasCooldowns: true, …}
+logger.ts:7 [SAVE] 💾 SaveData object created: {saveDataPlayTime: 13271670.299996534, saveDataGameStatePlayTime: 13271670.299996534, saveDataTimestamp: 1764253270468}
+logger.ts:7 [SAVE] ✅ Verified IndexedDB save: {savedPlayTime: 13271670.299996534, savedGameStatePlayTime: 13271670.299996534, savedTimestamp: 1764253270468}
+logger.ts:7 [SAVE] ⏭️ Skipping OCC check: {hasUser: true, isAutosave: false, skipOccCheck: false}
+logger.ts:7 [SAVE] ☁️ Starting cloud save... {diffSize: 1, playTime: 13271670.299996534, playTimeMinutes: '221.19'}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 13271670.299996534, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(1), hasPlayTime: false}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(2), diffSize: 27, playTime: 13271670.299996534, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Cloud save successful
+logger.ts:7 [GAME] Successfully saved claimed referrals to cloud
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [AUTOSAVE] 📊 Raw state snapshot: {statePlayTime: 13294164.09999648, playTimeMinutes: '221.57', isNewGame: false}
+logger.ts:7 [AUTOSAVE] Current cooldown state: {cooldowns: {…}, cooldownDurations: {…}, cooldownDetails: Array(30)}
+logger.ts:7 [AUTOSAVE] 📊 State playTime values: {statePlayTime: 13294164.09999648, gameStatePlayTime: 13294164.09999648, isNewGame: false, playTimeToSave: 13294164.09999648, playTimeMatch: true}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 13294164.09999648, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] 🔵 Starting save operation: {isAutosave: 13294164.09999648, skipOccCheck: false, inputPlayTime: 13294164.09999648, inputPlayTimeMinutes: '221.57'}
+logger.ts:7 [SAVE] 🔍 After sanitization: {sanitizedPlayTime: 13294164.09999648, originalPlayTime: 13294164.09999648, playTimesMatch: true}
+logger.ts:7 [SAVE] 📦 Creating SaveData object: {timestamp: 1764253291977, playTime: 13294164.09999648, playTimeMinutes: '221.57', gameStatePlayTime: 13294164.09999648, hasCooldowns: true, …}
+logger.ts:7 [SAVE] 💾 SaveData object created: {saveDataPlayTime: 13294164.09999648, saveDataGameStatePlayTime: 13294164.09999648, saveDataTimestamp: 1764253291977}
+logger.ts:7 [SAVE] ✅ Verified IndexedDB save: {savedPlayTime: 13294164.09999648, savedGameStatePlayTime: 13294164.09999648, savedTimestamp: 1764253291977}
+logger.ts:7 [SAVE] 🔍 Starting OCC check...
+logger.ts:7 [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 6, referrals: Array(6)}
+logger.ts:7 [SAVE] 🔍 OCC check - comparing playtimes: {cloudPlayTimeMs: '13271670.30', localPlayTimeMs: '13294164.10', differenceMs: '-22493.80', cloudMinutes: '221.19', localMinutes: '221.57', …}
+logger.ts:7 [SAVE] ✅ OCC check passed - local is newer or equal
+logger.ts:7 [SAVE] ☁️ Starting cloud save... {diffSize: 6, playTime: 13294164.09999648, playTimeMinutes: '221.57'}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 13294164.09999648, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(6), hasPlayTime: true}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 2108, playTime: 13294164.09999648, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Cloud save successful
