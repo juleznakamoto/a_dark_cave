@@ -19,6 +19,8 @@ describe('Event System', () => {
       weapons: {},
       clothing: {}, // Add clothing to prevent undefined errors
       blessings: {}, // Add blessings to prevent undefined errors
+      feastState: { isActive: false, endTime: 0, lastAcceptedLevel: 0 }, // Add feastState
+      greatFeastState: { isActive: false, endTime: 0 }, // Add greatFeastState
     };
   });
 
