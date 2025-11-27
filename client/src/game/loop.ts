@@ -831,40 +831,6 @@ async function handleAutoSave() {
       gameStateHasPlayTime: 'playTime' in gameState,
     });
 
-    // OCC: Optimistic Concurrency Control
-    // Before autosaving, check if cloud has newer state (another device/tab is ahead)
-    if (state.user) {
-      // First, verify session is still valid (in case single-session enforcement logged us out)
-      const { getCurrentUser } = await import('./auth');
-      const currentUser = await getCurrentUser();
-
-      if (!currentUser) {
-        logger.log('[LOOP] 🚪 Session invalidated (logged in elsewhere) - stopping game loop');
-        stopGameLoop();
-        useGameStore.setState({
-          inactivityDialogOpen: true,
-          inactivityReason: 'multitab',
-        });
-        return;
-      }
-
-      const cloudSave = await loadGameFromSupabase();
-      if (cloudSave && cloudSave.playTime > playTimeToSave) {
-        logger.log(
-          `[AUTOSAVE] ⚠️ Cloud save is newer (cloud: ${cloudSave.playTime}, local: ${playTimeToSave}). Stopping local save.`,
-        );
-        // This is a crucial OCC check. If cloud save is newer, we must not overwrite it.
-        // The user will be notified and prompted to reload.
-        useGameStore.setState({
-          dialogs: {
-            ...state.dialogs,
-            outdatedSave: { isOpen: true, cloudSave },
-          },
-        });
-        return; // Stop the autosave process
-      }
-    }
-
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
@@ -1048,15 +1014,3 @@ export async function manualSave() {
   }
 }
 
-// Dummy function for loadGameFromSupabase if it's not defined elsewhere
-// In a real scenario, this would be imported or defined properly.
-async function loadGameFromSupabase() {
-  // Placeholder implementation
-  const state = useGameStore.getState();
-  if (state.user) {
-    // Simulate fetching game state from Supabase
-    // In a real app, this would involve actual Supabase calls
-    return { playTime: state.playTime, ...state.currentSaveData }; // Example return
-  }
-  return null;
-}

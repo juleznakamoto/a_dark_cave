@@ -172,7 +172,7 @@ async function processUnclaimedReferrals(
     logger.log('[REFERRAL] 💾 Saving claimed referrals to Supabase...');
     try {
       await saveGameToSupabase(
-        { 
+        {
           referrals: updatedReferrals,
           resources: updatedGameState.resources,
           log: updatedGameState.log,
@@ -193,13 +193,11 @@ async function processUnclaimedReferrals(
 
 export async function saveGame(
   gameState: GameState,
-  isAutosave: boolean = false,
-  skipOccCheck: boolean = false,
+  isAutosave: boolean = true,
 ): Promise<void> {
   try {
     logger.log(`[SAVE] 🔵 Starting save operation:`, {
       isAutosave,
-      skipOccCheck,
       inputPlayTime: gameState.playTime,
       inputPlayTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
     });
@@ -266,7 +264,7 @@ export async function saveGame(
       savedTimestamp: verifyLocalSave?.timestamp,
     });
 
-    // Try to save to cloud if user is authenticated (optional enhancement)
+    // Try to save to cloud if user is authenticated
     try {
       const user = await getCurrentUser();
       if (user) {
@@ -285,96 +283,27 @@ export async function saveGame(
           sanitizedState,
         );
 
-        // OCC: Optimistic Concurrency Control
-        // Before writing, check if cloud has a newer save (but skip during initial load sync or when explicitly skipped)
-        if (user && isAutosave && !skipOccCheck) {
-          logger.log("[SAVE] 🔍 Starting OCC check...");
-          const cloudSave = await loadGameFromSupabase();
-          if (cloudSave) {
-            const cloudPlayTimeSeconds = cloudSave.playTime || 0;
-            const localPlayTimeSeconds = gameState.playTime || 0;
+        logger.log("[SAVE] ☁️ Starting cloud save...", {
+          diffSize: Object.keys(stateDiff).length,
+          playTime: gameState.playTime,
+          playTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
+        });
 
-            logger.log("[SAVE] 🔍 OCC check - comparing playtimes:", {
-              cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
-              localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
-              differenceMs: (
-                cloudPlayTimeSeconds - localPlayTimeSeconds
-              ).toFixed(2),
-              cloudMinutes: (cloudPlayTimeSeconds / 1000 / 60).toFixed(2),
-              localMinutes: (localPlayTimeSeconds / 1000 / 60).toFixed(2),
-              localIsNewer: localPlayTimeSeconds > cloudPlayTimeSeconds,
-              cloudIsNewer: cloudPlayTimeSeconds > localPlayTimeSeconds,
-            });
+        // Save diff to Supabase
+        await saveGameToSupabase(
+          stateDiff,
+          gameState.playTime,
+          isNewGame,
+          clickData,
+        );
 
-            // If cloud has longer playtime, another instance is ahead
-            if (cloudPlayTimeSeconds > localPlayTimeSeconds) {
-              logger.warn("[SAVE] ⚠️ Detected newer save in cloud:", {
-                cloudPlayTimeMs: cloudPlayTimeSeconds.toFixed(2),
-                localPlayTimeMs: localPlayTimeSeconds.toFixed(2),
-                differenceMs: (
-                  cloudPlayTimeSeconds - localPlayTimeSeconds
-                ).toFixed(2),
-                cloudMinutes: (cloudPlayTimeSeconds / 1000 / 60).toFixed(2),
-                localMinutes: (localPlayTimeSeconds / 1000 / 60).toFixed(2),
-              });
-
-              logger.log(
-                "[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...",
-              );
-
-              // Stop this game instance
-              const { stopGameLoop } = await import("./loop");
-              stopGameLoop();
-
-              // Show user the InactivityDialog
-              useGameStore.setState({
-                inactivityDialogOpen: true,
-                inactivityReason: "multitab",
-              });
-
-              return; // Don't save
-            } else {
-              logger.log("[SAVE] ✅ OCC check passed - local is newer or equal");
-            }
-          } else {
-            logger.log("[SAVE] ℹ️ No cloud save found during OCC check");
-          }
-        } else {
-          logger.log("[SAVE] ⏭️ Skipping OCC check:", {
-            hasUser: !!user,
-            isAutosave,
-            skipOccCheck,
-          });
-        }
-
-        // Only save to cloud if not skipping OCC check
-        // When skipOccCheck=true, we're syncing local with cloud state, so no need to write back to cloud
-        if (!skipOccCheck) {
-          logger.log("[SAVE] ☁️ Starting cloud save...", {
-            diffSize: Object.keys(stateDiff).length,
-            playTime: gameState.playTime,
-            playTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
-          });
-
-          // Save diff to Supabase (includes OCC check)
-          await saveGameToSupabase(
-            stateDiff,
-            gameState.playTime,
-            isNewGame,
-            clickData,
-          );
-
-          // Update last cloud state
-          await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
-          logger.log("[SAVE] ✅ Cloud save successful");
-        } else {
-          // Just update last cloud state for future diffs, don't write to cloud
-          await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
-          logger.log("[SAVE] 📥 Local state synced with cloud (no cloud write needed)");
-        }
+        // Update lastCloudState after successful cloud save
+        await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
+        logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
       }
-    } catch (cloudError: any) {
-      logger.debug("[SAVE] Cloud save skipped:", cloudError);
+    } catch (cloudError) {
+      logger.error("[SAVE] Cloud save failed:", cloudError);
+      // Don't throw - local save succeeded
     }
   } catch (error) {
     logger.error("[SAVE] ❌ Failed to save game locally:", error);
@@ -482,7 +411,7 @@ export async function loadGame(): Promise<GameState | null> {
           try {
             // Force full sync by clearing lastCloudState, then saveGame will handle it
             await db.delete("lastCloudState", LAST_CLOUD_STATE_KEY);
-            await saveGame(processedState, false, true); // Pass true to skip OCC check during this initial sync
+            await saveGame(processedState, false); // Pass true to skip OCC check during this initial sync
             await db.put("lastCloudState", processedState, LAST_CLOUD_STATE_KEY);
           } catch (syncError: any) {
             // If OCC violates due to equal playTimes, that's fine - cloud already has this state
