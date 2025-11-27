@@ -221,6 +221,29 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
             willStopTab: timeDifference < MIN_TIME_AHEAD
           });
 
+          // Enforce minimum time ahead requirement
+          if (timeDifference < MIN_TIME_AHEAD) {
+            console.warn('[SAVE] ⚠️ Local playTime not ahead enough - stopping this tab:', {
+              cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
+              localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
+              differenceSeconds: (timeDifference / 1000).toFixed(2),
+              requiredSeconds: (MIN_TIME_AHEAD / 1000).toFixed(2)
+            });
+            console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
+
+            // Stop game loop and show inactivity dialog
+            const { stopGameLoop } = await import('./loop');
+
+            useGameStore.setState({
+              isGameLoopActive: false,
+              inactivityDialogOpen: true,
+              inactivityReason: 'multitab'
+            });
+
+            stopGameLoop();
+            return; // Don't save
+          }
+
           if (cloudPlayTime > localPlayTime) {
             console.warn('[SAVE] ⚠️ Detected newer save in cloud:', {
               cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
