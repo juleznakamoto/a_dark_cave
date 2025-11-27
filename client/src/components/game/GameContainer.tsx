@@ -39,7 +39,6 @@ export default function GameContainer() {
     authDialogOpen, // Added authDialogOpen to state
     shopDialogOpen, // Added shopDialogOpen to state
     inactivityDialogOpen, // Added inactivityDialogOpen to state
-    state, // Assuming 'state' object contains inactivityDialogOpen
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
@@ -305,7 +304,7 @@ export default function GameContainer() {
       <IdleModeDialog />
       <MerchantDialog />
       <CubeDialog />
-      {state.inactivityDialogOpen && <InactivityDialog />}
+      {inactivityDialogOpen && <InactivityDialog />}
     </div>
   );
 }
