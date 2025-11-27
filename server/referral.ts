@@ -25,8 +25,28 @@ const getSupabaseAdmin = () => {
 export async function processReferral(newUserId: string, referralCode: string) {
   const adminClient = getSupabaseAdmin();
 
+  // If referral code is short (no hyphens), look up the full user ID
+  let fullReferralCode = referralCode;
+  if (!referralCode.includes('-')) {
+    const { data: saves } = await adminClient
+      .from('game_saves')
+      .select('user_id')
+      .like('user_id', `%${referralCode}`);
+    
+    if (saves && saves.length > 0) {
+      const match = saves.find(s => s.user_id.endsWith(referralCode));
+      if (match) {
+        fullReferralCode = match.user_id;
+      } else {
+        return { success: false, reason: 'referrer_not_found' };
+      }
+    } else {
+      return { success: false, reason: 'referrer_not_found' };
+    }
+  }
+
   // Prevent self-referral
-  if (newUserId === referralCode) {
+  if (newUserId === fullReferralCode) {
     return { success: false, reason: 'self_referral' };
   }
 
@@ -45,7 +65,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
   const { data: referrerSave, error: referrerError } = await adminClient
     .from('game_saves')
     .select('game_state')
-    .eq('user_id', referralCode)
+    .eq('user_id', fullReferralCode)
     .maybeSingle();
 
   if (referrerError) {
@@ -89,7 +109,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       game_state: updatedReferrerState,
       updated_at: new Date().toISOString(),
     })
-    .eq('user_id', referralCode);
+    .eq('user_id', fullReferralCode);
 
   if (referrerUpdateError) {
     return { success: false, reason: 'referrer_update_error' };
@@ -127,7 +147,7 @@ export async function processReferral(newUserId: string, referralCode: string) {
       ...initialGameState.resources,
       gold: newNewUserGold,
     },
-    referralCode: referralCode,
+    referralCode: fullReferralCode,
     referralProcessed: true,
     log: [
       ...(initialGameState.log || []),
