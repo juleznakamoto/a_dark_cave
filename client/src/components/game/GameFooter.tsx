@@ -188,7 +188,7 @@ export default function GameFooter() {
       await navigator.clipboard.writeText(inviteLink);
       toast({
         title: "Invite link copied!",
-        description: "Share it with your friends to earn 100 gold each.",
+        description: "Share it with your friends to earn 250 gold each.",
       });
     } catch (error) {
       toast({
@@ -288,7 +288,7 @@ export default function GameFooter() {
                     </TooltipTrigger>
                     <TooltipContent className="max-w-xs">
                       <p className="text-xs">
-                        Share your invite link to earn 100 gold for each friend
+                        Share your invite link to earn 250 gold for each friend
                         who signs up ({referralCount || 0}/10 invited).
                         <br />
                       </p>
