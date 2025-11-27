@@ -113,7 +113,7 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnightMountains: {
     id: "restlessKnightMountains",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 6 &&
+      state.buildings.stoneHut >= 4 &&
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
