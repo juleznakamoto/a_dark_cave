@@ -24,7 +24,7 @@ export default function InactivityDialog() {
     <Dialog open={true} onOpenChange={() => {}}>
       <DialogContent className="sm:max-w-md" hideClose={true}>
         <DialogHeader>
-          <DialogTitle className="">
+          <DialogTitle className="leading-6">
             {isMultiTab && 'Game stopped due another tab being active'}
             {isTimeout && 'Game stopped due to inactivity'}
           </DialogTitle>
