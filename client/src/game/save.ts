@@ -197,47 +197,46 @@ export async function saveGame(gameState: GameState, playTime: number = 0): Prom
         const lastCloudState = await db.get('lastCloudState', LAST_CLOUD_STATE_KEY);
         const stateDiff = calculateStateDiff(lastCloudState || null, sanitizedState);
 
-        console.log('[SAVE] 📤 Attempting cloud save with OCC check...', {
-          playTime,
-          isNewGame,
-          hasClickData: !!clickData
-        });
+        // Skip OCC check if this is a new game (fresh login) - loadGame will handle cloud sync
+        if (!isNewGame) {
+          // Before saving, check if there's a newer save in the cloud
+          const cloudSave = await loadGameFromSupabase();
+          if (cloudSave) {
+            const cloudPlayTime = cloudSave.playTime || 0;
+            const localPlayTime = playTime;
 
-        // Before saving, check if there's a newer save in the cloud
-        const cloudSave = await loadGameFromSupabase();
-        if (cloudSave) {
-          const cloudPlayTime = cloudSave.playTime || 0;
-          const localPlayTime = playTime;
+            const timeDifference = localPlayTime - cloudPlayTime;
 
-          const timeDifference = localPlayTime - cloudPlayTime;
-
-          console.log('[SAVE] 🔍 OCC check - comparing playtimes:', {
-            cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
-            localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
-            differenceSeconds: (timeDifference / 1000).toFixed(2),
-            localIsNewer: localPlayTime >= cloudPlayTime
-          });
-
-          if (cloudPlayTime > localPlayTime) {
-            console.warn('[SAVE] ⚠️ Detected newer save in cloud:', {
+            console.log('[SAVE] 🔍 OCC check - comparing playtimes:', {
               cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
               localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
-              differenceSeconds: ((cloudPlayTime - localPlayTime) / 1000).toFixed(2)
-            });
-            console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
-
-            // Stop game loop and show inactivity dialog
-            const { stopGameLoop } = await import('./loop');
-
-            useGameStore.setState({
-              isGameLoopActive: false,
-              inactivityDialogOpen: true,
-              inactivityReason: 'multitab'
+              differenceSeconds: (timeDifference / 1000).toFixed(2),
+              localIsNewer: localPlayTime > cloudPlayTime
             });
 
-            stopGameLoop();
-            return; // Don't save
+            if (cloudPlayTime >= localPlayTime) {
+              console.warn('[SAVE] ⚠️ Detected newer or equal save in cloud:', {
+                cloudPlayTimeSeconds: (cloudPlayTime / 1000).toFixed(2),
+                localPlayTimeSeconds: (localPlayTime / 1000).toFixed(2),
+                differenceSeconds: ((cloudPlayTime - localPlayTime) / 1000).toFixed(2)
+              });
+              console.log('[SAVE] 🛑 Another tab/device is actively playing - stopping this tab...');
+
+              // Stop game loop and show inactivity dialog
+              const { stopGameLoop } = await import('./loop');
+
+              useGameStore.setState({
+                isGameLoopActive: false,
+                inactivityDialogOpen: true,
+                inactivityReason: 'multitab'
+              });
+
+              stopGameLoop();
+              return; // Don't save
+            }
           }
+        } else {
+          console.log('[SAVE] ⏭️ Skipping OCC check - new game state (login scenario)');
         }
 
         // Save diff to Supabase (includes OCC check)
@@ -384,7 +383,7 @@ export async function loadGame(): Promise<GameState | null> {
             await saveGameToSupabase(processedState);
             await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
           } catch (syncError: any) {
-            // If OCC rejects due to equal playTimes, that's fine - cloud already has this state
+            // If OCC violates due to equal playTimes, that's fine - cloud already has this state
             if (syncError.message?.includes('OCC violation')) {
               console.log('[LOAD] 📊 Cloud already has this save state - skipping sync');
               await db.put('lastCloudState', processedState, LAST_CLOUD_STATE_KEY);
