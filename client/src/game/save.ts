@@ -232,7 +232,7 @@ export async function saveGame(
         );
 
         // OCC: Optimistic Concurrency Control
-        // Before writing, check if cloud has a newer save (but skip during initial load sync)
+        // Before writing, check if cloud has a newer save (but skip during initial load sync or when explicitly skipped)
         if (user && isAutosave && !skipOccCheck) {
           const cloudSave = await loadGameFromSupabase();
           if (cloudSave) {
@@ -281,17 +281,25 @@ export async function saveGame(
           }
         }
 
-        // Save diff to Supabase (includes OCC check)
-        await saveGameToSupabase(
-          stateDiff,
-          gameState.playTime,
-          isNewGame,
-          clickData,
-        );
-
-        // Update last cloud state
-        await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
-        logger.log("[SAVE] ✅ Cloud save successful");
+        // Only save to cloud if not skipping OCC check
+        // When skipOccCheck=true, we're syncing local with cloud state, so no need to write back to cloud
+        if (!skipOccCheck) {
+          // Save diff to Supabase (includes OCC check)
+          await saveGameToSupabase(
+            stateDiff,
+            gameState.playTime,
+            isNewGame,
+            clickData,
+          );
+          
+          // Update last cloud state
+          await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
+          logger.log("[SAVE] ✅ Cloud save successful");
+        } else {
+          // Just update last cloud state for future diffs, don't write to cloud
+          await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
+          logger.log("[SAVE] 📥 Local state synced with cloud (no cloud write needed)");
+        }
       }
     } catch (cloudError: any) {
       logger.debug("[SAVE] Cloud save skipped:", cloudError);
