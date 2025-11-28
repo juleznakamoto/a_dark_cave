@@ -807,13 +807,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
-        // Reset dialog states - these are UI-only and shouldn't persist across page loads
-        authDialogOpen: false,
-        shopDialogOpen: false,
-        eventDialog: { isOpen: false, currentEvent: null },
-        combatDialog: { isOpen: false, enemy: null, eventTitle: "", eventMessage: "", onVictory: null, onDefeat: null },
-        idleModeDialog: { isOpen: false },
-        inactivityDialogOpen: false,
       };
 
       set(loadedState);

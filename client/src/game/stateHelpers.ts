@@ -184,7 +184,7 @@ export function buildGameState(state: any): GameState {
     attackWaveTimers: state.attackWaveTimers || {},
     loopProgress: state.loopProgress || 0,
     isGameLoopActive: state.isGameLoopActive || false,
-    isPaused: state.isPaused || false,
+    isPaused: false, // Never save pause state - always unpause on load
     showEndScreen: state.showEndScreen || false,
     isMuted: state.isMuted || false,
     shopNotificationSeen: state.shopNotificationSeen || false,
