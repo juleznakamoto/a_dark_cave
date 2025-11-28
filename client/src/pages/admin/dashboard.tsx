@@ -2257,6 +2257,34 @@ export default function AdminDashboard() {
                 <CardDescription>Number of players who have seen each cube event at each playtime</CardDescription>
               </CardHeader>
               <CardContent>
+                <div className="mb-4 flex gap-4 flex-wrap">
+                  {(() => {
+                    const chartData = getCubeEventsOverPlaytime();
+                    if (chartData.length === 0) return null;
+                    
+                    // Get all cube event keys from the first data point
+                    const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
+                    
+                    return cubeKeys.map((key) => (
+                      <label key={key} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          defaultChecked={true}
+                          onChange={(e) => {
+                            const checkbox = e.target;
+                            const lines = document.querySelectorAll(`[data-cube-event="${key}"]`);
+                            lines.forEach(line => {
+                              const element = line as HTMLElement;
+                              element.style.display = checkbox.checked ? '' : 'none';
+                            });
+                          }}
+                          className="cursor-pointer"
+                        />
+                        <span className="text-sm">{key}</span>
+                      </label>
+                    ));
+                  })()}
+                </div>
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getCubeEventsOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
@@ -2279,6 +2307,7 @@ export default function AdminDashboard() {
                           stroke={COLORS[index % COLORS.length]}
                           strokeWidth={2}
                           dot={{ r: 3 }}
+                          data-cube-event={key}
                         />
                       ));
                     })()}
