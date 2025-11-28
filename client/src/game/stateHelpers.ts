@@ -162,6 +162,7 @@ export function buildGameState(state: any): GameState {
     clothing: state.clothing,
     relics: state.relics,
     books: state.books,
+    fellowship: state.fellowship,
     story: state.story,
     effects: state.effects,
     bastion_stats: state.bastion_stats,
