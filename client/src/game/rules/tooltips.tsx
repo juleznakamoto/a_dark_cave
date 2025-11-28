@@ -341,6 +341,12 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       return `Base Damage: ${baseDamage} per round for 3 rounds\n${knowledge >= 5 ? `Knowledge Bonus: +${knowledgeBonus}\n` : ""}Total Damage: ${baseDamage + knowledgeBonus} per round`;
     },
   },
+  crushing_strike: {
+    getContent: (state) => {
+      const damage = 10;
+      return `Deals ${damage} damage and stuns the enemy for 1 round.\nStunned enemies cannot attack.\nCan only be used once per battle.`;
+    },
+  },
 };
 
 // Event choice cost tooltip - formats cost string

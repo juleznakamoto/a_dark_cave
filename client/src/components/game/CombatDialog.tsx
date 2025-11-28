@@ -79,8 +79,11 @@ export default function CombatDialog({
     amount: number;
     visible: boolean;
   }>({ amount: 0, visible: false });
+  const [usedCrushingStrike, setUsedCrushingStrike] = useState(false);
+  const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
 
   const bastionStats = calculateBastionStats(gameState);
+  const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
 
   // Reset state when dialog opens
   useEffect(() => {
@@ -96,6 +99,8 @@ export default function CombatDialog({
       setEnemyDamageIndicator({ amount: 0, visible: false });
       setPlayerDamageIndicator({ amount: 0, visible: false });
       setIntegrityDamageIndicator({ amount: 0, visible: false });
+      setUsedCrushingStrike(false);
+      setEnemyStunnedRounds(0);
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
@@ -169,6 +174,40 @@ export default function CombatDialog({
 
   const handleStartFight = () => {
     setCombatStarted(true);
+  };
+
+  const handleUseCrushingStrike = () => {
+    if (!currentEnemy || usedCrushingStrike) return;
+
+    const damage = 10;
+
+    // Mark as used
+    setUsedCrushingStrike(true);
+
+    // Apply damage
+    setCurrentEnemy((prev) =>
+      prev
+        ? {
+            ...prev,
+            currentHealth: Math.max(0, prev.currentHealth - damage),
+          }
+        : null,
+    );
+
+    // Stun enemy for 1 round
+    setEnemyStunnedRounds(1);
+
+    // Show damage indicator
+    setEnemyDamageIndicator({ amount: damage, visible: true });
+    setTimeout(() => {
+      setEnemyDamageIndicator({ amount: 0, visible: false });
+    }, 3000);
+
+    // Check if enemy is defeated
+    if (currentEnemy && currentEnemy.currentHealth - damage <= 0) {
+      setCombatEnded(true);
+      setCombatResult("victory");
+    }
   };
 
   const handleUseItem = (item: CombatItem) => {
@@ -269,8 +308,11 @@ export default function CombatDialog({
     }
 
 
-    // Enemy attacks first
-    if (currentEnemy.attack > bastionStats.defense) {
+    // Enemy attacks first (only if not stunned)
+    if (enemyStunnedRounds > 0) {
+      // Enemy is stunned, skip attack and decrement stun counter
+      setEnemyStunnedRounds((prev) => Math.max(0, prev - 1));
+    } else if (currentEnemy.attack > bastionStats.defense) {
       integrityDamage = currentEnemy.attack - bastionStats.defense;
       const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
       setCurrentIntegrity(newIntegrityValue);
@@ -379,6 +421,9 @@ export default function CombatDialog({
                     </span>
                     {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
                       <span className="text-green-600" role="img" aria-label="poison-icon">▲</span>
+                    )}
+                    {enemyStunnedRounds > 0 && (
+                      <span className="text-yellow-600" role="img" aria-label="stun-icon">⚡</span>
                     )}
                   </div>
                   <span>
@@ -494,6 +539,39 @@ export default function CombatDialog({
                           </TooltipProvider>
                         );
                       })}
+                  </div>
+                </div>
+              )}
+
+              {/* Combat Skills */}
+              {HAS_RESTLESS_KNIGHT && (
+                <div className="border-t pt-3">
+                  <div className="text-sm font-medium mb-2">Combat Skills</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="w-full">
+                            <Button
+                              onClick={handleUseCrushingStrike}
+                              disabled={usedCrushingStrike || isProcessingRound}
+                              variant="outline"
+                              size="sm"
+                              className="text-xs w-full"
+                              button_id="combat-use-crushing-strike"
+                            >
+                              Crushing Strike
+                            </Button>
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs whitespace-pre-line">
+                            {combatItemTooltips.crushing_strike.getContent(gameState)}
+                            {'\n'}Available: {usedCrushingStrike ? "0/1" : "1/1"}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
               )}
