@@ -990,9 +990,9 @@ export default function AdminDashboard() {
     return churnedPlayers.sort((a, b) => b.daysSinceActivity - a.daysSinceActivity);
   };
 
-  // Get the top 20 most clicked buttons from churned players
+  // Get the top 20 most clicked buttons from churned players at their last playtime
   const getChurnedPlayersLastClicks = () => {
-    logger.log('🔍 Getting churned players top clicks START:', {
+    logger.log('🔍 Getting churned players last clicks START:', {
       now: new Date().toISOString(),
       cutoffDate: subDays(new Date(), churnDays).toISOString(),
       churnDays
@@ -1026,21 +1026,47 @@ export default function AdminDashboard() {
 
     logger.log('📊 Churned user IDs for clicks:', churnedUserIds.size, 'Sample:', Array.from(churnedUserIds).slice(0, 3).map(id => id.substring(0, 8)));
 
-    // Aggregate all clicks from churned users by button
-    const buttonTotals: Record<string, number> = {};
+    // Find the maximum playtime for each churned user
+    const userMaxPlaytime = new Map<string, string>();
 
     clickData.forEach(entry => {
       if (churnedUserIds.has(entry.user_id)) {
-        Object.entries(entry.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
-          Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
-            const cleanButton = cleanButtonName(button);
-            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
-          });
+        Object.keys(entry.clicks).forEach(playtimeKey => {
+          const minutes = parseInt(playtimeKey.replace('m', ''));
+          if (!isNaN(minutes)) {
+            const existingKey = userMaxPlaytime.get(entry.user_id);
+            if (!existingKey) {
+              userMaxPlaytime.set(entry.user_id, playtimeKey);
+            } else {
+              const existingMinutes = parseInt(existingKey.replace('m', ''));
+              if (minutes > existingMinutes) {
+                userMaxPlaytime.set(entry.user_id, playtimeKey);
+              }
+            }
+          }
         });
       }
     });
 
-    logger.log('📊 Total unique buttons clicked by churned users:', Object.keys(buttonTotals).length);
+    logger.log('📊 Found max playtime for', userMaxPlaytime.size, 'churned users');
+
+    // Aggregate clicks from churned users at their LAST playtime only
+    const buttonTotals: Record<string, number> = {};
+
+    clickData.forEach(entry => {
+      if (churnedUserIds.has(entry.user_id)) {
+        const maxPlaytimeKey = userMaxPlaytime.get(entry.user_id);
+        if (maxPlaytimeKey && entry.clicks[maxPlaytimeKey]) {
+          // Only count clicks at the maximum playtime
+          Object.entries(entry.clicks[maxPlaytimeKey] as Record<string, number>).forEach(([button, count]) => {
+            const cleanButton = cleanButtonName(button);
+            buttonTotals[cleanButton] = (buttonTotals[cleanButton] || 0) + count;
+          });
+        }
+      }
+    });
+
+    logger.log('📊 Total unique buttons clicked at last playtime by churned users:', Object.keys(buttonTotals).length);
 
     // Convert to array and sort by click count, take top 20
     const topClicks = Object.entries(buttonTotals)
@@ -1048,7 +1074,7 @@ export default function AdminDashboard() {
       .sort((a, b) => b.clicks - a.clicks)
       .slice(0, 20);
 
-    logger.log('📊 Returning top 20 clicked buttons:', topClicks.length);
+    logger.log('📊 Returning top 20 last clicked buttons:', topClicks.length);
 
     return topClicks;
   };
@@ -2024,8 +2050,8 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Top 20 Buttons Clicked by Churned Players</CardTitle>
-                <CardDescription>What actions did churned players perform the most?</CardDescription>
+                <CardTitle>Top 20 Last Buttons Clicked Before Churning</CardTitle>
+                <CardDescription>What were the last actions churned players performed at their final playtime?</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
