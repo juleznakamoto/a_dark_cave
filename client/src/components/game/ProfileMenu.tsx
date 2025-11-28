@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
 import { deleteSave } from "@/game/save";
@@ -28,10 +27,10 @@ import { useIsMobile } from "@/hooks/use-mobile";
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
   {
-    id: 'instagram',
-    name: 'Instagram',
-    icon: '/camera.png',
-    url: 'https://www.instagram.com/a_dark_cave/',
+    id: "instagram",
+    name: "Instagram",
+    icon: "/camera.png",
+    url: "https://www.instagram.com/a_dark_cave/",
     reward: 100,
   },
   // Add more platforms here as needed
@@ -50,7 +49,7 @@ export default function ProfileMenu() {
     addLogEntry,
     social_media_rewards,
   } = useGameStore();
-  
+
   const mobileTooltip = useMobileTooltip();
   const isMobile = useIsMobile();
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
@@ -92,7 +91,11 @@ export default function ProfileMenu() {
   };
 
   const handleRestartGame = async () => {
-    if (confirm("Are you sure you want to start a new game? This will delete your current progress.")) {
+    if (
+      confirm(
+        "Are you sure you want to start a new game? This will delete your current progress.",
+      )
+    ) {
       setAccountDropdownOpen(false);
       await deleteSave();
       restartGame();
@@ -101,7 +104,7 @@ export default function ProfileMenu() {
 
   const handleCopyInviteLink = () => {
     if (!currentUser) return;
-    
+
     const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
     navigator.clipboard.writeText(inviteLink);
     toast({
@@ -111,7 +114,12 @@ export default function ProfileMenu() {
     setAccountDropdownOpen(false);
   };
 
-  const handleSocialFollow = async (platformId: string, url: string, reward: number, platformName: string) => {
+  const handleSocialFollow = async (
+    platformId: string,
+    url: string,
+    reward: number,
+    platformName: string,
+  ) => {
     const currentRewards = useGameStore.getState().social_media_rewards;
 
     if (currentRewards[platformId]?.claimed) {
@@ -163,7 +171,7 @@ export default function ProfileMenu() {
 
       useGameStore.setState({
         lastSaved: new Date().toLocaleTimeString(),
-        isNewGame: false
+        isNewGame: false,
       });
     } catch (error) {
       logger.error("Failed to save social media reward claim:", error);
@@ -196,7 +204,12 @@ export default function ProfileMenu() {
               )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" side="bottom" sideOffset={8} className="w-56 text-xs !max-h-none">
+        <DropdownMenuContent
+          align="end"
+          side="bottom"
+          sideOffset={8}
+          className="w-56 text-xs !max-h-none"
+        >
           {currentUser ? (
             <>
               <DropdownMenuItem onClick={handleSignOut}>
@@ -222,29 +235,7 @@ export default function ProfileMenu() {
             New Game
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            onClick={() => {
-              if (currentUser) {
-                handleSocialFollow('instagram', 'https://www.instagram.com/a_dark_cave/', 100, 'Instagram');
-              }
-            }}
-            disabled={!currentUser}
-            className={!currentUser ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
-          >
-            <div className="flex items-center justify-between w-full">
-              <div className="flex items-center gap-1">
-                <span>Follow HARDCODED&nbsp;</span>
-                <img
-                  src="/camera.png"
-                  alt="Instagram"
-                  className="w-3 h-3 opacity-90"
-                />
-              </div>
-              <div className="flex items-center gap-2">
-                <span className="font-semibold">&nbsp;+100 Gold</span>
-              </div>
-            </div>
-          </DropdownMenuItem>
+
           <DropdownMenuItem
             onClick={handleCopyInviteLink}
             disabled={!currentUser}
@@ -274,10 +265,7 @@ export default function ProfileMenu() {
                         e.stopPropagation();
                         e.preventDefault();
                         if (isMobile) {
-                          mobileTooltip.handleTooltipClick(
-                            "referral-info",
-                            e,
-                          );
+                          mobileTooltip.handleTooltipClick("referral-info", e);
                         }
                       }}
                     >
@@ -297,8 +285,9 @@ export default function ProfileMenu() {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           {SOCIAL_PLATFORMS.map((platform) => {
-            console.log('Rendering platform:', platform.id, platform);
-            const isClaimed = social_media_rewards[platform.id]?.claimed ?? false;
+            console.log("Rendering platform:", platform.id, platform);
+            const isClaimed =
+              social_media_rewards[platform.id]?.claimed ?? false;
             const isActive = !isClaimed && !!currentUser;
 
             return (
@@ -306,11 +295,18 @@ export default function ProfileMenu() {
                 key={platform.id}
                 onClick={() => {
                   if (isActive) {
-                    handleSocialFollow(platform.id, platform.url, platform.reward, platform.name);
+                    handleSocialFollow(
+                      platform.id,
+                      platform.url,
+                      platform.reward,
+                      platform.name,
+                    );
                   }
                 }}
                 disabled={!isActive}
-                className={!isActive ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+                className={
+                  !isActive ? "opacity-50 cursor-not-allowed" : "cursor-pointer"
+                }
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-1">
@@ -322,14 +318,17 @@ export default function ProfileMenu() {
                     />
                   </div>
                   <div className="flex items-center gap-2">
-                    <span className="font-semibold">&nbsp;+{platform.reward} Gold</span>
-                    {isClaimed && <span className="text-xs text-muted-foreground">✓</span>}
+                    <span className="font-semibold">
+                      &nbsp;+{platform.reward} Gold
+                    </span>
+                    {isClaimed && (
+                      <span className="text-xs text-muted-foreground">✓</span>
+                    )}
                   </div>
                 </div>
               </DropdownMenuItem>
             );
           })}
-
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
