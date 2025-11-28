@@ -281,10 +281,12 @@ export default function ProfileMenu() {
               <DropdownMenuItem
                 key={platform.id}
                 onClick={() => {
-                  handleSocialFollow(platform.id, platform.url, platform.reward, platform.name);
+                  if (isActive) {
+                    handleSocialFollow(platform.id, platform.url, platform.reward, platform.name);
+                  }
                 }}
                 disabled={!isActive}
-                className={!isActive ? "opacity-50 cursor-not-allowed" : ""}
+                className={!isActive ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
               >
                 <div className="flex items-center justify-between w-full">
                   <div className="flex items-center gap-1">
