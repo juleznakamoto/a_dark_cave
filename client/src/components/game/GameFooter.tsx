@@ -1,11 +1,5 @@
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/game/state";
-import { deleteSave } from "@/game/save";
-import { useState, useEffect } from "react";
-import { getCurrentUser, signOut } from "@/game/auth";
-import AuthDialog from "./AuthDialog";
-import { useToast } from "@/hooks/use-toast";
-import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
 import {
   Tooltip,
@@ -13,21 +7,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
-import { useIsMobile } from "@/hooks/use-mobile";
+import { ShopDialog } from "./ShopDialog";
+import { useState, useEffect } from "react";
 
 export default function GameFooter() {
   const {
-    restartGame,
-    loadGame,
-    setAuthDialogOpen: setGameAuthDialogOpen,
     setShopDialogOpen,
     shopDialogOpen,
     isPaused,
@@ -38,100 +23,19 @@ export default function GameFooter() {
     shopNotificationSeen,
     setShopNotificationSeen,
     shopNotificationVisible,
-    authNotificationSeen,
-    setAuthNotificationSeen,
-    authNotificationVisible,
-    setIsUserSignedIn,
     cruelMode,
     story,
     mysteriousNoteShopNotificationSeen,
     mysteriousNoteDonateNotificationSeen,
-    referralCount,
   } = useGameStore();
   const mobileTooltip = useMobileTooltip();
-  const isMobile = useIsMobile();
   const [glowingButton, setGlowingButton] = useState<string | null>(null);
-  const [authDialogOpen, setAuthDialogOpen] = useState(false);
-  const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
-  const [currentUser, setCurrentUser] = useState<{
-    id: string;
-    email: string;
-  } | null>(null);
-  const [inviteDialogOpen, setInviteDialogOpen] = useState(false);
-  const { toast } = useToast();
   // Trigger glow animation when pause state changes
   useEffect(() => {
     setGlowingButton("pause");
     const timer = setTimeout(() => setGlowingButton(null), 500);
     return () => clearTimeout(timer);
   }, [isPaused]);
-
-  useEffect(() => {
-    // Check if there's a referral code in URL
-    const params = new URLSearchParams(window.location.search);
-    const hasReferralCode = params.has("ref");
-
-    // If there's a referral code and user is not signed in, activate the notification
-    if (hasReferralCode && !currentUser) {
-      setAuthNotificationSeen(false);
-    }
-  }, [currentUser]);
-
-  const handleSetAuthDialogOpen = (open: boolean) => {
-    setAuthDialogOpen(open);
-    setGameAuthDialogOpen(open);
-    if (open) {
-      setAccountDropdownOpen(false);
-    }
-  };
-
-  const handleAuthSuccess = async () => {
-    const user = await getCurrentUser();
-    setCurrentUser(user);
-    setIsUserSignedIn(!!user);
-    // Reload game to get cloud save
-    await loadGame();
-  };
-
-  // Close dropdown when shop dialog opens
-  useEffect(() => {
-    if (shopDialogOpen) {
-      setAccountDropdownOpen(false);
-    }
-  }, [shopDialogOpen]);
-
-  const handleSignOut = async () => {
-    try {
-      setAccountDropdownOpen(false);
-      await signOut();
-      setCurrentUser(null);
-      setIsUserSignedIn(false);
-      handleSetAuthDialogOpen(false); // Close auth dialog on sign out
-      toast({
-        title: "Signed out",
-        description: "You have been signed out successfully.",
-      });
-    } catch (error: any) {
-      toast({
-        title: "Error",
-        description: error.message || "Failed to sign out",
-        variant: "destructive",
-      });
-    }
-  };
-
-  const handleRestartGame = async () => {
-    if (
-      confirm(
-        "Restarting the game will delete your current progress. Are you sure to restart?",
-      )
-    ) {
-      // Stop all sounds before restarting
-      audioManager.stopAllSounds();
-      await deleteSave();
-      restartGame();
-    }
-  };
 
   const handleOfferTribute = () => {
     window.open("https://www.buymeacoffee.com/julez.b", "_blank");
@@ -143,156 +47,12 @@ export default function GameFooter() {
     audioManager.globalMute(newMutedState);
   };
 
-  const handleCopyInviteLink = async () => {
-    if (!currentUser) {
-      toast({
-        title: "Sign in required",
-        description: "You need to sign in to get your invite link.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    // Check if user has reached the referral limit
-    if ((referralCount || 0) >= 10) {
-      toast({
-        title: "Referral limit reached",
-        description:
-          "You have already invited 10 friends. For collaboration requests, click on Contact.",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    const inviteLink = `${window.location.origin}?ref=${currentUser.id}`;
-    try {
-      await navigator.clipboard.writeText(inviteLink);
-      toast({
-        title: "Invite link copied!",
-        description: "Share it with your friends to earn 100 gold each.",
-      });
-    } catch (error) {
-      toast({
-        title: "Failed to copy",
-        description: "Please copy the link manually: " + inviteLink,
-        variant: "destructive",
-      });
-    }
-  };
-
   return (
     <>
       <ShopDialog
         isOpen={shopDialogOpen}
         onClose={() => setShopDialogOpen(false)}
       />
-      {/* Account Dropdown - Absolute positioned in upper right */}
-      <div className="fixed top-2 right-2 z-30 pointer-events-auto">
-        <DropdownMenu
-          open={accountDropdownOpen}
-          onOpenChange={(open) => {
-            setAccountDropdownOpen(open);
-            if (open) {
-              setAuthNotificationSeen(true);
-            }
-          }}
-          modal={false}
-        >
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              size="xs"
-              className="px-2 py-1 text-xs hover relative bg-background/80  text-neutral-300 backdrop-blur-sm border border-border"
-            >
-              Profile
-              {authNotificationVisible &&
-                !authNotificationSeen &&
-                !currentUser && (
-                  <span className="absolute -top-[4px] -right-[4px] w-2 h-2 !bg-red-600 rounded-full shop-notification-pulse !opacity-100" />
-                )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-50 text-xs">
-            {currentUser ? (
-              <>
-                <DropdownMenuItem onClick={handleSignOut}>
-                  Sign Out
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </>
-            ) : (
-              <>
-                <DropdownMenuItem
-                  onClick={() => {
-                    setAccountDropdownOpen(false);
-                    handleSetAuthDialogOpen(true);
-                    setAuthNotificationSeen(true);
-                  }}
-                >
-                  Sign In/Up
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-              </>
-            )}
-            <DropdownMenuItem onClick={handleRestartGame}>
-              New Game
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={handleCopyInviteLink}
-              disabled={!currentUser}
-            >
-              <div className="flex items-center justify-between w-full">
-                <div className="flex items-center gap-1">
-                  <span>Invite&nbsp;</span>{" "}
-                  <img
-                    src="/person-add.png"
-                    alt=""
-                    className="w-3 h-3 opacity-90"
-                  />
-                </div>
-                <span className="font-semibold">&nbsp;+250 Gold</span>
-                <TooltipProvider>
-                  <Tooltip
-                    open={
-                      isMobile
-                        ? mobileTooltip.isTooltipOpen("referral-info")
-                        : undefined
-                    }
-                  >
-                    <TooltipTrigger asChild>
-                      <span
-                        className="font-black ml-2 text-muted-foreground cursor-pointer"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          e.preventDefault();
-                          if (isMobile) {
-                            mobileTooltip.handleTooltipClick(
-                              "referral-info",
-                              e,
-                            );
-                          }
-                        }}
-                      >
-                        ⓘ{" "}
-                      </span>
-                    </TooltipTrigger>
-                    <TooltipContent className="max-w-xs">
-                      <p className="text-xs">
-                        Share your invite link to earn 250 gold for each friend
-                        who signs up ({referralCount || 0}/10 invited).
-                        <br />
-                      </p>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              </div>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            {/* SocialMediaRewards component removed as it's no longer needed */}
-          </DropdownMenuContent>
-        </DropdownMenu>
-      </div>
       <footer className="border-t border-border px-2 py-2 text-xs text-muted-foreground">
         <div className="flex justify-between items-center">
           <div className="flex items-center space-x-0 flex-1">
@@ -426,11 +186,6 @@ export default function GameFooter() {
           </div>
         </div>
       </footer>
-      <AuthDialog
-        isOpen={authDialogOpen}
-        onClose={() => handleSetAuthDialogOpen(false)}
-        onAuthSuccess={handleAuthSuccess}
-      />
     </>
   );
 }
