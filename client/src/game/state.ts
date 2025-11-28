@@ -758,7 +758,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       hasPlayTime: savedState ? 'playTime' in savedState : false,
       allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
     });
-    
+
     // Notify game loop that we just loaded to skip auto-save for 30 seconds
     const { setLastGameLoadTime } = await import('@/game/loop');
     setLastGameLoadTime(performance.now());
@@ -769,7 +769,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (savedState) {
       // CRITICAL: Extract playTime FIRST before any processing
       const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
-      
+
       logger.log('[STATE] 📊 Setting Zustand state with playTime:', {
         loadedPlayTime,
         savedStatePlayTime: savedState.playTime,
@@ -812,7 +812,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       set(loadedState);
-      
+
       logger.log('[STATE] 📊 Zustand state after set:', {
         statePlayTime: get().playTime,
         loadedStatePlayTime: loadedState.playTime,
@@ -1066,39 +1066,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
         hasFellowship: 'fellowship' in updatedChanges,
         fellowshipValue: updatedChanges.fellowship,
       });
-      
+
       set((prevState) => {
         console.log('[STATE] Inside set - prevState:', {
           prevFellowship: prevState.fellowship,
         });
-        
-        const newState = {
+
+        // Use the same mergeStateUpdates function that other actions use
+        const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
+
+        console.log('[STATE] After mergeStateUpdates:', {
+          hasFellowship: 'fellowship' in mergedUpdates,
+          fellowship: mergedUpdates.fellowship,
+          fellowshipKeys: Object.keys(mergedUpdates.fellowship || {}),
+        });
+
+        return {
           ...prevState,
-          ...updatedChanges,
+          ...mergedUpdates,
         };
-
-        // Ensure events object is properly merged
-        if (updatedChanges.events) {
-          newState.events = {
-            ...prevState.events,
-            ...updatedChanges.events,
-          };
-        }
-
-        // Ensure fellowship object is properly merged
-        if (updatedChanges.fellowship) {
-          newState.fellowship = {
-            ...prevState.fellowship,
-            ...updatedChanges.fellowship,
-          };
-          console.log('[STATE] Fellowship merged:', {
-            prevFellowship: prevState.fellowship,
-            updateFellowship: updatedChanges.fellowship,
-            newFellowship: newState.fellowship,
-          });
-        }
-
-        return newState;
       });
 
       StateManager.schedulePopulationUpdate(get);
