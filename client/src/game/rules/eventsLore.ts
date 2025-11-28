@@ -348,7 +348,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightDesertFailed ? 60 : 30,
     title: "The Knight's Final Journey",
     message:
-      "The knight returns one last time, his armor weathered and scarred. 'I traveled far south to a vast desert,' he begins without prompting. 'There I met a man dedicated to recovering the lost technology of the ancients. He showed me wonders - devices embedded within the body itself, enhancing strength and senses beyond natural limits. The ancients were not merely human.' He pauses, studying your settlement. 'I have traveled enough. Your bastion could use a veteran blade. I offer my service in combat, if you will have me.'",
+      "The knight returns, 'I traveled far south to a vast desert,' he begins. 'There I met a man dedicated to recovering the lost technology of the ancients. He showed me wonders, devices that once were embedded within the body itself, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your bastion could use a veteran blade. I offer my service in combat, if you will have me.'",
     triggered: false,
     priority: 3,
     repeatable: false,
@@ -381,7 +381,7 @@ export const loreEvents: Record<string, GameEvent> = {
               restless_knight: true,
             },
             _logMessage:
-              "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+              "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
           };
         },
       },
@@ -413,7 +413,7 @@ export const loreEvents: Record<string, GameEvent> = {
               restless_knight: true,
             },
             _logMessage:
-              "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+              "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
           };
         },
       },
@@ -422,13 +422,13 @@ export const loreEvents: Record<string, GameEvent> = {
         label: "Convince him",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.15, {
+          return calculateSuccessChance(state, 0.0, {
             type: "knowledge",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.15, {
+          const successChance = calculateSuccessChance(state, 0.05, {
             type: "knowledge",
             multiplier: 0.01,
           });
