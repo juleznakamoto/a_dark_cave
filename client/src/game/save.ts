@@ -196,12 +196,6 @@ export async function saveGame(
   isAutosave: boolean = true,
 ): Promise<void> {
   try {
-    logger.log(`[SAVE] 🔵 Starting save operation:`, {
-      isAutosave,
-      inputPlayTime: gameState.playTime,
-      inputPlayTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
-    });
-
     // Check if game is inactive - if so, don't save
     const { useGameStore } = await import("./state");
     const currentState = useGameStore.getState();
@@ -212,21 +206,8 @@ export async function saveGame(
 
     const db = await getDB();
 
-    logger.log(`[SAVE] 🔍 Before sanitization:`, {
-      hasFellowship: 'fellowship' in gameState,
-      fellowship: gameState.fellowship,
-      fellowshipKeys: gameState.fellowship ? Object.keys(gameState.fellowship) : [],
-      allStateKeys: Object.keys(gameState).filter(k => k.includes('fellow')),
-    });
-
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
-
-    logger.log(`[SAVE] 🔍 After sanitization:`, {
-      sanitizedPlayTime: sanitizedState.playTime,
-      originalPlayTime: gameState.playTime,
-      playTimesMatch: sanitizedState.playTime === gameState.playTime,
-    });
 
     // Ensure cooldownDurations is always present
     if (!sanitizedState.cooldownDurations) {
@@ -237,39 +218,14 @@ export async function saveGame(
     const now = Date.now();
     sanitizedState.lastSaved = now;
 
-    logger.log(`[SAVE] 📦 Creating SaveData object:`, {
-      timestamp: now,
-      playTime: gameState.playTime,
-      playTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
-      gameStatePlayTime: sanitizedState.playTime,
-      hasCooldowns: !!sanitizedState.cooldowns,
-      cooldownsCount: sanitizedState.cooldowns
-        ? Object.keys(sanitizedState.cooldowns).length
-        : 0,
-    });
-
     const saveData: SaveData = {
       gameState: sanitizedState,
       timestamp: now,
-      playTime: gameState.playTime, // Use gameState.playTime
+      playTime: gameState.playTime,
     };
-
-    logger.log(`[SAVE] 💾 SaveData object created:`, {
-      saveDataPlayTime: saveData.playTime,
-      saveDataGameStatePlayTime: saveData.gameState.playTime,
-      saveDataTimestamp: saveData.timestamp,
-    });
 
     // Save locally first (most important)
     await db.put("saves", saveData, SAVE_KEY);
-
-    // Verify what was actually saved
-    const verifyLocalSave = await db.get("saves", SAVE_KEY);
-    logger.log(`[SAVE] ✅ Verified IndexedDB save:`, {
-      savedPlayTime: verifyLocalSave?.playTime,
-      savedGameStatePlayTime: verifyLocalSave?.gameState?.playTime,
-      savedTimestamp: verifyLocalSave?.timestamp,
-    });
 
     // Try to save to cloud if user is authenticated
     try {
@@ -289,17 +245,6 @@ export async function saveGame(
           lastCloudState || null,
           sanitizedState,
         );
-
-        logger.log("[SAVE] ☁️ Starting cloud save...", {
-          diffSize: Object.keys(stateDiff).length,
-          diffKeys: Object.keys(stateDiff),
-          hasFellowship: 'fellowship' in stateDiff,
-          fellowshipValue: stateDiff.fellowship,
-          lastCloudFellowship: lastCloudState?.fellowship,
-          currentFellowship: sanitizedState.fellowship,
-          playTime: gameState.playTime,
-          playTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
-        });
 
         // Save diff to Supabase
         await saveGameToSupabase(
@@ -325,23 +270,11 @@ export async function saveGame(
 
 export async function loadGame(): Promise<GameState | null> {
   try {
-    logger.log(`[LOAD] 🎮 Starting game load process...`);
-
     // Process referral if user just confirmed email
     await processReferralAfterConfirmation();
 
     const db = await getDB();
     const localSave = await db.get("saves", SAVE_KEY);
-
-    logger.log('[LOAD] 📊 Raw local save from IndexedDB:', {
-      exists: !!localSave,
-      playTime: localSave?.playTime,
-      playTimeMinutes: localSave?.playTime ? (localSave.playTime / 1000 / 60).toFixed(2) : 0,
-      timestamp: localSave?.timestamp,
-      timestampDate: localSave?.timestamp ? new Date(localSave.timestamp).toISOString() : 'none',
-      gameStatePlayTime: localSave?.gameState?.playTime,
-      gameStatePlayTimeMinutes: localSave?.gameState?.playTime ? (localSave.gameState.playTime / 1000 / 60).toFixed(2) : 0,
-    });
 
     if (isDev) {
       logger.log(`[LOAD] 💾 Local save retrieved:`, {
@@ -374,12 +307,6 @@ export async function loadGame(): Promise<GameState | null> {
       // User is authenticated - always use cloud save
       try {
         const cloudSave = await loadGameFromSupabase();
-        logger.log('[LOAD] 📊 Cloud save from Supabase:', {
-          exists: !!cloudSave,
-          playTime: cloudSave?.playTime,
-          playTimeMinutes: cloudSave?.playTime ? (cloudSave.playTime / 1000 / 60).toFixed(2) : 0,
-          timestamp: cloudSave?.timestamp,
-        });
 
         if (cloudSave) {
           // Cloud save exists - use it
@@ -390,11 +317,6 @@ export async function loadGame(): Promise<GameState | null> {
           );
 
           const stateToReturn = { ...processedState, playTime: cloudSave.playTime };
-
-          logger.log('[LOAD] 📊 State being returned:', {
-            playTime: stateToReturn.playTime,
-            playTimeMinutes: (stateToReturn.playTime / 1000 / 60).toFixed(2),
-          });
 
           // Save to IndexedDB to keep it in sync
           await db.put(

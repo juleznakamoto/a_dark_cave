@@ -883,54 +883,12 @@ function handleMadnessCheck() {
 
 async function handleAutoSave() {
   const state = useGameStore.getState();
-
-  logger.log("[AUTOSAVE]  Raw state snapshot:", {
-    statePlayTime: state.playTime,
-    playTimeMinutes: (state.playTime / 1000 / 60).toFixed(2),
-    isNewGame: state.isNewGame,
-  });
-
   const gameState: GameState = buildGameState(state);
-
-  // Log cooldown state before saving
-  logger.log("[AUTOSAVE] Current cooldown state:", {
-    cooldowns: state.cooldowns,
-    cooldownDurations: state.cooldownDurations,
-    cooldownDetails: Object.keys(state.cooldowns || {}).map((key) => ({
-      action: key,
-      remaining: state.cooldowns[key],
-      duration: state.cooldownDurations?.[key],
-    })),
-  });
-
-  logger.log("[AUTOSAVE] 📊 State playTime values:", {
-    statePlayTime: state.playTime,
-    gameStatePlayTime: gameState.playTime,
-    isNewGame: state.isNewGame,
-    playTimeToSave: state.isNewGame ? 0 : state.playTime,
-    playTimeMatch: state.playTime === gameState.playTime,
-  });
-
-  // Log fellowship state before saving to help debug cloud save issues
-  const currentState = useGameStore.getState(); // Re-fetch state to ensure it's the latest
-  logger.log(`[AUTOSAVE] 📊 Calling saveGame with:`, {
-      playTimeToSave: state.isNewGame ? 0 : state.playTime,
-      gameStateHasPlayTime: 'playTime' in gameState,
-      hasFellowship: 'fellowship' in currentState,
-      fellowship: currentState.fellowship,
-      fellowshipKeys: currentState.fellowship ? Object.keys(currentState.fellowship) : [],
-    });
 
   try {
     // If this is a new game, save playTime as the current session time only
     // Otherwise, save the accumulated playTime
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
-
-    // This log is now redundant with the one above
-    // logger.log("[AUTOSAVE] 📊 Calling saveGame with:", {
-    //   playTimeToSave,
-    //   gameStateHasPlayTime: 'playTime' in gameState,
-    // });
 
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();

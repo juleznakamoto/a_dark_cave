@@ -770,11 +770,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       // CRITICAL: Extract playTime FIRST before any processing
       const loadedPlayTime = savedState.playTime !== undefined ? savedState.playTime : 0;
 
-      logger.log('[STATE] 📊 Setting Zustand state with playTime:', {
-        loadedPlayTime,
-        savedStatePlayTime: savedState.playTime,
-      });
-
       const loadedState = {
         ...savedState,
         activeTab: "cave",
@@ -812,11 +807,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       };
 
       set(loadedState);
-
-      logger.log('[STATE] 📊 Zustand state after set:', {
-        statePlayTime: get().playTime,
-        loadedStatePlayTime: loadedState.playTime,
-      });
       StateManager.scheduleEffectsUpdate(get);
     } else {
       const newGameState = {
@@ -1036,13 +1026,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       currentLogEntry || undefined,
     );
 
-    console.log('[STATE] applyEventChoice returned changes:', {
-      hasChanges: !!changes,
-      changeKeys: Object.keys(changes),
-      hasFellowship: 'fellowship' in changes,
-      fellowship: changes.fellowship,
-    });
-
     let combatData = null;
     let logMessage = null;
     const updatedChanges = { ...changes };
@@ -1061,25 +1044,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
-      console.log('[STATE] About to apply changes:', {
-        updatedChanges,
-        hasFellowship: 'fellowship' in updatedChanges,
-        fellowshipValue: updatedChanges.fellowship,
-      });
-
       set((prevState) => {
-        console.log('[STATE] Inside set - prevState:', {
-          prevFellowship: prevState.fellowship,
-        });
-
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
-
-        console.log('[STATE] After mergeStateUpdates:', {
-          hasFellowship: 'fellowship' in mergedUpdates,
-          fellowship: mergedUpdates.fellowship,
-          fellowshipKeys: Object.keys(mergedUpdates.fellowship || {}),
-        });
 
         return {
           ...prevState,
