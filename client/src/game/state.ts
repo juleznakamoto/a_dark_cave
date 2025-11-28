@@ -1048,10 +1048,21 @@ export const useGameStore = create<GameStore>((set, get) => ({
         // Use the same mergeStateUpdates function that other actions use
         const mergedUpdates = mergeStateUpdates(prevState, updatedChanges);
 
-        return {
+        const newState = {
           ...prevState,
           ...mergedUpdates,
         };
+
+        // Log blessings after state update
+        logger.log('[STATE] After applying event choice:', {
+          eventId,
+          choiceId,
+          blessingsInChanges: updatedChanges.blessings,
+          blessingsAfterMerge: newState.blessings,
+          hasBlessingsInChanges: !!updatedChanges.blessings,
+        });
+
+        return newState;
       });
 
       StateManager.schedulePopulationUpdate(get);

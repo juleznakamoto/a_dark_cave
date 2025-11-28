@@ -1364,7 +1364,7 @@ export const choiceEvents: Record<string, GameEvent> = {
             return {};
           }
 
-          return {
+          const result = {
             resources: {
               ...state.resources,
               food: Math.max(0, state.resources.food - 2500),
@@ -1383,6 +1383,14 @@ export const choiceEvents: Record<string, GameEvent> = {
             _logMessage:
               "The master archer takes the payment and begins training your hunters immediately.",
           };
+
+          console.log('[MASTER ARCHER] Effect returning:', {
+            currentBlessings: state.blessings,
+            resultBlessings: result.blessings,
+            hasSharpAim: result.blessings.sharp_aim,
+          });
+
+          return result;
         },
       },
       {
