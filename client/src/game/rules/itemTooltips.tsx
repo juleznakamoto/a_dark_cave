@@ -1,10 +1,14 @@
-
-import { weaponEffects, toolEffects, clothingEffects, bookEffects } from "./effects";
+import {
+  weaponEffects,
+  toolEffects,
+  clothingEffects,
+  bookEffects,
+} from "./effects";
 import { capitalizeWords } from "@/lib/utils";
 
 export function renderItemTooltip(
   itemId: string,
-  itemType: "weapon" | "tool" | "blessing" | "book"
+  itemType: "weapon" | "tool" | "blessing" | "book",
 ) {
   const effect =
     itemType === "weapon"
@@ -21,9 +25,7 @@ export function renderItemTooltip(
     <div className="text-xs">
       {effect.name && <div className="font-bold mb-1">{effect.name}</div>}
       {effect.description && (
-        <div className="text-gray-400 mb-1">
-          {effect.description}
-        </div>
+        <div className="text-gray-400 mb-1">{effect.description}</div>
       )}
       {effect.bonuses?.generalBonuses && (
         <div className="mt-1 space-y-0.5">
@@ -33,24 +35,7 @@ export function renderItemTooltip(
           {effect.bonuses.generalBonuses.strength && (
             <div>+{effect.bonuses.generalBonuses.strength} Strength</div>
           )}
-          {effect.bonuses.generalBonuses.gatheringSpeed && (
-            <div>
-              +
-              {Math.round(
-                (effect.bonuses.generalBonuses.gatheringSpeed - 1) * 100
-              )}
-              % Gathering Speed
-            </div>
-          )}
-          {effect.bonuses.generalBonuses.craftingSpeed && (
-            <div>
-              +
-              {Math.round(
-                (effect.bonuses.generalBonuses.craftingSpeed - 1) * 100
-              )}
-              % Crafting Speed
-            </div>
-          )}
+
           {effect.bonuses.generalBonuses.explorationBonus && (
             <div>
               +{effect.bonuses.generalBonuses.explorationBonus} Exploration
@@ -67,14 +52,12 @@ export function renderItemTooltip(
             </div>
           )}
           {effect.bonuses.generalBonuses.madnessReduction && (
-            <div>
-              -{effect.bonuses.generalBonuses.madnessReduction} Madness
-            </div>
+            <div>-{effect.bonuses.generalBonuses.madnessReduction} Madness</div>
           )}
           {effect.bonuses.generalBonuses.craftingCostReduction && (
             <div>
               {Math.floor(
-                effect.bonuses.generalBonuses.craftingCostReduction * 100
+                effect.bonuses.generalBonuses.craftingCostReduction * 100,
               )}
               % Craft Discount
             </div>
@@ -82,7 +65,7 @@ export function renderItemTooltip(
           {effect.bonuses.generalBonuses.buildingCostReduction && (
             <div>
               {Math.floor(
-                effect.bonuses.generalBonuses.buildingCostReduction * 100
+                effect.bonuses.generalBonuses.buildingCostReduction * 100,
               )}
               % Build Discount
             </div>
@@ -93,7 +76,7 @@ export function renderItemTooltip(
                 +
                 {Math.round(
                   (effect.bonuses.generalBonuses.caveExploreMultiplier - 1) *
-                    100
+                    100,
                 )}
                 % Cave Explore Bonus
               </div>
@@ -117,10 +100,10 @@ export function renderItemTooltip(
                       {capitalizeWords(actionId)}: +{amount}{" "}
                       {capitalizeWords(resource)}
                     </div>
-                  )
+                  ),
                 )}
             </div>
-          )
+          ),
         )}
     </div>
   );

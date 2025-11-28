@@ -29,8 +29,6 @@ export interface EffectDefinition {
 
     // General bonuses
     generalBonuses?: {
-      gatheringSpeed?: number; // Multiplier for all gathering actions
-      craftingSpeed?: number; // Multiplier for crafting actions
       explorationBonus?: number; // Bonus resources when exploring
       luck?: number; // Luck bonus
       strength?: number; // Strength bonus
@@ -244,7 +242,7 @@ export const toolEffects: Record<string, EffectDefinition> = {
     bonuses: {
       actionBonuses: {
         mining: {
-          resourceMultiplier: 1.50,
+          resourceMultiplier: 1.5,
           cooldownReduction: 2,
         },
       },
@@ -982,14 +980,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch: {
     id: "flames_touch",
     name: "Flame's Touch",
-    description: "The foundry's fire burns hotter",
+    description: "Crafting Skills are improved",
     bonuses: {
-      actionBonuses: {
-        steelForger: {
-          resourceBonus: {
-            steel: 1,
-          },
-        },
+      generalBonuses: {
+        craftingCostReduction: 0.05,
       },
     },
   },
@@ -1046,14 +1040,10 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   flames_touch_enhanced: {
     id: "flames_touch_enhanced",
     name: "Strong Flame's Touch",
-    description: "The foundry's fire burns hotter than ever",
+    description: "Crafting Skills are vastly improved",
     bonuses: {
-      actionBonuses: {
-        steelForger: {
-          resourceBonus: {
-            steel: 3,
-          },
-        },
+      generalBonuses: {
+        craftingCostReduction: 0.15,
       },
     },
   },
@@ -1096,7 +1086,8 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_ascension: {
     id: "book_of_ascension",
     name: "Book of Ascension",
-    description: "Book on ascending the self. Grants the ability to improve at tasks through practice.",
+    description:
+      "Book on ascending the self. Grants the ability to improve at tasks through practice.",
     bonuses: {
       generalBonuses: {},
       actionBonuses: {},
@@ -1105,7 +1096,8 @@ export const bookEffects: Record<string, EffectDefinition> = {
   book_of_war: {
     id: "book_of_war",
     name: "Book of War",
-    description: "Book with military wisdom from a long vanished eastern kingdom. Grants knowledge about the outcome of events.",
+    description:
+      "Book with military wisdom from a long vanished eastern kingdom. Grants knowledge about the outcome of events.",
     bonuses: {
       generalBonuses: {},
       actionBonuses: {},
