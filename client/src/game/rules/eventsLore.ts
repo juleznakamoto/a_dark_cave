@@ -336,4 +336,151 @@ export const loreEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  restlessKnightDesert: {
+    id: "restlessKnightDesert",
+    condition: (state: GameState) =>
+      state.buildings.bastion >= 1 &&
+      state.story.seen.restlessKnightCoast &&
+      !state.story.seen.restlessKnightDesert,
+    triggerType: "resource",
+    timeProbability: (state: GameState) =>
+      state.story.seen.restlessKnightDesertFailed ? 60 : 30,
+    title: "The Knight's Final Journey",
+    message:
+      "The knight returns one last time, his armor weathered and scarred. 'I traveled far south to a vast desert,' he begins without prompting. 'There I met a man dedicated to recovering the lost technology of the ancients. He showed me wonders - devices embedded within the body itself, enhancing strength and senses beyond natural limits. The ancients were not merely human.' He pauses, studying your settlement. 'I have traveled enough. Your bastion could use a veteran blade. I offer my service in combat, if you will have me.'",
+    triggered: false,
+    priority: 3,
+    repeatable: false,
+    choices: [
+      {
+        id: "payGold",
+        label: "Pay 250 Gold",
+        cost: "250 gold",
+        effect: (state: GameState) => {
+          if (state.resources.gold < 250) {
+            return {
+              _logMessage: "You don't have enough gold.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              gold: state.resources.gold - 250,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                restlessKnightDesert: true,
+              },
+            },
+            fellowship: {
+              ...state.fellowship,
+              restless_knight: true,
+            },
+            _logMessage:
+              "The knight nods with satisfaction. 'A fair price. I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+          };
+        },
+      },
+      {
+        id: "paySilver",
+        label: "Pay 1000 Silver",
+        cost: "1000 silver",
+        effect: (state: GameState) => {
+          if (state.resources.silver < 1000) {
+            return {
+              _logMessage: "You don't have enough silver.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              silver: state.resources.silver - 1000,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                restlessKnightDesert: true,
+              },
+            },
+            fellowship: {
+              ...state.fellowship,
+              restless_knight: true,
+            },
+            _logMessage:
+              "The knight accepts the silver with a solemn bow. 'I shall defend your people with my life.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+          };
+        },
+      },
+      {
+        id: "convince",
+        label: "Convince him",
+        relevant_stats: ["knowledge"],
+        success_chance: (state: GameState) => {
+          return calculateSuccessChance(state, 0.15, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
+        },
+        effect: (state: GameState) => {
+          const successChance = calculateSuccessChance(state, 0.15, {
+            type: "knowledge",
+            multiplier: 0.01,
+          });
+
+          if (Math.random() < successChance) {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  restlessKnightDesert: true,
+                },
+              },
+              fellowship: {
+                ...state.fellowship,
+                restless_knight: true,
+              },
+              _logMessage:
+                "You speak of shared purpose and the value of knowledge over coin. The knight's eyes brighten. 'You understand what I have seen. I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+            };
+          } else {
+            return {
+              story: {
+                ...state.story,
+                seen: {
+                  ...state.story.seen,
+                  restlessKnightDesertFailed: true,
+                },
+              },
+              _logMessage:
+                "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey.' He departs, leaving you to wonder if he will return.",
+            };
+          }
+        },
+      },
+      {
+        id: "refuse",
+        label: "Refuse",
+        effect: (state: GameState) => {
+          return {
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                restlessKnightDesert: true,
+              },
+            },
+            _logMessage:
+              "You decline his offer. The knight nods with understanding. 'I respect your decision. May your bastion stand strong.' He turns and walks toward the horizon, perhaps seeking another place to call home.",
+          };
+        },
+      },
+    ],
+  },
 };

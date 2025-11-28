@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
+import { fellowshipEffects } from "@/game/rules/effects";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -342,6 +343,63 @@ export default function EstatePanel() {
             </div>
           </div>
         </div>
+
+        {/* Fellowship Section */}
+        {Object.keys(state.fellowship || {}).some(
+          (fellowId) => state.fellowship[fellowId],
+        ) && (
+          <div className="space-y-2 pt-1">
+            <h3 className="text-xs font-bold text-foreground">Fellowship</h3>
+            <div className="space-y-1">
+              {Object.entries(state.fellowship || {})
+                .filter(([_, owned]) => owned)
+                .map(([fellowId]) => {
+                  const effect = fellowshipEffects[fellowId];
+                  if (!effect) return null;
+
+                  return (
+                    <TooltipProvider key={fellowId}>
+                      <Tooltip
+                        open={cubeTooltip.isTooltipOpen(`fellowship-${fellowId}`)}
+                      >
+                        <TooltipTrigger asChild>
+                          <div
+                            onClick={(e) => {
+                              cubeTooltip.handleTooltipClick(
+                                `fellowship-${fellowId}`,
+                                e,
+                              );
+                            }}
+                            className="text-xs px-2 py-1 bg-neutral-900 border border-neutral-800 rounded cursor-pointer hover:bg-neutral-800 hover:border-neutral-500 transition-all"
+                          >
+                            {effect.name}
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          <div className="text-xs space-y-1">
+                            <div className="font-bold">{effect.name}</div>
+                            <div className="text-muted-foreground">
+                              {effect.description}
+                            </div>
+                            {effect.bonuses.generalBonuses && (
+                              <div className="border-t border-border mt-1 pt-1">
+                                {effect.bonuses.generalBonuses.strength && (
+                                  <div>
+                                    +{effect.bonuses.generalBonuses.strength}{" "}
+                                    Strength
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                          </div>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  );
+                })}
+            </div>
+          </div>
+        )}
 
         {/* Cube Section */}
         <div className="space-y-2 pt-1">

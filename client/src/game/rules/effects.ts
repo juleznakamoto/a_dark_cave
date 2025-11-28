@@ -1104,3 +1104,17 @@ export const bookEffects: Record<string, EffectDefinition> = {
     },
   },
 };
+
+export const fellowshipEffects: Record<string, EffectDefinition> = {
+  restless_knight: {
+    id: "restless_knight",
+    name: "Restless Knight",
+    description:
+      "A weathered veteran who has seen the remnants of the old world. Grants Crushing Strike ability in combat - deals 25 damage and stuns the enemy for 1 round (once per battle).",
+    bonuses: {
+      generalBonuses: {
+        strength: 8,
+      },
+    },
+  },
+};

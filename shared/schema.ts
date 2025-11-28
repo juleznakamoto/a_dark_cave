@@ -168,6 +168,13 @@ export const gameStateSchema = z.object({
       frostglass: z.boolean().default(false),
     })
     .default({}),
+  books: z
+    .object({
+      book_of_ascension: z.boolean().default(false),
+      book_of_war: z.boolean().default(false),
+    })
+    .default({}),
+  fellowship: z.record(z.string(), z.boolean()).default({}),
   blessings: z
     .object({
       dagons_gift: z.boolean().default(false),

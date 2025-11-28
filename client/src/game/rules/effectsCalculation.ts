@@ -4,6 +4,7 @@ import {
   weaponEffects,
   clothingEffects,
   bookEffects,
+  fellowshipEffects,
   ItemEffect,
   ActionBonuses,
 } from "./effects";
@@ -171,8 +172,8 @@ export const getDisplayTools = (state: GameState): Record<string, boolean> => {
 };
 
 // Helper function to get all active effects for a given state (modified to only use best tools)
-export const getActiveEffects = (state: GameState): EffectDefinition[] => {
-  const activeEffects: EffectDefinition[] = [];
+export const getActiveEffects = (state: GameState): ItemEffect[] => {
+  const activeEffects: ItemEffect[] = [];
 
   // Check clothing effects
   Object.entries(state.clothing || {}).forEach(([key, value]) => {
@@ -213,6 +214,13 @@ export const getActiveEffects = (state: GameState): EffectDefinition[] => {
   Object.keys(state.books || {}).forEach((bookKey) => {
     if (bookEffects[bookKey]) {
       activeEffects.push(bookEffects[bookKey]);
+    }
+  });
+
+  // Fellowship
+  Object.keys(state.fellowship || {}).forEach((fellowId) => {
+    if (fellowshipEffects[fellowId]) {
+      activeEffects.push(fellowshipEffects[fellowId]);
     }
   });
 
@@ -735,6 +743,88 @@ export const calculateTotalEffects = (state: GameState) => {
     effects.resource_multiplier.mine =
       (effects.resource_multiplier.mine || 1) * 2; // +100% mine resources
   }
+
+  // Fellowship effects
+  Object.keys(state.fellowship || {}).forEach((fellowId) => {
+    if (fellowshipEffects[fellowId]) {
+      const effect = fellowshipEffects[fellowId];
+      // Process madness bonuses from general bonuses (items that ADD madness)
+      if (effect.bonuses.generalBonuses?.madness) {
+        effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
+      }
+
+      // Process madness reduction from general bonuses (items that REDUCE madness)
+      if (effect.bonuses.generalBonuses?.madnessReduction) {
+        const effectKey = `${fellowId}_madness_reduction`;
+        effects.madness_reduction[effectKey] =
+          -effect.bonuses.generalBonuses.madnessReduction;
+      }
+
+      // Populate actionBonuses directly from effects
+      if (effect.bonuses.actionBonuses) {
+        effects.actionBonuses[fellowId] = effect.bonuses.actionBonuses;
+      }
+
+      if (effect.bonuses.actionBonuses) {
+        Object.entries(effect.bonuses.actionBonuses).forEach(
+          ([actionId, actionBonus]) => {
+            // Resource bonuses
+            if (actionBonus.resourceBonus) {
+              Object.entries(actionBonus.resourceBonus).forEach(
+                ([resource, bonus]) => {
+                  const key = `${actionId}_${resource}`;
+                  effects.resource_bonus[key] =
+                    (effects.resource_bonus[key] || 0) + bonus;
+                },
+              );
+            }
+
+            // Resource multipliers (additive)
+            if (
+              actionBonus.resourceMultiplier &&
+              actionBonus.resourceMultiplier !== 1
+            ) {
+              effects.resource_multiplier[actionId] =
+                (effects.resource_multiplier[actionId] || 1) +
+                (actionBonus.resourceMultiplier - 1);
+            }
+
+            // Probability bonuses
+            if (actionBonus.probabilityBonus) {
+              Object.entries(actionBonus.probabilityBonus).forEach(
+                ([resource, bonus]) => {
+                  const key = `${actionId}_${resource}`;
+                  effects.probability_bonus[key] =
+                    (effects.probability_bonus[key] || 0) + bonus;
+                },
+              );
+            }
+
+            // Cooldown reductions
+            if (actionBonus.cooldownReduction) {
+              effects.cooldown_reduction[actionId] =
+                (effects.cooldown_reduction[actionId] || 0) +
+                actionBonus.cooldownReduction;
+            }
+          },
+        );
+      }
+
+      // Process general bonuses
+      if (effect.bonuses.generalBonuses) {
+        if (effect.bonuses.generalBonuses.strength) {
+          effects.statBonuses.strength += effect.bonuses.generalBonuses.strength;
+        }
+        if (effect.bonuses.generalBonuses.luck) {
+          effects.statBonuses.luck += effect.bonuses.generalBonuses.luck;
+        }
+        if (effect.bonuses.generalBonuses.knowledge) {
+          effects.statBonuses.knowledge +=
+            effect.bonuses.generalBonuses.knowledge;
+        }
+      }
+    }
+  });
 
   return effects;
 };
