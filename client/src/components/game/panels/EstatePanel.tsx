@@ -277,7 +277,7 @@ export default function EstatePanel() {
           </div>
 
           {/* Sleep Intensity Upgrade */}
-          <div className="space-y-1">
+          <div className="space-y-0">
             <div className="flex items-center justify-between">
               <span className="text-xs font-medium text-foreground">
                 Sleep Intensity
