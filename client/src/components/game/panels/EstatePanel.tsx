@@ -213,7 +213,7 @@ export default function EstatePanel() {
           {/* Sleep Length Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground">
+              <span className="pb-1 text-xs font-medium text-foreground">
                 Sleep Length
               </span>
               {sleepUpgrades.lengthLevel < 5 ? (
@@ -279,7 +279,7 @@ export default function EstatePanel() {
           {/* Sleep Intensity Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-medium text-foreground">
+              <span className="pb-1 text-xs font-medium text-foreground">
                 Sleep Intensity
               </span>
               {sleepUpgrades.intensityLevel < 5 ? (
