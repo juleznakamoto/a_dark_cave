@@ -1092,9 +1092,10 @@ export default function AdminDashboard() {
   const getCubeEventsOverPlaytime = () => {
     logger.log('🔍 Getting cube events over playtime');
 
-    // Aggregate cube events by playtime buckets (1-hour intervals)
-    const playtimeBuckets = new Map<number, Set<string>>();
+    // Track which cube events each user has seen at each playtime bucket
+    const playtimeBuckets = new Map<number, Map<number, Set<string>>>();
     let maxBucket = 0;
+    let maxCubeEvent = 0;
 
     gameSaves.forEach(save => {
       const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
@@ -1102,29 +1103,44 @@ export default function AdminDashboard() {
       maxBucket = Math.max(maxBucket, bucket);
 
       if (!playtimeBuckets.has(bucket)) {
-        playtimeBuckets.set(bucket, new Set());
+        playtimeBuckets.set(bucket, new Map());
       }
 
-      // Count unique cube events seen by this player
+      const bucketData = playtimeBuckets.get(bucket)!;
       const events = save.game_state?.events || {};
+
+      // Check each cube event
       Object.keys(events).forEach(eventKey => {
         if (eventKey.startsWith('cube') && events[eventKey] === true) {
-          playtimeBuckets.get(bucket)!.add(save.user_id);
+          const cubeNum = getCubeEventNumber(eventKey);
+          if (cubeNum !== null) {
+            maxCubeEvent = Math.max(maxCubeEvent, cubeNum);
+            if (!bucketData.has(cubeNum)) {
+              bucketData.set(cubeNum, new Set());
+            }
+            bucketData.get(cubeNum)!.add(save.user_id);
+          }
         }
       });
     });
 
-    // Create array with all buckets
-    const result: Array<{ time: string; players: number }> = [];
+    // Create array with all buckets and cube events
+    const result: Array<{ time: string; [key: string]: any }> = [];
     for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
       const hours = bucket / 60;
-      result.push({
+      const dataPoint: { time: string; [key: string]: any } = {
         time: hours === 0 ? '0h' : `${hours}h`,
-        players: playtimeBuckets.get(bucket)?.size || 0,
-      });
+      };
+
+      const bucketData = playtimeBuckets.get(bucket);
+      for (let cubeNum = 1; cubeNum <= maxCubeEvent; cubeNum++) {
+        dataPoint[`Cube ${cubeNum}`] = bucketData?.get(cubeNum)?.size || 0;
+      }
+
+      result.push(dataPoint);
     }
 
-    logger.log('📊 Cube events over playtime:', result.length, 'buckets');
+    logger.log('📊 Cube events over playtime:', result.length, 'buckets', maxCubeEvent, 'cube events');
     return result;
   };
 
@@ -2238,7 +2254,7 @@ export default function AdminDashboard() {
             <Card>
               <CardHeader>
                 <CardTitle>Cube Events Over Playtime</CardTitle>
-                <CardDescription>Number of players who have seen cube events at each playtime</CardDescription>
+                <CardDescription>Number of players who have seen each cube event at each playtime</CardDescription>
               </CardHeader>
               <CardContent>
                 <ResponsiveContainer width="100%" height={400}>
@@ -2248,7 +2264,24 @@ export default function AdminDashboard() {
                     <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
-                    <Line type="monotone" dataKey="players" stroke="#8884d8" strokeWidth={2} dot={{ r: 4 }} />
+                    {(() => {
+                      const chartData = getCubeEventsOverPlaytime();
+                      if (chartData.length === 0) return null;
+                      
+                      // Get all cube event keys from the first data point
+                      const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
+                      
+                      return cubeKeys.map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                        />
+                      ));
+                    })()}
                   </LineChart>
                 </ResponsiveContainer>
               </CardContent>
