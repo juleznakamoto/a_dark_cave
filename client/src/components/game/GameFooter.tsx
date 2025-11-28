@@ -7,7 +7,6 @@ import AuthDialog from "./AuthDialog";
 import { useToast } from "@/hooks/use-toast";
 import { ShopDialog } from "./ShopDialog";
 import { audioManager } from "@/lib/audio";
-import SocialMediaRewards from "./SocialMediaRewards";
 import {
   Tooltip,
   TooltipContent,
@@ -290,7 +289,7 @@ export default function GameFooter() {
               </div>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <SocialMediaRewards />
+            {/* SocialMediaRewards component removed as it's no longer needed */}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
