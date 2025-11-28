@@ -314,7 +314,7 @@ export default function ProfileMenu() {
                     <img
                       src={platform.icon}
                       alt={platform.name}
-                      className="w-3 h-3 opacity-90"
+                      className="w-3 h-3 opacity-90 hover:bg-red"
                     />
                   </div>
                   <div className="flex items-center gap-2">
