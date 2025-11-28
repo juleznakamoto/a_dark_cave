@@ -68,8 +68,6 @@ export default function GameFooter() {
   }, [isPaused]);
 
   useEffect(() => {
-    checkAuth();
-
     // Check if there's a referral code in URL
     const params = new URLSearchParams(window.location.search);
     const hasReferralCode = params.has("ref");
@@ -78,28 +76,12 @@ export default function GameFooter() {
     if (hasReferralCode && !currentUser) {
       setAuthNotificationSeen(false);
     }
-  }, []);
+  }, [currentUser]);
 
-  const checkAuth = async () => {
-    const user = await getCurrentUser();
-    setCurrentUser(user);
-    setIsUserSignedIn(!!user);
-
-    // Check if there's a referral code in URL after we know the auth state
-    const params = new URLSearchParams(window.location.search);
-    const hasReferralCode = params.has("ref");
-
-    // If there's a referral code and user is not signed in, activate the notification
-    if (hasReferralCode && !user) {
-      setAuthNotificationSeen(false);
-      useGameStore.setState({ authNotificationVisible: true });
-    }
-  };
-
-  const handleSetAuthDialogOpen = (isOpen: boolean) => {
-    setAuthDialogOpen(isOpen);
-    setGameAuthDialogOpen(isOpen);
-    if (isOpen) {
+  const handleSetAuthDialogOpen = (open: boolean) => {
+    setAuthDialogOpen(open);
+    setGameAuthDialogOpen(open);
+    if (open) {
       setAccountDropdownOpen(false);
     }
   };
