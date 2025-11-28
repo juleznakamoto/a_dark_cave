@@ -67,11 +67,11 @@ export default function CavePanel() {
         {
           actions: [
             { id: "craftTorch", label: "Torch" },
-            { id: "craftTorches", label: "2 Torches" },
-            { id: "craftTorches3", label: "3 Torches" },
-            { id: "craftTorches4", label: "4 Torches" },
-            { id: "craftTorches5", label: "5 Torches" },
-            { id: "craftTorches10", label: "10 Torches" },
+            { id: "craftTorches", label: "Torches" },
+            { id: "craftTorches3", label: "Torches" },
+            { id: "craftTorches4", label: "Torches" },
+            { id: "craftTorches5", label: "Torches" },
+            { id: "craftTorches10", label: "Torches" },
             { id: "craftBoneTotem", label: "Bone Totem" },
             { id: "craftBoneTotems2", label: "2 Bone Totems" },
             { id: "craftBoneTotems3", label: "3 Bone Totems" },
