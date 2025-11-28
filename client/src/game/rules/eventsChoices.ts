@@ -1347,7 +1347,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
     triggerType: "resource",
-    timeProbability: 20,
+    timeProbability: 0.020,
     title: "The Master Archer",
     message:
       "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
