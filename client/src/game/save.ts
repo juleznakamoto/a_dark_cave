@@ -285,6 +285,11 @@ export async function saveGame(
 
         logger.log("[SAVE] ☁️ Starting cloud save...", {
           diffSize: Object.keys(stateDiff).length,
+          diffKeys: Object.keys(stateDiff),
+          hasFellowship: 'fellowship' in stateDiff,
+          fellowshipValue: stateDiff.fellowship,
+          lastCloudFellowship: lastCloudState?.fellowship,
+          currentFellowship: sanitizedState.fellowship,
           playTime: gameState.playTime,
           playTimeMinutes: gameState.playTime ? (gameState.playTime / 1000 / 60).toFixed(2) : 0,
         });
