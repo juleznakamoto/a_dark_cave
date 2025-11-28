@@ -200,11 +200,11 @@ export default function BastionPanel() {
       <AttackWavesChart />
 
       {/* Combat Skills Section - only show if restless knight is unlocked */}
-      {HAS_RESTLESS_KNIGHT && (
+      {/* {HAS_RESTLESS_KNIGHT && (
         <div className="w-64 space-y-3 pt-2">
           <h3 className="text-xs font-bold text-foreground">Combat Skills</h3>
           
-          {/* Crushing Strike Upgrade */}
+          {/* Crushing Strike Upgrade *\/}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="pb-1 text-xs font-medium text-foreground">
@@ -275,7 +275,7 @@ export default function BastionPanel() {
             </div>
           </div>
         </div>
-      )}
+      )} */}
 
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
