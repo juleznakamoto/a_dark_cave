@@ -48,6 +48,7 @@ export default function ProfileMenu() {
     referralCount,
     updateResource,
     addLogEntry,
+    social_media_rewards,
   } = useGameStore();
   
   const mobileTooltip = useMobileTooltip();
@@ -273,7 +274,7 @@ export default function ProfileMenu() {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           {SOCIAL_PLATFORMS.map((platform) => {
-            const isClaimed = useGameStore((state) => state.social_media_rewards[platform.id]?.claimed ?? false);
+            const isClaimed = social_media_rewards[platform.id]?.claimed ?? false;
             const isActive = !isClaimed && !!currentUser;
 
             return (
