@@ -1,5 +1,4 @@
 import { Action, GameState } from "@shared/schema";
-import { logger } from "@/lib/logger";
 import { ActionResult } from '@/game/actions';
 import { applyActionEffects } from "./index";
 
@@ -24,7 +23,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches: {
     id: "craftTorches",
-    label: "2 Torches",
+    label: "Torches",
     show_when: {
       "tools.stone_axe": true,
       "tools.iron_axe": false,
@@ -41,7 +40,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches3: {
     id: "craftTorches3",
-    label: "3 Torches",
+    label: "Torches",
     show_when: {
       "tools.iron_axe": true,
       "tools.steel_axe": false,
@@ -58,7 +57,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches4: {
     id: "craftTorches4",
-    label: "4 Torches",
+    label: "Torches",
     show_when: {
       "tools.steel_axe": true,
       "tools.obsidian_axe": false,
@@ -75,7 +74,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches5: {
     id: "craftTorches5",
-    label: "5 Torches",
+    label: "Torches",
     show_when: {
       "tools.obsidian_axe": true,
       "tools.adamant_axe": false,
@@ -92,7 +91,7 @@ export const caveCraftTools: Record<string, Action> = {
 
   craftTorches10: {
     id: "craftTorches10",
-    label: "10 Torches",
+    label: "Torches",
     show_when: {
       "tools.adamant_axe": true,
     },
