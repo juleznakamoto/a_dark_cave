@@ -1097,7 +1097,7 @@ export default function AdminDashboard() {
     let maxBucket = 0;
 
     gameSaves.forEach(save => {
-      const playTimeMinutes = save.playTime ? Math.round(save.playTime / 1000 / 60) : 0;
+      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
       const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
       maxBucket = Math.max(maxBucket, bucket);
 
