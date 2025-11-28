@@ -41,7 +41,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -146,7 +146,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -174,7 +174,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -203,7 +203,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -238,7 +238,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -265,7 +265,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -293,7 +293,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({
@@ -322,7 +322,7 @@ export const storyEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => ({

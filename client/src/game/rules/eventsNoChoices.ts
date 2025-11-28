@@ -24,7 +24,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     priority: 4,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: true,
     effect: (state: GameState) => {
@@ -107,7 +107,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: false,
     effect: (state: GameState) => ({
@@ -137,7 +137,7 @@ export const noChoiceEvents: Record<string, GameEvent> = {
     priority: 5,
     visualEffect: {
       type: "glow",
-      duration: 2,
+      duration: 3,
     },
     repeatable: false,
     effect: (state: GameState) => ({

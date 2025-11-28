@@ -10,7 +10,9 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.woodenHut || 0;
       const totalPopulation = count * 2;
-      return count > 0 ? [`+${totalPopulation} Max Population`] : ["+2 Max Population"];
+      return count > 0
+        ? [`+${totalPopulation} Max Population`]
+        : ["+2 Max Population"];
     },
     building: true,
     show_when: {
@@ -203,7 +205,11 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepeningPit",
     label: "Deepening Pit",
     description: "Deeper pit reaching further earth resources",
-    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners"],
+    tooltipEffects: [
+      "Unlocks Iron Miners",
+      "Unlocks Coal Miners",
+      "Unlocks Sulfur Miners",
+    ],
     building: true,
     show_when: {
       1: {
@@ -231,7 +237,12 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildDeepPit",
     label: "Deep Pit",
     description: "Very deep pit exposing valuable mineral veins",
-    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners", "Unlocks Obsidian Miners"],
+    tooltipEffects: [
+      "Unlocks Iron Miners",
+      "Unlocks Coal Miners",
+      "Unlocks Sulfur Miners",
+      "Unlocks Obsidian Miners",
+    ],
     building: true,
     show_when: {
       1: {
@@ -259,7 +270,14 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildBottomlessPit",
     label: "Bottomless Pit",
     description: "Extremely deep pit reaching the rarest materials",
-    tooltipEffects: ["Unlocks Iron Miners", "Unlocks Coal Miners", "Unlocks Sulfur Miners", "Unlocks Obsidian Miners", "Unlocks Adamant Miners", "Unlocks Moonstone Miners"],
+    tooltipEffects: [
+      "Unlocks Iron Miners",
+      "Unlocks Coal Miners",
+      "Unlocks Sulfur Miners",
+      "Unlocks Obsidian Miners",
+      "Unlocks Adamant Miners",
+      "Unlocks Moonstone Miners",
+    ],
     building: true,
     show_when: {
       1: {
@@ -348,7 +366,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildMasterworkFoundry",
     label: "Masterwork Foundry",
     description: "Masterwork foundry with superior steel production",
-    tooltipEffects: ["Unlocks Steel Forgers","+2 Steel (Steel Forger)"],
+    tooltipEffects: ["Unlocks Steel Forgers", "+2 Steel (Steel Forger)"],
     building: true,
     show_when: {
       1: {
@@ -1014,7 +1032,9 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.stoneHut || 0;
       const totalPopulation = count * 4;
-      return count > 0 ? [`+${totalPopulation} Max Population`] : ["+4 Max Population"];
+      return count > 0
+        ? [`+${totalPopulation} Max Population`]
+        : ["+4 Max Population"];
     },
     building: true,
     show_when: {
@@ -1182,7 +1202,9 @@ export const villageBuildActions: Record<string, Action> = {
     tooltipEffects: (state: GameState) => {
       const count = state.buildings.longhouse || 0;
       const totalPopulation = count * 8;
-      return count > 0 ? [`+${totalPopulation} Max Population (${count} longhouses)`] : ["+8 Max Population"];
+      return count > 0
+        ? [`+${totalPopulation} Max Population (${count} longhouses)`]
+        : ["+8 Max Population"];
     },
     building: true,
     show_when: {
@@ -1369,7 +1391,7 @@ export const villageBuildActions: Record<string, Action> = {
     },
     cooldown: 60,
   },
-  
+
   buildDarkEstate: {
     id: "buildDarkEstate",
     label: "Dark Estate",
@@ -1379,7 +1401,7 @@ export const villageBuildActions: Record<string, Action> = {
     show_when: {
       1: {
         "buildings.darkEstate": 0,
-        "story.seen.darkEstateUnlocked": true,
+        "buildings.woodenHut": 5,
       },
     },
     cost: {
@@ -1862,12 +1884,7 @@ export function handleBuildStoneHut(
   state: GameState,
   result: ActionResult,
 ): ActionResult {
-  return handleBuildingConstruction(
-    state,
-    result,
-    "buildStoneHut",
-    "stoneHut",
-  );
+  return handleBuildingConstruction(state, result, "buildStoneHut", "stoneHut");
 }
 
 export function handleBuildLonghouse(
