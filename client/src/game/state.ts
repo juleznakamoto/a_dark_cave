@@ -1068,6 +1068,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
           };
         }
 
+        // Ensure fellowship object is properly merged
+        if (updatedChanges.fellowship) {
+          newState.fellowship = {
+            ...prevState.fellowship,
+            ...updatedChanges.fellowship,
+          };
+        }
+
         return newState;
       });
 
