@@ -201,7 +201,7 @@ export default function CavePanel() {
           disabled={!canExecute}
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
-          tooltip={tooltipContent}
+          tooltip={actionId.startsWith("craftTorch") || actionId.startsWith("craftTorches") || actionId.startsWith("craftBoneTotem") || actionId.startsWith("craftLeatherTotem") || actionId.startsWith("craftEmberBomb") || actionId.startsWith("craftAshfireBomb") || actionId.startsWith("craftIronLantern") || actionId.startsWith("craftSteelLantern") || actionId.startsWith("craftObsidianLantern") || actionId.startsWith("craftAdamantLantern") ? getResourceGainTooltip(actionId, state) : tooltipContent}
         >
           {label}
         </CooldownButton>
