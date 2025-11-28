@@ -196,7 +196,7 @@ export default function ProfileMenu() {
               )}
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56 text-xs max-h-[400px] overflow-y-auto">
+        <DropdownMenuContent align="end" side="bottom" sideOffset={8} className="w-56 text-xs max-h-[80vh] overflow-y-auto">
           {currentUser ? (
             <>
               <DropdownMenuItem onClick={handleSignOut}>
