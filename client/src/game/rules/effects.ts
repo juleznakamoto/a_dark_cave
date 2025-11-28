@@ -1070,7 +1070,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
 
   forests_grace: {
     id: "forests_grace",
-    name: "The Forest's Grace",
+    name: "Forest's Grace",
     description: "The deers of the forest seem to notice you less",
     bonuses: {
       actionBonuses: {
