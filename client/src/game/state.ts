@@ -746,16 +746,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
   loadGame: async () => {
     const { loadGame: loadFromIDB } = await import('@/game/save');
-    const { getCurrentUser } = await import('@/game/auth');
     const savedState = await loadFromIDB();
-    const currentUser = await getCurrentUser();
 
     logger.log('[STATE] 📊 loadGame received state from save.ts:', {
       exists: !!savedState,
       playTime: savedState?.playTime,
       hasPlayTime: savedState ? 'playTime' in savedState : false,
       allTimeKeys: savedState ? Object.keys(savedState).filter(k => k.includes('play') || k.includes('time')) : [],
-      isSignedIn: !!currentUser,
     });
     
     // Notify game loop that we just loaded to skip auto-save for 30 seconds
@@ -774,15 +771,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
         savedStatePlayTime: savedState.playTime,
       });
 
-      // Clear cooldowns if playing unsigned to prevent stuck cooldowns
-      const cooldownsToUse = currentUser ? (savedState.cooldowns || {}) : {};
-      const cooldownDurationsToUse = currentUser ? (savedState.cooldownDurations || {}) : {};
-
       const loadedState = {
         ...savedState,
         activeTab: "cave",
-        cooldowns: cooldownsToUse,
-        cooldownDurations: cooldownDurationsToUse,
+        cooldowns: savedState.cooldowns || {},
+        cooldownDurations: savedState.cooldownDurations || {},
         attackWaveTimers: savedState.attackWaveTimers || {},
         log: savedState.log || [],
         events: savedState.events || defaultGameState.events,
@@ -819,7 +812,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       logger.log('[STATE] 📊 Zustand state after set:', {
         statePlayTime: get().playTime,
         loadedStatePlayTime: loadedState.playTime,
-        clearedCooldowns: !currentUser,
       });
       StateManager.scheduleEffectsUpdate(get);
     } else {
