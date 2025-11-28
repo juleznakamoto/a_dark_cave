@@ -161,6 +161,7 @@ const mergeStateUpdates = (
     clothing: { ...prevState.clothing, ...stateUpdates.clothing },
     relics: { ...prevState.relics, ...stateUpdates.relics },
     books: { ...prevState.books, ...stateUpdates.books },
+    fellowship: { ...prevState.fellowship, ...stateUpdates.fellowship },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     buttonUpgrades: stateUpdates.buttonUpgrades
@@ -264,6 +265,7 @@ const defaultGameState: GameState = {
     book_of_ascension: false,
     book_of_war: false,
   },
+  fellowship: {},
   feastState: {
     isActive: false,
     endTime: 0,
