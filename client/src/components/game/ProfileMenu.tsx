@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import AuthDialog from "./AuthDialog";
 
 // Social media platform configurations
 const SOCIAL_PLATFORMS = [
@@ -53,6 +54,7 @@ export default function ProfileMenu() {
   const mobileTooltip = useMobileTooltip();
   const isMobile = useIsMobile();
   const [accountDropdownOpen, setAccountDropdownOpen] = useState(false);
+  const [authDialogOpen, setAuthDialogOpen] = useState(false);
   const [currentUser, setCurrentUser] = useState<{
     id: string;
     email: string;
@@ -70,6 +72,7 @@ export default function ProfileMenu() {
   };
 
   const handleSetAuthDialogOpen = (open: boolean) => {
+    setAuthDialogOpen(open);
     setGameAuthDialogOpen(open);
   };
 
@@ -178,8 +181,17 @@ export default function ProfileMenu() {
     }
   };
 
+  const handleAuthSuccess = async () => {
+    await checkAuth();
+  };
+
   return (
     <div className="fixed top-2 right-2 z-50 pointer-events-auto">
+      <AuthDialog
+        isOpen={authDialogOpen}
+        onClose={() => setAuthDialogOpen(false)}
+        onAuthSuccess={handleAuthSuccess}
+      />
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
