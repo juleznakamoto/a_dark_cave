@@ -258,9 +258,24 @@ export function startGameLoop() {
       }
 
       // Process ticks in fixed intervals
+      let ticksProcessed = 0;
       while (tickAccumulator >= TICK_INTERVAL) {
         tickAccumulator -= TICK_INTERVAL;
         processTick();
+        ticksProcessed++;
+      }
+
+      // Log tick processing every 5 seconds
+      if (Math.floor(timeSinceStart / 5000) !== Math.floor((timeSinceStart - deltaTime) / 5000)) {
+        logger.log("[LOOP] 🔄 Tick processing:", {
+          ticksProcessed,
+          tickAccumulator: Math.round(tickAccumulator),
+          deltaTime: Math.round(deltaTime),
+          currentCooldowns: Object.entries(state.cooldowns || {}).map(([key, value]) => ({
+            action: key,
+            remaining: value.toFixed(2) + 's'
+          }))
+        });
       }
 
       // Auto-save logic (skip if inactive or recently loaded)
@@ -486,7 +501,17 @@ function processTick() {
   const state = useGameStore.getState();
 
   // Tick down cooldowns
+  const cooldownsBefore = { ...state.cooldowns };
   state.tickCooldowns();
+  const cooldownsAfter = useGameStore.getState().cooldowns;
+  
+  // Log cooldown changes (only if there were cooldowns)
+  if (Object.keys(cooldownsBefore).length > 0) {
+    logger.log("[LOOP] ⏱️ Cooldowns ticked:", {
+      before: Object.entries(cooldownsBefore).map(([k, v]) => `${k}: ${v.toFixed(2)}s`),
+      after: Object.entries(cooldownsAfter).map(([k, v]) => `${k}: ${v.toFixed(2)}s`)
+    });
+  }
 
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
