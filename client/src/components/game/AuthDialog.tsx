@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { signIn, signUp } from '@/game/auth';
 import { useToast } from '@/hooks/use-toast';
+import { logger } from '@/lib/logger';
 
 interface AuthDialogProps {
   isOpen: boolean;
@@ -30,7 +31,9 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
   const { toast } = useToast();
 
   const handleOpenChange = (open: boolean) => {
+    logger.log('[AUTH DIALOG] handleOpenChange called:', { open, willCallOnClose: !open });
     if (!open) {
+      logger.log('[AUTH DIALOG] Calling onClose from handleOpenChange');
       onClose();
     }
   };
@@ -57,10 +60,12 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           description: 'Your game will now sync across devices.',
         });
         
+        logger.log('[AUTH DIALOG] Sign in successful, reloading game');
         // Reload game from Supabase after sign-in
         const { useGameStore } = await import('@/game/state');
         await useGameStore.getState().loadGame();
         
+        logger.log('[AUTH DIALOG] Calling onAuthSuccess and onClose after signin');
         onAuthSuccess();
         onClose();
       } else if (mode === 'signup') {
@@ -70,6 +75,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
           title: 'Account created',
           description: 'Please check your email to verify your account. Also look in spam folder.',
         });
+        logger.log('[AUTH DIALOG] Calling onAuthSuccess and onClose after signup');
         onAuthSuccess();
         onClose();
       } else if (mode === 'reset') {
