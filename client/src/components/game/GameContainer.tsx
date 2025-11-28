@@ -19,6 +19,7 @@ import { useState, useEffect, useMemo, useRef } from "react";
 import { LimelightNav, NavItem } from "@/components/ui/limelight-nav";
 import { Mountain, Trees, Castle, Landmark } from "lucide-react";
 import { stopGameLoop } from "@/game/loop";
+import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 
 export default function GameContainer() {
   const {
@@ -305,6 +306,7 @@ export default function GameContainer() {
       <MerchantDialog />
       <CubeDialog />
       {inactivityDialogOpen && <InactivityDialog />}
+      <ProfileMenu />
     </div>
   );
 }
