@@ -1,0 +1,180 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:7 Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 🎮 Starting game load process...
+logger.ts:7 [LOAD] 📊 Raw local save from IndexedDB: 
+{exists: true, playTime: 47766.09999997611, playTimeMinutes: '0.80', timestamp: 1764318841810, timestampDate: '2025-11-28T08:34:01.810Z', …}
+exists
+: 
+true
+gameStatePlayTime
+: 
+47766.09999997611
+gameStatePlayTimeMinutes
+: 
+"0.80"
+playTime
+: 
+47766.09999997611
+playTimeMinutes
+: 
+"0.80"
+timestamp
+: 
+1764318841810
+timestampDate
+: 
+"2025-11-28T08:34:01.810Z"
+[[Prototype]]
+: 
+Object
+logger.ts:7 [LOAD] 💾 Local save retrieved: 
+{hasLocalSave: true, timestamp: '2025-11-28T08:34:01.810Z', playTime: 47766.09999997611, playTimeMinutes: 1, hasCooldowns: true, …}
+cooldownDetails
+: 
+Array(25)
+0
+: 
+{action: 'lightFire', remaining: 0, duration: 1}
+1
+: 
+{action: 'chopWood', remaining: 6.0000000000000096e-21, duration: 6}
+2
+: 
+{action: 'craftTorch', remaining: 0, duration: 2.5}
+3
+: 
+{action: 'exploreCave', remaining: 1.000000000000001e-19, duration: 10}
+4
+: 
+{action: 'craftStoneAxe', remaining: 0, duration: 1}
+5
+: 
+{action: 'craftStonePickaxe', remaining: 0, duration: 5}
+6
+: 
+{action: 'craftTorches', remaining: 3.0000000000000043e-19, duration: 3}
+7
+: 
+{action: 'buildWoodenHut', remaining: 1.8000000000000016e-16, duration: 180}
+8
+: 
+{action: 'buildBlacksmith', remaining: 5.000000000000005e-17, duration: 5}
+9
+: 
+{action: 'buildCabin', remaining: 1.5000000000000015e-15, duration: 15}
+10
+: 
+{action: 'craftIronAxe', remaining: 1.0000000000000008e-14, duration: 10}
+11
+: 
+{action: 'craftIronPickaxe', remaining: 1.0000000000000007e-13, duration: 10}
+12
+: 
+{action: 'craftIronSword', remaining: 1.5000000000000013e-12, duration: 15}
+13
+: 
+{action: 'craftCrudeBow', remaining: 1.0000000000000006e-11, duration: 10}
+14
+: 
+{action: 'craftHuntsmanBow', remaining: 1.5000000000000013e-10, duration: 15}
+15
+: 
+{action: 'buildShallowPit', remaining: 3.0000000000000025e-9, duration: 30}
+16
+: 
+{action: 'hunt', remaining: 1.0000000000000005e-8, duration: 10}
+17
+: 
+{action: 'buildFoundry', remaining: 2.000000000000001e-7, duration: 20}
+18
+: 
+{action: 'mineStone', remaining: 0.0000015000000000000009, duration: 15}
+19
+: 
+{action: 'ventureDeeper', remaining: 0.00002000000000000001, duration: 20}
+20
+: 
+{action: 'craftIronLantern', remaining: 0.00015000000000000007, duration: 15}
+21
+: 
+{action: 'craftTorches3', remaining: 0.00035000000000000005, duration: 3.5}
+22
+: 
+{action: 'mineIron', remaining: 0.020000000000000004, duration: 20}
+23
+: 
+{action: 'mineCoal', remaining: 0.2, duration: 20}
+24
+: 
+{action: 'descendFurther', remaining: 3, duration: 30}
+length
+: 
+25
+[[Prototype]]
+: 
+Array(0)
+cooldownDurations
+: 
+{lightFire: 1, chopWood: 6, craftTorch: 2.5, exploreCave: 10, craftStoneAxe: 1, …}
+cooldowns
+: 
+{lightFire: 0, chopWood: 6.0000000000000096e-21, craftTorch: 0, exploreCave: 1.000000000000001e-19, craftStoneAxe: 0, …}
+hasCooldownDurations
+: 
+true
+hasCooldowns
+: 
+true
+hasLocalSave
+: 
+true
+playTime
+: 
+47766.09999997611
+playTimeMinutes
+: 
+1
+timestamp
+: 
+"2025-11-28T08:34:01.810Z"
+[[Prototype]]
+: 
+Object
+logger.ts:7 [REFERRAL] 🔍 Processing unclaimed referrals... 
+{hasUser: false, hasReferrals: true, referralsCount: 0, referrals: Array(0)}
+hasReferrals
+: 
+true
+hasUser
+: 
+false
+referrals
+: 
+[]
+referralsCount
+: 
+0
+[[Prototype]]
+: 
+Object
+logger.ts:7 [REFERRAL] ⏭️ Skipping - no user or no referrals
+logger.ts:7 [LOAD] Returning local state (no auth): 
+{hasCooldownDurations: true, cooldownDurations: {…}}
+logger.ts:7 [GAME] Game loaded from save
+logger.ts:7 [LOOP] Starting game loop
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-28T08:40:25.824Z
+logger.ts:7 [IDLE MODE INIT] Dialog open check: 
+{dialogOpen: false, isActive: false, idleModeState: {…}}
+dialogOpen
+: 
+false
+idleModeState
+: 
+{isActive: false, startTime: 0, needsDisplay: false}
+isActive
+: 
+false
+[[Prototype]]
+: 
+Object
