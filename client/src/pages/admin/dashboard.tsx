@@ -1079,6 +1079,157 @@ export default function AdminDashboard() {
     return topClicks;
   };
 
+  // Helper function to extract cube event number from event ID
+  const getCubeEventNumber = (eventId: string): number | null => {
+    const match = eventId.match(/^cube(\d+[a-z]?)$/);
+    if (!match) return null;
+    // Remove letter suffix if present (e.g., "14a" -> "14")
+    const numStr = match[1].replace(/[a-z]$/, '');
+    return parseInt(numStr, 10);
+  };
+
+  // Get cube events players saw over playtime
+  const getCubeEventsOverPlaytime = () => {
+    logger.log('🔍 Getting cube events over playtime');
+
+    // Aggregate cube events by playtime buckets (1-hour intervals)
+    const playtimeBuckets = new Map<number, Set<string>>();
+    let maxBucket = 0;
+
+    gameSaves.forEach(save => {
+      const playTimeMinutes = save.playTime ? Math.round(save.playTime / 1000 / 60) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
+      maxBucket = Math.max(maxBucket, bucket);
+
+      if (!playtimeBuckets.has(bucket)) {
+        playtimeBuckets.set(bucket, new Set());
+      }
+
+      // Count unique cube events seen by this player
+      const events = save.game_state?.events || {};
+      Object.keys(events).forEach(eventKey => {
+        if (eventKey.startsWith('cube') && events[eventKey] === true) {
+          playtimeBuckets.get(bucket)!.add(save.user_id);
+        }
+      });
+    });
+
+    // Create array with all buckets
+    const result: Array<{ time: string; players: number }> = [];
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const hours = bucket / 60;
+      result.push({
+        time: hours === 0 ? '0h' : `${hours}h`,
+        players: playtimeBuckets.get(bucket)?.size || 0,
+      });
+    }
+
+    logger.log('📊 Cube events over playtime:', result.length, 'buckets');
+    return result;
+  };
+
+  // Get distribution of highest cube event seen by all players
+  const getHighestCubeEventDistribution = () => {
+    logger.log('🔍 Getting highest cube event distribution');
+
+    const highestCubeByPlayer = new Map<number, number>();
+
+    gameSaves.forEach(save => {
+      const events = save.game_state?.events || {};
+      let highestCube = 0;
+
+      Object.keys(events).forEach(eventKey => {
+        if (eventKey.startsWith('cube') && events[eventKey] === true) {
+          const cubeNum = getCubeEventNumber(eventKey);
+          if (cubeNum !== null && cubeNum > highestCube) {
+            highestCube = cubeNum;
+          }
+        }
+      });
+
+      if (highestCube > 0) {
+        highestCubeByPlayer.set(highestCube, (highestCubeByPlayer.get(highestCube) || 0) + 1);
+      }
+    });
+
+    // Convert to array format for chart
+    const maxCube = Math.max(...Array.from(highestCubeByPlayer.keys()), 0);
+    const result: Array<{ cubeEvent: string; players: number }> = [];
+
+    for (let i = 1; i <= maxCube; i++) {
+      result.push({
+        cubeEvent: `Cube ${i}`,
+        players: highestCubeByPlayer.get(i) || 0,
+      });
+    }
+
+    logger.log('📊 Highest cube event distribution:', result.length, 'events');
+    return result;
+  };
+
+  // Get top last cube events seen by churned players
+  const getChurnedPlayersLastCubeEvents = () => {
+    logger.log('🔍 Getting churned players last cube events');
+
+    const now = new Date();
+    const cutoffDate = subDays(now, churnDays);
+
+    // Get churned user IDs
+    const churnedUserIds = new Set<string>();
+    const userLastActivity = new Map<string, Date>();
+
+    gameSaves.forEach(save => {
+      const activityDate = new Date(save.updated_at);
+      const existing = userLastActivity.get(save.user_id);
+      if (!existing || activityDate > existing) {
+        userLastActivity.set(save.user_id, activityDate);
+      }
+      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      if (activityDate < cutoffDate && !hasCompletedGame) {
+        churnedUserIds.add(save.user_id);
+      }
+    });
+
+    logger.log('📊 Found churned users:', churnedUserIds.size);
+
+    // Find highest cube event for each churned player
+    const cubeEventCounts = new Map<number, number>();
+
+    gameSaves.forEach(save => {
+      if (churnedUserIds.has(save.user_id)) {
+        const events = save.game_state?.events || {};
+        let highestCube = 0;
+
+        Object.keys(events).forEach(eventKey => {
+          if (eventKey.startsWith('cube') && events[eventKey] === true) {
+            const cubeNum = getCubeEventNumber(eventKey);
+            if (cubeNum !== null && cubeNum > highestCube) {
+              highestCube = cubeNum;
+            }
+          }
+        });
+
+        if (highestCube > 0) {
+          cubeEventCounts.set(highestCube, (cubeEventCounts.get(highestCube) || 0) + 1);
+        }
+      }
+    });
+
+    // Convert to array format for chart
+    const result: Array<{ cubeEvent: string; players: number }> = [];
+    const sortedEntries = Array.from(cubeEventCounts.entries()).sort((a, b) => b[1] - a[1]);
+
+    sortedEntries.forEach(([cubeNum, count]) => {
+      result.push({
+        cubeEvent: `Cube ${cubeNum}`,
+        players: count,
+      });
+    });
+
+    logger.log('📊 Last cube events for churned players:', result.length, 'events');
+    return result;
+  };
+
   // Get the top 20 buttons clicked exactly once (first-time clicks) by churned players
   const getChurnedPlayersFirstTimeClicks = () => {
     logger.log('🔍 Getting churned players first-time clicks START:', {
@@ -2079,6 +2230,63 @@ export default function AdminDashboard() {
                     <YAxis />
                     <Tooltip />
                     <Bar dataKey="count" fill="#9333ea" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Cube Events Over Playtime</CardTitle>
+                <CardDescription>Number of players who have seen cube events at each playtime</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getCubeEventsOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="players" stroke="#8884d8" strokeWidth={2} dot={{ r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Highest Cube Event Distribution</CardTitle>
+                <CardDescription>What is the highest cube event players have seen?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getHighestCubeEventDistribution()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="cubeEvent" label={{ value: 'Cube Event', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="players" stroke="#82ca9d" strokeWidth={2} dot={{ r: 4 }} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Last Cube Events for Churned Players</CardTitle>
+                <CardDescription>What was the highest cube event churned players saw before leaving?</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <BarChart data={getChurnedPlayersLastCubeEvents()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="cubeEvent" label={{ value: 'Cube Event', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Players', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="players" fill="#ffc658" />
                   </BarChart>
                 </ResponsiveContainer>
               </CardContent>
