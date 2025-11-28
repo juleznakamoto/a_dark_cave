@@ -314,7 +314,7 @@ export default function ProfileMenu() {
                     <img
                       src={platform.icon}
                       alt={platform.name}
-                      className="w-3 h-3 opacity-90 group-hover:brightness-0 group-hover:invert group-hover:sepia group-hover:saturate-[5000%] group-hover:hue-rotate-[-10deg]"
+                      className="w-3 h-3 opacity-90 hover:bg-red"
                     />
                   </div>
                   <div className="flex items-center gap-2">
