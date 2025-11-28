@@ -168,7 +168,11 @@ export const gameStateSchema = z.object({
       frostglass: z.boolean().default(false),
     })
     .default({}),
-  fellowship: z.record(z.string(), z.boolean()).default({}),
+  fellowship: z
+    .object({
+      restless_knight: z.boolean().default(false),
+    })
+    .default({}),
   blessings: z
     .object({
       dagons_gift: z.boolean().default(false),
@@ -250,9 +254,7 @@ export const gameStateSchema = z.object({
     .default({}),
   story: z
     .object({
-      seen: z
-        .record(z.union([z.boolean(), z.number()]))
-        .default({}),
+      seen: z.record(z.union([z.boolean(), z.number()])).default({}),
     })
     .default({ seen: {} }),
   hoveredTooltips: z.record(z.boolean()).default({}),
@@ -352,20 +354,28 @@ export const gameStateSchema = z.object({
     .default({}),
 
   activatedPurchases: z.record(z.boolean()).default({}),
-  feastPurchases: z.record(z.object({
-    itemId: z.string(),
-    activationsRemaining: z.number(),
-    totalActivations: z.number(),
-    purchasedAt: z.number(),
-  })).default({}),
+  feastPurchases: z
+    .record(
+      z.object({
+        itemId: z.string(),
+        activationsRemaining: z.number(),
+        totalActivations: z.number(),
+        purchasedAt: z.number(),
+      }),
+    )
+    .default({}),
   cruelMode: z.boolean().default(false),
   CM: z.number().default(0),
-  attackWaveTimers: z.record(z.object({
-    startTime: z.number(),
-    duration: z.number(), // Duration in milliseconds
-    defeated: z.boolean(),
-    provoked: z.boolean().default(false),
-  })).default({}),
+  attackWaveTimers: z
+    .record(
+      z.object({
+        startTime: z.number(),
+        duration: z.number(), // Duration in milliseconds
+        defeated: z.boolean(),
+        provoked: z.boolean().default(false),
+      }),
+    )
+    .default({}),
   curseState: z
     .object({
       isActive: z.boolean().default(false),
@@ -386,79 +396,111 @@ export const gameStateSchema = z.object({
   startTime: z.number().default(0), // Timestamp when the current game was started
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   referralCode: z.string().optional(), // Store the referral code used during signup
-  referrals: z.array(z.object({
-    userId: z.string(),
-    claimed: z.boolean().default(false),
-    timestamp: z.number(),
-  })).default([]), // Track referrals with claim status
-  social_media_rewards: z.record(z.object({
-    claimed: z.boolean().default(false),
-    timestamp: z.number().optional(),
-  })).default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
-  idleModeState: z.object({
-    isActive: z.boolean().default(false),
-    startTime: z.number().default(0),
-    needsDisplay: z.boolean().default(false),
-  }).default({
-    isActive: false,
-    startTime: 0,
-    needsDisplay: false,
-  }),
-  sleepUpgrades: z.object({
-    lengthLevel: z.number().default(0), // 0-5
-    intensityLevel: z.number().default(0), // 0-5
-  }).default({
-    lengthLevel: 0,
-    intensityLevel: 0,
-  }),
-  buttonUpgrades: z.object({
-    caveExplore: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineStone: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineIron: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineCoal: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineSulfur: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineObsidian: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    mineAdamant: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    hunt: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-    chopWood: z.object({
-      clicks: z.number().default(0),
-      level: z.number().default(0),
-    }).default({ clicks: 0, level: 0 }),
-  }).default({
-    caveExplore: { clicks: 0, level: 0 },
-    mineStone: { clicks: 0, level: 0 },
-    mineIron: { clicks: 0, level: 0 },
-    mineCoal: { clicks: 0, level: 0 },
-    mineSulfur: { clicks: 0, level: 0 },
-    mineObsidian: { clicks: 0, level: 0 },
-    mineAdamant: { clicks: 0, level: 0 },
-    hunt: { clicks: 0, level: 0 },
-    chopWood: { clicks: 0, level: 0 },
-  }),
+  referrals: z
+    .array(
+      z.object({
+        userId: z.string(),
+        claimed: z.boolean().default(false),
+        timestamp: z.number(),
+      }),
+    )
+    .default([]), // Track referrals with claim status
+  social_media_rewards: z
+    .record(
+      z.object({
+        claimed: z.boolean().default(false),
+        timestamp: z.number().optional(),
+      }),
+    )
+    .default({}), // Track social media follow rewards by platform (e.g., 'instagram', 'twitter', etc.)
+  idleModeState: z
+    .object({
+      isActive: z.boolean().default(false),
+      startTime: z.number().default(0),
+      needsDisplay: z.boolean().default(false),
+    })
+    .default({
+      isActive: false,
+      startTime: 0,
+      needsDisplay: false,
+    }),
+  sleepUpgrades: z
+    .object({
+      lengthLevel: z.number().default(0), // 0-5
+      intensityLevel: z.number().default(0), // 0-5
+    })
+    .default({
+      lengthLevel: 0,
+      intensityLevel: 0,
+    }),
+  buttonUpgrades: z
+    .object({
+      caveExplore: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineStone: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineIron: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineCoal: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineSulfur: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineObsidian: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      mineAdamant: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      hunt: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+      chopWood: z
+        .object({
+          clicks: z.number().default(0),
+          level: z.number().default(0),
+        })
+        .default({ clicks: 0, level: 0 }),
+    })
+    .default({
+      caveExplore: { clicks: 0, level: 0 },
+      mineStone: { clicks: 0, level: 0 },
+      mineIron: { clicks: 0, level: 0 },
+      mineCoal: { clicks: 0, level: 0 },
+      mineSulfur: { clicks: 0, level: 0 },
+      mineObsidian: { clicks: 0, level: 0 },
+      mineAdamant: { clicks: 0, level: 0 },
+      hunt: { clicks: 0, level: 0 },
+      chopWood: { clicks: 0, level: 0 },
+    }),
   // Analytics: Track button clicks since last save (not persisted to local storage)
   clickAnalytics: z.record(z.number()).default({}),
 });
@@ -470,10 +512,12 @@ export const actionSchema = z.object({
   id: z.string(),
   label: z.string(),
   description: z.string().optional(),
-  tooltipEffects: z.union([
-    z.array(z.string()),
-    z.function().args(z.any()).returns(z.array(z.string()))
-  ]).optional(),
+  tooltipEffects: z
+    .union([
+      z.array(z.string()),
+      z.function().args(z.any()).returns(z.array(z.string())),
+    ])
+    .optional(),
   building: z.boolean().optional(),
   show_when: z
     .union([
@@ -498,7 +542,9 @@ export const actionSchema = z.object({
   unlocks: z.array(z.string()).optional(),
   craftingCostReduction: z.number().optional(),
   success_chance: z.function().args(z.any()).returns(z.number()).optional(),
-  relevant_stats: z.array(z.enum(["strength", "knowledge", "luck", "madness"])).optional(),
+  relevant_stats: z
+    .array(z.enum(["strength", "knowledge", "luck", "madness"]))
+    .optional(),
   cooldown: z.number().optional(),
 });
 
@@ -514,7 +560,7 @@ export const saveDataSchema = z.object({
 export type SaveData = z.infer<typeof saveDataSchema>;
 
 // Extend GameState to include lastSaved tracking
-declare module './schema' {
+declare module "./schema" {
   interface GameState {
     lastSaved?: number;
   }
