@@ -170,7 +170,7 @@ export default function ProfileMenu() {
   };
 
   return (
-    <div className="fixed top-2 right-2 z-30 pointer-events-auto">
+    <div className="fixed top-2 right-2 z-50 pointer-events-auto">
       <DropdownMenu
         open={accountDropdownOpen}
         onOpenChange={(open) => {
