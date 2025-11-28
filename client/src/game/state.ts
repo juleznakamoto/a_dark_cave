@@ -660,7 +660,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
       for (const key in newCooldowns) {
         if (newCooldowns[key] > 0) {
-          newCooldowns[key] = Math.max(0, newCooldowns[key] - 0.2);
+          const newValue = newCooldowns[key] - 0.2;
+          // Treat values below 0.001 as zero to avoid floating-point precision issues
+          newCooldowns[key] = newValue < 0.001 ? 0 : newValue;
         }
       }
 
