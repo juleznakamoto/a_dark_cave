@@ -522,17 +522,7 @@ function processTick() {
   const state = useGameStore.getState();
 
   // Tick down cooldowns
-  const cooldownsBefore = { ...state.cooldowns };
   state.tickCooldowns();
-  const cooldownsAfter = useGameStore.getState().cooldowns;
-  
-  // Log cooldown changes (only if there were cooldowns)
-  if (Object.keys(cooldownsBefore).length > 0) {
-    logger.log("[LOOP] ⏱️ Cooldowns ticked:", {
-      before: Object.entries(cooldownsBefore).map(([k, v]) => `${k}: ${v.toFixed(2)}s`),
-      after: Object.entries(cooldownsAfter).map(([k, v]) => `${k}: ${v.toFixed(2)}s`)
-    });
-  }
 
   // Check if feast has expired
   if (state.feastState?.isActive && state.feastState.endTime <= Date.now()) {
