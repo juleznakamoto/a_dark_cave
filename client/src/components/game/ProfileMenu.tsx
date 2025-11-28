@@ -72,13 +72,8 @@ export default function ProfileMenu() {
   };
 
   const handleSetAuthDialogOpen = (open: boolean) => {
-    logger.log('[AUTH DIALOG] Setting auth dialog state:', { open, source: 'ProfileMenu.handleSetAuthDialogOpen' });
     setAuthDialogOpen(open);
     setGameAuthDialogOpen(open);
-    logger.log('[AUTH DIALOG] After setting state:', { 
-      localState: open, 
-      gameStoreState: open 
-    });
   };
 
   const handleSignOut = async () => {
@@ -194,10 +189,7 @@ export default function ProfileMenu() {
     <div className="fixed top-2 right-2 z-50 pointer-events-auto">
       <AuthDialog
         isOpen={authDialogOpen}
-        onClose={() => {
-          logger.log('[AUTH DIALOG] onClose called from AuthDialog');
-          handleSetAuthDialogOpen(false);
-        }}
+        onClose={() => handleSetAuthDialogOpen(false)}
         onAuthSuccess={handleAuthSuccess}
       />
       <DropdownMenu

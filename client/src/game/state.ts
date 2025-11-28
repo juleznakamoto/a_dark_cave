@@ -1241,9 +1241,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   setAuthDialogOpen: (isOpen: boolean) => {
-    logger.log('[AUTH DIALOG] Game store setAuthDialogOpen called:', { isOpen, source: 'useGameStore.setAuthDialogOpen' });
     set({ authDialogOpen: isOpen });
-    logger.log('[AUTH DIALOG] Game store state updated:', { newState: isOpen });
   },
 
   setShopDialogOpen: (isOpen: boolean) => {
