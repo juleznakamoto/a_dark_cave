@@ -178,7 +178,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
+              "Grateful for the meal, the knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
           };
         },
       },
@@ -205,7 +205,7 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnightCoast: {
     id: "restlessKnightCoast",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 10 &&
+      state.buildings.stoneHut >= 8 &&
       state.story.seen.restlessKnightMountains &&
       !state.story.seen.restlessKnightCoast,
     triggerType: "resource",
@@ -213,17 +213,17 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightCoastFailed ? 60 : 30,
     title: "Tales from the Shore",
     message:
-      "The knight appears once more, his boots caked with salt and sand. 'I have traveled to a city on the shore of the ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
+      "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
     triggered: false,
     priority: 3,
     repeatable: false,
     choices: [
       {
         id: "payGold",
-        label: "Pay 75 Gold",
-        cost: "75 gold",
+        label: "Pay 50 Gold",
+        cost: "50 gold",
         effect: (state: GameState) => {
-          if (state.resources.gold < 75) {
+          if (state.resources.gold < 50) {
             return {
               _logMessage: "You don't have enough gold.",
             };
@@ -232,7 +232,7 @@ export const loreEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              gold: state.resources.gold - 75,
+              gold: state.resources.gold - 50,
             },
             story: {
               ...state.story,
@@ -242,16 +242,16 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The knight speaks: 'On the shore of the endless ocean lies a dead city, half-claimed by the waves. Among the ruins rest enormous metal vessels, their hulls rusted but still intact. These were ships that once floated upon the water, larger than any building in our settlement. The ancients commanded the very seas with their craft.'",
+              "The knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
           };
         },
       },
       {
         id: "payFood",
-        label: "Pay 3500 Food",
-        cost: "3500 food",
+        label: "Pay 2500 Food",
+        cost: "2500 food",
         effect: (state: GameState) => {
-          if (state.resources.food < 3500) {
+          if (state.resources.food < 2500) {
             return {
               _logMessage: "You don't have enough food.",
             };
@@ -260,7 +260,7 @@ export const loreEvents: Record<string, GameEvent> = {
           return {
             resources: {
               ...state.resources,
-              food: state.resources.food - 3500,
+              food: state.resources.food - 2500,
             },
             story: {
               ...state.story,
@@ -270,7 +270,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The knight shares his tale: 'On the shore of the endless ocean lies a dead city, half-claimed by the waves. Among the ruins rest enormous metal vessels, their hulls rusted but still intact. These were ships that once floated upon the water, larger than any building in our settlement. The ancients commanded the very seas with their craft.'",
+            "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
           };
         },
       },
@@ -279,13 +279,13 @@ export const loreEvents: Record<string, GameEvent> = {
         label: "Convince him",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.15, {
+          return calculateSuccessChance(state, 0.1, {
             type: "knowledge",
             multiplier: 0.01,
           });
         },
         effect: (state: GameState) => {
-          const successChance = calculateSuccessChance(state, 0.15, {
+          const successChance = calculateSuccessChance(state, 0.1, {
             type: "knowledge",
             multiplier: 0.01,
           });
@@ -300,7 +300,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "Your words move the knight. He speaks: 'On the shore of the endless ocean lies a dead city, half-claimed by the waves. Among the ruins rest enormous metal vessels, their hulls rusted but still intact. These were ships that once floated upon the water, larger than any building in our settlement. The ancients commanded the very seas with their craft.'",
+                "Your words move the knight. He speaks: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.''",
             };
           } else {
             return {
@@ -330,7 +330,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You decline his offer. The knight nods solemnly. 'Very well. The secrets of the shore shall remain with me,' he says before walking away.",
+              "You decline his offer. The knight nods solemnly. 'Very well. The secrets of the shore shall remain with me for now,' he says before walking away.",
           };
         },
       },
