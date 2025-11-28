@@ -1036,6 +1036,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       currentLogEntry || undefined,
     );
 
+    console.log('[STATE] applyEventChoice returned changes:', {
+      hasChanges: !!changes,
+      changeKeys: Object.keys(changes),
+      hasFellowship: 'fellowship' in changes,
+      fellowship: changes.fellowship,
+    });
+
     let combatData = null;
     let logMessage = null;
     const updatedChanges = { ...changes };
@@ -1054,7 +1061,17 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Apply state changes FIRST - this includes relics, resources, etc.
     if (Object.keys(updatedChanges).length > 0) {
+      console.log('[STATE] About to apply changes:', {
+        updatedChanges,
+        hasFellowship: 'fellowship' in updatedChanges,
+        fellowshipValue: updatedChanges.fellowship,
+      });
+      
       set((prevState) => {
+        console.log('[STATE] Inside set - prevState:', {
+          prevFellowship: prevState.fellowship,
+        });
+        
         const newState = {
           ...prevState,
           ...updatedChanges,
