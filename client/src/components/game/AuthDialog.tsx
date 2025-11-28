@@ -29,6 +29,12 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
   const [acceptedTerms, setAcceptedTerms] = useState(false);
   const { toast } = useToast();
 
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      onClose();
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -87,7 +93,7 @@ export default function AuthDialog({ isOpen, onClose, onAuthSuccess }: AuthDialo
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle>
