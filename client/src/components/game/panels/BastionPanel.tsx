@@ -9,7 +9,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
+import { Progress } from "@/components/ui/progress";
 import AttackWavesChart from "./AttackWavesChart";
+
+// Crushing Strike upgrade configurations
+const CRUSHING_STRIKE_UPGRADES = [
+  { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
+  { level: 1, damage: 20, stunRounds: 1, cost: 250, currency: "gold" },
+  { level: 2, damage: 30, stunRounds: 1, cost: 500, currency: "gold" },
+  { level: 3, damage: 40, stunRounds: 2, cost: 1000, currency: "gold" },
+  { level: 4, damage: 50, stunRounds: 2, cost: 1500, currency: "gold" },
+  { level: 5, damage: 50, stunRounds: 3, cost: 2000, currency: "gold" },
+];
 
 // Helper to get building label based on level
 const getBuildingLabel = (
@@ -37,9 +49,12 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources } = useGameStore();
+  const { buildings, story, resources, crushingStrikeLevel, fellowship } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
+  const mobileButtonTooltip = useMobileButtonTooltip();
+
+  const HAS_RESTLESS_KNIGHT = fellowship?.restless_knight === true;
 
   const bastionDamaged = story?.seen?.bastionDamaged || false;
   const watchtowerDamaged = story?.seen?.watchtowerDamaged || false;
@@ -47,6 +62,30 @@ export default function BastionPanel() {
 
   const hasDamagedBuildings =
     bastionDamaged || watchtowerDamaged || palisadesDamaged;
+
+  const handleCrushingStrikeUpgrade = () => {
+    const currentLevel = crushingStrikeLevel || 0;
+    if (currentLevel >= 5) return;
+
+    const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
+    const currency = nextUpgrade.currency as 'gold';
+    
+    if (resources[currency] >= nextUpgrade.cost) {
+      useGameStore.setState({
+        crushingStrikeLevel: currentLevel + 1,
+        resources: {
+          ...resources,
+          [currency]: resources[currency] - nextUpgrade.cost,
+        },
+      });
+    }
+  };
+
+  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[crushingStrikeLevel || 0];
+  const nextCrushingStrike = CRUSHING_STRIKE_UPGRADES[(crushingStrikeLevel || 0) + 1];
+  const canUpgradeCrushingStrike =
+    (crushingStrikeLevel || 0) < 5 &&
+    resources.gold >= (nextCrushingStrike?.cost || 0);
 
   // Helper to calculate 50% repair cost from action cost
   const getRepairCost = (actionId: string, level: number = 1) => {
@@ -159,6 +198,84 @@ export default function BastionPanel() {
     <div className="space-y-4 mt-2 pr-4 w-64">
       {/* Attack Waves Chart */}
       <AttackWavesChart />
+
+      {/* Combat Skills Section - only show if restless knight is unlocked */}
+      {HAS_RESTLESS_KNIGHT && (
+        <div className="w-64 space-y-3 pt-2">
+          <h3 className="text-xs font-bold text-foreground">Combat Skills</h3>
+          
+          {/* Crushing Strike Upgrade */}
+          <div className="space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="pb-1 text-xs font-medium text-foreground">
+                Crushing Strike
+              </span>
+              {(crushingStrikeLevel || 0) < 5 ? (
+                <TooltipProvider>
+                  <Tooltip open={mobileButtonTooltip.isTooltipOpen("upgrade-crushing-strike-button")}>
+                    <TooltipTrigger asChild>
+                      <div
+                        className="inline-block"
+                        onClick={mobileButtonTooltip.isMobile ? (e) => {
+                          mobileButtonTooltip.handleWrapperClick("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
+                        } : undefined}
+                        onTouchStart={mobileButtonTooltip.isMobile ? (e) => {
+                          mobileButtonTooltip.handleTouchStart("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
+                        } : undefined}
+                        onTouchEnd={mobileButtonTooltip.isMobile ? (e) => {
+                          mobileButtonTooltip.handleTouchEnd("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, handleCrushingStrikeUpgrade, e);
+                        } : undefined}
+                        onMouseDown={mobileButtonTooltip.isMobile ? (e) => {
+                          mobileButtonTooltip.handleMouseDown("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
+                        } : undefined}
+                        onMouseUp={mobileButtonTooltip.isMobile ? (e) => {
+                          mobileButtonTooltip.handleMouseUp("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, handleCrushingStrikeUpgrade, e);
+                        } : undefined}
+                      >
+                        <Button
+                          onClick={mobileButtonTooltip.isMobile && mobileButtonTooltip.isTooltipOpen("upgrade-crushing-strike-button") ? (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                          } : handleCrushingStrikeUpgrade}
+                          disabled={!canUpgradeCrushingStrike}
+                          size="xs"
+                          variant="outline"
+                          className="hover:bg-transparent hover:text-foreground"
+                          button_id="upgrade-crushing-strike"
+                        >
+                          Improve
+                        </Button>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <div className="text-xs whitespace-nowrap">
+                        {nextCrushingStrike.damage > currentCrushingStrike.damage && (
+                          <div>+{nextCrushingStrike.damage - currentCrushingStrike.damage} damage</div>
+                        )}
+                        {nextCrushingStrike.stunRounds > currentCrushingStrike.stunRounds && (
+                          <div>+{nextCrushingStrike.stunRounds - currentCrushingStrike.stunRounds} stun rounds</div>
+                        )}
+                        <div className="border-t border-border my-1" />
+                        <div className={resources.gold >= nextCrushingStrike.cost ? "" : "text-muted-foreground"}>
+                          -{nextCrushingStrike.cost} Gold
+                        </div>
+                      </div>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              ) : null}
+            </div>
+            <Progress
+              value={((crushingStrikeLevel || 0) / 5) * 100}
+              className="h-2"
+              segments={5}
+            />
+            <div className="flex justify-between text-xs text-muted-foreground">
+              <span>{currentCrushingStrike.damage} dmg, {currentCrushingStrike.stunRounds} stun</span>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (

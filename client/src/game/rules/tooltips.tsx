@@ -343,6 +343,21 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   },
   crushing_strike: {
     getContent: (state) => {
+      const level = state.crushingStrikeLevel || 0;
+      const configs = [
+        { damage: 10, stunRounds: 1 },
+        { damage: 20, stunRounds: 1 },
+        { damage: 30, stunRounds: 1 },
+        { damage: 40, stunRounds: 2 },
+        { damage: 50, stunRounds: 2 },
+        { damage: 50, stunRounds: 3 },
+      ];
+      const config = configs[level];
+      return `Deals ${config.damage} damage\nStuns enemy for ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}\nCan be used once per battle`;
+    },
+  },
+  crushing_strike: {
+    getContent: (state) => {
       const damage = 10;
       return `Deals ${damage} damage and stuns the enemy for 1 round.\nStunned enemies cannot attack.\nCan only be used once per battle.`;
     },

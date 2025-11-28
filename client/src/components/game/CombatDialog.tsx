@@ -177,34 +177,39 @@ export default function CombatDialog({
   };
 
   const handleUseCrushingStrike = () => {
-    if (!currentEnemy || usedCrushingStrike) return;
+    if (usedCrushingStrike || isProcessingRound) return;
 
-    const damage = 10;
+    const level = gameState.crushingStrikeLevel || 0;
+    const configs = [
+      { damage: 10, stunRounds: 1 },
+      { damage: 20, stunRounds: 1 },
+      { damage: 30, stunRounds: 1 },
+      { damage: 40, stunRounds: 2 },
+      { damage: 50, stunRounds: 2 },
+      { damage: 50, stunRounds: 3 },
+    ];
+    const config = configs[level];
 
-    // Mark as used
+    // Deal damage immediately
+    const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
+
+    // Set stun duration based on level
+    setEnemyStunnedRounds(config.stunRounds);
     setUsedCrushingStrike(true);
 
-    // Apply damage
+    // Update combat state
     setCurrentEnemy((prev) =>
-      prev
-        ? {
-            ...prev,
-            currentHealth: Math.max(0, prev.currentHealth - damage),
-          }
-        : null,
+      prev ? { ...prev, currentHealth: newEnemyHealth } : null,
     );
 
-    // Stun enemy for 1 round
-    setEnemyStunnedRounds(1);
-
-    // Show damage indicator
-    setEnemyDamageIndicator({ amount: damage, visible: true });
+    // Show damage indicator on enemy health bar
+    setEnemyDamageIndicator({ amount: config.damage, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
 
     // Check if enemy is defeated
-    if (currentEnemy && currentEnemy.currentHealth - damage <= 0) {
+    if (newEnemyHealth <= 0) {
       setCombatEnded(true);
       setCombatResult("victory");
     }
@@ -228,13 +233,9 @@ export default function CombatDialog({
       // The icon indication logic will also be in handleFight or a separate effect
     } else {
       // For bombs, apply damage directly
+      const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - finalDamage);
       setCurrentEnemy((prev) =>
-        prev
-          ? {
-              ...prev,
-              currentHealth: Math.max(0, prev.currentHealth - finalDamage),
-            }
-          : null,
+        prev ? { ...prev, currentHealth: newEnemyHealth } : null,
       );
       // Update game state to consume the item
       gameState.updateResource(item.id as keyof typeof gameState.resources, -1);
@@ -244,13 +245,12 @@ export default function CombatDialog({
       setTimeout(() => {
         setEnemyDamageIndicator({ amount: 0, visible: false });
       }, 3000);
-    }
 
-
-    // Check if enemy is defeated by bombs
-    if (currentEnemy && currentEnemy.currentHealth - finalDamage <= 0 && item.id !== "poison_arrows") {
-      setCombatEnded(true);
-      setCombatResult("victory");
+      // Check if enemy is defeated by bombs
+      if (newEnemyHealth <= 0) {
+        setCombatEnded(true);
+        setCombatResult("victory");
+      }
     }
   };
 
@@ -502,7 +502,7 @@ export default function CombatDialog({
                       .map((item) => {
                         const tooltipConfig = combatItemTooltips[item.id];
                         const tooltipContent = tooltipConfig ? tooltipConfig.getContent(gameState) : '';
-                        const availabilityText = item.id === "poison_arrows" 
+                        const availabilityText = item.id === "poison_arrows"
                           ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
                           : item.id === "ember_bomb"
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
