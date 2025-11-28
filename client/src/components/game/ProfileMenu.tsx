@@ -286,8 +286,7 @@ export default function ProfileMenu() {
                   </TooltipTrigger>
                   <TooltipContent className="max-w-xs">
                     <p className="text-xs">
-                      Share your invite link to earn 250 gold for each friend
-                      who signs up ({referralCount || 0}/10 invited).
+                      Invite your friends and both of you will receive 250 gold. You can invite up to 10 friends. ({referralCount || 0}/10 invited).
                       <br />
                     </p>
                   </TooltipContent>
