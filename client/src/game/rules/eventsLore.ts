@@ -8,7 +8,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 0.060 : 0.030;
+      return state.story.seen.restlessKnightFailed ? 60 : 30;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
@@ -118,7 +118,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 0.060 : 0.030,
+      state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
@@ -210,7 +210,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightCoast,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 0.060 : 0.030,
+      state.story.seen.restlessKnightCoastFailed ? 60 : 30,
     title: "Tales from the Shore",
     message:
       "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
@@ -342,10 +342,12 @@ export const loreEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.bastion >= 1 &&
       state.buildings.darkEstate >= 1 &&
-      state.story.seen.restlessKnightCoast,
+      state.story.seen.restlessKnightCoast
+    
+    ,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 0.060 : 0.030,
+      state.story.seen.restlessKnightDesertFailed ? 60 : 0.30,
     title: "The Knight's Final Journey",
     message:
       "The knight returns, 'I traveled far south to a vast desert. There I met a man devoted to recovering the lost technology of the ancients. He showed me devices once embedded in the body, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your could use a veteran blade. I offer my service in combat, if you accept.'",

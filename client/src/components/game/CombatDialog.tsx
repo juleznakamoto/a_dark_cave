@@ -53,7 +53,6 @@ export default function CombatDialog({
   onDefeat,
 }: CombatDialogProps) {
   const gameState = useGameStore();
-  const { bastion_stats, resources, fellowship } = gameState;
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
@@ -83,10 +82,6 @@ export default function CombatDialog({
 
   const bastionStats = calculateBastionStats(gameState);
 
-  // Crushing Strike state
-  const [crushingStrikeUsed, setCrushingStrikeUsed] = useState(false);
-  const [enemyStunned, setEnemyStunned] = useState(false);
-
   // Reset state when dialog opens
   useEffect(() => {
     if (isOpen && enemy) {
@@ -104,17 +99,12 @@ export default function CombatDialog({
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
-
-      // Reset Crushing Strike specific states
-      setCrushingStrikeUsed(false);
-      setEnemyStunned(false);
     }
   }, [
     isOpen,
     enemy,
     bastionStats.defense,
     bastionStats.attackFromFortifications,
-    bastionStats.integrity,
   ]);
 
   // Available combat items with max limits
@@ -257,118 +247,82 @@ export default function CombatDialog({
     onClose();
   };
 
-  const handleAttack = () => {
-    if (!isPlayerTurn || combatEnded) return;
+  const handleFight = () => {
+    if (!currentEnemy || isProcessingRound) return;
 
-    const playerDamage = Math.floor(
-      Math.random() * (bastionStats.attack / 2) + bastionStats.attack / 2,
-    );
-    const newEnemyHealth = Math.max(0, currentEnemy.currentHealth - playerDamage);
+    setIsProcessingRound(true);
 
-    setCombatLog((prev) => [
-      ...prev,
-      `You deal ${playerDamage} damage to ${currentEnemy.name}`,
-    ]);
-    setCurrentEnemy((prev) =>
-      prev ? { ...prev, currentHealth: newEnemyHealth } : null,
-    );
+    let currentEnemyHealth = currentEnemy.currentHealth;
+    let integrityDamage = 0;
+    let playerDamage = bastionStats.attack;
+    let poisonDamageDealt = 0;
 
-    if (newEnemyHealth <= 0) {
-      setCombatEnded(true);
-      setCombatResult("victory");
-      return;
+    // Apply poison damage if active and not used this round
+    const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
+    if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
+      const totalKnowledge = getTotalKnowledge(gameState);
+      const knowledgeBonus = Math.floor(totalKnowledge / 5);
+      poisonDamageDealt = 15 + knowledgeBonus; // Base 15 damage + knowledge bonus
+      // Need to track poison duration and its application per round
+      // For simplicity, let's assume it applies for 3 rounds after use
+      // This state needs to be managed more robustly, e.g., using useEffect or a state variable for poison status
     }
 
-    setIsPlayerTurn(false);
-    setTimeout(() => handleEnemyTurn(), 1000);
-  };
 
-  const handleCrushingStrike = () => {
-    if (!isPlayerTurn || combatEnded || crushingStrikeUsed) return;
+    // Enemy attacks first
+    if (currentEnemy.attack > bastionStats.defense) {
+      integrityDamage = currentEnemy.attack - bastionStats.defense;
+      const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
+      setCurrentIntegrity(newIntegrityValue);
 
-    const damage = 25;
-    const newEnemyHealth = Math.max(0, currentEnemy.currentHealth - damage);
+      // Show damage indicator on integrity bar
+      setIntegrityDamageIndicator({ amount: integrityDamage, visible: true });
+      setTimeout(() => {
+        setIntegrityDamageIndicator({ amount: 0, visible: false });
+      }, 3000);
 
-    setCombatLog((prev) => [
-      ...prev,
-      `The Restless Knight unleashes a Crushing Strike dealing ${damage} damage!`,
-      `${currentEnemy.name} is stunned for 1 round!`,
-    ]);
-    setCurrentEnemy((prev) =>
-      prev ? { ...prev, currentHealth: newEnemyHealth } : null,
-    );
-    setCrushingStrikeUsed(true);
-    setEnemyStunned(true);
-
-    if (newEnemyHealth <= 0) {
-      setCombatEnded(true);
-      setCombatResult("victory");
-      return;
+      // Check if integrity is depleted
+      if (newIntegrityValue <= 0) {
+        setCombatEnded(true);
+        setCombatResult("defeat");
+        setIsProcessingRound(false);
+        return;
+      }
     }
 
-    setIsPlayerTurn(false);
-    setTimeout(() => handleEnemyTurn(), 1000);
-  };
-
-  const handleEnemyTurn = () => {
-    if (combatEnded) return;
-
-    if (enemyStunned) {
-      setCombatLog((prev) => [
-        ...prev,
-        `${currentEnemy.name} is stunned and cannot attack!`,
-      ]);
-      setEnemyStunned(false); // Reset stun after it's applied
-      setIsPlayerTurn(true);
-      setRound((prev) => prev + 1); // Increment round only after enemy turn logic
-      setIsProcessingRound(false); // End processing for this round
-      return;
-    }
-
-    const enemyDamage = Math.floor(
-      Math.random() * (currentEnemy.attack / 2) + currentEnemy.attack / 2,
+    // Player attacks
+    const newHealth = Math.max(
+      0,
+      currentEnemyHealth - playerDamage - poisonDamageDealt,
     );
-    const integrityDamage = Math.max(0, enemyDamage - bastionStats.defense);
-    const newIntegrityValue = Math.max(0, currentIntegrity - integrityDamage);
+    currentEnemyHealth = newHealth;
 
-    setIntegrityDamageIndicator({ amount: integrityDamage, visible: true });
+    // Show damage indicator on enemy health bar
+    setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt, visible: true });
     setTimeout(() => {
-      setIntegrityDamageIndicator({ amount: 0, visible: false });
+      setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
 
-    setCurrentIntegrity(newIntegrityValue);
+    setCurrentEnemy((prev) =>
+      prev ? { ...prev, currentHealth: newHealth } : null,
+    );
 
-    if (newIntegrityValue <= 0) {
+    // Check battle outcome
+    if (newHealth <= 0) {
       setCombatEnded(true);
-      setCombatResult("defeat");
-      return;
+      setCombatResult("victory");
+      setIsProcessingRound(false);
+    } else {
+      // Next round - reset items for this round but keep total combat tracking
+      setRound((prev) => prev + 1);
+      setUsedItemsInRound(new Set());
+      setIsProcessingRound(false);
     }
-
-    setIsPlayerTurn(true);
-    setRound((prev) => prev + 1); // Increment round only after enemy turn logic
-    setIsProcessingRound(false); // End processing for this round
-  };
-
-  const handleDefend = () => {
-    if (!isPlayerTurn || combatEnded) return;
-    setCombatLog((prev) => [...prev, "You brace for impact."]);
-    setIsPlayerTurn(false);
-    setTimeout(() => handleEnemyTurn(), 1000);
-  };
-
-  const handleVictory = () => {
-    setCombatEnded(true);
-    setCombatResult("victory");
-  };
-
-  const handleDefeat = () => {
-    setCombatEnded(true);
-    setCombatResult("defeat");
   };
 
   if (!enemy) return null;
 
-  const enemyHealthPercentage = currentEnemy
+  const healthPercentage = currentEnemy
     ? (currentEnemy.currentHealth / currentEnemy.maxHealth) * 100
     : 0;
 
@@ -426,9 +380,6 @@ export default function CombatDialog({
                     {NIGHTSHADE_BOW_OWNED && usedItemsInCombat.includes("poison_arrows") && (
                       <span className="text-green-600" role="img" aria-label="poison-icon">▲</span>
                     )}
-                    {enemyStunned && (
-                      <span className="text-yellow-500" role="img" aria-label="stun-icon">⚡</span>
-                    )}
                   </div>
                   <span>
                     {currentEnemy?.currentHealth}/{currentEnemy?.maxHealth}{" "}
@@ -436,7 +387,7 @@ export default function CombatDialog({
                 </div>
                 <div className="relative">
                   <Progress
-                    value={enemyHealthPercentage}
+                    value={healthPercentage}
                     className="h-3 mt-2 [&>div]:bg-red-900" // Darker red for enemy health
                   />
                   {enemyDamageIndicator.visible && (
@@ -506,7 +457,7 @@ export default function CombatDialog({
                       .map((item) => {
                         const tooltipConfig = combatItemTooltips[item.id];
                         const tooltipContent = tooltipConfig ? tooltipConfig.getContent(gameState) : '';
-                        const availabilityText = item.id === "poison_arrows"
+                        const availabilityText = item.id === "poison_arrows" 
                           ? `Available: ${poisonArrowsUsedInCombat < 1 ? "1/1" : "0/1"}`
                           : item.id === "ember_bomb"
                             ? `Available: ${MAX_EMBER_BOMBS - emberBombsUsed}/${MAX_EMBER_BOMBS}`
@@ -547,68 +498,7 @@ export default function CombatDialog({
                 </div>
               )}
 
-              {/* Action Buttons */}
-              <div className="border-t pt-3">
-                <div className="grid grid-cols-2 gap-2">
-                  <Button
-                    onClick={handleAttack}
-                    disabled={!isPlayerTurn || combatEnded}
-                    className="w-full"
-                  >
-                    Attack
-                  </Button>
-                  <Button
-                    onClick={handleDefend}
-                    disabled={!isPlayerTurn || combatEnded}
-                    variant="outline"
-                    className="w-full"
-                  >
-                    Defend
-                  </Button>
-                  {fellowship?.restless_knight && (
-                    <TooltipProvider>
-                      <Tooltip>
-                        <TooltipTrigger asChild>
-                          <Button
-                            onClick={handleCrushingStrike}
-                            disabled={
-                              !isPlayerTurn || combatEnded || crushingStrikeUsed
-                            }
-                            variant="destructive"
-                            className="w-full"
-                          >
-                            ⚔️ Crushing Strike {crushingStrikeUsed && "(Used)"}
-                          </Button>
-                        </TooltipTrigger>
-                        <TooltipContent>
-                          <div className="text-xs">
-                            <div className="font-bold">Crushing Strike</div>
-                            <div>Deals 25 damage</div>
-                            <div className="text-yellow-400">
-                              Stuns enemy for 1 round
-                            </div>
-                            <div className="text-muted-foreground">
-                              Once per battle
-                            </div>
-                          </div>
-                        </TooltipContent>
-                      </Tooltip>
-                    </TooltipProvider>
-                  )}
-                </div>
-              </div>
-
-              {/* Combat Log */}
-              <div className="border-t pt-3">
-                <div className="text-sm font-medium mb-2">Combat Log</div>
-                <div className="h-24 overflow-y-auto text-xs bg-gray-800 bg-opacity-30 p-2 rounded">
-                  {combatLog.map((entry, index) => (
-                    <p key={index}>{entry}</p>
-                  ))}
-                </div>
-              </div>
-
-              {/* End Fight Button */}
+              {/* Fight Button */}
               <div className="border-t pt-3">
                 {combatEnded ? (
                   <Button
@@ -621,16 +511,16 @@ export default function CombatDialog({
                   </Button>
                 ) : (
                   <Button
-                    onClick={() => setIsProcessingRound(true)} // Placeholder for end of round processing
+                    onClick={handleFight}
                     disabled={
                       isProcessingRound ||
                       (currentEnemy?.currentHealth || 0) <= 0
                     }
                     className="w-full"
                     variant="outline"
-                    button_id="combat-next-round"
+                    button_id="combat-fight"
                   >
-                    {isProcessingRound ? "Processing..." : "End Turn"}
+                    {isProcessingRound ? "Fighting..." : "Fight"}
                   </Button>
                 )}
               </div>
