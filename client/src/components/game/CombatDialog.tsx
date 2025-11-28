@@ -423,7 +423,7 @@ export default function CombatDialog({
                       <span className="text-green-600" role="img" aria-label="poison-icon">▲</span>
                     )}
                     {enemyStunnedRounds > 0 && (
-                      <span className="text-yellow-600" role="img" aria-label="stun-icon">⚡</span>
+                      <span className="text-yellow-600" role="img" aria-label="stun-icon">◈</span>
                     )}
                   </div>
                   <span>
