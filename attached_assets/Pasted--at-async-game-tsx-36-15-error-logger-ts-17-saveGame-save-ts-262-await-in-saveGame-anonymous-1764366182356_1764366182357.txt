@@ -1,0 +1,48 @@
+    at async game.tsx:36:15
+error @ logger.ts:17
+saveGame @ save.ts:262
+await in saveGame
+(anonymous) @ game.tsx:36
+setTimeout
+initializeGame @ game.tsx:34
+await in initializeGame
+(anonymous) @ game.tsx:56
+commitHookEffectListMount @ chunk-276SZO74.js?v=ecbd7766:16915
+commitPassiveMountOnFiber @ chunk-276SZO74.js?v=ecbd7766:18156
+commitPassiveMountEffects_complete @ chunk-276SZO74.js?v=ecbd7766:18129
+commitPassiveMountEffects_begin @ chunk-276SZO74.js?v=ecbd7766:18119
+commitPassiveMountEffects @ chunk-276SZO74.js?v=ecbd7766:18109
+flushPassiveEffectsImpl @ chunk-276SZO74.js?v=ecbd7766:19490
+flushPassiveEffects @ chunk-276SZO74.js?v=ecbd7766:19447
+commitRootImpl @ chunk-276SZO74.js?v=ecbd7766:19416
+commitRoot @ chunk-276SZO74.js?v=ecbd7766:19277
+performSyncWorkOnRoot @ chunk-276SZO74.js?v=ecbd7766:18895
+flushSyncCallbacks @ chunk-276SZO74.js?v=ecbd7766:9119
+flushSync @ chunk-276SZO74.js?v=ecbd7766:18959
+scheduleRefresh @ chunk-276SZO74.js?v=ecbd7766:20004
+(anonymous) @ @react-refresh:267
+performReactRefresh @ @react-refresh:256
+(anonymous) @ @react-refresh:677
+setTimeout
+(anonymous) @ @react-refresh:666
+validateRefreshBoundaryAndEnqueueUpdate @ @react-refresh:728
+(anonymous) @ ItemProgressChart.tsx:26
+(anonymous) @ client:34
+(anonymous) @ client:218
+(anonymous) @ client:193
+queueUpdate @ client:193
+await in queueUpdate
+(anonymous) @ client:642
+handleMessage @ client:640
+(anonymous) @ client:550Understand this error
+logger.ts:7 [GAME] Successfully saved claimed referrals to cloud
+logger.ts:7 [LOOP] ⏸️ Pausing game loop (dialog open or manually paused)
+eventsChoices.ts:1387 [MASTER ARCHER] Effect returning: {currentBlessings: {…}, resultBlessings: {…}, hasSharpAim: true}currentBlessings: ashen_embrace: trueashen_embrace_enhanced: falsedagons_gift: truedagons_gift_enhanced: falseflames_touch: trueflames_touch_enhanced: falseforests_grace: trueravens_mark: trueravens_mark_enhanced: falsesharp_aim: false[[Prototype]]: ObjecthasSharpAim: trueresultBlessings: ashen_embrace: trueashen_embrace_enhanced: falsedagons_gift: truedagons_gift_enhanced: falseflames_touch: trueflames_touch_enhanced: falseforests_grace: trueravens_mark: trueravens_mark_enhanced: falsesharp_aim: true[[Prototype]]: Object[[Prototype]]: Object
+logger.ts:7 [STATE] After applying event choice: {eventId: 'masterArcher', choiceId: 'acceptArcherHelp', blessingsInChanges: {…}, blessingsAfterMerge: {…}, hasBlessingsInChanges: true}blessingsAfterMerge: ashen_embrace: trueashen_embrace_enhanced: falsedagons_gift: truedagons_gift_enhanced: falseflames_touch: trueflames_touch_enhanced: falseforests_grace: trueravens_mark: trueravens_mark_enhanced: falsesharp_aim: false[[Prototype]]: ObjectblessingsInChanges: ashen_embrace: trueashen_embrace_enhanced: falsedagons_gift: truedagons_gift_enhanced: falseflames_touch: trueflames_touch_enhanced: falseforests_grace: trueravens_mark: trueravens_mark_enhanced: falsesharp_aim: true[[Prototype]]: ObjectchoiceId: "acceptArcherHelp"eventId: "masterArcher"hasBlessingsInChanges: true[[Prototype]]: Object
+logger.ts:7 [LOOP] ▶️ Resuming game loop from pause
+logger.ts:7 [LOOP] ⏸️ Pausing game loop (dialog open or manually paused)
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: true, isDialogOpen: true, manuallyPaused: false, eventDialogOpen: true, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: true, isDialogOpen: true, manuallyPaused: false, eventDialogOpen: true, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: true, isDialogOpen: true, manuallyPaused: false, eventDialogOpen: true, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: true, isDialogOpen: true, manuallyPaused: false, eventDialogOpen: true, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: true, isDialogOpen: true, manuallyPaused: false, eventDialogOpen: true, combatDialogOpen: fa
