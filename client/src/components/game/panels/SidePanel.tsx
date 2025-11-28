@@ -161,6 +161,17 @@ export default function SidePanel() {
       ) : undefined,
     }));
 
+  // Dynamically generate fellowship items from state
+  const fellowshipItems = Object.entries(gameState.fellowship || {})
+    .filter(([key, value]) => value === true)
+    .map(([key, value]) => ({
+      id: key,
+      label: clothingEffects[key]?.name || capitalizeWords(key),
+      value: 1,
+      testId: `fellowship-${key}`,
+      visible: true,
+    }));
+
   // Dynamically generate schematic items from state
   const schematicItems = Object.entries(gameState.schematics || {})
     .filter(([key, value]) => {
@@ -891,7 +902,7 @@ export default function SidePanel() {
           sectionName,
         );
       case "estate":
-        return ["resources", "books"].includes(sectionName);
+        return ["resources", "books", "fellowship"].includes(sectionName);
       case "bastion":
         return ["resources", "fortifications", "bastion"].includes(sectionName);
 
@@ -1001,6 +1012,9 @@ export default function SidePanel() {
           )}
           {bookItems.length > 0 && shouldShowSection("books") && (
             <SidePanelSection title="Books" items={bookItems} />
+          )}
+          {fellowshipItems.length > 0 && shouldShowSection("fellowship") && (
+            <SidePanelSection title="Fellowship" items={fellowshipItems} />
           )}
         </div>
       </div>

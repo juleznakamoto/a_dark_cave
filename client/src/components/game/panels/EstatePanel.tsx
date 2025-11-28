@@ -344,8 +344,8 @@ export default function EstatePanel() {
           </div>
         </div>
 
-        {/* Fellowship Section */}
-        {Object.keys(state.fellowship || {}).some(
+        {/* Fellowship section removed - now in SidePanel */}
+        {false && Object.keys(state.fellowship || {}).some(
           (fellowId) => state.fellowship[fellowId],
         ) && (
           <div className="space-y-2 pt-1">
