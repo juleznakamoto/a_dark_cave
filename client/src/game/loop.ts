@@ -40,9 +40,12 @@ let isInactive = false;
 let lastGameLoadTime = 0; // Track when game was last loaded
 
 export function startGameLoop() {
-  if (gameLoopId) return; // Already running
+  if (gameLoopId) {
+    logger.log("[LOOP] ⚠️ Game loop already running, skipping start");
+    return; // Already running
+  }
 
-  logger.log("[LOOP] Starting game loop");
+  logger.log("[LOOP] 🚀 Starting game loop");
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
@@ -51,6 +54,9 @@ export function startGameLoop() {
   tickAccumulator = 0;
   if (gameStartTime === 0) {
     gameStartTime = now; // Set game start time only once
+    logger.log("[LOOP] 🕐 Game start time initialized:", gameStartTime);
+  } else {
+    logger.log("[LOOP] 🕐 Game start time already set:", gameStartTime);
   }
 
   // Initialize inactivity tracking
@@ -199,10 +205,27 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen;
     const isPaused = state.isPaused || isDialogOpen;
 
+    // Log pause state every 5 seconds
+    const timeSinceStart = timestamp - gameStartTime;
+    if (Math.floor(timeSinceStart / 5000) !== Math.floor((timeSinceStart - deltaTime) / 5000)) {
+      logger.log("[LOOP] 🔄 Loop running:", {
+        isPaused,
+        isDialogOpen,
+        manuallyPaused: state.isPaused,
+        eventDialogOpen: state.eventDialog.isOpen,
+        combatDialogOpen: state.combatDialog.isOpen,
+        authDialogOpen: state.authDialogOpen,
+        shopDialogOpen: state.shopDialogOpen,
+        idleModeDialogOpen: state.idleModeDialog.isOpen,
+        timeSinceStart: Math.round(timeSinceStart / 1000) + 's'
+      });
+    }
+
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && !state.isMuted) {
         // Check if this is the first frame of pause
+        logger.log("[LOOP] ⏸️ Pausing game loop (dialog open or manually paused)");
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
@@ -219,6 +242,7 @@ export function startGameLoop() {
 
     // Resume sounds when exiting pause state
     if (state.isPausedPreviously) {
+      logger.log("[LOOP] ▶️ Resuming game loop from pause");
       audioManager.resumeSounds();
       useGameStore.setState({ isPausedPreviously: false });
     }
@@ -354,18 +378,29 @@ export function startGameLoop() {
     gameLoopId = requestAnimationFrame(tick);
   }
 
+  logger.log("[LOOP] 🎬 First animation frame requested, loop ID:", gameLoopId);
   gameLoopId = requestAnimationFrame(tick);
+  logger.log("[LOOP] ✅ Game loop initialized successfully");
 }
 
 function handleInactivity() {
   logger.log("[INACTIVITY] 🛑 Stopping game due to inactivity");
+  logger.log("[INACTIVITY] Current loop state:", {
+    gameLoopId,
+    isInactive,
+    lastUserActivity: new Date(lastUserActivity).toISOString(),
+    timeSinceActivity: Math.round((Date.now() - lastUserActivity) / 1000) + 's'
+  });
   isInactive = true;
 
   // Stop the game loop
   if (gameLoopId) {
+    logger.log("[INACTIVITY] Canceling animation frame:", gameLoopId);
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
     logger.log("[INACTIVITY] Game loop stopped");
+  } else {
+    logger.log("[INACTIVITY] ⚠️ No game loop to stop (already stopped)");
   }
 
   // Stop inactivity checker
@@ -397,11 +432,20 @@ export function setLastGameLoadTime(time: number) {
 }
 
 export function stopGameLoop() {
-  logger.log("[LOOP] Stopping game loop");
+  logger.log("[LOOP] 🛑 Stopping game loop");
+  logger.log("[LOOP] Current state:", {
+    gameLoopId,
+    isInactive,
+    isGameLoopActive: useGameStore.getState().isGameLoopActive
+  });
 
   if (gameLoopId) {
+    logger.log("[LOOP] Canceling animation frame:", gameLoopId);
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
+    logger.log("[LOOP] ✅ Game loop stopped successfully");
+  } else {
+    logger.log("[LOOP] ⚠️ No game loop to stop (already stopped)");
   }
   if (loopProgressTimeoutId) {
     clearTimeout(loopProgressTimeoutId);
