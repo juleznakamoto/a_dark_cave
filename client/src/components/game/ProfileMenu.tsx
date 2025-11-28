@@ -305,6 +305,13 @@ export default function ProfileMenu() {
               </DropdownMenuItem>
             );
           })}
+          <DropdownMenuSeparator />
+          <DropdownMenuItem className="cursor-pointer">
+            <div className="flex items-center justify-between w-full">
+              <span>TEST ROW - Menu visible?</span>
+              <span className="text-xs text-muted-foreground">✓</span>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
