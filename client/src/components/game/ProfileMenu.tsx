@@ -306,6 +306,29 @@ export default function ProfileMenu() {
               </DropdownMenuItem>
             );
           })}
+          <DropdownMenuItem
+            onClick={() => {
+              if (currentUser) {
+                handleSocialFollow('instagram', 'https://www.instagram.com/a_dark_cave/', 100, 'Instagram');
+              }
+            }}
+            disabled={!currentUser}
+            className={!currentUser ? "opacity-50 cursor-not-allowed" : "cursor-pointer"}
+          >
+            <div className="flex items-center justify-between w-full">
+              <div className="flex items-center gap-1">
+                <span>Follow HARDCODED&nbsp;</span>
+                <img
+                  src="/camera.png"
+                  alt="Instagram"
+                  className="w-3 h-3 opacity-90"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="font-semibold">&nbsp;+100 Gold</span>
+              </div>
+            </div>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
