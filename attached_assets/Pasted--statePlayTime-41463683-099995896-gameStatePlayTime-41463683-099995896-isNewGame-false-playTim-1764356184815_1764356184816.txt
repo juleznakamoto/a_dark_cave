@@ -1,0 +1,18 @@
+{statePlayTime: 41463683.099995896, gameStatePlayTime: 41463683.099995896, isNewGame: false, playTimeToSave: 41463683.099995896, playTimeMatch: true}
+logger.ts:7 [AUTOSAVE] 📊 Calling saveGame with: {playTimeToSave: 41463683.099995896, gameStateHasPlayTime: true}
+logger.ts:7 [SAVE] 🔵 Starting save operation: {isAutosave: 41463683.099995896, inputPlayTime: 41463683.099995896, inputPlayTimeMinutes: '691.06'}
+logger.ts:7 [SAVE] 🔍 After sanitization: {sanitizedPlayTime: 41463683.099995896, originalPlayTime: 41463683.099995896, playTimesMatch: true}
+logger.ts:7 [SAVE] 📦 Creating SaveData object: {timestamp: 1764356161993, playTime: 41463683.099995896, playTimeMinutes: '691.06', gameStatePlayTime: 41463683.099995896, hasCooldowns: true, …}
+logger.ts:7 [SAVE] 💾 SaveData object created: {saveDataPlayTime: 41463683.099995896, saveDataGameStatePlayTime: 41463683.099995896, saveDataTimestamp: 1764356161993}
+logger.ts:7 [SAVE] ✅ Verified IndexedDB save: {savedPlayTime: 41463683.099995896, savedGameStatePlayTime: 41463683.099995896, savedTimestamp: 1764356161993}
+logger.ts:7 [SAVE] ☁️ Starting cloud save... {diffSize: 9, diffKeys: Array(9), hasFellowship: false, fellowshipValue: undefined, lastCloudFellowship: undefined, …}currentFellowship: undefineddiffKeys: Array(9)0: "resources"1: "weapons"2: "relics"3: "story"4: "blessings"5: "clickAnalytics"6: "loopProgress"7: "playTime"8: "lastSaved"length: 9[[Prototype]]: Array(0)diffSize: 9fellowshipValue: undefinedhasFellowship: falselastCloudFellowship: undefinedplayTime: 41463683.099995896playTimeMinutes: "691.06"[[Prototype]]: Object
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 41463683.099995896, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(9), hasPlayTime: true}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: true, clickAnalyticsKeys: Array(3), diffSize: 6243, playTime: 41463683.099995896, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 225, deltaTime: 258, currentCooldowns: Array(91)}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 75, deltaTime: 250, currentCooldowns: Array(91)}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, ti
