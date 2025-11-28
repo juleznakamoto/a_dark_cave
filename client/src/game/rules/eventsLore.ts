@@ -1,4 +1,3 @@
-
 import { GameEvent, calculateSuccessChance } from "./events";
 import { GameState } from "@shared/schema";
 
@@ -6,8 +5,7 @@ export const loreEvents: Record<string, GameEvent> = {
   restlessKnight: {
     id: "restlessKnight",
     condition: (state: GameState) =>
-      state.buildings.stoneHut >= 4 &&
-      !state.story.seen.restlessKnightSuccess,
+      state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
       return state.story.seen.restlessKnightFailed ? 60 : 30;
@@ -15,7 +13,7 @@ export const loreEvents: Record<string, GameEvent> = {
     title: "The Restless Knight",
     message: (state: GameState) =>
       state.story.seen.restlessKnightFailed
-        ? "Again, a knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+        ? "Again, the knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
         : "A knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
     triggered: false,
     priority: 3,
@@ -119,7 +117,8 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
-    timeProbability: (state: GameState) => state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
+    timeProbability: (state: GameState) =>
+      state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
@@ -151,7 +150,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-            "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'"
+              "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
           };
         },
       },
@@ -179,7 +178,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-            "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. Scholars who gathered there to study the past tell of an advanced civilization far beyond our understanding. Yet something brought their world to ruin.'",
+              "The knight shares his discovery: 'High in the mountains lies a monastery carved into the cliffs. The scholars there who study the past speak of a civilization far beyond our understanding. Their craft was so advanced it would seem like magic to us. Yet something brought their world to ruin.'",
           };
         },
       },
