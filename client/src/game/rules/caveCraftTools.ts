@@ -15,7 +15,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 10,
     },
     effects: {
-      "resources.torch": 1,
+      "resources.torch": "random(1,1)",
       "story.seen.actionCraftTorch": true,
     },
     unlocks: ["exploreDeeper"],
@@ -33,7 +33,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 20,
     },
     effects: {
-      "resources.torch": 2,
+      "resources.torch": "random(2,2)",
       "story.seen.actionCraftTorches": true,
     },
     cooldown: 3.0,
@@ -50,7 +50,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 30,
     },
     effects: {
-      "resources.torch": 3,
+      "resources.torch": "random(3,3)",
       "story.seen.actionCraftTorches3": true,
     },
     cooldown: 3.5,
@@ -67,7 +67,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 40,
     },
     effects: {
-      "resources.torch": 4,
+      "resources.torch": "random(4,4)",
       "story.seen.actionCraftTorches4": true,
     },
     cooldown: 4,
@@ -84,7 +84,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 50,
     },
     effects: {
-      "resources.torch": 5,
+      "resources.torch": "random(5,5)",
       "story.seen.actionCraftTorches5": true,
     },
     cooldown: 4.5,
@@ -100,7 +100,7 @@ export const caveCraftTools: Record<string, Action> = {
       "resources.wood": 100,
     },
     effects: {
-      "resources.torch": 10,
+      "resources.torch": "random(10,10)",
       "story.seen.actionCraftTorches10": true,
     },
     cooldown: 5.0,
