@@ -374,21 +374,11 @@ export function canExecuteAction(actionId: string, state: GameState): boolean {
         state,
       );
       if ((current || 0) < adjustedCost) {
-        if (actionId === "buildStoneHut") {
-          logger.log(
-            `[canExecuteAction] buildStoneHut blocked - ${path}: has ${current || 0}, needs ${adjustedCost}`,
-          );
-        }
         return false;
       }
     } else {
       // For other requirements, use exact equality check
       if (current !== requiredAmount) {
-        if (actionId === "buildStoneHut") {
-          logger.log(
-            `[canExecuteAction] buildStoneHut blocked - ${path}: has ${current}, needs ${requiredAmount} (exact match required)`,
-          );
-        }
         return false;
       }
     }
