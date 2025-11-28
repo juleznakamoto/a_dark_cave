@@ -111,7 +111,7 @@ export const storyEvents: Record<string, GameEvent> = {
     choices: [
       {
         id: "unpack_it",
-        label: "Unpack it",
+        label: "Unpack",
         effect: (state: GameState) => {
           return {
             books: {

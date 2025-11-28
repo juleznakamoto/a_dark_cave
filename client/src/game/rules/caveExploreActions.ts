@@ -170,7 +170,7 @@ export const caveExploreActions: Record<string, Action> = {
     show_when: {},
     cost: {},
     effects: {
-      "resources.wood": "random(5,10)",
+      "resources.wood": "random(6,12)",
       "story.seen.hasWood": true,
       "story.seen.firstWoodGathered": true,
       "relics.old_trinket": {
