@@ -8,7 +8,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.buildings.stoneHut >= 4 && !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 60 : 30;
+      return state.story.seen.restlessKnightFailed ? 0.060 : 0.030;
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
@@ -118,13 +118,13 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
+      state.story.seen.restlessKnightMountainsFailed ? 0.060 : 0.030,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "payGold",
@@ -210,13 +210,13 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightCoast,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightCoastFailed ? 60 : 30,
+      state.story.seen.restlessKnightCoastFailed ? 0.060 : 0.030,
     title: "Tales from the Shore",
     message:
       "The knight appears once more, 'I have traveled to a city on the shore of an ocean,' he says. 'What I found there defies belief. I will share this knowledge, for a price.'",
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "payGold",
@@ -270,7 +270,7 @@ export const loreEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-            "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
+              "Content for the meal, the knight shares: 'On the ocean shore I found a dead city, half-claimed by the waves. Among its ruins lie vast metal vessels, their rusted hulls still defying time. The ancients once ruled the seas with these giants, now stranded and silent on the sand.'",
           };
         },
       },
@@ -341,17 +341,17 @@ export const loreEvents: Record<string, GameEvent> = {
     id: "restlessKnightDesert",
     condition: (state: GameState) =>
       state.buildings.bastion >= 1 &&
-      state.story.seen.restlessKnightCoast &&
-      !state.story.seen.restlessKnightDesert,
+      state.buildings.darkEstate >= 1 &&
+      state.story.seen.restlessKnightCoast,
     triggerType: "resource",
     timeProbability: (state: GameState) =>
-      state.story.seen.restlessKnightDesertFailed ? 60 : 30,
+      state.story.seen.restlessKnightDesertFailed ? 0.060 : 0.030,
     title: "The Knight's Final Journey",
     message:
-      "The knight returns, 'I traveled far south to a vast desert,' he begins. 'There I met a man dedicated to recovering the lost technology of the ancients. He showed me wonders, devices that once were embedded within the body itself, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your bastion could use a veteran blade. I offer my service in combat, if you will have me.'",
+      "The knight returns, 'I traveled far south to a vast desert. There I met a man devoted to recovering the lost technology of the ancients. He showed me devices once embedded in the body, enhancing senses beyond natural limits. The ancients were not merely human.' He pauses, 'I have traveled enough. Your could use a veteran blade. I offer my service in combat, if you accept.'",
     triggered: false,
     priority: 3,
-    repeatable: false,
+    repeatable: true,
     choices: [
       {
         id: "payGold",
@@ -422,15 +422,15 @@ export const loreEvents: Record<string, GameEvent> = {
         label: "Convince him",
         relevant_stats: ["knowledge"],
         success_chance: (state: GameState) => {
-          return calculateSuccessChance(state, 0.0, {
+          return calculateSuccessChance(state, 0.05, {
             type: "knowledge",
-            multiplier: 0.01,
+            multiplier: 0.005,
           });
         },
         effect: (state: GameState) => {
           const successChance = calculateSuccessChance(state, 0.05, {
             type: "knowledge",
-            multiplier: 0.01,
+            multiplier: 0.005,
           });
 
           if (Math.random() < successChance) {
@@ -447,7 +447,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 restless_knight: true,
               },
               _logMessage:
-                "You speak of shared purpose and the value of knowledge over coin. The knight's eyes brighten. 'You understand what I have seen. I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The Restless Knight has joined your fellowship.",
+                "'Your purpose seems noble, the knight’s eyes brighten. 'I would be honored to stand with you.' He removes his weathered helm, revealing a scarred but determined face. The restless knight has joined your fellowship.",
             };
           } else {
             return {
@@ -459,7 +459,7 @@ export const loreEvents: Record<string, GameEvent> = {
                 },
               },
               _logMessage:
-                "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey.' He departs, leaving you to wonder if he will return.",
+                "The knight listens but shakes his head. 'Words alone cannot sustain a warrior. I must continue my journey, then, for now.', he says, turning away and departing.",
             };
           }
         },
@@ -473,11 +473,11 @@ export const loreEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                restlessKnightDesert: true,
+                  restlessKnightDesertFailed: true,
               },
             },
             _logMessage:
-              "You decline his offer. The knight nods with understanding. 'I respect your decision. May your bastion stand strong.' He turns and walks toward the horizon, perhaps seeking another place to call home.",
+              "You decline his offer. The knight nods with understanding. 'I respect your decision. I must continue my journey, then, for now.', he says, turning away and departing.",
           };
         },
       },

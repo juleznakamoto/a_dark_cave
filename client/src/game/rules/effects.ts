@@ -1110,11 +1110,9 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
     id: "restless_knight",
     name: "Restless Knight",
     description:
-      "A weathered veteran who has seen the remnants of the old world. Grants Crushing Strike ability in combat - deals 25 damage and stuns the enemy for 1 round (once per battle).",
+      "Veteran of combat who has seen the remnants of the old world. Grants Crushing Strike ability in combat.",
     bonuses: {
-      generalBonuses: {
-        strength: 8,
-      },
+      generalBonuses: {},
     },
   },
 };
