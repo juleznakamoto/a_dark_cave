@@ -212,6 +212,12 @@ export async function saveGame(
 
     const db = await getDB();
 
+    logger.log(`[SAVE] 🔍 Before sanitization:`, {
+      hasFellowship: 'fellowship' in gameState,
+      fellowship: gameState.fellowship,
+      fellowshipKeys: gameState.fellowship ? Object.keys(gameState.fellowship) : [],
+    });
+
     // Deep clone and sanitize the game state to remove non-serializable data
     const sanitizedState = JSON.parse(JSON.stringify(gameState));
 

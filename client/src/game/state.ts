@@ -1074,6 +1074,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
             ...prevState.fellowship,
             ...updatedChanges.fellowship,
           };
+          console.log('[STATE] Fellowship merged:', {
+            prevFellowship: prevState.fellowship,
+            updateFellowship: updatedChanges.fellowship,
+            newFellowship: newState.fellowship,
+          });
         }
 
         return newState;
