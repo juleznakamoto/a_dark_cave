@@ -17,7 +17,7 @@ import {
   getTotalCraftingCostReduction,
   getTotalBuildingCostReduction,
 } from "@/game/rules/effectsCalculation";
-import { bookEffects } from "@/game/rules/effects";
+import { bookEffects, fellowshipEffects } from "@/game/rules/effects";
 import BuildingProgressChart from "./BuildingProgressChart";
 import ItemProgressChart from "./ItemProgressChart";
 import { gameStateSchema } from "@shared/schema";
@@ -166,16 +166,16 @@ export default function SidePanel() {
     .filter(([key, value]) => value === true)
     .map(([key, value]) => ({
       id: key,
-      label: clothingEffects[key]?.name || capitalizeWords(key),
+      label: fellowshipEffects[key]?.name || capitalizeWords(key),
       value: 1,
       testId: `fellowship-${key}`,
       visible: true,
-      tooltip: clothingEffects[key] ? (
+      tooltip: fellowshipEffects[key] ? (
         <div>
-          <div className="font-bold">{clothingEffects[key].name}</div>
-          {clothingEffects[key].description && (
+          <div className="font-bold">{fellowshipEffects[key].name}</div>
+          {fellowshipEffects[key].description && (
             <div className="text-gray-400 mb-1">
-              {clothingEffects[key].description}
+              {fellowshipEffects[key].description}
             </div>
           )}
         </div>
