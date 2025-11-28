@@ -219,7 +219,7 @@ export default function SidePanelSection({
       }
     };
 
-    // Check if this is a relic, weapon, tool, blessing, or schematic that has effect information
+    // Check if this is a relic, weapon, tool, blessing, fellowship, or schematic that has effect information
     const relicEffect = clothingEffects[item.id];
     const weaponEffect = weaponEffects[item.id];
     const toolEffect = toolEffects[item.id];
@@ -320,6 +320,7 @@ export default function SidePanelSection({
           "Fortifications",
           "Blessings",
           "Schematics",
+          "Fellowship",
         ].includes(title) && (
           <span
             className={`font-mono ${
@@ -346,7 +347,8 @@ export default function SidePanelSection({
         title === "Weapons" ||
         title === "Clothing" ||
         title === "Schematics" ||
-        title === "Blessings")
+        title === "Blessings" ||
+        title === "Fellowship")
     ) {
       return (
         <TooltipProvider key={item.id}>
@@ -377,7 +379,7 @@ export default function SidePanelSection({
                 item.id,
                 title === "Weapons"
                   ? "weapon"
-                  : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics"
+                  : title === "Blessings" || title === "Clothing" || title === "Relics" || title === "Schematics" || title === "Fellowship"
                   ? "blessing"
                   : "tool"
               )}
@@ -422,6 +424,7 @@ export default function SidePanelSection({
                 "Blessings",
                 "Schematics",
                 "Books",
+                "Fellowship",
                 "Stats",
               ].includes(title) && (
                 <span

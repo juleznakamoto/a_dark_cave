@@ -170,6 +170,16 @@ export default function SidePanel() {
       value: 1,
       testId: `fellowship-${key}`,
       visible: true,
+      tooltip: clothingEffects[key] ? (
+        <div>
+          <div className="font-bold">{clothingEffects[key].name}</div>
+          {clothingEffects[key].description && (
+            <div className="text-gray-400 mb-1">
+              {clothingEffects[key].description}
+            </div>
+          )}
+        </div>
+      ) : undefined,
     }));
 
   // Dynamically generate schematic items from state
