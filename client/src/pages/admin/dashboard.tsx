@@ -64,6 +64,7 @@ const useQuery = (options) => {
 interface ButtonClickData {
   user_id: string;
   clicks: Record<string, number>;
+  timestamp: string; // Added timestamp for filtering by date
 }
 
 interface GameSaveData {
@@ -212,13 +213,13 @@ export default function AdminDashboard() {
   const loadData = async () => {
     try {
       const response = await fetch(`/api/admin/data?env=${environment}`);
-      
+
       if (!response.ok) {
         const errorText = await response.text();
         logger.error('Admin data fetch failed:', response.status, errorText);
         throw new Error(`Failed to fetch admin data: ${response.status}`);
       }
-      
+
       const data = await response.json();
 
       // Set the data
@@ -446,7 +447,7 @@ export default function AdminDashboard() {
   const getPurchasesByPlaytime = () => {
     // Filter out free purchases
     const paidPurchases = purchases.filter(p => p.price_paid > 0);
-    
+
     // Get playtime for each purchase by matching user_id to game saves
     const purchasesWithPlaytime = paidPurchases.map(purchase => {
       const userSave = gameSaves.find(save => save.user_id === purchase.user_id);
@@ -606,7 +607,7 @@ export default function AdminDashboard() {
             const bucketData = buckets.get(bucket)!;
             Object.entries(clicksAtTime as Record<string, number>).forEach(([button, count]) => {
               const cleanButton = cleanButtonName(button);
-              
+
               // Only include if selectedClickTypes is empty (all) or contains this button
               if (selectedClickTypes.size === 0 || selectedClickTypes.has(cleanButton)) {
                 bucketData[cleanButton] = (bucketData[cleanButton] || 0) + count;
@@ -890,7 +891,7 @@ export default function AdminDashboard() {
     // Get users with click data (full UUIDs)
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-    
+
     const clickUserSamples = Array.from(usersWithClicks).slice(0, 5);
     logger.log('📊 Users with clicks:', usersWithClicks.size, 'Sample IDs:', clickUserSamples);
     logger.log('📊 Click user ID lengths:', clickUserSamples.map(id => id.length));
@@ -914,10 +915,10 @@ export default function AdminDashboard() {
     logger.log('📊 Sample save:', { user_id: saveSamples[1]?.user_id, updated_at: saveSamples[1]?.updated_at });
     logger.log('📊 Sample save:', { user_id: saveSamples[2]?.user_id, updated_at: saveSamples[2]?.updated_at });
     logger.log('📊 Game save user ID lengths:', saveSamples.map(s => s?.user_id?.length));
-    
+
     const allSaveUserIds = gameSaves.map(s => s.user_id);
     logger.log('📊 First 10 game save user IDs:', allSaveUserIds.slice(0, 10));
-    
+
     // Check for overlap
     const clickUsersArray = Array.from(usersWithClicks);
     const overlappingUsers = clickUsersArray.filter(id => allSaveUserIds.includes(id));
@@ -931,21 +932,25 @@ export default function AdminDashboard() {
     // ONLY iterate through users who have clicks
     let churnedCount = 0;
     let notChurnedCount = 0;
-    
+
     logger.log('📊 Starting churn check for', usersWithClicks.size, 'users with clicks');
-    
+
     usersWithClicks.forEach((userId) => {
       // Get last activity for this user (if they have any game saves)
       const lastActivity = userLastActivity.get(userId);
-      
+
       if (!lastActivity) {
         // User has clicks but no game save - skip them
         logger.log('⚠️ User has clicks but no game save:', userId.substring(0, 8));
         return;
       }
-      
+
       const isBeforeCutoff = lastActivity < cutoffDate;
       const daysSince = differenceInDays(now, lastActivity);
+
+      // Check if they completed the game
+      const save = gameSaves.find(s => s.user_id === userId);
+      const hasCompletedGame = save?.game_state?.events?.cube15a || save?.game_state?.events?.cube15b;
 
       // Log first 5 checks to see what's happening
       if (churnedCount + notChurnedCount < 5) {
@@ -956,11 +961,13 @@ export default function AdminDashboard() {
           hasClicks: true, // We know they have clicks since we're iterating usersWithClicks
           isBeforeCutoff,
           daysSince,
-          willBeChurned: isBeforeCutoff
+          hasCompletedGame,
+          willBeChurned: isBeforeCutoff && !hasCompletedGame
         });
       }
 
-      if (isBeforeCutoff) {
+      // Only consider churned if they haven't completed the game
+      if (isBeforeCutoff && !hasCompletedGame) {
         churnedCount++;
         churnedPlayers.push({
           userId: userId.substring(0, 8) + '...',
@@ -993,14 +1000,14 @@ export default function AdminDashboard() {
 
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
-    
+
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-    
+
     logger.log('📊 Users with clicks:', usersWithClicks.size);
-    
-    // Get churned user IDs based on game save activity
+
+    // Get churned user IDs based on game save activity AND completion status
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
@@ -1010,11 +1017,10 @@ export default function AdminDashboard() {
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
-    });
-
-    userLastActivity.forEach((lastActivity, userId) => {
-      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
-        churnedUserIds.add(userId);
+      // Check completion status
+      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+        churnedUserIds.add(save.user_id);
       }
     });
 
@@ -1043,7 +1049,7 @@ export default function AdminDashboard() {
       .slice(0, 20);
 
     logger.log('📊 Returning top 20 clicked buttons:', topClicks.length);
-    
+
     return topClicks;
   };
 
@@ -1057,12 +1063,12 @@ export default function AdminDashboard() {
 
     const now = new Date();
     const cutoffDate = subDays(now, churnDays);
-    
+
     // Get users with click data
     const usersWithClicks = new Set<string>();
     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-    
-    // Get churned user IDs based on game save activity
+
+    // Get churned user IDs based on game save activity and completion status
     const churnedUserIds = new Set<string>();
     const userLastActivity = new Map<string, Date>();
 
@@ -1072,11 +1078,10 @@ export default function AdminDashboard() {
       if (!existing || activityDate > existing) {
         userLastActivity.set(save.user_id, activityDate);
       }
-    });
-
-    userLastActivity.forEach((lastActivity, userId) => {
-      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
-        churnedUserIds.add(userId);
+      // Check completion status
+      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+        churnedUserIds.add(save.user_id);
       }
     });
 
@@ -1108,7 +1113,7 @@ export default function AdminDashboard() {
       .slice(0, 20);
 
     logger.log('📊 Returning top 20 first-time clicked buttons:', topFirstTimeClicks.length);
-    
+
     return topFirstTimeClicks;
   };
 
@@ -1973,7 +1978,7 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>Churned Players</CardTitle>
-                  <CardDescription>Players inactive for {churnDays}+ days</CardDescription>
+                  <CardDescription>Players inactive for {churnDays}+ days and did not complete the game</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <p className="text-4xl font-bold">{getChurnedPlayers().length}</p>
@@ -2063,25 +2068,25 @@ export default function AdminDashboard() {
                   <LineChart data={(() => {
                     const now = new Date();
                     const cutoffDate = subDays(now, churnDays);
-                    
+
                     // Get users with click data
                     const usersWithClicks = new Set<string>();
                     clickData.forEach(entry => usersWithClicks.add(entry.user_id));
-                    
+
+                    // Get churned user IDs based on game save activity and completion status
                     const churnedUserIds = new Set<string>();
                     const userLastActivity = new Map<string, Date>();
-                    
+
                     gameSaves.forEach(save => {
                       const activityDate = new Date(save.updated_at);
                       const existing = userLastActivity.get(save.user_id);
                       if (!existing || activityDate > existing) {
                         userLastActivity.set(save.user_id, activityDate);
                       }
-                    });
-                    
-                    userLastActivity.forEach((lastActivity, userId) => {
-                      if (lastActivity < cutoffDate && usersWithClicks.has(userId)) {
-                        churnedUserIds.add(userId);
+                      // Check completion status
+                      const hasCompletedGame = save.game_state?.events?.cube15a || save.game_state?.events?.cube15b;
+                      if (activityDate < cutoffDate && !hasCompletedGame && usersWithClicks.has(save.user_id)) {
+                        churnedUserIds.add(save.user_id);
                       }
                     });
 
@@ -2104,7 +2109,7 @@ export default function AdminDashboard() {
                     // Group into 1-hour buckets
                     const buckets = new Map<number, number>();
                     let maxBucket = 0;
-                    
+
                     userMaxPlaytime.forEach((minutes) => {
                       const bucket = Math.floor(minutes / 60) * 60; // 60-minute buckets
                       maxBucket = Math.max(maxBucket, bucket);
