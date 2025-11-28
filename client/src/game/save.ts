@@ -216,6 +216,7 @@ export async function saveGame(
       hasFellowship: 'fellowship' in gameState,
       fellowship: gameState.fellowship,
       fellowshipKeys: gameState.fellowship ? Object.keys(gameState.fellowship) : [],
+      allStateKeys: Object.keys(gameState).filter(k => k.includes('fellow')),
     });
 
     // Deep clone and sanitize the game state to remove non-serializable data

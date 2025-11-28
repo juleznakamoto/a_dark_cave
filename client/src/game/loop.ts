@@ -94,7 +94,7 @@ export function startGameLoop() {
   activityEvents.forEach((event) => {
     window.addEventListener(event, handleActivity, { passive: true });
   });
-  
+
   // Also track page visibility changes
   const handleVisibilityChange = () => {
     if (!document.hidden) {
@@ -139,7 +139,7 @@ export function startGameLoop() {
   }
   const checkSession = async () => {
     const state = useGameStore.getState();
-    
+
     // Check if user is signed in
     if (!state.isUserSignedIn) {
       return; // Not signed in, no need to check session
@@ -147,7 +147,7 @@ export function startGameLoop() {
 
     try {
       logger.log('[SESSION] 🔍 Forcing session refresh to validate with server...');
-      
+
       // Use refreshSession() to FORCE a server-side token exchange
       // This is the ONLY way to detect if the session was revoked by single-session enforcement
       const { getSupabaseClient } = await import('@/lib/supabase');
@@ -162,7 +162,7 @@ export function startGameLoop() {
           errorCode: error?.code,
           hasSession: !!session,
         });
-        
+
         // Delete local save when session is invalidated
         try {
           const { deleteSave } = await import('./save');
@@ -171,7 +171,7 @@ export function startGameLoop() {
         } catch (deleteError) {
           logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
         }
-        
+
         stopGameLoop();
         useGameStore.setState({
           inactivityDialogOpen: true,
@@ -510,7 +510,7 @@ export function stopGameLoop() {
   activityEvents.forEach((event) => {
     window.removeEventListener(event, handleActivity);
   });
-  
+
   // Remove visibility listener
   const handleVisibilityChange = () => {};
   document.removeEventListener('visibilitychange', handleVisibilityChange);
@@ -884,7 +884,7 @@ function handleMadnessCheck() {
 async function handleAutoSave() {
   const state = useGameStore.getState();
 
-  logger.log("[AUTOSAVE] 📊 Raw state snapshot:", {
+  logger.log("[AUTOSAVE]  Raw state snapshot:", {
     statePlayTime: state.playTime,
     playTimeMinutes: (state.playTime / 1000 / 60).toFixed(2),
     isNewGame: state.isNewGame,
@@ -911,15 +911,26 @@ async function handleAutoSave() {
     playTimeMatch: state.playTime === gameState.playTime,
   });
 
+  // Log fellowship state before saving to help debug cloud save issues
+  const currentState = useGameStore.getState(); // Re-fetch state to ensure it's the latest
+  logger.log(`[AUTOSAVE] 📊 Calling saveGame with:`, {
+      playTimeToSave: state.isNewGame ? 0 : state.playTime,
+      gameStateHasPlayTime: 'playTime' in gameState,
+      hasFellowship: 'fellowship' in currentState,
+      fellowship: currentState.fellowship,
+      fellowshipKeys: currentState.fellowship ? Object.keys(currentState.fellowship) : [],
+    });
+
   try {
     // If this is a new game, save playTime as the current session time only
     // Otherwise, save the accumulated playTime
     const playTimeToSave = state.isNewGame ? 0 : state.playTime;
 
-    logger.log("[AUTOSAVE] 📊 Calling saveGame with:", {
-      playTimeToSave,
-      gameStateHasPlayTime: 'playTime' in gameState,
-    });
+    // This log is now redundant with the one above
+    // logger.log("[AUTOSAVE] 📊 Calling saveGame with:", {
+    //   playTimeToSave,
+    //   gameStateHasPlayTime: 'playTime' in gameState,
+    // });
 
     await saveGame(gameState, playTimeToSave);
     const now = new Date().toLocaleTimeString();
@@ -1103,4 +1114,3 @@ export async function manualSave() {
     throw error;
   }
 }
-
