@@ -162,6 +162,7 @@ const mergeStateUpdates = (
     relics: { ...prevState.relics, ...stateUpdates.relics },
     books: { ...prevState.books, ...stateUpdates.books },
     fellowship: { ...prevState.fellowship, ...stateUpdates.fellowship },
+    blessings: { ...prevState.blessings, ...stateUpdates.blessings },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     buttonUpgrades: stateUpdates.buttonUpgrades
@@ -199,7 +200,8 @@ const mergeStateUpdates = (
     stateUpdates.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
-    stateUpdates.books
+    stateUpdates.books ||
+    stateUpdates.blessings
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
