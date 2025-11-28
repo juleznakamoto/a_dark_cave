@@ -75,14 +75,18 @@ export function startGameLoop() {
     "scroll",
     "mousemove",
   ];
-  const handleActivity = () => {
+  const handleActivity = (event: Event) => {
     const previousActivity = lastUserActivity;
     lastUserActivity = Date.now();
     if (Date.now() - previousActivity > 60000) {
       // Log only if more than 1 minute since last activity
       logger.log(
-        "[INACTIVITY] User activity detected at",
-        new Date(lastUserActivity).toISOString(),
+        "[INACTIVITY] User activity detected:",
+        {
+          type: event.type,
+          time: new Date(lastUserActivity).toISOString(),
+          timeSinceLastActivity: Math.round((Date.now() - previousActivity) / 1000) + 's'
+        }
       );
     }
   };
@@ -90,6 +94,15 @@ export function startGameLoop() {
   activityEvents.forEach((event) => {
     window.addEventListener(event, handleActivity, { passive: true });
   });
+  
+  // Also track page visibility changes
+  const handleVisibilityChange = () => {
+    if (!document.hidden) {
+      logger.log("[INACTIVITY] Page became visible, resetting activity timer");
+      lastUserActivity = Date.now();
+    }
+  };
+  document.addEventListener('visibilitychange', handleVisibilityChange);
 
   // Start inactivity checker (every 30 seconds)
   if (inactivityCheckInterval) {
@@ -99,18 +112,22 @@ export function startGameLoop() {
     const now = Date.now();
     const timeSinceActivity = now - lastUserActivity;
 
-    if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive) {
+    // Don't trigger inactivity if the page is currently visible and active
+    if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive && !document.hidden) {
       logger.log("[INACTIVITY] ⚠️ INACTIVITY DETECTED!", {
         timeSinceActivity: Math.round(timeSinceActivity / 1000) + "s",
         lastActivity: new Date(lastUserActivity).toISOString(),
         threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + "s",
+        pageHidden: document.hidden,
       });
       handleInactivity();
-    } else if (timeSinceActivity > 60000) {
-      // Log every minute after 1 minute of inactivity
+    } else if (timeSinceActivity > 60000 && timeSinceActivity % 30000 < 1000) {
+      // Log every 30 seconds after 1 minute of inactivity (but only once per check)
       logger.log(
         "[INACTIVITY] User inactive for",
         Math.round(timeSinceActivity / 1000) + "s",
+        "| Page visible:",
+        !document.hidden
       );
     }
   }, 30000); // Check every 30 seconds
@@ -493,6 +510,10 @@ export function stopGameLoop() {
   activityEvents.forEach((event) => {
     window.removeEventListener(event, handleActivity);
   });
+  
+  // Remove visibility listener
+  const handleVisibilityChange = () => {};
+  document.removeEventListener('visibilitychange', handleVisibilityChange);
 
   StateManager.clearUpdateTimer();
 }
