@@ -395,6 +395,30 @@ export default function AdminDashboard() {
     return data;
   };
 
+  // Hourly sign-ups (last 24 hours)
+  const getHourlySignups = () => {
+    const data: { hour: string; signups: number }[] = [];
+    const now = new Date();
+
+    for (let i = 23; i >= 0; i--) {
+      const hourStart = new Date(now.getTime() - i * 60 * 60 * 1000);
+      hourStart.setMinutes(0, 0, 0);
+      const hourEnd = new Date(hourStart.getTime() + 60 * 60 * 1000 - 1);
+
+      const signupsCount = gameSaves.filter(save => {
+        const createdDate = parseISO(save.created_at);
+        return isWithinInterval(createdDate, { start: hourStart, end: hourEnd });
+      }).length;
+
+      data.push({
+        hour: format(hourStart, 'HH:mm'),
+        signups: signupsCount,
+      });
+    }
+
+    return data;
+  };
+
   // Daily purchases (last 30 days)
   const getDailyPurchases = () => {
     const data: { day: string; purchases: number }[] = [];
@@ -1403,6 +1427,25 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+
+            <Card>
+              <CardHeader>
+                <CardTitle>Hourly Sign-ups (Last 24 Hours)</CardTitle>
+                <CardDescription>New user registrations by hour</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={getHourlySignups()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="hour" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="signups" stroke="#ffc658" strokeWidth={2} />
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="engagement" className="space-y-4">
