@@ -52,7 +52,8 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const { bastion_stats, resources, fellowship } = useGameStore();
+  const gameState = useGameStore();
+  const { bastion_stats, resources, fellowship } = gameState;
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
