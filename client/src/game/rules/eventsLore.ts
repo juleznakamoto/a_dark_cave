@@ -14,7 +14,9 @@ export const loreEvents: Record<string, GameEvent> = {
     },
     title: "The Restless Knight",
     message: (state: GameState) =>
-      `${state.story.seen.restlessKnightFailed ? "Again, a" : "A"} knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'`,
+      state.story.seen.restlessKnightFailed
+        ? "Again, a knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'"
+        : "A knight in worn armor arrives at your village. 'I have seen much of the world,' he says with a hollow voice. 'For some gold, I will share what I have seen in my travels.'",
     triggered: false,
     priority: 3,
     repeatable: true,
