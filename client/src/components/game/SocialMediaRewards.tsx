@@ -133,7 +133,7 @@ export default function SocialMediaRewards() {
                 </span><img
                   src={platform.icon}
                   alt={platform.name}
-                  className="w-3 h-3"
+                  className="w-3 h-3 opacity-90"
                 />
               </div>
               <div className="flex items-center gap-2">

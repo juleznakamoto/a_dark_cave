@@ -10,7 +10,7 @@ export const loreEvents: Record<string, GameEvent> = {
       !state.story.seen.restlessKnightSuccess,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.restlessKnightFailed ? 45 : 30;
+      return state.story.seen.restlessKnightFailed ? 60 : 30;
     },
     title: "The Restless Knight",
     message:
@@ -117,7 +117,7 @@ export const loreEvents: Record<string, GameEvent> = {
       state.story.seen.restlessKnightSuccess &&
       !state.story.seen.restlessKnightMountains,
     triggerType: "resource",
-    timeProbability: (state: GameState) => state.story.seen.restlessKnightMountainsFailed ? 45 : 30,
+    timeProbability: (state: GameState) => state.story.seen.restlessKnightMountainsFailed ? 60 : 30,
     title: "Return from the Mountains",
     message:
       "The knight returns, his armor scratched and weathered. 'I found something extraordinary in the mountains,' he says. I will tell you about it, for a price'",
