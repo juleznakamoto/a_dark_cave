@@ -274,6 +274,7 @@ export default function ProfileMenu() {
           </DropdownMenuItem>
           <DropdownMenuSeparator />
           {SOCIAL_PLATFORMS.map((platform) => {
+            console.log('Rendering platform:', platform.id, platform);
             const isClaimed = social_media_rewards[platform.id]?.claimed ?? false;
             const isActive = !isClaimed && !!currentUser;
 
