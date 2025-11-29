@@ -458,8 +458,8 @@ export function handleSunkenTemple(
     // Deduct cost and add rewards
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 300,
-      gold: (state.resources.gold || 0) + 150,
+      silver: (state.resources.silver || 0) + 500,
+      gold: (state.resources.gold || 0) + 250,
       food: (state.resources.food || 0) - 5000,
     };
 
@@ -527,8 +527,8 @@ export function handlecollapsedTower(
     // Success: Discover the necromancer's plot
     result.stateUpdates.resources = {
       ...state.resources,
-      silver: (state.resources.silver || 0) + 200,
-      gold: (state.resources.gold || 0) + 100,
+      silver: (state.resources.silver || 0) + 500,
+      gold: (state.resources.gold || 0) + 250,
       food: (state.resources.food || 0) - 2500,
     };
 
