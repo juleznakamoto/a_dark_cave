@@ -485,11 +485,10 @@ export default function VillagePanel() {
                               <div className="relative inline-flex items-center gap-1 mt-[0px]">
                                 <CircularProgress
                                   value={(() => {
-                                    const curseDuration = 10 * 60 * 1000;
-                                    const curseElapsed =
-                                      curseDuration -
-                                      (curseState.endTime - Date.now());
-                                    return (curseElapsed / curseDuration) * 100;
+                                    const timeRemaining = Math.max(0, curseState.endTime - Date.now());
+                                    const totalDuration = (10 + 5 * state.CM) * 60 * 1000;
+                                    const elapsed = totalDuration - timeRemaining;
+                                    return Math.min(100, (elapsed / totalDuration) * 100);
                                   })()}
                                   size={18}
                                   strokeWidth={2}
