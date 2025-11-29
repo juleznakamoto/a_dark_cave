@@ -401,7 +401,7 @@ export default function EventDialog({
 
           {/* Timer bar for timed choices */}
           {event.isTimedChoice && timeRemaining !== null && (
-            <div className="mt-2 space-y-2">
+            <div className="mt-1 space-y-1">
               <div className="flex justify-between text-sm text-muted-foreground">
               </div>
               <Progress value={progress} className="h-2 timer-progress" />
