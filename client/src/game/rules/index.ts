@@ -34,7 +34,7 @@ import {
 } from "../buttonUpgrades";
 import { logger } from "@/lib/logger";
 import { attackWaveEvents } from "./eventsAttackWaves";
-import { choiceEvents } from "./eventsChoice";
+import { choiceEvents } from "./eventsChoices";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
 import { loreEvents } from "./eventsLore";
