@@ -794,7 +794,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         luck: 2,
-        knowledge: 7,
+        knowledge: 6,
         madness: 4,
       },
     },

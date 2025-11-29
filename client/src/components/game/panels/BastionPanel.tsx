@@ -49,7 +49,8 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources, crushingStrikeLevel, fellowship } = useGameStore();
+  const { buildings, story, resources, crushingStrikeLevel, fellowship } =
+    useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
   const mobileButtonTooltip = useMobileButtonTooltip();
@@ -68,8 +69,8 @@ export default function BastionPanel() {
     if (currentLevel >= 5) return;
 
     const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
-    const currency = nextUpgrade.currency as 'gold';
-    
+    const currency = nextUpgrade.currency as "gold";
+
     if (resources[currency] >= nextUpgrade.cost) {
       useGameStore.setState({
         crushingStrikeLevel: currentLevel + 1,
@@ -81,8 +82,10 @@ export default function BastionPanel() {
     }
   };
 
-  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[crushingStrikeLevel || 0];
-  const nextCrushingStrike = CRUSHING_STRIKE_UPGRADES[(crushingStrikeLevel || 0) + 1];
+  const currentCrushingStrike =
+    CRUSHING_STRIKE_UPGRADES[crushingStrikeLevel || 0];
+  const nextCrushingStrike =
+    CRUSHING_STRIKE_UPGRADES[(crushingStrikeLevel || 0) + 1];
   const canUpgradeCrushingStrike =
     (crushingStrikeLevel || 0) < 5 &&
     resources.gold >= (nextCrushingStrike?.cost || 0);
@@ -200,11 +203,11 @@ export default function BastionPanel() {
       <AttackWavesChart />
 
       {/* Combat Skills Section - only show if restless knight is unlocked */}
-      {/* {HAS_RESTLESS_KNIGHT && (
+      {HAS_RESTLESS_KNIGHT && (
         <div className="w-64 space-y-3 pt-2">
           <h3 className="text-xs font-bold text-foreground">Combat Skills</h3>
-          
-          {/* Crushing Strike Upgrade *\/}
+
+          {/* Crushing Strike Upgrade */}
           <div className="space-y-1">
             <div className="flex items-center justify-between">
               <span className="pb-1 text-xs font-medium text-foreground">
@@ -212,31 +215,87 @@ export default function BastionPanel() {
               </span>
               {(crushingStrikeLevel || 0) < 5 ? (
                 <TooltipProvider>
-                  <Tooltip open={mobileButtonTooltip.isTooltipOpen("upgrade-crushing-strike-button")}>
+                  <Tooltip
+                    open={mobileButtonTooltip.isTooltipOpen(
+                      "upgrade-crushing-strike-button",
+                    )}
+                  >
                     <TooltipTrigger asChild>
                       <div
                         className="inline-block"
-                        onClick={mobileButtonTooltip.isMobile ? (e) => {
-                          mobileButtonTooltip.handleWrapperClick("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
-                        } : undefined}
-                        onTouchStart={mobileButtonTooltip.isMobile ? (e) => {
-                          mobileButtonTooltip.handleTouchStart("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
-                        } : undefined}
-                        onTouchEnd={mobileButtonTooltip.isMobile ? (e) => {
-                          mobileButtonTooltip.handleTouchEnd("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, handleCrushingStrikeUpgrade, e);
-                        } : undefined}
-                        onMouseDown={mobileButtonTooltip.isMobile ? (e) => {
-                          mobileButtonTooltip.handleMouseDown("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, false, e);
-                        } : undefined}
-                        onMouseUp={mobileButtonTooltip.isMobile ? (e) => {
-                          mobileButtonTooltip.handleMouseUp("upgrade-crushing-strike-button", !canUpgradeCrushingStrike, handleCrushingStrikeUpgrade, e);
-                        } : undefined}
+                        onClick={
+                          mobileButtonTooltip.isMobile
+                            ? (e) => {
+                                mobileButtonTooltip.handleWrapperClick(
+                                  "upgrade-crushing-strike-button",
+                                  !canUpgradeCrushingStrike,
+                                  false,
+                                  e,
+                                );
+                              }
+                            : undefined
+                        }
+                        onTouchStart={
+                          mobileButtonTooltip.isMobile
+                            ? (e) => {
+                                mobileButtonTooltip.handleTouchStart(
+                                  "upgrade-crushing-strike-button",
+                                  !canUpgradeCrushingStrike,
+                                  false,
+                                  e,
+                                );
+                              }
+                            : undefined
+                        }
+                        onTouchEnd={
+                          mobileButtonTooltip.isMobile
+                            ? (e) => {
+                                mobileButtonTooltip.handleTouchEnd(
+                                  "upgrade-crushing-strike-button",
+                                  !canUpgradeCrushingStrike,
+                                  handleCrushingStrikeUpgrade,
+                                  e,
+                                );
+                              }
+                            : undefined
+                        }
+                        onMouseDown={
+                          mobileButtonTooltip.isMobile
+                            ? (e) => {
+                                mobileButtonTooltip.handleMouseDown(
+                                  "upgrade-crushing-strike-button",
+                                  !canUpgradeCrushingStrike,
+                                  false,
+                                  e,
+                                );
+                              }
+                            : undefined
+                        }
+                        onMouseUp={
+                          mobileButtonTooltip.isMobile
+                            ? (e) => {
+                                mobileButtonTooltip.handleMouseUp(
+                                  "upgrade-crushing-strike-button",
+                                  !canUpgradeCrushingStrike,
+                                  handleCrushingStrikeUpgrade,
+                                  e,
+                                );
+                              }
+                            : undefined
+                        }
                       >
                         <Button
-                          onClick={mobileButtonTooltip.isMobile && mobileButtonTooltip.isTooltipOpen("upgrade-crushing-strike-button") ? (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                          } : handleCrushingStrikeUpgrade}
+                          onClick={
+                            mobileButtonTooltip.isMobile &&
+                            mobileButtonTooltip.isTooltipOpen(
+                              "upgrade-crushing-strike-button",
+                            )
+                              ? (e) => {
+                                  e.preventDefault();
+                                  e.stopPropagation();
+                                }
+                              : handleCrushingStrikeUpgrade
+                          }
                           disabled={!canUpgradeCrushingStrike}
                           size="xs"
                           variant="outline"
@@ -249,14 +308,32 @@ export default function BastionPanel() {
                     </TooltipTrigger>
                     <TooltipContent>
                       <div className="text-xs whitespace-nowrap">
-                        {nextCrushingStrike.damage > currentCrushingStrike.damage && (
-                          <div>+{nextCrushingStrike.damage - currentCrushingStrike.damage} damage</div>
+                        {nextCrushingStrike.damage >
+                          currentCrushingStrike.damage && (
+                          <div>
+                            +
+                            {nextCrushingStrike.damage -
+                              currentCrushingStrike.damage}{" "}
+                            damage
+                          </div>
                         )}
-                        {nextCrushingStrike.stunRounds > currentCrushingStrike.stunRounds && (
-                          <div>+{nextCrushingStrike.stunRounds - currentCrushingStrike.stunRounds} stun rounds</div>
+                        {nextCrushingStrike.stunRounds >
+                          currentCrushingStrike.stunRounds && (
+                          <div>
+                            +
+                            {nextCrushingStrike.stunRounds -
+                              currentCrushingStrike.stunRounds}{" "}
+                            stun rounds
+                          </div>
                         )}
                         <div className="border-t border-border my-1" />
-                        <div className={resources.gold >= nextCrushingStrike.cost ? "" : "text-muted-foreground"}>
+                        <div
+                          className={
+                            resources.gold >= nextCrushingStrike.cost
+                              ? ""
+                              : "text-muted-foreground"
+                          }
+                        >
                           -{nextCrushingStrike.cost} Gold
                         </div>
                       </div>
@@ -271,11 +348,15 @@ export default function BastionPanel() {
               segments={5}
             />
             <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{currentCrushingStrike.damage} dmg, {currentCrushingStrike.stunRounds} stun</span>
+              <span>
+                {currentCrushingStrike.damage} dmg,{" "}
+                {currentCrushingStrike.stunRounds} round
+                {currentCrushingStrike.stunRounds > 1 ? "s" : ""} stun
+              </span>
             </div>
           </div>
         </div>
-      )} */}
+      )}
 
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
