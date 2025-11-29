@@ -1,3 +1,4 @@
+
 import { GameState, gameStateSchema } from "@shared/schema";
 import { getMaxPopulation } from "./population";
 
@@ -148,63 +149,47 @@ export function killVillagers(state: GameState, deathCount: number): Partial<Gam
 }
 
 /**
+ * List of UI-only properties that should not be persisted
+ * These are transient state used only for UI rendering
+ */
+const UI_ONLY_PROPERTIES = [
+  'activeTab',
+  'devMode',
+  'lastSaved',
+  'eventDialog',
+  'combatDialog',
+  'authDialogOpen',
+  'shopDialogOpen',
+  'idleModeDialog',
+  'inactivityDialogOpen',
+  'inactivityReason',
+  'current_population',
+  'total_population',
+  'referralCount',
+  'referredUsers',
+] as const;
+
+/**
  * Builds a clean GameState object from the Zustand store state
- * Filters out functions and Zustand-specific properties
+ * Filters out UI-only properties and functions
  */
 export function buildGameState(state: any): GameState {
-  return {
-    resources: state.resources,
-    weapons: state.weapons,
-    tools: state.tools,
-    buildings: state.buildings,
-    flags: state.flags,
-    villagers: state.villagers,
-    clothing: state.clothing,
-    relics: state.relics,
-    books: state.books,
-    fellowship: state.fellowship,
-    story: state.story,
-    effects: state.effects,
-    bastion_stats: state.bastion_stats,
-    events: state.events,
-    log: state.log,
-    hoveredTooltips: state.hoveredTooltips,
-    feastState: state.feastState,
-    greatFeastState: state.greatFeastState,
-    curseState: state.curseState,
-    miningBoostState: state.miningBoostState,
-    activatedPurchases: state.activatedPurchases,
-    feastPurchases: state.feastPurchases,
-    cruelMode: state.cruelMode,
-    CM: state.CM,
-    blessings: state.blessings,
-    buttonUpgrades: state.buttonUpgrades,
-    clickAnalytics: state.clickAnalytics || {},
-    cooldowns: state.cooldowns || {},
-    cooldownDurations: state.cooldownDurations || {},
-    attackWaveTimers: state.attackWaveTimers || {},
-    loopProgress: state.loopProgress || 0,
-    isGameLoopActive: state.isGameLoopActive || false,
-    isPaused: false, // Never save pause state - always unpause on load
-    showEndScreen: state.showEndScreen || false,
-    isMuted: state.isMuted || false,
-    sleepUpgrades: state.sleepUpgrades || { lengthLevel: 0, intensityLevel: 0 },
-    combatSkills: state.combatSkills || { crushingStrikeLevel: 0 },
-    shopNotificationSeen: state.shopNotificationSeen || false,
-    shopNotificationVisible: state.shopNotificationVisible || false,
-    authNotificationSeen: state.authNotificationSeen || false,
-    authNotificationVisible: state.authNotificationVisible || false,
-    mysteriousNoteShopNotificationSeen: state.mysteriousNoteShopNotificationSeen || false,
-    mysteriousNoteDonateNotificationSeen: state.mysteriousNoteDonateNotificationSeen || false,
-    isUserSignedIn: state.isUserSignedIn || false,
-    playTime: state.playTime || 0,
-    isNewGame: state.isNewGame || false,
-    startTime: state.startTime || 0,
-    idleModeState: state.idleModeState || { isActive: false, startTime: 0, needsDisplay: false },
-    sleepUpgrades: state.sleepUpgrades || { lengthLevel: 0, intensityLevel: 0 },
-    referralCount: state.referralCount || 0,
-    referredUsers: state.referredUsers || [],
-    referrals: state.referrals || [],
-    social_media_rewards: state.social_media_rewards || {},
-  };
+  const cleaned: any = {};
+  
+  // Copy all properties except UI-only ones
+  for (const key in state) {
+    // Skip functions
+    if (typeof state[key] === 'function') continue;
+    
+    // Skip UI-only properties
+    if (UI_ONLY_PROPERTIES.includes(key as any)) continue;
+    
+    // Copy everything else
+    cleaned[key] = state[key];
+  }
+  
+  // Always reset pause state when saving (never save as paused)
+  cleaned.isPaused = false;
+  
+  return cleaned as GameState;
 }
