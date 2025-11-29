@@ -172,9 +172,9 @@ const mergeStateUpdates = (
     greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
     curseState: stateUpdates.curseState || prevState.curseState,
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
+    combatSkills: stateUpdates.combatSkills || prevState.combatSkills,
     clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
     madness: stateUpdates.madness !== undefined ? stateUpdates.madness : prevState.madness,
-    crushingStrikeLevel: stateUpdates.crushingStrikeLevel !== undefined ? stateUpdates.crushingStrikeLevel : prevState.crushingStrikeLevel,
     miningBoostState: stateUpdates.miningBoostState || prevState.miningBoostState,
     greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
@@ -292,6 +292,9 @@ const defaultGameState: GameState = {
   curseState: {
     isActive: false,
     endTime: 0,
+  },
+  combatSkills: {
+    crushingStrikeLevel: 0,
   },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }

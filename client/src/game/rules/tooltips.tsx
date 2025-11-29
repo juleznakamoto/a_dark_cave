@@ -343,7 +343,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
   },
   crushing_strike: {
     getContent: (state) => {
-      const level = state.crushingStrikeLevel || 0;
+      const level = state.combatSkills.crushingStrikeLevel;
       const configs = [
         { damage: 10, stunRounds: 1 },
         { damage: 20, stunRounds: 1 },

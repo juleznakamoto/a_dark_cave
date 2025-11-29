@@ -49,7 +49,7 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources, crushingStrikeLevel, fellowship } =
+  const { buildings, story, resources, combatSkills, fellowship } =
     useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -66,16 +66,20 @@ export default function BastionPanel() {
 
   const handleCrushingStrikeUpgrade = () => {
     useGameStore.setState((state) => {
-      const currentLevel = state.crushingStrikeLevel || 0;
+      const currentLevel = state.combatSkills.crushingStrikeLevel;
       if (currentLevel >= 5) return state;
 
       const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
-      const currency = "gold";
+      const currency = "gold" as const;
 
       if (state.resources[currency] < nextUpgrade.cost) return state;
 
       return {
-        crushingStrikeLevel: currentLevel + 1,
+        ...state,
+        combatSkills: {
+          ...state.combatSkills,
+          crushingStrikeLevel: currentLevel + 1,
+        },
         resources: {
           ...state.resources,
           [currency]: state.resources[currency] - nextUpgrade.cost,
@@ -84,13 +88,11 @@ export default function BastionPanel() {
     });
   };
 
-  const currentCrushingStrike =
-    CRUSHING_STRIKE_UPGRADES[crushingStrikeLevel || 0];
-  const nextCrushingStrike =
-    CRUSHING_STRIKE_UPGRADES[(crushingStrikeLevel || 0) + 1];
+  const currentLevel = combatSkills.crushingStrikeLevel;
+  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel];
+  const nextCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
   const canUpgradeCrushingStrike =
-    (crushingStrikeLevel || 0) < 5 &&
-    resources.gold >= (nextCrushingStrike?.cost || 0);
+    currentLevel < 5 && nextCrushingStrike && resources.gold >= nextCrushingStrike.cost;
 
   // Helper to calculate 50% repair cost from action cost
   const getRepairCost = (actionId: string, level: number = 1) => {
@@ -345,7 +347,7 @@ export default function BastionPanel() {
               ) : null}
             </div>
             <Progress
-              value={((crushingStrikeLevel || 0) / 5) * 100}
+              value={(currentLevel / 5) * 100}
               className="h-2"
               segments={5}
             />

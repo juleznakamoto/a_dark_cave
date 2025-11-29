@@ -353,7 +353,13 @@ export const gameStateSchema = z.object({
     })
     .default({}),
 
-  crushingStrikeLevel: z.number().default(0),
+  combatSkills: z
+    .object({
+      crushingStrikeLevel: z.number().default(0),
+    })
+    .default({
+      crushingStrikeLevel: 0,
+    }),
 
   activatedPurchases: z.record(z.boolean()).default({}),
   feastPurchases: z

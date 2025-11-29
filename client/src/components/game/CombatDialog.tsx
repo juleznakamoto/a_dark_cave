@@ -52,7 +52,14 @@ export default function CombatDialog({
   onVictory,
   onDefeat,
 }: CombatDialogProps) {
-  const gameState = useGameStore();
+  const { combatDialog, setCombatDialog, executeAction } = useGameStore();
+  const gameState = useGameStore.getState();
+  const weapons = useGameStore((state) => state.weapons);
+  const clothing = useGameStore((state) => state.clothing);
+  const crushingStrikeLevel = useGameStore(
+    (state) => state.combatSkills.crushingStrikeLevel,
+  );
+
   const [combatStarted, setCombatStarted] = useState(false);
   const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [round, setRound] = useState(1);
@@ -179,7 +186,7 @@ export default function CombatDialog({
   const handleUseCrushingStrike = () => {
     if (usedCrushingStrike || isProcessingRound) return;
 
-    const level = gameState.crushingStrikeLevel || 0;
+    const level = crushingStrikeLevel || 0;
     const configs = [
       { damage: 10, stunRounds: 1 },
       { damage: 20, stunRounds: 1 },
