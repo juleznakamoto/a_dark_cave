@@ -178,7 +178,8 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Refuse",
         effect: (state: GameState) => {
           return {
-            _logMessage: "You decline the trader's offer. The mirror disappears into the night with him.",
+            _logMessage:
+              "You decline the trader's offer. The mirror disappears into the night with him.",
           };
         },
       },
@@ -1224,7 +1225,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "You refuse to pay. The witch spits and curses, but nothing happens. She hobbles away, muttering threats into the wind. It seems you got lucky.",
             };
           } else {
-            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
             return {
               curseState: {
                 isActive: true,
@@ -1272,7 +1273,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "The villagers strike her down before she can finish her curse. Before the witch falls her body dissolves into black smoke, leaving only a foul stench.",
             };
           } else {
-            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
             return {
               curseState: {
                 isActive: true,
@@ -1320,7 +1321,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 "You speak ancient words of power, learned from old texts. The witch recoils in fear and flees, her curse broken before it could take hold.",
             };
           } else {
-            const curseDuration = 10 * 60 * 1000; // 10 minutes
+            const curseDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
             return {
               curseState: {
                 isActive: true,
@@ -1347,7 +1348,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 5 && !state.blessings.sharp_aim,
     triggerType: "resource",
-    timeProbability: 0.020,
+    timeProbability: 0.02,
     title: "The Master Archer",
     message:
       "A man in a dark red leather coat arrives with a confident grin and sharp eyes. He offers to help your archers, saying he can sharpen their aim and improve their hunting skills. If you accept, he'll stay and get to work.",
@@ -1384,7 +1385,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               "The master archer takes the payment and begins training your hunters immediately.",
           };
 
-          console.log('[MASTER ARCHER] Effect returning:', {
+          console.log("[MASTER ARCHER] Effect returning:", {
             currentBlessings: state.blessings,
             resultBlessings: result.blessings,
             hasSharpAim: result.blessings.sharp_aim,
@@ -1410,7 +1411,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     id: "mysteriousWoman",
     condition: (state: GameState) =>
       state.buildings.stoneHut >= 3 &&
-      state.resources.silver >= 200 + state.CM * 50 &&
+      state.resources.silver >= 200 + state.CM * 100 &&
       !state.story.seen.mysteriousWomanEvent,
     triggerType: "resource",
     timeProbability: 5,
@@ -1426,7 +1427,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Let her stay",
         effect: (state: GameState) => {
           // She steals silver
-          const silverStolen = 200 + state.CM * 50;
+          const silverStolen = 200 + state.CM * 100;
           return {
             resources: {
               ...state.resources,
@@ -1671,7 +1672,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Banish her",
         effect: (state: GameState) => {
           return {
-            ...killVillagers(state, 10),
+            ...killVillagers(state, 10 + 5 * state.CM),
             story: {
               ...state.story,
               seen: {
@@ -1679,8 +1680,7 @@ export const choiceEvents: Record<string, GameEvent> = {
                 youngWomanProtestEvent: true,
               },
             },
-            _logMessage:
-              "You banish the young woman from the village. She convinces 10 sympathetic villagers to leave with her, abandoning your settlement forever.",
+            _logMessage: `You banish the young woman from the village. She convinces ${state.CM ? "15" : "10"} sympathetic villagers to leave with her, abandoning your settlement forever.`,
           };
         },
       },
@@ -1689,7 +1689,7 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Sacrifice her",
         effect: (state: GameState) => {
           return {
-            ...killVillagers(state, 21), // 1 for her + 20 who leave
+            ...killVillagers(state, 21 + 10 * state.CM), // 1 for her + 20/30 who leave
             story: {
               ...state.story,
               seen: {
@@ -1698,7 +1698,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "Shortly after the sacrifice is carried out at the Black Monolith, 20 horrified villagers pack their belongings and flee the village in disgust.",
+              `Shortly after the sacrifice is carried out at the Black Monolith, ${state.CM ? "30" : "20"} horrified villagers pack their belongings and flee the village in disgust.`,
           };
         },
       },

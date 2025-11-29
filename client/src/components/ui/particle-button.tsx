@@ -100,7 +100,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const flickerRef = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const idRef = useRef(0);
-    const spawnCountRef = useRef(cruelMode ? 4 : 2); // initial number of sparks per spawn (doubled in cruel mode)
+    const spawnCountRef = useRef(cruelMode ? 20 : 2);
     const rampStartRef = useRef<number | null>(null);
 
     const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
@@ -176,7 +176,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         delayTimeoutRef.current = setTimeout(() => {
             setIsGlowing(true);
             setGlowIntensity(0.1); // start with very small glow
-            spawnCountRef.current = cruelMode ? 4 : 2;
+            spawnCountRef.current = cruelMode ? 10 : 2;
             rampStartRef.current = Date.now();
 
             spawnSparks(); // spawn immediately
@@ -186,13 +186,13 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
             rampUpRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
-                    const maxParticles = cruelMode ? 20 : 10; // double max particles in cruel mode
+                    const maxParticles = cruelMode ? 100 : 10;
                     if (elapsed < 10000) {
                         spawnCountRef.current =
-                            (cruelMode ? 2 : 1) + Math.floor((elapsed / 10000) * maxParticles);
+                            (cruelMode ? 10 : 1) + Math.floor((elapsed / 10000) * maxParticles);
                     } else {
                         spawnCountRef.current =
-                            Math.floor(Math.random() * (cruelMode ? 14 : 7)) + (cruelMode ? 12 : 6); // max doubled in cruel mode
+                            Math.floor(Math.random() * (cruelMode ? 70 : 7)) + (cruelMode ? 60 : 6);
                         if (rampUpRef.current) {
                             clearInterval(rampUpRef.current);
                             rampUpRef.current = null;
