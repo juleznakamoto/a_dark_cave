@@ -163,6 +163,7 @@ const mergeStateUpdates = (
     books: { ...prevState.books, ...stateUpdates.books },
     fellowship: { ...prevState.fellowship, ...stateUpdates.fellowship },
     blessings: { ...prevState.blessings, ...stateUpdates.blessings },
+    events: { ...prevState.events, ...stateUpdates.events },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
     buttonUpgrades: stateUpdates.buttonUpgrades
