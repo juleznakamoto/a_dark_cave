@@ -66,19 +66,19 @@ export default function BastionPanel() {
 
   const handleCrushingStrikeUpgrade = () => {
     const currentLevel = crushingStrikeLevel || 0;
-    if (currentLevel >= 5) return;
-
     const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
-    const currency = nextUpgrade.currency as "gold";
+    if (!nextUpgrade) return;
 
+    const currency = "gold";
     if (resources[currency] >= nextUpgrade.cost) {
-      useGameStore.setState({
+      useGameStore.setState((state) => ({
+        ...state,
         crushingStrikeLevel: currentLevel + 1,
         resources: {
-          ...resources,
-          [currency]: resources[currency] - nextUpgrade.cost,
+          ...state.resources,
+          [currency]: state.resources[currency] - nextUpgrade.cost,
         },
-      });
+      }));
     }
   };
 
