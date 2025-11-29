@@ -16,11 +16,11 @@ import AttackWavesChart from "./AttackWavesChart";
 // Crushing Strike upgrade configurations
 const CRUSHING_STRIKE_UPGRADES = [
   { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
-  { level: 1, damage: 20, stunRounds: 1, cost: 250, currency: "gold" },
-  { level: 2, damage: 30, stunRounds: 1, cost: 500, currency: "gold" },
-  { level: 3, damage: 40, stunRounds: 2, cost: 1000, currency: "gold" },
-  { level: 4, damage: 50, stunRounds: 2, cost: 1500, currency: "gold" },
-  { level: 5, damage: 50, stunRounds: 3, cost: 2500, currency: "gold" },
+  { level: 1, damage: 20, stunRounds: 1, cost: 500, currency: "gold" },
+  { level: 2, damage: 30, stunRounds: 1, cost: 1000, currency: "gold" },
+  { level: 3, damage: 40, stunRounds: 2, cost: 1500, currency: "gold" },
+  { level: 4, damage: 50, stunRounds: 2, cost: 2000, currency: "gold" },
+  { level: 5, damage: 60, stunRounds: 3, cost: 2500, currency: "gold" },
 ];
 
 // Helper to get building label based on level
