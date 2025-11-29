@@ -1117,4 +1117,13 @@ export const fellowshipEffects: Record<string, EffectDefinition> = {
       generalBonuses: {},
     },
   },
+  elder_wizard: {
+    id: "elder_wizard",
+    name: "Elder Wizard",
+    description:
+      "Ancient wizard with mastery over arcane fire. Unlocks Bloodflame Sphere: a powerful spell that deals initial damage and inflicts burning damage over multiple rounds, but consumes the caster's health.",
+    bonuses: {
+      generalBonuses: {},
+    },
+  },
 };

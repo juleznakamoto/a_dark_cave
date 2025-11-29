@@ -33,6 +33,20 @@ import {
   getUpgradeBonusMultiplier,
 } from "../buttonUpgrades";
 import { logger } from "@/lib/logger";
+import { attackWaveEvents } from "./eventsAttackWave";
+import { choiceEvents } from "./eventsChoice";
+import { cubeEvents } from "./eventsCube";
+import { feastEvents } from "./eventsFeast";
+import { loreEvents } from "./eventsLore";
+import { madnessEvents } from "./eventsMadness";
+import { merchantEvents } from "./eventsMerchant";
+import { noChoiceEvents } from "./eventsNoChoices";
+import { recurringEvents } from "./eventsRecurring";
+import { storyEvents } from "./eventsStory";
+import { villageAttackEvents } from "./eventsVillageAttacks";
+import { woodcutterEvents } from "./eventsWoodcutter";
+import { fellowshipEvents } from "./eventsFellowship";
+import { knightEvents } from "./eventsKnight";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
@@ -668,7 +682,11 @@ export const applyActionEffects = (
           if (probabilityEffect.isChoice && probabilityEffect.eventId) {
             const event =
               caveEvents[probabilityEffect.eventId] ||
-              huntEvents[probabilityEffect.eventId];
+              huntEvents[probabilityEffect.eventId] ||
+              loreEvents[probabilityEffect.eventId] ||
+              fellowshipEvents[probabilityEffect.eventId] ||
+              knightEvents[probabilityEffect.eventId];
+
 
             // Ensure the event exists and hasn't been seen before
             if (event && !state.story.seen[probabilityEffect.eventId]) {
@@ -1046,3 +1064,23 @@ export function getActionCostBreakdown(
 
   return breakdown;
 }
+
+// Combine all event types
+export const allEvents: Record<string, GameEvent> = {
+  ...caveEvents,
+  ...huntEvents,
+  ...storyEvents,
+  ...loreEvents,
+  ...madnessEvents,
+  ...noChoiceEvents,
+  ...recurringEvents,
+  ...woodcutterEvents,
+  ...villageAttackEvents,
+  ...attackWaveEvents,
+  ...choiceEvents,
+  ...cubeEvents,
+  ...feastEvents,
+  ...merchantEvents,
+  ...fellowshipEvents,
+  ...knightEvents, // Add the last event of the knight
+};

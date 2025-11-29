@@ -295,6 +295,7 @@ const defaultGameState: GameState = {
   },
   combatSkills: {
     crushingStrikeLevel: 0,
+    bloodflameSphereLevel: 0,
   },
   activatedPurchases: {},
   feastPurchases: {}, // Track individual feast purchases: { purchaseId: { itemId, activationsRemaining, totalActivations } }

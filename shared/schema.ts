@@ -171,6 +171,7 @@ export const gameStateSchema = z.object({
   fellowship: z
     .object({
       restless_knight: z.boolean().default(false),
+      elder_wizard: z.boolean().default(false),
     })
     .default({}),
   blessings: z
@@ -356,9 +357,11 @@ export const gameStateSchema = z.object({
   combatSkills: z
     .object({
       crushingStrikeLevel: z.number().default(0),
+      bloodflameSphereLev: z.number().default(0),
     })
     .default({
       crushingStrikeLevel: 0,
+      bloodflameSphereLevel: 0,
     }),
 
   activatedPurchases: z.record(z.boolean()).default({}),
