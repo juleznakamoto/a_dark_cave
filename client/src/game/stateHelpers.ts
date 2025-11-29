@@ -1,4 +1,3 @@
-
 import { GameState, gameStateSchema } from "@shared/schema";
 import { getMaxPopulation } from "./population";
 
@@ -165,8 +164,6 @@ const UI_ONLY_PROPERTIES = [
   'inactivityReason',
   'current_population',
   'total_population',
-  'referralCount',
-  'referredUsers',
 ] as const;
 
 /**
@@ -175,21 +172,21 @@ const UI_ONLY_PROPERTIES = [
  */
 export function buildGameState(state: any): GameState {
   const cleaned: any = {};
-  
+
   // Copy all properties except UI-only ones
   for (const key in state) {
     // Skip functions
     if (typeof state[key] === 'function') continue;
-    
+
     // Skip UI-only properties
     if (UI_ONLY_PROPERTIES.includes(key as any)) continue;
-    
+
     // Copy everything else
     cleaned[key] = state[key];
   }
-  
+
   // Always reset pause state when saving (never save as paused)
   cleaned.isPaused = false;
-  
+
   return cleaned as GameState;
 }

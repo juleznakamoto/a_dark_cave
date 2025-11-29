@@ -413,6 +413,8 @@ export const gameStateSchema = z.object({
       }),
     )
     .default([]), // Track referrals with claim status
+  referralCount: z.number().default(0), // Computed from referrals array length
+  referredUsers: z.array(z.string()).default([]), // List of referred user IDs (computed from referrals)
   social_media_rewards: z
     .record(
       z.object({
