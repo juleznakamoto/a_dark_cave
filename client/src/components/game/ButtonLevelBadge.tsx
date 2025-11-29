@@ -63,10 +63,10 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                             ? (info.clicks / info.nextLevel.clicksRequired) * 100
                             : 0
                         }
-                        size={40}
-                        strokeWidth={3}
+                        size={26}
+                        strokeWidth={2}
                       />
-                      <div className="absolute inset-0 flex items-center justify-center text-sm font-medium">
+                      <div className="absolute mb-[2px] inset-0 flex items-center justify-center text-xs font-medium">
                         {info.level}
                       </div>
                     </div>
@@ -81,7 +81,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                   </div>
                 </>
               ) : (
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-1">
                   <span>Bonus:</span>
                   <span>+{info.bonus}%</span>
                 </div>
