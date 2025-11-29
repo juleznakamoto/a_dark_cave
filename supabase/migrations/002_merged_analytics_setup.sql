@@ -71,7 +71,8 @@ CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
   p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL,
-  p_clear_clicks BOOLEAN DEFAULT FALSE
+  p_clear_clicks BOOLEAN DEFAULT FALSE,
+  p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
 )
 RETURNS void
 LANGUAGE plpgsql
@@ -94,20 +95,26 @@ BEGIN
   FROM game_saves
   WHERE user_id = p_user_id;
 
-  -- OCC: Validate playTime if both states exist
+  -- OCC: Validate playTime if both states exist (unless overwrite is allowed)
   IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
     v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
     v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
     
-    -- Reject save if new playTime is not strictly greater than existing
-    IF v_new_playtime <= v_existing_playtime THEN
-      RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+    IF p_allow_playtime_overwrite THEN
+      -- Allow overwrite for game restarts
+      RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
+        v_new_playtime, v_existing_playtime;
+    ELSE
+      -- Reject save if new playTime is not strictly greater than existing
+      IF v_new_playtime <= v_existing_playtime THEN
+        RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
+          v_new_playtime, v_existing_playtime;
+      END IF;
+      
+      -- Log successful OCC check (visible in Supabase logs)
+      RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
         v_new_playtime, v_existing_playtime;
     END IF;
-    
-    -- Log successful OCC check (visible in Supabase logs)
-    RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
-      v_new_playtime, v_existing_playtime;
   END IF;
 
   -- Merge the diff with existing state (deep merge for JSONB)
@@ -194,4 +201,4 @@ END;
 $$;
 
 -- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, BOOLEAN) TO authenticated;
+GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, BOOLEAN, BOOLEAN) TO authenticated;

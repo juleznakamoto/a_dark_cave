@@ -276,12 +276,15 @@ export async function saveGameToSupabase(
     throw new Error('Not authenticated');
   }
 
+  const allowOverwrite = stateDiff.allowPlayTimeOverwrite === true;
+
   logger.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
     playTime,
     isNewGame,
     userId: user.id.substring(0, 8) + '...',
     diffKeys: Object.keys(stateDiff),
-    hasPlayTime: 'playTime' in stateDiff
+    hasPlayTime: 'playTime' in stateDiff,
+    allowPlayTimeOverwrite: allowOverwrite
   });
 
   // Deep clone and sanitize the diff to remove non-serializable data
@@ -300,12 +303,13 @@ export async function saveGameToSupabase(
     diffSize: JSON.stringify(sanitizedDiff).length,
     playTime,
     isNewGame,
-    clearClicks
+    clearClicks,
+    allowPlayTimeOverwrite: allowOverwrite
   });
 
   // OCC: Single atomic database call - the RPC function handles:
   // 1. Reading current state
-  // 2. Validating playTime is strictly greater
+  // 2. Validating playTime is strictly greater (unless allowPlayTimeOverwrite is true)
   // 3. Merging diff with existing state
   // 4. Writing merged state
   // All in one transaction - prevents race conditions
@@ -314,6 +318,7 @@ export async function saveGameToSupabase(
     p_game_state_diff: sanitizedDiff,
     p_click_analytics: analyticsParam,
     p_clear_clicks: clearClicks,
+    p_allow_playtime_overwrite: allowOverwrite,
   });
 
   if (error) {

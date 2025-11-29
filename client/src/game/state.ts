@@ -726,9 +726,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
       effects: calculateTotalEffects({ ...defaultGameState, ...preserved }),
       bastion_stats: calculateBastionStats(defaultGameState),
 
-      // Mark as new game
+      // Mark as new game and allow overwriting cloud playTime once
       isNewGame: true,
       startTime: Date.now(),
+      allowPlayTimeOverwrite: true,
     };
 
     set(resetState);

@@ -399,9 +399,10 @@ export const gameStateSchema = z.object({
   mysteriousNoteShopNotificationSeen: z.boolean().default(false), // Track if mysterious note shop notification has been seen
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
-  playTime: z.number().default(0),
-  isNewGame: z.boolean().default(false),
+  playTime: z.number().default(0), // Track total play time in milliseconds
+  isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
+  allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)
   hasMadeNonFreePurchase: z.boolean().default(false), // Track if player has made any non-free shop purchase
   referralCode: z.string().optional(), // Store the referral code used during signup
   referrals: z

@@ -257,6 +257,13 @@ export async function saveGame(
         // Update lastCloudState after successful cloud save
         await db.put("lastCloudState", sanitizedState, LAST_CLOUD_STATE_KEY);
         logger.log("[SAVE] ✅ Updated lastCloudState after successful cloud save");
+
+        // Clear the allowPlayTimeOverwrite flag after successful save
+        if (sanitizedState.allowPlayTimeOverwrite) {
+          const { useGameStore } = await import("./state");
+          useGameStore.setState({ allowPlayTimeOverwrite: false });
+          logger.log("[SAVE] 🔓 Cleared allowPlayTimeOverwrite flag after successful cloud save");
+        }
       }
     } catch (cloudError) {
       logger.error("[SAVE] Cloud save failed:", cloudError);
