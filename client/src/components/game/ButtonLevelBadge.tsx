@@ -63,14 +63,14 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
             <div className="">
               {!info.isMaxLevel && info.nextLevel ? (
                 <>
-                  <div className="flex items-center gap-3">
-                    <div className="relative">
+                  <div className="flex items-center gap-2">
+                    <div className="pt-1 relative">
                       <CircularProgress
                         value={progressPercent}
-                        size={26}
+                        size={24}
                         strokeWidth={2}
                       />
-                      <div className="absolute mb-[2px] inset-0 flex items-center justify-center text-xs font-medium">
+                      <div className="absolute mb-[0px] inset-0 flex items-center justify-center text-xs font-medium">
                         {info.level}
                       </div>
                     </div>
