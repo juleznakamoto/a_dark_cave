@@ -1,3 +1,5 @@
+import { StateManager } from "../state";
+
 // Define action bonuses interface
 export interface ActionBonuses {
   resourceBonus: Record<string, number>;
@@ -567,7 +569,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
     bonuses: {
       generalBonuses: {
         knowledge: 5,
-        madness: -5,
+        madness: -5-1*state.CM,
       },
       actionBonuses: {},
     },
