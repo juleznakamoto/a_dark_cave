@@ -65,6 +65,7 @@ import { noChoiceEvents } from "./eventsNoChoices";
 import { feastEvents } from "./eventsFeast";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { loreEvents } from "./eventsLore";
+import { fellowshipEvents } from "./eventsFellowship";
 import { GAME_CONSTANTS } from "../constants";
 
 export interface GameEvent {
@@ -135,6 +136,7 @@ export const gameEvents: Record<string, GameEvent> = {
   ...feastEvents,
   ...villageAttackEvents,
   ...loreEvents,
+  ...fellowshipEvents,
 };
 
 export class EventManager {
