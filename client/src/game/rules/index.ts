@@ -33,7 +33,7 @@ import {
   getUpgradeBonusMultiplier,
 } from "../buttonUpgrades";
 import { logger } from "@/lib/logger";
-import { attackWaveEvents } from "./eventsAttackWave";
+import { attackWaveEvents } from "./eventsAttackWaves";
 import { choiceEvents } from "./eventsChoice";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
