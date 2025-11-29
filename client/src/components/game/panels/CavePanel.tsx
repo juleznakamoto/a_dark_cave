@@ -13,7 +13,7 @@ import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
-import ParticleButton from "@/components/ParticleButton";
+import { ParticleButton } from "@/components/ui/particle-button";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
