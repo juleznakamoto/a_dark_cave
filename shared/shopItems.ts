@@ -21,21 +21,21 @@ export interface ShopItem {
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
-  // cruel_mode: {
-  //   id: "cruel_mode",
-  //   name: "Cruel Mode",
-  //   description:
-  //     "Experience a cruel world, with an expanded story, new items, more lore and deadlier foes. Endure, or vanish.",
-  //   originalPrice: 699,
-  //   price: 349, // 3.49 €
-  //   rewards: {},
-  //   canPurchaseMultipleTimes: false,
-  //   category: "blessing",
-  //   activationMessage:
-  //     "Cruel Mode unlocked! Start a new game to experience the ultimate challenge.",
-  //   symbol: "⛤",
-  //   symbolColor: "text-red-600",
-  // },
+  cruel_mode: {
+    id: "cruel_mode",
+    name: "Cruel Mode",
+    description:
+      "Experience a cruel world, with an expanded story, new items, more lore and deadlier foes. Endure, or vanish.",
+    originalPrice: 999,
+    price: 499, // 4.99 €
+    rewards: {},
+    canPurchaseMultipleTimes: false,
+    category: "blessing",
+    activationMessage:
+      "Cruel Mode unlocked! Start a new game to experience the ultimate challenge.",
+    symbol: "⛤",
+    symbolColor: "text-red-600",
+  },
 
   gold_100_free: {
     id: "gold_100_free",
