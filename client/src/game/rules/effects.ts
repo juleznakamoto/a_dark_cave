@@ -991,7 +991,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark: {
     id: "ravens_mark",
     name: "Raven's Mark",
-    description: "More strangers approach the village",
+    description: "Strangers approach the village more often",
     bonuses: {},
   },
 
@@ -1051,7 +1051,7 @@ export const clothingEffects: Record<string, EffectDefinition> = {
   ravens_mark_enhanced: {
     id: "ravens_mark_enhanced",
     name: "Raven's Great Mark",
-    description: "Much more strangers approach the village",
+    description: "Strangers approach the village much more often",
     bonuses: {},
   },
 
