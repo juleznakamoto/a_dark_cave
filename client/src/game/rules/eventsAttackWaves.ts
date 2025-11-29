@@ -3,6 +3,32 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 
+// Helper function to calculate enemy stats
+function calculateEnemyStats(params: {
+  attack: { base: number; random?: number; cmBonus: number; options?: number[] };
+  health: { base: number; cmBonus: number };
+}, state: GameState) {
+  const health = params.health.base + state.CM * params.health.cmBonus;
+  
+  let attack: number;
+  if (params.attack.options) {
+    // Use options array if provided (e.g., fifth wave)
+    attack = params.attack.options[Math.floor(Math.random() * params.attack.options.length)] + state.CM * params.attack.cmBonus;
+  } else if (params.attack.random) {
+    // Use random range if provided
+    attack = Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus;
+  } else {
+    // Fallback to base + CM bonus
+    attack = params.attack.base + state.CM * params.attack.cmBonus;
+  }
+  
+  return {
+    attack,
+    maxHealth: health,
+    currentHealth: health,
+  };
+}
+
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
@@ -204,7 +230,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       const params = WAVE_PARAMS.firstWave;
-      const health = params.health.base + state.CM * params.health.cmBonus;
+      const enemyStats = calculateEnemyStats(params, state);
       return {
         story: {
           ...state.story,
@@ -216,9 +242,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
-            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus,
-            maxHealth: health,
-            currentHealth: health,
+            ...enemyStats,
           },
           eventTitle: "The First Wave",
           eventMessage: FIRST_WAVE_MESSAGE,
@@ -304,7 +328,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       const params = WAVE_PARAMS.secondWave;
-      const health = params.health.base + state.CM * params.health.cmBonus;
+      const enemyStats = calculateEnemyStats(params, state);
       return {
         story: {
           ...state.story,
@@ -316,9 +340,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
-            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus,
-            maxHealth: health,
-            currentHealth: health,
+            ...enemyStats,
           },
           eventTitle: "The Second Wave",
           eventMessage: SECOND_WAVE_MESSAGE,
@@ -402,14 +424,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       const params = WAVE_PARAMS.thirdWave;
-      const health = params.health.base + state.CM * params.health.cmBonus;
+      const enemyStats = calculateEnemyStats(params, state);
       return {
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
-            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus,
-            maxHealth: health,
-            currentHealth: health,
+            ...enemyStats,
           },
           eventTitle: "The Third Wave",
           eventMessage: THIRD_WAVE_MESSAGE,
@@ -493,14 +513,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       const params = WAVE_PARAMS.fourthWave;
-      const health = params.health.base + state.CM * params.health.cmBonus;
+      const enemyStats = calculateEnemyStats(params, state);
       return {
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
-            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * params.attack.cmBonus,
-            maxHealth: health,
-            currentHealth: health,
+            ...enemyStats,
           },
           eventTitle: "The Fourth Wave",
           eventMessage: FOURTH_WAVE_MESSAGE,
@@ -584,14 +602,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     repeatable: true,
     effect: (state: GameState) => {
       const params = WAVE_PARAMS.fifthWave;
-      const health = params.health.base + state.CM * params.health.cmBonus;
+      const enemyStats = calculateEnemyStats(params, state);
       return {
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",
-            attack: params.attack.options![Math.floor(Math.random() * params.attack.options!.length)] + state.CM * params.attack.cmBonus,
-            maxHealth: health,
-            currentHealth: health,
+            ...enemyStats,
           },
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,
