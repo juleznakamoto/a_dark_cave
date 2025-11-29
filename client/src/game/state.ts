@@ -174,6 +174,9 @@ const mergeStateUpdates = (
     sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
     clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
     madness: stateUpdates.madness !== undefined ? stateUpdates.madness : prevState.madness,
+    crushingStrikeLevel: stateUpdates.crushingStrikeLevel !== undefined ? stateUpdates.crushingStrikeLevel : prevState.crushingStrikeLevel,
+    miningBoostState: stateUpdates.miningBoostState || prevState.miningBoostState,
+    greatFeastActivations: stateUpdates.greatFeastActivations !== undefined ? stateUpdates.greatFeastActivations : prevState.greatFeastActivations,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
           ...prevState.buttonUpgrades,

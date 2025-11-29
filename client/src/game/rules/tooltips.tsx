@@ -356,12 +356,6 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       return `Deals ${config.damage} damage\nStuns enemy for ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}\nCan be used once per battle`;
     },
   },
-  crushing_strike: {
-    getContent: (state) => {
-      const damage = 10;
-      return `Deals ${damage} damage and stuns the enemy for 1 round.\nStunned enemies cannot attack.\nCan only be used once per battle.`;
-    },
-  },
 };
 
 // Event choice cost tooltip - formats cost string
