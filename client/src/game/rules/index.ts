@@ -46,7 +46,6 @@ import { storyEvents } from "./eventsStory";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
-import { knightEvents } from "./eventsKnight";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
@@ -1082,5 +1081,4 @@ export const allEvents: Record<string, GameEvent> = {
   ...feastEvents,
   ...merchantEvents,
   ...fellowshipEvents,
-  ...knightEvents, // Add the last event of the knight
 };
