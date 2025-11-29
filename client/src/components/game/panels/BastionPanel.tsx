@@ -217,7 +217,7 @@ export default function BastionPanel() {
               <span className="pb-1 text-xs font-medium text-foreground">
                 Crushing Strike
               </span>
-              {(crushingStrikeLevel || 0) < 5 ? (
+              {currentLevel < 5 ? (
                 <TooltipProvider>
                   <Tooltip
                     open={mobileButtonTooltip.isTooltipOpen(
