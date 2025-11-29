@@ -9,7 +9,7 @@ function calculateEnemyStats(params: {
   health: { base: number; cmBonus: number };
 }, state: GameState) {
   const health = params.health.base + state.CM * params.health.cmBonus;
-  
+
   let attack: number;
   if (params.attack.options) {
     // Use options array if provided (e.g., fifth wave)
@@ -21,7 +21,7 @@ function calculateEnemyStats(params: {
     // Fallback to base + CM bonus
     attack = params.attack.base + state.CM * params.attack.cmBonus;
   }
-  
+
   return {
     attack,
     maxHealth: health,
@@ -78,23 +78,68 @@ const WAVE_PARAMS = {
   },
 } as const;
 
-const FIRST_WAVE_MESSAGE =
-  "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
-
-const SECOND_WAVE_MESSAGE =
-  "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.";
-
-const THIRD_WAVE_MESSAGE =
-  "Hoards of pale creatures come from the cave, screams shake even the stones, their bone weapons cracking the ground.";
-
-const FOURTH_WAVE_MESSAGE =
-  "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.";
-
-const FIFTH_WAVE_MESSAGE =
-  "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.";
+const WAVE_CONFIG = {
+  firstWave: {
+    title: "The First Wave",
+    message: "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.",
+    enemyName: "Group of pale creatures",
+    condition: (state: GameState) => 
+      state.flags.portalBlasted &&
+      state.story.seen.hasBastion &&
+      !state.story.seen.firstWaveVictory,
+    triggeredFlag: "firstWaveTriggered" as const,
+    victoryFlag: "firstWaveVictory" as const,
+  },
+  secondWave: {
+    title: "The Second Wave",
+    message: "They creatures return in greater numbers, clad in crude bone, their weapons glowing with foul light.",
+    enemyName: "Pack of pale creatures",
+    condition: (state: GameState) => 
+      state.story.seen.firstWaveVictory && 
+      !state.story.seen.secondWaveVictory,
+    triggeredFlag: "secondWaveTriggered" as const,
+    victoryFlag: "secondWaveVictory" as const,
+  },
+  thirdWave: {
+    title: "The Third Wave",
+    message: "Hoards of pale creatures come from the cave, screams shake even the stones, their bone weapons cracking the ground.",
+    enemyName: "Horde of pale creatures",
+    condition: (state: GameState) => 
+      state.story.seen.wizardDecryptsScrolls &&
+      state.story.seen.secondWaveVictory &&
+      !state.story.seen.thirdWaveVictory,
+    triggeredFlag: null,
+    victoryFlag: "thirdWaveVictory" as const,
+  },
+  fourthWave: {
+    title: "The Fourth Wave",
+    message: "The sky seems to darken as an uncountable mass of pale creatures surges from the cave, pressing towards the city.",
+    enemyName: "Legion of pale creatures",
+    condition: (state: GameState) => 
+      state.weapons.frostglass_sword &&
+      state.story.seen.thirdWaveVictory &&
+      !state.story.seen.fourthWaveVictory,
+    triggeredFlag: null,
+    victoryFlag: "fourthWaveVictory" as const,
+  },
+  fifthWave: {
+    title: "The Final Wave",
+    message: "From the cave emerge countless pale figures, larger and more twisted than before, their forms unspeakable as they advance on the city.",
+    enemyName: "Swarm of pale creatures",
+    condition: (state: GameState) => 
+      state.weapons.bloodstone_staff &&
+      state.story.seen.fourthWaveVictory &&
+      !state.story.seen.fifthWaveVictory,
+    triggeredFlag: null,
+    victoryFlag: "fifthWaveVictory" as const,
+  },
+} as const;
 
 const VICTORY_MESSAGE = (silverReward: number) =>
   `Your defenses hold! The pale creatures crash against your walls but cannot break through. Victory is yours! You claim ${silverReward} silver from the fallen creatures.`;
+
+const FIFTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
+  `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${silverReward} silver from the fallen creatures.`;
 
 function createDefeatMessage(
   casualties: number,
@@ -186,27 +231,31 @@ function handleDefeat(
   };
 }
 
-export const attackWaveEvents: Record<string, GameEvent> = {
-  firstWave: {
-    id: "firstWave",
+// Factory function to create attack wave events
+function createAttackWaveEvent(
+  waveId: keyof typeof WAVE_PARAMS,
+): GameEvent {
+  const params = WAVE_PARAMS[waveId];
+  const config = WAVE_CONFIG[waveId];
+
+  return {
+    id: waveId,
     condition: (state: GameState) => {
-      const baseCondition = state.flags.portalBlasted &&
-        state.story.seen.hasBastion &&
-        !state.story.seen.firstWaveVictory;
-      
+      const baseCondition = config.condition(state);
+
       if (!baseCondition) return false;
 
       // Check if timer exists and has expired
-      const timer = state.attackWaveTimers?.firstWave;
+      const timer = state.attackWaveTimers?.[waveId];
       if (!timer) {
         // Initialize timer if conditions just met
         const now = Date.now();
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
-            firstWave: {
+            [waveId]: {
               startTime: now,
-              duration: WAVE_PARAMS.firstWave.initialDuration,
+              duration: params.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -223,29 +272,33 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     },
     triggerType: "resource",
     timeProbability: 0.25,
-    title: "The First Wave",
-    message: FIRST_WAVE_MESSAGE,
+    title: config.title,
+    message: config.message,
     triggered: false,
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
-      const params = WAVE_PARAMS.firstWave;
       const enemyStats = calculateEnemyStats(params, state);
-      return {
+
+      const storyUpdate = config.triggeredFlag ? {
         story: {
           ...state.story,
           seen: {
             ...state.story.seen,
-            firstWaveTriggered: true,
+            [config.triggeredFlag]: true,
           },
         },
+      } : {};
+
+      return {
+        ...storyUpdate,
         _combatData: {
           enemy: {
-            name: "Group of pale creatures",
+            name: config.enemyName,
             ...enemyStats,
           },
-          eventTitle: "The First Wave",
-          eventMessage: FIRST_WAVE_MESSAGE,
+          eventTitle: config.title,
+          eventMessage: config.message,
           onVictory: () => ({
             resources: {
               ...state.resources,
@@ -255,17 +308,19 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               ...state.story,
               seen: {
                 ...state.story.seen,
-                firstWaveVictory: true,
+                [config.victoryFlag]: true,
               },
             },
             attackWaveTimers: {
               ...state.attackWaveTimers,
-              firstWave: {
-                ...state.attackWaveTimers.firstWave,
+              [waveId]: {
+                ...state.attackWaveTimers[waveId],
                 defeated: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(params.silverReward),
+            _logMessage: waveId === "fifthWave" 
+              ? FIFTH_WAVE_VICTORY_MESSAGE(params.silverReward)
+              : VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
             const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
@@ -273,382 +328,28 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
-                firstWave: {
+                [waveId]: {
                   startTime: Date.now(),
                   duration: params.defeatDuration,
                   defeated: false,
                 },
               },
-              events: {
+              events: waveId === "firstWave" ? {
                 ...state.events,
                 firstWave: false, // Reset event triggered state
-              },
+              } : state.events,
             };
           },
         },
       };
     },
-  },
+  };
+}
 
-  secondWave: {
-    id: "secondWave",
-    condition: (state: GameState) => {
-      const baseCondition = state.story.seen.firstWaveVictory && !state.story.seen.secondWaveVictory;
-      
-      if (!baseCondition) return false;
-
-      const timer = state.attackWaveTimers?.secondWave;
-      if (!timer) {
-        const now = Date.now();
-        useGameStore.setState((s) => ({
-          attackWaveTimers: {
-            ...s.attackWaveTimers,
-            secondWave: {
-              startTime: now,
-              duration: WAVE_PARAMS.secondWave.initialDuration,
-              defeated: false,
-              provoked: false,
-            },
-          },
-        }));
-        return false;
-      }
-
-      if (timer.defeated) return false;
-
-      const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
-    },
-    triggerType: "resource",
-    timeProbability: 0.25,
-    title: "The Second Wave",
-    message: SECOND_WAVE_MESSAGE,
-    triggered: false,
-    priority: 5,
-    repeatable: true,
-    effect: (state: GameState) => {
-      const params = WAVE_PARAMS.secondWave;
-      const enemyStats = calculateEnemyStats(params, state);
-      return {
-        story: {
-          ...state.story,
-          seen: {
-            ...state.story.seen,
-            secondWaveTriggered: true,
-          },
-        },
-        _combatData: {
-          enemy: {
-            name: "Pack of pale creatures",
-            ...enemyStats,
-          },
-          eventTitle: "The Second Wave",
-          eventMessage: SECOND_WAVE_MESSAGE,
-          onVictory: () => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver + params.silverReward,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                secondWaveVictory: true,
-              },
-            },
-            attackWaveTimers: {
-              ...state.attackWaveTimers,
-              secondWave: {
-                ...state.attackWaveTimers.secondWave,
-                defeated: true,
-              },
-            },
-            _logMessage: VICTORY_MESSAGE(params.silverReward),
-          }),
-          onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
-            return {
-              ...defeatResult,
-              attackWaveTimers: {
-                ...state.attackWaveTimers,
-                secondWave: {
-                  startTime: Date.now(),
-                  duration: params.defeatDuration,
-                  defeated: false,
-                },
-              },
-            };
-          },
-        },
-      };
-    },
-  },
-
-  thirdWave: {
-    id: "thirdWave",
-    condition: (state: GameState) => {
-      const baseCondition = state.story.seen.wizardDecryptsScrolls &&
-        state.story.seen.secondWaveVictory &&
-        !state.story.seen.thirdWaveVictory;
-      
-      if (!baseCondition) return false;
-
-      const timer = state.attackWaveTimers?.thirdWave;
-      if (!timer) {
-        const now = Date.now();
-        useGameStore.setState((s) => ({
-          attackWaveTimers: {
-            ...s.attackWaveTimers,
-            thirdWave: {
-              startTime: now,
-              duration: WAVE_PARAMS.thirdWave.initialDuration,
-              defeated: false,
-              provoked: false,
-            },
-          },
-        }));
-        return false;
-      }
-
-      if (timer.defeated) return false;
-
-      const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
-    },
-    triggerType: "resource",
-    timeProbability: 0.25,
-    title: "The Third Wave",
-    message: THIRD_WAVE_MESSAGE,
-    triggered: false,
-    priority: 5,
-    repeatable: true,
-    effect: (state: GameState) => {
-      const params = WAVE_PARAMS.thirdWave;
-      const enemyStats = calculateEnemyStats(params, state);
-      return {
-        _combatData: {
-          enemy: {
-            name: "Horde of pale creatures",
-            ...enemyStats,
-          },
-          eventTitle: "The Third Wave",
-          eventMessage: THIRD_WAVE_MESSAGE,
-          onVictory: () => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver + params.silverReward,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                thirdWaveVictory: true,
-              },
-            },
-            attackWaveTimers: {
-              ...state.attackWaveTimers,
-              thirdWave: {
-                ...state.attackWaveTimers.thirdWave,
-                defeated: true,
-              },
-            },
-            _logMessage: VICTORY_MESSAGE(params.silverReward),
-          }),
-          onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
-            return {
-              ...defeatResult,
-              attackWaveTimers: {
-                ...state.attackWaveTimers,
-                thirdWave: {
-                  startTime: Date.now(),
-                  duration: params.defeatDuration,
-                  defeated: false,
-                },
-              },
-            };
-          },
-        },
-      };
-    },
-  },
-
-  fourthWave: {
-    id: "fourthWave",
-    condition: (state: GameState) => {
-      const baseCondition = state.weapons.frostglass_sword &&
-        state.story.seen.thirdWaveVictory &&
-        !state.story.seen.fourthWaveVictory;
-      
-      if (!baseCondition) return false;
-
-      const timer = state.attackWaveTimers?.fourthWave;
-      if (!timer) {
-        const now = Date.now();
-        useGameStore.setState((s) => ({
-          attackWaveTimers: {
-            ...s.attackWaveTimers,
-            fourthWave: {
-              startTime: now,
-              duration: WAVE_PARAMS.fourthWave.initialDuration,
-              defeated: false,
-              provoked: false,
-            },
-          },
-        }));
-        return false;
-      }
-
-      if (timer.defeated) return false;
-
-      const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
-    },
-    triggerType: "resource",
-    timeProbability: 0.25,
-    title: "The Fourth Wave",
-    message: FOURTH_WAVE_MESSAGE,
-    triggered: false,
-    priority: 5,
-    repeatable: true,
-    effect: (state: GameState) => {
-      const params = WAVE_PARAMS.fourthWave;
-      const enemyStats = calculateEnemyStats(params, state);
-      return {
-        _combatData: {
-          enemy: {
-            name: "Legion of pale creatures",
-            ...enemyStats,
-          },
-          eventTitle: "The Fourth Wave",
-          eventMessage: FOURTH_WAVE_MESSAGE,
-          onVictory: () => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver + params.silverReward,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                fourthWaveVictory: true,
-              },
-            },
-            attackWaveTimers: {
-              ...state.attackWaveTimers,
-              fourthWave: {
-                ...state.attackWaveTimers.fourthWave,
-                defeated: true,
-              },
-            },
-            _logMessage: VICTORY_MESSAGE(params.silverReward),
-          }),
-          onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
-            return {
-              ...defeatResult,
-              attackWaveTimers: {
-                ...state.attackWaveTimers,
-                fourthWave: {
-                  startTime: Date.now(),
-                  duration: params.defeatDuration,
-                  defeated: false,
-                },
-              },
-            };
-          },
-        },
-      };
-    },
-  },
-
-  fifthWave: {
-    id: "fifthWave",
-    condition: (state: GameState) => {
-      const baseCondition = state.weapons.bloodstone_staff &&
-        state.story.seen.fourthWaveVictory &&
-        !state.story.seen.fifthWaveVictory;
-      
-      if (!baseCondition) return false;
-
-      const timer = state.attackWaveTimers?.fifthWave;
-      if (!timer) {
-        const now = Date.now();
-        useGameStore.setState((s) => ({
-          attackWaveTimers: {
-            ...s.attackWaveTimers,
-            fifthWave: {
-              startTime: now,
-              duration: WAVE_PARAMS.fifthWave.initialDuration,
-              defeated: false,
-              provoked: false,
-            },
-          },
-        }));
-        return false;
-      }
-
-      if (timer.defeated) return false;
-
-      const elapsed = Date.now() - timer.startTime;
-      return elapsed >= timer.duration;
-    },
-    triggerType: "resource",
-    timeProbability: 0.25,
-    title: "The Final Wave",
-    message: FIFTH_WAVE_MESSAGE,
-    triggered: false,
-    priority: 5,
-    repeatable: true,
-    effect: (state: GameState) => {
-      const params = WAVE_PARAMS.fifthWave;
-      const enemyStats = calculateEnemyStats(params, state);
-      return {
-        _combatData: {
-          enemy: {
-            name: "Swarm of pale creatures",
-            ...enemyStats,
-          },
-          eventTitle: "The Final Wave",
-          eventMessage: FIFTH_WAVE_MESSAGE,
-          onVictory: () => ({
-            resources: {
-              ...state.resources,
-              silver: state.resources.silver + params.silverReward,
-            },
-            story: {
-              ...state.story,
-              seen: {
-                ...state.story.seen,
-                fifthWaveVictory: true,
-              },
-            },
-            attackWaveTimers: {
-              ...state.attackWaveTimers,
-              fifthWave: {
-                ...state.attackWaveTimers.fifthWave,
-                defeated: true,
-              },
-            },
-            _logMessage:
-              `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${params.silverReward} silver from the fallen creatures.`,
-          }),
-          onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
-            return {
-              ...defeatResult,
-              attackWaveTimers: {
-                ...state.attackWaveTimers,
-                fifthWave: {
-                  startTime: Date.now(),
-                  duration: params.defeatDuration,
-                  defeated: false,
-                },
-              },
-            };
-          },
-        },
-      };
-    },
-  },
+export const attackWaveEvents: Record<string, GameEvent> = {
+  firstWave: createAttackWaveEvent("firstWave"),
+  secondWave: createAttackWaveEvent("secondWave"),
+  thirdWave: createAttackWaveEvent("thirdWave"),
+  fourthWave: createAttackWaveEvent("fourthWave"),
+  fifthWave: createAttackWaveEvent("fifthWave"),
 };
