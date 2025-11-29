@@ -1,5 +1,5 @@
 
-import { GameEvent, calculateSuccessChance } from "./events";
+import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 
 export const fellowshipEvents: Record<string, GameEvent> = {
@@ -9,7 +9,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
       state.buildings.wizardTower >= 1 && !state.fellowship.elder_wizard,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.wizardOfferDeclined ? 60 : 30;
+      return state.story.seen.wizardOfferDeclined ? 0.045 : 0.030;
     },
     title: "The Wizard's Offer",
     message: (state: GameState) =>
