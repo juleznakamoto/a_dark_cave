@@ -1,0 +1,112 @@
+Download the React DevTools for a better development experience: https://reactjs.org/link/react-devtools
+logger.ts:7 Registering sounds for lazy loading...
+logger.ts:7 Sound URLs registered for lazy loading
+logger.ts:7 [LOAD] 💾 Local save retrieved: {hasLocalSave: true, timestamp: '2025-11-29T11:01:35.880Z', playTime: 27716.70000000001, playTimeMinutes: 0, hasCooldowns: true, …}
+logger.ts:7 [LOAD CLOUD] 📊 Loaded from Supabase: {hasData: true, hasReferrals: true, referralsCount: 6, referrals: Array(6), playTime: 62408068.1999978, …}
+logger.ts:7 [LOAD] ☁️ Using cloud save (user authenticated)
+logger.ts:7 [REFERRAL] 🔍 Processing unclaimed referrals... {hasUser: true, hasReferrals: true, referralsCount: 6, referrals: Array(6)}
+logger.ts:7 [REFERRAL] ℹ️ No unclaimed referrals to process
+logger.ts:7 [LOAD] ✅ Cloud save loaded and synced locally
+logger.ts:7 [GAME] Game loaded from save
+logger.ts:7 [GAME] Detected claimed referrals - saving to cloud
+logger.ts:7 [LOOP] 🚀 Starting game loop
+logger.ts:7 [LOOP] 🕐 Game start time initialized: 4210.300000011921
+logger.ts:7 [INACTIVITY] Initialized activity tracking at 2025-11-29T11:01:41.826Z
+logger.ts:7 [LOOP] 🎬 First animation frame requested, loop ID: null
+logger.ts:7 [LOOP] ✅ Game loop initialized successfully
+logger.ts:7 [IDLE MODE INIT] Dialog open check: {dialogOpen: false, isActive: false, idleModeState: {…}}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 62408068.1999978, isNewGame: false, userId: 'a375ecb5...', diffKeys: Array(1), hasPlayTime: false}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 27, playTime: 62408068.1999978, isNewGame: false, …}
+logger.ts:7 [SAVE CLOUD] ✅ Cloud save completed successfully - OCC check passed in database
+logger.ts:7 [SAVE] ✅ Updated lastCloudState after successful cloud save
+logger.ts:7 [GAME] Successfully saved claimed referrals to cloud
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 192, deltaTime: 258, currentCooldowns: Array(0)}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 217, deltaTime: 250, currentCooldowns: Array(0)}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 25, deltaTime: 250, currentCooldowns: Array(0)}
+logger.ts:7 [GAME LOOP] Normal production running - idle mode is NOT active
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 75, deltaTime: 250, currentCooldowns: Array(0)}
+logger.ts:7 [LOOP] 🔄 Loop running: {isPaused: false, isDialogOpen: false, manuallyPaused: false, eventDialogOpen: false, combatDialogOpen: false, …}
+logger.ts:7 [LOOP] 🔄 Tick processing: {ticksProcessed: 1, tickAccumulator: 109, deltaTime: 250, currentCooldowns: Array(0)}
+logger.ts:7 [SAVE CLOUD] 🔍 Starting cloud save with OCC... {playTime: 21175, isNewGame: true, userId: 'a375ecb5...', diffKeys: Array(41), hasPlayTime: true}
+logger.ts:7 [SAVE CLOUD] 💾 Calling database RPC with OCC validation... {hasClickAnalytics: false, clickAnalyticsKeys: Array(0), diffSize: 5907, playTime: 21175, isNewGame: true, …}
+@supabase_supabase-js.js?v=ecbd7766:5633  POST https://epmegaduehlztjqoeqih.supabase.co/rest/v1/rpc/save_game_with_analytics 400 (Bad Request)
+(anonymous) @ @supabase_supabase-js.js?v=ecbd7766:5633
+(anonymous) @ @supabase_supabase-js.js?v=ecbd7766:5654
+await in (anonymous)
+then @ @supabase_supabase-js.js?v=ecbd7766:94Understand this error
+logger.ts:12 [SAVE CLOUD] ⚠️ OCC REJECTED by database: OCC violation: new playTime (21175) must be greater than existing playTime (62408068.1999978)
+warn @ logger.ts:12
+saveGameToSupabase @ auth.ts:322
+await in saveGameToSupabase
+saveGame @ save.ts:250
+await in saveGame
+handleAutoSave @ loop.ts:893
+tick @ loop.ts:304
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:207
+requestAnimationFrame
+tick @ loop.ts:410Understand this warning
+logger.ts:17 [SAVE] Cloud save failed: Error: OCC violation: OCC violation: new playTime (21175) must be greater than existing playTime (62408068.1999978)
+    at saveGameToSupabase (auth.ts:323:13)
+    at async saveGame (save.ts:250:9)
+    at async handleAutoSave (loop.ts:893:5)
