@@ -188,6 +188,8 @@ export function buildGameState(state: any): GameState {
     isPaused: false, // Never save pause state - always unpause on load
     showEndScreen: state.showEndScreen || false,
     isMuted: state.isMuted || false,
+    sleepUpgrades: state.sleepUpgrades || { lengthLevel: 0, intensityLevel: 0 },
+    combatSkills: state.combatSkills || { crushingStrikeLevel: 0 },
     shopNotificationSeen: state.shopNotificationSeen || false,
     shopNotificationVisible: state.shopNotificationVisible || false,
     authNotificationSeen: state.authNotificationSeen || false,
