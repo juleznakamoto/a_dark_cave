@@ -640,11 +640,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Trigger immediate save for long cooldowns (>5 seconds)
     if (shouldTriggerImmediateSave) {
+      // Capture state immediately to avoid race conditions
+      const stateToSave = get();
+      const playTimeToSave = stateToSave.playTime;
+      
       setTimeout(async () => {
         try {
           const { saveGame } = await import('@/game/save');
-          const currentState = get();
-          await saveGame(currentState, currentState.playTime);
+          await saveGame(stateToSave, playTimeToSave);
         } catch (error) {
           logger.error(`Failed to save cooldowns for ${actionId}:`, error);
         }
