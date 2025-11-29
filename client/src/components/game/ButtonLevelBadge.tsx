@@ -53,17 +53,10 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
         >
           <div className="space-y-1.5">
             <div className="">
-              <div className="flex justify-between gap-2">
-                <span>Level:</span> <span>{info.level}</span>
-              </div>
-              <div className="flex justify-between gap-2">
-                <span>Clicks:</span>
-                <span>{info.clicks.toLocaleString()}</span>
-              </div>
               {!info.isMaxLevel && info.nextLevel ? (
                 <>
-                  <div className="border-t my-1.5 pt-1.5">
-                    <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3">
+                    <div className="relative">
                       <CircularProgress
                         value={
                           info.nextLevel.clicksRequired > 0
@@ -73,20 +66,23 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                         size={40}
                         strokeWidth={3}
                       />
-                      <div className="flex flex-col gap-0.5">
-                        <div className="text-xs">
-                          Bonus: <span className="font-medium">+{info.bonus}%</span>
-                        </div>
-                        <div className="text-xs">
-                          Next bonus: <span className="font-medium">+{info.nextLevel.bonus}%</span>
-                        </div>
+                      <div className="absolute inset-0 flex items-center justify-center text-sm font-medium">
+                        {info.level}
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-0.5">
+                      <div className="text-xs">
+                        Bonus: <span className="font-medium">+{info.bonus}%</span>
+                      </div>
+                      <div className="text-xs">
+                        Next bonus: <span className="font-medium">+{info.nextLevel.bonus}%</span>
                       </div>
                     </div>
                   </div>
                 </>
               ) : (
                 <div className="flex justify-between gap-2">
-                  <span className=" ">Bonus:</span>
+                  <span>Bonus:</span>
                   <span>+{info.bonus}%</span>
                 </div>
               )}
