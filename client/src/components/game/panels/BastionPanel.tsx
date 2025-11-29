@@ -123,14 +123,14 @@ export default function BastionPanel() {
     });
   };
 
-  const currentLevel = combatSkills.crushingStrikeLevel;
-  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel];
+  const currentLevel = combatSkills.crushingStrikeLevel ?? 0;
+  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel] ?? CRUSHING_STRIKE_UPGRADES[0];
   const nextCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
   const canUpgradeCrushingStrike =
     currentLevel < 5 && nextCrushingStrike && resources.gold >= nextCrushingStrike.cost;
 
-  const currentBloodflameLevel = combatSkills.bloodflameSphereLevel;
-  const currentBloodflameSphere = BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel];
+  const currentBloodflameLevel = combatSkills.bloodflameSphereLevel ?? 0;
+  const currentBloodflameSphere = BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel] ?? BLOODFLAME_SPHERE_UPGRADES[0];
   const nextBloodflameSphere = BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel + 1];
   const canUpgradeBloodflameSphere =
     currentBloodflameLevel < 5 && nextBloodflameSphere && resources.gold >= nextBloodflameSphere.cost;
