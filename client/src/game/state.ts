@@ -164,8 +164,16 @@ const mergeStateUpdates = (
     fellowship: { ...prevState.fellowship, ...stateUpdates.fellowship },
     blessings: { ...prevState.blessings, ...stateUpdates.blessings },
     events: { ...prevState.events, ...stateUpdates.events },
+    stats: { ...prevState.stats, ...stateUpdates.stats },
     cooldowns: { ...prevState.cooldowns, ...stateUpdates.cooldowns },
     cooldownDurations: { ...prevState.cooldownDurations, ...stateUpdates.cooldownDurations },
+    attackWaveTimers: { ...prevState.attackWaveTimers, ...stateUpdates.attackWaveTimers },
+    feastState: stateUpdates.feastState || prevState.feastState,
+    greatFeastState: stateUpdates.greatFeastState || prevState.greatFeastState,
+    curseState: stateUpdates.curseState || prevState.curseState,
+    sleepUpgrades: stateUpdates.sleepUpgrades || prevState.sleepUpgrades,
+    clickAnalytics: { ...prevState.clickAnalytics, ...stateUpdates.clickAnalytics },
+    madness: stateUpdates.madness !== undefined ? stateUpdates.madness : prevState.madness,
     buttonUpgrades: stateUpdates.buttonUpgrades
       ? {
           ...prevState.buttonUpgrades,
