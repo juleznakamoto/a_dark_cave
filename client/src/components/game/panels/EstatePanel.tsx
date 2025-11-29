@@ -112,24 +112,27 @@ export default function EstatePanel() {
     upgrades: typeof SLEEP_LENGTH_UPGRADES | typeof SLEEP_INTENSITY_UPGRADES,
     levelKey: 'lengthLevel' | 'intensityLevel'
   ) => {
-    const currentLevel = sleepUpgrades[levelKey];
-    if (currentLevel >= 5) return;
+    useGameStore.setState((state) => {
+      const currentLevel = state.sleepUpgrades[levelKey];
+      if (currentLevel >= 5) return state;
 
-    const nextUpgrade = upgrades[currentLevel + 1];
-    const currency = nextUpgrade.currency as 'gold' | 'silver';
-    
-    if (resources[currency] >= nextUpgrade.cost) {
-      useGameStore.setState({
+      const nextUpgrade = upgrades[currentLevel + 1];
+      const currency = nextUpgrade.currency as 'gold' | 'silver';
+      
+      if (state.resources[currency] < nextUpgrade.cost) return state;
+
+      return {
+        ...state,
         sleepUpgrades: {
-          ...sleepUpgrades,
+          ...state.sleepUpgrades,
           [levelKey]: currentLevel + 1,
         },
         resources: {
-          ...resources,
-          [currency]: resources[currency] - nextUpgrade.cost,
+          ...state.resources,
+          [currency]: state.resources[currency] - nextUpgrade.cost,
         },
-      });
-    }
+      };
+    });
   };
 
   const handleSleepLengthUpgrade = () => 
