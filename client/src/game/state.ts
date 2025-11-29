@@ -515,12 +515,8 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
 
     // Store initial cooldown duration if it's a new cooldown
-    let shouldTriggerImmediateSave = false;
-    let cooldownDuration = 0;
-
     if (result.stateUpdates.cooldowns && result.stateUpdates.cooldowns[actionId]) {
       const initialDuration = result.stateUpdates.cooldowns[actionId];
-      cooldownDuration = initialDuration;
 
       set((prevState) => ({
         cooldownDurations: {
@@ -528,9 +524,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
           [actionId]: initialDuration,
         },
       }));
-
-      // Mark for immediate save if cooldown > 5 seconds
-      shouldTriggerImmediateSave = initialDuration > 5;
     }
 
     // Apply dev mode cooldown multiplier (0.1x)
@@ -538,10 +531,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       const updatedCooldowns = { ...result.stateUpdates.cooldowns };
       for (const key in updatedCooldowns) {
         updatedCooldowns[key] = updatedCooldowns[key] * 0.1;
-        // Update the cooldown duration for immediate save check
-        if (key === actionId) {
-          cooldownDuration = updatedCooldowns[key];
-        }
       }
       result.stateUpdates.cooldowns = updatedCooldowns;
     }
@@ -637,22 +626,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
 
     // Handle delayed effects
     StateManager.handleDelayedEffects(result.delayedEffects);
-
-    // Trigger immediate save for long cooldowns (>5 seconds)
-    if (shouldTriggerImmediateSave) {
-      // Capture state immediately to avoid race conditions
-      const stateToSave = get();
-      const playTimeToSave = stateToSave.playTime;
-      
-      setTimeout(async () => {
-        try {
-          const { saveGame } = await import('@/game/save');
-          await saveGame(stateToSave, playTimeToSave);
-        } catch (error) {
-          logger.error(`Failed to save cooldowns for ${actionId}:`, error);
-        }
-      }, 0);
-    }
   },
 
   setCooldown: (action: string, duration: number) => {
@@ -660,20 +633,6 @@ export const useGameStore = create<GameStore>((set, get) => ({
       cooldowns: { ...state.cooldowns, [action]: duration },
       cooldownDurations: { ...state.cooldownDurations, [action]: duration },
     }));
-
-    // Only save immediately for cooldowns >5 seconds
-    // Shorter cooldowns will be saved by the 15-second auto-save
-    if (duration > 5) {
-      setTimeout(async () => {
-        try {
-          const { saveGame } = await import('@/game/save');
-          const currentState = get();
-          await saveGame(currentState, currentState.playTime);
-        } catch (error) {
-          logger.error(`Failed to save cooldowns for ${action}:`, error);
-        }
-      }, 0);
-    }
   },
 
   tickCooldowns: () => {
