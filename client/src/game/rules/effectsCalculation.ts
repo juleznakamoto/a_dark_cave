@@ -649,7 +649,12 @@ export const calculateTotalEffects = (state: GameState) => {
   activeEffects.forEach((effect) => {
     // Process madness bonuses from general bonuses (items that ADD madness)
     if (effect.bonuses.generalBonuses?.madness) {
-      effects.statBonuses.madness += effect.bonuses.generalBonuses.madness;
+      let madnessValue = effect.bonuses.generalBonuses.madness;
+      // In cruel mode, items with >=4 madness get +1 additional madness
+      if (state.cruelMode && madnessValue >= 4) {
+        madnessValue += 1;
+      }
+      effects.statBonuses.madness += madnessValue;
     }
 
     // Process madness reduction from general bonuses (items that REDUCE madness)
