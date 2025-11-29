@@ -13,6 +13,7 @@ import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import ParticleButton from "@/components/ParticleButton";
 
 export default function CavePanel() {
   const { flags, executeAction } = useGameStore();
@@ -213,6 +214,23 @@ export default function CavePanel() {
           <ButtonLevelBadge upgradeKey={upgradeKey} />
         </div>
       ) : button;
+    }
+
+    // Special case for buildTorch, which uses ParticleButton
+    if (actionId === "buildTorch") {
+      return (
+        <ParticleButton
+          key={actionId}
+          onClick={() => executeAction("buildTorch")}
+          disabled={
+            (state.cooldowns.buildTorch || 0) > 0 ||
+            !canExecuteAction("buildTorch", state)
+          }
+          cruelMode={state.cruelMode}
+        >
+          {label}
+        </ParticleButton>
+      );
     }
 
     const button = (

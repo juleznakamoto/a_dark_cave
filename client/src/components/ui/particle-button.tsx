@@ -10,6 +10,7 @@ import type { ButtonProps } from "@/components/ui/button";
 interface ParticleButtonProps extends ButtonProps {
     spawnInterval?: number;
     hoverDelay?: number;
+    cruelMode?: boolean;
 }
 
 interface Spark {
@@ -86,6 +87,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     spawnInterval = 300,
     hoverDelay = 100,
     className,
+    cruelMode = false,
     ...props
 }: ParticleButtonProps, ref) => {
     const [sparks, setSparks] = useState<Spark[]>([]);
@@ -98,7 +100,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
     const flickerRef = useRef<NodeJS.Timeout | null>(null);
     const delayTimeoutRef = useRef<NodeJS.Timeout | null>(null);
     const idRef = useRef(0);
-    const spawnCountRef = useRef(2); // initial number of sparks per spawn
+    const spawnCountRef = useRef(cruelMode ? 4 : 2); // initial number of sparks per spawn (doubled in cruel mode)
     const rampStartRef = useRef<number | null>(null);
 
     const colors = ["#ffb347", "#ff9234", "#ffcd94", "#ff6f3c", "#ff4500"]; // ember-like
@@ -174,7 +176,7 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
         delayTimeoutRef.current = setTimeout(() => {
             setIsGlowing(true);
             setGlowIntensity(0.1); // start with very small glow
-            spawnCountRef.current = 2;
+            spawnCountRef.current = cruelMode ? 4 : 2;
             rampStartRef.current = Date.now();
 
             spawnSparks(); // spawn immediately
@@ -184,12 +186,13 @@ const ParticleButton = forwardRef<HTMLButtonElement, ParticleButtonProps>(({
             rampUpRef.current = setInterval(() => {
                 if (rampStartRef.current) {
                     const elapsed = Date.now() - rampStartRef.current;
+                    const maxParticles = cruelMode ? 20 : 10; // double max particles in cruel mode
                     if (elapsed < 10000) {
                         spawnCountRef.current =
-                            1 + Math.floor((elapsed / 10000) * 10);
+                            (cruelMode ? 2 : 1) + Math.floor((elapsed / 10000) * maxParticles);
                     } else {
                         spawnCountRef.current =
-                            Math.floor(Math.random() * 7) + 6; // max
+                            Math.floor(Math.random() * (cruelMode ? 14 : 7)) + (cruelMode ? 12 : 6); // max doubled in cruel mode
                         if (rampUpRef.current) {
                             clearInterval(rampUpRef.current);
                             rampUpRef.current = null;
