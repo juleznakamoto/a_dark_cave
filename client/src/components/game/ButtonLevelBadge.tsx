@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { UpgradeKey, getButtonUpgradeInfo } from "@/game/buttonUpgrades";
+import { UpgradeKey, getButtonUpgradeInfo, getUpgradeLevelsForKey } from "@/game/buttonUpgrades";
 import { useGameStore } from "@/game/state";
 import {
   Tooltip,
@@ -25,6 +25,14 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
   }
 
   const info = getButtonUpgradeInfo(upgradeKey, buttonUpgrade);
+
+  // Calculate progress within current level range
+  const upgradeLevels = getUpgradeLevelsForKey(upgradeKey);
+  const currentLevelStart = upgradeLevels[info.level]?.clicksRequired || 0;
+  const nextLevelTarget = info.nextLevel?.clicksRequired || 0;
+  const clicksInCurrentLevel = info.clicks - currentLevelStart;
+  const clicksNeededForLevel = nextLevelTarget - currentLevelStart;
+  const progressPercent = clicksNeededForLevel > 0 ? (clicksInCurrentLevel / clicksNeededForLevel) * 100 : 0;
 
   return (
     <TooltipProvider>
@@ -58,11 +66,7 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                   <div className="flex items-center gap-3">
                     <div className="relative">
                       <CircularProgress
-                        value={
-                          info.nextLevel.clicksRequired > 0
-                            ? (info.clicks / info.nextLevel.clicksRequired) * 100
-                            : 0
-                        }
+                        value={progressPercent}
                         size={26}
                         strokeWidth={2}
                       />

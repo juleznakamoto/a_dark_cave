@@ -200,17 +200,22 @@ export function getButtonUpgradeInfo(key: UpgradeKey, upgrade: { clicks: number;
   const currentLevelInfo = upgradeLevels[currentLevel];
   const nextLevelInfo = upgradeLevels[currentLevel + 1];
 
-  const clicksNeeded = nextLevelInfo ? nextLevelInfo.clicksRequired - currentClicks : 0;
+  // Calculate clicks needed for the next level based on total clicks
+  const clicksRequiredForNextLevel = nextLevelInfo ? nextLevelInfo.clicksRequired : 0;
+  const clicksSinceLastLevel = currentClicks - (currentLevelInfo ? currentLevelInfo.clicksRequired : 0);
+  const clicksNeededForNextLevel = Math.max(0, clicksRequiredForNextLevel - currentClicks);
+
   const isMaxLevel = currentLevel >= MAX_UPGRADE_LEVEL;
 
   return {
     level: currentLevel,
     clicks: currentClicks,
     bonus: currentLevelInfo?.bonus || 0,
-    clicksNeeded,
+    clicksNeeded: clicksNeededForNextLevel,
     isMaxLevel,
     nextLevel: nextLevelInfo,
     upgradeName: UPGRADE_LABELS[key],
+    clicksSinceLastLevel: Math.max(0, clicksSinceLastLevel), // Clicks made since reaching the current level
   };
 }
 
