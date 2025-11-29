@@ -6,7 +6,7 @@ import { useGameStore } from "@/game/state";
 // Attack Wave Parameters
 const WAVE_PARAMS = {
   firstWave: {
-    attack: { base: 15, random: 10, cmBonus: 5 },
+    attack: { base: 20, random: 10, cmBonus: 5 },
     health: { base: 200, cmBonus: 50 },
     silverReward: 200,
     initialDuration: 10 * 60 * 1000, // 10 minutes
@@ -15,7 +15,7 @@ const WAVE_PARAMS = {
     buildingDamageMultiplier: 1,
   },
   secondWave: {
-    attack: { base: 25, random: 10, cmBonus: 5 },
+    attack: { base: 30, random: 10, cmBonus: 5 },
     health: { base: 300, cmBonus: 50 },
     silverReward: 300,
     initialDuration: 10 * 60 * 1000,
@@ -196,7 +196,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.25,
     title: "The First Wave",
     message: FIRST_WAVE_MESSAGE,
     triggered: false,
@@ -296,7 +296,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.25,
     title: "The Second Wave",
     message: SECOND_WAVE_MESSAGE,
     triggered: false,
@@ -394,7 +394,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.25,
     title: "The Third Wave",
     message: THIRD_WAVE_MESSAGE,
     triggered: false,
@@ -485,7 +485,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.25,
     title: "The Fourth Wave",
     message: FOURTH_WAVE_MESSAGE,
     triggered: false,
@@ -576,7 +576,7 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       return elapsed >= timer.duration;
     },
     triggerType: "resource",
-    timeProbability: 0.5,
+    timeProbability: 0.25,
     title: "The Final Wave",
     message: FIFTH_WAVE_MESSAGE,
     triggered: false,
