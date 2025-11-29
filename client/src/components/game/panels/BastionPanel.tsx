@@ -67,15 +67,14 @@ export default function BastionPanel() {
   const handleCrushingStrikeUpgrade = () => {
     useGameStore.setState((state) => {
       const currentLevel = state.crushingStrikeLevel || 0;
-      if (currentLevel >= 5) return state;
-
       const nextUpgrade = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
-      const currency = 'gold';
+      if (!nextUpgrade) return state;
 
+      const currency = "gold";
       if (state.resources[currency] < nextUpgrade.cost) return state;
 
-      // Return only the changed fields, not spreading state
       return {
+        ...state,
         crushingStrikeLevel: currentLevel + 1,
         resources: {
           ...state.resources,
