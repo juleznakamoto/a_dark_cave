@@ -3,8 +3,6 @@ import { GameState } from "@shared/schema";
 import { getTotalKnowledge } from "./effectsCalculation";
 import { logger } from "@/lib/logger";
 
-const isDev = import.meta.env.DEV;
-
 // Resource prices in gold per unit
 const PRICES = {
   food: 0.04,
