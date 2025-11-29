@@ -3,6 +3,55 @@ import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
 import { useGameStore } from "@/game/state";
 
+// Attack Wave Parameters
+const WAVE_PARAMS = {
+  firstWave: {
+    attack: { base: 15, random: 10 },
+    health: 200,
+    silverReward: 200,
+    initialDuration: 10 * 60 * 1000, // 10 minutes
+    defeatDuration: 20 * 60 * 1000, // 20 minutes
+    maxCasualties: 5,
+    buildingDamageMultiplier: 1,
+  },
+  secondWave: {
+    attack: { base: 25, random: 10 },
+    health: 300,
+    silverReward: 300,
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
+    maxCasualties: 10,
+    buildingDamageMultiplier: 2,
+  },
+  thirdWave: {
+    attack: { base: 35, random: 10 },
+    health: 350,
+    silverReward: 400,
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
+    maxCasualties: 15,
+    buildingDamageMultiplier: 3,
+  },
+  fourthWave: {
+    attack: { base: 45, random: 10 },
+    health: 400,
+    silverReward: 500,
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
+    maxCasualties: 20,
+    buildingDamageMultiplier: 4,
+  },
+  fifthWave: {
+    attack: { base: 55, random: 15, options: [55, 60, 65, 70] },
+    health: 600,
+    silverReward: 1000,
+    initialDuration: 10 * 60 * 1000,
+    defeatDuration: 20 * 60 * 1000,
+    maxCasualties: 25,
+    buildingDamageMultiplier: 5,
+  },
+} as const;
+
 const FIRST_WAVE_MESSAGE =
   "Pale figures emerge from the cave, finally freed, their ember eyes cutting through the dark as they march towards the city.";
 
@@ -126,13 +175,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       if (!timer) {
         // Initialize timer if conditions just met
         const now = Date.now();
-        const duration = 10 * 60 * 1000; // 10 minutes
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
             firstWave: {
               startTime: now,
-              duration: duration,
+              duration: WAVE_PARAMS.firstWave.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -155,6 +203,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
+      const params = WAVE_PARAMS.firstWave;
+      const health = params.health + state.CM * 50;
       return {
         story: {
           ...state.story,
@@ -166,16 +216,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Group of pale creatures",
-            attack: Math.ceil(Math.random() * 10) + 15 + state.CM * 5,
-            maxHealth: 200 + state.CM * 50,
-            currentHealth: 200 + state.CM * 50,
+            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * 5,
+            maxHealth: health,
+            currentHealth: health,
           },
           eventTitle: "The First Wave",
           eventMessage: FIRST_WAVE_MESSAGE,
           onVictory: () => ({
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 200,
+              silver: state.resources.silver + params.silverReward,
             },
             story: {
               ...state.story,
@@ -191,17 +241,17 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 defeated: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(200),
+            _logMessage: VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, 1, 5);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
             return {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 firstWave: {
                   startTime: Date.now(),
-                  duration: 20 * 60 * 1000, // 20 minutes on defeat
+                  duration: params.defeatDuration,
                   defeated: false,
                 },
               },
@@ -226,13 +276,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       const timer = state.attackWaveTimers?.secondWave;
       if (!timer) {
         const now = Date.now();
-        const duration = 10 * 60 * 1000;
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
             secondWave: {
               startTime: now,
-              duration: duration,
+              duration: WAVE_PARAMS.secondWave.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -254,6 +303,8 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
+      const params = WAVE_PARAMS.secondWave;
+      const health = params.health + state.CM * 50;
       return {
         story: {
           ...state.story,
@@ -265,16 +316,16 @@ export const attackWaveEvents: Record<string, GameEvent> = {
         _combatData: {
           enemy: {
             name: "Pack of pale creatures",
-            attack: Math.ceil(Math.random() * 10) + 25 + state.CM * 5,
-            maxHealth: 300 + state.CM * 50,
-            currentHealth: 300 + state.CM * 50,
+            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * 5,
+            maxHealth: health,
+            currentHealth: health,
           },
           eventTitle: "The Second Wave",
           eventMessage: SECOND_WAVE_MESSAGE,
           onVictory: () => ({
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 300,
+              silver: state.resources.silver + params.silverReward,
             },
             story: {
               ...state.story,
@@ -290,17 +341,17 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 defeated: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(300),
+            _logMessage: VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, 2, 10);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
             return {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 secondWave: {
                   startTime: Date.now(),
-                  duration: 20 * 60 * 1000,
+                  duration: params.defeatDuration,
                   defeated: false,
                 },
               },
@@ -323,13 +374,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       const timer = state.attackWaveTimers?.thirdWave;
       if (!timer) {
         const now = Date.now();
-        const duration = 10 * 60 * 1000;
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
             thirdWave: {
               startTime: now,
-              duration: duration,
+              duration: WAVE_PARAMS.thirdWave.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -351,20 +401,22 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
+      const params = WAVE_PARAMS.thirdWave;
+      const health = params.health + state.CM * 100;
       return {
         _combatData: {
           enemy: {
             name: "Horde of pale creatures",
-            attack: Math.ceil(Math.random() * 10) + 35 + state.CM * 10,
-            maxHealth: 350 + state.CM * 100,
-            currentHealth: 350 + state.CM * 100,
+            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * 10,
+            maxHealth: health,
+            currentHealth: health,
           },
           eventTitle: "The Third Wave",
           eventMessage: THIRD_WAVE_MESSAGE,
           onVictory: () => ({
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 400,
+              silver: state.resources.silver + params.silverReward,
             },
             story: {
               ...state.story,
@@ -380,17 +432,17 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 defeated: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(400),
+            _logMessage: VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, 3, 15);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
             return {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 thirdWave: {
                   startTime: Date.now(),
-                  duration: 20 * 60 * 1000,
+                  duration: params.defeatDuration,
                   defeated: false,
                 },
               },
@@ -413,13 +465,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       const timer = state.attackWaveTimers?.fourthWave;
       if (!timer) {
         const now = Date.now();
-        const duration = 10 * 60 * 1000;
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
             fourthWave: {
               startTime: now,
-              duration: duration,
+              duration: WAVE_PARAMS.fourthWave.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -441,20 +492,22 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
+      const params = WAVE_PARAMS.fourthWave;
+      const health = params.health + state.CM * 150;
       return {
         _combatData: {
           enemy: {
             name: "Legion of pale creatures",
-            attack: Math.ceil(Math.random() * 10) + 45 + state.CM * 15,
-            maxHealth: 400 + state.CM * 150,
-            currentHealth: 400 + state.CM * 150,
+            attack: Math.ceil(Math.random() * params.attack.random) + params.attack.base + state.CM * 15,
+            maxHealth: health,
+            currentHealth: health,
           },
           eventTitle: "The Fourth Wave",
           eventMessage: FOURTH_WAVE_MESSAGE,
           onVictory: () => ({
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 500,
+              silver: state.resources.silver + params.silverReward,
             },
             story: {
               ...state.story,
@@ -470,17 +523,17 @@ export const attackWaveEvents: Record<string, GameEvent> = {
                 defeated: true,
               },
             },
-            _logMessage: VICTORY_MESSAGE(500),
+            _logMessage: VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, 4, 20);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
             return {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 fourthWave: {
                   startTime: Date.now(),
-                  duration: 20 * 60 * 1000,
+                  duration: params.defeatDuration,
                   defeated: false,
                 },
               },
@@ -503,13 +556,12 @@ export const attackWaveEvents: Record<string, GameEvent> = {
       const timer = state.attackWaveTimers?.fifthWave;
       if (!timer) {
         const now = Date.now();
-        const duration = 10 * 60 * 1000;
         useGameStore.setState((s) => ({
           attackWaveTimers: {
             ...s.attackWaveTimers,
             fifthWave: {
               startTime: now,
-              duration: duration,
+              duration: WAVE_PARAMS.fifthWave.initialDuration,
               defeated: false,
               provoked: false,
             },
@@ -531,20 +583,22 @@ export const attackWaveEvents: Record<string, GameEvent> = {
     priority: 5,
     repeatable: true,
     effect: (state: GameState) => {
+      const params = WAVE_PARAMS.fifthWave;
+      const health = params.health + state.CM * 200;
       return {
         _combatData: {
           enemy: {
             name: "Swarm of pale creatures",
-            attack: [55, 60, 65, 70][Math.ceil(Math.random() * 3)] + state.CM * 20,
-            maxHealth: 600 + state.CM * 200,
-            currentHealth: 600 + state.CM * 200,
+            attack: params.attack.options![Math.floor(Math.random() * params.attack.options!.length)] + state.CM * 20,
+            maxHealth: health,
+            currentHealth: health,
           },
           eventTitle: "The Final Wave",
           eventMessage: FIFTH_WAVE_MESSAGE,
           onVictory: () => ({
             resources: {
               ...state.resources,
-              silver: state.resources.silver + 1000,
+              silver: state.resources.silver + params.silverReward,
             },
             story: {
               ...state.story,
@@ -561,17 +615,17 @@ export const attackWaveEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim 1000 silver from the fallen creatures.",
+              `The final wave has been defeated! The path beyond the shattered portal now lies open. You can venture deeper into the depths to discover what lies beyond. You claim ${params.silverReward} silver from the fallen creatures.`,
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, 5, 25);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
             return {
               ...defeatResult,
               attackWaveTimers: {
                 ...state.attackWaveTimers,
                 fifthWave: {
                   startTime: Date.now(),
-                  duration: 20 * 60 * 1000,
+                  duration: params.defeatDuration,
                   defeated: false,
                 },
               },
