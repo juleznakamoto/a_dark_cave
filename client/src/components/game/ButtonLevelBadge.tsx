@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { UpgradeKey, getButtonUpgradeInfo } from "@/game/buttonUpgrades";
 import { useGameStore } from "@/game/state";
 import {
@@ -7,6 +7,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { CircularProgress } from "@/components/ui/circular-progress";
 
 interface ButtonLevelBadgeProps {
   upgradeKey: UpgradeKey;
@@ -56,30 +57,38 @@ export function ButtonLevelBadge({ upgradeKey }: ButtonLevelBadgeProps) {
                 <span>Level:</span> <span>{info.level}</span>
               </div>
               <div className="flex justify-between gap-2">
-                <span className=" ">Bonus:</span>
-                <span>+{info.bonus}%</span>
-              </div>
-              <div className="flex justify-between gap-2">
                 <span>Clicks:</span>
                 <span>{info.clicks.toLocaleString()}</span>
               </div>
-              {!info.isMaxLevel && info.nextLevel && (
+              {!info.isMaxLevel && info.nextLevel ? (
                 <>
                   <div className="border-t my-1.5 pt-1.5">
-                    <div className="flex justify-between gap-2">
-                      <span>Next Level:</span>
-                      <span>{info.level + 1}</span>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <span>Bonus</span>
-                      <span>+{info.nextLevel.bonus}%</span>
-                    </div>
-                    <div className="flex justify-between gap-2">
-                      <span>Clicks needed:</span>
-                      <span>{info.nextLevel.clicksRequired}</span>
+                    <div className="flex items-center gap-3">
+                      <CircularProgress
+                        value={
+                          info.nextLevel.clicksRequired > 0
+                            ? (info.clicks / info.nextLevel.clicksRequired) * 100
+                            : 0
+                        }
+                        size={40}
+                        strokeWidth={3}
+                      />
+                      <div className="flex flex-col gap-0.5">
+                        <div className="text-xs">
+                          Bonus: <span className="font-medium">+{info.bonus}%</span>
+                        </div>
+                        <div className="text-xs">
+                          Next bonus: <span className="font-medium">+{info.nextLevel.bonus}%</span>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </>
+              ) : (
+                <div className="flex justify-between gap-2">
+                  <span className=" ">Bonus:</span>
+                  <span>+{info.bonus}%</span>
+                </div>
               )}
               {info.isMaxLevel && (
                 <div className="mt-1 pt-1 border-t ">max level</div>
