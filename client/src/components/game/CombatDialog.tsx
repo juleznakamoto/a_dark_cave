@@ -93,6 +93,8 @@ export default function CombatDialog({
   const [usedCrushingStrike, setUsedCrushingStrike] = useState(false);
   const [usedBloodflameSphere, setUsedBloodflameSphere] = useState(false);
   const [enemyStunnedRounds, setEnemyStunnedRounds] = useState(0);
+  const [enemyBurnRounds, setEnemyBurnRounds] = useState(0);
+  const [enemyBurnDamage, setEnemyBurnDamage] = useState(0);
 
   const HAS_RESTLESS_KNIGHT = gameState.fellowship.restless_knight || false;
   const HAS_ELDER_WIZARD = gameState.fellowship.elder_wizard || false;
@@ -116,6 +118,8 @@ export default function CombatDialog({
       setUsedCrushingStrike(false);
       setUsedBloodflameSphere(false);
       setEnemyStunnedRounds(0);
+      setEnemyBurnRounds(0);
+      setEnemyBurnDamage(0);
       const maxIntegrity = bastionStats.integrity;
       setMaxIntegrityForCombat(maxIntegrity);
       setCurrentIntegrity(maxIntegrity);
@@ -236,21 +240,38 @@ export default function CombatDialog({
 
     const level = bloodflameSphereLevel || 0;
     const configs = [
-      { damage: 15, burnRounds: 2 },
-      { damage: 30, burnRounds: 2 },
-      { damage: 45, burnRounds: 3 },
-      { damage: 60, burnRounds: 3 },
-      { damage: 75, burnRounds: 4 },
-      { damage: 90, burnRounds: 4 },
+      { damage: 15, burnDamage: 10, burnRounds: 2, healthCost: 5 },
+      { damage: 30, burnDamage: 15, burnRounds: 2, healthCost: 10 },
+      { damage: 45, burnDamage: 20, burnRounds: 3, healthCost: 15 },
+      { damage: 60, burnDamage: 25, burnRounds: 3, healthCost: 20 },
+      { damage: 75, burnDamage: 30, burnRounds: 4, healthCost: 25 },
+      { damage: 90, burnDamage: 35, burnRounds: 4, healthCost: 30 },
     ];
     const config = configs[level];
 
-    // Deal damage immediately
+    // Consume health cost from integrity
+    const newIntegrityValue = Math.max(0, currentIntegrity - config.healthCost);
+    setCurrentIntegrity(newIntegrityValue);
+
+    // Show integrity damage indicator
+    setIntegrityDamageIndicator({ amount: config.healthCost, visible: true });
+    setTimeout(() => {
+      setIntegrityDamageIndicator({ amount: 0, visible: false });
+    }, 3000);
+
+    // Check if integrity is depleted
+    if (newIntegrityValue <= 0) {
+      setCombatEnded(true);
+      setCombatResult("defeat");
+      return;
+    }
+
+    // Deal immediate damage
     const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
 
-    // Set burn duration based on level
-    // This would need a new state variable to track active burn effects and their damage per round
-    // For now, we'll just mark it as used
+    // Set burn effect
+    setEnemyBurnRounds(config.burnRounds);
+    setEnemyBurnDamage(config.burnDamage);
     setUsedBloodflameSphere(true);
 
     // Update combat state
@@ -352,16 +373,20 @@ export default function CombatDialog({
     let integrityDamage = 0;
     let playerDamage = bastionStats.attack;
     let poisonDamageDealt = 0;
+    let burnDamageDealt = 0;
 
-    // Apply poison damage if active and not used this round
+    // Apply poison damage if active
     const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
     if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
       const totalKnowledge = getTotalKnowledge(gameState);
       const knowledgeBonus = Math.floor(totalKnowledge / 5);
       poisonDamageDealt = 15 + knowledgeBonus; // Base 15 damage + knowledge bonus
-      // Need to track poison duration and its application per round
-      // For simplicity, let's assume it applies for 3 rounds after use
-      // This state needs to be managed more robustly, e.g., using useEffect or a state variable for poison status
+    }
+
+    // Apply burn damage if active
+    if (enemyBurnRounds > 0) {
+      burnDamageDealt = enemyBurnDamage;
+      setEnemyBurnRounds((prev) => Math.max(0, prev - 1));
     }
 
 
@@ -392,12 +417,12 @@ export default function CombatDialog({
     // Player attacks
     const newHealth = Math.max(
       0,
-      currentEnemyHealth - playerDamage - poisonDamageDealt,
+      currentEnemyHealth - playerDamage - poisonDamageDealt - burnDamageDealt,
     );
     currentEnemyHealth = newHealth;
 
     // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt, visible: true });
+    setEnemyDamageIndicator({ amount: playerDamage + poisonDamageDealt + burnDamageDealt, visible: true });
     setTimeout(() => {
       setEnemyDamageIndicator({ amount: 0, visible: false });
     }, 3000);
@@ -481,6 +506,9 @@ export default function CombatDialog({
                     )}
                     {enemyStunnedRounds > 0 && (
                       <span className="text-yellow-600" role="img" aria-label="stun-icon">◈</span>
+                    )}
+                    {enemyBurnRounds > 0 && (
+                      <span className="text-orange-600" role="img" aria-label="burn-icon">🔥</span>
                     )}
                   </div>
                   <span>
