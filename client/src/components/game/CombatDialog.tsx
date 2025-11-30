@@ -249,9 +249,24 @@ export default function CombatDialog({
     ];
     const config = configs[level];
 
+    console.log('[BLOODFLAME] Button clicked - applying immediate effects:', {
+      baseDamage: config.damage,
+      healthCost: config.healthCost,
+      burnDamage: config.burnDamage,
+      burnRounds: config.burnRounds,
+      currentEnemyHealth: currentEnemy?.currentHealth,
+      currentIntegrity: currentIntegrity,
+    });
+
     // Consume health cost from integrity
     const newIntegrityValue = Math.max(0, currentIntegrity - config.healthCost);
     setCurrentIntegrity(newIntegrityValue);
+
+    console.log('[BLOODFLAME] Integrity consumed:', {
+      before: currentIntegrity,
+      cost: config.healthCost,
+      after: newIntegrityValue,
+    });
 
     // Show integrity damage indicator
     setIntegrityDamageIndicator({ amount: config.healthCost, visible: true });
@@ -266,8 +281,14 @@ export default function CombatDialog({
       return;
     }
 
-    // Apply immediate damage
+    // Apply immediate base damage
     const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
+
+    console.log('[BLOODFLAME] Base damage applied:', {
+      before: currentEnemy?.currentHealth,
+      damage: config.damage,
+      after: newEnemyHealth,
+    });
 
     // Set burn effect for subsequent rounds
     setEnemyBurnRounds(config.burnRounds);
@@ -386,6 +407,11 @@ export default function CombatDialog({
     // Apply burn damage if active (works for all rounds burn is active)
     if (enemyBurnRounds > 0) {
       burnDamageDealt = enemyBurnDamage;
+      console.log('[BLOODFLAME] Burn damage applied in Fight:', {
+        burnDamage: burnDamageDealt,
+        remainingBurnRounds: enemyBurnRounds,
+        enemyHealth: currentEnemyHealth,
+      });
       setEnemyBurnRounds((prev) => Math.max(0, prev - 1));
     }
 
