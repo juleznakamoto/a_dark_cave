@@ -1,10 +1,12 @@
+
 import { useEffect } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { playlight } from "@/lib/playlight";
+import "playlight-sdk/dist/playlight-sdk.css";
+import playlightSDK from "playlight-sdk";
 import Game from "@/pages/game";
 import BuildingProgress from "@/pages/building-progress";
 import HeroTest from "@/pages/hero-test";
@@ -40,8 +42,13 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    // Initialize Playlight SDK (dev mode only)
-    playlight.init();
+    if (!isDev) return;
+    
+    try {
+      playlightSDK.init();
+    } catch (error) {
+      console.error("Error initializing the Playlight SDK:", error);
+    }
   }, []);
 
   return (
