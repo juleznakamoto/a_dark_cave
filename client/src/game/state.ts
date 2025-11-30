@@ -347,8 +347,8 @@ const defaultGameState: GameState = {
   cooldownDurations: {}, // Initialize cooldownDurations
 
   // Analytics tracking
-  clickAnalytics: {} as Record<string, number>,
-  resourceAnalytics: {} as Record<string, number>,
+  clickAnalytics: {},
+  resourceAnalytics: {},
   lastResourceSnapshotTime: 0,
   isPausedPreviously: false, // Initialize isPausedPreviously
 };
