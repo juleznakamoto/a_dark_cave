@@ -141,6 +141,8 @@ interface GameStore extends GameState {
   setGameLoopActive: (isActive: boolean) => void;
   togglePause: () => void;
   updatePlayTime: (deltaTime: number) => void;
+  trackButtonClick: (buttonId: string) => void; // Added for button click analytics
+  getAndResetClickAnalytics: () => Record<string, number> | null; // Added for resetting click analytics
 }
 
 // Helper functions
@@ -452,7 +454,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
-    set((state) => updateResource(state, resource, amount));
+    set((state) => {
+      const currentValue = state.resources[resource] || 0;
+      const newValue = Math.max(0, currentValue + amount);
+
+      // Track resource change in analytics (only if game loop is active)
+      const resourceAnalytics = state.isGameLoopActive ? {
+        ...state.resourceAnalytics,
+        [resource]: (state.resourceAnalytics[resource] || 0) + amount,
+      } : state.resourceAnalytics;
+
+      return {
+        resources: {
+          ...state.resources,
+          [resource]: newValue,
+        },
+        resourceAnalytics,
+      };
+    });
 
     // If updating free villagers, update population counts immediately
     if (resource === ("free" as any)) {
@@ -722,6 +741,13 @@ export const useGameStore = create<GameStore>((set, get) => ({
       type: "system",
     };
     get().addLogEntry(initialLogEntry);
+
+    // Reset analytics trackers
+    set({
+      clickAnalytics: {},
+      resourceAnalytics: {},
+      lastResourceSnapshotTime: 0, // Reset snapshot time
+    });
   },
 
   trackButtonClick: (buttonId: string) => {
@@ -745,34 +771,35 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   trackResourceChange: (resource: string, amount: number) => {
-    // This is now a no-op since we track absolute values
-    // The analytics are captured during save
+    // This is now handled within updateResource
   },
 
   getAndResetResourceAnalytics: () => {
+    const analytics = get().resourceAnalytics;
     const state = get();
-    const currentTime = state.playTime || 0;
+    const playTime = state.playTime;
 
-    // Only create snapshot if enough time has passed (at least 1 minute)
-    const timeSinceLastSnapshot = currentTime - state.lastResourceSnapshotTime;
-    if (timeSinceLastSnapshot < 60000) {
+    // Only return if there are resource changes to report
+    if (Object.keys(analytics).length === 0) {
       return null;
     }
 
-    // Create snapshot of current resources
-    const snapshot: Record<string, number> = {};
-    const resources = state.resources || {};
+    // Calculate playtime bucket (0m, 5m, 10m, etc.)
+    const playtimeMinutes = Math.floor(playTime / 1000 / 60);
+    const bucket = Math.floor(playtimeMinutes / 5) * 5;
+    const bucketKey = `${bucket}m`;
 
-    for (const [key, value] of Object.entries(resources)) {
-      if (typeof value === 'number' && value > 0) {
-        snapshot[key] = value;
+    // Create snapshot of resource changes with playtime bucket
+    const snapshot = {
+      [bucketKey]: {
+        ...analytics
       }
-    }
+    };
 
-    // Update last snapshot time
-    set({ lastResourceSnapshotTime: currentTime });
+    // Reset the analytics
+    set({ resourceAnalytics: {} });
 
-    return Object.keys(snapshot).length > 0 ? snapshot : null;
+    return snapshot;
   },
 
   loadGame: async () => {
