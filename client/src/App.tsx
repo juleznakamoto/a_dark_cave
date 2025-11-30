@@ -5,6 +5,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import "playlight-sdk/dist/playlight-sdk.css";
 import playlightSDK from "playlight-sdk";
 import Game from "@/pages/game";
 import BuildingProgress from "@/pages/building-progress";

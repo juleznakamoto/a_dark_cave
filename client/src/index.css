@@ -1,5 +1,3 @@
-@import "playlight-sdk/dist/playlight-sdk.css";
-
 /* Mobile fullscreen support */
 @supports (-webkit-touch-callout: none) {
   body {
