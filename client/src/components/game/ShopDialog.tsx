@@ -708,19 +708,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
                         .filter((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{dbId})
-                          // dbId can be either a UUID or a numeric timestamp
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
+                          // The UUID has 5 dash-separated segments, so we need to remove them
                           let itemId = purchaseId;
                           if (purchaseId.startsWith('purchase-')) {
                             // Remove 'purchase-' prefix
                             const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            // Find the last dash - everything before it is the itemId
-                            const lastDashIndex = withoutPrefix.lastIndexOf('-');
-                            if (lastDashIndex !== -1) {
-                              itemId = withoutPrefix.substring(0, lastDashIndex);
-                            } else {
-                              itemId = withoutPrefix;
-                            }
+                            // UUID format is: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 segments)
+                            // Split by dash and remove the last 5 segments (the UUID parts)
+                            const parts = withoutPrefix.split('-');
+                            // The itemId is everything except the last 5 parts (UUID)
+                            itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
 
@@ -737,16 +735,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           return item && !item.rewards.feastActivations;
                         })
                         .map((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{dbId})
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
                           let itemId = purchaseId;
                           if (purchaseId.startsWith('purchase-')) {
                             const withoutPrefix = purchaseId.substring('purchase-'.length);
-                            const lastDashIndex = withoutPrefix.lastIndexOf('-');
-                            if (lastDashIndex !== -1) {
-                              itemId = withoutPrefix.substring(0, lastDashIndex);
-                            } else {
-                              itemId = withoutPrefix;
-                            }
+                            const parts = withoutPrefix.split('-');
+                            // Remove the last 5 parts (UUID segments)
+                            itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
 
