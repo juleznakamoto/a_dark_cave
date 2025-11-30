@@ -5,7 +5,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { logger } from "@/lib/logger";
 import { villageBuildActions } from "@/game/rules/villageBuildActions";
 import { capitalizeWords } from "@/lib/utils";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { calculateBastionStats } from "@/game/bastionStats";
 import {
   getDisplayTools,
@@ -59,9 +59,20 @@ export default function SidePanel() {
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);
 
+  // Track which resources have ever been seen (using a ref to persist across renders)
+  const seenResourcesRef = useRef<Set<string>>(new Set());
+  
+  // Update seen resources
+  resourceOrder.forEach((key) => {
+    if ((resources[key as keyof typeof resources] ?? 0) > 0) {
+      seenResourcesRef.current.add(key);
+    }
+  });
+
   // Dynamically generate resource items from state (in schema order)
+  // Show resource if it has ever been > 0, even if currently 0
   const resourceItems = resourceOrder
-    .filter((key) => (resources[key as keyof typeof resources] ?? 0) > 0)
+    .filter((key) => seenResourcesRef.current.has(key))
     .map((key) => ({
       id: key,
       label: capitalizeWords(key),
