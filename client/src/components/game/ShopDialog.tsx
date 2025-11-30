@@ -211,12 +211,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       const client = await getSupabaseClient();
       const { data, error } = await client
         .from("purchases")
-        .select("item_id")
+        .select("id, item_id")
         .eq("user_id", user.id);
 
       if (error) throw error;
       if (data) {
-        setPurchasedItems(data.map((p) => p.item_id));
+        // Use database ID as the unique purchase identifier
+        setPurchasedItems(data.map((p) => `purchase-${p.item_id}-${p.id}`));
       }
     } catch (error) {
       logger.error("Error loading purchased items:", error);
