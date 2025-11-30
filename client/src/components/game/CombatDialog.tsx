@@ -266,13 +266,30 @@ export default function CombatDialog({
       return;
     }
 
-    // Set burn effect - damage will be applied in handleFight() just like poison arrows
+    // Apply immediate damage
+    const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
+
+    // Set burn effect for subsequent rounds
     setEnemyBurnRounds(config.burnRounds);
-    setEnemyBurnDamage(config.damage); // Use immediate damage as burn damage
+    setEnemyBurnDamage(config.burnDamage);
     setUsedBloodflameSphere(true);
 
-    // Mark as used in combat tracking (like poison arrows)
-    setUsedItemsInCombat((prev) => [...prev, "bloodflame_sphere"]);
+    // Update combat state
+    setCurrentEnemy((prev) =>
+      prev ? { ...prev, currentHealth: newEnemyHealth } : null,
+    );
+
+    // Show damage indicator on enemy health bar
+    setEnemyDamageIndicator({ amount: config.damage, visible: true });
+    setTimeout(() => {
+      setEnemyDamageIndicator({ amount: 0, visible: false });
+    }, 3000);
+
+    // Check if enemy is defeated
+    if (newEnemyHealth <= 0) {
+      setCombatEnded(true);
+      setCombatResult("victory");
+    }
   };
 
 
