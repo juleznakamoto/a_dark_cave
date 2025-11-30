@@ -654,18 +654,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           className="w-full"
                           button_id={`shop-purchase-${item.id}`}
                         >
-                          {!item.canPurchaseMultipleTimes &&
-                          purchasedItems.some(pid => {
-                            if (!pid.startsWith('purchase-')) return false;
-                            const withoutPrefix = pid.substring('purchase-'.length);
-                            if (withoutPrefix.includes('-temp-')) {
-                              return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
-                            }
-                            const parts = withoutPrefix.split('-');
-                            return parts.slice(0, -5).join('-') === item.id;
-                          })
-                            ? "Already Claimed"
-                            : item.price === 0 ? "Claim" : "Purchase"}
+                          {item.price === 0 ? "Claim" : "Purchase"}
                         </Button>
                       </CardFooter>
                     </Card>
