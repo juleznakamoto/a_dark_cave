@@ -268,11 +268,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         if (error) throw error;
 
-        // Generate unique purchase ID for this purchase instance
-        const purchaseId = `purchase-${itemId}-${Date.now()}`;
-
-        // Add to purchased items list with unique ID
-        setPurchasedItems((prev) => [...prev, purchaseId]);
+        // Reload purchases from database to get the correct ID
+        await loadPurchasedItems();
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {
@@ -316,12 +313,8 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
   const handlePurchaseSuccess = async () => {
     const item = SHOP_ITEMS[selectedItem!];
 
-    // Save purchase to database is now handled by verifyPurchase
-    // Generate unique purchase ID for this purchase instance
-    const purchaseId = `purchase-${selectedItem}-${Date.now()}`;
-
-    // Add to purchased items list with unique ID
-    setPurchasedItems((prev) => [...prev, purchaseId]);
+    // Reload purchases from database to get the correct ID
+    await loadPurchasedItems();
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -329,18 +322,31 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     }
 
     // If this item has feast activations (feast or bundle), track it individually
+    // We need to find the newly created purchase ID from the reloaded list
     if (item.rewards.feastActivations) {
-      useGameStore.setState((state) => ({
-        feastPurchases: {
-          ...state.feastPurchases,
-          [purchaseId]: {
-            itemId: selectedItem!,
-            activationsRemaining: item.rewards.feastActivations!,
-            totalActivations: item.rewards.feastActivations!,
-            purchasedAt: Date.now(),
+      // Get the latest purchase for this item (the one just created)
+      const latestPurchaseId = purchasedItems
+        .filter(pid => {
+          const itemId = pid.startsWith('purchase-') 
+            ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+            : pid;
+          return itemId === selectedItem;
+        })
+        .pop(); // Get the last one (newest)
+
+      if (latestPurchaseId) {
+        useGameStore.setState((state) => ({
+          feastPurchases: {
+            ...state.feastPurchases,
+            [latestPurchaseId]: {
+              itemId: selectedItem!,
+              activationsRemaining: item.rewards.feastActivations!,
+              totalActivations: item.rewards.feastActivations!,
+              purchasedAt: Date.now(),
+            },
           },
-        },
-      }));
+        }));
+      }
     }
 
     gameState.addLogEntry({
