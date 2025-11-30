@@ -353,7 +353,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         { damage: 60, stunRounds: 3 },
       ];
       const config = configs[level];
-      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}\nUse once per combat`;
+      return `Damage: ${config.damage}\nStun Duration: ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}`;
     },
   },
   bloodflame_sphere: {
@@ -368,7 +368,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
       ];
       const config = configs[level];
-      return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} rounds\nHealth Cost: ${config.healthCost}\nUse once per combat`;
+      return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} rounds\nHealth Cost: ${config.healthCost}`;
     },
   },
   crushing_strike: {

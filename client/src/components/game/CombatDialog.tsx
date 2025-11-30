@@ -508,7 +508,7 @@ export default function CombatDialog({
                       <span className="text-yellow-600" role="img" aria-label="stun-icon">◈</span>
                     )}
                     {enemyBurnRounds > 0 && (
-                      <span className="text-orange-600" role="img" aria-label="burn-icon">🔥</span>
+                      <span className="text-orange-600" role="img" aria-label="burn-icon">  ҉</span>
                     )}
                   </div>
                   <span>
