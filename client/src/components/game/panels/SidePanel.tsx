@@ -923,9 +923,9 @@ export default function SidePanel() {
           sectionName,
         );
       case "estate":
-        return ["resources", "books", "fellowship"].includes(sectionName);
+        return ["resources", "books"].includes(sectionName);
       case "bastion":
-        return ["resources", "fortifications", "bastion"].includes(sectionName);
+        return ["resources", "fortifications", "bastion", "fellowship"].includes(sectionName);
 
       default:
         return true; // Show all sections by default
