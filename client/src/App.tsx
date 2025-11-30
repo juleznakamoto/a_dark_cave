@@ -5,7 +5,6 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import playlightSDK from "playlight-sdk";
 import Game from "@/pages/game";
 import BuildingProgress from "@/pages/building-progress";
 import HeroTest from "@/pages/hero-test";
@@ -43,17 +42,19 @@ function App() {
   useEffect(() => {
     if (!isDev) return;
     
-    // Load CSS dynamically to avoid PostCSS processing issues
-    const link = document.createElement('link');
-    link.rel = 'stylesheet';
-    link.href = '/node_modules/playlight-sdk/dist/playlight-sdk.css';
-    document.head.appendChild(link);
+    // Initialize Playlight SDK via ESM CDN (after hydration)
+    const initPlaylight = async () => {
+      try {
+        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const playlightSDK = module.default;
+        playlightSDK.init();
+        console.log("[PLAYLIGHT] SDK initialized successfully");
+      } catch (error) {
+        console.error("Error loading the Playlight SDK:", error);
+      }
+    };
     
-    try {
-      playlightSDK.init();
-    } catch (error) {
-      console.error("Error initializing the Playlight SDK:", error);
-    }
+    initPlaylight();
   }, []);
 
   return (
