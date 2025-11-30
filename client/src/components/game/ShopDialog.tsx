@@ -664,7 +664,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             const parts = withoutPrefix.split('-');
                             return parts.slice(0, -5).join('-') === item.id;
                           })
-                            ? "Already Claimed"
+                            ? item.price === 0 ? "Already Claimed" : "Already Purchased"
                             : item.price === 0 ? "Claim" : "Purchase"}
                         </Button>
                       </CardFooter>
