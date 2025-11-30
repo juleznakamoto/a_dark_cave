@@ -1,4 +1,3 @@
-
 import { useEffect } from "react";
 import { Switch, Route } from "wouter";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -39,9 +38,9 @@ function Router() {
 function App() {
   useEffect(() => {
     if (!isDev) return;
-    
+
     // Initialize Playlight SDK via ESM CDN (after hydration)
-    const initPlaylight = async () => {
+    (async () => {
       try {
         const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
         const playlightSDK = module.default;
@@ -50,12 +49,10 @@ function App() {
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
-    };
-    
-    initPlaylight();
+    })();
   }, []);
 
-  
+
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
