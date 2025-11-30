@@ -216,7 +216,9 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
       if (error) throw error;
       if (data) {
-        // Use database ID as the unique purchase identifier
+        logger.log("[SHOP] Loaded purchases from DB:", data);
+        // Use numeric database ID as the unique purchase identifier
+        // Format: purchase-{itemId}-{numericDbId}
         setPurchasedItems(data.map((p) => `purchase-${p.item_id}-${p.id}`));
       }
     } catch (error) {
@@ -706,13 +708,17 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
                         .filter((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{db_id})
-                          // Handle case where itemId itself contains dashes (e.g., gold_20000)
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
+                          // The UUID has 5 dash-separated segments, so we need to remove them
                           let itemId = purchaseId;
                           if (purchaseId.startsWith('purchase-')) {
-                            const parts = purchaseId.split('-');
-                            // Remove 'purchase' prefix and the db_id (last part)
-                            itemId = parts.slice(1, -1).join('-');
+                            // Remove 'purchase-' prefix
+                            const withoutPrefix = purchaseId.substring('purchase-'.length);
+                            // UUID format is: xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx (5 segments)
+                            // Split by dash and remove the last 5 segments (the UUID parts)
+                            const parts = withoutPrefix.split('-');
+                            // The itemId is everything except the last 5 parts (UUID)
+                            itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
 
@@ -729,11 +735,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           return item && !item.rewards.feastActivations;
                         })
                         .map((purchaseId) => {
-                          // Extract itemId from purchaseId
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{uuid})
                           let itemId = purchaseId;
                           if (purchaseId.startsWith('purchase-')) {
-                            const parts = purchaseId.split('-');
-                            itemId = parts.slice(1, -1).join('-');
+                            const withoutPrefix = purchaseId.substring('purchase-'.length);
+                            const parts = withoutPrefix.split('-');
+                            // Remove the last 5 parts (UUID segments)
+                            itemId = parts.slice(0, -5).join('-');
                           }
                           const item = SHOP_ITEMS[itemId];
 
