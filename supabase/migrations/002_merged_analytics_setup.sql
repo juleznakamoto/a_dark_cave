@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS button_clicks (
   user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
   timestamp TIMESTAMPTZ NOT NULL,
   clicks JSONB NOT NULL,
+  resource_changes JSONB DEFAULT '{}'::jsonb,
   created_at TIMESTAMPTZ DEFAULT NOW(),
   updated_at TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(user_id)
@@ -71,6 +72,7 @@ CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
   p_game_state_diff JSONB,
   p_click_analytics JSONB DEFAULT NULL,
+  p_resource_analytics JSONB DEFAULT NULL,
   p_clear_clicks BOOLEAN DEFAULT FALSE,
   p_allow_playtime_overwrite BOOLEAN DEFAULT FALSE
 )
@@ -82,7 +84,9 @@ DECLARE
   v_existing_state JSONB;
   v_merged_state JSONB;
   v_existing_clicks JSONB;
+  v_existing_resources JSONB;
   v_updated_clicks JSONB;
+  v_updated_resources JSONB;
   v_playtime_ms NUMERIC;
   v_playtime_minutes INTEGER;
   v_playtime_bucket INTEGER;
@@ -134,14 +138,9 @@ BEGIN
 
   -- Handle click analytics
   IF p_clear_clicks THEN
-    -- Explicitly clear clicks (e.g., for new game)
+    -- Explicitly clear clicks and resources (e.g., for new game)
     DELETE FROM button_clicks WHERE user_id = p_user_id;
-  ELSIF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
-    -- Get existing clicks for this user
-    SELECT clicks INTO v_existing_clicks
-    FROM button_clicks
-    WHERE user_id = p_user_id;
-
+  ELSE
     -- Get playtime from merged game state (in milliseconds, convert to 5-minute buckets)
     v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;
     v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
@@ -149,56 +148,115 @@ BEGIN
     v_playtime_bucket := FLOOR(v_playtime_minutes / 5) * 5;
     v_playtime_key := v_playtime_bucket || 'm';
 
-    -- If user has existing clicks, merge new playtime entry
-    IF v_existing_clicks IS NOT NULL THEN
-      -- Check if this playtime bucket already exists
-      IF v_existing_clicks ? v_playtime_key THEN
-        -- Sum the click counts for each action
-        DECLARE
-          v_existing_bucket JSONB;
-          v_merged_bucket JSONB;
-          v_key TEXT;
-          v_existing_count INTEGER;
-          v_new_count INTEGER;
-        BEGIN
-          v_existing_bucket := v_existing_clicks->v_playtime_key;
-          v_merged_bucket := '{}'::jsonb;
-          
-          -- Add all keys from existing bucket
-          FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
-            v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
-            v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
-            v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
-          END LOOP;
-          
-          -- Add any new keys from p_click_analytics that weren't in existing
-          FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
-            IF NOT (v_existing_bucket ? v_key) THEN
-              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
-            END IF;
-          END LOOP;
-          
-          v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
-        END;
+    -- Get existing analytics for this user
+    SELECT clicks, resource_changes INTO v_existing_clicks, v_existing_resources
+    FROM button_clicks
+    WHERE user_id = p_user_id;
+
+    -- Process click analytics
+    IF p_click_analytics IS NOT NULL AND p_click_analytics != '{}'::jsonb THEN
+      -- If user has existing clicks, merge new playtime entry
+      IF v_existing_clicks IS NOT NULL THEN
+        -- Check if this playtime bucket already exists
+        IF v_existing_clicks ? v_playtime_key THEN
+          -- Sum the click counts for each action
+          DECLARE
+            v_existing_bucket JSONB;
+            v_merged_bucket JSONB;
+            v_key TEXT;
+            v_existing_count INTEGER;
+            v_new_count INTEGER;
+          BEGIN
+            v_existing_bucket := v_existing_clicks->v_playtime_key;
+            v_merged_bucket := '{}'::jsonb;
+            
+            -- Add all keys from existing bucket
+            FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
+              v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
+              v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
+              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
+            END LOOP;
+            
+            -- Add any new keys from p_click_analytics that weren't in existing
+            FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
+              IF NOT (v_existing_bucket ? v_key) THEN
+                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
+              END IF;
+            END LOOP;
+            
+            v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
+          END;
+        ELSE
+          -- Add new playtime bucket to existing data
+          v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
+        END IF;
       ELSE
-        -- Add new playtime bucket to existing data
-        v_updated_clicks := v_existing_clicks || jsonb_build_object(v_playtime_key, p_click_analytics);
+        -- No existing clicks, create new object with playtime
+        v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
       END IF;
     ELSE
-      -- No existing clicks, create new object with playtime
-      v_updated_clicks := jsonb_build_object(v_playtime_key, p_click_analytics);
+      v_updated_clicks := v_existing_clicks;
     END IF;
 
-    -- Upsert the clicks with timestamp
-    INSERT INTO button_clicks (user_id, timestamp, clicks)
-    VALUES (p_user_id, NOW(), v_updated_clicks)
-    ON CONFLICT (user_id)
-    DO UPDATE SET
-      clicks = EXCLUDED.clicks,
-      timestamp = EXCLUDED.timestamp;
+    -- Process resource analytics (same structure as clicks)
+    IF p_resource_analytics IS NOT NULL AND p_resource_analytics != '{}'::jsonb THEN
+      IF v_existing_resources IS NOT NULL THEN
+        IF v_existing_resources ? v_playtime_key THEN
+          -- Sum the resource changes for each resource type
+          DECLARE
+            v_existing_bucket JSONB;
+            v_merged_bucket JSONB;
+            v_key TEXT;
+            v_existing_amount NUMERIC;
+            v_new_amount NUMERIC;
+          BEGIN
+            v_existing_bucket := v_existing_resources->v_playtime_key;
+            v_merged_bucket := '{}'::jsonb;
+            
+            -- Add all keys from existing bucket
+            FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
+              v_existing_amount := (v_existing_bucket->>v_key)::NUMERIC;
+              v_new_amount := COALESCE((p_resource_analytics->>v_key)::NUMERIC, 0);
+              v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_amount + v_new_amount));
+            END LOOP;
+            
+            -- Add any new keys from p_resource_analytics that weren't in existing
+            FOR v_key IN SELECT jsonb_object_keys(p_resource_analytics) LOOP
+              IF NOT (v_existing_bucket ? v_key) THEN
+                v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_resource_analytics->v_key);
+              END IF;
+            END LOOP;
+            
+            v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], v_merged_bucket);
+          END;
+        ELSE
+          v_updated_resources := v_existing_resources || jsonb_build_object(v_playtime_key, p_resource_analytics);
+        END IF;
+      ELSE
+        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics);
+      END IF;
+    ELSE
+      v_updated_resources := v_existing_resources;
+    END IF;
+
+    -- Upsert the analytics with timestamp
+    IF v_updated_clicks IS NOT NULL OR v_updated_resources IS NOT NULL THEN
+      INSERT INTO button_clicks (user_id, timestamp, clicks, resource_changes)
+      VALUES (
+        p_user_id, 
+        NOW(), 
+        COALESCE(v_updated_clicks, '{}'::jsonb),
+        COALESCE(v_updated_resources, '{}'::jsonb)
+      )
+      ON CONFLICT (user_id)
+      DO UPDATE SET
+        clicks = EXCLUDED.clicks,
+        resource_changes = EXCLUDED.resource_changes,
+        timestamp = EXCLUDED.timestamp;
+    END IF;
   END IF;
 END;
 $$;
 
 -- Grant execute permission to authenticated users
-GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, BOOLEAN, BOOLEAN) TO authenticated;
+GRANT EXECUTE ON FUNCTION save_game_with_analytics(UUID, JSONB, JSONB, JSONB, BOOLEAN, BOOLEAN) TO authenticated;

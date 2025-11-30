@@ -235,6 +235,9 @@ export async function saveGame(
 
         // Get and reset click analytics
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
+        
+        // Get and reset resource analytics
+        const resourceData = useGameStore.getState().getAndResetResourceAnalytics();
 
         // Get last cloud state for diff calculation
         const lastCloudState = await db.get(
@@ -252,6 +255,7 @@ export async function saveGame(
           gameState.playTime,
           isNewGame,
           clickData,
+          resourceData,
         );
 
         // Update lastCloudState after successful cloud save

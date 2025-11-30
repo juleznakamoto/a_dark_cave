@@ -1,6 +1,7 @@
 import { getSupabaseClient } from '@/lib/supabase';
 import { GameState } from '@shared/schema';
 import { logger } from '@/lib/logger';
+import { Json } from '@supabase/supabase-js/dist/main/lib/types';
 
 // Define SaveData interface here to avoid circular dependency if it's in schema
 // If SaveData is already defined elsewhere and accessible, this can be removed.
@@ -264,11 +265,11 @@ export async function updatePassword(newPassword: string) {
 }
 
 export async function saveGameToSupabase(
-  stateDiff: Partial<GameState>,
+  gameState: Partial<GameState>,
   playTime?: number,
   isNewGame: boolean = false,
-  clickData: Record<string, number> | null = null,
-  clearClicks: boolean = false
+  clickAnalytics: Record<string, number> | null = null,
+  resourceAnalytics: Record<string, number> | null = null,
 ): Promise<void> {
   const user = await getCurrentUser();
   if (!user) {
@@ -276,35 +277,41 @@ export async function saveGameToSupabase(
     throw new Error('Not authenticated');
   }
 
-  const allowOverwrite = stateDiff.allowPlayTimeOverwrite === true;
+  const allowOverwrite = gameState.allowPlayTimeOverwrite === true;
 
   logger.log('[SAVE CLOUD] 🔍 Starting cloud save with OCC...', {
     playTime,
     isNewGame,
     userId: user.id.substring(0, 8) + '...',
-    diffKeys: Object.keys(stateDiff),
-    hasPlayTime: 'playTime' in stateDiff,
+    diffKeys: Object.keys(gameState),
+    hasPlayTime: 'playTime' in gameState,
     allowPlayTimeOverwrite: allowOverwrite
   });
 
   // Deep clone and sanitize the diff to remove non-serializable data
-  const sanitizedDiff = JSON.parse(JSON.stringify(stateDiff));
+  const sanitizedDiff = JSON.parse(JSON.stringify(gameState));
 
   const supabase = await getSupabaseClient();
 
   // Ensure clickAnalytics is either a valid object with data or null
-  const analyticsParam = clickData && Object.keys(clickData).length > 0
-    ? clickData
+  const clickAnalyticsParam = clickAnalytics && Object.keys(clickAnalytics).length > 0
+    ? clickAnalytics
+    : null;
+
+  // Ensure resourceAnalytics is either a valid object with data or null
+  const resourceAnalyticsParam = resourceAnalytics && Object.keys(resourceAnalytics).length > 0
+    ? resourceAnalytics
     : null;
 
   logger.log('[SAVE CLOUD] 💾 Calling database RPC with OCC validation...', {
-    hasClickAnalytics: !!analyticsParam,
-    clickAnalyticsKeys: analyticsParam ? Object.keys(analyticsParam) : [],
+    hasClickAnalytics: !!clickAnalyticsParam,
+    clickAnalyticsKeys: clickAnalyticsParam ? Object.keys(clickAnalyticsParam) : [],
+    hasResourceAnalytics: !!resourceAnalyticsParam,
+    resourceAnalyticsKeys: resourceAnalyticsParam ? Object.keys(resourceAnalyticsParam) : [],
     diffSize: JSON.stringify(sanitizedDiff).length,
     playTime,
     isNewGame,
-    clearClicks,
-    allowPlayTimeOverwrite: allowOverwrite
+    allowOverwrite
   });
 
   // OCC: Single atomic database call - the RPC function handles:
@@ -313,13 +320,14 @@ export async function saveGameToSupabase(
   // 3. Merging diff with existing state
   // 4. Writing merged state
   // All in one transaction - prevents race conditions
-  const { error } = await supabase.rpc('save_game_with_analytics', {
-    p_user_id: user.id,
-    p_game_state_diff: sanitizedDiff,
-    p_click_analytics: analyticsParam,
-    p_clear_clicks: clearClicks,
-    p_allow_playtime_overwrite: allowOverwrite,
-  });
+  const { error } = await supabase.rpc("save_game_with_analytics", {
+        p_user_id: user.id,
+        p_game_state_diff: sanitizedDiff as unknown as Json,
+        p_click_analytics: clickAnalyticsParam as unknown as Json,
+        p_resource_analytics: resourceAnalyticsParam as unknown as Json,
+        p_clear_clicks: isNewGame,
+        p_allow_playtime_overwrite: allowOverwrite,
+      });
 
   if (error) {
     // Check if it's an OCC violation

@@ -516,7 +516,8 @@ export const gameStateSchema = z.object({
       chopWood: { clicks: 0, level: 0 },
     }),
   // Analytics: Track button clicks since last save (not persisted to local storage)
-  clickAnalytics: z.record(z.number()).default({}),
+  clickAnalytics: z.record(z.number()).default({}), // Track button clicks by button ID
+  resourceAnalytics: z.record(z.number()).default({}), // Track resource gains/losses by resource type
 });
 
 export type GameState = z.infer<typeof gameStateSchema>;

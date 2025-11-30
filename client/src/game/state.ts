@@ -91,6 +91,8 @@ interface GameStore extends GameState {
   isMuted: boolean; // Audio mute state
 
   // Actions
+  trackResourceChange: (resource: string, amount: number) => void;
+  getAndResetResourceAnalytics: () => Record<string, number> | null;
   executeAction: (actionId: string) => void;
   setActiveTab: (tab: string) => void;
   setBoostMode: (enabled: boolean) => void;
@@ -727,6 +729,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
     // Reset the analytics
     set({ clickAnalytics: {} });
     return clicks;
+  },
+
+  trackResourceChange: (resource: string, amount: number) => {
+    set((state) => ({
+      resourceAnalytics: {
+        ...state.resourceAnalytics,
+        [resource]: (state.resourceAnalytics[resource] || 0) + amount,
+      },
+    }));
+  },
+
+  getAndResetResourceAnalytics: () => {
+    const resources = get().resourceAnalytics;
+    // Only return if there are resources to report
+    if (Object.keys(resources).length === 0) {
+      return null;
+    }
+    // Reset the analytics
+    set({ resourceAnalytics: {} });
+    return resources;
   },
 
   loadGame: async () => {

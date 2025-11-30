@@ -6,23 +6,31 @@ export function updateResource(
   resource: keyof GameState['resources'],
   amount: number
 ): Partial<GameState> {
-  const newAmount = Math.max(0, state.resources[resource] + amount);
-  const updates: Partial<GameState> = {
-    resources: { ...state.resources, [resource]: newAmount }
-  };
+  const newAmount = Math.max(0, (state.resources[resource] || 0) + amount);
 
-  // Track when resources are first seen
-  if (newAmount > 0 && !state.story.seen[`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]) {
-    updates.story = {
-      ...state.story,
-      seen: {
-        ...state.story.seen,
-        [`has${resource.charAt(0).toUpperCase() + resource.slice(1)}`]: true
-      }
+  // Track the resource change for analytics (only track actual changes, not zero changes)
+  if (amount !== 0) {
+    const resourceName = resource as string;
+    const currentTracking = state.resourceAnalytics?.[resourceName] || 0;
+
+    return {
+      resources: {
+        ...state.resources,
+        [resource]: newAmount,
+      },
+      resourceAnalytics: {
+        ...state.resourceAnalytics,
+        [resourceName]: currentTracking + amount,
+      },
     };
   }
 
-  return updates;
+  return {
+    resources: {
+      ...state.resources,
+      [resource]: newAmount,
+    },
+  };
 }
 
 export function updateFlag(
