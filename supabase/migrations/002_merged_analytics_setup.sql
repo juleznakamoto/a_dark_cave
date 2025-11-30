@@ -2,17 +2,16 @@
 -- Drop the existing function first to allow parameter name change
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 
--- Create the button_clicks table for analytics (one row per user)
-CREATE TABLE IF NOT EXISTS button_clicks (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
-  timestamp TIMESTAMPTZ NOT NULL,
-  clicks JSONB NOT NULL,
-  resources JSONB DEFAULT '{}'::jsonb,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  updated_at TIMESTAMPTZ DEFAULT NOW(),
-  UNIQUE(user_id)
-);
+-- Add resources column to button_clicks if it doesn't exist
+DO $$ 
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM information_schema.columns 
+    WHERE table_name = 'button_clicks' AND column_name = 'resources'
+  ) THEN
+    ALTER TABLE button_clicks ADD COLUMN resources JSONB DEFAULT '{}'::jsonb;
+  END IF;
+END $$;
 
 -- Create purchases table to track user purchases
 CREATE TABLE IF NOT EXISTS purchases (
