@@ -371,21 +371,6 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
       return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} rounds\nHealth Cost: ${config.healthCost}`;
     },
   },
-  crushing_strike: {
-    getContent: (state) => {
-      const level = state.combatSkills.crushingStrikeLevel;
-      const configs = [
-        { damage: 10, stunRounds: 1 },
-        { damage: 20, stunRounds: 1 },
-        { damage: 30, stunRounds: 1 },
-        { damage: 40, stunRounds: 2 },
-        { damage: 50, stunRounds: 2 },
-        { damage: 50, stunRounds: 3 },
-      ];
-      const config = configs[level];
-      return `Deals ${config.damage} damage\nStuns enemy for ${config.stunRounds} round${config.stunRounds > 1 ? 's' : ''}\nCan be used once per battle`;
-    },
-  },
 };
 
 // Event choice cost tooltip - formats cost string
