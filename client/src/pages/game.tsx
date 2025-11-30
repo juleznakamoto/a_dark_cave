@@ -6,6 +6,7 @@ import { loadGame, saveGame } from "@/game/save"; // Import saveGame
 import EventDialog from "@/components/game/EventDialog";
 import CombatDialog from "@/components/game/CombatDialog";
 import { logger } from "@/lib/logger";
+import { playlight } from "@/lib/playlight";
 
 export default function Game() {
   const initialize = useGameStore((state) => state.initialize);
@@ -16,9 +17,19 @@ export default function Game() {
 
   useEffect(() => {
     const initializeGame = async () => {
+      // Initialize Playlight analytics (dev mode only)
+      await playlight.init();
+
       // Wait for auth to be ready first
       const { getCurrentUser } = await import('@/game/auth');
       const user = await getCurrentUser();
+
+      // Identify user in Playlight if logged in
+      if (user) {
+        playlight.identify(user.id, {
+          email: user.email,
+        });
+      }
 
       // Load saved game or initialize with defaults
       const savedState = await loadGame();

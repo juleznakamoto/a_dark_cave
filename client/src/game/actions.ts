@@ -2,6 +2,7 @@ import { GameState } from "@shared/game/schema";
 import { LogEntry } from "@/game/rules/events";
 import { gameActions } from "@/game/rules";
 import { logger } from "@/lib/logger";
+import { playlight } from "@/lib/playlight";
 // Import all handlers from the modular action files
 import {
   handleLightFire,
@@ -164,6 +165,8 @@ export function executeGameAction(
   actionId: string,
   state: GameState,
 ): ActionResult {
+  const action = gameActions[actionId]; // Get action details for Playlight tracking
+
   const result: ActionResult = {
     stateUpdates: {
       cooldowns: {
