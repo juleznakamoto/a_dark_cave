@@ -104,7 +104,7 @@ export const populationJobs: Record<string, PopulationJobConfig> = {
     label: "tanner",
     production: [
       { resource: "leather", amount: 1, interval: 15000 },
-      { resource: "fur", amount: -5, interval: 15000 },
+      { resource: "fur", amount: -10, interval: 15000 },
       { resource: "food", amount: -5, interval: 15000 },
     ],
   },
