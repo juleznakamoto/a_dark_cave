@@ -268,7 +268,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         // Generate unique purchase ID for this purchase instance
         const purchaseId = `purchase-${itemId}-${Date.now()}`;
-        
+
         // Add to purchased items list with unique ID
         setPurchasedItems((prev) => [...prev, purchaseId]);
 
@@ -317,7 +317,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     // Save purchase to database is now handled by verifyPurchase
     // Generate unique purchase ID for this purchase instance
     const purchaseId = `purchase-${selectedItem}-${Date.now()}`;
-    
+
     // Add to purchased items list with unique ID
     setPurchasedItems((prev) => [...prev, purchaseId]);
 
@@ -706,19 +706,43 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                       {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
                         .filter((purchaseId) => {
-                          // Extract itemId from purchaseId (format: purchase-{itemId}-{timestamp})
-                          const itemId = purchaseId.startsWith('purchase-') 
-                            ? purchaseId.split('-').slice(1, -1).join('-')
-                            : purchaseId;
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{db_id})
+                          // Handle case where itemId itself contains dashes (e.g., gold_20000)
+                          let itemId = purchaseId;
+                          if (purchaseId.startsWith('purchase-')) {
+                            const parts = purchaseId.split('-');
+                            // Remove 'purchase' prefix and the db_id (last part)
+                            itemId = parts.slice(1, -1).join('-');
+                          }
                           const item = SHOP_ITEMS[itemId];
+
+                          logger.log("[SHOP] Filtering purchase:", {
+                            purchaseId,
+                            extractedItemId: itemId,
+                            itemExists: !!item,
+                            hasFeastActivations: item?.rewards?.feastActivations,
+                            willShow: item && !item.rewards.feastActivations
+                          });
+
+                          // Don't show items with feast activations here (they're shown above)
+                          // But do check if the item exists
                           return item && !item.rewards.feastActivations;
                         })
                         .map((purchaseId) => {
                           // Extract itemId from purchaseId
-                          const itemId = purchaseId.startsWith('purchase-') 
-                            ? purchaseId.split('-').slice(1, -1).join('-')
-                            : purchaseId;
+                          let itemId = purchaseId;
+                          if (purchaseId.startsWith('purchase-')) {
+                            const parts = purchaseId.split('-');
+                            itemId = parts.slice(1, -1).join('-');
+                          }
                           const item = SHOP_ITEMS[itemId];
+
+                          logger.log("[SHOP] Rendering purchase:", {
+                            purchaseId,
+                            itemId,
+                            itemName: item?.name
+                          });
+
                           if (!item) return null;
 
                           const isActivated =
