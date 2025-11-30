@@ -742,14 +742,26 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   getAndResetClickAnalytics: () => {
-    const clicks = get().clickAnalytics;
+    const state = get();
+    const clicks = state.clickAnalytics;
     // Only return if there are clicks to report
     if (Object.keys(clicks).length === 0) {
       return null;
     }
+
+    const currentTime = state.playTime || 0;
+    const playtimeMinutes = Math.floor(currentTime / 1000 / 60);
+    const bucket = Math.floor(playtimeMinutes / 60) * 60;
+    const bucketKey = `${bucket}m`;
+
+    // Return pre-bucketed data for the server
+    const bucketedData = {
+      [bucketKey]: clicks
+    };
+
     // Reset the analytics
     set({ clickAnalytics: {} });
-    return clicks;
+    return bucketedData;
   },
 
   trackResourceChange: (resource: string, amount: number) => {
