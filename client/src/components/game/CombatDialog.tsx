@@ -240,12 +240,12 @@ export default function CombatDialog({
 
     const level = bloodflameSphereLevel || 0;
     const configs = [
-      { damage: 15, burnDamage: 10, burnRounds: 2, healthCost: 5 },
-      { damage: 30, burnDamage: 15, burnRounds: 2, healthCost: 10 },
-      { damage: 45, burnDamage: 20, burnRounds: 3, healthCost: 15 },
-      { damage: 60, burnDamage: 25, burnRounds: 3, healthCost: 20 },
-      { damage: 75, burnDamage: 30, burnRounds: 4, healthCost: 25 },
-      { damage: 90, burnDamage: 35, burnRounds: 4, healthCost: 30 },
+      { damage: 10, burnDamage: 10, burnRounds: 1, healthCost: 10 },
+      { damage: 15, burnDamage: 15, burnRounds: 1, healthCost: 10 },
+      { damage: 20, burnDamage: 20, burnRounds: 1, healthCost: 10 },
+      { damage: 25, burnDamage: 25, burnRounds: 2, healthCost: 20 },
+      { damage: 30, burnDamage: 30, burnRounds: 2, healthCost: 20 },
+      { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
     ];
     const config = configs[level];
 
