@@ -1437,7 +1437,10 @@ export default function AdminDashboard() {
     // Convert to array and format for chart display
     const result: Array<{ time: string; [key: string]: any }> = [];
 
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+    // Limit to first 24 hours (1440 minutes = 24 * 60)
+    const maxDisplayBucket = Math.min(maxBucket, 24 * 60);
+
+    for (let bucket = 0; bucket <= maxDisplayBucket; bucket += 60) {
       const hours = bucket / 60;
       const dataPoint: { time: string; [key: string]: any } = {
         time: hours === 0 ? '0h' : `${hours}h`,
