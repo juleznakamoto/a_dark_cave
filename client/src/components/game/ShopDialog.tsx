@@ -276,30 +276,20 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           }
         }
 
-        // CRITICAL: Add a temporary ID to purchasedItems IMMEDIATELY to prevent race condition
-        // This blocks rapid double-clicks before database save completes
-        const tempId = `purchase-${itemId}-temp-${Date.now()}`;
-        setPurchasedItems(prev => [...prev, tempId]);
-
         // Save purchase to Supabase
         const client = await getSupabaseClient();
-        const { data, error } = await client.from("purchases").insert({
+        const { error } = await client.from("purchases").insert({
           user_id: user.id,
           item_id: itemId,
           item_name: item.name,
           price_paid: item.price,
           purchased_at: new Date().toISOString(),
-        }).select('id').single();
+        });
 
-        if (error) {
-          // Remove temp ID on error
-          setPurchasedItems(prev => prev.filter(pid => pid !== tempId));
-          throw error;
-        }
+        if (error) throw error;
 
-        // Replace temp ID with real ID from database
-        const realId = `purchase-${itemId}-${data.id}`;
-        setPurchasedItems(prev => prev.map(pid => pid === tempId ? realId : pid));
+        // Reload purchases from database to get the correct ID
+        await loadPurchasedItems();
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {
