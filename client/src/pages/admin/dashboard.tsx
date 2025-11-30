@@ -1358,113 +1358,6 @@ export default function AdminDashboard() {
     return result;
   };
 
-  // Get resources over playtime
-  const getResourcesOverPlaytime = () => {
-    logger.log('🔍 Getting resources over playtime');
-
-    let filteredSaves = gameSaves;
-
-    if (selectedUser !== 'all') {
-      filteredSaves = gameSaves.filter(s => s.user_id === selectedUser);
-    }
-
-    // Filter by completed players if toggle is on
-    if (showCompletedOnly) {
-      const completedUserIds = new Set(
-        gameSaves
-          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
-          .map(save => save.user_id)
-      );
-      filteredSaves = filteredSaves.filter(s => completedUserIds.has(s.user_id));
-    }
-
-    // Track resources at each playtime bucket (hourly)
-    const playtimeBuckets = new Map<number, {
-      wood: number;
-      stone: number;
-      iron: number;
-      steel: number;
-      coal: number;
-      food: number;
-      gold: number;
-      obsidian: number;
-      adamant: number;
-      frostglass: number;
-      bloodstone: number;
-      nightshade: number;
-      bone: number;
-    }>();
-    let maxBucket = 0;
-
-    filteredSaves.forEach(save => {
-      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
-      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
-      maxBucket = Math.max(maxBucket, bucket);
-
-      if (!playtimeBuckets.has(bucket)) {
-        playtimeBuckets.set(bucket, {
-          wood: 0,
-          stone: 0,
-          iron: 0,
-          steel: 0,
-          coal: 0,
-          food: 0,
-          gold: 0,
-          obsidian: 0,
-          adamant: 0,
-          frostglass: 0,
-          bloodstone: 0,
-          nightshade: 0,
-          bone: 0,
-        });
-      }
-
-      const bucketData = playtimeBuckets.get(bucket)!;
-      const resources = save.game_state?.resources || {};
-
-      // Sum all resources for players at this playtime
-      bucketData.wood += resources.wood || 0;
-      bucketData.stone += resources.stone || 0;
-      bucketData.iron += resources.iron || 0;
-      bucketData.steel += resources.steel || 0;
-      bucketData.coal += resources.coal || 0;
-      bucketData.food += resources.food || 0;
-      bucketData.gold += resources.gold || 0;
-      bucketData.obsidian += resources.obsidian || 0;
-      bucketData.adamant += resources.adamant || 0;
-      bucketData.frostglass += resources.frostglass || 0;
-      bucketData.bloodstone += resources.bloodstone || 0;
-      bucketData.nightshade += resources.nightshade || 0;
-      bucketData.bone += resources.bone || 0;
-    });
-
-    // Create array with all buckets from 0 to max playtime
-    const result: Array<{ time: string; [key: string]: any }> = [];
-    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
-      const hours = bucket / 60;
-      const bucketData = playtimeBuckets.get(bucket);
-      result.push({
-        time: hours === 0 ? '0h' : `${hours}h`,
-        wood: bucketData?.wood || 0,
-        stone: bucketData?.stone || 0,
-        iron: bucketData?.iron || 0,
-        steel: bucketData?.steel || 0,
-        coal: bucketData?.coal || 0,
-        food: bucketData?.food || 0,
-        gold: bucketData?.gold || 0,
-        obsidian: bucketData?.obsidian || 0,
-        adamant: bucketData?.adamant || 0,
-        frostglass: bucketData?.frostglass || 0,
-        bloodstone: bucketData?.bloodstone || 0,
-        nightshade: bucketData?.nightshade || 0,
-        bone: bucketData?.bone || 0,
-      });
-    }
-
-    logger.log('📊 Resources over playtime:', result.length, 'buckets');
-    return result;
-  };
-
   const getARPU = () => {
     const totalUsers = gameSaves.length;
     if (totalUsers === 0) return 0;
@@ -1550,7 +1443,6 @@ export default function AdminDashboard() {
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="churn">Churn</TabsTrigger>
             <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
-            <TabsTrigger value="resources">Resources</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -2633,75 +2525,6 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
-
-          <TabsContent value="resources" className="space-y-4">
-            <div className="flex items-center gap-4 mb-4">
-              <label className="flex items-center gap-2 cursor-pointer">
-                <input
-                  type="checkbox"
-                  checked={showCompletedOnly}
-                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
-                  className="cursor-pointer w-4 h-4"
-                />
-                <span className="text-sm font-medium">
-                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
-                </span>
-              </label>
-            </div>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Resource Collection Over Playtime</CardTitle>
-                <CardDescription>
-                  Total resources collected at each hour of playtime {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getResourcesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Resources', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="wood" stroke="#8b4513" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="stone" stroke="#808080" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="iron" stroke="#c0c0c0" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="steel" stroke="#4682b4" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="coal" stroke="#1a1a1a" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="food" stroke="#228b22" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="gold" stroke="#ffd700" strokeWidth={2} dot={{ r: 3 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Advanced Resources Over Playtime</CardTitle>
-                <CardDescription>
-                  Rare resource collection over time {selectedUser !== 'all' ? 'for selected user' : showCompletedOnly ? 'for completed players only' : 'across all users'}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <ResponsiveContainer width="100%" height={400}>
-                  <LineChart data={getResourcesOverPlaytime()}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
-                    <YAxis label={{ value: 'Resources', angle: -90, position: 'insideLeft' }} />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="obsidian" stroke="#800080" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="adamant" stroke="#ff1493" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="frostglass" stroke="#00ffff" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="bloodstone" stroke="#dc143c" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="nightshade" stroke="#4b0082" strokeWidth={2} dot={{ r: 3 }} />
-                    <Line type="monotone" dataKey="bone" stroke="#f5f5dc" strokeWidth={2} dot={{ r: 3 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
           </TabsContent>
         </Tabs>
           </div>
