@@ -6,7 +6,6 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import Game from "@/pages/game";
-import BuildingProgress from "@/pages/building-progress";
 import HeroTest from "@/pages/hero-test";
 import NotFound from "@/pages/not-found";
 import ResetPassword from "@/pages/reset-password";
@@ -16,7 +15,6 @@ import Terms from "@/pages/terms";
 import Withdrawal from "@/pages/withdrawal";
 import ExplosionTest from "@/pages/explosion-test";
 import AdminDashboard from '@/pages/admin/dashboard';
-
 
 const isDev = import.meta.env.DEV;
 
@@ -57,6 +55,7 @@ function App() {
     initPlaylight();
   }, []);
 
+  
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
