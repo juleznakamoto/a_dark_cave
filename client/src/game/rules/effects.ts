@@ -1,5 +1,3 @@
-import { StateManager } from "../state";
-
 // Define action bonuses interface
 export interface ActionBonuses {
   resourceBonus: Record<string, number>;
