@@ -403,6 +403,7 @@ export const gameStateSchema = z.object({
   mysteriousNoteDonateNotificationSeen: z.boolean().default(false), // Track if mysterious note donate notification has been seen
   isUserSignedIn: z.boolean().default(false), // Track if user is currently signed in
   playTime: z.number().default(0), // Track total play time in milliseconds
+  lastResourceSnapshotTime: z.number().default(0).optional(),
   isNewGame: z.boolean().default(false), // Track if this is a newly started game
   startTime: z.number().default(0), // Timestamp when the current game was started
   allowPlayTimeOverwrite: z.boolean().default(false), // Allow overwriting higher playTime on next save (used for game restarts)

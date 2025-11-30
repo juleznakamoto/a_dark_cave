@@ -90,6 +90,11 @@ interface GameStore extends GameState {
   isPaused: boolean; // New state for pause/unpause
   isMuted: boolean; // Audio mute state
 
+  // Analytics tracking
+  clickAnalytics: {} as Record<string, number>,
+  resourceAnalytics: {} as Record<string, number>,
+  lastResourceSnapshotTime: 0,
+
   // Actions
   trackResourceChange: (resource: string, amount: number) => void;
   getAndResetResourceAnalytics: () => Record<string, number> | null;
@@ -207,6 +212,7 @@ const mergeStateUpdates = (
     referredUsers: stateUpdates.referredUsers || prevState.referredUsers, // Merge referredUsers
     referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
     social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
+    lastResourceSnapshotTime: stateUpdates.lastResourceSnapshotTime !== undefined ? stateUpdates.lastResourceSnapshotTime : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
   };
 
   if (
@@ -214,8 +220,7 @@ const mergeStateUpdates = (
     stateUpdates.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
-    stateUpdates.books ||
-    stateUpdates.blessings
+    stateUpdates.books
   ) {
     const tempState = { ...prevState, ...merged };
     merged.effects = calculateTotalEffects(tempState);
@@ -338,6 +343,11 @@ const defaultGameState: GameState = {
   // Cooldown management
   cooldowns: {},
   cooldownDurations: {}, // Initialize cooldownDurations
+
+  // Analytics tracking
+  clickAnalytics: {} as Record<string, number>,
+  resourceAnalytics: {} as Record<string, number>,
+  lastResourceSnapshotTime: 0,
 };
 
 // State management utilities
@@ -737,20 +747,29 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   getAndResetResourceAnalytics: () => {
-    // Return current absolute resource values
     const state = get();
-    const resources = state.resources;
-    
-    // Convert resources object to analytics format (only non-zero values)
-    const analytics: Record<string, number> = {};
-    Object.entries(resources).forEach(([key, value]) => {
-      if (value > 0) {
-        analytics[key] = value;
+    const currentTime = state.playTime || 0;
+
+    // Only create snapshot if enough time has passed (at least 1 minute)
+    const timeSinceLastSnapshot = currentTime - state.lastResourceSnapshotTime;
+    if (timeSinceLastSnapshot < 60000) {
+      return null;
+    }
+
+    // Create snapshot of current resources
+    const snapshot: Record<string, number> = {};
+    const resources = state.resources || {};
+
+    for (const [key, value] of Object.entries(resources)) {
+      if (typeof value === 'number' && value > 0) {
+        snapshot[key] = value;
       }
-    });
-    
-    // Don't reset - we want absolute values each time
-    return Object.keys(analytics).length > 0 ? analytics : null;
+    }
+
+    // Update last snapshot time
+    set({ lastResourceSnapshotTime: currentTime });
+
+    return Object.keys(snapshot).length > 0 ? snapshot : null;
   },
 
   loadGame: async () => {
@@ -809,6 +828,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         idleModeState: savedState.idleModeState || { isActive: false, startTime: 0, needsDisplay: false }, // Load idle mode state
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
+        lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
       };
 
       set(loadedState);

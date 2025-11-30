@@ -236,8 +236,11 @@ export async function saveGame(
         // Get and reset click analytics
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
         
-        // Get absolute resource values (not deltas)
-        const resourceData = useGameStore.getState().getAndResetResourceAnalytics();
+        // Get resource snapshot only during autosaves (when game loop is running)
+        // This ensures resources are tracked at consistent intervals with proper playTime
+        const resourceData = isAutosave 
+          ? useGameStore.getState().getAndResetResourceAnalytics()
+          : null;
 
         // Get last cloud state for diff calculation
         const lastCloudState = await db.get(
