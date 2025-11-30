@@ -1374,6 +1374,68 @@ export default function AdminDashboard() {
     return `${hours}h ${mins}m`;
   };
 
+  // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
+  const getResourceStatsOverPlaytime = () => {
+    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    let maxBucket = 0;
+
+    // Filter data based on selected user and completion status
+    let filteredSaves = gameSaves;
+    if (selectedUser !== 'all') {
+      filteredSaves = gameSaves.filter(save => save.user_id === selectedUser);
+    }
+    if (showCompletedOnly) {
+      const completedUserIds = new Set(
+        gameSaves
+          .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
+          .map(save => save.user_id)
+      );
+      filteredSaves = filteredSaves.filter(save => completedUserIds.has(save.user_id));
+    }
+
+    filteredSaves.forEach(save => {
+      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
+      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
+      maxBucket = Math.max(maxBucket, bucket);
+
+      if (!playtimeBuckets.has(bucket)) {
+        playtimeBuckets.set(bucket, {});
+      }
+
+      const bucketData = playtimeBuckets.get(bucket)!;
+      const resources = save.game_state?.resources || {};
+
+      Object.entries(resources).forEach(([resourceName, resourceData]: [string, any]) => {
+        if (!bucketData[resourceName]) {
+          bucketData[resourceName] = { total: 0, count: 0 };
+        }
+        bucketData[resourceName].total += resourceData.amount || 0; // Assuming 'amount' field exists
+        bucketData[resourceName].count += 1;
+      });
+    });
+
+    // Convert to array and format for chart display
+    const result: Array<{ time: string; [key: string]: any }> = [];
+
+    for (let bucket = 0; bucket <= maxBucket; bucket += 60) {
+      const hours = bucket / 60;
+      const dataPoint: { time: string; [key: string]: any } = {
+        time: hours === 0 ? '0h' : `${hours}h`,
+      };
+
+      const bucketData = playtimeBuckets.get(bucket);
+      if (bucketData) {
+        Object.entries(bucketData).forEach(([resourceName, stats]: [string, any]) => {
+          dataPoint[resourceName] = stats.count > 0 ? stats.total / stats.count : 0; // Average per player in this bucket
+        });
+      }
+      result.push(dataPoint);
+    }
+
+    return result;
+  };
+
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-background">
@@ -1443,6 +1505,7 @@ export default function AdminDashboard() {
             <TabsTrigger value="referrals">Referrals</TabsTrigger>
             <TabsTrigger value="churn">Churn</TabsTrigger>
             <TabsTrigger value="sleep">Sleep Upgrades</TabsTrigger>
+            <TabsTrigger value="resources">Resources</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-4">
@@ -2261,10 +2324,10 @@ export default function AdminDashboard() {
                   {(() => {
                     const chartData = getCubeEventsOverPlaytime();
                     if (chartData.length === 0) return null;
-                    
+
                     // Get all cube event keys from the first data point
                     const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
-                    
+
                     return cubeKeys.map((key) => (
                       <label key={key} className="flex items-center gap-2 cursor-pointer">
                         <input
@@ -2295,10 +2358,10 @@ export default function AdminDashboard() {
                     {(() => {
                       const chartData = getCubeEventsOverPlaytime();
                       if (chartData.length === 0) return null;
-                      
+
                       // Get all cube event keys from the first data point
                       const cubeKeys = Object.keys(chartData[0]).filter(key => key.startsWith('Cube '));
-                      
+
                       return cubeKeys.map((key, index) => (
                         <Line
                           key={key}
@@ -2525,6 +2588,59 @@ export default function AdminDashboard() {
                 </CardContent>
               </Card>
             </div>
+          </TabsContent>
+
+          <TabsContent value="resources" className="space-y-4">
+            <div className="flex items-center gap-4 mb-4">
+              <label className="flex items-center gap-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showCompletedOnly}
+                  onChange={(e) => setShowCompletedOnly(e.target.checked)}
+                  className="cursor-pointer w-4 h-4"
+                />
+                <span className="text-sm font-medium">
+                  Show only players who completed the game ({gameSaves.filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b).length} players)
+                </span>
+              </label>
+            </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Average Resources Over Playtime</CardTitle>
+                <CardDescription>
+                  Average amount of each resource in 1-hour playtime intervals. Filterable by completion status.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <ResponsiveContainer width="100%" height={400}>
+                  <LineChart data={getResourceStatsOverPlaytime()}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <YAxis label={{ value: 'Average Amount', angle: -90, position: 'insideLeft' }} />
+                    <Tooltip />
+                    <Legend />
+                    {(() => {
+                      const chartData = getResourceStatsOverPlaytime();
+                      if (chartData.length === 0) return null;
+
+                      // Dynamically get resource names from the data keys (excluding 'time')
+                      const resourceKeys = Object.keys(chartData[0]).filter(key => key !== 'time');
+
+                      return resourceKeys.map((key, index) => (
+                        <Line
+                          key={key}
+                          type="monotone"
+                          dataKey={key}
+                          stroke={COLORS[index % COLORS.length]}
+                          strokeWidth={2}
+                          dot={{ r: 3 }}
+                        />
+                      ));
+                    })()}
+                  </LineChart>
+                </ResponsiveContainer>
+              </CardContent>
+            </Card>
           </TabsContent>
         </Tabs>
           </div>
