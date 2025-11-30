@@ -148,6 +148,7 @@ export default function CavePanel() {
       'exploreCitadel'
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
+    const isCraftAction = actionId.startsWith("craft");
     const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
 
     // Special handling for blastPortal button
@@ -172,7 +173,19 @@ export default function CavePanel() {
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
 
-      if (resourceGainTooltip) {
+      if (isCraftAction && showCost) {
+        // Craft actions: always show cost breakdown regardless of Clerk's Hut
+        const costBreakdown = getActionCostBreakdown(actionId, state);
+        tooltipContent = (
+          <div className="text-xs whitespace-nowrap">
+            {costBreakdown.map((costItem, index) => (
+              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
+                {costItem.text}
+              </div>
+            ))}
+          </div>
+        );
+      } else if (resourceGainTooltip) {
         // Mine actions: show gains and costs (getResourceGainTooltip handles both)
         tooltipContent = resourceGainTooltip;
       } else if (showCost) {
@@ -201,7 +214,7 @@ export default function CavePanel() {
           disabled={!canExecute}
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
-          tooltip={actionId.startsWith("craftTorch") || actionId.startsWith("craftTorches") || actionId.startsWith("craftBoneTotem") || actionId.startsWith("craftLeatherTotem") || actionId.startsWith("craftEmberBomb") || actionId.startsWith("craftAshfireBomb") || actionId.startsWith("craftIronLantern") || actionId.startsWith("craftSteelLantern") || actionId.startsWith("craftObsidianLantern") || actionId.startsWith("craftAdamantLantern") ? getResourceGainTooltip(actionId, state) : tooltipContent}
+          tooltip={tooltipContent}
         >
           {label}
         </CooldownButton>
