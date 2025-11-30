@@ -265,8 +265,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
         if (error) throw error;
 
-        // Add to purchased items list
-        setPurchasedItems((prev) => [...prev, itemId]);
+        // Generate unique purchase ID for this purchase instance
+        const purchaseId = `purchase-${itemId}-${Date.now()}`;
+        
+        // Add to purchased items list with unique ID
+        setPurchasedItems((prev) => [...prev, purchaseId]);
 
         // Set hasMadeNonFreePurchase flag if this is a paid item (even if price is 0, we don't set it)
         if (item.price > 0) {
@@ -311,8 +314,11 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     const item = SHOP_ITEMS[selectedItem!];
 
     // Save purchase to database is now handled by verifyPurchase
-    // Add to purchased items list
-    setPurchasedItems((prev) => [...prev, selectedItem!]);
+    // Generate unique purchase ID for this purchase instance
+    const purchaseId = `purchase-${selectedItem}-${Date.now()}`;
+    
+    // Add to purchased items list with unique ID
+    setPurchasedItems((prev) => [...prev, purchaseId]);
 
     // Set hasMadeNonFreePurchase flag if this is a paid item
     if (item.price > 0) {
@@ -321,7 +327,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
     // If this item has feast activations (feast or bundle), track it individually
     if (item.rewards.feastActivations) {
-      const purchaseId = `feast-purchase-${Date.now()}`;
       useGameStore.setState((state) => ({
         feastPurchases: {
           ...state.feastPurchases,
@@ -598,13 +603,23 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           disabled={
                             !currentUser ||
                             (!item.canPurchaseMultipleTimes &&
-                              purchasedItems.includes(item.id))
+                              purchasedItems.some(pid => {
+                                const purchasedItemId = pid.startsWith('purchase-') 
+                                  ? pid.split('-').slice(1, -1).join('-')
+                                  : pid;
+                                return purchasedItemId === item.id;
+                              }))
                           }
                           className="w-full"
                           button_id={`shop-purchase-${item.id}`}
                         >
                           {!item.canPurchaseMultipleTimes &&
-                          purchasedItems.includes(item.id)
+                          purchasedItems.some(pid => {
+                            const purchasedItemId = pid.startsWith('purchase-') 
+                              ? pid.split('-').slice(1, -1).join('-')
+                              : pid;
+                            return purchasedItemId === item.id;
+                          })
                             ? "Already Purchased"
                             : "Purchase"}
                         </Button>
@@ -689,21 +704,29 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
 
                       {/* Show non-feast, non-bundle purchases */}
                       {purchasedItems
-                        .filter((itemId) => {
+                        .filter((purchaseId) => {
+                          // Extract itemId from purchaseId (format: purchase-{itemId}-{timestamp})
+                          const itemId = purchaseId.startsWith('purchase-') 
+                            ? purchaseId.split('-').slice(1, -1).join('-')
+                            : purchaseId;
                           const item = SHOP_ITEMS[itemId];
                           return item && !item.rewards.feastActivations;
                         })
-                        .map((itemId) => {
+                        .map((purchaseId) => {
+                          // Extract itemId from purchaseId
+                          const itemId = purchaseId.startsWith('purchase-') 
+                            ? purchaseId.split('-').slice(1, -1).join('-')
+                            : purchaseId;
                           const item = SHOP_ITEMS[itemId];
                           if (!item) return null;
 
                           const isActivated =
-                            activatedPurchases[itemId] || false;
+                            activatedPurchases[purchaseId] || false;
                           const isCruelModeItem = itemId === "cruel_mode";
 
                           return (
                             <div
-                              key={itemId}
+                              key={purchaseId}
                               className="flex items-center justify-between p-3 border rounded-lg"
                             >
                               <div className="flex flex-col">
@@ -721,7 +744,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                               </div>
                               <Button
                                 onClick={() =>
-                                  handleActivatePurchase(itemId, itemId)
+                                  handleActivatePurchase(purchaseId, itemId)
                                 }
                                 disabled={!isCruelModeItem && isActivated}
                                 size="sm"
