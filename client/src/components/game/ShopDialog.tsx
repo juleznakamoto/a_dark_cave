@@ -614,7 +614,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             (!item.canPurchaseMultipleTimes &&
                               purchasedItems.some(pid => {
                                 const purchasedItemId = pid.startsWith('purchase-') 
-                                  ? pid.split('-').slice(1, -1).join('-')
+                                  ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
                                   : pid;
                                 return purchasedItemId === item.id;
                               }))
@@ -625,12 +625,12 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                           {!item.canPurchaseMultipleTimes &&
                           purchasedItems.some(pid => {
                             const purchasedItemId = pid.startsWith('purchase-') 
-                              ? pid.split('-').slice(1, -1).join('-')
+                              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
                               : pid;
                             return purchasedItemId === item.id;
                           })
-                            ? "Already Purchased"
-                            : "Purchase"}
+                            ? "Already Claimed"
+                            : item.price === 0 ? "Claim" : "Purchase"}
                         </Button>
                       </CardFooter>
                     </Card>
