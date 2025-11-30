@@ -18,7 +18,7 @@ export default function Game() {
   useEffect(() => {
     const initializeGame = async () => {
       // Initialize Playlight SDK (dev mode only)
-      await playlight.init();
+      playlight.init();
 
       // Wait for auth to be ready first
       const { getCurrentUser } = await import('@/game/auth');
