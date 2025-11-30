@@ -2635,7 +2635,11 @@ export default function AdminDashboard() {
                 <ResponsiveContainer width="100%" height={400}>
                   <LineChart data={getResourceStatsOverPlaytime()}>
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="time" label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }} />
+                    <XAxis 
+                      dataKey="time" 
+                      label={{ value: 'Playtime', position: 'insideBottom', offset: -5 }}
+                      interval={0}
+                    />
                     <YAxis label={{ value: 'Average Amount', angle: -90, position: 'insideLeft' }} />
                     <Tooltip />
                     <Legend />
