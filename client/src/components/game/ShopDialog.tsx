@@ -259,9 +259,18 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
         // Check if already purchased (for non-repeatable items)
         if (!item.canPurchaseMultipleTimes) {
           const alreadyPurchased = purchasedItems.some(pid => {
-            const purchasedItemId = pid.startsWith('purchase-') 
-              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
-              : pid;
+            // Extract item ID from purchase ID
+            // Format: purchase-{itemId}-{uuid} or purchase-{itemId}-temp-{timestamp}
+            if (!pid.startsWith('purchase-')) return false;
+            
+            const withoutPrefix = pid.substring('purchase-'.length);
+            // Check if it's a temp ID
+            if (withoutPrefix.includes('-temp-')) {
+              return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === itemId;
+            }
+            // For real IDs with UUID, remove the last 5 dash-separated segments (UUID)
+            const parts = withoutPrefix.split('-');
+            const purchasedItemId = parts.slice(0, -5).join('-');
             return purchasedItemId === itemId;
           });
 
@@ -633,10 +642,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                             !currentUser ||
                             (!item.canPurchaseMultipleTimes &&
                               purchasedItems.some(pid => {
-                                const purchasedItemId = pid.startsWith('purchase-') 
-                                  ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
-                                  : pid;
-                                return purchasedItemId === item.id;
+                                if (!pid.startsWith('purchase-')) return false;
+                                const withoutPrefix = pid.substring('purchase-'.length);
+                                if (withoutPrefix.includes('-temp-')) {
+                                  return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
+                                }
+                                const parts = withoutPrefix.split('-');
+                                return parts.slice(0, -5).join('-') === item.id;
                               }))
                           }
                           className="w-full"
@@ -644,10 +656,13 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                         >
                           {!item.canPurchaseMultipleTimes &&
                           purchasedItems.some(pid => {
-                            const purchasedItemId = pid.startsWith('purchase-') 
-                              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
-                              : pid;
-                            return purchasedItemId === item.id;
+                            if (!pid.startsWith('purchase-')) return false;
+                            const withoutPrefix = pid.substring('purchase-'.length);
+                            if (withoutPrefix.includes('-temp-')) {
+                              return withoutPrefix.substring(0, withoutPrefix.indexOf('-temp-')) === item.id;
+                            }
+                            const parts = withoutPrefix.split('-');
+                            return parts.slice(0, -5).join('-') === item.id;
                           })
                             ? "Already Claimed"
                             : item.price === 0 ? "Claim" : "Purchase"}
