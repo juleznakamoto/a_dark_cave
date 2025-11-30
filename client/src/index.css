@@ -1,3 +1,5 @@
+@import "playlight-sdk/dist/playlight-sdk.css";
+
 /* Mobile fullscreen support */
 @supports (-webkit-touch-callout: none) {
   body {
@@ -13,8 +15,6 @@ html, body {
   overflow: hidden;
 }
 
-
-@import "playlight-sdk/dist/playlight-sdk.css";
 
 @tailwind base;
 @tailwind components;
