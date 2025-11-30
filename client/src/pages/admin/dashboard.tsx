@@ -1380,7 +1380,7 @@ export default function AdminDashboard() {
     // Filter data based on selected user and completion status
     let filteredClicks = clickData;
     if (selectedUser !== 'all') {
-      filteredClicks = clickData.filter(save => save.user_id === selectedUser);
+      filteredClicks = clickData.filter(record => record.user_id === selectedUser);
     }
     if (showCompletedOnly) {
       const completedUserIds = new Set(
@@ -1388,7 +1388,7 @@ export default function AdminDashboard() {
           .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
           .map(save => save.user_id)
       );
-      filteredClicks = filteredClicks.filter(save => completedUserIds.has(save.user_id));
+      filteredClicks = filteredClicks.filter(record => completedUserIds.has(record.user_id));
     }
 
     // Group resource data by playtime bucket
@@ -1396,15 +1396,15 @@ export default function AdminDashboard() {
     let maxBucket = 0;
 
     filteredClicks.forEach(record => {
-      // Ensure 'resources' exists and is an object
-      const resources = record.resources || {};
+      // Resources are stored in the 'resources' field with playtime snapshots
+      const resourceSnapshots = record.resources || {};
       
-      // Iterate over playtime entries within the record.clicks
-      Object.entries(record.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
+      // Iterate over playtime entries in resources
+      Object.entries(resourceSnapshots).forEach(([playtimeKey, resourcesAtTime]: [string, any]) => {
         try {
           // Extract playtime in minutes from the key (e.g., "45m" -> 45)
           const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
-          if (!isNaN(playtimeMinutes)) {
+          if (!isNaN(playtimeMinutes) && typeof resourcesAtTime === 'object') {
             const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
             maxBucket = Math.max(maxBucket, bucket);
 
@@ -1414,18 +1414,17 @@ export default function AdminDashboard() {
 
             const bucketData = playtimeBuckets.get(bucket)!;
 
-            // Iterate over resources defined in the game state
-            const gameStateResources = record.game_state?.resources || {}; // Assuming resources are in game_state
-            Object.entries(gameStateResources).forEach(([resourceName, resourceValue]: [string, any]) => {
-              // Check if 'amount' field exists for the resource
-              const amount = resourceValue.amount !== undefined ? resourceValue.amount : resourceValue; // Fallback to direct value if 'amount' is not present
+            // Iterate over resources at this playtime
+            Object.entries(resourcesAtTime).forEach(([resourceName, resourceValue]: [string, any]) => {
+              // Resource value should be a number
+              const amount = typeof resourceValue === 'number' ? resourceValue : 0;
               
-              if (typeof amount === 'number') {
-                  if (!bucketData[resourceName]) {
-                    bucketData[resourceName] = { total: 0, count: 0 };
-                  }
-                  bucketData[resourceName].total += amount;
-                  bucketData[resourceName].count += 1;
+              if (amount > 0) {
+                if (!bucketData[resourceName]) {
+                  bucketData[resourceName] = { total: 0, count: 0 };
+                }
+                bucketData[resourceName].total += amount;
+                bucketData[resourceName].count += 1;
               }
             });
           }
@@ -1447,7 +1446,7 @@ export default function AdminDashboard() {
       const bucketData = playtimeBuckets.get(bucket);
       if (bucketData) {
         Object.entries(bucketData).forEach(([resourceName, stats]: [string, any]) => {
-          dataPoint[resourceName] = stats.count > 0 ? stats.total / stats.count : 0; // Average per player in this bucket
+          dataPoint[resourceName] = stats.count > 0 ? Math.round(stats.total / stats.count) : 0; // Average per player in this bucket
         });
       }
       result.push(dataPoint);
