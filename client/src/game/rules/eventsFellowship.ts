@@ -14,8 +14,8 @@ export const fellowshipEvents: Record<string, GameEvent> = {
     title: "The Wizard's Offer",
     message: (state: GameState) =>
       state.story.seen.wizardOfferDeclined
-        ? "The old wizard approaches again. 'I have reconsidered,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the war against the foes that emerge from the depths.'"
-        : "An old wizard emerges from the tower. 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the war against the foes that emerge from the depths.'",
+        ? "The old wizard approaches you again, 'My offer to join you in the fight against the foes from the depths still stands. For a fair price, I will join you.'"
+        : "The old wizard approaches you, 'I have lived long and seen much,' he says with a weary voice. 'The threat you face is dire. For a fair price, I will join you in the fight against the foes that emerge from the depths.'",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -48,7 +48,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The wizard nods with satisfaction. 'A fair price for my services. I shall defend your people with arcane fire.' He removes his weathered hood, revealing ancient eyes that glow with power. The Elder Wizard has joined your fellowship.",
+              "The wizard nods with satisfaction. 'A fair price for my services. I shall defend your people with arcane fire.' He removes his weathered hood, revealing ancient eyes that glow with fading power. The Elder Wizard has joined your fellowship.",
           };
         },
       },
