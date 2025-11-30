@@ -12,7 +12,12 @@ const mockStripe = {
 
 vi.mock('stripe', () => {
   return {
-    default: vi.fn(() => mockStripe),
+    default: class MockStripe {
+      paymentIntents = mockStripe.paymentIntents;
+      constructor() {
+        return mockStripe;
+      }
+    },
   };
 });
 
