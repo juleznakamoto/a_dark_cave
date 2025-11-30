@@ -11,7 +11,7 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.shrine": 0,
     },
     cost: {
-      "resources.bones": 50,
+      "resources.bones": 100,
     },
     effects: {
       "resources.bone_totem": 1,
@@ -27,7 +27,7 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.temple": 0,
     },
     cost: {
-      "resources.bones": 100,
+      "resources.bones": 200,
     },
     effects: {
       "resources.bone_totem": 2,
@@ -43,7 +43,7 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.sanctum": 0,
     },
     cost: {
-      "resources.bones": 150,
+      "resources.bones": 300,
     },
     effects: {
       "resources.bone_totem": 3,
@@ -75,7 +75,7 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.sanctum": 0,
     },
     cost: {
-      "resources.leather": 20,
+      "resources.leather": 30,
     },
     effects: {
       "resources.leather_totem": 1,
@@ -91,7 +91,7 @@ export const caveCraftResources: Record<string, Action> = {
       "buildings.sanctum": 1,
     },
     cost: {
-      "resources.leather": 100,
+      "resources.leather": 150,
     },
     effects: {
       "resources.leather_totem": 5,
