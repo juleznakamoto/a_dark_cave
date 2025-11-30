@@ -1,6 +1,7 @@
 import { GameEvent } from "./events";
 import { GameState } from "@shared/schema";
 import { killVillagers } from "@/game/stateHelpers";
+import { useGameStore } from "@/game/state";
 
 // Helper function to calculate enemy stats
 function calculateEnemyStats(params: {
@@ -244,10 +245,26 @@ function createAttackWaveEvent(
 
       if (!baseCondition) return false;
 
-      // Check if timer exists and has expired
+      // Initialize timer if it doesn't exist and base conditions are met
       const timer = state.attackWaveTimers?.[waveId];
       if (!timer) {
-        // Timer will be initialized by the effect when conditions are first met
+        // Initialize timer immediately when base conditions are first met
+        setTimeout(() => {
+          const currentState = useGameStore.getState();
+          if (!currentState.attackWaveTimers?.[waveId]) {
+            useGameStore.setState({
+              attackWaveTimers: {
+                ...currentState.attackWaveTimers,
+                [waveId]: {
+                  startTime: Date.now(),
+                  duration: params.initialDuration,
+                  defeated: false,
+                  provoked: false,
+                },
+              },
+            });
+          }
+        }, 0);
         return false;
       }
 
@@ -277,22 +294,8 @@ function createAttackWaveEvent(
         },
       } : {};
 
-      // Initialize timer if it doesn't exist yet
-      const timerUpdate = !state.attackWaveTimers?.[waveId] ? {
-        attackWaveTimers: {
-          ...state.attackWaveTimers,
-          [waveId]: {
-            startTime: Date.now(),
-            duration: params.initialDuration,
-            defeated: false,
-            provoked: false,
-          },
-        },
-      } : {};
-
       return {
         ...storyUpdate,
-        ...timerUpdate,
         _combatData: {
           enemy: {
             name: config.enemyName,
