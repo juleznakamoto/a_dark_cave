@@ -435,7 +435,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
       }
 
       // Activate a Great Feast
-      const feastDuration = 60 * 60 * 1000; // 60 minutes in milliseconds
+      const feastDuration = 30 * 60 * 1000; // 30 minutes in milliseconds
       const endTime = Date.now() + feastDuration;
 
       useGameStore.setState((state) => ({
