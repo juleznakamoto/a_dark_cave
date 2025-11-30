@@ -776,10 +776,23 @@ export const useGameStore = create<GameStore>((set, get) => ({
       }
     }
 
+    // If no resources, return null
+    if (Object.keys(snapshot).length === 0) {
+      return null;
+    }
+
+    // Calculate playtime bucket (same as clicks - 1 hour intervals)
+    const playtimeMinutes = Math.floor(currentTime / 1000 / 60);
+    const bucket = Math.floor(playtimeMinutes / 60) * 60;
+    const bucketKey = `${bucket}m`;
+
     // Update last snapshot time
     set({ lastResourceSnapshotTime: currentTime });
 
-    return Object.keys(snapshot).length > 0 ? snapshot : null;
+    // Return bucketed data (same format as clicks)
+    return {
+      [bucketKey]: snapshot
+    };
   },
 
   loadGame: async () => {

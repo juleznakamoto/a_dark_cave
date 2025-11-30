@@ -1,4 +1,3 @@
-
 -- Drop the existing function first to allow parameter name change
 DROP FUNCTION IF EXISTS save_game_with_analytics(UUID, JSONB, JSONB);
 
@@ -102,7 +101,7 @@ BEGIN
   IF v_existing_state IS NOT NULL AND p_game_state_diff ? 'playTime' THEN
     v_existing_playtime := COALESCE((v_existing_state->>'playTime')::NUMERIC, 0);
     v_new_playtime := COALESCE((p_game_state_diff->>'playTime')::NUMERIC, 0);
-    
+
     IF p_allow_playtime_overwrite THEN
       -- Allow overwrite for game restarts
       RAISE NOTICE 'OCC check SKIPPED: playTime overwrite allowed (game restart) - new: %, existing: %', 
@@ -113,7 +112,7 @@ BEGIN
         RAISE EXCEPTION 'OCC violation: new playTime (%) must be greater than existing playTime (%)', 
           v_new_playtime, v_existing_playtime;
       END IF;
-      
+
       -- Log successful OCC check (visible in Supabase logs)
       RAISE NOTICE 'OCC check passed: new playTime (%) > existing playTime (%)', 
         v_new_playtime, v_existing_playtime;
@@ -163,19 +162,19 @@ BEGIN
           BEGIN
             v_existing_bucket := v_existing_clicks->v_playtime_key;
             v_merged_bucket := '{}'::jsonb;
-            
+
             FOR v_key IN SELECT jsonb_object_keys(v_existing_bucket) LOOP
               v_existing_count := (v_existing_bucket->>v_key)::INTEGER;
               v_new_count := COALESCE((p_click_analytics->>v_key)::INTEGER, 0);
               v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], to_jsonb(v_existing_count + v_new_count));
             END LOOP;
-            
+
             FOR v_key IN SELECT jsonb_object_keys(p_click_analytics) LOOP
               IF NOT (v_existing_bucket ? v_key) THEN
                 v_merged_bucket := jsonb_set(v_merged_bucket, ARRAY[v_key], p_click_analytics->v_key);
               END IF;
             END LOOP;
-            
+
             v_updated_clicks := jsonb_set(v_existing_clicks, ARRAY[v_playtime_key], v_merged_bucket);
           END;
         ELSE
@@ -188,13 +187,13 @@ BEGIN
       v_updated_clicks := v_existing_clicks;
     END IF;
 
-    -- Process resource analytics (ABSOLUTE VALUES - just replace, don't sum)
+    -- Process resource analytics (SNAPSHOT VALUES - already bucketed from client)
     IF p_resource_analytics IS NOT NULL AND p_resource_analytics != '{}'::jsonb THEN
       IF v_existing_resources IS NOT NULL THEN
-        -- Simply replace the bucket with new absolute values
-        v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], p_resource_analytics);
+        -- Merge the new bucketed data with existing
+        v_updated_resources := v_existing_resources || p_resource_analytics;
       ELSE
-        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics);
+        v_updated_resources := p_resource_analytics;
       END IF;
     ELSE
       v_updated_resources := v_existing_resources;
