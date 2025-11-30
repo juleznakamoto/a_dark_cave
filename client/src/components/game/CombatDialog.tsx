@@ -266,30 +266,13 @@ export default function CombatDialog({
       return;
     }
 
-    // Deal immediate damage
-    const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
-
-    // Set burn effect
+    // Set burn effect - damage will be applied in handleFight() just like poison arrows
     setEnemyBurnRounds(config.burnRounds);
-    setEnemyBurnDamage(config.burnDamage);
+    setEnemyBurnDamage(config.damage); // Use immediate damage as burn damage
     setUsedBloodflameSphere(true);
 
-    // Update combat state
-    setCurrentEnemy((prev) =>
-      prev ? { ...prev, currentHealth: newEnemyHealth } : null,
-    );
-
-    // Show damage indicator on enemy health bar
-    setEnemyDamageIndicator({ amount: config.damage, visible: true });
-    setTimeout(() => {
-      setEnemyDamageIndicator({ amount: 0, visible: false });
-    }, 3000);
-
-    // Check if enemy is defeated
-    if (newEnemyHealth <= 0) {
-      setCombatEnded(true);
-      setCombatResult("victory");
-    }
+    // Mark as used in combat tracking (like poison arrows)
+    setUsedItemsInCombat((prev) => [...prev, "bloodflame_sphere"]);
   };
 
 
@@ -375,7 +358,7 @@ export default function CombatDialog({
     let poisonDamageDealt = 0;
     let burnDamageDealt = 0;
 
-    // Apply poison damage if active
+    // Apply poison damage if active (works for all rounds poison is active)
     const poisonArrowsUsedThisRound = usedItemsInRound.has("poison_arrows");
     if (NIGHTSHADE_BOW_OWNED && poisonArrowsUsedThisRound) {
       const totalKnowledge = getTotalKnowledge(gameState);
@@ -383,7 +366,7 @@ export default function CombatDialog({
       poisonDamageDealt = 15 + knowledgeBonus; // Base 15 damage + knowledge bonus
     }
 
-    // Apply burn damage if active
+    // Apply burn damage if active (works for all rounds burn is active)
     if (enemyBurnRounds > 0) {
       burnDamageDealt = enemyBurnDamage;
       setEnemyBurnRounds((prev) => Math.max(0, prev - 1));
