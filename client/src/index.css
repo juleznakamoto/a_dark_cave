@@ -15,6 +15,7 @@ html, body {
 
 
 @tailwind base;
+@import "playlight-sdk/dist/playlight-sdk.css";
 @tailwind components;
 @tailwind utilities;
 
