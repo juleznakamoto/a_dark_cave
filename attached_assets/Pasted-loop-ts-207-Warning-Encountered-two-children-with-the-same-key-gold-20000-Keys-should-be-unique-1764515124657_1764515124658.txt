@@ -1,0 +1,57 @@
+loop.ts:207 Warning: Encountered two children with the same key, `gold_20000`. Keys should be unique so that components maintain their identity across updates. Non-unique keys may cause children to be duplicated and/or omitted — the behavior is unsupported and could change in a future version.
+    at div
+    at div
+    at div
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-7O3VHJ4X.js?v=ecbd7766:42:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…e/node_modules/.vite/deps/@radix-ui_react-scroll-area.js?v=ecbd7766:117:13
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-7O3VHJ4X.js?v=ecbd7766:42:13
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=ecbd7766:38:15)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…ace/node_modules/.vite/deps/@radix-ui_react-scroll-area.js?v=ecbd7766:55:7
+    at _c (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/scroll-area.tsx:21:11)
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-7O3VHJ4X.js?v=ecbd7766:42:13
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-CDJ7QCJS.js?v=ecbd7766:24:11)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…orkspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=ecbd7766:177:13
+    at _c5 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tabs.tsx:72:12)
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-7O3VHJ4X.js?v=ecbd7766:42:13
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=ecbd7766:38:15)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/workspace/node_modules/.vite/deps/@radix-ui_react-tabs.js?v=ecbd7766:55:7
+    at div
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:267:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:296:7
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:522:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:499:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:612:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:631:5
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…space/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:1458:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…space/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:1381:58
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:988:11)
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…space/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:1372:64
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:864:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:841:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:954:13
+    at https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:970:22
+    at Presence (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:988:11)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=ecbd7766:38:15)
+    at DialogPortal (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…space/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:1334:11)
+    at _c3 (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/dialog.tsx:52:12)
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=ecbd7766:38:15)
+    at Dialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-dialog.js?v=ecbd7766:1274:5)
+    at ShopDialog (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/ShopDialog.tsx?t=1764513743392:260:30)
+    at GameFooter (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameFooter.tsx?t=1764513743392:47:7)
+    at div
+    at div
+    at GameContainer (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/game/GameContainer.tsx?t=1764513743392:63:7)
+    at div
+    at Game (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/pages/game.tsx?t=1764513743392:28:22)
+    at Route (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ecbd7766:265:16)
+    at Switch (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…/home/runner/workspace/node_modules/.vite/deps/wouter.js?v=ecbd7766:321:17)
+    at Router
+    at Provider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…unner/workspace/node_modules/.vite/deps/chunk-3RXG37ZK.js?v=ecbd7766:38:15)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…kspace/node_modules/.vite/deps/@radix-ui_react-tooltip.js?v=ecbd7766:294:5)
+    at TooltipProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.dev/src/components/ui/tooltip.tsx:22:3)
+    at QueryClientProvider (https://2682ae70-ce47-4e54-b2a7-c9aabb0102f9-00-2k4742ln1pjlp.riker.replit.…rkspace/node_modules/.vite/deps/@tanstack_react-query.js?v=ecbd7766:2805:3)
+    at App
