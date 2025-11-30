@@ -9,7 +9,7 @@ export const fellowshipEvents: Record<string, GameEvent> = {
       state.buildings.wizardTower >= 1 && !state.fellowship.elder_wizard,
     triggerType: "resource",
     timeProbability: (state: GameState) => {
-      return state.story.seen.wizardOfferDeclined ? 0.045 : 0.030;
+      return state.story.seen.wizardOfferDeclined ? 45 : 30;
     },
     title: "The Wizard's Offer",
     message: (state: GameState) =>

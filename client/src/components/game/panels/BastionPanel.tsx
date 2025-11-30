@@ -25,12 +25,60 @@ const CRUSHING_STRIKE_UPGRADES = [
 
 // Bloodflame Sphere upgrade configurations
 const BLOODFLAME_SPHERE_UPGRADES = [
-  { level: 0, damage: 10, burnDamage: 10, burnRounds: 1, healthCost: 10, cost: 0, currency: null },
-  { level: 1, damage: 15, burnDamage: 15, burnRounds: 1, healthCost: 10, cost: 500, currency: "gold" },
-  { level: 2, damage: 20, burnDamage: 20, burnRounds: 1, healthCost: 10, cost: 1000, currency: "gold" },
-  { level: 3, damage: 25, burnDamage: 25, burnRounds: 2, healthCost: 20, cost: 1500, currency: "gold" },
-  { level: 4, damage: 30, burnDamage: 30, burnRounds: 2, healthCost: 20, cost: 2000, currency: "gold" },
-  { level: 5, damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20, cost: 2500, currency: "gold" },
+  {
+    level: 0,
+    damage: 10,
+    burnDamage: 10,
+    burnRounds: 1,
+    healthCost: 10,
+    cost: 0,
+    currency: null,
+  },
+  {
+    level: 1,
+    damage: 15,
+    burnDamage: 15,
+    burnRounds: 1,
+    healthCost: 10,
+    cost: 500,
+    currency: "gold",
+  },
+  {
+    level: 2,
+    damage: 20,
+    burnDamage: 20,
+    burnRounds: 1,
+    healthCost: 10,
+    cost: 1000,
+    currency: "gold",
+  },
+  {
+    level: 3,
+    damage: 25,
+    burnDamage: 25,
+    burnRounds: 2,
+    healthCost: 20,
+    cost: 1500,
+    currency: "gold",
+  },
+  {
+    level: 4,
+    damage: 30,
+    burnDamage: 30,
+    burnRounds: 2,
+    healthCost: 20,
+    cost: 2000,
+    currency: "gold",
+  },
+  {
+    level: 5,
+    damage: 35,
+    burnDamage: 35,
+    burnRounds: 3,
+    healthCost: 20,
+    cost: 2500,
+    currency: "gold",
+  },
 ];
 
 // Helper to get building label based on level
@@ -124,16 +172,24 @@ export default function BastionPanel() {
   };
 
   const currentLevel = combatSkills.crushingStrikeLevel ?? 0;
-  const currentCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel] ?? CRUSHING_STRIKE_UPGRADES[0];
+  const currentCrushingStrike =
+    CRUSHING_STRIKE_UPGRADES[currentLevel] ?? CRUSHING_STRIKE_UPGRADES[0];
   const nextCrushingStrike = CRUSHING_STRIKE_UPGRADES[currentLevel + 1];
   const canUpgradeCrushingStrike =
-    currentLevel < 5 && nextCrushingStrike && resources.gold >= nextCrushingStrike.cost;
+    currentLevel < 5 &&
+    nextCrushingStrike &&
+    resources.gold >= nextCrushingStrike.cost;
 
   const currentBloodflameLevel = combatSkills.bloodflameSphereLevel ?? 0;
-  const currentBloodflameSphere = BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel] ?? BLOODFLAME_SPHERE_UPGRADES[0];
-  const nextBloodflameSphere = BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel + 1];
+  const currentBloodflameSphere =
+    BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel] ??
+    BLOODFLAME_SPHERE_UPGRADES[0];
+  const nextBloodflameSphere =
+    BLOODFLAME_SPHERE_UPGRADES[currentBloodflameLevel + 1];
   const canUpgradeBloodflameSphere =
-    currentBloodflameLevel < 5 && nextBloodflameSphere && resources.gold >= nextBloodflameSphere.cost;
+    currentBloodflameLevel < 5 &&
+    nextBloodflameSphere &&
+    resources.gold >= nextBloodflameSphere.cost;
 
   // Helper to calculate 50% repair cost from action cost
   const getRepairCost = (actionId: string, level: number = 1) => {
@@ -254,320 +310,324 @@ export default function BastionPanel() {
 
           {/* Crushing Strike Upgrade */}
           {HAS_RESTLESS_KNIGHT && (
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="pb-1 text-xs font-medium text-foreground">
-                Crushing Strike
-              </span>
-              {currentLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip
-                    open={mobileButtonTooltip.isTooltipOpen(
-                      "upgrade-crushing-strike-button",
-                    )}
-                  >
-                    <TooltipTrigger asChild>
-                      <div
-                        className="inline-block"
-                        onClick={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleWrapperClick(
-                                  "upgrade-crushing-strike-button",
-                                  !canUpgradeCrushingStrike,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchStart={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleTouchStart(
-                                  "upgrade-crushing-strike-button",
-                                  !canUpgradeCrushingStrike,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchEnd={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleTouchEnd(
-                                  "upgrade-crushing-strike-button",
-                                  !canUpgradeCrushingStrike,
-                                  handleCrushingStrikeUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseDown={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleMouseDown(
-                                  "upgrade-crushing-strike-button",
-                                  !canUpgradeCrushingStrike,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseUp={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleMouseUp(
-                                  "upgrade-crushing-strike-button",
-                                  !canUpgradeCrushingStrike,
-                                  handleCrushingStrikeUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                      >
-                        <Button
-                          onClick={
-                            mobileButtonTooltip.isMobile &&
-                            mobileButtonTooltip.isTooltipOpen(
-                              "upgrade-crushing-strike-button",
-                            )
-                              ? (e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                }
-                              : handleCrushingStrikeUpgrade
-                          }
-                          disabled={!canUpgradeCrushingStrike}
-                          size="xs"
-                          variant="outline"
-                          className="hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-crushing-strike"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        {nextCrushingStrike.damage >
-                          currentCrushingStrike.damage && (
-                          <div>
-                            +
-                            {nextCrushingStrike.damage -
-                              currentCrushingStrike.damage}{" "}
-                            damage
-                          </div>
-                        )}
-                        {nextCrushingStrike.stunRounds >
-                          currentCrushingStrike.stunRounds && (
-                          <div>
-                            +
-                            {nextCrushingStrike.stunRounds -
-                              currentCrushingStrike.stunRounds}{" "}
-                            stun round
-                          </div>
-                        )}
-                        <div className="border-t border-border my-1" />
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="pb-1 text-xs font-medium text-foreground">
+                  Crushing Strike
+                </span>
+                {currentLevel < 5 ? (
+                  <TooltipProvider>
+                    <Tooltip
+                      open={mobileButtonTooltip.isTooltipOpen(
+                        "upgrade-crushing-strike-button",
+                      )}
+                    >
+                      <TooltipTrigger asChild>
                         <div
-                          className={
-                            resources.gold >= nextCrushingStrike.cost
-                              ? ""
-                              : "text-muted-foreground"
+                          className="inline-block"
+                          onClick={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleWrapperClick(
+                                    "upgrade-crushing-strike-button",
+                                    !canUpgradeCrushingStrike,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onTouchStart={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleTouchStart(
+                                    "upgrade-crushing-strike-button",
+                                    !canUpgradeCrushingStrike,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onTouchEnd={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleTouchEnd(
+                                    "upgrade-crushing-strike-button",
+                                    !canUpgradeCrushingStrike,
+                                    handleCrushingStrikeUpgrade,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onMouseDown={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleMouseDown(
+                                    "upgrade-crushing-strike-button",
+                                    !canUpgradeCrushingStrike,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onMouseUp={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleMouseUp(
+                                    "upgrade-crushing-strike-button",
+                                    !canUpgradeCrushingStrike,
+                                    handleCrushingStrikeUpgrade,
+                                    e,
+                                  );
+                                }
+                              : undefined
                           }
                         >
-                          -{nextCrushingStrike.cost} Gold
+                          <Button
+                            onClick={
+                              mobileButtonTooltip.isMobile &&
+                              mobileButtonTooltip.isTooltipOpen(
+                                "upgrade-crushing-strike-button",
+                              )
+                                ? (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                  }
+                                : handleCrushingStrikeUpgrade
+                            }
+                            disabled={!canUpgradeCrushingStrike}
+                            size="xs"
+                            variant="outline"
+                            className="hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-crushing-strike"
+                          >
+                            Improve
+                          </Button>
                         </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : null}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          {nextCrushingStrike.damage >
+                            currentCrushingStrike.damage && (
+                            <div>
+                              +
+                              {nextCrushingStrike.damage -
+                                currentCrushingStrike.damage}{" "}
+                              damage
+                            </div>
+                          )}
+                          {nextCrushingStrike.stunRounds >
+                            currentCrushingStrike.stunRounds && (
+                            <div>
+                              +
+                              {nextCrushingStrike.stunRounds -
+                                currentCrushingStrike.stunRounds}{" "}
+                              stun round
+                            </div>
+                          )}
+                          <div className="border-t border-border my-1" />
+                          <div
+                            className={
+                              resources.gold >= nextCrushingStrike.cost
+                                ? ""
+                                : "text-muted-foreground"
+                            }
+                          >
+                            -{nextCrushingStrike.cost} Gold
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : null}
+              </div>
+              <Progress
+                value={(currentLevel / 5) * 100}
+                className="h-2"
+                segments={5}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>
+                  {currentCrushingStrike.damage} damage,{" "}
+                  {currentCrushingStrike.stunRounds} round
+                  {currentCrushingStrike.stunRounds > 1 ? "s" : ""} stun
+                </span>
+              </div>
             </div>
-            <Progress
-              value={(currentLevel / 5) * 100}
-              className="h-2"
-              segments={5}
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>
-                {currentCrushingStrike.damage} damage,{" "}
-                {currentCrushingStrike.stunRounds} round
-                {currentCrushingStrike.stunRounds > 1 ? "s" : ""} stun
-              </span>
-            </div>
-          </div>
           )}
 
           {/* Bloodflame Sphere Upgrade */}
           {HAS_ELDER_WIZARD && (
-          <div className="space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="pb-1 text-xs font-medium text-foreground">
-                Bloodflame Sphere
-              </span>
-              {currentBloodflameLevel < 5 ? (
-                <TooltipProvider>
-                  <Tooltip
-                    open={mobileButtonTooltip.isTooltipOpen(
-                      "upgrade-bloodflame-sphere-button",
-                    )}
-                  >
-                    <TooltipTrigger asChild>
-                      <div
-                        className="inline-block"
-                        onClick={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleWrapperClick(
-                                  "upgrade-bloodflame-sphere-button",
-                                  !canUpgradeBloodflameSphere,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchStart={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleTouchStart(
-                                  "upgrade-bloodflame-sphere-button",
-                                  !canUpgradeBloodflameSphere,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onTouchEnd={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleTouchEnd(
-                                  "upgrade-bloodflame-sphere-button",
-                                  !canUpgradeBloodflameSphere,
-                                  handleBloodflameSphereUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseDown={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleMouseDown(
-                                  "upgrade-bloodflame-sphere-button",
-                                  !canUpgradeBloodflameSphere,
-                                  false,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                        onMouseUp={
-                          mobileButtonTooltip.isMobile
-                            ? (e) => {
-                                mobileButtonTooltip.handleMouseUp(
-                                  "upgrade-bloodflame-sphere-button",
-                                  !canUpgradeBloodflameSphere,
-                                  handleBloodflameSphereUpgrade,
-                                  e,
-                                );
-                              }
-                            : undefined
-                        }
-                      >
-                        <Button
-                          onClick={
-                            mobileButtonTooltip.isMobile &&
-                            mobileButtonTooltip.isTooltipOpen(
-                              "upgrade-bloodflame-sphere-button",
-                            )
-                              ? (e) => {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                }
-                              : handleBloodflameSphereUpgrade
-                          }
-                          disabled={!canUpgradeBloodflameSphere}
-                          size="xs"
-                          variant="outline"
-                          className="hover:bg-transparent hover:text-foreground"
-                          button_id="upgrade-bloodflame-sphere"
-                        >
-                          Improve
-                        </Button>
-                      </div>
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      <div className="text-xs whitespace-nowrap">
-                        {nextBloodflameSphere.damage >
-                          currentBloodflameSphere.damage && (
-                          <div>
-                            +
-                            {nextBloodflameSphere.damage -
-                              currentBloodflameSphere.damage}{" "}
-                            damage
-                          </div>
-                        )}
-                        {nextBloodflameSphere.burnDamage >
-                          currentBloodflameSphere.burnDamage && (
-                          <div>
-                            +
-                            {nextBloodflameSphere.burnDamage -
-                              currentBloodflameSphere.burnDamage}{" "}
-                            burn damage
-                          </div>
-                        )}
-                        {nextBloodflameSphere.burnRounds >
-                          currentBloodflameSphere.burnRounds && (
-                          <div>
-                            +
-                            {nextBloodflameSphere.burnRounds -
-                              currentBloodflameSphere.burnRounds}{" "}
-                            burn round
-                          </div>
-                        )}
-                        {nextBloodflameSphere.healthCost >
-                          currentBloodflameSphere.healthCost && (
-                          <div className="text-red-400">
-                            +
-                            {nextBloodflameSphere.healthCost -
-                              currentBloodflameSphere.healthCost}{" "}
-                            health cost
-                          </div>
-                        )}
-                        <div className="border-t border-border my-1" />
+            <div className="space-y-1">
+              <div className="flex items-center justify-between">
+                <span className="pb-1 text-xs font-medium text-foreground">
+                  Bloodflame Sphere
+                </span>
+                {currentBloodflameLevel < 5 ? (
+                  <TooltipProvider>
+                    <Tooltip
+                      open={mobileButtonTooltip.isTooltipOpen(
+                        "upgrade-bloodflame-sphere-button",
+                      )}
+                    >
+                      <TooltipTrigger asChild>
                         <div
-                          className={
-                            resources.gold >= nextBloodflameSphere.cost
-                              ? ""
-                              : "text-muted-foreground"
+                          className="inline-block"
+                          onClick={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleWrapperClick(
+                                    "upgrade-bloodflame-sphere-button",
+                                    !canUpgradeBloodflameSphere,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onTouchStart={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleTouchStart(
+                                    "upgrade-bloodflame-sphere-button",
+                                    !canUpgradeBloodflameSphere,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onTouchEnd={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleTouchEnd(
+                                    "upgrade-bloodflame-sphere-button",
+                                    !canUpgradeBloodflameSphere,
+                                    handleBloodflameSphereUpgrade,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onMouseDown={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleMouseDown(
+                                    "upgrade-bloodflame-sphere-button",
+                                    !canUpgradeBloodflameSphere,
+                                    false,
+                                    e,
+                                  );
+                                }
+                              : undefined
+                          }
+                          onMouseUp={
+                            mobileButtonTooltip.isMobile
+                              ? (e) => {
+                                  mobileButtonTooltip.handleMouseUp(
+                                    "upgrade-bloodflame-sphere-button",
+                                    !canUpgradeBloodflameSphere,
+                                    handleBloodflameSphereUpgrade,
+                                    e,
+                                  );
+                                }
+                              : undefined
                           }
                         >
-                          -{nextBloodflameSphere.cost} Gold
+                          <Button
+                            onClick={
+                              mobileButtonTooltip.isMobile &&
+                              mobileButtonTooltip.isTooltipOpen(
+                                "upgrade-bloodflame-sphere-button",
+                              )
+                                ? (e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                  }
+                                : handleBloodflameSphereUpgrade
+                            }
+                            disabled={!canUpgradeBloodflameSphere}
+                            size="xs"
+                            variant="outline"
+                            className="hover:bg-transparent hover:text-foreground"
+                            button_id="upgrade-bloodflame-sphere"
+                          >
+                            Improve
+                          </Button>
                         </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ) : null}
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-xs whitespace-nowrap">
+                          {nextBloodflameSphere.damage >
+                            currentBloodflameSphere.damage && (
+                            <div>
+                              +
+                              {nextBloodflameSphere.damage -
+                                currentBloodflameSphere.damage}{" "}
+                              damage
+                            </div>
+                          )}
+                          {nextBloodflameSphere.burnDamage >
+                            currentBloodflameSphere.burnDamage && (
+                            <div>
+                              +
+                              {nextBloodflameSphere.burnDamage -
+                                currentBloodflameSphere.burnDamage}{" "}
+                              burn damage
+                            </div>
+                          )}
+                          {nextBloodflameSphere.burnRounds >
+                            currentBloodflameSphere.burnRounds && (
+                            <div>
+                              +
+                              {nextBloodflameSphere.burnRounds -
+                                currentBloodflameSphere.burnRounds}{" "}
+                              burn round
+                            </div>
+                          )}
+                          {nextBloodflameSphere.healthCost >
+                            currentBloodflameSphere.healthCost && (
+                            <div>
+                              +
+                              {nextBloodflameSphere.healthCost -
+                                currentBloodflameSphere.healthCost}{" "}
+                              health cost
+                            </div>
+                          )}
+                          <div className="border-t border-border my-1" />
+                          <div
+                            className={
+                              resources.gold >= nextBloodflameSphere.cost
+                                ? ""
+                                : "text-muted-foreground"
+                            }
+                          >
+                            -{nextBloodflameSphere.cost} Gold
+                          </div>
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
+                ) : null}
+              </div>
+              <Progress
+                value={(currentBloodflameLevel / 5) * 100}
+                className="h-2"
+                segments={5}
+              />
+              <div className="flex justify-between text-xs text-muted-foreground">
+                <span>
+                  {currentBloodflameSphere.damage} damage,{" "}
+                  {currentBloodflameSphere.burnDamage} burn damage for{" "}
+                  {currentBloodflameSphere.burnRounds} round
+                  {currentBloodflameSphere.burnRounds > 1 ? "s" : ""},{" "}
+                  {currentBloodflameSphere.healthCost} health cost
+                </span>
+              </div>
             </div>
-            <Progress
-              value={(currentBloodflameLevel / 5) * 100}
-              className="h-2"
-              segments={5}
-            />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>
-                {currentBloodflameSphere.damage} dmg, {currentBloodflameSphere.burnDamage}×{currentBloodflameSphere.burnRounds} burn, {currentBloodflameSphere.healthCost} HP cost
-              </span>
-            </div>
-          </div>
           )}
         </div>
       )}
