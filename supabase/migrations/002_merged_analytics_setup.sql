@@ -66,6 +66,7 @@ CREATE INDEX IF NOT EXISTS purchases_item_id_idx ON purchases(item_id);
 -- Create a function that saves both game state and click analytics atomically
 -- Now handles state diffs by merging with existing state
 -- Implements Optimistic Concurrency Control (OCC) based on playTime
+-- Expects p_click_analytics and p_resource_analytics as raw data (not pre-bucketed)
 CREATE OR REPLACE FUNCTION save_game_with_analytics(
   p_user_id UUID,
   p_game_state_diff JSONB,
@@ -187,13 +188,20 @@ BEGIN
       v_updated_clicks := v_existing_clicks;
     END IF;
 
-    -- Process resource analytics (SNAPSHOT VALUES - already bucketed from client)
+    -- Process resource analytics (SNAPSHOT VALUES - raw data from client)
     IF p_resource_analytics IS NOT NULL AND p_resource_analytics != '{}'::jsonb THEN
       IF v_existing_resources IS NOT NULL THEN
-        -- Merge the new bucketed data with existing
-        v_updated_resources := v_existing_resources || p_resource_analytics;
+        -- Store the snapshot in the current playtime bucket
+        IF v_existing_resources ? v_playtime_key THEN
+          -- Replace the snapshot at this bucket (snapshots are not cumulative)
+          v_updated_resources := jsonb_set(v_existing_resources, ARRAY[v_playtime_key], p_resource_analytics);
+        ELSE
+          -- Add new bucket
+          v_updated_resources := v_existing_resources || jsonb_build_object(v_playtime_key, p_resource_analytics);
+        END IF;
       ELSE
-        v_updated_resources := p_resource_analytics;
+        -- First snapshot
+        v_updated_resources := jsonb_build_object(v_playtime_key, p_resource_analytics);
       END IF;
     ELSE
       v_updated_resources := v_existing_resources;

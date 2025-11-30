@@ -749,19 +749,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return null;
     }
 
-    const currentTime = state.playTime || 0;
-    const playtimeMinutes = Math.floor(currentTime / 1000 / 60);
-    const bucket = Math.floor(playtimeMinutes / 60) * 60;
-    const bucketKey = `${bucket}m`;
-
-    // Return pre-bucketed data for the server
-    const bucketedData = {
-      [bucketKey]: clicks
-    };
-
     // Reset the analytics
     set({ clickAnalytics: {} });
-    return bucketedData;
+    
+    // Return raw click data - the database will handle bucketing based on playTime
+    return clicks;
   },
 
   trackResourceChange: (resource: string, amount: number) => {
@@ -793,18 +785,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
       return null;
     }
 
-    // Calculate playtime bucket (same as clicks - 1 hour intervals)
-    const playtimeMinutes = Math.floor(currentTime / 1000 / 60);
-    const bucket = Math.floor(playtimeMinutes / 60) * 60;
-    const bucketKey = `${bucket}m`;
-
     // Update last snapshot time
     set({ lastResourceSnapshotTime: currentTime });
 
-    // Return bucketed data (same format as clicks)
-    return {
-      [bucketKey]: snapshot
-    };
+    // Return raw snapshot data - the database will handle bucketing based on playTime
+    return snapshot;
   },
 
   loadGame: async () => {
