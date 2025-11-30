@@ -256,6 +256,26 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
           throw new Error("User not authenticated");
         }
 
+        // Check if already purchased (for non-repeatable items)
+        if (!item.canPurchaseMultipleTimes) {
+          const alreadyPurchased = purchasedItems.some(pid => {
+            const purchasedItemId = pid.startsWith('purchase-') 
+              ? pid.substring('purchase-'.length, pid.lastIndexOf('-'))
+              : pid;
+            return purchasedItemId === itemId;
+          });
+
+          if (alreadyPurchased) {
+            gameState.addLogEntry({
+              id: `already-claimed-${Date.now()}`,
+              message: `You have already claimed ${item.name}.`,
+              timestamp: Date.now(),
+              type: "system",
+            });
+            return;
+          }
+        }
+
         // Save purchase to Supabase
         const client = await getSupabaseClient();
         const { error } = await client.from("purchases").insert({
