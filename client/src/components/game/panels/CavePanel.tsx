@@ -172,12 +172,13 @@ export default function CavePanel() {
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
 
+      const costBreakdown = showCost ? getActionCostBreakdown(actionId, state) : null;
+
       if (resourceGainTooltip) {
         // Mine actions: show gains and costs (getResourceGainTooltip handles both)
         tooltipContent = resourceGainTooltip;
-      } else if (showCost) {
-        // Other actions with costs
-        const costBreakdown = getActionCostBreakdown(actionId, state);
+      } else if (costBreakdown && costBreakdown.length > 0) {
+        // Other actions with costs (including crafting)
         tooltipContent = (
           <div className="text-xs whitespace-nowrap">
             {costBreakdown.map((costItem, index) => (
