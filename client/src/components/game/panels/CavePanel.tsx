@@ -137,7 +137,7 @@ export default function CavePanel() {
     const canExecute = canExecuteAction(actionId, state);
     const showCost = action.cost && Object.keys(action.cost).length > 0;
 
-    // Check if this is a mine action or cave exploration action
+    // Check if this is a mine action or cave exploration action or craft action
     const isMineAction = actionId.startsWith("mine");
     const caveExploreActions = [
       'exploreCave',
@@ -149,7 +149,7 @@ export default function CavePanel() {
     ];
     const isCaveExploreAction = caveExploreActions.includes(actionId);
     const isCraftAction = actionId.startsWith("craft");
-    const resourceGainTooltip = (isMineAction || isCaveExploreAction) ? getResourceGainTooltip(actionId, state) : null;
+    const resourceGainTooltip = (isMineAction || isCaveExploreAction || isCraftAction) ? getResourceGainTooltip(actionId, state) : null;
 
     // Special handling for blastPortal button
     const isBlastPortal = actionId === 'blastPortal';
