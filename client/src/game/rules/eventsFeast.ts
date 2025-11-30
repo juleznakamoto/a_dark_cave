@@ -11,15 +11,13 @@ interface FeastConfig {
 }
 
 const feastConfigs: FeastConfig[] = [
-  { level: 1, woodenHuts: 3, foodCost: 100 },
-  { level: 2, woodenHuts: 6, foodCost: 500 },
-  { level: 3, woodenHuts: 9, foodCost: 1000 },
-  { level: 4, woodenHuts: 2, foodCost: 1500 },
-  { level: 5, stoneHuts: 5, foodCost: 2000 },
-  { level: 6, stoneHuts: 8, foodCost: 2500 },
-  { level: 7, stoneHuts: 10, foodCost: 5000 },
-  { level: 8, secondWaveVictory: 1, foodCost: 5000 },
-  { level: 9, fourthWaveVictory: 1, foodCost: 5000 },
+  { level: 1, woodenHuts: 4, foodCost: 500 },
+  { level: 2, woodenHuts: 7, foodCost: 1000 },
+  { level: 3, stoneHuts: 1, foodCost: 2500 },
+  { level: 4, stoneHuts: 5, foodCost: 5000 },
+  { level: 5, stoneHuts: 9, foodCost: 7500 },
+  { level: 6, secondWaveVictory: 1, foodCost: 10000 },
+  { level: 7, fourthWaveVictory: 1, foodCost: 15000 },
 ];
 
 function createFeastEvent(config: FeastConfig): GameEvent {
@@ -69,7 +67,7 @@ function createFeastEvent(config: FeastConfig): GameEvent {
       return false;
     },
     triggerType: "resource",
-    timeProbability: 8,
+    timeProbability: 15,
     title: "Village Feast",
     message: `The villagers propose organizing a feast to celebrate and boost work morale.`,
     triggered: false,
