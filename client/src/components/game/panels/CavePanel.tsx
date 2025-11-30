@@ -173,25 +173,7 @@ export default function CavePanel() {
     if (showCost || resourceGainTooltip) {
       let tooltipContent;
 
-      if (isCraftAction && showCost) {
-        // Craft actions: always show cost breakdown, and gains if Clerk's Hut is built
-        const costBreakdown = getActionCostBreakdown(actionId, state);
-        const craftGainTooltip = getResourceGainTooltip(actionId, state);
-        
-        tooltipContent = (
-          <div className="text-xs whitespace-nowrap">
-            {craftGainTooltip}
-            {craftGainTooltip && costBreakdown.length > 0 && (
-              <div className="border-t border-border my-1" />
-            )}
-            {costBreakdown.map((costItem, index) => (
-              <div key={index} className={costItem.satisfied ? "" : "text-muted-foreground"}>
-                {costItem.text}
-              </div>
-            ))}
-          </div>
-        );
-      } else if (resourceGainTooltip) {
+      if (resourceGainTooltip) {
         // Mine actions: show gains and costs (getResourceGainTooltip handles both)
         tooltipContent = resourceGainTooltip;
       } else if (showCost) {
