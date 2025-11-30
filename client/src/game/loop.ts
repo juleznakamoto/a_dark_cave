@@ -268,9 +268,9 @@ export function startGameLoop() {
       // Accumulate time for fixed timestep
       tickAccumulator += deltaTime;
 
-      // Update play time in state (but not during idle mode)
+      // Update play time in state (but not during idle mode or inactivity)
       const currentState = useGameStore.getState();
-      if (!currentState.idleModeState?.isActive) {
+      if (!currentState.idleModeState?.isActive && !isInactive) {
         currentState.updatePlayTime(deltaTime);
       }
 

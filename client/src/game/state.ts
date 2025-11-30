@@ -91,9 +91,10 @@ interface GameStore extends GameState {
   isMuted: boolean; // Audio mute state
 
   // Analytics tracking
-  clickAnalytics: {} as Record<string, number>,
-  resourceAnalytics: {} as Record<string, number>,
-  lastResourceSnapshotTime: 0,
+  clickAnalytics: Record<string, number>;
+  resourceAnalytics: Record<string, number>;
+  lastResourceSnapshotTime: number;
+  isPausedPreviously: boolean;
 
   // Actions
   trackResourceChange: (resource: string, amount: number) => void;
@@ -213,6 +214,7 @@ const mergeStateUpdates = (
     referrals: stateUpdates.referrals || prevState.referrals, // Merge referrals
     social_media_rewards: stateUpdates.social_media_rewards || prevState.social_media_rewards, // Merge social_media_rewards
     lastResourceSnapshotTime: stateUpdates.lastResourceSnapshotTime !== undefined ? stateUpdates.lastResourceSnapshotTime : prevState.lastResourceSnapshotTime, // Merge lastResourceSnapshotTime
+    isPausedPreviously: stateUpdates.isPausedPreviously !== undefined ? stateUpdates.isPausedPreviously : prevState.isPausedPreviously, // Merge isPausedPreviously
   };
 
   if (
@@ -348,6 +350,7 @@ const defaultGameState: GameState = {
   clickAnalytics: {} as Record<string, number>,
   resourceAnalytics: {} as Record<string, number>,
   lastResourceSnapshotTime: 0,
+  isPausedPreviously: false, // Initialize isPausedPreviously
 };
 
 // State management utilities
@@ -1307,13 +1310,24 @@ export const useGameStore = create<GameStore>((set, get) => ({
         isPaused: !state.isPaused,
         loopProgress: 0, // Always reset loop progress when toggling pause
       };
+      // Update isPausedPreviously to reflect the state *before* toggling
+      // This is crucial for the game loop to know when to resume playTime updates
+      newState.isPausedPreviously = state.isPaused;
       return newState;
     });
   },
 
   updatePlayTime: (deltaTime: number) => {
-    set((state) => ({
-      playTime: state.playTime + deltaTime,
-    }));
+    set((state) => {
+      // Only update playTime if the game is NOT paused and was NOT previously paused
+      // This prevents playTime from incrementing during pauses or inactivity
+      if (!state.isPaused && !state.isPausedPreviously) {
+        return {
+          playTime: state.playTime + deltaTime,
+        };
+      }
+      // If paused or was previously paused, return state without updating playTime
+      return {};
+    });
   },
 }));
