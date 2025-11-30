@@ -467,7 +467,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
     useGameStore.setState((state) => ({
       activatedPurchases: {
         ...state.activatedPurchases,
-        [itemId]: true,
+        [purchaseId]: true,
       },
       hasMadeNonFreePurchase: state.hasMadeNonFreePurchase || item.price > 0,
     }));
