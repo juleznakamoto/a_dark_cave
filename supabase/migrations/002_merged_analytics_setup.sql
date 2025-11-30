@@ -139,10 +139,10 @@ BEGIN
   IF p_clear_clicks THEN
     DELETE FROM button_clicks WHERE user_id = p_user_id;
   ELSE
-    -- Get playtime bucket (1 hour = 60 minutes)
+    -- Get playtime bucket (10 minute intervals)
     v_playtime_ms := (v_merged_state->>'playTime')::NUMERIC;
     v_playtime_minutes := FLOOR(v_playtime_ms / 1000 / 60);
-    v_playtime_bucket := FLOOR(v_playtime_minutes / 60) * 60;
+    v_playtime_bucket := FLOOR(v_playtime_minutes / 10) * 10;
     v_playtime_key := v_playtime_bucket || 'm';
 
     -- Get existing analytics
