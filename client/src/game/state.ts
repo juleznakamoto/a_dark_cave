@@ -732,23 +732,25 @@ export const useGameStore = create<GameStore>((set, get) => ({
   },
 
   trackResourceChange: (resource: string, amount: number) => {
-    set((state) => ({
-      resourceAnalytics: {
-        ...state.resourceAnalytics,
-        [resource]: (state.resourceAnalytics[resource] || 0) + amount,
-      },
-    }));
+    // This is now a no-op since we track absolute values
+    // The analytics are captured during save
   },
 
   getAndResetResourceAnalytics: () => {
-    const resources = get().resourceAnalytics;
-    // Only return if there are resources to report
-    if (Object.keys(resources).length === 0) {
-      return null;
-    }
-    // Reset the analytics
-    set({ resourceAnalytics: {} });
-    return resources;
+    // Return current absolute resource values
+    const state = get();
+    const resources = state.resources;
+    
+    // Convert resources object to analytics format (only non-zero values)
+    const analytics: Record<string, number> = {};
+    Object.entries(resources).forEach(([key, value]) => {
+      if (value > 0) {
+        analytics[key] = value;
+      }
+    });
+    
+    // Don't reset - we want absolute values each time
+    return Object.keys(analytics).length > 0 ? analytics : null;
   },
 
   loadGame: async () => {

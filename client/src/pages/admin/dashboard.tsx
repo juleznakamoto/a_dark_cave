@@ -157,12 +157,10 @@ export default function AdminDashboard() {
     const totalClicks: Record<string, number> = {};
 
     filteredClicks.forEach(record => {
-      // Format: { "playtime": { "button": count } }
-      Object.values(record.clicks).forEach((playtimeClicks: any) => {
-        Object.entries(playtimeClicks).forEach(([button, count]) => {
-          const cleanButton = cleanButtonName(button);
-          totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
-        });
+      // Format: { "button": count } - assuming direct mapping from button to count within record.clicks
+      Object.entries(record.clicks).forEach(([button, count]) => {
+        const cleanButton = cleanButtonName(button);
+        totalClicks[cleanButton] = (totalClicks[cleanButton] || 0) + (count as number);
       });
     });
 
@@ -1376,13 +1374,13 @@ export default function AdminDashboard() {
 
   // NEW FUNCTION FOR RESOURCE STATS OVER PLAYTIME
   const getResourceStatsOverPlaytime = () => {
-    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
-    let maxBucket = 0;
+    // If no click data is available, return empty array
+    if (!clickData || clickData.length === 0) return [];
 
     // Filter data based on selected user and completion status
-    let filteredSaves = gameSaves;
+    let filteredClicks = clickData;
     if (selectedUser !== 'all') {
-      filteredSaves = gameSaves.filter(save => save.user_id === selectedUser);
+      filteredClicks = clickData.filter(save => save.user_id === selectedUser);
     }
     if (showCompletedOnly) {
       const completedUserIds = new Set(
@@ -1390,27 +1388,50 @@ export default function AdminDashboard() {
           .filter(save => save.game_state?.events?.cube15a || save.game_state?.events?.cube15b)
           .map(save => save.user_id)
       );
-      filteredSaves = filteredSaves.filter(save => completedUserIds.has(save.user_id));
+      filteredClicks = filteredClicks.filter(save => completedUserIds.has(save.user_id));
     }
 
-    filteredSaves.forEach(save => {
-      const playTimeMinutes = save.game_state?.playTime ? Math.round(save.game_state.playTime / 1000 / 60) : 0;
-      const bucket = Math.floor(playTimeMinutes / 60) * 60; // 1-hour buckets
-      maxBucket = Math.max(maxBucket, bucket);
+    // Group resource data by playtime bucket
+    const playtimeBuckets = new Map<number, Record<string, { total: number; count: number }>>();
+    let maxBucket = 0;
 
-      if (!playtimeBuckets.has(bucket)) {
-        playtimeBuckets.set(bucket, {});
-      }
+    filteredClicks.forEach(record => {
+      // Ensure 'resources' exists and is an object
+      const resources = record.resources || {};
+      
+      // Iterate over playtime entries within the record.clicks
+      Object.entries(record.clicks).forEach(([playtimeKey, clicksAtTime]: [string, any]) => {
+        try {
+          // Extract playtime in minutes from the key (e.g., "45m" -> 45)
+          const playtimeMinutes = parseInt(playtimeKey.replace('m', ''));
+          if (!isNaN(playtimeMinutes)) {
+            const bucket = Math.floor(playtimeMinutes / 60) * 60; // Group into 1-hour buckets
+            maxBucket = Math.max(maxBucket, bucket);
 
-      const bucketData = playtimeBuckets.get(bucket)!;
-      const resources = save.game_state?.resources || {};
+            if (!playtimeBuckets.has(bucket)) {
+              playtimeBuckets.set(bucket, {});
+            }
 
-      Object.entries(resources).forEach(([resourceName, resourceData]: [string, any]) => {
-        if (!bucketData[resourceName]) {
-          bucketData[resourceName] = { total: 0, count: 0 };
+            const bucketData = playtimeBuckets.get(bucket)!;
+
+            // Iterate over resources defined in the game state
+            const gameStateResources = record.game_state?.resources || {}; // Assuming resources are in game_state
+            Object.entries(gameStateResources).forEach(([resourceName, resourceValue]: [string, any]) => {
+              // Check if 'amount' field exists for the resource
+              const amount = resourceValue.amount !== undefined ? resourceValue.amount : resourceValue; // Fallback to direct value if 'amount' is not present
+              
+              if (typeof amount === 'number') {
+                  if (!bucketData[resourceName]) {
+                    bucketData[resourceName] = { total: 0, count: 0 };
+                  }
+                  bucketData[resourceName].total += amount;
+                  bucketData[resourceName].count += 1;
+              }
+            });
+          }
+        } catch (e) {
+          logger.warn('Failed to process playtime or resources:', playtimeKey, e);
         }
-        bucketData[resourceName].total += resourceData.amount || 0; // Assuming 'amount' field exists
-        bucketData[resourceName].count += 1;
       });
     });
 

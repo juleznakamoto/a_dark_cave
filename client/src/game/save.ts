@@ -236,7 +236,7 @@ export async function saveGame(
         // Get and reset click analytics
         const clickData = useGameStore.getState().getAndResetClickAnalytics();
         
-        // Get and reset resource analytics
+        // Get absolute resource values (not deltas)
         const resourceData = useGameStore.getState().getAndResetResourceAnalytics();
 
         // Get last cloud state for diff calculation

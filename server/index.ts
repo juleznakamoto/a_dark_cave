@@ -64,9 +64,8 @@ app.get('/api/admin/data', async (req, res) => {
     log(`📊 Fetching admin dashboard data from ${env.toUpperCase()} environment...`);
 
     // Fetch all data in parallel
-    const [clicksResult, resourcesResult, savesResult, purchasesResult] = await Promise.all([
+    const [clicksResult, savesResult, purchasesResult] = await Promise.all([
       adminClient.from('button_clicks').select('*').order('timestamp', { ascending: true }),
-      adminClient.from('resource_analytics').select('user_id, resources, timestamp').eq('environment', env),
       adminClient.from('game_saves').select('user_id, game_state, updated_at, created_at'),
       adminClient.from('purchases').select('*').order('purchased_at', { ascending: false })
     ]);
@@ -74,10 +73,6 @@ app.get('/api/admin/data', async (req, res) => {
     if (clicksResult.error) {
       log('❌ Error fetching button_clicks:', clicksResult.error);
       throw clicksResult.error;
-    }
-    if (resourcesResult.error) {
-      log('❌ Error fetching resource_analytics:', resourcesResult.error);
-      throw resourcesResult.error;
     }
     if (savesResult.error) {
       log('❌ Error fetching game_saves:', savesResult.error);
@@ -89,13 +84,11 @@ app.get('/api/admin/data', async (req, res) => {
     }
 
     log(`✅ Fetched ${clicksResult.data.length} click records`);
-    log(`✅ Fetched ${resourcesResult.data.length} resource analytics records`);
     log(`✅ Fetched ${savesResult.data.length} game saves`);
     log(`✅ Fetched ${purchasesResult.data.length} purchases`);
 
     res.json({
       clicks: clicksResult.data,
-      resources: resourcesResult.data,
       saves: savesResult.data,
       purchases: purchasesResult.data
     });
