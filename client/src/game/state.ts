@@ -466,7 +466,11 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
   setHighlightedResources: (resources: string[]) => { // Updated type
-    logger.log('[HIGHLIGHT] Setting highlighted resources:', resources);
+    logger.log('[HIGHLIGHT] Setting highlighted resources:', {
+      resources,
+      resourceCount: resources.length,
+      stackTrace: new Error().stack?.split('\n').slice(1, 8).join('\n')
+    });
     set({ highlightedResources: resources });
   },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),

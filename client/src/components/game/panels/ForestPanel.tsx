@@ -235,11 +235,11 @@ export default function ForestPanel() {
           onMouseEnter={() => {
             const resources = getResourcesFromActionCost(actionId, state);
             logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-            setHighlightedResources(new Set(resources));
+            setHighlightedResources(resources);
           }}
           onMouseLeave={() => {
             logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-            setHighlightedResources(new Set());
+            setHighlightedResources([]);
           }}
           style={{ pointerEvents: 'auto' }}
         >
