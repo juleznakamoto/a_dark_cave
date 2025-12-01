@@ -17,7 +17,10 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
 
   if (isVersionCheckActive) {
     logger.log("[VERSION] ⚠️ Version check already active, updating callback");
-    logger.log("[VERSION] Previous callback type:", typeof versionCheckCallback);
+    logger.log(
+      "[VERSION] Previous callback type:",
+      typeof versionCheckCallback,
+    );
     versionCheckCallback = onNewVersionDetected;
     logger.log("[VERSION] New callback type:", typeof versionCheckCallback);
     logger.log("[VERSION] Exiting early - check already running");
@@ -35,10 +38,13 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   const existingLastModified = sessionStorage.getItem("app_last_modified");
   logger.log("[VERSION] 📦 SessionStorage on startup:");
   logger.log("[VERSION]   - app_etag:", existingEtag || "null");
-  logger.log("[VERSION]   - app_last_modified:", existingLastModified || "null");
+  logger.log(
+    "[VERSION]   - app_last_modified:",
+    existingLastModified || "null",
+  );
 
   // Check every 30 seconds for testing
-  const CHECK_INTERVAL = 30 * 1000;
+  const CHECK_INTERVAL = 15 * 60 * 1000;
 
   const checkVersion = async () => {
     try {
@@ -71,20 +77,28 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
 
       logger.log("[VERSION] 📦 Current sessionStorage values:");
       logger.log("[VERSION]   - Stored ETag:", storedEtag || "null");
-      logger.log("[VERSION]   - Stored Last-Modified:", storedLastModified || "null");
+      logger.log(
+        "[VERSION]   - Stored Last-Modified:",
+        storedLastModified || "null",
+      );
 
       // Store initial values on first check (when nothing is stored)
       if (!storedEtag && !storedLastModified) {
         logger.log("[VERSION] ========================================");
         logger.log("[VERSION] 📝 FIRST CHECK - No stored values found");
-        logger.log("[VERSION] This is the initial version check after page load");
+        logger.log(
+          "[VERSION] This is the initial version check after page load",
+        );
         if (etag) {
           sessionStorage.setItem("app_etag", etag);
           logger.log("[VERSION] ✅ Initial ETag stored:", etag);
         }
         if (lastModified) {
           sessionStorage.setItem("app_last_modified", lastModified);
-          logger.log("[VERSION] ✅ Initial Last-Modified stored:", lastModified);
+          logger.log(
+            "[VERSION] ✅ Initial Last-Modified stored:",
+            lastModified,
+          );
         }
         logger.log("[VERSION] First check complete - no comparison needed");
         logger.log("[VERSION] ========================================");
@@ -104,7 +118,10 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       logger.log("[VERSION]   - Match:", lastModified === storedLastModified);
 
       const etagChanged = etag && storedEtag && etag !== storedEtag;
-      const lastModifiedChanged = lastModified && storedLastModified && lastModified !== storedLastModified;
+      const lastModifiedChanged =
+        lastModified &&
+        storedLastModified &&
+        lastModified !== storedLastModified;
       const hasChanged = etagChanged || lastModifiedChanged;
 
       logger.log("[VERSION] 📊 Comparison results:");
@@ -121,13 +138,17 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           logger.log("[VERSION]   - ETag: '%s' -> '%s'", storedEtag, etag);
         }
         if (lastModifiedChanged) {
-          logger.log("[VERSION]   - Last-Modified: '%s' -> '%s'", storedLastModified, lastModified);
+          logger.log(
+            "[VERSION]   - Last-Modified: '%s' -> '%s'",
+            storedLastModified,
+            lastModified,
+          );
         }
 
         // DO NOT update sessionStorage here - we want the toast to keep appearing
         // until the user actually refreshes. SessionStorage will be updated
         // automatically when the page reloads.
-        
+
         logger.log("[VERSION] 📞 Preparing to call callback...");
         logger.log("[VERSION] Callback exists:", versionCheckCallback !== null);
         logger.log("[VERSION] Callback type:", typeof versionCheckCallback);
@@ -138,12 +159,23 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           try {
             logger.log("[VERSION] 🔔 Calling versionCheckCallback NOW...");
             versionCheckCallback();
-            logger.log("[VERSION] ✅ versionCheckCallback executed successfully");
+            logger.log(
+              "[VERSION] ✅ versionCheckCallback executed successfully",
+            );
           } catch (callbackError) {
-            logger.log("[VERSION] ❌ Error calling version callback:", callbackError);
+            logger.log(
+              "[VERSION] ❌ Error calling version callback:",
+              callbackError,
+            );
             logger.log("[VERSION] Error details:", {
-              message: callbackError instanceof Error ? callbackError.message : String(callbackError),
-              stack: callbackError instanceof Error ? callbackError.stack : undefined,
+              message:
+                callbackError instanceof Error
+                  ? callbackError.message
+                  : String(callbackError),
+              stack:
+                callbackError instanceof Error
+                  ? callbackError.stack
+                  : undefined,
             });
           }
         } else {
@@ -178,7 +210,11 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
     logger.log("[VERSION] ⏰ Periodic check triggered");
     checkVersion();
   }, CHECK_INTERVAL);
-  logger.log("[VERSION] ⏰ Periodic checks scheduled every", CHECK_INTERVAL / 1000, "seconds");
+  logger.log(
+    "[VERSION] ⏰ Periodic checks scheduled every",
+    CHECK_INTERVAL / 1000,
+    "seconds",
+  );
   logger.log("[VERSION] ========================================");
 }
 
