@@ -7,12 +7,19 @@ const mockCreate = vi.fn();
 const mockRetrieve = vi.fn();
 
 vi.mock('stripe', () => {
-  const MockStripe = vi.fn().mockImplementation(() => ({
+  class MockStripe {
     paymentIntents: {
-      create: mockCreate,
-      retrieve: mockRetrieve,
-    },
-  }));
+      create: typeof mockCreate;
+      retrieve: typeof mockRetrieve;
+    };
+    
+    constructor() {
+      this.paymentIntents = {
+        create: mockCreate,
+        retrieve: mockRetrieve,
+      };
+    }
+  }
   
   return {
     default: MockStripe,
