@@ -13,7 +13,7 @@ import Privacy from "@/pages/privacy";
 import Terms from "@/pages/terms";
 import Withdrawal from "@/pages/withdrawal";
 import ExplosionTest from "@/pages/explosion-test";
-import AdminDashboard from '@/pages/admin/dashboard';
+import AdminDashboard from "@/pages/admin/dashboard";
 
 const isDev = import.meta.env.DEV;
 
@@ -37,11 +37,12 @@ function Router() {
 
 function App() {
   useEffect(() => {
-
     // Initialize Playlight SDK via ESM CDN (after hydration)
     (async () => {
       try {
-        const module = await import("https://sdk.playlight.dev/playlight-sdk.es.js");
+        const module = await import(
+          "https://sdk.playlight.dev/playlight-sdk.es.js"
+        );
         const playlightSDK = module.default;
         playlightSDK.init();
         console.log("[PLAYLIGHT] SDK initialized successfully");
@@ -50,7 +51,6 @@ function App() {
       }
     })();
   }, []);
-
 
   return (
     <QueryClientProvider client={queryClient}>
