@@ -632,6 +632,110 @@ export default function BastionPanel() {
         </div>
       )}
 
+      {/* Heal Section - only show if there are wounded fellowship members */}
+      {(story?.seen?.restlessKnightWounded || story?.seen?.elderWizardWounded) && (
+        <div className="space-y-2">
+          <h3 className="text-xs font-bold text-foreground">Heal</h3>
+          <div className="flex flex-wrap gap-2">
+            {story?.seen?.restlessKnightWounded && fellowship?.restless_knight && (
+              <TooltipProvider key="restless-knight">
+                <Tooltip open={mobileTooltip.isTooltipOpen("heal-restless-knight")}>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) =>
+                        mobileTooltip.handleTooltipClick("heal-restless-knight", e)
+                      }
+                    >
+                      <Button
+                        onClick={() => {
+                          if (resources.food >= 1500) {
+                            useGameStore.setState((state) => ({
+                              resources: {
+                                ...state.resources,
+                                food: state.resources.food - 1500,
+                              },
+                              story: {
+                                ...state.story,
+                                seen: {
+                                  ...state.story.seen,
+                                  restlessKnightWounded: false,
+                                },
+                              },
+                            }));
+                          }
+                        }}
+                        disabled={resources.food < 1500}
+                        variant="outline"
+                        size="xs"
+                        className="hover:bg-transparent hover:text-foreground"
+                        button_id="heal-restless-knight"
+                      >
+                        Restless Knight
+                      </Button>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
+                        -1500 Food
+                      </div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+
+            {story?.seen?.elderWizardWounded && fellowship?.elder_wizard && (
+              <TooltipProvider key="elder-wizard">
+                <Tooltip open={mobileTooltip.isTooltipOpen("heal-elder-wizard")}>
+                  <TooltipTrigger asChild>
+                    <div
+                      onClick={(e) =>
+                        mobileTooltip.handleTooltipClick("heal-elder-wizard", e)
+                      }
+                    >
+                      <Button
+                        onClick={() => {
+                          if (resources.food >= 1500) {
+                            useGameStore.setState((state) => ({
+                              resources: {
+                                ...state.resources,
+                                food: state.resources.food - 1500,
+                              },
+                              story: {
+                                ...state.story,
+                                seen: {
+                                  ...state.story.seen,
+                                  elderWizardWounded: false,
+                                },
+                              },
+                            }));
+                          }
+                        }}
+                        disabled={resources.food < 1500}
+                        variant="outline"
+                        size="xs"
+                        className="hover:bg-transparent hover:text-foreground"
+                        button_id="heal-elder-wizard"
+                      >
+                        Elder Wizard
+                      </Button>
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <div className="text-xs whitespace-nowrap">
+                      <div className={resources.food >= 1500 ? "" : "text-muted-foreground"}>
+                        -1500 Food
+                      </div>
+                    </div>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Repair Section - only show if there are damaged buildings */}
       {hasDamagedBuildings && (
         <div className="space-y-2">

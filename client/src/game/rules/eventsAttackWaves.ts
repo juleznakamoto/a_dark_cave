@@ -39,6 +39,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000, // 20 minutes
     maxCasualties: 5,
     buildingDamageMultiplier: 1,
+    fellowshipWoundedMultiplier: 0.1,
   },
   secondWave: {
     attack: { base: 30, random: 10, options: [30, 35, 40], cmBonus: 5 },
@@ -48,6 +49,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 10,
     buildingDamageMultiplier: 2,
+    fellowshipWoundedMultiplier: 0.2,
   },
   thirdWave: {
     attack: { base: 40, random: 10, options: [40, 45, 50], cmBonus: 10 },
@@ -57,6 +59,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 15,
     buildingDamageMultiplier: 3,
+    fellowshipWoundedMultiplier: 0.3,
   },
   fourthWave: {
     attack: { base: 50, random: 15, options: [50, 55, 60, 65], cmBonus: 15 },
@@ -66,6 +69,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 20,
     buildingDamageMultiplier: 4,
+    fellowshipWoundedMultiplier: 0.4,
   },
   fifthWave: {
     attack: { base: 65, random: 20, options: [65, 70, 75, 80, 85], cmBonus: 20 },
@@ -75,6 +79,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 25,
     buildingDamageMultiplier: 5,
+    fellowshipWoundedMultiplier: 0.5,
   },
 } as const;
 
@@ -144,6 +149,7 @@ const FIFTH_WAVE_VICTORY_MESSAGE = (silverReward: number) =>
 function createDefeatMessage(
   casualties: number,
   damagedBuildings: string[],
+  woundedFellows: string[] = [],
 ): string {
   let msg = "The creatures overwhelm your defenses. ";
 
@@ -160,6 +166,10 @@ function createDefeatMessage(
     msg += ` Your ${damagedBuildings.join(" and ")} ${damagedBuildings.length === 1 ? "is" : "are"} damaged in the assault.`;
   }
 
+  if (woundedFellows.length > 0) {
+    msg += ` ${woundedFellows.join(" and ")} ${woundedFellows.length === 1 ? "is" : "are"} wounded in battle.`;
+  }
+
   return msg;
 }
 
@@ -167,6 +177,7 @@ function handleDefeat(
   state: GameState,
   DamageBuildingMultiplier: number,
   maxCasualties: number,
+  fellowshipWoundedMultiplier: number,
 ) {
   const currentPopulation = Object.values(state.villagers).reduce(
     (sum, count) => sum + (count || 0),
@@ -189,6 +200,21 @@ function handleDefeat(
 
   // helper function for random check
   const chance = (prob: number) => Math.random() < prob;
+
+  // Fellowship wounding logic
+  let fellowshipWounded = {};
+  const woundedFellows: string[] = [];
+  const fellowshipChance = Math.min(fellowshipWoundedMultiplier + state.CM * 0.1, 0.9);
+
+  if (state.fellowship?.restless_knight && !state.story.seen.restlessKnightWounded && chance(fellowshipChance)) {
+    fellowshipWounded = { ...fellowshipWounded, restlessKnightWounded: true };
+    woundedFellows.push("Restless Knight");
+  }
+
+  if (state.fellowship?.elder_wizard && !state.story.seen.elderWizardWounded && chance(fellowshipChance)) {
+    fellowshipWounded = { ...fellowshipWounded, elderWizardWounded: true };
+    woundedFellows.push("Elder Wizard");
+  }
 
   // Bastion damage
   if (
@@ -227,9 +253,10 @@ function handleDefeat(
       seen: {
         ...state.story.seen,
         ...buildingDamage,
+        ...fellowshipWounded,
       },
     },
-    _logMessage: createDefeatMessage(casualties, damagedBuildings),
+    _logMessage: createDefeatMessage(casualties, damagedBuildings, woundedFellows),
   };
 }
 
@@ -329,7 +356,7 @@ function createAttackWaveEvent(
               : VICTORY_MESSAGE(params.silverReward),
           }),
           onDefeat: () => {
-            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties);
+            const defeatResult = handleDefeat(state, params.buildingDamageMultiplier, params.maxCasualties, params.fellowshipWoundedMultiplier);
             return {
               ...defeatResult,
               attackWaveTimers: {
