@@ -3,6 +3,7 @@ import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
+import { BLOODFLAME_SPHERE_UPGRADES } from "@/components/game/panels/BastionPanel";
 import {
   Dialog,
   DialogContent,
@@ -695,7 +696,7 @@ export default function CombatDialog({
                                 disabled={
                                   usedBloodflameSphere || 
                                   isProcessingRound || 
-                                  currentIntegrity <= [10, 10, 10, 20, 20, 20][bloodflameSphereLevel] || 
+                                  currentIntegrity <= BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel].healthCost || 
                                   gameState.story?.seen?.elderWizardWounded
                                 }
                                 variant="outline"

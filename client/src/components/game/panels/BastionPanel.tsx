@@ -24,7 +24,7 @@ const CRUSHING_STRIKE_UPGRADES = [
 ];
 
 // Bloodflame Sphere upgrade configurations
-const BLOODFLAME_SPHERE_UPGRADES = [
+export const BLOODFLAME_SPHERE_UPGRADES = [
   {
     level: 0,
     damage: 10,
