@@ -46,18 +46,6 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
       logger.log("[VERSION] 🔍 Running version check...");
       logger.log("[VERSION] Check time:", new Date().toISOString());
       
-      // TEST: Trigger callback every time the check runs
-      logger.log("[VERSION] 🧪 TEST MODE: Triggering callback on every check");
-      if (typeof versionCheckCallback === "function") {
-        try {
-          logger.log("[VERSION] 🔔 Calling versionCheckCallback for test...");
-          versionCheckCallback();
-          logger.log("[VERSION] ✅ Test callback executed successfully");
-        } catch (callbackError) {
-          logger.log("[VERSION] ❌ Error calling test callback:", callbackError);
-        }
-      }
-      
       // Fetch the index.html with cache-busting query param
       const cacheBuster = Date.now();
       logger.log("[VERSION] Cache buster value:", cacheBuster);
