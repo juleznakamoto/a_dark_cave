@@ -14,4 +14,4 @@
       logger.log('[VERSION] Cleaning up version check');
       stopVersionCheck();
     };
-  }, [setVersionCheckDialogOpen, versionCheckDialogOpen]);
+  }, [setVersionCheckDialogOpen]);
