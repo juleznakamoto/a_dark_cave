@@ -561,13 +561,6 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
               >
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pr-4">
                   {Object.values(SHOP_ITEMS)
-                    .filter((item) => {
-                      // Only show Cruel Mode in dev mode
-                      if (item.id === 'cruel_mode') {
-                        return import.meta.env.DEV;
-                      }
-                      return true;
-                    })
                     .map((item) => (
                     <Card key={item.id} className="flex flex-col">
                       <CardHeader className="pb-3">
