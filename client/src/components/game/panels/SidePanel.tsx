@@ -59,6 +59,12 @@ export default function SidePanel() {
     return () => clearTimeout(cleanupTimer);
   }, [resourceChanges]);
 
+  // Calculate total stats including bonuses from relics/clothing (needed early for seenStatsRef)
+  const totalLuck = getTotalLuck(gameState);
+  const totalStrength = getTotalStrength(gameState);
+  const totalKnowledge = getTotalKnowledge(gameState);
+  const totalMadness = getTotalMadness(gameState);
+
   // Track which resources have ever been seen (using a ref to persist across renders)
   const seenResourcesRef = useRef<Set<string>>(new Set());
   
@@ -556,12 +562,6 @@ export default function SidePanel() {
       testId: `population-${key}`,
       visible: true,
     }));
-
-  // Calculate total stats including bonuses from relics/clothing
-  const totalLuck = getTotalLuck(gameState);
-  const totalStrength = getTotalStrength(gameState);
-  const totalKnowledge = getTotalKnowledge(gameState);
-  const totalMadness = getTotalMadness(gameState);
 
   // Build stats items with total values
   const statsItems = [];
