@@ -621,7 +621,7 @@ export default function BastionPanel() {
               <div className="flex justify-between text-xs text-muted-foreground">
                 <span>
                   {currentBloodflameSphere.damage} damage,{" "}
-                  {currentBloodflameSphere.burnDamage} burn damage for{" "}
+                  {currentBloodflameSphere.burnDamage} burn for{" "}
                   {currentBloodflameSphere.burnRounds} round
                   {currentBloodflameSphere.burnRounds > 1 ? "s" : ""},{" "}
                   {currentBloodflameSphere.healthCost} health cost
