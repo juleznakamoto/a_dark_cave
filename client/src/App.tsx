@@ -66,10 +66,10 @@ function App() {
             previousPauseState = state.isPaused;
             if (state.isPaused) {
               console.log("[PLAYLIGHT] Game paused - showing sidebar");
-              playlightSDK.showSidebar();
+              playlightSDK.show();
             } else {
               console.log("[PLAYLIGHT] Game unpaused - hiding sidebar");
-              playlightSDK.hideSidebar();
+              playlightSDK.hide();
             }
           }
         });
