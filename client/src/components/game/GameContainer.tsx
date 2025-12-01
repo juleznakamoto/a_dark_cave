@@ -23,6 +23,7 @@ import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from '@/game/versionCheck';
 import { logger } from '@/lib/logger';
 import { toast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button'; // Import Button component
 
 export default function GameContainer() {
   const {
@@ -96,7 +97,7 @@ export default function GameContainer() {
 
     // Capture toast in closure to ensure it's available when callback fires
     const showUpdateToast = toast;
-    
+
     startVersionCheck(() => {
       logger.log('[VERSION] Version check callback fired!');
       try {
@@ -104,13 +105,14 @@ export default function GameContainer() {
         showUpdateToast({
           title: "New Version Available",
           description: "A new version of the game is available. Please refresh to update.",
-          action: {
-            label: "Refresh",
-            onClick: () => {
-              logger.log('[VERSION] User clicked refresh button');
-              window.location.reload();
-            }
-          }
+          action: (
+              <Button
+                onClick={() => window.location.reload()}
+                className="w-full bg-red-600 hover:bg-red-700 text-white"
+              >
+                Refresh
+              </Button>
+            ),
         });
         logger.log('[VERSION] ✅ Toast notification triggered successfully');
       } catch (error) {
