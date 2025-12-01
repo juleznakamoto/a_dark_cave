@@ -207,7 +207,17 @@ export async function saveGame(
     const db = await getDB();
 
     // Deep clone and sanitize the game state to remove non-serializable data
-    const sanitizedState = JSON.parse(JSON.stringify(gameState));
+    let sanitizedState: any;
+    try {
+      // Use custom replacer to convert undefined to null for safe serialization
+      sanitizedState = JSON.parse(JSON.stringify(gameState, (key, value) => {
+        return value === undefined ? null : value;
+      }));
+    } catch (parseError) {
+      logger.warn("[SAVE] ⚠️ JSON serialization failed, using gameState directly:", parseError);
+      // Fallback: use gameState directly if JSON round-trip fails
+      sanitizedState = { ...gameState };
+    }
 
     // Ensure cooldownDurations is always present
     if (!sanitizedState.cooldownDurations) {
