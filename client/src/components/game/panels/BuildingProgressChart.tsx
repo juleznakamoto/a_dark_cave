@@ -102,10 +102,10 @@ export default function BuildingProgressChart() {
       },
       {
         buildingType: "clerksHut",
-        maxCount: 2,
+        maxCount: 3,
         color: tailwindToHex("gray-400/80"),
         label: "Knowledge",
-        relatedBuildings: ["scriptorium"],
+        relatedBuildings: ["scriptorium", "inkwardenAcademy"],
       },
     ],
     // Third ring: Resource buildings and pits
