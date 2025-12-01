@@ -933,9 +933,9 @@ function handleStrangerApproach() {
   }
 
   if (currentPopulation === 0) {
-    probability = Math.max(0.8, probability);
+    probability = Math.max(0.7-0.1*state.CM, probability);
   } else if (currentPopulation <= 4) {
-    probability = Math.max(0.5, probability);
+    probability = Math.max(0.45-0.05*state.CM, probability);
   }
 
   // Check if stranger(s) approach based on probability

@@ -1,5 +1,5 @@
 import { GameState } from "@shared/schema";
-import { getTotalKnowledge, getActionBonuses } from "./effectsCalculation";
+import { getTotalKnowledge, getActionBonuses, getTotalCraftingCostReduction } from "./effectsCalculation";
 import { gameActions } from "./index";
 import { getTotalMadness } from "./effectsCalculation";
 
@@ -24,6 +24,12 @@ export const getResourceGainTooltip = (
   const gains: Array<{ resource: string; min: number; max: number }> = [];
   const costs: Array<{ resource: string; amount: number; hasEnough: boolean }> =
     [];
+
+  // Check if this is a craft action to apply crafting discount
+  const isCraftAction = actionId.startsWith("craft");
+  const craftingDiscount = isCraftAction 
+    ? getTotalCraftingCostReduction(state)
+    : 0;
 
   // Handle sacrifice actions with dynamic costs and bonuses
   const isSacrificeAction =
@@ -138,16 +144,21 @@ export const getResourceGainTooltip = (
       }
     });
 
-    // Parse costs for mine actions
+    // Parse costs for mine and craft actions
     if (action.cost) {
       Object.entries(action.cost).forEach(([key, value]) => {
         if (key.startsWith("resources.")) {
           const resource = key.split(".")[1];
           if (typeof value === "number") {
+            // Apply crafting discount if applicable
+            const finalCost = isCraftAction 
+              ? Math.ceil(value * (1 - craftingDiscount))
+              : value;
+
             const hasEnough =
               (state.resources[resource as keyof typeof state.resources] ||
-                0) >= value;
-            costs.push({ resource, amount: value, hasEnough });
+                0) >= finalCost;
+            costs.push({ resource, amount: finalCost, hasEnough });
           }
         }
       });
