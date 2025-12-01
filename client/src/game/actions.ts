@@ -89,6 +89,7 @@ import {
   handleBuildQuarry,
   handleBuildClerksHut,
   handleBuildScriptorium,
+  handleBuildInkwardenAcademy,
   handleBuildTannery,
   handleBuildMasterTannery,
   handleBuildStoneHut,
