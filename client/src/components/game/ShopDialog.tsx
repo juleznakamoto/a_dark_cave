@@ -730,7 +730,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 size="sm"
                                 variant={
-                                  isGreatFeastActive ? "outline" : "default"
+                                  isGreatFeastActive || purchase.activationsRemaining <= 0 ? "outline" : "default"
                                 }
                                 className={
                                   isGreatFeastActive
@@ -739,7 +739,7 @@ export function ShopDialog({ isOpen, onClose }: ShopDialogProps) {
                                 }
                                 button_id={`shop-activate-${purchase.itemId}`}
                               >
-                                {isGreatFeastActive ? "Active" : "Activate"}
+                                {isGreatFeastActive ? "Active" : purchase.activationsRemaining <= 0 ? "Activated" : "Activate"}
                               </Button>
                             </div>
                           );
