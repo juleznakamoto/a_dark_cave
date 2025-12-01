@@ -853,7 +853,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
         referrals: savedState.referrals || [], // Load referrals list
         social_media_rewards: savedState.social_media_rewards || defaultGameState.social_media_rewards, // Load social_media_rewards
         lastResourceSnapshotTime: savedState.lastResourceSnapshotTime !== undefined ? savedState.lastResourceSnapshotTime : 0, // Load lastResourceSnapshotTime
-        versionCheckDialogOpen: savedState.versionCheckDialogOpen !== undefined ? savedState.versionCheckDialogOpen : false, // Load version check dialog state
+        
       };
 
       set(loadedState);
@@ -905,7 +905,7 @@ export const useGameStore = create<GameStore>((set, get) => ({
     if (state.isPaused) return;
 
     // Don't check for new events if any dialog is already open
-    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen || state.versionCheckDialogOpen;
+    const isAnyDialogOpen = state.eventDialog.isOpen || state.combatDialog.isOpen;
     if (isAnyDialogOpen) return;
 
     const { newLogEntries, stateChanges, triggeredEvents } =

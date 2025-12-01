@@ -137,9 +137,14 @@ function dispatch(action: Action) {
   })
 }
 
-type Toast = Omit<ToasterToast, "id">
+type Toast = Omit<ToasterToast, "id"> & {
+  action?: {
+    label: string;
+    onClick: () => void;
+  };
+}
 
-function toast({ ...props }: Toast) {
+function toast({ action, ...props }: Toast) {
   const id = genId()
 
   const update = (props: ToasterToast) =>
@@ -149,12 +154,29 @@ function toast({ ...props }: Toast) {
     })
   const dismiss = () => dispatch({ type: "DISMISS_TOAST", toastId: id })
 
+  // Convert action to ToastActionElement if provided
+  let actionElement: ToastActionElement | undefined;
+  if (action) {
+    actionElement = React.createElement(
+      'button',
+      {
+        onClick: () => {
+          action.onClick();
+          dismiss();
+        },
+        className: 'inline-flex h-8 shrink-0 items-center justify-center rounded-md border bg-transparent px-3 text-sm font-medium ring-offset-background transition-colors hover:bg-secondary focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+      },
+      action.label
+    ) as unknown as ToastActionElement;
+  }
+
   dispatch({
     type: "ADD_TOAST",
     toast: {
       ...props,
       id,
       open: true,
+      action: actionElement,
       onOpenChange: (open) => {
         if (!open) dismiss()
       },
