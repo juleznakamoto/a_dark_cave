@@ -242,11 +242,11 @@ export default function CavePanel() {
         onMouseEnter={() => {
           const resources = getResourcesFromActionCost(actionId);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
-          setHighlightedResources(resources);
+          setHighlightedResources(new Set(resources));
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources([]);
+          setHighlightedResources(new Set());
         }}
       >
         {label}

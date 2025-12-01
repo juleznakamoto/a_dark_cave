@@ -281,6 +281,44 @@ function getAdjustedCost(
   return cost;
 }
 
+// Helper function to extract resource IDs from action cost
+export function getResourcesFromActionCost(actionId: string): string[] {
+  const action = gameActions[actionId];
+  if (!action?.cost) return [];
+  
+  const resources: string[] = [];
+  
+  // Handle different cost structures
+  if (typeof action.cost === 'object' && !Array.isArray(action.cost)) {
+    // Check if it's a tiered cost structure (has numeric keys)
+    const keys = Object.keys(action.cost);
+    const firstKey = keys[0];
+    
+    if (firstKey && !isNaN(Number(firstKey))) {
+      // Tiered cost - use level 1
+      const tier1Cost = action.cost[1] || action.cost[firstKey];
+      if (tier1Cost) {
+        Object.keys(tier1Cost).forEach(key => {
+          if (key.startsWith('resources.')) {
+            const resourceName = key.split('.')[1];
+            resources.push(resourceName);
+          }
+        });
+      }
+    } else {
+      // Simple cost structure
+      Object.keys(action.cost).forEach(key => {
+        if (key.startsWith('resources.')) {
+          const resourceName = key.split('.')[1];
+          resources.push(resourceName);
+        }
+      });
+    }
+  }
+  
+  return resources;
+}
+
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];
@@ -1062,46 +1100,6 @@ export function getActionCostBreakdown(
   });
 
   return breakdown;
-}
-
-// Extract resource keys from action cost
-export function getResourcesFromActionCost(actionId: string): string[] {
-  const state = useGameStore.getState();
-  const action = gameActions[actionId];
-  
-  if (!action?.cost) return [];
-
-  // Get the current level for this action
-  let level = 1;
-  
-  // Handle multi-level building actions
-  if (actionId === 'buildWatchtower') {
-    level = (state.buildings.watchtower || 0) + 1;
-  } else if (actionId === 'buildPalisades') {
-    level = (state.buildings.palisades || 0) + 1;
-  } else if (actionId === 'buildWoodenHut') {
-    level = (state.buildings.woodenHut || 0) + 1;
-  } else if (actionId === 'buildStoneHut') {
-    level = (state.buildings.stoneHut || 0) + 1;
-  } else if (actionId === 'buildLonghouse') {
-    level = (state.buildings.longhouse || 0) + 1;
-  }
-
-  const levelCosts = action.cost[level];
-  if (!levelCosts) return [];
-
-  const resources: string[] = [];
-  
-  Object.keys(levelCosts).forEach((costKey) => {
-    if (costKey.startsWith('resources.')) {
-      const resourceName = costKey.split('.')[1];
-      resources.push(resourceName);
-    }
-  });
-
-  logger.log(`[HIGHLIGHT] getResourcesFromActionCost for ${actionId} level ${level}:`, resources);
-  
-  return resources;
 }
 
 // Combine all event types
