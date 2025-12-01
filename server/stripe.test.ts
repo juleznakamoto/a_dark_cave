@@ -128,6 +128,29 @@ describe('Stripe Shop Integration', () => {
         },
       });
 
+
+  describe('Purchase Restrictions', () => {
+    it('should track which items can be purchased multiple times', () => {
+      // Verify shop items configuration
+      expect(SHOP_ITEMS.gold_100_free.canPurchaseMultipleTimes).toBe(false);
+      expect(SHOP_ITEMS.cruel_mode.canPurchaseMultipleTimes).toBe(false);
+      expect(SHOP_ITEMS.gold_250.canPurchaseMultipleTimes).toBe(true);
+      expect(SHOP_ITEMS.great_feast_1.canPurchaseMultipleTimes).toBe(true);
+    });
+
+    it('should allow payment intent creation for any item (enforcement happens at purchase verification)', async () => {
+      mockCreateFromModule.mockResolvedValue({
+        client_secret: 'test_secret',
+      });
+
+      // Should allow creating payment intent even for non-repeatable items
+      // (the enforcement of "already purchased" should happen client-side and during purchase verification)
+      const result = await createPaymentIntent('cruel_mode');
+      expect(result.clientSecret).toBe('test_secret');
+    });
+  });
+
+
       const result = await verifyPayment('test_payment_intent');
 
       expect(result.success).toBe(false);

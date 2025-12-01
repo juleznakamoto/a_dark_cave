@@ -197,6 +197,71 @@ describe('ShopDialog', () => {
               { id: 1, item_id: 'great_feast_1' },
               { id: 2, item_id: 'great_feast_1' },
             ],
+
+
+    it('should prevent purchasing cruel_mode twice', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      // Mock existing purchase of cruel_mode
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [{ id: 1, item_id: 'cruel_mode' }],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        // In dev mode, cruel_mode should be visible
+        if (import.meta.env.DEV) {
+          const purchaseButton = screen.getByRole('button', { name: /already purchased/i });
+          expect(purchaseButton).toBeDisabled();
+        }
+      });
+    });
+
+    it('should allow first-time purchase of cruel_mode', async () => {
+      const user = userEvent.setup();
+      const onClose = vi.fn();
+
+      // Mock no existing purchases
+      mockSupabaseClient.from = vi.fn(() => ({
+        select: vi.fn(() => ({
+          eq: vi.fn(() => ({
+            data: [],
+            error: null,
+          })),
+        })),
+        insert: vi.fn(() => ({
+          data: null,
+          error: null,
+        })),
+      }));
+
+      global.fetch = vi.fn(() =>
+        Promise.resolve({
+          json: () => Promise.resolve({ clientSecret: 'test_secret' }),
+        })
+      ) as any;
+
+      render(<ShopDialog isOpen={true} onClose={onClose} />);
+
+      await waitFor(() => {
+        if (import.meta.env.DEV) {
+          const purchaseButton = screen.getByRole('button', { name: /purchase/i });
+          expect(purchaseButton).not.toBeDisabled();
+        }
+      });
+    });
+
             error: null,
           })),
         })),
