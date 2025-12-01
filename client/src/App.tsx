@@ -60,10 +60,11 @@ function App() {
         const { useGameStore } = await import('./game/state');
         
         // Subscribe to pause state to control sidebar visibility
-        useGameStore.subscribe(
-          (state) => state.isPaused,
-          (isPaused) => {
-            if (isPaused) {
+        let previousPauseState = useGameStore.getState().isPaused;
+        useGameStore.subscribe((state) => {
+          if (state.isPaused !== previousPauseState) {
+            previousPauseState = state.isPaused;
+            if (state.isPaused) {
               console.log("[PLAYLIGHT] Game paused - showing sidebar");
               playlightSDK.showSidebar();
             } else {
@@ -71,7 +72,7 @@ function App() {
               playlightSDK.hideSidebar();
             }
           }
-        );
+        });
         
         // Set up event listeners for game pause/unpause when sidebar opens
         playlightSDK.onEvent('discoveryOpen', () => {
