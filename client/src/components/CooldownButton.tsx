@@ -50,6 +50,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
+  const lastMouseEventRef = useRef<{ type: string; timestamp: number } | null>(null);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -181,8 +182,24 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
+      onMouseEnter={(e) => {
+        // Debounce: only call if at least 50ms since last enter event
+        const now = Date.now();
+        if (lastMouseEventRef.current?.type === 'enter' && now - lastMouseEventRef.current.timestamp < 50) {
+          return;
+        }
+        lastMouseEventRef.current = { type: 'enter', timestamp: now };
+        props.onMouseEnter?.();
+      }}
+      onMouseLeave={(e) => {
+        // Debounce: only call if at least 50ms since last leave event
+        const now = Date.now();
+        if (lastMouseEventRef.current?.type === 'leave' && now - lastMouseEventRef.current.timestamp < 50) {
+          return;
+        }
+        lastMouseEventRef.current = { type: 'leave', timestamp: now };
+        props.onMouseLeave?.();
+      }}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
