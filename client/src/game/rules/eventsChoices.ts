@@ -1739,7 +1739,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 90, // 1.5 hours
     title: "Frostfall",
     message:
-      "Dark clouds gather overhead as icy winds begin to howl through the village. The temperature drops sharply, and snowflakes swirl in the freezing air. The elders warn that a terrible blizzard approaches—one that will cripple all production unless preparations are made.",
+      "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -1748,20 +1748,20 @@ export const choiceEvents: Record<string, GameEvent> = {
         id: "prepareFrostfall",
         label: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
-          const woodCost = 500 * Math.pow(2, timesOccurred);
-          const foodCost = 500 * Math.pow(2, timesOccurred);
+          const woodCost = 1000 * Math.pow(2, timesOccurred);
+          const foodCost = 1000 * Math.pow(2, timesOccurred);
           return `Prepare (${woodCost} wood, ${foodCost} food)`;
         },
         cost: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
-          const woodCost = 500 * Math.pow(2, timesOccurred);
-          const foodCost = 500 * Math.pow(2, timesOccurred);
+          const woodCost = 1000 * Math.pow(2, timesOccurred);
+          const foodCost = 1000 * Math.pow(2, timesOccurred);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
-          const woodCost = 500 * Math.pow(2, timesOccurred);
-          const foodCost = 500 * Math.pow(2, timesOccurred);
+          const woodCost = 1000 * Math.pow(2, timesOccurred);
+          const foodCost = 1000 * Math.pow(2, timesOccurred);
 
           if (state.resources.wood < woodCost || state.resources.food < foodCost) {
             return {
@@ -1783,7 +1783,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "Your villagers work tirelessly to stockpile firewood and food, insulating their homes against the coming storm. When the blizzard arrives, the village weathers it safely.",
+              "Thanks to the stockpiles of firewood and food, the villagers survive the frostfall unharmed.",
           };
         },
       },
@@ -1807,7 +1807,7 @@ export const choiceEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "You choose not to prepare for the storm. The blizzard hits with brutal force, freezing winds howl through the village, and thick snow blankets everything. All production slows to a crawl as villagers struggle to survive the cold.",
+              "The frostfall hits with brutal force. All production slows to a crawl as villagers struggle to survive the cold.",
           };
         },
       },
