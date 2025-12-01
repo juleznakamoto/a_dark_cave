@@ -355,6 +355,8 @@ export function executeGameAction(
       return handleBuildClerksHut(state, result);
     case "buildScriptorium":
       return handleBuildScriptorium(state, result);
+    case "buildInkwardenAcademy":
+      return handleBuildInkwardenAcademy(state, result);
     case "buildTannery":
       return handleBuildTannery(state, result);
     case "buildMasterTannery":

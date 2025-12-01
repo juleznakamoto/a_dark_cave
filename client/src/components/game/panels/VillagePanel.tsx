@@ -103,6 +103,7 @@ export default function VillagePanel() {
         { id: "buildQuarry", label: "Quarry" },
         { id: "buildClerksHut", label: "Clerk's Hut" },
         { id: "buildScriptorium", label: "Scriptorium" },
+        { id: "buildInkwardenAcademy", label: "Inkwarden Academy" },
         { id: "buildTannery", label: "Tannery" },
         { id: "buildMasterTannery", label: "Master Tannery" },
         { id: "buildAlchemistHall", label: "Alchemist's Hall" },
@@ -239,13 +240,18 @@ export default function VillagePanel() {
         className="hover:bg-transparent hover:text-foreground"
         tooltip={tooltipContent}
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId, state);
-          logger.log(`[HIGHLIGHT] VillagePanel mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-          setHighlightedResources(resources);
+          // Only highlight resources if Inkwarden Academy is built
+          if (buildings.inkwardenAcademy > 0) {
+            const resources = getResourcesFromActionCost(actionId, state);
+            logger.log(`[HIGHLIGHT] VillagePanel mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
+            setHighlightedResources(resources);
+          }
         }}
         onMouseLeave={() => {
-          logger.log(`[HIGHLIGHT] VillagePanel mouse leave on ${actionId}`);
-          setHighlightedResources([]);
+          if (buildings.inkwardenAcademy > 0) {
+            logger.log(`[HIGHLIGHT] VillagePanel mouse leave on ${actionId}`);
+            setHighlightedResources([]);
+          }
         }}
         style={{ pointerEvents: 'auto' }}
       >

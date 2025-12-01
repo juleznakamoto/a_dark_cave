@@ -565,6 +565,38 @@ export const villageBuildActions: Record<string, Action> = {
     cooldown: 40,
   },
 
+  buildInkwardenAcademy: {
+    id: "buildInkwardenAcademy",
+    label: "Inkwarden Academy",
+    description: "Grand academy of scholars providing supreme knowledge and resource tracking",
+    tooltipEffects: ["+10 Knowledge", "Greatly improved resource tracking"],
+    building: true,
+    show_when: {
+      1: {
+        "buildings.stoneHut": 3,
+        "buildings.scriptorium": 1,
+        "buildings.inkwardenAcademy": 0,
+      },
+    },
+    cost: {
+      1: {
+        "resources.stone": 10000,
+        "resources.steel": 2500,
+        "resources.adamant": 2500,
+      },
+    },
+    effects: {
+      1: {
+        "buildings.inkwardenAcademy": 1,
+        "story.seen.hasInkwardenAcademy": true,
+      },
+    },
+    statsEffects: {
+      knowledge: 10,
+    },
+    cooldown: 60,
+  },
+
   buildTannery: {
     id: "buildTannery",
     label: "Tannery",
@@ -1839,6 +1871,31 @@ export function handleBuildScriptorium(
   }
 
   return scriptoriumResult;
+}
+
+export function handleBuildInkwardenAcademy(
+  state: GameState,
+  result: ActionResult,
+): ActionResult {
+  const inkwardenAcademyResult = handleBuildingConstruction(
+    state,
+    result,
+    "buildInkwardenAcademy",
+    "inkwardenAcademy",
+  );
+
+  // Add Inkwarden Academy completion message
+  if (state.buildings.inkwardenAcademy === 0) {
+    inkwardenAcademyResult.logEntries!.push({
+      id: `inkwarden-academy-built-${Date.now()}`,
+      message:
+        "The Inkwarden Academy rises as a monument to knowledge. Its halls echo with the wisdom of ages, and every resource is now tracked with unparalleled precision.",
+      timestamp: Date.now(),
+      type: "system",
+    });
+  }
+
+  return inkwardenAcademyResult;
 }
 
 export function handleBuildTannery(

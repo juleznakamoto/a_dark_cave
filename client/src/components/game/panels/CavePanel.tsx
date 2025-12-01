@@ -206,13 +206,17 @@ export default function CavePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
           onMouseEnter={() => {
-            const resources = getResourcesFromActionCost(actionId, state);
-            logger.log(`[HIGHLIGHT] CavePanel mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-            setHighlightedResources(resources);
+            if (state.buildings.inkwardenAcademy > 0) {
+              const resources = getResourcesFromActionCost(actionId, state);
+              logger.log(`[HIGHLIGHT] CavePanel mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
+              setHighlightedResources(resources);
+            }
           }}
           onMouseLeave={() => {
-            logger.log(`[HIGHLIGHT] CavePanel mouse leave on ${actionId}`);
-            setHighlightedResources([]);
+            if (state.buildings.inkwardenAcademy > 0) {
+              logger.log(`[HIGHLIGHT] CavePanel mouse leave on ${actionId}`);
+              setHighlightedResources([]);
+            }
           }}
           style={{ pointerEvents: 'auto' }}
         >
@@ -241,13 +245,17 @@ export default function CavePanel() {
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId, state);
-          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-          setHighlightedResources(new Set(resources));
+          if (state.buildings.inkwardenAcademy > 0) {
+            const resources = getResourcesFromActionCost(actionId, state);
+            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
+            setHighlightedResources(new Set(resources));
+          }
         }}
         onMouseLeave={() => {
-          logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources(new Set());
+          if (state.buildings.inkwardenAcademy > 0) {
+            logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+            setHighlightedResources(new Set());
+          }
         }}
         style={{ pointerEvents: 'auto' }}
       >

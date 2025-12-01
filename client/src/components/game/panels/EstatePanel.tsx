@@ -120,7 +120,7 @@ export default function EstatePanel() {
 
       const nextUpgrade = upgrades[currentLevel + 1];
       const currency = nextUpgrade.currency as 'gold' | 'silver';
-      
+
       if (state.resources[currency] < nextUpgrade.cost) return state;
 
       return {

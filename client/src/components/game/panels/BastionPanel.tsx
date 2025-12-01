@@ -299,6 +299,29 @@ export default function BastionPanel() {
     }
   };
 
+  const getResourcesFromActionCost = (actionId: string, state: any) => {
+    const action = gameActions[actionId];
+    const cost = action?.cost?.[1]; // Assuming level 1 cost for highlighting
+    if (!cost) return [];
+
+    const buildingCostReduction = getTotalBuildingCostReduction(state);
+
+    const resources: string[] = [];
+    for (const [path, amount] of Object.entries(cost)) {
+      if (path.startsWith("resources.")) {
+        const resource = path.split(".")[1];
+        // Apply building cost reduction to highlight cost (as it would be paid)
+        const effectiveCost = Math.floor(
+          amount * (0.25 + state.CM * 0.05) * (1 - buildingCostReduction),
+        );
+        if (effectiveCost > 0) {
+          resources.push(resource);
+        }
+      }
+    }
+    return resources;
+  };
+
   return (
     <div className="space-y-4 mt-2 pr-4 w-64">
       {/* Attack Waves Chart */}

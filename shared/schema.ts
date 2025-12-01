@@ -213,6 +213,7 @@ export const gameStateSchema = z.object({
       masterTannery: z.number().default(0),
       clerksHut: z.number().default(0),
       scriptorium: z.number().default(0),
+      inkwardenAcademy: z.number().default(0),
       tradePost: z.number().default(0),
       grandBazaar: z.number().default(0),
       merchantsGuild: z.number().default(0),

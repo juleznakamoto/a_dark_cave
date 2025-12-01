@@ -199,7 +199,7 @@ export default function ForestPanel() {
                 )}
                 <div className="flex items-center gap-1">
                   <span>{successPercentage}</span>
-                  {action.success_chance && action.relevant_stats && (
+                  {action.relevant_stats && (
                     <div className="flex gap-1">
                       {action.relevant_stats.map((stat) => {
                         if (stat === "strength") {
@@ -233,13 +233,15 @@ export default function ForestPanel() {
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
-            const resources = getResourcesFromActionCost(actionId, state);
-            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-            setHighlightedResources(resources);
+            if (state.buildings.inkwardenAcademy > 0) {
+              const resources = getResourcesFromActionCost(actionId, state);
+              setHighlightedResources(resources);
+            }
           }}
           onMouseLeave={() => {
-            logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-            setHighlightedResources([]);
+            if (state.buildings.inkwardenAcademy > 0) {
+              setHighlightedResources([]);
+            }
           }}
           style={{ pointerEvents: 'auto' }}
         >
@@ -269,13 +271,15 @@ export default function ForestPanel() {
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId, state);
-          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-          setHighlightedResources(new Set(resources));
+          if (state.buildings.inkwardenAcademy > 0) {
+            const resources = getResourcesFromActionCost(actionId, state);
+            setHighlightedResources(new Set(resources));
+          }
         }}
         onMouseLeave={() => {
-          logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources(new Set());
+          if (state.buildings.inkwardenAcademy > 0) {
+            setHighlightedResources(new Set());
+          }
         }}
         style={{ pointerEvents: 'auto' }}
       >

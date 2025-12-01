@@ -7,7 +7,7 @@ import { caveCraftResources } from "./caveCraftResources";
 import { caveCraftTools } from "./caveCraftTools";
 import { caveCraftWeapons } from "./caveCraftWeapons";
 import { caveMineActions } from "./caveMineActions";
-import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry } from "./villageBuildActions";
+import { villageBuildActions, handleBuildBlackMonolith, handleBuildPrimeFoundry, handleBuildMasterworkFoundry, handleBuildScriptorium, handleBuildInkwardenAcademy, handleBuildTannery } from "./villageBuildActions";
 import { forestScoutActions } from "./forestScoutActions";
 import {
   forestSacrificeActions,
@@ -64,6 +64,7 @@ const actionHandlers: Record<string, (state: GameState, actionId: string) => Par
   animals: handleAnimals,
   boneTotems: handleBoneTotems,
   leatherTotems: handleLeatherTotems,
+  buildInkwardenAcademy: handleBuildInkwardenAcademy, // Added Inkwarden Academy handler
 };
 
 
@@ -115,6 +116,8 @@ const getNextBuildingLevel = (actionId: string, state: GameState): number => {
     buildPalisades: "palisades",
     buildFortifiedMoat: "fortifiedMoat", // Added Fortified Moat
     buildBlackMonolith: "blackMonolith", // Added Black Monolith
+    buildScriptorium: "scriptorium", // Added Scriptorium
+    buildInkwardenAcademy: "inkwardenAcademy", // Added Inkwarden Academy
   };
 
   const buildingKey = buildingMap[actionId];
@@ -285,22 +288,22 @@ function getAdjustedCost(
 export function getResourcesFromActionCost(actionId: string, state: GameState): string[] {
   const action = gameActions[actionId];
   if (!action?.cost) return [];
-  
+
   const resources: string[] = [];
-  
+
   // Handle different cost structures
   if (typeof action.cost === 'object' && !Array.isArray(action.cost)) {
     // Check if it's a tiered cost structure (has numeric keys)
     const keys = Object.keys(action.cost);
     const firstKey = keys[0];
-    
+
     if (firstKey && !isNaN(Number(firstKey))) {
       // Tiered cost - for building actions, get the next building level
       let level = 1;
       if (action.building) {
         level = getNextBuildingLevel(actionId, state);
       }
-      
+
       const levelCost = action.cost[level];
       if (levelCost) {
         Object.keys(levelCost).forEach(key => {
@@ -320,7 +323,7 @@ export function getResourcesFromActionCost(actionId: string, state: GameState): 
       });
     }
   }
-  
+
   return resources;
 }
 
