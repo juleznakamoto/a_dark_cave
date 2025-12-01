@@ -147,7 +147,9 @@ function createDefeatMessage(
 ): string {
   let msg = "The creatures overwhelm your defenses. ";
 
-  if (casualties === 1) {
+  if (casualties === 0) {
+    msg += "The defenses crumble under the assault before the remaining creatures retreat to the depths.";
+  } else if (casualties === 1) {
     msg +=
       "One villager falls before the remaining creatures retreat to the depths.";
   } else {
