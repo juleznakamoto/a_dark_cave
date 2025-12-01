@@ -115,7 +115,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           }
 
           if (foodLoss > 0) {
-            message += ` The wolves also devour ${foodLoss} units of food from your stores.`;
+            message += ` The wolves also devour ${foodLoss} food from your stores.`;
           }
 
           if (hutDestroyed) {
@@ -228,7 +228,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
             message += `${villagerDeaths} villagers are dragged from their huts, their screams echoing through the night.`;
           }
 
-          message += ` The wolves ransack your food stores, consuming ${foodLoss} units.`;
+          message += ` The wolves ransack your supplies, consuming ${foodLoss} food.`;
 
           return {
             ...deathResult,
