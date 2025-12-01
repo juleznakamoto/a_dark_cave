@@ -2,18 +2,20 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createPaymentIntent, verifyPayment } from './stripe';
 
-// Mock Stripe with standard pattern
+// Mock Stripe with proper class constructor pattern
 const mockCreate = vi.fn();
 const mockRetrieve = vi.fn();
 
 vi.mock('stripe', () => {
+  const MockStripe = vi.fn().mockImplementation(() => ({
+    paymentIntents: {
+      create: mockCreate,
+      retrieve: mockRetrieve,
+    },
+  }));
+  
   return {
-    default: vi.fn().mockImplementation(() => ({
-      paymentIntents: {
-        create: mockCreate,
-        retrieve: mockRetrieve,
-      },
-    })),
+    default: MockStripe,
   };
 });
 
