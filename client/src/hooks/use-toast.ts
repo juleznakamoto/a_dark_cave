@@ -72,17 +72,12 @@ const addToRemoveQueue = (toastId: string) => {
 }
 
 export const reducer = (state: State, action: Action): State => {
-  console.log('[TOAST REDUCER] Action received:', action.type);
-  console.log('[TOAST REDUCER] Current state:', state);
-  
   switch (action.type) {
     case "ADD_TOAST":
-      console.log('[TOAST REDUCER] Adding toast:', action.toast);
       const newState = {
         ...state,
         toasts: [action.toast, ...state.toasts].slice(0, TOAST_LIMIT),
       };
-      console.log('[TOAST REDUCER] New state after ADD_TOAST:', newState);
       return newState;
 
     case "UPDATE_TOAST":
@@ -137,21 +132,11 @@ const listeners: Array<(state: State) => void> = []
 let memoryState: State = { toasts: [] }
 
 function dispatch(action: Action) {
-  console.log('[TOAST DISPATCH] Dispatching action:', action.type);
-  console.log('[TOAST DISPATCH] Before reducer - memoryState:', memoryState);
-  console.log('[TOAST DISPATCH] Listeners count:', listeners.length);
-  
   memoryState = reducer(memoryState, action)
-  
-  console.log('[TOAST DISPATCH] After reducer - memoryState:', memoryState);
-  console.log('[TOAST DISPATCH] Notifying', listeners.length, 'listeners');
-  
-  listeners.forEach((listener, index) => {
-    console.log('[TOAST DISPATCH] Calling listener', index);
+
+  listeners.forEach((listener) => {
     listener(memoryState)
   })
-  
-  console.log('[TOAST DISPATCH] All listeners notified');
 }
 
 type Toast = Omit<ToasterToast, "id"> & {
@@ -162,13 +147,7 @@ type Toast = Omit<ToasterToast, "id"> & {
 }
 
 function toast({ action, ...props }: Toast) {
-  console.log('[TOAST] ========================================');
-  console.log('[TOAST] toast() function called');
-  console.log('[TOAST] Props:', props);
-  console.log('[TOAST] Action:', action);
-  
   const id = genId()
-  console.log('[TOAST] Generated ID:', id);
 
   const update = (props: ToasterToast) =>
     dispatch({
@@ -176,19 +155,16 @@ function toast({ action, ...props }: Toast) {
       toast: { ...props, id },
     })
   const dismiss = () => {
-    console.log('[TOAST] Dismiss called for toast:', id);
     dispatch({ type: "DISMISS_TOAST", toastId: id });
   }
 
   // Convert action to ToastActionElement if provided
   let actionElement: ToastActionElement | undefined;
   if (action) {
-    console.log('[TOAST] Creating action element for action:', action);
     actionElement = React.createElement(
       'button',
       {
         onClick: () => {
-          console.log('[TOAST] Action button clicked');
           action.onClick();
           dismiss();
         },
@@ -196,7 +172,6 @@ function toast({ action, ...props }: Toast) {
       },
       action.label
     ) as unknown as ToastActionElement;
-    console.log('[TOAST] Action element created:', actionElement);
   }
 
   const toastConfig = {
@@ -205,23 +180,14 @@ function toast({ action, ...props }: Toast) {
     open: true,
     action: actionElement,
     onOpenChange: (open: boolean) => {
-      console.log('[TOAST] onOpenChange called, open:', open);
       if (!open) dismiss()
     },
   };
-  
-  console.log('[TOAST] Dispatching ADD_TOAST with config:', toastConfig);
-  console.log('[TOAST] Current toasts before dispatch:', memoryState.toasts.length);
 
   dispatch({
     type: "ADD_TOAST",
     toast: toastConfig,
   })
-  
-  console.log('[TOAST] After dispatch, toasts count:', memoryState.toasts.length);
-  console.log('[TOAST] Current toasts:', memoryState.toasts);
-  console.log('[TOAST] Listeners count:', listeners.length);
-  console.log('[TOAST] ========================================');
 
   return {
     id: id,
@@ -234,23 +200,15 @@ function useToast() {
   const [state, setState] = React.useState<State>(memoryState)
 
   React.useEffect(() => {
-    console.log('[USE_TOAST] useToast hook mounted');
-    console.log('[USE_TOAST] Initial state:', state);
-    console.log('[USE_TOAST] Adding listener, current count:', listeners.length);
-    
     listeners.push(setState)
-    
-    console.log('[USE_TOAST] Listener added, new count:', listeners.length);
-    
+
     return () => {
-      console.log('[USE_TOAST] useToast hook unmounting');
       const index = listeners.indexOf(setState)
       if (index > -1) {
         listeners.splice(index, 1)
-        console.log('[USE_TOAST] Listener removed, remaining count:', listeners.length);
       }
     }
-  }, [state])
+  }, [])
 
   return {
     ...state,

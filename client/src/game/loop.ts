@@ -42,11 +42,9 @@ let lastGameLoadTime = 0; // Track when game was last loaded
 
 export function startGameLoop() {
   if (gameLoopId) {
-    logger.log("[LOOP] ⚠️ Game loop already running, skipping start");
     return; // Already running
   }
 
-  logger.log("[LOOP] 🚀 Starting game loop");
   useGameStore.setState({ isGameLoopActive: true });
   const now = performance.now();
   lastFrameTime = now;
@@ -55,18 +53,11 @@ export function startGameLoop() {
   tickAccumulator = 0;
   if (gameStartTime === 0) {
     gameStartTime = now; // Set game start time only once
-    logger.log("[LOOP] 🕐 Game start time initialized:", gameStartTime);
-  } else {
-    logger.log("[LOOP] 🕐 Game start time already set:", gameStartTime);
   }
 
   // Initialize inactivity tracking
   lastUserActivity = Date.now();
   isInactive = false;
-  logger.log(
-    "[INACTIVITY] Initialized activity tracking at",
-    new Date(lastUserActivity).toISOString(),
-  );
 
   // Set up activity listeners
   const activityEvents = [
@@ -77,19 +68,7 @@ export function startGameLoop() {
     "mousemove",
   ];
   const handleActivity = (event: Event) => {
-    const previousActivity = lastUserActivity;
     lastUserActivity = Date.now();
-    if (Date.now() - previousActivity > 60000) {
-      // Log only if more than 1 minute since last activity
-      logger.log(
-        "[INACTIVITY] User activity detected:",
-        {
-          type: event.type,
-          time: new Date(lastUserActivity).toISOString(),
-          timeSinceLastActivity: Math.round((Date.now() - previousActivity) / 1000) + 's'
-        }
-      );
-    }
   };
 
   activityEvents.forEach((event) => {
@@ -99,7 +78,6 @@ export function startGameLoop() {
   // Also track page visibility changes
   const handleVisibilityChange = () => {
     if (!document.hidden) {
-      logger.log("[INACTIVITY] Page became visible, resetting activity timer");
       lastUserActivity = Date.now();
     }
   };
@@ -115,21 +93,7 @@ export function startGameLoop() {
 
     // Don't trigger inactivity if the page is currently visible and active
     if (timeSinceActivity > INACTIVITY_TIMEOUT && !isInactive && !document.hidden) {
-      logger.log("[INACTIVITY] ⚠️ INACTIVITY DETECTED!", {
-        timeSinceActivity: Math.round(timeSinceActivity / 1000) + "s",
-        lastActivity: new Date(lastUserActivity).toISOString(),
-        threshold: Math.round(INACTIVITY_TIMEOUT / 1000) + "s",
-        pageHidden: document.hidden,
-      });
       handleInactivity();
-    } else if (timeSinceActivity > 60000 && timeSinceActivity % 30000 < 1000) {
-      // Log every 30 seconds after 1 minute of inactivity (but only once per check)
-      logger.log(
-        "[INACTIVITY] User inactive for",
-        Math.round(timeSinceActivity / 1000) + "s",
-        "| Page visible:",
-        !document.hidden
-      );
     }
   }, 30000); // Check every 30 seconds
 
@@ -147,8 +111,6 @@ export function startGameLoop() {
     }
 
     try {
-      logger.log('[SESSION] 🔍 Forcing session refresh to validate with server...');
-
       // Use refreshSession() to FORCE a server-side token exchange
       // This is the ONLY way to detect if the session was revoked by single-session enforcement
       const { getSupabaseClient } = await import('@/lib/supabase');
@@ -157,20 +119,11 @@ export function startGameLoop() {
 
       // If there's an error or no session, the token was invalidated server-side
       if (error || !session) {
-        logger.log('[SESSION] 🚪 Session invalidated (logged in elsewhere) - stopping game loop', {
-          hasError: !!error,
-          errorMessage: error?.message,
-          errorCode: error?.code,
-          hasSession: !!session,
-        });
-
         // Delete local save when session is invalidated
         try {
           const { deleteSave } = await import('./save');
           await deleteSave();
-          logger.log('[SESSION] 🗑️ Local save deleted after session invalidation');
         } catch (deleteError) {
-          logger.error('[SESSION] ⚠️ Failed to delete local save:', deleteError);
         }
 
         stopGameLoop();
@@ -178,15 +131,8 @@ export function startGameLoop() {
           inactivityDialogOpen: true,
           inactivityReason: 'multitab',
         });
-      } else {
-        logger.log('[SESSION] ✅ Session refreshed and valid', {
-          userId: session.user.id.substring(0, 8) + '...',
-          email: session.user.email,
-          expiresAt: new Date(session.expires_at! * 1000).toISOString(),
-        });
       }
     } catch (error) {
-      logger.error('[SESSION] ❌ Error refreshing session:', error);
     }
   };
   sessionCheckInterval = setInterval(checkSession, SESSION_CHECK_INTERVAL);
@@ -225,27 +171,9 @@ export function startGameLoop() {
       state.idleModeDialog.isOpen;
     const isPaused = state.isPaused || isDialogOpen;
 
-    // Log pause state every 5 seconds
-    const timeSinceStart = timestamp - gameStartTime;
-    if (Math.floor(timeSinceStart / 5000) !== Math.floor((timeSinceStart - deltaTime) / 5000)) {
-      logger.log("[LOOP] 🔄 Loop running:", {
-        isPaused,
-        isDialogOpen,
-        manuallyPaused: state.isPaused,
-        eventDialogOpen: state.eventDialog.isOpen,
-        combatDialogOpen: state.combatDialog.isOpen,
-        authDialogOpen: state.authDialogOpen,
-        shopDialogOpen: state.shopDialogOpen,
-        idleModeDialogOpen: state.idleModeDialog.isOpen,
-        timeSinceStart: Math.round(timeSinceStart / 1000) + 's'
-      });
-    }
-
     if (isPaused) {
       // Stop all sounds when paused (unless already stopped by mute)
       if (!state.isPausedPreviously && !state.isMuted) {
-        // Check if this is the first frame of pause
-        logger.log("[LOOP] ⏸️ Pausing game loop (dialog open or manually paused)");
         audioManager.stopAllSounds();
         useGameStore.setState({ isPausedPreviously: true });
       }
@@ -262,7 +190,6 @@ export function startGameLoop() {
 
     // Resume sounds when exiting pause state
     if (state.isPausedPreviously) {
-      logger.log("[LOOP] ▶️ Resuming game loop from pause");
       audioManager.resumeSounds();
       useGameStore.setState({ isPausedPreviously: false });
     }
@@ -283,19 +210,6 @@ export function startGameLoop() {
         tickAccumulator -= TICK_INTERVAL;
         processTick();
         ticksProcessed++;
-      }
-
-      // Log tick processing every 5 seconds
-      if (Math.floor(timeSinceStart / 5000) !== Math.floor((timeSinceStart - deltaTime) / 5000)) {
-        logger.log("[LOOP] 🔄 Tick processing:", {
-          ticksProcessed,
-          tickAccumulator: Math.round(tickAccumulator),
-          deltaTime: Math.round(deltaTime),
-          currentCooldowns: Object.entries(state.cooldowns || {}).map(([key, value]) => ({
-            action: key,
-            remaining: value.toFixed(2) + 's'
-          }))
-        });
       }
 
       // Auto-save logic (skip if inactive or recently loaded)
@@ -385,9 +299,6 @@ export function startGameLoop() {
         // Skip production if idle mode is active
         const currentState = useGameStore.getState();
         if (!currentState.idleModeState?.isActive) {
-          logger.log(
-            "[GAME LOOP] Normal production running - idle mode is NOT active",
-          );
           handleGathererProduction();
           handleHunterProduction();
           handleMinerProduction();
@@ -399,8 +310,6 @@ export function startGameLoop() {
 
           // Check for events (including attack waves)
           currentState.checkEvents();
-        } else {
-          logger.log("[GAME LOOP] Production SKIPPED - idle mode is active");
         }
       } else {
         // Update loop progress (0-100 based on production cycle)
@@ -413,43 +322,28 @@ export function startGameLoop() {
     gameLoopId = requestAnimationFrame(tick);
   }
 
-  logger.log("[LOOP] 🎬 First animation frame requested, loop ID:", gameLoopId);
   gameLoopId = requestAnimationFrame(tick);
-  logger.log("[LOOP] ✅ Game loop initialized successfully");
 }
 
 function handleInactivity() {
-  logger.log("[INACTIVITY] 🛑 Stopping game due to inactivity");
-  logger.log("[INACTIVITY] Current loop state:", {
-    gameLoopId,
-    isInactive,
-    lastUserActivity: new Date(lastUserActivity).toISOString(),
-    timeSinceActivity: Math.round((Date.now() - lastUserActivity) / 1000) + 's'
-  });
   isInactive = true;
 
   // Stop the game loop
   if (gameLoopId) {
-    logger.log("[INACTIVITY] Canceling animation frame:", gameLoopId);
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    logger.log("[INACTIVITY] Game loop stopped");
-  } else {
-    logger.log("[INACTIVITY] ⚠️ No game loop to stop (already stopped)");
   }
 
   // Stop inactivity checker
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    logger.log("[INACTIVITY] Inactivity checker stopped");
   }
 
   // Stop session checker
   if (sessionCheckInterval) {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
-    logger.log("[INACTIVITY] Session checker stopped");
   }
 
   // Stop version check
@@ -461,29 +355,16 @@ function handleInactivity() {
     inactivityDialogOpen: true,
     inactivityReason: "timeout",
   });
-  logger.log("[INACTIVITY] Inactivity dialog opened");
 }
 
 export function setLastGameLoadTime(time: number) {
   lastGameLoadTime = time;
-  logger.log("[LOOP] 🔄 Game loaded - skipping auto-save for 30 seconds");
 }
 
 export function stopGameLoop() {
-  logger.log("[LOOP] 🛑 Stopping game loop");
-  logger.log("[LOOP] Current state:", {
-    gameLoopId,
-    isInactive,
-    isGameLoopActive: useGameStore.getState().isGameLoopActive
-  });
-
   if (gameLoopId) {
-    logger.log("[LOOP] Canceling animation frame:", gameLoopId);
     cancelAnimationFrame(gameLoopId);
     gameLoopId = null;
-    logger.log("[LOOP] ✅ Game loop stopped successfully");
-  } else {
-    logger.log("[LOOP] ⚠️ No game loop to stop (already stopped)");
   }
   if (loopProgressTimeoutId) {
     clearTimeout(loopProgressTimeoutId);
@@ -494,14 +375,12 @@ export function stopGameLoop() {
   if (inactivityCheckInterval) {
     clearInterval(inactivityCheckInterval);
     inactivityCheckInterval = null;
-    logger.log("[LOOP] Inactivity checker cleared");
   }
 
   // Clean up session checker
   if (sessionCheckInterval) {
     clearInterval(sessionCheckInterval);
     sessionCheckInterval = null;
-    logger.log("[LOOP] Session checker cleared");
   }
 
   // Clean up version check
@@ -588,7 +467,6 @@ function processTick() {
     (key) => state.events[key] !== prevEvents[key],
   );
   if (eventsChanged && import.meta.env.DEV) {
-    logger.log("[LOOP] Events changed, triggering autosave");
     // Manually call autosave to persist events changes
     handleAutoSave();
   }
@@ -903,7 +781,6 @@ async function handleAutoSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
-    logger.error("Auto save failed:", error);
   }
 }
 
@@ -1063,8 +940,6 @@ function handleStrangerApproach() {
 
 // Export the manual save function
 export async function manualSave() {
-  logger.log("[SAVE] Manual save initiated.");
-
   const state = useGameStore.getState();
 
   const gameState: GameState = buildGameState(state);
@@ -1077,7 +952,6 @@ export async function manualSave() {
     const now = new Date().toLocaleTimeString();
     useGameStore.setState({ lastSaved: now, isNewGame: false });
   } catch (error) {
-    logger.error("[SAVE] Manual save failed:", error);
     throw error;
   }
 }
