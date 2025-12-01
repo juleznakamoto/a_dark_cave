@@ -16,11 +16,11 @@ const prefixArgs = (...args: any[]) => {
   
   // If first arg is a string, prefix it with version
   if (typeof args[0] === 'string') {
-    return [`[${versionSuffix}] ${args[0]}`, ...args.slice(1)];
+    return [`v${versionSuffix} ${args[0]}`, ...args.slice(1)];
   }
   
   // Otherwise, add version as first arg
-  return [`[${versionSuffix}]`, ...args];
+  return [`v${versionSuffix}`, ...args];
 };
 
 export const logger = {
