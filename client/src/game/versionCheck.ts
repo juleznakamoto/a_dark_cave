@@ -66,7 +66,7 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         logger.log('[VERSION] ✅ Version is current');
       }
     } catch (error) {
-      logger.error('[VERSION] ❌ Error checking version:', error);
+      logger.log('[VERSION] ❌ Error checking version:', error);
     }
   };
 
