@@ -181,14 +181,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
-      onMouseEnter={(e) => {
-        e.stopPropagation();
-        props.onMouseEnter?.();
-      }}
-      onMouseLeave={(e) => {
-        e.stopPropagation();
-        props.onMouseLeave?.();
-      }}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
