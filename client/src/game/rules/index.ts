@@ -33,7 +33,6 @@ import {
   getUpgradeBonusMultiplier,
 } from "../buttonUpgrades";
 import { logger } from "@/lib/logger";
-import { attackWaveEvents } from "./eventsAttackWaves";
 import { choiceEvents } from "./eventsChoices";
 import { cubeEvents } from "./eventsCube";
 import { feastEvents } from "./eventsFeast";
@@ -46,6 +45,7 @@ import { storyEvents } from "./eventsStory";
 import { villageAttackEvents } from "./eventsVillageAttacks";
 import { woodcutterEvents } from "./eventsWoodcutter";
 import { fellowshipEvents } from "./eventsFellowship";
+import { attackWaveEvents } from "./eventsAttackWaves";
 
 // Action handlers map
 const actionHandlers: Record<string, (state: GameState, actionId: string) => Partial<GameState>> = {
