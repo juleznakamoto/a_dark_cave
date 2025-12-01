@@ -94,20 +94,23 @@ export default function GameContainer() {
     logger.log('[VERSION] Initializing version check from GameContainer');
 
     startVersionCheck(() => {
-      logger.log('[VERSION] Version check callback fired! Getting store reference...');
+      logger.log('[VERSION] Version check callback fired!');
       try {
-        // Get the latest store reference directly instead of using closure
-        const { setVersionCheckDialog } = useGameStore.getState();
-        
-        if (typeof setVersionCheckDialog === 'function') {
-          logger.log('[VERSION] Calling setVersionCheckDialog(true)...');
-          setVersionCheckDialog(true);
-          logger.log('[VERSION] ✅ setVersionCheckDialog(true) called successfully');
-        } else {
-          logger.log('[VERSION] ❌ setVersionCheckDialog is not a function:', typeof setVersionCheckDialog);
-        }
+        logger.log('[VERSION] Calling toast() to notify user...');
+        toast({
+          title: "New Version Available",
+          description: "A new version of the game is available. Please refresh to update.",
+          action: {
+            label: "Refresh",
+            onClick: () => {
+              logger.log('[VERSION] User clicked refresh button');
+              window.location.reload();
+            }
+          }
+        });
+        logger.log('[VERSION] ✅ Toast notification triggered successfully');
       } catch (error) {
-        logger.log('[VERSION] ❌ Error in version check callback:', error);
+        logger.log('[VERSION] ❌ Error triggering toast:', error);
       }
     });
 
