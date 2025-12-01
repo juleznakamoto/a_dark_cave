@@ -35,6 +35,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "⚵",
     symbolColor: "text-sky-700",
   },
+
   cruel_mode: {
     id: "cruel_mode",
     name: "Cruel Mode",
@@ -50,8 +51,6 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbol: "⛤",
     symbolColor: "text-red-600",
   },
-
-
 
   gold_250: {
     id: "gold_250",
@@ -120,8 +119,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
   great_feast_1: {
     id: "great_feast_1",
     name: "1 Great Feast",
-    description:
-      "Boost village production by 4x for 30 minutes",
+    description: "Boost village production by 4x for 30 minutes",
     originalPrice: 299,
     price: 149, // 1.49 €
     rewards: {
