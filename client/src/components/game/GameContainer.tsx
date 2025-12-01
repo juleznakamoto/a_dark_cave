@@ -22,6 +22,7 @@ import { stopGameLoop } from "@/game/loop";
 import ProfileMenu from "./ProfileMenu"; // Imported ProfileMenu
 import { startVersionCheck, stopVersionCheck } from '@/game/versionCheck';
 import { logger } from '@/lib/logger';
+import { toast } from '@/hooks/use-toast';
 
 export default function GameContainer() {
   const {
