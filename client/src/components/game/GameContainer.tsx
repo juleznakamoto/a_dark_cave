@@ -105,14 +105,13 @@ export default function GameContainer() {
         showUpdateToast({
           title: "New Version Available",
           description: "A new version of the game is available. Please refresh to update.",
-          action: (
-              <Button
-                onClick={() => window.location.reload()}
-                className="w-full bg-red-600 hover:bg-red-700 text-white"
-              >
-                Refresh
-              </Button>
-            ),
+          action: {
+            label: "Refresh",
+            onClick: () => {
+              logger.log('[VERSION] User clicked refresh button');
+              window.location.reload();
+            }
+          },
         });
         logger.log('[VERSION] ✅ Toast notification triggered successfully');
       } catch (error) {
