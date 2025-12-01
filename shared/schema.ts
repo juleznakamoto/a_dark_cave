@@ -357,7 +357,7 @@ export const gameStateSchema = z.object({
   combatSkills: z
     .object({
       crushingStrikeLevel: z.number().default(0),
-      bloodflameSphereLev: z.number().default(0),
+      bloodflameSphereLevel: z.number().default(0),
     })
     .default({
       crushingStrikeLevel: 0,
