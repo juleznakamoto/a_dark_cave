@@ -1160,7 +1160,7 @@ export const choiceEvents: Record<string, GameEvent> = {
       !state.curseState?.isActive &&
       !state.story.seen.witchsCurseEvent,
     triggerType: "resource",
-    timeProbability: 0.045,
+    timeProbability: 45,
     title: "The Witch's Curse",
     message:
       "A hunched old woman in tattered robes arrives at the gates. With malice in her voice she demands, 'Pay me 50 gold, or I shall curse you with misfortune.'",
