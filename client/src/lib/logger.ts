@@ -3,7 +3,11 @@ const isDev = import.meta.env.DEV;
 
 export const logger = {
   log: (...args: any[]) => {
-    if (isDev) {
+    // Always log VERSION messages in production for debugging
+    const isVersionLog = args.some(arg => 
+      typeof arg === 'string' && arg.includes('[VERSION]')
+    );
+    if (isDev || isVersionLog) {
       console.log(...args);
     }
   },
