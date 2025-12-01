@@ -27,8 +27,8 @@ interface CooldownButtonProps {
   "data-testid"?: string;
   button_id?: string;
   tooltip?: React.ReactNode;
-  onMouseEnter?: () => void;
-  onMouseLeave?: () => void;
+  onMouseEnter?: (e?: React.MouseEvent<HTMLDivElement>) => void;
+  onMouseLeave?: (e?: React.MouseEvent<HTMLDivElement>) => void;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -140,6 +140,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   const tooltipId = buttonId; // Use buttonId for tooltip identification
 
+  const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Stop propagation to prevent duplicate triggers from nested elements
+    e.stopPropagation();
+    props.onMouseEnter?.(e);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    // Stop propagation to prevent duplicate triggers from nested elements
+    e.stopPropagation();
+    props.onMouseLeave?.(e);
+  };
+
   return (
     <div
       className="relative inline-block"
@@ -181,31 +193,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
-      onMouseEnter={(e) => {
-        if (props.onMouseEnter) {
-          console.log('[MOUSE_ENTER_DEBUG]', {
-            buttonId,
-            target: e.target?.constructor?.name,
-            currentTarget: e.currentTarget?.constructor?.name,
-            relatedTarget: e.relatedTarget?.constructor?.name,
-            eventPhase: e.eventPhase,
-            bubbles: e.bubbles,
-            stackTrace: new Error().stack?.split('\n').slice(1, 4).join('\n')
-          });
-          props.onMouseEnter();
-        }
-      }}
-      onMouseLeave={(e) => {
-        if (props.onMouseLeave) {
-          console.log('[MOUSE_LEAVE_DEBUG]', {
-            buttonId,
-            target: e.target?.constructor?.name,
-            currentTarget: e.currentTarget?.constructor?.name,
-            relatedTarget: e.relatedTarget?.constructor?.name
-          });
-          props.onMouseLeave();
-        }
-      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>

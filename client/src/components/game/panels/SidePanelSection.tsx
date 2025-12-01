@@ -288,15 +288,6 @@ export default function SidePanelSection({
 
     // Check if this resource is highlighted
     const isHighlighted = highlightedResources.has(item.id);
-    if (isHighlighted) {
-      logger.log(`[HIGHLIGHT] Resource ${item.id} is highlighted`, {
-        highlightedResourcesRaw,
-        highlightedResourcesSet: Array.from(highlightedResources),
-        itemId: item.id,
-        renderTimestamp: Date.now(),
-        stackTrace: new Error().stack?.split('\n').slice(1, 8).join('\n')
-      });
-    }
 
     const labelContent = (
       <span
