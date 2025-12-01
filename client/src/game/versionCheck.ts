@@ -2,7 +2,7 @@
 import { logger } from '@/lib/logger';
 
 // Version is set at build time
-export const APP_VERSION = import.meta.env.VITE_APP_VERSION || __BUILD_TIME__;
+export const APP_VERSION = import.meta.env.VITE_APP_VERSION || (typeof __BUILD_TIME__ !== 'undefined' ? __BUILD_TIME__ : 'dev');
 
 // Global variable to track if version check is active
 let isVersionCheckActive = false;
