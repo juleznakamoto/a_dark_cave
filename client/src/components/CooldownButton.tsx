@@ -181,8 +181,31 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
+      onMouseEnter={(e) => {
+        if (props.onMouseEnter) {
+          console.log('[MOUSE_ENTER_DEBUG]', {
+            buttonId,
+            target: e.target?.constructor?.name,
+            currentTarget: e.currentTarget?.constructor?.name,
+            relatedTarget: e.relatedTarget?.constructor?.name,
+            eventPhase: e.eventPhase,
+            bubbles: e.bubbles,
+            stackTrace: new Error().stack?.split('\n').slice(1, 4).join('\n')
+          });
+          props.onMouseEnter();
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (props.onMouseLeave) {
+          console.log('[MOUSE_LEAVE_DEBUG]', {
+            buttonId,
+            target: e.target?.constructor?.name,
+            currentTarget: e.currentTarget?.constructor?.name,
+            relatedTarget: e.relatedTarget?.constructor?.name
+          });
+          props.onMouseLeave();
+        }
+      }}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
