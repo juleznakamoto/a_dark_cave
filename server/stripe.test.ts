@@ -3,19 +3,17 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createPaymentIntent, verifyPayment } from './stripe';
 
 // Mock Stripe
-const mockStripe = {
-  paymentIntents: {
-    create: vi.fn(),
-    retrieve: vi.fn(),
-  },
+const mockPaymentIntents = {
+  create: vi.fn(),
+  retrieve: vi.fn(),
 };
 
 vi.mock('stripe', () => {
   return {
     default: class MockStripe {
-      paymentIntents = mockStripe.paymentIntents;
+      paymentIntents = mockPaymentIntents;
       constructor() {
-        return mockStripe;
+        return this;
       }
     },
   };
@@ -28,13 +26,13 @@ describe('Stripe Shop Integration', () => {
 
   describe('createPaymentIntent', () => {
     it('should create payment intent with correct amount', async () => {
-      mockStripe.paymentIntents.create.mockResolvedValue({
+      mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
       const result = await createPaymentIntent('gold_250');
 
-      expect(mockStripe.paymentIntents.create).toHaveBeenCalledWith({
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith({
         amount: 99, // Server-side price
         currency: 'eur',
         metadata: {
@@ -52,7 +50,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should always use server-side price, never client price', async () => {
-      mockStripe.paymentIntents.create.mockResolvedValue({
+      mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
@@ -60,7 +58,7 @@ describe('Stripe Shop Integration', () => {
       const result = await createPaymentIntent('gold_250', 1); // Try to pay only 1 cent
 
       // Should still use server price of 99 cents
-      expect(mockStripe.paymentIntents.create).toHaveBeenCalledWith(
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith(
         expect.objectContaining({
           amount: 99, // Server-enforced price
         })
@@ -68,13 +66,13 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should handle great feast items correctly', async () => {
-      mockStripe.paymentIntents.create.mockResolvedValue({
+      mockPaymentIntents.create.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
       const result = await createPaymentIntent('great_feast_1');
 
-      expect(mockStripe.paymentIntents.create).toHaveBeenCalledWith({
+      expect(mockPaymentIntents.create).toHaveBeenCalledWith({
         amount: 149,
         currency: 'eur',
         metadata: {
@@ -88,7 +86,7 @@ describe('Stripe Shop Integration', () => {
 
   describe('verifyPayment', () => {
     it('should verify successful payment', async () => {
-      mockStripe.paymentIntents.retrieve.mockResolvedValue({
+      mockPaymentIntents.retrieve.mockResolvedValue({
         status: 'succeeded',
         amount: 99,
         metadata: {
@@ -103,7 +101,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should reject payment with incorrect amount', async () => {
-      mockStripe.paymentIntents.retrieve.mockResolvedValue({
+      mockPaymentIntents.retrieve.mockResolvedValue({
         status: 'succeeded',
         amount: 1, // Wrong amount!
         metadata: {
@@ -118,7 +116,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should reject non-succeeded payments', async () => {
-      mockStripe.paymentIntents.retrieve.mockResolvedValue({
+      mockPaymentIntents.retrieve.mockResolvedValue({
         status: 'pending',
         amount: 99,
         metadata: {
