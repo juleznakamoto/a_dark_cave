@@ -44,6 +44,7 @@ export default function GameContainer() {
     shopDialogOpen, // Added shopDialogOpen to state
     inactivityDialogOpen, // Added inactivityDialogOpen to state
     versionCheckDialogOpen,
+    setVersionCheckDialogOpen,
   } = useGameStore();
 
   // Estate unlocks when Dark Estate is built
