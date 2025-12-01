@@ -24,7 +24,11 @@ void main(){gl_Position=position;}`;
     this.canvas = canvas;
     this.scale = scale;
     this.shaderSource = shaderSource;
-    this.gl = canvas.getContext('webgl2')!;
+    const gl = canvas.getContext('webgl2');
+    if (!gl) {
+      throw new Error('WebGL2 context not available');
+    }
+    this.gl = gl;
     this.gl.viewport(0, 0, canvas.width * scale, canvas.height * scale);
   }
 
@@ -175,16 +179,21 @@ export default function CloudShader({ className = '' }: CloudShaderProps) {
   useEffect(() => {
     if (!canvasRef.current) return;
 
-    const canvas = canvasRef.current;
-    // Reduce DPR further to save memory
-    const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
+    try {
+      const canvas = canvasRef.current;
+      // Reduce DPR further to save memory
+      const dpr = Math.max(1, 0.4 * window.devicePixelRatio);
 
-    canvas.width = window.innerWidth * dpr;
-    canvas.height = window.innerHeight * dpr;
+      canvas.width = window.innerWidth * dpr;
+      canvas.height = window.innerHeight * dpr;
 
-    rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
-    rendererRef.current.setup();
-    rendererRef.current.init();
+      rendererRef.current = new WebGLRenderer(canvas, dpr, shaderSource);
+      rendererRef.current.setup();
+      rendererRef.current.init();
+    } catch (error) {
+      logger.error('[CloudShader] Failed to initialize WebGL renderer:', error);
+      return;
+    }
 
     let isActive = true;
     let frameCount = 0;

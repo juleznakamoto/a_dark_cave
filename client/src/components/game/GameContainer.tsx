@@ -341,16 +341,9 @@ export default function GameContainer() {
       {inactivityDialogOpen && <InactivityDialog />}
       <VersionCheckDialog 
         isOpen={versionCheckDialogOpen} 
-        onReload={async () => {
-          // Save game before reloading - but reload regardless of save result
-          try {
-            const { saveGame } = await import('@/game/save');
-            await saveGame();
-            logger.log('[VERSION] ✅ Game saved successfully before reload');
-          } catch (error) {
-            logger.error('[VERSION] ⚠️ Failed to save before reload, but reloading anyway:', error);
-          }
-          // Always reload, even if save fails
+        onReload={() => {
+          // Reload immediately - autosave will have already saved the current state
+          logger.log('[VERSION] 🔄 Reloading page to apply new version...');
           window.location.reload();
         }}
       />
