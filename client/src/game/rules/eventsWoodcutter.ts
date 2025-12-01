@@ -43,7 +43,7 @@ export const woodcutterEvents: Record<string, GameEvent> = {
               },
             },
             _logMessage:
-              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised 100 wood stacked neatly at your village edge.",
+              "The woodcutter takes the food and heads into the forest. By evening, he returns with the promised 100 wood stacked neatly at the village's edge.",
           };
         },
       },

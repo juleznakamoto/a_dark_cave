@@ -443,7 +443,7 @@ export const choiceEvents: Record<string, GameEvent> = {
     timeProbability: 35,
     title: "The Hidden Lake",
     message:
-      "While gathering wood in the forest, your villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
+      "While gathering wood in the forest, the villagers discover a lake hidden among trees. One villager swears he saw a woman-like figure surface briefly, her gaze beautiful yet inhuman. What do you do?",
     triggered: false,
     priority: 3,
     repeatable: true,
@@ -512,7 +512,7 @@ export const choiceEvents: Record<string, GameEvent> = {
           if (rand < successChance) {
             return {
               _logMessage:
-                "You order your villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath the water.",
+                "You order the villagers to avoid the lake. Some grumble about lost opportunities, but they obey. Its secrets remain hidden beneath the water.",
             };
           } else {
             const deathResult = killVillagers(state, 1);

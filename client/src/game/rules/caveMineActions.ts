@@ -17,7 +17,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.stone": "random(4,8)",
       "story.seen.hasMinedStone": true,
     },
-    cooldown: 15,
+    cooldown: 12,
     upgrade_key: "mineStone",
   },
 
@@ -35,7 +35,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.iron": "random(4,8)",
       "story.seen.hasIron": true,
     },
-    cooldown: 20,
+    cooldown: 15,
     upgrade_key: "mineIron",
   },
 
@@ -53,7 +53,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.coal": "random(4,8)",
       "story.seen.hasCoal": true,
     },
-    cooldown: 20,
+    cooldown: 15,
     upgrade_key: "mineCoal",
   },
 
@@ -72,7 +72,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.sulfur": "random(4,8)",
       "story.seen.hasSulfur": true,
     },
-    cooldown: 20,
+    cooldown: 15,
     upgrade_key: "mineSulfur",
   },
 
@@ -90,7 +90,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.obsidian": "random(3,7)",
       "story.seen.hasObsidian": true,
     },
-    cooldown: 25,
+    cooldown: 20,
     upgrade_key: "mineObsidian",
   },
 
@@ -108,7 +108,7 @@ export const caveMineActions: Record<string, Action> = {
       "resources.adamant": "random(2,6)",
       "story.seen.hasAdamant": true,
     },
-    cooldown: 30,
+    cooldown: 25,
     upgrade_key: "mineAdamant",
   },
 };

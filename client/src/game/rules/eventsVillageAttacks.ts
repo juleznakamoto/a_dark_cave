@@ -14,7 +14,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
     timeProbability: 40,
     title: "Wolf Attack",
     message:
-      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle your village.",
+      "Close to midnight, wolves emerge from the darkness, their eyes glowing with unnatural hunger. Their howls echo filled with malice as they circle the village.",
     triggered: false,
     priority: 4,
     repeatable: true,
@@ -315,8 +315,8 @@ export const villageAttackEvents: Record<string, GameEvent> = {
               },
               _logMessage:
                 minimalDeaths === 1
-                  ? `Your villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
-                  : `Your villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
+                  ? `The villagers drive back the cannibals! One villager falls in the battle, but the tribe retreats in defeat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`
+                  : `The villagers fight valiantly and repel the cannibals! ${minimalDeaths} villagers fall in the battle, but the tribe is forced to retreat. Among the bodies, you find a primitive necklace made of human bones and 500 silver.`,
             };
           }
 
@@ -358,7 +358,7 @@ export const villageAttackEvents: Record<string, GameEvent> = {
           let message = "The cannibals overwhelm your defenses. ";
 
           if (totalLost === 0) {
-            message += "Your villagers manage to survive, though barely.";
+            message += "The villagers manage to survive, though barely.";
           } else if (totalLost === 1) {
             message += "One villager is abducted by the cannibals.";
           } else {

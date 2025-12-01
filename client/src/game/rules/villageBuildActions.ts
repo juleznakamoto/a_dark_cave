@@ -113,7 +113,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.woodenHut": 1,
       },
     },
-    cooldown: 180,
+    cooldown: 150,
   },
 
   buildCabin: {
@@ -1170,7 +1170,7 @@ export const villageBuildActions: Record<string, Action> = {
         "buildings.stoneHut": 1,
       },
     },
-    cooldown: 240,
+    cooldown: 180,
   },
 
   buildFortifiedMoat: {

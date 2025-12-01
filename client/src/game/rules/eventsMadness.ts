@@ -37,7 +37,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     triggerType: "resource",
     timeProbability: 30,
     message:
-      "The shadows in your village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
+      "The shadows in the village seem to move wrong. They stretch too long, twist at impossible angles, and sometimes seem to move independently of their sources. You catch glimpses of shapes that shouldn't be there. (+2 Madness)",
     triggered: false,
     priority: 1,
     repeatable: false,
@@ -64,7 +64,7 @@ export const madnessEvents: Record<string, GameEvent> = {
     timeProbability: 30,
     title: "Hollow Stares",
     message:
-      "One of your villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
+      "One of the villagers has begun staring at nothing for hours. When you approach, their eyes are completely black. They smile when they notice you watching.",
     triggered: false,
     priority: 3,
     repeatable: false,
