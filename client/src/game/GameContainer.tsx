@@ -8,34 +8,54 @@ import { toast } from '@/hooks/use-toast';
 
 // Initialize version check
   useEffect(() => {
-    logger.log('[VERSION] Initializing version check from GameContainer');
+    logger.log('[VERSION] ========================================');
+    logger.log('[VERSION] GameContainer: Initializing version check');
+    logger.log('[VERSION] GameContainer: Timestamp:', new Date().toISOString());
 
-    startVersionCheck(() => {
-      logger.log('[VERSION] 🔔 Version check callback fired!');
-      logger.log('[VERSION] Triggering toast notification for new version');
+    const callback = () => {
+      logger.log('[VERSION] ========================================');
+      logger.log('[VERSION] 🔔 GAMECONTAINER CALLBACK FIRED!');
+      logger.log('[VERSION] GameContainer: Callback execution started');
+      logger.log('[VERSION] GameContainer: Timestamp:', new Date().toISOString());
 
       // Trigger toast with version check dialog content
       try {
-        logger.log('[VERSION] Calling toast function...');
-        toast({
+        logger.log('[VERSION] GameContainer: About to call toast()...');
+        logger.log('[VERSION] GameContainer: toast function type:', typeof toast);
+        
+        const result = toast({
           title: "New Version Available",
           description: "A new version of the game is available. Please refresh to update.",
           action: {
             label: "Refresh",
             onClick: () => {
-              logger.log('[VERSION] User clicked refresh button');
+              logger.log('[VERSION] GameContainer: User clicked refresh button');
               window.location.reload();
             }
           }
         });
-        logger.log('[VERSION] ✅ Toast triggered successfully');
+        
+        logger.log('[VERSION] GameContainer: toast() returned:', result);
+        logger.log('[VERSION] ✅ GameContainer: Toast triggered successfully');
       } catch (error) {
-        logger.log('[VERSION] ❌ Error triggering toast:', error);
+        logger.log('[VERSION] ❌ GameContainer: Error triggering toast:', error);
+        logger.error('[VERSION] GameContainer: Error stack:', error);
       }
-    });
+      
+      logger.log('[VERSION] GameContainer: Callback execution completed');
+      logger.log('[VERSION] ========================================');
+    };
+
+    logger.log('[VERSION] GameContainer: Callback defined, type:', typeof callback);
+    logger.log('[VERSION] GameContainer: Calling startVersionCheck...');
+    
+    startVersionCheck(callback);
+    
+    logger.log('[VERSION] GameContainer: startVersionCheck called');
+    logger.log('[VERSION] ========================================');
 
     return () => {
-      logger.log('[VERSION] Cleaning up version check');
+      logger.log('[VERSION] GameContainer: Cleaning up version check');
       stopVersionCheck();
     };
   }, []);
