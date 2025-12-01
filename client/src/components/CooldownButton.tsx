@@ -50,6 +50,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
   const { cooldowns, cooldownDurations } = useGameStore();
   const isFirstRenderRef = useRef<boolean>(true);
   const mobileTooltip = useMobileButtonTooltip();
+  const wrapperRef = useRef<HTMLDivElement>(null);
 
   // Get the action ID from the test ID or generate one
   const actionId =
@@ -142,6 +143,7 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
   return (
     <div
+      ref={wrapperRef}
       className="relative inline-block"
       onClick={mobileTooltip.isMobile ? (e) => {
         // Don't show tooltip if action was just executed
@@ -181,8 +183,18 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
 
         mobileTooltip.handleTouchEnd(tooltipId, isButtonDisabled, onClick, e);
       } : undefined}
-      onMouseEnter={props.onMouseEnter}
-      onMouseLeave={props.onMouseLeave}
+      onMouseEnter={(e) => {
+        // Only trigger if we're entering the wrapper div, not a child element
+        if (e.currentTarget === wrapperRef.current && props.onMouseEnter) {
+          props.onMouseEnter();
+        }
+      }}
+      onMouseLeave={(e) => {
+        // Only trigger if we're leaving the wrapper div, not entering a child element
+        if (e.currentTarget === wrapperRef.current && props.onMouseLeave) {
+          props.onMouseLeave();
+        }
+      }}
     >
       <TooltipProvider>
         <Tooltip open={mobileTooltip.isMobile ? mobileTooltip.isTooltipOpen(tooltipId) : undefined} delayDuration={300}>
