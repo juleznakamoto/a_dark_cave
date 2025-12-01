@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { getTotalPopulationEffects } from "@/game/population";
 import { Progress } from "@/components/ui/progress";
+import { logger } from "@/lib/logger";
 
 // Sleep upgrade configurations
 const SLEEP_LENGTH_UPGRADES = [
@@ -41,6 +42,7 @@ export default function EstatePanel() {
     setIdleModeDialog,
     sleepUpgrades,
     resources,
+    setHighlightedResources,
   } = useGameStore();
   const mobileTooltip = useMobileButtonTooltip();
   const cubeTooltip = useMobileTooltip();
@@ -240,6 +242,14 @@ export default function EstatePanel() {
                         onMouseUp={mobileTooltip.isMobile ? (e) => {
                           mobileTooltip.handleMouseUp("upgrade-length-button", !canUpgradeLength, handleSleepLengthUpgrade, e);
                         } : undefined}
+                        onMouseEnter={() => {
+                          logger.log('[HIGHLIGHT] EstatePanel sleep length mouse enter');
+                          setHighlightedResources(['gold']);
+                        }}
+                        onMouseLeave={() => {
+                          logger.log('[HIGHLIGHT] EstatePanel sleep length mouse leave');
+                          setHighlightedResources([]);
+                        }}
                       >
                         <Button
                           onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-length-button") ? (e) => {
@@ -306,6 +316,14 @@ export default function EstatePanel() {
                         onMouseUp={mobileTooltip.isMobile ? (e) => {
                           mobileTooltip.handleMouseUp("upgrade-intensity-button", !canUpgradeIntensity, handleSleepIntensityUpgrade, e);
                         } : undefined}
+                        onMouseEnter={() => {
+                          logger.log('[HIGHLIGHT] EstatePanel sleep intensity mouse enter');
+                          setHighlightedResources(['gold']);
+                        }}
+                        onMouseLeave={() => {
+                          logger.log('[HIGHLIGHT] EstatePanel sleep intensity mouse leave');
+                          setHighlightedResources([]);
+                        }}
                       >
                         <Button
                           onClick={mobileTooltip.isMobile && mobileTooltip.isTooltipOpen("upgrade-intensity-button") ? (e) => {

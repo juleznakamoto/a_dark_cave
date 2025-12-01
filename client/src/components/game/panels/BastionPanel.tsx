@@ -12,6 +12,7 @@ import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { useMobileButtonTooltip } from "@/hooks/useMobileTooltip";
 import { Progress } from "@/components/ui/progress";
 import AttackWavesChart from "./AttackWavesChart";
+import { logger } from "@/lib/logger";
 
 // Crushing Strike upgrade configurations
 export const CRUSHING_STRIKE_UPGRADES = [
@@ -107,7 +108,7 @@ const getBuildingLabel = (
 };
 
 export default function BastionPanel() {
-  const { buildings, story, resources, combatSkills, fellowship } =
+  const { buildings, story, resources, combatSkills, fellowship, setHighlightedResources } =
     useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -385,6 +386,14 @@ export default function BastionPanel() {
                                 }
                               : undefined
                           }
+                          onMouseEnter={() => {
+                            logger.log('[HIGHLIGHT] BastionPanel crushing strike mouse enter');
+                            setHighlightedResources(['gold']);
+                          }}
+                          onMouseLeave={() => {
+                            logger.log('[HIGHLIGHT] BastionPanel crushing strike mouse leave');
+                            setHighlightedResources([]);
+                          }}
                         >
                           <Button
                             onClick={
@@ -536,6 +545,14 @@ export default function BastionPanel() {
                                 }
                               : undefined
                           }
+                          onMouseEnter={() => {
+                            logger.log('[HIGHLIGHT] BastionPanel bloodflame sphere mouse enter');
+                            setHighlightedResources(['gold']);
+                          }}
+                          onMouseLeave={() => {
+                            logger.log('[HIGHLIGHT] BastionPanel bloodflame sphere mouse leave');
+                            setHighlightedResources([]);
+                          }}
                         >
                           <Button
                             onClick={
