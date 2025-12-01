@@ -1726,4 +1726,91 @@ export const choiceEvents: Record<string, GameEvent> = {
       },
     ],
   },
+
+  frostfall: {
+    id: "frostfall",
+    condition: (state: GameState) => {
+      const timesOccurred = state.story?.seen?.frostfallCount || 0;
+      return state.buildings.woodenHut >= 4 && 
+             !state.frostfallState?.isActive && 
+             timesOccurred < 5;
+    },
+    triggerType: "resource",
+    timeProbability: 90, // 1.5 hours
+    title: "Frostfall",
+    message:
+      "Dark clouds gather overhead as icy winds begin to howl through the village. The temperature drops sharply, and snowflakes swirl in the freezing air. The elders warn that a terrible blizzard approaches—one that will cripple all production unless preparations are made.",
+    triggered: false,
+    priority: 4,
+    repeatable: true,
+    choices: [
+      {
+        id: "prepareFrostfall",
+        label: (state: GameState) => {
+          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const woodCost = 500 * Math.pow(2, timesOccurred);
+          const foodCost = 500 * Math.pow(2, timesOccurred);
+          return `Prepare (${woodCost} wood, ${foodCost} food)`;
+        },
+        cost: (state: GameState) => {
+          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const woodCost = 500 * Math.pow(2, timesOccurred);
+          const foodCost = 500 * Math.pow(2, timesOccurred);
+          return `${woodCost} wood, ${foodCost} food`;
+        },
+        effect: (state: GameState) => {
+          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const woodCost = 500 * Math.pow(2, timesOccurred);
+          const foodCost = 500 * Math.pow(2, timesOccurred);
+
+          if (state.resources.wood < woodCost || state.resources.food < foodCost) {
+            return {
+              _logMessage: "You don't have enough resources to prepare.",
+            };
+          }
+
+          return {
+            resources: {
+              ...state.resources,
+              wood: state.resources.wood - woodCost,
+              food: state.resources.food - foodCost,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                frostfallCount: timesOccurred + 1,
+              },
+            },
+            _logMessage:
+              "Your villagers work tirelessly to stockpile firewood and food, insulating their homes against the coming storm. When the blizzard arrives, the village weathers it safely.",
+          };
+        },
+      },
+      {
+        id: "doNothing",
+        label: "Do nothing",
+        effect: (state: GameState) => {
+          const timesOccurred = state.story?.seen?.frostfallCount || 0;
+          const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // 10/15 minutes
+          
+          return {
+            frostfallState: {
+              isActive: true,
+              endTime: Date.now() + frostfallDuration,
+            },
+            story: {
+              ...state.story,
+              seen: {
+                ...state.story.seen,
+                frostfallCount: timesOccurred + 1,
+              },
+            },
+            _logMessage:
+              "You choose not to prepare for the storm. The blizzard hits with brutal force, freezing winds howl through the village, and thick snow blankets everything. All production slows to a crawl as villagers struggle to survive the cold.",
+          };
+        },
+      },
+    ],
+  },
 };

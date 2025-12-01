@@ -428,6 +428,7 @@ export default function VillagePanel() {
                 const curseState = useGameStore.getState().curseState;
                 const miningBoostState =
                   useGameStore.getState().miningBoostState;
+                const frostfallState = useGameStore.getState().frostfallState; // Assume frostfallState exists
                 const isGreatFeast =
                   greatFeastState?.isActive &&
                   greatFeastState.endTime > Date.now();
@@ -438,6 +439,9 @@ export default function VillagePanel() {
                 const isMiningBoosted =
                   miningBoostState?.isActive &&
                   miningBoostState.endTime > Date.now();
+                const isFrostfall =
+                  frostfallState?.isActive && frostfallState.endTime > Date.now();
+
 
                 return (
                   <>
@@ -568,6 +572,49 @@ export default function VillagePanel() {
                           <TooltipContent>
                             <div className="text-xs whitespace-pre-line">
                               {miningBoostTooltip.getContent(state)}
+                            </div>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+
+                    {/* Frostfall Indicator */}
+                    {isFrostfall && (
+                      <TooltipProvider>
+                        <Tooltip
+                          open={mobileTooltip.isTooltipOpen("frostfall-progress")}
+                        >
+                          <TooltipTrigger asChild>
+                            <div
+                              className="text-xs text-primary flex items-center gap-0.5 cursor-pointer"
+                              onClick={(e) =>
+                                mobileTooltip.handleTooltipClick(
+                                  "frostfall-progress",
+                                  e,
+                                )
+                              }
+                            >
+                              <div className="relative inline-flex items-center gap-1 mt-[0px]">
+                                <CircularProgress
+                                  value={(() => {
+                                    const frostfallDuration = (10 + 5 * state.CM) * 60 * 1000; // Same duration as curse, adjust if needed
+                                    const timeRemaining = Math.max(0, frostfallState.endTime - Date.now());
+                                    const elapsed = frostfallDuration - timeRemaining;
+                                    return Math.min(100, (elapsed / frostfallDuration) * 100);
+                                  })()}
+                                  size={18}
+                                  strokeWidth={2}
+                                  className="text-blue-600" // Blue color for frostfall
+                                />
+                                <span className="absolute inset-0 flex items-center justify-center font-extrabold text-[12px] -mt-[0px] text-blue-600">
+                                  ✼
+                                </span>
+                              </div>
+                            </div>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <div className="text-xs whitespace-pre-line">
+                              Frostfall is active! All village production is reduced by 25% for {Math.round((frostfallState.endTime - Date.now()) / 1000 / 60)} minutes.
                             </div>
                           </TooltipContent>
                         </Tooltip>
