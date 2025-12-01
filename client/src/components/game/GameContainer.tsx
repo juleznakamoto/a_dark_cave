@@ -93,13 +93,15 @@ export default function GameContainer() {
 
 
   // Initialize version check
+  // In your GameContainer.tsx, replace the version check useEffect with this:
+
   useEffect(() => {
     logger.log('[VERSION] Initializing version check from GameContainer');
     logger.log('[VERSION] setVersionCheckDialogOpen function:', setVersionCheckDialogOpen);
 
     startVersionCheck(() => {
       logger.log('[VERSION] Version check callback fired! Setting dialog open...');
-      logger.log('[VERSION] Current versionCheckDialogOpen state:', versionCheckDialogOpen);
+      // Don't reference versionCheckDialogOpen here - it creates a stale closure
       setVersionCheckDialogOpen(true);
       logger.log('[VERSION] setVersionCheckDialogOpen(true) called');
     });
@@ -108,7 +110,24 @@ export default function GameContainer() {
       logger.log('[VERSION] Cleaning up version check');
       stopVersionCheck();
     };
-  }, []);
+  }, []); // Empty dependency array - don't include setVersionCheckDialogOpen since it's stable
+
+  // Alternative approach - add setVersionCheckDialogOpen to dependencies if you want to be explicit
+  // This works because Zustand setters are stable and won't cause re-renders
+  // useEffect(() => {
+  //   logger.log('[VERSION] Initializing version check from GameContainer');
+
+  //   startVersionCheck(() => {
+  //     logger.log('[VERSION] Version check callback fired! Setting dialog open...');
+  //     setVersionCheckDialogOpen(true);
+  //     logger.log('[VERSION] setVersionCheckDialogOpen(true) called');
+  //   });
+
+  //   return () => {
+  //     logger.log('[VERSION] Cleaning up version check');
+  //     stopVersionCheck();
+  //   };
+  // }, [setVersionCheckDialogOpen]); // Include it in dependencies for React best practices
 
   // Stop game loop when end screen is shown
   useEffect(() => {
