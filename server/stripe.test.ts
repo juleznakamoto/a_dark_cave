@@ -11,9 +11,9 @@ const mockPaymentIntents = {
 vi.mock('stripe', () => {
   return {
     default: class MockStripe {
-      paymentIntents = mockPaymentIntents;
+      paymentIntents;
       constructor() {
-        return this;
+        this.paymentIntents = mockPaymentIntents;
       }
     },
   };
