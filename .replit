@@ -8,7 +8,7 @@ packages = ["imagemagick_light", "run"]
 
 [deployment]
 deploymentTarget = "autoscale"
-build = ["sh", "-c", "npm run build"]
+build = ["sh", "-c", "npm test -- --run && npm run build"]
 run = ["sh", "-c", "NODE_ENV=production node dist/index.js"]
 
 [[ports]]
@@ -16,24 +16,8 @@ localPort = 5000
 externalPort = 80
 
 [[ports]]
-localPort = 33183
-externalPort = 3003
-
-[[ports]]
-localPort = 35349
-externalPort = 3002
-
-[[ports]]
 localPort = 42235
 externalPort = 3000
-
-[[ports]]
-localPort = 42783
-externalPort = 5000
-
-[[ports]]
-localPort = 45825
-externalPort = 4200
 
 [[ports]]
 localPort = 51204
