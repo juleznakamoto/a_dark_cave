@@ -281,6 +281,44 @@ function getAdjustedCost(
   return cost;
 }
 
+// Helper function to extract resource IDs from action cost
+export function getResourcesFromActionCost(actionId: string): string[] {
+  const action = gameActions[actionId];
+  if (!action?.cost) return [];
+  
+  const resources: string[] = [];
+  
+  // Handle different cost structures
+  if (typeof action.cost === 'object' && !Array.isArray(action.cost)) {
+    // Check if it's a tiered cost structure (has numeric keys)
+    const keys = Object.keys(action.cost);
+    const firstKey = keys[0];
+    
+    if (firstKey && !isNaN(Number(firstKey))) {
+      // Tiered cost - use level 1
+      const tier1Cost = action.cost[1] || action.cost[firstKey];
+      if (tier1Cost) {
+        Object.keys(tier1Cost).forEach(key => {
+          if (key.startsWith('resources.')) {
+            const resourceName = key.split('.')[1];
+            resources.push(resourceName);
+          }
+        });
+      }
+    } else {
+      // Simple cost structure
+      Object.keys(action.cost).forEach(key => {
+        if (key.startsWith('resources.')) {
+          const resourceName = key.split('.')[1];
+          resources.push(resourceName);
+        }
+      });
+    }
+  }
+  
+  return resources;
+}
+
 // Utility function to check if requirements are met for an action
 export function canExecuteAction(actionId: string, state: GameState): boolean {
   const action = gameActions[actionId];

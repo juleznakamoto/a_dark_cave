@@ -64,6 +64,7 @@ export default function SidePanelSection({
   const gameState = useGameStore((state) => state);
   const hoveredTooltips = useGameStore((state) => state.hoveredTooltips || {});
   const setHoveredTooltip = useGameStore((state) => state.setHoveredTooltip);
+  const highlightedResources = useGameStore((state) => state.highlightedResources || new Set());
   const hoverTimersRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
   const mobileTooltip = useMobileTooltip();
 
@@ -281,9 +282,19 @@ export default function SidePanelSection({
     const newItemPulseClass =
       shouldPulse && !hoveredTooltips[item.id] ? "new-item-pulse" : "";
 
+    // Check if this resource is highlighted
+    const isHighlighted = highlightedResources.has(item.id);
+    if (isHighlighted) {
+      logger.log(`[HIGHLIGHT] Resource ${item.id} is highlighted`);
+    }
+
     const labelContent = (
       <span
-        className={`text-xs text-gray-400 flex items-center gap-1 ${newItemPulseClass}`}
+        className={cn(
+          "text-xs text-gray-400 flex items-center gap-1",
+          newItemPulseClass,
+          isHighlighted && "font-bold"
+        )}
       >
         {item.icon !== undefined && (
           <span className={cn("mr-1", item.iconColor)}>{item.icon}</span>
@@ -323,15 +334,13 @@ export default function SidePanelSection({
           "Fellowship",
         ].includes(title) && (
           <span
-            className={`font-mono ${
-              isAnimated
-                ? "text-green-800 font-bold"
-                : isDecreaseAnimated
-                  ? "text-red-800 font-bold"
-                  : isMadness
-                    ? madnessClasses
-                    : ""
-            }`}
+            className={cn(
+              "font-mono",
+              isAnimated && "text-green-800 font-bold",
+              isDecreaseAnimated && "text-red-800 font-bold",
+              isMadness && madnessClasses,
+              isHighlighted && "font-bold"
+            )}
           >
             {displayValue}
           </span>

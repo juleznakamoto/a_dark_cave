@@ -5,6 +5,7 @@ import {
   shouldShowAction,
   canExecuteAction,
   getActionCostBreakdown,
+  getResourcesFromActionCost,
 } from "@/game/rules";
 import {
   feastTooltip,
@@ -29,6 +30,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useMobileTooltip } from "@/hooks/useMobileTooltip";
+import { logger } from "@/lib/logger";
 
 export default function VillagePanel() {
   const {
@@ -38,6 +40,7 @@ export default function VillagePanel() {
     executeAction,
     assignVillager,
     unassignVillager,
+    setHighlightedResources,
   } = useGameStore();
   const state = useGameStore.getState();
   const mobileTooltip = useMobileTooltip();
@@ -235,6 +238,15 @@ export default function VillagePanel() {
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
         tooltip={tooltipContent}
+        onMouseEnter={() => {
+          const resources = getResourcesFromActionCost(actionId);
+          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+          setHighlightedResources(new Set(resources));
+        }}
+        onMouseLeave={() => {
+          logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+          setHighlightedResources(new Set());
+        }}
       >
         {displayLabel}
       </CooldownButton>

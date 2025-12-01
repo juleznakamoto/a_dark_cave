@@ -4,6 +4,7 @@ import {
   shouldShowAction,
   canExecuteAction,
   getActionCostBreakdown,
+  getResourcesFromActionCost,
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
@@ -13,9 +14,10 @@ import { useExplosionEffect } from "@/components/ui/explosion-effect";
 import { useRef } from "react";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import { logger } from "@/lib/logger";
 
 export default function CavePanel() {
-  const { flags, executeAction } = useGameStore();
+  const { flags, executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
   const mobileTooltip = useMobileTooltip();
   const explosionEffect = useExplosionEffect();
@@ -203,6 +205,15 @@ export default function CavePanel() {
           variant="outline"
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
+          onMouseEnter={() => {
+            const resources = getResourcesFromActionCost(actionId);
+            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+            setHighlightedResources(new Set(resources));
+          }}
+          onMouseLeave={() => {
+            logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+            setHighlightedResources(new Set());
+          }}
         >
           {label}
         </CooldownButton>
@@ -228,6 +239,15 @@ export default function CavePanel() {
         disabled={!canExecute}
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
+        onMouseEnter={() => {
+          const resources = getResourcesFromActionCost(actionId);
+          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+          setHighlightedResources(new Set(resources));
+        }}
+        onMouseLeave={() => {
+          logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+          setHighlightedResources(new Set());
+        }}
       >
         {label}
       </CooldownButton>

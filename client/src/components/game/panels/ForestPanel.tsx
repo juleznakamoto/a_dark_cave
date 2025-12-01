@@ -5,15 +5,17 @@ import {
   shouldShowAction,
   canExecuteAction,
   getActionCostBreakdown,
+  getResourcesFromActionCost,
 } from "@/game/rules";
 import { getResourceGainTooltip } from "@/game/rules/tooltips";
 import CooldownButton from "@/components/CooldownButton";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { ButtonLevelBadge } from "@/components/game/ButtonLevelBadge";
 import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
+import { logger } from "@/lib/logger";
 
 export default function ForestPanel() {
-  const { executeAction } = useGameStore();
+  const { executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
 
   // Define action groups with their actions
@@ -230,6 +232,15 @@ export default function ForestPanel() {
           variant="outline"
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
           tooltip={tooltipContent}
+          onMouseEnter={() => {
+            const resources = getResourcesFromActionCost(actionId);
+            logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+            setHighlightedResources(new Set(resources));
+          }}
+          onMouseLeave={() => {
+            logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+            setHighlightedResources(new Set());
+          }}
         >
           {displayLabel}
         </CooldownButton>
@@ -256,6 +267,15 @@ export default function ForestPanel() {
         disabled={!canExecute}
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
+        onMouseEnter={() => {
+          const resources = getResourcesFromActionCost(actionId);
+          logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
+          setHighlightedResources(new Set(resources));
+        }}
+        onMouseLeave={() => {
+          logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
+          setHighlightedResources(new Set());
+        }}
       >
         {displayLabel}
       </CooldownButton>

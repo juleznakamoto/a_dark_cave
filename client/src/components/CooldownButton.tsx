@@ -26,6 +26,8 @@ interface CooldownButtonProps {
   "data-testid"?: string;
   button_id?: string;
   tooltip?: React.ReactNode;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
@@ -111,6 +113,8 @@ const CooldownButton = forwardRef<HTMLButtonElement, CooldownButtonProps>(
       } ${className}`}
       data-testid={testId}
       button_id={props.button_id || actionId}
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
       {...props}
     >
       {/* Button content */}

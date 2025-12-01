@@ -64,6 +64,9 @@ interface GameStore extends GameState {
   mysteriousNoteShopNotificationSeen: boolean;
   mysteriousNoteDonateNotificationSeen: boolean;
 
+  // Resource highlighting state
+  highlightedResources: Set<string>;
+
   // Auth state
   isUserSignedIn: boolean;
 
@@ -111,6 +114,7 @@ interface GameStore extends GameState {
   setAuthNotificationVisible: (visible: boolean) => void;
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => void;
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => void;
+  setHighlightedResources: (resources: Set<string>) => void;
   setIsUserSignedIn: (signedIn: boolean) => void;
   updateResource: (
     resource: keyof GameState["resources"],
@@ -332,6 +336,9 @@ const defaultGameState: GameState = {
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
 
+  // Initialize resource highlighting state
+  highlightedResources: new Set<string>(),
+
   // Auth state
   isUserSignedIn: false,
 
@@ -443,6 +450,9 @@ export const useGameStore = create<GameStore>((set, get) => ({
   // Initialize mysterious note notification state
   mysteriousNoteShopNotificationSeen: false,
   mysteriousNoteDonateNotificationSeen: false,
+  
+  // Initialize resource highlighting
+  highlightedResources: new Set<string>(),
 
   setActiveTab: (tab: string) => set({ activeTab: tab }),
 
@@ -455,6 +465,10 @@ export const useGameStore = create<GameStore>((set, get) => ({
   setAuthNotificationVisible: (visible: boolean) => set({ authNotificationVisible: visible }),
   setMysteriousNoteShopNotificationSeen: (seen: boolean) => set({ mysteriousNoteShopNotificationSeen: seen }),
   setMysteriousNoteDonateNotificationSeen: (seen: boolean) => set({ mysteriousNoteDonateNotificationSeen: seen }),
+  setHighlightedResources: (resources: Set<string>) => {
+    logger.log('[HIGHLIGHT] Setting highlighted resources:', Array.from(resources));
+    set({ highlightedResources: resources });
+  },
   setIsUserSignedIn: (signedIn: boolean) => set({ isUserSignedIn: signedIn }),
 
   updateResource: (resource: keyof GameState["resources"], amount: number) => {
