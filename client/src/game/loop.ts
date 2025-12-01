@@ -458,58 +458,6 @@ function processTick() {
     });
   }
 
-  // Apply curse penalty if active
-  if (state.curseState?.isActive) {
-    if (Date.now() >= state.curseState.endTime) {
-      // Curse has expired
-      useGameStore.setState((state) => ({
-        curseState: {
-          ...state.curseState,
-          isActive: false,
-        },
-      }));
-    } else {
-      // Apply curse penalty (reduce all production by 50%)
-      useGameStore.setState((state) => {
-        const updates: Partial<GameState> = { resources: {} };
-        Object.keys(state.resources).forEach((resource) => {
-          const originalValue = state.resources[resource as keyof typeof state.resources];
-          if (originalValue > 0) {
-            // Only reduce positive changes (production)
-            (updates.resources as any)[resource] = originalValue - Math.floor(originalValue * 0.5);
-          }
-        });
-        return updates;
-      });
-    }
-  }
-
-  // Apply Frostfall penalty if active
-  if (state.frostfallState?.isActive) {
-    if (Date.now() >= state.frostfallState.endTime) {
-      // Frostfall has expired
-      useGameStore.setState((state) => ({
-        frostfallState: {
-          ...state.frostfallState,
-          isActive: false,
-        },
-      }));
-    } else {
-      // Apply Frostfall penalty (reduce all production by 25%)
-      useGameStore.setState((state) => {
-        const updates: Partial<GameState> = { resources: {} };
-        Object.keys(state.resources).forEach((resource) => {
-          const originalValue = state.resources[resource as keyof typeof state.resources];
-          if (originalValue > 0) {
-            // Only reduce positive changes (production)
-            (updates.resources as any)[resource] = originalValue - Math.floor(originalValue * 0.25);
-          }
-        });
-        return updates;
-      });
-    }
-  }
-
   // Check for random events
   const prevEvents = { ...state.events };
   state.checkEvents();
