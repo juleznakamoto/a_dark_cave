@@ -37,7 +37,6 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    if (!isDev) return;
 
     // Initialize Playlight SDK via ESM CDN (after hydration)
     (async () => {
