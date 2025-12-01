@@ -49,7 +49,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 10,
     buildingDamageMultiplier: 2,
-    fellowshipWoundedMultiplier: 0.2,
+    fellowshipWoundedMultiplier: 0.15,
   },
   thirdWave: {
     attack: { base: 40, random: 10, options: [40, 45, 50], cmBonus: 10 },
@@ -59,7 +59,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 15,
     buildingDamageMultiplier: 3,
-    fellowshipWoundedMultiplier: 0.3,
+    fellowshipWoundedMultiplier: 0.2,
   },
   fourthWave: {
     attack: { base: 50, random: 15, options: [50, 55, 60, 65], cmBonus: 15 },
@@ -69,7 +69,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 20,
     buildingDamageMultiplier: 4,
-    fellowshipWoundedMultiplier: 0.4,
+    fellowshipWoundedMultiplier: 0.25,
   },
   fifthWave: {
     attack: { base: 65, random: 20, options: [65, 70, 75, 80, 85], cmBonus: 20 },
@@ -79,7 +79,7 @@ const WAVE_PARAMS = {
     defeatDuration: 20 * 60 * 1000,
     maxCasualties: 25,
     buildingDamageMultiplier: 5,
-    fellowshipWoundedMultiplier: 0.5,
+    fellowshipWoundedMultiplier: 0.3,
   },
 } as const;
 
