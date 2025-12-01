@@ -15,16 +15,8 @@ import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 
 export default function ForestPanel() {
-  const { executeAction } = useGameStore();
+  const { executeAction, setHighlightedResources } = useGameStore();
   const state = useGameStore();
-  
-  const setHighlightedResources = (resources: string[]) => {
-    logger.log('[HIGHLIGHT_TRACE] ForestPanel calling setHighlightedResources', {
-      resources,
-      stackTrace: new Error().stack?.split('\n').slice(1, 8).join('\n')
-    });
-    useGameStore.getState().setHighlightedResources(resources);
-  };
 
   // Define action groups with their actions
   const actionGroups = [
