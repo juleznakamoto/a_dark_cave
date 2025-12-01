@@ -62,14 +62,18 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
         
         stopVersionCheck();
         
-        // Safely call the callback
-        if (typeof onNewVersionDetected === 'function') {
-          try {
-            onNewVersionDetected();
-          } catch (callbackError) {
-            logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
+        // Safely call the callback after a small delay to ensure cleanup
+        setTimeout(() => {
+          if (typeof onNewVersionDetected === 'function') {
+            try {
+              onNewVersionDetected();
+            } catch (callbackError) {
+              logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
+            }
+          } else {
+            logger.log('[VERSION] ⚠️ onNewVersionDetected is not a function:', typeof onNewVersionDetected);
           }
-        }
+        }, 100);
       } else {
         logger.log('[VERSION] ✅ Version is current');
       }
