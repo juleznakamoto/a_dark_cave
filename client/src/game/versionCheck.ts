@@ -63,24 +63,27 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           newLastModified: lastModified,
         });
         
+        // Store callback before stopping (which sets it to null)
+        const callbackToExecute = versionCheckCallback;
+        
         stopVersionCheck();
         
         logger.log('[VERSION] Preparing to call onNewVersionDetected callback');
-        logger.log('[VERSION] Callback type:', typeof versionCheckCallback);
-        logger.log('[VERSION] Callback function:', versionCheckCallback);
+        logger.log('[VERSION] Callback type:', typeof callbackToExecute);
+        logger.log('[VERSION] Callback function:', callbackToExecute);
         
         // Safely call the callback after a small delay to ensure cleanup
         setTimeout(() => {
-          if (typeof versionCheckCallback === 'function') {
+          if (typeof callbackToExecute === 'function') {
             try {
               logger.log('[VERSION] Calling onNewVersionDetected...');
-              versionCheckCallback();
+              callbackToExecute();
               logger.log('[VERSION] ✅ onNewVersionDetected called successfully');
             } catch (callbackError) {
               logger.log('[VERSION] ❌ Error calling version callback:', callbackError);
             }
           } else {
-            logger.log('[VERSION] ⚠️ versionCheckCallback is not a function:', typeof versionCheckCallback);
+            logger.log('[VERSION] ⚠️ callbackToExecute is not a function:', typeof callbackToExecute);
           }
         }, 100);
       } else {
