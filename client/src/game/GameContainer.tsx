@@ -1,26 +1,26 @@
 // Initialize version check
   useEffect(() => {
     logger.log('[VERSION] Initializing version check from GameContainer');
+    logger.log('[VERSION] ⚠️ DIALOG DEACTIVATED - Logging only mode');
 
     startVersionCheck(() => {
-      logger.log('[VERSION] 🔔 Version check callback fired! Getting store reference...');
+      logger.log('[VERSION] 🔔 Version check callback fired!');
+      logger.log('[VERSION] ⚠️ Dialog opening is DISABLED for debugging');
+      logger.log('[VERSION] A new version was detected but dialog will not open');
+      
+      // DIALOG DISABLED FOR DEBUGGING
+      // Uncomment the code below to re-enable the dialog:
+      /*
       try {
-        // Get the latest store reference directly instead of using closure
         const { setVersionCheckDialogOpen } = useGameStore.getState();
-
-        logger.log('[VERSION] Store function retrieved:', typeof setVersionCheckDialogOpen);
-
         if (typeof setVersionCheckDialogOpen === 'function') {
-          logger.log('[VERSION] Calling setVersionCheckDialogOpen(true)...');
           setVersionCheckDialogOpen(true);
-          logger.log('[VERSION] ✅ setVersionCheckDialogOpen(true) called successfully');
-          logger.log('[VERSION] Dialog should now be visible to user');
-        } else {
-          logger.log('[VERSION] ❌ setVersionCheckDialogOpen is not a function:', typeof setVersionCheckDialogOpen);
+          logger.log('[VERSION] ✅ Dialog opened');
         }
       } catch (error) {
-        logger.log('[VERSION] ❌ Error in version check callback:', error);
+        logger.log('[VERSION] ❌ Error:', error);
       }
+      */
     });
 
     return () => {
