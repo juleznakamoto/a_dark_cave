@@ -7,7 +7,7 @@
       logger.log('[VERSION] 🔔 Version check callback fired!');
       logger.log('[VERSION] ⚠️ Dialog opening is DISABLED for debugging');
       logger.log('[VERSION] A new version was detected but dialog will not open');
-      
+
       // DIALOG DISABLED FOR DEBUGGING
       // Uncomment the code below to re-enable the dialog:
       /*
