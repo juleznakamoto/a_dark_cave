@@ -100,14 +100,14 @@ export default function GameContainer() {
       logger.log('[VERSION] Version check callback fired! Getting store reference...');
       try {
         // Get the latest store reference directly instead of using closure
-        const { setVersionCheckDialogOpen: setDialogOpen } = useGameStore.getState();
+        const { setVersionCheckDialog } = useGameStore.getState();
         
-        if (typeof setDialogOpen === 'function') {
-          logger.log('[VERSION] Calling setVersionCheckDialogOpen(true)...');
-          setDialogOpen(true);
-          logger.log('[VERSION] ✅ setVersionCheckDialogOpen(true) called successfully');
+        if (typeof setVersionCheckDialog === 'function') {
+          logger.log('[VERSION] Calling setVersionCheckDialog(true)...');
+          setVersionCheckDialog(true);
+          logger.log('[VERSION] ✅ setVersionCheckDialog(true) called successfully');
         } else {
-          logger.log('[VERSION] ❌ setDialogOpen is not a function:', typeof setDialogOpen);
+          logger.log('[VERSION] ❌ setVersionCheckDialog is not a function:', typeof setVersionCheckDialog);
         }
       } catch (error) {
         logger.log('[VERSION] ❌ Error in version check callback:', error);
