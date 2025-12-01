@@ -20,6 +20,12 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   isVersionCheckActive = true;
   versionCheckCallback = onNewVersionDetected;
   logger.log("[VERSION] Starting version check with version:", APP_VERSION);
+  
+  // Clear any stale sessionStorage values on initial load to prevent false positives
+  // This ensures we start fresh after a page reload
+  sessionStorage.removeItem("app_etag");
+  sessionStorage.removeItem("app_last_modified");
+  logger.log("[VERSION] Cleared sessionStorage to start fresh");
 
   // Check every 5 minutes
   const CHECK_INTERVAL = 5 * 60 * 1000;
