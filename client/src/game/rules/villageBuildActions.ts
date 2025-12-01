@@ -507,7 +507,7 @@ export const villageBuildActions: Record<string, Action> = {
     id: "buildClerksHut",
     label: "Clerk's Hut",
     description: "Hut where clerks track resources of the village",
-    tooltipEffects: ["+2 Knowledge"],
+    tooltipEffects: ["+2 Knowledge", "Resource tracking"],
     building: true,
     show_when: {
       1: {
@@ -538,7 +538,7 @@ export const villageBuildActions: Record<string, Action> = {
     label: "Scriptorium",
     description:
       "Library of knowledge providing detailed tracking of resources",
-    tooltipEffects: ["+5 Knowledge"],
+    tooltipEffects: ["+5 Knowledge", "Improved resource tracking"],
     building: true,
     show_when: {
       1: {

@@ -294,7 +294,7 @@ export default function SidePanelSection({
         className={cn(
           "text-xs text-gray-400 flex items-center gap-1",
           newItemPulseClass,
-          isHighlighted && "font-bold"
+          isHighlighted && "!text-gray-100"
         )}
       >
         {item.icon !== undefined && (
@@ -336,11 +336,11 @@ export default function SidePanelSection({
         ].includes(title) && (
           <span
             className={cn(
-              "font-mono",
+              "font-mono text-gray-300",
               isAnimated && "text-green-800 font-bold",
               isDecreaseAnimated && "text-red-800 font-bold",
               isMadness && madnessClasses,
-              isHighlighted && "font-bold"
+              isHighlighted && "font-bold !text-gray-100"
             )}
           >
             {displayValue}
