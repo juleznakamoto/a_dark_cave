@@ -3,7 +3,7 @@ import { useGameStore } from "@/game/state";
 import { calculateBastionStats } from "@/game/bastionStats";
 import { getTotalKnowledge } from "@/game/rules/effectsCalculation";
 import { combatItemTooltips } from "@/game/rules/tooltips";
-import { BLOODFLAME_SPHERE_UPGRADES } from "@/components/game/panels/BastionPanel";
+import { BLOODFLAME_SPHERE_UPGRADES, CRUSHING_STRIKE_UPGRADES } from "@/components/game/panels/BastionPanel";
 import {
   Dialog,
   DialogContent,
@@ -201,15 +201,7 @@ export default function CombatDialog({
     if (usedCrushingStrike || isProcessingRound) return;
 
     const level = crushingStrikeLevel || 0;
-    const configs = [
-      { damage: 10, stunRounds: 1 },
-      { damage: 20, stunRounds: 1 },
-      { damage: 30, stunRounds: 1 },
-      { damage: 40, stunRounds: 2 },
-      { damage: 50, stunRounds: 2 },
-      { damage: 50, stunRounds: 3 },
-    ];
-    const config = configs[level];
+    const config = CRUSHING_STRIKE_UPGRADES[level];
 
     // Deal damage immediately
     const newEnemyHealth = Math.max(0, (currentEnemy?.currentHealth || 0) - config.damage);
@@ -240,15 +232,7 @@ export default function CombatDialog({
     if (usedBloodflameSphere || isProcessingRound) return;
 
     const level = bloodflameSphereLevel || 0;
-    const configs = [
-      { damage: 10, burnDamage: 10, burnRounds: 1, healthCost: 10 },
-      { damage: 15, burnDamage: 15, burnRounds: 1, healthCost: 10 },
-      { damage: 20, burnDamage: 20, burnRounds: 1, healthCost: 10 },
-      { damage: 25, burnDamage: 25, burnRounds: 2, healthCost: 20 },
-      { damage: 30, burnDamage: 30, burnRounds: 2, healthCost: 20 },
-      { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
-    ];
-    const config = configs[level];
+    const config = BLOODFLAME_SPHERE_UPGRADES[level];
 
     console.log('[BLOODFLAME] Button clicked - applying immediate effects:', {
       baseDamage: config.damage,

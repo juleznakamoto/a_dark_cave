@@ -14,7 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import AttackWavesChart from "./AttackWavesChart";
 
 // Crushing Strike upgrade configurations
-const CRUSHING_STRIKE_UPGRADES = [
+export const CRUSHING_STRIKE_UPGRADES = [
   { level: 0, damage: 10, stunRounds: 1, cost: 0, currency: null },
   { level: 1, damage: 20, stunRounds: 1, cost: 500, currency: "gold" },
   { level: 2, damage: 30, stunRounds: 1, cost: 1000, currency: "gold" },
