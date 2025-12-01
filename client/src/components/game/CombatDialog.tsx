@@ -480,21 +480,6 @@ export default function CombatDialog({
     ? (currentIntegrity / maxIntegrityForCombat) * 100
     : 0;
 
-  // Define BLOODFLAME_SPHERE_UPGRADES outside the component if it's a constant config
-  // For now, assuming it's accessible or defined elsewhere. If not, it needs to be defined.
-  // Placeholder definition:
-  const BLOODFLAME_SPHERE_UPGRADES = [
-    { damage: 10, burnDamage: 10, burnRounds: 1, healthCost: 10 },
-    { damage: 15, burnDamage: 15, burnRounds: 1, healthCost: 10 },
-    { damage: 20, burnDamage: 20, burnRounds: 1, healthCost: 10 },
-    { damage: 25, burnDamage: 25, burnRounds: 2, healthCost: 20 },
-    { damage: 30, burnDamage: 30, burnRounds: 2, healthCost: 20 },
-    { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
-  ];
-
-  // Player health (currentIntegrity) is needed for the disable condition
-  const playerHealth = currentIntegrity;
-
   return (
     <Dialog open={isOpen} onOpenChange={() => {}}>
       <DialogContent
@@ -707,7 +692,12 @@ export default function CombatDialog({
                             <div className="w-full">
                               <Button
                                 onClick={handleUseBloodflameSphere}
-                                disabled={usedBloodflameSphere || isProcessingRound || playerHealth <= BLOODFLAME_SPHERE_UPGRADES[bloodflameSphereLevel].healthCost || gameState.story?.seen?.elderWizardWounded}
+                                disabled={
+                                  usedBloodflameSphere || 
+                                  isProcessingRound || 
+                                  currentIntegrity <= [10, 10, 10, 20, 20, 20][bloodflameSphereLevel] || 
+                                  gameState.story?.seen?.elderWizardWounded
+                                }
                                 variant="outline"
                                 size="sm"
                                 className="text-xs w-full"
