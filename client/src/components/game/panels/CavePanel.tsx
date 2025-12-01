@@ -17,10 +17,16 @@ import { ACTION_TO_UPGRADE_KEY } from "@/game/buttonUpgrades";
 import { logger } from "@/lib/logger";
 
 export default function CavePanel() {
-  const { flags, executeAction, setHighlightedResources } = useGameStore();
+  const { executeAction } = useGameStore();
   const state = useGameStore();
-  const mobileTooltip = useMobileTooltip();
-  const explosionEffect = useExplosionEffect();
+
+  const setHighlightedResources = (resources: string[]) => {
+    logger.log('[HIGHLIGHT_TRACE] CavePanel calling setHighlightedResources', {
+      resources,
+      stackTrace: new Error().stack?.split('\n').slice(1, 8).join('\n')
+    });
+    useGameStore.getState().setHighlightedResources(resources);
+  };
 
   // Separate refs for each explosion button
   const blastPortalRef = useRef<HTMLButtonElement>(null);
@@ -208,11 +214,11 @@ export default function CavePanel() {
           onMouseEnter={() => {
             const resources = getResourcesFromActionCost(actionId, state);
             logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-            setHighlightedResources(new Set(resources));
+            setHighlightedResources(resources);
           }}
           onMouseLeave={() => {
             logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-            setHighlightedResources(new Set());
+            setHighlightedResources([]);
           }}
           style={{ pointerEvents: 'auto' }}
         >
@@ -243,11 +249,11 @@ export default function CavePanel() {
         onMouseEnter={() => {
           const resources = getResourcesFromActionCost(actionId, state);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId} (disabled: ${!canExecute}), resources:`, resources);
-          setHighlightedResources(new Set(resources));
+          setHighlightedResources(resources);
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources(new Set());
+          setHighlightedResources([]);
         }}
         style={{ pointerEvents: 'auto' }}
       >

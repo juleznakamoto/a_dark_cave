@@ -33,17 +33,16 @@ import { useMobileTooltip } from "@/hooks/useMobileTooltip";
 import { logger } from "@/lib/logger";
 
 export default function VillagePanel() {
-  const {
-    villagers,
-    buildings,
-    story,
-    executeAction,
-    assignVillager,
-    unassignVillager,
-    setHighlightedResources,
-  } = useGameStore();
-  const state = useGameStore.getState();
-  const mobileTooltip = useMobileTooltip();
+  const { executeAction } = useGameStore();
+  const state = useGameStore();
+
+  const setHighlightedResources = (resources: string[]) => {
+    logger.log('[HIGHLIGHT_TRACE] VillagePanel calling setHighlightedResources', {
+      resources,
+      stackTrace: new Error().stack?.split('\n').slice(1, 8).join('\n')
+    });
+    useGameStore.getState().setHighlightedResources(resources);
+  };
 
   // Get progress from game loop state
   const loopProgress = useGameStore((state) => state.loopProgress);
