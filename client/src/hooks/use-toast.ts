@@ -252,8 +252,6 @@ function useToast() {
     }
   }, [state])
 
-  console.log('[USE_TOAST] useToast returning state with', state.toasts.length, 'toasts');
-
   return {
     ...state,
     toast,
