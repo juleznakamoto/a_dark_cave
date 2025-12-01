@@ -91,6 +91,24 @@ export default function GameContainer() {
   }, [flags.villageUnlocked, flags.forestUnlocked, estateUnlocked, flags.bastionUnlocked]);
 
 
+  // Initialize version check
+  useEffect(() => {
+    logger.log('[VERSION] Initializing version check from GameContainer');
+    logger.log('[VERSION] setVersionCheckDialogOpen function:', setVersionCheckDialogOpen);
+
+    startVersionCheck(() => {
+      logger.log('[VERSION] Version check callback fired! Setting dialog open...');
+      logger.log('[VERSION] Current versionCheckDialogOpen state:', versionCheckDialogOpen);
+      setVersionCheckDialogOpen(true);
+      logger.log('[VERSION] setVersionCheckDialogOpen(true) called');
+    });
+
+    return () => {
+      logger.log('[VERSION] Cleaning up version check');
+      stopVersionCheck();
+    };
+  }, []);
+
   // Stop game loop when end screen is shown
   useEffect(() => {
     if (showEndScreen) {
@@ -169,24 +187,6 @@ export default function GameContainer() {
   if (showEndScreen) {
     return <EndScreen />;
   }
-
-  useEffect(() => {
-    logger.log('[VERSION] Initializing version check from GameContainer');
-    logger.log('[VERSION] setVersionCheckDialogOpen function:', setVersionCheckDialogOpen);
-
-    startVersionCheck(() => {
-      logger.log('[VERSION] Version check callback fired! Setting dialog open...');
-      logger.log('[VERSION] Current versionCheckDialogOpen state:', versionCheckDialogOpen);
-      setVersionCheckDialogOpen(true);
-      logger.log('[VERSION] setVersionCheckDialogOpen(true) called');
-    });
-
-    return () => {
-      logger.log('[VERSION] Cleaning up version check');
-      stopVersionCheck();
-    };
-  }, []);
-
 
   return (
     <div className="fixed inset-0 bg-background text-foreground flex flex-col">
