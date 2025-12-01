@@ -1,0 +1,75 @@
+(2) ['stone', 'iron']
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource iron is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource iron is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource iron is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource iron is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildPalisades
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+CooldownButton.tsx:203 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-build-palisades', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildPalisades
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+CooldownButton.tsx:188 [MOUSE_ENTER_DEBUG] {buttonId: 'button-build-watchtower', target: 'HTMLSpanElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement', eventPhase: 3, …}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on buildWatchtower (disabled: false), resources: (5) ['wood', 'stone', 'steel', 'obsidian', 'adamant']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: (5) ['wood', 'stone', 'steel', 'obsidian', 'adamant']
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on buildWatchtower (disabled: false), resources: (5) ['wood', 'stone', 'steel', 'obsidian', 'adamant']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: (5) ['wood', 'stone', 'steel', 'obsidian', 'adamant']
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource wood is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource steel is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource obsidian is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource adamant is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildWatchtower
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+CooldownButton.tsx:203 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-build-watchtower', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLButtonElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildWatchtower
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+CooldownButton.tsx:188 [MOUSE_ENTER_DEBUG] {buttonId: 'button-build-palisades', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLButtonElement', eventPhase: 3, …}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse enter on buildPalisades (disabled: true), resources: (2) ['stone', 'iron']
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: (2) ['stone', 'iron']
+logger.ts:33 v983Z [HIGHLIGHT] Resource stone is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Resource iron is highlighted
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildPalisades
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+CooldownButton.tsx:203 [MOUSE_LEAVE_DEBUG] {buttonId: 'button-build-palisades', target: 'HTMLButtonElement', currentTarget: 'HTMLDivElement', relatedTarget: 'HTMLDivElement'}
+logger.ts:33 v983Z [HIGHLIGHT] Mouse leave on buildPalisades
+logger.ts:33 v983Z [HIGHLIGHT] Setting highlighted resources: []
+logger.ts:33 v983Z Loading all sounds after user gesture...
