@@ -1731,13 +1731,13 @@ export const choiceEvents: Record<string, GameEvent> = {
     condition: (state: GameState) => {
       const timesOccurred = state.story?.seen?.frostfallCount || 0;
       return (
-        state.buildings.woodenHut >= 4 &&
+        state.buildings.woodenHut >= 3 &&
         !state.frostfallState?.isActive &&
         timesOccurred < 5
       );
     },
     triggerType: "resource",
-    timeProbability: 0.09, // 1.5 hours
+    timeProbability: 90, // 1.5 hours
     title: "Frostfall",
     message:
       "Icy winds howl through the village. The elders warn that a terrible blizzard is approaching. Preparations must be made, or the consequences will be dire.",
@@ -1750,14 +1750,14 @@ export const choiceEvents: Record<string, GameEvent> = {
         label: "Prepare",
         cost: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
-          const woodCost = 1000 * Math.pow(2, timesOccurred);
-          const foodCost = 1000 * Math.pow(2, timesOccurred);
+          const woodCost = 1000 * (timesOccurred + 1);
+          const foodCost = 1000 * (timesOccurred + 1);
           return `${woodCost} wood, ${foodCost} food`;
         },
         effect: (state: GameState) => {
           const timesOccurred = state.story?.seen?.frostfallCount || 0;
-          const woodCost = 1000 * Math.pow(2, timesOccurred);
-          const foodCost = 1000 * Math.pow(2, timesOccurred);
+          const woodCost = 1000 * (timesOccurred + 1);
+          const foodCost = 1000 * (timesOccurred + 1);
 
           if (
             state.resources.wood < woodCost ||
