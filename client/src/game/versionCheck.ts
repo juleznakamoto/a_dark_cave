@@ -37,14 +37,26 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
   logger.log("[VERSION]   - app_etag:", existingEtag || "null");
   logger.log("[VERSION]   - app_last_modified:", existingLastModified || "null");
 
-  // Check every 1 minutes
-  const CHECK_INTERVAL = 1 * 60 * 1000;
+  // Check every 30 seconds for testing
+  const CHECK_INTERVAL = 30 * 1000;
 
   const checkVersion = async () => {
     try {
       logger.log("[VERSION] ========================================");
       logger.log("[VERSION] 🔍 Running version check...");
       logger.log("[VERSION] Check time:", new Date().toISOString());
+      
+      // TEST: Trigger callback every time the check runs
+      logger.log("[VERSION] 🧪 TEST MODE: Triggering callback on every check");
+      if (typeof versionCheckCallback === "function") {
+        try {
+          logger.log("[VERSION] 🔔 Calling versionCheckCallback for test...");
+          versionCheckCallback();
+          logger.log("[VERSION] ✅ Test callback executed successfully");
+        } catch (callbackError) {
+          logger.log("[VERSION] ❌ Error calling test callback:", callbackError);
+        }
+      }
       
       // Fetch the index.html with cache-busting query param
       const cacheBuster = Date.now();
@@ -173,14 +185,14 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
     }
   };
 
-  // Run initial check after 30 seconds
-  logger.log("[VERSION] ⏰ Scheduling initial check in 30 seconds...");
+  // Run initial check after 10 seconds for testing
+  logger.log("[VERSION] ⏰ Scheduling initial check in 10 seconds...");
   setTimeout(() => {
     logger.log("[VERSION] ========================================");
-    logger.log("[VERSION] ⏰ Initial 30s delay complete");
+    logger.log("[VERSION] ⏰ Initial 10s delay complete");
     logger.log("[VERSION] Running first periodic version check");
     checkVersion();
-  }, 30000);
+  }, 10000);
 
   // Then check periodically
   versionCheckInterval = setInterval(() => {
