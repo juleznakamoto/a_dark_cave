@@ -37,15 +37,47 @@ function Router() {
 
 function App() {
   useEffect(() => {
-    // Initialize Playlight SDK via ESM CDN (after hydration)
+    // Initialize Playlight SDK with game pause integration
     (async () => {
       try {
         const module = await import(
           "https://sdk.playlight.dev/playlight-sdk.es.js"
         );
         const playlightSDK = module.default;
-        playlightSDK.init();
-        console.log("[PLAYLIGHT] SDK initialized successfully");
+        
+        // Initialize SDK
+        playlightSDK.init({
+          exitIntent: {
+            enabled: true,
+            immediate: false
+          },
+          sidebar: {
+            hasFrameworkRoot: true,
+            forceVisible: false
+          }
+        });
+        
+        // Import game store
+        const { useGameStore } = await import('./game/state');
+        
+        // Set up event listeners for game pause/unpause
+        playlightSDK.onEvent('discoveryOpen', () => {
+          console.log("[PLAYLIGHT] Discovery opened - pausing game");
+          const state = useGameStore.getState();
+          if (!state.isPaused) {
+            state.togglePause();
+          }
+        });
+        
+        playlightSDK.onEvent('discoveryClose', () => {
+          console.log("[PLAYLIGHT] Discovery closed - resuming game");
+          const state = useGameStore.getState();
+          if (state.isPaused) {
+            state.togglePause();
+          }
+        });
+        
+        console.log("[PLAYLIGHT] SDK initialized with game pause integration");
       } catch (error) {
         console.error("Error loading the Playlight SDK:", error);
       }
