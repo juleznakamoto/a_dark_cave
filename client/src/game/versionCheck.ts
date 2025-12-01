@@ -63,6 +63,14 @@ export function startVersionCheck(onNewVersionDetected: () => void) {
           newLastModified: lastModified,
         });
         
+        // Update sessionStorage with new values so refresh doesn't trigger dialog again
+        if (etag) {
+          sessionStorage.setItem('app_etag', etag);
+        }
+        if (lastModified) {
+          sessionStorage.setItem('app_last_modified', lastModified);
+        }
+        
         // Store callback before stopping (which sets it to null)
         const callbackToExecute = versionCheckCallback;
         
