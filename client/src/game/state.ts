@@ -223,7 +223,7 @@ const mergeStateUpdates = (
 
   if (
     stateUpdates.tools ||
-    state.weapons || // This line seems incorrect, should be stateUpdates.weapons
+    stateUpdates.weapons ||
     stateUpdates.clothing ||
     stateUpdates.relics ||
     stateUpdates.books
