@@ -1,0 +1,99 @@
+[VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] startVersionCheck() called
+index-CJhuTTDt.js:128 [VERSION] Current timestamp: 2025-12-01T08:54:28.533Z
+index-CJhuTTDt.js:128 [VERSION] ✅ Version check activated
+index-CJhuTTDt.js:128 [VERSION] App version: 2025-12-01T08:50:38.046Z
+index-CJhuTTDt.js:128 [VERSION] Callback set: undefined
+index-CJhuTTDt.js:128 [VERSION] 📦 SessionStorage on startup:
+index-CJhuTTDt.js:128 [VERSION]   - app_etag: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - app_last_modified: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION] ⏰ Scheduling initial check in 30 seconds...
+index-CJhuTTDt.js:128 [VERSION] ⏰ Periodic checks scheduled every 300 seconds
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] Initializing version check from GameContainer
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] startVersionCheck() called
+index-CJhuTTDt.js:128 [VERSION] Current timestamp: 2025-12-01T08:54:28.553Z
+index-CJhuTTDt.js:128 [VERSION] ⚠️ Version check already active, updating callback
+index-CJhuTTDt.js:128 [VERSION] Previous callback type: undefined
+index-CJhuTTDt.js:128 [VERSION] New callback type: function
+index-CJhuTTDt.js:128 [VERSION] Exiting early - check already running
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] ⏰ Initial 30s delay complete
+index-CJhuTTDt.js:128 [VERSION] Running first periodic version check
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] 🔍 Running version check...
+index-CJhuTTDt.js:128 [VERSION] Check time: 2025-12-01T08:54:59.171Z
+index-CJhuTTDt.js:128 [VERSION] Cache buster value: 1764579299171
+index-CJhuTTDt.js:128 [VERSION] ✅ Fetch completed, status: 200
+index-CJhuTTDt.js:128 [VERSION] 📥 Headers received from server:
+index-CJhuTTDt.js:128 [VERSION]   - ETag: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Last-Modified: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION] 📦 Current sessionStorage values:
+index-CJhuTTDt.js:128 [VERSION]   - Stored ETag: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Stored Last-Modified: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] 🔍 COMPARING VALUES:
+index-CJhuTTDt.js:128 [VERSION] Checking ETag:
+index-CJhuTTDt.js:128 [VERSION]   - Current: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Stored: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Match: true
+index-CJhuTTDt.js:128 [VERSION] Checking Last-Modified:
+index-CJhuTTDt.js:128 [VERSION]   - Current: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION]   - Stored: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION]   - Match: true
+index-CJhuTTDt.js:128 [VERSION] 📊 Comparison results:
+index-CJhuTTDt.js:128 [VERSION]   - ETag changed: false
+index-CJhuTTDt.js:128 [VERSION]   - Last-Modified changed: false
+index-CJhuTTDt.js:128 [VERSION]   - Has any change: false
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] ✅ No version change detected
+index-CJhuTTDt.js:128 [VERSION] Both ETag and Last-Modified match stored values
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] ⏰ Periodic check triggered
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] 🔍 Running version check...
+index-CJhuTTDt.js:128 [VERSION] Check time: 2025-12-01T08:59:29.179Z
+index-CJhuTTDt.js:128 [VERSION] Cache buster value: 1764579569179
+index-CJhuTTDt.js:128 [VERSION] ✅ Fetch completed, status: 200
+index-CJhuTTDt.js:128 [VERSION] 📥 Headers received from server:
+index-CJhuTTDt.js:128 [VERSION]   - ETag: W/"197a-19ad921d728"
+index-CJhuTTDt.js:128 [VERSION]   - Last-Modified: Mon, 01 Dec 2025 08:57:45 GMT
+index-CJhuTTDt.js:128 [VERSION] 📦 Current sessionStorage values:
+index-CJhuTTDt.js:128 [VERSION]   - Stored ETag: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Stored Last-Modified: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] 🔍 COMPARING VALUES:
+index-CJhuTTDt.js:128 [VERSION] Checking ETag:
+index-CJhuTTDt.js:128 [VERSION]   - Current: W/"197a-19ad921d728"
+index-CJhuTTDt.js:128 [VERSION]   - Stored: W/"197a-19ad91b7e28"
+index-CJhuTTDt.js:128 [VERSION]   - Match: false
+index-CJhuTTDt.js:128 [VERSION] Checking Last-Modified:
+index-CJhuTTDt.js:128 [VERSION]   - Current: Mon, 01 Dec 2025 08:57:45 GMT
+index-CJhuTTDt.js:128 [VERSION]   - Stored: Mon, 01 Dec 2025 08:50:49 GMT
+index-CJhuTTDt.js:128 [VERSION]   - Match: false
+index-CJhuTTDt.js:128 [VERSION] 📊 Comparison results:
+index-CJhuTTDt.js:128 [VERSION]   - ETag changed: true
+index-CJhuTTDt.js:128 [VERSION]   - Last-Modified changed: true
+index-CJhuTTDt.js:128 [VERSION]   - Has any change: true
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] ========================================
+index-CJhuTTDt.js:128 [VERSION] 🆕 NEW VERSION DETECTED!
+index-CJhuTTDt.js:128 [VERSION] Changes:
+index-CJhuTTDt.js:128 [VERSION]   - ETag: 'W/"197a-19ad91b7e28"' -> 'W/"197a-19ad921d728"'
+index-CJhuTTDt.js:128 [VERSION]   - Last-Modified: 'Mon, 01 Dec 2025 08:50:49 GMT' -> 'Mon, 01 Dec 2025 08:57:45 GMT'
+index-CJhuTTDt.js:128 [VERSION] 📝 Updating sessionStorage with new values...
+index-CJhuTTDt.js:128 [VERSION] ✅ Updated ETag in sessionStorage: W/"197a-19ad921d728"
+index-CJhuTTDt.js:128 [VERSION] ✅ Updated Last-Modified in sessionStorage: Mon, 01 Dec 2025 08:57:45 GMT
+index-CJhuTTDt.js:128 [VERSION] 📞 Preparing to call callback...
+index-CJhuTTDt.js:128 [VERSION] Callback exists: true
+index-CJhuTTDt.js:128 [VERSION] Callback type: function
+index-CJhuTTDt.js:128 [VERSION] 🔔 Calling versionCheckCallback NOW...
+index-CJhuTTDt.js:128 [VERSION] Version check callback fired! Getting store reference...
+index-CJhuTTDt.js:128 [VERSION] Calling setVersionCheckDialog(true)...
+index-CJhuTTDt.js:128 [VERSION] ✅ setVersionCheckDialog(true) called successfully
+index-CJhuTTDt.js:128 [VERSION] ✅ versionCheckCallback executed successfully
+index-CJhuTTDt.js:128 [VERSION] 🛑 Stopping version check...
+index-CJhuTTDt.js:128 [VERSION] Version check stopped
+index-CJhuTTDt.js:128 [VERSION] ========================================
