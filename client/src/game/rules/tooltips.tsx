@@ -27,7 +27,7 @@ export const getResourceGainTooltip = (
 
   // Check if this is a craft action to apply crafting discount
   const isCraftAction = actionId.startsWith("craft");
-  const craftingDiscount = isCraftAction
+  const craftingDiscount = isCraftAction 
     ? getTotalCraftingCostReduction(state)
     : 0;
 
@@ -151,7 +151,7 @@ export const getResourceGainTooltip = (
           const resource = key.split(".")[1];
           if (typeof value === "number") {
             // Apply crafting discount if applicable
-            const finalCost = isCraftAction
+            const finalCost = isCraftAction 
               ? Math.ceil(value * (1 - craftingDiscount))
               : value;
 
@@ -296,21 +296,25 @@ export const curseTooltip: TooltipConfig = {
   },
 };
 
-export const miningBoostTooltip = {
+export const miningBoostTooltip: TooltipConfig = {
   getContent: (state: GameState) => {
-    const timeRemaining = Math.max(0, (state.miningBoostState?.endTime || 0) - Date.now());
-    const minutesRemaining = Math.round(timeRemaining / 1000 / 60);
+    const miningBoostState = state.miningBoostState;
+    const isBoosted =
+      miningBoostState?.isActive && miningBoostState.endTime > Date.now();
 
-    return `Mining Boost is active! All mining production is doubled for ${minutesRemaining} minutes.`;
-  },
-};
+    if (isBoosted) {
+      const remainingMs = miningBoostState.endTime - Date.now();
+      const remainingMinutes = Math.ceil(remainingMs / 60000);
+      return (
+        <>
+          <div className="font-bold">Mining Boost</div>
+          <div>Mining Production: 200%</div>
+          <div>{remainingMinutes} min remaining</div>
+        </>
+      );
+    }
 
-export const frostfallTooltip = {
-  getContent: (state: GameState) => {
-    const timeRemaining = Math.max(0, (state.frostfallState?.endTime || 0) - Date.now());
-    const minutesRemaining = Math.round(timeRemaining / 1000 / 60);
-
-    return `Frostfall is active! All village production is reduced by 25% for ${minutesRemaining} minutes.`;
+    return null;
   },
 };
 
