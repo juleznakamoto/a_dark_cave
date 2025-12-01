@@ -295,10 +295,16 @@ export function getResourcesFromActionCost(actionId: string): string[] {
     const firstKey = keys[0];
     
     if (firstKey && !isNaN(Number(firstKey))) {
-      // Tiered cost - use level 1
-      const tier1Cost = action.cost[1] || action.cost[firstKey];
-      if (tier1Cost) {
-        Object.keys(tier1Cost).forEach(key => {
+      // Tiered cost - for building actions, get the next building level
+      let level = 1;
+      if (action.building) {
+        const state = useGameStore.getState();
+        level = getNextBuildingLevel(actionId, state);
+      }
+      
+      const levelCost = action.cost[level];
+      if (levelCost) {
+        Object.keys(levelCost).forEach(key => {
           if (key.startsWith('resources.')) {
             const resourceName = key.split('.')[1];
             resources.push(resourceName);
