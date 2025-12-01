@@ -239,13 +239,13 @@ export default function VillagePanel() {
         className="hover:bg-transparent hover:text-foreground"
         tooltip={tooltipContent}
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId);
+          const resources = getResourcesFromActionCost(actionId, state);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
-          setHighlightedResources(new Set(resources));
+          setHighlightedResources(resources);
         }}
         onMouseLeave={() => {
           logger.log(`[HIGHLIGHT] Mouse leave on ${actionId}`);
-          setHighlightedResources(new Set());
+          setHighlightedResources([]);
         }}
       >
         {displayLabel}

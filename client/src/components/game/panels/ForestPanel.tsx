@@ -233,7 +233,7 @@ export default function ForestPanel() {
           className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
           tooltip={tooltipContent}
           onMouseEnter={() => {
-            const resources = getResourcesFromActionCost(actionId);
+            const resources = getResourcesFromActionCost(actionId, state);
             logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
             setHighlightedResources(new Set(resources));
           }}
@@ -268,7 +268,7 @@ export default function ForestPanel() {
         variant="outline"
         className={`hover:bg-transparent hover:text-foreground ${isTradeButton ? "w-fit" : ""}`}
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId);
+          const resources = getResourcesFromActionCost(actionId, state);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
           setHighlightedResources(new Set(resources));
         }}

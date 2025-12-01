@@ -206,7 +206,7 @@ export default function CavePanel() {
           className="hover:bg-transparent hover:text-foreground"
           tooltip={tooltipContent}
           onMouseEnter={() => {
-            const resources = getResourcesFromActionCost(actionId);
+            const resources = getResourcesFromActionCost(actionId, state);
             logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
             setHighlightedResources(new Set(resources));
           }}
@@ -240,7 +240,7 @@ export default function CavePanel() {
         variant="outline"
         className="hover:bg-transparent hover:text-foreground"
         onMouseEnter={() => {
-          const resources = getResourcesFromActionCost(actionId);
+          const resources = getResourcesFromActionCost(actionId, state);
           logger.log(`[HIGHLIGHT] Mouse enter on ${actionId}, resources:`, resources);
           setHighlightedResources(new Set(resources));
         }}

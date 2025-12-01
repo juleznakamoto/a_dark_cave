@@ -282,7 +282,7 @@ function getAdjustedCost(
 }
 
 // Helper function to extract resource IDs from action cost
-export function getResourcesFromActionCost(actionId: string): string[] {
+export function getResourcesFromActionCost(actionId: string, state: GameState): string[] {
   const action = gameActions[actionId];
   if (!action?.cost) return [];
   
@@ -298,7 +298,6 @@ export function getResourcesFromActionCost(actionId: string): string[] {
       // Tiered cost - for building actions, get the next building level
       let level = 1;
       if (action.building) {
-        const state = useGameStore.getState();
         level = getNextBuildingLevel(actionId, state);
       }
       
