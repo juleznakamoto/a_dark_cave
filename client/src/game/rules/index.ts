@@ -721,8 +721,7 @@ export const applyActionEffects = (
               caveEvents[probabilityEffect.eventId] ||
               huntEvents[probabilityEffect.eventId] ||
               loreEvents[probabilityEffect.eventId] ||
-              fellowshipEvents[probabilityEffect.eventId] ||
-              knightEvents[probabilityEffect.eventId];
+              fellowshipEvents[probabilityEffect.eventId];
 
 
             // Ensure the event exists and hasn't been seen before
