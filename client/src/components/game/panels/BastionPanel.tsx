@@ -662,6 +662,14 @@ export default function BastionPanel() {
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick("heal-restless-knight", e)
                       }
+                      onMouseEnter={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel heal restless knight mouse enter');
+                        setHighlightedResources(['food']);
+                      }}
+                      onMouseLeave={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel heal restless knight mouse leave');
+                        setHighlightedResources([]);
+                      }}
                     >
                       <Button
                         onClick={() => {
@@ -710,6 +718,14 @@ export default function BastionPanel() {
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick("heal-elder-wizard", e)
                       }
+                      onMouseEnter={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel heal elder wizard mouse enter');
+                        setHighlightedResources(['food']);
+                      }}
+                      onMouseLeave={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel heal elder wizard mouse leave');
+                        setHighlightedResources([]);
+                      }}
                     >
                       <Button
                         onClick={() => {
@@ -766,6 +782,15 @@ export default function BastionPanel() {
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick("repair-bastion", e)
                       }
+                      onMouseEnter={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair bastion mouse enter');
+                        const resources = Object.keys(getRepairCost("buildBastion", 1));
+                        setHighlightedResources(resources);
+                      }}
+                      onMouseLeave={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair bastion mouse leave');
+                        setHighlightedResources([]);
+                      }}
                     >
                       <Button
                         onClick={repairBastion}
@@ -811,6 +836,15 @@ export default function BastionPanel() {
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick("repair-watchtower", e)
                       }
+                      onMouseEnter={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair watchtower mouse enter');
+                        const resources = Object.keys(getRepairCost("buildWatchtower", buildings.watchtower));
+                        setHighlightedResources(resources);
+                      }}
+                      onMouseLeave={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair watchtower mouse leave');
+                        setHighlightedResources([]);
+                      }}
                     >
                       <Button
                         onClick={repairWatchtower}
@@ -862,6 +896,15 @@ export default function BastionPanel() {
                       onClick={(e) =>
                         mobileTooltip.handleTooltipClick("repair-palisades", e)
                       }
+                      onMouseEnter={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair palisades mouse enter');
+                        const resources = Object.keys(getRepairCost("buildPalisades", buildings.palisades));
+                        setHighlightedResources(resources);
+                      }}
+                      onMouseLeave={() => {
+                        logger.log('[HIGHLIGHT] BastionPanel repair palisades mouse leave');
+                        setHighlightedResources([]);
+                      }}
                     >
                       <Button
                         onClick={repairPalisades}
