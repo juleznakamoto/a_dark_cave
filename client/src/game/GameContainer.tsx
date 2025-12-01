@@ -5,6 +5,7 @@
 
     startVersionCheck(() => {
       logger.log('[VERSION] Version check callback fired! Setting dialog open...');
+      logger.log('[VERSION] Current versionCheckDialogOpen state:', versionCheckDialogOpen);
       setVersionCheckDialogOpen(true);
       logger.log('[VERSION] setVersionCheckDialogOpen(true) called');
     });
@@ -13,4 +14,4 @@
       logger.log('[VERSION] Cleaning up version check');
       stopVersionCheck();
     };
-  }, [setVersionCheckDialogOpen]);
+  }, [setVersionCheckDialogOpen, versionCheckDialogOpen]);
