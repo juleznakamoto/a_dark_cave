@@ -3,28 +3,40 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { createPaymentIntent, verifyPayment } from './stripe';
 
 // Mock Stripe with proper class constructor pattern
+// Mock functions are created inside the factory to avoid hoisting issues
 const mockCreate = vi.fn();
 const mockRetrieve = vi.fn();
 
 vi.mock('stripe', () => {
+  // Create mock functions inside the factory
+  const mockCreateFn = vi.fn();
+  const mockRetrieveFn = vi.fn();
+  
   class MockStripe {
     paymentIntents: {
-      create: typeof mockCreate;
-      retrieve: typeof mockRetrieve;
+      create: typeof mockCreateFn;
+      retrieve: typeof mockRetrieveFn;
     };
     
     constructor() {
       this.paymentIntents = {
-        create: mockCreate,
-        retrieve: mockRetrieve,
+        create: mockCreateFn,
+        retrieve: mockRetrieveFn,
       };
     }
   }
   
   return {
     default: MockStripe,
+    mockCreate: mockCreateFn,
+    mockRetrieve: mockRetrieveFn,
   };
 });
+
+// Get the mock functions from the mocked module
+const stripeMock = await import('stripe');
+const mockCreateFromModule = (stripeMock as any).mockCreate;
+const mockRetrieveFromModule = (stripeMock as any).mockRetrieve;
 
 describe('Stripe Shop Integration', () => {
   beforeEach(() => {
@@ -33,13 +45,13 @@ describe('Stripe Shop Integration', () => {
 
   describe('createPaymentIntent', () => {
     it('should create payment intent with correct amount', async () => {
-      mockCreate.mockResolvedValue({
+      mockCreateFromModule.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
       const result = await createPaymentIntent('gold_250');
 
-      expect(mockCreate).toHaveBeenCalledWith({
+      expect(mockCreateFromModule).toHaveBeenCalledWith({
         amount: 99, // Server-side price
         currency: 'eur',
         metadata: {
@@ -57,7 +69,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should always use server-side price, never client price', async () => {
-      mockCreate.mockResolvedValue({
+      mockCreateFromModule.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
@@ -65,7 +77,7 @@ describe('Stripe Shop Integration', () => {
       const result = await createPaymentIntent('gold_250', 1); // Try to pay only 1 cent
 
       // Should still use server price of 99 cents
-      expect(mockCreate).toHaveBeenCalledWith(
+      expect(mockCreateFromModule).toHaveBeenCalledWith(
         expect.objectContaining({
           amount: 99, // Server-enforced price
         })
@@ -73,13 +85,13 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should handle great feast items correctly', async () => {
-      mockCreate.mockResolvedValue({
+      mockCreateFromModule.mockResolvedValue({
         client_secret: 'test_secret',
       });
 
       const result = await createPaymentIntent('great_feast_1');
 
-      expect(mockCreate).toHaveBeenCalledWith({
+      expect(mockCreateFromModule).toHaveBeenCalledWith({
         amount: 149,
         currency: 'eur',
         metadata: {
@@ -93,7 +105,7 @@ describe('Stripe Shop Integration', () => {
 
   describe('verifyPayment', () => {
     it('should verify successful payment', async () => {
-      mockRetrieve.mockResolvedValue({
+      mockRetrieveFromModule.mockResolvedValue({
         status: 'succeeded',
         amount: 99,
         metadata: {
@@ -108,7 +120,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should reject payment with incorrect amount', async () => {
-      mockRetrieve.mockResolvedValue({
+      mockRetrieveFromModule.mockResolvedValue({
         status: 'succeeded',
         amount: 1, // Wrong amount!
         metadata: {
@@ -123,7 +135,7 @@ describe('Stripe Shop Integration', () => {
     });
 
     it('should reject non-succeeded payments', async () => {
-      mockRetrieve.mockResolvedValue({
+      mockRetrieveFromModule.mockResolvedValue({
         status: 'pending',
         amount: 99,
         metadata: {
