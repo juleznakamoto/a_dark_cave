@@ -33,11 +33,11 @@ export default function EndScreen() {
           line2: "Ends Here",
         }}
         subtitle1="At least for now..."
-        subtitle2="You finished the first chapter."
-        subtitle3="Feel free to play again or try Cruel Mode (coming soon)."
+        subtitle2="Try Cruel Mode for an even bigger challenge with an extended gameplay."
+        subtitle3=""
         buttons={{
           primary: {
-            text: "⛤ Cruel Mode ⛤",
+            text: "⛤ Cruel Mode",
             onClick: handleCruelMode,
             buttonId: "end-screen-cruel-mode",
           },

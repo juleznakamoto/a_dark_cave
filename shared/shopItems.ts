@@ -21,6 +21,20 @@ export interface ShopItem {
 }
 
 export const SHOP_ITEMS: Record<string, ShopItem> = {
+  gold_100_free: {
+    id: "gold_100_free",
+    name: "100 Gold (Free Gift)",
+    description: "A generous gift to get you started (one-time only)",
+    price: 0, // Free!
+    rewards: {
+      resources: { gold: 100 },
+    },
+    canPurchaseMultipleTimes: false,
+    category: "resource",
+    activationMessage: "100 Gold have been added to your inventory as a gift!",
+    symbol: "⚵",
+    symbolColor: "text-sky-700",
+  },
   cruel_mode: {
     id: "cruel_mode",
     name: "Cruel Mode",
@@ -37,20 +51,7 @@ export const SHOP_ITEMS: Record<string, ShopItem> = {
     symbolColor: "text-red-600",
   },
 
-  gold_100_free: {
-    id: "gold_100_free",
-    name: "100 Gold (Free Gift)",
-    description: "A generous gift to get you started (one-time only)",
-    price: 0, // Free!
-    rewards: {
-      resources: { gold: 100 },
-    },
-    canPurchaseMultipleTimes: false,
-    category: "resource",
-    activationMessage: "100 Gold have been added to your inventory as a gift!",
-    symbol: "⚵",
-    symbolColor: "text-sky-700",
-  },
+
 
   gold_250: {
     id: "gold_250",
