@@ -189,6 +189,18 @@ export const getPopulationProduction = (
     });
   }
 
+  // Apply frostfall penalty if active (0.75x for positive production only)
+  const frostfallState = state.frostfallState;
+  const isFrostfall = frostfallState?.isActive && frostfallState.endTime > Date.now();
+  if (isFrostfall) {
+    baseProduction.forEach((prod) => {
+      // Only reduce positive production (not consumption)
+      if (prod.totalAmount > 0) {
+        prod.totalAmount = Math.floor(prod.totalAmount * 0.75);
+      }
+    });
+  }
+
   // Apply mining boost multiplier if active (for mining jobs only)
   const miningBoostState = state.miningBoostState;
   const isMiningJob = jobId.endsWith("_miner");
