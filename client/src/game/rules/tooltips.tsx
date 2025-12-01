@@ -379,7 +379,7 @@ export const combatItemTooltips: Record<string, TooltipConfig> = {
         { damage: 35, burnDamage: 35, burnRounds: 3, healthCost: 20 },
       ];
       const config = configs[level];
-      return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} rounds\nHealth Cost: ${config.healthCost}`;
+      return `Damage: ${config.damage}\nBurn: ${config.burnDamage}×${config.burnRounds} round${config.burnRounds > 1 ? "s" : ""}\nHealth Cost: ${config.healthCost}`;
     },
   },
 };
