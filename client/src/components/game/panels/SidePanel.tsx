@@ -69,6 +69,15 @@ export default function SidePanel() {
     }
   });
 
+  // Track which stats have ever been seen
+  const seenStatsRef = useRef<Set<string>>(new Set());
+  
+  // Update seen stats
+  if (totalLuck > 0) seenStatsRef.current.add('luck');
+  if (totalStrength > 0) seenStatsRef.current.add('strength');
+  if (totalKnowledge > 0) seenStatsRef.current.add('knowledge');
+  if (totalMadness > 0) seenStatsRef.current.add('madness');
+
   // Dynamically generate resource items from state (in schema order)
   // Show resource if it has ever been > 0, even if currently 0
   const resourceItems = resourceOrder
@@ -559,15 +568,8 @@ export default function SidePanel() {
   const hasScriptorium = buildings.scriptorium > 0;
   const hasClerksHut = buildings.clerksHut > 0;
 
-  // Only show stats if at least one is > 0
-  const hasAnyStats =
-    totalLuck > 0 ||
-    totalStrength > 0 ||
-    totalKnowledge > 0 ||
-    totalMadness > 0;
-
-  if (hasAnyStats) {
-    // Always show luck
+  // Show luck if it has ever been > 0
+  if (seenStatsRef.current.has('luck')) {
     statsItems.push({
       id: "luck",
       label: "Luck",
@@ -580,8 +582,10 @@ export default function SidePanel() {
         <span className="text-gray-400">Bends fate in your favor</span>
       ) : undefined,
     });
+  }
 
-    // Always show strength
+  // Show strength if it has ever been > 0
+  if (seenStatsRef.current.has('strength')) {
     statsItems.push({
       id: "strength",
       label: "Strength",
@@ -596,8 +600,10 @@ export default function SidePanel() {
         </span>
       ) : undefined,
     });
+  }
 
-    // Always show knowledge
+  // Show knowledge if it has ever been > 0
+  if (seenStatsRef.current.has('knowledge')) {
     statsItems.push({
       id: "knowledge",
       label: "Knowledge",
@@ -612,8 +618,10 @@ export default function SidePanel() {
         </span>
       ) : undefined,
     });
+  }
 
-    // Always show madness (show 0 if below 0)
+  // Show madness if it has ever been > 0 (display 0 if below 0)
+  if (seenStatsRef.current.has('madness')) {
     const displayMadness = Math.max(0, totalMadness);
 
     // Build combined madness tooltip
